@@ -1,0 +1,141 @@
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Condition="Exists('..\dir.props')" Project="..\dir.props" />
+  <!-- Build Tools Version -->
+  <PropertyGroup>
+    <BuildToolsVersion>1.0.25-prerelease-00046</BuildToolsVersion>
+    <DnxVersion>1.0.0-beta5-11682</DnxVersion>
+  </PropertyGroup>
+
+  <!-- Common repo directories -->
+  <PropertyGroup>
+    <ProjectDir>$(MSBuildThisFileDirectory)</ProjectDir>
+    <SourceDir>$(ProjectDir)src/</SourceDir>
+
+    <!-- Output directories -->
+    <BinDir Condition="'$(BinDir)'==''">$(ProjectDir)bin/</BinDir>
+    <ObjDir Condition="'$(ObjDir)'==''">$(BinDir)obj/</ObjDir>
+    <TestWorkingDir Condition="'$(TestWorkingDir)'==''">$(BinDir)tests/</TestWorkingDir>
+    <PackagesOutDir Condition="'$(PackagesOutDir)'==''">$(BinDir)packages/</PackagesOutDir>
+    
+    <!-- Input Directories -->
+    <PackagesDir Condition="'$(PackagesDir)'==''">$(ProjectDir)packages/</PackagesDir>
+    <ToolsDir Condition="'$(ToolsDir)'==''">$(PackagesDir)Microsoft.DotNet.BuildTools.$(BuildToolsVersion)/lib/</ToolsDir>
+  </PropertyGroup>
+
+  <!-- Common nuget properties -->
+  <PropertyGroup>
+    <NuGetToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDir)NuGet.exe</NuGetToolPath>
+    <NuGetConfigFile Condition="'$(NuGetConfigFile)' == ''">$(SourceDir)NuGet.Config</NuGetConfigFile>
+    <NuGetConfigCommandLine>-ConfigFile "$(NuGetConfigFile)"</NuGetConfigCommandLine>
+
+    <NugetRestoreCommand>"$(NuGetToolPath)"</NugetRestoreCommand>
+    <NugetRestoreCommand>$(NugetRestoreCommand) install</NugetRestoreCommand>
+    <NugetRestoreCommand>$(NugetRestoreCommand) -OutputDirectory "$(PackagesDir.TrimEnd('/'))"</NugetRestoreCommand>
+    <NugetRestoreCommand>$(NugetRestoreCommand) $(NuGetConfigCommandLine)</NugetRestoreCommand>
+    <NugetRestoreCommand>$(NugetRestoreCommand) -Verbosity detailed</NugetRestoreCommand>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DnuToolPath Condition="'$(DnuToolPath)' == ''">$(PackagesDir)dnx-coreclr-win-x86.$(DnxVersion)\bin\dnu.cmd</DnuToolPath>
+
+    <DnuRestoreCommand>"$(DnuToolPath)"</DnuRestoreCommand>
+    <DnuRestoreCommand>$(DnuRestoreCommand) restore</DnuRestoreCommand>
+    <DnuRestoreCommand>$(DnuRestoreCommand) --packages "$(PackagesDir.TrimEnd('/'))"</DnuRestoreCommand>
+
+    <!-- Current version of DNX does not support all semantics used in our packages, 
+         so we ignore the pre-calculation in the lock file and calculate asset applicability in the build task -->
+    <NuGetIngoreLockFile>true</NuGetIngoreLockFile>
+  </PropertyGroup>
+  <!-- 
+  Projects that have no OS-specific implementations just use Debug and Release for $(Configuration).
+  Projects that do have OS-specific implementations use OS_Debug and OS_Release, for all OS's we support even
+  if the code is the same between some OS's (so if you have some project that just calls POSIX APIs, we still have
+  OSX_[Debug|Release] and Linux_[Debug|Release] configurations.  We do this so that we place all the output under
+  a single binary folder and can have a similar experiance between the command line and Visual Studio.
+  
+  Since now have multiple *Debug and *Release configurations, ConfigurationGroup is set to Debug for any of the
+  debug configurations, and to Release for any of the release configurations.
+  -->
+
+  <!-- Set default Configuration and Platform -->
+  <PropertyGroup>
+    <Platform Condition="'$(Platform)'==''">AnyCPU</Platform>
+
+    <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
+    <ConfigurationGroup Condition="$(Configuration.EndsWith('Debug'))">Debug</ConfigurationGroup>
+    <ConfigurationGroup Condition="$(Configuration.EndsWith('Release'))">Release</ConfigurationGroup>
+    <ConfigurationGroup Condition="'$(ConfigurationGroup)'==''">$(Configuration)</ConfigurationGroup>
+ 
+    <OS Condition="$(Configuration.StartsWith('Windows'))">Windows_NT</OS>
+    <OS Condition="$(Configuration.StartsWith('Linux'))">Linux</OS>
+    <OS Condition="$(Configuration.StartsWith('OSX'))">OSX</OS>
+
+    <OSGroup Condition="'$(OSGroup)'==''">$(OS)</OSGroup>
+  </PropertyGroup>
+
+  <!-- Setup Default symbol and optimization for Configuration -->
+  <PropertyGroup Condition="'$(ConfigurationGroup)' == 'Debug'">
+    <DebugSymbols Condition="'$(DebugSymbols)' == ''">true</DebugSymbols>
+    <Optimize Condition="'$(Optimize)' == ''">false</Optimize>
+    <DebugType Condition="'$(DebugType)' == ''">full</DebugType>
+    <DefineConstants>$(DefineConstants),DEBUG,TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ConfigurationGroup)' == 'Release'">
+    <DebugSymbols Condition="'$(DebugSymbols)' == ''">true</DebugSymbols>
+    <Optimize Condition="'$(Optimize)' == ''">true</Optimize>
+    <DebugType Condition="'$(DebugType)' == ''">pdbonly</DebugType>
+    <DefineConstants>$(DefineConstants),TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Disable some standard properties for building our projects -->
+  <PropertyGroup>
+    <NoStdLib>true</NoStdLib>
+    <NoExplicitReferenceToStdLib>true</NoExplicitReferenceToStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <!-- Setup some common paths -->
+  <PropertyGroup>
+    <CommonPath>$(SourceDir)Common\src</CommonPath>
+    <CommonTestPath>$(SourceDir)Common\tests</CommonTestPath>
+  </PropertyGroup>
+
+  <!-- Setup the default output and intermediate paths -->
+  <PropertyGroup>
+    <OSPlatformConfig>$(OSGroup).$(Platform).$(ConfigurationGroup)</OSPlatformConfig>
+
+    <BaseOutputPath Condition="'$(BaseOutputPath)'==''">$(BinDir)</BaseOutputPath>
+    <OutputPath Condition="'$(OutputPath)'==''">$(BaseOutputPath)$(OSPlatformConfig)\$(MSBuildProjectName)\</OutputPath>
+
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'==''">$(ObjDir)</BaseIntermediateOutputPath>
+    <IntermediateOutputRootPath Condition="'$(IntermediateOutputRootPath)' == ''">$(BaseIntermediateOutputPath)$(OSPlatformConfig)\</IntermediateOutputRootPath>
+    <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' == ''">$(IntermediateOutputRootPath)$(MSBuildProjectName)\</IntermediateOutputPath>
+
+    <TestPath Condition="'$(TestPath)'==''">$(TestWorkingDir)$(OSPlatformConfig)\$(MSBuildProjectName)\</TestPath>
+
+    <PackagesBasePath Condition="'$(PackagesBasePath)'==''">$(BinDir)$(OSPlatformConfig)</PackagesBasePath>
+  </PropertyGroup>
+
+  <!-- Setup common target properties that we use to conditionally include sources -->
+  <PropertyGroup>
+    <TargetsWindows Condition="'$(OS)' == 'Windows_NT'">true</TargetsWindows>
+    <TargetsLinux Condition="'$(OS)' == 'Linux'">true</TargetsLinux>
+    <TargetsOSX Condition="'$(OS)' == 'OSX'">true</TargetsOSX>
+
+    <TargetsUnix Condition="'$(TargetsLinux)' == 'true' or '$(TargetsOSX)' == 'true'">true</TargetsUnix>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Work around known Dev14 bug - see
+         https://connect.microsoft.com/VisualStudio/feedback/details/1000796/connect-file-uap-props-not-found-cant-build-a-portable-lib-on-vs14
+    -->
+    <_WindowsKitBinPath>$(MSBuildProgramFiles32)\Windows Kits\8.1\bin\x86</_WindowsKitBinPath>
+    <_WindowsPhoneKitBinPath>$(MSBuildProgramFiles32)\Windows Phone Kits\8.1\bin</_WindowsPhoneKitBinPath>
+    <MakePriExeFullPath>$(_WindowsKitBinPath)\makepri.exe</MakePriExeFullPath>
+    <MakeAppxExeFullPath>$(_WindowsKitBinPath)\makeappx.exe</MakeAppxExeFullPath>
+    <SignAppxPackageExeFullPath>$(_WindowsKitBinPath)\signtool.exe</SignAppxPackageExeFullPath>
+    <MakePriExtensionPath>$(_WindowsPhoneKitBinPath)\x86\MrmEnvironmentExtDl.dll</MakePriExtensionPath>
+    <MakePriExtensionPath_x64>$(_WindowsPhoneKitBinPath)\x64\MrmEnvironmentExtDl.dll</MakePriExtensionPath_x64>
+  </PropertyGroup>
+</Project>
