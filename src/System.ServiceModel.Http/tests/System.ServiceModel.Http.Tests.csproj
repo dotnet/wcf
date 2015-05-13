@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.ServiceModel.Http.Tests</RootNamespace>
     <AssemblyName>System.ServiceModel.Http.Tests</AssemblyName>
+    <TestCategories>InnerLoop</TestCategories>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{0DE9D9C2-10FB-4DF0-9668-7BD5290EC936}</ProjectGuid>
@@ -17,9 +18,6 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

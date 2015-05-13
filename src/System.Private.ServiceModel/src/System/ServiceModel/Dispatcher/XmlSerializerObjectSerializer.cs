@@ -79,17 +79,17 @@ namespace System.ServiceModel.Dispatcher
 
         public override void WriteStartObject(XmlDictionaryWriter writer, object graph)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(NotImplemented.ByDesign);
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException());
         }
 
         public override void WriteObjectContent(XmlDictionaryWriter writer, object graph)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(NotImplemented.ByDesign);
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException());
         }
 
         public override void WriteEndObject(XmlDictionaryWriter writer)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(NotImplemented.ByDesign);
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException());
         }
 
         public override object ReadObject(XmlDictionaryReader reader, bool verifyObjectName)

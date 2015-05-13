@@ -281,8 +281,8 @@ namespace System.Xml.Serialization
 #if FEATURE_NETNATIVE
                     if (GeneratedXmlSerializers.IsInitialized)
                     {
-                        s_instance = new XmlMappingTypeSimpleWrapperFactory();
-                        return s_instance;
+                        _instance = new XmlMappingTypeSimpleWrapperFactory();
+                        return _instance;
                     }
 #endif
                     s_instance = new XmlMappingTypeReflectionWrapperFactory();

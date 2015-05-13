@@ -47,6 +47,7 @@ namespace System.ServiceModel.Channels
             _socket = socket;
             _socket.SendBufferSize = _socket.ReceiveBufferSize = _asyncReadBufferSize;
             _sendTimeout = _receiveTimeout = TimeSpan.MaxValue;
+            _socket.UseOnlyOverlappedIO = false;
         }
 
         private Timer SendTimer
