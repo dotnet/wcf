@@ -13,7 +13,7 @@ public static class Http_TransportChannel_ServiceModelLayer_ClientBaseTests
 {
     [Fact]
     [OuterLoop]
-    public static void VerifyHttpRequestMessagePropertyTest()
+    public static void MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify()
     {
         StringBuilder errorBuilder = new StringBuilder();
 
@@ -60,12 +60,12 @@ public static class Http_TransportChannel_ServiceModelLayer_ClientBaseTests
             errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
 
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Scenario: VerifyHttpRequestMessagePropertyTest FAILED with the following errors: {0}", errorBuilder));
+        Assert.True(errorBuilder.Length == 0, String.Format("Test Scenario: MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify FAILED with the following errors: {0}", errorBuilder));
     }
 
     [Fact]
     [OuterLoop]
-    public static void ClientMessageInspectorScenario()
+    public static void ClientMessageInspector_Verify_Invoke()
     {
         // This test verifies ClientMessageInspector can be added to the client endpoint behaviors
         // and this is it called properly when a message is sent.
@@ -125,7 +125,7 @@ public static class Http_TransportChannel_ServiceModelLayer_ClientBaseTests
 
     [Fact]
     [OuterLoop]
-    public static void ClientBaseOfTCall()
+    public static void ClientBaseOfT_Call()
     {
         // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation
         StringBuilder errorBuilder = new StringBuilder();

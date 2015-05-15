@@ -14,72 +14,7 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
 {
     [Fact]
     [OuterLoop]
-    public static void TypedProxySynchronousCall()
-    {
-        // This test verifies a typed proxy can call a service operation synchronously
-        StringBuilder errorBuilder = new StringBuilder();
-        try
-        {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
-
-            // Note the service interface used.  It was manually generated with svcutil.
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
-
-            string result = serviceProxy.Echo("Hello");
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
-
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxySynchronousCall FAILED with the following errors: {0}", errorBuilder));
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void TypedProxyAsyncTaskCall()
-    {
-        // This test verifies a typed proxy can call a service operation asynchronously using Task<string>
-        StringBuilder errorBuilder = new StringBuilder();
-
-        try
-        {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
-
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
-
-            Task<string> task = serviceProxy.EchoAsync("Hello");
-            string result = task.Result;
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
-
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxyAsyncTaskCall FAILED with the following errors: {0}", errorBuilder));
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void TypedProxyAsyncBeginEndCall()
+    public static void TypedProxy_AsyncBeginEnd_Call()
     {
         // This test verifies a typed proxy can call a service operation asynchronously using Begin/End
         StringBuilder errorBuilder = new StringBuilder();
@@ -131,7 +66,7 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    public static void TypedProxyAsyncBeginEndNoCallbackCall()
+    public static void TypedProxy_AsyncBeginEnd_Call_WithNoCallback()
     {
         // This test verifies a typed proxy can call a service operation asynchronously using Begin/End
         StringBuilder errorBuilder = new StringBuilder();
@@ -176,27 +111,60 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    public static void TypedProxySynchronousCallWithSingleThreadedSyncContext()
-    {
-        bool success = Task.Run(() =>
-        {
-            TestTypes.SingleThreadSynchronizationContext.Run(() =>
-            {
-                Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxySynchronousCall(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
-            });
-        }).Wait(TestHelpers.TestTimeout);
-        Assert.True(success, "Test Scenario: TypedProxySynchronousCallWithSingleThreadedSyncContext FAILED");
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void TypedProxyAsyncTaskCallWithSingleThreadedSyncContext()
+    public static void TypedProxy_AsyncBeginEnd_Call_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
         {
             SingleThreadSynchronizationContext.Run(() =>
             {
-                Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxyAsyncTaskCall(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+                Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxy_AsyncBeginEnd_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(TestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: TypedProxyAsyncBeginEndCallWithSingleThreadedSyncContext FAILED");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void TypedProxy_AsyncTask_Call()
+    {
+        // This test verifies a typed proxy can call a service operation asynchronously using Task<string>
+        StringBuilder errorBuilder = new StringBuilder();
+
+        try
+        {
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
+
+            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
+
+            Task<string> task = serviceProxy.EchoAsync("Hello");
+            string result = task.Result;
+            if (!string.Equals(result, "Hello"))
+            {
+                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+            }
+
+            factory.Close();
+        }
+        catch (Exception ex)
+        {
+            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+        }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxyAsyncTaskCall FAILED with the following errors: {0}", errorBuilder));
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void TypedProxy_AsyncTask_Call_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxy_AsyncTask_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
         }).Wait(TestHelpers.TestTimeout);
 
@@ -205,7 +173,53 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    public static void TaskCallWithSynchContextContinuesOnSameThread()
+    public static void TypedProxy_Synchronous_Call()
+    {
+        // This test verifies a typed proxy can call a service operation synchronously
+        StringBuilder errorBuilder = new StringBuilder();
+        try
+        {
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
+
+            // Note the service interface used.  It was manually generated with svcutil.
+            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
+
+            string result = serviceProxy.Echo("Hello");
+            if (!string.Equals(result, "Hello"))
+            {
+                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+            }
+
+            factory.Close();
+        }
+        catch (Exception ex)
+        {
+            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+        }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxySynchronousCall FAILED with the following errors: {0}", errorBuilder));
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void TypedProxy_Synchronous_Call_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxy_Synchronous_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(TestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: TypedProxySynchronousCallWithSingleThreadedSyncContext FAILED");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void TypedProxy_Task_Call_WithSyncContext_ContinuesOnSameThread()
     {
         // This test verifies a task based call to a service operation continues on the same thread
         StringBuilder errorBuilder = new StringBuilder();
@@ -252,59 +266,5 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
         }
 
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TaskCallWithSynchContextContinuesOnSameThread FAILED with the following errors: {0}", errorBuilder));
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void TypedProxyAsyncBeginEndCallWithSingleThreadedSyncContext()
-    {
-        bool success = Task.Run(() =>
-        {
-            SingleThreadSynchronizationContext.Run(() =>
-            {
-                Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxyAsyncBeginEndCall(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
-            });
-        }).Wait(TestHelpers.TestTimeout);
-        Assert.True(success, "Test Scenario: TypedProxyAsyncBeginEndCallWithSingleThreadedSyncContext FAILED");
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void SameBinding_DefaultSettings_EchoString()
-    {
-        string testCaseName = "HttpsTransportBindingElement_ScenarioTests.SameBinding_DefaultSettings_EchoString";
-        string variationDetails = "Client:: BasicHttpBinding/DefaultValues\nServer:: BasicHttpBinding/DefaultValues";
-
-        StringBuilder errorBuilder = new StringBuilder();
-
-        try
-        {
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.HttpBaseAddress_Basic, variationDetails, errorBuilder);
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: {0} FAILED with the following errors: {1}", testCaseName, errorBuilder));
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void NetHttpBinding_DefaultSettings_EchoString()
-    {
-        string testString = "Hello";
-
-        StringBuilder errorBuilder = new StringBuilder();
-        NetHttpBinding binding = new NetHttpBinding();
-
-        bool success = false;
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp));
-        IWcfService serviceProxy = factory.CreateChannel();
-        string result = serviceProxy.Echo(testString);
-        success = string.Equals(result, testString);
-
-        Assert.True(success, string.Format("Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
     }
 }
