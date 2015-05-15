@@ -1,27 +1,6 @@
 @echo off
 setlocal
 
-:: Note: We've disabled node reuse because it causes file locking issues.
-::       The issue is that we extend the build with our own targets which
-::       means that that rebuilding cannot successfully delete the task
-::       assembly. 
-
-set outloop=false
-
-REM this is a temporary step until the build tools provide a proper hook. 
-REM it will need to deal with multiple include and exclude categories.
-REM See dotnet/corefx#1477
-
-echo %* | findstr /i /C:"OuterLoop"  1>nul
-if %errorlevel% equ 0 (
-  set outloop=true
-)
-
-if "%outloop%" equ "true" (
-	start /wait BuildWCFTestService.cmd
-)
-
-
 if not defined VisualStudioVersion (
     if defined VS140COMNTOOLS (
         call "%VS140COMNTOOLS%\VsDevCmd.bat"
@@ -33,7 +12,7 @@ if not defined VisualStudioVersion (
         goto :EnvSet
     )
 
-    echo Error: build.cmd requires Visual Studio 2013 or 2015.  
+    echo Error: %~nx0 requires Visual Studio 2013 or 2015.  
     echo        Please see https://github.com/dotnet/wcf/wiki/Developer-Guide for build instructions.
     exit /b 1
 )
@@ -41,17 +20,15 @@ if not defined VisualStudioVersion (
 :EnvSet
 
 :: Log build command line
-set _buildproj=%~dp0build.proj
-set _buildlog=%~dp0msbuild.log
+set _buildproj=src\System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\wcfservice.csproj
+set _buildlog=%~dp0msbuildWCFTestService.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
-if "%outloop%" equ "true"  (
-        pushd setupfiles
-        start /wait RunElevated.vbs SetupWCFTestService.cmd
-        popd
-)
-
+:Clean Up Test Service
+pushd setupfiles
+start /wait RunElevated.vbs CleanupWCFTestService.cmd
+popd
 call :build %*
 
 :: Build
@@ -67,15 +44,10 @@ set BUILDERRORLEVEL=%ERRORLEVEL%
 goto :eof
 
 :AfterBuild
+
 echo.
 :: Pull the build summary from the log file
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo Build Exit Code = %BUILDERRORLEVEL%
 
-if "%outloop%" equ "true"  (
-	pushd setupfiles
-	start /wait RunElevated.vbs CleanupWCFTestService.cmd
-	popd
-)
-
-exit /b %BUILDERRORLEVEL%
+exit %BUILDERRORLEVEL%
