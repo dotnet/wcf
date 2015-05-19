@@ -120,7 +120,7 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
                 Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxy_AsyncBeginEnd_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
         }).Wait(TestHelpers.TestTimeout);
-        Assert.True(success, "Test Scenario: TypedProxyAsyncBeginEndCallWithSingleThreadedSyncContext FAILED");
+        Assert.True(success, "Test Scenario: TypedProxy_AsyncBeginEnd_Call_WithSingleThreadedSyncContext timed out");
     }
 
     [Fact]
@@ -168,7 +168,7 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
             });
         }).Wait(TestHelpers.TestTimeout);
 
-        Assert.True(success, "Test Scenario: TypedProxyAsyncTaskCallWithSingleThreadedSyncContext FAILED");
+        Assert.True(success, "Test Scenario: TypedProxy_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
     }
 
     [Fact]
@@ -214,7 +214,7 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
                 Task.Factory.StartNew(() => Http_TransportChannel_ServiceModelLayer_TypedProxyTests.TypedProxy_Synchronous_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
         }).Wait(TestHelpers.TestTimeout);
-        Assert.True(success, "Test Scenario: TypedProxySynchronousCallWithSingleThreadedSyncContext FAILED");
+        Assert.True(success, "Test Scenario: TypedProxy_Synchronous_Call_WithSingleThreadedSyncContext timed out");
     }
 
     [Fact]
