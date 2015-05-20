@@ -1,4 +1,4 @@
-# Windows Communication Foundation (WCF)
+# WCF
 
 |   |Windows|
 |:-:|:-:|
@@ -8,11 +8,13 @@
 
 
 
-The wcf repo contains the library implementation for [Windows Communication Foundation](https://github.com/dotnet/wcf). It includes System.ServiceModel.Http, System.ServiceModel.NetTcp and other libraries. It builds and runs on Windows. You can ['watch'](https://github.com/dotnet/wcf/subscription) the repo to see progress as additional libraries are added.
+This repository contains the source code for the version of the [Windows Communication Foundation](https://msdn.microsoft.com/en-us/library/dd456779.aspx) that targets the [.NET Core](http://github.com/dotnet/core) platform, specifically the [.NET Core Runtime (CoreCLR)](https://github.com/dotnet/coreclr) and [.NET Core Framework (CoreFx)](http://github.com/dotnet/corefx).
 
-The version of WCF in this repo runs on top of the [.NET Core](http://github.com/dotnet/core) platform, namely the [.NET Core Runtime (CoreCLR)](https://github.com/dotnet/coreclr) and [.NET Core Framework (CoreFx)](http://github.com/dotnet/corefx)
+It's a subset of the full Windows Communication Foundation available on the desktop and provides support for the library profiles already available for building WCF apps for the Windows Store. These profiles are primarily client-based, making them suited for mobile devices or on mid-tier servers to communicate with existing WCF services.
 
-This wcf repo is a subset of the full WCF product available on the desktop, and it supports the library profiles already available for building WCF apps for the Windows Store.  Those profiles are primarily client-based, making them suited for mobile devices or on a mid-tier server to communicate with existing WCF services.
+By targeting .NET Core, WCF now has the opportunity for much wider reach across PCs, laptops, mobile devices, Xbox, HoloLens etc.  And because .NET Core is designed to be cross-platform, it offers the potential for this version of WCF to ultimately run on OS X or Linux operating systems.
+
+We have deliberately opened the doors to the code early in the process so that you can be part of the effort by contributing to the project or providing feedback. Several features are still a work in progress, and we expect to enable them as soon as possible.  Click on [Issues](https://github.com/dotnet/wcf/issues) to follow how we are prioritizing the work. Our goal is to achieve feature parity with the corresponding Windows Store libraries and then improve based on your feedback.
 
 ## How to Engage, Contribute and Provide Feedback
 
@@ -28,16 +30,20 @@ Looking for something to work on? The list of [up-for-grabs issues](https://gith
 * [Developer Guide](https://github.com/dotnet/wcf/wiki/Developer-Guide)
 * [Issue Guide](https://github.com/dotnet/wcf/wiki/Issue-Guide)
 
-You are also encouraged to start a discussion by filing an issue or creating a
-gist.
+You are also encouraged to start a discussion by filing a [New Issue](https://github.com/dotnet/wcf/issues/new).
 
 You can discuss .NET OSS more generally in the [.NET Foundation forums].
+
+Want to chat with other members of the WCF community?
+
+[![Join the chat at https://gitter.im/dotnet/wcf](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dotnet/wcf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 [.NET Foundation forums]: http://forums.dotnetfoundation.org/
 
 ## WCF Library Components
 
-The repo contains the following library components.
+This repo contains the following library components.
 
 * **System.ServiceModel.Primitives**.  Provides the common types used by all of the WCF libraries.
 
@@ -51,7 +57,7 @@ The repo contains the following library components.
 
 ## License
 
-Windows Communication Foundation (including the wcf repo) is licensed under the [MIT license](LICENSE).
+This WCF repo is licensed under the [MIT license](LICENSE).
 
 ## .NET Foundation
 
