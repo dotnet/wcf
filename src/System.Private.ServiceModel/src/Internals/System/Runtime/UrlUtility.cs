@@ -361,7 +361,7 @@ namespace System.Runtime
 
         private static char IntToHex(int n)
         {
-            //WCF CHANGE: CHANGED FROM Debug.Assert() to Fx.Assert()
+            //WTF CHANGE: CHANGED FROM Debug.Assert() to Fx.Assert()
             Fx.Assert(n < 0x10, "n < 0x10");
 
             if (n <= 9)

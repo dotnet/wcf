@@ -25,7 +25,7 @@ public static class CustomBindingTest
             factory.Open();
 
             // Create the channel and open it.  Success is anything other than an exception.
-            IRequestChannel channel = factory.CreateChannel(new EndpointAddress("http://localhost/WcfProjectNService.svc"));
+            IRequestChannel channel = factory.CreateChannel(new EndpointAddress("http://localhost/WtfProjectNService.svc"));
             channel.Open();
         }
         catch (Exception ex)

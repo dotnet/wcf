@@ -93,7 +93,7 @@ namespace TestTypes
     }
 
     //// Needed by the MahjongApp Scenario tests
-    [DataContract(Name = "ResultOf{0}", Namespace = "http://www.contoso.com/wcfnamespace")]
+    [DataContract(Name = "ResultOf{0}", Namespace = "http://www.contoso.com/wtfnamespace")]
     public class ResultObject<TEntity>
     {
         private string _errorMessage;
@@ -354,7 +354,7 @@ namespace TestTypes
     }
 }
 
-[DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
+[DataContract(Namespace = "http://www.contoso.com/wtfnamespace")]
 public class CompositeType
 {
     private bool _boolValue = true;
@@ -375,7 +375,7 @@ public class CompositeType
     }
 }
 
-[System.Runtime.Serialization.DataContract(Name = "FaultDetail", Namespace = "http://www.contoso.com/wcfnamespace")]
+[System.Runtime.Serialization.DataContract(Name = "FaultDetail", Namespace = "http://www.contoso.com/wtfnamespace")]
 public class FaultDetail
 {
     private string _report;
@@ -397,7 +397,7 @@ public class FaultDetail
     }
 }
 
-[DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
+[DataContract(Namespace = "http://www.contoso.com/wtfnamespace")]
 public class ComplexCompositeType : IEquatable<ComplexCompositeType>
 {
     private bool _boolValue;
@@ -629,7 +629,7 @@ public class ComplexCompositeType : IEquatable<ComplexCompositeType>
     }
 }
 
-[DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
+[DataContract(Namespace = "http://www.contoso.com/wtfnamespace")]
 public class TestHttpRequestMessageProperty
 {
     private bool _suppressEntityBody;

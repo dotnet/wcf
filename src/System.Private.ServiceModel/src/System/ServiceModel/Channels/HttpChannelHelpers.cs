@@ -1593,7 +1593,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                // There is no inner exception so there's not enough information to be able to convert to the correct WCF exception.
+                // There is no inner exception so there's not enough information to be able to convert to the correct WTF exception.
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(requestException.Message, requestException));
             }
         }
