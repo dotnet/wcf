@@ -6,8 +6,26 @@ setlocal
 ::       means that that rebuilding cannot successfully delete the task
 ::       assembly. 
 
-echo %2 | find /I "outerloop"
-if "%errorlevel%" equ "0" (
+set outloop=false
+
+:START_CMDLINE_PARSE
+set SWITCH=%1
+if {%SWITCH%} == {} goto :END_CMDLINE_PARSE
+set VALUE=%2
+
+if /i "%SWITCH%" == "/p:WithCategories" (
+  if /i "%VALUE%" == "OuterLoop" (
+      set outloop=true
+      goto :END_CMDLINE_PARSE
+  )
+)
+
+SHIFT
+SHIFT
+goto :START_CMDLINE_PARSE
+:END_CMDLINE_PARSE
+
+if "%outloop%" equ "true" (
 	start /wait BuildWCFTestService.cmd
 )
 
@@ -36,8 +54,7 @@ set _buildlog=%~dp0msbuild.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
-echo %2 | find /I "outerloop"
-if "%errorlevel%" equ "0" (
+if "%outloop%" equ "true"  (
         pushd setupfiles
         start /wait RunElevated.vbs SetupWCFTestService.cmd
         popd
@@ -63,8 +80,7 @@ echo.
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo Build Exit Code = %BUILDERRORLEVEL%
 
-echo %2 | find /I "outerloop"
-if "%errorlevel%" equ "0" (
+if "%outloop%" equ "true"  (
 	pushd setupfiles
 	start /wait RunElevated.vbs CleanupWCFTestService.cmd
 	popd
