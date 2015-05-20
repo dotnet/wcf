@@ -308,7 +308,7 @@ namespace System.ServiceModel
         }
 
         // NOTE: UserInfo, Query, and Fragment are ignored when comparing Uris as addresses
-        // this is the WCF logic for comparing Uris that represent addresses
+        // this is the WTF logic for comparing Uris that represent addresses
         // this method must be kept in sync with UriGetHashCode
         internal static bool UriEquals(Uri u1, Uri u2, bool ignoreCase, bool includeHostInComparison)
         {

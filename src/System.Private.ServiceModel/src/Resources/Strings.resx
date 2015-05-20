@@ -1261,7 +1261,7 @@
     <value>The communication object, {0}, has overridden the virtual function {1} but it does not call version defined in the base class.</value>
   </data>
   <data name="CommunicationObjectInInvalidState" xml:space="preserve">
-    <value>The communication object, {0}, is not part of WCF and is in an unsupported state '{1}'.  This indicates an internal error in the implementation of that communication object.</value>
+    <value>The communication object, {0}, is not part of WTF and is in an unsupported state '{1}'.  This indicates an internal error in the implementation of that communication object.</value>
   </data>
   <data name="CommunicationObjectCloseInterrupted1" xml:space="preserve">
     <value>The communication object, {0}, cannot be used due to an error that occurred during close.</value>
@@ -4810,7 +4810,7 @@
     <value>An incoming MSMQ message contained invalid or unexpected .NET Message Framing information in its body. The message cannot be received. Ensure that the sender is using a compatible service contract with a matching SessionMode.</value>
   </data>
   <data name="MsmqBadXml" xml:space="preserve">
-    <value>An XML error was encountered while reading a WCF message. The message cannot be received. Ensure the message was sent by a WCF client which used an identical message encoder.</value>
+    <value>An XML error was encountered while reading a WTF message. The message cannot be received. Ensure the message was sent by a WTF client which used an identical message encoder.</value>
   </data>
   <data name="MsmqBatchRequiresTransactionScope" xml:space="preserve">
     <value>TransactedBatchingBehavior validation failed because none of the service operations had the TransactionScopeRequired property set to true on their OperationBehavior attribute. The service host cannot be started. Ensure this requirement is met if you wish to use this behavior.</value>
@@ -5419,7 +5419,7 @@
     <value>The required outer proxy could not be created. Ensure that the service moniker is correctly installed and registered.</value>
   </data>
   <data name="UnableToLoadDll" xml:space="preserve">
-    <value>Cannot load library {0}. Ensure that WCF is properly installed.</value>
+    <value>Cannot load library {0}. Ensure that WTF is properly installed.</value>
   </data>
   <data name="InterfaceNotRegistered" xml:space="preserve">
     <value>Interface Not Registered</value>
@@ -5464,7 +5464,7 @@
     <value>QueryInterface succeeded but the persistable type wrapper was null.</value>
   </data>
   <data name="UnexpectedThreadingModel" xml:space="preserve">
-    <value>Unexpected threading model. WCF/COM+ integration only supports STA and MTA threading models.</value>
+    <value>Unexpected threading model. WTF/COM+ integration only supports STA and MTA threading models.</value>
   </data>
   <data name="NoneOfTheMethodsForInterfaceFoundInConfig" xml:space="preserve">
     <value>None of the methods were found for interface {0}.</value>
@@ -6373,7 +6373,7 @@
     <value>Client certificate is invalid with native error code {0} (see http://go.microsoft.com/fwlink/?LinkId=187517 for details).</value>
   </data>
   <data name="TraceCodeHttpsClientCertificateNotPresent" xml:space="preserve">
-    <value>Client certificate is required.  No certificate was found in the request.  This might be because the client certificate could not be successfully validated by the operating system or IIS.  For information on how to bypass those validations and use a custom X509CertificateValidator in WCF please see http://go.microsoft.com/fwlink/?LinkId=208540.</value>
+    <value>Client certificate is required.  No certificate was found in the request.  This might be because the client certificate could not be successfully validated by the operating system or IIS.  For information on how to bypass those validations and use a custom X509CertificateValidator in WTF please see http://go.microsoft.com/fwlink/?LinkId=208540.</value>
   </data>
   <data name="TraceCodeImportSecurityChannelBindingEntry" xml:space="preserve">
     <value>Starting Security ImportChannelBinding</value>

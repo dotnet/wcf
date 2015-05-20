@@ -62,7 +62,7 @@ public static class ContractDescriptionTest
     }
 
     [Theory]
-    [InlineData(typeof(IWcfService))]
+    [InlineData(typeof(IWtfService))]
     [InlineData(null)]
     public static void ContractType_Property_Sets(Type contractType)
     {
@@ -72,7 +72,7 @@ public static class ContractDescriptionTest
     }
 
     [Theory]
-    [InlineData(typeof(IWcfService))]
+    [InlineData(typeof(IWtfService))]
     [InlineData(null)]
     public static void CallbackContractType_Property_Sets(Type contractType)
     {

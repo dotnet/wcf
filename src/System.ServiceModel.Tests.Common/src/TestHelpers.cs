@@ -49,7 +49,7 @@ public class MyClientBase<T> : ClientBase<T> where T : class
 }
 
 // This helper class is used for ClientBase<T> tests
-public class MyClientBase : ClientBase<IWcfServiceGenerated>
+public class MyClientBase : ClientBase<IWtfServiceGenerated>
 {
     public MyClientBase(Binding binding, EndpointAddress endpointAddress)
         : base(binding, endpointAddress)

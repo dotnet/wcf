@@ -125,19 +125,19 @@ public class ChannelFactoryTest
     // Create the channel factory using BasicHttpBinding and open the channel using a user generated interface
     public static void CreateChannel_Of_Typed_Proxy_Using_BasicHttpBinding()
     {
-        ChannelFactory<IWcfServiceGenerated> factory = null;
+        ChannelFactory<IWtfServiceGenerated> factory = null;
         try
         {
             BasicHttpBinding binding = new BasicHttpBinding();
 
             // Create the channel factory
-            factory = new ChannelFactory<IWcfServiceGenerated>(binding, new EndpointAddress(Constants.BaseAddress.HttpBaseAddress));
+            factory = new ChannelFactory<IWtfServiceGenerated>(binding, new EndpointAddress(Constants.BaseAddress.HttpBaseAddress));
             factory.Open();
 
             // Create the channel.
-            IWcfServiceGenerated channel = factory.CreateChannel();
+            IWtfServiceGenerated channel = factory.CreateChannel();
 
-            Assert.IsAssignableFrom<IWcfServiceGenerated>(channel);
+            Assert.IsAssignableFrom<IWtfServiceGenerated>(channel);
         }
         finally
         {

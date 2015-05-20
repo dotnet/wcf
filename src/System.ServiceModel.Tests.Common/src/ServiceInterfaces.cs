@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using TestTypes;
 
 [ServiceContract]
-public interface IWcfService
+public interface IWtfService
 {
     [OperationContract]
     Message MessageRequestReply(Message message);
@@ -20,17 +20,17 @@ public interface IWcfService
     [OperationContract]
     String Echo(String message);
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoComplex")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/EchoComplex")]
     ComplexCompositeType EchoComplex(ComplexCompositeType message);
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoWithTimeout")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/EchoWithTimeout")]
     String EchoWithTimeout(String message);
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingDataContract")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/GetDataUsingDataContract")]
     CompositeType GetDataUsingDataContract(CompositeType composite);
 
     [OperationContract]
-    [FaultContract(typeof(FaultDetail), Action = "http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name = "FaultDetail", Namespace = "http://www.contoso.com/wcfnamespace")]
+    [FaultContract(typeof(FaultDetail), Action = "http://tempuri.org/IWtfService/TestFaultFaultDetailFault", Name = "FaultDetail", Namespace = "http://www.contoso.com/wtfnamespace")]
     void TestFault(string faultMsg);
 
     [OperationContract]
@@ -39,18 +39,18 @@ public interface IWcfService
     [OperationContract]
     void NotExistOnServer();
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoHttpMessageProperty")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/EchoHttpMessageProperty")]
     TestHttpRequestMessageProperty EchoHttpRequestMessageProperty();
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/GetRestartServiceEndpoint")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/GetRestartServiceEndpoint")]
     string GetRestartServiceEndpoint();
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/GetRequestCustomHeader", ReplyAction = "*")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/GetRequestCustomHeader", ReplyAction = "*")]
     string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace);
 }
 
 [ServiceContract]
-public interface IWcfProjectNRestartService
+public interface IWtfProjectNRestartService
 {
     [OperationContract]
     string RestartService();
@@ -60,19 +60,19 @@ public interface IWcfProjectNRestartService
 
 
 
-[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
-public interface IWcfServiceGenerated
+[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWtfService")]
+public interface IWtfServiceGenerated
 {
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWcfService/MessageRequestReplyResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWtfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWtfService/MessageRequestReplyResponse")]
     System.ServiceModel.Channels.Message MessageRequestReply(System.ServiceModel.Channels.Message request);
 
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWcfService/MessageRequestReplyResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWtfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWtfService/MessageRequestReplyResponse")]
     System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request);
 
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/Echo", ReplyAction = "http://tempuri.org/IWcfService/EchoResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWtfService/Echo", ReplyAction = "http://tempuri.org/IWtfService/EchoResponse")]
     string Echo(string message);
 
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/Echo", ReplyAction = "http://tempuri.org/IWcfService/EchoResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWtfService/Echo", ReplyAction = "http://tempuri.org/IWtfService/EchoResponse")]
     System.Threading.Tasks.Task<string> EchoAsync(string message);
 }
 
@@ -80,21 +80,21 @@ public interface IWcfServiceGenerated
 
 
 
-[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
-public interface IWcfServiceBeginEndGenerated
+[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWtfService")]
+public interface IWtfServiceBeginEndGenerated
 {
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWcfService/MessageRequestReplyResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWtfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWtfService/MessageRequestReplyResponse")]
     System.ServiceModel.Channels.Message MessageRequestReply(System.ServiceModel.Channels.Message request);
 
-    [System.ServiceModel.OperationContractAttribute(AsyncPattern = true, Action = "http://tempuri.org/IWcfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWcfService/MessageRequestReplyResponse")]
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern = true, Action = "http://tempuri.org/IWtfService/MessageRequestReply", ReplyAction = "http://tempuri.org/IWtfService/MessageRequestReplyResponse")]
     System.IAsyncResult BeginMessageRequestReply(System.ServiceModel.Channels.Message request, System.AsyncCallback callback, object asyncState);
 
     System.ServiceModel.Channels.Message EndMessageRequestReply(System.IAsyncResult result);
 
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/Echo", ReplyAction = "http://tempuri.org/IWcfService/EchoResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWtfService/Echo", ReplyAction = "http://tempuri.org/IWtfService/EchoResponse")]
     string Echo(string message);
 
-    [System.ServiceModel.OperationContractAttribute(AsyncPattern = true, Action = "http://tempuri.org/IWcfService/Echo", ReplyAction = "http://tempuri.org/IWcfService/EchoResponse")]
+    [System.ServiceModel.OperationContractAttribute(AsyncPattern = true, Action = "http://tempuri.org/IWtfService/Echo", ReplyAction = "http://tempuri.org/IWtfService/EchoResponse")]
     System.IAsyncResult BeginEcho(string message, System.AsyncCallback callback, object asyncState);
 
     string EndEcho(System.IAsyncResult result);
@@ -167,18 +167,18 @@ public interface IUser
     [OperationContract]
     string GetData(int value);
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/UserGetAuthToken")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/UserGetAuthToken")]
     ResultObject<string> UserGetAuthToken(string liveId);
 
     [OperationContract]
     ResultObject<string> UserGetId();
 
-    [OperationContract(Action = "http://tempuri.org/IWcfService/ValidateMessagePropertyHeaders")]
+    [OperationContract(Action = "http://tempuri.org/IWtfService/ValidateMessagePropertyHeaders")]
     Dictionary<string, string> ValidateMessagePropertyHeaders();
 }
 
 [ServiceContract]
-public interface IWcfRestartService
+public interface IWtfRestartService
 {
     [OperationContract]
     String RestartService(Guid uniqueIdentifier);
