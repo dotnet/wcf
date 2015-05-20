@@ -17,6 +17,9 @@
 
             var tempFile = Path.Combine(directory, Path.GetRandomFileName());
             var client = new System.Net.WebClient();
+            client.Proxy = System.Net.WebRequest.DefaultWebProxy;
+            client.Proxy.Credentials = System.Net.CredentialCache.DefaultCredentials;
+
             var tryCount = 1;
             var maxTries = 3;
 
