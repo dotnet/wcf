@@ -61,7 +61,7 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
             errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
 
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxyAsyncBeginEndCall FAILED with the following errors: {0}", errorBuilder));
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxy_AsyncBeginEnd_Call FAILED with the following errors: {0}", errorBuilder));
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public static class Http_TransportChannel_ServiceModelLayer_TypedProxyTests
             errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
 
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxyAsyncBeginEndNoCallbackCall FAILED with the following errors: {0}", errorBuilder));
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxy_AsyncBeginEnd_Call_WithNoCallback FAILED with the following errors: {0}", errorBuilder));
     }
 
     [Fact]

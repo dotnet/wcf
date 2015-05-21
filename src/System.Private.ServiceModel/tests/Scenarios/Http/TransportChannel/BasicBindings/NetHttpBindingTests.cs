@@ -25,8 +25,8 @@ public static class Http_TransportChannel_BasicBindings_NetHttpBindingTests
         ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp));
         IWcfService serviceProxy = factory.CreateChannel();
         string result = serviceProxy.Echo(testString);
-        success = string.Equals(result, testString);
 
-        Assert.True(success, string.Format("Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+        Assert.True(string.Equals(result, testString), 
+            string.Format("Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
     }
 }
