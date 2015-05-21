@@ -8,25 +8,14 @@ setlocal
 
 set outloop=false
 
-REM this command line processing is a temporary step until the build tools provide a proper hook. 
+REM this is a temporary step until the build tools provide a proper hook. 
 REM it will need to deal with multiple include and exclude categories.
 REM See dotnet/corefx#1477
-:START_CMDLINE_PARSE
-set SWITCH=%1
-if {%SWITCH%} == {} goto :END_CMDLINE_PARSE
-set VALUE=%2
 
-if /i "%SWITCH%" == "/p:WithCategories" (
-  if /i "%VALUE%" == "OuterLoop" (
-      set outloop=true
-      goto :END_CMDLINE_PARSE
-  )
+echo %* | findstr /i /C:"/p:WithCategories=OuterLoop"  1>nul
+if %errorlevel% equ 0 (
+  set outloop=true
 )
-
-SHIFT
-SHIFT
-goto :START_CMDLINE_PARSE
-:END_CMDLINE_PARSE
 
 if "%outloop%" equ "true" (
 	start /wait BuildWCFTestService.cmd
