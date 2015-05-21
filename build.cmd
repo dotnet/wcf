@@ -8,6 +8,9 @@ setlocal
 
 set outloop=false
 
+REM this command line processing is a temporary step until the build tools provide a proper hook. 
+REM it will need to deal with multiple include and exclude categories.
+REM See dotnet/corefx#1477
 :START_CMDLINE_PARSE
 set SWITCH=%1
 if {%SWITCH%} == {} goto :END_CMDLINE_PARSE
