@@ -12,7 +12,7 @@ REM this is a temporary step until the build tools provide a proper hook.
 REM it will need to deal with multiple include and exclude categories.
 REM See dotnet/corefx#1477
 
-echo %* | findstr /i /C:"/p:WithCategories=OuterLoop"  1>nul
+echo %* | findstr /i /C:"OuterLoop"  1>nul
 if %errorlevel% equ 0 (
   set outloop=true
 )
