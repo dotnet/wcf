@@ -249,7 +249,7 @@ namespace System.ServiceModel
             return result;
         }
 
-        //Static funtions to create channels
+        //Static functions to create channels
         private static InstanceContext GetInstanceContextForObject(object callbackObject)
         {
             if (callbackObject is InstanceContext)
