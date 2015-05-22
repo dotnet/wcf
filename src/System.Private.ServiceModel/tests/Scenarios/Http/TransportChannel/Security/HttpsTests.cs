@@ -20,6 +20,8 @@ public static class Http_TransportChannel_Security_HttpsTests
 
         CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
         ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Https_DefaultBinding_Address, variationDetails, errorBuilder);
+
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
     // Client and Server bindings setup exactly the same using default settings.
@@ -32,6 +34,8 @@ public static class Http_TransportChannel_Security_HttpsTests
 
         CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(), new HttpsTransportBindingElement());
         ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.HttpsSoap12_Address, variationDetails, errorBuilder);
+
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
     // Client and Server bindings setup exactly the same using Soap11
@@ -44,6 +48,8 @@ public static class Http_TransportChannel_Security_HttpsTests
 
         CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
         ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.HttpsSoap11_Address, variationDetails, errorBuilder);
+
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
     // Client and Server bindings setup exactly the same using Soap12
@@ -56,5 +62,7 @@ public static class Http_TransportChannel_Security_HttpsTests
 
         CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap12WSAddressing10, Encoding.UTF8), new HttpsTransportBindingElement());
         ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.HttpsSoap12_Address, variationDetails, errorBuilder);
+
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 }

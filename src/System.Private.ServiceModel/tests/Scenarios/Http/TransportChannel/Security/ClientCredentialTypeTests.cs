@@ -19,7 +19,7 @@ public static class Http_TransportChannel_Security_ClientCredentialTypeTests
 
     [Fact(Skip = "Test server support required")]
     [OuterLoop]
-    public static void BasicAuthentication()
+    public static void BasicAuthentication_RoundTrips_Echo()
     {
         StringBuilder errorBuilder = new StringBuilder();
 
@@ -45,7 +45,7 @@ public static class Http_TransportChannel_Security_ClientCredentialTypeTests
 
     [Fact(Skip = "Test server support required")]
     [OuterLoop]
-    public static void DigestAuthentication()
+    public static void DigestAuthentication_RoundTrips_Echo()
     {
         StringBuilder errorBuilder = new StringBuilder();
 
@@ -71,7 +71,7 @@ public static class Http_TransportChannel_Security_ClientCredentialTypeTests
 
     [Fact(Skip = "Not Supported Yet")]
     [OuterLoop]
-    public static void NtlmAuthentication()
+    public static void NtlmAuthentication_RoundTrips_Echo()
     {
         StringBuilder errorBuilder = new StringBuilder();
 
@@ -92,7 +92,7 @@ public static class Http_TransportChannel_Security_ClientCredentialTypeTests
 
     [Fact(Skip = "Not Supported Yet")]
     [OuterLoop]
-    public static void WindowsAuthentication()
+    public static void WindowsAuthentication_RoundTrips_Echo()
     {
         StringBuilder errorBuilder = new StringBuilder();
 

@@ -14,7 +14,7 @@ public static class Http_TransportChannel_BasicBindings_NetHttpBindingTests
 {
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_EchoString_RoundTrips()
+    public static void DefaultSettings_Echo_RoundTrips_String()
     {
         string testString = "Hello";
 
