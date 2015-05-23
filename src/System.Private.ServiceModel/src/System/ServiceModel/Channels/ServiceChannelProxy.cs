@@ -518,7 +518,7 @@ namespace System.ServiceModel.Channels
         // Net Native and CoreClr do not have .Net Remoting and therefore cannot use that mechanism.
         // But because typed proxies derive from ServiceChannelProxy, implementing these interfaces
         // on ServiceChannelProxy permits casting the typed proxy to these interfaces.
-        // All interface implentations delegate directly to the underlying ServiceChannel.
+        // All interface implementations delegate directly to the underlying ServiceChannel.
         T IChannel.GetProperty<T>()
         {
             return _serviceChannel.GetProperty<T>();

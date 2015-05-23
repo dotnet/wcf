@@ -75,7 +75,7 @@ namespace System.ServiceModel.Channels
                     }
                     catch (CommunicationException)
                     {
-                        // CommmunicationException is ok since it was a cached connection of unknown state
+                        // CommunicationException is ok since it was a cached connection of unknown state
                     }
                     catch (TimeoutException)
                     {
@@ -157,7 +157,7 @@ namespace System.ServiceModel.Channels
                     }
                     catch (CommunicationException /*e*/)
                     {
-                        // CommmunicationException is ok since it was a cached connection of unknown state
+                        // CommunicationException is ok since it was a cached connection of unknown state
                     }
                     catch (TimeoutException /*e*/)
                     {

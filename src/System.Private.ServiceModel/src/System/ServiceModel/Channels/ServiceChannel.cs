@@ -404,7 +404,7 @@ namespace System.ServiceModel.Channels
         {
             // need to call this method after this.binder and this.clientRuntime are set to prevent a potential 
             // NullReferenceException in this method or in the OnInnerChannelFaulted method; 
-            // because this method accesses this.binder and OnInnerChannelFaulted acesses this.clientRuntime.
+            // because this method accesses this.binder and OnInnerChannelFaulted accesses this.clientRuntime.
             _binder.Channel.Faulted += OnInnerChannelFaulted;
         }
 

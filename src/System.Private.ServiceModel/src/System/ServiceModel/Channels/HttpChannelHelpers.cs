@@ -1406,7 +1406,7 @@ namespace System.ServiceModel.Channels
                 private Stream _requestStream;
                 // This TCS is used to provide a task for the forwarding stream class to await on if SerializeToStreamAsync
                 // hasn't been called by HttpClient yet. It's possible we could try writing to the stream before HttpClient
-                // has proivded it.
+                // has provided it.
                 private TaskCompletionSource<Stream> _transportStreamTcs;
                 private Task<Stream> _transportStreamTask;
                 // This TCS is used to provide a task to SerializeToStreamAsync to return to HttpClient. This allows us to

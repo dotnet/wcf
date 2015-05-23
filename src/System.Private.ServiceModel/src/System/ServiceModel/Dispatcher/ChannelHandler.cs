@@ -1066,7 +1066,7 @@ namespace System.ServiceModel.Dispatcher
         }
 
         //Return: False denotes failure, Caller should discard the request.
-        //      : True denotes operation is sucessful.
+        //      : True denotes operation is successful.
         private bool TryRetrievingInstanceContext(RequestContext request)
         {
             bool releasePump = true;
