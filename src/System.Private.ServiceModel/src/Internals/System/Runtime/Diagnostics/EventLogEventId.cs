@@ -23,7 +23,7 @@ namespace System.Runtime.Diagnostics
     internal enum EventLogEventId : uint
     {
         // EventIDs from shared Diagnostics and Reliability code
-        // All EventId's beneath 'FailedToSetupTracing', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-incrememt
+        // All EventId's beneath 'FailedToSetupTracing', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-increment
         FailedToSetupTracing = EventSeverity.Error | EventFacility.Tracing | 0x0064,
         FailedToInitializeTraceSource,
         FailFast,
@@ -35,7 +35,7 @@ namespace System.Runtime.Diagnostics
         PiiLoggingNotAllowed,
 
         // ServiceModel EventIDs
-        // All EventId's beneath 'WebHostUnhandledException', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-incrememt
+        // All EventId's beneath 'WebHostUnhandledException', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-increment
         WebHostUnhandledException = EventSeverity.Error | EventFacility.ServiceModel | 0x0001,
         WebHostHttpError,
         WebHostFailedToProcessRequest,
@@ -67,7 +67,7 @@ namespace System.Runtime.Diagnostics
         WebHostNotLoggingInsufficientMemoryExceptionsOnActivationForNextTimeInterval = EventSeverity.Warning | EventFacility.ServiceModel | 0x001c,
 
         // TransactionBridge
-        // All EventId's beneath 'UnhandledStateMachineExceptionRecordDescription', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-incrememt
+        // All EventId's beneath 'UnhandledStateMachineExceptionRecordDescription', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-increment
         UnhandledStateMachineExceptionRecordDescription = EventSeverity.Error | EventFacility.TransactionBridge | 0x0001,
         FatalUnexpectedStateMachineEvent,
         ParticipantRecoveryLogEntryCorrupt,
@@ -92,7 +92,7 @@ namespace System.Runtime.Diagnostics
         MissingNecessaryEnhancedKeyUsage,
 
         // SMSvcHost
-        // All EventId's beneath 'StartErrorPublish', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-incrememt
+        // All EventId's beneath 'StartErrorPublish', until the next explicitly assigned one, inherit its severity and facility, via the enum's auto-increment
         StartErrorPublish = EventSeverity.Error | EventFacility.SMSvcHost | 0x0001,
         BindingError,
         LAFailedToListenForApp,

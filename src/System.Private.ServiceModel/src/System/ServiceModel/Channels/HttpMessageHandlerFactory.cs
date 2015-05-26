@@ -33,7 +33,7 @@ namespace System.ServiceModel.Channels
         /// HTTP message handler types must derive from <see cref="DelegatingHandler"/> and have a public constructor
         /// taking exactly one argument of type <see cref="HttpMessageHandler"/>. The handlers are invoked in a 
         /// bottom-up fashion in the incoming path and top-down in the outgoing path. That is, the last entry is called first 
-        /// for an incoming request messasge but invoked last for an outgoing response message.</param>
+        /// for an incoming request message but invoked last for an outgoing response message.</param>
         [MethodImpl(MethodImplOptions.NoInlining)]
         public HttpMessageHandlerFactory(params Type[] handlers)
         {
@@ -86,7 +86,7 @@ namespace System.ServiceModel.Channels
         /// <param name="handlers">A function to generate an ordered list of <see cref="DelegatingHandler"/> instances 
         /// to be invoked as part of an <see cref="HttpMessageHandler"/> instance.
         /// The handlers are invoked in a bottom-up fashion in the incoming path and top-down in the outgoing path. That is, 
-        /// the last entry is called first for an incoming request messasge but invoked last for an outgoing response message.</param>
+        /// the last entry is called first for an incoming request message but invoked last for an outgoing response message.</param>
         [MethodImpl(MethodImplOptions.NoInlining)]
         public HttpMessageHandlerFactory(Func<IEnumerable<DelegatingHandler>> handlers)
         {

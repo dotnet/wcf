@@ -98,7 +98,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            // Check for case insensative match
+            // Check for case insensitive match
             for (int i = 0; i < charSetEncodings.Length; i++)
             {
                 string compare = charSetEncodings[i].CharSet;

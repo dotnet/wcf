@@ -211,7 +211,7 @@ namespace System.Runtime
         public static DefaultTaskSchedulerAwaiter Singleton = new DefaultTaskSchedulerAwaiter();
 
         // If the current TaskScheduler is the default, if we aren't currently running inside a task and
-        // the default SyncronizationContext isn't current, when a Task starts, it will change the TaskScheduler
+        // the default SynchronizationContext isn't current, when a Task starts, it will change the TaskScheduler
         // to one based off the current SynchronizationContext. Also, any async api's that WCF consumes will
         // post back to the same SynchronizationContext as they were started in which could cause WCF to deadlock
         // on our Sync code path.

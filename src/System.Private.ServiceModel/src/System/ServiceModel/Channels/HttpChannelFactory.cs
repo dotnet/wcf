@@ -596,7 +596,7 @@ namespace System.ServiceModel.Channels
             {
                 // This method replaces the method with the following prototyp:
                 //      protected HttpWebRequest GetWebRequest(EndpointAddress to, Uri via, SecurityTokenContainer clientCertificateToken, ref TimeoutHelper timeoutHelper)
-                // SecurityTokenContainer doesn't exist so was exluded from method signature
+                // SecurityTokenContainer doesn't exist so was excluded from method signature
                 SecurityTokenProviderContainer httpClientTokenProvider;
 
                 if (this.ManualAddressing)
