@@ -11,26 +11,18 @@ public static class Tcp_Message_Encoding_TextEncodingTests
     // Simple echo of a string. Same binding on both client and server. CustomBinding with TextMessageEncoding and no WindowsStreamSecurityBindingElement
     [Fact]
     [OuterLoop]
-    public static void SameBinding_SecurityModeNone_Text_EchoString()
+    public static void SameBinding_SecurityModeNone_Text_EchoString_Roundtrip()
     {
-        string testCaseName = "SameBinding_SecurityModeNone_Text_EchoString";
         string variationDetails = "Client:: CustomBinding/TcpTransport/NoWindowsStreamSecurity/TextMessageEncoding = None\nServer:: CustomBinding/TcpTransport/NoWindowsStreamSecurity/TextMessageEncoding = None";
         StringBuilder errorBuilder = new StringBuilder();
 
-        try
-        {
-            BindingElement[] bindingElements = new BindingElement[2];
-            bindingElements[0] = new TextMessageEncodingBindingElement();
-            bindingElements[1] = new TcpTransportBindingElement();
-            CustomBinding binding = new CustomBinding(bindingElements);
+        BindingElement[] bindingElements = new BindingElement[2];
+        bindingElements[0] = new TextMessageEncodingBindingElement();
+        bindingElements[1] = new TcpTransportBindingElement();
+        CustomBinding binding = new CustomBinding(bindingElements);
 
-            ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Tcp_CustomBinding_NoSecurity_Text_Address, variationDetails, errorBuilder);
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
+        ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Tcp_CustomBinding_NoSecurity_Text_Address, variationDetails, errorBuilder);
 
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: {0} FAILED with the following errors: {1}", testCaseName, errorBuilder));
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 }

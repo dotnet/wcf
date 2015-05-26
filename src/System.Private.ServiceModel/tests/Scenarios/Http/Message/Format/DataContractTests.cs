@@ -11,7 +11,7 @@ public static class Http_Message_Format_DataContractTests
 {
     [Fact]
     [OuterLoop]
-    public static void TypedProxy_CallService_EchoDataContract()
+    public static void TypedProxy_CallService_Echo_RoundTrips_DataContract()
     {
         // Verifies a typed proxy can call a service operation echoing a DataContract object synchronously
         StringBuilder errorBuilder = new StringBuilder();
