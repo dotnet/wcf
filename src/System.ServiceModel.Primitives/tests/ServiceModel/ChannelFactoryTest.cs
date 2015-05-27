@@ -23,7 +23,7 @@ public class ChannelFactoryTest
                 new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
                 new HttpTransportBindingElement() });
 
-            EndpointAddress endpointAddress = new EndpointAddress(Constants.BaseAddress.HttpBaseAddress);
+            EndpointAddress endpointAddress = new EndpointAddress(BaseAddress.HttpBaseAddress);
 
             // Create the channel factory for the request-reply message exchange pattern.
             factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
@@ -78,7 +78,7 @@ public class ChannelFactoryTest
         {
             BasicHttpBinding binding = new BasicHttpBinding();
 
-            EndpointAddress endpointAddress = new EndpointAddress(Constants.BaseAddress.HttpBaseAddress);
+            EndpointAddress endpointAddress = new EndpointAddress(BaseAddress.HttpBaseAddress);
 
             // Create the channel factory for the request-reply message exchange pattern.
             factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
@@ -131,7 +131,7 @@ public class ChannelFactoryTest
             BasicHttpBinding binding = new BasicHttpBinding();
 
             // Create the channel factory
-            factory = new ChannelFactory<IWcfServiceGenerated>(binding, new EndpointAddress(Constants.BaseAddress.HttpBaseAddress));
+            factory = new ChannelFactory<IWcfServiceGenerated>(binding, new EndpointAddress(BaseAddress.HttpBaseAddress));
             factory.Open();
 
             // Create the channel.

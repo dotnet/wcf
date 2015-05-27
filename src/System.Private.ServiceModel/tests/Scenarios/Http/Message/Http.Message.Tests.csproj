@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Http.Message.Tests</RootNamespace>
+    <AssemblyName>Http.Message.Tests</AssemblyName>
+    <TestCategories>OuterLoop</TestCategories>
+    <SignAssembly>false</SignAssembly>
+    <CLSCompliant>false</CLSCompliant>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ProjectGuid>{2A82F2E5-9201-4787-A977-8C7CF1FCAA0C}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj">
+      <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
+      <Name>System.Private.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Tests.Common\src\System.ServiceModel.Tests.Common.csproj">
+      <Project>{e896294a-ab4a-4af5-a01c-a19e3972eff9}</Project>
+      <Name>System.ServiceModel.Tests.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ServiceModel.Scenarios.Common\ServiceModel.Scenarios.Common.csproj">
+      <Project>{c2210035-aab0-4dbb-9a42-6a23c0bd763b}</Project>
+      <Name>ServiceModel.Scenarios.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+</Project>

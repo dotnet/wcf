@@ -6,6 +6,22 @@ setlocal
 ::       means that that rebuilding cannot successfully delete the task
 ::       assembly. 
 
+set outloop=false
+
+REM this is a temporary step until the build tools provide a proper hook. 
+REM it will need to deal with multiple include and exclude categories.
+REM See dotnet/corefx#1477
+
+echo %* | findstr /i /C:"OuterLoop"  1>nul
+if %errorlevel% equ 0 (
+  set outloop=true
+)
+
+if "%outloop%" equ "true" (
+	start /wait BuildWCFTestService.cmd
+)
+
+
 if not defined VisualStudioVersion (
     if defined VS140COMNTOOLS (
         call "%VS140COMNTOOLS%\VsDevCmd.bat"
@@ -18,7 +34,7 @@ if not defined VisualStudioVersion (
     )
 
     echo Error: build.cmd requires Visual Studio 2013 or 2015.  
-    echo        Please see https://github.com/dotnet/corefx/wiki/Developer-Guide for build instructions.
+    echo        Please see https://github.com/dotnet/wcf/wiki/Developer-Guide for build instructions.
     exit /b 1
 )
 
@@ -29,6 +45,13 @@ set _buildproj=%~dp0build.proj
 set _buildlog=%~dp0msbuild.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
+
+if "%outloop%" equ "true"  (
+        pushd setupfiles
+        start /wait RunElevated.vbs SetupWCFTestService.cmd
+        popd
+)
+
 call :build %*
 
 :: Build
@@ -44,10 +67,15 @@ set BUILDERRORLEVEL=%ERRORLEVEL%
 goto :eof
 
 :AfterBuild
-
 echo.
 :: Pull the build summary from the log file
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo Build Exit Code = %BUILDERRORLEVEL%
+
+if "%outloop%" equ "true"  (
+	pushd setupfiles
+	start /wait RunElevated.vbs CleanupWCFTestService.cmd
+	popd
+)
 
 exit /b %BUILDERRORLEVEL%
