@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.ServiceModel.NetTcp.Tests</RootNamespace>
     <AssemblyName>System.ServiceModel.NetTcp.Tests</AssemblyName>
+    <TestCategories>InnerLoop</TestCategories>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{135C7EE5-6E44-4619-ADD5-589034443AE7}</ProjectGuid>
@@ -17,9 +18,6 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

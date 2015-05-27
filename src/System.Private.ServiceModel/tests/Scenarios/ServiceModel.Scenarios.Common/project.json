@@ -24,7 +24,6 @@
     "System.ObjectModel": "4.0.10-beta-22819",
     "System.Reflection": "4.0.10-beta-22819",
     "System.Reflection.DispatchProxy": "4.0.0-beta-22819",
-    "System.Reflection.Emit": "4.0.0-beta-22819",
     "System.Reflection.Extensions": "4.0.0-beta-22819",
     "System.Reflection.Primitives": "4.0.0-beta-22819",
     "System.Reflection.TypeExtensions": "4.0.0-beta-22819",
@@ -35,6 +34,11 @@
     "System.Runtime.InteropServices": "4.0.20-beta-22819",
     "System.Runtime.Serialization.Xml": "4.0.10-beta-22819",
     "System.Security.Claims": "4.0.0-beta-22819",
+    "System.Security.Cryptography.Encoding": "4.0.0-beta-22819",
+    "System.Security.Cryptography.Encryption": "4.0.0-beta-22819",
+    "System.Security.Cryptography.Hashing": "4.0.0-beta-22819",
+    "System.Security.Cryptography.RandomNumberGenerator": "4.0.0-beta-22819",
+    "System.Security.Cryptography.X509Certificates": "4.0.0-beta-22819",
     "System.Security.Principal": "4.0.0-beta-22819",
     "System.Security.Principal.Windows": "4.0.0-beta-22819",
     "System.Text.Encoding": "4.0.10-beta-22819",
@@ -48,7 +52,8 @@
     "xunit": "2.0.0-beta5-build2785",
     "xunit.abstractions.netcore": "1.0.0-prerelease",
     "xunit.assert": "2.0.0-beta5-build2785",
-    "xunit.core.netcore": "1.0.1-prerelease"
+    "xunit.core.netcore": "1.0.1-prerelease",
+    "xunit.netcore.extensions":  "1.0.0-prerelease-*"
   },
   "frameworks": {
     "dnxcore50": {}

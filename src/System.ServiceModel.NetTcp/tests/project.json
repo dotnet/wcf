@@ -22,9 +22,6 @@
     "System.Net.Sockets": "4.0.0-beta-22819",
     "System.Net.WebHeaderCollection": "4.0.0-beta-22819",
     "System.ObjectModel": "4.0.10-beta-22819",
-    "System.Private.DataContractSerialization": "4.0.0-beta-22819",
-    "System.Private.Networking": "4.0.0-beta-22819",
-    "System.Private.ServiceModel": "4.0.0-beta-22819",
     "System.Reflection": "4.0.10-beta-22819",
     "System.Reflection.DispatchProxy": "4.0.0-beta-22819",
     "System.Reflection.Extensions": "4.0.0-beta-22819",
@@ -46,6 +43,13 @@
     "System.Xml.ReaderWriter": "4.0.10-beta-22819",
     "System.Xml.XDocument": "4.0.10-beta-22819",
     "System.Xml.XmlDocument": "4.0.0-beta-22819",
-    "System.Xml.XmlSerializer": "4.0.10-beta-22819"
+    "System.Xml.XmlSerializer": "4.0.10-beta-22819",
+    "xunit": "2.0.0-beta5-build2785",
+    "xunit.abstractions.netcore": "1.0.0-prerelease",
+    "xunit.assert": "2.0.0-beta5-build2785",
+    "xunit.core.netcore": "1.0.1-prerelease"
+  },
+  "frameworks": {
+    "dnxcore50": {}
   }
 }

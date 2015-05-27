@@ -56,8 +56,29 @@ public interface IWcfProjectNRestartService
     string RestartService();
 }
 
-// 
+[ServiceContract(ConfigurationName = "IWcfService")]
+public interface IWcfServiceXmlGenerated
+{
+    [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormat", ReplyAction = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatResponse"),
+    XmlSerializerFormat]
+    string EchoXmlSerializerFormat(string message);
 
+    [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatSupportFaults", ReplyAction = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatSupportFaultsResponse"),
+    XmlSerializerFormat(SupportFaults = true)]
+    string EchoXmlSerializerFormatSupportFaults(string message, bool pleaseThrowException);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatUsingRpc", ReplyAction = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatUsingRpcResponse"),
+    XmlSerializerFormat(Style = OperationFormatStyle.Rpc)]
+    string EchoXmlSerializerFormatUsingRpc(string message);
+
+    [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormat", ReplyAction = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatResponse"),
+    XmlSerializerFormat]
+    Task<string> EchoXmlSerializerFormatAsync(string message);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingXmlSerializer"),
+    XmlSerializerFormat]
+    XmlCompositeType GetDataUsingXmlSerializer(XmlCompositeType composite);
+}
 
 
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
@@ -77,8 +98,6 @@ public interface IWcfServiceGenerated
 }
 
 // 
-
-
 
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
 public interface IWcfServiceBeginEndGenerated
