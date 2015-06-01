@@ -70,88 +70,8 @@ namespace System.ServiceModel
 
         public override SecurityTokenProvider CreateSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
-            return this.CreateSecurityTokenProvider(tokenRequirement, false);
+            throw ExceptionHelper.PlatformNotSupported("CreateSecurityTokenProvider(SecurityTokenRequirement tokenRequirement) not supported");
         }
-
-        internal SecurityTokenProvider CreateSecurityTokenProvider(SecurityTokenRequirement tokenRequirement, bool disableInfoCard)
-        {
-            if (tokenRequirement == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenRequirement");
-            }
-
-            SecurityTokenProvider result = null;
-
-            // Where CardSpace is not supported, CardSpaceTryCreateSecurityTokenProviderStub(...) always returns false  
-            if (tokenRequirement is RecipientServiceModelSecurityTokenRequirement && tokenRequirement.TokenType == SecurityTokenTypes.X509Certificate && tokenRequirement.KeyUsage == SecurityKeyUsage.Exchange)
-            {
-                throw ExceptionHelper.PlatformNotSupported("uncorrelated duplex case - not supported");
-            }
-            else if (tokenRequirement is InitiatorServiceModelSecurityTokenRequirement)
-            {
-                InitiatorServiceModelSecurityTokenRequirement initiatorRequirement = tokenRequirement as InitiatorServiceModelSecurityTokenRequirement;
-
-                // initiatorRequirement will never be null due to the preceding 'is' validation.
-                string tokenType = initiatorRequirement.TokenType;
-                if (IsIssuedSecurityTokenRequirement(initiatorRequirement))
-                {
-                    throw ExceptionHelper.PlatformNotSupported("Security tokens are not supported for security. ");
-                }
-                else if (tokenType == SecurityTokenTypes.X509Certificate)
-                {
-                    throw ExceptionHelper.PlatformNotSupported("X509Certificates are not supported for security. ");
-                }
-                else if (tokenType == SecurityTokenTypes.Kerberos)
-                {
-                    throw ExceptionHelper.PlatformNotSupported("Kerberos is not supported for security yet. ");
-                }
-                else if (tokenType == SecurityTokenTypes.UserName)
-                {
-                    if (_parent.UserName.UserName == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.UserNamePasswordNotProvidedOnClientCredentials));
-                    }
-                    result = new UserNameSecurityTokenProvider(_parent.UserName.UserName, _parent.UserName.Password);
-                }
-                else if (tokenType == ServiceModelSecurityTokenTypes.SspiCredential)
-                {
-                    if (IsDigestAuthenticationScheme(initiatorRequirement))
-                    {
-                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.HttpDigest.ClientCredential), true, _parent.HttpDigest.AllowedImpersonationLevel);
-                    }
-                    else
-                    {
-                        throw ExceptionHelper.PlatformNotSupported("NTLM is not supported for security yet. ");
-                    }
-                }
-                else if (tokenType == ServiceModelSecurityTokenTypes.Spnego)
-                {
-                    throw ExceptionHelper.PlatformNotSupported("Spnego is not supported for security yet. ");
-                }
-                else if (tokenType == ServiceModelSecurityTokenTypes.MutualSslnego)
-                {
-                    throw ExceptionHelper.PlatformNotSupported("MutualSslnego is not supported for security yet. ");
-                    //result = CreateTlsnegoTokenProvider(initiatorRequirement, true);
-                }
-                else if (tokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego)
-                {
-                    throw ExceptionHelper.PlatformNotSupported("AnonymousSslnego is not supported for security yet. ");
-                }
-                else if (tokenType == ServiceModelSecurityTokenTypes.SecureConversation)
-                {
-                    throw ExceptionHelper.PlatformNotSupported("SecureConversation is not supported for security yet. ");
-                }
-            }
-
-            if ((result == null) && !tokenRequirement.IsOptionalToken)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new NotSupportedException(string.Format(SR.SecurityTokenManagerCannotCreateProviderForRequirement, tokenRequirement)));
-            }
-
-            return result;
-        }
-
 
         public override SecurityTokenSerializer CreateSecurityTokenSerializer(SecurityTokenVersion version)
         {

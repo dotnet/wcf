@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Diagnostics.Contracts;
-using System.IdentityModel.Selectors;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,7 +10,6 @@ using System.Runtime.CompilerServices;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security;
-using System.ServiceModel.Security.Tokens;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +25,6 @@ namespace System.ServiceModel.Channels
         private HttpCookieContainerManager _httpCookieContainerManager;
         private HttpClient _httpClient;
         private SecurityCredentialsManager _channelCredentials;
-        private SecurityTokenManager _securityTokenManager;
         private ISecurityCapabilities _securityCapabilities;
         private int _maxBufferSize;
         private TransferMode _transferMode;
@@ -112,14 +109,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public SecurityTokenManager SecurityTokenManager
-        {
-            get
-            {
-                return _securityTokenManager;
-            }
-        }
-
         public int MaxBufferSize
         {
             get
@@ -177,21 +166,46 @@ namespace System.ServiceModel.Channels
                     clientHandler.UseProxy = _useDefaultWebProxy;
                 }
 
-                if (this.AuthenticationScheme == AuthenticationSchemes.Basic)
+                ICredentials creds = null;
+                clientHandler.UseDefaultCredentials = false;
+                if (_authenticationScheme != AuthenticationSchemes.Anonymous)
                 {
+                    creds = CredentialCache.DefaultCredentials;
                     ClientCredentials credentials = _channelCredentials as ClientCredentials;
                     if (credentials != null)
                     {
-                        clientHandler.Credentials = new NetworkCredential(credentials.UserName.UserName, credentials.UserName.Password);
+                        switch (_authenticationScheme)
+                        {
+                            case AuthenticationSchemes.Basic:
+                                if (credentials.UserName.UserName != string.Empty)
+                                {
+                                    creds = new NetworkCredential(credentials.UserName.UserName, credentials.UserName.Password);
+                                }
+                                break;
+                            case AuthenticationSchemes.Digest:
+                                if (credentials.HttpDigest.ClientCredential.UserName != string.Empty)
+                                {
+                                    creds = credentials.HttpDigest.ClientCredential;
+                                }
+                                break;
+                            case AuthenticationSchemes.Ntlm:
+                                goto case AuthenticationSchemes.Negotiate;
+                            case AuthenticationSchemes.Negotiate:
+                                if (credentials.Windows.ClientCredential.UserName != string.Empty)
+                                {
+                                    creds = credentials.Windows.ClientCredential;
+                                }
+                                break;
+                        }
                     }
                 }
-                else if (this.AuthenticationScheme == AuthenticationSchemes.Digest)
+                if (creds == CredentialCache.DefaultCredentials)
                 {
-                    ClientCredentials credentials = _channelCredentials as ClientCredentials;
-                    if (credentials != null)
-                    {
-                        clientHandler.Credentials = new NetworkCredential(credentials.HttpDigest.ClientCredential.UserName, credentials.HttpDigest.ClientCredential.Password);
-                    }
+                    clientHandler.UseDefaultCredentials = true;
+                }
+                else
+                {
+                    clientHandler.Credentials = creds;
                 }
 
                 var client = new HttpClient(clientHandler);
@@ -210,42 +224,6 @@ namespace System.ServiceModel.Channels
         public override int GetMaxBufferSize()
         {
             return MaxBufferSize;
-        }
-
-        private SecurityTokenProviderContainer CreateAndOpenTokenProvider(TimeSpan timeout, AuthenticationSchemes authenticationScheme,
-            EndpointAddress target, Uri via, ChannelParameterCollection channelParameters)
-        {
-            SecurityTokenProvider tokenProvider = null;
-            switch (authenticationScheme)
-            {
-                case AuthenticationSchemes.Anonymous:
-                    break;
-                case AuthenticationSchemes.Basic:
-                    tokenProvider = TransportSecurityHelpers.GetUserNameTokenProvider(this.SecurityTokenManager, target, via, this.Scheme, authenticationScheme, channelParameters);
-                    break;
-                case AuthenticationSchemes.Negotiate:
-                case AuthenticationSchemes.Ntlm:
-                    // tokenProvider = TransportSecurityHelpers.GetSspiTokenProvider(this.SecurityTokenManager, target, via, this.Scheme, authenticationScheme, channelParameters);
-                    // break;
-                    throw ExceptionHelper.PlatformNotSupported("Negotiate/NTLM not supported yet");
-                case AuthenticationSchemes.Digest:
-                    tokenProvider = TransportSecurityHelpers.GetDigestTokenProvider(this.SecurityTokenManager, target, via, this.Scheme, authenticationScheme, channelParameters);
-                    break;
-                default:
-                    // The setter for this property should prevent this.
-                    throw Fx.AssertAndThrow("CreateAndOpenTokenProvider: Invalid authentication scheme");
-            }
-            SecurityTokenProviderContainer result;
-            if (tokenProvider != null)
-            {
-                result = new SecurityTokenProviderContainer(tokenProvider);
-                result.Open(timeout);
-            }
-            else
-            {
-                result = null;
-            }
-            return result;
         }
 
         protected virtual void ValidateCreateChannelParameters(EndpointAddress remoteAddress, Uri via)
@@ -276,7 +254,6 @@ namespace System.ServiceModel.Channels
             {
                 _channelCredentials = ClientCredentials.CreateDefaultCredentials();
             }
-            _securityTokenManager = _channelCredentials.CreateSecurityTokenManager();
         }
 
         protected virtual bool IsSecurityTokenManagerRequired()
@@ -330,12 +307,6 @@ namespace System.ServiceModel.Channels
                 httpClientToDispose.Dispose();
             }
         }
-
-        static internal void TraceResponseReceived(HttpResponseMessage response, Message message, object receiver)
-        {
-            Contract.Assert((response != null && response.RequestMessage != null) || response == null, "If response is NOT null, response.RequestMessage MUST have a value");
-        }
-
 
         internal static bool IsWindowsAuth(AuthenticationSchemes authScheme)
         {
@@ -412,24 +383,6 @@ namespace System.ServiceModel.Channels
         }
         [MethodImpl(MethodImplOptions.NoInlining)]
 
-        private void CreateAndOpenTokenProvidersCore(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider)
-        {
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            tokenProvider = CreateAndOpenTokenProvider(timeoutHelper.RemainingTime(), this.AuthenticationScheme, to, via, channelParameters);
-        }
-
-        internal void CreateAndOpenTokenProviders(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider)
-        {
-            if (!IsSecurityTokenManagerRequired())
-            {
-                tokenProvider = null;
-            }
-            else
-            {
-                CreateAndOpenTokenProvidersCore(to, via, channelParameters, timeout, out tokenProvider);
-            }
-        }
-
         internal static bool MapIdentity(EndpointAddress target, AuthenticationSchemes authenticationScheme)
         {
             if (target.Identity == null)
@@ -449,7 +402,6 @@ namespace System.ServiceModel.Channels
         {
             // Double-checked locking pattern requires volatile for read/write synchronization
             private HttpChannelFactory<IRequestChannel> _factory;
-            private SecurityTokenProviderContainer _tokenProvider;
 
             private ChannelParameterCollection _channelParameters;
 
@@ -503,33 +455,6 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            private void CreateAndOpenTokenProviders(TimeSpan timeout)
-            {
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                if (!ManualAddressing)
-                {
-                    Factory.CreateAndOpenTokenProviders(this.RemoteAddress, this.Via, _channelParameters, timeoutHelper.RemainingTime(), out _tokenProvider);
-                }
-            }
-
-
-            private void CloseTokenProviders(TimeSpan timeout)
-            {
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                if (_tokenProvider != null)
-                {
-                    _tokenProvider.Close(timeoutHelper.RemainingTime());
-                }
-            }
-
-            private void AbortTokenProviders()
-            {
-                if (_tokenProvider != null)
-                {
-                    _tokenProvider.Abort();
-                }
-            }
-
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             {
                 return CommunicationObjectInternal.OnBeginOpen(this, timeout, callback, state);
@@ -548,8 +473,6 @@ namespace System.ServiceModel.Channels
             internal protected override Task OnOpenAsync(TimeSpan timeout)
             {
                 PrepareOpen();
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                CreateAndOpenTokenProviders(timeoutHelper.RemainingTime());
                 return TaskHelpers.CompletedTask();
             }
 
@@ -560,7 +483,6 @@ namespace System.ServiceModel.Channels
             protected override void OnAbort()
             {
                 PrepareClose(true);
-                AbortTokenProviders();
                 base.OnAbort();
             }
 
@@ -581,9 +503,8 @@ namespace System.ServiceModel.Channels
 
             protected internal override async Task OnCloseAsync(TimeSpan timeout)
             {
+                var timeoutHelper = new TimeoutHelper(timeout);
                 PrepareClose(false);
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                CloseTokenProviders(timeoutHelper.RemainingTime());
                 await base.WaitForPendingRequestsAsync(timeoutHelper.RemainingTime());
             }
 
@@ -597,33 +518,7 @@ namespace System.ServiceModel.Channels
                 // This method replaces the method with the following prototyp:
                 //      protected HttpWebRequest GetWebRequest(EndpointAddress to, Uri via, SecurityTokenContainer clientCertificateToken, ref TimeoutHelper timeoutHelper)
                 // SecurityTokenContainer doesn't exist so was excluded from method signature
-                SecurityTokenProviderContainer httpClientTokenProvider;
-
-                if (this.ManualAddressing)
-                {
-                    TimeoutHelper timeoutHelper = new TimeoutHelper(TimeSpan.FromMinutes(1));
-
-                    this.Factory.CreateAndOpenTokenProviders(to, via, _channelParameters, timeoutHelper.RemainingTime(),
-                        out httpClientTokenProvider);
-                }
-                else
-                {
-                    httpClientTokenProvider = _tokenProvider;
-                }
-                try
-                {
-                    return Task.FromResult(this.Factory.GetHttpRequestMessage(to, via, cancelToken, false));
-                }
-                finally
-                {
-                    if (this.ManualAddressing)
-                    {
-                        if (httpClientTokenProvider != null)
-                        {
-                            httpClientTokenProvider.Abort();
-                        }
-                    }
-                }
+                return Task.FromResult(this.Factory.GetHttpRequestMessage(to, via, cancelToken, false));
             }
 
 

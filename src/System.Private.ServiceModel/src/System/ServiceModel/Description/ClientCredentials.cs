@@ -143,13 +143,6 @@ namespace System.ServiceModel.Description
             {
                 return;
             }
-
-            try
-            {
-            }
-            catch (System.IO.FileNotFoundException)
-            {
-            }
         }
 
         // RC0 workaround to freeze credentials when the channel factory is opened
