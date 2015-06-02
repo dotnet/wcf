@@ -925,7 +925,7 @@ namespace System.ServiceModel.Channels
 
         private bool AuthenticationSchemeMayRequireResend()
         {
-            return _authenticationScheme == AuthenticationSchemes.Basic || _authenticationScheme == AuthenticationSchemes.Digest;
+            return _authenticationScheme != AuthenticationSchemes.Anonymous;
         }
 
         private async Task<HttpResponseMessage> SendHeaddAsync(Uri requestUri)
