@@ -1090,6 +1090,30 @@
         "runtime": [
           "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.dll"
         ]
+      },
+      "xunit.netcore.extensions/1.0.0-prerelease-00051": {
+        "dependencies": {
+          "System.Diagnostics.Debug": "4.0.10-beta-22703",
+          "System.IO": "4.0.10-beta-22703",
+          "System.Linq": "4.0.0-beta-22703",
+          "System.Reflection": "4.0.10-beta-22703",
+          "System.Reflection.Primitives": "4.0.0-beta-22703",
+          "System.Runtime": "4.0.20-beta-22703",
+          "System.Runtime.Extensions": "4.0.10-beta-22703",
+          "System.Runtime.Handles": "4.0.0-beta-22703",
+          "System.Runtime.InteropServices": "4.0.20-beta-22703",
+          "System.Text.Encoding": "4.0.10-beta-22703",
+          "System.Threading": "4.0.10-beta-22703",
+          "System.Threading.Tasks": "4.0.10-beta-22703",
+          "xunit.abstractions.netcore": "1.0.0-prerelease",
+          "xunit.core.netcore": "1.0.0-prerelease"
+        },
+        "compile": [
+          "lib/portable-wpa80+win80+net45+aspnetcore50/Xunit.NetCore.Extensions.dll"
+        ],
+        "runtime": [
+          "lib/portable-wpa80+win80+net45+aspnetcore50/Xunit.NetCore.Extensions.dll"
+        ]
       }
     }
   },
@@ -2061,6 +2085,15 @@
         "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.pdb",
         "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.xml"
       ]
+    },
+    "xunit.netcore.extensions/1.0.0-prerelease-00051": {
+      "sha512": "8exRcZk2lrXIH3/DQFQ2pZ3eeYggXgCVGJmFOUetvsO2UROnjBAqGgtCPWB/jQE//ZVOYlOzKDzwvQlbEj4ktw==",
+      "files": [
+        "xunit.netcore.extensions.1.0.0-prerelease-00051.nupkg",
+        "xunit.netcore.extensions.1.0.0-prerelease-00051.nupkg.sha512",
+        "xunit.netcore.extensions.nuspec",
+        "lib/portable-wpa80+win80+net45+aspnetcore50/Xunit.NetCore.Extensions.dll"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -2099,6 +2132,11 @@
       "System.Runtime.InteropServices >= 4.0.20-beta-22819",
       "System.Runtime.Serialization.Xml >= 4.0.10-beta-22819",
       "System.Security.Claims >= 4.0.0-beta-22819",
+      "System.Security.Cryptography.Encoding >= 4.0.0-beta-22819",
+      "System.Security.Cryptography.Encryption >= 4.0.0-beta-22819",
+      "System.Security.Cryptography.Hashing >= 4.0.0-beta-22819",
+      "System.Security.Cryptography.RandomNumberGenerator >= 4.0.0-beta-22819",
+      "System.Security.Cryptography.X509Certificates >= 4.0.0-beta-22819",
       "System.Security.Principal >= 4.0.0-beta-22819",
       "System.Security.Principal.Windows >= 4.0.0-beta-22819",
       "System.Text.Encoding >= 4.0.10-beta-22819",
@@ -2112,7 +2150,8 @@
       "xunit >= 2.0.0-beta5-build2785",
       "xunit.abstractions.netcore >= 1.0.0-prerelease",
       "xunit.assert >= 2.0.0-beta5-build2785",
-      "xunit.core.netcore >= 1.0.1-prerelease"
+      "xunit.core.netcore >= 1.0.1-prerelease",
+      "xunit.netcore.extensions >= 1.0.0-prerelease-*"
     ],
     "DNXCore,Version=v5.0": []
   }
