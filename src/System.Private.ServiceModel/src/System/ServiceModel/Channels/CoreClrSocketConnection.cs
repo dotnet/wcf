@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+#if FEATURE_CORECLR
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
@@ -906,3 +907,4 @@ namespace System.ServiceModel.Channels
         }
     }
 }
+#endif // FEATURE_CORECLR

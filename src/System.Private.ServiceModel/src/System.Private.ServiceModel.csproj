@@ -14,17 +14,25 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
-    <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
+     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsNETNativeLibrary)' != 'true'">
+     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
+    </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
     </Compile>
-    <Compile Include=".\**\*.cs" />
+    <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
+    <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
