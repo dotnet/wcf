@@ -18,17 +18,12 @@ To report an issue or just to open the discussion for a proposed feature, open a
 Contributing
 ============
 
-Please read [Contributing](https://github.com/dotnet/corefx/blob/master/Documentation/contributing.md) to .NET Core before making your first contribution.
+Please read [Contributing](https://github.com/dotnet/wcf/blob/master/Documentation/contributing.md) to .NET Core before making your first contribution.
 
 Building the repository
 =======================
 
-The WCF repository can be built from a regular, non-admin command prompt using build.cmd. This build produces a single System.Private.ServiceModel assembly that implements each of these individual client libraries:
- - System.ServiceModel.Primitives
- - System.ServiceModel.Http
- - System.ServiceModel.NetTcp
- - System.ServiceModel.Duplex
- - System.ServiceModel.Security
+The WCF repository can be built from a regular, non-admin command prompt using build.cmd. This build produces a single System.Private.ServiceModel assembly that implements the individual client libraries.
 
 Microsoft uses this repository to create and publish separate NuGet packages for each library. 
 

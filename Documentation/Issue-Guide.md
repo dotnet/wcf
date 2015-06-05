@@ -11,8 +11,12 @@ We use GitHub labels on our issues in order to classify them.  We have the follo
  * [bug](https://github.com/dotnet/wcf/labels/bug): Issues for bugs in an assembly.
  * [documentation](https://github.com/dotnet/wcf/labels/documentation): Issues relating to documentation (e.g. incorrect documentation, enhancement requests)
  * [enhancement](https://github.com/dotnet/wcf/labels/enhancement): Issues related to an assembly that improve it, but do not add new APIs (e.g performance improvements, code cleanup)
- * [test bug](https://github.com/dotnet/wcf/labels/test%20bug): Issues for bugs in the tests for a specific assembly.
-* **Ownership**: These labels are used to specify who owns specific issue. Issues without an ownership tag are still considered "up for discussion" and haven't been approved yet. We have the following different types of ownership:
+ * [feature request](https://github.com/dotnet/wcf/labels/feature%20request) is a label we assign to issues that are requests for new features. This is intended as a way to tag issues where we want active community discussion on the importance of a proposed new features
+ * [not yet supported](https://github.com/dotnet/wcf/labels/not%20yet%20supported) is a label we assign to issues for features that work in Windows Store but throw PlatformNotSupportedException from the libraries in this repo. Most of these are under development and are expected to be fixed.
+ * [stress](https://github.com/dotnet/wcf/labels/stress) is a label we assign for issues discovered when running in stress labs or heavily loaded applications
+ * [test bug](https://github.com/dotnet/wcf/labels/test%20bug) is a label we assign to all issues related to testing. We label these further with "infrastructure" (for test infrastructure changes) or "enhancement" (for missing tests or those that need enhancement).
+
+**Ownership**: These labels are used to specify who owns specific issue. Issues without an ownership tag are still considered "up for discussion" and haven't been approved yet. We have the following different types of ownership:
  * [up for grabs](https://github.com/dotnet/wcf/labels/up%20for%20grabs): Small sections of work which we believe are well scoped. These sorts of issues are a good place to start if you are new.  Anyone is free to work on these issues.
  * [feature approved](https://github.com/dotnet/wcf/labels/feature%20approved): Larger scale issues.  Like up for grabs, anyone is free to work on these issues, but they may be trickier or require more work.
  * [grabbed by community](https://github.com/dotnet/wcf/labels/grabbed%20by%20community): Someone outside the CoreFx team has assumed responsibility for addressing this issue and is working on a fix.  The comments for the issue will call out who is working on it.  You shouldn't try to address the issue without coordinating with the owner.
@@ -30,9 +34,6 @@ In addition to the above, we have labels for each of the individual libraries wi
  * [System.ServiceModel.NetTcp](https://github.com/dotnet/wcf/labels/System.ServiceModel.NetTcp)
  * [System.ServiceModel.Duplex](https://github.com/dotnet/wcf/labels/System.ServiceModel.Duplex)
  * [System.ServiceModel.Security](https://github.com/dotnet/wcf/labels/System.ServiceModel.Security)
-
-Because the WCF repo is still a work in progress, we have this additional label:
- * [not-supported](https://github.com/dotnet/wcf/labels/not%2Dsupported): the feature is not yet supported. These are used for features that were available for Windows Store apps but have not yet been implemented in the WCF repo. Other labels will reflect its current progress.
 
 ### Assignee
 We assign each issue to a WCF team member.  In most cases, the assignee will not be the one who ultimately fixes the issue (that only happens in the case where the issue is tagged "grabbed by assignee"). The purpose of the assignee is to act as a point of contact between the WCF team and the community for the issue and make sure it's driven to resolution.  If you're working on an issue and get stuck, please reach out to the assignee (just at mention them)  and they will work to help you out.
