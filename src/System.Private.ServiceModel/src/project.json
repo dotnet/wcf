@@ -18,7 +18,6 @@
     "System.Net.Http": "4.0.0-beta-22819",
     "System.Net.NameResolution": "4.0.0-beta-22819",
     "System.Net.Primitives": "4.0.10-beta-22819",
-    "System.Net.Security": "4.0.0-beta-22819",
     "System.Net.Sockets": "4.0.0-beta-22819",
     "System.Net.WebHeaderCollection": "4.0.0-beta-22819",
     "System.ObjectModel": "4.0.10-beta-22819",
@@ -35,7 +34,6 @@
     "System.Runtime.Serialization.Xml": "4.0.10-beta-22819",
     "System.Security.Claims": "4.0.0-beta-22819",
     "System.Security.Principal": "4.0.0-beta-22819",
-    "System.Security.Principal.Windows": "4.0.0-beta-22819",
     "System.Text.Encoding": "4.0.10-beta-22819",
     "System.Threading": "4.0.10-beta-22819",
     "System.Threading.Tasks": "4.0.10-beta-22819",
@@ -46,6 +44,16 @@
     "System.Xml.XmlSerializer": "4.0.10-beta-22819"
   },
   "frameworks": {
-    "dnxcore50": {}
+    "dnxcore50": {
+      "dependencies": {
+        "System.Net.Security": "4.0.0-beta-22819",
+        "System.Security.Principal.Windows": "4.0.0-beta-22819",
+      }
+    },
+    "netcore50": {
+      "dependencies": {
+        "System.Runtime.WindowsRuntime": "4.0.10-beta-*"
+      }
+    }
   }
 }
