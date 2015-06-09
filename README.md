@@ -74,7 +74,7 @@ There are many .NET related projects on GitHub.
 
 ## The Windows Communication Foundation Story
 
-[Windows Communication Foundation](https://msdn.microsoft.com/en-us/library/dd456779.aspx) has been part of the full .NET Framework for a number of years. Microsoft continues to develop this version and has made the source code available via [Reference Source](http://referencesource.microsoft.com).
+[Windows Communication Foundation](https://msdn.microsoft.com/en-us/library/dd456779.aspx) has been part of the full .NET Framework for a number of years. Microsoft continues to develop this version and has made the source code available via [Reference Source](https://github.com/microsoft/referencesource).
 
 With the introduction of Windows 8, Microsoft made some of the client-oriented functionality available in the [Windows Store](https://msdn.microsoft.com/en-us/library/hh556233(v=vs.110).aspx). This allowed mobile devices to interact with WCF services that were built with the .NET framework version.
 
