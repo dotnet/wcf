@@ -6,12 +6,12 @@ using System.ServiceModel;
 using System.Text;
 using Xunit;
 
-public static class Security_TransportSecurity_Https_ClientCredentialTypeTests
+public static class Https_ClientCredentialTypeTests
 {
     private static string s_username;
     private static string s_password;
 
-    static Security_TransportSecurity_Https_ClientCredentialTypeTests()
+    static Https_ClientCredentialTypeTests()
     {
         s_username = "wcf-test";
         s_password = "wcfSaysHell0World!";

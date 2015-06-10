@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Xunit;
 
-public static class Client_ExpectedExceptions_ExpectedExceptionTests
+public static class ExpectedExceptionTests
 {
     [Fact]
     [OuterLoop]

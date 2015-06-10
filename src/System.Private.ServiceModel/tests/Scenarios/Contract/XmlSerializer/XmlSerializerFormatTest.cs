@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-public static class Contract_XmlSerializer_XmlSerializerFormatTests
+public static class XmlSerializerFormatTests
 {
     private static readonly string s_basicEndpointAddress = Endpoints.HttpBaseAddress_Basic;
 

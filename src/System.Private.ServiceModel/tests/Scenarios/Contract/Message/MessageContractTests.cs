@@ -7,7 +7,7 @@ using System.Text;
 using System.Xml;
 using Xunit;
 
-public static class Contract_Message_MessageContractTests
+public static class MessageContractTests
 {
     [Fact]
     [OuterLoop]

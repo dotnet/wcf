@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Xunit;
 
-public static class Contract_Fault_FaultExceptionTests
+public static class FaultExceptionTests
 {
     [Fact]
     [OuterLoop]

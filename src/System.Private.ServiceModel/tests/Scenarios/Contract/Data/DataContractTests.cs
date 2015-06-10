@@ -7,11 +7,11 @@ using System.ServiceModel.Channels;
 using System.Text;
 using Xunit;
 
-public static class Contract_Data_DataContractTests
+public static class DataContractTests
 {
     [Fact]
     [OuterLoop]
-    public static void TypedProxy_CallService_Echo_RoundTrips_DataContract()
+    public static void CustomBinding_DefaultSettings_Echo_RoundTrips_DataContract()
     {
         // Verifies a typed proxy can call a service operation echoing a DataContract object synchronously
         StringBuilder errorBuilder = new StringBuilder();

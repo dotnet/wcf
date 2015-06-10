@@ -7,14 +7,18 @@ using System.ServiceModel.Channels;
 using System.Text;
 using Xunit;
 
-public static class Client_ChannelLayer_RequestReplyChannelShapeTests
+public static class RequestReplyChannelShapeTests
 {
+    // Creating a ChannelFactory using a binding's 'BuildChannelFactory' method and providing a channel shape...
+    //       returns a concrete type determined by the channel shape requested and other binding related settings.
+    // The tests in this file use the IRequestChannel shape.
+
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
 
     [Fact]
     [OuterLoop]
-    public static void IChannelFactoryOfIRequestChannel()
+    public static void IRequestChannel_Http_BasicHttpBinding()
     {
         try
         {
@@ -63,7 +67,7 @@ public static class Client_ChannelLayer_RequestReplyChannelShapeTests
 
     [Fact]
     [OuterLoop]
-    public static void InvokeIRequestChannelCreatedViaBinding()
+    public static void IRequestChannel_Http_CustomBinding()
     {
         try
         {
@@ -116,182 +120,5 @@ public static class Client_ChannelLayer_RequestReplyChannelShapeTests
         {
             Assert.True(false, String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void InvokeIRequestChannelViaProxy()
-    {
-        string address = BaseAddress.HttpBaseAddress;
-
-        StringBuilder errorBuilder = new StringBuilder();
-
-        try
-        {
-            CustomBinding binding = new CustomBinding(new BindingElement[] {
-                new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
-                new HttpTransportBindingElement() });
-
-            EndpointAddress endpointAddress = new EndpointAddress(address);
-
-            // Create the channel factory for the request-reply message exchange pattern.
-            var factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
-
-            // Create the channel.
-            IRequestChannel channel = factory.CreateChannel();
-            channel.Open();
-
-            // Create the Message object to send to the service.
-            Message requestMessage = Message.CreateMessage(
-                binding.MessageVersion,
-                action,
-                new CustomBodyWriter(clientMessage));
-
-            // Send the Message and receive the Response.
-            Message replyMessage = channel.Request(requestMessage);
-
-            string replyMessageAction = replyMessage.Headers.Action;
-
-            if (!string.Equals(replyMessageAction, action + "Response"))
-            {
-                errorBuilder.AppendLine(String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}", action + "Response", replyMessageAction));
-            }
-
-            var replyReader = replyMessage.GetReaderAtBodyContents();
-            string actualResponse = replyReader.ReadElementContentAsString();
-            string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                errorBuilder.AppendLine(String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
-
-            replyMessage.Close();
-            channel.Close();
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeRequestChannelViaProxy FAILED with the following errors: {0}", errorBuilder));
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void InvokeIRequestChannelViaProxyTimeout()
-    {
-        string address = BaseAddress.HttpBaseAddress;
-        StringBuilder errorBuilder = new StringBuilder();
-
-        try
-        {
-            CustomBinding binding = new CustomBinding(new BindingElement[] {
-                new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
-                new HttpTransportBindingElement() });
-
-            EndpointAddress endpointAddress = new EndpointAddress(address);
-
-            // Create the channel factory for the request-reply message exchange pattern.
-            var factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
-
-            // Create the channel.
-            IRequestChannel channel = factory.CreateChannel();
-            channel.Open();
-
-            // Create the Message object to send to the service.
-            Message requestMessage = Message.CreateMessage(
-                binding.MessageVersion,
-                action,
-                new CustomBodyWriter(clientMessage));
-
-            // Send the Message and receive the Response.
-            Message replyMessage = channel.Request(requestMessage, TimeSpan.FromSeconds(60));
-
-            string replyMessageAction = replyMessage.Headers.Action;
-
-            if (!string.Equals(replyMessageAction, action + "Response"))
-            {
-                errorBuilder.AppendLine(String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}", action + "Response", replyMessageAction));
-            }
-
-
-            var replyReader = replyMessage.GetReaderAtBodyContents();
-            string actualResponse = replyReader.ReadElementContentAsString();
-            string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                errorBuilder.AppendLine(String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
-
-            replyMessage.Close();
-            channel.Close();
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeIRequestChannelViaProxyTimeout FAILED with the following errors: {0}", errorBuilder));
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void InvokeIRequestChannelViaProxyAsync()
-    {
-        string address = BaseAddress.HttpBaseAddress;
-        StringBuilder errorBuilder = new StringBuilder();
-
-        try
-        {
-            CustomBinding binding = new CustomBinding(new BindingElement[] {
-                new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
-                new HttpTransportBindingElement() });
-
-            EndpointAddress endpointAddress = new EndpointAddress(address);
-
-            // Create the channel factory for the request-reply message exchange pattern.
-            var factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
-
-            // Create the channel.
-            IRequestChannel channel = factory.CreateChannel();
-            channel.Open();
-
-            // Create the Message object to send to the service.
-            Message requestMessage = Message.CreateMessage(
-                binding.MessageVersion,
-                action,
-                new CustomBodyWriter(clientMessage));
-
-            // Send the Message and receive the Response.
-            IAsyncResult ar = channel.BeginRequest(requestMessage, null, null);
-            Message replyMessage = channel.EndRequest(ar);
-
-            string replyMessageAction = replyMessage.Headers.Action;
-
-            if (!string.Equals(replyMessageAction, action + "Response"))
-            {
-                errorBuilder.AppendLine(String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}", action + "Response", replyMessageAction));
-            }
-
-            var replyReader = replyMessage.GetReaderAtBodyContents();
-            string actualResponse = replyReader.ReadElementContentAsString();
-            string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                errorBuilder.AppendLine(String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
-
-            replyMessage.Close();
-            channel.Close();
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeIRequestChannelViaProxyAsync FAILED with the following errors: {0}", errorBuilder));
     }
 }

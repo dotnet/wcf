@@ -246,68 +246,6 @@ public class MessageDescriptionData
     public Type MessageType { get; set; }
 }
 
-// This class is used to wire up the ClientMessageInspector on the endpoint
-public class ClientMessageInspectorBehavior : IEndpointBehavior
-{
-    private ClientMessageInspector _inspector;
-
-    public ClientMessageInspectorBehavior(ClientMessageInspectorData data)
-    {
-        _inspector = new ClientMessageInspector(data);
-    }
-
-    public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
-    {
-    }
-
-    public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
-    {
-        clientRuntime.ClientMessageInspectors.Add(_inspector);
-    }
-
-    public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
-    {
-    }
-
-    public void Validate(ServiceEndpoint endpoint)
-    {
-    }
-}
-
-// This class is ClientMessageInspector that captures its state for testing
-public class ClientMessageInspector : IClientMessageInspector
-{
-    private ClientMessageInspectorData _data;
-    public ClientMessageInspector(ClientMessageInspectorData data)
-    {
-        _data = data;
-    }
-
-    public void AfterReceiveReply(ref Message reply, object correlationState)
-    {
-        _data.AfterReceiveReplyCalled = true;
-        _data.Reply = reply;
-    }
-
-    public object BeforeSendRequest(ref Message request, IClientChannel channel)
-    {
-        _data.BeforeSendRequestCalled = true;
-        _data.Request = request;
-        _data.Channel = channel;
-        return null;
-    }
-}
-
-// This class is used to hold test data set by ClientMessageInspector
-public class ClientMessageInspectorData
-{
-    public bool BeforeSendRequestCalled { get; set; }
-    public bool AfterReceiveReplyCalled { get; set; }
-    public Message Request { get; set; }
-    public Message Reply { get; set; }
-    public IClientChannel Channel { get; set; }
-}
-
 public class CustomBodyWriter : BodyWriter
 {
     private string _bodyContent;

@@ -10,14 +10,18 @@ using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
 
-public static class Client_ChannelLayer_DuplexChannelShapeTests
+public static class DuplexChannelShapeTests
 {
+    // Creating a ChannelFactory using a binding's 'BuildChannelFactory' method and providing a channel shape...
+    //       returns a concrete type determined by the channel shape requested and other binding related settings.
+    // The tests in this file use the IDuplexChannel shape.
+
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
 
     [Fact]
     [OuterLoop]
-    public static void IChannelFactory_IRequestChannel_NetTcp_SecurityModeNone()
+    public static void IDuplexSessionChannel_Tcp_NetTcpBinding()
     {
         StringBuilder errorBuilder = new StringBuilder();
 
