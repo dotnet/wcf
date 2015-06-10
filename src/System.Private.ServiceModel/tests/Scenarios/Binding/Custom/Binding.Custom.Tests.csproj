@@ -15,7 +15,7 @@
     <ProjectGuid>{EDC88742-E7BF-4B7A-9DE2-55055B81B8F2}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CustomBindingWithHttpTransportTests.cs" />
+    <Compile Include="CustomBindingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

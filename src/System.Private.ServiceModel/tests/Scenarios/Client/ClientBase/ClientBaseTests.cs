@@ -9,7 +9,7 @@ using System.ServiceModel.Dispatcher;
 using System.Text;
 using Xunit;
 
-public static class Client_ClientBase_ClientBaseTests
+public static class ClientBaseTests
 {
     [Fact]
     [OuterLoop]
@@ -197,6 +197,65 @@ public static class Client_ClientBase_ClientBaseTests
 
             return null;
         }
+    }
+
+    public class ClientMessageInspectorBehavior : IEndpointBehavior
+    {
+        private ClientMessageInspector _inspector;
+
+        public ClientMessageInspectorBehavior(ClientMessageInspectorData data)
+        {
+            _inspector = new ClientMessageInspector(data);
+        }
+
+        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
+        {
+        }
+
+        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
+        {
+            clientRuntime.ClientMessageInspectors.Add(_inspector);
+        }
+
+        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+        {
+        }
+
+        public void Validate(ServiceEndpoint endpoint)
+        {
+        }
+    }
+
+    public class ClientMessageInspector : IClientMessageInspector
+    {
+        private ClientMessageInspectorData _data;
+        public ClientMessageInspector(ClientMessageInspectorData data)
+        {
+            _data = data;
+        }
+
+        public void AfterReceiveReply(ref Message reply, object correlationState)
+        {
+            _data.AfterReceiveReplyCalled = true;
+            _data.Reply = reply;
+        }
+
+        public object BeforeSendRequest(ref Message request, IClientChannel channel)
+        {
+            _data.BeforeSendRequestCalled = true;
+            _data.Request = request;
+            _data.Channel = channel;
+            return null;
+        }
+    }
+
+    public class ClientMessageInspectorData
+    {
+        public bool BeforeSendRequestCalled { get; set; }
+        public bool AfterReceiveReplyCalled { get; set; }
+        public Message Request { get; set; }
+        public Message Reply { get; set; }
+        public IClientChannel Channel { get; set; }
     }
 }
 

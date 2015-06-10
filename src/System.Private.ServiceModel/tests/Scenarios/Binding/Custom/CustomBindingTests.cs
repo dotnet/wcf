@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 using TestTypes;
 using Xunit;
 
-public static class Binding_Http_BasicHttpBindingTests
+public static class CustomBindingTests
 {
+    // Client and Server bindings setup exactly the same using default settings.
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String()
+    public static void DefaultSettings_Https_Text_Echo_RoundTrips_String()
     {
-        string variationDetails = "Client:: BasicHttpBinding/DefaultValues\nServer:: BasicHttpBinding/DefaultValues";
+        string variationDetails = "Client:: CustomBinding/DefaultValues\nServer:: CustomBinding/DefaultValues";
         string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
         bool success = false;
-
-        BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-
+        
         try
         {
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(), new HttpsTransportBindingElement());
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpsSoap12_Address));
 
             IWcfService serviceProxy = factory.CreateChannel();
 
@@ -40,6 +40,10 @@ public static class Binding_Http_BasicHttpBindingTests
         catch (Exception ex)
         {
             errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
+            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
+            {
+                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
+            }
         }
 
         Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());

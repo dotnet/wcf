@@ -10,29 +10,42 @@ using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
 
-public static class Security_TransportSecurity_Tcp_ClientCredentialTypeTests
+public static class Tcp_ClientCredentialTypeTests
 {
     // Simple echo of a string using NetTcpBinding on both client and server with all default settings.
     [Fact(Skip = "SecurityMode.Transport not yet supported.")]
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
-        string testCaseName = "NetTcpBinding_ScenarioTests.SameBinding_DefaultSettings_EchoString";
         string variationDetails = "Client:: NetTcpBinding/DefaultValues\nServer:: NetTcpBinding/DefaultValues";
-
+        string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
+        bool success = false;
 
         try
         {
             NetTcpBinding binding = new NetTcpBinding();
-            ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Tcp_DefaultBinding_Address, variationDetails, errorBuilder);
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_DefaultBinding_Address));
+            IWcfService serviceProxy = factory.CreateChannel();
+
+            string result = serviceProxy.Echo(testString);
+            success = string.Equals(result, testString);
+
+            if (!success)
+            {
+                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+            }
         }
         catch (Exception ex)
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
+            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
+            {
+                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
+            }
         }
 
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: {0} FAILED with the following errors: {1}", testCaseName, errorBuilder));
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
     // Simple echo of a string using NetTcpBinding on both client and server with all default settings.
@@ -40,21 +53,35 @@ public static class Security_TransportSecurity_Tcp_ClientCredentialTypeTests
     [OuterLoop]
     public static void SameBinding_SecurityModeNone_EchoString()
     {
-        string testCaseName = "NetTcpBinding_ScenarioTests.SameBinding_SecurityModeNone_EchoString";
         string variationDetails = "Client:: NetTcpBinding/SecurityMode = None\nServer:: NetTcpBinding/SecurityMode = None";
+        string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
+        bool success = false;
 
         try
         {
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
-            ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Tcp_NoSecurity_Address, variationDetails, errorBuilder);
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            IWcfService serviceProxy = factory.CreateChannel();
+
+            string result = serviceProxy.Echo(testString);
+            success = string.Equals(result, testString);
+
+            if (!success)
+            {
+                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+            }
         }
         catch (Exception ex)
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
+            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
+            {
+                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
+            }
         }
 
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: {0} FAILED with the following errors: {1}", testCaseName, errorBuilder));
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
@@ -62,20 +89,34 @@ public static class Security_TransportSecurity_Tcp_ClientCredentialTypeTests
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_EchoString()
     {
-        string testCaseName = "NetTcpBinding_ScenarioTests.SameBinding_SecurityModeTransport_EchoString";
         string variationDetails = "Client:: NetTcpBinding/SecurityMode = Transport\nServer:: NetTcpBinding/SecurityMode = Transport";
+        string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
+        bool success = false;
 
         try
         {
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
-            ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Tcp_NoSecurity_Address, variationDetails, errorBuilder);
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            IWcfService serviceProxy = factory.CreateChannel();
+
+            string result = serviceProxy.Echo(testString);
+            success = string.Equals(result, testString);
+
+            if (!success)
+            {
+                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+            }
         }
         catch (Exception ex)
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
+            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
+            {
+                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
+            }
         }
 
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: {0} FAILED with the following errors: {1}", testCaseName, errorBuilder));
+        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 }

@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Xunit;
 
-public static class Contract_Message_MessageTests
+public static class MessageTests
 {
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "Test Custom_Message_RoundTrips.";
