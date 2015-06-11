@@ -17,7 +17,8 @@ public static class Https_ClientCredentialTypeTests
         s_password = "wcfSaysHell0World!";
     }
 
-    [Fact(Skip = "Test server support required")]
+    [Fact]
+    [ActiveIssue(69)]
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
@@ -43,7 +44,8 @@ public static class Https_ClientCredentialTypeTests
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: BasicAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    [Fact(Skip = "Test server support required")]
+    [Fact]
+    [ActiveIssue(69)]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()
     {
@@ -69,7 +71,8 @@ public static class Https_ClientCredentialTypeTests
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: DigestAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    [Fact(Skip = "Not Supported Yet")]
+    [Fact]
+    [ActiveIssue(5)]
     [OuterLoop]
     public static void NtlmAuthentication_RoundTrips_Echo()
     {
@@ -90,7 +93,8 @@ public static class Https_ClientCredentialTypeTests
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: NtlmAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    [Fact(Skip = "Not Supported Yet")]
+    [Fact]
+    [ActiveIssue(6)]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {
