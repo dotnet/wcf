@@ -13,7 +13,9 @@ using Xunit;
 public static class Tcp_ClientCredentialTypeTests
 {
     // Simple echo of a string using NetTcpBinding on both client and server with all default settings.
-    [Fact(Skip = "SecurityMode.Transport not yet supported.")]
+    // Default settings means SecurityMode is set to Transport.
+    [Fact]
+    [ActiveIssue(81)]
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
@@ -85,7 +87,8 @@ public static class Tcp_ClientCredentialTypeTests
     }
 
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
-    [Fact(Skip = "Net.Tcp with SecurityMode=Transport is not currently supported.")]
+    [Fact]
+    [ActiveIssue(81)]
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_EchoString()
     {
