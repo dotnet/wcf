@@ -26,9 +26,9 @@ Want to get more familiar with what's going on in the code?
 
 Looking for something to work on? The list of [up-for-grabs issues](https://github.com/dotnet/wcf/labels/up%20for%20grabs) is a great place to start. See some of our guides for more details:
 
-* [Contributing Guide](https://github.com/dotnet/wcf/wiki/Contributing)
-* [Developer Guide](https://github.com/dotnet/wcf/wiki/Developer-Guide)
-* [Issue Guide](https://github.com/dotnet/wcf/wiki/Issue-Guide)
+* [Contributing Guide](Documentation/contributing.md)
+* [Developer Guide](Documentation/developer-guide.md)
+* [Issue Guide](Documentation/issue-guide.md)
 
 You are also encouraged to start a discussion by filing a [New Issue](https://github.com/dotnet/wcf/issues/new).
 
