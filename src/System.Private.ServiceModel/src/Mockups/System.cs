@@ -64,7 +64,7 @@ namespace System.Security.Principal
         internal WindowsIdentity(IntPtr token) { }
         internal WindowsIdentity(IntPtr token, string authType) { }
         public static WindowsIdentity GetCurrent() { return null; }
-        public SecurityIdentifier User { get; }
+        public SecurityIdentifier User { get { return null; } }
 
         void IDisposable.Dispose() { }
     }
