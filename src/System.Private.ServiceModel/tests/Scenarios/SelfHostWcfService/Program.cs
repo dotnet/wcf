@@ -10,12 +10,15 @@ namespace WcfService
     {
         private static void Main(string[] args)
         {
-            using (ServiceHost host = new ServiceHost(
-                typeof(WcfService)))
+            using (ServiceHost wcfservicehost = new ServiceHost(typeof(WcfService)))
+            using (ServiceHost userNameService = new ServiceHost(typeof(WcfUserNameService)))
             {
-                host.Open();
-                Console.WriteLine("Service is ready!");
-                Console.ReadKey();
+                wcfservicehost.Open();
+                Console.WriteLine("WcfService is ready");
+                userNameService.Open();
+                Console.WriteLine("Wcf user name service is ready");
+                Console.WriteLine("Press ENTER to close services...");
+                Console.ReadLine();
             }
         }
     }

@@ -33,7 +33,7 @@ public static partial class Endpoints
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
-        get { return BaseAddress.HttpsBasicBaseAddress + "/https-basic"; }
+        get { return BaseAddress.HttpsBasicBaseAddress + "/CustomerUserName/https-basic"; }
     }
 
     public static string Https_DigestAuth_Address
