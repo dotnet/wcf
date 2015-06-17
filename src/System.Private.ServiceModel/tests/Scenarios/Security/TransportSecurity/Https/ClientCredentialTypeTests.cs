@@ -18,7 +18,6 @@ public static class Https_ClientCredentialTypeTests
     }
 
     [Fact]
-    [ActiveIssue(69)]
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
@@ -28,16 +27,26 @@ public static class Https_ClientCredentialTypeTests
         {
             BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
-            Action<ChannelFactory> credentials = (factory) =>
-            {
-                factory.Credentials.UserName.UserName = s_username;
-                factory.Credentials.UserName.Password = s_password;
-            };
 
-            ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Https_BasicAuth_Address, "BasicHttpBinding - Basic auth ", errorBuilder, credentials);
+            ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
+            factory.Credentials.UserName.UserName = "test1";
+            factory.Credentials.UserName.Password = "test1pwd";
+
+            IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
+
+            string testString = "I am a test";
+            string result = serviceProxy.Echo(testString);
+            bool success = string.Equals(result, testString);
+
+            if (!success)
+            {
+                errorBuilder.AppendLine(string.Format("Basic echo test.\nTest variation:...\n{0}\nUsing address: '{1}'", "BasicAuthentication_RoundTrips_Echo", Endpoints.Https_BasicAuth_Address));
+                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+            }
         }
         catch (Exception ex)
         {
+            errorBuilder.AppendLine(string.Format("Basic echo test.\nTest variation:...\n{0}\nUsing address: '{1}'", "BasicAuthentication_RoundTrips_Echo", Endpoints.Https_BasicAuth_Address));
             errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
 

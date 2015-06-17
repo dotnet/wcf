@@ -202,3 +202,10 @@ public interface IWcfRestartService
     [OperationContract]
     String RestartService(Guid uniqueIdentifier);
 }
+
+[ServiceContract]
+public interface IWcfCustomUserNameService
+{
+    [OperationContract(Action = "http://tempuri.org/IWcfCustomUserNameService/Echo")]
+    String Echo(String message);
+}
