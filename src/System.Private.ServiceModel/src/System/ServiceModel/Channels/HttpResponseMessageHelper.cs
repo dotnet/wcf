@@ -25,6 +25,7 @@ namespace System.ServiceModel.Channels
         {
             Contract.Assert(httpResponseMessage != null);
             Contract.Assert(httpResponseMessage.RequestMessage != null);
+            Contract.Assert(factory != null);
             _httpResponseMessage = httpResponseMessage;
             _httpRequestMessage = httpResponseMessage.RequestMessage;
             _factory = factory;
@@ -72,6 +73,12 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     actionAbsent = (message.Headers.Action == null);
+                    // message.Headers.Action uses an XmlDictionaryReader. If the xml is malformed,
+                    // an XmlException might be thrown when trying to parse the response data.
+                    // CommunicationException is the base type for any ServiceModel exceptions. If anything went
+                    // wrong in any ServiceModel code, an exception deriving from CommunicationException will be
+                    // thrown. 
+                    // In these cases, be tolerant of the failure and treat it as though the action is absent.
                 }
                 catch (XmlException)
                 {
@@ -89,6 +96,7 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     toAbsent = (message.Headers.To == null);
+                    // message.Headers.To has the same failure modes as for the Action header.
                 }
                 catch (XmlException)
                 {
@@ -289,7 +297,7 @@ namespace System.ServiceModel.Channels
             if (content != null)
             {
                 contentStream = await content.ReadAsStreamAsync();
-                _contentLength = content.Headers.ContentLength ?? -1;
+                _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : - 1;
                 if (_contentLength <= 0)
                 {
                     var preReadBuffer = new byte[1];

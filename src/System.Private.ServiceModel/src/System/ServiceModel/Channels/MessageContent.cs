@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace System.ServiceModel.Channels
 {
-    internal abstract class MessageContent : HttpContent
+    public abstract class MessageContent : HttpContent
     {
         protected Message _message;
         protected MessageEncoder _messageEncoder;
@@ -164,7 +164,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    internal class StreamedMessageContent : MessageContent
+    public class StreamedMessageContent : MessageContent
     {
         private Task _encodingTask;
 
@@ -175,16 +175,17 @@ namespace System.ServiceModel.Channels
 
         protected override Task<Stream> CreateContentReadStreamAsync()
         {
+            // WriteMessageAsync might run synchronously and try to write to the stream. ProducerConsumerStream
+            // will block on the write until the stream is being read from. The WriteMessageAsync method needs
+            // to run on a different thread to prevent a deadlock.
             _stream = new ProducerConsumerStream();
-            _encodingTask = _messageEncoder.WriteMessageAsync(_message, _stream);
+            _encodingTask = Task.Run(async () => await _messageEncoder.WriteMessageAsync(_message, _stream));
             return Task.FromResult(_stream);
         }
 
-        protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
+        protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            _stream = new ProducerConsumerStream();
-            await _messageEncoder.WriteMessageAsync(_message, _stream);
-            await _stream.CopyToAsync(stream, 8192);
+            return _messageEncoder.WriteMessageAsync(_message, _stream);
         }
 
         protected override bool TryComputeLength(out long length)
@@ -199,12 +200,13 @@ namespace System.ServiceModel.Channels
     {
         private bool _disposed;
         private bool _messageEncoded;
+        private readonly BufferManager _bufferManager;
         private ArraySegment<byte> _buffer;
-        private BufferManager _bufferManager;
-        protected long? _contentLength;
+        private long? _contentLength;
 
         public BufferedMessageContent(Message message, MessageEncoder messageEncoder, BufferManager bufferManager) : base(message, messageEncoder)
         {
+            Contract.Assert(bufferManager != null);
             _bufferManager = bufferManager;
             _messageEncoded = false;
         }
@@ -254,8 +256,9 @@ namespace System.ServiceModel.Channels
                 _disposed = true;
                 if(_buffer.Array != null)
                 {
-                    _bufferManager.ReturnBuffer(_buffer.Array);
+                    var byteArray = _buffer.Array;
                     _buffer = default(ArraySegment<byte>);
+                    _bufferManager.ReturnBuffer(byteArray);
                 }
             }
 

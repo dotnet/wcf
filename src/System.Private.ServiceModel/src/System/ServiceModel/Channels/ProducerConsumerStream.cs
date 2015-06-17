@@ -19,22 +19,32 @@ namespace System.ServiceModel.Channels
             _currentBuffer = WriteBufferWrapper.EmptyContainer;
         }
 
+        public override bool CanRead { get { return !_disposed; } }
+
+        public override bool CanSeek { get { return false; } }
+
+        public override bool CanWrite { get { return !_disposed; } }
+
         public override void Flush()
         {
             _dataAvail.TrySetResult(0);
         }
 
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SetLength(long value)
-        {
-            throw new NotImplementedException();
-        }
-
         public override int Read(byte[] buffer, int offset, int count)
+        {
+            try
+            {
+                return ReadAsync(buffer, offset, count, CancellationToken.None).GetAwaiter().GetResult();
+            }
+            catch (OperationCanceledException oce)
+            {
+                // If WriteAsync is canceled, an OperationCanceledException might get thrown on the Read path.
+                // The stream is no longer usable so converting to an ObjectDisposedException.
+                throw new ObjectDisposedException("ProducerConsumerStream", oce);
+            }
+        }
+
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             if (buffer == null)
             {
@@ -44,98 +54,52 @@ namespace System.ServiceModel.Channels
             {
                 throw new ArgumentOutOfRangeException("offset");
             }
-            if (count < 0 || count > buffer.Length - offset)
+            if (count <= 0 || count > buffer.Length - offset)
             {
                 throw new ArgumentOutOfRangeException("count");
             }
-            Contract.EndContractBlock();
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             if (_disposed)
             {
                 return 0;
             }
 
-            _buffer.SetResult(new WriteBufferWrapper(buffer, offset, count));
-            int totalBytesRead = 0;
-            do
+            using (cancellationToken.Register(CancelAndDispose, this))
             {
-                int bytesRead = _dataAvail.Task.Result;
-                _dataAvail = new TaskCompletionSource<int>();
-                totalBytesRead += bytesRead;
-                count -= bytesRead;
-                if (bytesRead == 0)
+                _buffer.TrySetResult(new WriteBufferWrapper(buffer, offset, count));
+                int totalBytesRead = 0;
+                while (count > 0)
                 {
-                    break;
+                    int bytesRead = await _dataAvail.Task;
+                    _dataAvail = new TaskCompletionSource<int>();
+                    if (bytesRead == 0)
+                    {
+                        break;
+                    }
+
+                    totalBytesRead += bytesRead;
+                    count -= bytesRead;
                 }
-            } while (count > 0);
-            return totalBytesRead;
+
+                return totalBytesRead;
+            }
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (buffer == null)
+            try
             {
-                throw new ArgumentNullException("buffer");
+                WriteAsync(buffer, offset, count, CancellationToken.None).GetAwaiter().GetResult();
             }
-            if (offset < 0 || offset > buffer.Length)
+            catch (OperationCanceledException oce)
             {
-                throw new ArgumentOutOfRangeException("offset");
-            }
-            if (count < 0 || count > buffer.Length - offset)
-            {
-                throw new ArgumentOutOfRangeException("count");
-            }
-            Contract.EndContractBlock();
-
-            if (_disposed)
-            {
-                throw new ObjectDisposedException("ProducerConsumerStream");
+                // If ReadAsync is canceled, an OperationCanceledException might get thrown on the write path.
+                // The stream is no longer usable so converting to an ObjectDisposedException.
+                throw new ObjectDisposedException("ProducerConsumerStream", oce);
             }
 
-            while (count > 0)
-            {
-                if (_currentBuffer == WriteBufferWrapper.EmptyContainer)
-                {
-                    _currentBuffer = _buffer.Task.Result;
-                    _buffer = new TaskCompletionSource<WriteBufferWrapper>();
-                }
-
-                int bytesWritten = _currentBuffer.Write(buffer, offset, count);
-                count -= bytesWritten;
-                offset += bytesWritten;
-                if (_currentBuffer.Count == 0)
-                {
-                    _currentBuffer = WriteBufferWrapper.EmptyContainer;
-                }
-
-                _dataAvail.TrySetResult(bytesWritten);
-            }
-        }
-
-        public override bool CanRead
-        {
-            get { return !_disposed; }
-        }
-
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
-
-        public override bool CanWrite
-        {
-            get { return !_disposed; }
-        }
-
-        public override long Length
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override long Position
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
         }
 
         public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -152,69 +116,56 @@ namespace System.ServiceModel.Channels
             {
                 throw new ArgumentOutOfRangeException("count");
             }
-            Contract.EndContractBlock();
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             if (_disposed)
             {
                 throw new ObjectDisposedException("ProducerConsumerStream");
             }
 
-            while (count > 0)
+            using (cancellationToken.Register(CancelAndDispose, this))
             {
-                if (_currentBuffer == WriteBufferWrapper.EmptyContainer)
+                while (count > 0)
                 {
-                    _currentBuffer = await _buffer.Task;
-                }
+                    if (_currentBuffer == WriteBufferWrapper.EmptyContainer)
+                    {
+                        _currentBuffer = await _buffer.Task;
+                        _buffer = new TaskCompletionSource<WriteBufferWrapper>();
+                    }
 
-                int bytesWritten = _currentBuffer.Write(buffer, offset, count);
-                count -= bytesWritten;
-                offset += bytesWritten;
-                if (_currentBuffer.Count == 0)
-                {
-                    _currentBuffer = WriteBufferWrapper.EmptyContainer;
-                }
+                    int bytesWritten = _currentBuffer.Write(buffer, offset, count);
+                    count -= bytesWritten;
+                    offset += bytesWritten;
+                    if (_currentBuffer.Count == 0)
+                    {
+                        _currentBuffer = WriteBufferWrapper.EmptyContainer;
+                    }
 
-                _dataAvail.TrySetResult(bytesWritten);
+                    _dataAvail.TrySetResult(bytesWritten);
+                }
             }
         }
 
-        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        public override long Seek(long offset, SeekOrigin origin)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
-            if (offset < 0 || offset > buffer.Length)
-            {
-                throw new ArgumentOutOfRangeException("offset");
-            }
-            if (count < 0 || count > buffer.Length - offset)
-            {
-                throw new ArgumentOutOfRangeException("count");
-            }
-            Contract.EndContractBlock();
+            throw new NotSupportedException();
+        }
 
-            if (_disposed)
-            {
-                return 0;
-            }
+        public override void SetLength(long value)
+        {
+            throw new NotSupportedException();
+        }
 
-            _buffer.TrySetResult(new WriteBufferWrapper(buffer, offset, count));
-            int totalBytesRead = 0;
-            do
-            {
-                int bytesRead = await _dataAvail.Task;
-                _dataAvail = new TaskCompletionSource<int>();
-                if (bytesRead == 0)
-                {
-                    break;
-                }
+        public override long Length
+        {
+            get { throw new NotSupportedException(); }
+        }
 
-                totalBytesRead += bytesRead;
-                count -= bytesRead;
-            } while (count > 0);
-
-            return totalBytesRead;
+        public override long Position
+        {
+            get { throw new NotSupportedException(); }
+            set { throw new NotSupportedException(); }
         }
 
         protected override void Dispose(bool disposing)
@@ -228,7 +179,20 @@ namespace System.ServiceModel.Channels
             base.Dispose(disposing);
         }
 
+        private static void CancelAndDispose(object state)
+        {
+            var thisPtr = state as ProducerConsumerStream;
+            if (thisPtr != null)
+            {
+                thisPtr._dataAvail.TrySetCanceled();
+                thisPtr._buffer.TrySetCanceled();
+                thisPtr.Dispose();
+            }
+        }
+
+#pragma warning disable 660,661  // Hashcode not needed, Equals overriden for fast path comparison of EmptyContainer
         private struct WriteBufferWrapper : IEquatable<WriteBufferWrapper>
+#pragma warning restore 660,661
         {
             public static readonly WriteBufferWrapper EmptyContainer = new WriteBufferWrapper(null, -1, -1, true);
 
@@ -249,55 +213,21 @@ namespace System.ServiceModel.Channels
             public byte[] ByteBuffer
             {
                 get { return _buffer; }
-                set
-                {
-                    if (_buffer == value)
-                    {
-                        return;
-                    }
-                    if (_readOnly)
-                    {
-                        throw new ArgumentException("value");
-                    }
-                    _buffer = value;
-                }
             }
 
             public int Offset
             {
                 get { return _offset; }
-                set
-                {
-                    if (_offset == value)
-                    {
-                        return;
-                    }
-                    if (_readOnly)
-                    {
-                        throw new ArgumentException("value");
-                    }
-                    _offset = value;
-                }
             }
 
             public int Count
             {
                 get { return _count; }
-                set
-                {
-                    if (_count == value)
-                    {
-                        return;
-                    }
-                    if (_readOnly)
-                    {
-                        throw new ArgumentException("value");
-                    }
-                    _count = value;
-                }
             }
 
+#pragma warning disable 659 // Hashcode not needed, Equals overriden for fast path comparison of EmptyContainer
             public override bool Equals(object obj)
+#pragma warning restore 659
             {
                 if (obj is WriteBufferWrapper)
                     return this.Equals((WriteBufferWrapper)obj);
@@ -336,10 +266,9 @@ namespace System.ServiceModel.Channels
             {
                 if (_readOnly)
                 {
-                    throw new InvalidOperationException("BufferContainer.Write");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
                 }
 
-                // TODO: Parameter validation
                 int bytesToCopy = Math.Min(_count, srcCount);
                 Buffer.BlockCopy(srcBuffer, srcOffset, _buffer, _offset, bytesToCopy);
                 _offset += bytesToCopy;

@@ -30,6 +30,8 @@ namespace System.ServiceModel.Channels
 
         internal const string HttpStatusCodeExceptionKey = "System.ServiceModel.Channels.HttpInput.HttpStatusCode";
         internal const string HttpStatusDescriptionExceptionKey = "System.ServiceModel.Channels.HttpInput.HttpStatusDescription";
+        internal const string HttpRequestHeadersTypeName = "System.Net.Http.Headers.HttpRequestHeaders";
+
 
         internal const int ResponseStreamExcerptSize = 1024;
         internal const string MIMEVersionHeader = "MIME-Version";

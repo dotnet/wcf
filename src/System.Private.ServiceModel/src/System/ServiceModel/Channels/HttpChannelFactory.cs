@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -142,7 +143,7 @@ namespace System.ServiceModel.Channels
             }
             if (typeof(T) == typeof(IHttpCookieContainerManager))
             {
-                return (T)(object)this.GetHttpCookieContainerManager();
+                return (T)(object)GetHttpCookieContainerManager();
             }
 
             return base.GetProperty<T>();
@@ -230,7 +231,7 @@ namespace System.ServiceModel.Channels
         {
             base.ValidateScheme(via);
 
-            if (this.MessageVersion.Addressing == AddressingVersion.None && remoteAddress.Uri != via)
+            if (MessageVersion.Addressing == AddressingVersion.None && remoteAddress.Uri != via)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateToMustEqualViaException(remoteAddress.Uri, via));
             }
@@ -238,7 +239,7 @@ namespace System.ServiceModel.Channels
 
         protected override TChannel OnCreateChannel(EndpointAddress remoteAddress, Uri via)
         {
-            return this.OnCreateChannelCore(remoteAddress, via);
+            return OnCreateChannelCore(remoteAddress, via);
         }
 
         protected virtual TChannel OnCreateChannelCore(EndpointAddress remoteAddress, Uri via)
@@ -275,10 +276,10 @@ namespace System.ServiceModel.Channels
         {
             if (IsSecurityTokenManagerRequired())
             {
-                this.InitializeSecurityTokenManager();
+                InitializeSecurityTokenManager();
             }
 
-            if (this.AllowCookies &&
+            if (AllowCookies &&
                 !_httpCookieContainerManager.IsInitialized) // We don't want to overwrite the CookieContainer if someone has set it already.
             {
                 _httpCookieContainerManager.CookieContainer = new CookieContainer();
@@ -287,13 +288,13 @@ namespace System.ServiceModel.Channels
 
         internal protected override Task OnOpenAsync(TimeSpan timeout)
         {
-            this.OnOpen(timeout);
+            OnOpen(timeout);
             return TaskHelpers.CompletedTask();
         }
 
         protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            this.OnClose(timeout);
+            OnClose(timeout);
             return TaskHelpers.CompletedTask();
         }
 
@@ -316,28 +317,19 @@ namespace System.ServiceModel.Channels
                 authScheme == AuthenticationSchemes.Ntlm;
         }
 
-        internal HttpRequestMessage GetHttpRequestMessage(EndpointAddress to, Uri via, CancellationToken cancelToken, bool isWebSocketRequest)
+        internal HttpRequestMessage GetHttpRequestMessage(EndpointAddress to, Uri via)
         {
-            Uri httpWebRequestUri = via;
+            Uri httpRequestUri = via;
 
             HttpRequestMessage requestMessage = null;
 
-            if (!isWebSocketRequest)
+            requestMessage = new HttpRequestMessage(HttpMethod.Post, httpRequestUri);
+            if (TransferModeHelper.IsRequestStreamed(TransferMode))
             {
-                requestMessage = new HttpRequestMessage(HttpMethod.Post, httpWebRequestUri);
-                if (TransferModeHelper.IsRequestStreamed(TransferMode))
-                {
-                    requestMessage.Headers.TransferEncodingChunked = true;
-                }
-            }
-            else
-            {
-                requestMessage = new HttpRequestMessage(HttpMethod.Get, httpWebRequestUri);
+                requestMessage.Headers.TransferEncodingChunked = true;
             }
 
             requestMessage.Headers.CacheControl = s_requestCacheHeader;
-
-
             return requestMessage;
         }
 
@@ -353,7 +345,7 @@ namespace System.ServiceModel.Channels
 
                 to = new EndpointAddress(toHeader);
 
-                if (this.MessageVersion.Addressing == AddressingVersion.None)
+                if (MessageVersion.Addressing == AddressingVersion.None)
                 {
                     via = toHeader;
                 }
@@ -395,12 +387,11 @@ namespace System.ServiceModel.Channels
 
         private bool MapIdentity(EndpointAddress target)
         {
-            return MapIdentity(target, this.AuthenticationScheme);
+            return MapIdentity(target, AuthenticationScheme);
         }
 
         protected class HttpClientRequestChannel : RequestChannel
         {
-            // Double-checked locking pattern requires volatile for read/write synchronization
             private HttpChannelFactory<IRequestChannel> _factory;
 
             private ChannelParameterCollection _channelParameters;
@@ -416,8 +407,6 @@ namespace System.ServiceModel.Channels
                 get { return _factory; }
             }
 
-
-
             protected ChannelParameterCollection ChannelParameters
             {
                 get
@@ -430,7 +419,7 @@ namespace System.ServiceModel.Channels
             {
                 if (typeof(T) == typeof(ChannelParameterCollection))
                 {
-                    if (this.State == CommunicationState.Created)
+                    if (State == CommunicationState.Created)
                     {
                         lock (ThisLock)
                         {
@@ -450,9 +439,7 @@ namespace System.ServiceModel.Channels
 
             private void PrepareOpen()
             {
-                if (Factory.MapIdentity(RemoteAddress))
-                {
-                }
+                Factory.MapIdentity(RemoteAddress);
             }
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -513,18 +500,12 @@ namespace System.ServiceModel.Channels
                 return new HttpClientChannelAsyncRequest(this);
             }
 
-            public virtual Task<HttpRequestMessage> GetHttpRequestMessageAsync(EndpointAddress to, Uri via, CancellationToken cancelToken)
+            internal Task<HttpRequestMessage> GetHttpRequestMessageAsync(EndpointAddress to, Uri via, TimeoutHelper timeoutHelper)
             {
                 // This method replaces the method with the following prototyp:
                 //      protected HttpWebRequest GetWebRequest(EndpointAddress to, Uri via, SecurityTokenContainer clientCertificateToken, ref TimeoutHelper timeoutHelper)
                 // SecurityTokenContainer doesn't exist so was excluded from method signature
-                return Task.FromResult(this.Factory.GetHttpRequestMessage(to, via, cancelToken, false));
-            }
-
-
-            public virtual bool WillGetWebRequestCompleteSynchronously()
-            {
-                return true;
+                return Task.FromResult(Factory.GetHttpRequestMessage(to, via));
             }
 
             internal virtual void OnHttpRequestCompleted(HttpRequestMessage request)
@@ -539,23 +520,26 @@ namespace System.ServiceModel.Channels
                 private EndpointAddress _to;
                 private Uri _via;
                 private HttpRequestMessage _httpRequestMessage;
-                private Task<HttpResponseMessage> _httpResponseMessageTask;
+                private HttpResponseMessage _httpResponseMessage;
                 private HttpAbortReason _abortReason;
                 private TimeoutHelper _timeoutHelper;
                 private int _httpRequestCompleted;
+                private HttpClient _httpClient;
+
                 public HttpClientChannelAsyncRequest(HttpClientRequestChannel channel)
                 {
                     _channel = channel;
                     _to = channel.RemoteAddress;
                     _via = channel.Via;
                     _factory = channel.Factory;
+                    _httpClient = _factory.GetHttpClient();
                 }
 
                 public async Task SendRequestAsync(Message message, TimeoutHelper timeoutHelper)
                 {
                     _timeoutHelper = timeoutHelper;
                     _factory.ApplyManualAddressing(ref _to, ref _via, message);
-                    _httpRequestMessage = await _channel.GetHttpRequestMessageAsync(_to, _via, _timeoutHelper.CancellationToken);
+                    _httpRequestMessage = await _channel.GetHttpRequestMessageAsync(_to, _via, _timeoutHelper);
 
                     Message request = message;
 
@@ -564,32 +548,67 @@ namespace System.ServiceModel.Channels
                         if (_channel.State != CommunicationState.Opened)
                         {
                             // if we were aborted while getting our request or doing correlation, 
-                            // we need to abort the web request and bail
+                            // we need to abort the request and bail
                             Cleanup();
                             _channel.ThrowIfDisposedOrNotOpen();
                         }
 
-                        HttpOutput httpOutput = HttpOutput.CreateHttpOutput(_httpRequestMessage, _factory, request, _factory.IsChannelBindingSupportEnabled, _factory.GetHttpClient(), _factory._authenticationScheme, _timeoutHelper);
+                        bool suppressEntityBody = PrepareMessageHeaders(request);
 
-                        bool success = false;
+                        if (!suppressEntityBody)
+                        {
+                            _httpRequestMessage.Content = MessageContent.Create(_factory, request, _timeoutHelper);
+                        }
+
                         try
                         {
-                            _httpResponseMessageTask = await httpOutput.SendAsync(_httpRequestMessage);
-                            //this.channelBinding = httpOutput.TakeChannelBinding();
-                            await httpOutput.CloseAsync();
+                            // There is a possibility that a HEAD pre-auth request might fail when the actual request
+                            // will succeed. For example, when the web service refuses HEAD requests. We don't want
+                            // to fail the actual request because of some subtlety which causes the HEAD request.
+                            await SendPreauthenticationHeadRequestIfNeeded();
+                        }
+                        catch { /* ignored */ }
+
+                        bool success = false;
+
+                        try
+                        {
+                            _httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _timeoutHelper.CancellationToken);
+                            // As we have the response message and no exceptions have been thrown, the request message has completed it's job.
+                            // Calling Dispose() on the request message to free up resources in HttpContent, but keeping the object around
+                            // as we can still query properties once dispose'd.
+                            _httpRequestMessage.Dispose();
                             success = true;
+                        }
+                        catch (HttpRequestException requestException)
+                        {
+                            HttpChannelUtilities.ProcessGetResponseWebException(requestException, _httpRequestMessage,
+                                _abortReason);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            if (_timeoutHelper.CancellationToken.IsCancellationRequested)
+                            {
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(
+                                    SR.HttpRequestTimedOut, _httpRequestMessage.RequestUri, _timeoutHelper.OriginalTimeout)));
+                            }
+                            else
+                            {
+                                // Cancellation came from somewhere other than timeoutCts and needs to be handled differently.
+                                throw;
+                            }
                         }
                         finally
                         {
                             if (!success)
                             {
-                                httpOutput.Abort(HttpAbortReason.Aborted);
+                                Abort(_channel);
                             }
                         }
                     }
                     finally
                     {
-                        if (!object.ReferenceEquals(request, message))
+                        if (!ReferenceEquals(request, message))
                         {
                             request.Close();
                         }
@@ -600,10 +619,12 @@ namespace System.ServiceModel.Channels
                 {
                     if (_httpRequestMessage != null)
                     {
+						var httpRequestMessageSnapshot = _httpRequestMessage;
+						_httpRequestMessage = null;
                         _timeoutHelper.CancelCancellationToken(false);
-                        this.TryCompleteHttpRequest(_httpRequestMessage);
+                        TryCompleteHttpRequest(httpRequestMessageSnapshot);
+                        httpRequestMessageSnapshot.Dispose();
                     }
-                    //ChannelBindingUtility.Dispose(ref this.channelBinding);
                 }
 
                 public void Abort(RequestChannel channel)
@@ -617,52 +638,14 @@ namespace System.ServiceModel.Channels
                     Cleanup();
                 }
 
-                [System.Diagnostics.CodeAnalysis.SuppressMessage(FxCop.Category.ReliabilityBasic, "Reliability104",
-                            Justification = "This is an old method from previous release.")]
                 public async Task<Message> ReceiveReplyAsync(TimeoutHelper timeoutHelper)
                 {
-                    _timeoutHelper = timeoutHelper;
-                    HttpResponseMessage httpResponse = null;
-                    HttpRequestException responseException = null;
                     try
                     {
-                        httpResponse = await _httpResponseMessageTask;
-                    }
-                    catch (HttpRequestException requestException)
-                    {
-                        responseException = requestException;
-                        httpResponse = HttpChannelUtilities.ProcessGetResponseWebException(responseException, _httpRequestMessage,
-                            _abortReason);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        if (_timeoutHelper.CancellationToken.IsCancellationRequested)
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(
-                                SR.HttpRequestTimedOut, _httpRequestMessage.RequestUri, _timeoutHelper.OriginalTimeout)));
-                        }
-                        else
-                        {
-                            // Cancellation came from somewhere other than timeoutCts and needs to be handled differently.
-                            throw;
-                        }
-                    }
-
-                    try
-                    {
-                        HttpInput httpInput = HttpChannelUtilities.ValidateRequestReplyResponse(_httpRequestMessage, httpResponse,
-                            _factory, responseException);
-
-                        Message replyMessage = null;
-                        if (httpInput != null)
-                        {
-                            var outException = new OutWrapper<Exception>();
-                            replyMessage = await httpInput.ParseIncomingMessageAsync(outException);
-                            Exception exception = outException;
-                            Contract.Assert(exception == null, "ParseIncomingMessage should not set an exception after parsing a response message.");
-                        }
-
-                        this.TryCompleteHttpRequest(_httpRequestMessage);
+                        _timeoutHelper = timeoutHelper;
+                        var responseHelper = new HttpResponseMessageHelper(_httpResponseMessage, _factory);
+                        var replyMessage = await responseHelper.ParseIncomingResponse();
+                        TryCompleteHttpRequest(_httpRequestMessage);
                         return replyMessage;
                     }
                     catch (OperationCanceledException)
@@ -680,9 +663,185 @@ namespace System.ServiceModel.Channels
                     }
                 }
 
+                private bool PrepareMessageHeaders(Message message)
+                {
+                    string action = message.Headers.Action;
+
+                    if (action != null)
+                    {
+                        action = string.Format(CultureInfo.InvariantCulture, "\"{0}\"", UrlUtility.UrlPathEncode(action));
+                    }
+
+                    if (message.Version.Addressing == AddressingVersion.None)
+                    {
+                        message.Headers.Action = null;
+                        message.Headers.To = null;
+                    }
+
+                    bool suppressEntityBody = message is NullMessage;
+
+                    object property;
+                    if (message.Properties.TryGetValue(HttpRequestMessageProperty.Name, out property))
+                    {
+                        HttpRequestMessageProperty requestProperty = (HttpRequestMessageProperty)property;
+                        _httpRequestMessage.Method = new HttpMethod(requestProperty.Method);
+                        // Query string was applied in HttpChannelFactory.ApplyManualAddressing
+                        WebHeaderCollection requestHeaders = requestProperty.Headers;
+                        suppressEntityBody = suppressEntityBody || requestProperty.SuppressEntityBody;
+                        var headerKeys = requestHeaders.AllKeys;
+                        for (int i = 0; i < headerKeys.Length; i++)
+                        {
+                            string name = headerKeys[i];
+                            string value = requestHeaders[name];
+                            if (string.Compare(name, "accept", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                _httpRequestMessage.Headers.Accept.TryParseAdd(value);
+                            }
+                            else if (string.Compare(name, "connection", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                if (value.IndexOf("keep-alive", StringComparison.OrdinalIgnoreCase) != -1)
+                                {
+                                    _httpRequestMessage.Headers.ConnectionClose = false;
+                                }
+                                else
+                                {
+                                    _httpRequestMessage.Headers.Connection.TryParseAdd(value);
+                                }
+                            }
+                            else if (string.Compare(name, "SOAPAction", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                if (action == null)
+                                {
+                                    action = value;
+                                }
+                                else
+                                {
+                                    if (!String.IsNullOrEmpty(value) && string.Compare(value, action, StringComparison.Ordinal) != 0)
+                                    {
+                                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                                            new ProtocolException(SR.Format(SR.HttpSoapActionMismatch, action, value)));
+                                    }
+                                }
+                            }
+                            else if (string.Compare(name, "content-length", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                // this will be taken care of by System.Net when we write to the content
+                            }
+                            else if (string.Compare(name, "content-type", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                // Handled by MessageContent
+                            }
+                            else if (string.Compare(name, "expect", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                if (value.ToUpperInvariant().IndexOf("100-CONTINUE", StringComparison.OrdinalIgnoreCase) != -1)
+                                {
+                                    _httpRequestMessage.Headers.ExpectContinue = true;
+                                }
+                                else
+                                {
+                                    _httpRequestMessage.Headers.Expect.TryParseAdd(value);
+                                }
+                            }
+                            else if (string.Compare(name, "host", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                // this should be controlled through Via
+                            }
+                            else if (string.Compare(name, "referer", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                // referrer is proper spelling, but referer is the what is in the protocol.
+
+                                _httpRequestMessage.Headers.Referrer = new Uri(value);
+                            }
+                            else if (string.Compare(name, "transfer-encoding", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                if (value.ToUpperInvariant().IndexOf("CHUNKED", StringComparison.OrdinalIgnoreCase) != -1)
+                                {
+                                    _httpRequestMessage.Headers.TransferEncodingChunked = true;
+                                }
+                                else
+                                {
+                                    _httpRequestMessage.Headers.TransferEncoding.TryParseAdd(value);
+                                }
+                            }
+                            else if (string.Compare(name, "user-agent", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                _httpRequestMessage.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse(value));
+                            }
+                            else if (string.Compare(name, "if-modified-since", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                DateTimeOffset modifiedSinceDate;
+                                if (DateTimeOffset.TryParse(value, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal, out modifiedSinceDate))
+                                {
+                                    _httpRequestMessage.Headers.IfModifiedSince = modifiedSinceDate;
+                                }
+                                else
+                                {
+                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                                        new ProtocolException(SR.Format(SR.HttpIfModifiedSinceParseError, value)));
+                                }
+                            }
+                            else if (string.Compare(name, "date", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                // this will be taken care of by System.Net when we make the request
+                            }
+                            else if (string.Compare(name, "proxy-connection", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                throw ExceptionHelper.PlatformNotSupported("proxy-connection");
+                            }
+                            else if (string.Compare(name, "range", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                // specifying a range doesn't make sense in the context of WCF
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    _httpRequestMessage.Headers.Add(name, value);
+                                }
+                                catch (Exception addHeaderException)
+                                {
+                                    throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(
+                                                    SR.CopyHttpHeaderFailed,
+                                                    name,
+                                                    value,
+                                                    HttpChannelUtilities.HttpRequestHeadersTypeName),
+                                                    addHeaderException));
+                                }
+                            }
+                        }
+                    }
+
+                    if (action != null)
+                    {
+                        if (message.Version.Envelope == EnvelopeVersion.Soap11)
+                        {
+                            _httpRequestMessage.Headers.TryAddWithoutValidation("SOAPAction", action);
+                        }
+                        else if (message.Version.Envelope == EnvelopeVersion.Soap12)
+                        {
+                            // Handled by MessageContent
+                        }
+                        else if (message.Version.Envelope != EnvelopeVersion.None)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                                new ProtocolException(SR.Format(SR.EnvelopeVersionUnknown,
+                                message.Version.Envelope.ToString())));
+                        }
+                    }
+
+                    // since we don't get the output stream in send when retVal == true, 
+                    // we need to disable chunking for some verbs (DELETE/PUT)
+                    if (suppressEntityBody)
+                    {
+                        _httpRequestMessage.Headers.TransferEncodingChunked = false;
+                    }
+
+                    return suppressEntityBody;
+                }
+
                 public void OnReleaseRequest()
                 {
-                    this.TryCompleteHttpRequest(_httpRequestMessage);
+                    TryCompleteHttpRequest(_httpRequestMessage);
                 }
 
                 private void TryCompleteHttpRequest(HttpRequestMessage request)
@@ -696,6 +855,31 @@ namespace System.ServiceModel.Channels
                     {
                         _channel.OnHttpRequestCompleted(request);
                     }
+                }
+
+                private async Task SendPreauthenticationHeadRequestIfNeeded()
+                {
+                    if (!AuthenticationSchemeMayRequireResend())
+                    {
+                        return;
+                    }
+
+                    var requestUri = _httpRequestMessage.RequestUri;
+                    // sends a HEAD request to the specificed requestUri for authentication purposes 
+                    Contract.Assert(requestUri != null);
+
+                    HttpRequestMessage headHttpRequestMessage = new HttpRequestMessage()
+                    {
+                        Method = HttpMethod.Head,
+                        RequestUri = requestUri
+                    };
+
+                    await _httpClient.SendAsync(headHttpRequestMessage, _timeoutHelper.CancellationToken);
+                }
+
+                private bool AuthenticationSchemeMayRequireResend()
+                {
+                    return _factory.AuthenticationScheme != AuthenticationSchemes.Anonymous;
                 }
             }
         }
