@@ -61,7 +61,7 @@ namespace System.IdentityModel.Tokens
             return CryptoHelper.GenerateDerivedKey(_symmetricKey, algorithm, label, nonce, derivedKeyLength, offset);
         }
 
-#pragma warning disable CS0436 // ICryptoTransform conflicts with imported types 
+#pragma warning disable 0436 // ICryptoTransform conflicts with imported types 
         public override ICryptoTransform GetDecryptionTransform(string algorithm, byte[] iv)
         {
             return CryptoHelper.CreateDecryptor(_symmetricKey, iv, algorithm);
@@ -71,14 +71,14 @@ namespace System.IdentityModel.Tokens
         {
             return CryptoHelper.CreateEncryptor(_symmetricKey, iv, algorithm);
         }
-#pragma warning restore CS0436 
+#pragma warning restore 0436 
 
         public override int GetIVSize(string algorithm)
         {
             return CryptoHelper.GetIVSize(algorithm);
         }
 
-#pragma warning disable CS0436 // KeyedHashAlgorithm, SymmetricAlgorithm conflict with imported types 
+#pragma warning disable 0436 // KeyedHashAlgorithm, SymmetricAlgorithm conflict with imported types 
         public override KeyedHashAlgorithm GetKeyedHashAlgorithm(string algorithm)
         {
             return CryptoHelper.CreateKeyedHashAlgorithm(_symmetricKey, algorithm);
@@ -88,7 +88,7 @@ namespace System.IdentityModel.Tokens
         {
             return CryptoHelper.GetSymmetricAlgorithm(_symmetricKey, algorithm);
         }
-#pragma warning restore CS0436
+#pragma warning restore 0436
 
         public override byte[] GetSymmetricKey()
         {

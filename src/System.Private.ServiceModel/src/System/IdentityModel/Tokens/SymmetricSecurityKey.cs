@@ -9,17 +9,17 @@ namespace System.IdentityModel.Tokens
     {
         public abstract byte[] GenerateDerivedKey(string algorithm, byte[] label, byte[] nonce, int derivedKeyLength, int offset);
 
-#pragma warning disable CS0436 // ICryptoTransform conflicts with imported types 
+#pragma warning disable 0436 // ICryptoTransform conflicts with imported types 
         public abstract ICryptoTransform GetDecryptionTransform(string algorithm, byte[] iv);
         public abstract ICryptoTransform GetEncryptionTransform(string algorithm, byte[] iv);
-#pragma warning restore CS0436
+#pragma warning restore 0436
 
         public abstract int GetIVSize(string algorithm);
 
-#pragma warning disable CS0436 // KeyedHashAlgorithm, SymmetricAlgorithm conflict with imported types 
+#pragma warning disable 0436 // KeyedHashAlgorithm, SymmetricAlgorithm conflict with imported types 
         public abstract KeyedHashAlgorithm GetKeyedHashAlgorithm(string algorithm);
         public abstract SymmetricAlgorithm GetSymmetricAlgorithm(string algorithm);
-#pragma warning restore CS0436
+#pragma warning restore 0436
 
         public abstract byte[] GetSymmetricKey();
     }

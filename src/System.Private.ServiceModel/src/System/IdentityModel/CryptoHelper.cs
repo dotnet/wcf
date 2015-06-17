@@ -11,9 +11,9 @@ using System.ServiceModel.Security;
 namespace System.Security.Cryptography
 {
     internal abstract class HashAlgorithm {}
-#pragma warning disable CS0436 // HashAlgorithm conflicts with imported types
+#pragma warning disable 0436 // HashAlgorithm conflicts with imported types
     internal abstract class KeyedHashAlgorithm : HashAlgorithm {}
-#pragma warning restore CS0436 
+#pragma warning restore 0436 
     internal interface ICryptoTransform {}
     internal abstract class SymmetricAlgorithm {}
 }
@@ -55,7 +55,7 @@ namespace System.IdentityModel
             throw ExceptionHelper.PlatformNotSupported();
         }
 
-#pragma warning disable CS0436 // ICryptoTransform, KeyedHashAlgorithm, SymmetricAlgorithm conflict with imported types 
+#pragma warning disable 0436 // ICryptoTransform, KeyedHashAlgorithm, SymmetricAlgorithm conflict with imported types 
         internal static ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, string algorithm)
         {
             throw ExceptionHelper.PlatformNotSupported();
@@ -75,7 +75,7 @@ namespace System.IdentityModel
         {
             throw ExceptionHelper.PlatformNotSupported();
         }
-#pragma warning restore CS0436 
+#pragma warning restore 0436 
 
         internal static bool IsAsymmetricAlgorithm(string algorithm)
         {

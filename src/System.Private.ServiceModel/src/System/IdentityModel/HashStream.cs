@@ -13,7 +13,7 @@ namespace System.IdentityModel
 
         private MemoryStream _logStream;
 
-#pragma warning disable CS0436 // HashAlgorithm conflicts with imported types 
+#pragma warning disable 0436 // HashAlgorithm conflicts with imported types 
         /// <summary>
         /// Constructor for HashStream. The HashAlgorithm instance is owned by the caller.
         /// </summary>
@@ -24,7 +24,7 @@ namespace System.IdentityModel
 
             Reset(hash);
         }
-#pragma warning restore CS0436
+#pragma warning restore 0436
 
         public override bool CanRead
         {
@@ -89,12 +89,12 @@ namespace System.IdentityModel
             throw ExceptionHelper.PlatformNotSupported();
         }
 
-#pragma warning disable CS0436 // HashAlgorithm conflicts with imported types 
+#pragma warning disable 0436 // HashAlgorithm conflicts with imported types 
         public void Reset(HashAlgorithm hash)
         {
             throw ExceptionHelper.PlatformNotSupported();
         }
-#pragma warning restore CS0436
+#pragma warning restore 0436
 
         public override void Write(byte[] buffer, int offset, int count)
         {
