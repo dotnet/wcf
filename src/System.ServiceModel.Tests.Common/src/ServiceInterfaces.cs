@@ -209,3 +209,23 @@ public interface IWcfCustomUserNameService
     [OperationContract(Action = "http://tempuri.org/IWcfCustomUserNameService/Echo")]
     String Echo(String message);
 }
+
+[ServiceContract(
+    Name = "SampleDuplexHello",
+    Namespace = "http://microsoft.wcf.test",
+    CallbackContract = typeof(IHelloCallbackContract),
+    SessionMode = SessionMode.Required
+  )]
+public interface IDuplexHello
+{
+    [OperationContract(IsOneWay = true)]
+    void Hello(string greeting);
+}
+
+public interface IHelloCallbackContract
+{
+    [OperationContract(IsOneWay = true)]
+    void Reply(string responseToGreeting);
+}
+
+
