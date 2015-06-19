@@ -60,9 +60,6 @@ public class MyClientBase : ClientBase<IWcfServiceGenerated>
 // This helper class is used by the ContractDescription tests to validate contracts.
 public class ContractDescriptionTestHelper
 {
-    // Real service endpoint not required for this test because we never open the channel
-    private const string address = "http://localhost/fakeservice.svc";
-
     // Helper method to validate that service contract T is correct.
     // This helper uses ClientBase<T> to construct the ContractDescription.
     // The 'expectedOperations' describes the operations we expect to find in that contract.
@@ -73,13 +70,17 @@ public class ContractDescriptionTestHelper
         StringBuilder errorBuilder = new StringBuilder();
         try
         {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
+            // Arrange
+            CustomBinding binding = new CustomBinding();
+            binding.Elements.Add(new TextMessageEncodingBindingElement());
+            binding.Elements.Add(new HttpTransportBindingElement());
+            EndpointAddress address = new EndpointAddress(BaseAddress.FakeServerBaseAddress);
 
-            MyClientBase<T> client = new MyClientBase<T>(customBinding, new EndpointAddress(address));
-            ContractDescription contract = client.Endpoint.Contract;
+            // Act
+            ChannelFactory<T> factory = new ChannelFactory<T>(binding, address);
+            ContractDescription contract = factory.Endpoint.Contract;
 
+            // Assert
             string results = ValidateContractDescription(contract, typeof(T), expectedContract);
             if (results != null)
             {

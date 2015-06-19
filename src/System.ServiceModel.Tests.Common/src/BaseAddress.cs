@@ -5,9 +5,10 @@ using System;
 
 public static class BaseAddress
 {
-#if USE_FIDDLER
-    // Base address for testing nonexistent endpoints
+    // base address never used for end-to-end communication
+    public const string FakeServerBaseAddress = "http://localhost/fakeservice.svc";
 
+#if USE_FIDDLER
     public const string HttpServerBaseAddress = "http://localhost.fiddler:8081/";
 
     // Base address for HTTP endpoints
@@ -28,7 +29,6 @@ public static class BaseAddress
     // Base address for HTTPS endpoints with Windows Authentication
     public const string HttpsWindowsBaseAddress = "https://localhost.fiddler:44285/WindowsCommunicationFoundation";
 #else
-    // Base address for testing nonexistent endpoints
 
     public const string HttpServerBaseAddress = "http://localhost:8081/";
 

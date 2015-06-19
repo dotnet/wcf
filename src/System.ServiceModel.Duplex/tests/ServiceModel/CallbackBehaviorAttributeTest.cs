@@ -15,4 +15,24 @@ public static class CallbackBehaviorAttributeTest
         Assert.True(cba.AutomaticSessionShutdown, "AutomaticSessionShutdown should have been true");
         Assert.True(cba.UseSynchronizationContext, "UseSynchronizationContext should have been true");
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public static void AutomaticSessionShutdown_Property_Is_Settable(bool value)
+    {
+        CallbackBehaviorAttribute cba = new CallbackBehaviorAttribute();
+        cba.AutomaticSessionShutdown = value;
+        Assert.Equal(value, cba.AutomaticSessionShutdown);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public static void UseSynchronizationContext_Property_Is_Settable(bool value)
+    {
+        CallbackBehaviorAttribute cba = new CallbackBehaviorAttribute();
+        cba.UseSynchronizationContext = value;
+        Assert.Equal(value, cba.UseSynchronizationContext);
+    }
 }

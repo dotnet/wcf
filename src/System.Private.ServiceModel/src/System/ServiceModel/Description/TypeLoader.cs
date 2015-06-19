@@ -502,8 +502,11 @@ namespace System.ServiceModel.Description
         {
             if (serviceEndpoint.Contract.IsDuplex())
             {
-                // 
-                throw ExceptionHelper.PlatformNotSupported();
+                CallbackBehaviorAttribute attr = serviceEndpoint.Behaviors.Find<CallbackBehaviorAttribute>();
+                if (attr == null)
+                {
+                    serviceEndpoint.Behaviors.Insert(0, new CallbackBehaviorAttribute());
+                }
             }
         }
 

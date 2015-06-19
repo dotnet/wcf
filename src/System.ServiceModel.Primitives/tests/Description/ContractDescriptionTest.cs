@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
 using TestTypes;
@@ -160,5 +162,33 @@ public static class ContractDescriptionTest
 
         // Assert.True because results contains informative error failure
         Assert.True(results == null, results);
+    }
+
+    [Fact]
+    public static void Duplex_ContractDescription_Builds_From_ServiceContract()
+    {
+        // Arrange
+        CustomBinding binding = new CustomBinding();
+        binding.Elements.Add(new TextMessageEncodingBindingElement());
+        binding.Elements.Add(new HttpTransportBindingElement());
+        EndpointAddress address = new EndpointAddress(BaseAddress.FakeServerBaseAddress);
+
+        //Act
+        ChannelFactory<IDuplexHello> factory = new ChannelFactory<IDuplexHello>(binding, address);
+        ContractDescription contract = factory.Endpoint.Contract;
+
+        // Assert
+        Assert.NotNull(contract);
+        Assert.Equal<Type>(typeof(IHelloCallbackContract), contract.CallbackContractType);
+
+        // Duplex contracts capture operations from both the service and the callback type
+        Assert.Equal(2, contract.Operations.Count);
+        OperationDescription operation = contract.Operations.Find("Hello");
+        Assert.True(operation != null, "Failed to find Hello operation in contract.");
+        Assert.True(operation.IsOneWay, "Expected Hello operation to be IsOneWay.");
+
+        operation = contract.Operations.Find("Reply");
+        Assert.True(operation != null, "Failed to find Reply operation in contract.");
+        Assert.True(operation.IsOneWay, "Expected Reply operation to be IsOneWay.");
     }
 }
