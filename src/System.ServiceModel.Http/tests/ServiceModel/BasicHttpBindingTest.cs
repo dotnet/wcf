@@ -9,7 +9,6 @@ using System.ServiceModel.Tests.Common;
 using System.Text;
 using System.Xml;
 using Xunit;
-using Xunit.Extensions;
 
 public static class BasicHttpBindingTest
 {

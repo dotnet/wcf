@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -31,10 +32,12 @@ public class ChannelFactoryTest
 
             // Create the channel.
             channel = factory.CreateChannel();
-            Assert.IsAssignableFrom<IRequestChannel>(channel);
+            Assert.True(typeof(IRequestChannel).GetTypeInfo().IsAssignableFrom(channel.GetType().GetTypeInfo()),
+                String.Format("Channel type '{0}' was not assignable to '{1}'", channel.GetType(), typeof(IRequestChannel)));
 
             channel2 = factory2.CreateChannel();
-            Assert.IsAssignableFrom<IRequestChannel>(channel2);
+            Assert.True(typeof(IRequestChannel).GetTypeInfo().IsAssignableFrom(channel2.GetType().GetTypeInfo()),
+                String.Format("Channel type '{0}' was not assignable to '{1}'", channel2.GetType(), typeof(IRequestChannel)));
 
             // Validate ToString()
             string toStringResult = channel.ToString();
@@ -86,10 +89,12 @@ public class ChannelFactoryTest
 
             // Create the channel.
             channel = factory.CreateChannel();
-            Assert.IsAssignableFrom<IRequestChannel>(channel);
+            Assert.True(typeof(IRequestChannel).GetTypeInfo().IsAssignableFrom(channel.GetType().GetTypeInfo()),
+                String.Format("Channel type '{0}' was not assignable to '{1}'", channel.GetType(), typeof(IRequestChannel)));
 
             channel2 = factory2.CreateChannel();
-            Assert.IsAssignableFrom<IRequestChannel>(channel2);
+            Assert.True(typeof(IRequestChannel).GetTypeInfo().IsAssignableFrom(channel2.GetType().GetTypeInfo()),
+                String.Format("Channel type '{0}' was not assignable to '{1}'", channel2.GetType(), typeof(IRequestChannel)));
 
             // Validate ToString()
             string toStringResult = channel.ToString();
@@ -137,7 +142,8 @@ public class ChannelFactoryTest
             // Create the channel.
             IWcfServiceGenerated channel = factory.CreateChannel();
 
-            Assert.IsAssignableFrom<IWcfServiceGenerated>(channel);
+            Assert.True(typeof(IWcfServiceGenerated).GetTypeInfo().IsAssignableFrom(channel.GetType().GetTypeInfo()),
+                String.Format("Channel type '{0}' was not assignable to '{1}'", channel.GetType(), typeof(IRequestChannel)));
         }
         finally
         {
