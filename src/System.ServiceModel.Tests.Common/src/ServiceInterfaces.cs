@@ -213,8 +213,7 @@ public interface IWcfCustomUserNameService
 [ServiceContract(
     Name = "SampleDuplexHello",
     Namespace = "http://microsoft.wcf.test",
-    CallbackContract = typeof(IHelloCallbackContract),
-    SessionMode = SessionMode.Required
+    CallbackContract = typeof(IHelloCallbackContract)
   )]
 public interface IDuplexHello
 {
