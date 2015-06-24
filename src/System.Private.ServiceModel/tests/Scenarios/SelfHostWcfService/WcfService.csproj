@@ -50,6 +50,7 @@
     <Compile Include="CompositeType.cs" />
     <Compile Include="FaultDetail.cs" />
     <Compile Include="IWcfCustomUserNameService.cs" />
+    <Compile Include="IWcfDuplexService.cs" />
     <Compile Include="IWcfRestartService.cs" />
     <Compile Include="IWcfService.cs" />
     <Compile Include="MahojongTypes.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
     <Compile Include="TestHttpRequestMessageProperty.cs" />
+    <Compile Include="WcfDuplexService.cs" />
     <Compile Include="WcfRestartService.cs" />
     <Compile Include="WcfService.cs" />
     <Compile Include="WcfUserNameService.cs" />

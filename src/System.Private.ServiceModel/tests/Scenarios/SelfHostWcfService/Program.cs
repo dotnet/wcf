@@ -12,14 +12,32 @@ namespace WcfService
         {
             using (ServiceHost wcfservicehost = new ServiceHost(typeof(WcfService)))
             using (ServiceHost userNameService = new ServiceHost(typeof(WcfUserNameService)))
+            using (ServiceHost wcfDuplexService = new ServiceHost(typeof(WcfDuplexService)))
             {
                 wcfservicehost.Open();
                 Console.WriteLine("WcfService is ready");
                 userNameService.Open();
                 Console.WriteLine("Wcf user name service is ready");
+                wcfDuplexService.Open();
+                Console.WriteLine("WcfDuplexService is ready");
+
+                DumpEndpoints(wcfservicehost, userNameService, wcfDuplexService);
+
                 Console.WriteLine("Press ENTER to close services...");
                 Console.ReadLine();
             }
         }
+
+         static void DumpEndpoints(params ServiceHost[] hosts)
+         {
+             foreach (var host in hosts)
+             {
+                 Console.WriteLine("Host : " +  host.GetType().Name);
+                 foreach (var endpoint in host.Description.Endpoints)
+                 {
+                     Console.WriteLine("\t" + endpoint.ListenUri);
+                 }
+             }
+         }
     }
 }

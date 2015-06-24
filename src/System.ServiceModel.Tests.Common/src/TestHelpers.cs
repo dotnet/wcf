@@ -57,6 +57,15 @@ public class MyClientBase : ClientBase<IWcfServiceGenerated>
     }
 }
 
+// This helper class is used for DuplexClientBase<T> tests
+public class MyDuplexClientBase<T> : DuplexClientBase<T> where T : class
+{
+    public MyDuplexClientBase(InstanceContext callbackInstance, Binding binding, EndpointAddress endpointAddress)
+        : base(callbackInstance, binding, endpointAddress)
+    {
+    }
+}
+
 // This helper class is used by the ContractDescription tests to validate contracts.
 public class ContractDescriptionTestHelper
 {
