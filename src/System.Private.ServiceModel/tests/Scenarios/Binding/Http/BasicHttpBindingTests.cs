@@ -4,17 +4,20 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Tests.Common;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TestTypes;
 using Xunit;
 
-public static class Binding_Http_BasicHttpBindingTests
+public class Binding_Http_BasicHttpBindingTests : OuterLoopTests
 {
+    public Binding_Http_BasicHttpBindingTests() : base("WcfService.TestResources.BasicHttpResource") { }
+
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String()
+    public void DefaultSettings_Echo_RoundTrips_String()
     {
         string variationDetails = "Client:: BasicHttpBinding/DefaultValues\nServer:: BasicHttpBinding/DefaultValues";
         string testString = "Hello";
@@ -25,7 +28,7 @@ public static class Binding_Http_BasicHttpBindingTests
 
         try
         {
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(base.EndpointAddress));
 
             IWcfService serviceProxy = factory.CreateChannel();
 
