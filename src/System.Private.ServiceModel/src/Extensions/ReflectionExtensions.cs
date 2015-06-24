@@ -92,7 +92,7 @@ namespace System.ServiceModel
         }
         public static InterfaceMapping GetInterfaceMap(this Type type, Type interfaceType)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            return type.GetTypeInfo().GetRuntimeInterfaceMap(interfaceType);
         }
         public static MemberInfo[] GetMember(this Type type, string name, BindingFlags bindingAttr)
         {
