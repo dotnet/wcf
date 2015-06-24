@@ -15,9 +15,11 @@ namespace System.ServiceModel.Channels
 {
     public abstract class MessageContent : HttpContent
     {
+#pragma warning disable 3008	// not CLS-compliant
         protected Message _message;
         protected MessageEncoder _messageEncoder;
         protected Stream _stream = null;
+#pragma warning restore 3008	// not CLS-compliant
         private bool _disposed;
 
         public MessageContent(Message message, MessageEncoder messageEncoder)
@@ -75,7 +77,6 @@ namespace System.ServiceModel.Channels
                     }
                     else if (string.Compare(name, "content-type", StringComparison.OrdinalIgnoreCase) == 0)
                     {
-                        MediaTypeHeaderValue contentType;
                         if (SetContentType(value))
                         {
                             wasContentTypeSet = true;
