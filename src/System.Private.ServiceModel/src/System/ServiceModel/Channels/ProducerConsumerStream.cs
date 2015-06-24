@@ -190,9 +190,9 @@ namespace System.ServiceModel.Channels
             }
         }
 
-#pragma warning disable 660,661  // Hashcode not needed, Equals overriden for fast path comparison of EmptyContainer
+#pragma warning disable 659,660,661  // Hashcode not needed, Equals overriden for fast path comparison of EmptyContainer
         private struct WriteBufferWrapper : IEquatable<WriteBufferWrapper>
-#pragma warning restore 660,661
+#pragma warning restore 659,660,661
         {
             public static readonly WriteBufferWrapper EmptyContainer = new WriteBufferWrapper(null, -1, -1, true);
 
