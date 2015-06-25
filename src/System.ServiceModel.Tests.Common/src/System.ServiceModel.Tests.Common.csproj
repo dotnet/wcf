@@ -14,9 +14,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</ProjectGuid>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(UseFiddler)' == 'true'">
-     <DefineConstants>$(DefineConstants);USE_FIDDLER</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
   </ItemGroup>

@@ -2,17 +2,19 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.ServiceModel.Tests.Common;
+
 public static partial class Endpoints
 {
     // HTTP Addresses
     public static string HttpBaseAddress_Basic
     {
-        get { return BaseAddress.HttpBaseAddress + "/Basic"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.BasicHttpResource"); }
     }
 
     public static string HttpBaseAddress_NetHttp
     {
-        get { return BaseAddress.HttpBaseAddress + "/NetHttp"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.NetHttpResource"); }
     }
 
     public static string HttpSoap11_Address
