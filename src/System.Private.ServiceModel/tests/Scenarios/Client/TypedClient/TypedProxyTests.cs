@@ -21,6 +21,7 @@ public static class TypedProxyTests
 
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
+    static TimeSpan maxTestWaitTime = TimeSpan.FromSeconds(10);
 
     [Fact]
     [OuterLoop]
@@ -279,6 +280,58 @@ public static class TypedProxyTests
     }
 
     [Fact]
+    [ActiveIssue(90)]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_DuplexCallback()
+    {
+        DuplexChannelFactory<IDuplexChannelService> factory = null;
+        StringBuilder errorBuilder = new StringBuilder();
+        Guid guid = Guid.NewGuid();
+
+        try
+        {
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.Security.Mode = SecurityMode.None;
+
+            DuplexChannelServiceCallback callbackService = new DuplexChannelServiceCallback();
+            InstanceContext context = new InstanceContext(callbackService);
+
+            factory = new DuplexChannelFactory<IDuplexChannelService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Callback_Address));
+            IDuplexChannelService serviceProxy = factory.CreateChannel();
+
+            serviceProxy.Ping(guid);
+            Guid returnedGuid = callbackService.CallbackGuid;
+
+            if (guid != returnedGuid)
+            {
+                errorBuilder.AppendLine(String.Format("The sent GUID does not match the returned GUID. Sent: {0} Received: {1}", guid, returnedGuid));
+            }
+
+            factory.Close();
+        }
+        catch (Exception ex)
+        {
+            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
+            {
+                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
+            }
+        }
+        finally
+        {
+            if (factory != null && factory.State != CommunicationState.Closed)
+            {
+                factory.Abort();
+            }
+        }
+
+        if (errorBuilder.Length != 0)
+        {
+            Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceContract_TypedProxy_DuplexCallback FAILED with the following errors: {0}", errorBuilder));
+        }
+    }
+
+    [Fact]
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannel()
     {
@@ -453,5 +506,45 @@ public static class TypedProxyTests
         }
 
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeIRequestChannelViaProxyAsync FAILED with the following errors: {0}", errorBuilder));
+    }
+
+    public class DuplexChannelServiceCallback : IDuplexChannelCallback
+    {
+        private TaskCompletionSource<Guid> _tcs;
+
+        public DuplexChannelServiceCallback()
+        {
+            _tcs = new TaskCompletionSource<Guid>();
+        }
+
+        public Guid CallbackGuid
+        {
+            get
+            {
+                if (_tcs.Task.Wait(maxTestWaitTime))
+                {
+                    return _tcs.Task.Result;
+                }
+                throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", maxTestWaitTime));
+            }
+        }
+
+        public void OnPingCallback(Guid guid)
+        {
+            _tcs.SetResult(guid);
+        }
+    }
+
+    [ServiceContract(CallbackContract = typeof(IDuplexChannelCallback))]
+    public interface IDuplexChannelService
+    {
+        [OperationContract(IsOneWay = true)]
+        void Ping(Guid guid);
+    }
+
+    public interface IDuplexChannelCallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void OnPingCallback(Guid guid);
     }
 }

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class WcfDuplexService : IWcfDuplexService
     {
         public static IWcfDuplexServiceCallback callback;
@@ -17,5 +16,16 @@ namespace WcfService
             // Schedule the callback on another thread to avoid reentrancy.
             Task.Run(() => callback.OnPingCallback(guid));
         }
+    }
+
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
+    internal class TestIDuplexService : IDuplexChannelService
+    {
+        public void Ping(Guid guid)
+        {
+            IDuplexChannelCallback callback = OperationContext.Current.GetCallbackChannel<IDuplexChannelCallback>();
+            callback.OnPingCallback(guid);
+        }
+
     }
 }

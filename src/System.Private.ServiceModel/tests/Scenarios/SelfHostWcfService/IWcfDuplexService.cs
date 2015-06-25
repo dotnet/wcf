@@ -18,4 +18,17 @@ namespace WcfService
         [OperationContract]
         void OnPingCallback(Guid guid);
     }
+
+    [ServiceContract(CallbackContract = typeof(IDuplexChannelCallback))]
+    public interface IDuplexChannelService
+    {
+        [OperationContract(IsOneWay = true)]
+        void Ping(Guid guid);
+    }
+
+    public interface IDuplexChannelCallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void OnPingCallback(Guid guid);
+    }
 }
