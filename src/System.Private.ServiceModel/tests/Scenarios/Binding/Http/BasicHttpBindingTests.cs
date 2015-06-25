@@ -11,10 +11,8 @@ using System.Threading.Tasks;
 using TestTypes;
 using Xunit;
 
-public class Binding_Http_BasicHttpBindingTests : OuterLoopTests
+public class Binding_Http_BasicHttpBindingTests : IClassFixture<BridgeTestFixture>
 {
-    public Binding_Http_BasicHttpBindingTests() : base("WcfService.TestResources.BasicHttpResource") { }
-
     [Fact]
     [OuterLoop]
     public void DefaultSettings_Echo_RoundTrips_String()
@@ -28,7 +26,7 @@ public class Binding_Http_BasicHttpBindingTests : OuterLoopTests
 
         try
         {
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(base.EndpointAddress));
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
 
             IWcfService serviceProxy = factory.CreateChannel();
 

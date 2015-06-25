@@ -13,6 +13,7 @@
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{15636BB6-CD0B-4EC7-B7A8-9AB59A17B625}</ProjectGuid>
+    <XunitOptions>-parallel none</XunitOptions>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BasicHttpBindingTests.cs" />
@@ -36,4 +37,12 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyTestToTestDirectory">
+    <CreateItem Include="$(OutDir)\*.*">
+      <Output TaskParameter="Include" ItemName="OutputFiles" />
+    </CreateItem>
+    <Copy
+      SourceFiles="@(OutputFiles)"
+      DestinationFolder="$(TestPath)%(TestTargetFramework.Folder)"/>
+  </Target>
 </Project>
