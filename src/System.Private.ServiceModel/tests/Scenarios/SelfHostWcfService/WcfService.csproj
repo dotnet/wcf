@@ -58,6 +58,10 @@
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
+    <Compile Include="TestResources\HttpsSoap12Resource.cs" />
+    <Compile Include="TestResources\HttpSoap12Resource.cs" />
+    <Compile Include="TestResources\HttpsSoap11Resource.cs" />
+    <Compile Include="TestResources\HttpSoap11Resource.cs" />
     <Compile Include="TestResources\NetHttpResource.cs" />
     <Compile Include="TestResources\BasicHttpResource.cs" />
     <Compile Include="TestResources\ResourceController.cs" />

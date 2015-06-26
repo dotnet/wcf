@@ -19,12 +19,12 @@ public static partial class Endpoints
 
     public static string HttpSoap11_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/http-soap11"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpSoap11Resource"); }
     }
 
     public static string HttpSoap12_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/http-soap12"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpSoap12Resource"); }
     }
 
     public static string HttpBinary_Address
@@ -60,12 +60,12 @@ public static partial class Endpoints
 
     public static string HttpsSoap11_Address
     {
-        get { return BaseAddress.HttpsBaseAddress + "/https-soap11"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpsSoap11Resource"); }
     }
 
     public static string HttpsSoap12_Address
     {
-        get { return BaseAddress.HttpsBaseAddress + "/https-soap12"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpsSoap12Resource"); }
     }
 
     public static string HttpUrlNotFound_Address
