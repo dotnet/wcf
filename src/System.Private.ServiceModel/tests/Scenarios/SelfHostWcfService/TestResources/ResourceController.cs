@@ -15,7 +15,9 @@ namespace WcfService.TestResources
 
         protected abstract string Address { get; }
 
-        public string PUT(string port)
+        protected abstract string Port { get; }
+
+        public string PUT()
         {
             ServiceHost host;
             if (!currentHosts.TryGetValue(Address, out host))
@@ -29,7 +31,7 @@ namespace WcfService.TestResources
                         host.AddServiceEndpoint(
                             typeof(ContractType),
                             GetBinding(),
-                            new Uri(string.Format("{0}://localhost:{1}/{2}/{3}", Protocol, port, AppDomain.CurrentDomain.FriendlyName, Address)));
+                            new Uri(string.Format("{0}://localhost:{1}/{2}/{3}", Protocol, Port, AppDomain.CurrentDomain.FriendlyName, Address)));
                         host.Open();
                         currentHosts.Add(Address, host);
                     }

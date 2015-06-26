@@ -28,7 +28,7 @@ namespace Web.Controllers
                     loaderType.FullName);
             loader.LoadAssemblies();
 
-            return loader.IResourcePUT(resource.name, "8081");
+            return loader.IResourcePUT(resource.name);
         }
     }
 }

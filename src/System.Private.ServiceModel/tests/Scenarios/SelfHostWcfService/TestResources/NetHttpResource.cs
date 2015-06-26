@@ -9,6 +9,8 @@ namespace WcfService.TestResources
 
         protected override string Address { get { return "NetHttp"; } }
 
+        protected override string Port { get { return "8081"; } }
+
         protected override Binding GetBinding()
         {
             return new NetHttpBinding();
