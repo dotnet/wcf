@@ -1,4 +1,5 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<<<<<<< HEAD
 
 <!-- Handles the test output directory issue for visual studio. Currently we need to do a full build from the command line first.
      But once - dotnet/buildtools#181 is fixed we might be able to get rid of this. 
@@ -9,4 +10,9 @@
   <PropertyGroup Condition=" $(MSBuildProjectName.EndsWith('.Tests')) AND '$(BuildingInsideVisualStudio)' == 'true' ">
     <OutputPath>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.proj))\\bin\\tests\\Windows_NT.$(Platform).$(Configuration)\$(MSBuildProjectName)\dnxcore50</OutputPath>
   </PropertyGroup>  
+=======
+  <PropertyGroup>
+    <XunitOptions>-parallel none</XunitOptions>
+  </PropertyGroup>
+>>>>>>> Didn't see that these files were not being tracked with the last commit.
 </Project>
