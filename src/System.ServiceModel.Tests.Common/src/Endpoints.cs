@@ -29,7 +29,7 @@ public static partial class Endpoints
 
     public static string HttpBinary_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/http-binary"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpBinaryResource"); }
     }
 
     // HTTPS Addresses
@@ -91,6 +91,6 @@ public static partial class Endpoints
 
     public static string Tcp_CustomBinding_NoSecurity_Text_Address
     {
-        get { return BaseAddress.TcpBaseAddress + "/tcp-custombinding-nosecurity-text"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.TcpNoSecurityTextResource"); }
     }
 }
