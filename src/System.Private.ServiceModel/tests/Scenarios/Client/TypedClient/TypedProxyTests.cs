@@ -21,103 +21,44 @@ public static class TypedProxyTests
 
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
-    static TimeSpan maxTestWaitTime = TimeSpan.FromSeconds(10);
 
     [Fact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncBeginEnd_Call()
     {
-        // This test verifies a typed proxy can call a service operation asynchronously using Begin/End
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = new CustomBinding();
+        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+        customBinding.Elements.Add(new HttpTransportBindingElement());
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call(customBinding, BaseAddress.HttpBaseAddress, "ServiceContract_TypedProxy_AsyncBeginEnd_Call");
+    }
 
-        try
-        {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
-
-            ChannelFactory<IWcfServiceBeginEndGenerated> factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-            IWcfServiceBeginEndGenerated serviceProxy = factory.CreateChannel();
-            string result = null;
-            ManualResetEvent waitEvent = new ManualResetEvent(false);
-
-            // The callback is optional with this Begin call, but we want to test that it works.
-            // This delegate should execute when the call has completed, and that is how it gets the result of the call.
-            AsyncCallback callback = (iar) =>
-            {
-                result = serviceProxy.EndEcho(iar);
-                waitEvent.Set();
-            };
-
-            IAsyncResult ar = serviceProxy.BeginEcho("Hello", callback, null);
-
-            // This test requires the callback to be called.
-            // An actual timeout should call the callback, but we still set
-            // a maximum wait time in case that does not happen.
-            bool success = waitEvent.WaitOne(TestHelpers.TestTimeout);
-            if (!success)
-            {
-                errorBuilder.AppendLine("AsyncCallback was not called.");
-            }
-
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
-
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxy_AsyncBeginEnd_Call FAILED with the following errors: {0}", errorBuilder));
+    [Fact]
+    [ActiveIssue(78)]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call()
+    {
+        NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call");
     }
 
     [Fact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback()
     {
-        // This test verifies a typed proxy can call a service operation asynchronously using Begin/End
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = new CustomBinding();
+        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+        customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        try
-        {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(customBinding, BaseAddress.HttpBaseAddress, "ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback");
+    }
 
-            ChannelFactory<IWcfServiceBeginEndGenerated> factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-            IWcfServiceBeginEndGenerated serviceProxy = factory.CreateChannel();
-            string result = null;
-
-            IAsyncResult ar = serviceProxy.BeginEcho("Hello", null, null);
-            // An actual timeout should complete the ar, but we still set
-            // a maximum wait time in case that does not happen.
-            bool success = ar.AsyncWaitHandle.WaitOne(TestHelpers.TestTimeout);
-            if (success)
-            {
-                result = serviceProxy.EndEcho(ar);
-            }
-            else
-            {
-                errorBuilder.AppendLine("AsyncCallback was not called.");
-            }
-
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
-
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxy_AsyncBeginEnd_Call_WithNoCallback FAILED with the following errors: {0}", errorBuilder));
+    [Fact]
+    [ActiveIssue(78)]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback()
+    {
+        NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback");
     }
 
     [Fact]
@@ -135,36 +76,38 @@ public static class TypedProxyTests
     }
 
     [Fact]
+    [ActiveIssue(78)]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => TypedProxyTests.ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(TestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext timed out");
+    }
+
+    [Fact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncTask_Call()
     {
-        // This test verifies a typed proxy can call a service operation asynchronously using Task<string>
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = new CustomBinding();
+        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+        customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        try
-        {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
+        ServiceContract_TypedProxy_AsyncTask_Call(customBinding, BaseAddress.HttpBaseAddress, "ServiceContract_TypedProxy_AsyncTask_Call");
+    }
 
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
-
-            Task<string> task = serviceProxy.EchoAsync("Hello");
-            string result = task.Result;
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
-
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxyAsyncTaskCall FAILED with the following errors: {0}", errorBuilder));
+    [Fact]
+    [ActiveIssue(78)]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call()
+    {
+        NetTcpBinding netTcpBinding = new NetTcpBinding();
+        ServiceContract_TypedProxy_AsyncTask_Call(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call");
     }
 
     [Fact]
@@ -180,6 +123,22 @@ public static class TypedProxyTests
         }).Wait(TestHelpers.TestTimeout);
 
         Assert.True(success, "Test Scenario: TypedProxy_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
+    }
+
+    [Fact]
+    [ActiveIssue(78)]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => TypedProxyTests.ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(TestHelpers.TestTimeout);
+
+        Assert.True(success, "Test Scenario: ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
     }
 
     [Fact]
@@ -277,58 +236,6 @@ public static class TypedProxyTests
         }
 
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TaskCallWithSynchContextContinuesOnSameThread FAILED with the following errors: {0}", errorBuilder));
-    }
-
-    [Fact]
-    [ActiveIssue(90)]
-    [OuterLoop]
-    public static void ServiceContract_TypedProxy_DuplexCallback()
-    {
-        DuplexChannelFactory<IDuplexChannelService> factory = null;
-        StringBuilder errorBuilder = new StringBuilder();
-        Guid guid = Guid.NewGuid();
-
-        try
-        {
-            NetTcpBinding binding = new NetTcpBinding();
-            binding.Security.Mode = SecurityMode.None;
-
-            DuplexChannelServiceCallback callbackService = new DuplexChannelServiceCallback();
-            InstanceContext context = new InstanceContext(callbackService);
-
-            factory = new DuplexChannelFactory<IDuplexChannelService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Callback_Address));
-            IDuplexChannelService serviceProxy = factory.CreateChannel();
-
-            serviceProxy.Ping(guid);
-            Guid returnedGuid = callbackService.CallbackGuid;
-
-            if (guid != returnedGuid)
-            {
-                errorBuilder.AppendLine(String.Format("The sent GUID does not match the returned GUID. Sent: {0} Received: {1}", guid, returnedGuid));
-            }
-
-            factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
-        }
-        finally
-        {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
-            }
-        }
-
-        if (errorBuilder.Length != 0)
-        {
-            Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceContract_TypedProxy_DuplexCallback FAILED with the following errors: {0}", errorBuilder));
-        }
     }
 
     [Fact]
@@ -508,43 +415,114 @@ public static class TypedProxyTests
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeIRequestChannelViaProxyAsync FAILED with the following errors: {0}", errorBuilder));
     }
 
-    public class DuplexChannelServiceCallback : IDuplexChannelCallback
+    private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call(Binding binding, string endpoint, string testName)
     {
-        private TaskCompletionSource<Guid> _tcs;
-
-        public DuplexChannelServiceCallback()
+        // Verifies a typed proxy can call a service operation asynchronously using Begin/End
+        StringBuilder errorBuilder = new StringBuilder();
+        try
         {
-            _tcs = new TaskCompletionSource<Guid>();
-        }
+            ChannelFactory<IWcfServiceBeginEndGenerated> factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(binding, new EndpointAddress(endpoint));
+            IWcfServiceBeginEndGenerated serviceProxy = factory.CreateChannel();
+            string result = null;
+            ManualResetEvent waitEvent = new ManualResetEvent(false);
 
-        public Guid CallbackGuid
-        {
-            get
+            // The callback is optional with this Begin call, but we want to test that it works.
+            // This delegate should execute when the call has completed, and that is how it gets the result of the call.
+            AsyncCallback callback = (iar) =>
             {
-                if (_tcs.Task.Wait(maxTestWaitTime))
-                {
-                    return _tcs.Task.Result;
-                }
-                throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", maxTestWaitTime));
+                result = serviceProxy.EndEcho(iar);
+                waitEvent.Set();
+            };
+
+            IAsyncResult ar = serviceProxy.BeginEcho("Hello", callback, null);
+
+            // This test requires the callback to be called.
+            // An actual timeout should call the callback, but we still set
+            // a maximum wait time in case that does not happen.
+            bool success = waitEvent.WaitOne(TestHelpers.TestTimeout);
+            if (!success)
+            {
+                errorBuilder.AppendLine("AsyncCallback was not called.");
             }
-        }
 
-        public void OnPingCallback(Guid guid)
+            if (!string.Equals(result, "Hello"))
+            {
+                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+            }
+
+            factory.Close();
+        }
+        catch (Exception ex)
         {
-            _tcs.SetResult(guid);
+            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: {0} FAILED with the following errors: {1}", testName, errorBuilder));
     }
 
-    [ServiceContract(CallbackContract = typeof(IDuplexChannelCallback))]
-    public interface IDuplexChannelService
+    private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(Binding binding, string endpoint, string testName)
     {
-        [OperationContract(IsOneWay = true)]
-        void Ping(Guid guid);
+        // This test verifies a typed proxy can call a service operation asynchronously using Begin/End
+        StringBuilder errorBuilder = new StringBuilder();
+
+        try
+        {
+            ChannelFactory<IWcfServiceBeginEndGenerated> factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(binding, new EndpointAddress(endpoint));
+            IWcfServiceBeginEndGenerated serviceProxy = factory.CreateChannel();
+            string result = null;
+
+            IAsyncResult ar = serviceProxy.BeginEcho("Hello", null, null);
+            // An actual timeout should complete the ar, but we still set
+            // a maximum wait time in case that does not happen.
+            bool success = ar.AsyncWaitHandle.WaitOne(TestHelpers.TestTimeout);
+            if (success)
+            {
+                result = serviceProxy.EndEcho(ar);
+            }
+            else
+            {
+                errorBuilder.AppendLine("AsyncCallback was not called.");
+            }
+
+            if (!string.Equals(result, "Hello"))
+            {
+                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+            }
+
+            factory.Close();
+        }
+        catch (Exception ex)
+        {
+            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+        }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: {0} FAILED with the following errors: {1}", testName, errorBuilder));
     }
 
-    public interface IDuplexChannelCallback
+    private static void ServiceContract_TypedProxy_AsyncTask_Call(Binding binding, string endpoint, string testName)
     {
-        [OperationContract(IsOneWay = true)]
-        void OnPingCallback(Guid guid);
+        // This test verifies a typed proxy can call a service operation asynchronously using Task<string>
+        StringBuilder errorBuilder = new StringBuilder();
+
+        try
+        {
+            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(binding, new EndpointAddress(endpoint));
+            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
+
+            Task<string> task = serviceProxy.EchoAsync("Hello");
+            string result = task.Result;
+            if (!string.Equals(result, "Hello"))
+            {
+                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+            }
+
+            factory.Close();
+        }
+        catch (Exception ex)
+        {
+            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+        }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxyAsyncTaskCall FAILED with the following errors: {0}", errorBuilder));
     }
 }
