@@ -18,12 +18,12 @@ namespace WcfService.TestResources
         const string HttpsProtocol = "https://localhost:" + HttpsPort + "/";
         const string TcpProtocol = "net.tcp://localhost:" + TcpPort + "/";
 
-        public object PUT()
+        public object Put()
         {
             throw new NotImplementedException("Cannot PUT on this resource");
         }
 
-        public object GET()
+        public object Get()
         {
             var http = HttpProtocol + AppDomain.CurrentDomain.FriendlyName;
             var https = HttpsProtocol + AppDomain.CurrentDomain.FriendlyName;

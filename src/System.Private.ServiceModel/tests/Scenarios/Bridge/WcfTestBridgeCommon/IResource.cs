@@ -4,8 +4,8 @@ namespace WcfTestBridgeCommon
 {
     public interface IResource
     {
-        object PUT();
+        object Put();
 
-        object GET();
+        object Get();
     }
 }
