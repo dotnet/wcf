@@ -50,6 +50,8 @@
     <Compile Include="ComplexCompositeType.cs" />
     <Compile Include="CompositeType.cs" />
     <Compile Include="FaultDetail.cs" />
+    <Compile Include="IWcfCustomUserNameService.cs" />
+    <Compile Include="IWcfDuplexService.cs" />
     <Compile Include="IWcfRestartService.cs" />
     <Compile Include="IWcfService.cs" />
     <Compile Include="MahojongTypes.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="TestResources\BasicHttpResource.cs" />
     <Compile Include="TestResources\EndpointResource.cs" />
     <Compile Include="TestHttpRequestMessageProperty.cs" />
+    <Compile Include="WcfDuplexService.cs" />
     <Compile Include="WcfRestartService.cs" />
     <Compile Include="WcfService.cs" />
   </ItemGroup>

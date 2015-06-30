@@ -227,4 +227,15 @@ public interface IHelloCallbackContract
     void Reply(string responseToGreeting);
 }
 
+[ServiceContract(CallbackContract = typeof(IWcfDuplexServiceCallback))]
+public interface IWcfDuplexService
+{
+    [OperationContract]
+    void Ping(Guid guid);
+}
 
+public interface IWcfDuplexServiceCallback
+{
+    [OperationContract]
+    void OnPingCallback(Guid guid);
+}

@@ -89,6 +89,11 @@ public static partial class Endpoints
         get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.TcpNoSecurityResource"); }
     }
 
+    public static string Tcp_NoSecurity_Callback_Address
+    {
+        get { return BaseAddress.TcpDuplexAddress + "/tcp-nosecurity-callback"; }
+    }
+
     public static string Tcp_CustomBinding_NoSecurity_Text_Address
     {
         get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.TcpNoSecurityTextResource"); }

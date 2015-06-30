@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- 
+    CreateTestPropertiesFile:
+      This task generates a C# file to initialize the TestProperties.Properties
+      dictionary with the provided name/value pairs.
+      FileName :          the full name of the file to generate
+      TestPropertyItems : item collection of name/value pairs to generate
+                          name = item.ItemSpec
+                          value = item's metadata for "Value" or "DefaultValue" if "Value" is blank
+  -->
+  <UsingTask TaskName="CreateTestPropertiesFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <FileName ParameterType="System.String" Required="true" />
+      <TestPropertyItems ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+      <Reference Include="System.IO" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        
+        // In some build environments, paths such as $(OutputPath) are
+        // not created prior to starting the build.  So we may find
+        // we need to create the folder for the generated file.
+        string outputFolder = Path.GetDirectoryName(FileName);
+        if (!Directory.Exists(outputFolder))
+        {
+            Log.LogMessage("Creating output folder {0}", outputFolder);
+            Directory.CreateDirectory(outputFolder);
+        }
+
+        StringBuilder sb = new StringBuilder();
+	      sb.AppendLine(
+ @"using System.Collections.Generic;
+namespace System.ServiceModel.Tests.Common
+{
+    public static partial class TestProperties
+    {");
+        
+        // Generate a string for each property name.
+        // Code accessing the properties should use these generated names.
+        foreach (var item in TestPropertyItems)
+        {
+            sb.AppendLine(String.Format("        public static readonly string {0}_PropertyName = \"{0}\";", item.ItemSpec));
+        }
+        
+        // Generate the Initialize partial method to populate the dictionary
+        sb.AppendLine(
+@"        static partial void Initialize(Dictionary<string, string> properties)
+        {");
+                
+        foreach (var item in TestPropertyItems)
+        {
+            string propertyName = item.ItemSpec;
+            string propertyValue = item.GetMetadata("Value");
+            if (String.IsNullOrEmpty(propertyValue))
+            {
+                propertyValue = item.GetMetadata("DefaultValue");
+            }
+         
+            // Convert the property value into a legal string literal.     
+            StringBuilder literal = new StringBuilder();       
+            foreach (var c in propertyValue)
+            {
+                switch (c)
+                {
+                    case '\'': literal.Append(@"\'"); break;
+                    case '\"': literal.Append("\\\""); break;
+                    case '\\': literal.Append(@"\\"); break;
+                    default:
+                        if (c >= 0x20 && c <= 0x7e)
+                        {
+                            // ASCII printable character
+                            literal.Append(c);
+                        }
+                        else
+                        {
+                            // As UTF16 escaped character
+                            literal.AppendFormat(@"\u{0:x4}", (int)c);
+                        }
+                        break;
+                }
+            }
+            
+            string setStatement = String.Format("            properties[\"{0}\"] = \"{1}\";", propertyName, literal.ToString());
+            Log.LogMessage(setStatement);
+            sb.AppendLine(setStatement);
+        }
+            
+	      sb.AppendLine(
+ @"        }
+    }
+}");
+        
+        // Do not rewrite file if there are no changes.  This permits incremental builds.
+        string contentsToWrite = sb.ToString();
+        string priorContents = File.Exists(FileName) ? File.ReadAllText(FileName) : String.Empty;
+        if (!String.Equals(contentsToWrite, priorContents))
+        {
+            Log.LogMessage("Test properties were generated to {0}.", FileName);
+            File.WriteAllText(FileName, sb.ToString());
+        }
+        else
+        {
+             Log.LogMessage("No changes were made to the existing file {0}", FileName);
+        }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <!--
+    CreateTestProperties:
+      This target generates a file to initialize the TestProperties dictionary
+      with a set of known name/value pairs.  The file will also contain
+      generated static strings for each property name.  Code accessing the
+      properties in TestProperties.Properties should use these generated
+      names rather than separate string literals.
+  -->
+  <Target Name="CreateTestProperties">
+
+    <!-- Generate the file (will be a NOP if file exists and doesn't need to change) -->
+    <CreateTestPropertiesFile FileName ="$(GeneratedTestPropertiesFileName)" TestPropertyItems="@(TestProperty)"/>
+
+    <!-- Add the generated file to the @(Compile) collection so it gets built. -->
+    <ItemGroup>
+      <Compile Include="$(GeneratedTestPropertiesFileName)" />
+    </ItemGroup>
+
+  </Target>
+</Project>
+
+

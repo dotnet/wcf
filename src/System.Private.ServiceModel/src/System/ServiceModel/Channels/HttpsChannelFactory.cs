@@ -186,22 +186,6 @@ namespace System.ServiceModel.Channels
                 base.OnClose(timeoutHelper.RemainingTime());
             }
 
-            public async Task<HttpRequestMessage> BaseGetHttpRequestMessageAsync(EndpointAddress to, Uri via, CancellationToken cancellationToken)
-            {
-                return await base.GetHttpRequestMessageAsync(to, via, cancellationToken);
-            }
-
-
-            public override bool WillGetWebRequestCompleteSynchronously()
-            {
-                if (!base.WillGetWebRequestCompleteSynchronously())
-                {
-                    return false;
-                }
-
-                return (_certificateProvider == null && !Factory.ManualAddressing);
-            }
-
             internal override void OnHttpRequestCompleted(HttpRequestMessage request)
             {
             }
