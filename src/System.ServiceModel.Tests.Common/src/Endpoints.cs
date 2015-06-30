@@ -35,7 +35,7 @@ public static partial class Endpoints
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
-        get { return BaseAddress.HttpsBasicBaseAddress + "/CustomerUserName/https-basic"; } // TODO: Uses IWcfCustomUserNameService interface which is not implemented in WcfService
+        get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpsBasicBaseAddress") + "/CustomerUserName/https-basic"; } // TODO: Uses IWcfCustomUserNameService interface which is not implemented in WcfService
     }
 
     public static string Https_DigestAuth_Address
@@ -70,12 +70,12 @@ public static partial class Endpoints
 
     public static string HttpUrlNotFound_Address
     {
-        get { return BaseAddress.HttpServerBaseAddress + "/UnknownUrl.htm"; } 
+        get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpServerBaseAddress") + "/UnknownUrl.htm"; } 
     }
 
     public static string HttpProtocolError_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/UnknownProtocolUrl.htm"; } 
+        get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpBaseAddress") + "/UnknownProtocolUrl.htm"; } 
     }
 
     // net.tcp Addresses
