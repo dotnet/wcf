@@ -36,7 +36,7 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        public string IResourcePUT(string typeName)
+        public object IResourceCall(string typeName, string verb)
         {
             Type type = null;
             if (!types.TryGetValue(typeName, out type))
@@ -45,7 +45,7 @@ namespace WcfTestBridgeCommon
             }
 
             var resource = Activator.CreateInstance(type);
-            return resource.GetType().GetMethod("PUT").Invoke(resource, null) as string;
+            return resource.GetType().GetMethod(verb).Invoke(resource, null);
         }
 
         private bool IResourceFilter(Type t, object o)

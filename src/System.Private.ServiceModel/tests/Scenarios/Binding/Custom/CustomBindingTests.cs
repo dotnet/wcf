@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using TestTypes;
 using Xunit;
 
-public class CustomBindingTests : IClassFixture<BridgeTestFixture>
+public static class CustomBindingTests
 {
     // Client and Server bindings setup exactly the same using default settings.
     [Fact]

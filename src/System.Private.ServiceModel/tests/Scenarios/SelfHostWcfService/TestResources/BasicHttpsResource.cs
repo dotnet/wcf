@@ -3,13 +3,13 @@ using System.ServiceModel.Channels;
 
 namespace WcfService.TestResources
 {
-    internal class NetHttpResource : HttpResource
+    internal class BasicHttpsResource : HttpsResource
     {
-        protected override string Address { get { return "NetHttp"; } }
+        protected override string Address { get { return "basicHttps"; } }
 
         protected override Binding GetBinding()
         {
-            return new NetHttpBinding();
+            return new BasicHttpsBinding();
         }
     }
 }

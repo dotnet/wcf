@@ -35,27 +35,27 @@ public static partial class Endpoints
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
-        get { return BaseAddress.HttpsBasicBaseAddress + "/CustomerUserName/https-basic"; }
+        get { return BaseAddress.HttpsBasicBaseAddress + "/CustomerUserName/https-basic"; } // TODO: Uses IWcfCustomUserNameService interface which is not implemented in WcfService
     }
 
     public static string Https_DigestAuth_Address
     {
-        get { return BaseAddress.HttpsDigestBaseAddress + "/https-digest"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpsDigestResource"); }
     }
 
     public static string Https_NtlmAuth_Address
     {
-        get { return BaseAddress.HttpsNtlmBaseAddress + "/https-ntlm"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpsNtlmResource"); }
     }
 
     public static string Https_WindowsAuth_Address
     {
-        get { return BaseAddress.HttpsWindowsBaseAddress + "/https-windows"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.HttpsWindowsResource"); }
     }
 
     public static string Https_DefaultBinding_Address
     {
-        get { return BaseAddress.HttpsBaseAddress + "/basicHttps"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.BasicHttpsResource"); }
     }
 
     public static string HttpsSoap11_Address
@@ -70,23 +70,23 @@ public static partial class Endpoints
 
     public static string HttpUrlNotFound_Address
     {
-        get { return BaseAddress.HttpServerBaseAddress + "/UnknownUrl.htm"; }
+        get { return BaseAddress.HttpServerBaseAddress + "/UnknownUrl.htm"; } 
     }
 
     public static string HttpProtocolError_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/UnknownProtocolUrl.htm"; }
+        get { return BaseAddress.HttpBaseAddress + "/UnknownProtocolUrl.htm"; } 
     }
 
     // net.tcp Addresses
     public static string Tcp_DefaultBinding_Address
     {
-        get { return BaseAddress.TcpBaseAddress + "/tcp-default"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.TcpDefaultResource"); }
     }
 
     public static string Tcp_NoSecurity_Address
     {
-        get { return BaseAddress.TcpBaseAddress + "/tcp-nosecurity"; }
+        get { return BridgeTestFixture.GetResourceAddress("WcfService.TestResources.TcpNoSecurityResource"); }
     }
 
     public static string Tcp_NoSecurity_Callback_Address

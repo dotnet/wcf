@@ -9,13 +9,17 @@ namespace Web
             // Web API configuration and services
 
             // Web API routes
-            config.MapHttpAttributeRoutes();
-
+            //config.MapHttpAttributeRoutes();
+            config.Routes.MapHttpRoute(
+                name: "Resource",
+                routeTemplate: "resource/{name}",
+                defaults: new { controller = "resource", name = RouteParameter.Optional }
+                );
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+                );
         }
     }
 }

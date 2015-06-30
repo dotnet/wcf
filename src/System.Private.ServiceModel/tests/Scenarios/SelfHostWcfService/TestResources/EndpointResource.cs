@@ -6,7 +6,7 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
 {
-    internal abstract class ResourceController<ServiceType, ContractType> : IResource where ServiceType : class, ContractType 
+    internal abstract class EndpointResource<ServiceType, ContractType> : IResource where ServiceType : class, ContractType 
     {
         private static Dictionary<string, ServiceHost> currentHosts = new Dictionary<string, ServiceHost>();
         private static object currentHostLock = new object();
@@ -17,7 +17,7 @@ namespace WcfService.TestResources
 
         protected abstract string Port { get; }
 
-        public string PUT()
+        public object PUT()
         {
             ServiceHost host;
             if (!currentHosts.TryGetValue(Address, out host))
@@ -41,6 +41,38 @@ namespace WcfService.TestResources
             return host.Description.Endpoints.Count != 1 ? null : host.Description.Endpoints[0].ListenUri.ToString();
         }
 
+        public object GET()
+        {
+            ServiceHost host;
+            if (currentHosts.TryGetValue(Address, out host))
+            {
+                return host.Description.Endpoints.Count != 1 ? null : host.Description.Endpoints[0].ListenUri.ToString();
+            }
+
+            return null;
+        }
+
         protected abstract Binding GetBinding();
+    }
+
+    internal abstract class HttpResource : EndpointResource<WcfService, IWcfService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Http; } }
+
+        protected override string Port { get { return BaseAddressResource.HttpPort; } }
+    }
+
+    internal abstract class HttpsResource : EndpointResource<WcfService, IWcfService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Https; } }
+
+        protected override string Port { get { return BaseAddressResource.HttpsPort; } }
+    }
+
+    internal abstract class TcpResource : EndpointResource<WcfService, IWcfService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Tcp; } }
+
+        protected override string Port { get { return BaseAddressResource.TcpPort; } }
     }
 }
