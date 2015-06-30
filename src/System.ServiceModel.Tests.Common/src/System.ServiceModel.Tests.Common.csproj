@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="CreateTestProperties;Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -22,6 +22,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+    <None Include="testproperties.props" />
+    <None Include="testproperties.targets" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj">
@@ -29,5 +31,7 @@
       <Name>System.Private.ServiceModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="testproperties.props" />
+  <Import Project="testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

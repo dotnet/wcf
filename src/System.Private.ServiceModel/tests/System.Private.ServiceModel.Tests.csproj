@@ -14,7 +14,7 @@
     <ProjectGuid>{BB3B114D-68D7-4E36-9EBE-127E694E6EC9}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="**\*.cs" Exclude="Scenarios\SelfHostWcfService\*" />
+    <Compile Include="**\*.cs" Exclude="Scenarios\**\*" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
