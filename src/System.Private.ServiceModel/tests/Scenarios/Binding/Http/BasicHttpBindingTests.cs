@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 using TestTypes;
 using Xunit;
 
-public class Binding_Http_BasicHttpBindingTests : IClassFixture<BridgeTestFixture>
+public static class Binding_Http_BasicHttpBindingTests 
 {
     [Fact]
     [OuterLoop]
-    public void DefaultSettings_Echo_RoundTrips_String()
+    public static void DefaultSettings_Echo_RoundTrips_String()
     {
         string variationDetails = "Client:: BasicHttpBinding/DefaultValues\nServer:: BasicHttpBinding/DefaultValues";
         string testString = "Hello";

@@ -6,19 +6,19 @@ using System.Text;
 
 namespace System.ServiceModel.Tests.Common
 {
-    public class BridgeTestFixture : IDisposable
+    public static class BridgeTestFixture 
     {
         private static Dictionary<string, string> _Resources = new Dictionary<string, string>();
         private static BridgeState _BridgeStatus = BridgeState.NotStarted;
+        private static Dictionary<string, string> _BaseAddresses = null;
 
         private static string BridgeBaseAddress
         {
-            // Would like to pull this address either from msbuild properties, env vars, or 
-            // configuration passed into xunit.
+            // TODO: Pull this address from msbuild props, env vars, or config passed into xunit.
             get { return "http://localhost:44283"; }
         }
 
-        public BridgeTestFixture()
+        static BridgeTestFixture()
         {
             if (_BridgeStatus == BridgeState.NotStarted)
             {
@@ -30,18 +30,39 @@ namespace System.ServiceModel.Tests.Common
             }
         }
 
-        public void Dispose()
-        {
-            // Placeholder for releasing the resource
-        }
-
         public static string GetResourceAddress(string resourceName)
         {
             string resourceAddress = null;
             if (_BridgeStatus == BridgeState.Started && !_Resources.TryGetValue(resourceName, out resourceAddress))
             {
-                resourceAddress = MakeResourceRequest(resourceName);
+                resourceAddress = MakeResourcePutRequest(resourceName);
                 _Resources.Add(resourceName, resourceAddress);
+            }
+
+            return resourceAddress;
+        }
+
+        public static string GetBaseAddress(string resourceName, string name)
+        {
+            string resourceAddress = null;
+            if (_BridgeStatus == BridgeState.Started)
+            {
+                if (_BaseAddresses == null)
+                {
+                    _BaseAddresses = new Dictionary<string, string>();
+                    string response = MakeResourceGetRequest(resourceName);
+
+                    var reader = new JsonTextReader(new StringReader(response));
+                    while (reader.Read())
+                    {
+                        if (reader.TokenType == JsonToken.String)
+                        {
+                            _BaseAddresses.Add(reader.Path, reader.Value as string);
+                        }
+                    }
+                }
+
+                _BaseAddresses.TryGetValue(name, out resourceAddress);
             }
 
             return resourceAddress;
@@ -71,7 +92,7 @@ namespace System.ServiceModel.Tests.Common
             }
         }
 
-        private static string MakeResourceRequest(string resourceName)
+        private static string MakeResourcePutRequest(string resourceName)
         {
             using (HttpClient httpClient = new HttpClient())
             {
@@ -102,6 +123,19 @@ namespace System.ServiceModel.Tests.Common
             }
             
             return null;
+        }
+
+        private static string MakeResourceGetRequest(string resourceName)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri(BridgeBaseAddress);
+                var response = httpClient.GetAsync("/resource/" + resourceName).Result;
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception("Unexpected status code: " + response.StatusCode);
+
+                return response.Content.ReadAsStringAsync().Result;
+            }
         }
 
         enum BridgeState

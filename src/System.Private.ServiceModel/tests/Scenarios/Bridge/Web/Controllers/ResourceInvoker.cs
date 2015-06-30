@@ -8,7 +8,7 @@ namespace Web.Controllers
 {
     public class ResourceInvoker
     {
-        public static object DynamicInvoke(resource resource)
+        public static object DynamicInvokePUT(resource resource)
         {
             if (String.IsNullOrEmpty(resource.name))
             {
@@ -28,7 +28,30 @@ namespace Web.Controllers
                     loaderType.FullName);
             loader.LoadAssemblies();
 
-            return loader.IResourcePUT(resource.name);
+            return loader.IResourceCall(resource.name, "PUT");
+        }
+
+        public static object DynamicInvokeGET(string name)
+        {
+            if (String.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            AppDomain appDomain;
+            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomain, out appDomain))
+            {
+                throw new ArgumentException("Resource not found");
+            }
+
+            Type loaderType = typeof(AssemblyLoader);
+            var loader =
+                (AssemblyLoader)appDomain.CreateInstanceFromAndUnwrap(
+                    loaderType.Assembly.Location,
+                    loaderType.FullName);
+            loader.LoadAssemblies();
+
+            return loader.IResourceCall(name, "GET");
         }
     }
 }

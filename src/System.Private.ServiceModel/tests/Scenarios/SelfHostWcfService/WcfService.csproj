@@ -56,6 +56,13 @@
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
+    <Compile Include="TestResources\BaseAddressResource.cs" />
+    <Compile Include="TestResources\BasicHttpsResource.cs" />
+    <Compile Include="TestResources\HttpsWindowsResource.cs" />
+    <Compile Include="TestResources\HttpsNtlmResource.cs" />
+    <Compile Include="TestResources\HttpsDigestResource.cs" />
+    <Compile Include="TestResources\TcpDefaultResource.cs" />
+    <Compile Include="TestResources\TcpNoSecurityResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityTextResource.cs" />
     <Compile Include="TestResources\HttpsSoap12Resource.cs" />
     <Compile Include="TestResources\HttpSoap12Resource.cs" />
@@ -64,7 +71,7 @@
     <Compile Include="TestResources\HttpBinaryResource.cs" />
     <Compile Include="TestResources\NetHttpResource.cs" />
     <Compile Include="TestResources\BasicHttpResource.cs" />
-    <Compile Include="TestResources\ResourceController.cs" />
+    <Compile Include="TestResources\EndpointResource.cs" />
     <Compile Include="TestHttpRequestMessageProperty.cs" />
     <Compile Include="WcfRestartService.cs" />
     <Compile Include="WcfService.cs" />
