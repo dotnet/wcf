@@ -17,7 +17,7 @@ namespace WcfService.TestResources
 
         protected abstract string Port { get; }
 
-        public object PUT()
+        public object Put()
         {
             ServiceHost host;
             if (!currentHosts.TryGetValue(Address, out host))
@@ -41,7 +41,7 @@ namespace WcfService.TestResources
             return host.Description.Endpoints.Count != 1 ? null : host.Description.Endpoints[0].ListenUri.ToString();
         }
 
-        public object GET()
+        public object Get()
         {
             ServiceHost host;
             if (currentHosts.TryGetValue(Address, out host))

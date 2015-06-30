@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.ServiceModel.Tests.Common;
-
 public static class BaseAddress
 {
     // base address never used for end-to-end communication
@@ -31,25 +28,25 @@ public static class BaseAddress
     public const string HttpsWindowsBaseAddress = "https://localhost.fiddler:44285/WindowsCommunicationFoundation";
 #else
 
-    public static string HttpServerBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpServerBaseAddress"); } } //"http://localhost:8081/";
+    public const string HttpServerBaseAddress = "http://localhost:8081/";
 
     // Base address for HTTP endpoints
-    public static string HttpBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpBaseAddress"); } } //= "http://localhost:8081/WindowsCommunicationFoundation";
+    public const string HttpBaseAddress = "http://localhost:8081/WindowsCommunicationFoundation";
 
     // Base address for HTTPS endpoints
-    public static string HttpsBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpsBaseAddress"); } } //= "https://localhost:44285/WindowsCommunicationFoundation";
+    public const string HttpsBaseAddress = "https://localhost:44285/WindowsCommunicationFoundation";
 
     // Base address for HTTPS endpoints with Basic Authentication 
-    public static string HttpsBasicBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpsBasicBaseAddress"); } } //= "https://localhost:44285/WindowsCommunicationFoundation";
+    public const string HttpsBasicBaseAddress = "https://localhost:44285/WindowsCommunicationFoundation";
 
     // Base address for HTTPS endpoints with Digest Authentication
-    public static string HttpsDigestBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpsDigestBaseAddress"); } } //= "https://localhost:44285/WindowsCommunicationFoundation";
+    public const string HttpsDigestBaseAddress = "https://localhost:44285/WindowsCommunicationFoundation";
 
     // Base address for HTTPS endpoints with NT Authentication
-    public static string HttpsNtlmBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpsNtlmBaseAddress"); } } //= "https://localhost:44285/WindowsCommunicationFoundation";
+    public const string HttpsNtlmBaseAddress = "https://localhost:44285/WindowsCommunicationFoundation";
 
     // Base address for HTTPS endpoints with Windows Authentication
-    public static string HttpsWindowsBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpsWindowsBaseAddress"); } } //= "https://localhost:44285/WindowsCommunicationFoundation";
+    public const string HttpsWindowsBaseAddress = "https://localhost:44285/WindowsCommunicationFoundation";
 #endif
 
     // Base address for Net.TCP endpoints
