@@ -8,7 +8,7 @@ namespace Web.Controllers
 {
     public class ResourceInvoker
     {
-        public static object DynamicInvokePUT(resource resource)
+        public static object DynamicInvokePut(resource resource)
         {
             if (String.IsNullOrEmpty(resource.name))
             {
@@ -31,7 +31,7 @@ namespace Web.Controllers
             return loader.IResourceCall(resource.name, "PUT");
         }
 
-        public static object DynamicInvokeGET(string name)
+        public static object DynamicInvokeGet(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
             {
