@@ -28,7 +28,7 @@ namespace Web.Controllers
                     loaderType.FullName);
             loader.LoadAssemblies();
 
-            return loader.IResourceCall(resource.name, "PUT");
+            return loader.IResourceCall(resource.name, "Put");
         }
 
         public static object DynamicInvokeGet(string name)
@@ -51,7 +51,7 @@ namespace Web.Controllers
                     loaderType.FullName);
             loader.LoadAssemblies();
 
-            return loader.IResourceCall(name, "GET");
+            return loader.IResourceCall(name, "Get");
         }
     }
 }
