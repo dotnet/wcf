@@ -28,7 +28,7 @@ namespace Web.Controllers
             {         
                 Debug.WriteLine("Received request to create resource \n" + json);
 
-                var result = ResourceInvoker.DynamicInvokePUT(resource);
+                var result = ResourceInvoker.DynamicInvokePut(resource);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -62,7 +62,7 @@ namespace Web.Controllers
             {
                 Debug.WriteLine("Received request to get resource " + name);
 
-                var result = ResourceInvoker.DynamicInvokeGET(name);
+                var result = ResourceInvoker.DynamicInvokeGet(name);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
