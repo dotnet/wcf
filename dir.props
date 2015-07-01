@@ -77,7 +77,11 @@
 
     <DnuRestoreCommand>"$(DnuToolPath)"</DnuRestoreCommand>
     <DnuRestoreCommand>$(DnuRestoreCommand) restore</DnuRestoreCommand>
-    <DnuRestoreCommand>$(DnuRestoreCommand) --parallel</DnuRestoreCommand>
+<!-- temporarily remove the parallel switch to allow package restore.
+     to restore, remove the X from DnuRestoreCommands below.
+-->
+    <DnuRestoreCommandX>$(DnuRestoreCommand) --parallel</DnuRestoreCommandX>
+
     <!-- Dnu doesn't like trailing slashes in the packages directory argument -->
     <DnuRestoreCommand>$(DnuRestoreCommand) --packages "$(PackagesDir.TrimEnd('/\'.ToCharArray()))" $(DnuRestoreSource)</DnuRestoreCommand>
     <DnuRestoreCommand Condition="'$(LockDependencies)' == 'true'">$(DnuRestoreCommand) --lock</DnuRestoreCommand>
