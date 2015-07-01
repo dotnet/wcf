@@ -1,10 +1,4 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="AfterBuild" DependsOnTargets="CopyTestToTestDirectory">
-    <CreateItem Include="$(OutDir)\*.*">
-      <Output TaskParameter="Include" ItemName="OutputFiles" />
-    </CreateItem>
-    <Copy
-      SourceFiles="@(OutputFiles)"
-      DestinationFolder="$(TestPath)%(TestTargetFramework.Folder)"/>
+  <Target Name="AfterBuild" DependsOnTargets="CopyTestToTestDirectory" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
   </Target>
 </Project>
