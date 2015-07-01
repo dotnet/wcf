@@ -83,11 +83,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConfigBackup.xml">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Bridge\WcfTestBridgeCommon\WcfTestBridgeCommon.csproj">
       <Project>{81305303-19df-4512-a8a7-f97760daa3de}</Project>
       <Name>WcfTestBridgeCommon</Name>

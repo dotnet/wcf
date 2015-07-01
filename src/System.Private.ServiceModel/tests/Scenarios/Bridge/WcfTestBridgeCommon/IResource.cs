@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WcfTestBridgeCommon
+﻿namespace WcfTestBridgeCommon
 {
     public interface IResource
     {

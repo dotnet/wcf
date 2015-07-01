@@ -2,7 +2,7 @@
   <Import Project="dir.props" />
   <Import Project="BuildValues.props" />
  <PropertyGroup>
-    <ExcludeProjects>System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\WcfService.csproj</ExcludeProjects>
+    <ExcludeProjects>System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\WcfService.csproj;System.Private.ServiceModel\tests\Scenarios\Bridge\Bridge\Bridge.csproj;System.Private.ServiceModel\tests\Scenarios\Bridge\WcfTestBridgeCommon\WcfTestBridgeCommon.csproj;System.Private.ServiceModel\tests\Scenarios\Bridge\Web\Web.csproj;System.Private.ServiceModel\tests\Scenarios\Bridge\tests\Bridge.Tests\Bridge.Tests.csproj</ExcludeProjects>
   </PropertyGroup>
   <ItemGroup>
     <Project Include="*\src\*.csproj" Exclude="$(ExcludeProjects)" />
