@@ -6,7 +6,7 @@ using System.Text;
 
 namespace System.ServiceModel.Tests.Common
 {
-    public static class BridgeTestFixture 
+    public static class BridgeClient 
     {
         private static Dictionary<string, string> _Resources = new Dictionary<string, string>();
         private static BridgeState _BridgeStatus = BridgeState.NotStarted;
@@ -18,7 +18,7 @@ namespace System.ServiceModel.Tests.Common
             get { return "http://localhost:44283"; }
         }
 
-        static BridgeTestFixture()
+        static BridgeClient()
         {
             if (_BridgeStatus == BridgeState.NotStarted)
             {
