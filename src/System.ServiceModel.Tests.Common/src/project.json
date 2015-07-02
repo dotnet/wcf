@@ -47,7 +47,8 @@
     "xunit": "2.0.0-beta5-build2785",
     "xunit.abstractions.netcore": "1.0.0-prerelease",
     "xunit.assert": "2.0.0-beta5-build2785",
-    "xunit.core.netcore": "1.0.1-prerelease"
+    "xunit.core.netcore": "1.0.1-prerelease",
+    "Newtonsoft.Json": "6.0.6"
   },
   "frameworks": {
     "dnxcore50": {}

@@ -4,10 +4,11 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Tests.Common;
 using System.Text;
 using Xunit;
 
-public static class BinaryEncodingTests
+public static class BinaryEncodingTests 
 {
     // Client and Server bindings setup exactly the same using Binary Message encoder
     // and exchanging a basic message

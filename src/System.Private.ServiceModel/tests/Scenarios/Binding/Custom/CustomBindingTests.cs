@@ -4,6 +4,7 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Tests.Common;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;

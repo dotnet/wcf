@@ -4,10 +4,11 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Tests.Common;
 using System.Text;
 using Xunit;
 
-public static class TextEncodingTests
+public static class TextEncodingTests 
 {
     // Simple echo of a string. Same binding on both client and server. CustomBinding with TextMessageEncoding and no WindowsStreamSecurityBindingElement
     [Fact]
