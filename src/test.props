@@ -11,5 +11,5 @@
   </PropertyGroup>
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>
-  </PropertyGroup>  
+  </PropertyGroup>
 </Project>
