@@ -41,7 +41,7 @@ public static class DuplexClientBaseTests
                 errorBuilder.AppendLine(String.Format("The sent GUID does not match the returned GUID. Sent: {0} Received: {1}", guid, returnedGuid));
             }
 
-            duplexService.Close();
+            ((ICommunicationObject)duplexService).Close();
         }
         catch (Exception ex)
         {
