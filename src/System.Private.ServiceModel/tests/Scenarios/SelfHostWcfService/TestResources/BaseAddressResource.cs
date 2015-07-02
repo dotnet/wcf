@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
