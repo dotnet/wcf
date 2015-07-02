@@ -1,5 +1,4 @@
-﻿using System.ServiceModel;
-using System.ServiceModel.Channels;
+﻿using System.ServiceModel.Channels;
 using System.Text;
 
 namespace WcfService.TestResources
