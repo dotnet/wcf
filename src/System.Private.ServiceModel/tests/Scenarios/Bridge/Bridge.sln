@@ -14,11 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfTestBridgeCommon", "WcfT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{CBFF5891-FAA5-4E70-B1BF-07A6B7B6461D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{27DFC17B-4F0B-4A5C-B110-48B6651A7654}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "..\SelfHostWcfService\WcfService.csproj", "{CBE9909F-4CF7-4AD0-9307-BD0DFBB1105E}"
 EndProject
 Global
