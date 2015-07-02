@@ -16,5 +16,6 @@
           Returns="$(DocumentationFile)"/>
 
   <Import Project="$(ToolsDir)Build.Common.targets" Condition="Exists('$(ToolsDir)Build.Common.targets')" />
+  <Import Project="..\wcf.targets" Condition="Exists('..\wcf.targets')"/>
 
 </Project>

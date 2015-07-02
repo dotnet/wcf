@@ -1,0 +1,14 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    Overrides for WCF
+  -->
+
+  <PropertyGroup Condition="'$(BridgeResourceFolder)' == ''">
+     <BridgeResourceFolder>$(MSBuildThisFileDirectory)bin\wcf\BridgeResources\</BridgeResourceFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(WcfToolsOutputPath)' == ''">
+     <WcfToolsOutputPath>$(MSBuildThisFileDirectory)bin\wcf\tools\</WcfToolsOutputPath>
+  </PropertyGroup>
+
+</Project>
