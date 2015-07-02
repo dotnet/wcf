@@ -15,6 +15,14 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Newtonsoft.Json/6.0.6": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll": {}
+        }
+      },
       "System.Collections/4.0.10-beta-23024": {
       "Newtonsoft.Json/6.0.6": {
         "compile": [
