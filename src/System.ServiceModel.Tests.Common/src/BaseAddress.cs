@@ -51,7 +51,7 @@ public static class BaseAddress
 
     // Base address for Net.TCP endpoints
     public const string TcpDuplexAddress = "net.tcp://localhost:810/WindowsCommunicationFoundation";
-    public static string TcpBaseAddress { get { return BridgeTestFixture.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "TcpBaseAddress"); } } //= "net.tcp://localhost:809/WindowsCommunicationFoundation";
+    public static string TcpBaseAddress = "net.tcp://localhost:809/WindowsCommunicationFoundation";
 }
 
 
