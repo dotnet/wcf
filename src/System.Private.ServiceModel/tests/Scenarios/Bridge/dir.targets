@@ -62,7 +62,7 @@
   <Target Name="_NugetPackageRestore" DependsOnTargets="_DownloadAndRunNugetPackageRestore" />
 
   <Target Name="_DownloadAndRunNugetPackageRestore">
-    <Message Importance="High" Text="Restoring nuget packages... $(SolutionDir)" />
+    <Message Importance="High" Text="Restoring nuget packages..." />
 
     <!-- Download latest nuget.exe -->
     <DownloadFile FileName="$(NuGetToolPath)"
