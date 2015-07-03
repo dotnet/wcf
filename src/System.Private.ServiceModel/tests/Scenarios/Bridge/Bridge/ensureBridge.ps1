@@ -25,7 +25,7 @@ if(!$result)
 {
 	Write-Host Launching bridge.exe.
 	$bridgePath = Join-Path $PSScriptRoot bridge.exe
-	Start-Process $bridgePath $portNumber
+	Start-Process $bridgePath $portNumber -WorkingDirectory $PSScriptRoot
 	$result = checkBridge;
 }
 
