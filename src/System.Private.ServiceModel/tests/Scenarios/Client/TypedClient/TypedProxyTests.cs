@@ -29,7 +29,7 @@ public static class TypedProxyTests
         CustomBinding customBinding = new CustomBinding();
         customBinding.Elements.Add(new TextMessageEncodingBindingElement());
         customBinding.Elements.Add(new HttpTransportBindingElement());
-        ServiceContract_TypedProxy_AsyncBeginEnd_Call(customBinding, BaseAddress.HttpBaseAddress, "ServiceContract_TypedProxy_AsyncBeginEnd_Call");
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call");
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public static class TypedProxyTests
         customBinding.Elements.Add(new TextMessageEncodingBindingElement());
         customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(customBinding, BaseAddress.HttpBaseAddress, "ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback");
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback");
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public static class TypedProxyTests
         customBinding.Elements.Add(new TextMessageEncodingBindingElement());
         customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        ServiceContract_TypedProxy_AsyncTask_Call(customBinding, BaseAddress.HttpBaseAddress, "ServiceContract_TypedProxy_AsyncTask_Call");
+        ServiceContract_TypedProxy_AsyncTask_Call(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncTask_Call");
     }
 
     [Fact]
@@ -154,7 +154,7 @@ public static class TypedProxyTests
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
             // Note the service interface used.  It was manually generated with svcutil.
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             IWcfServiceGenerated serviceProxy = factory.CreateChannel();
 
             string result = serviceProxy.Echo("Hello");
@@ -200,7 +200,7 @@ public static class TypedProxyTests
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             IWcfServiceGenerated serviceProxy = factory.CreateChannel();
             string result = String.Empty;
 
@@ -242,7 +242,7 @@ public static class TypedProxyTests
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannel()
     {
-        string address = BaseAddress.HttpBaseAddress;
+        string address = Endpoints.DefaultCustomHttp_Address;
 
         StringBuilder errorBuilder = new StringBuilder();
 
@@ -301,7 +301,7 @@ public static class TypedProxyTests
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannelTimeout()
     {
-        string address = BaseAddress.HttpBaseAddress;
+        string address = Endpoints.DefaultCustomHttp_Address;
         StringBuilder errorBuilder = new StringBuilder();
 
         try
@@ -360,7 +360,7 @@ public static class TypedProxyTests
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannelAsync()
     {
-        string address = BaseAddress.HttpBaseAddress;
+        string address = Endpoints.DefaultCustomHttp_Address;
         StringBuilder errorBuilder = new StringBuilder();
 
         try

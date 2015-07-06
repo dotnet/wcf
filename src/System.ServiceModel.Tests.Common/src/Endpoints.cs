@@ -7,6 +7,11 @@ using System.ServiceModel.Tests.Common;
 public static partial class Endpoints
 {
     // HTTP Addresses
+    public static string DefaultCustomHttp_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DefaultCustomHttpResource"); }
+    }
+
     public static string HttpBaseAddress_Basic
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicHttpResource"); }
@@ -35,7 +40,7 @@ public static partial class Endpoints
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
-        get { return BridgeClient.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpsBasicBaseAddress") + "/CustomerUserName/https-basic"; } // TODO: Uses IWcfCustomUserNameService interface which is not implemented in WcfService
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicAuthResource"); } 
     }
 
     public static string Https_DigestAuth_Address

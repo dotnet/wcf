@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
@@ -32,6 +33,7 @@ namespace WcfService.TestResources
                             typeof(ContractType),
                             GetBinding(),
                             new Uri(string.Format("{0}://localhost:{1}/{2}/{3}", Protocol, Port, AppDomain.CurrentDomain.FriendlyName, Address)));
+                        ModifyBehaviors(host.Description);
                         host.Open();
                         currentHosts.Add(Address, host);
                     }
@@ -53,6 +55,18 @@ namespace WcfService.TestResources
         }
 
         protected abstract Binding GetBinding();
+
+        private void ModifyBehaviors(ServiceDescription desc)
+        {
+            ServiceDebugBehavior debug = desc.Behaviors.Find<ServiceDebugBehavior>();
+            if (debug == null)
+            {
+                debug = new ServiceDebugBehavior();
+                desc.Behaviors.Add(debug);
+            }
+
+            debug.IncludeExceptionDetailInFaults = true;
+        }
     }
 
     internal abstract class HttpResource : EndpointResource<WcfService, IWcfService>
