@@ -11,6 +11,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <WcfSourceProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfSourceProj>
-    <WcfTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Tests.Common\src\System.ServiceModel.Tests.Common.csproj'))</WcfTestCommonProj>
+    <WcfTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\src\System.ServiceModel.Tests.Common.csproj'))</WcfTestCommonProj>
   </PropertyGroup>
 </Project>
