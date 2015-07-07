@@ -22,11 +22,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj">
+    <ProjectReference Include='$(WcfSourceProj)'>
       <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
       <Name>System.Private.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Tests.Common\src\System.ServiceModel.Tests.Common.csproj">
+    <ProjectReference Include='$(WcfTestCommonProj)'>
       <Project>{e896294a-ab4a-4af5-a01c-a19e3972eff9}</Project>
       <Name>System.ServiceModel.Tests.Common</Name>
     </ProjectReference>
