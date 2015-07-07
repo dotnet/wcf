@@ -75,12 +75,12 @@ public static partial class Endpoints
 
     public static string HttpUrlNotFound_Address
     {
-        get { return BridgeClient.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpServerBaseAddress") + "/UnknownUrl.htm"; } 
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.EndpointNotFoundResource") + "/UnknownUrl.htm"; } 
     }
 
     public static string HttpProtocolError_Address
     {
-        get { return BridgeClient.GetBaseAddress("WcfService.TestResources.BaseAddressResource", "HttpBaseAddress") + "/UnknownProtocolUrl.htm"; } 
+        get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; } 
     }
 
     // net.tcp Addresses

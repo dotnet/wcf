@@ -22,7 +22,7 @@ public static class DataContractTests
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
             // Note the service interface used.  It was manually generated with svcutil.
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             IWcfService serviceProxy = factory.CreateChannel();
 
             CompositeType request = new CompositeType() { StringValue = "myString", BoolValue = true };
