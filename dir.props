@@ -43,11 +43,16 @@
     <ToolsDir Condition="'$(ToolsDir)'==''">$(PackagesDir)Microsoft.DotNet.BuildTools.$(BuildToolsVersion)/lib/</ToolsDir>
   </PropertyGroup>
 
+  <!-- list of nuget package sources passed to nuget.exe -->
+  <ItemGroup>
+    <NuGetSourceList Include="https://www.myget.org/F/dotnet-buildtools" />
+  </ItemGroup>
+
   <!-- Common nuget properties -->
   <PropertyGroup>
     <NuGetToolPath Condition="'$(NuGetToolPath)'==''">$(PackagesDir)NuGet.exe</NuGetToolPath>
-    <NuGetConfigFile Condition="'$(NuGetConfigFile)'==''">$(SourceDir)NuGet.Config</NuGetConfigFile>
-    <NuGetConfigCommandLine>-ConfigFile "$(NuGetConfigFile)"</NuGetConfigCommandLine>
+    <NuGetPackageSource>@(NuGetSourceList -> '-source %(Identity)', ' ')</NuGetPackageSource>
+    <NuGetConfigCommandLine>$(NuGetPackageSource)</NuGetConfigCommandLine>
 
     <NugetRestoreCommand>"$(NuGetToolPath)"</NugetRestoreCommand>
     <NugetRestoreCommand>$(NugetRestoreCommand) install</NugetRestoreCommand>
@@ -77,12 +82,7 @@
 
     <DnuRestoreCommand>"$(DnuToolPath)"</DnuRestoreCommand>
     <DnuRestoreCommand>$(DnuRestoreCommand) restore</DnuRestoreCommand>
-<!-- temporarily remove the parallel switch to allow package restore.
-     to restore, remove the X from DnuRestoreCommands below.
--->
-    <DnuRestoreCommandX>$(DnuRestoreCommand) --parallel</DnuRestoreCommandX>
-
-    <!-- Dnu doesn't like trailing slashes in the packages directory argument -->
+    <DnuRestoreCommand Condition="'$(ParallelRestore)'=='true'">$(DnuRestoreCommand) --parallel</DnuRestoreCommand>
     <DnuRestoreCommand>$(DnuRestoreCommand) --packages "$(PackagesDir.TrimEnd('/\'.ToCharArray()))" $(DnuRestoreSource)</DnuRestoreCommand>
     <DnuRestoreCommand Condition="'$(LockDependencies)' == 'true'">$(DnuRestoreCommand) --lock</DnuRestoreCommand>
   </PropertyGroup>
