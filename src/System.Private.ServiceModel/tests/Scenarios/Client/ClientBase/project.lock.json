@@ -10,7 +10,7 @@
         },
         "compile": {
           "ref/dotnet/Microsoft.Win32.Primitives.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
@@ -24,21 +24,12 @@
         }
       },
       "System.Collections/4.0.10-beta-23024": {
-      "Newtonsoft.Json/6.0.6": {
-        "compile": [
-          "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll"
-        ],
-        "runtime": [
-          "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll"
-        ]
-      },
-      "System.Collections/4.0.10-beta-22819": {
         "dependencies": {
           "System.Runtime": "4.0.20-beta-23024"
         },
         "compile": {
           "ref/dotnet/System.Collections.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Collections.dll": {}
         }
@@ -57,7 +48,7 @@
         },
         "compile": {
           "ref/dotnet/System.Collections.Concurrent.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.Collections.Concurrent.dll": {}
         }
@@ -73,7 +64,7 @@
         },
         "compile": {
           "ref/dotnet/System.Collections.NonGeneric.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.Collections.NonGeneric.dll": {}
         }
@@ -90,7 +81,7 @@
         },
         "compile": {
           "ref/dotnet/System.Collections.Specialized.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.Collections.Specialized.dll": {}
         }
@@ -101,7 +92,7 @@
         },
         "compile": {
           "ref/dotnet/System.ComponentModel.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.ComponentModel.dll": {}
         }
@@ -115,7 +106,7 @@
         },
         "compile": {
           "ref/dotnet/System.ComponentModel.EventBasedAsync.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.ComponentModel.EventBasedAsync.dll": {}
         }
@@ -126,7 +117,7 @@
         },
         "compile": {
           "ref/dotnet/System.Diagnostics.Contracts.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Contracts.dll": {}
         }
@@ -137,7 +128,7 @@
         },
         "compile": {
           "ref/dotnet/System.Diagnostics.Debug.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Debug.dll": {}
         }
@@ -148,7 +139,7 @@
         },
         "compile": {
           "ref/dotnet/System.Diagnostics.Tools.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Tools.dll": {}
         }
@@ -159,7 +150,7 @@
         },
         "compile": {
           "ref/dotnet/System.Diagnostics.Tracing.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Tracing.dll": {}
         }
@@ -170,7 +161,7 @@
         },
         "compile": {
           "ref/dotnet/System.Globalization.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Globalization.dll": {}
         }
@@ -182,7 +173,7 @@
         },
         "compile": {
           "ref/dotnet/System.Globalization.Calendars.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Globalization.Calendars.dll": {}
         }
@@ -197,7 +188,7 @@
         },
         "compile": {
           "ref/dotnet/System.Globalization.Extensions.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.Globalization.Extensions.dll": {}
         }
@@ -210,7 +201,7 @@
         },
         "compile": {
           "ref/dotnet/System.IO.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.IO.dll": {}
         }
@@ -229,7 +220,7 @@
         },
         "compile": {
           "ref/dotnet/System.IO.Compression.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.IO.Compression.dll": {}
         }
@@ -252,7 +243,7 @@
         },
         "compile": {
           "ref/dotnet/System.IO.FileSystem.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.IO.FileSystem.dll": {}
         }
@@ -263,7 +254,7 @@
         },
         "compile": {
           "ref/dotnet/System.IO.FileSystem.Primitives.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.IO.FileSystem.Primitives.dll": {}
         }
@@ -278,7 +269,7 @@
         },
         "compile": {
           "ref/dotnet/System.Linq.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.Linq.dll": {}
         }
@@ -303,7 +294,7 @@
         },
         "compile": {
           "ref/dotnet/System.Linq.Expressions.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Linq.Expressions.dll": {}
         }
@@ -320,7 +311,7 @@
         },
         "compile": {
           "ref/dotnet/System.Linq.Queryable.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.Linq.Queryable.dll": {}
         }
@@ -346,7 +337,7 @@
         },
         "compile": {
           "ref/dotnet/System.Net.Http.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Net.Http.dll": {}
         }
@@ -357,7 +348,7 @@
         },
         "compile": {
           "ref/dotnet/System.Net.NameResolution.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Net.NameResolution.dll": {}
         }
@@ -368,7 +359,7 @@
         },
         "compile": {
           "ref/dotnet/System.Net.Primitives.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Net.Primitives.dll": {}
         }
@@ -379,7 +370,7 @@
         },
         "compile": {
           "ref/dotnet/System.Net.Security.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Net.Security.dll": {}
         }
@@ -390,7 +381,7 @@
         },
         "compile": {
           "ref/dotnet/System.Net.Sockets.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Net.Sockets.dll": {}
         }
@@ -404,7 +395,7 @@
         },
         "compile": {
           "ref/dotnet/System.Net.WebHeaderCollection.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.Net.WebHeaderCollection.dll": {}
         }
@@ -419,7 +410,7 @@
         },
         "compile": {
           "ref/dotnet/System.ObjectModel.dll": {}
-      },
+        },
         "runtime": {
           "lib/dotnet/System.ObjectModel.dll": {}
         }
@@ -493,7 +484,7 @@
         },
         "compile": {
           "ref/dotnet/System.Reflection.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Reflection.dll": {}
         }
@@ -511,7 +502,7 @@
         },
         "compile": {
           "ref/dotnet/System.Reflection.DispatchProxy.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Reflection.DispatchProxy.dll": {}
         }
@@ -526,7 +517,7 @@
         },
         "compile": {
           "ref/dotnet/System.Reflection.Emit.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Reflection.Emit.dll": {}
         }
@@ -539,7 +530,7 @@
         },
         "compile": {
           "ref/dotnet/System.Reflection.Emit.ILGeneration.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Reflection.Emit.ILGeneration.dll": {}
         }
@@ -553,7 +544,7 @@
         },
         "compile": {
           "ref/dotnet/System.Reflection.Emit.Lightweight.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Reflection.Emit.Lightweight.dll": {}
         }
@@ -565,7 +556,7 @@
         },
         "compile": {
           "ref/dotnet/System.Reflection.Extensions.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Reflection.Extensions.dll": {}
         }
@@ -612,7 +603,7 @@
         },
         "compile": {
           "ref/dotnet/System.Runtime.dll": {}
-      },
+        },
         "runtime": {
           "lib/DNXCore50/System.Runtime.dll": {}
         }
