@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.ServiceModel;
 using System.Text;
 using Xunit;
@@ -12,41 +14,22 @@ public static class ExpectedExceptionTests
     [OuterLoop]
     public static void NotExistentHost_Throws_EndpointNotFoundException()
     {
-        string nonExistHost = "http://nonexisthost/WcfService/WindowsCommunicationFoundation";
-        //On .NET Native retail, exception message is stripped to include only parameter
-        string expectExceptionMsg = nonExistHost;
+        string nonExistentHost = "http://nonexisthost/WcfService/WindowsCommunicationFoundation";
 
-        try
+        BasicHttpBinding binding = new BasicHttpBinding();
+        binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
+
+        EndpointNotFoundException exception = Assert.Throws<EndpointNotFoundException>(() =>
         {
-            //This test can also hang for other test infrastructure related reasons, adding clock based timeout in addition to the innner SendTimeout.
-            DateTime start = DateTime.Now;
-            while (DateTime.Now.Subtract(start).Seconds < 15)
+            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(nonExistentHost)))
             {
-                BasicHttpBinding binding = new BasicHttpBinding();
-                //Setting a timeout as this test takes 500 seconds to finish when it fails.
-                binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
-                using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(nonExistHost)))
-                {
-                    IWcfService serviceProxy = factory.CreateChannel();
-                    string response = serviceProxy.Echo("Hello");
-                }
+                IWcfService serviceProxy = factory.CreateChannel();
+                string response = serviceProxy.Echo("Hello");
             }
-        }
-        catch (Exception e)
-        {
-            if (e.GetType() != typeof(EndpointNotFoundException))
-            {
-                Assert.True(false, string.Format("Expected exception: {0}, actual: {1}", "EndpointNotFoundException", e.GetType()));
-            }
+        });
 
-            if (!e.Message.Contains(expectExceptionMsg))
-            {
-                Assert.True(false, string.Format("Expected exception message: {0}, actual: {1}", expectExceptionMsg, e.Message));
-            }
-            return;
-        }
-
-        Assert.True(false, "Expected EndpointNotFoundException, but no exception thrown.");
+        // On .Net Native retail, exception message is stripped to include only parameter
+        Assert.Contains(nonExistentHost, exception.Message, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -157,28 +140,28 @@ public static class ExpectedExceptionTests
     [OuterLoop]
     public static void TimeoutTest_SendTimeout5Seconds()
     {
-        bool exceptionThrown = false;
+        BasicHttpBinding binding = new BasicHttpBinding();
+        binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
+        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+
+        Stopwatch watch = new Stopwatch();
         try
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-            IWcfService proxy = factory.CreateChannel();
-            proxy.EchoWithTimeout("Hello");
+            var exception = Assert.Throws<TimeoutException>(() =>
+            {
+                IWcfService proxy = factory.CreateChannel();
+                watch.Start();
+                proxy.EchoWithTimeout("Hello");
+            });
         }
-        catch (TimeoutException)
+        finally
         {
-            exceptionThrown = true;
-        }
-        catch (Exception ex)
-        {
-            Assert.True(false, String.Format("Unexpected exception caught: {0}", ex.ToString()));
+            watch.Stop();
         }
 
-        if (!exceptionThrown)
-        {
-            Assert.True(false, "Expected TimeoutException was not thrown nor was any other exception thrown.");
-        }
+        // want to assert that this completed in > 5 s as an upper bound since the SendTimeout is 5 sec
+        // (usual case is around 5001-5005 ms) 
+        Assert.InRange<long>(watch.ElapsedMilliseconds, 5000, 6000);
     }
 
     // SendTimeout is set to 0, this should trigger a TimeoutException before even attempting to call the service.
@@ -186,28 +169,28 @@ public static class ExpectedExceptionTests
     [OuterLoop]
     public static void TimeoutTest_SendTimeout0Seconds()
     {
-        bool exceptionThrown = false;
+        BasicHttpBinding binding = new BasicHttpBinding();
+        binding.SendTimeout = TimeSpan.FromMilliseconds(0);
+        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+
+        Stopwatch watch = new Stopwatch();
         try
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            binding.SendTimeout = TimeSpan.FromMilliseconds(0);
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-            IWcfService proxy = factory.CreateChannel();
-            proxy.EchoWithTimeout("Hello");
+            var exception = Assert.Throws<TimeoutException>(() =>
+            {
+                IWcfService proxy = factory.CreateChannel();
+                watch.Start();
+                proxy.EchoWithTimeout("Hello");
+            });
         }
-        catch (TimeoutException)
+        finally
         {
-            exceptionThrown = true;
-        }
-        catch (Exception ex)
-        {
-            Assert.True(false, String.Format("Unexpected exception caught: {0}", ex.ToString()));
+            watch.Stop(); 
         }
 
-        if (!exceptionThrown)
-        {
-            Assert.True(false, "Expected TimeoutException was not thrown nor was any other exception thrown.");
-        }
+        // want to assert that this completed in < 0.5 s as an upper bound since the SendTimeout is 0 sec
+        // (usual case is around 1 - 3 ms) 
+        Assert.InRange<long>(watch.ElapsedMilliseconds, 0, 500);
     }
 
     [Fact]
@@ -297,54 +280,42 @@ public static class ExpectedExceptionTests
     public static void UnknownUrl_Throws_EndpointNotFoundException()
     {
         string notFoundUrl = Endpoints.HttpUrlNotFound_Address;
-        // On .Net Native retail, exception message is stripped to include only parameter
-        string expectExceptionMsg = new Uri(notFoundUrl).ToString();
 
-        try
+        BasicHttpBinding binding = new BasicHttpBinding();
+        binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
+
+        EndpointNotFoundException exception = Assert.Throws<EndpointNotFoundException>(() =>
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
             using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(notFoundUrl)))
             {
                 IWcfService serviceProxy = factory.CreateChannel();
                 string response = serviceProxy.Echo("Hello");
             }
-        }
-        catch (Exception e)
-        {
-            Assert.True(e.GetType() == typeof(EndpointNotFoundException), string.Format("Expected exception: {0}, actual: {1}", "EndpointNotFoundException", e.GetType()));
-            Assert.True(e.Message.Contains(expectExceptionMsg), string.Format("Expected exception message should contain: {0}, actual: {1}", expectExceptionMsg, e.Message));
-            return;
-        }
+        });
 
-        Assert.True(false, "Expected EndpointNotFoundException, but no exception thrown.");
+        // On .Net Native retail, exception message is stripped to include only parameter
+        Assert.Contains(notFoundUrl, exception.Message, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
     [OuterLoop]
     public static void UnknownUrl_Throws_ProtocolException()
-    {
+    { 
         string protocolExceptionUri = Endpoints.HttpProtocolError_Address;
-        // On .Net Native retail, exception message is stripped to include only parameter
-        string expectExceptionMsg = new Uri(protocolExceptionUri).ToString();
 
-        try
+        BasicHttpBinding binding = new BasicHttpBinding();
+        binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
+
+        using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(protocolExceptionUri)))
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(protocolExceptionUri)))
+            IWcfService serviceProxy = factory.CreateChannel();
+            ProtocolException exception = Assert.Throws<ProtocolException>(() =>
             {
-                IWcfService serviceProxy = factory.CreateChannel();
                 string response = serviceProxy.Echo("Hello");
-            }
-        }
-        catch (Exception e)
-        {
-            Assert.True(e.GetType() == typeof(ProtocolException), string.Format("Expected exception: {0}, actual: {1}", "ProtocolException", e.GetType()));
-            Assert.True(e.Message.Contains(expectExceptionMsg), string.Format("Expected exception message should contain: {0}, actual: {1}", expectExceptionMsg, e.Message));
-            return;
-        }
+            });
 
-        Assert.True(false, "Expected ProtocolException, but no exception thrown.");
+            // On .Net Native retail, exception message is stripped to include only parameter
+            Assert.Contains(protocolExceptionUri, exception.Message);
+        }
     }
 }
