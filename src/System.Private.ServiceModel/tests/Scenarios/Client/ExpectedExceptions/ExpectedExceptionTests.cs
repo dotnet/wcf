@@ -138,7 +138,7 @@ public static class ExpectedExceptionTests
     // The client should throw a TimeoutException
     [Fact]
     [OuterLoop]
-    public static void TimeoutTest_SendTimeout5Seconds()
+    public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
     {
         BasicHttpBinding binding = new BasicHttpBinding();
         binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
@@ -161,13 +161,13 @@ public static class ExpectedExceptionTests
 
         // want to assert that this completed in > 5 s as an upper bound since the SendTimeout is 5 sec
         // (usual case is around 5001-5005 ms) 
-        Assert.InRange<long>(watch.ElapsedMilliseconds, 5000, 6000);
+        Assert.InRange<long>(watch.ElapsedMilliseconds, 5000, 10000);
     }
 
     // SendTimeout is set to 0, this should trigger a TimeoutException before even attempting to call the service.
     [Fact]
     [OuterLoop]
-    public static void TimeoutTest_SendTimeout0Seconds()
+    public static void SendTimeout_Zero_Throws_TimeoutException_Immediately()
     {
         BasicHttpBinding binding = new BasicHttpBinding();
         binding.SendTimeout = TimeSpan.FromMilliseconds(0);
@@ -188,9 +188,9 @@ public static class ExpectedExceptionTests
             watch.Stop(); 
         }
 
-        // want to assert that this completed in < 0.5 s as an upper bound since the SendTimeout is 0 sec
+        // want to assert that this completed in < 2 s as an upper bound since the SendTimeout is 0 sec
         // (usual case is around 1 - 3 ms) 
-        Assert.InRange<long>(watch.ElapsedMilliseconds, 0, 500);
+        Assert.InRange<long>(watch.ElapsedMilliseconds, 0, 2000);
     }
 
     [Fact]
