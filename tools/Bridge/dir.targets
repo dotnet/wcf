@@ -69,7 +69,7 @@
                   Address="https://www.nuget.org/nuget.exe" />
 
     <PropertyGroup>
-      <NugetRestoreCommand>"$(NuGetToolPath)" restore</NugetRestoreCommand>
+      <NugetRestoreCommand>"$(NuGetToolPath)" restore -PackagesDirectory $(PackageOutputDir)</NugetRestoreCommand>
     </PropertyGroup>
     
     <Exec Command="$(NugetRestoreCommand)" StandardOutputImportance="Low" WorkingDirectory="$(SolutionDir)" />
