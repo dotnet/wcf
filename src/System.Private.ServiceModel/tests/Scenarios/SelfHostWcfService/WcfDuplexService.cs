@@ -28,4 +28,14 @@ namespace WcfService
         }
 
     }
+
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    internal class DuplexChannelCallbackReturnService : IWcfDuplexTaskReturnService
+    {
+        public Task<Guid> Ping(Guid guid)
+        {
+            IWcfDuplexTaskReturnCallback callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexTaskReturnCallback>();
+            return callback.ServicePingCallback(guid);
+        }
+    }
 }
