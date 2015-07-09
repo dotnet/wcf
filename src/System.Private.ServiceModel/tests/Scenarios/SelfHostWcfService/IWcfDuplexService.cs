@@ -3,6 +3,7 @@
 
 using System;
 using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace WcfService
 {
@@ -30,5 +31,18 @@ namespace WcfService
     {
         [OperationContract(IsOneWay = true)]
         void OnPingCallback(Guid guid);
+    }
+
+    [ServiceContract(CallbackContract = typeof(IWcfDuplexTaskReturnCallback))]
+    public interface IWcfDuplexTaskReturnService
+    {
+        [OperationContract]
+        Task<Guid> Ping(Guid guid);
+    }
+
+    public interface IWcfDuplexTaskReturnCallback
+    {
+        [OperationContract]
+        Task<Guid> ServicePingCallback(Guid guid);
     }
 }

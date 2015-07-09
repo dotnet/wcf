@@ -239,3 +239,16 @@ public interface IWcfDuplexServiceCallback
     [OperationContract]
     void OnPingCallback(Guid guid);
 }
+
+[ServiceContract(CallbackContract = typeof(IWcfDuplexTaskReturnCallback))]
+public interface IWcfDuplexTaskReturnService
+{
+    [OperationContract]
+    Task<Guid> Ping(Guid guid);
+}
+
+public interface IWcfDuplexTaskReturnCallback
+{
+    [OperationContract]
+    Task<Guid> ServicePingCallback(Guid guid);
+}
