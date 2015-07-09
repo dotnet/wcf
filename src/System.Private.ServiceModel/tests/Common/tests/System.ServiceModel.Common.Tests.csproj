@@ -1,8 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <TestCategories>OuterLoop</TestCategories>
-  </PropertyGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -10,17 +7,24 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Client.ClientBase.Tests</RootNamespace>
-    <AssemblyName>Client.ClientBase.Tests</AssemblyName>
+    <RootNamespace>System.ServiceModel.Common.Tests</RootNamespace>
+    <AssemblyName>System.ServiceModel.Common.Tests</AssemblyName>
     <SignAssembly>false</SignAssembly>
+    <CLSCompliant>false</CLSCompliant>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProjectGuid>{E0142AC1-DA3D-4143-BFF1-7A70EE0981D4}</ProjectGuid>
+    <ProjectGuid>{D19D214D-70F1-47C9-9F55-D45D5839AD4A}</ProjectGuid>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(UseFiddler)' == 'true'">
+    <DefineConstants>$(DefineConstants);USE_FIDDLER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**\*.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include='$(WcfSourceProj)'>
+    <ProjectReference Include="$(WcfSourceProj)">
       <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
       <Name>System.Private.ServiceModel</Name>
     </ProjectReference>
@@ -28,15 +32,6 @@
       <Project>{e896294a-ab4a-4af5-a01c-a19e3972eff9}</Project>
       <Name>System.ServiceModel.Tests.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ServiceModel.Scenarios.Common\ServiceModel.Scenarios.Common.csproj">
-      <Project>{c2210035-aab0-4dbb-9a42-6a23c0bd763b}</Project>
-      <Name>ServiceModel.Scenarios.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ClientBaseTests.cs" />
-    <Compile Include="DuplexClientBaseTests.cs" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), test.targets))\test.targets" />
 </Project>

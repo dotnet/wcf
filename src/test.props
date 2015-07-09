@@ -8,6 +8,10 @@
   <PropertyGroup Condition=" $(MSBuildProjectName.EndsWith('.Tests')) AND '$(BuildingInsideVisualStudio)' == 'true' ">
     <OutputPath>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.proj))\\bin\\tests\\Windows_NT.$(Platform).$(Configuration)\$(MSBuildProjectName)\dnxcore50</OutputPath>
   </PropertyGroup>  
+  <PropertyGroup>
+    <WcfSourceProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfSourceProj>
+    <WcfTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\src\System.ServiceModel.Tests.Common.csproj'))</WcfTestCommonProj>
+  </PropertyGroup>
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>
   </PropertyGroup>  

@@ -23,7 +23,7 @@
     <None Include="testproperties.targets" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj">
+    <ProjectReference Include='$(WcfSourceProj)'>
       <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
       <Name>System.Private.ServiceModel</Name>
     </ProjectReference>
