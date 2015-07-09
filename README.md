@@ -45,15 +45,13 @@ Want to chat with other members of the WCF community?
 
 This repo contains the following library components.
 
-* **System.ServiceModel.Primitives**. Provides the common types used by all of the WCF libraries.
-
-* **System.ServiceModel.Http**. Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).
-
-* **System.ServiceModel.NetTcp**. Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).
- 
-* **System.ServiceModel.Duplex**. Provides the types that permit 2-way ("duplex") exchanges of messages.  This library is currently under construction and not yet fully functional.
-
-* **System.ServiceModel.Security**. Provides the types that support additional security features. This library is currently under construction and not yet fully functional.
+|Component|Description|
+|:--------|:----------|
+|**System.ServiceModel.Primitives**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Primitives.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the common types used by all of the WCF libraries.|
+|**System.ServiceModel.Http**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Http.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).|
+|**System.ServiceModel.NetTcp**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.NetTcp.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).|
+|**System.ServiceModel.Duplex**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Duplex.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that permit 2-way ("duplex") exchanges of messages.  This library is currently under construction and not yet fully functional.|
+|**System.ServiceModel.Security**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Security.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that support additional security features. This library is currently under construction and not yet fully functional|
 
 ## License
 
