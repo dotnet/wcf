@@ -9,14 +9,13 @@ using System.Reflection;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Name={_name}, IsInitiating={_isInitiating}, IsTerminating={_isTerminating}")]
+    [DebuggerDisplay("Name={_name}, IsInitiating={_isInitiating}")]
     public class OperationDescription
     {
         internal const string SessionOpenedAction = Channels.WebSocketTransportSettings.ConnectionOpenedAction;
 
         private XmlName _name;
         private bool _isInitiating;
-        private bool _isTerminating;
         private bool _isSessionOpenNotificationEnabled;
         private ContractDescription _declaringContract;
         private FaultDescriptionCollection _faults;
@@ -48,7 +47,6 @@ namespace System.ServiceModel.Description
             }
             _declaringContract = declaringContract;
             _isInitiating = true;
-            _isTerminating = false;
             _faults = new FaultDescriptionCollection();
             _messages = new MessageDescriptionCollection();
             _behaviors = new KeyedByTypeCollection<IOperationBehavior>();
@@ -164,12 +162,6 @@ namespace System.ServiceModel.Description
             return Messages[0].Direction == MessageDirection.Output;
         }
 
-        public bool IsTerminating
-        {
-            get { return _isTerminating; }
-            set { _isTerminating = value; }
-        }
-
         public Collection<Type> KnownTypes
         {
             get { return _knownTypes; }
@@ -197,23 +189,6 @@ namespace System.ServiceModel.Description
         }
 
         internal bool IsValidateRpcWrapperName { get { return _validateRpcWrapperName; } }
-
-
-        //This property is set during contract inference in a hosted workflow scenario. This is required to handle correct
-        //transactional invocation from the dispatcher in regards to scenarios involving the TransactedReceiveScope activity
-        internal bool IsInsideTransactedReceiveScope
-        {
-            get;
-            set;
-        }
-
-        //This property is set during contract inference in a hosted workflow scenario. This is required to handle correct
-        //transactional invocation from the dispatcher in regards to scenarios involving the TransactedReceiveScope activity
-        internal bool IsFirstReceiveOfTransactedReceiveScopeTree
-        {
-            get;
-            set;
-        }
 
         internal Type TaskTResult
         {

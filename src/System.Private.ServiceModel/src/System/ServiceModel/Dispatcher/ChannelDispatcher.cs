@@ -20,7 +20,6 @@ namespace System.ServiceModel.Dispatcher
         private EndpointDispatcherCollection _endpointDispatchers;
         private Collection<IErrorHandler> _errorHandlers;
         private EndpointDispatcherTable _filterTable;
-        private bool _isTransactedReceive;
         private bool _receiveContextEnabled;
         private readonly IChannelListener _listener = null;
         private ListenerHandler _listenerHandler;
@@ -52,7 +51,6 @@ namespace System.ServiceModel.Dispatcher
             _channels = new CommunicationObjectManager<IChannel>(this.ThisLock);
             _pendingChannels = new SynchronizedChannelCollection<IChannel>(this.ThisLock);
             _errorHandlers = new Collection<IErrorHandler>();
-            _isTransactedReceive = false;
             _receiveSynchronously = false;
             _transactionTimeout = TimeSpan.Zero;
             _maxPendingReceives = 1; //Default maxpending receives is 1;
@@ -137,19 +135,6 @@ namespace System.ServiceModel.Dispatcher
             get { return _shared.IsOnServer; }
         }
 
-        public bool IsTransactedReceive
-        {
-            get
-            {
-                return _isTransactedReceive;
-            }
-            set
-            {
-                this.ThrowIfDisposedOrImmutable();
-                _isTransactedReceive = value;
-            }
-        }
-
         public bool ReceiveContextEnabled
         {
             get
@@ -201,6 +186,11 @@ namespace System.ServiceModel.Dispatcher
                 this.ThrowIfDisposedOrImmutable();
                 _shared.ManualAddressing = value;
             }
+        }
+
+        internal SynchronizedChannelCollection<IChannel> PendingChannels
+        {
+            get { return _pendingChannels; }
         }
 
         public bool ReceiveSynchronously

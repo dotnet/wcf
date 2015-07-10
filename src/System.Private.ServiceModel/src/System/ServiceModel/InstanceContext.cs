@@ -16,6 +16,7 @@ namespace System.ServiceModel
 {
     public sealed class InstanceContext : CommunicationObject, IExtensibleObject<InstanceContext>
     {
+        private InstanceBehavior _behavior;
         private ConcurrencyInstanceContextFacet _concurrency;
         private ServiceChannelManager _channels;
         private ExtensionCollection<InstanceContext> _extensions;
@@ -45,6 +46,18 @@ namespace System.ServiceModel
             }
             _channels = new ServiceChannelManager(this);
             _isUserCreated = isUserCreated;
+        }
+
+        internal InstanceBehavior Behavior
+        {
+            get { return _behavior; }
+            set
+            {
+                if (_behavior == null)
+                {
+                    _behavior = value;
+                }
+            }
         }
 
         internal ConcurrencyInstanceContextFacet Concurrency
@@ -91,6 +104,15 @@ namespace System.ServiceModel
                         _extensions = new ExtensionCollection<InstanceContext>(this, this.ThisLock);
                     return _extensions;
                 }
+            }
+        }
+
+        public ICollection<IChannel> IncomingChannels
+        {
+            get
+            {
+                this.ThrowIfClosed();
+                return _channels.IncomingChannels;
             }
         }
 
@@ -146,10 +168,62 @@ namespace System.ServiceModel
             _channels.Abort();
         }
 
+        internal void BindRpc(ref MessageRpc rpc)
+        {
+            this.ThrowIfClosed();
+            _channels.IncrementActivityCount();
+            rpc.SuccessfullyBoundInstance = true;
+        }
+
+        internal void FaultInternal()
+        {
+            this.Fault();
+        }
+
         public object GetServiceInstance(Message message)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            lock (_serviceInstanceLock)
+            {
+                this.ThrowIfClosedOrNotOpen();
+
+                object current = _userObject;
+
+                if (current != null)
+                {
+                    return current;
+                }
+
+                if (_behavior == null)
+                {
+                    Exception error = new InvalidOperationException(SR.SFxInstanceNotInitialized);
+                    if (message != null)
+                    {
+                        throw TraceUtility.ThrowHelperError(error, message);
+                    }
+                    else
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
+                    }
+                }
+
+                object newUserObject;
+                if (message != null)
+                {
+                    newUserObject = _behavior.GetInstance(this, message);
+                }
+                else
+                {
+                    newUserObject = _behavior.GetInstance(this);
+                }
+                if (newUserObject != null)
+                {
+                    SetUserObject(newUserObject);
+                }
+
+                return newUserObject;
+            }
         }
+
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
@@ -201,6 +275,22 @@ namespace System.ServiceModel
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             return TaskHelpers.CompletedTask();
+        }
+
+        void SetUserObject(object newUserObject)
+        {
+            if (_behavior != null && !_wellKnown)
+            {
+                object oldUserObject = Interlocked.Exchange(ref _userObject, newUserObject);
+            }
+        }
+
+        internal void UnbindRpc(ref MessageRpc rpc)
+        {
+            if (rpc.InstanceContext == this && rpc.SuccessfullyBoundInstance)
+            {
+                _channels.DecrementActivityCount();
+            }
         }
 
         internal class CloseAsyncResult : AsyncResult

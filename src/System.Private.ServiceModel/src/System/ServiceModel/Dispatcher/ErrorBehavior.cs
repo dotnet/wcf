@@ -23,6 +23,59 @@ namespace System.ServiceModel.Dispatcher
             _messageVersion = channelDispatcher.MessageVersion;
         }
 
+        void InitializeFault(ref MessageRpc rpc)
+        {
+            Exception error = rpc.Error;
+            FaultException fault = error as FaultException;
+            if (fault != null)
+            {
+                string action;
+                MessageFault messageFault = rpc.Operation.FaultFormatter.Serialize(fault, out action);
+                if (action == null)
+                    action = rpc.RequestVersion.Addressing.DefaultFaultAction;
+                if (messageFault != null)
+                    rpc.FaultInfo.Fault = Message.CreateMessage(rpc.RequestVersion, messageFault, action);
+            }
+        }
+
+        internal void ProvideMessageFault(ref MessageRpc rpc)
+        {
+            if (rpc.Error != null)
+            {
+                ProvideMessageFaultCore(ref rpc);
+            }
+        }
+
+        void ProvideMessageFaultCore(ref MessageRpc rpc)
+        {
+            if (_messageVersion != rpc.RequestVersion)
+            {
+                Fx.Assert("System.ServiceModel.Dispatcher.ErrorBehavior.ProvideMessageFaultCore(): (this.messageVersion != rpc.RequestVersion)");
+            }
+
+            this.InitializeFault(ref rpc);
+
+            this.ProvideFault(rpc.Error, rpc.Channel.GetProperty<FaultConverter>(), ref rpc.FaultInfo);
+
+            this.ProvideMessageFaultCoreCoda(ref rpc);
+        }
+
+        void ProvideMessageFaultCoreCoda(ref MessageRpc rpc)
+        {
+            if (rpc.FaultInfo.Fault.Headers.Action == null)
+            {
+                rpc.FaultInfo.Fault.Headers.Action = rpc.RequestVersion.Addressing.DefaultFaultAction;
+            }
+
+            rpc.Reply = rpc.FaultInfo.Fault;
+        }
+
+        internal void ProvideOnlyFaultOfLastResort(ref MessageRpc rpc)
+        {
+            ProvideFaultOfLastResort(rpc.Error, ref rpc.FaultInfo);
+            ProvideMessageFaultCoreCoda(ref rpc);
+        }
+
         private void ProvideFaultOfLastResort(Exception error, ref ErrorHandlerFaultInfo faultInfo)
         {
             if (faultInfo.Fault == null)
@@ -96,6 +149,23 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
+        internal void HandleError(ref MessageRpc rpc)
+        {
+            if (rpc.Error != null)
+            {
+                HandleErrorCore(ref rpc);
+            }
+        }
+
+        void HandleErrorCore(ref MessageRpc rpc)
+        {
+            bool handled = HandleErrorCommon(rpc.Error, ref rpc.FaultInfo);
+            if (handled)
+            {
+                rpc.Error = null;
+            }
+        }
+
         private bool HandleErrorCommon(Exception error, ref ErrorHandlerFaultInfo faultInfo)
         {
             bool handled;
@@ -134,6 +204,12 @@ namespace System.ServiceModel.Dispatcher
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(e);
             }
             return handled;
+        }
+
+        internal bool HandleError(Exception error)
+        {
+            ErrorHandlerFaultInfo faultInfo = new ErrorHandlerFaultInfo(_messageVersion.Addressing.DefaultFaultAction);
+            return HandleError(error, ref faultInfo);
         }
 
         internal bool HandleError(Exception error, ref ErrorHandlerFaultInfo faultInfo)

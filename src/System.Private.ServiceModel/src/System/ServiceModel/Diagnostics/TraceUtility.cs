@@ -308,6 +308,11 @@ namespace System.ServiceModel.Diagnostics
             }
         }
 
+        static internal string GetCallerInfo(OperationContext context)
+        {
+            return "null";
+        }
+
         [Fx.Tag.SecurityNote(Critical = "Calls critical method DiagnosticSection.UnsafeGetSection.",
             Safe = "Doesn't leak config section instance, just reads and stores string values for Guid")]
         [SecuritySafeCritical]

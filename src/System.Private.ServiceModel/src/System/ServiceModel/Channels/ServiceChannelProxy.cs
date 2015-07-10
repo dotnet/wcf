@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    public class ServiceChannelProxy : DispatchProxy, ICommunicationObject, IChannel, IClientChannel, IOutputChannel, IRequestChannel, IServiceChannel
+    public class ServiceChannelProxy : DispatchProxy, ICommunicationObject, IChannel, IClientChannel, IOutputChannel, IRequestChannel, IServiceChannel, IDuplexContextChannel
     {
         private const String activityIdSlotName = "E2ETrace.ActivityID";
         private Type _proxiedType;
@@ -776,6 +776,21 @@ namespace System.ServiceModel.Channels
             return _serviceChannel.EndRequest(result);
         }
 
+        public IAsyncResult BeginCloseOutputSession(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return ((IDuplexContextChannel)_serviceChannel).BeginCloseOutputSession(timeout, callback, state);
+        }
+
+        public void EndCloseOutputSession(IAsyncResult result)
+        {
+            ((IDuplexContextChannel)_serviceChannel).EndCloseOutputSession(result);
+        }
+
+        public void CloseOutputSession(TimeSpan timeout)
+        {
+            ((IDuplexContextChannel)_serviceChannel).CloseOutputSession(timeout);
+        }
+
         EndpointAddress IRequestChannel.RemoteAddress
         {
             get { return ((IContextChannel)_serviceChannel).RemoteAddress; }
@@ -789,6 +804,32 @@ namespace System.ServiceModel.Channels
         Uri IServiceChannel.ListenUri
         {
             get { return _serviceChannel.ListenUri; }
+        }
+
+        public bool AutomaticInputSessionShutdown
+        {
+            get
+            {
+                return ((IDuplexContextChannel)_serviceChannel).AutomaticInputSessionShutdown;
+            }
+
+            set
+            {
+                ((IDuplexContextChannel)_serviceChannel).AutomaticInputSessionShutdown = value;
+            }
+        }
+
+        public InstanceContext CallbackInstance
+        {
+            get
+            {
+                return ((IDuplexContextChannel)_serviceChannel).CallbackInstance;
+            }
+
+            set
+            {
+                ((IDuplexContextChannel)_serviceChannel).CallbackInstance = value;
+            }
         }
         #endregion // Channel interfaces
     }

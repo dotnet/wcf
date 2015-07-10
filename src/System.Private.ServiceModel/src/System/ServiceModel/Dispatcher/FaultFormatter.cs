@@ -9,7 +9,7 @@ using System.Runtime;
 
 namespace System.ServiceModel.Dispatcher
 {
-    internal class FaultFormatter : IClientFaultFormatter
+    internal class FaultFormatter : IClientFaultFormatter, IDispatchFaultFormatter
     {
         private FaultContractInfo[] _faultContractInfos;
 
@@ -31,6 +31,29 @@ namespace System.ServiceModel.Dispatcher
             }
             AddInfrastructureFaults(faultContractInfoList);
             _faultContractInfos = GetSortedArray(faultContractInfoList);
+        }
+
+        public MessageFault Serialize(FaultException faultException, out string action)
+        {
+            XmlObjectSerializer serializer = null;
+            Type detailType = null;
+            string faultExceptionAction = action = faultException.Action;
+
+            Type faultExceptionOfT = null;
+            for (Type faultType = faultException.GetType(); faultType != typeof(FaultException); faultType = faultType.BaseType())
+            {
+                if (faultType.IsGenericType() && (faultType.GetGenericTypeDefinition() == typeof(FaultException<>)))
+                {
+                    faultExceptionOfT = faultType;
+                    break;
+                }
+            }
+            if (faultExceptionOfT != null)
+            {
+                detailType = faultExceptionOfT.GetGenericArguments()[0];
+                serializer = GetSerializer(detailType, faultExceptionAction, out action);
+            }
+            return CreateMessageFault(serializer, faultException, detailType);
         }
 
         public FaultException Deserialize(MessageFault messageFault, string action)

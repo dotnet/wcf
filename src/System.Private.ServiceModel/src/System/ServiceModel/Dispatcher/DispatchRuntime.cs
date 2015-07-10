@@ -12,6 +12,7 @@ using System.ServiceModel.Diagnostics;
 using System.Threading;
 using System.Runtime.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -22,11 +23,13 @@ namespace System.ServiceModel.Dispatcher
         private bool _automaticInputSessionShutdown;
         private ChannelDispatcher _channelDispatcher;
         private EndpointDispatcher _endpointDispatcher = null;
+        private IInstanceProvider _instanceProvider;
         private IInstanceContextProvider _instanceContextProvider;
-        private bool _ignoreTransactionMessageProperty;
         private OperationCollection _operations;
         private ClientRuntime _proxyRuntime;
+        private ImmutableDispatchRuntime _runtime;
         private SynchronizationContext _synchronizationContext;
+        private Type _type;
         private DispatchOperation _unhandled;
         private SharedRuntimeState _shared;
 
@@ -39,7 +42,9 @@ namespace System.ServiceModel.Dispatcher
             }
 
             _proxyRuntime = proxyRuntime;
+            _instanceProvider = new CallbackInstanceProvider();
             _channelDispatcher = new ChannelDispatcher(shared);
+            _instanceContextProvider = InstanceContextProviderBase.GetProviderForMode(InstanceContextMode.PerSession, this);
             Fx.Assert(!shared.IsOnServer, "Client constructor called on server?");
         }
 
@@ -52,6 +57,8 @@ namespace System.ServiceModel.Dispatcher
             _automaticInputSessionShutdown = true;
 
             _unhandled = new DispatchOperation(this, "*", MessageHeaders.WildcardAction, MessageHeaders.WildcardAction);
+            _unhandled.InternalFormatter = MessageOperationFormatter.Instance;
+            _unhandled.InternalInvoker = new UnhandledActionInvoker(this);
         }
 
         public IInstanceContextProvider InstanceContextProvider
@@ -151,15 +158,15 @@ namespace System.ServiceModel.Dispatcher
             get { return _endpointDispatcher; }
         }
 
-        public bool IgnoreTransactionMessageProperty
+        public IInstanceProvider InstanceProvider
         {
-            get { return _ignoreTransactionMessageProperty; }
+            get { return _instanceProvider; }
             set
             {
                 lock (this.ThisLock)
                 {
                     this.InvalidateRuntime();
-                    _ignoreTransactionMessageProperty = value;
+                    _instanceProvider = value;
                 }
             }
         }
@@ -178,6 +185,19 @@ namespace System.ServiceModel.Dispatcher
                 {
                     this.InvalidateRuntime();
                     _synchronizationContext = value;
+                }
+            }
+        }
+
+        public Type Type
+        {
+            get { return _type; }
+            set
+            {
+                lock (this.ThisLock)
+                {
+                    this.InvalidateRuntime();
+                    _type = value;
                 }
             }
         }
@@ -245,6 +265,24 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
+        internal int MaxParameterInspectors
+        {
+            get
+            {
+                lock (this.ThisLock)
+                {
+                    int max = 0;
+
+                    for (int i = 0; i < _operations.Count; i++)
+                    {
+                        max = System.Math.Max(max, _operations[i].ParameterInspectors.Count);
+                    }
+                    max = System.Math.Max(max, _unhandled.ParameterInspectors.Count);
+                    return max;
+                }
+            }
+        }
+
         // Internal access to CallbackClientRuntime, but this one doesn't create on demand
         internal ClientRuntime ClientRuntime
         {
@@ -256,13 +294,44 @@ namespace System.ServiceModel.Dispatcher
             get { return _shared; }
         }
 
+        internal DispatchOperationRuntime GetOperation(ref Message message)
+        {
+            ImmutableDispatchRuntime runtime = this.GetRuntime();
+            return runtime.GetOperation(ref message);
+        }
 
+        internal ImmutableDispatchRuntime GetRuntime()
+        {
+            ImmutableDispatchRuntime runtime = _runtime;
+            if (runtime != null)
+            {
+                return runtime;
+            }
+            else
+            {
+                return GetRuntimeCore();
+            }
+        }
+
+        ImmutableDispatchRuntime GetRuntimeCore()
+        {
+            lock (this.ThisLock)
+            {
+                if (_runtime == null)
+                {
+                    _runtime = new ImmutableDispatchRuntime(this);
+                }
+
+                return _runtime;
+            }
+        }
 
         internal void InvalidateRuntime()
         {
             lock (this.ThisLock)
             {
                 _shared.ThrowIfImmutable();
+                _runtime = null;
             }
         }
 
@@ -274,6 +343,86 @@ namespace System.ServiceModel.Dispatcher
         internal SynchronizedCollection<T> NewBehaviorCollection<T>()
         {
             return new DispatchBehaviorCollection<T>(this);
+        }
+
+        internal class UnhandledActionInvoker : IOperationInvoker
+        {
+            readonly DispatchRuntime _dispatchRuntime;
+
+            public UnhandledActionInvoker(DispatchRuntime dispatchRuntime)
+            {
+                _dispatchRuntime = dispatchRuntime;
+            }
+
+            public object[] AllocateInputs()
+            {
+                return new object[1];
+            }
+
+            public Task<object> InvokeAsync(object instance, object[] inputs, out object[] outputs)
+            {
+                outputs = EmptyArray<object>.Allocate(0);
+
+                Message message = inputs[0] as Message;
+                if (message == null)
+                {
+                    return null;
+                }
+
+                string action = message.Headers.Action;
+
+                FaultCode code = FaultCode.CreateSenderFaultCode(AddressingStrings.ActionNotSupported,
+                    message.Version.Addressing.Namespace);
+                string reasonText = SR.Format(SR.SFxNoEndpointMatchingContract, action);
+                FaultReason reason = new FaultReason(reasonText);
+
+                FaultException exception = new FaultException(reason, code);
+                ErrorBehavior.ThrowAndCatch(exception);
+
+                ServiceChannel serviceChannel = OperationContext.Current.InternalServiceChannel;
+                OperationContext.Current.OperationCompleted +=
+                    delegate (object sender, EventArgs e)
+                    {
+                        ChannelDispatcher channelDispatcher = _dispatchRuntime.ChannelDispatcher;
+                        if (!channelDispatcher.HandleError(exception) && serviceChannel.HasSession)
+                        {
+                            try
+                            {
+                                serviceChannel.Close(ChannelHandler.CloseAfterFaultTimeout);
+                            }
+                            catch (Exception ex)
+                            {
+                                if (Fx.IsFatal(ex))
+                                {
+                                    throw;
+                                }
+                                channelDispatcher.HandleError(ex);
+                            }
+                        }
+                    };
+
+                if (_dispatchRuntime._shared.EnableFaults)
+                {
+                    MessageFault fault = MessageFault.CreateFault(code, reason, action);
+                    return Task.FromResult((object)Message.CreateMessage(message.Version, fault, message.Version.Addressing.DefaultFaultAction));
+                }
+                else
+                {
+                    OperationContext.Current.RequestContext.Close();
+                    OperationContext.Current.RequestContext = null;
+                    return Task.FromResult((object)null);
+                }
+            }
+
+            public IAsyncResult InvokeBegin(object instance, object[] inputs, AsyncCallback callback, object state)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException());
+            }
+
+            public object InvokeEnd(object instance, out object[] outputs, IAsyncResult result)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException());
+            }
         }
 
         internal class DispatchBehaviorCollection<T> : SynchronizedCollection<T>
@@ -376,6 +525,24 @@ namespace System.ServiceModel.Dispatcher
 
                 _outer.InvalidateRuntime();
                 base.SetItem(index, item);
+            }
+        }
+
+        class CallbackInstanceProvider : IInstanceProvider
+        {
+            object IInstanceProvider.GetInstance(InstanceContext instanceContext)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxCannotActivateCallbackInstace));
+            }
+
+            object IInstanceProvider.GetInstance(InstanceContext instanceContext, Message message)
+            {
+                throw TraceUtility.ThrowHelperError(new InvalidOperationException(SR.SFxCannotActivateCallbackInstace), message);
+            }
+
+            void IInstanceProvider.ReleaseInstance(InstanceContext instanceContext, object instance)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxCannotActivateCallbackInstace));
             }
         }
     }

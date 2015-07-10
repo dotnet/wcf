@@ -7,19 +7,21 @@ namespace System.ServiceModel.Dispatcher
 {
     public sealed class DispatchOperation
     {
-        private string _action;
-        private SynchronizedCollection<FaultContractInfo> _faultContractInfos;
-        private bool _isTerminating;
+        private readonly string _action;
+        private readonly SynchronizedCollection<FaultContractInfo> _faultContractInfos;
+        private IDispatchMessageFormatter _formatter;
+        private IDispatchFaultFormatter _faultFormatter;
+        private IOperationInvoker _invoker;
         private bool _isSessionOpenNotificationEnabled;
-        private string _name;
-        private DispatchRuntime _parent;
-        private string _replyAction;
+        private readonly string _name;
+        private readonly SynchronizedCollection<IParameterInspector> _parameterInspectors;
+        private readonly DispatchRuntime _parent;
+        private readonly string _replyAction;
         private bool _deserializeRequest = true;
         private bool _serializeReply = true;
-        private bool _isOneWay;
+        private readonly bool _isOneWay;
         private bool _autoDisposeParameters = true;
         private bool _hasNoDisposableParameters;
-        private bool _isInsideTransactedReceiveScope = false;
 
         public DispatchOperation(DispatchRuntime parent, string name, string action)
         {
@@ -33,7 +35,7 @@ namespace System.ServiceModel.Dispatcher
             _action = action;
 
             _faultContractInfos = parent.NewBehaviorCollection<FaultContractInfo>();
-
+            _parameterInspectors = parent.NewBehaviorCollection<IParameterInspector>();
             _isOneWay = true;
         }
 
@@ -73,21 +75,66 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
+        internal IDispatchMessageFormatter Formatter
+        {
+            get { return _formatter; }
+            set
+            {
+                lock (_parent.ThisLock)
+                {
+                    _parent.InvalidateRuntime();
+                    _formatter = value;
+                }
+            }
+        }
+
+        internal IDispatchFaultFormatter FaultFormatter
+        {
+            get
+            {
+                if (_faultFormatter == null)
+                {
+                   _faultFormatter = new DataContractSerializerFaultFormatter(_faultContractInfos);
+                }
+                return _faultFormatter;
+            }
+            set
+            {
+                lock (_parent.ThisLock)
+                {
+                    _parent.InvalidateRuntime();
+                    _faultFormatter = value;
+                }
+            }
+        }
+
         internal bool HasNoDisposableParameters
         {
             get { return _hasNoDisposableParameters; }
             set { _hasNoDisposableParameters = value; }
         }
 
-        public bool IsTerminating
+        internal IDispatchMessageFormatter InternalFormatter
         {
-            get { return _isTerminating; }
+            get { return _formatter; }
+            set { _formatter = value; }
+        }
+
+        internal IOperationInvoker InternalInvoker
+        {
+            get { return _invoker; }
+            set { _invoker = value; }
+        }
+
+        public IOperationInvoker Invoker
+        {
+            get { return _invoker; }
             set
             {
                 lock (_parent.ThisLock)
                 {
                     _parent.InvalidateRuntime();
-                    _isTerminating = value;
+                    _invoker = value;
                 }
             }
         }
@@ -110,9 +157,19 @@ namespace System.ServiceModel.Dispatcher
             get { return _name; }
         }
 
+        public SynchronizedCollection<IParameterInspector> ParameterInspectors
+        {
+            get { return _parameterInspectors; }
+        }
+
         public DispatchRuntime Parent
         {
             get { return _parent; }
+        }
+
+        public string ReplyAction
+        {
+            get { return _replyAction; }
         }
 
         public bool DeserializeRequest
@@ -137,19 +194,6 @@ namespace System.ServiceModel.Dispatcher
                 {
                     _parent.InvalidateRuntime();
                     _serializeReply = value;
-                }
-            }
-        }
-
-        public bool IsInsideTransactedReceiveScope
-        {
-            get { return _isInsideTransactedReceiveScope; }
-            set
-            {
-                lock (_parent.ThisLock)
-                {
-                    _parent.InvalidateRuntime();
-                    _isInsideTransactedReceiveScope = value;
                 }
             }
         }

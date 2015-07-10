@@ -11,19 +11,43 @@ namespace System.ServiceModel.Dispatcher
 {
     internal class ConcurrencyBehavior
     {
-        private static bool SupportsTransactedBatch(ChannelDispatcher channelDispatcher)
+        private ConcurrencyMode _concurrencyMode;
+        private bool _enforceOrderedReceive;
+
+        internal ConcurrencyBehavior(DispatchRuntime runtime)
         {
-            return channelDispatcher.IsTransactedReceive && (channelDispatcher.MaxTransactedBatchSize > 0);
+            _concurrencyMode = runtime.ConcurrencyMode;
+            _enforceOrderedReceive = runtime.EnsureOrderedDispatch;
+        }
+
+        internal bool IsConcurrent(ref MessageRpc rpc)
+        {
+            return IsConcurrent(_concurrencyMode, _enforceOrderedReceive, rpc.Channel.HasSession);
+        }
+
+        internal static bool IsConcurrent(ConcurrencyMode concurrencyMode, bool ensureOrderedDispatch, bool hasSession)
+        {
+            if (concurrencyMode != ConcurrencyMode.Single)
+            {
+                return true;
+            }
+
+            if (hasSession)
+            {
+                return false;
+            }
+
+            if (ensureOrderedDispatch)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         internal static bool IsConcurrent(ChannelDispatcher runtime, bool hasSession)
         {
             bool isConcurrencyModeSingle = true;
-
-            if (ConcurrencyBehavior.SupportsTransactedBatch(runtime))
-            {
-                return false;
-            }
 
             foreach (EndpointDispatcher endpointDispatcher in runtime.Endpoints)
             {
@@ -49,6 +73,39 @@ namespace System.ServiceModel.Dispatcher
             }
 
             return false;
+        }
+
+        internal void LockInstance(ref MessageRpc rpc)
+        {
+            if (_concurrencyMode != ConcurrencyMode.Multiple)
+            {
+                ConcurrencyInstanceContextFacet resource = rpc.InstanceContext.Concurrency;
+                lock (rpc.InstanceContext.ThisLock)
+                {
+                    if (!resource.Locked)
+                    {
+                        resource.Locked = true;
+                    }
+                    else
+                    {
+                        MessageRpcWaiter waiter = new MessageRpcWaiter(rpc.Pause());
+                        resource.EnqueueNewMessage(waiter);
+                    }
+                }
+
+                if (_concurrencyMode == ConcurrencyMode.Reentrant)
+                {
+                    rpc.OperationContext.IsServiceReentrant = true;
+                }
+            }
+        }
+
+        internal void UnlockInstance(ref MessageRpc rpc)
+        {
+            if (_concurrencyMode != ConcurrencyMode.Multiple)
+            {
+                ConcurrencyBehavior.UnlockInstance(rpc.InstanceContext);
+            }
         }
 
         internal static void UnlockInstanceBeforeCallout(OperationContext operationContext)

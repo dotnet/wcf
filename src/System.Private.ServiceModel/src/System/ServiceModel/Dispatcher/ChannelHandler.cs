@@ -48,6 +48,8 @@ namespace System.ServiceModel.Dispatcher
         private bool _receiveSynchronously;
         private RequestContext _replied;
         private EventTraceActivity _eventTraceActivity;
+        private bool _shouldRejectMessageWithOnOpenActionHeader;
+        private object _acquirePumpLock = new object();
 
         internal ChannelHandler(MessageVersion messageVersion, IChannelBinder binder, ServiceChannel channel)
         {
@@ -104,7 +106,6 @@ namespace System.ServiceModel.Dispatcher
             _receiver = new ErrorHandlingReceiver(_binder, channelDispatcher);
             _idleManager = idleManager;
             Fx.Assert((_idleManager != null) == (_binder.HasSession && _listener.ChannelDispatcher.DefaultCommunicationTimeouts.ReceiveTimeout != TimeSpan.MaxValue), "idle manager is present only when there is a session with a finite receive timeout");
-
 
             _requestInfo = new RequestInfo(this);
 
@@ -243,7 +244,79 @@ namespace System.ServiceModel.Dispatcher
 
         private bool DispatchAndReleasePump(RequestContext request, bool cleanThread, OperationContext currentOperationContext)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            ServiceChannel channel = _requestInfo.Channel;
+            EndpointDispatcher endpoint = _requestInfo.Endpoint;
+            bool releasedPump = false;
+
+            try
+            {
+                DispatchRuntime dispatchBehavior = _requestInfo.DispatchRuntime;
+
+                if (channel == null || dispatchBehavior == null)
+                {
+                    Fx.Assert("System.ServiceModel.Dispatcher.ChannelHandler.Dispatch(): (channel == null || dispatchBehavior == null)");
+                    return true;
+                }
+
+                EventTraceActivity eventTraceActivity = TraceDispatchMessageStart(request.RequestMessage);
+                Message message = request.RequestMessage;
+
+                DispatchOperationRuntime operation = dispatchBehavior.GetOperation(ref message);
+                if (operation == null)
+                {
+                    Fx.Assert("ChannelHandler.Dispatch (operation == null)");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "No DispatchOperationRuntime found to process message.")));
+                }
+
+                if (_shouldRejectMessageWithOnOpenActionHeader && message.Headers.Action == OperationDescription.SessionOpenedAction)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxNoEndpointMatchingAddressForConnectionOpeningMessage, message.Headers.Action, "Open")));
+                }
+
+                if (MessageLogger.LoggingEnabled)
+                {
+                    MessageLogger.LogMessage(ref message, (operation.IsOneWay ? MessageLoggingSource.ServiceLevelReceiveDatagram : MessageLoggingSource.ServiceLevelReceiveRequest) | MessageLoggingSource.LastChance);
+                }
+
+                bool hasOperationContextBeenSet;
+                if (currentOperationContext != null)
+                {
+                    hasOperationContextBeenSet = true;
+                    currentOperationContext.ReInit(request, message, channel);
+                }
+                else
+                {
+                    hasOperationContextBeenSet = false;
+                    currentOperationContext = new OperationContext(request, message, channel);
+                }
+
+                MessageRpc rpc = new MessageRpc(request, message, operation, channel,
+                    this, cleanThread, currentOperationContext, _requestInfo.ExistingInstanceContext, eventTraceActivity);
+
+                TraceUtility.MessageFlowAtMessageReceived(message, currentOperationContext, eventTraceActivity, true);
+
+                // These need to happen before Dispatch but after accessing any ChannelHandler
+                // state, because we go multi-threaded after this until we reacquire pump mutex.
+                ReleasePump();
+                releasedPump = true;
+
+                return operation.Parent.Dispatch(ref rpc, hasOperationContextBeenSet);
+            }
+            catch (Exception e)
+            {
+                if (Fx.IsFatal(e))
+                {
+                    throw;
+                }
+                return this.HandleError(e, request, channel);
+            }
+            finally
+            {
+                if (!releasedPump)
+                {
+                    this.ReleasePump();
+                }
+            }
         }
 
         internal void DispatchDone()
@@ -735,10 +808,8 @@ namespace System.ServiceModel.Dispatcher
 
         private bool TryReceive(TimeSpan timeout, out RequestContext requestContext)
         {
-            bool valid;
-            {
-                valid = _receiver.TryReceive(timeout, out requestContext);
-            }
+            _shouldRejectMessageWithOnOpenActionHeader = false;
+            bool valid = _receiver.TryReceive(timeout, out requestContext);
 
             if (valid)
             {
@@ -1024,7 +1095,10 @@ namespace System.ServiceModel.Dispatcher
         {
             if (_isConcurrent)
             {
-                _isPumpAcquired = 0;
+                lock (_acquirePumpLock)
+                {
+                    _isPumpAcquired = 0;
+                }
             }
         }
 
@@ -1149,9 +1223,15 @@ namespace System.ServiceModel.Dispatcher
         {
             if (_isConcurrent)
             {
-                if (_isPumpAcquired != 0 || Interlocked.CompareExchange(ref _isPumpAcquired, 1, 0) != 0)
+                lock (_acquirePumpLock)
                 {
-                    return false;
+                    if (_isPumpAcquired != 0)
+                    {
+                        return false;
+                    }
+
+                    _isPumpAcquired = 1;
+                    return true;
                 }
             }
 
@@ -1187,6 +1267,21 @@ namespace System.ServiceModel.Dispatcher
                 this.EndpointLookupDone = false;
                 this.RequestContext = null;
             }
+        }
+
+        EventTraceActivity TraceDispatchMessageStart(Message message)
+        {
+            if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled && message != null)
+            {
+                EventTraceActivity eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
+                if (TD.DispatchMessageStartIsEnabled())
+                {
+                    TD.DispatchMessageStart(eventTraceActivity);
+                }
+                return eventTraceActivity;
+            }
+
+            return null;
         }
 
         /// <summary>
