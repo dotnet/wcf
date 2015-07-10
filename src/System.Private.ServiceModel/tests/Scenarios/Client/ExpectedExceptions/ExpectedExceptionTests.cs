@@ -29,7 +29,7 @@ public static class ExpectedExceptionTests
         });
 
         // On .Net Native retail, exception message is stripped to include only parameter
-        Assert.Contains(nonExistentHost, exception.Message, StringComparison.OrdinalIgnoreCase);
+        Assert.True(exception.Message.Contains(nonExistentHost), string.Format("Expected exception message to contain: '{0}'", nonExistentHost));
     }
 
     [Fact]
@@ -294,7 +294,7 @@ public static class ExpectedExceptionTests
         });
 
         // On .Net Native retail, exception message is stripped to include only parameter
-        Assert.Contains(notFoundUrl, exception.Message, StringComparison.OrdinalIgnoreCase);
+        Assert.True(exception.Message.Contains(notFoundUrl), string.Format("Expected exception message to contain: '{0}'", notFoundUrl));
     }
 
     [Fact]
@@ -315,7 +315,7 @@ public static class ExpectedExceptionTests
             });
 
             // On .Net Native retail, exception message is stripped to include only parameter
-            Assert.Contains(protocolExceptionUri, exception.Message);
+            Assert.True(exception.Message.Contains(protocolExceptionUri), string.Format("Expected exception message to contain '{0}'", protocolExceptionUri));
         }
     }
 }
