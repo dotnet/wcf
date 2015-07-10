@@ -35,7 +35,7 @@ public static class TypedProxyDuplexTests
 
         try
         {
-            factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address))
+            factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address));
             IWcfDuplexTaskReturnService serviceProxy = factory.CreateChannel();
 
             Task<Guid> task = serviceProxy.Ping(guid);
