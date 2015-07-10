@@ -13,19 +13,21 @@ namespace System.Runtime.Serialization
 {
     public class GeneratedXmlSerializers
     {
-        private static Func<Dictionary<string, Type>> s_GeneratedSerializersInitializer;
-        private static Lazy<Dictionary<string, Type>> generatedSerializers = new Lazy<Dictionary<string, Type>>(InitGeneratedSerializers);
+        // For NetNative, ToolChain sets s_generatedSerializersInitializer at App startup.
+        // For UWP, s_generatedSerializersInitializer is null.
+        private static Func<Dictionary<string, Type>> s_generatedSerializersInitializer;
+        private static Lazy<Dictionary<string, Type>> s_generatedSerializers = new Lazy<Dictionary<string, Type>>(InitGeneratedSerializers);
 
         public static Func<Dictionary<string, Type>> GeneratedSerializersInitializer
         {
             get
             {
-                return s_GeneratedSerializersInitializer;
+                return s_generatedSerializersInitializer;
             }
             set
             {
-                Contract.Assert(s_GeneratedSerializersInitializer == null, "s_GeneratedSerializersInitializer is already initialized.");
-                s_GeneratedSerializersInitializer = value;
+                Contract.Assert(s_generatedSerializersInitializer == null, "s_generatedSerializersInitializer is already initialized.");
+                s_generatedSerializersInitializer = value;
             }
         }
 
@@ -43,9 +45,12 @@ namespace System.Runtime.Serialization
 
         internal static Dictionary<string, Type> GetGeneratedSerializers()
         {
-            return generatedSerializers.Value;
+            return s_generatedSerializers.Value;
         }
 
+        // This property is used to determine if the code is running in NetNative or in UWP.
+        // true  - NetNative
+        // false - UWP
         internal static bool IsInitialized
         {
             get
