@@ -226,7 +226,7 @@ namespace System.ServiceModel.Description
                 operationDescription.EnsureInvariants();
                 if (operationDescription.IsInitiating)
                     thereIsAtLeastOneInitiatingOperation = true;
-                if ((!operationDescription.IsInitiating || operationDescription.IsTerminating)
+                if ((!operationDescription.IsInitiating)
                     && (this.SessionMode != SessionMode.Required))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(

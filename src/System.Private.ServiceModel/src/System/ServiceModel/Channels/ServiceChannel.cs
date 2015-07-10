@@ -46,7 +46,6 @@ namespace System.ServiceModel.Channels
         private readonly bool _openBinder = false;
         private TimeSpan _operationTimeout;
         private object _proxy;
-        private string _terminatingOperationName;
         private bool _hasChannelStartedAutoClosing;
         private bool _hasCleanedUpChannelCollections;
         private EventTraceActivity _eventActivity;
@@ -567,11 +566,6 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxNonInitiatingOperation1, operation.Name)));
             }
 
-            if (_terminatingOperationName != null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxTerminatingOperationAlreadyCalled1, _terminatingOperationName)));
-            }
-
             if (_hasChannelStartedAutoClosing)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.SFxClientOutputSessionAutoClosed));
@@ -940,7 +934,6 @@ namespace System.ServiceModel.Channels
                                                                                   operation.Name,
                                                                                   rpc.Reply.Headers.Action,
                                                                                   operation.ReplyAction));
-                            this.TerminateIfNecessary(ref rpc);
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                         }
                     }
@@ -954,7 +947,6 @@ namespace System.ServiceModel.Channels
                         }
                         ThrowIfFaultUnderstood(rpc.Reply, fault, action, rpc.Reply.Version, rpc.Channel.GetProperty<FaultConverter>());
                         FaultException fe = rpc.Operation.FaultFormatter.Deserialize(fault, action);
-                        this.TerminateIfNecessary(ref rpc);
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(fe);
                     }
 
@@ -990,7 +982,6 @@ namespace System.ServiceModel.Channels
                     }
                 }
             }
-            this.TerminateIfNecessary(ref rpc);
 
             if (TD.ServiceChannelCallStopIsEnabled())
             {
@@ -1002,15 +993,6 @@ namespace System.ServiceModel.Channels
                 TD.ServiceChannelCallStop(rpc.EventTraceActivity, rpc.Action,
                                             _clientRuntime.ContractName,
                                             remoteAddress);
-            }
-        }
-
-        private void TerminateIfNecessary(ref ProxyRpc rpc)
-        {
-            if (rpc.Operation.IsTerminating)
-            {
-                _terminatingOperationName = rpc.Operation.Name;
-                TerminatingOperationBehavior.AfterReply(ref rpc);
             }
         }
 
@@ -1056,11 +1038,6 @@ namespace System.ServiceModel.Channels
                     if (string.Compare(code.Name, FaultCodeConstants.Codes.SessionTerminated, StringComparison.Ordinal) == 0)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new ChannelTerminatedException(fault.Reason.GetMatchingTranslation(CultureInfo.CurrentCulture).Text));
-                    }
-
-                    if (string.Compare(code.Name, FaultCodeConstants.Codes.TransactionAborted, StringComparison.Ordinal) == 0)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new ProtocolException(fault.Reason.GetMatchingTranslation(CultureInfo.CurrentCulture).Text));
                     }
                 }
 

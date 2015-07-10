@@ -3474,9 +3474,6 @@
   <data name="SFxChannelFactoryCannotCreateFactoryWithoutDescription" xml:space="preserve">
     <value>CreateFactory requires that the Endpoint property be initialized. Either provide a valid ServiceEndpoint in the CreateDescription method or override the CreateFactory method to provide an alternative implementation.</value>
   </data>
-  <data name="SFxChannelTerminated0" xml:space="preserve">
-    <value>An operation marked as IsTerminating has already been invoked on this channel, causing the channel's connection to terminate.  No more operations may be invoked on this channel.  Please re-create the channel to continue communication.</value>
-  </data>
   <data name="SFxClientOutputSessionAutoClosed" xml:space="preserve">
     <value>This channel can no longer be used to send messages as the output session was auto-closed due to a server-initiated shutdown. Either disable auto-close by setting the DispatchRuntime.AutomaticInputSessionShutdown to false, or consider modifying the shutdown protocol with the remote server.</value>
   </data>
@@ -4139,9 +4136,6 @@
   </data>
   <data name="SFxStreamResponseMessageClosed" xml:space="preserve">
     <value>The message containing this stream has been closed. </value>
-  </data>
-  <data name="SFxTerminatingOperationAlreadyCalled1" xml:space="preserve">
-    <value>This channel cannot send any more messages because IsTerminating operation '{0}' has already been called.</value>
   </data>
   <data name="SFxThrottleLimitMustBeGreaterThanZero0" xml:space="preserve">
     <value>Throttle limit must be greater than zero. To disable, set to Int32.MaxValue.</value>

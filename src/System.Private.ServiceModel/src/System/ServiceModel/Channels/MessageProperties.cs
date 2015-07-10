@@ -368,6 +368,49 @@ namespace System.ServiceModel.Channels
             this.Encoder = properties.Encoder;
         }
 
+        internal void MergeProperties(MessageProperties properties)
+        {
+            // MergeProperties behavior should be equivalent to the behavior
+            // of CopyProperties except that Merge supports property values that
+            // implement the IMergeEnabledMessageProperty.  Any changes to CopyProperties
+            // should be reflected in MergeProperties as well.
+            if (properties == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("properties");
+            }
+
+            if (_disposed)
+            {
+                ThrowDisposed();
+            }
+
+            if (properties._properties != null)
+            {
+                for (int i = 0; i < properties._properties.Length; i++)
+                {
+                    if (properties._properties[i].Name == null)
+                    {
+                        break;
+                    }
+
+                    Property property = properties._properties[i];
+
+                    IMergeEnabledMessageProperty currentValue;
+                    if (!this.TryGetValue(property.Name, out currentValue) ||
+                        !currentValue.TryMergeWithProperty(property.Value))
+                    {
+                        // Merge wasn't possible so copy
+                        // this[string] will call CreateCopyOfPropertyValue, so we don't need to repeat that here
+                        this[property.Name] = property.Value;
+                    }
+                }
+            }
+
+            this.Via = properties.Via;
+            this.AllowOutputBatching = properties.AllowOutputBatching;
+            this.Security = (properties.Security != null) ? (SecurityMessageProperty)properties.Security.CreateCopy() : null;
+            this.Encoder = properties.Encoder;
+        }
 
         internal void CopyProperties(KeyValuePair<string, object>[] array)
         {

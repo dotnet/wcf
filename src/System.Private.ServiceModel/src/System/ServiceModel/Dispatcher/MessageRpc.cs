@@ -20,6 +20,7 @@ namespace System.ServiceModel.Dispatcher
     {
         internal readonly ServiceChannel Channel;
         internal readonly ChannelHandler channelHandler;
+        internal readonly object[] Correlation;
         internal readonly OperationContext OperationContext;
         internal ServiceModelActivity Activity;
         internal Guid ResponseActivityId;
@@ -39,6 +40,7 @@ namespace System.ServiceModel.Dispatcher
         internal bool MessageRpcOwnsInstanceContextThrottle;
         internal MessageRpcProcessor NextProcessor;
         internal Collection<MessageHeaderInfo> NotUnderstoodHeaders;
+        internal DispatchOperationRuntime Operation;
         internal Message Request;
         internal RequestContext RequestContext;
         internal bool RequestContextThrewOnReply;
@@ -60,7 +62,7 @@ namespace System.ServiceModel.Dispatcher
         private bool _isInstanceContextSingleton;
         private SignalGate<IAsyncResult> _invokeContinueGate;
 
-        internal MessageRpc(RequestContext requestContext, Message request,
+        internal MessageRpc(RequestContext requestContext, Message request, DispatchOperationRuntime operation,
             ServiceChannel channel, ChannelHandler channelHandler, bool cleanThread,
             OperationContext operationContext, InstanceContext instanceContext, EventTraceActivity eventTraceActivity)
         {
@@ -73,6 +75,7 @@ namespace System.ServiceModel.Dispatcher
             this.CanSendReply = true;
             this.Channel = channel;
             this.channelHandler = channelHandler;
+            this.Correlation = EmptyArray<object>.Allocate(operation.Parent.CorrelationCount);
             this.DidDeserializeRequestBody = false;
             this.Error = null;
             this.ErrorProcessor = null;
@@ -82,6 +85,7 @@ namespace System.ServiceModel.Dispatcher
             this.MessageRpcOwnsInstanceContextThrottle = false;
             this.NextProcessor = null;
             this.NotUnderstoodHeaders = null;
+            this.Operation = operation;
             this.OperationContext = operationContext;
             _paused = false;
             this.ParametersDisposed = false;
@@ -104,6 +108,12 @@ namespace System.ServiceModel.Dispatcher
             _isInstanceContextSingleton = false;
             _invokeContinueGate = null;
 
+            if (!operation.IsOneWay && !operation.Parent.ManualAddressing)
+            {
+                this.RequestID = request.Headers.MessageId;
+                this.ReplyToInfo = new RequestReplyCorrelator.ReplyToInfo(request);
+            }
+            else
             {
                 this.RequestID = null;
                 this.ReplyToInfo = new RequestReplyCorrelator.ReplyToInfo();
@@ -320,6 +330,71 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
+        internal void DisposeParameters(bool excludeInput)
+        {
+            if (this.Operation.DisposeParameters)
+            {
+                this.DisposeParametersCore(excludeInput);
+            }
+        }
+
+        internal void DisposeParametersCore(bool excludeInput)
+        {
+            if (!this.ParametersDisposed)
+            {
+                if (!excludeInput)
+                {
+                    this.DisposeParameterList(this.InputParameters);
+                }
+
+                this.DisposeParameterList(this.OutputParameters);
+
+                IDisposable disposableParameter = this.ReturnParameter as IDisposable;
+                if (disposableParameter != null)
+                {
+                    try
+                    {
+                        disposableParameter.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        if (Fx.IsFatal(e))
+                        {
+                            throw;
+                        }
+                        this.channelHandler.HandleError(e);
+                    }
+                }
+                this.ParametersDisposed = true;
+            }
+        }
+
+        void DisposeParameterList(object[] parameters)
+        {
+            IDisposable disposableParameter = null;
+            if (parameters != null)
+            {
+                foreach (Object obj in parameters)
+                {
+                    disposableParameter = obj as IDisposable;
+                    if (disposableParameter != null)
+                    {
+                        try
+                        {
+                            disposableParameter.Dispose();
+                        }
+                        catch (Exception e)
+                        {
+                            if (Fx.IsFatal(e))
+                            {
+                                throw;
+                            }
+                            this.channelHandler.HandleError(e);
+                        }
+                    }
+                }
+            }
+        }
 
         // See notes on UnPause and Resume (mutually exclusive)
         // Pausing will Increment the BusyCount for the hosting environment

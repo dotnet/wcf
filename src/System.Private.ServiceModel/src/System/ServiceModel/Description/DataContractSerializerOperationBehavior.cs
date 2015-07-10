@@ -131,6 +131,20 @@ namespace System.ServiceModel.Description
 
         void IOperationBehavior.ApplyDispatchBehavior(OperationDescription description, DispatchOperation dispatch)
         {
+            if (description == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("description");
+
+            if (dispatch == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("dispatch");
+
+            if (dispatch.Formatter != null)
+                return;
+
+            bool formatRequest;
+            bool formatReply;
+            dispatch.Formatter = (IDispatchMessageFormatter)GetFormatter(description, out formatRequest, out formatReply, false);
+            dispatch.DeserializeRequest = formatRequest;
+            dispatch.SerializeReply = formatReply;
         }
 
         void IOperationBehavior.ApplyClientBehavior(OperationDescription description, ClientOperation proxy)

@@ -131,7 +131,6 @@ namespace System.ServiceModel.Description
             child.BeginMethod = operation.BeginMethod;
             child.EndMethod = operation.EndMethod;
             child.IsOneWay = operation.IsOneWay;
-            child.IsTerminating = operation.IsTerminating;
             child.IsInitiating = operation.IsInitiating;
             child.IsSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
             for (int i = 0; i < operation.Faults.Count; i++)
@@ -159,15 +158,12 @@ namespace System.ServiceModel.Description
 
             child.HasNoDisposableParameters = operation.HasNoDisposableParameters;
 
-            child.IsTerminating = operation.IsTerminating;
             child.IsSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
             for (int i = 0; i < operation.Faults.Count; i++)
             {
                 FaultDescription fault = operation.Faults[i];
                 child.FaultContractInfos.Add(new FaultContractInfo(fault.Action, fault.DetailType, fault.ElementName, fault.Namespace, operation.KnownTypes));
             }
-
-            child.IsInsideTransactedReceiveScope = operation.IsInsideTransactedReceiveScope;
 
             if (requestAction != MessageHeaders.WildcardAction)
             {
@@ -195,7 +191,6 @@ namespace System.ServiceModel.Description
             }
             // endpoint behaviors
             BindingInformationEndpointBehavior.Instance.ApplyClientBehavior(serviceEndpoint, clientRuntime);
-            TransactionContractInformationEndpointBehavior.Instance.ApplyClientBehavior(serviceEndpoint, clientRuntime);
             for (int i = 0; i < serviceEndpoint.Behaviors.Count; i++)
             {
                 IEndpointBehavior behavior = serviceEndpoint.Behaviors[i];
@@ -320,38 +315,6 @@ namespace System.ServiceModel.Description
             {
                 IBindingMulticastCapabilities multicast = binding.GetProperty<IBindingMulticastCapabilities>(new BindingParameterCollection());
                 return (multicast != null) && multicast.IsMulticast;
-            }
-        }
-        internal class TransactionContractInformationEndpointBehavior : IEndpointBehavior
-        {
-            private static TransactionContractInformationEndpointBehavior s_instance;
-            public static TransactionContractInformationEndpointBehavior Instance
-            {
-                get
-                {
-                    if (s_instance == null)
-                    {
-                        s_instance = new TransactionContractInformationEndpointBehavior();
-                    }
-                    return s_instance;
-                }
-            }
-            public void Validate(ServiceEndpoint serviceEndpoint) { }
-            public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection parameters) { }
-            public void ApplyClientBehavior(ServiceEndpoint serviceEndpoint, ClientRuntime behavior)
-            {
-                behavior.AddTransactionFlowProperties = UsesTransactionFlowProperties(serviceEndpoint.Binding.CreateBindingElements(),
-                                                                                      serviceEndpoint.Contract);
-            }
-            public void ApplyDispatchBehavior(ServiceEndpoint serviceEndpoint, EndpointDispatcher endpointDispatcher)
-            {
-                endpointDispatcher.DispatchRuntime.IgnoreTransactionMessageProperty = !UsesTransactionFlowProperties(
-                    serviceEndpoint.Binding.CreateBindingElements(), serviceEndpoint.Contract);
-            }
-            private static bool UsesTransactionFlowProperties(BindingElementCollection bindingElements, ContractDescription contract)
-            {
-                // 
-                return false;
             }
         }
 

@@ -106,10 +106,6 @@ namespace System.ServiceModel.Dispatcher
         {
             base.OnOpened();
             _channelDispatcher.Channels.IncrementActivityCount();
-            if (_channelDispatcher.IsTransactedReceive && _channelDispatcher.ReceiveContextEnabled && _channelDispatcher.MaxTransactedBatchSize > 0)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.IncompatibleBehaviors));
-            }
             NewChannelPump();
         }
 

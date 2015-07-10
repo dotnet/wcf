@@ -14,7 +14,7 @@ using System.Runtime;
 
 namespace System.ServiceModel.Dispatcher
 {
-    internal abstract class OperationFormatter : IClientMessageFormatter
+    internal abstract class OperationFormatter : IClientMessageFormatter, IDispatchMessageFormatter
     {
         private MessageDescription _replyDescription;
         private MessageDescription _requestDescription;
@@ -160,6 +160,60 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
+        public void DeserializeRequest(Message message, object[] parameters)
+        {
+            if (message == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+
+            if (parameters == null)
+                throw TraceUtility.ThrowHelperError(new ArgumentNullException("parameters"), message);
+
+            try
+            {
+                if (_requestDescription.IsTypedMessage)
+                {
+                    object typeMessageInstance = CreateTypedMessageInstance(_requestDescription.MessageType);
+                    TypedMessageParts typedMessageParts = new TypedMessageParts(typeMessageInstance, _requestDescription);
+                    object[] parts = new object[typedMessageParts.Count];
+
+                    GetPropertiesFromMessage(message, _requestDescription, parts);
+                    GetHeadersFromMessage(message, _requestDescription, parts, true/*isRequest*/);
+                    DeserializeBodyContents(message, parts, true/*isRequest*/);
+
+                    // copy values into the actual field/properties
+                    typedMessageParts.SetTypedMessageParts(parts);
+
+                    parameters[0] = typeMessageInstance;
+                }
+                else
+                {
+                    GetPropertiesFromMessage(message, _requestDescription, parameters);
+                    GetHeadersFromMessage(message, _requestDescription, parameters, true/*isRequest*/);
+                    DeserializeBodyContents(message, parameters, true/*isRequest*/);
+                }
+            }
+            catch (XmlException xe)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    OperationFormatter.CreateDeserializationFailedFault(
+                        SR.Format(SR.SFxErrorDeserializingRequestBodyMore, _operationName, xe.Message),
+                        xe));
+            }
+            catch (FormatException fe)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    OperationFormatter.CreateDeserializationFailedFault(
+                        SR.Format(SR.SFxErrorDeserializingRequestBodyMore, _operationName, fe.Message),
+                        fe));
+            }
+            catch (SerializationException se)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
+                    SR.Format(SR.SFxErrorDeserializingRequestBodyMore, _operationName, se.Message),
+                    se));
+            }
+        }
+
         private object DeserializeBodyContents(Message message, object[] parameters, bool isRequest)
         {
             MessageDescription messageDescription;
@@ -217,6 +271,44 @@ namespace System.ServiceModel.Dispatcher
             AddPropertiesToMessage(msg, _requestDescription, parts);
             AddHeadersToMessage(msg, _requestDescription, parts, true /*isRequest*/);
 
+            return msg;
+        }
+
+        public Message SerializeReply(MessageVersion messageVersion, object[] parameters, object result)
+        {
+            object[] parts = null;
+            object resultPart = null;
+
+            if (messageVersion == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("messageVersion");
+
+            if (parameters == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parameters");
+
+            if (_replyDescription.IsTypedMessage)
+            {
+                // If the response is a typed message then it must 
+                // be the response (as opposed to an out param).  We will
+                // serialize the response in the exact same way that we
+                // would serialize a bunch of outs (with no return value).
+
+                TypedMessageParts typedMessageParts = new TypedMessageParts(result, _replyDescription);
+
+                // make a copy of the list so that we have the actual values of the field/properties
+                parts = new object[typedMessageParts.Count];
+                typedMessageParts.GetTypedMessageParts(parts);
+            }
+            else
+            {
+                parts = parameters;
+                resultPart = result;
+            }
+
+            Message msg = new OperationFormatterMessage(this, messageVersion,
+                _replyAction == null ? null : ActionHeader.Create(_replyAction, messageVersion.Addressing),
+                parts, resultPart, false/*isRequest*/);
+            AddPropertiesToMessage(msg, _replyDescription, parts);
+            AddHeadersToMessage(msg, _replyDescription, parts, false /*isRequest*/);
             return msg;
         }
 

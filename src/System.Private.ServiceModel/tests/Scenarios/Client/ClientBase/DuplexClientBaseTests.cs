@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Runtime;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
@@ -85,7 +86,13 @@ public static class DuplexClientBaseTests
 
         public void OnPingCallback(Guid guid)
         {
-            _tcs.SetResult(guid);
+            // Set the result in an async task with a 100ms delay to prevent a race condition
+            // where the OnPingCallback hasn't sent the reply to the server before the channel is closed.
+            Task.Run(async () =>
+            {
+                await Task.Delay(100);
+                _tcs.SetResult(guid);
+            });
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Runtime;
 
 namespace System.ServiceModel.Dispatcher
 {
-    internal class PrimitiveOperationFormatter : IClientMessageFormatter
+    internal class PrimitiveOperationFormatter : IClientMessageFormatter, IDispatchMessageFormatter
     {
         private OperationDescription _operation;
         private MessageDescription _responseMessage;
@@ -179,6 +179,28 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
+        ActionHeader GetReplyActionHeader(AddressingVersion addressing)
+        {
+            if (_replyAction == null)
+            {
+                return null;
+            }
+
+            if (addressing == AddressingVersion.WSAddressing10)
+            {
+                return ReplyActionHeader10;
+            }
+            else if (addressing == AddressingVersion.None)
+            {
+                return ReplyActionHeaderNone;
+            }
+            else
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    new InvalidOperationException(SR.Format(SR.AddressingVersionNotSupported, addressing)));
+            }
+        }
+
         private static string GetArrayItemName(Type type)
         {
             switch (type.GetTypeCode())
@@ -332,6 +354,17 @@ namespace System.ServiceModel.Dispatcher
             return Message.CreateMessage(messageVersion, GetActionHeader(messageVersion.Addressing), new PrimitiveRequestBodyWriter(parameters, this));
         }
 
+        public Message SerializeReply(MessageVersion messageVersion, object[] parameters, object result)
+        {
+            if (messageVersion == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("messageVersion");
+
+            if (parameters == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parameters");
+
+            return Message.CreateMessage(messageVersion, GetReplyActionHeader(messageVersion.Addressing), new PrimitiveResponseBodyWriter(parameters, result, this));
+        }
+
         public object DeserializeReply(Message message, object[] parameters)
         {
             if (message == null)
@@ -369,6 +402,72 @@ namespace System.ServiceModel.Dispatcher
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
                     SR.Format(SR.SFxErrorDeserializingReplyBodyMore, _operation.Name, se.Message), se));
+            }
+        }
+
+        public void DeserializeRequest(Message message, object[] parameters)
+        {
+            if (message == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+            if (parameters == null)
+                throw TraceUtility.ThrowHelperError(new ArgumentNullException("parameters"), message);
+            try
+            {
+                if (message.IsEmpty)
+                {
+                    if (_requestWrapperName == null)
+                        return;
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(SR.SFxInvalidMessageBodyEmptyMessage));
+                }
+
+                XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
+                using (bodyReader)
+                {
+                    DeserializeRequest(bodyReader, parameters);
+                    message.ReadFromBodyContentsToEnd(bodyReader);
+                }
+            }
+            catch (XmlException xe)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    OperationFormatter.CreateDeserializationFailedFault(
+                        SR.Format(SR.SFxErrorDeserializingRequestBodyMore, _operation.Name, xe.Message),
+                        xe));
+            }
+            catch (FormatException fe)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    OperationFormatter.CreateDeserializationFailedFault(
+                        SR.Format(SR.SFxErrorDeserializingRequestBodyMore, _operation.Name, fe.Message),
+                        fe));
+            }
+            catch (SerializationException se)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
+                    SR.Format(SR.SFxErrorDeserializingRequestBodyMore, _operation.Name, se.Message),
+                    se));
+            }
+        }
+
+        void DeserializeRequest(XmlDictionaryReader reader, object[] parameters)
+        {
+            if (_requestWrapperName != null)
+            {
+                if (!reader.IsStartElement(_requestWrapperName, _requestWrapperNamespace))
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(SR.Format(SR.SFxInvalidMessageBody, _requestWrapperName, _requestWrapperNamespace, reader.NodeType, reader.Name, reader.NamespaceURI)));
+                bool isEmptyElement = reader.IsEmptyElement;
+                reader.Read();
+                if (isEmptyElement)
+                {
+                    return;
+                }
+            }
+
+            DeserializeParameters(reader, _requestParts, parameters);
+
+            if (_requestWrapperName != null)
+            {
+                reader.ReadEndElement();
             }
         }
 
