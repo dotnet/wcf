@@ -96,4 +96,14 @@ public static partial class Endpoints
     {
         get { return BaseAddress.TcpBaseAddress + "/tcp-custombinding-nosecurity-text"; }
     }
+
+    public static string Tcp_NoSecurity_TaskReturn_Address
+    {
+        get { return BaseAddress.TcpDuplexTaskReturnAddress + "/tcp-nosecurity-taskreturn"; }
+    }
+
+    public static string Tcp_NoSecurity_DuplexCallback_Address
+    {
+        get { return BaseAddress.TcpDuplexCallbackAddress + "/tcp-nosecurity-typedproxy-duplexcallback"; }
+    }
 }

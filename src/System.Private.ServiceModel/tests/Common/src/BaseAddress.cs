@@ -54,6 +54,8 @@ public static class BaseAddress
     // Base address for Net.TCP endpoints
     public const string TcpBaseAddress = "net.tcp://localhost:809/WindowsCommunicationFoundation";
     public const string TcpDuplexAddress = "net.tcp://localhost:810/WindowsCommunicationFoundation";
+    public const string TcpDuplexCallbackAddress = "net.tcp://localhost:811/WindowsCommunicationFoundation";
+    public const string TcpDuplexTaskReturnAddress = "net.tcp://localhost:812/WindowsCommunicationFoundation";
 }
 
 
