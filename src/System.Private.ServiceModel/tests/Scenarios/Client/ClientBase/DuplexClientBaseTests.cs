@@ -14,7 +14,6 @@ public static class DuplexClientBaseTests
     static TimeSpan maxTestWaitTime = TimeSpan.FromSeconds(10);
 
     [Fact]
-    [ActiveIssue(90)]
     [OuterLoop]
     public static void DuplexClientBaseOfT_OverNetTcp_Call()
     {
