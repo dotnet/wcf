@@ -13,6 +13,8 @@ namespace WcfService
             using (ServiceHost wcfservicehost = new ServiceHost(typeof(WcfService)))
             using (ServiceHost userNameService = new ServiceHost(typeof(WcfUserNameService)))
             using (ServiceHost wcfDuplexService = new ServiceHost(typeof(WcfDuplexService)))
+            using (ServiceHost duplexCallbackService = new ServiceHost(typeof(DuplexCallbackService)))
+            using (ServiceHost duplexChannelCallbackReturnService = new ServiceHost(typeof(DuplexChannelCallbackReturnService)))
             {
                 wcfservicehost.Open();
                 Console.WriteLine("WcfService is ready");
@@ -20,8 +22,12 @@ namespace WcfService
                 Console.WriteLine("Wcf user name service is ready");
                 wcfDuplexService.Open();
                 Console.WriteLine("WcfDuplexService is ready");
+                duplexCallbackService.Open();
+                Console.WriteLine("DuplexCallbackService is ready");
+                duplexChannelCallbackReturnService.Open();
+                Console.WriteLine("DuplexChannelCallbackReturnService is ready");
 
-                DumpEndpoints(wcfservicehost, userNameService, wcfDuplexService);
+                DumpEndpoints(wcfservicehost, userNameService, wcfDuplexService, duplexCallbackService, duplexChannelCallbackReturnService);
 
                 Console.WriteLine("Press ENTER to close services...");
                 Console.ReadLine();

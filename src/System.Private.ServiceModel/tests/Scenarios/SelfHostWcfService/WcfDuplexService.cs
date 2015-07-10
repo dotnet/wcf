@@ -19,7 +19,7 @@ namespace WcfService
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
-    internal class TestIDuplexService : IDuplexChannelService
+    internal class DuplexCallbackService : IDuplexChannelService
     {
         public void Ping(Guid guid)
         {

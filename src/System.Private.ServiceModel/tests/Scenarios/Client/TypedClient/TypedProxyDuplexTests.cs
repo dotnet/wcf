@@ -30,24 +30,24 @@ public static class TypedProxyDuplexTests
         NetTcpBinding binding = new NetTcpBinding();
         binding.Security.Mode = SecurityMode.None;
 
-        DuplexChannelServiceCallback callbackService = new DuplexChannelServiceCallback();
+        DuplexTaskReturnServiceCallback callbackService = new DuplexTaskReturnServiceCallback();
         InstanceContext context = new InstanceContext(callbackService);
 
-        using (factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Callback_Address)))
+        try
         {
+            factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address));
             IWcfDuplexTaskReturnService serviceProxy = factory.CreateChannel();
 
             Task<Guid> task = serviceProxy.Ping(guid);
 
             Guid returnedGuid = task.Result;
 
-            if (guid != returnedGuid)
-            {
-                Assert.True(false, String.Format("The sent GUID does not match the returned GUID. Sent: {0} Received: {1}", guid, returnedGuid));
-            }
+            Assert.Equal(guid, returnedGuid);
 
             factory.Close();
-
+        }
+        finally
+        {
             if (factory != null && factory.State != CommunicationState.Closed)
             {
                 factory.Abort();

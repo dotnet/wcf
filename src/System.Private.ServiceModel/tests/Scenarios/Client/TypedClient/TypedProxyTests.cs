@@ -433,7 +433,7 @@ public static class TypedProxyTests
             DuplexChannelServiceCallback callbackService = new DuplexChannelServiceCallback();
             InstanceContext context = new InstanceContext(callbackService);
 
-            factory = new DuplexChannelFactory<IDuplexChannelService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Callback_Address));
+            factory = new DuplexChannelFactory<IDuplexChannelService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_DuplexCallback_Address));
             IDuplexChannelService serviceProxy = factory.CreateChannel();
 
             serviceProxy.Ping(guid);
