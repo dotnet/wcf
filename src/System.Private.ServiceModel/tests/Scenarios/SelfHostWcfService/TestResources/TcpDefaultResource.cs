@@ -1,0 +1,15 @@
+﻿using System.ServiceModel;
+using System.ServiceModel.Channels;
+
+namespace WcfService.TestResources
+{
+    internal class TcpDefaultResource : TcpResource
+    {
+        protected override string Address { get { return "tcp-default"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new NetTcpBinding() { PortSharingEnabled = false };
+        }
+    }
+}

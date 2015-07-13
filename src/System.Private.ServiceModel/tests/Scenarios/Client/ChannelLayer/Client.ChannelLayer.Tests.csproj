@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <TestCategories>OuterLoop</TestCategories>
+    </PropertyGroup>
     <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
     <PropertyGroup>
         <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -9,7 +12,6 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>Client.ChannelLayer.Tests</RootNamespace>
         <AssemblyName>Client.ChannelLayer.Tests</AssemblyName>
-        <TestCategories>OuterLoop</TestCategories>
         <SignAssembly>false</SignAssembly>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ProjectGuid>{1DFF7AF1-5873-4984-B871-73F2F9A84239}</ProjectGuid>

@@ -5,19 +5,19 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CBE9909F-4CF7-4AD0-9307-BD0DFBB1105E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WcfService</RootNamespace>
     <AssemblyName>WcfService</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <OutputPath>$(SolutionDir)\bin\WcfService\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,10 +26,12 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,10 +56,28 @@
     <Compile Include="IWcfRestartService.cs" />
     <Compile Include="IWcfService.cs" />
     <Compile Include="MahojongTypes.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
+    <Compile Include="TestResources\BaseAddressResource.cs" />
+    <Compile Include="TestResources\EndpointNotFoundResource.cs" />
+    <Compile Include="TestResources\BasicAuthResource.cs" />
+    <Compile Include="TestResources\BasicHttpsResource.cs" />
+    <Compile Include="TestResources\DefaultCustomHttpResource.cs" />
+    <Compile Include="TestResources\HttpsWindowsResource.cs" />
+    <Compile Include="TestResources\HttpsNtlmResource.cs" />
+    <Compile Include="TestResources\HttpsDigestResource.cs" />
+    <Compile Include="TestResources\TcpDefaultResource.cs" />
+    <Compile Include="TestResources\TcpNoSecurityResource.cs" />
+    <Compile Include="TestResources\TcpNoSecurityTextResource.cs" />
+    <Compile Include="TestResources\HttpsSoap12Resource.cs" />
+    <Compile Include="TestResources\HttpSoap12Resource.cs" />
+    <Compile Include="TestResources\HttpsSoap11Resource.cs" />
+    <Compile Include="TestResources\HttpSoap11Resource.cs" />
+    <Compile Include="TestResources\HttpBinaryResource.cs" />
+    <Compile Include="TestResources\NetHttpResource.cs" />
+    <Compile Include="TestResources\BasicHttpResource.cs" />
+    <Compile Include="TestResources\EndpointResource.cs" />
     <Compile Include="TestHttpRequestMessageProperty.cs" />
     <Compile Include="WcfDuplexService.cs" />
     <Compile Include="WcfRestartService.cs" />
@@ -66,6 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\tools\Bridge\WcfTestBridgeCommon\WcfTestBridgeCommon.csproj">
+      <Project>{81305303-19df-4512-a8a7-f97760daa3de}</Project>
+      <Name>WcfTestBridgeCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,7 +20,7 @@ if not defined VisualStudioVersion (
 :EnvSet
 
 :: Log build command line
-set _buildproj=src\System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\wcfservice.csproj
+set _buildproj=tools\Bridge\Bridge.sln
 set _buildlog=%~dp0msbuildWCFTestService.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"

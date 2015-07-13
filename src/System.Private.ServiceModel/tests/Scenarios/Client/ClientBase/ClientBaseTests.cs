@@ -23,7 +23,7 @@ public static class ClientBaseTests
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
-            MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             client.Endpoint.EndpointBehaviors.Add(new ClientMessagePropertyBehavior());
             IWcfService serviceProxy = client.ChannelFactory.CreateChannel();
             TestHttpRequestMessageProperty property = serviceProxy.EchoHttpRequestMessageProperty();
@@ -76,7 +76,7 @@ public static class ClientBaseTests
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
-            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
 
             // Add the ClientMessageInspector and give it an instance where it can record what happens when it is called.
             ClientMessageInspectorData data = new ClientMessageInspectorData();
@@ -135,7 +135,7 @@ public static class ClientBaseTests
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
-            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
 
             string result = serviceProxy.Echo("Hello");
