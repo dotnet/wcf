@@ -417,7 +417,7 @@ public static class TypedProxyTests
     }
 
     [Fact]
-    [ActiveIssue(90)]
+    [ActiveIssue(157)]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_DuplexCallback()
     {
