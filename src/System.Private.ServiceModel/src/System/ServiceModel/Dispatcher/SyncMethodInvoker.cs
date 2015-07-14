@@ -71,7 +71,7 @@ namespace System.ServiceModel.Dispatcher
             return tuple.Item1;
         }
 
-        private async Task<Tuple<object,object[]>> InvokeAsync(object instance, object[] inputs)
+        private Task<Tuple<object,object[]>> InvokeAsync(object instance, object[] inputs)
         {
             EnsureIsInitialized();
 
@@ -142,7 +142,7 @@ namespace System.ServiceModel.Dispatcher
                     {
                         TD.OperationInvoked(eventTraceActivity, MethodName, TraceUtility.GetCallerInfo(OperationContext.Current));
                     }
-                    returnValue = await _invokeDelegate(instance, inputs, outputs);
+                    returnValue = _invokeDelegate(instance, inputs, outputs);
                     callSucceeded = true;
                 }
             }
@@ -182,7 +182,7 @@ namespace System.ServiceModel.Dispatcher
                 }
             }
 
-            return Tuple.Create(returnValue, outputs);
+            return Task.FromResult(Tuple.Create(returnValue, outputs));
         }
 
         void EnsureIsInitialized()

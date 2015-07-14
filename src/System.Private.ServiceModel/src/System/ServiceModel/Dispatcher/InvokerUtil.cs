@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace System.ServiceModel.Dispatcher
 {
 
-    delegate Task<object> InvokeDelegate(object target, object[] inputs, object[] outputs);
+    delegate object InvokeDelegate(object target, object[] inputs, object[] outputs);
 
     internal sealed class InvokerUtil
     {
@@ -30,7 +30,7 @@ namespace System.ServiceModel.Dispatcher
             internal InvokeDelegate GenerateInvokeDelegate(MethodInfo method, out int inputParameterCount, out int outputParameterCount)
             {
                 ParameterInfo[] parameters = method.GetParameters();
-                bool returnsValue = method.ReturnType == typeof (void);
+                bool returnsValue = method.ReturnType != typeof (void);
                 var inputCount = parameters.Length;
                 inputParameterCount = inputCount;
 
@@ -70,8 +70,10 @@ namespace System.ServiceModel.Dispatcher
                     {
                         outputs[i] = inputs[outputPos[i]];
                     }
-                    return Task.FromResult(result);
+
+                    return result;
                 };
+
                 return lambda;
             }
         }
