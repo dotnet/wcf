@@ -15,12 +15,12 @@ public static class ClientBaseTests
     [OuterLoop]
     public static void MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify()
     {
-        CustomBinding customBinding = new CustomBinding();
-        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-        customBinding.Elements.Add(new HttpTransportBindingElement());
-        MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        client.Endpoint.EndpointBehaviors.Add(new ClientMessagePropertyBehavior());
+            MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            client.Endpoint.EndpointBehaviors.Add(new ClientMessagePropertyBehavior());
 
         try
         {
@@ -33,15 +33,15 @@ public static class ClientBaseTests
             Assert.Equal("My%20address", property.QueryString);
             Assert.True(property.Headers.Count > 0, "TestHttpRequestMessageProperty.Headers should not have empty headers");
             Assert.Equal("my value", property.Headers["customer"]);
-        }
-        finally
-        {
-            if (client != null && client.State != CommunicationState.Closed)
-            {
-                client.Abort(); 
             }
-        }
-    }
+        finally
+            {
+            if (client != null && client.State != CommunicationState.Closed)
+                {
+                client.Abort(); 
+                }
+                }
+                }
 
     [Fact]
     [OuterLoop]
@@ -50,14 +50,15 @@ public static class ClientBaseTests
         // This test verifies ClientMessageInspector can be added to the client endpoint behaviors
         // and this is it called properly when a message is sent.
 
-        CustomBinding customBinding = new CustomBinding();
-        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-        customBinding.Elements.Add(new HttpTransportBindingElement());
-        MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        // Add the ClientMessageInspector and give it an instance where it can record what happens when it is called.
-        ClientMessageInspectorData data = new ClientMessageInspectorData();
-        client.Endpoint.EndpointBehaviors.Add(new ClientMessageInspectorBehavior(data));
+            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+
+            // Add the ClientMessageInspector and give it an instance where it can record what happens when it is called.
+            ClientMessageInspectorData data = new ClientMessageInspectorData();
+            client.Endpoint.EndpointBehaviors.Add(new ClientMessageInspectorBehavior(data));
 
         try
         {
@@ -74,7 +75,7 @@ public static class ClientBaseTests
             Assert.True(data.Reply != null, "Did not call pass Reply to AfterReceiveReplyCalled");
         }
         finally
-        {
+            {
             if (client != null && client.State != CommunicationState.Closed)
             {
                 client.Abort();
@@ -85,7 +86,7 @@ public static class ClientBaseTests
     [Fact]
     [OuterLoop]
     public static void ClientBaseOfT_Sync_RoundTrip_Check_CommunicationState()
-    {
+            {
         CustomBinding customBinding = new CustomBinding();
         customBinding.Elements.Add(new TextMessageEncodingBindingElement());
         customBinding.Elements.Add(new HttpTransportBindingElement());
@@ -97,37 +98,37 @@ public static class ClientBaseTests
         Assert.Equal(CommunicationState.Opened, client.State);
 
         try
-        {
+            {
             string result = serviceProxy.Echo("Hello");
             Assert.Equal(CommunicationState.Opened, client.State);
 
             ((ICommunicationObject)client).Close();
             Assert.Equal(CommunicationState.Closed, client.State);
-        }
+            }
         finally
-        {
+            {
             // normally we'd also check for if (client != null && client.State != CommuncationState.Closed), 
             // but this is a test and it'd be good to have the Abort happen and the channel is still Closed
             if (client != null)
             {
                 client.Abort();
                 Assert.Equal(CommunicationState.Closed, client.State);
-            }
+        }
         }
     }
 
     [Fact]
     [OuterLoop]
     public static void ClientBaseOfT_Sync_RoundTrip_Call_Using_HttpTransport()
-    {
+        {
         // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation over Http
 
-        CustomBinding customBinding = new CustomBinding();
-        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-        customBinding.Elements.Add(new HttpTransportBindingElement());
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
-        IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
 
         try
         {
@@ -141,7 +142,7 @@ public static class ClientBaseTests
                 client.Abort();
             }
         }
-    }
+            }
 
     [Fact]
     [OuterLoop]
@@ -167,7 +168,7 @@ public static class ClientBaseTests
         finally
         {
             if (client != null && client.State != CommunicationState.Closed)
-            {
+        {
                 client.Abort();
             }
         }

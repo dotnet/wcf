@@ -2,108 +2,115 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.ServiceModel.Tests.Common;
+
 public static partial class Endpoints
 {
     // HTTP Addresses
+    public static string DefaultCustomHttp_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DefaultCustomHttpResource"); }
+    }
+
     public static string HttpBaseAddress_Basic
     {
-        get { return BaseAddress.HttpBaseAddress + "/Basic"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicHttpResource"); }
     }
 
     public static string HttpBaseAddress_NetHttp
     {
-        get { return BaseAddress.HttpBaseAddress + "/NetHttp"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.NetHttpResource"); }
     }
 
     public static string HttpSoap11_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/http-soap11"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpSoap11Resource"); }
     }
 
     public static string HttpSoap12_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/http-soap12"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpSoap12Resource"); }
     }
 
     public static string HttpBinary_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/http-binary"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpBinaryResource"); }
     }
 
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
-        get { return BaseAddress.HttpsBasicBaseAddress + "/CustomerUserName/https-basic"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicAuthResource"); } 
     }
 
     public static string Https_DigestAuth_Address
     {
-        get { return BaseAddress.HttpsDigestBaseAddress + "/https-digest"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsDigestResource"); }
     }
 
     public static string Https_NtlmAuth_Address
     {
-        get { return BaseAddress.HttpsNtlmBaseAddress + "/https-ntlm"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsNtlmResource"); }
     }
 
     public static string Https_WindowsAuth_Address
     {
-        get { return BaseAddress.HttpsWindowsBaseAddress + "/https-windows"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsWindowsResource"); }
     }
 
     public static string Https_DefaultBinding_Address
     {
-        get { return BaseAddress.HttpsBaseAddress + "/basicHttps"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicHttpsResource"); }
     }
 
     public static string HttpsSoap11_Address
     {
-        get { return BaseAddress.HttpsBaseAddress + "/https-soap11"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap11Resource"); }
     }
 
     public static string HttpsSoap12_Address
     {
-        get { return BaseAddress.HttpsBaseAddress + "/https-soap12"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap12Resource"); }
     }
 
     public static string HttpUrlNotFound_Address
     {
-        get { return BaseAddress.HttpServerBaseAddress + "/UnknownUrl.htm"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.EndpointNotFoundResource") + "/UnknownUrl.htm"; } 
     }
 
     public static string HttpProtocolError_Address
     {
-        get { return BaseAddress.HttpBaseAddress + "/UnknownProtocolUrl.htm"; }
+        get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; } 
     }
 
     // net.tcp Addresses
     public static string Tcp_DefaultBinding_Address
     {
-        get { return BaseAddress.TcpBaseAddress + "/tcp-default"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpDefaultResource"); }
     }
 
     public static string Tcp_NoSecurity_Address
     {
-        get { return BaseAddress.TcpBaseAddress + "/tcp-nosecurity"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpNoSecurityResource"); }
     }
 
     public static string Tcp_NoSecurity_Callback_Address
     {
-        get { return BaseAddress.TcpDuplexAddress + "/tcp-nosecurity-callback"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexResource"); }
     }
 
     public static string Tcp_CustomBinding_NoSecurity_Text_Address
     {
-        get { return BaseAddress.TcpBaseAddress + "/tcp-custombinding-nosecurity-text"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpNoSecurityTextResource"); }
     }
 
     public static string Tcp_NoSecurity_TaskReturn_Address
     {
-        get { return BaseAddress.TcpDuplexTaskReturnAddress + "/tcp-nosecurity-taskreturn"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexChannelCallbackReturnResource"); }
     }
 
     public static string Tcp_NoSecurity_DuplexCallback_Address
     {
-        get { return BaseAddress.TcpDuplexCallbackAddress + "/tcp-nosecurity-typedproxy-duplexcallback"; }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexCallbackResource"); }
     }
 }

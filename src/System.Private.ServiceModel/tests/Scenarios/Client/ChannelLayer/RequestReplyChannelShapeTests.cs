@@ -84,7 +84,7 @@ public static class RequestReplyChannelShapeTests
 
             // Create the channel.
             IRequestChannel channel = factory.CreateChannel(
-               new EndpointAddress(BaseAddress.HttpBaseAddress));
+               new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             channel.Open();
 
             // Create the Message object to send to the service.
