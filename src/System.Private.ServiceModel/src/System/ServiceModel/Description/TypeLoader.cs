@@ -517,12 +517,14 @@ namespace System.ServiceModel.Description
             Contract.Assert(method1 != null);
             Contract.Assert(method2 != null);
 
-            if (method1 == method2)
+            if (method1.Equals(method2))
             {
                 return true;
             }
 
-            if (!String.Equals(method1.Name, method2.Name, StringComparison.Ordinal))
+            if (method1.ReturnType != method2.ReturnType ||
+                !String.Equals(method1.Name, method2.Name, StringComparison.Ordinal) ||
+                !ParameterInfosMatch(method1.ReturnParameter, method2.ReturnParameter))
             {
                 return false;
             }
@@ -536,13 +538,42 @@ namespace System.ServiceModel.Description
 
             for (int i = 0; i < parameters1.Length; ++i)
             {
-                if (parameters1[0].ParameterType != parameters2[i].ParameterType)
+                if (!ParameterInfosMatch(parameters1[i], parameters2[i]))
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        // Returns true if 2 ParameterInfo's match in signature with respect
+        // to the MemberInfo's in which they are declared. Position is required
+        // to match but name is not.
+        private static bool ParameterInfosMatch(ParameterInfo parameterInfo1, ParameterInfo parameterInfo2)
+        {
+            // Null is possible for a ParameterInfo from MethodInfo.ReturnParameter.
+            // If both are null, we have no information to compare and say they are equal.
+            if (parameterInfo1 == null && parameterInfo2 == null)
+            {
+                return true;
+            }
+
+            if (parameterInfo1 == null || parameterInfo2 == null)
+            {
+                return false;
+            }
+
+            if (parameterInfo1.Equals(parameterInfo2))
+            {
+                return true;
+            }
+
+            return ((parameterInfo1.ParameterType == parameterInfo2.ParameterType) &&
+                    (parameterInfo1.IsIn == parameterInfo2.IsIn) &&
+                    (parameterInfo1.IsOut == parameterInfo2.IsOut) &&
+                    (parameterInfo1.IsRetval == parameterInfo2.IsRetval) &&
+                    (parameterInfo1.Position == parameterInfo2.Position));
         }
 
         internal void AddBehaviorsSFx(ServiceEndpoint serviceEndpoint, Type contractType)
