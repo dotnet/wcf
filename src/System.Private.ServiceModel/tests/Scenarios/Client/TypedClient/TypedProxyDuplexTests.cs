@@ -20,7 +20,6 @@ public static class TypedProxyDuplexTests
     //              IDuplexChannel (for a two-way duplex message exchange pattern)
 
     [Fact]
-    [ActiveIssue(138)]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncTask_CallbackReturn()
     {

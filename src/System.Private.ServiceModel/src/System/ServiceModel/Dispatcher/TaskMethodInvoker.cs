@@ -99,7 +99,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (_isGenericTask)
             {
-                returnVal = _taskTResultGetMethod.Invoke(result, Type.EmptyTypes);
+                returnVal = _taskTResultGetMethod.Invoke(task, Type.EmptyTypes);
             }
             else
             {
@@ -187,7 +187,13 @@ namespace System.ServiceModel.Dispatcher
                         TD.OperationInvoked(eventTraceActivity, MethodName,
                             TraceUtility.GetCallerInfo(OperationContext.Current));
                     }
-                    returnValue = await _invokeDelegate(instance, inputs, outputs);
+                    returnValue = _invokeDelegate(instance, inputs, outputs);
+                    var returnValueTask = returnValue as Task;
+                    if (returnValueTask != null)
+                    {
+                        await returnValueTask;
+                    }
+
                     callSucceeded = true;
                 }
             }
