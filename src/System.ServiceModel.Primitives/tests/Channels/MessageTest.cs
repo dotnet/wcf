@@ -30,8 +30,7 @@ public static class MessageTest
         Assert.Equal<string>(s_action, message.Headers.Action);
         Assert.True(message.IsEmpty);
     }
-
-    [Fact(Skip = "Investigating failure")]
+    
     public static void CreateMessageWithSoap12WSAddressing10_WithBody()
     {
         string content = "This is what goes in the body of the message.";
