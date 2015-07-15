@@ -115,8 +115,8 @@
            Text="The build tools package was just restored and so we cannot continue the build of an individual project because targets from the build tools package were not able to be imported. Please retry the build the individual project again." />
   </Target>
 
-  <!-- Provide default empty targets for BuildAndTest and Test which can be hooked onto or overridden as necessary -->
+  <!-- Provide default targets which can be hooked onto or overridden as necessary -->
   <Target Name="BuildAndTest" DependsOnTargets="Build;Test" />
-
+  <Target Name="RebuildAndTest" DependsOnTargets="Rebuild;Test" />
   <Target Name="Test" />
 </Project>

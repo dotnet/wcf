@@ -12,6 +12,7 @@
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{C2210035-AAB0-4DBB-9A42-6A23C0BD763B}</ProjectGuid>
+    <CLSCompliant>false</CLSCompliant>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
