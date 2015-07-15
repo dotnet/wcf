@@ -15,52 +15,32 @@ public static class ClientBaseTests
     [OuterLoop]
     public static void MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = new CustomBinding();
+        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+        customBinding.Elements.Add(new HttpTransportBindingElement());
+        MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+
+        client.Endpoint.EndpointBehaviors.Add(new ClientMessagePropertyBehavior());
 
         try
         {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
-
-            MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-            client.Endpoint.EndpointBehaviors.Add(new ClientMessagePropertyBehavior());
             IWcfService serviceProxy = client.ChannelFactory.CreateChannel();
             TestHttpRequestMessageProperty property = serviceProxy.EchoHttpRequestMessageProperty();
-            if (property == null)
-            {
-                errorBuilder.AppendLine("Null HttpRequestMessageProperty returned");
-            }
-            else
-            {
-                if (property.SuppressEntityBody != false)
-                {
-                    errorBuilder.AppendLine("Expected SuppressEntityBody: false, actual: " + property.SuppressEntityBody);
-                }
-                if (property.Method != "POST")
-                {
-                    errorBuilder.AppendLine("Expected Method: POST, actual: " + property.Method);
-                }
-                if (property.QueryString != "My%20address")
-                {
-                    errorBuilder.AppendLine("Expected QueryString: My%20address, actual: " + property.QueryString);
-                }
-                if (property.Headers.Count == 0)
-                {
-                    errorBuilder.AppendLine("Headers are empty");
-                }
-                else if (property.Headers["customer"] != "my value")
-                {
-                    errorBuilder.AppendLine("Expected customer header: my value, actual: " + property.Headers["customer"]);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
 
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Scenario: MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify FAILED with the following errors: {0}", errorBuilder));
+            Assert.NotNull(property);
+            Assert.True(property.SuppressEntityBody == false, "Expected SuppressEntityBody to be 'false'");
+            Assert.Equal("POST", property.Method);
+            Assert.Equal("My%20address", property.QueryString);
+            Assert.True(property.Headers.Count > 0, "TestHttpRequestMessageProperty.Headers should not have empty headers");
+            Assert.Equal("my value", property.Headers["customer"]);
+        }
+        finally
+        {
+            if (client != null && client.State != CommunicationState.Closed)
+            {
+                client.Abort(); 
+            }
+        }
     }
 
     [Fact]
@@ -69,58 +49,37 @@ public static class ClientBaseTests
     {
         // This test verifies ClientMessageInspector can be added to the client endpoint behaviors
         // and this is it called properly when a message is sent.
-        StringBuilder errorBuilder = new StringBuilder();
+
+        CustomBinding customBinding = new CustomBinding();
+        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+        customBinding.Elements.Add(new HttpTransportBindingElement());
+        MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
+
+        // Add the ClientMessageInspector and give it an instance where it can record what happens when it is called.
+        ClientMessageInspectorData data = new ClientMessageInspectorData();
+        client.Endpoint.EndpointBehaviors.Add(new ClientMessageInspectorBehavior(data));
+
         try
         {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
-
-            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-
-            // Add the ClientMessageInspector and give it an instance where it can record what happens when it is called.
-            ClientMessageInspectorData data = new ClientMessageInspectorData();
-            client.Endpoint.EndpointBehaviors.Add(new ClientMessageInspectorBehavior(data));
             IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
 
             // This proxy call should invoke the client message inspector
             string result = serviceProxy.Echo("Hello");
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
 
-            if (!data.BeforeSendRequestCalled)
-            {
-                errorBuilder.AppendLine(String.Format("Did not call BeforeSendRequest"));
-            }
-
-            if (data.Request == null)
-            {
-                errorBuilder.AppendLine(String.Format("Did not call pass Request to BeforeSendRequest"));
-            }
-
-            if (data.Channel == null)
-            {
-                errorBuilder.AppendLine(String.Format("Did not call pass Channel to BeforeSendRequest"));
-            }
-
-            if (!data.AfterReceiveReplyCalled)
-            {
-                errorBuilder.AppendLine(String.Format("Did not call AfterReceiveReplyCalled"));
-            }
-
-            if (data.Reply == null)
-            {
-                errorBuilder.AppendLine(String.Format("Did not call pass Reply to AfterReceiveReplyCalled"));
-            }
+            Assert.Equal("Hello", result);
+            Assert.True(data.BeforeSendRequestCalled, "BeforeSendRequest should have been called");
+            Assert.True(data.Request != null, "Did not call pass Request to BeforeSendRequest");
+            Assert.True(data.Channel != null, "Did not call pass Channel to BeforeSendRequest");
+            Assert.True(data.AfterReceiveReplyCalled, "AfterReceiveReplyCalled should have been called");
+            Assert.True(data.Reply != null, "Did not call pass Reply to AfterReceiveReplyCalled");
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            if (client != null && client.State != CommunicationState.Closed)
+            {
+                client.Abort();
+            }
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ClientMessageInspectorScenario FAILED with the following errors: {0}", errorBuilder));
     }
 
     [Fact]
