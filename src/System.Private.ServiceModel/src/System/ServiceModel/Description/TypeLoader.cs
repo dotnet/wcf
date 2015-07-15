@@ -390,13 +390,11 @@ namespace System.ServiceModel.Description
         private KeyedByTypeCollection<IOperationBehavior> GetIOperationBehaviorAttributesFromType(OperationDescription opDesc, Type targetIface, Type implType)
         {
             KeyedByTypeCollection<IOperationBehavior> result = new KeyedByTypeCollection<IOperationBehavior>();
-            InterfaceMapping ifaceMap = default(InterfaceMapping);
             bool useImplAttrs = false;
             if (implType != null)
             {
                 if (targetIface.IsAssignableFrom(implType) && targetIface.IsInterface())
                 {
-                    ifaceMap = implType.GetInterfaceMap(targetIface);
                     useImplAttrs = true;
                 }
                 else
@@ -406,37 +404,35 @@ namespace System.ServiceModel.Description
                 }
             }
             MethodInfo opMethod = opDesc.OperationMethod;
-            ProcessOpMethod(opMethod, true, opDesc, result, ifaceMap, useImplAttrs);
+            ProcessOpMethod(opMethod, true, opDesc, result, targetIface, implType, useImplAttrs);
             if (opDesc.SyncMethod != null && opDesc.BeginMethod != null)
             {
-                ProcessOpMethod(opDesc.BeginMethod, false, opDesc, result, ifaceMap, useImplAttrs);
+                ProcessOpMethod(opDesc.BeginMethod, false, opDesc, result, targetIface, implType, useImplAttrs);
             }
             else if (opDesc.SyncMethod != null && opDesc.TaskMethod != null)
             {
-                ProcessOpMethod(opDesc.TaskMethod, false, opDesc, result, ifaceMap, useImplAttrs);
+                ProcessOpMethod(opDesc.TaskMethod, false, opDesc, result, targetIface, implType, useImplAttrs);
             }
             else if (opDesc.TaskMethod != null && opDesc.BeginMethod != null)
             {
-                ProcessOpMethod(opDesc.BeginMethod, false, opDesc, result, ifaceMap, useImplAttrs);
+                ProcessOpMethod(opDesc.BeginMethod, false, opDesc, result, targetIface, implType, useImplAttrs);
             }
             return result;
         }
 
         private void ProcessOpMethod(MethodInfo opMethod, bool canHaveBehaviors,
-                             OperationDescription opDesc, KeyedByTypeCollection<IOperationBehavior> result,
-                             InterfaceMapping ifaceMap, bool useImplAttrs)
+                     OperationDescription opDesc, KeyedByTypeCollection<IOperationBehavior> result,
+                     Type ifaceType, Type implType, bool useImplAttrs)
         {
             MethodInfo method = null;
             if (useImplAttrs)
             {
-                int methodIndex = Array.IndexOf(ifaceMap.InterfaceMethods, opMethod);
-                // if opMethod doesn't exist in the interfacemap, it means opMethod was on
+                MethodInfo ifaceMethod = GetCorrespondingMethodFromType(ifaceType, opMethod);
+                // if opMethod doesn't exist in the interface, it means opMethod was on
                 // the "other" interface (not the one implemented by implType)
-                if (methodIndex != -1)
+                if (ifaceMethod != null)
                 {
-                    MethodInfo implMethod = ifaceMap.TargetMethods[methodIndex];
-                    // C++ allows you to create abstract classes that have missing interface method
-                    // implementations, which shows up as nulls in the interfacemapping
+                    MethodInfo implMethod = GetCorrespondingMethodFromType(implType, opMethod);
                     if (implMethod != null)
                     {
                         method = implMethod;
@@ -497,6 +493,87 @@ namespace System.ServiceModel.Description
                     Fx.Assert("Invalid state. No exception for canHaveBehaviors = false");
                 }
             }
+        }
+
+        // Given a MethodInfo which could be from any type, return a MethodInfo declared by the given type 
+        // that matches in name and parameter types.  Null is returned if there is no match.
+        private static MethodInfo GetCorrespondingMethodFromType(Type type, MethodInfo methodInfo)
+        {
+            Contract.Assert(type != null);
+            Contract.Assert(methodInfo != null);
+
+            if (methodInfo.DeclaringType == type)
+            {
+                return methodInfo;
+            }
+
+            MethodInfo matchingMethod = type.GetTypeInfo().DeclaredMethods.SingleOrDefault(m => MethodsMatch(m, methodInfo));
+            return matchingMethod;
+        }
+
+        // Returns true if the given methods match in name and parameter types
+        private static bool MethodsMatch(MethodInfo method1, MethodInfo method2)
+        {
+            Contract.Assert(method1 != null);
+            Contract.Assert(method2 != null);
+
+            if (method1.Equals(method2))
+            {
+                return true;
+            }
+
+            if (method1.ReturnType != method2.ReturnType ||
+                !String.Equals(method1.Name, method2.Name, StringComparison.Ordinal) ||
+                !ParameterInfosMatch(method1.ReturnParameter, method2.ReturnParameter))
+            {
+                return false;
+            }
+
+            ParameterInfo[] parameters1 = method1.GetParameters();
+            ParameterInfo[] parameters2 = method2.GetParameters();
+            if (parameters1.Length != parameters2.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < parameters1.Length; ++i)
+            {
+                if (!ParameterInfosMatch(parameters1[i], parameters2[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Returns true if 2 ParameterInfo's match in signature with respect
+        // to the MemberInfo's in which they are declared. Position is required
+        // to match but name is not.
+        private static bool ParameterInfosMatch(ParameterInfo parameterInfo1, ParameterInfo parameterInfo2)
+        {
+            // Null is possible for a ParameterInfo from MethodInfo.ReturnParameter.
+            // If both are null, we have no information to compare and say they are equal.
+            if (parameterInfo1 == null && parameterInfo2 == null)
+            {
+                return true;
+            }
+
+            if (parameterInfo1 == null || parameterInfo2 == null)
+            {
+                return false;
+            }
+
+            if (parameterInfo1.Equals(parameterInfo2))
+            {
+                return true;
+            }
+
+            return ((parameterInfo1.ParameterType == parameterInfo2.ParameterType) &&
+                    (parameterInfo1.IsIn == parameterInfo2.IsIn) &&
+                    (parameterInfo1.IsOut == parameterInfo2.IsOut) &&
+                    (parameterInfo1.IsRetval == parameterInfo2.IsRetval) &&
+                    (parameterInfo1.Position == parameterInfo2.Position));
         }
 
         internal void AddBehaviorsSFx(ServiceEndpoint serviceEndpoint, Type contractType)
