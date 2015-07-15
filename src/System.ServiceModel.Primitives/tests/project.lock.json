@@ -1101,6 +1101,30 @@
         "runtime": {
           "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.dll": {}
         }
+      },
+      "xunit.netcore.extensions/1.0.0-prerelease-00056": {
+        "dependencies": {
+          "System.Diagnostics.Debug": "4.0.10-beta-22703",
+          "System.IO": "4.0.10-beta-22703",
+          "System.Linq": "4.0.0-beta-22703",
+          "System.Reflection": "4.0.10-beta-22703",
+          "System.Reflection.Primitives": "4.0.0-beta-22703",
+          "System.Runtime": "4.0.20-beta-22703",
+          "System.Runtime.Extensions": "4.0.10-beta-22703",
+          "System.Runtime.Handles": "4.0.0-beta-22703",
+          "System.Runtime.InteropServices": "4.0.20-beta-22703",
+          "System.Text.Encoding": "4.0.10-beta-22703",
+          "System.Threading": "4.0.10-beta-22703",
+          "System.Threading.Tasks": "4.0.10-beta-22703",
+          "xunit.abstractions.netcore": "1.0.0-prerelease",
+          "xunit.core.netcore": "1.0.0-prerelease"
+        },
+        "compile": {
+          "lib/portable-wpa80+win80+net45+aspnetcore50/Xunit.NetCore.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/portable-wpa80+win80+net45+aspnetcore50/Xunit.NetCore.Extensions.dll": {}
+        }
       }
     }
   },
@@ -2880,6 +2904,15 @@
         "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.pdb",
         "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.xml"
       ]
+    },
+    "xunit.netcore.extensions/1.0.0-prerelease-00056": {
+      "sha512": "UPxtAjxht7LkVoI6njl23cSXiNtPjM0zT9ouhtS0Ju3bXDSUfWjT3i4vRx8f7xrV24AOdbLfxVETP8DapKHClw==",
+      "files": [
+        "xunit.netcore.extensions.1.0.0-prerelease-00056.nupkg",
+        "xunit.netcore.extensions.1.0.0-prerelease-00056.nupkg.sha512",
+        "xunit.netcore.extensions.nuspec",
+        "lib/portable-wpa80+win80+net45+aspnetcore50/Xunit.NetCore.Extensions.dll"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -2934,7 +2967,8 @@
       "xunit >= 2.0.0-beta5-build2785",
       "xunit.abstractions.netcore >= 1.0.0-prerelease",
       "xunit.assert >= 2.0.0-beta5-build2785",
-      "xunit.core.netcore >= 1.0.1-prerelease"
+      "xunit.core.netcore >= 1.0.1-prerelease",
+      "xunit.netcore.extensions >= 1.0.0-prerelease-*"
     ],
     "DNXCore,Version=v5.0": []
   }

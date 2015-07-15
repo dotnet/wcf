@@ -125,31 +125,93 @@ public static class ClientBaseTests
 
     [Fact]
     [OuterLoop]
-    public static void ClientBaseOfT_Call()
+    public static void ClientBaseOfT_Sync_RoundTrip_Check_CommunicationState()
     {
-        // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = new CustomBinding();
+        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+        customBinding.Elements.Add(new HttpTransportBindingElement());
+
+        MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
+        Assert.Equal(CommunicationState.Created, client.State);
+
+        IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+        Assert.Equal(CommunicationState.Opened, client.State);
+
         try
         {
-            CustomBinding customBinding = new CustomBinding();
-            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-            customBinding.Elements.Add(new HttpTransportBindingElement());
-
-            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(BaseAddress.HttpBaseAddress));
-            IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
-
             string result = serviceProxy.Echo("Hello");
-            if (!string.Equals(result, "Hello"))
+            Assert.Equal(CommunicationState.Opened, client.State);
+
+            ((ICommunicationObject)client).Close();
+            Assert.Equal(CommunicationState.Closed, client.State);
+        }
+        finally
+        {
+            // normally we'd also check for if (client != null && client.State != CommuncationState.Closed), 
+            // but this is a test and it'd be good to have the Abort happen and the channel is still Closed
+            if (client != null)
             {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+                client.Abort();
+                Assert.Equal(CommunicationState.Closed, client.State);
             }
         }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
+    }
 
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ClientBaseOfTCall FAILED with the following errors: {0}", errorBuilder));
+    [Fact]
+    [OuterLoop]
+    public static void ClientBaseOfT_Sync_RoundTrip_Call_Using_HttpTransport()
+    {
+        // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation over Http
+
+        CustomBinding customBinding = new CustomBinding();
+        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+        customBinding.Elements.Add(new HttpTransportBindingElement());
+
+        MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
+        IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+
+        try
+        {
+            string result = serviceProxy.Echo("Hello");
+            Assert.Equal("Hello", result);
+        }
+        finally
+        {
+            if (client != null && client.State != CommunicationState.Closed)
+            {
+                client.Abort();
+            }
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void ClientBaseOfT_Sync_RoundTrip_Call_Using_NetTcpTransport()
+    {
+        // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation over Tcp
+        // (request reply over Tcp) 
+
+        // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation over Http
+
+        CustomBinding binding = new CustomBinding(
+                new TextMessageEncodingBindingElement(),
+                new TcpTransportBindingElement());
+
+        MyClientBase client = new MyClientBase(binding, new EndpointAddress(Endpoints.Tcp_CustomBinding_NoSecurity_Text_Address));
+        IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+
+        try
+        {
+            string result = serviceProxy.Echo("Hello");
+            Assert.Equal("Hello", result);
+        }
+        finally
+        {
+            if (client != null && client.State != CommunicationState.Closed)
+            {
+                client.Abort();
+            }
+        }
     }
 
     private class ClientMessagePropertyBehavior : IEndpointBehavior
