@@ -4,8 +4,6 @@
 using System;
 using System.Runtime;
 using System.ServiceModel;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,10 +13,49 @@ public static class DuplexClientBaseTests
 
     [Fact]
     [OuterLoop]
-    public static void DuplexClientBaseOfT_OverNetTcp_Call()
+    public static void DuplexClientBaseOfT_OverHttp_Call_Throws_InvalidOperation()
     {
         DuplexClientBase<IWcfDuplexService> duplexService = null;
-        StringBuilder errorBuilder = new StringBuilder();
+        Guid guid = Guid.NewGuid();
+
+        try
+        {
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None); 
+
+            WcfDuplexServiceCallback callbackService = new WcfDuplexServiceCallback();
+            InstanceContext context = new InstanceContext(callbackService);
+
+            duplexService = new MyDuplexClientBase<IWcfDuplexService>(context, binding, new EndpointAddress(Endpoints.Https_DefaultBinding_Address));
+
+            var exception = Assert.Throws<InvalidOperationException>(() => 
+            { 
+                IWcfDuplexService proxy = duplexService.ChannelFactory.CreateChannel();
+            });
+
+            // Can't compare the entire exception message - .NET Native doesn't necessarily output the entire message, just params
+            // "Contract requires Duplex, but Binding 'BasicHttpBinding' doesn't support it or isn't configured properly to support it"
+            Assert.True(exception.Message.Contains("BasicHttpBinding"));
+
+            Assert.Throws<CommunicationObjectFaultedException>(() => 
+            {
+                // You can't gracefully close a Faulted CommunicationObject, so we should make sure it throws here too
+                ((ICommunicationObject)duplexService).Close();
+            }); 
+        }
+        finally
+        {
+            if (duplexService != null && duplexService.State != CommunicationState.Closed)
+            {
+                duplexService.Abort();
+            }
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void DuplexClientBaseOfT_OverNetTcp_Synchronous_Call()
+    {
+        DuplexClientBase<IWcfDuplexService> duplexService = null;
         Guid guid = Guid.NewGuid();
 
         try
@@ -36,20 +73,10 @@ public static class DuplexClientBaseTests
             Task.Run(() => proxy.Ping(guid));
             Guid returnedGuid = callbackService.CallbackGuid;
 
-            if (guid != returnedGuid)
-            {
-                errorBuilder.AppendLine(String.Format("The sent GUID does not match the returned GUID. Sent: {0} Received: {1}", guid, returnedGuid));
-            }
+            Assert.True(guid == returnedGuid, 
+                string.Format("The sent GUID does not match the returned GUID. Sent '{0}', Received: '{1}'", guid, returnedGuid)); 
 
             ((ICommunicationObject)duplexService).Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
         }
         finally
         {
@@ -58,8 +85,6 @@ public static class DuplexClientBaseTests
                 duplexService.Abort();
             }
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: DuplexClientBaseOfT_OverNetTcp_Call FAILED with the following errors: {0}", errorBuilder));
     }
 
     public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
