@@ -24,9 +24,14 @@
         <None Include="project.json" />
     </ItemGroup>
     <ItemGroup>
+        <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
         <ProjectReference Include='$(WcfSourceProj)'>
-            <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
-            <Name>System.Private.ServiceModel</Name>
+          <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
+          <Name>System.Private.ServiceModel</Name>
+          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+          <OutputItemType>Content</OutputItemType>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
         </ProjectReference>
         <ProjectReference Include='$(WcfTestCommonProj)'>
             <Project>{e896294a-ab4a-4af5-a01c-a19e3972eff9}</Project>
