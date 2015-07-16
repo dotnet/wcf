@@ -119,7 +119,7 @@ namespace System.ServiceModel.Channels
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return ((IAsyncCommunicationObject)this).CloseAsync(timeout).ToApm(callback, state);
+            return CloseAsyncInternal(timeout).ToApm(callback, state);
         }
 
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
@@ -129,7 +129,7 @@ namespace System.ServiceModel.Channels
 
         public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return ((IAsyncCommunicationObject)this).OpenAsync(timeout).ToApm(callback, state);
+            return OpenAsyncInternal(timeout).ToApm(callback, state);
         }
 
         public void Close()

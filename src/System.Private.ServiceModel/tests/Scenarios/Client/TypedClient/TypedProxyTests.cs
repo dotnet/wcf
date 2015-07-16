@@ -34,7 +34,6 @@ public static class TypedProxyTests
     }
 
     [Fact]
-    [ActiveIssue(78)]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call()
     {
@@ -54,7 +53,6 @@ public static class TypedProxyTests
     }
 
     [Fact]
-    [ActiveIssue(78)]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback()
     {
@@ -77,7 +75,6 @@ public static class TypedProxyTests
     }
 
     [Fact]
-    [ActiveIssue(78)]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext()
     {
@@ -103,11 +100,11 @@ public static class TypedProxyTests
     }
 
     [Fact]
-    [ActiveIssue(78)]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call()
     {
         NetTcpBinding netTcpBinding = new NetTcpBinding();
+        netTcpBinding.Security.Mode = SecurityMode.None;
         ServiceContract_TypedProxy_AsyncTask_Call(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call");
     }
 
@@ -127,7 +124,6 @@ public static class TypedProxyTests
     }
 
     [Fact]
-    [ActiveIssue(78)]
     [OuterLoop]
     public static void ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext()
     {
@@ -209,7 +205,7 @@ public static class TypedProxyTests
             {
                 SingleThreadSynchronizationContext.Run(async delegate
                 {
-                    int startThread = Environment.CurrentManagedThreadId; //!!!! Use of System.Environment pulls in the contract "System.Runtime.Extensions", is this really needed?
+                    int startThread = Environment.CurrentManagedThreadId;
                     result = await serviceProxy.EchoAsync("Hello");
                     if (startThread != Environment.CurrentManagedThreadId)
                     {
