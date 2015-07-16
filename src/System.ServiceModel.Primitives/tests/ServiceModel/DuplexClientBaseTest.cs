@@ -10,6 +10,7 @@ using Xunit;
 public class DuplexClientBaseTest
 {
     [Fact]
+    [ActiveIssue(178)]
     public static void DuplexClientBase_Ctor_Initializes_State()
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
@@ -24,6 +25,7 @@ public class DuplexClientBaseTest
     }
 
     [Fact]
+    [ActiveIssue(178)]
     public static void DuplexClientBase_Aborts_Changes_CommunicationState()
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
@@ -37,6 +39,7 @@ public class DuplexClientBaseTest
     }
 
     [Fact]
+    [ActiveIssue(178)]
     public static void CreateDuplexClientBase_NullContext_Throws()
     {
         Binding binding = new NetTcpBinding();
@@ -45,6 +48,7 @@ public class DuplexClientBaseTest
     }
 
     [Fact]
+    [ActiveIssue(178)]
     public static void CreateDuplexClientBase_NullBinding_Throws()
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
@@ -61,6 +65,7 @@ public class DuplexClientBaseTest
     }
     
     [Fact]
+    [ActiveIssue(178)]
     public static void CreateDuplexClientBase_Binding_Url_Mismatch_Throws()
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
