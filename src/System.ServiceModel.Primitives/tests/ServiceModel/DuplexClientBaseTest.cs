@@ -68,7 +68,7 @@ public class DuplexClientBaseTest
         EndpointAddress endpoint = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
         Assert.Throws<ArgumentException>("via", () => {
             MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, binding, endpoint);
-            duplexClientBase.Open(); 
+            ((ICommunicationObject)duplexClientBase).Open(); 
         });
     }
 

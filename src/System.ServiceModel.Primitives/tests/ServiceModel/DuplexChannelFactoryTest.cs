@@ -16,10 +16,11 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_EndpointAddress_Null_Throws()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         EndpointAddress remoteAddress = null;
 
-        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, remoteAddress);
+        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, remoteAddress);
         try {
             Assert.Throws<InvalidOperationException>(() =>
                {
@@ -37,10 +38,11 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_InvalidEndpointAddress_AsString_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         Assert.Throws<UriFormatException>(() =>
         {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, "invalid");
+            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, "invalid");
         });
     }
 
@@ -48,10 +50,11 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_EmptyEndpointAddress_AsString_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         Assert.Throws<UriFormatException>(() =>
         {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, string.Empty);
+            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, string.Empty);
         });
     }
 
@@ -60,10 +63,11 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_ExpectedNetTcpScheme_HttpScheme_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         Assert.Throws<ArgumentException>("via", () =>
         {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, "http://not-the-right-scheme");
+            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, "http://not-the-right-scheme");
             factory.CreateChannel();
         });
     }
@@ -73,10 +77,11 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_ExpectedNetTcpScheme_InvalidScheme_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         Assert.Throws<ArgumentException>("via", () =>
         {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, "qwerty://not-the-right-scheme");
+            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, "qwerty://not-the-right-scheme");
             factory.CreateChannel();
         });
     }
@@ -86,26 +91,28 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_BasicHttpBinding_Throws_InvalidOperation()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
 
         // Contract requires Duplex, but Binding 'BasicHttpBinding' doesn't support it or isn't configured properly to support it.
         var exception = Assert.Throws<InvalidOperationException>(() =>
         {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, "http://basichttp-not-duplex");
+            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, "http://basichttp-not-duplex");
             factory.CreateChannel();
         });
 
-        Assert.Contains("BasicHttpBinding", exception.Message, StringComparison.OrdinalIgnoreCase);
+        Assert.True(exception.Message.Contains("BasicHttpBinding"), "InvalidOperationException exception string should contain 'BasicHttpBinding'");
     }
 
     [Fact]
     public static void CreateChannel_Address_NullString_ThrowsArgumentNull()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         Assert.Throws<ArgumentNullException>("uri", () =>
         {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, (string)null);
+            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, (string)null);
         });
     }
 
@@ -113,8 +120,9 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_Address_NullEndpointAddress_ThrowsArgumentNull()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
-        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, (EndpointAddress)null);
+        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, (EndpointAddress)null);
 
         Assert.Throws<InvalidOperationException>(() =>
         {
@@ -127,11 +135,12 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_Using_NetTcpBinding_Defaults()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         EndpointAddress endpoint = new EndpointAddress("net.tcp://not-an-endpoint");
         Assert.Throws<ArgumentNullException>("endpointAddress", () =>
         {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, endpoint);
+            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
             factory.CreateChannel();
         });
     }
@@ -140,9 +149,10 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_Using_NetTcp_NoSecurity()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding(SecurityMode.None);
         EndpointAddress endpoint = new EndpointAddress("net.tcp://not-an-endpoint");
-        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, endpoint);
+        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
         factory.CreateChannel(); 
     }
 
@@ -150,9 +160,10 @@ public class DuplexChannelFactoryTest
     public static void CreateChannel_Using_Http_NoSecurity()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetHttpBinding(BasicHttpSecurityMode.None);
         EndpointAddress endpoint = new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp);
-        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, endpoint);
+        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
 
         // Can't cast to IDuplexSessionChannel to IRequestChannel on http
         var exception = Assert.Throws<InvalidCastException>(() =>
@@ -160,7 +171,7 @@ public class DuplexChannelFactoryTest
             factory.CreateChannel();
         });
 
-        Assert.Contains("IRequestChannel", exception.Message, StringComparison.OrdinalIgnoreCase);
+        Assert.True(exception.Message.Contains("IRequestChannel"), "InvalidCastException exception string should contain 'IRequestChannel'");
     }
 
     [Fact]
@@ -172,6 +183,7 @@ public class DuplexChannelFactoryTest
         IWcfDuplexService channel2 = null;
 
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
+        InstanceContext context = new InstanceContext(callback);
 
         try
         {
@@ -179,8 +191,8 @@ public class DuplexChannelFactoryTest
             EndpointAddress endpointAddress = new EndpointAddress(BaseAddress.TcpDuplexAddress);
 
             // Create the channel factory for the request-reply message exchange pattern.
-            factory = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, endpointAddress);
-            factory2 = new DuplexChannelFactory<IWcfDuplexService>(callback, binding, endpointAddress);
+            factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpointAddress);
+            factory2 = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpointAddress);
 
             // Create the channel.
             channel = factory.CreateChannel();
