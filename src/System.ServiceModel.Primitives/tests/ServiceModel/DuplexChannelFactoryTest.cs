@@ -188,7 +188,7 @@ public class DuplexChannelFactoryTest
         try
         {
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
-            EndpointAddress endpointAddress = new EndpointAddress(BaseAddress.TcpDuplexAddress);
+            EndpointAddress endpointAddress = new EndpointAddress(FakeAddress.TcpAddress);
 
             // Create the channel factory for the request-reply message exchange pattern.
             factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpointAddress);
