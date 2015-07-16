@@ -157,6 +157,7 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
+    [ActiveIssue(178)]
     public static void CreateChannel_Using_Http_NoSecurity()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
