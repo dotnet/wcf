@@ -1,5 +1,4 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
 <!-- Handles the test output directory issue for visual studio. Currently we need to do a full build from the command line first.
      But once - dotnet/buildtools#181 is fixed we might be able to get rid of this. 
      This property walks up the tree and finds the buildtools computed $(bindir) and $(TestPath)\$(DebugTestFrameworkFolder)
@@ -8,9 +7,12 @@
 -->
   <PropertyGroup Condition=" $(MSBuildProjectName.EndsWith('.Tests')) AND '$(BuildingInsideVisualStudio)' == 'true' ">
     <OutputPath>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.proj))\\bin\\tests\\Windows_NT.$(Platform).$(Configuration)\$(MSBuildProjectName)\dnxcore50</OutputPath>
-  </PropertyGroup>
+  </PropertyGroup>  
   <PropertyGroup>
     <WcfSourceProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfSourceProj>
     <WcfTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\src\System.ServiceModel.Tests.Common.csproj'))</WcfTestCommonProj>
   </PropertyGroup>
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
+    <XunitOptions>-parallel none</XunitOptions>
+  </PropertyGroup>  
 </Project>
