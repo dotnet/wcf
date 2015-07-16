@@ -14,7 +14,7 @@ public class DuplexClientBaseTest
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
         Binding binding = new NetTcpBinding();
-        EndpointAddress endpoint = new EndpointAddress(BaseAddress.Tcp_NoSecurity_Callback_Address);
+        EndpointAddress endpoint = new EndpointAddress(FakeAddress.TcpAddress);
         MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, binding, endpoint);
 
         Assert.Equal<EndpointAddress>(endpoint, duplexClientBase.Endpoint.Address);
@@ -28,7 +28,7 @@ public class DuplexClientBaseTest
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
         Binding binding = new NetTcpBinding();
-        EndpointAddress endpoint = new EndpointAddress(BaseAddress.Tcp_NoSecurity_Callback_Address);
+        EndpointAddress endpoint = new EndpointAddress(FakeAddress.TcpAddress);
         MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, binding, endpoint);
 
         Assert.Equal<CommunicationState>(CommunicationState.Created, duplexClientBase.State);
@@ -40,7 +40,7 @@ public class DuplexClientBaseTest
     public static void CreateDuplexClientBase_NullContext_Throws()
     {
         Binding binding = new NetTcpBinding();
-        EndpointAddress endpoint = new EndpointAddress(BaseAddress.Tcp_NoSecurity_Callback_Address);
+        EndpointAddress endpoint = new EndpointAddress(FakeAddress.TcpAddress);
         Assert.Throws<ArgumentNullException>("callbackInstance", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(null, binding, endpoint); }); 
     }
 
@@ -48,7 +48,7 @@ public class DuplexClientBaseTest
     public static void CreateDuplexClientBase_NullBinding_Throws()
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
-        EndpointAddress endpoint = new EndpointAddress(BaseAddress.Tcp_NoSecurity_Callback_Address);
+        EndpointAddress endpoint = new EndpointAddress(FakeAddress.TcpAddress);
         Assert.Throws<ArgumentNullException>("binding", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, null, endpoint); });
     }
 
@@ -65,7 +65,7 @@ public class DuplexClientBaseTest
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
         Binding binding = new NetTcpBinding();
-        EndpointAddress endpoint = new EndpointAddress(BaseAddress.HttpBaseAddress_Basic);
+        EndpointAddress endpoint = new EndpointAddress(FakeAddress.HttpAddress);
         Assert.Throws<ArgumentException>("via", () => {
             MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, binding, endpoint);
             ((ICommunicationObject)duplexClientBase).Open(); 

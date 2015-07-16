@@ -162,7 +162,7 @@ public class DuplexChannelFactoryTest
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
         InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetHttpBinding(BasicHttpSecurityMode.None);
-        EndpointAddress endpoint = new EndpointAddress(BaseAddress.HttpBaseAddress_NetHttp);
+        EndpointAddress endpoint = new EndpointAddress(FakeAddress.HttpAddress);
         DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
 
         // Can't cast to IDuplexSessionChannel to IRequestChannel on http
