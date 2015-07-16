@@ -157,13 +157,12 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
-    [ActiveIssue(178)]
     public static void CreateChannel_Using_Http_NoSecurity()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
         InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetHttpBinding(BasicHttpSecurityMode.None);
-        EndpointAddress endpoint = new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp);
+        EndpointAddress endpoint = new EndpointAddress(BaseAddress.HttpBaseAddress_NetHttp);
         DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
 
         // Can't cast to IDuplexSessionChannel to IRequestChannel on http

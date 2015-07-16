@@ -47,9 +47,15 @@ public static class BaseAddress
 
     // Base address for HTTPS endpoints with Windows Authentication
     public const string HttpsWindowsBaseAddress = "https://localhost:44285/WindowsCommunicationFoundation";
+
+    public const string HttpBaseAddress_NetHttp = BaseAddress.HttpBaseAddress + "/NetHttp";
+
+    public const string HttpBaseAddress_Basic = BaseAddress.HttpBaseAddress + "/Basic";
+
 #endif
 
     public const string TcpDuplexAddress = "net.tcp://localhost:809/WindowsCommunicationFoundation";
+    public const string Tcp_NoSecurity_Callback_Address = BaseAddress.TcpDuplexAddress + "/tcp-nosecurity-callback";
 }
 
 
