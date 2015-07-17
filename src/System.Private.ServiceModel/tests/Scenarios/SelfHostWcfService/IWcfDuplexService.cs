@@ -38,11 +38,19 @@ namespace WcfService
     {
         [OperationContract]
         Task<Guid> Ping(Guid guid);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultDetail), Name = "FaultDetail")]
+        Task<Guid> FaultPing(Guid guid);
     }
 
     public interface IWcfDuplexTaskReturnCallback
     {
         [OperationContract]
         Task<Guid> ServicePingCallback(Guid guid);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultDetail), Name = "FaultDetail")]
+        Task<Guid> ServicePingFaultCallback(Guid guid);
     }
 }

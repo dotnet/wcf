@@ -37,5 +37,23 @@ namespace WcfService
             IWcfDuplexTaskReturnCallback callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexTaskReturnCallback>();
             return callback.ServicePingCallback(guid);
         }
+
+        public async Task<Guid> FaultPing(Guid guid)
+        {
+            Guid retval;
+            IWcfDuplexTaskReturnCallback callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexTaskReturnCallback>();
+            try
+            {
+                // If we just return the result of the Callback we won't catch the FaultException here.
+                retval = await callback.ServicePingFaultCallback(guid);
+            }
+            catch (FaultException<FaultDetail> ex)
+            {
+                // Need to throw a new instance of FaultException so that certain fields such as the Action match what the client expects
+                // Otherwise the client will just get a plain FaultException instead of the expected FaultException<FaultDetail>
+                throw new FaultException<FaultDetail>(ex.Detail, ex.Message);
+            }
+            return retval;
+        }
     }
 }
