@@ -84,7 +84,7 @@ public class ContractDescriptionTestHelper
             CustomBinding binding = new CustomBinding();
             binding.Elements.Add(new TextMessageEncodingBindingElement());
             binding.Elements.Add(new HttpTransportBindingElement());
-            EndpointAddress address = new EndpointAddress(BaseAddress.FakeServerBaseAddress);
+            EndpointAddress address = new EndpointAddress(FakeAddress.HttpAddress);
 
             // Act
             ChannelFactory<T> factory = new ChannelFactory<T>(binding, address);
