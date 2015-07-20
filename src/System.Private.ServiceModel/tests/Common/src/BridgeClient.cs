@@ -50,8 +50,10 @@ namespace System.ServiceModel.Tests.Common
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(BridgeBaseAddress);
+                string resourceFolder = TestProperties.GetProperty(TestProperties.BridgeResourceFolder_PropertyName);
+                string contentPayload = "{ resourcesDirectory : \"" + resourceFolder + "\" }"; 
                 var content = new StringContent(
-                    @"{ resourcesDirectory : ""WcfService"" }",
+                    contentPayload,
                     Encoding.UTF8,
                     "application/json");
                 try
