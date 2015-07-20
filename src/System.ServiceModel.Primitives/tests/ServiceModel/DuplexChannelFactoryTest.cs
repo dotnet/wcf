@@ -101,7 +101,8 @@ public class DuplexChannelFactoryTest
             factory.CreateChannel();
         });
 
-        Assert.True(exception.Message.Contains("BasicHttpBinding"), "InvalidOperationException exception string should contain 'BasicHttpBinding'");
+        Assert.True(exception.Message.Contains("BasicHttpBinding"), 
+            string.Format("InvalidOperationException exception string should contain 'BasicHttpBinding'. Actual message:\r\n" + exception.ToString()));
     }
 
     [Fact]
@@ -171,7 +172,8 @@ public class DuplexChannelFactoryTest
             factory.CreateChannel();
         });
 
-        Assert.True(exception.Message.Contains("IRequestChannel"), "InvalidCastException exception string should contain 'IRequestChannel'");
+        Assert.True(exception.Message.Contains("IRequestChannel"), 
+            string.Format("InvalidCastException exception string should contain 'IRequestChannel'. Actual message:\r\n" + exception.ToString()));
     }
 
     [Fact]
