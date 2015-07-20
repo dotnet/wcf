@@ -345,13 +345,15 @@
           "lib/DNXCore50/System.Net.Security.dll": {}
         }
       },
-      "System.Net.Sockets/4.0.0-beta-23024": {
+      "System.Net.Sockets/4.0.10-beta-23024": {
         "dependencies": {
-          "System.Runtime": "4.0.0-beta-23024",
-          "System.Net.Primitives": "4.0.10-beta-23024"
+          "System.Private.Networking": "4.0.0-beta-23024"
         },
         "compile": {
           "ref/dotnet/System.Net.Sockets.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Net.Sockets.dll": {}
         }
       },
       "System.Net.WebHeaderCollection/4.0.0-beta-23024": {
@@ -1113,7 +1115,7 @@
           "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.dll": {}
         }
       },
-      "xunit.netcore.extensions/1.0.0-prerelease-00057": {
+      "xunit.netcore.extensions/1.0.0-prerelease-00059": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10-beta-22703",
           "System.IO": "4.0.10-beta-22703",
@@ -1708,15 +1710,13 @@
         "ref/net46/System.Net.Security.dll"
       ]
     },
-    "System.Net.Sockets/4.0.0-beta-23024": {
-      "serviceable": true,
-      "sha512": "qyiFruoOoB5lC4lRFMkCDnGhbgiMrTv8czhVRAqh49IW4Hfz/M9G4LC7xlsvkq/uBLNWDXHkKHYe1jGYgjkwyQ==",
+    "System.Net.Sockets/4.0.10-beta-23024": {
+      "sha512": "mcT7iQDwvJhMJbmrT11Kli7q3VUvSyaYUtP1eK++0ndkWFFbpZ+JBX/UNTyQA9TNWE+Qi756kqOYrfILpNRqSw==",
       "files": [
-        "System.Net.Sockets.4.0.0-beta-23024.nupkg",
-        "System.Net.Sockets.4.0.0-beta-23024.nupkg.sha512",
+        "System.Net.Sockets.4.0.10-beta-23024.nupkg",
+        "System.Net.Sockets.4.0.10-beta-23024.nupkg.sha512",
         "System.Net.Sockets.nuspec",
-        "lib/net46/System.Net.Sockets.dll",
-        "lib/netcore50/System.Net.Sockets.dll",
+        "lib/DNXCore50/System.Net.Sockets.dll",
         "ref/dotnet/System.Net.Sockets.dll",
         "ref/dotnet/System.Net.Sockets.xml",
         "ref/dotnet/de/System.Net.Sockets.xml",
@@ -1727,8 +1727,7 @@
         "ref/dotnet/ko/System.Net.Sockets.xml",
         "ref/dotnet/ru/System.Net.Sockets.xml",
         "ref/dotnet/zh-hans/System.Net.Sockets.xml",
-        "ref/dotnet/zh-hant/System.Net.Sockets.xml",
-        "ref/net46/System.Net.Sockets.dll"
+        "ref/dotnet/zh-hant/System.Net.Sockets.xml"
       ]
     },
     "System.Net.WebHeaderCollection/4.0.0-beta-23024": {
@@ -2885,11 +2884,11 @@
         "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.xml"
       ]
     },
-    "xunit.netcore.extensions/1.0.0-prerelease-00057": {
-      "sha512": "h+ZpJ1kRZsMXAuL2PN7amoFLnjcYvFrnZsv1NyPVWp/QY86the5KFtog9ANnz12HoPQmKjGj9JKzha9NIr7AHA==",
+    "xunit.netcore.extensions/1.0.0-prerelease-00059": {
+      "sha512": "+KnoIsBnzTcK2iQOi5KYZBQZqwETaiIvOklN7bEUd7VIpgozCOv/VHbHPENKOTB3N2umT5WCYTnTCKh6rmuQ4Q==",
       "files": [
-        "xunit.netcore.extensions.1.0.0-prerelease-00057.nupkg",
-        "xunit.netcore.extensions.1.0.0-prerelease-00057.nupkg.sha512",
+        "xunit.netcore.extensions.1.0.0-prerelease-00059.nupkg",
+        "xunit.netcore.extensions.1.0.0-prerelease-00059.nupkg.sha512",
         "xunit.netcore.extensions.nuspec",
         "lib/portable-wpa80+win80+net45+aspnetcore50/Xunit.NetCore.Extensions.dll"
       ]
@@ -2897,6 +2896,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "System.Net.Sockets >= 4.0.10-beta-*",
       "System.ServiceModel.NetTcp >= 4.0.0-beta-*",
       "System.ServiceModel.Primitives >= 4.0.0-beta-*",
       "xunit >= 2.0.0-beta5-build2785",
