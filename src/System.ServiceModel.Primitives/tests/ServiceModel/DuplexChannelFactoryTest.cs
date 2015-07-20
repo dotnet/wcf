@@ -172,8 +172,8 @@ public class DuplexChannelFactoryTest
             factory.CreateChannel();
         });
 
-        Assert.True(exception.Message.Contains("IRequestChannel"), 
-            string.Format("InvalidCastException exception string should contain 'IRequestChannel'. Actual message:\r\n" + exception.ToString()));
+        // Can't check that the InvalidCastException message as .NET Native only reports this message for all InvalidCastExceptions:
+        // "System.InvalidCastException: Arg_InvalidCastException"
     }
 
     [Fact]
