@@ -3,12 +3,16 @@
     Overrides for WCF
   -->
 
+  <PropertyGroup>
+     <WcfRootFolder>$(MSBuildThisFileDirectory)</WcfRootFolder>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(BridgeResourceFolder)' == ''">
-     <BridgeResourceFolder>$(MSBuildThisFileDirectory)bin\wcf\BridgeResources\</BridgeResourceFolder>
+     <BridgeResourceFolder>$(WcfRootFolder)bin\Wcf\Bridge\Resources\</BridgeResourceFolder>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(WcfToolsOutputPath)' == ''">
-     <WcfToolsOutputPath>$(MSBuildThisFileDirectory)bin\wcf\tools\</WcfToolsOutputPath>
+     <WcfToolsOutputPath>$(WcfRootFolder)bin\Wcf\tools\</WcfToolsOutputPath>
   </PropertyGroup>
 
 </Project>
