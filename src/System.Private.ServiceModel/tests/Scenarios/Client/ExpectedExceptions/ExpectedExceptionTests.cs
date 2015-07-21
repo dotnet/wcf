@@ -320,7 +320,6 @@ public static class ExpectedExceptionTests
     }
 
     [Fact]
-    [ActiveIssue(194)]
     [OuterLoop]
     public static void DuplexCallback_Throws_FaultException()
     {
