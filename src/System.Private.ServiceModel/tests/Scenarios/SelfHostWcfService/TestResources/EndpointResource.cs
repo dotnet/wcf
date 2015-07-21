@@ -15,11 +15,17 @@ namespace WcfService.TestResources
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
 
+        #region Host Listen Uri components
+
         protected abstract string Protocol { get; }
+
+        protected virtual string Host { get { return "localhost"; } }
 
         protected abstract string Address { get; }
 
         protected abstract string Port { get; }
+
+        #endregion Host Listen Uri components
 
         public object Put()
         {
@@ -35,7 +41,7 @@ namespace WcfService.TestResources
                         host.AddServiceEndpoint(
                             typeof(ContractType),
                             GetBinding(),
-                            new Uri(string.Format("{0}://localhost:{1}/{2}/{3}", Protocol, Port, AppDomain.CurrentDomain.FriendlyName, Address)));
+                            BuildUri());
                         ModifyBehaviors(host.Description);
                         host.Open();
                         s_currentHosts.Add(Address, host);
@@ -69,6 +75,16 @@ namespace WcfService.TestResources
             }
 
             debug.IncludeExceptionDetailInFaults = true;
+        }
+
+        private Uri BuildUri()
+        {
+            var builder = new UriBuilder();
+            builder.Host = Host;
+            builder.Port = Int32.Parse(Port);
+            builder.Path = AppDomain.CurrentDomain.FriendlyName + "/" + Address;
+            builder.Scheme = Protocol;
+            return builder.Uri;
         }
     }
 
