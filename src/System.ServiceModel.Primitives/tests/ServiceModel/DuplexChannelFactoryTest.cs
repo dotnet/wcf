@@ -101,7 +101,8 @@ public class DuplexChannelFactoryTest
             factory.CreateChannel();
         });
 
-        Assert.True(exception.Message.Contains("BasicHttpBinding"), "InvalidOperationException exception string should contain 'BasicHttpBinding'");
+        Assert.True(exception.Message.Contains("BasicHttpBinding"), 
+            string.Format("InvalidOperationException exception string should contain 'BasicHttpBinding'. Actual message:\r\n" + exception.ToString()));
     }
 
     [Fact]
@@ -171,7 +172,8 @@ public class DuplexChannelFactoryTest
             factory.CreateChannel();
         });
 
-        Assert.True(exception.Message.Contains("IRequestChannel"), "InvalidCastException exception string should contain 'IRequestChannel'");
+        // Can't check that the InvalidCastException message as .NET Native only reports this message for all InvalidCastExceptions:
+        // "System.InvalidCastException: Arg_InvalidCastException"
     }
 
     [Fact]
