@@ -66,6 +66,7 @@
     <Compile Include="TestResources\BasicHttpsResource.cs" />
     <Compile Include="TestResources\DefaultCustomHttpResource.cs" />
     <Compile Include="TestResources\DuplexResources.cs" />
+    <Compile Include="TestResources\HttpWindowsResource.cs" />
     <Compile Include="TestResources\HttpsWindowsResource.cs" />
     <Compile Include="TestResources\HttpsNtlmResource.cs" />
     <Compile Include="TestResources\HttpsDigestResource.cs" />
