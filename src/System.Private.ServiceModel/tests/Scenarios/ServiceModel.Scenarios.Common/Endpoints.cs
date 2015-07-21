@@ -58,6 +58,11 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsWindowsResource"); }
     }
 
+    public static string Http_WindowsAuth_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpWindowsResource"); }
+    }
+
     public static string Https_DefaultBinding_Address
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicHttpsResource"); }

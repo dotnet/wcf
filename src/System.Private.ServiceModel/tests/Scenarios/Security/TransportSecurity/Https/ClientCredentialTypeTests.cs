@@ -102,8 +102,9 @@ public static class Https_ClientCredentialTypeTests
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: NtlmAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
+    // Issue 53 will enable us optional run this test on domain machines.
     [Fact]
-    [ActiveIssue(6)]
+    [ActiveIssue(53)]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {
@@ -111,10 +112,10 @@ public static class Https_ClientCredentialTypeTests
 
         try
         {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
 
-            ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Https_WindowsAuth_Address, "BasicHttpBinding with Windows authentication", errorBuilder, null);
+            ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Http_WindowsAuth_Address, "BasicHttpBinding with Windows authentication", errorBuilder, null);
         }
         catch (Exception ex)
         {
