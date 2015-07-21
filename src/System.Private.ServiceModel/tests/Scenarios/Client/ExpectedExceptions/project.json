@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "System.Reflection.Emit.Lightweight": "4.0.0-beta-*",
+    "System.ServiceModel.Duplex": "4.0.0-beta-*", 
     "System.ServiceModel.Http": "4.0.10-beta-*", 
+    "System.ServiceModel.NetTcp": "4.0.0-beta-*", 
     "System.ServiceModel.Primitives": "4.0.0-beta-*", 
     "xunit": "2.0.0-beta5-build2785",
     "xunit.abstractions.netcore": "1.0.0-prerelease",

@@ -886,6 +886,17 @@
           "lib/DNXCore50/System.Security.SecureString.dll": {}
         }
       },
+      "System.ServiceModel.Duplex/4.0.0-beta-23024": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.0.0-beta-23024"
+        },
+        "compile": {
+          "ref/dotnet/System.ServiceModel.Duplex.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.ServiceModel.Duplex.dll": {}
+        }
+      },
       "System.ServiceModel.Http/4.0.10-beta-23024": {
         "dependencies": {
           "System.Private.ServiceModel": "4.0.0-beta-23024"
@@ -895,6 +906,17 @@
         },
         "runtime": {
           "lib/DNXCore50/System.ServiceModel.Http.dll": {}
+        }
+      },
+      "System.ServiceModel.NetTcp/4.0.0-beta-23024": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.0.0-beta-23024"
+        },
+        "compile": {
+          "ref/dotnet/System.ServiceModel.NetTcp.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.ServiceModel.NetTcp.dll": {}
         }
       },
       "System.ServiceModel.Primitives/4.0.0-beta-23024": {
@@ -2509,6 +2531,34 @@
         "ref/net46/System.Security.SecureString.dll"
       ]
     },
+    "System.ServiceModel.Duplex/4.0.0-beta-23024": {
+      "serviceable": true,
+      "sha512": "PsU7/tj/OecbUWIkhna6/Kv/NDtbx50XmyyTrx4PCJ3F8TdDAgARfOgze+rmXB1dMi+dVpswVy8czGH1Wg0LZg==",
+      "files": [
+        "System.ServiceModel.Duplex.4.0.0-beta-23024.nupkg",
+        "System.ServiceModel.Duplex.4.0.0-beta-23024.nupkg.sha512",
+        "System.ServiceModel.Duplex.nuspec",
+        "lib/DNXCore50/System.ServiceModel.Duplex.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.ServiceModel.Duplex.dll",
+        "lib/win8/_._",
+        "ref/dotnet/System.ServiceModel.Duplex.dll",
+        "ref/dotnet/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/de/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/es/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/fr/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/it/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/ja/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/ko/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/ru/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/zh-hans/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/zh-hant/System.ServiceModel.Duplex.xml",
+        "ref/net45/_._",
+        "ref/netcore50/System.ServiceModel.Duplex.dll",
+        "ref/netcore50/System.ServiceModel.Duplex.xml",
+        "ref/win8/_._"
+      ]
+    },
     "System.ServiceModel.Http/4.0.10-beta-23024": {
       "serviceable": true,
       "sha512": "vjwaH0lzJNobqVRVfZZ1FLQ4XeBJpRCHUNsie3UfiFvSYINyoBn8GAeMlaPHF5EueQlY9Qb4bm1wo6kzz0VB9w==",
@@ -2531,6 +2581,34 @@
         "ref/dotnet/zh-hans/System.ServiceModel.Http.xml",
         "ref/dotnet/zh-hant/System.ServiceModel.Http.xml",
         "ref/net46/_._"
+      ]
+    },
+    "System.ServiceModel.NetTcp/4.0.0-beta-23024": {
+      "serviceable": true,
+      "sha512": "3HskA0TyW2K7Q9rgjvR0tIcK3SrIj24nkWdzEwaeyHbh5iHw/37YdW5OJqrrrQkZix876wmE3yRNbxMmMKcUiA==",
+      "files": [
+        "System.ServiceModel.NetTcp.4.0.0-beta-23024.nupkg",
+        "System.ServiceModel.NetTcp.4.0.0-beta-23024.nupkg.sha512",
+        "System.ServiceModel.NetTcp.nuspec",
+        "lib/DNXCore50/System.ServiceModel.NetTcp.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.ServiceModel.NetTcp.dll",
+        "lib/win8/_._",
+        "ref/dotnet/System.ServiceModel.NetTcp.dll",
+        "ref/dotnet/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/de/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/es/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/fr/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/it/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/ja/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/ko/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/ru/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/zh-hans/System.ServiceModel.NetTcp.xml",
+        "ref/dotnet/zh-hant/System.ServiceModel.NetTcp.xml",
+        "ref/net45/_._",
+        "ref/netcore50/System.ServiceModel.NetTcp.dll",
+        "ref/netcore50/System.ServiceModel.NetTcp.xml",
+        "ref/win8/_._"
       ]
     },
     "System.ServiceModel.Primitives/4.0.0-beta-23024": {
@@ -2931,7 +3009,9 @@
   "projectFileDependencyGroups": {
     "": [
       "System.Reflection.Emit.Lightweight >= 4.0.0-beta-*",
+      "System.ServiceModel.Duplex >= 4.0.0-beta-*",
       "System.ServiceModel.Http >= 4.0.10-beta-*",
+      "System.ServiceModel.NetTcp >= 4.0.0-beta-*",
       "System.ServiceModel.Primitives >= 4.0.0-beta-*",
       "xunit >= 2.0.0-beta5-build2785",
       "xunit.abstractions.netcore >= 1.0.0-prerelease",
