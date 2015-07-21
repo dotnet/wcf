@@ -688,3 +688,20 @@ public class XmlCompositeType
         set { _stringValue = value; }
     }
 }
+
+public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
+{
+    public Task<Guid> ServicePingCallback(Guid guid)
+    {
+        // This returns the guid to the service which called this callback.
+        // We could return Task.FromResult(guid) but that means we could execute the 
+        // completion on the same thread. But if someone is using a task it means they 
+        // would potentially have the completion on another thread.
+        return Task.Run<Guid>(() => guid);
+    }
+
+    public Task<Guid> ServicePingFaultCallback(Guid guid)
+    {
+        throw new FaultException<FaultDetail>(new FaultDetail("Throwing a Fault Exception from the Callback method."), "Reason: Testing FaultException returned from Duplex Callback");
+    }
+}

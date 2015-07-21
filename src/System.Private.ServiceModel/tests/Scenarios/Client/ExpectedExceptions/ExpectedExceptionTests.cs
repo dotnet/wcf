@@ -2,10 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 public static class ExpectedExceptionTests
@@ -185,7 +185,7 @@ public static class ExpectedExceptionTests
         }
         finally
         {
-            watch.Stop(); 
+            watch.Stop();
         }
 
         // want to assert that this completed in < 2 s as an upper bound since the SendTimeout is 0 sec
@@ -300,7 +300,7 @@ public static class ExpectedExceptionTests
     [Fact]
     [OuterLoop]
     public static void UnknownUrl_Throws_ProtocolException()
-    { 
+    {
         string protocolExceptionUri = Endpoints.HttpProtocolError_Address;
 
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -316,6 +316,49 @@ public static class ExpectedExceptionTests
 
             // On .Net Native retail, exception message is stripped to include only parameter
             Assert.True(exception.Message.Contains(protocolExceptionUri), string.Format("Expected exception message to contain '{0}'", protocolExceptionUri));
+        }
+    }
+
+    [Fact]
+    [ActiveIssue(194)]
+    [OuterLoop]
+    public static void DuplexCallback_Throws_FaultException()
+    {
+        DuplexChannelFactory<IWcfDuplexTaskReturnService> factory = null;
+        Guid guid = Guid.NewGuid();
+
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.None;
+
+        DuplexTaskReturnServiceCallback callbackService = new DuplexTaskReturnServiceCallback();
+        InstanceContext context = new InstanceContext(callbackService);
+
+        try
+        {
+            var exception = Assert.Throws<FaultException<FaultDetail>>(() =>
+            {
+                factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address));
+                IWcfDuplexTaskReturnService serviceProxy = factory.CreateChannel();
+
+                Task<Guid> task = serviceProxy.FaultPing(guid);
+                if ((task as IAsyncResult).AsyncWaitHandle.WaitOne(ScenarioTestHelpers.TestTimeout))
+                {
+                    Guid returnedGuid = task.GetAwaiter().GetResult();
+                }
+                else
+                {
+                    throw new TimeoutException(String.Format("The call to the Service did not complete within the alloted time of: {0}", ScenarioTestHelpers.TestTimeout));
+                }
+
+                // Not closing the factory as an exception will always be thrown prior to this point.
+            });
+        }
+        finally
+        {
+            if (factory != null && factory.State != CommunicationState.Closed)
+            {
+                factory.Abort();
+            }
         }
     }
 }
