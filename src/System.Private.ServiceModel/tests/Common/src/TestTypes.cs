@@ -702,6 +702,10 @@ public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
 
     public Task<Guid> ServicePingFaultCallback(Guid guid)
     {
-        throw new FaultException<FaultDetail>(new FaultDetail("Throwing a Fault Exception from the Callback method."), "Reason: Testing FaultException returned from Duplex Callback");
+        throw new FaultException<FaultDetail>(
+          new FaultDetail("Throwing a Fault Exception from the Callback method."), 
+          new FaultReason("Reason: Testing FaultException returned from Duplex Callback"), 
+          new FaultCode("ServicePingFaultCallback"),
+          "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallback");
     }
 }
