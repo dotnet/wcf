@@ -78,17 +78,6 @@
           "lib/dotnet/System.Collections.Specialized.dll": {}
         }
       },
-      "System.ComponentModel/4.0.0-beta-23024": {
-        "dependencies": {
-          "System.Runtime": "4.0.20-beta-23024"
-        },
-        "compile": {
-          "ref/dotnet/System.ComponentModel.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/System.ComponentModel.dll": {}
-        }
-      },
       "System.ComponentModel.EventBasedAsync/4.0.10-beta-23024": {
         "dependencies": {
           "System.Runtime": "4.0.20-beta-23024",
@@ -123,17 +112,6 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Diagnostics.Debug.dll": {}
-        }
-      },
-      "System.Diagnostics.Tools/4.0.0-beta-23024": {
-        "dependencies": {
-          "System.Runtime": "4.0.0-beta-23024"
-        },
-        "compile": {
-          "ref/dotnet/System.Diagnostics.Tools.dll": {}
-        },
-        "runtime": {
-          "lib/DNXCore50/System.Diagnostics.Tools.dll": {}
         }
       },
       "System.Diagnostics.Tracing/4.0.20-beta-23024": {
@@ -461,6 +439,54 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Private.Networking.dll": {}
+        }
+      },
+      "System.Private.ServiceModel/4.0.0-beta-23024": {
+        "dependencies": {
+          "System.Runtime": "4.0.20-beta-23024",
+          "System.Runtime.InteropServices": "4.0.20-beta-23024",
+          "System.Resources.ResourceManager": "4.0.0-beta-23024",
+          "System.Security.Principal": "4.0.0-beta-23024",
+          "System.Xml.XmlDocument": "4.0.0-beta-23024",
+          "System.Security.Principal.Windows": "4.0.0-beta-23024",
+          "System.Threading.Timer": "4.0.0-beta-23024",
+          "System.Collections.Specialized": "4.0.0-beta-23024",
+          "System.Collections.NonGeneric": "4.0.0-beta-23024",
+          "System.Reflection.TypeExtensions": "4.0.0-beta-23024",
+          "System.Reflection.Extensions": "4.0.0-beta-23024",
+          "System.Security.Claims": "4.0.0-beta-23024",
+          "System.Net.Security": "4.0.0-beta-23024",
+          "System.Net.Http": "4.0.0-beta-23024",
+          "System.Net.Sockets": "4.0.0-beta-23024",
+          "System.Net.NameResolution": "4.0.0-beta-23024",
+          "System.Net.WebHeaderCollection": "4.0.0-beta-23024",
+          "System.Reflection.DispatchProxy": "4.0.0-beta-23024",
+          "System.Linq": "4.0.0-beta-23024",
+          "System.Linq.Queryable": "4.0.0-beta-23024",
+          "System.Reflection.Primitives": "4.0.0-beta-23024",
+          "System.Diagnostics.Contracts": "4.0.0-beta-23024",
+          "System.IO.Compression": "4.0.0-beta-23024",
+          "System.ObjectModel": "4.0.10-beta-23024",
+          "System.Collections": "4.0.10-beta-23024",
+          "System.Text.Encoding": "4.0.10-beta-23024",
+          "System.IO": "4.0.10-beta-23024",
+          "System.Runtime.Serialization.Xml": "4.0.10-beta-23024",
+          "System.Threading.Tasks": "4.0.10-beta-23024",
+          "System.Diagnostics.Debug": "4.0.10-beta-23024",
+          "System.Xml.ReaderWriter": "4.0.10-beta-23024",
+          "System.Runtime.Serialization.Primitives": "4.0.10-beta-23024",
+          "System.Reflection": "4.0.10-beta-23024",
+          "System.Xml.XmlSerializer": "4.0.10-beta-23024",
+          "System.Threading": "4.0.10-beta-23024",
+          "System.Globalization": "4.0.10-beta-23024",
+          "System.Collections.Concurrent": "4.0.10-beta-23024",
+          "System.ComponentModel.EventBasedAsync": "4.0.10-beta-23024",
+          "System.Net.Primitives": "4.0.10-beta-23024",
+          "System.Runtime.Extensions": "4.0.10-beta-23024",
+          "System.Linq.Expressions": "4.0.10-beta-23024"
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Private.ServiceModel.dll": {}
         }
       },
       "System.Private.Uri/4.0.0-beta-23024": {
@@ -848,6 +874,39 @@
           "lib/DNXCore50/System.Security.SecureString.dll": {}
         }
       },
+      "System.ServiceModel.Duplex/4.0.0-beta-23024": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.0.0-beta-23024"
+        },
+        "compile": {
+          "ref/dotnet/System.ServiceModel.Duplex.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.ServiceModel.Duplex.dll": {}
+        }
+      },
+      "System.ServiceModel.Http/4.0.10-beta-23024": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.0.0-beta-23024"
+        },
+        "compile": {
+          "ref/dotnet/System.ServiceModel.Http.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.ServiceModel.Http.dll": {}
+        }
+      },
+      "System.ServiceModel.Primitives/4.0.0-beta-23024": {
+        "dependencies": {
+          "System.Private.ServiceModel": "4.0.0-beta-23024"
+        },
+        "compile": {
+          "ref/dotnet/System.ServiceModel.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.ServiceModel.Primitives.dll": {}
+        }
+      },
       "System.Text.Encoding/4.0.10-beta-23024": {
         "dependencies": {
           "System.Runtime": "4.0.0-beta-23024"
@@ -969,27 +1028,6 @@
           "lib/dotnet/System.Xml.ReaderWriter.dll": {}
         }
       },
-      "System.Xml.XDocument/4.0.10-beta-23024": {
-        "dependencies": {
-          "System.Runtime": "4.0.20-beta-23024",
-          "System.IO": "4.0.10-beta-23024",
-          "System.Xml.ReaderWriter": "4.0.10-beta-23024",
-          "System.Resources.ResourceManager": "4.0.0-beta-23024",
-          "System.Diagnostics.Debug": "4.0.10-beta-23024",
-          "System.Collections": "4.0.10-beta-23024",
-          "System.Globalization": "4.0.10-beta-23024",
-          "System.Threading": "4.0.10-beta-23024",
-          "System.Text.Encoding": "4.0.10-beta-23024",
-          "System.Reflection": "4.0.10-beta-23024",
-          "System.Runtime.Extensions": "4.0.10-beta-23024"
-        },
-        "compile": {
-          "ref/dotnet/System.Xml.XDocument.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/System.Xml.XDocument.dll": {}
-        }
-      },
       "System.Xml.XmlDocument/4.0.0-beta-23024": {
         "dependencies": {
           "System.Runtime": "4.0.20-beta-23024",
@@ -1034,58 +1072,6 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Xml.XmlSerializer.dll": {}
-        }
-      },
-      "xunit/2.0.0-beta5-build2785": {
-        "dependencies": {
-          "xunit.core": "[2.0.0-beta5-build2785]",
-          "xunit.assert": "[2.0.0-beta5-build2785]"
-        }
-      },
-      "xunit.abstractions/2.0.0-beta5-build2785": {
-        "compile": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.abstractions.dll": {}
-        }
-      },
-      "xunit.abstractions.netcore/1.0.0-prerelease": {
-        "compile": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS/xunit.abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS/xunit.abstractions.dll": {}
-        }
-      },
-      "xunit.assert/2.0.0-beta5-build2785": {
-        "compile": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monoandroid+monotouch10/xunit.assert.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monoandroid+monotouch10/xunit.assert.dll": {}
-        }
-      },
-      "xunit.core/2.0.0-beta5-build2785": {
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0-beta5-build2785]"
-        },
-        "compile": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.core.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.core.dll": {}
-        }
-      },
-      "xunit.core.netcore/1.0.1-prerelease": {
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0-beta5-build2785]"
-        },
-        "compile": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.dll": {}
         }
       }
     }
@@ -1208,34 +1194,6 @@
         "ref/net46/System.Collections.Specialized.dll"
       ]
     },
-    "System.ComponentModel/4.0.0-beta-23024": {
-      "serviceable": true,
-      "sha512": "mWm8VZS/TYhjVU+/JXJW/Y2cg/Ec7/V7RS7JJ1UwuGN5xgVOwliiQFQNVz1Ev4uJu0eGd49mqH2VhtykBxBeuA==",
-      "files": [
-        "System.ComponentModel.4.0.0-beta-23024.nupkg",
-        "System.ComponentModel.4.0.0-beta-23024.nupkg.sha512",
-        "System.ComponentModel.nuspec",
-        "lib/dotnet/System.ComponentModel.dll",
-        "lib/net45/_._",
-        "lib/netcore50/System.ComponentModel.dll",
-        "lib/win8/_._",
-        "ref/dotnet/System.ComponentModel.dll",
-        "ref/dotnet/System.ComponentModel.xml",
-        "ref/dotnet/de/System.ComponentModel.xml",
-        "ref/dotnet/es/System.ComponentModel.xml",
-        "ref/dotnet/fr/System.ComponentModel.xml",
-        "ref/dotnet/it/System.ComponentModel.xml",
-        "ref/dotnet/ja/System.ComponentModel.xml",
-        "ref/dotnet/ko/System.ComponentModel.xml",
-        "ref/dotnet/ru/System.ComponentModel.xml",
-        "ref/dotnet/zh-hans/System.ComponentModel.xml",
-        "ref/dotnet/zh-hant/System.ComponentModel.xml",
-        "ref/net45/_._",
-        "ref/netcore50/System.ComponentModel.dll",
-        "ref/netcore50/System.ComponentModel.xml",
-        "ref/win8/_._"
-      ]
-    },
     "System.ComponentModel.EventBasedAsync/4.0.10-beta-23024": {
       "serviceable": true,
       "sha512": "CPRl6hFWrcp99p+2kfZJ7m4lPTrWu2G9/66QLFoiwrkRXEpAh1JXfwvvq5tcrBE/kqRGfcU+J0eNyXti8fSpPg==",
@@ -1310,35 +1268,6 @@
         "ref/dotnet/zh-hant/System.Diagnostics.Debug.xml",
         "ref/net46/_._",
         "runtimes/win8-aot/lib/netcore50/System.Diagnostics.Debug.dll"
-      ]
-    },
-    "System.Diagnostics.Tools/4.0.0-beta-23024": {
-      "serviceable": true,
-      "sha512": "Je0gBNcoaMp7mnrTx73BfAhj+0cLtLAgscY7p7RVhBEOMfMIUqeBR3FP49tK2DwUQe1BvJBtGfdMhBtO0vw7cQ==",
-      "files": [
-        "System.Diagnostics.Tools.4.0.0-beta-23024.nupkg",
-        "System.Diagnostics.Tools.4.0.0-beta-23024.nupkg.sha512",
-        "System.Diagnostics.Tools.nuspec",
-        "lib/DNXCore50/System.Diagnostics.Tools.dll",
-        "lib/net45/_._",
-        "lib/netcore50/System.Diagnostics.Tools.dll",
-        "lib/win8/_._",
-        "ref/dotnet/System.Diagnostics.Tools.dll",
-        "ref/dotnet/System.Diagnostics.Tools.xml",
-        "ref/dotnet/de/System.Diagnostics.Tools.xml",
-        "ref/dotnet/es/System.Diagnostics.Tools.xml",
-        "ref/dotnet/fr/System.Diagnostics.Tools.xml",
-        "ref/dotnet/it/System.Diagnostics.Tools.xml",
-        "ref/dotnet/ja/System.Diagnostics.Tools.xml",
-        "ref/dotnet/ko/System.Diagnostics.Tools.xml",
-        "ref/dotnet/ru/System.Diagnostics.Tools.xml",
-        "ref/dotnet/zh-hans/System.Diagnostics.Tools.xml",
-        "ref/dotnet/zh-hant/System.Diagnostics.Tools.xml",
-        "ref/net45/_._",
-        "ref/netcore50/System.Diagnostics.Tools.dll",
-        "ref/netcore50/System.Diagnostics.Tools.xml",
-        "ref/win8/_._",
-        "runtimes/win8-aot/lib/netcore50/System.Diagnostics.Tools.dll"
       ]
     },
     "System.Diagnostics.Tracing/4.0.20-beta-23024": {
@@ -1806,6 +1735,19 @@
         "System.Private.Networking.nuspec",
         "lib/DNXCore50/System.Private.Networking.dll",
         "lib/netcore50/System.Private.Networking.dll",
+        "ref/dnxcore50/_._",
+        "ref/netcore50/_._"
+      ]
+    },
+    "System.Private.ServiceModel/4.0.0-beta-23024": {
+      "serviceable": true,
+      "sha512": "Brh0iZwwTLywg+17IDsATnCuHmSJ9Pvc7/D7SUtFp8JjRyDzhCCi2Vb8FYMID2f9RgubpEqxNdfG60f0UF6D6g==",
+      "files": [
+        "System.Private.ServiceModel.4.0.0-beta-23024.nupkg",
+        "System.Private.ServiceModel.4.0.0-beta-23024.nupkg.sha512",
+        "System.Private.ServiceModel.nuspec",
+        "lib/DNXCore50/System.Private.ServiceModel.dll",
+        "lib/netcore50/System.Private.ServiceModel.dll",
         "ref/dnxcore50/_._",
         "ref/netcore50/_._"
       ]
@@ -2464,6 +2406,86 @@
         "ref/net46/System.Security.SecureString.dll"
       ]
     },
+    "System.ServiceModel.Duplex/4.0.0-beta-23024": {
+      "serviceable": true,
+      "sha512": "PsU7/tj/OecbUWIkhna6/Kv/NDtbx50XmyyTrx4PCJ3F8TdDAgARfOgze+rmXB1dMi+dVpswVy8czGH1Wg0LZg==",
+      "files": [
+        "System.ServiceModel.Duplex.4.0.0-beta-23024.nupkg",
+        "System.ServiceModel.Duplex.4.0.0-beta-23024.nupkg.sha512",
+        "System.ServiceModel.Duplex.nuspec",
+        "lib/DNXCore50/System.ServiceModel.Duplex.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.ServiceModel.Duplex.dll",
+        "lib/win8/_._",
+        "ref/dotnet/System.ServiceModel.Duplex.dll",
+        "ref/dotnet/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/de/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/es/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/fr/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/it/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/ja/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/ko/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/ru/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/zh-hans/System.ServiceModel.Duplex.xml",
+        "ref/dotnet/zh-hant/System.ServiceModel.Duplex.xml",
+        "ref/net45/_._",
+        "ref/netcore50/System.ServiceModel.Duplex.dll",
+        "ref/netcore50/System.ServiceModel.Duplex.xml",
+        "ref/win8/_._"
+      ]
+    },
+    "System.ServiceModel.Http/4.0.10-beta-23024": {
+      "serviceable": true,
+      "sha512": "vjwaH0lzJNobqVRVfZZ1FLQ4XeBJpRCHUNsie3UfiFvSYINyoBn8GAeMlaPHF5EueQlY9Qb4bm1wo6kzz0VB9w==",
+      "files": [
+        "System.ServiceModel.Http.4.0.10-beta-23024.nupkg",
+        "System.ServiceModel.Http.4.0.10-beta-23024.nupkg.sha512",
+        "System.ServiceModel.Http.nuspec",
+        "lib/DNXCore50/System.ServiceModel.Http.dll",
+        "lib/net46/_._",
+        "lib/netcore50/System.ServiceModel.Http.dll",
+        "ref/dotnet/System.ServiceModel.Http.dll",
+        "ref/dotnet/System.ServiceModel.Http.xml",
+        "ref/dotnet/de/System.ServiceModel.Http.xml",
+        "ref/dotnet/es/System.ServiceModel.Http.xml",
+        "ref/dotnet/fr/System.ServiceModel.Http.xml",
+        "ref/dotnet/it/System.ServiceModel.Http.xml",
+        "ref/dotnet/ja/System.ServiceModel.Http.xml",
+        "ref/dotnet/ko/System.ServiceModel.Http.xml",
+        "ref/dotnet/ru/System.ServiceModel.Http.xml",
+        "ref/dotnet/zh-hans/System.ServiceModel.Http.xml",
+        "ref/dotnet/zh-hant/System.ServiceModel.Http.xml",
+        "ref/net46/_._"
+      ]
+    },
+    "System.ServiceModel.Primitives/4.0.0-beta-23024": {
+      "serviceable": true,
+      "sha512": "XDtjd7iMMaIg84dBb4Vp4SSdWSlhdwNgQNIwxiSCRHJc4i3Fek69VWnE2dvR8o6AnlYXSpaug+HHU6kceXURCA==",
+      "files": [
+        "System.ServiceModel.Primitives.4.0.0-beta-23024.nupkg",
+        "System.ServiceModel.Primitives.4.0.0-beta-23024.nupkg.sha512",
+        "System.ServiceModel.Primitives.nuspec",
+        "lib/DNXCore50/System.ServiceModel.Primitives.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.ServiceModel.Primitives.dll",
+        "lib/win8/_._",
+        "ref/dotnet/System.ServiceModel.Primitives.dll",
+        "ref/dotnet/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/de/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/es/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/fr/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/it/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/ja/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/ko/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/ru/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/zh-hans/System.ServiceModel.Primitives.xml",
+        "ref/dotnet/zh-hant/System.ServiceModel.Primitives.xml",
+        "ref/net45/_._",
+        "ref/netcore50/System.ServiceModel.Primitives.dll",
+        "ref/netcore50/System.ServiceModel.Primitives.xml",
+        "ref/win8/_._"
+      ]
+    },
     "System.Text.Encoding/4.0.10-beta-23024": {
       "sha512": "rNCH8+rj+jrlVbw91Xrj6NpT2bhcQn0D66oCzSDPmXhf6+udI74M8SBGLI2qz48lc8L4Mr5dEIifEq2p4D1P3w==",
       "files": [
@@ -2682,29 +2704,6 @@
         "ref/net46/_._"
       ]
     },
-    "System.Xml.XDocument/4.0.10-beta-23024": {
-      "serviceable": true,
-      "sha512": "kEdUaXET7z5Cgq1DniSv7suMyZesqN5XGLztEw+SFP34nEBX5hwexYeLDRliXT5gPI33B+IwCYA1TcDYfV1BXg==",
-      "files": [
-        "System.Xml.XDocument.4.0.10-beta-23024.nupkg",
-        "System.Xml.XDocument.4.0.10-beta-23024.nupkg.sha512",
-        "System.Xml.XDocument.nuspec",
-        "lib/dotnet/System.Xml.XDocument.dll",
-        "lib/net46/_._",
-        "ref/dotnet/System.Xml.XDocument.dll",
-        "ref/dotnet/System.Xml.XDocument.xml",
-        "ref/dotnet/de/System.Xml.XDocument.xml",
-        "ref/dotnet/es/System.Xml.XDocument.xml",
-        "ref/dotnet/fr/System.Xml.XDocument.xml",
-        "ref/dotnet/it/System.Xml.XDocument.xml",
-        "ref/dotnet/ja/System.Xml.XDocument.xml",
-        "ref/dotnet/ko/System.Xml.XDocument.xml",
-        "ref/dotnet/ru/System.Xml.XDocument.xml",
-        "ref/dotnet/zh-hans/System.Xml.XDocument.xml",
-        "ref/dotnet/zh-hant/System.Xml.XDocument.xml",
-        "ref/net46/_._"
-      ]
-    },
     "System.Xml.XmlDocument/4.0.0-beta-23024": {
       "serviceable": true,
       "sha512": "wDzy1eLJNIq0psj57MQmkBjy65ibacL4j4wZR+xWYpxWR93cdXAwn7eOJkiW5GIklelHro6y/6W/7gxpq2SVVA==",
@@ -2753,148 +2752,14 @@
         "ref/net46/_._",
         "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll"
       ]
-    },
-    "xunit/2.0.0-beta5-build2785": {
-      "sha512": "bNycxZe/83M7o7j0IbGp3/daiPLi17hZgYZB6xttgCVDnxgAuw/TP1zetiUTW1yVUPASnAjlkBeJayv/G2Crsw==",
-      "files": [
-        "xunit.2.0.0-beta5-build2785.nupkg",
-        "xunit.2.0.0-beta5-build2785.nupkg.sha512",
-        "xunit.nuspec"
-      ]
-    },
-    "xunit.abstractions/2.0.0-beta5-build2785": {
-      "sha512": "b2RCnV2/wilCH1dsh7bAF82Ou+Vs+WfYLEItzRUUbD3YHNODx0ncpQwLz1JYjL/voBFc5mQh77hxIbgCGmyxKA==",
-      "files": [
-        "xunit.abstractions.2.0.0-beta5-build2785.nupkg",
-        "xunit.abstractions.2.0.0-beta5-build2785.nupkg.sha512",
-        "xunit.abstractions.nuspec",
-        "lib/net35/xunit.abstractions.dll",
-        "lib/net35/xunit.abstractions.xml",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.abstractions.dll",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.abstractions.xml"
-      ]
-    },
-    "xunit.abstractions.netcore/1.0.0-prerelease": {
-      "sha512": "fajSAvVztuUVSb/o1GxYM5I33Ikvx6CNNscpOnDAl6AnDAKqhOeu3iPTL0VzDhzXiXyOKbRi4iewv4hAWTgeuw==",
-      "files": [
-        "xunit.abstractions.netcore.1.0.0-prerelease.nupkg",
-        "xunit.abstractions.netcore.1.0.0-prerelease.nupkg.sha512",
-        "xunit.abstractions.netcore.nuspec",
-        "lib/net35/xunit.abstractions.dll",
-        "lib/net35/xunit.abstractions.xml",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS/xunit.abstractions.dll",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS/xunit.abstractions.xml"
-      ]
-    },
-    "xunit.assert/2.0.0-beta5-build2785": {
-      "sha512": "1PTLrP+jLzSIhqO3JzzgPcMPmSyBlFadpFH6v3d2Vm08x/bIYHnF78h20qt6wk/t3wMu7smOsyoNcUFeP2ZnGg==",
-      "files": [
-        "xunit.assert.2.0.0-beta5-build2785.nupkg",
-        "xunit.assert.2.0.0-beta5-build2785.nupkg.sha512",
-        "xunit.assert.nuspec",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monoandroid+monotouch10/xunit.assert.dll",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monoandroid+monotouch10/xunit.assert.pdb",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monoandroid+monotouch10/xunit.assert.xml"
-      ]
-    },
-    "xunit.core/2.0.0-beta5-build2785": {
-      "sha512": "3rDhbyvCS1iA20A7uXxYvw3LLa4MtyXUX9Y6i3QjY/dRhIHEZcSxBjBfGP3MjPm900WnsBx2H0ryQo2RWABhhg==",
-      "files": [
-        "xunit.core.2.0.0-beta5-build2785.nupkg",
-        "xunit.core.2.0.0-beta5-build2785.nupkg.sha512",
-        "xunit.core.nuspec",
-        "build/monoandroid/xunit.core.props",
-        "build/monoandroid/xunit.execution.dll",
-        "build/monotouch/xunit.core.props",
-        "build/monotouch/xunit.execution.dll",
-        "build/portable-net45+win+wpa81+wp80+monotouch+monoandroid/xunit.core.props",
-        "build/portable-net45+win+wpa81+wp80+monotouch+monoandroid/xunit.execution.dll",
-        "build/win8/xunit.core.props",
-        "build/win8/xunit.core.targets",
-        "build/win8/xunit.execution.dll",
-        "build/win8/device/xunit.execution.dll",
-        "build/wp8/xunit.core.props",
-        "build/wp8/xunit.core.targets",
-        "build/wp8/xunit.execution.dll",
-        "build/wp8/device/xunit.execution.dll",
-        "build/wpa81/xunit.core.props",
-        "build/wpa81/xunit.core.targets",
-        "build/wpa81/xunit.execution.dll",
-        "build/wpa81/device/xunit.execution.dll",
-        "build/wpa81/device/xunit.execution.pri",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.core.dll",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.core.dll.tdnet",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.core.pdb",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.core.xml",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.runner.tdnet.dll",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid/xunit.runner.utility.dll"
-      ]
-    },
-    "xunit.core.netcore/1.0.1-prerelease": {
-      "sha512": "iy2u6WUx6CxSn7ahvJrBOrrpsLphtu1kjDGmyJKOiCmoCPczZEHjPOVL1OCt4V3EWCwS0zypWV8uVSqn1/UM8g==",
-      "files": [
-        "xunit.core.netcore.1.0.1-prerelease.nupkg",
-        "xunit.core.netcore.1.0.1-prerelease.nupkg.sha512",
-        "xunit.core.netcore.nuspec",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.dll",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.pdb",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.core.xml",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.dll",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.pdb",
-        "lib/portable-net45+aspnetcore50+win+wpa81+wp80/xunit.runner.utility.xml"
-      ]
     }
   },
   "projectFileDependencyGroups": {
     "": [
-      "System.Collections >= 4.0.10-beta-*",
-      "System.Collections.Concurrent >= 4.0.10-beta-*",
-      "System.Collections.NonGeneric >= 4.0.0-beta-*",
-      "System.Collections.Specialized >= 4.0.0-beta-*",
-      "System.ComponentModel >= 4.0.0-beta-*",
-      "System.ComponentModel.EventBasedAsync >= 4.0.10-beta-*",
-      "System.Diagnostics.Contracts >= 4.0.0-beta-*",
-      "System.Diagnostics.Debug >= 4.0.10-beta-*",
-      "System.Diagnostics.Tools >= 4.0.0-beta-*",
-      "System.Globalization >= 4.0.10-beta-*",
-      "System.IO >= 4.0.10-beta-*",
-      "System.IO.Compression >= 4.0.0-beta-*",
-      "System.Linq >= 4.0.0-beta-*",
-      "System.Linq.Expressions >= 4.0.10-beta-*",
-      "System.Linq.Queryable >= 4.0.0-beta-*",
-      "System.Net.Http >= 4.0.0-beta-*",
-      "System.Net.NameResolution >= 4.0.0-beta-*",
-      "System.Net.Primitives >= 4.0.10-beta-*",
-      "System.Net.Security >= 4.0.0-beta-*",
       "System.Net.Sockets >= 4.0.10-beta-*",
-      "System.Net.WebHeaderCollection >= 4.0.0-beta-*",
-      "System.ObjectModel >= 4.0.10-beta-*",
-      "System.Reflection >= 4.0.10-beta-*",
-      "System.Reflection.DispatchProxy >= 4.0.0-beta-*",
-      "System.Reflection.Extensions >= 4.0.0-beta-*",
-      "System.Reflection.Primitives >= 4.0.0-beta-*",
-      "System.Reflection.TypeExtensions >= 4.0.0-beta-*",
-      "System.Resources.ResourceManager >= 4.0.0-beta-*",
-      "System.Runtime >= 4.0.20-beta-*",
-      "System.Runtime.Extensions >= 4.0.10-beta-*",
-      "System.Runtime.Handles >= 4.0.0-beta-*",
-      "System.Runtime.InteropServices >= 4.0.20-beta-*",
-      "System.Runtime.Serialization.Xml >= 4.0.10-beta-*",
-      "System.Security.Claims >= 4.0.0-beta-*",
-      "System.Security.Principal >= 4.0.0-beta-*",
-      "System.Security.Principal.Windows >= 4.0.0-beta-*",
-      "System.Text.Encoding >= 4.0.10-beta-*",
-      "System.Threading >= 4.0.10-beta-*",
-      "System.Threading.Tasks >= 4.0.10-beta-*",
-      "System.Threading.Timer >= 4.0.0-beta-*",
-      "System.Xml.ReaderWriter >= 4.0.10-beta-*",
-      "System.Xml.XDocument >= 4.0.10-beta-*",
-      "System.Xml.XmlDocument >= 4.0.0-beta-*",
-      "System.Xml.XmlSerializer >= 4.0.10-beta-*",
-      "xunit >= 2.0.0-beta5-build2785",
-      "xunit.abstractions.netcore >= 1.0.0-prerelease",
-      "xunit.assert >= 2.0.0-beta5-build2785",
-      "xunit.core.netcore >= 1.0.1-prerelease"
+      "System.ServiceModel.Duplex >= 4.0.0-beta-*",
+      "System.ServiceModel.Http >= 4.0.10-beta-*",
+      "System.ServiceModel.Primitives >= 4.0.0-beta-*"
     ],
     "DNXCore,Version=v5.0": []
   }
