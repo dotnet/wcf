@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="CreateTestProperties;Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -36,4 +36,10 @@
   <Import Project="testproperties.props" />
   <Import Project="testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+
+  <!-- Add our code-gen target after the imports above because they reset $(CoreCompileDependsOn) -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);CreateTestProperties</CoreCompileDependsOn>
+  </PropertyGroup>
+
 </Project>
