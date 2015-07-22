@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -16,7 +17,6 @@ namespace Bridge
     class JsonStringMediaTypeFormatter : BufferedMediaTypeFormatter
     {
         private static readonly Regex regexResource = new Regex(@"name\s*:\s*""([a-z_][a-z0-9._]*)""", RegexOptions.IgnoreCase);
-        private static readonly Regex regexConfig = new Regex(@"resourcesDirectory\s*:\s*""([^""]+)""", RegexOptions.IgnoreCase);
 
         public JsonStringMediaTypeFormatter()
         {
@@ -25,12 +25,18 @@ namespace Bridge
 
         public override bool CanReadType(Type type)
         {
-            return type == typeof(string) || type == typeof(resource) || type == typeof(config);
+            return type == typeof(string) ||
+                   type == typeof(resource) ||
+                   type == typeof(IDictionary<string, string>);
         }
 
         public override bool CanWriteType(Type type)
         {
-            return type == typeof(string) || type == typeof(resource) || type == typeof(resourceResponse) || type == typeof(config) || type == typeof(configResponse) || type.IsAssignableFrom(typeof(IDictionary));
+            return type == typeof(string) || 
+                   type == typeof(resource) || 
+                   type == typeof(resourceResponse) || 
+                   type == typeof(configResponse) || 
+                   type.IsAssignableFrom(typeof(IDictionary));
         }
 
         public override void WriteToStream(Type type, object value, Stream writeStream, HttpContent content, CancellationToken cancellationToken)
@@ -43,16 +49,8 @@ namespace Bridge
                     IDictionary dict = value as IDictionary;
                     if (dict != null)
                     {
-                        StringBuilder sb = new StringBuilder();
-                        sb.AppendLine("{");
-                        foreach (var key in dict.Keys)
-                        {
-                            sb.AppendFormat("   {0} : \"{1}\",\n", key, dict[key]);
-                        }
-
-                        sb.Remove(sb.Length - 2, 2);
-                        sb.AppendLine("\n}");
-                        writer.Write(sb.ToString());
+                        string dictionaryAsJson = SerializeDictionary(dict);
+                        writer.Write(dictionaryAsJson);
                     }
                 }
                 else
@@ -77,14 +75,48 @@ namespace Bridge
                 if (match.Success && match.Groups.Count == 2)
                     return new resource() { name = match.Groups[1].Value };
             }
-            else if (type == typeof(config))
+            else if (type == typeof(IDictionary<string,string>) || type.IsAssignableFrom(typeof(IDictionary)))
             {
-                var match = regexConfig.Match(data);
-                if (match.Success && match.Groups.Count == 2)
-                    return new config() { resourcesDirectory = match.Groups[1].Value };
+                return DeserializeDictionary(data);
             }
 
             return data;
+        }
+
+        private static string SerializeDictionary(IDictionary dictionary)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("{");
+            foreach (var key in dictionary.Keys)
+            {
+                sb.AppendFormat("   {0} : \"{1}\",\n", key, dictionary[key] == null ? String.Empty : dictionary[key].ToString());
+            }
+
+            sb.Remove(sb.Length - 2, 2);
+            sb.AppendLine("\n}");
+            return sb.ToString();
+        }
+
+        private static Dictionary<string, string> DeserializeDictionary(string data)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            data = data.Replace("{", String.Empty)
+                    .Replace("}", String.Empty)
+                    .Trim();
+
+            string[] pairs = data.Split(',');
+            foreach (string pair in pairs)
+            {
+                int colonPos = pair.IndexOf(':');
+                if (colonPos > 0)
+                {
+                    string key = pair.Substring(0, colonPos-1).Replace("\"", String.Empty).Trim();
+                    string value = pair.Substring(colonPos + 1).Replace("\"", String.Empty).Trim();
+                    dictionary[key] = value;
+                }
+            }
+
+            return dictionary;
         }
     }
 }

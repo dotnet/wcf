@@ -14,12 +14,12 @@ namespace Bridge
     {
         public static string UpdateApp(this config config)
         {
-            var newPath = Path.GetFullPath(config.resourcesDirectory);
-            if (ConfigController.Config.resourcesDirectory != newPath)
+            if (!String.Equals(ConfigController.Config.BridgeResourceFolder, config.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase))
             {
+                var newPath = Path.GetFullPath(config.BridgeResourceFolder);
                 Trace.WriteLine("Adding assemblies in the directory");
                 string friendlyName = CreateAppDomain(newPath);
-                ConfigController.Config.resourcesDirectory = newPath;
+                ConfigController.Config = config;
                 return friendlyName;
             }
 
@@ -28,9 +28,9 @@ namespace Bridge
 
         public static bool isValidProbingPath(this config config)
         {
-            if (config != null && !String.IsNullOrWhiteSpace(config.resourcesDirectory))
+            if (config != null && !String.IsNullOrWhiteSpace(config.BridgeResourceFolder))
             {
-                if (Directory.Exists(config.resourcesDirectory))
+                if (Directory.Exists(config.BridgeResourceFolder))
                 {
                     return true;
                 }

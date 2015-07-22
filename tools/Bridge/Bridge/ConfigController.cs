@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
@@ -14,15 +15,17 @@ namespace Bridge
         internal static config Config = new config();
         internal static string CurrentAppDomain;
 
-        public HttpResponseMessage POST(config config)
+        public HttpResponseMessage POST(IDictionary<string, string> configInfo)
         {
-            Trace.WriteLine("POST config: " + config);
+            config config = new config(configInfo);
+
+            Trace.WriteLine("POST config: " + Environment.NewLine + config);
             try
             {
                 if (!config.isValidProbingPath())
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        "config.resourcesDirectory does not exist.");
+                        String.Format("config.resourcesDirectory {0} does not exist.", config.BridgeResourceFolder));
                 }
 
                 string friendlyName = config.UpdateApp();

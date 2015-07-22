@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,8 +18,7 @@ namespace System.ServiceModel.Tests.Common
 
         private static string BridgeBaseAddress
         {
-            // TODO: Pull this address from msbuild props, env vars, or config passed into xunit.
-            get { return "http://localhost:44283"; }
+            get { return TestProperties.GetProperty(TestProperties.BridgeUrl_PropertyName); }
         }
 
         static BridgeClient()
@@ -50,10 +50,8 @@ namespace System.ServiceModel.Tests.Common
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(BridgeBaseAddress);
-                string resourceFolder = TestProperties.GetProperty(TestProperties.BridgeResourceFolder_PropertyName);
-                string contentPayload = "{ resourcesDirectory : \"" + resourceFolder + "\" }"; 
                 var content = new StringContent(
-                    contentPayload,
+                    CreateConfigRequestContentAsJson(),
                     Encoding.UTF8,
                     "application/json");
                 try
@@ -69,6 +67,24 @@ namespace System.ServiceModel.Tests.Common
                     throw new Exception("Bridge is not running", exc);
                 }
             }
+        }
+
+        private static string CreateConfigRequestContentAsJson()
+        {
+            // Create a Json dictionary of name/value pairs from TestProperties
+            StringBuilder sb = new StringBuilder("{ ");
+            string[] propertyNames = TestProperties.PropertyNames.ToArray();
+            for (int i = 0; i < propertyNames.Length; ++i)
+            {
+                string propertyName = propertyNames[i];
+                sb.Append(String.Format("\"{0}\" : \"{1}\"", propertyName, TestProperties.GetProperty(propertyName)));
+                if (i < propertyNames.Length - 1)
+                {
+                    sb.Append(", ");
+                }
+            }
+            sb.Append(" }");
+            return sb.ToString();
         }
 
         private static string MakeResourcePutRequest(string resourceName)
