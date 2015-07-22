@@ -40,7 +40,8 @@ namespace WcfService
         Task<Guid> Ping(Guid guid);
 
         [OperationContract]
-        [FaultContract(typeof(FaultDetail), Name = "FaultDetail")]
+        [FaultContract(typeof (FaultDetail), Name = "FaultDetail",
+            Action = "http://tempuri.org/IWcfDuplexTaskReturnService/FaultPingFaultDetailFault")]
         Task<Guid> FaultPing(Guid guid);
     }
 
@@ -50,7 +51,8 @@ namespace WcfService
         Task<Guid> ServicePingCallback(Guid guid);
 
         [OperationContract]
-        [FaultContract(typeof(FaultDetail), Name = "FaultDetail")]
+        [FaultContract(typeof (FaultDetail), Name = "FaultDetail",
+            Action = "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallbackFaultDetailFault")]
         Task<Guid> ServicePingFaultCallback(Guid guid);
     }
 }

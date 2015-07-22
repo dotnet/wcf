@@ -88,6 +88,7 @@ namespace System.ServiceModel.Dispatcher
                 Fx.Assert(invokeTask.IsCompleted, "Task.Result is expected to be completed");
                 tuple = invokeTask.Result;
                 task = tuple.Item1 as Task;
+                Fx.Assert(task != null, "Returned object is expected to be a non-null Task");
                 if (task.IsFaulted)
                 {
                     Fx.Assert(task.Exception != null, "Task.IsFaulted guarantees non-null exception.");
@@ -204,16 +205,23 @@ namespace System.ServiceModel.Dispatcher
                             TraceUtility.GetCallerInfo(OperationContext.Current));
                     }
                     returnValue = _invokeDelegate(instance, inputs, outputs);
+
+                    if (returnValue == null)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("task");
+                    }
+
                     var returnValueTask = returnValue as Task;
                     if (returnValueTask != null)
                     {
+                        // Only return once the task has completed
                         await returnValueTask;
                     }
 
                     callSucceeded = true;
                 }
             }
-            catch (System.ServiceModel.FaultException)
+            catch (FaultException)
             {
                 callFaulted = true;
                 throw;

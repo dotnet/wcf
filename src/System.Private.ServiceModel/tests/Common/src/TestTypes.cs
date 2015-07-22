@@ -691,6 +691,13 @@ public class XmlCompositeType
 
 public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
 {
+    private bool _wrapExceptionInTask;
+
+    public DuplexTaskReturnServiceCallback(bool wrapExceptionInTask = false)
+    {
+        _wrapExceptionInTask = wrapExceptionInTask;
+    }
+
     public Task<Guid> ServicePingCallback(Guid guid)
     {
         // This returns the guid to the service which called this callback.
@@ -702,10 +709,19 @@ public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
 
     public Task<Guid> ServicePingFaultCallback(Guid guid)
     {
-        throw new FaultException<FaultDetail>(
-          new FaultDetail("Throwing a Fault Exception from the Callback method."), 
-          new FaultReason("Reason: Testing FaultException returned from Duplex Callback"), 
-          new FaultCode("ServicePingFaultCallback"),
-          "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallback");
+        var fault = new FaultException<FaultDetail>(
+            new FaultDetail("Throwing a Fault Exception from the Callback method."),
+            new FaultReason("Reason: Testing FaultException returned from Duplex Callback"),
+            new FaultCode("ServicePingFaultCallback"),
+            "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallbackFaultDetailFault");
+
+        if (_wrapExceptionInTask)
+        {
+            var tcs = new TaskCompletionSource<Guid>();
+            tcs.TrySetException(fault);
+            return tcs.Task;
+        }
+
+        throw fault;
     }
 }
