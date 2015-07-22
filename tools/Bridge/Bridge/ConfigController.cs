@@ -3,9 +3,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace Bridge
@@ -15,13 +17,17 @@ namespace Bridge
         internal static config Config = new config();
         internal static string CurrentAppDomain;
 
-        public HttpResponseMessage POST(IDictionary<string, string> configInfo)
+        public HttpResponseMessage POST(HttpRequestMessage request)
         {
-            config config = new config(configInfo);
-
-            Trace.WriteLine("POST config: " + Environment.NewLine + config);
             try
             {
+                // Handle deserialization explicitly to bypass MediaTypeFormatter use
+                string nameValuePairs = request.Content.ReadAsStringAsync().Result;
+                Dictionary<string, string> configInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
+
+                config config = new config(configInfo);
+
+                Trace.WriteLine("POST config: " + Environment.NewLine + config);
                 if (!config.isValidProbingPath())
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -30,12 +36,18 @@ namespace Bridge
 
                 string friendlyName = config.UpdateApp();
                 CurrentAppDomain = friendlyName;
-                var response = new configResponse
+
+                var configResponse = new configResponse
                 {
                     types = TypeCache.Cache[friendlyName]
                 };
-                Trace.WriteLine("POST config: " + response);
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                Trace.WriteLine("POST config: " + configResponse);
+
+                // Directly return a json string to avoid use of MediaTypeFormatters
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(configResponse.ToString());
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+                return response;
             }
             catch (Exception ex)
             {

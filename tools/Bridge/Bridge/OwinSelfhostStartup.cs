@@ -16,7 +16,6 @@ namespace Bridge
             WebApiConfig.Register(config);
             IdleTimeoutHandler.Register(config);
             appBuilder.UseWebApi(config);
-            config.Formatters[0] = new JsonStringMediaTypeFormatter();
             appBuilder.UseErrorPage();
             appBuilder.UseWelcomePage("/");
         }
