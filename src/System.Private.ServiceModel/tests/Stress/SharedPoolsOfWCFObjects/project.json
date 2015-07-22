@@ -1,0 +1,35 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "",
+  "authors": [ "" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "System.Net.Sockets": "4.0.10-beta-*",
+    "System.ServiceModel.NetTcp": "4.0.0-beta-*",
+    "System.ServiceModel.Http": "4.0.10-beta-*",
+    "System.ServiceModel.Primitives": "4.0.0-beta-*",
+    "System.ServiceModel.Security": "4.0.0-beta-*",
+    "System.Console": "4.0.0-beta-*",
+    "System.Collections": "4.0.10-beta-*",
+    "System.Linq": "4.0.0-beta-*",
+    "System.Threading": "4.0.10-beta-*",
+    "System.Diagnostics.Debug": "4.0.10-beta-*",
+    "System.Collections.Specialized": "4.0.0-beta-*",
+
+  },
+
+  "commands": {
+    "WCFClientStressTestsCore" : "WCFClientStressTestsCore"
+  },
+
+  "frameworks" : {
+    "dnxcore50" : {
+      "dependencies": {
+
+      }
+    }
+  }
+}
