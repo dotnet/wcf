@@ -17,7 +17,7 @@
       </TestProperty>
       <TestProperty Include="BridgeUrl">
         <Value>$(BridgeUrl)</Value>
-        <DefaultValue>http://localhost/Bridge</DefaultValue>
+        <DefaultValue>http://localhost:44283</DefaultValue>
       </TestProperty>
       <TestProperty Include="UseFiddlerUrl">
         <Value>$(UseFiddlerUrl)</Value>

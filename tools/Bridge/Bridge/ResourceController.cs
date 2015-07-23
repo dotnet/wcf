@@ -2,9 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace Bridge
@@ -16,8 +18,14 @@ namespace Bridge
         /// </summary>
         /// <param name="resource"></param>
         /// <response code="200">Test initialized.</response>
-        public HttpResponseMessage Put(resource resource)
+        public HttpResponseMessage Put(HttpRequestMessage request)
         {
+            string nameValuePairs = request.Content.ReadAsStringAsync().Result;
+            Dictionary<string, string> resourceInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
+            string resourceName = null;
+            resourceInfo.TryGetValue("name", out resourceName);
+            resource resource = resourceName == null ? null : new resource { name = resourceName };
+            
             if (resource == null)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "resource data { name:'...' } not specified.");
@@ -31,11 +39,17 @@ namespace Bridge
 
                 var result = ResourceInvoker.DynamicInvokePut(resource);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new resourceResponse
+                resourceResponse resourceResponse = new resourceResponse
                 {
                     id = correlationId,
                     details = result.ToString()
-                });
+                };
+
+                // Directly return a json string to avoid use of MediaTypeFormatters
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(resourceResponse.ToString());
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+                return response;
             }
             catch (Exception exception)
             {

@@ -94,7 +94,7 @@
     <Compile Include="ConfigController.cs" />
     <Compile Include="ConfigurationExtensions.cs" />
     <Compile Include="IdleTimeoutManager.cs" />
-    <Compile Include="JsonStringMediaTypeFormatter.cs" />
+    <Compile Include="JsonSerializer.cs" />
     <Compile Include="OwinSelfhostStartup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="resource.cs" />
