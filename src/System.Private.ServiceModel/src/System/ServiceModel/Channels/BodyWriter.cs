@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace System.ServiceModel.Channels
@@ -81,6 +82,12 @@ namespace System.ServiceModel.Channels
 
         protected abstract void OnWriteBodyContents(XmlDictionaryWriter writer);
 
+        protected virtual Task OnWriteBodyContentsAsync(XmlDictionaryWriter writer)
+        {
+            OnWriteBodyContents(writer);
+            return Task.CompletedTask;
+        }
+
         protected virtual IAsyncResult OnBeginWriteBodyContents(XmlDictionaryWriter writer, AsyncCallback callback, object state)
         {
             throw ExceptionHelper.PlatformNotSupported();
@@ -110,6 +117,12 @@ namespace System.ServiceModel.Channels
         {
             EnsureWriteBodyContentsState(writer);
             OnWriteBodyContents(writer);
+        }
+
+        internal Task WriteBodyContentsAsync(XmlDictionaryWriter writer)
+        {
+            EnsureWriteBodyContentsState(writer);
+            return OnWriteBodyContentsAsync(writer);
         }
 
         public IAsyncResult BeginWriteBodyContents(XmlDictionaryWriter writer, AsyncCallback callback, object state)

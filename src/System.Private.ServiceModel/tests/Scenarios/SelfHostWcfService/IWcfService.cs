@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -65,5 +66,14 @@ namespace WcfService
 
         [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingXmlSerializer"), XmlSerializerFormat]
         XmlCompositeType GetDataUsingXmlSerializer(XmlCompositeType composite);
+
+        [OperationContract]
+        Stream GetStreamFromString(string data);
+
+        [OperationContract]
+        string GetStringFromStream(Stream stream);
+
+        [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoStream", ReplyAction = "http://tempuri.org/IWcfService/EchoStreamResponse")]
+        Stream EchoStream(Stream stream);
     }
 }

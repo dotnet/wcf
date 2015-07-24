@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -47,6 +48,18 @@ public interface IWcfService
 
     [OperationContract(Action = "http://tempuri.org/IWcfService/GetRequestCustomHeader", ReplyAction = "*")]
     string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace);
+
+    [OperationContract]
+    Stream GetStreamFromString(string data);
+
+    [OperationContract]
+    string GetStringFromStream(Stream stream);
+
+    [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoStream", ReplyAction = "http://tempuri.org/IWcfService/EchoStreamResponse")]
+    Stream EchoStream(Stream stream);
+
+    [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoStream", ReplyAction = "http://tempuri.org/IWcfService/EchoStreamResponse")]
+    Task<Stream> EchoStreamAsync(Stream stream);
 }
 
 [ServiceContract]
