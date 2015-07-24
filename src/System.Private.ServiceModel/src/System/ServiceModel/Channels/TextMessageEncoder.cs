@@ -546,7 +546,9 @@ namespace System.ServiceModel.Channels
                     await message.WriteMessageAsync(xmlWriter);
                     xmlWriter.WriteEndDocument();
                 }
-                await xmlWriter.FlushAsync();
+
+                // The underlying type of xmlWriter, XmlUTF8TextWriter, has not implemented FlushAsync() yet.
+                xmlWriter.Flush();
                 ReturnStreamedWriter(xmlWriter);
 
                 if (TD.StreamedMessageWrittenByEncoderIsEnabled())

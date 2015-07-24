@@ -7875,6 +7875,9 @@
   <data name="XmlInvalidConversion" xml:space="preserve">
     <value>The value '{0}' cannot be parsed as the type '{1}'.</value>
   </data>
+  <data name="XmlInvalidStream" xml:space="preserve">
+    <value>Stream returned by OperationStreamProvider cannot be null.</value>
+  </data>
   <data name="LockTimeoutExceptionMessage" xml:space="preserve">
     <value>Cannot claim lock within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
   </data>

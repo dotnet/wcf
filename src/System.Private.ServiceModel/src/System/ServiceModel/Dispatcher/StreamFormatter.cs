@@ -49,8 +49,17 @@ namespace System.ServiceModel.Dispatcher
         internal void Serialize(XmlDictionaryWriter writer, object[] parameters, object returnValue)
         {
             Stream streamValue = GetStreamAndWriteStartWrapperIfNecessary(writer, parameters, returnValue);
-            writer.WriteValue(new OperationStreamProvider(streamValue));
+            var streamProvider = new OperationStreamProvider(streamValue);
+            StreamFormatterHelper.WriteValue(writer, streamProvider);
             WriteEndWrapperIfNecessary(writer);
+        }
+
+        internal async Task SerializeAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
+        {
+            Stream streamValue = await GetStreamAndWriteStartWrapperIfNecessaryAsync(writer, parameters, returnValue);
+            var streamProvider = new OperationStreamProvider(streamValue);
+            await StreamFormatterHelper.WriteValueAsync(writer, streamProvider);
+            await WriteEndWrapperIfNecessaryAsync(writer);
         }
 
         private Stream GetStreamAndWriteStartWrapperIfNecessary(XmlDictionaryWriter writer, object[] parameters, object returnValue)
@@ -64,11 +73,30 @@ namespace System.ServiceModel.Dispatcher
             return streamValue;
         }
 
+        private Task<Stream> GetStreamAndWriteStartWrapperIfNecessaryAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
+        {
+            Stream streamValue = GetStreamValue(parameters, returnValue);
+            if (streamValue == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(_partName);
+            if (WrapperName != null)
+                writer.WriteStartElement(null, WrapperName, WrapperNamespace);
+            writer.WriteStartElement(null, PartName, PartNamespace);
+            return Task.FromResult(streamValue);
+        }
+
         private void WriteEndWrapperIfNecessary(XmlDictionaryWriter writer)
         {
             writer.WriteEndElement();
             if (_wrapperName != null)
                 writer.WriteEndElement();
+        }
+
+        private Task WriteEndWrapperIfNecessaryAsync(XmlDictionaryWriter writer)
+        {
+            writer.WriteEndElement();
+            if (_wrapperName != null)
+                writer.WriteEndElement();
+            return Task.CompletedTask;
         }
 
         internal IAsyncResult BeginSerialize(XmlDictionaryWriter writer, object[] parameters, object returnValue, AsyncCallback callback, object state)
@@ -94,7 +122,10 @@ namespace System.ServiceModel.Dispatcher
             {
                 _streamFormatter = streamFormatter;
                 _writer = writer;
-                throw ExceptionHelper.PlatformNotSupported("StreamFormatter.SerializeAsyncResult is not supported.");
+
+                // As we use the Task-returning method for async operation,
+                // we shouldn't get to this point. Throw exception just in case.
+                throw ExceptionHelper.AsError(NotImplemented.ByDesign);
             }
 
             private static bool HandleEndSerialize(IAsyncResult result)
@@ -346,6 +377,84 @@ namespace System.ServiceModel.Dispatcher
             public void ReleaseStream(Stream stream)
             {
                 //Noop
+            }
+        }
+
+        internal class StreamFormatterHelper
+        {
+            // The method was duplicated from the desktop implementation of
+            // System.Xml.XmlDictionaryWriter.WriteValue(IStreamProvider)
+            public static void WriteValue(XmlDictionaryWriter writer, OperationStreamProvider value)
+            {
+                if (value == null)
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
+
+                Stream stream = value.GetStream();
+                if (stream == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.XmlInvalidStream)));
+                }
+
+                int blockSize = 256;
+                int bytesRead = 0;
+                byte[] block = new byte[blockSize];
+                while (true)
+                {
+                    bytesRead = stream.Read(block, 0, blockSize);
+                    if (bytesRead > 0)
+                    {
+                        writer.WriteBase64(block, 0, bytesRead);
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                    if (blockSize < 65536 && bytesRead == blockSize)
+                    {
+                        blockSize = blockSize * 16;
+                        block = new byte[blockSize];
+                    }
+                }
+
+                value.ReleaseStream(stream);
+            }
+
+            public static async Task WriteValueAsync(XmlDictionaryWriter writer, OperationStreamProvider value)
+            {
+                if (value == null)
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
+
+                Stream stream = value.GetStream();
+                if (stream == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.XmlInvalidStream)));
+                }
+
+                int blockSize = 256;
+                int bytesRead = 0;
+                byte[] block = new byte[blockSize];
+                while (true)
+                {
+                    bytesRead = await stream.ReadAsync(block, 0, blockSize);
+                    if (bytesRead > 0)
+                    {
+                        // XmlDictionaryWriter has not implemented WriteBase64Async() yet.
+                        writer.WriteBase64(block, 0, bytesRead);
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                    if (blockSize < 65536 && bytesRead == blockSize)
+                    {
+                        blockSize = blockSize * 16;
+                        block = new byte[blockSize];
+                    }
+                }
+
+                value.ReleaseStream(stream);
             }
         }
     }

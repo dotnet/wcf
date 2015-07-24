@@ -186,7 +186,7 @@ namespace System.ServiceModel.Channels
 
         protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            return _messageEncoder.WriteMessageAsync(_message, _stream);
+            return _messageEncoder.WriteMessageAsync(_message, stream);
         }
 
         protected override bool TryComputeLength(out long length)

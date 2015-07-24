@@ -636,7 +636,11 @@ namespace System.ServiceModel.Channels
         public virtual async Task OnWriteMessageAsync(XmlDictionaryWriter writer)
         {
             this.WriteMessagePreamble(writer);
-            await this.WriteBodyContentsAsync(writer);
+
+            // We should call OnWriteBodyContentsAsync instead of WriteBodyContentsAsync here,
+            // otherwise EnsureWriteMessageState would get called twice. Also see OnWriteMessage()
+            // for the example.
+            await this.OnWriteBodyContentsAsync(writer);
             this.WriteMessagePostamble(writer);
         }
 
@@ -1046,6 +1050,11 @@ namespace System.ServiceModel.Channels
         protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
         {
             _bodyWriter.WriteBodyContents(writer);
+        }
+
+        protected override Task OnWriteBodyContentsAsync(XmlDictionaryWriter writer)
+        {
+            return _bodyWriter.WriteBodyContentsAsync(writer);
         }
 
         protected override IAsyncResult OnBeginWriteMessage(XmlDictionaryWriter writer, AsyncCallback callback, object state)

@@ -3,9 +3,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Text;
 
 namespace WcfService
 {
@@ -233,6 +235,42 @@ namespace WcfService
         {
             composite.StringValue = composite.StringValue;
             return composite;
+        }
+
+        public Stream GetStreamFromString(string data)
+        {
+            return StringToStream(data);
+        }
+
+        public string GetStringFromStream(Stream stream)
+        {
+            string data = StreamToString(stream);
+
+            return data;
+        }
+
+        public Stream EchoStream(Stream stream)
+        {
+            string data = StreamToString(stream);
+            return StringToStream(data);            
+        }
+
+        private static string StreamToString(Stream stream)
+        {
+            var reader = new StreamReader(stream, Encoding.UTF8);
+            return reader.ReadToEnd();
+        }
+
+        private static Stream StringToStream(string str)
+        {
+            var ms = new MemoryStream();
+            var sw = new StreamWriter(ms, Encoding.UTF8);
+
+            sw.Write(str);
+            sw.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+
+            return ms;
         }
     }
 }

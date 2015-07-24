@@ -11,6 +11,7 @@ using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Channels;
 using System.Runtime.Diagnostics;
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -336,6 +337,22 @@ namespace System.ServiceModel.Dispatcher
             if (streamFormatter != null)
             {
                 streamFormatter.Serialize(writer, parameters, returnValue);
+                return;
+            }
+
+            SerializeBody(writer, version, RequestAction, messageDescription, returnValue, parameters, isRequest);
+        }
+
+        private async Task SerializeBodyContentsAsync(XmlDictionaryWriter writer, MessageVersion version, object[] parameters, object returnValue, bool isRequest)
+        {
+            MessageDescription messageDescription;
+            StreamFormatter streamFormatter;
+
+            SetupStreamAndMessageDescription(isRequest, out streamFormatter, out messageDescription);
+
+            if (streamFormatter != null)
+            {
+                await streamFormatter.SerializeAsync(writer, parameters, returnValue);
                 return;
             }
 
@@ -696,6 +713,11 @@ namespace System.ServiceModel.Dispatcher
                     {
                         _operationFormatter.SerializeBodyContents(writer, _version, _parameters, _returnValue, _isRequest);
                     }
+                }
+
+                protected override Task OnWriteBodyContentsAsync(XmlDictionaryWriter writer)
+                {
+                    return _operationFormatter.SerializeBodyContentsAsync(writer, _version, _parameters, _returnValue, _isRequest);
                 }
 
                 protected override IAsyncResult OnBeginWriteBodyContents(XmlDictionaryWriter writer, AsyncCallback callback, object state)
