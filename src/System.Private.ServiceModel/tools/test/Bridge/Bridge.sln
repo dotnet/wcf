@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge", "Bridge\Bridge.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfTestBridgeCommon", "WcfTestBridgeCommon\WcfTestBridgeCommon.csproj", "{81305303-19DF-4512-A8A7-F97760DAA3DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "..\..\..\tests\Scenarios\SelfHostWcfService\WcfService.csproj", "{CBE9909F-4CF7-4AD0-9307-BD0DFBB1105E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfService", "..\SelfHostWcfService\WcfService.csproj", "{CBE9909F-4CF7-4AD0-9307-BD0DFBB1105E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
