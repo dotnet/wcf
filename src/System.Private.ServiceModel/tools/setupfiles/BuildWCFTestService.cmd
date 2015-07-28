@@ -20,13 +20,13 @@ if not defined VisualStudioVersion (
 :EnvSet
 
 :: Log build command line
-set _buildproj=tools\Bridge\Bridge.sln
-set _buildlog=%~dp0msbuildWCFTestService.log
+set _buildproj=%~dp0..\test\Bridge\Bridge.sln
+set _buildlog=%~dp0..\..\..\..\msbuildWCFTestService.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
 :Clean Up Test Service
-pushd setupfiles
+pushd %~dp0
 start /wait RunElevated.vbs CleanupWCFTestService.cmd
 popd
 call :build %*

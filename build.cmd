@@ -7,6 +7,7 @@ setlocal
 ::       assembly. 
 
 set outloop=false
+set setupFilesFolder=%~dp0src\System.Private.ServiceModel\tools\setupfiles
 
 REM this is a temporary step until the build tools provide a proper hook. 
 REM it will need to deal with multiple include and exclude categories.
@@ -18,7 +19,7 @@ if %errorlevel% equ 0 (
 )
 
 if "%outloop%" equ "true" (
-	start /wait BuildWCFTestService.cmd
+    start /D %setupFilesFolder% /wait BuildWCFTestService.cmd
 )
 
 
@@ -34,7 +35,7 @@ if not defined VisualStudioVersion (
     )
 
     echo Error: build.cmd requires Visual Studio 2013 or 2015.  
-    echo        Please see https://github.com/dotnet/wcf/wiki/Developer-Guide for build instructions.
+    echo        Please see https://github.com/dotnet/wcf/blob/master/Documentation/developer-guide.md for build instructions.
     exit /b 1
 )
 
@@ -47,9 +48,7 @@ set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
 if "%outloop%" equ "true"  (
-        pushd setupfiles
-        start /wait RunElevated.vbs SetupWCFTestService.cmd
-        popd
+    start /D %setupFilesFolder% /wait RunElevated.vbs SetupWCFTestService.cmd
 )
 
 call :build %*
@@ -73,9 +72,7 @@ findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo Build Exit Code = %BUILDERRORLEVEL%
 
 if "%outloop%" equ "true"  (
-	pushd setupfiles
-	start /wait RunElevated.vbs CleanupWCFTestService.cmd
-	popd
+    start /D %setupFilesFolder% /wait RunElevated.vbs CleanupWCFTestService.cmd
 )
 
 exit /b %BUILDERRORLEVEL%
