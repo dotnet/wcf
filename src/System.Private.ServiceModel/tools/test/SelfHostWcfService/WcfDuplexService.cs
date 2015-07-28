@@ -51,7 +51,7 @@ namespace WcfService
             {
                 // Need to throw a new instance of FaultException so that certain fields such as the Action match what the client expects
                 // Otherwise the client will just get a plain FaultException instead of the expected FaultException<FaultDetail>
-                throw new FaultException<FaultDetail>(ex.Detail, ex.Message);
+                throw new FaultException<FaultDetail>(ex.Detail, ex.Message, ex.Code);
             }
             return retval;
         }

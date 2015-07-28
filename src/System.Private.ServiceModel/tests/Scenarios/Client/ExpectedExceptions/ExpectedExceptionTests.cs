@@ -320,9 +320,53 @@ public static class ExpectedExceptionTests
     }
 
     [Fact]
-    [ActiveIssue(194)]
     [OuterLoop]
-    public static void DuplexCallback_Throws_FaultException()
+    public static void DuplexCallback_Throws_FaultException_DirectThrow()
+    {
+        DuplexChannelFactory<IWcfDuplexTaskReturnService> factory = null;
+        Guid guid = Guid.NewGuid();
+
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.None;
+
+        DuplexTaskReturnServiceCallback callbackService = new DuplexTaskReturnServiceCallback(true);
+        InstanceContext context = new InstanceContext(callbackService);
+
+        try
+        {
+            var exception = Assert.Throws<FaultException<FaultDetail>>(() =>
+            {
+                factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address));
+                IWcfDuplexTaskReturnService serviceProxy = factory.CreateChannel();
+
+                Task<Guid> task = serviceProxy.FaultPing(guid);
+                if ((task as IAsyncResult).AsyncWaitHandle.WaitOne(ScenarioTestHelpers.TestTimeout))
+                {
+                    Guid returnedGuid = task.GetAwaiter().GetResult();
+                }
+                else
+                {
+                    throw new TimeoutException(String.Format("The call to the Service did not complete within the alloted time of: {0}", ScenarioTestHelpers.TestTimeout));
+                }
+
+                // Not closing the factory as an exception will always be thrown prior to this point.
+            });
+
+            Assert.Equal("ServicePingFaultCallback", exception.Code.Name);
+            Assert.Equal("Reason: Testing FaultException returned from Duplex Callback", exception.Reason.GetMatchingTranslation().Text);
+        }
+        finally
+        {
+            if (factory != null && factory.State != CommunicationState.Closed)
+            {
+                factory.Abort();
+            }
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void DuplexCallback_Throws_FaultException_ReturnsFaultedTask()
     {
         DuplexChannelFactory<IWcfDuplexTaskReturnService> factory = null;
         Guid guid = Guid.NewGuid();
@@ -352,6 +396,9 @@ public static class ExpectedExceptionTests
 
                 // Not closing the factory as an exception will always be thrown prior to this point.
             });
+
+            Assert.Equal("ServicePingFaultCallback", exception.Code.Name);
+            Assert.Equal("Reason: Testing FaultException returned from Duplex Callback", exception.Reason.GetMatchingTranslation().Text);
         }
         finally
         {

@@ -74,16 +74,33 @@ namespace System.ServiceModel.Dispatcher
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.SFxInvalidCallbackIAsyncResult));
             }
 
-            var tuple = invokeTask.Result;
-
-            var task = tuple.Item1 as Task;
-            if (task.IsFaulted)
+            AggregateException ae = null;
+            Tuple<object, object[]> tuple = null;
+            Task task = null;
+            
+            if (invokeTask.IsFaulted)
             {
-                Fx.Assert(task.Exception != null, "Task.IsFaulted guarantees non-null exception.");
+                Fx.Assert(invokeTask.Exception != null, "Task.IsFaulted guarantees non-null exception.");
+                ae = invokeTask.Exception;
+            }
+            else
+            {
+                Fx.Assert(invokeTask.IsCompleted, "Task.Result is expected to be completed");
+                tuple = invokeTask.Result;
+                task = tuple.Item1 as Task;
+                Fx.Assert(task != null, "Returned object is expected to be a non-null Task");
+                if (task.IsFaulted)
+                {
+                    Fx.Assert(task.Exception != null, "Task.IsFaulted guarantees non-null exception.");
+                    ae = task.Exception;
+                }
+            }
 
+            if (ae != null)
+            {
                 // If FaultException is thrown, we will get 'callFaulted' behavior below.
                 // Any other exception will retain 'callFailed' behavior.
-                throw FxTrace.Exception.AsError<FaultException>(task.Exception);
+                throw FxTrace.Exception.AsError<FaultException>(ae);
             }
 
             // Task cancellation without an exception indicates failure but we have no
@@ -188,16 +205,23 @@ namespace System.ServiceModel.Dispatcher
                             TraceUtility.GetCallerInfo(OperationContext.Current));
                     }
                     returnValue = _invokeDelegate(instance, inputs, outputs);
+
+                    if (returnValue == null)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("task");
+                    }
+
                     var returnValueTask = returnValue as Task;
                     if (returnValueTask != null)
                     {
+                        // Only return once the task has completed
                         await returnValueTask;
                     }
 
                     callSucceeded = true;
                 }
             }
-            catch (System.ServiceModel.FaultException)
+            catch (FaultException)
             {
                 callFaulted = true;
                 throw;

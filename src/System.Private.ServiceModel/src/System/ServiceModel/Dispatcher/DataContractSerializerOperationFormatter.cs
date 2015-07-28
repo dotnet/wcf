@@ -35,10 +35,11 @@ namespace System.ServiceModel.Dispatcher
 
         internal static DataContractSerializer CreateSerializer(Type type, IList<Type> knownTypes, string rootName, string rootNs, int maxItems)
         {
+            XmlDictionary dictionary = new XmlDictionary(2);
             return new DataContractSerializer(
                 type,
-                rootName,
-                rootNs,
+                dictionary.Add(rootName),
+                dictionary.Add(rootNs),
                 knownTypes);
         }
         internal static DataContractSerializer CreateSerializer(Type type, XmlDictionaryString rootName, XmlDictionaryString rootNs, int maxItems)
