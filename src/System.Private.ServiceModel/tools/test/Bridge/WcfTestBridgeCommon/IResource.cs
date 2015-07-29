@@ -5,7 +5,7 @@ namespace WcfTestBridgeCommon
 {
     public interface IResource
     {
-        object Put();
+        object Put(ResourceRequestContext context);
 
         object Get();
     }

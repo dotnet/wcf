@@ -90,7 +90,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="config.cs" />
     <Compile Include="ConfigController.cs" />
     <Compile Include="ConfigurationExtensions.cs" />
     <Compile Include="IdleTimeoutManager.cs" />

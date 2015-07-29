@@ -26,8 +26,7 @@ namespace Bridge
 
         internal static void Register(HttpConfiguration config)
         {
-            // Read configuration value from enviroment and register for larger values. 
-            var waitTimeout = TimeSpan.FromMinutes(10);            
+            var waitTimeout = TimeSpan.FromMinutes(ConfigController.BridgeConfiguration.BridgeIdleTimeoutMinutes);            
             config.MessageHandlers.Add(new IdleTimeoutHandler(waitTimeout));
         }
 

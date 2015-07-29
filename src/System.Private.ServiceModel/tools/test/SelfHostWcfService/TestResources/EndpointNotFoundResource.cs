@@ -15,7 +15,7 @@ namespace WcfService.TestResources
         private static object s_currentHostLock = new object();
         private const string Address = "not-found";
 
-        public object Put()
+        public object Put(ResourceRequestContext context)
         {
             if (s_currentHost == null)
             {

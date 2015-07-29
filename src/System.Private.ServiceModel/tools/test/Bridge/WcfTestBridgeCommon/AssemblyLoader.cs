@@ -38,7 +38,7 @@ namespace WcfTestBridgeCommon
             AppDomain.CurrentDomain.SetData(TypeList, types);
         }
 
-        public object IResourceCall(string typeName, string verb)
+        public object IResourceCall(string typeName, string verb, object[] arguments)
         {
             var types = AppDomain.CurrentDomain.GetData(TypeList) as Dictionary<string, Type>;
             Type type = null;
@@ -48,7 +48,8 @@ namespace WcfTestBridgeCommon
             }
 
             var resource = Activator.CreateInstance(type);
-            return resource.GetType().GetMethod(verb).Invoke(resource, null);
+            MethodInfo method = resource.GetType().GetMethod(verb);
+            return method.Invoke(resource, arguments);
         }
 
         private bool IResourceFilter(Type t, object o)

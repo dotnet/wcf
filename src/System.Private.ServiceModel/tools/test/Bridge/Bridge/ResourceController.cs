@@ -35,7 +35,7 @@ namespace Bridge
 
             try
             {
-                Debug.WriteLine("Received request to create resource \n" + resource);
+                Debug.WriteLine(String.Format("Received request to create resource: {0}", resource));
 
                 var result = ResourceInvoker.DynamicInvokePut(resource);
 
@@ -44,6 +44,8 @@ namespace Bridge
                     id = correlationId,
                     details = result.ToString()
                 };
+
+                Debug.WriteLine(String.Format("Resource creation response is: {0}", resourceResponse.ToString()));
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
