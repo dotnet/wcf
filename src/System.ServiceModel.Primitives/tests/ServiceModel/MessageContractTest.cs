@@ -3,8 +3,6 @@
 
 using System;
 using System.ServiceModel;
-using System.Text;
-using System.Xml;
 using Xunit;
 
 public static class MessageContractTest

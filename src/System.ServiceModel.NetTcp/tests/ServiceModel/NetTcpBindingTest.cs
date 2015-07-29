@@ -3,11 +3,8 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Text;
 using System.Xml;
 using Xunit;
-using TestTypes;
 
 public static class NetTcpBindingTest
 {

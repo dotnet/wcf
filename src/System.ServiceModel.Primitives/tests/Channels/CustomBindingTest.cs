@@ -4,7 +4,6 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
 using Xunit;
 
 public static class CustomBindingTest

@@ -5,7 +5,6 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.Text;
 using TestTypes;
 using Xunit;
 

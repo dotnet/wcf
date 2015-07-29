@@ -4,10 +4,10 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using TestTypes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TestTypes;
 using Xunit;
 
 public static class TypedProxyTests
@@ -70,7 +70,7 @@ public static class TypedProxyTests
             {
                 Task.Factory.StartNew(() => TypedProxyTests.ServiceContract_TypedProxy_AsyncBeginEnd_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
-        }).Wait(TestHelpers.TestTimeout);
+        }).Wait(ScenarioTestHelpers.TestTimeout);
         Assert.True(success, "Test Scenario: TypedProxy_AsyncBeginEnd_Call_WithSingleThreadedSyncContext timed out");
     }
 
@@ -84,7 +84,7 @@ public static class TypedProxyTests
             {
                 Task.Factory.StartNew(() => TypedProxyTests.ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
-        }).Wait(TestHelpers.TestTimeout);
+        }).Wait(ScenarioTestHelpers.TestTimeout);
         Assert.True(success, "Test Scenario: ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext timed out");
     }
 
@@ -118,7 +118,7 @@ public static class TypedProxyTests
             {
                 Task.Factory.StartNew(() => TypedProxyTests.ServiceContract_TypedProxy_AsyncTask_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
-        }).Wait(TestHelpers.TestTimeout);
+        }).Wait(ScenarioTestHelpers.TestTimeout);
 
         Assert.True(success, "Test Scenario: TypedProxy_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
     }
@@ -133,7 +133,7 @@ public static class TypedProxyTests
             {
                 Task.Factory.StartNew(() => TypedProxyTests.ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
-        }).Wait(TestHelpers.TestTimeout);
+        }).Wait(ScenarioTestHelpers.TestTimeout);
 
         Assert.True(success, "Test Scenario: ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
     }
@@ -180,7 +180,7 @@ public static class TypedProxyTests
             {
                 Task.Factory.StartNew(() => TypedProxyTests.ServiceContract_TypedProxy_Synchronous_Call(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
-        }).Wait(TestHelpers.TestTimeout);
+        }).Wait(ScenarioTestHelpers.TestTimeout);
         Assert.True(success, "Test Scenario: TypedProxy_Synchronous_Call_WithSingleThreadedSyncContext timed out");
     }
 
@@ -213,7 +213,7 @@ public static class TypedProxyTests
                             startThread, Environment.CurrentManagedThreadId));
                     }
                 });
-            }).Wait(TestHelpers.TestTimeout);
+            }).Wait(ScenarioTestHelpers.TestTimeout);
 
             if (!success)
             {
@@ -528,7 +528,7 @@ public static class TypedProxyTests
             // This test requires the callback to be called.
             // An actual timeout should call the callback, but we still set
             // a maximum wait time in case that does not happen.
-            bool success = waitEvent.WaitOne(TestHelpers.TestTimeout);
+            bool success = waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout);
             if (!success)
             {
                 errorBuilder.AppendLine("AsyncCallback was not called.");
@@ -563,7 +563,7 @@ public static class TypedProxyTests
             IAsyncResult ar = serviceProxy.BeginEcho("Hello", null, null);
             // An actual timeout should complete the ar, but we still set
             // a maximum wait time in case that does not happen.
-            bool success = ar.AsyncWaitHandle.WaitOne(TestHelpers.TestTimeout);
+            bool success = ar.AsyncWaitHandle.WaitOne(ScenarioTestHelpers.TestTimeout);
             if (success)
             {
                 result = serviceProxy.EndEcho(ar);

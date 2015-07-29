@@ -1,9 +1,11 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <WcfSourceProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfSourceProj>
-    <WcfTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\src\System.ServiceModel.Tests.Common.csproj'))</WcfTestCommonProj>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
-    <XunitOptions>-parallel none</XunitOptions>
-  </PropertyGroup>  
+    <PropertyGroup>
+        <WcfSourceProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfSourceProj>
+        <WcfUnitTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj'))</WcfUnitTestCommonProj>
+        <WcfScenarioTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.csproj'))</WcfScenarioTestCommonProj>
+        <WcfInfrastructureCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Infrastructure\src\Infrastructure.Common.csproj'))</WcfInfrastructureCommonProj>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
+        <XunitOptions>-parallel none</XunitOptions>
+    </PropertyGroup>
 </Project>

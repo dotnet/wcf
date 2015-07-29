@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace System.ServiceModel.Tests.Common
+namespace Infrastructure.Common
 {
     // This type exists to provide name/value pairs for properties
     // defined at build time and accessible at runtime.

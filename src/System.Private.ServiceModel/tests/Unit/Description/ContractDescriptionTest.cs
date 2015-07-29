@@ -4,8 +4,6 @@
 using System;
 using System.Net.Security;
 using System.ServiceModel.Description;
-using System.Text;
-using TestTypes;
 using Xunit;
 
 public static class ContractDescriptionTest

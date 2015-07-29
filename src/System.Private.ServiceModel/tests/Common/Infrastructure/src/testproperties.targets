@@ -34,7 +34,7 @@
         StringBuilder sb = new StringBuilder();
 	      sb.AppendLine(
  @"using System.Collections.Generic;
-namespace System.ServiceModel.Tests.Common
+namespace Infrastructure.Common
 {
     public static partial class TestProperties
     {");
