@@ -3,6 +3,7 @@
 
 using System;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using System.Text;
 using Xunit;
 
@@ -51,6 +52,62 @@ public static class Https_ClientCredentialTypeTests
         }
 
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: BasicAuthentication FAILED with the following errors: {0}", errorBuilder));
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()
+    {
+        StringBuilder errorBuilder = new StringBuilder();
+        // Will need to use localized string once it is available
+        // On Native retail, the message is stripped to 'HttpAuthorizationForbidden, Basic'
+        // On Debug or .Net Core, the entire message is "The HTTP request was forbidden with client authentication scheme 'Basic'."
+        // Thus we will only check message contains "forbidden"
+        string message = "forbidden";
+
+        MessageSecurityException exception = Assert.Throws<MessageSecurityException>(() =>
+        {
+            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
+
+            ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
+            factory.Credentials.UserName.UserName = "test1";
+            factory.Credentials.UserName.Password = "test1";
+
+            IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
+
+            string testString = "I am a test";
+            string result = serviceProxy.Echo(testString);
+        });
+      
+        Assert.True(exception.Message.ToLower().Contains(message), string.Format("Expected exception message to contain: '{0}', actual message is: '{1}'", message, exception.Message));
+    }
+
+    [Fact]
+    [ActiveIssue(224)]
+    [OuterLoop]
+    public static void BasicAuthenticationEmptyUser_throw_ArgumentException()
+    {
+        StringBuilder errorBuilder = new StringBuilder();
+        //Will need to use localized string once it is available
+        string message = "The username cannot be empty.";
+
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+        {
+            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
+
+            ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
+            factory.Credentials.UserName.UserName = "";
+            factory.Credentials.UserName.Password = "NoUserName";
+
+            IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
+
+            string testString = "I am a test";
+            string result = serviceProxy.Echo(testString);
+        });
+
+        Assert.True(exception.Message.Contains(message), string.Format("Expected exception message to contain: '{0}'", message));
     }
 
     [Fact]
