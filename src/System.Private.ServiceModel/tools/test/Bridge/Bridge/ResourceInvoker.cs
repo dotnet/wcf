@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using WcfTestBridgeCommon;
 
 namespace Bridge
@@ -27,7 +28,11 @@ namespace Bridge
                     loaderType.Assembly.Location,
                     loaderType.FullName);
 
-            return loader.IResourceCall(resource.name, "Put");
+            ResourceRequestContext context = new ResourceRequestContext
+            {
+                BridgeConfiguration = ConfigController.BridgeConfiguration
+            };
+            return loader.IResourceCall(resource.name, "Put", new object[] { context });
         }
 
         public static object DynamicInvokeGet(string name)
@@ -49,7 +54,7 @@ namespace Bridge
                     loaderType.Assembly.Location,
                     loaderType.FullName);
 
-            return loader.IResourceCall(name, "Get");
+            return loader.IResourceCall(name, "Get", null);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace WcfService.TestResources
         private const string HttpsProtocol = "https://localhost:" + HttpsPort + "/";
         private const string TcpProtocol = "net.tcp://localhost:" + TcpPort + "/";
 
-        public object Put()
+        public object Put(ResourceRequestContext context)
         {
             throw new NotImplementedException("Cannot PUT on this resource");
         }

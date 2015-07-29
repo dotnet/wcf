@@ -14,12 +14,16 @@ namespace WcfService.TestResources
     {
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
+        private string _hostName = "localhost";
 
         #region Host Listen Uri components
 
         protected abstract string Protocol { get; }
 
-        protected virtual string Host { get { return "localhost"; } }
+        protected virtual string Host {
+            get { return _hostName; }
+            set { _hostName = value; }
+        }
 
         protected abstract string Address { get; }
 
@@ -27,7 +31,7 @@ namespace WcfService.TestResources
 
         #endregion Host Listen Uri components
 
-        public object Put()
+        public object Put(ResourceRequestContext context)
         {
             ServiceHost host;
             if (!s_currentHosts.TryGetValue(Address, out host))
@@ -37,7 +41,18 @@ namespace WcfService.TestResources
                     if (!s_currentHosts.TryGetValue(Address, out host))
                     {
                         host = new ServiceHost(typeof(ServiceType));
-                        // URI assumes localhost but that instead should be passed in
+
+                        // The URL to reach the Bridge is passed in as part of
+                        // the Bridge configuration.  The default behavior of
+                        // an endpoint resource is to use that for its Host name.
+                        string bridgeUrl = context.BridgeConfiguration.BridgeUrl;
+                        if (!string.IsNullOrEmpty(bridgeUrl))
+                        {
+                            Uri uri = new Uri(bridgeUrl);
+                            string hostName = uri.Host;
+                            Host = hostName;
+                        }
+
                         host.AddServiceEndpoint(
                             typeof(ContractType),
                             GetBinding(),

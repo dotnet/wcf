@@ -12,31 +12,18 @@ namespace Bridge
 {
     public static class ConfigurationExtensions
     {
-        public static string UpdateApp(this config config)
+        public static string UpdateApp(this BridgeConfiguration config)
         {
-            if (!String.Equals(ConfigController.Config.BridgeResourceFolder, config.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase))
+            if (!String.Equals(ConfigController.BridgeConfiguration.BridgeResourceFolder, config.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase))
             {
                 var newPath = Path.GetFullPath(config.BridgeResourceFolder);
                 Trace.WriteLine("Adding assemblies in the directory");
                 string friendlyName = CreateAppDomain(newPath);
-                ConfigController.Config = config;
+                ConfigController.BridgeConfiguration = config;
                 return friendlyName;
             }
 
             return "BridgeAppDomain" + (TypeCache.AppDomains.Count - 1);
-        }
-
-        public static bool isValidProbingPath(this config config)
-        {
-            if (config != null && !String.IsNullOrWhiteSpace(config.BridgeResourceFolder))
-            {
-                if (Directory.Exists(config.BridgeResourceFolder))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

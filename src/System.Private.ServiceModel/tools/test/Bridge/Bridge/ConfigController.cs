@@ -5,18 +5,37 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using WcfTestBridgeCommon;
 
 namespace Bridge
 {
     public class ConfigController : ApiController
     {
-        internal static config Config = new config();
+        private const int Default_BridgeIdleTimeoutMinutes = 20;
+
+        private static BridgeConfiguration s_bridgeConfiguration = new BridgeConfiguration
+        {
+            BridgeIdleTimeoutMinutes = Default_BridgeIdleTimeoutMinutes   // initialize so is accessible during app startup
+        };
+
         internal static string CurrentAppDomain;
 
+        public static BridgeConfiguration BridgeConfiguration
+        {
+            get
+            {
+                return s_bridgeConfiguration;
+            }
+            set
+            {
+                s_bridgeConfiguration = value;
+            }
+        }
         public HttpResponseMessage POST(HttpRequestMessage request)
         {
             try
@@ -25,27 +44,20 @@ namespace Bridge
                 string nameValuePairs = request.Content.ReadAsStringAsync().Result;
                 Dictionary<string, string> configInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
 
-                config config = new config(configInfo);
+                // Create a new configuration combining the existing one with any provided properties.
+                BridgeConfiguration newConfiguration = new BridgeConfiguration(BridgeConfiguration, configInfo);
 
-                Trace.WriteLine("POST config: " + Environment.NewLine + config);
-                if (!config.isValidProbingPath())
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        String.Format("config.resourcesDirectory {0} does not exist.", config.BridgeResourceFolder));
-                }
+                Trace.WriteLine("POST config request: " + Environment.NewLine + newConfiguration);
 
-                string friendlyName = config.UpdateApp();
+                string friendlyName = newConfiguration.UpdateApp();
                 CurrentAppDomain = friendlyName;
 
-                var configResponse = new configResponse
-                {
-                    types = TypeCache.Cache[friendlyName]
-                };
-                Trace.WriteLine("POST config: " + configResponse);
+                string configResponse = PrepareConfigResponse(TypeCache.Cache[friendlyName]);
+                Trace.WriteLine("POST config response: " + Environment.NewLine + configResponse);
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(configResponse.ToString());
+                response.Content = new StringContent(configResponse);
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
                 return response;
             }
@@ -56,6 +68,16 @@ namespace Bridge
 
                 return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
             }
+        }
+
+        private static string PrepareConfigResponse(IEnumerable<string> types)
+        {
+            return string.Format(@"{{
+    types : [
+        ""{0}""
+    ]
+}}",
+                string.Join("\",\n        \"", types));
         }
     }
 }
