@@ -7,12 +7,15 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using WcfTestBridgeCommon;
 
 namespace Bridge
 {
     public class IdleTimeoutHandler : DelegatingHandler
     {
-        IdleTimeoutManager _timeoutManager;
+        public static readonly int Default_Timeout_Minutes = 20;
+
+        private IdleTimeoutManager _timeoutManager;
 
         private IdleTimeoutHandler(TimeSpan idleTimeout)
         {
@@ -26,7 +29,7 @@ namespace Bridge
 
         internal static void Register(HttpConfiguration config)
         {
-            var waitTimeout = TimeSpan.FromMinutes(ConfigController.BridgeConfiguration.BridgeIdleTimeoutMinutes);            
+            var waitTimeout = TimeSpan.FromMinutes(Default_Timeout_Minutes);            
             config.MessageHandlers.Add(new IdleTimeoutHandler(waitTimeout));
         }
 
@@ -55,6 +58,26 @@ namespace Bridge
                 _waitTimeout = idleTimeout;
                 _timer = new Timer(this.TimeOutCallback);
                 this.Restart();
+
+                // Register to be notified when the Bridge configuration changes
+                ConfigController.BridgeConfigurationChanged += (object s, Tuple<BridgeConfiguration, BridgeConfiguration> tuple) =>
+                {
+                    BridgeConfiguration newConfig = tuple.Item2;
+
+                    int minutes = newConfig.BridgeIdleTimeoutMinutes;
+                    TimeSpan newTimeout = (minutes <= 0)
+                                            ? Timeout.InfiniteTimeSpan
+                                            : TimeSpan.FromMinutes(minutes);
+
+                    // When this notification is received, we will already have
+                    // restarted the timer with its prior timeout.  There is no
+                    // need to restart again if the timeout span is the same.
+                    if (!newTimeout.Equals(_waitTimeout))
+                    {
+                        _waitTimeout = newTimeout;
+                        Restart();
+                    }
+                };
             }
 
             public IDisposable Start()

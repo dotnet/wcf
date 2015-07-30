@@ -10,16 +10,15 @@ using WcfTestBridgeCommon;
 
 namespace Bridge
 {
-    public static class ConfigurationExtensions
+    public static class AppDomainManager
     {
-        public static string UpdateApp(this BridgeConfiguration config)
+        public static string UpdateApp(BridgeConfiguration oldConfig, BridgeConfiguration newConfig)
         {
-            if (!String.Equals(ConfigController.BridgeConfiguration.BridgeResourceFolder, config.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase))
+            if (!String.Equals(oldConfig.BridgeResourceFolder, newConfig.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase))
             {
-                var newPath = Path.GetFullPath(config.BridgeResourceFolder);
+                var newPath = Path.GetFullPath(newConfig.BridgeResourceFolder);
                 Trace.WriteLine("Adding assemblies in the directory");
                 string friendlyName = CreateAppDomain(newPath);
-                ConfigController.BridgeConfiguration = config;
                 return friendlyName;
             }
 

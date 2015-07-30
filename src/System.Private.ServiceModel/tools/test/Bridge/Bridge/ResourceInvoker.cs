@@ -17,7 +17,7 @@ namespace Bridge
             }
 
             AppDomain appDomain;
-            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomain, out appDomain))
+            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
             {
                 throw new ArgumentException("Resource not found");
             }
@@ -43,7 +43,7 @@ namespace Bridge
             }
 
             AppDomain appDomain;
-            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomain, out appDomain))
+            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
             {
                 throw new ArgumentException("Resource not found");
             }

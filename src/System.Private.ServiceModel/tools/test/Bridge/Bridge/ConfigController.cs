@@ -16,14 +16,25 @@ namespace Bridge
 {
     public class ConfigController : ApiController
     {
-        private const int Default_BridgeIdleTimeoutMinutes = 20;
+        public static EventHandler<Tuple<BridgeConfiguration, BridgeConfiguration>> BridgeConfigurationChanged;
 
         private static BridgeConfiguration s_bridgeConfiguration = new BridgeConfiguration
         {
-            BridgeIdleTimeoutMinutes = Default_BridgeIdleTimeoutMinutes   // initialize so is accessible during app startup
+            BridgeIdleTimeoutMinutes = IdleTimeoutHandler.Default_Timeout_Minutes
         };
 
-        internal static string CurrentAppDomain;
+        internal static string CurrentAppDomainName;
+
+        static ConfigController()
+        {
+            // Register to manage AppDomains in response to changes to configuration
+            BridgeConfigurationChanged += (object s, Tuple<BridgeConfiguration, BridgeConfiguration> tuple) =>
+            {
+                BridgeConfiguration oldConfig = tuple.Item1;
+                BridgeConfiguration newConfig = tuple.Item2;
+                CurrentAppDomainName = AppDomainManager.UpdateApp(oldConfig, newConfig);
+            };
+        }
 
         public static BridgeConfiguration BridgeConfiguration
         {
@@ -44,16 +55,24 @@ namespace Bridge
                 string nameValuePairs = request.Content.ReadAsStringAsync().Result;
                 Dictionary<string, string> configInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
 
+                Trace.WriteLine("POST config content: " + Environment.NewLine + nameValuePairs);
+
                 // Create a new configuration combining the existing one with any provided properties.
                 BridgeConfiguration newConfiguration = new BridgeConfiguration(BridgeConfiguration, configInfo);
+                Trace.WriteLine("POST config properties: " + Environment.NewLine + newConfiguration);
 
-                Trace.WriteLine("POST config request: " + Environment.NewLine + newConfiguration);
+                // Take the new configuration and notify listeners of the change.
+                BridgeConfiguration oldConfiguration = BridgeConfiguration;
+                BridgeConfiguration = newConfiguration;
 
-                string friendlyName = newConfiguration.UpdateApp();
-                CurrentAppDomain = friendlyName;
+                if (BridgeConfigurationChanged != null)
+                {
+                    Tuple<BridgeConfiguration, BridgeConfiguration> eventArgs = new Tuple<BridgeConfiguration, BridgeConfiguration>(oldConfiguration, newConfiguration);
+                    BridgeConfigurationChanged(this, eventArgs);
+                }
 
-                string configResponse = PrepareConfigResponse(TypeCache.Cache[friendlyName]);
-                Trace.WriteLine("POST config response: " + Environment.NewLine + configResponse);
+                string configResponse = PrepareConfigResponse(TypeCache.Cache[CurrentAppDomainName]);
+                Trace.WriteLine("POST config response content: " + Environment.NewLine + configResponse);
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
