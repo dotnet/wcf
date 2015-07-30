@@ -12,6 +12,7 @@ namespace System.ServiceModel.Tests.Common
 {
     public static class BridgeClient 
     {
+        private static object s_thisLock = new object();
         private static Dictionary<string, string> _Resources = new Dictionary<string, string>();
         private static BridgeState _BridgeStatus = BridgeState.NotStarted;
         private static readonly Regex regexResource = new Regex(@"details\s*:\s*""([^""]+)""", RegexOptions.IgnoreCase);
@@ -23,13 +24,18 @@ namespace System.ServiceModel.Tests.Common
 
         private static void EnsureBridgeIsRunning()
         {
-            if (_BridgeStatus == BridgeState.NotStarted)
+            // Tests run concurrently, so we need the initial configuration
+            // request to finish and set state before the rest continue.
+            lock (s_thisLock)
             {
-                MakeConfigRequest();
-            }
-            else if (_BridgeStatus == BridgeState.Faulted)
-            {
-                throw new Exception("Bridge is not running");
+                if (_BridgeStatus == BridgeState.NotStarted)
+                {
+                    MakeConfigRequest();
+                }
+                else if (_BridgeStatus == BridgeState.Faulted)
+                {
+                    throw new Exception("Bridge is not running");
+                }
             }
         }
         public static string GetResourceAddress(string resourceName)
