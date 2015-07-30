@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.IO;
+using System.Net.Http;
 using System.ServiceModel;
 using System.Text;
 using Xunit;
@@ -92,6 +94,7 @@ public static class ServiceContractTests
     public static void DefaultSettings_Echo_RoundTrips_String_Streamed()
     {
         string testString = "Hello";
+        StringBuilder errorBuilder = new StringBuilder();
 
         BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
         binding.TransferMode = TransferMode.Streamed;
@@ -105,6 +108,11 @@ public static class ServiceContractTests
             var result = StreamToString(returnStream);
             Assert.Equal(testString, result);
         }
+        catch (System.ServiceModel.CommunicationException e)
+        {
+            errorBuilder.AppendLine(string.Format("Unexpected exception thrown: '{0}'", e.ToString()));
+            PrintInnerExceptionsHresult(e, errorBuilder);
+        }
         finally
         {
             if (factory != null && factory.State != CommunicationState.Closed)
@@ -112,6 +120,8 @@ public static class ServiceContractTests
                 factory.Abort();
             }
         }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed FAILED with the following errors: {0}", errorBuilder));
     }
 
     [Fact]
@@ -119,6 +129,7 @@ public static class ServiceContractTests
     public static void DefaultSettings_Echo_RoundTrips_String_Streamed_Async()
     {
         string testString = "Hello";
+        StringBuilder errorBuilder = new StringBuilder();
 
         BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
         binding.TransferMode = TransferMode.Streamed;
@@ -132,12 +143,28 @@ public static class ServiceContractTests
             var result = StreamToString(returnStream);
             Assert.Equal(testString, result);
         }
+        catch (System.ServiceModel.CommunicationException e)
+        {
+            errorBuilder.AppendLine(string.Format("Unexpected exception thrown: '{0}'", e.ToString()));
+            PrintInnerExceptionsHresult(e, errorBuilder);
+        }
         finally
         {
             if (factory != null && factory.State != CommunicationState.Closed)
             {
                 factory.Abort();
             }
+        }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed FAILED with the following errors: {0}", errorBuilder));
+    }
+
+    private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
+    {
+        if (e.InnerException != null)
+        {
+            errorBuilder.AppendLine(string.Format("\r\n InnerException type: '{0}', Hresult:'{1}'", e.InnerException, e.InnerException.HResult));
+            PrintInnerExceptionsHresult(e.InnerException, errorBuilder);
         }
     }
 
