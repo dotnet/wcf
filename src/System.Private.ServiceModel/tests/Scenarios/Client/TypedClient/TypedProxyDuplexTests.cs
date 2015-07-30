@@ -3,11 +3,7 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using TestTypes;
 using Xunit;
 
 public static class TypedProxyDuplexTests

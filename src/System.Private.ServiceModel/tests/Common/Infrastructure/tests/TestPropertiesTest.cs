@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Tests.Common;
+using Infrastructure.Common;
 using Xunit;
 
 public static class TestPropertiesTest

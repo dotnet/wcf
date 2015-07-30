@@ -4,14 +4,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace TestTypes
 {
@@ -723,5 +722,52 @@ public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
         }
 
         throw fault;
+    }
+}
+
+public class CustomBodyWriter : BodyWriter
+{
+    private string _bodyContent;
+
+    public CustomBodyWriter()
+        : base(true)
+    { }
+
+    public CustomBodyWriter(string message)
+        : base(true)
+    {
+        _bodyContent = message;
+    }
+
+    protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
+    {
+        writer.WriteString(_bodyContent);
+    }
+}
+
+//Helper class used in this test to allow construction of ContractDescription
+public class MyClientBase<T> : ClientBase<T> where T : class
+{
+    public MyClientBase(Binding binding, EndpointAddress endpointAddress)
+        : base(binding, endpointAddress)
+    {
+    }
+}
+
+// This helper class is used for ClientBase<T> tests
+public class MyClientBase : ClientBase<IWcfServiceGenerated>
+{
+    public MyClientBase(Binding binding, EndpointAddress endpointAddress)
+        : base(binding, endpointAddress)
+    {
+    }
+}
+
+// This helper class is used for DuplexClientBase<T> tests
+public class MyDuplexClientBase<T> : DuplexClientBase<T> where T : class
+{
+    public MyDuplexClientBase(InstanceContext callbackInstance, Binding binding, EndpointAddress endpointAddress)
+        : base(callbackInstance, binding, endpointAddress)
+    {
     }
 }

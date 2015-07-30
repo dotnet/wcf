@@ -7,24 +7,25 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System.ServiceModel.Tests.Common</RootNamespace>
-    <AssemblyName>System.ServiceModel.Tests.Common</AssemblyName>
+    <RootNamespace>System.ServiceModel.Common.Tests</RootNamespace>
+    <AssemblyName>System.ServiceModel.Common.Tests</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <CLSCompliant>false</CLSCompliant>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProjectGuid>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</ProjectGuid>
+    <ProjectGuid>{D19D214D-70F1-47C9-9F55-D45D5839AD4A}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UseFiddler)' == 'true'">
+    <DefineConstants>$(DefineConstants);USE_FIDDLER</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
-    <None Include="testproperties.props" />
-    <None Include="testproperties.targets" />
   </ItemGroup>
   <ItemGroup>
     <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
-    <ProjectReference Include='$(WcfSourceProj)'>
+    <ProjectReference Include="$(WcfSourceProj)">
       <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
       <Name>System.Private.ServiceModel</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -32,14 +33,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
     </ProjectReference>
+    <ProjectReference Include="..\src\Infrastructure.Common.csproj">
+      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
+      <Name>Infrastructure.Common</Name>
+    </ProjectReference>
   </ItemGroup>
-  <Import Project="testproperties.props" />
-  <Import Project="testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
-
-  <!-- Add our code-gen target after the imports above because they reset $(CoreCompileDependsOn) -->
-  <PropertyGroup>
-    <CoreCompileDependsOn>$(CoreCompileDependsOn);CreateTestProperties</CoreCompileDependsOn>
-  </PropertyGroup>
-
 </Project>

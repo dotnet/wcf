@@ -1,45 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <TestCategories>OuterLoop</TestCategories>
-  </PropertyGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contract.Fault.Tests</RootNamespace>
-    <AssemblyName>Contract.Fault.Tests</AssemblyName>
-    <SignAssembly>false</SignAssembly>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProjectGuid>{0324E738-B6EF-43FB-8321-DC49640D2615}</ProjectGuid>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="FaultExceptionTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
-    <ProjectReference Include='$(WcfSourceProj)'>
-      <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
-      <Name>System.Private.ServiceModel</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <OutputItemType>Content</OutputItemType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfTestCommonProj)'>
-      <Project>{e896294a-ab4a-4af5-a01c-a19e3972eff9}</Project>
-      <Name>System.ServiceModel.Tests.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ServiceModel.Scenarios.Common\ServiceModel.Scenarios.Common.csproj">
-      <Project>{c2210035-aab0-4dbb-9a42-6a23c0bd763b}</Project>
-      <Name>ServiceModel.Scenarios.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+    <PropertyGroup>
+        <TestCategories>OuterLoop</TestCategories>
+    </PropertyGroup>
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+    <PropertyGroup>
+        <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Contract.Fault.Tests</RootNamespace>
+        <AssemblyName>Contract.Fault.Tests</AssemblyName>
+        <SignAssembly>false</SignAssembly>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <ProjectGuid>{0324E738-B6EF-43FB-8321-DC49640D2615}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="FaultExceptionTests.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="project.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
+        <ProjectReference Include="$(WcfSourceProj)">
+            <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
+            <Name>System.Private.ServiceModel</Name>
+            <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+            <OutputItemType>Content</OutputItemType>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
+        </ProjectReference>
+        <ProjectReference Include='$(WcfScenarioTestCommonProj)'>
+            <Project>{9098B41C-9C2E-4FC6-B7D8-FC3411736A22}</Project>
+            <Name>ScenarioTests.Common</Name>
+        </ProjectReference>
+    </ItemGroup>
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
