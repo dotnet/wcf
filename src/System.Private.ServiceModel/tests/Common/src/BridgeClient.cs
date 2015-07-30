@@ -12,6 +12,7 @@ namespace System.ServiceModel.Tests.Common
 {
     public static class BridgeClient 
     {
+        private static object s_thisLock = new object();
         private static Dictionary<string, string> _Resources = new Dictionary<string, string>();
         private static BridgeState _BridgeStatus = BridgeState.NotStarted;
         private static readonly Regex regexResource = new Regex(@"details\s*:\s*""([^""]+)""", RegexOptions.IgnoreCase);
@@ -21,20 +22,26 @@ namespace System.ServiceModel.Tests.Common
             get { return TestProperties.GetProperty(TestProperties.BridgeUrl_PropertyName); }
         }
 
-        static BridgeClient()
+        private static void EnsureBridgeIsRunning()
         {
-            if (_BridgeStatus == BridgeState.NotStarted)
+            // Tests run concurrently, so we need the initial configuration
+            // request to finish and set state before the rest continue.
+            lock (s_thisLock)
             {
-                MakeConfigRequest();
-            }
-            else if (_BridgeStatus == BridgeState.Faulted)
-            {
-                throw new Exception("Bridge is not running");
+                if (_BridgeStatus == BridgeState.NotStarted)
+                {
+                    MakeConfigRequest();
+                }
+                else if (_BridgeStatus == BridgeState.Faulted)
+                {
+                    throw new Exception("Bridge is not running");
+                }
             }
         }
-
         public static string GetResourceAddress(string resourceName)
         {
+            EnsureBridgeIsRunning();
+
             string resourceAddress = null;
             if (_BridgeStatus == BridgeState.Started && !_Resources.TryGetValue(resourceName, out resourceAddress))
             {
@@ -58,7 +65,18 @@ namespace System.ServiceModel.Tests.Common
                 {
                     var response = httpClient.PostAsync("/config/", content).Result;
                     if (!response.IsSuccessStatusCode)
-                        throw new Exception("Unexpected status code: " + response.StatusCode);
+                    {
+                        string reason = String.Empty;
+                        if (response.Content != null)
+                        {
+                            string contentAsString = response.Content.ReadAsStringAsync().Result;
+                            reason = String.Format("{0}Bridge returned content:{0}{1}",
+                                                    Environment.NewLine, contentAsString);
+                        }
+                        throw new Exception(
+                            String.Format("Bridge returned unexpected status code {0}{1}", 
+                                            response.StatusCode, reason));
+                    }
                     _BridgeStatus = BridgeState.Started;
                 }
                 catch (Exception exc)
@@ -71,6 +89,8 @@ namespace System.ServiceModel.Tests.Common
 
         private static string CreateConfigRequestContentAsJson()
         {
+            ValidateConfigRequestProperties();
+
             // Create a Json dictionary of name/value pairs from TestProperties
             StringBuilder sb = new StringBuilder("{ ");
             string[] propertyNames = TestProperties.PropertyNames.ToArray();
@@ -87,8 +107,21 @@ namespace System.ServiceModel.Tests.Common
             return sb.ToString();
         }
 
+        // Validates some of the name/value pairs that will be sent to the Bridge
+        // via the /config POST request.
+        private static void ValidateConfigRequestProperties()
+        {
+            string bridgeResourceFolder = TestProperties.GetProperty(TestProperties.BridgeResourceFolder_PropertyName);
+            if (String.IsNullOrEmpty(bridgeResourceFolder) || !Directory.Exists(bridgeResourceFolder))
+            {
+                throw new Exception(String.Format("BridgeResourceFolder '{0}' does not exist", bridgeResourceFolder));
+            }
+        }
+
         private static string MakeResourcePutRequest(string resourceName)
         {
+            EnsureBridgeIsRunning();
+
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(BridgeBaseAddress);
@@ -118,6 +151,8 @@ namespace System.ServiceModel.Tests.Common
 
         private static string MakeResourceGetRequest(string resourceName)
         {
+            EnsureBridgeIsRunning();
+
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(BridgeBaseAddress);
