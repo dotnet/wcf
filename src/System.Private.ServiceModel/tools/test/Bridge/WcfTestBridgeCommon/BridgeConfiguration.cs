@@ -13,12 +13,12 @@ namespace WcfTestBridgeCommon
         // that is the set of name/value pairs from which this type is created.
         private const string BridgeResourceFolder_PropertyName = "BridgeResourceFolder";
         private const string BridgeUrl_PropertyName = "BridgeUrl";
-        private const string BridgeIdleTimeoutMinutes_PropertyName = "BridgeIdleTimeoutMinutes";
+        private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
 
         public string BridgeResourceFolder { get; set; }
         public string BridgeUrl { get; set; }
-        public int BridgeIdleTimeoutMinutes { get; set; }
+        public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
 
         public BridgeConfiguration()
@@ -32,7 +32,7 @@ namespace WcfTestBridgeCommon
         {
             BridgeResourceFolder = configuration.BridgeResourceFolder;
             BridgeUrl = configuration.BridgeUrl;
-            BridgeIdleTimeoutMinutes = configuration.BridgeIdleTimeoutMinutes;
+            BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
 
             string propertyValue = null;
@@ -53,17 +53,17 @@ namespace WcfTestBridgeCommon
                 BridgeUrl = propertyValue;
             }
 
-            if (properties.TryGetValue(BridgeIdleTimeoutMinutes_PropertyName, out propertyValue))
+            if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
             {
-                int minutes = 0;
-                if (!int.TryParse(propertyValue, out minutes))
+                TimeSpan span;
+                if (!TimeSpan.TryParse(propertyValue, out span))
                 {
                     throw new ArgumentException(
-                        String.Format("The BridgeIdleTimeoutMinutes value '{0}' is not a valid integer.", propertyValue),
-                        BridgeResourceFolder_PropertyName);
+                        String.Format("The BridgeMaxIdleTimeSpan value '{0}' is not a valid TimeSpan.", propertyValue),
+                        BridgeMaxIdleTimeSpan_PropertyName);
                 }
 
-                BridgeIdleTimeoutMinutes = minutes;
+                BridgeMaxIdleTimeSpan = span;
             }
 
             if (properties.TryGetValue(UseFiddlerUrl_PropertyName, out propertyValue))
@@ -85,7 +85,7 @@ namespace WcfTestBridgeCommon
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(String.Format("{0} : '{1}'", BridgeResourceFolder_PropertyName, BridgeResourceFolder));
             sb.AppendLine(String.Format("{0} : '{1}'", BridgeUrl_PropertyName, BridgeUrl));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeIdleTimeoutMinutes_PropertyName, BridgeIdleTimeoutMinutes));
+            sb.AppendLine(String.Format("{0} : '{1}'", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan));
             sb.AppendLine(String.Format("{0} : '{1}'", UseFiddlerUrl_PropertyName, UseFiddlerUrl));
             return sb.ToString();
         }

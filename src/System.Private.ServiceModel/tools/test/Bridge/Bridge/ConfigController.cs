@@ -3,9 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,14 +14,25 @@ namespace Bridge
 {
     public class ConfigController : ApiController
     {
-        private const int Default_BridgeIdleTimeoutMinutes = 20;
+        // Separate events are triggered for changes to specific BridgeConfiguration elements
+        public static EventHandler<ChangedEventArgs<string>> ResourceFolderChanged;
+        public static EventHandler<ChangedEventArgs<TimeSpan>> IdleTimeoutChanged;
 
         private static BridgeConfiguration s_bridgeConfiguration = new BridgeConfiguration
         {
-            BridgeIdleTimeoutMinutes = Default_BridgeIdleTimeoutMinutes   // initialize so is accessible during app startup
+            BridgeMaxIdleTimeSpan = IdleTimeoutHandler.Default_MaxIdleTimeSpan
         };
 
-        internal static string CurrentAppDomain;
+        internal static string CurrentAppDomainName;
+
+        static ConfigController()
+        {
+            // Register to manage AppDomains in response to changes to the resource folder
+            ResourceFolderChanged += (object s, ChangedEventArgs<string> args) =>
+            {
+                CurrentAppDomainName = AppDomainManager.OnResourceFolderChanged(args.OldValue, args.NewValue);
+            };
+        }
 
         public static BridgeConfiguration BridgeConfiguration
         {
@@ -41,19 +50,50 @@ namespace Bridge
             try
             {
                 // Handle deserialization explicitly to bypass MediaTypeFormatter use
-                string nameValuePairs = request.Content.ReadAsStringAsync().Result;
+                string nameValuePairs = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 Dictionary<string, string> configInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
+
+                Trace.WriteLine(String.Format("POST config raw content:{0}{1}",
+                                              Environment.NewLine, nameValuePairs),
+                                typeof(ConfigController).Name);
 
                 // Create a new configuration combining the existing one with any provided properties.
                 BridgeConfiguration newConfiguration = new BridgeConfiguration(BridgeConfiguration, configInfo);
+                Trace.WriteLine(String.Format("POST new config:{0}{1}",
+                                              Environment.NewLine, newConfiguration),
+                                typeof(ConfigController).Name);
 
-                Trace.WriteLine("POST config request: " + Environment.NewLine + newConfiguration);
+                // Take the new configuration and notify listeners of the change.
+                BridgeConfiguration oldConfiguration = BridgeConfiguration;
+                BridgeConfiguration = newConfiguration;
 
-                string friendlyName = newConfiguration.UpdateApp();
-                CurrentAppDomain = friendlyName;
+                // Notify of change of resource folder
+                bool resourceFolderChanged = !String.Equals(oldConfiguration.BridgeResourceFolder, newConfiguration.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase);
+                if (ResourceFolderChanged != null && resourceFolderChanged) 
+                {
+                    ResourceFolderChanged(this, new ChangedEventArgs<string>(
+                                                    oldConfiguration.BridgeResourceFolder, 
+                                                    newConfiguration.BridgeResourceFolder));
+                }
 
-                string configResponse = PrepareConfigResponse(TypeCache.Cache[friendlyName]);
-                Trace.WriteLine("POST config response: " + Environment.NewLine + configResponse);
+                // Notify of change of the idle timeout
+                if (IdleTimeoutChanged != null &&
+                    oldConfiguration.BridgeMaxIdleTimeSpan != newConfiguration.BridgeMaxIdleTimeSpan)
+                {
+                    IdleTimeoutChanged(this, new ChangedEventArgs<TimeSpan>(
+                                                oldConfiguration.BridgeMaxIdleTimeSpan,
+                                                newConfiguration.BridgeMaxIdleTimeSpan));
+                }
+
+                // When the resource folder changes, the response is an array of
+                // resource types.  Any other changes returns an empty string.
+                string configResponse = resourceFolderChanged
+                                            ? PrepareConfigResponse(TypeCache.Cache[CurrentAppDomainName])
+                                            : String.Empty;
+
+                Trace.WriteLine(String.Format("POST config returning raw content:{0}{1}",
+                                              Environment.NewLine, configResponse),
+                                typeof(ConfigController).Name);
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
@@ -64,7 +104,9 @@ namespace Bridge
             catch (Exception ex)
             {
                 var exceptionResponse = ex.Message;
-                Trace.WriteLine("POST config exception: " + ex);
+                Trace.WriteLine(String.Format("POST config exception:{0}{1}", 
+                                                Environment.NewLine, ex),
+                                typeof(ConfigController).Name);
 
                 return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
             }

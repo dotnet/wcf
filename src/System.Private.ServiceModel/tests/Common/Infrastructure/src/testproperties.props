@@ -23,6 +23,10 @@
         <Value>$(UseFiddlerUrl)</Value>
         <DefaultValue>false</DefaultValue>
       </TestProperty>
+      <TestProperty Include="BridgeMaxIdleTimeSpan">
+        <Value>$(BridgeMaxIdleTimeSpan)</Value>
+        <DefaultValue>20:00</DefaultValue>
+      </TestProperty>
     </ItemGroup>
 
   <!--
