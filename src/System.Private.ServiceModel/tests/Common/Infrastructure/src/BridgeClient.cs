@@ -64,19 +64,18 @@ namespace Infrastructure.Common
                     "application/json");
                 try
                 {
-                    var response = httpClient.PostAsync("/config/", content).Result;
+                    var response = httpClient.PostAsync("/config/", content).GetAwaiter().GetResult();
                     if (!response.IsSuccessStatusCode)
                     {
-                        string reason = String.Empty;
+                        string reason = String.Format("{0}Bridge returned unexpected status code='{1}', reason='{2}'",
+                                                    Environment.NewLine, response.StatusCode, response.ReasonPhrase);
                         if (response.Content != null)
                         {
-                            string contentAsString = response.Content.ReadAsStringAsync().Result;
-                            reason = String.Format("{0}Bridge returned content:{0}{1}",
-                                                    Environment.NewLine, contentAsString);
+                            string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                            reason = String.Format("{0}, content:{1}{2}",
+                                                    reason, Environment.NewLine, contentAsString);
                         }
-                        throw new Exception(
-                            String.Format("Bridge returned unexpected status code {0}{1}", 
-                                            response.StatusCode, reason));
+                        throw new Exception(reason);
                     }
                     _BridgeStatus = BridgeState.Started;
                 }
@@ -132,11 +131,11 @@ namespace Infrastructure.Common
                         "application/json");
                 try
                 {
-                    var response = httpClient.PutAsync("/resource/", content).Result;
+                    var response = httpClient.PutAsync("/resource/", content).GetAwaiter().GetResult();
                     if (!response.IsSuccessStatusCode)
                         throw new Exception("Unexpected status code: " + response.StatusCode);
 
-                    var responseContent = response.Content.ReadAsStringAsync().Result;
+                    var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     var match = regexResource.Match(responseContent);
                     if (!match.Success || match.Groups.Count != 2)
                         throw new Exception("Invalid response from bridge: " + responseContent);
@@ -157,11 +156,11 @@ namespace Infrastructure.Common
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(BridgeBaseAddress);
-                var response = httpClient.GetAsync("/resource/" + resourceName).Result;
+                var response = httpClient.GetAsync("/resource/" + resourceName).GetAwaiter().GetResult();
                 if (!response.IsSuccessStatusCode)
                     throw new Exception("Unexpected status code: " + response.StatusCode);
 
-                return response.Content.ReadAsStringAsync().Result;
+                return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
         }
 

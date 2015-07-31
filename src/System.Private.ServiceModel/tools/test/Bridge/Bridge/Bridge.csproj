@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDomainManager.cs" />
+    <Compile Include="ChangedEventArgs.cs" />
     <Compile Include="ConfigController.cs" />
     <Compile Include="IdleTimeoutManager.cs" />
     <Compile Include="JsonSerializer.cs" />

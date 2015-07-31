@@ -20,7 +20,7 @@ namespace Bridge
         /// <response code="200">Test initialized.</response>
         public HttpResponseMessage Put(HttpRequestMessage request)
         {
-            string nameValuePairs = request.Content.ReadAsStringAsync().Result;
+            string nameValuePairs = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             Dictionary<string, string> resourceInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
             string resourceName = null;
             resourceInfo.TryGetValue("name", out resourceName);

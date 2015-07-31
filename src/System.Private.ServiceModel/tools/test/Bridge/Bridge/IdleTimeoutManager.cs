@@ -7,14 +7,12 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using WcfTestBridgeCommon;
 
 namespace Bridge
 {
     public class IdleTimeoutHandler : DelegatingHandler
     {
-        public static readonly int Default_Timeout_Minutes = 20;
-
+        public static readonly TimeSpan Default_MaxIdleTimeSpan = TimeSpan.FromMinutes(30);
         private IdleTimeoutManager _timeoutManager;
 
         private IdleTimeoutHandler(TimeSpan idleTimeout)
@@ -22,14 +20,15 @@ namespace Bridge
             _timeoutManager = new IdleTimeoutManager(idleTimeout); ;
             _timeoutManager.OnTimeOut += (s, e) =>
             {
-                Console.WriteLine("Timed out as there were no messages to the bridge for {0} seconds", (int)e.TotalSeconds);
+                Trace.WriteLine(String.Format("Timed out as there were no messages to the bridge for {0} seconds", (int)e.TotalSeconds),
+                                this.GetType().Name);
                 Environment.Exit(-1);
             };
         }
 
         internal static void Register(HttpConfiguration config)
         {
-            var waitTimeout = TimeSpan.FromMinutes(Default_Timeout_Minutes);            
+            var waitTimeout = Default_MaxIdleTimeSpan;            
             config.MessageHandlers.Add(new IdleTimeoutHandler(waitTimeout));
         }
 
@@ -59,15 +58,10 @@ namespace Bridge
                 _timer = new Timer(this.TimeOutCallback);
                 this.Restart();
 
-                // Register to be notified when the Bridge configuration changes
-                ConfigController.BridgeConfigurationChanged += (object s, Tuple<BridgeConfiguration, BridgeConfiguration> tuple) =>
+                // Register to be notified when the Bridge idle timeout changes
+                ConfigController.IdleTimeoutChanged += (object s, ChangedEventArgs<TimeSpan> args) =>
                 {
-                    BridgeConfiguration newConfig = tuple.Item2;
-
-                    int minutes = newConfig.BridgeIdleTimeoutMinutes;
-                    TimeSpan newTimeout = (minutes <= 0)
-                                            ? Timeout.InfiniteTimeSpan
-                                            : TimeSpan.FromMinutes(minutes);
+                    TimeSpan newTimeout = args.NewValue;
 
                     // When this notification is received, we will already have
                     // restarted the timer with its prior timeout.  There is no
