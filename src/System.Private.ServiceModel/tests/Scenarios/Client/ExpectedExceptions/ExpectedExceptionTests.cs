@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -286,10 +287,37 @@ public static class ExpectedExceptionTests
 
         EndpointNotFoundException exception = Assert.Throws<EndpointNotFoundException>(() =>
         {
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(notFoundUrl)))
+            try
             {
-                IWcfService serviceProxy = factory.CreateChannel();
-                string response = serviceProxy.Echo("Hello");
+                using (
+                    ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding,
+                        new EndpointAddress(notFoundUrl)))
+                {
+                    IWcfService serviceProxy = factory.CreateChannel();
+                    string response = serviceProxy.Echo("Hello");
+                }
+            }
+            catch (EndpointNotFoundException)
+            {
+                throw;
+            }
+            catch (CommunicationException ce)
+            {
+                if (ce.InnerException == null)
+                    throw;
+
+                if (ce.InnerException.GetType() == typeof (HttpRequestException))
+                {
+                    var httpReqExcep = ce.InnerException as HttpRequestException;
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("Received HttpRequestException with unknown error code ")
+                        .AppendLine(ce.InnerException.HResult.ToString())
+                        .AppendLine("Full details for HttpRequestException:")
+                        .AppendLine(httpReqExcep.ToString());
+                    throw new CommunicationException(sb.ToString());
+                }
+
+                throw;
             }
         });
 
