@@ -18,6 +18,10 @@ namespace System.ServiceModel
         private string[] _mustUnderstandActorValues;
         private string _senderFaultName;
         private string _receiverFaultName;
+        private const string Soap11ToStringFormat = "Soap11 ({0})";
+        private const string Soap12ToStringFormat = "Soap12 ({0})";
+        private const string EnvelopeNoneToStringFormat = "EnvelopeNone ({0})";
+
         private static EnvelopeVersion s_soap11 =
             new EnvelopeVersion(
                 "",
@@ -26,7 +30,7 @@ namespace System.ServiceModel
                 XD.Message11Dictionary.Namespace,
                 Message11Strings.Actor,
                 XD.Message11Dictionary.Actor,
-                SR.Soap11ToStringFormat,
+                Soap11ToStringFormat,
                 "Client",
                 "Server");
 
@@ -38,7 +42,7 @@ namespace System.ServiceModel
                 XD.Message12Dictionary.Namespace,
                 Message12Strings.Role,
                 XD.Message12Dictionary.Role,
-                SR.Soap12ToStringFormat,
+                Soap12ToStringFormat,
                 "Sender",
                 "Receiver");
 
@@ -49,7 +53,7 @@ namespace System.ServiceModel
                 XD.MessageDictionary.Namespace,
                 null,
                 null,
-                SR.EnvelopeNoneToStringFormat,
+                EnvelopeNoneToStringFormat,
                 "Sender",
                 "Receiver");
 

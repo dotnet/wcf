@@ -18,12 +18,14 @@ namespace System.ServiceModel.Channels
         private Uri _noneUri;
         private string _faultAction;
         private string _defaultFaultAction;
+        private const string AddressingNoneToStringFormat = "AddressingNone ({0})";
+        private const string Addressing10ToStringFormat = "Addressing10 ({0})";
 
         private static AddressingVersion s_none = new AddressingVersion(AddressingNoneStrings.Namespace, XD.AddressingNoneDictionary.Namespace,
-            SR.AddressingNoneToStringFormat, new MessagePartSpecification(), null, null, null, null, null);
+            AddressingNoneToStringFormat, new MessagePartSpecification(), null, null, null, null, null);
 
         private static AddressingVersion s_addressing10 = new AddressingVersion(Addressing10Strings.Namespace,
-            XD.Addressing10Dictionary.Namespace, SR.Addressing10ToStringFormat, Addressing10SignedMessageParts,
+            XD.Addressing10Dictionary.Namespace, Addressing10ToStringFormat, Addressing10SignedMessageParts,
             Addressing10Strings.Anonymous, XD.Addressing10Dictionary.Anonymous, Addressing10Strings.NoneAddress,
             Addressing10Strings.FaultAction, Addressing10Strings.DefaultFaultAction);
         private static MessagePartSpecification s_addressing10SignedMessageParts;

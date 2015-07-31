@@ -1431,111 +1431,6 @@
   <data name="SocketCloseReadReceivedData" xml:space="preserve">
     <value>A graceful close was attempted on the socket, but the other side ({0}) is still sending data.</value>
   </data>
-  <data name="PipeCantCloseWithPendingWrite" xml:space="preserve">
-    <value>The pipe cannot be closed while a write to the pipe is pending.</value>
-  </data>
-  <data name="PipeShutdownWriteError" xml:space="preserve">
-    <value>The shutdown indicator could not be written to the pipe.  The application on the other end of the pipe may not be listening for it.  The pipe will still be closed.</value>
-  </data>
-  <data name="PipeShutdownReadError" xml:space="preserve">
-    <value>The shutdown indicator was not received from the pipe.  The application on the other end of the pipe may not have sent it.  The pipe will still be closed.</value>
-  </data>
-  <data name="PipeNameCanNotBeAccessed" xml:space="preserve">
-    <value>The pipe name could not be obtained for the pipe URI: {0}</value>
-  </data>
-  <data name="PipeNameCanNotBeAccessed2" xml:space="preserve">
-    <value>The pipe name could not be obtained for {0}.</value>
-  </data>
-  <data name="PipeModeChangeFailed" xml:space="preserve">
-    <value>The pipe was not able to be set to message mode: {0}</value>
-  </data>
-  <data name="PipeCloseFailed" xml:space="preserve">
-    <value>The pipe could not close gracefully.  This may be caused by the application on the other end of the pipe exiting.</value>
-  </data>
-  <data name="PipeAlreadyShuttingDown" xml:space="preserve">
-    <value>The pipe cannot be written to because it is already in the process of shutting down.</value>
-  </data>
-  <data name="PipeSignalExpected" xml:space="preserve">
-    <value>The read from the pipe expected just a signal, but received actual data.</value>
-  </data>
-  <data name="PipeAlreadyClosing" xml:space="preserve">
-    <value>The pipe cannot be written to or read from because it is already in the process of being closed.</value>
-  </data>
-  <data name="PipeAcceptFailed" xml:space="preserve">
-    <value>Server cannot accept pipe: {0}</value>
-  </data>
-  <data name="PipeListenFailed" xml:space="preserve">
-    <value>Cannot listen on pipe '{0}': {1}</value>
-  </data>
-  <data name="PipeNameInUse" xml:space="preserve">
-    <value>Cannot listen on pipe name '{0}' because another pipe endpoint is already listening on that name.</value>
-  </data>
-  <data name="PipeNameCantBeReserved" xml:space="preserve">
-    <value>Cannot listen on pipe '{0}' because the pipe name could not be reserved: {1}</value>
-  </data>
-  <data name="PipeListenerDisposed" xml:space="preserve">
-    <value>The pipe listener has been disposed.</value>
-  </data>
-  <data name="PipeListenerNotListening" xml:space="preserve">
-    <value>Connections cannot be created until the pipe has started listening.  Call Listen() before attempting to accept a connection.</value>
-  </data>
-  <data name="PipeConnectAddressFailed" xml:space="preserve">
-    <value>A pipe endpoint exists for '{0}', but the connect failed: {1}</value>
-  </data>
-  <data name="PipeConnectFailed" xml:space="preserve">
-    <value>Cannot connect to endpoint '{0}'. </value>
-  </data>
-  <data name="PipeConnectTimedOut" xml:space="preserve">
-    <value>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The time allotted to this operation may have been a portion of a longer timeout.</value>
-  </data>
-  <data name="PipeConnectTimedOutServerTooBusy" xml:space="preserve">
-    <value>Cannot connect to endpoint '{0}' within the allotted timeout of {1}. The server has likely reached the MaxConnections quota and is too busy to accept new connections. The time allotted to this operation may have been a portion of a longer timeout.</value>
-  </data>
-  <data name="PipeEndpointNotFound" xml:space="preserve">
-    <value>The pipe endpoint '{0}' could not be found on your local machine. </value>
-  </data>
-  <data name="PipeUriSchemeWrong" xml:space="preserve">
-    <value>URIs used with pipes must use the scheme: 'net.pipe'.</value>
-  </data>
-  <data name="PipeWriteIncomplete" xml:space="preserve">
-    <value>The pipe write did not write all the bytes.</value>
-  </data>
-  <data name="PipeClosed" xml:space="preserve">
-    <value>The operation cannot be completed because the pipe was closed.  This may have been caused by the application on the other end of the pipe exiting.</value>
-  </data>
-  <data name="PipeReadTimedOut" xml:space="preserve">
-    <value>The read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
-  </data>
-  <data name="PipeWriteTimedOut" xml:space="preserve">
-    <value>The write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
-  </data>
-  <data name="PipeConnectionAbortedReadTimedOut" xml:space="preserve">
-    <value>The pipe connection was aborted because an asynchronous read from the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
-  </data>
-  <data name="PipeConnectionAbortedWriteTimedOut" xml:space="preserve">
-    <value>The pipe connection was aborted because an asynchronous write to the pipe did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
-  </data>
-  <data name="PipeWriteError" xml:space="preserve">
-    <value>There was an error writing to the pipe: {0}.</value>
-  </data>
-  <data name="PipeReadError" xml:space="preserve">
-    <value>There was an error reading from the pipe: {0}.</value>
-  </data>
-  <data name="PipeUnknownWin32Error" xml:space="preserve">
-    <value>Unrecognized error {0} (0x{1})</value>
-  </data>
-  <data name="PipeKnownWin32Error" xml:space="preserve">
-    <value>{0} ({1}, 0x{2})</value>
-  </data>
-  <data name="PipeWritePending" xml:space="preserve">
-    <value>There is already a write in progress for the pipe.  Wait for the first operation to complete before attempting to write again.</value>
-  </data>
-  <data name="PipeReadPending" xml:space="preserve">
-    <value>There is already a read in progress for the pipe.  Wait for the first operation to complete before attempting to read again.</value>
-  </data>
-  <data name="PipeDuplicationFailed" xml:space="preserve">
-    <value>There was an error duplicating the.</value>
-  </data>
   <data name="SessionValueInvalid" xml:space="preserve">
     <value>The Session value '{0}' is invalid. Please specify 'CurrentSession','ServiceSession' or a valid non-negative Windows Session Id.</value>
   </data>
@@ -1725,32 +1620,11 @@
   <data name="QueryCantGetStringForMovedIterator" xml:space="preserve">
     <value>The string value can't be determined because the XPathNodeIterator has been moved past the first node.</value>
   </data>
-  <data name="MessageVersionToStringFormat" xml:space="preserve">
-    <value>{0} {1}</value>
-  </data>
-  <data name="Addressing10ToStringFormat" xml:space="preserve">
-    <value>Addressing10 ({0})</value>
-  </data>
-  <data name="Addressing200408ToStringFormat" xml:space="preserve">
-    <value>Addressing200408 ({0})</value>
-  </data>
-  <data name="AddressingNoneToStringFormat" xml:space="preserve">
-    <value>AddressingNone ({0})</value>
-  </data>
   <data name="AddressingVersionNotSupported" xml:space="preserve">
     <value>Addressing Version '{0}' is not supported.</value>
   </data>
   <data name="SupportedAddressingModeNotSupported" xml:space="preserve">
     <value>The '{0}' addressing mode is not supported.</value>
-  </data>
-  <data name="Soap11ToStringFormat" xml:space="preserve">
-    <value>Soap11 ({0})</value>
-  </data>
-  <data name="Soap12ToStringFormat" xml:space="preserve">
-    <value>Soap12 ({0})</value>
-  </data>
-  <data name="EnvelopeNoneToStringFormat" xml:space="preserve">
-    <value>EnvelopeNone ({0})</value>
   </data>
   <data name="MessagePropertyReturnedNullCopy" xml:space="preserve">
     <value>The IMessageProperty could not be copied. CreateCopy returned null.</value>
@@ -4776,219 +4650,6 @@
   <data name="PrivacyNoticeElementVersionAttributeInvalid" xml:space="preserve">
     <value>PrivacyNotice element Version attribute must have an integer value.</value>
   </data>
-  <data name="MsmqActiveDirectoryRequiresNativeTransfer" xml:space="preserve">
-    <value>Binding validation failed. The client cannot send messages. A conflict in the binding properties caused this failure. The UseActiveDirectory is set to true and QueueTransferProtocol is set to Native. To resolve the conflict, correct one of the properties.</value>
-  </data>
-  <data name="MsmqAdvancedPoisonHandlingRequired" xml:space="preserve">
-    <value>Binding validation failed because the binding's ReceiveErrorHandlig property is set to Move or Reject while the version of MSMQ installed on this system is not 4.0 or higher. The channel listener cannot be opened. Resolve the conflict by setting the ReceiveErrorHandling property to Drop or Fault, or by upgrading to MSMQ v4.0.</value>
-  </data>
-  <data name="MsmqAmbientTransactionInactive" xml:space="preserve">
-    <value>The Ambient transaction used to Complete the ReceiveContext Operation is not in an active state. </value>
-  </data>
-  <data name="MsmqAuthCertificateRequiresProtectionSign" xml:space="preserve">
-    <value>Binding validation failed because the binding's MsmqAuthenticationMode property is set to Certificate while the MsmqProtectionLevel property is not set to Sign or EncryptAndSign. The channel factory or service host cannot be opened. Resolve the conflict by correcting one of the properties.</value>
-  </data>
-  <data name="MsmqAuthNoneRequiresProtectionNone" xml:space="preserve">
-    <value>Binding validation failed. The service or the client cannot be started. A conflict in the binding properties caused this failure. The MsmqAuthenticationMode is set to None and MsmqProtectionLevel is not set to None. To resolve to conflict, correct one of the properties.</value>
-  </data>
-  <data name="MsmqAuthWindowsRequiresProtectionNotNone" xml:space="preserve">
-    <value>Binding validation failed because the binding's MsmqAuthenticationMode property is set to WindowsDomain while the MsmqProtectionLevel property is not set to Sign or EncryptAndSign. The channel factory or service host cannot be opened. Resolve the conflict by correcting one of the properties.</value>
-  </data>
-  <data name="MsmqBadCertificate" xml:space="preserve">
-    <value>Creation of a message security context failed because the attached sender certificate was invalid or cannot be validated. The message cannot be received. Ensure that a valid certificate is attached to the message and that the certificate is present in the receiver's certificate store.</value>
-  </data>
-  <data name="MsmqBadContentType" xml:space="preserve">
-    <value>The content type of an incoming message is unknown or not supported. The message cannot be received. Ensure that the sender was configured to use the same message encoder as the receiver.</value>
-  </data>
-  <data name="MsmqBadFrame" xml:space="preserve">
-    <value>An incoming MSMQ message contained invalid or unexpected .NET Message Framing information in its body. The message cannot be received. Ensure that the sender is using a compatible service contract with a matching SessionMode.</value>
-  </data>
-  <data name="MsmqBadXml" xml:space="preserve">
-    <value>An XML error was encountered while reading a WCF message. The message cannot be received. Ensure the message was sent by a WCF client which used an identical message encoder.</value>
-  </data>
-  <data name="MsmqBatchRequiresTransactionScope" xml:space="preserve">
-    <value>TransactedBatchingBehavior validation failed because none of the service operations had the TransactionScopeRequired property set to true on their OperationBehavior attribute. The service host cannot be started. Ensure this requirement is met if you wish to use this behavior.</value>
-  </data>
-  <data name="MsmqByteArrayBodyExpected" xml:space="preserve">
-    <value>A mismatch was detected between the serialization format specified in the MsmqIntegrationMessageProperty and the body of the MSMQ message. The message cannot be sent. The serialization format ByteArray requires the body of the MSMQ message to be of type byte[].</value>
-  </data>
-  <data name="MsmqCannotDeserializeActiveXMessage" xml:space="preserve">
-    <value>An error occurred while deserializing an MSMQ message's ActiveX body. The message cannot be received. The specified variant type for the body does not match the actual MSMQ message body.</value>
-  </data>
-  <data name="MsmqCannotDeserializeXmlMessage" xml:space="preserve">
-    <value>An error occurred while deserializing an MSMQ message's XML body. The message cannot be received. Ensure that the service contract is decorated with appropriate [ServiceKnownType] attributes or the TargetSerializationTypes property is set on the MsmqIntegrationBindingElement.</value>
-  </data>
-  <data name="MsmqCannotUseBodyTypeWithActiveXSerialization" xml:space="preserve">
-    <value>The properties of the message are mismatched. The message cannot be sent. The BodyType message property cannot be specified if the ActiveX serialization format is used.</value>
-  </data>
-  <data name="MsmqCertificateNotFound" xml:space="preserve">
-    <value>The sender's X.509 certificate was not found. The message cannot be sent. Ensure the certificate is available in the sender's certificate store.</value>
-  </data>
-  <data name="MsmqCustomRequiresPerAppDLQ" xml:space="preserve">
-    <value>Binding validation failed. The client cannot send the message. The DeadLetterQueue is set to Custom, but the CustomDeadLetterQueue is not specified. Specify the URI of the dead letter queue for each application in the CustomDeadLetterQueue property.</value>
-  </data>
-  <data name="MsmqDeserializationError" xml:space="preserve">
-    <value>An error was encountered while deserializing the message. The message cannot be received.</value>
-  </data>
-  <data name="MsmqDirectFormatNameRequiredForPoison" xml:space="preserve">
-    <value>Binding validation failed because the endpoint listen URI does not represent an MSMQ direct format name. The service host cannot be opened. Make sure you use a direct format name for the endpoint's listen URI.</value>
-  </data>
-  <data name="MsmqDLQNotLocal" xml:space="preserve">
-    <value>The host in the CustomDeadLetterQueue URI is not \"localhost\" or the local machine name. A custom DLQ must reside on the sender's machine.</value>
-  </data>
-  <data name="MsmqDLQNotWriteable" xml:space="preserve">
-    <value>Binding validation failed. The client cannot send a message. The specified dead letter queue does not exist or cannot be written. Ensure the queue exists with the proper authorization to write to it.</value>
-  </data>
-  <data name="MsmqEncryptRequiresUseAD" xml:space="preserve">
-    <value>Binding validation failed because the binding's MsmqProtectionLevel property is set to EncryptAndSign while the UseActiveDirectory is not set to true. The channel factory or the service host cannot be opened. Resolve the conflict by correcting one of the properties.</value>
-  </data>
-  <data name="MsmqExactlyOnceNeededForReceiveContext" xml:space="preserve">
-    <value>Binding validation failed. The service or the client cannot be started. The ExactlyOnce property is set to false and ReceiveContext is enabled. This is not supported. To resolve the conflict, either set ExactlyOnce to true or disable ReceiveContext.</value>
-  </data>
-  <data name="MsmqGetPrivateComputerInformationError" xml:space="preserve">
-    <value>The version check failed with the error: '{0}'. The version of MSMQ cannot be detected All operations that are on the queued channel will fail. Ensure that MSMQ is installed and is available.</value>
-  </data>
-  <data name="MsmqInvalidMessageId" xml:space="preserve">
-    <value>The message ID '{0}' is not in the right format.</value>
-  </data>
-  <data name="MsmqInvalidScheme" xml:space="preserve">
-    <value>The specified addressing scheme is invalid for this binding. The NetMsmqBinding scheme must be net.msmq. The MsmqIntegrationBinding scheme must be msmq.formatname.</value>
-  </data>
-  <data name="MsmqInvalidServiceOperationForMsmqIntegrationBinding" xml:space="preserve">
-    <value>The MsmqIntegrationBinding validation failed. The service cannot be started. The {0} binding does not support the method signature for the service operation {1} in the {2} contract. Correct the service operation to use the MsmqIntegrationBinding.</value>
-  </data>
-  <data name="MsmqInvalidTypeDeserialization" xml:space="preserve">
-    <value>The ActiveX serialization failed because the serialization format cannot be recognized. The message cannot be received.</value>
-  </data>
-  <data name="MsmqInvalidTypeSerialization" xml:space="preserve">
-    <value>The variant type is not recognized. The ActiveX serialization failed. The message cannot be sent. The specified variant type is not supported.</value>
-  </data>
-  <data name="MsmqKnownWin32Error" xml:space="preserve">
-    <value>{0} ({1}, 0x{2})</value>
-  </data>
-  <data name="MsmqMessageDoesntHaveIntegrationProperty" xml:space="preserve">
-    <value>The message cannot be sent because it's missing an MsmqIntegrationMessageProperty. All messages sent over MSMQ integration channels must carry the MsmqIntegrationMessageProperty.</value>
-  </data>
-  <data name="MsmqNoAssurancesForVolatile" xml:space="preserve">
-    <value>Binding validation failed. The service or the client cannot be started. The ExactlyOnce property is set to true and the Durable property is set to false. This is not supported. To resolve the conflict, correct one of these properties.</value>
-  </data>
-  <data name="MsmqNonNegativeArgumentExpected" xml:space="preserve">
-    <value>Argument must be a positive number or zero.</value>
-  </data>
-  <data name="MsmqNonTransactionalQueueNeeded" xml:space="preserve">
-    <value>A mismatch between the binding and MSMQ queue configuration was detected. The service cannot be started. The ExactlyOnce property is set to false and the queue to read messages from is a transactional queue, Correct the error by setting the ExactlyOnce property to true or create a non-transactional binding.</value>
-  </data>
-  <data name="MsmqNoMoveForSubqueues" xml:space="preserve">
-    <value>Binding validation failed because the URI represents a subqueue and the ReceiveErrorHandling parameter is set to Move. The service host or channel listener cannot be opened. Resolve this conflict by setting the ReceiveErrorHandling to Fault, Drop or Reject.</value>
-  </data>
-  <data name="MsmqNoSid" xml:space="preserve">
-    <value>Creation of a message security context failed because the sender's SID was not found in the message. The message cannot be received. The WindowsDomain MsmqAuthenticationMode requires the sender's SID.</value>
-  </data>
-  <data name="MsmqOpenError" xml:space="preserve">
-    <value>An error occurred while opening the queue:{0}. The  message cannot be sent or received from the queue. Ensure that MSMQ is installed and running. Also ensure that the queue is available to open with the required access mode and authorization.</value>
-  </data>
-  <data name="MsmqPathLookupError" xml:space="preserve">
-    <value>An error occurred when converting the '{0}' queue path name to the format name: {1}. All operations on the queued channel failed. Ensure that the queue address is valid. MSMQ must be installed with Active Directory integration enabled and access to it is available.</value>
-  </data>
-  <data name="MsmqPerAppDLQRequiresCustom" xml:space="preserve">
-    <value>Binding validation failed. The client cannot send messages. The CustomDeadLetterQueue property is set, but the DeadLetterQueue property is not set to Custom. Set the DeadLetterQueue property to Custom.</value>
-  </data>
-  <data name="MsmqPerAppDLQRequiresExactlyOnce" xml:space="preserve">
-    <value>Binding validation failed. The client cannot send messages. A conflict in the binding properties is causing the failure. To use the custom dead letter queue, ExactlyOnce must be set to true to resolve to conflict.</value>
-  </data>
-  <data name="MsmqPerAppDLQRequiresMsmq4" xml:space="preserve">
-    <value>A mismatch between the binding and MSMQ configuration was detected. The client cannot send messages. To use the custom dead letter queue, you must have MSMQ version 4.0 or higher. If you do not have MSMQ version 4.0 or higher set the DeadLetterQueue property to System or None. </value>
-  </data>
-  <data name="MsmqPoisonMessage" xml:space="preserve">
-    <value>The transport channel detected a poison message. This occurred because the message exceeded the maximum number of delivery attempts or because the channel detected a fundamental problem with the message. The inner exception may contain additional information.</value>
-  </data>
-  <data name="MsmqQueueNotReadable" xml:space="preserve">
-    <value>There was an error opening the queue. Ensure that MSMQ is installed and running, the queue exists and has proper authorization to be read from. The inner exception may contain additional information.</value>
-  </data>
-  <data name="MsmqReceiveContextMessageNotReceived" xml:space="preserve">
-    <value>The ReceiveContext delete operation failed because the message with Id '{0}' could not be received from the lock subqueue. </value>
-  </data>
-  <data name="MsmqReceiveContextMessageNotMoved" xml:space="preserve">
-    <value>The ReceiveContext unlock operation failed because the message with Id '{0}' could not be moved from the lock subqueue to the main queue.</value>
-  </data>
-  <data name="MsmqReceiveContextSubqueuesNotSupported" xml:space="preserve">
-    <value>The queue could not be opened because the ReceiveContext feature is not supported on subqueues. Specify a different queue to receive from, or disable ReceiveContext.</value>
-  </data>
-  <data name="MsmqReceiveError" xml:space="preserve">
-    <value>An error occurred while receiving a message from the queue: {0}. Ensure that MSMQ is installed and running. Make sure the queue is available to receive from.</value>
-  </data>
-  <data name="MsmqSameTransactionExpected" xml:space="preserve">
-    <value>A transaction error occurred for this session. The session channel is faulted. Messages in the session cannot be sent or received. A queued session cannot be associated with more than one transaction. Ensure that all messages in the session are sent or received using a single transaction.</value>
-  </data>
-  <data name="MsmqSendError" xml:space="preserve">
-    <value>An error occurred while sending to the queue: {0}.Ensure that MSMQ is installed and running. If you are sending to a local queue, ensure the queue exists with the required access mode and authorization.</value>
-  </data>
-  <data name="MsmqSerializationTableFull" xml:space="preserve">
-    <value>A serialization error occurred. The message cannot be sent or received. The MSMQ integration channel is able to serialize no more than {0} types.</value>
-  </data>
-  <data name="MsmqSessionChannelAbort" xml:space="preserve">
-    <value>The transaction associated with this session channel has been rolled back because Abort was called on the session channel before the transaction committed. </value>
-  </data>
-  <data name="MsmqSessionChannelHasPendingItems" xml:space="preserve">
-    <value>Session channels must not have pending messages when the transactions associated with these channels are committed. Pending messages are either messages that have not been received from the session channel or messages that have been received but Complete has not been called for them. The channel has faulted and the transaction was rolled back.</value>
-  </data>
-  <data name="MsmqSessionChannelsMustBeClosed" xml:space="preserve">
-    <value>Session channels must be closed before the transaction is committed. The channel has faulted and the transaction was rolled back.</value>
-  </data>
-  <data name="MsmqSessionGramSizeMustBeInIntegerRange" xml:space="preserve">
-    <value>The total size of messages sent in this session exceeded the maximum value of Int32. The messages in this session cannot be sent.</value>
-  </data>
-  <data name="MsmqSessionMessagesNotConsumed" xml:space="preserve">
-    <value>An attempt made to close the session channel while there are still messages pending in the session. Current transaction will be rolled back and the session channel will be faulted. Messages in a session must be consumed all at once.</value>
-  </data>
-  <data name="MsmqSessionPrematureClose" xml:space="preserve">
-    <value>An attempt was made to close the session channel while there are still messages pending in the session. The sessiongram will be rolled back to the queue and the session channel will be faulted. </value>
-  </data>
-  <data name="MsmqStreamBodyExpected" xml:space="preserve">
-    <value>A serialization error occurred because of a mismatch between the value of the SerializationFormat property and the type of the body. The message cannot be sent. Ensure the type of the body is Stream or use a different SerializationFormat.</value>
-  </data>
-  <data name="MsmqTimeSpanTooLarge" xml:space="preserve">
-    <value>The message time to live (TTL) is too large. The message cannot be sent. The message TTL cannot exceed the Int32 maximum value.</value>
-  </data>
-  <data name="MsmqTokenProviderNeededForCertificates" xml:space="preserve">
-    <value>A client X.509 certificate was not specified through the channel factory's Credentials property, but one is required when the binding's MsmqAuthenticationMode property is set to Certificate. The message cannot be sent.</value>
-  </data>
-  <data name="MsmqTransactionNotActive" xml:space="preserve">
-    <value>The current transaction is not active. Messages in this session cannot be sent or received and the session channel will be faulted. All messages in a session must be sent or received using a single transaction.</value>
-  </data>
-  <data name="MsmqTransactionalQueueNeeded" xml:space="preserve">
-    <value>Binding validation failed because the binding's ExactlyOnce property is set to true while the destination queue is non-transactional. The service host cannot be opened. Resolve this conflict by setting the ExactlyOnce property to false or creating a transactional queue for this binding.</value>
-  </data>
-  <data name="MsmqTransactionCurrentRequired" xml:space="preserve">
-    <value>A transaction was not found in Transaction.Current but one is required for this operation. The channel cannot be opened. Ensure this operation is being called within a transaction scope.</value>
-  </data>
-  <data name="MsmqTransactionRequired" xml:space="preserve">
-    <value>A transaction is required but is not available. Messages cannot be sent or received. Ensure that the transaction scope is specified to send or receive messages.</value>
-  </data>
-  <data name="MsmqTransactedDLQExpected" xml:space="preserve">
-    <value>A mismatch occurred between the binding and the MSMQ configuration. Messages cannot be sent. The custom dead letter queue specified in the binding must be a transactional queue. Ensure that the  custom dead letter queue address is correct and the queue is a transactional queue.</value>
-  </data>
-  <data name="MsmqUnexpectedPort" xml:space="preserve">
-    <value>The net.msmq scheme does not support port numbers. To correct this, remove the port number from the URI.</value>
-  </data>
-  <data name="MsmqUnknownWin32Error" xml:space="preserve">
-    <value>Unrecognized error {0} (0x{1})</value>
-  </data>
-  <data name="MsmqUnsupportedSerializationFormat" xml:space="preserve">
-    <value>The serialization failed because the serialization format '{0}' is not supported. The message cannot be sent or received.</value>
-  </data>
-  <data name="MsmqWindowsAuthnRequiresAD" xml:space="preserve">
-    <value>Binding validation failed because the binding's MsmqAuthenticationMode property is set to WindowsDomain but MSMQ is installed with Active Directory integration disabled. The channel factory or service host cannot be opened.</value>
-  </data>
-  <data name="MsmqWrongPrivateQueueSyntax" xml:space="preserve">
-    <value>The URL in invalid. The URL for the queue cannot contain the '$' character. Use the syntax in net.msmq://machine/private/queueName to address a private queue.</value>
-  </data>
-  <data name="MsmqWrongUri" xml:space="preserve">
-    <value>The URI is invalid because it is missing a host.</value>
-  </data>
-  <data name="MsmqCannotReacquireLock" xml:space="preserve">
-    <value>Failed to reacquire lock for message. </value>
-  </data>
   <data name="XDCannotFindValueInDictionaryString" xml:space="preserve">
     <value>Cannot find '{0}' value in dictionary string.</value>
   </data>
@@ -5024,12 +4685,6 @@
   </data>
   <data name="MultipleStreamUpgradeProvidersInParameters" xml:space="preserve">
     <value>More than one IStreamUpgradeProviderElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple IStreamUpgradeProviderElements in a CustomBinding. Remove all but one of these elements.</value>
-  </data>
-  <data name="MultiplePeerResolverBindingElementsinParameters" xml:space="preserve">
-    <value>More than one PeerResolverBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple PeerResolverBindingElements in a CustomBinding. Remove all but one of these elements.</value>
-  </data>
-  <data name="MultiplePeerCustomResolverBindingElementsInParameters" xml:space="preserve">
-    <value>More than one PeerCustomResolverBindingElement was found in the BindingParameters of the BindingContext.  This usually is caused by having multiple PeerCustomResolverBindingElement in a CustomBinding. Remove all but one of these elements.</value>
   </data>
   <data name="SecurityCapabilitiesMismatched" xml:space="preserve">
     <value>The security capabilities of binding '{0}' do not match those of the generated runtime object. Most likely this means the binding contains a StreamSecurityBindingElement, but lacks a TransportBindingElement that supports Stream Security (such as TCP or Named Pipes). Either remove the unused StreamSecurityBindingElement or use a transport that supports this element.</value>
@@ -5421,32 +5076,8 @@
   <data name="BadInterfaceRegistration" xml:space="preserve">
     <value>Bad Interface Registration</value>
   </data>
-  <data name="NotAComObject" xml:space="preserve">
-    <value>The argument passed to SetObject is not a COM object.</value>
-  </data>
   <data name="NoTypeLibraryFoundForInterface" xml:space="preserve">
     <value>No type library available for interface</value>
-  </data>
-  <data name="CannotFindClsidInApplication" xml:space="preserve">
-    <value>Cannot find CLSID {0} in COM+ application {1}.</value>
-  </data>
-  <data name="ComActivationAccessDenied" xml:space="preserve">
-    <value>Cannot create an instance of the specified service: access is denied.</value>
-  </data>
-  <data name="ComActivationFailure" xml:space="preserve">
-    <value>An internal error occurred attempting to create an instance of the specified service.</value>
-  </data>
-  <data name="ComDllHostInitializerFoundNoServices" xml:space="preserve">
-    <value>No services are configured for the application.</value>
-  </data>
-  <data name="ComRequiresWindowsSecurity" xml:space="preserve">
-    <value>Access is denied. The message was not authenticated with a valid windows identity.</value>
-  </data>
-  <data name="ComInconsistentSessionRequirements" xml:space="preserve">
-    <value>The session requirements of the contracts are inconsistent. All COM contracts in a service must have the same session requirement.</value>
-  </data>
-  <data name="ComMessageAccessDenied" xml:space="preserve">
-    <value>Access is denied.</value>
   </data>
   <data name="VariantArrayNull" xml:space="preserve">
     <value>Parameter at index {0} is null.</value>
@@ -5463,9 +5094,6 @@
   <data name="NoneOfTheMethodsForInterfaceFoundInConfig" xml:space="preserve">
     <value>None of the methods were found for interface {0}.</value>
   </data>
-  <data name="ComOperationNotFound" xml:space="preserve">
-    <value>The {0} operation on the service {1} could not be found in the catalog.</value>
-  </data>
   <data name="InvalidWebServiceInterface" xml:space="preserve">
     <value>The interface with IID {0} cannot be exposed as a web service</value>
   </data>
@@ -5475,20 +5103,11 @@
   <data name="InvalidWebServiceReturnValue" xml:space="preserve">
     <value>The return value of type {0} on method {1} of interface {2} cannot be serialized.</value>
   </data>
-  <data name="OnlyClsidsAllowedForServiceType" xml:space="preserve">
-    <value>The COM+ Integration service '{0}' specified in configuration is not in a supported format and could not be started. Ensure that the configuration is correctly specified.</value>
-  </data>
   <data name="OperationNotFound" xml:space="preserve">
     <value>The method '{0}' could not be found. Ensure that the correct method name is specified.</value>
   </data>
   <data name="BadDispID" xml:space="preserve">
     <value>The Dispatch ID '{0}' could not be found or is invalid.</value>
-  </data>
-  <data name="ComNoAsyncOperationsAllowed" xml:space="preserve">
-    <value>At least one operation is asynchronous. Asynchronous operations are not allowed.</value>
-  </data>
-  <data name="ComDuplicateOperation" xml:space="preserve">
-    <value>There are duplicate operations, which is invalid. Remove the duplicates.</value>
   </data>
   <data name="BadParamCount" xml:space="preserve">
     <value>The number of parameters in the request did not match the number supported by the method. Ensure that the correct number of parameters are specified.</value>
@@ -5646,68 +5265,8 @@
   <data name="NoTokenInChannelParameters" xml:space="preserve">
     <value>No Infocard token was found in the ChannelParameters. Infocard requires that the security token be created during channel intialization.</value>
   </data>
-  <data name="PeerMessageMustHaveVia" xml:space="preserve">
-    <value>Message with action {0} received from a neighbor is missing a via Header.</value>
-  </data>
-  <data name="PeerLinkUtilityInvalidValues" xml:space="preserve">
-    <value>The LinkUtility message received from a neighbor has invalid values for usefull '{0}' and total '{1}'.</value>
-  </data>
-  <data name="PeerNeighborInvalidState" xml:space="preserve">
-    <value>Internal Error: Peer Neighbor state change from {0} to {1} is invalid.</value>
-  </data>
-  <data name="PeerMaxReceivedMessageSizeConflict" xml:space="preserve">
-    <value>The MaxReceivedMessageSize of the associated listener ({0}) is greater than the MaxReceivedMessageSize of the PeerNode ({1}) with the meshid ({2}), ensure that all ChannelFactories and Endpoints for this mesh have the same configuration for MaxRecievedMessageSize.</value>
-  </data>
-  <data name="PeerConflictingPeerNodeSettings" xml:space="preserve">
-    <value>Binding settings conflict with an existing instance that is using the same mesh name. Check the value of the property {0}.</value>
-  </data>
   <data name="ArgumentOutOfRange" xml:space="preserve">
     <value>value must be &gt;= {0} and &lt;= {1}.</value>
-  </data>
-  <data name="PeerChannelViaTooLong" xml:space="preserve">
-    <value>Invalid message: the peer channel via ({0}) has a size of ({1}) it exceeds the maximum via size of ({2}).</value>
-  </data>
-  <data name="PeerNodeAborted" xml:space="preserve">
-    <value>The PeerNode cannot be opened because it has been Aborted.</value>
-  </data>
-  <data name="PeerPnrpNotAvailable" xml:space="preserve">
-    <value>PNRP is not available. Please refer to the documentation with your system for details on how to install and enable PNRP.</value>
-  </data>
-  <data name="PeerPnrpNotInstalled" xml:space="preserve">
-    <value>The PNRP service is not installed on this machine. Please refer to the documentation with your system for details on how to install and enable PNRP.</value>
-  </data>
-  <data name="PeerResolverBindingElementRequired" xml:space="preserve">
-    <value>A PeerResolverBindingElement is required in the {0} binding. The default resolver (PNRP) is not available.</value>
-  </data>
-  <data name="PeerResolverRequired" xml:space="preserve">
-    <value>Resolver must be specified. The default resolver (PNRP) is not available. Please refer to the documentation with your system for details on how to install and enable PNRP.</value>
-  </data>
-  <data name="PeerResolverInvalid" xml:space="preserve">
-    <value>The specified ResolverType: {0} cannot be loaded.  Please ensure that the type name specified refers to a type that can be loaded.</value>
-  </data>
-  <data name="PeerResolverSettingsInvalid" xml:space="preserve">
-    <value>Specified resolver settings are not enough to create a valid resolver.  Please ensure that a ResolverType and an Address is specified for the custom resolver.</value>
-  </data>
-  <data name="PeerListenIPAddressInvalid" xml:space="preserve">
-    <value>The ListenIPAddress {0} is invalid.</value>
-  </data>
-  <data name="PeerFlooderDisposed" xml:space="preserve">
-    <value>Internal Error. PeerFlooder instance is already disposed. It cannot be used to send messages.</value>
-  </data>
-  <data name="PeerPnrpIllegalUri" xml:space="preserve">
-    <value>Internal Error. Address of the Service cannot be registered with PNRP.</value>
-  </data>
-  <data name="PeerInvalidRegistrationId" xml:space="preserve">
-    <value>The registrationId {0} is invalid.</value>
-  </data>
-  <data name="PeerConflictingHeader" xml:space="preserve">
-    <value>Application message contains a header that conflicts with a PeerChannel specific header. Name = {0} and Namespace = {1}.</value>
-  </data>
-  <data name="PnrpNoClouds" xml:space="preserve">
-    <value>PNRP could not find any clouds that match the current operation.</value>
-  </data>
-  <data name="PnrpAddressesUnsupported" xml:space="preserve">
-    <value>\"Specified addresses can not be registered with PNRP because either PNRP is not enabled or the specified addresses do not have corresponding clouds. Please refer to the documentation with your system for details on how to install and enable PNRP.\"</value>
   </data>
   <data name="InsufficientCryptoSupport" xml:space="preserve">
     <value>The binding's PeerTransportSecuritySettings can not be supported under the current system security configuration.</value>
@@ -5717,9 +5276,6 @@
   </data>
   <data name="UnexpectedSecurityTokensDuringHandshake" xml:space="preserve">
     <value>Connection was not accepted because the SecurityContext contained tokens that do not match the current security settings.</value>
-  </data>
-  <data name="PnrpAddressesExceedLimit" xml:space="preserve">
-    <value>Addresses specified in the registration exceed PNRP's per registration address limit.</value>
   </data>
   <data name="InsufficientResolverSettings" xml:space="preserve">
     <value>Provided information is Insufficient to create a valid connection to the resolver service.</value>
@@ -5736,23 +5292,8 @@
   <data name="NotValidWhenClosed" xml:space="preserve">
     <value>The operation: {0} is not valid while the object is in closed state.</value>
   </data>
-  <data name="PeerNullRegistrationInfo" xml:space="preserve">
-    <value>Registration info can not be null.  Please ensure that the Register operation is invoked with a valid RegistrationInfo object.</value>
-  </data>
-  <data name="PeerNullResolveInfo" xml:space="preserve">
-    <value>Resolve info can not be null.  Please ensure that the Resolve operation is invoked with a valid ResolveInfo object.</value>
-  </data>
-  <data name="PeerNullRefreshInfo" xml:space="preserve">
-    <value>Refresh info can not be null.  Please ensure that the Refresh operation is invoked with a valid RefreshInfo object.</value>
-  </data>
-  <data name="PeerInvalidMessageBody" xml:space="preserve">
-    <value>MessageBody does not contain a valid {0} message.  Please ensure that the message is well formed.</value>
-  </data>
   <data name="DuplicatePeerRegistration" xml:space="preserve">
     <value>A peer registration with the service address {0} already exists.</value>
-  </data>
-  <data name="PeerNodeToStringFormat" xml:space="preserve">
-    <value>MeshId: {0}, Node Id: {1}, Online: {2}, Open: {3}, Port: {4}</value>
   </data>
   <data name="MessagePropagationException" xml:space="preserve">
     <value>The MessagePropagationFilter threw an exception. Please refer to InnerException.</value>
@@ -5762,21 +5303,6 @@
   </data>
   <data name="ResolverException" xml:space="preserve">
     <value>The Peer resolver threw an exception.  Please refer to InnerException.</value>
-  </data>
-  <data name="PnrpCloudNotFound" xml:space="preserve">
-    <value>One of the addresses specified doesn't match any PNRP cloud for registration.{0}</value>
-  </data>
-  <data name="PnrpCloudDisabled" xml:space="preserve">
-    <value>Specified cloud {0} could not be used for the specified operation because it is disabled.</value>
-  </data>
-  <data name="PnrpCloudResolveOnly" xml:space="preserve">
-    <value>Specified cloud {0} is configured for Resolve operations only.</value>
-  </data>
-  <data name="PnrpPortBlocked" xml:space="preserve">
-    <value>Requested PNRP operation {0} cloud not be performed because the port is blocked possibly by a firewall.</value>
-  </data>
-  <data name="PnrpDuplicatePeerName" xml:space="preserve">
-    <value>Specified mesh name {0} cannot be used because a name can only be registered once per process.</value>
   </data>
   <data name="RefreshIntervalMustBeGreaterThanZero" xml:space="preserve">
     <value>Invalid RefreshInterval value of {0}; it must be greater than zero</value>
@@ -5789,33 +5315,6 @@
   </data>
   <data name="MustRegisterMoreThanZeroAddresses" xml:space="preserve">
     <value>Registration with zero addresses detected.   Please call Register with more than zero addresses.</value>
-  </data>
-  <data name="PeerCertGenFailure" xml:space="preserve">
-    <value>Certificate generation has failed. Please see the inner exception for more information.</value>
-  </data>
-  <data name="PeerThrottleWaiting" xml:space="preserve">
-    <value>Throttle on the mesh {0} waiting.</value>
-  </data>
-  <data name="PeerThrottlePruning" xml:space="preserve">
-    <value>Attempting to prune the slow neighbor for the mesh {0}.</value>
-  </data>
-  <data name="PeerMaintainerStarting" xml:space="preserve">
-    <value>Maintainer is starting for the mesh {0}.</value>
-  </data>
-  <data name="PeerMaintainerConnect" xml:space="preserve">
-    <value>Maintainer is attempting a connection to Peer {0} for the mesh {1}.</value>
-  </data>
-  <data name="PeerMaintainerConnectFailure" xml:space="preserve">
-    <value>Maintainer encountered exception when attempting a connection to Peer {0} for the mesh {1}. Exception is {2}.</value>
-  </data>
-  <data name="PeerMaintainerInitialConnect" xml:space="preserve">
-    <value>Mantainer's InitialConnect is running for the mesh {0}.</value>
-  </data>
-  <data name="PeerMaintainerPruneMode" xml:space="preserve">
-    <value>Mantainer is attempting to prune connections for the mesh {0}.</value>
-  </data>
-  <data name="PeerMaintainerConnectMode" xml:space="preserve">
-    <value>Mantainer is attempting to establish additional connections for the mesh {0}.</value>
   </data>
   <data name="BasicHttpContextBindingRequiresAllowCookie" xml:space="preserve">
     <value>BasicHttpContextBinding {0}:{1} requires that AllowCookies property is set to true.</value>
@@ -5933,24 +5432,6 @@
   </data>
   <data name="WsatUriCreationFailed" xml:space="preserve">
     <value>A registration service address could not be created from MSDTC whereabouts information.</value>
-  </data>
-  <data name="WhereaboutsReadFailed" xml:space="preserve">
-    <value>The MSDTC whereabouts information could not be deserialized.</value>
-  </data>
-  <data name="WhereaboutsSignatureMissing" xml:space="preserve">
-    <value>The standard whereabouts signature was missing from the MSDTC whereabouts information.</value>
-  </data>
-  <data name="WhereaboutsImplausibleProtocolCount" xml:space="preserve">
-    <value>The MSDTC whereabouts information's protocol count was invalid.</value>
-  </data>
-  <data name="WhereaboutsImplausibleHostNameByteCount" xml:space="preserve">
-    <value>The MSDTC whereabouts information's host name byte count was invalid.</value>
-  </data>
-  <data name="WhereaboutsInvalidHostName" xml:space="preserve">
-    <value>The MSDTC whereabouts information's host name was invalid.</value>
-  </data>
-  <data name="WhereaboutsNoHostName" xml:space="preserve">
-    <value>The MSDTC whereabouts information did not contain a host name.</value>
   </data>
   <data name="InvalidWsatProtocolVersion" xml:space="preserve">
     <value>The specified WSAT protocol version is invalid.</value>
@@ -6071,117 +5552,6 @@
   </data>
   <data name="TraceCodeChannelPreparedMessage" xml:space="preserve">
     <value>Prepared message for sending over a channel</value>
-  </data>
-  <data name="TraceCodeComIntegrationChannelCreated" xml:space="preserve">
-    <value>ComPlus:channel created.</value>
-  </data>
-  <data name="TraceCodeComIntegrationDispatchMethod" xml:space="preserve">
-    <value>ComPlus:Dispatch method details.</value>
-  </data>
-  <data name="TraceCodeComIntegrationDllHostInitializerAddingHost" xml:space="preserve">
-    <value>ComPlus:DllHost initializer:Adding host.</value>
-  </data>
-  <data name="TraceCodeComIntegrationDllHostInitializerStarted" xml:space="preserve">
-    <value>ComPlus:Started DllHost initializer.</value>
-  </data>
-  <data name="TraceCodeComIntegrationDllHostInitializerStarting" xml:space="preserve">
-    <value>ComPlus:Starting DllHost initializer.</value>
-  </data>
-  <data name="TraceCodeComIntegrationDllHostInitializerStopped" xml:space="preserve">
-    <value>ComPlus:Stopped DllHost initializer.</value>
-  </data>
-  <data name="TraceCodeComIntegrationDllHostInitializerStopping" xml:space="preserve">
-    <value>ComPlus:Stopping DllHost initializer.</value>
-  </data>
-  <data name="TraceCodeComIntegrationEnteringActivity" xml:space="preserve">
-    <value>ComPlus:Entering COM+ activity.</value>
-  </data>
-  <data name="TraceCodeComIntegrationExecutingCall" xml:space="preserve">
-    <value>ComPlus:Executing COM call.</value>
-  </data>
-  <data name="TraceCodeComIntegrationInstanceCreationRequest" xml:space="preserve">
-    <value>ComPlus:Received instance creation request.</value>
-  </data>
-  <data name="TraceCodeComIntegrationInstanceCreationSuccess" xml:space="preserve">
-    <value>ComPlus:Created instance.</value>
-  </data>
-  <data name="TraceCodeComIntegrationInstanceReleased" xml:space="preserve">
-    <value>ComPlus:Released instance.</value>
-  </data>
-  <data name="TraceCodeComIntegrationInvokedMethod" xml:space="preserve">
-    <value>ComPlus:Invoked method.</value>
-  </data>
-  <data name="TraceCodeComIntegrationInvokingMethod" xml:space="preserve">
-    <value>ComPlus:Invoking method.</value>
-  </data>
-  <data name="TraceCodeComIntegrationInvokingMethodContextTransaction" xml:space="preserve">
-    <value>Complus:Invoking method with transaction in COM+ context.</value>
-  </data>
-  <data name="TraceCodeComIntegrationInvokingMethodNewTransaction" xml:space="preserve">
-    <value>Complus:Invoking method with new incoming transaction.</value>
-  </data>
-  <data name="TraceCodeComIntegrationLeftActivity" xml:space="preserve">
-    <value>ComPlus:Left COM+ activity.</value>
-  </data>
-  <data name="TraceCodeComIntegrationMexChannelBuilderLoaded" xml:space="preserve">
-    <value>Complus:Mex channel loader loaded.</value>
-  </data>
-  <data name="TraceCodeComIntegrationMexMonikerMetadataExchangeComplete" xml:space="preserve">
-    <value>Complus:Metadata exchange completed successfully.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceHostCreatedServiceContract" xml:space="preserve">
-    <value>ComPlus:Created service contract.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceHostCreatedServiceEndpoint" xml:space="preserve">
-    <value>ComPlus:Created service endpoint.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceHostStartedService" xml:space="preserve">
-    <value>ComPlus:Started service.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceHostStartedServiceDetails" xml:space="preserve">
-    <value>ComPlus:Started service:details.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceHostStartingService" xml:space="preserve">
-    <value>ComPlus:Starting service.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceHostStoppedService" xml:space="preserve">
-    <value>ComPlus:Stopped service.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceHostStoppingService" xml:space="preserve">
-    <value>ComPlus:Stopping service.</value>
-  </data>
-  <data name="TraceCodeComIntegrationServiceMonikerParsed" xml:space="preserve">
-    <value>ComPlus:Service moniker parsed.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTLBImportConverterEvent" xml:space="preserve">
-    <value>ComPlus:Type library converter event.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTLBImportFinished" xml:space="preserve">
-    <value>ComPlus:Finished type library import.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTLBImportFromAssembly" xml:space="preserve">
-    <value>ComPlus:Type library import: using assembly.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTLBImportFromTypelib" xml:space="preserve">
-    <value>ComPlus:Type library import: using type library.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTLBImportStarting" xml:space="preserve">
-    <value>ComPlus:Starting type library import.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTxProxyTxAbortedByContext" xml:space="preserve">
-    <value>ComPlus:Transaction aborted by COM+ context.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTxProxyTxAbortedByTM" xml:space="preserve">
-    <value>ComPlus:Transaction aborted by Transaction Manager.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTxProxyTxCommitted" xml:space="preserve">
-    <value>ComPlus:Transaction committed.</value>
-  </data>
-  <data name="TraceCodeComIntegrationTypedChannelBuilderLoaded" xml:space="preserve">
-    <value>ComPlus:Typed channel builder loaded.</value>
-  </data>
-  <data name="TraceCodeComIntegrationWsdlChannelBuilderLoaded" xml:space="preserve">
-    <value>ComPlus:WSDL channel builder loaded.</value>
   </data>
   <data name="TraceCodeCommunicationObjectAborted" xml:space="preserve">
     <value>Aborted '{0}'.</value>
@@ -6444,96 +5814,6 @@
   <data name="TraceCodeMessageProcessingPaused" xml:space="preserve">
     <value>Switched threads while processing a message.</value>
   </data>
-  <data name="TraceCodeMsmqCannotPeekOnQueue" xml:space="preserve">
-    <value>MsmqActivation service cannot peek on the queue.</value>
-  </data>
-  <data name="TraceCodeMsmqCannotReadQueues" xml:space="preserve">
-    <value>MsmqActivation service cannot discover queues.</value>
-  </data>
-  <data name="TraceCodeMsmqDatagramReceived" xml:space="preserve">
-    <value>MSMQ datagram message received.</value>
-  </data>
-  <data name="TraceCodeMsmqDatagramSent" xml:space="preserve">
-    <value>MSMQ datagram message sent.</value>
-  </data>
-  <data name="TraceCodeMsmqDetected" xml:space="preserve">
-    <value>MSMQ detected successfully.</value>
-  </data>
-  <data name="TraceCodeMsmqEnteredBatch" xml:space="preserve">
-    <value>Entered batching mode.</value>
-  </data>
-  <data name="TraceCodeMsmqExpectedException" xml:space="preserve">
-    <value>Expected exception caught.</value>
-  </data>
-  <data name="TraceCodeMsmqFoundBaseAddress" xml:space="preserve">
-    <value>Hosting environment found the base address for the service.</value>
-  </data>
-  <data name="TraceCodeMsmqLeftBatch" xml:space="preserve">
-    <value>Left batching mode.</value>
-  </data>
-  <data name="TraceCodeMsmqMatchedApplicationFound" xml:space="preserve">
-    <value>MsmqActivation service found application matching queue.</value>
-  </data>
-  <data name="TraceCodeMsmqMessageLockedUnderTheTransaction" xml:space="preserve">
-    <value>Cannot move or delete message because it is still locked under the transaction.</value>
-  </data>
-  <data name="TraceCodeMsmqMessageDropped" xml:space="preserve">
-    <value>Message was dropped.</value>
-  </data>
-  <data name="TraceCodeMsmqMessageRejected" xml:space="preserve">
-    <value>Message was rejected.</value>
-  </data>
-  <data name="TraceCodeMsmqMoveOrDeleteAttemptFailed" xml:space="preserve">
-    <value>Cannot move or delete message.</value>
-  </data>
-  <data name="TraceCodeMsmqPoisonMessageMovedPoison" xml:space="preserve">
-    <value>Poison message moved to the poison subqueue.</value>
-  </data>
-  <data name="TraceCodeMsmqPoisonMessageMovedRetry" xml:space="preserve">
-    <value>Poison message moved to the retry subqueue.</value>
-  </data>
-  <data name="TraceCodeMsmqPoisonMessageRejected" xml:space="preserve">
-    <value>Poison message rejected.</value>
-  </data>
-  <data name="TraceCodeMsmqPoolFull" xml:space="preserve">
-    <value>Pool of the native MSMQ messages is full. This may affect performance.</value>
-  </data>
-  <data name="TraceCodeMsmqPotentiallyPoisonMessageDetected" xml:space="preserve">
-    <value>Transaction which received this message was aborted at least once.</value>
-  </data>
-  <data name="TraceCodeMsmqQueueClosed" xml:space="preserve">
-    <value>MSMQ queue closed.</value>
-  </data>
-  <data name="TraceCodeMsmqQueueOpened" xml:space="preserve">
-    <value>MSMQ queue opened.</value>
-  </data>
-  <data name="TraceCodeMsmqQueueTransactionalStatusUnknown" xml:space="preserve">
-    <value>Cannot detect if the queue is transactional.</value>
-  </data>
-  <data name="TraceCodeMsmqScanStarted" xml:space="preserve">
-    <value>MsmqActivation service started scan for queues.</value>
-  </data>
-  <data name="TraceCodeMsmqSessiongramReceived" xml:space="preserve">
-    <value>MSMQ transport session received.</value>
-  </data>
-  <data name="TraceCodeMsmqSessiongramSent" xml:space="preserve">
-    <value>MSMQ transport session sent.</value>
-  </data>
-  <data name="TraceCodeMsmqStartingApplication" xml:space="preserve">
-    <value>MSMQ Activation service started application.</value>
-  </data>
-  <data name="TraceCodeMsmqStartingService" xml:space="preserve">
-    <value>Hosting environment started service.</value>
-  </data>
-  <data name="TraceCodeMsmqUnexpectedAcknowledgment" xml:space="preserve">
-    <value>Unexpected acknowledgment value.</value>
-  </data>
-  <data name="TraceCodeNamedPipeChannelMessageReceiveFailed" xml:space="preserve">
-    <value>Failed to receive a message over a named pipe channel.</value>
-  </data>
-  <data name="TraceCodeNamedPipeChannelMessageReceived" xml:space="preserve">
-    <value>Received a message over a named pipe channel.</value>
-  </data>
   <data name="TraceCodeNegotiationAuthenticatorAttached" xml:space="preserve">
     <value>NegotiationTokenAuthenticator was attached.</value>
   </data>
@@ -6548,84 +5828,6 @@
   </data>
   <data name="TraceCodeOverridingDuplicateConfigurationKey" xml:space="preserve">
     <value>The configuration system has detected a duplicate key in a different configuration scope and is overriding with the more recent value.</value>
-  </data>
-  <data name="TraceCodePeerChannelMessageReceived" xml:space="preserve">
-    <value>A message was received by a peer channel.</value>
-  </data>
-  <data name="TraceCodePeerChannelMessageSent" xml:space="preserve">
-    <value>A message was sent on a peer channel.</value>
-  </data>
-  <data name="TraceCodePeerFloodedMessageNotMatched" xml:space="preserve">
-    <value>A PeerNode received a message that did not match any local channels.</value>
-  </data>
-  <data name="TraceCodePeerFloodedMessageNotPropagated" xml:space="preserve">
-    <value>A PeerNode received a flooded message that was not propagated further.</value>
-  </data>
-  <data name="TraceCodePeerFloodedMessageReceived" xml:space="preserve">
-    <value>A PeerNode received a flooded message.</value>
-  </data>
-  <data name="TraceCodePeerFlooderReceiveMessageQuotaExceeded" xml:space="preserve">
-    <value>Received message could not be forwarded to other neighbors since it exceeded the quota set for the peer node.</value>
-  </data>
-  <data name="TraceCodePeerNeighborCloseFailed" xml:space="preserve">
-    <value>A Peer Neighbor close has failed.</value>
-  </data>
-  <data name="TraceCodePeerNeighborClosingFailed" xml:space="preserve">
-    <value>A Peer Neighbor closing has failed.</value>
-  </data>
-  <data name="TraceCodePeerNeighborManagerOffline" xml:space="preserve">
-    <value>A Peer Neighbor Manager is offline.</value>
-  </data>
-  <data name="TraceCodePeerNeighborManagerOnline" xml:space="preserve">
-    <value>A Peer Neighbor Manager is online.</value>
-  </data>
-  <data name="TraceCodePeerNeighborMessageReceived" xml:space="preserve">
-    <value>A message was received by a Peer Neighbor.</value>
-  </data>
-  <data name="TraceCodePeerNeighborNotAccepted" xml:space="preserve">
-    <value>A Peer Neighbor was not accepted.</value>
-  </data>
-  <data name="TraceCodePeerNeighborNotFound" xml:space="preserve">
-    <value>A Peer Neighbor was not found.</value>
-  </data>
-  <data name="TraceCodePeerNeighborOpenFailed" xml:space="preserve">
-    <value>A Peer Neighbor open has failed.</value>
-  </data>
-  <data name="TraceCodePeerNeighborStateChangeFailed" xml:space="preserve">
-    <value>A Peer Neighbor state change has failed.</value>
-  </data>
-  <data name="TraceCodePeerNeighborStateChanged" xml:space="preserve">
-    <value>A Peer Neighbor state has changed.</value>
-  </data>
-  <data name="TraceCodePeerNodeAddressChanged" xml:space="preserve">
-    <value>A PeerNode address has changed.</value>
-  </data>
-  <data name="TraceCodePeerNodeAuthenticationFailure" xml:space="preserve">
-    <value>A neighbor connection could not be established due to insufficient or wrong credentials.</value>
-  </data>
-  <data name="TraceCodePeerNodeAuthenticationTimeout" xml:space="preserve">
-    <value>A neighbor security handshake as timed out.</value>
-  </data>
-  <data name="TraceCodePeerNodeClosed" xml:space="preserve">
-    <value>A PeerNode was closed.</value>
-  </data>
-  <data name="TraceCodePeerNodeClosing" xml:space="preserve">
-    <value>A PeerNode is closing.</value>
-  </data>
-  <data name="TraceCodePeerNodeOpenFailed" xml:space="preserve">
-    <value>Peer node open failed.</value>
-  </data>
-  <data name="TraceCodePeerNodeOpened" xml:space="preserve">
-    <value>A PeerNode was opened.</value>
-  </data>
-  <data name="TraceCodePeerNodeOpening" xml:space="preserve">
-    <value>A PeerNode is opening.</value>
-  </data>
-  <data name="TraceCodePeerReceiveMessageAuthenticationFailure" xml:space="preserve">
-    <value>Message source could not be authenticated.</value>
-  </data>
-  <data name="TraceCodePeerServiceOpened" xml:space="preserve">
-    <value>PeerService Opened and listening at '{0}'.</value>
   </data>
   <data name="TraceCodePerformanceCounterFailedToLoad" xml:space="preserve">
     <value>A performance counter failed to load. Some performance counters will not be available.</value>
@@ -6642,23 +5844,8 @@
   <data name="TraceCodePerformanceCountersFailedOnRelease" xml:space="preserve">
     <value>Unloading the performance counters failed.</value>
   </data>
-  <data name="TraceCodePnrpRegisteredAddresses" xml:space="preserve">
-    <value>Registered addresses in PNRP.</value>
-  </data>
-  <data name="TraceCodePnrpResolvedAddresses" xml:space="preserve">
-    <value>Resolved addresses in PNRP.</value>
-  </data>
-  <data name="TraceCodePnrpResolveException" xml:space="preserve">
-    <value>Unexpected Exception during PNRP resolve operation.</value>
-  </data>
-  <data name="TraceCodePnrpUnregisteredAddresses" xml:space="preserve">
-    <value>Unregistered addresses in PNRP.</value>
-  </data>
   <data name="TraceCodePrematureDatagramEof" xml:space="preserve">
     <value>A null Message (signalling end of channel) was received from a datagram channel, but the channel is still in the Opened state. This indicates a bug in the datagram channel, and the demuxer receive loop has been prematurely stalled. </value>
-  </data>
-  <data name="TraceCodePeerMaintainerActivity" xml:space="preserve">
-    <value>PeerMaintainer Activity.</value>
   </data>
   <data name="TraceCodeReliableChannelOpened" xml:space="preserve">
     <value>A reliable channel has been opened.</value>
@@ -6876,38 +6063,17 @@
   <data name="TraceCodeServiceHostCreation" xml:space="preserve">
     <value>Create ServiceHost.</value>
   </data>
-  <data name="TraceCodePortSharingClosed" xml:space="preserve">
-    <value>The TransportManager was successfully closed.</value>
-  </data>
-  <data name="TraceCodePortSharingDuplicatedPipe" xml:space="preserve">
-    <value>A named pipe was successfully duplicated.</value>
-  </data>
-  <data name="TraceCodePortSharingDuplicatedSocket" xml:space="preserve">
-    <value>A socket was successfully duplicated.</value>
-  </data>
-  <data name="TraceCodePortSharingDupHandleGranted" xml:space="preserve">
-    <value>The PROCESS_DUP_HANDLE access right has been granted to the {0} service's account with SID '{1}'.</value>
-  </data>
-  <data name="TraceCodePortSharingListening" xml:space="preserve">
-    <value>The TransportManager is now successfully listening.</value>
-  </data>
   <data name="TraceCodeSkipBehavior" xml:space="preserve">
     <value>Behavior type is not of expected type</value>
   </data>
   <data name="TraceCodeFailedAcceptFromPool" xml:space="preserve">
     <value>An attempt to reuse a pooled connection failed. Another attempt will be made with {0} remaining in the overall timeout.</value>
   </data>
-  <data name="TraceCodeFailedPipeConnect" xml:space="preserve">
-    <value>An attempt to connect to the named pipe endpoint at '{1}' failed. Another attempt will be made with {0} remaining in the overall timeout.</value>
-  </data>
   <data name="TraceCodeSystemTimeResolution" xml:space="preserve">
     <value>The operating system's timer resolution was detected as {0} ticks, which is about {1} milliseconds.</value>
   </data>
   <data name="TraceCodeRequestContextAbort" xml:space="preserve">
     <value>RequestContext aborted</value>
-  </data>
-  <data name="TraceCodePipeConnectionAbort" xml:space="preserve">
-    <value>PipeConnection aborted</value>
   </data>
   <data name="TraceCodeSharedManagerServiceEndpointNotExist" xml:space="preserve">
     <value>The shared memory for the endpoint of the service '{0}' does not exist. The service may not be started.</value>
