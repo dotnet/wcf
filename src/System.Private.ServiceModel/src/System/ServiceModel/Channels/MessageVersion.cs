@@ -15,6 +15,7 @@ namespace System.ServiceModel.Channels
         private static MessageVersion s_soap12;
         private static MessageVersion s_soap11Addressing10;
         private static MessageVersion s_soap12Addressing10;
+        private const string MessageVersionToStringFormat = "{0} {1}";
 
         static MessageVersion()
         {
@@ -154,7 +155,7 @@ namespace System.ServiceModel.Channels
 
         public override string ToString()
         {
-            return SR.Format(SR.MessageVersionToStringFormat, _envelope.ToString(), _addressing.ToString());
+            return string.Format(MessageVersionToStringFormat, _envelope.ToString(), _addressing.ToString());
         }
 
         internal bool IsMatch(MessageVersion messageVersion)
