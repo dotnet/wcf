@@ -35,12 +35,14 @@ namespace Bridge
         protected async override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Trace.WriteLine(String.Format("Bridge received {0} : {1} at {2}", request.Method, request.RequestUri, DateTime.Now), this.GetType().Name);            
+            Trace.WriteLine(String.Format("Bridge received {0} : {1} at {2:T}", request.Method, request.RequestUri, DateTime.Now), 
+                            this.GetType().Name);            
             using (_timeoutManager.Start())
             {
                 // Call the inner handler.
                 var response = await base.SendAsync(request, cancellationToken);
-                Trace.WriteLine(String.Format("Bridge completed {0} : {1} at {2}", request.Method, request.RequestUri, DateTime.Now), this.GetType().Name);
+                Trace.WriteLine(String.Format("Bridge completed {0} : {1} at {2:T}", request.Method, request.RequestUri, DateTime.Now), 
+                                this.GetType().Name);
                 return response;
             }
         }
