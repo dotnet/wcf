@@ -35,7 +35,7 @@ namespace Bridge
 
             try
             {
-                Debug.WriteLine(String.Format("Received request to create resource: {0}", resource));
+                Trace.WriteLine(String.Format("Received request to create resource: {0}", resource), this.GetType().Name);
 
                 var result = ResourceInvoker.DynamicInvokePut(resource);
 
@@ -45,7 +45,7 @@ namespace Bridge
                     details = result.ToString()
                 };
 
-                Debug.WriteLine(String.Format("Resource creation response is: {0}", resourceResponse.ToString()));
+                Trace.WriteLine(String.Format("Resource creation response is: {0}", resourceResponse.ToString()), this.GetType().Name);
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
@@ -55,7 +55,8 @@ namespace Bridge
             }
             catch (Exception exception)
             {
-                Debug.WriteLine("Exception when trying to create resource : " + resource.name + " : " + exception.Message);
+                Trace.WriteLine(String.Format("Exception when trying to create resource {0}{1}:{2}",
+                                                resource.name, Environment.NewLine, exception.ToString()), this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
                 {
                     id = correlationId,
@@ -77,7 +78,7 @@ namespace Bridge
 
             try
             {
-                Debug.WriteLine("Received request to get resource " + name);
+                Trace.WriteLine(String.Format("Received request to get resource: {0}", name), this.GetType().Name);
 
                 var result = ResourceInvoker.DynamicInvokeGet(name);
 
@@ -85,7 +86,8 @@ namespace Bridge
             }
             catch (Exception exception)
             {
-                Debug.WriteLine("Exception when trying to get resource : " + name + " : " + exception.Message);
+                Trace.WriteLine(String.Format("Exception when trying to get resource {0}{1}:{2}",
+                                                name, Environment.NewLine, exception.ToString()), this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
                 {
                     id = Guid.NewGuid(),

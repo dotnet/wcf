@@ -16,23 +16,27 @@ namespace Bridge
                 throw new ArgumentNullException("resource.name");
             }
 
-            AppDomain appDomain;
-            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
+            // Disallow concurrent resource instantation or configuration changes
+            lock (ConfigController.BridgeLock)
             {
-                throw new ArgumentException("Resource not found");
+                AppDomain appDomain;
+                if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
+                {
+                    throw new ArgumentException("Resource not found");
+                }
+
+                Type loaderType = typeof(AssemblyLoader);
+                var loader =
+                    (AssemblyLoader)appDomain.CreateInstanceFromAndUnwrap(
+                        loaderType.Assembly.Location,
+                        loaderType.FullName);
+
+                ResourceRequestContext context = new ResourceRequestContext
+                {
+                    BridgeConfiguration = ConfigController.BridgeConfiguration
+                };
+                return loader.IResourceCall(resource.name, "Put", new object[] { context });
             }
-
-            Type loaderType = typeof(AssemblyLoader);
-            var loader =
-                (AssemblyLoader)appDomain.CreateInstanceFromAndUnwrap(
-                    loaderType.Assembly.Location,
-                    loaderType.FullName);
-
-            ResourceRequestContext context = new ResourceRequestContext
-            {
-                BridgeConfiguration = ConfigController.BridgeConfiguration
-            };
-            return loader.IResourceCall(resource.name, "Put", new object[] { context });
         }
 
         public static object DynamicInvokeGet(string name)
@@ -42,19 +46,23 @@ namespace Bridge
                 throw new ArgumentNullException("name");
             }
 
-            AppDomain appDomain;
-            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
+            // Disallow concurrent resource instantation or configuration changes
+            lock (ConfigController.BridgeLock)
             {
-                throw new ArgumentException("Resource not found");
+                AppDomain appDomain;
+                if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
+                {
+                    throw new ArgumentException("Resource not found");
+                }
+
+                Type loaderType = typeof(AssemblyLoader);
+                var loader =
+                    (AssemblyLoader)appDomain.CreateInstanceFromAndUnwrap(
+                        loaderType.Assembly.Location,
+                        loaderType.FullName);
+
+                return loader.IResourceCall(name, "Get", null);
             }
-
-            Type loaderType = typeof(AssemblyLoader);
-            var loader =
-                (AssemblyLoader)appDomain.CreateInstanceFromAndUnwrap(
-                    loaderType.Assembly.Location,
-                    loaderType.FullName);
-
-            return loader.IResourceCall(name, "Get", null);
         }
     }
 }
