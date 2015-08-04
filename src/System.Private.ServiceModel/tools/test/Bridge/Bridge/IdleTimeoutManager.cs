@@ -20,7 +20,7 @@ namespace Bridge
             _timeoutManager = new IdleTimeoutManager(idleTimeout); ;
             _timeoutManager.OnTimeOut += (s, e) =>
             {
-                Trace.WriteLine(String.Format("Timed out as there were no messages to the bridge for {0} seconds", (int)e.TotalSeconds),
+                Trace.WriteLine(String.Format("{0:T} - Timed out as there were no messages to the bridge for {1} seconds", DateTime.Now, (int)e.TotalSeconds),
                                 this.GetType().Name);
                 Environment.Exit(-1);
             };
@@ -35,12 +35,14 @@ namespace Bridge
         protected async override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Debug.WriteLine("DEBUG: Processing : " + request.RequestUri);            
+            Trace.WriteLine(String.Format("{0:T} - Bridge received {1} {2}", DateTime.Now, request.Method, request.RequestUri), 
+                            this.GetType().Name);            
             using (_timeoutManager.Start())
             {
                 // Call the inner handler.
                 var response = await base.SendAsync(request, cancellationToken);
-                Debug.WriteLine("DEBUG: Completed  : " + request.RequestUri);
+                Trace.WriteLine(String.Format("{0:T} - Bridge completed {1} {2}", DateTime.Now, request.Method, request.RequestUri),
+                                this.GetType().Name);
                 return response;
             }
         }

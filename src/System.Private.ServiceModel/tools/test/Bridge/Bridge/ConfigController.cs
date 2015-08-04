@@ -27,12 +27,18 @@ namespace Bridge
 
         static ConfigController()
         {
+            BridgeLock = new object();
+
             // Register to manage AppDomains in response to changes to the resource folder
             ResourceFolderChanged += (object s, ChangedEventArgs<string> args) =>
             {
                 CurrentAppDomainName = AppDomainManager.OnResourceFolderChanged(args.OldValue, args.NewValue);
             };
         }
+
+        // We lock the Bridge when necessary to prevent configuration
+        // changes or resource instantiation concurrent execution.
+        public static object BridgeLock { get; private set; }
 
         public static BridgeConfiguration BridgeConfiguration
         {
@@ -47,68 +53,72 @@ namespace Bridge
         }
         public HttpResponseMessage POST(HttpRequestMessage request)
         {
-            try
+            // A configuration change can have wide impact, so we don't allow concurrent use
+            lock(BridgeLock)
             {
-                // Handle deserialization explicitly to bypass MediaTypeFormatter use
-                string nameValuePairs = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                Dictionary<string, string> configInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
-
-                Trace.WriteLine(String.Format("POST config raw content:{0}{1}",
-                                              Environment.NewLine, nameValuePairs),
-                                typeof(ConfigController).Name);
-
-                // Create a new configuration combining the existing one with any provided properties.
-                BridgeConfiguration newConfiguration = new BridgeConfiguration(BridgeConfiguration, configInfo);
-                Trace.WriteLine(String.Format("POST new config:{0}{1}",
-                                              Environment.NewLine, newConfiguration),
-                                typeof(ConfigController).Name);
-
-                // Take the new configuration and notify listeners of the change.
-                BridgeConfiguration oldConfiguration = BridgeConfiguration;
-                BridgeConfiguration = newConfiguration;
-
-                // Notify of change of resource folder
-                bool resourceFolderChanged = !String.Equals(oldConfiguration.BridgeResourceFolder, newConfiguration.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase);
-                if (ResourceFolderChanged != null && resourceFolderChanged) 
+                try
                 {
-                    ResourceFolderChanged(this, new ChangedEventArgs<string>(
-                                                    oldConfiguration.BridgeResourceFolder, 
-                                                    newConfiguration.BridgeResourceFolder));
-                }
+                    // Handle deserialization explicitly to bypass MediaTypeFormatter use
+                    string nameValuePairs = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    Dictionary<string, string> configInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
 
-                // Notify of change of the idle timeout
-                if (IdleTimeoutChanged != null &&
-                    oldConfiguration.BridgeMaxIdleTimeSpan != newConfiguration.BridgeMaxIdleTimeSpan)
+                    Trace.WriteLine(String.Format("{0:T} -- POST config received raw content:{1}{2}",
+                                                  DateTime.Now, Environment.NewLine, nameValuePairs),
+                                    typeof(ConfigController).Name);
+
+                    // Create a new configuration combining the existing one with any provided properties.
+                    BridgeConfiguration newConfiguration = new BridgeConfiguration(BridgeConfiguration, configInfo);
+                    Trace.WriteLine(String.Format("{0:T} -- applying new config:{0}{1}",
+                                                  DateTime.Now, Environment.NewLine, newConfiguration),
+                                    typeof(ConfigController).Name);
+
+                    // Take the new configuration and notify listeners of the change.
+                    BridgeConfiguration oldConfiguration = BridgeConfiguration;
+                    BridgeConfiguration = newConfiguration;
+
+                    // Notify of change of resource folder
+                    bool resourceFolderChanged = !String.Equals(oldConfiguration.BridgeResourceFolder, newConfiguration.BridgeResourceFolder, StringComparison.OrdinalIgnoreCase);
+                    if (ResourceFolderChanged != null && resourceFolderChanged)
+                    {
+                        ResourceFolderChanged(this, new ChangedEventArgs<string>(
+                                                        oldConfiguration.BridgeResourceFolder,
+                                                        newConfiguration.BridgeResourceFolder));
+                    }
+
+                    // Notify of change of the idle timeout
+                    if (IdleTimeoutChanged != null &&
+                        oldConfiguration.BridgeMaxIdleTimeSpan != newConfiguration.BridgeMaxIdleTimeSpan)
+                    {
+                        IdleTimeoutChanged(this, new ChangedEventArgs<TimeSpan>(
+                                                    oldConfiguration.BridgeMaxIdleTimeSpan,
+                                                    newConfiguration.BridgeMaxIdleTimeSpan));
+                    }
+
+                    // When the resource folder changes, the response is an array of
+                    // resource types.  Any other changes returns an empty string.
+                    string configResponse = resourceFolderChanged
+                                                ? PrepareConfigResponse(TypeCache.Cache[CurrentAppDomainName])
+                                                : String.Empty;
+
+                    Trace.WriteLine(String.Format("{0:T} - POST config returning raw content:{1}{2}",
+                                                  DateTime.Now, Environment.NewLine, configResponse),
+                                    typeof(ConfigController).Name);
+
+                    // Directly return a json string to avoid use of MediaTypeFormatters
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Content = new StringContent(configResponse);
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+                    return response;
+                }
+                catch (Exception ex)
                 {
-                    IdleTimeoutChanged(this, new ChangedEventArgs<TimeSpan>(
-                                                oldConfiguration.BridgeMaxIdleTimeSpan,
-                                                newConfiguration.BridgeMaxIdleTimeSpan));
+                    var exceptionResponse = ex.Message;
+                    Trace.WriteLine(String.Format("{0:T} - POST config exception:{1}{2}",
+                                                    DateTime.Now, Environment.NewLine, ex),
+                                    typeof(ConfigController).Name);
+
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
                 }
-
-                // When the resource folder changes, the response is an array of
-                // resource types.  Any other changes returns an empty string.
-                string configResponse = resourceFolderChanged
-                                            ? PrepareConfigResponse(TypeCache.Cache[CurrentAppDomainName])
-                                            : String.Empty;
-
-                Trace.WriteLine(String.Format("POST config returning raw content:{0}{1}",
-                                              Environment.NewLine, configResponse),
-                                typeof(ConfigController).Name);
-
-                // Directly return a json string to avoid use of MediaTypeFormatters
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(configResponse);
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                var exceptionResponse = ex.Message;
-                Trace.WriteLine(String.Format("POST config exception:{0}{1}", 
-                                                Environment.NewLine, ex),
-                                typeof(ConfigController).Name);
-
-                return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
             }
         }
 
