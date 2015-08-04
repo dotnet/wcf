@@ -60,7 +60,10 @@ namespace System.Runtime
                 else if (antecedent.IsCanceled) tcsObj.TrySetCanceled();
                 else tcsObj.TrySetResult(antecedent.Result);
 
-                if (callbackObj != null) callback(tcsObj.Task);
+                if (callbackObj != null)
+                {
+                    callbackObj(tcsObj.Task);
+                }
             }, continuationState, CancellationToken.None, TaskContinuationOptions.HideScheduler, TaskScheduler.Default);
             return tcs.Task;
         }
@@ -113,7 +116,7 @@ namespace System.Runtime
                     tcsObj.TrySetResult(null);
                 }
 
-                if (callback != null)
+                if (callbackObj != null)
                 {
                     callbackObj(tcsObj.Task);
                 }
