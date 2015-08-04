@@ -2,65 +2,31 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
 
 namespace System.ServiceModel
 {
     public abstract class DuplexClientBase<TChannel> : ClientBase<TChannel>
         where TChannel : class
     {
-        // IMPORTANT: any changes to the set of protected .ctors of this class need to be reflected
-        // in ServiceContractGenerator.cs as well.
-
-        protected DuplexClientBase(object callbackInstance)
-            : this(new InstanceContext(callbackInstance))
-        {
-        }
-        protected DuplexClientBase(object callbackInstance, string endpointConfigurationName)
-            : this(new InstanceContext(callbackInstance), endpointConfigurationName)
-        {
-        }
-        protected DuplexClientBase(object callbackInstance, string endpointConfigurationName, string remoteAddress)
-            : this(new InstanceContext(callbackInstance), endpointConfigurationName, remoteAddress)
-        {
-        }
-        protected DuplexClientBase(object callbackInstance, string endpointConfigurationName, EndpointAddress remoteAddress)
-            : this(new InstanceContext(callbackInstance), endpointConfigurationName, remoteAddress)
-        {
-        }
-        protected DuplexClientBase(object callbackInstance, Binding binding, EndpointAddress remoteAddress)
-            : this(new InstanceContext(callbackInstance), binding, remoteAddress)
-        {
-        }
-
-        protected DuplexClientBase(object callbackInstance, ServiceEndpoint endpoint)
-            : this(new InstanceContext(callbackInstance), endpoint)
-        {
-        }
 
         protected DuplexClientBase(InstanceContext callbackInstance)
-            : base(callbackInstance)
         {
+            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
         }
         protected DuplexClientBase(InstanceContext callbackInstance, string endpointConfigurationName)
-            : base(callbackInstance, endpointConfigurationName)
         {
+            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
         }
         protected DuplexClientBase(InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress)
-            : base(callbackInstance, endpointConfigurationName, remoteAddress)
         {
+            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
         }
         protected DuplexClientBase(InstanceContext callbackInstance, string endpointConfigurationName, EndpointAddress remoteAddress)
-            : base(callbackInstance, endpointConfigurationName, remoteAddress)
         {
+            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
         }
         protected DuplexClientBase(InstanceContext callbackInstance, Binding binding, EndpointAddress remoteAddress)
             : base(callbackInstance, binding, remoteAddress)
-        {
-        }
-
-        protected DuplexClientBase(InstanceContext callbackInstance, ServiceEndpoint endpoint)
-            : base(callbackInstance, endpoint)
         {
         }
 
