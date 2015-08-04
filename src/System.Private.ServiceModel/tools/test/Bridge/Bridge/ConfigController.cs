@@ -62,14 +62,14 @@ namespace Bridge
                     string nameValuePairs = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     Dictionary<string, string> configInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
 
-                    Trace.WriteLine(String.Format("POST config raw content:{0}{1}",
-                                                  Environment.NewLine, nameValuePairs),
+                    Trace.WriteLine(String.Format("{0:T} -- POST config received raw content:{1}{2}",
+                                                  DateTime.Now, Environment.NewLine, nameValuePairs),
                                     typeof(ConfigController).Name);
 
                     // Create a new configuration combining the existing one with any provided properties.
                     BridgeConfiguration newConfiguration = new BridgeConfiguration(BridgeConfiguration, configInfo);
-                    Trace.WriteLine(String.Format("POST new config:{0}{1}",
-                                                  Environment.NewLine, newConfiguration),
+                    Trace.WriteLine(String.Format("{0:T} -- applying new config:{0}{1}",
+                                                  DateTime.Now, Environment.NewLine, newConfiguration),
                                     typeof(ConfigController).Name);
 
                     // Take the new configuration and notify listeners of the change.
@@ -100,8 +100,8 @@ namespace Bridge
                                                 ? PrepareConfigResponse(TypeCache.Cache[CurrentAppDomainName])
                                                 : String.Empty;
 
-                    Trace.WriteLine(String.Format("POST config returning raw content:{0}{1}",
-                                                  Environment.NewLine, configResponse),
+                    Trace.WriteLine(String.Format("{0:T} - POST config returning raw content:{1}{2}",
+                                                  DateTime.Now, Environment.NewLine, configResponse),
                                     typeof(ConfigController).Name);
 
                     // Directly return a json string to avoid use of MediaTypeFormatters
@@ -113,8 +113,8 @@ namespace Bridge
                 catch (Exception ex)
                 {
                     var exceptionResponse = ex.Message;
-                    Trace.WriteLine(String.Format("POST config exception:{0}{1}",
-                                                    Environment.NewLine, ex),
+                    Trace.WriteLine(String.Format("{0:T} - POST config exception:{1}{2}",
+                                                    DateTime.Now, Environment.NewLine, ex),
                                     typeof(ConfigController).Name);
 
                     return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);

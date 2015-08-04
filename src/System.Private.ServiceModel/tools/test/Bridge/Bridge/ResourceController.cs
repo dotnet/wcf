@@ -25,9 +25,16 @@ namespace Bridge
             string resourceName = null;
             resourceInfo.TryGetValue("name", out resourceName);
             resource resource = resourceName == null ? null : new resource { name = resourceName };
-            
-            if (resource == null)
+
+            Trace.WriteLine(String.Format("{0:T} - Received PUT request for resource {1}", 
+                                          DateTime.Now, String.IsNullOrWhiteSpace(resourceName) ? "null" : resourceName),
+                            this.GetType().Name);
+
+            if (String.IsNullOrWhiteSpace(resourceName))
             {
+                Trace.WriteLine(String.Format("{0:T} - PUT response is BadRequest due to missing name", DateTime.Now),
+                                this.GetType().Name);
+
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "resource data { name:'...' } not specified.");
             }
 
@@ -35,7 +42,7 @@ namespace Bridge
 
             try
             {
-                Trace.WriteLine(String.Format("Received request to create resource: {0}", resource), this.GetType().Name);
+
 
                 var result = ResourceInvoker.DynamicInvokePut(resource);
 
@@ -45,7 +52,9 @@ namespace Bridge
                     details = result.ToString()
                 };
 
-                Trace.WriteLine(String.Format("Resource creation response is: {0}", resourceResponse.ToString()), this.GetType().Name);
+                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is:{2}{3}", 
+                                              DateTime.Now, resourceName, Environment.NewLine, resourceResponse.ToString()), 
+                                this.GetType().Name);
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
@@ -55,8 +64,9 @@ namespace Bridge
             }
             catch (Exception exception)
             {
-                Trace.WriteLine(String.Format("Exception when trying to create resource {0}{1}:{2}",
-                                                resource.name, Environment.NewLine, exception.ToString()), this.GetType().Name);
+                Trace.WriteLine(String.Format("{0:T} - Exception executing PUT for resource {1}{2}:{3}",
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
+                                this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
                 {
                     id = correlationId,
@@ -71,23 +81,34 @@ namespace Bridge
         /// <param name="name">name of the resource</param>
         public HttpResponseMessage Get(string name)
         {
+            Trace.WriteLine(String.Format("{0:T} - Received GET request for resource {1}", 
+                                          DateTime.Now, String.IsNullOrWhiteSpace(name) ? "null" : name),
+                            this.GetType().Name);
+
             if (string.IsNullOrWhiteSpace(name))
             {
+                Trace.WriteLine(String.Format("{0:T} - GET response is BadRequest due to missing name", DateTime.Now),
+                                this.GetType().Name);
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "name not specified.");
             }
 
             try
             {
-                Trace.WriteLine(String.Format("Received request to get resource: {0}", name), this.GetType().Name);
+
 
                 var result = ResourceInvoker.DynamicInvokeGet(name);
+
+                Trace.WriteLine(String.Format("{0:T} - GET response for resource {1} is:{2}{3}", 
+                                              DateTime.Now, name, Environment.NewLine, result),
+                                this.GetType().Name);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception exception)
             {
-                Trace.WriteLine(String.Format("Exception when trying to get resource {0}{1}:{2}",
-                                                name, Environment.NewLine, exception.ToString()), this.GetType().Name);
+                Trace.WriteLine(String.Format("{0:T} - Exception executing GET for resource {1}{2}:{3}",
+                                                DateTime.Now, name, Environment.NewLine, exception.ToString()), 
+                                this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
                 {
                     id = Guid.NewGuid(),

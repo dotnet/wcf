@@ -15,7 +15,8 @@ namespace Bridge
         public static string OnResourceFolderChanged(string oldFolder, string newFolder)
         {
             var newPath = Path.GetFullPath(newFolder);
-            Trace.WriteLine(String.Format("Adding assemblies from the resource folder {0}", newPath), typeof(AppDomainManager).Name);
+            Trace.WriteLine(String.Format("{0:T} Adding assemblies from the resource folder {1}", DateTime.Now, newPath), 
+                            typeof(AppDomainManager).Name);
             return CreateAppDomain(newPath);
         }
 
