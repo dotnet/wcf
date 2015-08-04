@@ -73,6 +73,7 @@
     <Compile Include="TestResources\TcpDefaultResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityTextResource.cs" />
+    <Compile Include="TestResources\TcpVerifyDNSResource.cs" />
     <Compile Include="TestResources\HttpsSoap12Resource.cs" />
     <Compile Include="TestResources\HttpSoap12Resource.cs" />
     <Compile Include="TestResources\HttpsSoap11Resource.cs" />

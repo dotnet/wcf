@@ -20,6 +20,7 @@
         <Compile Include="Https\ClientCredentialTypeTests.cs" />
         <Compile Include="Https\HttpsTests.cs" />
         <Compile Include="Tcp\ClientCredentialTypeTests.cs" />
+        <Compile Include="Tcp\IdentityTests.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="project.json" />
