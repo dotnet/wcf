@@ -15,6 +15,7 @@ namespace WcfService.TestResources
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
         private string _hostName = "localhost";
+        protected string certThumbprint = "1d 85 a3 f6 cd 2c 02 2c 5c a5 4e 5c b2 00 a4 7f 89 ba 0d 3d";
 
         #region Host Listen Uri components
 
@@ -58,6 +59,7 @@ namespace WcfService.TestResources
                             GetBinding(),
                             BuildUri());
                         ModifyBehaviors(host.Description);
+                        ModifyHost(host);
                         host.Open();
                         s_currentHosts.Add(Address, host);
                     }
@@ -79,6 +81,10 @@ namespace WcfService.TestResources
         }
 
         protected abstract Binding GetBinding();
+
+        protected virtual void ModifyHost(ServiceHost serviceHost)
+        {
+        }
 
         private void ModifyBehaviors(ServiceDescription desc)
         {
