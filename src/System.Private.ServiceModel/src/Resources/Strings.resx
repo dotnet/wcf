@@ -732,9 +732,6 @@
   <data name="CannotPerformImpersonationOnUsernameToken" xml:space="preserve">
     <value>Impersonation using the client token is not possible. The binding ('{0}', '{1}') for contract ('{2}', '{3}') uses the Username Security Token for client authentication with a Membership Provider registered. Use a different type of security token for the client.</value>
   </data>
-  <data name="SecureConversationRequiredByReliableSession" xml:space="preserve">
-    <value>Cannot establish a reliable session without secure conversation. Enable secure conversation.</value>
-  </data>
   <data name="RevertImpersonationFailure" xml:space="preserve">
     <value>Failed to revert impersonation. {0}</value>
   </data>
@@ -857,12 +854,6 @@
   </data>
   <data name="SecurityBindingElementCannotBeExpressedInConfig" xml:space="preserve">
     <value>A security policy was imported for the endpoint. The security policy contains requirements that cannot be represented in a Windows Communication Foundation configuration. Look for a comment about the SecurityBindingElement parameters that are required in the configuration file that was generated. Create the correct binding element with code. The binding configuration that is in the configuration file is not secure.</value>
-  </data>
-  <data name="ConfigurationSchemaInsuffientForSecurityBindingElementInstance" xml:space="preserve">
-    <value>The configuration schema is insufficient to describe the non-standard configuration of the following security binding element: </value>
-  </data>
-  <data name="ConfigurationSchemaContainsX509IssuerSerialReference" xml:space="preserve">
-    <value>The wsdl schema that was used to create this configuration file contained a 'RequireIssuerSerialReference' assertion for a X509Token.  This can not be represented in configuration, you will need to programatically adjust the appropriate X509SecurityTokenParameters.X509KeyIdentifierClauseType to X509KeyIdentifierClauseType.IssuerSerial.  The default of X509KeyIdentifierClauseType.Thumbprint will be used, which may cause interop issues.</value>
   </data>
   <data name="SecurityProtocolCannotDoReplayDetection" xml:space="preserve">
     <value>The security protocol '{0}' cannot do replay detection.</value>
@@ -2238,9 +2229,6 @@
   <data name="UnableToCreateTokenReference" xml:space="preserve">
     <value>Unable to create token reference.</value>
   </data>
-  <data name="ConfigNull" xml:space="preserve">
-    <value>null</value>
-  </data>
   <data name="NonceLengthTooShort" xml:space="preserve">
     <value>The specified nonce is too short. The minimum required nonce length is 4 bytes.</value>
   </data>
@@ -2775,26 +2763,11 @@
   <data name="AssertionNotSupported" xml:space="preserve">
     <value>The {0}:{1} assertion is not supported.</value>
   </data>
-  <data name="CloseOutputSessionErrorReason" xml:space="preserve">
-    <value>An unexpected error occurred while attempting to close the output half of the duplex reliable session.</value>
-  </data>
-  <data name="ConflictingAddress" xml:space="preserve">
-    <value>The remote endpoint sent conflicting requests to create a reliable session. The conflicting requests have inconsistent filter criteria such as address or action. The reliable session has been faulted.</value>
-  </data>
   <data name="ConflictingOffer" xml:space="preserve">
     <value>The remote endpoint sent conflicting requests to create a reliable session. The remote endpoint requested both a one way and a two way session. The reliable session has been faulted.</value>
   </data>
   <data name="CouldNotParseWithAction" xml:space="preserve">
     <value>A message with action {0} could not be parsed.</value>
-  </data>
-  <data name="CSRefused" xml:space="preserve">
-    <value>The request to create a reliable session has been refused by the RM Destination. {0} The channel could not be opened.</value>
-  </data>
-  <data name="CSRefusedAcksToMustEqualEndpoint" xml:space="preserve">
-    <value>The endpoint processing requests to create a reliable session only supports sessions in which the AcksTo Uri and the Endpoint Uri are the same.</value>
-  </data>
-  <data name="CSRefusedAcksToMustEqualReplyTo" xml:space="preserve">
-    <value>The endpoint processing requests to create a reliable session only supports sessions in which the AcksTo Uri and the ReplyTo Uri are the same.</value>
   </data>
   <data name="CSRefusedDuplexNoOffer" xml:space="preserve">
     <value>The endpoint at {0} processes duplex sessions. The create sequence request must contain an offer for a return sequence. This is likely caused by a binding mismatch.</value>
@@ -2802,23 +2775,8 @@
   <data name="CSRefusedInputOffer" xml:space="preserve">
     <value>The endpoint at {0} processes input sessions. The create sequence request must not contain an offer for a return sequence. This is likely caused by a binding mismatch.</value>
   </data>
-  <data name="CSRefusedInvalidIncompleteSequenceBehavior" xml:space="preserve">
-    <value>The request to create a reliable session contains an invalid wsrm:IncompleteSequenceBehavior value. This is a WS-ReliableMessaging protocol violation.</value>
-  </data>
-  <data name="CSRefusedNoSTRWSSecurity" xml:space="preserve">
-    <value>The request to create a reliable session contains the wsse:SecurityTokenReference but does not carry a wsrm:UsesSequenceSTR header. This is a WS-ReliableMessaging protocol violation. The session could not be created.</value>
-  </data>
   <data name="CSRefusedReplyNoOffer" xml:space="preserve">
     <value>The endpoint at {0} processes reply sessions. The create sequence request must contain an offer for a return sequence. This is likely caused by a binding mismatch.</value>
-  </data>
-  <data name="CSRefusedRequiredSecurityElementMissing" xml:space="preserve">
-    <value>The RM Destination requires the WS-SecureConversation protocol in the binding. This is likely caused by a binding mismatch.</value>
-  </data>
-  <data name="CSRefusedSSLNotSupported" xml:space="preserve">
-    <value>The endpoint processing requests to create a reliable session does not support sessions that use SSL. This is likely caused by a binding mismatch. The session could not be created.</value>
-  </data>
-  <data name="CSRefusedSTRNoWSSecurity" xml:space="preserve">
-    <value>The request to create a reliable session carries a wsrm:UsesSequenceSTR header, but does not contain the wsse:SecurityTokenReference. This is a WS-ReliableMessaging protocol violation. The session could not be created.</value>
   </data>
   <data name="CSRefusedUnexpectedElementAtEndOfCSMessage" xml:space="preserve">
     <value>The message is not a valid SOAP message. The body contains more than 1 root element.</value>
@@ -2829,17 +2787,8 @@
   <data name="CSResponseOfferRejectedReason" xml:space="preserve">
     <value>The client requested creation of a two way session. A one way session was created. The session cannot continue without as a one way session. This is likely caused by a binding mismatch.</value>
   </data>
-  <data name="CSResponseWithInvalidIncompleteSequenceBehavior" xml:space="preserve">
-    <value>The response to the request to create a reliable session contains an invalid wsrm:IncompleteSequenceBehavior value. This is a WS-ReliableMessaging protocol violation.</value>
-  </data>
-  <data name="CSResponseWithOffer" xml:space="preserve">
-    <value>The remote endpoint replied to a request for a one way session with an offer for a two way session. This is a WS-ReliableMessaging protocol violation. The channel could not be opened.</value>
-  </data>
   <data name="CSResponseWithOfferReason" xml:space="preserve">
     <value>A return sequence was not offered by the create sequence request. The create sequence response cannot accept a return sequence.</value>
-  </data>
-  <data name="CSResponseWithoutOffer" xml:space="preserve">
-    <value>The remote endpoint replied to a request for a two way session with an offer for a one way session. This is a WS-ReliableMessaging protocol violation. The channel could not be opened.</value>
   </data>
   <data name="CSResponseWithoutOfferReason" xml:space="preserve">
     <value>A return sequence was offered by the create sequence request but the create sequence response did not accept this sequence.</value>
@@ -2850,15 +2799,6 @@
   <data name="DeliveryAssuranceRequired" xml:space="preserve">
     <value>The WS-RM policy under the namespace {0} requires the wsrmp:ExactlyOnce, wsrmp:AtLeastOnce, or wsrmp:AtMostOnce assertion. The {1} element under the {2} namespace was found.</value>
   </data>
-  <data name="EarlyRequestTerminateSequence" xml:space="preserve">
-    <value>The remote endpoint sent a TerminateSequence protocol message before fully acknowledging all messages in the reply sequence. This is a violation of the reliable request reply protocol. The reliable session was faulted.</value>
-  </data>
-  <data name="EarlySecurityClose" xml:space="preserve">
-    <value>The remote endpoint has closed the underlying secure session before the reliable session fully completed. The reliable session was faulted.</value>
-  </data>
-  <data name="EarlySecurityFaulted" xml:space="preserve">
-    <value>The underlying secure session has faulted before the reliable session fully completed. The reliable session was faulted.</value>
-  </data>
   <data name="EarlyTerminateSequence" xml:space="preserve">
     <value>The remote endpoint has errantly sent a TerminateSequence protocol message before the sequence finished.</value>
   </data>
@@ -2868,23 +2808,8 @@
   <data name="ElementRequired" xml:space="preserve">
     <value>The {0}:{1} element requires a {2}:{3} child element but has no child elements.</value>
   </data>
-  <data name="InconsistentLastMsgNumberExceptionString" xml:space="preserve">
-    <value>The remote endpoint specified two different last message numbers. The reliable session is in an inconsistent state since it cannot determine the actual last message. The reliable session was faulted.</value>
-  </data>
   <data name="InvalidAcknowledgementFaultReason" xml:space="preserve">
     <value>The SequenceAcknowledgement violates the cumulative acknowledgement invariant.</value>
-  </data>
-  <data name="InvalidAcknowledgementReceived" xml:space="preserve">
-    <value>A violation of acknowledgement protocol has been detected. An InvalidAcknowledgement fault was sent to the remote endpoint and the reliable session was faulted.</value>
-  </data>
-  <data name="InvalidBufferRemaining" xml:space="preserve">
-    <value>An acknowledgement was received indicating the remaining buffer space on the remote endpoint is {0}. This number cannot be less than zero. The reliable session was faulted.</value>
-  </data>
-  <data name="InvalidSequenceNumber" xml:space="preserve">
-    <value>A message was received with a sequence number of {0}. Sequence numbers cannot be less than 1. The reliable session was faulted.</value>
-  </data>
-  <data name="InvalidSequenceRange" xml:space="preserve">
-    <value>An acknowledgement range starting at {0} and ending at {1} was received. This is an invalid acknowledgement range. The reliable session was faulted.</value>
   </data>
   <data name="InvalidWsrmResponseChannelNotOpened" xml:space="preserve">
     <value>The remote endpoint responded to the {0} request with a response with action {1}. The response must be a {0}Response with action {2}. The channel could not be opened.</value>
@@ -2892,77 +2817,29 @@
   <data name="InvalidWsrmResponseSessionFaultedExceptionString" xml:space="preserve">
     <value>The remote endpoint responded to the {0} request with a response with action {1}. The response must be a {0}Response with action {2}. The channel was faulted.</value>
   </data>
-  <data name="InvalidWsrmResponseSessionFaultedFaultString" xml:space="preserve">
-    <value>The {0} request's response was a message with action {1}. The response must be a {0}Response with action {2}. The reliable session cannot continue.</value>
-  </data>
-  <data name="LastMessageNumberExceeded" xml:space="preserve">
-    <value>A message was received with a sequence number higher than the sequence number of the last message in this sequence. This is a violation of the sequence number protocol. The reliable session was faulted.</value>
-  </data>
   <data name="LastMessageNumberExceededFaultReason" xml:space="preserve">
     <value>The value for wsrm:MessageNumber exceeds the value of the MessageNumber accompanying a LastMessage element in this Sequence.</value>
   </data>
   <data name="ManualAddressingNotSupported" xml:space="preserve">
     <value>Binding validation failed because the TransportBindingElement's ManualAddressing property was set to true on a binding that is configured to create reliable sessions. This combination is not supported and the channel factory or service host was not opened.</value>
   </data>
-  <data name="MaximumRetryCountExceeded" xml:space="preserve">
-    <value>The maximum retry count has been exceeded with no response from the remote endpoint. The reliable session was faulted. This is often an indication that the remote endpoint is no longer available.</value>
-  </data>
   <data name="MessageExceptionOccurred" xml:space="preserve">
     <value>A problem occurred while reading a message. See inner exception for details.</value>
-  </data>
-  <data name="MessageNumberRollover" xml:space="preserve">
-    <value>The maximum message number for this sequence has been exceeded. The reliable session was faulted.</value>
   </data>
   <data name="MessageNumberRolloverFaultReason" xml:space="preserve">
     <value>The maximum value for wsrm:MessageNumber has been exceeded.</value>
   </data>
-  <data name="MillisecondsNotConvertibleToBindingRange" xml:space="preserve">
-    <value>The {0} assertion's Milliseconds attribute does not fall within the range this binding uses. The ReliableSessionBindingElement could not be created.</value>
-  </data>
-  <data name="MissingFinalAckExceptionString" xml:space="preserve">
-    <value>The remote endpoint did not include a final acknowledgement in the reply to the close sequence request message. This is a violation of the WS-ReliableMessaging protocol. The reliable session was faulted.</value>
-  </data>
   <data name="MissingMessageIdOnWsrmRequest" xml:space="preserve">
     <value>The wsa:MessageId header must be present on a wsrm:{0} message.</value>
-  </data>
-  <data name="MissingRelatesToOnWsrmResponseReason" xml:space="preserve">
-    <value>The returned wsrm:{0}Response message was missing the required wsa:RelatesTo header. This is a violation of the WS-Addressing request reply protocol. The reliable session was faulted.</value>
   </data>
   <data name="MissingReplyToOnWsrmRequest" xml:space="preserve">
     <value>The wsa:ReplyTo header must be present on a wsrm:{0} message.</value>
   </data>
-  <data name="MultipleVersionsFoundInPolicy" xml:space="preserve">
-    <value>More than one version of the {0} assertion was found. The ReliableSessionBindingElement could not be created.</value>
-  </data>
-  <data name="NoActionNoSequenceHeaderReason" xml:space="preserve">
-    <value>The endpoint only processes messages using the WS-ReliableMessaging protocol. The message sent to the endpoint does not have an action or any headers used by the protocol and cannot be processed.</value>
-  </data>
-  <data name="NonEmptyWsrmMessageIsEmpty" xml:space="preserve">
-    <value>A message with action {0} is an empty message. This message cannot be processed because the body of this WS-ReliableMessaging protocol message must carry information pertaining to a reliable session.</value>
-  </data>
   <data name="NonWsrmFeb2005ActionNotSupported" xml:space="preserve">
     <value>The action {0} is not supported by this endpoint. Only WS-ReliableMessaging February 2005 messages are processed by this endpoint.</value>
   </data>
-  <data name="NotAllRepliesAcknowledgedExceptionString" xml:space="preserve">
-    <value>The remote endpoint closed the session before acknowledging all responses. All replies could not be delivered. The reliable session was faulted.</value>
-  </data>
-  <data name="ReceivedResponseBeforeRequestExceptionString" xml:space="preserve">
-    <value>The remote endpoint returned a {0}Response when the {0} request had not been sent. This is a WS-ReliableMessaging protocol violation. The reliable session was faulted.</value>
-  </data>
   <data name="ReceivedResponseBeforeRequestFaultString" xml:space="preserve">
     <value>The {0}Response was received when the {0} request had not been sent. This is a WS-ReliableMessaging protocol violation. The reliable session cannot continue.</value>
-  </data>
-  <data name="ReplyMissingAcknowledgement" xml:space="preserve">
-    <value>The remote endpoint failed to include a required SequenceAcknowledgement header on a reliable reply message. The reliable session was faulted.</value>
-  </data>
-  <data name="ReliableRequestContextAborted" xml:space="preserve">
-    <value>Due to a request context abort call, the reliable reply session channel potentially has a gap in its reply sequence. The ExactlyOnce assurance can no longer be satisfied. The reliable session was faulted.</value>
-  </data>
-  <data name="RequiredAttributeIsMissing" xml:space="preserve">
-    <value>The required {0} attribute is missing from the {1} element in the {2} assertion. The ReliableSessionBindingElement could not be created.</value>
-  </data>
-  <data name="RequiredMillisecondsAttributeIncorrect" xml:space="preserve">
-    <value>The {0} assertion's required Milliseconds attribute is not schema compliant. Milliseconds must be convertible to an unsigned long. The ReliableSessionBindingElement could not be created.</value>
   </data>
   <data name="RMEndpointNotFoundReason" xml:space="preserve">
     <value>The endpoint at {0} has stopped accepting wsrm sessions.</value>
@@ -2982,32 +2859,17 @@
   <data name="SequenceTerminatedInactivityTimeoutExceeded" xml:space="preserve">
     <value>The inactivity timeout of ({0}) has been exceeded.</value>
   </data>
-  <data name="SequenceTerminatedInconsistentLastMsgNumber" xml:space="preserve">
-    <value>Two different wsrm:LastMsgNumber values were specified. Because of this the reliable session cannot complete.</value>
-  </data>
   <data name="SequenceTerminatedMaximumRetryCountExceeded" xml:space="preserve">
     <value>The user specified maximum retry count for a particular message has been exceeded. Because of this the reliable session cannot continue.</value>
   </data>
-  <data name="SequenceTerminatedMissingFinalAck" xml:space="preserve">
-    <value>The CloseSequence request's reply message must carry a final acknowledgement. This is a violation of the WS-ReliableMessaging protocol. The reliable session cannot continue.</value>
-  </data>
-  <data name="SequenceTerminatedOnAbort" xml:space="preserve">
-    <value>Due to a user abort the reliable session cannot continue.</value>
-  </data>
   <data name="SequenceTerminatedQuotaExceededException" xml:space="preserve">
     <value>The necessary size to buffer a sequence message has exceeded the configured buffer quota. Because of this the reliable session cannot continue.</value>
-  </data>
-  <data name="SequenceTerminatedReliableRequestThrew" xml:space="preserve">
-    <value>The session has stopped waiting for a particular reply. Because of this the reliable session cannot continue.</value>
   </data>
   <data name="SequenceTerminatedReplyMissingAcknowledgement" xml:space="preserve">
     <value>A reply message was received with no acknowledgement.</value>
   </data>
   <data name="SequenceTerminatedNotAllRepliesAcknowledged" xml:space="preserve">
     <value>All of the reply sequence's messages must be acknowledged prior to closing the request sequence. This is a violation of the reply sequence's delivery guarantee. The session cannot continue.</value>
-  </data>
-  <data name="SequenceTerminatedSessionClosedBeforeDone" xml:space="preserve">
-    <value>The user of the remote endpoint's reliable session expects no more messages and a new message arrived. Due to this the reliable session cannot continue.</value>
   </data>
   <data name="SequenceTerminatedSmallLastMsgNumber" xml:space="preserve">
     <value>The wsrm:LastMsgNumber value is too small. A message with a larger sequence number has already been received.</value>
@@ -3042,17 +2904,11 @@
   <data name="SequenceTerminatedUnexpectedTerminateSequenceResponse" xml:space="preserve">
     <value>The RM destination received a TerminateSequenceResponse message. The RM destination does not process TerminateSequenceResponse messages.</value>
   </data>
-  <data name="SequenceTerminatedUnsupportedClose" xml:space="preserve">
-    <value>The RM source does not support an RM destination initiated close since messages can be lost. The reliable session cannot continue.</value>
-  </data>
   <data name="SequenceTerminatedUnsupportedTerminateSequence" xml:space="preserve">
     <value>The RM source does not support an RM destination initiated termination since messages can be lost. The reliable session cannot continue.</value>
   </data>
   <data name="SequenceTerminatedUnknownAddToWindowError" xml:space="preserve">
     <value>An unknown error occurred while trying to add a sequence message to the window.</value>
-  </data>
-  <data name="SmallLastMsgNumberExceptionString" xml:space="preserve">
-    <value>The remote endpoint specified a last message number that is smaller than a sequence number that has already been seen. The reliable session is in an inconsistent state since it cannot determine the actual last message. The reliable session was faulted.</value>
   </data>
   <data name="TimeoutOnAddToWindow" xml:space="preserve">
     <value>The message could not be transferred within the allotted timeout of {0}. There was no space available in the reliable channel's transfer window. The time allotted to this operation may have been a portion of a longer timeout.</value>
@@ -3108,29 +2964,11 @@
   <data name="UnknownSequenceFaultReason" xml:space="preserve">
     <value>The value of wsrm:Identifier is not a known Sequence identifier.</value>
   </data>
-  <data name="UnknownSequenceFaultReceived" xml:space="preserve">
-    <value>The remote endpoint no longer recognizes this sequence. This is most likely due to an abort on the remote endpoint. {0} The reliable session was faulted.</value>
-  </data>
   <data name="UnknownSequenceMessageReceived" xml:space="preserve">
     <value>The remote endpoint has sent a message containing an unrecognized sequence identifier. The reliable session was faulted.</value>
   </data>
-  <data name="UnrecognizedFaultReceived" xml:space="preserve">
-    <value>The remote endpoint has sent an unrecognized fault with namespace, {0}, name {1}, and reason {2}. The reliable session was faulted.</value>
-  </data>
   <data name="UnrecognizedFaultReceivedOnOpen" xml:space="preserve">
     <value>The remote endpoint has sent an unrecognized fault with namespace, {0}, name {1}, and reason {2}. The channel could not be opened.</value>
-  </data>
-  <data name="UnsupportedCloseExceptionString" xml:space="preserve">
-    <value>The remote endpoint closed the sequence before message transfer was complete. This is not supported since all messages could not be transferred. The reliable session was faulted.</value>
-  </data>
-  <data name="UnsupportedTerminateSequenceExceptionString" xml:space="preserve">
-    <value>The remote endpoint terminated the sequence before message transfer was complete. This is not supported since all messages could not be transferred. The reliable session was faulted.</value>
-  </data>
-  <data name="WrongIdentifierFault" xml:space="preserve">
-    <value>The remote endpoint has sent an fault message with an unexpected sequence identifier over a session. The fault may be intended for a different session. The fault reason is: {0} The reliable session was faulted.</value>
-  </data>
-  <data name="WSHttpDoesNotSupportRMWithHttps" xml:space="preserve">
-    <value>Binding validation failed because the WSHttpBinding does not support reliable sessions over transport security (HTTPS). The channel factory or service host could not be opened. Use message security for secure reliable messaging over HTTP.</value>
   </data>
   <data name="WsrmFaultReceived" xml:space="preserve">
     <value>The sequence has been terminated by the remote endpoint. {0} The reliable session was faulted.</value>
@@ -3138,20 +2976,11 @@
   <data name="WsrmMessageProcessingError" xml:space="preserve">
     <value>An error occurred while processing a message. {0}</value>
   </data>
-  <data name="WsrmMessageWithWrongRelatesToExceptionString" xml:space="preserve">
-    <value>The returned {0}Response was carrying the a wsa:RelatesTo header that does not correlate with the wsa:MessageId header on the {0} request. This is a violation of the WS-Addressing request reply protocol. The reliable session cannot continue.</value>
-  </data>
   <data name="WsrmMessageWithWrongRelatesToFaultString" xml:space="preserve">
     <value>The remote endpoint has responded to a {0} request message with an invalid reply. The reply has a wsa:RelatesTo header with an unexpected identifier. The reliable session cannot continue.</value>
   </data>
-  <data name="WsrmRequestIncorrectReplyToExceptionString" xml:space="preserve">
-    <value>The remote endpoint sent a wsrm:{0} request message with a wsa:ReplyTo address containing a URI which is not equivalent to the remote address. This is not supported. The reliable session was faulted.</value>
-  </data>
   <data name="WsrmRequestIncorrectReplyToFaultString" xml:space="preserve">
     <value>The wsrm:{0} request message's wsa:ReplyTo address containing a URI which is not equivalent to the remote address. This is not supported. The reliable session was faulted.</value>
-  </data>
-  <data name="WsrmRequiredExceptionString" xml:space="preserve">
-    <value>The incoming message is not a WS-ReliableMessaging 1.1 message and could not be processed.</value>
   </data>
   <data name="WsrmRequiredFaultString" xml:space="preserve">
     <value>The RM server requires the use of WS-ReliableMessaging 1.1 protocol. This is likely caused by a binding mismatch.</value>
@@ -4716,204 +4545,6 @@
   <data name="BindingProtocolMappingNotDefined" xml:space="preserve">
     <value>The binding for scheme '{0}' specified in the protocol mapping does not exist and must be created.</value>
   </data>
-  <data name="ConfigBindingCannotBeConfigured" xml:space="preserve">
-    <value>The binding on the service endpoint cannot be configured.</value>
-  </data>
-  <data name="ConfigBindingExtensionNotFound" xml:space="preserve">
-    <value>Configuration binding extension '{0}' could not be found. Verify that this binding extension is properly registered in system.serviceModel/extensions/bindingExtensions and that it is spelled correctly.</value>
-  </data>
-  <data name="ConfigBindingReferenceCycleDetected" xml:space="preserve">
-    <value>A binding reference cycle was detected in your configuration. The following reference cycle must be removed: {0}.</value>
-  </data>
-  <data name="ConfigBindingTypeCannotBeNullOrEmpty" xml:space="preserve">
-    <value>The binding specified cannot be null or an empty string.  Please specify a valid binding.  Valid binding values can be found in the system.serviceModel/extensions/bindingExtensions collection.</value>
-  </data>
-  <data name="ConfigCannotParseXPathFilter" xml:space="preserve">
-    <value>Cannot parse type '{0}' into a System.ServiceModel.Dispatcher.XPathMessageFilter.</value>
-  </data>
-  <data name="ConfigEndpointExtensionNotFound" xml:space="preserve">
-    <value>Configuration endpoint extension '{0}' could not be found. Verify that this endpoint extension is properly registered in system.serviceModel/extensions/endpointExtensions and that it is spelled correctly.</value>
-  </data>
-  <data name="ConfigEndpointReferenceCycleDetected" xml:space="preserve">
-    <value>An endpoint reference cycle was detected in your configuration. The following reference cycle must be removed: {0}.</value>
-  </data>
-  <data name="ConfigEndpointTypeCannotBeNullOrEmpty" xml:space="preserve">
-    <value>The endpoint specified cannot be null or an empty string.  Please specify a valid endpoint.  Valid endpoint values can be found in the system.serviceModel/extensions/endpointExtensions collection.</value>
-  </data>
-  <data name="ConfigXPathFilterMustNotBeEmpty" xml:space="preserve">
-    <value>Filter element body must not be empty.</value>
-  </data>
-  <data name="ConfigDuplicateItem" xml:space="preserve">
-    <value>An extension named {0} already appears in the {1}. Extension names must be unique.</value>
-  </data>
-  <data name="ConfigDuplicateExtensionName" xml:space="preserve">
-    <value> An extension of name '{0}' already appears in extension collection. Extension names must be unique.</value>
-  </data>
-  <data name="ConfigDuplicateExtensionType" xml:space="preserve">
-    <value>An extension of type '{0}' already appears in extension collection. Extension types must be unique.</value>
-  </data>
-  <data name="ConfigDuplicateKey" xml:space="preserve">
-    <value>A child element with the element name '{0}' already exists.  Child elements can only be added once.</value>
-  </data>
-  <data name="ConfigDuplicateKeyAtSameScope" xml:space="preserve">
-    <value>A child element named '{0}' with same key already exists at the same configuration scope. Collection elements must be unique within the same configuration scope (e.g. the same application.config file). Duplicate key value:  '{1}'.</value>
-  </data>
-  <data name="ConfigElementKeyNull" xml:space="preserve">
-    <value>The '{0}' configuration element key cannot be null.</value>
-  </data>
-  <data name="ConfigElementKeysNull" xml:space="preserve">
-    <value>At least one of the configuration element keys '{0}' must not be null.</value>
-  </data>
-  <data name="ConfigElementTypeNotAllowed" xml:space="preserve">
-    <value>Extension element '{0}' cannot be added to this element.  Verify that the extension is registered in the extension collection at system.serviceModel/extensions/{1}.</value>
-  </data>
-  <data name="ConfigExtensionCollectionNotFound" xml:space="preserve">
-    <value>Extension collection '{0}' not found.</value>
-  </data>
-  <data name="ConfigExtensionTypeNotRegisteredInCollection" xml:space="preserve">
-    <value>The extension of type '{0}' is not registered in the extension collection '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidServiceAuthenticationManagerType" xml:space="preserve">
-    <value>Invalid value for serviceAuthenticationManagerType. The serviceAuthenticationManagerType '{0}' does not derive from '{1}'. </value>
-  </data>
-  <data name="ConfigInvalidAuthorizationPolicyType" xml:space="preserve">
-    <value>Invalid value in policyType. The policyType '{0}' does not implement from '{1}'. </value>
-  </data>
-  <data name="ConfigInvalidBindingConfigurationName" xml:space="preserve">
-    <value>The {1} binding does not have a configured binding named '{0}'.</value>
-  </data>
-  <data name="ConfigInvalidBindingName" xml:space="preserve">
-    <value>The binding at {1} does not have a configured binding named '{0}'. This is an invalid value for {2}.</value>
-  </data>
-  <data name="ConfigInvalidCommonEndpointBehaviorType" xml:space="preserve">
-    <value>Cannot add the behavior extension '{0}' to the common endpoint behavior because it does not implement '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidCommonServiceBehaviorType" xml:space="preserve">
-    <value>Cannot add the behavior extension '{0}' to the common service behavior because it does not implement '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidCertificateValidatorType" xml:space="preserve">
-    <value>Invalid value for the certificate validator type. The type '{0}' does not derive from the appropriate base class '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidClientCredentialsType" xml:space="preserve">
-    <value>Invalid value for the client credentials type. The type '{0}' does not derive from the appropriate base class '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidClassFactoryValue" xml:space="preserve">
-    <value>The value '{0}' is not a valid instance of type '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidClassInstanceValue" xml:space="preserve">
-    <value>The instance is not a valid configurable value of type '{0}'.</value>
-  </data>
-  <data name="ConfigInvalidEncodingValue" xml:space="preserve">
-    <value>{0} is not a valid encoding string for System.Text.Encoding.GetEncoding(string).</value>
-  </data>
-  <data name="ConfigInvalidEndpointBehavior" xml:space="preserve">
-    <value>There is no endpoint behavior named '{0}'.</value>
-  </data>
-  <data name="ConfigInvalidEndpointBehaviorType" xml:space="preserve">
-    <value>Cannot add the '{0}' behavior extension to '{1}' endpoint behavior because the underlying behavior type does not implement the IEndpointBehavior interface.</value>
-  </data>
-  <data name="ConfigInvalidEndpointName" xml:space="preserve">
-    <value>The endpoint at {1} does not have a configured endpoint named '{0}'. This is an invalid value for {2}.</value>
-  </data>
-  <data name="ConfigInvalidAttribute" xml:space="preserve">
-    <value>The attribute '{0}' cannot be specified on element '{1}' when attribute '{2}' is not specified.</value>
-  </data>
-  <data name="ConfigNoEndpointCreated" xml:space="preserve">
-    <value>The CreateServiceEndpoint method in type '{0}' returned null instead of an instance of type '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidExtensionElement" xml:space="preserve">
-    <value>Invalid element in configuration. The extension '{0}' does not derive from correct extension base type '{1}'. </value>
-  </data>
-  <data name="ConfigInvalidExtensionElementName" xml:space="preserve">
-    <value>Invalid element in configuration. The extension name '{0}' is not registered in the collection at system.serviceModel/extensions/{1}. </value>
-  </data>
-  <data name="ConfigInvalidExtensionType" xml:space="preserve">
-    <value>The '{0}' type must derive from {1} to be used in the {2} collection.</value>
-  </data>
-  <data name="ConfigInvalidKeyType" xml:space="preserve">
-    <value>The element {0} requires a key of type '{1}'. Type of the key passed in: '{2}'.</value>
-  </data>
-  <data name="ConfigInvalidReliableMessagingVersionValue" xml:space="preserve">
-    <value>'{0}' is not a valid reliable messaging version.  Valid values are 'WSReliableMessagingFebruary2005' and 'WSReliableMessaging11'.</value>
-  </data>
-  <data name="ConfigInvalidSamlSerializerType" xml:space="preserve">
-    <value>Invalid value for the saml serializer type. The type '{0}' does not derive from the appropriate base class: '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidSection" xml:space="preserve">
-    <value>Invalid binding path.  There is no binding registered with the configuration path '{0}'.</value>
-  </data>
-  <data name="ConfigInvalidServiceCredentialsType" xml:space="preserve">
-    <value>Invalid value for the service credentials type. The type '{0}' does not derive from the appropriate base class '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidSecurityStateEncoderType" xml:space="preserve">
-    <value>Invalid value for the  security state encoder type. The type '{0}' does not derive from the appropriate base class '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidUserNamePasswordValidatorType" xml:space="preserve">
-    <value>Invalid value for the username password validator type. The type '{0}' does not derive from the appropriate base class '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidServiceAuthorizationManagerType" xml:space="preserve">
-    <value>Invalid value for serviceAuthorizationManagerType. The serviceAuthorizationManagerType '{0}' does not derive from '{1}'. </value>
-  </data>
-  <data name="ConfigInvalidServiceBehavior" xml:space="preserve">
-    <value>There is no service behavior named '{0}'.</value>
-  </data>
-  <data name="ConfigInvalidServiceBehaviorType" xml:space="preserve">
-    <value>Cannot add the behavior extension '{0}' to the service behavior named '{1}' because the underlying behavior type does not implement the IServiceBehavior interface.</value>
-  </data>
-  <data name="ConfigInvalidStartValue" xml:space="preserve">
-    <value>Start must be between 0 and {0}. Value passed in is {1}.</value>
-  </data>
-  <data name="ConfigInvalidTransactionFlowProtocolValue" xml:space="preserve">
-    <value>'{0}' is not a valid transaction protocol.  Valid values are 'OleTransactions', 'WSAtomicTransactionOctober2004', and 'WSAtomicTransaction11'.</value>
-  </data>
-  <data name="ConfigInvalidType" xml:space="preserve">
-    <value>The type '{0}' registered for extension '{1}' could not be loaded.</value>
-  </data>
-  <data name="ConfigInvalidTypeForBinding" xml:space="preserve">
-    <value>Invalid binding type for binding extension configuration object.  This binding extension manages configuration of binding type '{0}' and cannot act upon type '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidTypeForBindingElement" xml:space="preserve">
-    <value>Invalid binding element type for binding element extension configuration object.  This binding element extension manages configuration of binding element type '{0}' and cannot act upon type '{1}'.</value>
-  </data>
-  <data name="ConfigInvalidTypeForEndpoint" xml:space="preserve">
-    <value>Invalid endpoint type for endpoint extension configuration object.  This endpoint extension manages configuration of endpoint type '{0}' and cannot act upon type '{1}'.</value>
-  </data>
-  <data name="ConfigKeyNotFoundInElementCollection" xml:space="preserve">
-    <value>No elements matching the key '{0}' were found in the configuration element collection.</value>
-  </data>
-  <data name="ConfigKeysDoNotMatch" xml:space="preserve">
-    <value>The key does not match the indexer key. When setting the value of a specific index, the key of the desired value must match the index at which it is being set. Key on element (expected value): {0}. Key provided to indexer: {1}.</value>
-  </data>
-  <data name="ConfigMessageEncodingAlreadyInBinding" xml:space="preserve">
-    <value>Cannot add the message encoding element '{0}'. Another message encoding element already exists in the binding '{1}'. There can only be one message encoding element for each binding.</value>
-  </data>
-  <data name="ConfigNoExtensionCollectionAssociatedWithType" xml:space="preserve">
-    <value>Cannot find the extension collection associated with extension of type '{0}'.</value>
-  </data>
-  <data name="ConfigNullIssuerAddress" xml:space="preserve">
-    <value>Federated issuer address cannot be null when specifying an issuer binding.</value>
-  </data>
-  <data name="ConfigReadOnly" xml:space="preserve">
-    <value>The configuration is read only.</value>
-  </data>
-  <data name="ConfigSectionNotFound" xml:space="preserve">
-    <value>The '{0}' configuration section cannot be created. The machine.config file is missing information. Verify that this configuration section is properly registered and that you have correctly spelled the section name. For Windows Communication Foundation sections, run ServiceModelReg.exe -i to fix this error.</value>
-  </data>
-  <data name="ConfigStreamUpgradeElementAlreadyInBinding" xml:space="preserve">
-    <value>Cannot add stream upgrade element '{0}'. Another stream upgrade element already exists in the binding '{1}'. There can only be one stream update element per binding.</value>
-  </data>
-  <data name="ConfigTransportAlreadyInBinding" xml:space="preserve">
-    <value>Cannot add the transport element '{0}'. Another transport element already exists in the binding '{1}'. There can only be one transport element for each binding.</value>
-  </data>
-  <data name="ConfigXmlElementMustBeSet" xml:space="preserve">
-    <value>The XmlElement must contain XML content.</value>
-  </data>
-  <data name="ConfigXPathFilterIsNull" xml:space="preserve">
-    <value>The XPathFilter for an XPathFilterElement cannot be null.</value>
-  </data>
-  <data name="ConfigXPathNamespacePrefixNotFound" xml:space="preserve">
-    <value>Namespace prefix '{0}' referenced in XPath expression was not found.</value>
-  </data>
   <data name="Default" xml:space="preserve">
     <value>(Default)</value>
   </data>
@@ -5847,9 +5478,6 @@
   <data name="TraceCodePrematureDatagramEof" xml:space="preserve">
     <value>A null Message (signalling end of channel) was received from a datagram channel, but the channel is still in the Opened state. This indicates a bug in the datagram channel, and the demuxer receive loop has been prematurely stalled. </value>
   </data>
-  <data name="TraceCodeReliableChannelOpened" xml:space="preserve">
-    <value>A reliable channel has been opened.</value>
-  </data>
   <data name="TraceCodeRemoveBehavior" xml:space="preserve">
     <value>Behavior type already exists in the collection</value>
   </data>
@@ -6155,9 +5783,6 @@
   </data>
   <data name="TraceCodeWsrmMessageDropped" xml:space="preserve">
     <value>A message in a WS-RM sequence has been dropped because it could not be buffered.</value>
-  </data>
-  <data name="TraceCodeWsrmNegativeElapsedTimeDetected" xml:space="preserve">
-    <value>The reliable session infrastructure detected a system clock change. This will temporarily result in a less optimal message retry strategy.</value>
   </data>
   <data name="TraceCodeWsrmReceiveAcknowledgement" xml:space="preserve">
     <value>WS-RM SequenceAcknowledgement received.</value>
