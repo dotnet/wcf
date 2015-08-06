@@ -6,6 +6,9 @@
     "xunit.netcore.extensions": "1.0.0-prerelease-*"
   },
   "frameworks": {
-    "dnxcore50": {}
+    "dnxcore50": {
+      "System.Net.WebSockets": "4.0.0-beta-*",
+      "System.Net.WebSockets.Client": "4.0.0-beta-*"
+    }
   }
 }

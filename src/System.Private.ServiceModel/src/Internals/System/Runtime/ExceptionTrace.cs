@@ -207,7 +207,6 @@ namespace System.Runtime
             TraceCore.UnhandledException(_diagnosticTrace, exception != null ? exception.ToString() : string.Empty, exception);
         }
 
-
         private TException TraceException<TException>(TException exception)
             where TException : Exception
         {

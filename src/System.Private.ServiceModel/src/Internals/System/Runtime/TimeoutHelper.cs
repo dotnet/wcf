@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace System.Runtime
 {
-    public struct TimeoutHelper
+    public struct TimeoutHelper : IDisposable
     {
         private bool _cancellationTokenInitialized;
         private bool _deadlineSet;
@@ -34,7 +34,11 @@ namespace System.Runtime
         // that isn't cancelled if _cts.Cancel() is called. This happens only on the Abort paths, so it's not an issue. 
         private void InitializeCancellationToken(TimeSpan timeout)
         {
-            if (timeout > TimeSpan.Zero)
+            if (timeout == TimeSpan.MaxValue || timeout == Timeout.InfiniteTimeSpan)
+            {
+                _cancellationToken = CancellationToken.None;
+            }
+            else if (timeout > TimeSpan.Zero)
             {
                 _cts = new CancellationTokenSource(timeout);
                 _cancellationToken = _cts.Token;
@@ -185,6 +189,16 @@ namespace System.Runtime
             Contract.Assert(!_deadlineSet, "TimeoutHelper deadline set twice.");
             _deadline = DateTime.UtcNow + _originalTimeout;
             _deadlineSet = true;
+        }
+
+        public void Dispose()
+        {
+            if (_cancellationTokenInitialized && _cts !=null)
+            {
+                _cts.Dispose();
+                _cancellationTokenInitialized = false;
+                _cancellationToken = default(CancellationToken);
+            }
         }
 
         public static void ThrowIfNegativeArgument(TimeSpan timeout)

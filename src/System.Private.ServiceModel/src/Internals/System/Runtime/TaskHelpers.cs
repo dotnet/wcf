@@ -151,6 +151,11 @@ namespace System.Runtime
         // period passes.
         public static async Task<bool> AwaitWithTimeout(this Task task, TimeSpan timeout)
         {
+            if (task.IsCompleted)
+            {
+                return true;
+            }
+
             using (CancellationTokenSource cts = new CancellationTokenSource())
             {
                 var completedTask = await Task.WhenAny(task, Task.Delay(timeout, cts.Token));
@@ -176,6 +181,39 @@ namespace System.Runtime
         public static TResult WaitForCompletion<TResult>(this Task<TResult> task)
         {
             return task.GetAwaiter().GetResult();
+        }
+
+        // Used by WebSocketTransportDuplexSessionChannel on the sync code path.
+        // TODO: Try and switch as many code paths as possible which use this to async
+        public static void Wait(this Task task, TimeSpan timeout, Action<Exception, TimeSpan, string> exceptionConverter, string operationType)
+        {
+            bool timedOut = false;
+
+            try
+            {
+                if (timeout > TimeoutHelper.MaxWait)
+                {
+                    task.Wait();
+                }
+                else
+                {
+                    timedOut = !task.Wait(timeout);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Fx.IsFatal(ex) || exceptionConverter == null)
+                {
+                    throw;
+                }
+
+                exceptionConverter(ex, timeout, operationType);
+            }
+
+            if (timedOut)
+            {
+                throw Fx.Exception.AsError(new TimeoutException(InternalSR.TaskTimedOutError(timeout)));
+            }
         }
 
         public static Task CompletedTask()

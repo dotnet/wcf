@@ -56,7 +56,15 @@ namespace System.ServiceModel.Channels
 
         protected override void ValidateCreateChannelParameters(EndpointAddress remoteAddress, Uri via)
         {
-            base.ValidateCreateChannelParameters(remoteAddress, via);
+            if (string.Compare(via.Scheme, "wss", StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                base.ValidateScheme(via);
+            }
+
+            if (MessageVersion.Addressing == AddressingVersion.None && remoteAddress.Uri != via)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateToMustEqualViaException(remoteAddress.Uri, via));
+            }
         }
 
         protected override TChannel OnCreateChannelCore(EndpointAddress address, Uri via)

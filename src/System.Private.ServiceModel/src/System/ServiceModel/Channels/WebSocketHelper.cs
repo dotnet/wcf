@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Runtime;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -45,11 +46,6 @@ namespace System.ServiceModel.Channels
         internal static int ComputeClientBufferSize(long maxReceivedMessageSize)
         {
             return ComputeInternalBufferSize(maxReceivedMessageSize, false);
-        }
-
-        internal static int ComputeServerBufferSize(long maxReceivedMessageSize)
-        {
-            return ComputeInternalBufferSize(maxReceivedMessageSize, true);
         }
 
         internal static int GetReceiveBufferSize(long maxReceivedMessageSize)
@@ -188,17 +184,7 @@ namespace System.ServiceModel.Channels
         internal static WebSocketTransportSettings GetRuntimeWebSocketSettings(WebSocketTransportSettings settings)
         {
             WebSocketTransportSettings runtimeSettings = settings.Clone();
-            if (runtimeSettings.MaxPendingConnections == WebSocketDefaults.DefaultMaxPendingConnections)
-            {
-                runtimeSettings.MaxPendingConnections = WebSocketDefaults.MaxPendingConnectionsCpuCount;
-            }
-
             return runtimeSettings;
-        }
-
-        internal static bool OSSupportsWebSockets()
-        {
-            return true;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.WrapExceptionsRule,
@@ -277,6 +263,32 @@ namespace System.ServiceModel.Channels
             }
 
             return new CommunicationException(exception.Message, exception);
+        }
+
+        internal static void ThrowExceptionOnTaskFailure(Task task, TimeSpan timeout, string operation)
+        {
+            if (task.IsFaulted)
+            {
+                throw FxTrace.Exception.AsError<CommunicationException>(task.Exception);
+            }
+            if (task.IsCanceled)
+            {
+                throw FxTrace.Exception.AsError(GetTimeoutException(null, timeout, operation));
+            }
+        }
+
+        // TODO: Move to correct place alphabetically, it's here temporariliy to make editting easier
+        internal static Exception CreateExceptionOnTaskFailure(Task task, TimeSpan timeout, string operation)
+        {
+            if (task.IsFaulted)
+            {
+                return FxTrace.Exception.AsError<CommunicationException>(task.Exception);
+            }
+            if (task.IsCanceled)
+            {
+                throw FxTrace.Exception.AsError(GetTimeoutException(null, timeout, operation));
+            }
+            return null;
         }
 
         internal static TimeoutException GetTimeoutException(Exception innerException, TimeSpan timeout, string operation)

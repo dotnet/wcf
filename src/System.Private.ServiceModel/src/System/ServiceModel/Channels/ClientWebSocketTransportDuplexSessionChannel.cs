@@ -1,0 +1,234 @@
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
+using System.Diagnostics.Contracts;
+using System.IdentityModel.Selectors;
+using System.IO;
+using System.Net;
+using System.Net.WebSockets;
+using System.Runtime;
+using System.ServiceModel.Diagnostics.Application;
+using System.ServiceModel.Security;
+using System.ServiceModel.Security.Tokens;
+using System.Threading.Tasks;
+
+namespace System.ServiceModel.Channels
+{
+    class ClientWebSocketTransportDuplexSessionChannel : WebSocketTransportDuplexSessionChannel
+    {
+        readonly ClientWebSocketFactory _connectionFactory;
+        HttpChannelFactory<IDuplexSessionChannel> _channelFactory;
+        SecurityTokenProviderContainer _webRequestTokenProvider;
+        SecurityTokenProviderContainer _webRequestProxyTokenProvider;
+        //HttpWebRequest httpWebRequest;
+        volatile bool _cleanupStarted;
+
+        public ClientWebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, ClientWebSocketFactory connectionFactory, EndpointAddress remoteAddresss, Uri via, ConnectionBufferPool bufferPool)
+            : base(channelFactory, remoteAddresss, via, bufferPool)
+        {
+            Contract.Assert(channelFactory != null, "connection factory must be set");
+            _channelFactory = channelFactory;
+            _connectionFactory = connectionFactory;
+        }
+
+        protected override bool IsStreamedOutput
+        {
+            get { return TransferModeHelper.IsRequestStreamed(TransferMode); }
+        }
+
+        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return CommunicationObjectInternal.OnBeginOpen(this, timeout, callback, state);
+        }
+
+        protected override void OnEndOpen(IAsyncResult result)
+        {
+            CommunicationObjectInternal.OnEnd(result);
+        }
+
+        protected override void OnOpen(TimeSpan timeout)
+        {
+            CommunicationObjectInternal.OnOpen(this, timeout);
+        }
+
+        protected internal override async Task OnOpenAsync(TimeSpan timeout)
+        {
+            TimeoutHelper helper = new TimeoutHelper(timeout);
+
+            bool success = false;
+            try
+            {
+                if (TD.WebSocketConnectionRequestSendStartIsEnabled())
+                {
+                    TD.WebSocketConnectionRequestSendStart(
+                        EventTraceActivity,
+                        RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
+                }
+
+                ChannelParameterCollection channelParameterCollection = new ChannelParameterCollection();
+
+                HttpsChannelFactory<IDuplexSessionChannel> httpsChannelFactory = _channelFactory as HttpsChannelFactory<IDuplexSessionChannel>;
+                if (httpsChannelFactory != null && httpsChannelFactory.RequireClientCertificate)
+                {
+                    SecurityTokenProvider certificateProvider = httpsChannelFactory.CreateAndOpenCertificateTokenProvider(RemoteAddress, Via, channelParameterCollection, helper.RemainingTime());
+                }
+
+                try
+                {
+                    WebSocket = await CreateWebSocketWithFactoryAsync(helper);
+                }
+                finally
+                {
+                    if (WebSocket != null && _cleanupStarted)
+                    {
+                        WebSocket.Abort();
+                        CommunicationObjectAbortedException communicationObjectAbortedException = new CommunicationObjectAbortedException(
+                            new WebSocketException(WebSocketError.ConnectionClosedPrematurely).Message);
+                        FxTrace.Exception.AsWarning(communicationObjectAbortedException);
+                        throw communicationObjectAbortedException;
+                    }
+                }
+
+                bool inputUseStreaming = TransferModeHelper.IsResponseStreamed(TransferMode);
+
+                SetMessageSource(new WebSocketMessageSource(
+                    this,
+                    WebSocket,
+                    inputUseStreaming,
+                    this));
+
+                success = true;
+
+                if (TD.WebSocketConnectionRequestSendStopIsEnabled())
+                {
+                    TD.WebSocketConnectionRequestSendStop(
+                        EventTraceActivity,
+                        WebSocket != null ? WebSocket.GetHashCode() : -1);
+                }
+            }
+            catch (WebSocketException ex)
+            {
+                if (TD.WebSocketConnectionFailedIsEnabled())
+                {
+                    TD.WebSocketConnectionFailed(EventTraceActivity, ex.Message);
+                }
+
+                TryConvertAndThrow(ex);
+            }
+            finally
+            {
+                CleanupTokenProviders();
+                if (!success)
+                {
+                    CleanupOnError();
+                }
+            }
+        }
+
+        protected override void OnCleanup()
+        {
+            _cleanupStarted = true;
+            base.OnCleanup();
+        }
+
+        static void TryConvertAndThrow(WebSocketException ex)
+        {
+            switch (ex.WebSocketErrorCode)
+            {
+                //case WebSocketError.Success:
+                //case WebSocketError.InvalidMessageType:
+                //case WebSocketError.Faulted:
+                //case WebSocketError.NativeError:
+                //case WebSocketError.NotAWebSocket:
+                case WebSocketError.UnsupportedVersion:
+                    throw FxTrace.Exception.AsError(new CommunicationException(SR.Format(SR.WebSocketVersionMismatchFromServer, ""), ex));
+                case WebSocketError.UnsupportedProtocol:
+                    throw FxTrace.Exception.AsError(new CommunicationException(SR.Format(SR.WebSocketSubProtocolMismatchFromServer, ""), ex));
+                //case WebSocketError.HeaderError:
+                //case WebSocketError.ConnectionClosedPrematurely:
+                //case WebSocketError.InvalidState:
+                default:
+                    throw FxTrace.Exception.AsError(new CommunicationException(ex.Message, ex));
+            }
+        }
+
+        void CleanupOnError()
+        {
+            Cleanup();
+        }
+
+        void CleanupTokenProviders()
+        {
+            if (_webRequestTokenProvider != null)
+            {
+                _webRequestTokenProvider.Abort();
+                _webRequestTokenProvider = null;
+            }
+
+            if (_webRequestProxyTokenProvider != null)
+            {
+                _webRequestProxyTokenProvider.Abort();
+                _webRequestProxyTokenProvider = null;
+            }
+        }
+
+        private async Task<WebSocket> CreateWebSocketWithFactoryAsync(TimeoutHelper timeoutHelper)
+        {
+            Contract.Assert(_connectionFactory != null, "Invalid call: CreateWebSocketWithFactory.");
+
+            if (TD.WebSocketCreateClientWebSocketWithFactoryIsEnabled())
+            {
+                TD.WebSocketCreateClientWebSocketWithFactory(EventTraceActivity, _connectionFactory.GetType().FullName);
+            }
+
+            // Create the client WebSocket with the factory.
+            WebSocket ws;
+            try
+            {
+                //(Uri address, WebHeaderCollection headers, ICredentials credentials, WebSocketTransportSettings settings, TimeoutHelper timeoutHelper);
+                var headers = new WebHeaderCollection();
+                headers[WebSocketTransportSettings.SoapContentTypeHeader] = _channelFactory.WebSocketSoapContentType;
+                if (_channelFactory.MessageEncoderFactory is BinaryMessageEncoderFactory)
+                {
+                    headers[WebSocketTransportSettings.BinaryEncoderTransferModeHeader] = _channelFactory.TransferMode.ToString();
+                }
+
+                var credentials = _channelFactory.GetCredentials();
+                ws = await _connectionFactory.CreateWebSocketAsync(Via, headers, credentials, WebSocketSettings.Clone(), timeoutHelper);
+            }
+            catch (Exception e)
+            {
+                if (Fx.IsFatal(e))
+                {
+                    throw;
+                }
+
+                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.ClientWebSocketFactory_CreateWebSocketFailed, _connectionFactory.GetType().Name), e));
+            }
+
+            // The returned WebSocket should be valid (non-null), in an opened state and with the same SubProtocol that we requested.
+            if (ws == null)
+            {
+                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.ClientWebSocketFactory_InvalidWebSocket, _connectionFactory.GetType().Name)));
+            }
+
+            if (ws.State != WebSocketState.Open)
+            {
+                ws.Dispose();
+                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.ClientWebSocketFactory_InvalidWebSocket, _connectionFactory.GetType().Name)));
+            }
+
+            string requested = WebSocketSettings.SubProtocol;
+            string obtained = ws.SubProtocol;
+            if (!(requested == null ? string.IsNullOrWhiteSpace(obtained) : requested.Equals(obtained, StringComparison.OrdinalIgnoreCase)))
+            {
+                ws.Dispose();
+                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.ClientWebSocketFactory_InvalidSubProtocol, _connectionFactory.GetType().Name, obtained, requested)));
+            }
+
+            return ws;
+        }
+    }
+}
+

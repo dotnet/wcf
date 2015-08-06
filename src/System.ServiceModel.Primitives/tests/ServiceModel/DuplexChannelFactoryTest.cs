@@ -164,15 +164,7 @@ public class DuplexChannelFactoryTest
         Binding binding = new NetHttpBinding(BasicHttpSecurityMode.None);
         EndpointAddress endpoint = new EndpointAddress(FakeAddress.HttpAddress);
         DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
-
-        // Can't cast to IDuplexSessionChannel to IRequestChannel on http
-        var exception = Assert.Throws<InvalidCastException>(() =>
-        {
-            factory.CreateChannel();
-        });
-
-        // Can't check that the InvalidCastException message as .NET Native only reports this message for all InvalidCastExceptions:
-        // "System.InvalidCastException: Arg_InvalidCastException"
+        factory.CreateChannel();
     }
 
     [Fact]
