@@ -6,6 +6,9 @@ using System.IO;
 using System.Net.Http;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using TestTypes;
 using Xunit;
 
 public static class ServiceContractTests
@@ -157,6 +160,34 @@ public static class ServiceContractTests
         }
 
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed FAILED with the following errors: {0}", errorBuilder));
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.DefaultSettings_Echo_RoundTrips_String_Streamed(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(TestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.DefaultSettings_Echo_RoundTrips_String_Streamed_Async(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(TestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext");
     }
 
     private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
