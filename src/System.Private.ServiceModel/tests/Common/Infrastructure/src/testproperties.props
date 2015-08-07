@@ -15,9 +15,17 @@
         <Value>$(BridgeResourceFolder)</Value>
         <DefaultValue>$(OutputPath)</DefaultValue>
       </TestProperty>
-      <TestProperty Include="BridgeUrl">
-        <Value>$(BridgeUrl)</Value>
-        <DefaultValue>http://localhost:44283</DefaultValue>
+      <TestProperty Include="BridgeHost">
+        <Value>$(BridgeHost)</Value>
+        <DefaultValue>localhost</DefaultValue>
+      </TestProperty>
+      <TestProperty Include="BridgePort">
+        <Value>$(BridgePort)</Value>
+        <DefaultValue>44283</DefaultValue>
+      </TestProperty>
+      <TestProperty Include="BridgeRemoteEnabled">
+        <Value>$(BridgeRemoteEnabled)</Value>
+        <DefaultValue>false</DefaultValue>
       </TestProperty>
       <TestProperty Include="UseFiddlerUrl">
         <Value>$(UseFiddlerUrl)</Value>
