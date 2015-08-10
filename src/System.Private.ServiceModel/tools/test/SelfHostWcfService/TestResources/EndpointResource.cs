@@ -43,15 +43,13 @@ namespace WcfService.TestResources
                     {
                         host = new ServiceHost(typeof(ServiceType));
 
-                        // The URL to reach the Bridge is passed in as part of
+                        // The host name to reach the Bridge is passed in as part of
                         // the Bridge configuration.  The default behavior of
                         // an endpoint resource is to use that for its Host name.
-                        string bridgeUrl = context.BridgeConfiguration.BridgeUrl;
-                        if (!string.IsNullOrEmpty(bridgeUrl))
+                        string bridgeHost = context.BridgeConfiguration.BridgeHost;
+                        if (!string.IsNullOrEmpty(bridgeHost))
                         {
-                            Uri uri = new Uri(bridgeUrl);
-                            string hostName = uri.Host;
-                            Host = hostName;
+                            Host = bridgeHost;
                         }
 
                         host.AddServiceEndpoint(

@@ -14,8 +14,11 @@ public static class TestPropertiesTest
     {
         // Test property names are auto-generated.
         // This test will fail to compile if these names are not generated.
+        // It is not necessary to test all the known properties, just to
+        // test that property name code generation occurred.
         Assert.NotNull(TestProperties.BridgeResourceFolder_PropertyName);
-        Assert.NotNull(TestProperties.BridgeUrl_PropertyName);
+        Assert.NotNull(TestProperties.BridgeHost_PropertyName);
+        Assert.NotNull(TestProperties.BridgePort_PropertyName);
         Assert.NotNull(TestProperties.UseFiddlerUrl_PropertyName);
     }
 

@@ -20,7 +20,12 @@ namespace Infrastructure.Common
 
         private static string BridgeBaseAddress
         {
-            get { return TestProperties.GetProperty(TestProperties.BridgeUrl_PropertyName); }
+            get
+            {
+                return String.Format("http://{0}:{1}",
+                                TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName),
+                                TestProperties.GetProperty(TestProperties.BridgePort_PropertyName));
+            }
         }
 
         private static void EnsureBridgeIsRunning()

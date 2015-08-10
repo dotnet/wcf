@@ -12,12 +12,14 @@ namespace WcfTestBridgeCommon
         // These property names must match the names used in TestProperties because
         // that is the set of name/value pairs from which this type is created.
         private const string BridgeResourceFolder_PropertyName = "BridgeResourceFolder";
-        private const string BridgeUrl_PropertyName = "BridgeUrl";
+        private const string BridgeHost_PropertyName = "BridgeHost";
+        private const string BridgePort_PropertyName = "BridgePort";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
 
         public string BridgeResourceFolder { get; set; }
-        public string BridgeUrl { get; set; }
+        public string BridgeHost { get; set; }
+        public int BridgePort { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
 
@@ -31,7 +33,8 @@ namespace WcfTestBridgeCommon
         public BridgeConfiguration(BridgeConfiguration configuration, Dictionary<string, string> properties)
         {
             BridgeResourceFolder = configuration.BridgeResourceFolder;
-            BridgeUrl = configuration.BridgeUrl;
+            BridgeHost = configuration.BridgeHost;
+            BridgePort = configuration.BridgePort;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
 
@@ -48,9 +51,22 @@ namespace WcfTestBridgeCommon
                 BridgeResourceFolder = Path.GetFullPath(propertyValue);
             }
 
-            if (properties.TryGetValue(BridgeUrl_PropertyName, out propertyValue))
+            if (properties.TryGetValue(BridgeHost_PropertyName, out propertyValue))
             {
-                BridgeUrl = propertyValue;
+                BridgeHost = propertyValue;
+            }
+
+            if (properties.TryGetValue(BridgePort_PropertyName, out propertyValue))
+            {
+                int port = 0;
+                if (!int.TryParse(propertyValue, out port))
+                {
+                    throw new ArgumentException(
+                        String.Format("The BridgePort value '{0}' is not a valid port number.", propertyValue),
+                        BridgeMaxIdleTimeSpan_PropertyName);
+                }
+
+                BridgePort = port;
             }
 
             if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
@@ -84,7 +100,8 @@ namespace WcfTestBridgeCommon
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(String.Format("{0} : '{1}'", BridgeResourceFolder_PropertyName, BridgeResourceFolder));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeUrl_PropertyName, BridgeUrl));
+            sb.AppendLine(String.Format("{0} : '{1}'", BridgeHost_PropertyName, BridgeHost));
+            sb.AppendLine(String.Format("{0} : '{1}'", BridgePort_PropertyName, BridgePort));
             sb.AppendLine(String.Format("{0} : '{1}'", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan));
             sb.AppendLine(String.Format("{0} : '{1}'", UseFiddlerUrl_PropertyName, UseFiddlerUrl));
             return sb.ToString();

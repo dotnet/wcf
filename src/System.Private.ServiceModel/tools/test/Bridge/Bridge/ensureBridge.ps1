@@ -1,9 +1,24 @@
 ﻿Param(
 	[Alias('p')]
-	[int]$portNumber = 44283
+	[int]$portNumber = 44283,
+
+        [Alias('h')]
+        [string]$hostName = 'localhost',
+
+        [Alias('r')]
+        [string]$allowRemote = $false
 )
 
-$baseAddress = "http://localhost:" + $portNumber
+Write-Host
+
+$baseAddress = "http://" + $hostName + ":" + $portNumber
+
+Write-Host portNumber is $portNumber
+Write-Host hostName is $hostName
+Write-Host allowRemote is $allowRemote
+
+
+Write-Host Bridge base address is $baseAddress
 
 Write-Host
 
@@ -23,11 +38,25 @@ $result= checkBridge;
 
 if(!$result)
 {
-	Write-Host Launching bridge.exe.
+        if ($hostName -ne 'localhost')
+        {
+            Write-Host The Bridge cannot be started remotely on $hostName.
+            Read-Host -Prompt "Press Enter to continue"
+            exit -1;
+        }
 
 	$bridgePath = Join-Path $PSScriptRoot bridge.exe
+        $bridgeArgs = '-port:' + $portNumber;
+        if ($allowRemote -eq $true)
+        {
+            $bridgeArgs = $bridgeArgs + ' -allowRemote'
+        }
 
-	Start-Process $bridgePath $portNumber -WorkingDirectory $PSScriptRoot
+	Write-Host Launching Bridge at $bridgePath $bridgeArgs
+
+        #Read-Host -Prompt "Press Enter to continue"
+
+	Start-Process $bridgePath $bridgeArgs -WorkingDirectory $PSScriptRoot
 	$result = checkBridge;
 }
 
