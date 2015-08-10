@@ -178,10 +178,16 @@ namespace System.ServiceModel.Channels
                         switch (_authenticationScheme)
                         {
                             case AuthenticationSchemes.Basic:
-                                if (credentials.UserName.UserName != string.Empty)
+                                if (credentials.UserName.UserName == null)
                                 {
-                                    creds = new NetworkCredential(credentials.UserName.UserName, credentials.UserName.Password);
+                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("userName");
                                 }
+                                if (credentials.UserName.UserName == string.Empty)
+                                {
+                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.UserNameCannotBeEmpty);
+                                }
+
+                                creds = new NetworkCredential(credentials.UserName.UserName, credentials.UserName.Password);
                                 break;
                             case AuthenticationSchemes.Digest:
                                 if (credentials.HttpDigest.ClientCredential.UserName != string.Empty)
