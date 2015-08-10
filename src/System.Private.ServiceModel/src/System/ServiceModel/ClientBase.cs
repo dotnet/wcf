@@ -23,22 +23,22 @@ namespace System.ServiceModel
 
         protected ClientBase()
         {
-            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
+            throw new PlatformNotSupportedException(SR.ConfigurationFilesNotSupported);
         }
 
         protected ClientBase(string endpointConfigurationName)
         {
-            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
+            throw new PlatformNotSupportedException(SR.ConfigurationFilesNotSupported);
         }
 
         protected ClientBase(string endpointConfigurationName, string remoteAddress)
         {
-            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
+            throw new PlatformNotSupportedException(SR.ConfigurationFilesNotSupported);
         }
 
         protected ClientBase(string endpointConfigurationName, EndpointAddress remoteAddress)
         {
-            throw new NotSupportedException(SR.ConfigurationFilesNotSupported);
+            throw new PlatformNotSupportedException(SR.ConfigurationFilesNotSupported);
         }
 
         protected ClientBase(Binding binding, EndpointAddress remoteAddress)
@@ -105,14 +105,6 @@ namespace System.ServiceModel
             }
         }
 
-        public ChannelFactory<TChannel> ChannelFactory
-        {
-            get
-            {
-                return GetChannelFactory();
-            }
-        }
-
         public CommunicationState State
         {
             get
@@ -125,7 +117,7 @@ namespace System.ServiceModel
                 else
                 {
                     // we may have failed to create the channel under open, in which case we our factory wouldn't be open
-                    return GetChannelFactory().State;
+                    return _channelFactory.State;
                 }
             }
         }
@@ -142,13 +134,13 @@ namespace System.ServiceModel
         {
             get
             {
-                return GetChannelFactory().Endpoint;
+                return _channelFactory.Endpoint;
             }
         }
 
         public void Open()
         {
-            ((ICommunicationObject)this).Open(GetChannelFactory().InternalOpenTimeout);
+            ((ICommunicationObject)this).Open(_channelFactory.InternalOpenTimeout);
         }
 
         public void Abort()
@@ -163,29 +155,29 @@ namespace System.ServiceModel
 
         public void Close()
         {
-            ((ICommunicationObject)this).Close(GetChannelFactory().InternalCloseTimeout);
+            ((ICommunicationObject)this).Close(_channelFactory.InternalCloseTimeout);
         }
 
         private void CreateChannelInternal()
         {
-            _channel = this.CreateChannel();
+            _channel = CreateChannel();
         }
 
         protected virtual TChannel CreateChannel()
         {
-            return GetChannelFactory().CreateChannel();
+            return _channelFactory.CreateChannel();
         }
 
         void IDisposable.Dispose()
         {
-            this.Close();
+            Close();
         }
 
         void ICommunicationObject.Open(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            GetChannelFactory().Open(timeoutHelper.RemainingTime());
-            this.InnerChannel.Open(timeoutHelper.RemainingTime());
+            _channelFactory.Open(timeoutHelper.RemainingTime());
+            InnerChannel.Open(timeoutHelper.RemainingTime());
         }
 
         void ICommunicationObject.Close(TimeSpan timeout)
@@ -211,11 +203,11 @@ namespace System.ServiceModel
         {
             add
             {
-                this.InnerChannel.Closed += value;
+                InnerChannel.Closed += value;
             }
             remove
             {
-                this.InnerChannel.Closed -= value;
+                InnerChannel.Closed -= value;
             }
         }
 
@@ -223,11 +215,11 @@ namespace System.ServiceModel
         {
             add
             {
-                this.InnerChannel.Closing += value;
+                InnerChannel.Closing += value;
             }
             remove
             {
-                this.InnerChannel.Closing -= value;
+                InnerChannel.Closing -= value;
             }
         }
 
@@ -235,11 +227,11 @@ namespace System.ServiceModel
         {
             add
             {
-                this.InnerChannel.Faulted += value;
+                InnerChannel.Faulted += value;
             }
             remove
             {
-                this.InnerChannel.Faulted -= value;
+                InnerChannel.Faulted -= value;
             }
         }
 
@@ -247,11 +239,11 @@ namespace System.ServiceModel
         {
             add
             {
-                this.InnerChannel.Opened += value;
+                InnerChannel.Opened += value;
             }
             remove
             {
-                this.InnerChannel.Opened -= value;
+                InnerChannel.Opened -= value;
             }
         }
 
@@ -259,17 +251,17 @@ namespace System.ServiceModel
         {
             add
             {
-                this.InnerChannel.Opening += value;
+                InnerChannel.Opening += value;
             }
             remove
             {
-                this.InnerChannel.Opening -= value;
+                InnerChannel.Opening -= value;
             }
         }
 
         IAsyncResult ICommunicationObject.BeginClose(AsyncCallback callback, object state)
         {
-            return ((ICommunicationObject)this).BeginClose(GetChannelFactory().InternalCloseTimeout, callback, state);
+            return ((ICommunicationObject)this).BeginClose(_channelFactory.InternalCloseTimeout, callback, state);
         }
 
         IAsyncResult ICommunicationObject.BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -284,7 +276,7 @@ namespace System.ServiceModel
 
         IAsyncResult ICommunicationObject.BeginOpen(AsyncCallback callback, object state)
         {
-            return ((ICommunicationObject)this).BeginOpen(GetChannelFactory().InternalOpenTimeout, callback, state);
+            return ((ICommunicationObject)this).BeginOpen(_channelFactory.InternalOpenTimeout, callback, state);
         }
 
         IAsyncResult ICommunicationObject.BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -301,27 +293,27 @@ namespace System.ServiceModel
 
         internal IAsyncResult BeginFactoryOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return GetChannelFactory().BeginOpen(timeout, callback, state);
+            return _channelFactory.BeginOpen(timeout, callback, state);
         }
 
         internal void EndFactoryOpen(IAsyncResult result)
         {
-            GetChannelFactory().EndOpen(result);
+            _channelFactory.EndOpen(result);
         }
 
         internal IAsyncResult BeginChannelOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return this.InnerChannel.BeginOpen(timeout, callback, state);
+            return InnerChannel.BeginOpen(timeout, callback, state);
         }
 
         internal void EndChannelOpen(IAsyncResult result)
         {
-            this.InnerChannel.EndOpen(result);
+            InnerChannel.EndOpen(result);
         }
 
         internal IAsyncResult BeginFactoryClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return GetChannelFactory().BeginClose(timeout, callback, state);
+            return _channelFactory.BeginClose(timeout, callback, state);
         }
 
         internal void EndFactoryClose(IAsyncResult result)
@@ -332,7 +324,7 @@ namespace System.ServiceModel
             }
             else
             {
-                GetChannelFactory().EndClose(result);
+                _channelFactory.EndClose(result);
             }
         }
 
@@ -340,7 +332,7 @@ namespace System.ServiceModel
         {
             if (_channel != null)
             {
-                return this.InnerChannel.BeginClose(timeout, callback, state);
+                return InnerChannel.BeginClose(timeout, callback, state);
             }
             else
             {
@@ -356,13 +348,8 @@ namespace System.ServiceModel
             }
             else
             {
-                this.InnerChannel.EndClose(result);
+                InnerChannel.EndClose(result);
             }
-        }
-
-        private ChannelFactory<TChannel> GetChannelFactory()
-        {
-            return _channelFactory;
         }
 
         // WARNING: changes in the signature/name of the following delegates must be applied to the 
@@ -525,7 +512,7 @@ namespace System.ServiceModel
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxChannelFactoryEndpointAddressUri));
                 }
 
-                ChannelFactory<T> cf = client.ChannelFactory;
+                ChannelFactory<T> cf = client._channelFactory;
                 cf.EnsureOpened();  // to prevent the NullReferenceException that is thrown if the ChannelFactory is not open when cf.ServiceChannelFactory is accessed.
                 _channel = cf.ServiceChannelFactory.CreateServiceChannel(client.Endpoint.Address, client.Endpoint.Address.Uri);
                 _channel.InstanceContext = cf.CallbackInstance;
