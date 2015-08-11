@@ -8,11 +8,20 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.Text;
 using System.Xml;
+using Infrastructure.Common;
 
 public static class ScenarioTestHelpers
 {
     private const string testString = "Hello";
-    public static readonly TimeSpan TestTimeout = TimeSpan.FromSeconds(20);
+    public static TimeSpan TestTimeout
+    {
+        get
+        {
+            // Let any exception throw to the test that asked for this so it is reported
+            string timeSpanAsString = TestProperties.GetProperty(TestProperties.MaxTestTimeSpan_PropertyName);
+            return TimeSpan.Parse(timeSpanAsString);
+        }
+    }
 
     public static string GenerateStringValue(int length)
     {

@@ -35,6 +35,10 @@
         <Value>$(BridgeMaxIdleTimeSpan)</Value>
         <DefaultValue>20:00</DefaultValue>
       </TestProperty>
+      <TestProperty Include="MaxTestTimeSpan">
+        <Value>$(MaxTestTimeSpan)</Value>
+        <DefaultValue>00:20</DefaultValue>
+      </TestProperty>
     </ItemGroup>
 
   <!--
