@@ -16,10 +16,10 @@ namespace Bridge
         // Null is allowed and means there is no resource folder.
         public static string OnResourceFolderChanged(string oldFolder, string newFolder)
         {
-            // Any change to the folder shuts down the prior AppDomain
+            // Changing the current AppDomain's folder to null unloads the AppDomain
             if (!String.Equals(oldFolder, newFolder))
             {
-                if (!(String.IsNullOrEmpty(ConfigController.CurrentAppDomainName)))
+                if (!(String.IsNullOrEmpty(ConfigController.CurrentAppDomainName)) && newFolder == null)
                 {
                     Trace.WriteLine(String.Format("{0:T} Shutting down the appDomain for {1}", DateTime.Now, ConfigController.CurrentAppDomainName),
                                     typeof(AppDomainManager).Name);

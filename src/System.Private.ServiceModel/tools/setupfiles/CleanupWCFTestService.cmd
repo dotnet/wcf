@@ -4,7 +4,8 @@ REM elevated window does not set current directory correctly.
 REM Workaround it by passing the current directory around
 pushd %1
 
-if '%BridgeKeepRunning%' == 'true' (
+echo BridgeKeepRunning=%BridgeKeepRunning%
+if '%BridgeKeepRunning%' neq 'true' (
     echo stopping the Bridge.exe task...
     Taskkill /IM bridge.exe /F
     netsh http delete sslcert ipport=0.0.0.0:44285

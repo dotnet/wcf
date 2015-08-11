@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using WcfTestBridgeCommon;
 
 namespace Bridge
 {
@@ -22,6 +23,7 @@ namespace Bridge
             {
                 Trace.WriteLine(String.Format("{0:T} - Timed out as there were no messages to the bridge for {1} seconds", DateTime.Now, (int)e.TotalSeconds),
                                 this.GetType().Name);
+                PortManager.CloseAllOpenedPortsInFireWall();
                 Environment.Exit(-1);
             };
         }

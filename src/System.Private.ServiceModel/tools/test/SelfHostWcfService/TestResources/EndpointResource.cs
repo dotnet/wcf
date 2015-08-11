@@ -101,6 +101,7 @@ namespace WcfService.TestResources
             var builder = new UriBuilder();
             builder.Host = Host;
             builder.Port = Int32.Parse(Port);
+            PortManager.OpenPortInFirewall(builder.Port);
             builder.Path = AppDomain.CurrentDomain.FriendlyName + "/" + Address;
             builder.Scheme = Protocol;
             return builder.Uri;

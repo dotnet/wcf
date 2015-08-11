@@ -38,6 +38,7 @@
     <Compile Include="AssemblyLoader.cs" />
     <Compile Include="BridgeConfiguration.cs" />
     <Compile Include="IResource.cs" />
+    <Compile Include="PortManager.cs" />
     <Compile Include="ResourceRequestContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
