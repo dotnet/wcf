@@ -39,6 +39,7 @@ call :build %*
 goto :AfterBuild
 
 :build
+msbuild %~dp0..\test\Bridge.Build.Tasks\Bridge.Build.Tasks.sln
 %_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
 set BUILDERRORLEVEL=%ERRORLEVEL%
 goto :eof

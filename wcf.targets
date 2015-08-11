@@ -11,6 +11,14 @@
      <BridgeResourceFolder>$(WcfRootFolder)bin\Wcf\Bridge\Resources\</BridgeResourceFolder>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(BridgeHost)' == ''">
+     <BridgeHost>localhost</BridgeHost>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(BridgePort)' == ''">
+     <BridgePort>44283</BridgePort>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(WcfToolsOutputPath)' == ''">
      <WcfToolsOutputPath>$(WcfRootFolder)bin\Wcf\tools\</WcfToolsOutputPath>
   </PropertyGroup>
