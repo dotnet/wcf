@@ -12,8 +12,26 @@ namespace Bridge
 {
     public static class AppDomainManager
     {
+        // This method is called whenever the resource folder location changes.
+        // Null is allowed and means there is no resource folder.
         public static string OnResourceFolderChanged(string oldFolder, string newFolder)
         {
+            // Any change to the folder shuts down the prior AppDomain
+            if (!String.Equals(oldFolder, newFolder))
+            {
+                if (!(String.IsNullOrEmpty(ConfigController.CurrentAppDomainName)))
+                {
+                    Trace.WriteLine(String.Format("{0:T} Shutting down the appDomain for {1}", DateTime.Now, ConfigController.CurrentAppDomainName),
+                                    typeof(AppDomainManager).Name);
+                    ShutdownAppDomain(ConfigController.CurrentAppDomainName);
+                }
+            }
+
+            if (newFolder == null)
+            {
+                return null;
+            }
+
             var newPath = Path.GetFullPath(newFolder);
             Trace.WriteLine(String.Format("{0:T} Adding assemblies from the resource folder {1}", DateTime.Now, newPath), 
                             typeof(AppDomainManager).Name);
@@ -39,6 +57,27 @@ namespace Bridge
             TypeCache.Cache.Add(friendlyName, loader.GetTypes());
 
             return friendlyName;
+        }
+
+        public static void ShutdownAppDomain(string appDomainName)
+        {
+            if (String.IsNullOrWhiteSpace(appDomainName))
+            {
+                throw new ArgumentNullException("appDomainName");
+            }
+
+            lock (ConfigController.BridgeLock)
+            {
+                AppDomain appDomain = null;
+                if (TypeCache.AppDomains.TryGetValue(appDomainName, out appDomain))
+                {
+                    // If the AppDomain cannot unload, allow the exception to propagate
+                    // back to the caller and leave the current cache state unaffected.
+                    AppDomain.Unload(appDomain);
+                    TypeCache.AppDomains.Remove(appDomainName);
+                    TypeCache.Cache.Remove(appDomainName);
+                }
+            }
         }
     }
 

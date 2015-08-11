@@ -28,6 +28,14 @@ namespace Infrastructure.Common
             }
         }
 
+        private static bool IsBridgeHostedLocally
+        {
+            get
+            {
+                return String.Equals("localhost", TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName), StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
         private static void EnsureBridgeIsRunning()
         {
             // Tests run concurrently, so we need the initial configuration
@@ -102,7 +110,18 @@ namespace Infrastructure.Common
             for (int i = 0; i < propertyNames.Length; ++i)
             {
                 string propertyName = propertyNames[i];
-                sb.Append(String.Format("\"{0}\" : \"{1}\"", propertyName, TestProperties.GetProperty(propertyName)));
+                string propertyValue = TestProperties.GetProperty(propertyName);
+
+                // If the Bridge is remote but the resources folder is local, omit it from the config request.
+                // In remote scenarios, either the Bridge must be started with its own resources folder or
+                // it is placed on a file share that we can reference from this application.
+                if ((String.Equals(propertyName, TestProperties.BridgeResourceFolder_PropertyName)) && 
+                    (!IsBridgeHostedLocally && !IsPathRemote(propertyValue)))
+                {
+                    continue;
+                }
+
+                sb.Append(String.Format("\"{0}\" : \"{1}\"", propertyName, propertyValue));
                 if (i < propertyNames.Length - 1)
                 {
                     sb.Append(", ");
@@ -117,10 +136,26 @@ namespace Infrastructure.Common
         private static void ValidateConfigRequestProperties()
         {
             string bridgeResourceFolder = TestProperties.GetProperty(TestProperties.BridgeResourceFolder_PropertyName);
+
+            // Validate the Bridge resource folder exists (even if UNC).
             if (String.IsNullOrEmpty(bridgeResourceFolder) || !Directory.Exists(bridgeResourceFolder))
             {
                 throw new Exception(String.Format("BridgeResourceFolder '{0}' does not exist", bridgeResourceFolder));
             }
+        }
+
+        // Returns true if the given file path is remote.
+        internal static bool IsPathRemote(string path)
+        {
+            if (String.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+            if (new Uri(path).IsUnc)
+            {
+                return true;
+            }
+            return false;
         }
 
         private static string MakeResourcePutRequest(string resourceName)

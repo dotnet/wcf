@@ -20,9 +20,13 @@ namespace Bridge
             lock (ConfigController.BridgeLock)
             {
                 AppDomain appDomain;
+                if (String.IsNullOrWhiteSpace(ConfigController.CurrentAppDomainName))
+                {
+                    throw new InvalidOperationException("The Bridge resource folder has not been configured.");
+                }
                 if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
                 {
-                    throw new ArgumentException("Resource not found");
+                    throw new ArgumentException("Resource not found", "resource");
                 }
 
                 Type loaderType = typeof(AssemblyLoader);
