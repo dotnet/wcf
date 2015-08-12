@@ -44,6 +44,10 @@ namespace Bridge.Build.Tasks
                     if (response.Content != null)
                     {
                         string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        if (contentAsString.Length > 1000)
+                        {
+                            contentAsString = contentAsString.Substring(0, 999) + "...";
+                        }
                         reason = String.Format("{0}, content:{1}{2}",
                                                 reason, Environment.NewLine, contentAsString);
                     }
@@ -65,6 +69,10 @@ namespace Bridge.Build.Tasks
                     if (response.Content != null)
                     {
                         string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        if (contentAsString.Length > 1000)
+                        {
+                            contentAsString = contentAsString.Substring(0, 999) + "...";
+                        }
                         reason = String.Format("{0}, content:{1}{2}",
                                                 reason, Environment.NewLine, contentAsString);
                     }

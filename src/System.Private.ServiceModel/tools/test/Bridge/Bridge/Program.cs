@@ -39,7 +39,7 @@ namespace Bridge
                 }
             }
 
-            PortManager.CloseAllOpenedPortsInFireWall();
+            Environment.Exit(0);
         }
 
         [Conditional("DEBUG")]
