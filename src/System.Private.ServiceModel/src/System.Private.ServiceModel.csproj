@@ -17,16 +17,17 @@
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
-     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsNETNativeLibrary)' != 'true'">
-     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
-    </PropertyGroup>
+    <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
     </Compile>
     <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" />
+    <Compile Include="Internals\WcfEventSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
