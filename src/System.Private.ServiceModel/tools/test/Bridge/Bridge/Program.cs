@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using WcfTestBridgeCommon;
 
 namespace Bridge
 {
@@ -20,6 +21,8 @@ namespace Bridge
             string visibleHost = (commandLineArgs.AllowRemote) ? Environment.MachineName : "localhost";
             string visibleAddress = String.Format(hostFormatString, visibleHost, commandLineArgs.Port);
 
+            PortManager.OpenPortInFirewall(commandLineArgs.Port);
+
             OwinSelfhostStartup.Startup(owinAddress);
 
             Console.WriteLine("The Bridge is listening at {0} with remote access {1}", visibleAddress, commandLineArgs.AllowRemote ? "enabled" : "disabled");
@@ -35,6 +38,8 @@ namespace Bridge
                     break;
                 }
             }
+
+            Environment.Exit(0);
         }
 
         [Conditional("DEBUG")]

@@ -122,6 +122,58 @@ namespace Bridge
             }
         }
 
+        public HttpResponseMessage Get(HttpRequestMessage request)
+        {
+            string configResponse = (!String.IsNullOrWhiteSpace(CurrentAppDomainName))
+                            ? PrepareConfigResponse(TypeCache.Cache[CurrentAppDomainName])
+                            : "\"The Bridge is not currently configured for a resource folder.\"";
+
+            Trace.WriteLine(String.Format("{0:T} - GET config returning raw content:{1}{2}",
+                                          DateTime.Now, Environment.NewLine, configResponse),
+                            typeof(ConfigController).Name);
+
+            // Directly return a json string to avoid use of MediaTypeFormatters
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(configResponse);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+            return response;
+        }
+
+        // The DELETE Http verb means release all resources allocated
+        // and return to an initial state
+        public HttpResponseMessage Delete(HttpRequestMessage request)
+        {
+            // A configuration change can have wide impact, so we don't allow concurrent use
+            lock (ConfigController.BridgeLock)
+            {
+                try {
+                    if (!String.IsNullOrEmpty(CurrentAppDomainName))
+                    {
+                        // Signal change of resource folder from prior value to null.
+                        string oldResourceFolder = BridgeConfiguration.BridgeResourceFolder;
+                        BridgeConfiguration.BridgeResourceFolder = null;
+                        if (ResourceFolderChanged != null)
+                        {
+                            ResourceFolderChanged(this, new ChangedEventArgs<string>(oldResourceFolder, null));
+                        }
+                    }
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Content = new StringContent("\"Bridge configuration has been cleared.\"");
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    var exceptionResponse = ex.Message;
+                    Trace.WriteLine(String.Format("{0:T} - DELETE config exception:{1}{2}",
+                                                    DateTime.Now, Environment.NewLine, ex),
+                                    typeof(ConfigController).Name);
+
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
+                }
+            }
+        }
+
         private static string PrepareConfigResponse(IEnumerable<string> types)
         {
             return string.Format(@"{{

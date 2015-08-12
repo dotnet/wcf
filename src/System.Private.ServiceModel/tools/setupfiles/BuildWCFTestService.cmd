@@ -20,7 +20,8 @@ if not defined VisualStudioVersion (
 :EnvSet
 
 :: Log build command line
-set _buildproj=%~dp0..\test\Bridge\Bridge.sln
+set _buildproj1=%~dp0..\test\Bridge.Build.Tasks\Bridge.Build.Tasks.sln
+set _buildproj2=%~dp0..\test\Bridge\Bridge.sln
 set _buildlog=%~dp0..\..\..\..\msbuildWCFTestService.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
@@ -39,7 +40,8 @@ call :build %*
 goto :AfterBuild
 
 :build
-%_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
+%_buildprefix% msbuild "%_buildproj1%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
+%_buildprefix% msbuild "%_buildproj2%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
 set BUILDERRORLEVEL=%ERRORLEVEL%
 goto :eof
 

@@ -38,13 +38,6 @@ $result= checkBridge;
 
 if(!$result)
 {
-        if ($hostName -ne 'localhost')
-        {
-            Write-Host The Bridge cannot be started remotely on $hostName.
-            Read-Host -Prompt "Press Enter to continue"
-            exit -1;
-        }
-
 	$bridgePath = Join-Path $PSScriptRoot bridge.exe
         $bridgeArgs = '-port:' + $portNumber;
         if ($allowRemote -eq $true)
