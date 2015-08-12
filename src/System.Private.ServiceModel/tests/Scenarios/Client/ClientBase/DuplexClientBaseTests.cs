@@ -8,7 +8,6 @@ using Xunit;
 
 public static class DuplexClientBaseTests
 {
-    static TimeSpan maxTestWaitTime = TimeSpan.FromSeconds(10);
 
     [Fact]
     [OuterLoop]
@@ -85,38 +84,4 @@ public static class DuplexClientBaseTests
             }
         }
     }
-
-    public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
-    {
-        private TaskCompletionSource<Guid> _tcs;
-
-        public WcfDuplexServiceCallback()
-        {
-            _tcs = new TaskCompletionSource<Guid>();
-        }
-
-        public Guid CallbackGuid
-        {
-            get
-            {
-                if (_tcs.Task.Wait(maxTestWaitTime))
-                {
-                    return _tcs.Task.Result;
-                }
-                throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", maxTestWaitTime));
-            }
-        }
-
-        public void OnPingCallback(Guid guid)
-        {
-            // Set the result in an async task with a 100ms delay to prevent a race condition
-            // where the OnPingCallback hasn't sent the reply to the server before the channel is closed.
-            Task.Run(async () =>
-            {
-                await Task.Delay(100);
-                _tcs.SetResult(guid);
-            });
-        }
-    }
 }
-

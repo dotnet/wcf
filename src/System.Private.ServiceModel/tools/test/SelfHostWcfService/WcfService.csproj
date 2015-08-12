@@ -84,10 +84,12 @@
     <Compile Include="TestResources\BasicHttpResource.cs" />
     <Compile Include="TestResources\EndpointResource.cs" />
     <Compile Include="TestHttpRequestMessageProperty.cs" />
+    <Compile Include="TestResources\WebSocketResources.cs" />
     <Compile Include="WcfDuplexService.cs" />
     <Compile Include="WcfRestartService.cs" />
     <Compile Include="WcfService.cs" />
     <Compile Include="WcfUserNameService.cs" />
+    <Compile Include="WcfWebSocketService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
