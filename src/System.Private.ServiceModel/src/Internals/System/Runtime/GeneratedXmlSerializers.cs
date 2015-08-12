@@ -4,7 +4,6 @@
 #if FEATURE_NETNATIVE
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,49 +12,18 @@ namespace System.Runtime.Serialization
 {
     public class GeneratedXmlSerializers
     {
-        // For NetNative, ToolChain sets s_generatedSerializersInitializer at App startup.
-        // For UWP, s_generatedSerializersInitializer is null.
-        private static Func<Dictionary<string, Type>> s_generatedSerializersInitializer;
-        private static Lazy<Dictionary<string, Type>> s_generatedSerializers = new Lazy<Dictionary<string, Type>>(InitGeneratedSerializers);
+        private static Dictionary<string, Type> s_generatedSerializers = new Dictionary<string, Type>();
 
-        public static Func<Dictionary<string, Type>> GeneratedSerializersInitializer
+        public static Dictionary<string, Type> GetGeneratedSerializers()
+        {
+            return s_generatedSerializers;
+        }
+
+        public static bool IsInitialized
         {
             get
             {
-                return s_generatedSerializersInitializer;
-            }
-            set
-            {
-                Contract.Assert(s_generatedSerializersInitializer == null, "s_generatedSerializersInitializer is already initialized.");
-                s_generatedSerializersInitializer = value;
-            }
-        }
-
-        private static Dictionary<string, Type> InitGeneratedSerializers()
-        {
-            if (GeneratedSerializersInitializer != null)
-            {
-                return GeneratedSerializersInitializer();
-            }
-            else
-            {
-                return new Dictionary<string, Type>();
-            }
-        }
-
-        internal static Dictionary<string, Type> GetGeneratedSerializers()
-        {
-            return s_generatedSerializers.Value;
-        }
-
-        // This property is used to determine if the code is running in NetNative or in UWP.
-        // true  - NetNative
-        // false - UWP
-        internal static bool IsInitialized
-        {
-            get
-            {
-                return GetGeneratedSerializers().Count != 0;
+                return s_generatedSerializers.Count != 0;
             }
         }
     }
