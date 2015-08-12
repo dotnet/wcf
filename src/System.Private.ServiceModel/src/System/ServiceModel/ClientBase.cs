@@ -105,6 +105,22 @@ namespace System.ServiceModel
             }
         }
 
+        public ChannelFactory<TChannel> ChannelFactory
+        {
+            get
+            {
+                return _channelFactory;
+            }
+        }
+
+        public ClientCredentials ClientCredentials
+        {
+            get
+            {
+                return _channelFactory.Credentials;
+            }
+        }
+
         public CommunicationState State
         {
             get
