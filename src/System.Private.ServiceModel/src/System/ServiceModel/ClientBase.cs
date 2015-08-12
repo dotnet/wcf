@@ -105,6 +105,22 @@ namespace System.ServiceModel
             }
         }
 
+        public ChannelFactory<TChannel> ChannelFactory
+        {
+            get
+            {
+                throw new PlatformNotSupportedException();
+            }
+        }
+
+        public ClientCredentials ClientCredentials
+        {
+            get
+            {
+                throw new PlatformNotSupportedException();
+            }
+        }
+
         public CommunicationState State
         {
             get
