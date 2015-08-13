@@ -84,13 +84,11 @@ public static class Https_ClientCredentialTypeTests
     }
 
     [Fact]
-    [ActiveIssue(224)]
     [OuterLoop]
     public static void BasicAuthenticationEmptyUser_throw_ArgumentException()
     {
         StringBuilder errorBuilder = new StringBuilder();
-        //Will need to use localized string once it is available
-        string message = "The username cannot be empty.";
+        string paraMessage = "username";
 
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
         {
@@ -107,7 +105,7 @@ public static class Https_ClientCredentialTypeTests
             string result = serviceProxy.Echo(testString);
         });
 
-        Assert.True(exception.Message.Contains(message), string.Format("Expected exception message to contain: '{0}'", message));
+        Assert.True(exception.Message.ToLower().Contains(paraMessage), string.Format("Expected exception message to contain: '{0}', actual: '{1}'", paraMessage, exception.Message));
     }
 
     [Fact]
@@ -138,7 +136,6 @@ public static class Https_ClientCredentialTypeTests
     }
 
     [Fact]
-    [ActiveIssue(5)]
     [OuterLoop]
     public static void NtlmAuthentication_RoundTrips_Echo()
     {
