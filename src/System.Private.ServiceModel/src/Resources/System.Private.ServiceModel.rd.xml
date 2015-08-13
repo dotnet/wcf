@@ -19,6 +19,12 @@
             <TypeParameter Name="detailType" DataContractSerializer="Public" DataContractJsonSerializer="Public" />
           </Method>
         </Type>
+         <!-- Objects passed to the InstanceContext ctor require reflection for duplex contracts -->
+        <Type Name="InstanceContext" Dynamic="Required All" >  
+          <Method Name=".ctor">  
+            <Parameter Name="implementation" Dynamic="Required All" />  
+          </Method>  
+        </Type>  
         <Type Name="MessageBodyMemberAttribute" Dynamic="Required All" />
         <Type Name="MessageContractMemberAttribute" Dynamic="Required All" />
         <Type Name="MessageParameterAttribute" Dynamic="Required All" />
@@ -29,6 +35,10 @@
         <!-- ServiceContractAttribute on a type makes it available for Reflection -->
         <Type Name="ServiceContractAttribute" Dynamic="Required All" >
           <AttributeImplies Dynamic="Required All" />
+          <!-- Type in CallbackContract named property requires reflection -->
+          <Method Name=".ctor">
+             <TypeParameter Name="CallbackContract" Dynamic="Required All" />
+          </Method>
         </Type>
         <!-- ExceptionDetail requires serialization for FaultException -->
         <Type Name="ExceptionDetail" Dynamic="Required All" DataContractJsonSerializer="Public" DataContractSerializer="Public" />
