@@ -10,7 +10,9 @@ namespace Bridge
 {
     internal class Program
     {
-        private const int DefaultPortNumber = 44283;
+        internal const int DefaultPortNumber = 44283;
+        internal const bool DefaultAllowRemote = false;
+        internal const string DefaultRemoteAddresses = "LocalSubnet";
 
         private static void Main(string[] args)
         {
@@ -21,16 +23,35 @@ namespace Bridge
             string visibleHost = (commandLineArgs.AllowRemote) ? Environment.MachineName : "localhost";
             string visibleAddress = String.Format(hostFormatString, visibleHost, commandLineArgs.Port);
 
+            // Configure the remote addresses the firewall rules will accept.
+            // If remote access is not allowed, specifically disallow remote addresses
+            PortManager.RemoteAddresses = commandLineArgs.AllowRemote ? commandLineArgs.RemoteAddresses : String.Empty;
+
+            // Remove any pre-existing firewall rules the Bridge may have added
+            // in past runs.  We normally cleanup on exit but could have been
+            // aborted.
+            PortManager.RemoveAllBridgeFirewallRules();
+
+            // Open the port used to communicate with the Bridge itself
             PortManager.OpenPortInFirewall(commandLineArgs.Port);
 
+            Console.WriteLine("Starting the Bridge at {0}", visibleAddress);
             OwinSelfhostStartup.Startup(owinAddress);
-
-            Console.WriteLine("The Bridge is listening at {0} with remote access {1}", visibleAddress, commandLineArgs.AllowRemote ? "enabled" : "disabled");
 
             Test(visibleHost, commandLineArgs.Port);
 
             while (true)
             {
+                Console.WriteLine("The Bridge is listening at {0}", visibleAddress);
+                if (commandLineArgs.AllowRemote)
+                {
+                    Console.WriteLine("Remote access is allowed from '{0}'", commandLineArgs.RemoteAddresses);
+                }
+                else
+                {
+                    Console.WriteLine("Remote access is disabled.");
+                }
+
                 Console.WriteLine("Type \"exit\" to stop the Bridge.");
                 string answer = Console.ReadLine();
                 if (String.Equals(answer, "exit", StringComparison.OrdinalIgnoreCase))
@@ -45,9 +66,11 @@ namespace Bridge
         [Conditional("DEBUG")]
         private static void Test(string hostName, int portNumber)
         {
-            Console.WriteLine("Self-testing the Bridge...");
+            Console.WriteLine("Self-testing the Bridge on http://{0}:{1} ...", hostName, portNumber);
+            string executionFolder = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+            string ensureBridgePath = Path.Combine(executionFolder, "ensureBridge.ps1");
             string commandLine = String.Format("-ExecutionPolicy Bypass -File {0} -portNumber {1} -hostName {2}", 
-                                            Path.GetFullPath("ensureBridge.ps1"), portNumber, hostName);
+                                            ensureBridgePath, portNumber, hostName);
             ProcessStartInfo procStartInfo = new ProcessStartInfo("powershell.exe", commandLine);
             procStartInfo.RedirectStandardOutput = true;
             procStartInfo.UseShellExecute = false;
@@ -62,13 +85,12 @@ namespace Bridge
 
         class CommandLineArguments
         {
-            private const int DefaultPortNumber = 44283;
-            private const bool DefaultAllowRemote = false;
-
             public CommandLineArguments(string[] args)
             {
                 Port = DefaultPortNumber;
                 AllowRemote = DefaultAllowRemote;
+                RemoteAddresses = DefaultRemoteAddresses;
+
                 bool success = Parse(args);
                 if (!success)
                 {
@@ -79,6 +101,7 @@ namespace Bridge
 
             public int Port { get; private set; }
             public bool AllowRemote { get; private set; }
+            public string RemoteAddresses { get; private set; }
 
             private bool Parse(string[] args)
             {
@@ -110,6 +133,14 @@ namespace Bridge
                     {
                         AllowRemote = true;
                     }
+                    else if (String.Equals(argAndValue[0], "remoteAddresses", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (argAndValue.Length < 2)
+                        {
+                            return false;
+                        }
+                        RemoteAddresses = argAndValue[1];
+                    }
                     else
                     {
                         return false;
@@ -122,9 +153,10 @@ namespace Bridge
             private void ShowUsage()
             {
                 Console.WriteLine("Starts a new instance of the Bridge.  Usage is:");
-                Console.WriteLine("Bridge.exe [/port:nnn] [/allowRemote]");
+                Console.WriteLine("Bridge.exe [/port:nnn] [/allowRemote] [/remoteAddresses:x,y,z");
                 Console.WriteLine("   /port:nnn     Listening port for the bridge (default is {0}", DefaultPortNumber);
                 Console.WriteLine("   /allowRemote  If specified, allows access from other than localHost (default is localhost only)");
+                Console.WriteLine("   /remoteAddresses  Comma-separated list of addresses firewall rules will accept (default is 'LocalSubnet')");
             }
         }
     }

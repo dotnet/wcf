@@ -21,7 +21,7 @@ if '%BridgeAllowRemote%' neq '' (
    set _bridgeAllowRemoteArg=-allowRemote %BridgeAllowRemote%
 )
 
-echo Executing: start powershell -ExecutionPolicy Bypass -File ..\test\Bridge\bin\ensureBridge.ps1 %_bridgeHostArg% %_bridgePortArg% %_bridgeAllowRemoteArg%
+echo Executing: start powershell -ExecutionPolicy Bypass -File ..\test\Bridge\bin\ensureBridge.ps1 %_bridgeHostArg% %_bridgePortArg% %_bridgeAllowRemoteArg% %2 %3 %4 %5 %6 %7
 
-start powershell -ExecutionPolicy Bypass -File ..\test\Bridge\bin\ensureBridge.ps1 %_bridgeHostArg% %_bridgePortArg% %_bridgeAllowRemoteArg%
+start powershell -ExecutionPolicy Bypass -File ..\test\Bridge\bin\ensureBridge.ps1 %_bridgeHostArg% %_bridgePortArg% %_bridgeAllowRemoteArg% %2 %3 %4 %5 %6 %7
 exit /b

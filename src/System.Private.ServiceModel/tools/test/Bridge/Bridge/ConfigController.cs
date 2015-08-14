@@ -143,6 +143,9 @@ namespace Bridge
         // and return to an initial state
         public HttpResponseMessage Delete(HttpRequestMessage request)
         {
+            Trace.WriteLine(String.Format("{0:T} - received DELETE request", DateTime.Now),
+                            typeof(ConfigController).Name);
+
             // A configuration change can have wide impact, so we don't allow concurrent use
             lock (ConfigController.BridgeLock)
             {

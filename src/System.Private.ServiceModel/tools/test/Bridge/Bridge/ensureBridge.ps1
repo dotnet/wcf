@@ -5,20 +5,24 @@
         [Alias('h')]
         [string]$hostName = 'localhost',
 
+        [Alias('a')]
+        [string]$allowRemote = $false,
+
         [Alias('r')]
-        [string]$allowRemote = $false
+        [string]$remoteAddresses = ''
+
 )
 
 Write-Host
 
 $baseAddress = "http://" + $hostName + ":" + $portNumber
 
-Write-Host portNumber is $portNumber
-Write-Host hostName is $hostName
-Write-Host allowRemote is $allowRemote
+#Write-Host portNumber is $portNumber
+#Write-Host hostName is $hostName
+#Write-Host allowRemote is $allowRemote
+#Write-Host remoteAddresses is $remoteAddresses
 
-
-Write-Host Bridge base address is $baseAddress
+Write-Host Ensuring Bridge is available at $baseAddress
 
 Write-Host
 
@@ -43,6 +47,10 @@ if(!$result)
         if ($allowRemote -eq $true)
         {
             $bridgeArgs = $bridgeArgs + ' -allowRemote'
+        }
+        if ($remoteAddresses -ine '')
+        {
+            $bridgeArgs = $bridgeArgs + ' -remoteAddresses:' + $remoteAddresses
         }
 
 	Write-Host Launching Bridge at $bridgePath $bridgeArgs
