@@ -5,7 +5,7 @@
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
     <AssemblyName>System.Private.ServiceModel</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <OutputType>Library</OutputType>
     <NoWarn>$(NoWarn);1634;1691;649</NoWarn>
@@ -17,11 +17,11 @@
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
-     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsNETNativeLibrary)' != 'true'">
-     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
-    </PropertyGroup>
+    <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
