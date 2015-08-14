@@ -2,7 +2,15 @@
   <!--
     Overrides for WCF
   -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>EnsureAssemblyInfoFileDirExists;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
 
+  <Target Name="EnsureAssemblyInfoFileDirExists">
+    <Error Condition="!Exists('$(BaseIntermediateOutputPath)')" Text="EnsureAssemblyInfoFileDirExists failed because BaseIntermediateOutputPath isn't set to a valid directory" />
+    <MakeDir Directories="$(AssemblyInfoFileDir)" />
+  </Target>
+  
   <PropertyGroup>
      <WcfRootFolder>$(MSBuildThisFileDirectory)</WcfRootFolder>
   </PropertyGroup>
