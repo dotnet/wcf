@@ -153,6 +153,44 @@ public static class ScenarioTestHelpers
 
         return compositeObject;
     }
+
+    /// <summary>
+    /// Closes com objects in the order passed in if not already closed.
+    /// If Close fails for Timeout or Communication exception then Aborts.
+    /// </summary>
+    /// <param name="objects">Any communication objects that need to be cleaned up.
+    /// In the order in which they need to be cleaned up.</param>
+    public static void CloseCommunicationObjects(params ICommunicationObject[] objects)
+    {
+        foreach(ICommunicationObject comObj in objects)
+        {
+            try
+            {
+                if(comObj == null)
+                {
+                    continue;
+                }
+                // Only want to call Close if it is in the Opened state
+                if(comObj.State == CommunicationState.Opened)
+                {
+                    comObj.Close();
+                }
+                // Anything not closed by this point should be aborted
+                if(comObj.State != CommunicationState.Closed)
+                {
+                    comObj.Abort();
+                }
+            }
+            catch(TimeoutException)
+            {
+                comObj.Abort();
+            }
+            catch(CommunicationException)
+            {
+                comObj.Abort();
+            }
+        }
+    }
 }
 
 
