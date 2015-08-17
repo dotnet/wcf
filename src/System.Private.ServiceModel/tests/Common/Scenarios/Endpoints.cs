@@ -37,6 +37,16 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpBinaryResource"); }
     }
 
+    public static string NetHttpWebSocketTransport_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketTransportResource"); }
+    }
+
+    public static string NetHttpDuplexWebSocket_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexWebSocketResource"); }
+    }
+
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {

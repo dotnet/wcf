@@ -771,3 +771,36 @@ public class MyDuplexClientBase<T> : DuplexClientBase<T> where T : class
     {
     }
 }
+
+public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
+{
+    private TaskCompletionSource<Guid> _tcs;
+
+    public WcfDuplexServiceCallback()
+    {
+        _tcs = new TaskCompletionSource<Guid>();
+    }
+
+    public Guid CallbackGuid
+    {
+        get
+        {
+            if (_tcs.Task.Wait(ScenarioTestHelpers.TestTimeout))
+            {
+                return _tcs.Task.Result;
+            }
+            throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", ScenarioTestHelpers.TestTimeout));
+        }
+    }
+
+    public void OnPingCallback(Guid guid)
+    {
+        // Set the result in an async task with a 100ms delay to prevent a race condition
+        // where the OnPingCallback hasn't sent the reply to the server before the channel is closed.
+        Task.Run(async () =>
+        {
+            await Task.Delay(100);
+            _tcs.SetResult(guid);
+        });
+    }
+}
