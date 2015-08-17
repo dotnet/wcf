@@ -28,3 +28,40 @@ The WCF repository can be built from a regular, non-admin command prompt using b
 Microsoft uses this repository to create and publish separate NuGet packages for each library. 
 
 The repository is a work in progress, and not all of the libraries are complete yet.
+
+Running the unit tests
+======================
+Unit tests are those that test aspects of the WCF libraries that don't require network interactions.
+To build the product and run the unit tests, simply execute this CMD from the root of the repository:
+
+```
+    build.cmd
+```
+
+Running the scenario tests
+==========================
+Scenario tests are those tests that involve network activity between the tests and one or
+more running WCF services.  By default, they are not run with the normal build.cmd.
+To run the scenario tests, execute this CMD from the root of the repository:
+
+```
+    build.cmd /p:WithCategories=OuterLoop
+```
+
+Obtaining code coverage
+=======================
+You can also obtain detailed code coverage information by including an additional property
+when you run the build script.  For example, this CMD runs the scenario tests and collects
+code coverage numbers:
+```
+    build.cmd /p:WithCategories=OuterLoop /p:Coverage=true
+```
+
+Running scenario tests across multiple machines
+===============================================
+By default scenario tests run against WCF services that are locally self-hosted.
+To run these tests against WCF services running on a separate machine, see:
+[Cross-machine test guide](https://github.com/dotnet/wcf/blob/master/Documentation/cross-machine-test-guide.md).
+
+
+
