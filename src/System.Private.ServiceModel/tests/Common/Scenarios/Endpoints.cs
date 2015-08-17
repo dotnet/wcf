@@ -78,11 +78,6 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap12Resource"); }
     }
 
-    public static string HttpUrlNotFound_Address
-    {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.EndpointNotFoundResource") + "/UnknownUrl.htm"; } 
-    }
-
     public static string HttpProtocolError_Address
     {
         get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; } 
