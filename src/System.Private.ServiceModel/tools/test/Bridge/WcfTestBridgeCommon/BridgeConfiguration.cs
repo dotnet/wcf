@@ -161,15 +161,15 @@ namespace WcfTestBridgeCommon
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0} : '{1}'", BridgeResourceFolder_PropertyName, BridgeResourceFolder)
-              .AppendFormat("{0} : '{1}'", BridgeHost_PropertyName, BridgeHost)
-              .AppendFormat("{0} : '{1}'", BridgePort_PropertyName, BridgePort)
-              .AppendFormat("{0} : '{1}'", BridgeHttpPort_PropertyName, BridgeHttpPort)
-              .AppendFormat("{0} : '{1}'", BridgeHttpsPort_PropertyName, BridgeHttpsPort)
-              .AppendFormat("{0} : '{1}'", BridgeTcpPort_PropertyName, BridgeTcpPort)
-              .AppendFormat("{0} : '{1}'", BridgeWebSocketPort_PropertyName, BridgeWebSocketPort)
-              .AppendFormat("{0} : '{1}'", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan)
-              .AppendFormat("{0} : '{1}'", UseFiddlerUrl_PropertyName, UseFiddlerUrl);
+            sb.AppendFormat("  {0} : '{1}'{2}", BridgeResourceFolder_PropertyName, BridgeResourceFolder, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeHost_PropertyName, BridgeHost, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgePort_PropertyName, BridgePort, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeHttpPort_PropertyName, BridgeHttpPort, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeHttpsPort_PropertyName, BridgeHttpsPort, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeTcpPort_PropertyName, BridgeTcpPort, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeWebSocketPort_PropertyName, BridgeWebSocketPort, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", UseFiddlerUrl_PropertyName, UseFiddlerUrl, Environment.NewLine);
             return sb.ToString();
         }
     }
