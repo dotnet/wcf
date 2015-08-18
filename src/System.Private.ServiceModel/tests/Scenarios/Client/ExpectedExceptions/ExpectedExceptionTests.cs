@@ -280,7 +280,8 @@ public static class ExpectedExceptionTests
     [OuterLoop]
     public static void UnknownUrl_Throws_EndpointNotFoundException()
     {
-        string notFoundUrl = Endpoints.HttpUrlNotFound_Address;
+        // We need a running service host at the other end but mangle the endpoint suffix
+        string notFoundUrl = Endpoints.HttpBaseAddress_Basic + "not-an-endpoint";
 
         BasicHttpBinding binding = new BasicHttpBinding();
         binding.SendTimeout = TimeSpan.FromMilliseconds(10000);

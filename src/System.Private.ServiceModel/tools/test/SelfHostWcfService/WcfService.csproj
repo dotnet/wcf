@@ -62,7 +62,6 @@
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
     <Compile Include="TestResources\BaseAddressResource.cs" />
-    <Compile Include="TestResources\EndpointNotFoundResource.cs" />
     <Compile Include="TestResources\BasicAuthResource.cs" />
     <Compile Include="TestResources\BasicHttpsResource.cs" />
     <Compile Include="TestResources\DefaultCustomHttpResource.cs" />
