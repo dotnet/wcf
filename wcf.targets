@@ -39,6 +39,10 @@
      <BridgeTcpPort>809</BridgeTcpPort>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(BridgeWebSocketPort)' == ''">
+     <BridgeWebSocketPort>8083</BridgeWebSocketPort>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(WcfToolsOutputPath)' == ''">
      <WcfToolsOutputPath>$(WcfRootFolder)bin\Wcf\tools\</WcfToolsOutputPath>
   </PropertyGroup>

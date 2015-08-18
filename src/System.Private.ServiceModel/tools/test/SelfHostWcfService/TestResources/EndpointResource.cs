@@ -96,34 +96,4 @@ namespace WcfService.TestResources
             return builder.Uri;
         }
     }
-
-    internal abstract class HttpResource : EndpointResource<WcfService, IWcfService>
-    {
-        protected override string Protocol { get { return BaseAddressResource.Http; } }
-
-        protected override int GetPort(ResourceRequestContext context)
-        {
-            return context.BridgeConfiguration.BridgeHttpPort;
-        }
-    }
-
-    internal abstract class HttpsResource : EndpointResource<WcfService, IWcfService>
-    {
-        protected override string Protocol { get { return BaseAddressResource.Https; } }
-
-        protected override int GetPort(ResourceRequestContext context)
-        {
-            return context.BridgeConfiguration.BridgeHttpsPort;
-        }
-    }
-
-    internal abstract class TcpResource : EndpointResource<WcfService, IWcfService>
-    {
-        protected override string Protocol { get { return BaseAddressResource.Tcp; } }
-
-        protected override int GetPort(ResourceRequestContext context)
-        {
-            return context.BridgeConfiguration.BridgeTcpPort;
-        }
-    }
 }

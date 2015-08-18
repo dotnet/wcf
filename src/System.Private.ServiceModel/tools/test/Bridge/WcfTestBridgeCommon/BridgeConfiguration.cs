@@ -20,6 +20,7 @@ namespace WcfTestBridgeCommon
         private const string BridgeHttpPort_PropertyName = "BridgeHttpPort";
         private const string BridgeHttpsPort_PropertyName = "BridgeHttpsPort";
         private const string BridgeTcpPort_PropertyName = "BridgeTcpPort";
+        private const string BridgeWebSocketPort_PropertyName = "BridgeWebSocketPort";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
 
@@ -29,6 +30,7 @@ namespace WcfTestBridgeCommon
         public int BridgeHttpPort { get; set; }
         public int BridgeHttpsPort { get; set; }
         public int BridgeTcpPort { get; set; }
+        public int BridgeWebSocketPort { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
 
@@ -47,6 +49,7 @@ namespace WcfTestBridgeCommon
             BridgeHttpPort = configuration.BridgeHttpPort;
             BridgeHttpsPort = configuration.BridgeHttpsPort;
             BridgeTcpPort = configuration.BridgeTcpPort;
+            BridgeWebSocketPort = configuration.BridgeWebSocketPort;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
 
@@ -88,6 +91,11 @@ namespace WcfTestBridgeCommon
             if (TryParseIntegerProperty(BridgeTcpPort_PropertyName, properties, out port))
             {
                 BridgeTcpPort = port;
+            }
+
+            if (TryParseIntegerProperty(BridgeWebSocketPort_PropertyName, properties, out port))
+            {
+                BridgeWebSocketPort = port;
             }
 
             if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
@@ -143,6 +151,7 @@ namespace WcfTestBridgeCommon
             result[BridgeHttpPort_PropertyName] = BridgeHttpPort.ToString();
             result[BridgeHttpsPort_PropertyName] = BridgeHttpsPort.ToString();
             result[BridgeTcpPort_PropertyName] = BridgeTcpPort.ToString();
+            result[BridgeWebSocketPort_PropertyName] = BridgeWebSocketPort.ToString();
             result[BridgeMaxIdleTimeSpan_PropertyName] = BridgeMaxIdleTimeSpan.ToString();
             result[UseFiddlerUrl_PropertyName] = UseFiddlerUrl.ToString();
 
@@ -152,14 +161,15 @@ namespace WcfTestBridgeCommon
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeResourceFolder_PropertyName, BridgeResourceFolder));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeHost_PropertyName, BridgeHost));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgePort_PropertyName, BridgePort));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeHttpPort_PropertyName, BridgeHttpPort));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeHttpsPort_PropertyName, BridgeHttpsPort));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeTcpPort_PropertyName, BridgeTcpPort));
-            sb.AppendLine(String.Format("{0} : '{1}'", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan));
-            sb.AppendLine(String.Format("{0} : '{1}'", UseFiddlerUrl_PropertyName, UseFiddlerUrl));
+            sb.AppendFormat("{0} : '{1}'", BridgeResourceFolder_PropertyName, BridgeResourceFolder)
+              .AppendFormat("{0} : '{1}'", BridgeHost_PropertyName, BridgeHost)
+              .AppendFormat("{0} : '{1}'", BridgePort_PropertyName, BridgePort)
+              .AppendFormat("{0} : '{1}'", BridgeHttpPort_PropertyName, BridgeHttpPort)
+              .AppendFormat("{0} : '{1}'", BridgeHttpsPort_PropertyName, BridgeHttpsPort)
+              .AppendFormat("{0} : '{1}'", BridgeTcpPort_PropertyName, BridgeTcpPort)
+              .AppendFormat("{0} : '{1}'", BridgeWebSocketPort_PropertyName, BridgeWebSocketPort)
+              .AppendFormat("{0} : '{1}'", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan)
+              .AppendFormat("{0} : '{1}'", UseFiddlerUrl_PropertyName, UseFiddlerUrl);
             return sb.ToString();
         }
     }

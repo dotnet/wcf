@@ -35,6 +35,10 @@
         <Value>$(BridgeTcpPort)</Value>
         <DefaultValue>809</DefaultValue>
       </TestProperty>
+      <TestProperty Include="BridgeWebSocketPort">
+        <Value>$(BridgeWebSocketPort)</Value>
+        <DefaultValue>8083</DefaultValue>
+      </TestProperty>
       <TestProperty Include="BridgeRemoteEnabled">
         <Value>$(BridgeRemoteEnabled)</Value>
         <DefaultValue>false</DefaultValue>
