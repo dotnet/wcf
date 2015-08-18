@@ -14,21 +14,19 @@ namespace WcfService.TestResources
     {
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
-        private string _hostName = "localhost";
         protected string certThumbprint = "1d 85 a3 f6 cd 2c 02 2c 5c a5 4e 5c b2 00 a4 7f 89 ba 0d 3d";
 
         #region Host Listen Uri components
 
         protected abstract string Protocol { get; }
 
-        protected virtual string Host {
-            get { return _hostName; }
-            set { _hostName = value; }
-        }
-
         protected abstract string Address { get; }
 
-        protected abstract string Port { get; }
+        protected virtual string GetHost(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeHost;
+        }
+        protected abstract int GetPort(ResourceRequestContext context);
 
         #endregion Host Listen Uri components
 
@@ -43,19 +41,10 @@ namespace WcfService.TestResources
                     {
                         host = new ServiceHost(typeof(ServiceType));
 
-                        // The host name to reach the Bridge is passed in as part of
-                        // the Bridge configuration.  The default behavior of
-                        // an endpoint resource is to use that for its Host name.
-                        string bridgeHost = context.BridgeConfiguration.BridgeHost;
-                        if (!string.IsNullOrEmpty(bridgeHost))
-                        {
-                            Host = bridgeHost;
-                        }
-
                         host.AddServiceEndpoint(
                             typeof(ContractType),
                             GetBinding(),
-                            BuildUri());
+                            BuildUri(context));
                         ModifyBehaviors(host.Description);
                         ModifyHost(host);
                         host.Open();
@@ -67,7 +56,7 @@ namespace WcfService.TestResources
             return host.Description.Endpoints.Count != 1 ? null : host.Description.Endpoints[0].ListenUri.ToString();
         }
 
-        public object Get()
+        public object Get(ResourceRequestContext context)
         {
             ServiceHost host;
             if (s_currentHosts.TryGetValue(Address, out host))
@@ -84,7 +73,7 @@ namespace WcfService.TestResources
         {
         }
 
-        private void ModifyBehaviors(ServiceDescription desc)
+        protected virtual void ModifyBehaviors(ServiceDescription desc)
         {
             ServiceDebugBehavior debug = desc.Behaviors.Find<ServiceDebugBehavior>();
             if (debug == null)
@@ -96,11 +85,11 @@ namespace WcfService.TestResources
             debug.IncludeExceptionDetailInFaults = true;
         }
 
-        private Uri BuildUri()
+        private Uri BuildUri(ResourceRequestContext context)
         {
             var builder = new UriBuilder();
-            builder.Host = Host;
-            builder.Port = Int32.Parse(Port);
+            builder.Host = GetHost(context);
+            builder.Port = GetPort(context);
             PortManager.OpenPortInFirewall(builder.Port);
             builder.Path = AppDomain.CurrentDomain.FriendlyName + "/" + Address;
             builder.Scheme = Protocol;
@@ -112,20 +101,29 @@ namespace WcfService.TestResources
     {
         protected override string Protocol { get { return BaseAddressResource.Http; } }
 
-        protected override string Port { get { return BaseAddressResource.HttpPort; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeHttpPort;
+        }
     }
 
     internal abstract class HttpsResource : EndpointResource<WcfService, IWcfService>
     {
         protected override string Protocol { get { return BaseAddressResource.Https; } }
 
-        protected override string Port { get { return BaseAddressResource.HttpsPort; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeHttpsPort;
+        }
     }
 
     internal abstract class TcpResource : EndpointResource<WcfService, IWcfService>
     {
         protected override string Protocol { get { return BaseAddressResource.Tcp; } }
 
-        protected override string Port { get { return BaseAddressResource.TcpPort; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeTcpPort;
+        }
     }
 }

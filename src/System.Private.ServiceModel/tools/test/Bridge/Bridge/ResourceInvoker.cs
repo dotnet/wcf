@@ -37,7 +37,8 @@ namespace Bridge
 
                 ResourceRequestContext context = new ResourceRequestContext
                 {
-                    BridgeConfiguration = ConfigController.BridgeConfiguration
+                    BridgeConfiguration = ConfigController.BridgeConfiguration,
+                    ResourceName = resource.name
                 };
                 return loader.IResourceCall(resource.name, "Put", new object[] { context });
             }
@@ -65,7 +66,13 @@ namespace Bridge
                         loaderType.Assembly.Location,
                         loaderType.FullName);
 
-                return loader.IResourceCall(name, "Get", null);
+                ResourceRequestContext context = new ResourceRequestContext
+                {
+                    BridgeConfiguration = ConfigController.BridgeConfiguration,
+                    ResourceName = name
+                };
+
+                return loader.IResourceCall(name, "Get", new object[] { context });
             }
         }
     }

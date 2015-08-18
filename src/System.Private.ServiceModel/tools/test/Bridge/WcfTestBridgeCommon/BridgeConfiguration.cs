@@ -17,12 +17,18 @@ namespace WcfTestBridgeCommon
         private const string BridgeResourceFolder_PropertyName = "BridgeResourceFolder";
         private const string BridgeHost_PropertyName = "BridgeHost";
         private const string BridgePort_PropertyName = "BridgePort";
+        private const string BridgeHttpPort_PropertyName = "BridgeHttpPort";
+        private const string BridgeHttpsPort_PropertyName = "BridgeHttpsPort";
+        private const string BridgeTcpPort_PropertyName = "BridgeTcpPort";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
 
         public string BridgeResourceFolder { get; set; }
         public string BridgeHost { get; set; }
         public int BridgePort { get; set; }
+        public int BridgeHttpPort { get; set; }
+        public int BridgeHttpsPort { get; set; }
+        public int BridgeTcpPort { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
 
@@ -38,6 +44,9 @@ namespace WcfTestBridgeCommon
             BridgeResourceFolder = configuration.BridgeResourceFolder;
             BridgeHost = configuration.BridgeHost;
             BridgePort = configuration.BridgePort;
+            BridgeHttpPort = configuration.BridgeHttpPort;
+            BridgeHttpsPort = configuration.BridgeHttpsPort;
+            BridgeTcpPort = configuration.BridgeTcpPort;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
 
@@ -59,17 +68,26 @@ namespace WcfTestBridgeCommon
                 BridgeHost = propertyValue;
             }
 
-            if (properties.TryGetValue(BridgePort_PropertyName, out propertyValue))
-            {
-                int port = 0;
-                if (!int.TryParse(propertyValue, out port))
-                {
-                    throw new ArgumentException(
-                        String.Format("The BridgePort value '{0}' is not a valid port number.", propertyValue),
-                        BridgeMaxIdleTimeSpan_PropertyName);
-                }
+            int port;
 
+            if (TryParseIntegerProperty(BridgePort_PropertyName, properties, out port))
+            {
                 BridgePort = port;
+            }
+
+            if (TryParseIntegerProperty(BridgeHttpPort_PropertyName, properties, out port))
+            {
+                BridgeHttpPort = port;
+            }
+
+            if (TryParseIntegerProperty(BridgeHttpsPort_PropertyName, properties, out port))
+            {
+                BridgeHttpsPort = port;
+            }
+
+            if (TryParseIntegerProperty(BridgeTcpPort_PropertyName, properties, out port))
+            {
+                BridgeTcpPort = port;
             }
 
             if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
@@ -99,12 +117,47 @@ namespace WcfTestBridgeCommon
             }
         }
 
+        private static bool TryParseIntegerProperty(string propertyName, Dictionary<string, string> properties, out int result)
+        {
+            string propertyValue;
+            result = 0;
+            if (properties.TryGetValue(propertyName, out propertyValue))
+            {
+                if (!int.TryParse(propertyValue, out result))
+                {
+                    throw new ArgumentException(
+                        String.Format("The {0} value '{1}' is not a valid integer.", propertyName, propertyValue),
+                        propertyName);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public Dictionary<string, string> ToDictionary()
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            result[BridgeResourceFolder_PropertyName] = BridgeResourceFolder;
+            result[BridgeHost_PropertyName] = BridgeHost;
+            result[BridgePort_PropertyName] = BridgePort.ToString();
+            result[BridgeHttpPort_PropertyName] = BridgeHttpPort.ToString();
+            result[BridgeHttpsPort_PropertyName] = BridgeHttpsPort.ToString();
+            result[BridgeTcpPort_PropertyName] = BridgeTcpPort.ToString();
+            result[BridgeMaxIdleTimeSpan_PropertyName] = BridgeMaxIdleTimeSpan.ToString();
+            result[UseFiddlerUrl_PropertyName] = UseFiddlerUrl.ToString();
+
+            return result;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(String.Format("{0} : '{1}'", BridgeResourceFolder_PropertyName, BridgeResourceFolder));
             sb.AppendLine(String.Format("{0} : '{1}'", BridgeHost_PropertyName, BridgeHost));
             sb.AppendLine(String.Format("{0} : '{1}'", BridgePort_PropertyName, BridgePort));
+            sb.AppendLine(String.Format("{0} : '{1}'", BridgeHttpPort_PropertyName, BridgeHttpPort));
+            sb.AppendLine(String.Format("{0} : '{1}'", BridgeHttpsPort_PropertyName, BridgeHttpsPort));
+            sb.AppendLine(String.Format("{0} : '{1}'", BridgeTcpPort_PropertyName, BridgeTcpPort));
             sb.AppendLine(String.Format("{0} : '{1}'", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan));
             sb.AppendLine(String.Format("{0} : '{1}'", UseFiddlerUrl_PropertyName, UseFiddlerUrl));
             return sb.ToString();

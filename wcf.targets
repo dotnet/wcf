@@ -27,6 +27,18 @@
      <BridgePort>44283</BridgePort>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(BridgeHttpPort)' == ''">
+     <BridgeHttpPort>8081</BridgeHttpPort>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(BridgeHttpsPort)' == ''">
+     <BridgeHttpsPort>44285</BridgeHttpsPort>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(BridgeTcpPort)' == ''">
+     <BridgeTcpPort>809</BridgeTcpPort>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(WcfToolsOutputPath)' == ''">
      <WcfToolsOutputPath>$(WcfRootFolder)bin\Wcf\tools\</WcfToolsOutputPath>
   </PropertyGroup>

@@ -7,6 +7,6 @@ namespace WcfTestBridgeCommon
     {
         object Put(ResourceRequestContext context);
 
-        object Get();
+        object Get(ResourceRequestContext context);
     }
 }
