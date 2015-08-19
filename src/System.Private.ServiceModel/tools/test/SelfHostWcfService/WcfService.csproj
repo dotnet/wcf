@@ -66,6 +66,8 @@
     <Compile Include="TestResources\BasicHttpsResource.cs" />
     <Compile Include="TestResources\DefaultCustomHttpResource.cs" />
     <Compile Include="TestResources\DuplexResources.cs" />
+    <Compile Include="TestResources\HttpResource.cs" />
+    <Compile Include="TestResources\HttpsResource.cs" />
     <Compile Include="TestResources\HttpWindowsResource.cs" />
     <Compile Include="TestResources\HttpsWindowsResource.cs" />
     <Compile Include="TestResources\HttpsNtlmResource.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="TestResources\TcpDefaultResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityTextResource.cs" />
+    <Compile Include="TestResources\TcpResource.cs" />
     <Compile Include="TestResources\TcpVerifyDNSResource.cs" />
     <Compile Include="TestResources\HttpsSoap12Resource.cs" />
     <Compile Include="TestResources\HttpSoap12Resource.cs" />

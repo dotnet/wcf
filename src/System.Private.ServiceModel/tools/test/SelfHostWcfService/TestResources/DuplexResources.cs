@@ -3,6 +3,7 @@
 
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
 {
@@ -10,7 +11,10 @@ namespace WcfService.TestResources
     {
         protected override string Protocol { get { return BaseAddressResource.Tcp; } }
 
-        protected override string Port { get { return "810"; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeTcpPort + 1;
+        }
 
         protected override string Address {  get { return "tcp-nosecurity-callback"; } }
 
@@ -24,7 +28,10 @@ namespace WcfService.TestResources
     {
         protected override string Protocol { get { return BaseAddressResource.Tcp; } }
 
-        protected override string Port { get { return "811"; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeTcpPort + 2;
+        }
 
         protected override string Address { get { return "tcp-nosecurity-typedproxy-duplexcallback"; } }
 
@@ -38,7 +45,10 @@ namespace WcfService.TestResources
     {
         protected override string Protocol { get { return BaseAddressResource.Tcp; } }
 
-        protected override string Port { get { return "812"; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeTcpPort + 3;
+        }
 
         protected override string Address { get { return "tcp-nosecurity-taskreturn"; } }
 

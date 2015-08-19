@@ -11,51 +11,18 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
 {
-    internal class BasicAuthResource : IResource
+    internal class BasicAuthResource : EndpointResource<WcfUserNameService, IWcfCustomUserNameService>
     {
-        private static ServiceHost s_currentHost = null;
-        private static object s_currentHostLock = new object();
-        private const string Address = "https-basic";
+        protected override string Address { get { return "https-basic"; } }
 
-        public object Put(ResourceRequestContext context)
+        protected override string Protocol { get { return BaseAddressResource.Https; } }
+
+        protected override int GetPort(ResourceRequestContext context)
         {
-            if (s_currentHost == null)
-            {
-                lock (s_currentHostLock)
-                {
-                    if (s_currentHost == null)
-                    {
-                        s_currentHost = new ServiceHost(
-                            typeof(WcfUserNameService),
-                            new Uri(string.Format("{0}://localhost:{1}/{2}/CustomUserName",
-                                BaseAddressResource.Https,
-                                BaseAddressResource.HttpsPort,
-                                AppDomain.CurrentDomain.FriendlyName))
-                            );
-                        s_currentHost.AddServiceEndpoint(
-                            typeof(IWcfCustomUserNameService),
-                            GetBinding(),
-                            Address);
-                        ModifyBehaviors(s_currentHost.Description);
-                        s_currentHost.Open();
-                    }
-                }
-            }
-
-            return s_currentHost.Description.Endpoints.Count != 1 ? null : s_currentHost.Description.Endpoints[0].ListenUri.ToString();
+            return context.BridgeConfiguration.BridgeHttpsPort;
         }
 
-        public object Get()
-        {
-            if (s_currentHost != null)
-            {
-                return s_currentHost.Description.Endpoints.Count != 1 ? null : s_currentHost.Description.Endpoints[0].ListenUri.ToString();
-            }
-
-            return null;
-        }
-
-        private Binding GetBinding()
+        protected override Binding GetBinding()
         {
             var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
@@ -70,16 +37,9 @@ namespace WcfService.TestResources
             return serviceCredentials;
         }
 
-        private void ModifyBehaviors(ServiceDescription desc)
+        protected override void ModifyBehaviors(ServiceDescription desc)
         {
-            ServiceDebugBehavior debug = desc.Behaviors.Find<ServiceDebugBehavior>();
-            if (debug == null)
-            {
-                debug = new ServiceDebugBehavior();
-                desc.Behaviors.Add(debug);
-            }
-
-            debug.IncludeExceptionDetailInFaults = true;
+            base.ModifyBehaviors(desc);
 
             desc.Behaviors.Remove<ServiceCredentials>();
             desc.Behaviors.Add(GetServiceCredentials());

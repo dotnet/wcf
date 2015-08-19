@@ -1,8 +1,6 @@
 echo off
 setlocal
-REM elevated window does not set current directory correctly. 
-REM Workaround it by passing the current directory around
-pushd %1
+pushd %~dp0
 
 echo BridgeKeepRunning=%BridgeKeepRunning%
 if '%BridgeKeepRunning%' neq 'true' (

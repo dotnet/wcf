@@ -8,6 +8,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
 {
@@ -15,7 +16,10 @@ namespace WcfService.TestResources
     {
         protected override string Protocol { get { return BaseAddressResource.Http; } }
 
-        protected override string Port { get { return "8083"; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeWebSocketPort;
+        }
 
         protected override string Address { get { return "http-defaultduplexwebsockets"; } }
 
@@ -29,7 +33,10 @@ namespace WcfService.TestResources
     {
         protected override string Protocol { get { return BaseAddressResource.Http; } }
 
-        protected override string Port { get { return "8083"; } }
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeWebSocketPort;
+        }
 
         protected override string Address { get { return "http-requestreplywebsockets-transportusagealways"; } }
 

@@ -28,13 +28,8 @@ namespace Infrastructure.Common
             }
         }
 
-        private static bool IsBridgeHostedLocally
-        {
-            get
-            {
-                return String.Equals("localhost", TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName), StringComparison.OrdinalIgnoreCase);
-            }
-        }
+        private static bool IsBridgeHostedLocally { get; set; }
+
 
         private static void EnsureBridgeIsRunning()
         {
@@ -44,6 +39,15 @@ namespace Infrastructure.Common
             {
                 if (_BridgeStatus == BridgeState.NotStarted)
                 {
+                    // The initial ping establishes Bridge state
+                    PingBridge();
+
+                    // An optional second ping to localhost determines whether
+                    // the Bridge is running locally but using something other
+                    // than localhost for the host name
+                    IsBridgeHostedLocally = DoesBridgeRespondToLocalHost();
+
+                    // Bridge is known running -- configure with our resources
                     MakeConfigRequest();
                 }
                 else if (_BridgeStatus == BridgeState.Faulted)
@@ -64,6 +68,71 @@ namespace Infrastructure.Common
             }
 
             return resourceAddress;
+        }
+
+        // Issues a GET request to the Bridge base address to determine
+        // whether it is running.  This method also sets state to indicate
+        // whether the bridge is running or unavailable.
+        private static void PingBridge()
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                try
+                {
+                    var response = httpClient.GetAsync(BridgeBaseAddress).GetAwaiter().GetResult();
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string reason = String.Format("{0}Bridge returned unexpected status code='{1}', reason='{2}'",
+                                                    Environment.NewLine, response.StatusCode, response.ReasonPhrase);
+                        if (response.Content != null)
+                        {
+                            string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                            if (contentAsString.Length > 1000)
+                            {
+                                contentAsString = contentAsString.Substring(0, 999) + "...";
+                            }
+                            reason = String.Format("{0}, content:{1}{2}",
+                                                    reason, Environment.NewLine, contentAsString);
+                        }
+                        throw new Exception(reason);
+                    }
+                    _BridgeStatus = BridgeState.Started;
+                }
+                catch (Exception exc)
+                {
+                    _BridgeStatus = BridgeState.Faulted;
+                    throw new Exception("Bridge is not running", exc);
+                }
+            }
+        }
+
+        // Returns true if the Bridge will respond or has responded to localhost.
+        // This is used to determine whether local file paths are acceptable for the BridgeResourceFolder.
+        private static bool DoesBridgeRespondToLocalHost()
+        {
+            // If we have already pinged before and the host is "localhost", no need to repeat it.
+            if (_BridgeStatus == BridgeState.Started && 
+                String.Equals("localhost", TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName), StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            // This ping to localhost may fail if the Bridge is running on a remote machine.
+            // This is acceptable for the purposes of this teste.
+            string localHostAddress = String.Format("http://localhost:{0}",
+                                                    TestProperties.GetProperty(TestProperties.BridgePort_PropertyName));
+            using (HttpClient httpClient = new HttpClient())
+            {
+                try
+                {
+                    var response = httpClient.GetAsync(BridgeBaseAddress).GetAwaiter().GetResult();
+                    return response.IsSuccessStatusCode;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
 
         private static void MakeConfigRequest()

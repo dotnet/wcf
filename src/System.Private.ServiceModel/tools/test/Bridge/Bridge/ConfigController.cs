@@ -124,9 +124,9 @@ namespace Bridge
 
         public HttpResponseMessage Get(HttpRequestMessage request)
         {
-            string configResponse = (!String.IsNullOrWhiteSpace(CurrentAppDomainName))
-                            ? PrepareConfigResponse(TypeCache.Cache[CurrentAppDomainName])
-                            : "\"The Bridge is not currently configured for a resource folder.\"";
+            Dictionary<string, string> dictionary = BridgeConfiguration.ToDictionary();
+
+            string configResponse = JsonSerializer.SerializeDictionary(dictionary);
 
             Trace.WriteLine(String.Format("{0:T} - GET config returning raw content:{1}{2}",
                                           DateTime.Now, Environment.NewLine, configResponse),
