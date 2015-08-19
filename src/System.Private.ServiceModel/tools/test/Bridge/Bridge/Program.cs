@@ -27,6 +27,11 @@ namespace Bridge
             // If remote access is not allowed, specifically disallow remote addresses
             PortManager.RemoteAddresses = commandLineArgs.AllowRemote ? commandLineArgs.RemoteAddresses : String.Empty;
 
+            // Initialize the BridgeConfiguration from command line.
+            // The first POST to the ConfigController will supply the rest.
+            ConfigController.BridgeConfiguration.BridgeHost = visibleHost;
+            ConfigController.BridgeConfiguration.BridgePort = commandLineArgs.Port;
+
             // Remove any pre-existing firewall rules the Bridge may have added
             // in past runs.  We normally cleanup on exit but could have been
             // aborted.
@@ -51,6 +56,8 @@ namespace Bridge
                 {
                     Console.WriteLine("Remote access is disabled.");
                 }
+
+                Console.WriteLine("Current configuration is:{0}{1}", Environment.NewLine, ConfigController.BridgeConfiguration.ToString());
 
                 Console.WriteLine("Type \"exit\" to stop the Bridge.");
                 string answer = Console.ReadLine();

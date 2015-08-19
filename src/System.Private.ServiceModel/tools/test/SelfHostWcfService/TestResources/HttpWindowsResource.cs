@@ -3,6 +3,7 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
 {
@@ -17,12 +18,9 @@ namespace WcfService.TestResources
             return binding;
         }
 
-        protected override string Host
+        protected override string GetHost(ResourceRequestContext context)
         {
-            get
-            {
-                return Environment.MachineName;
-            }
+            return Environment.MachineName;
         }
     }
 }

@@ -4,18 +4,17 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Security.Cryptography.X509Certificates;
+using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
 {
     internal class TcpVerifyDNSResource : TcpResource
     {
         protected override string Address { get { return "tcp-VerifyDNS"; } }
-        protected override string Host
+
+        protected override string GetHost(ResourceRequestContext context)
         {
-            get
-            {
-                return Environment.MachineName;
-            }
+            return Environment.MachineName;
         }
 
         protected override Binding GetBinding()

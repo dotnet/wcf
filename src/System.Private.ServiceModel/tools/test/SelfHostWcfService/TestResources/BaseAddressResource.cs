@@ -12,26 +12,20 @@ namespace WcfService.TestResources
         internal const string Http = "http";
         internal const string Https = "https";
         internal const string Tcp = "net.tcp";
-        internal const string HttpPort = "8081";
-        internal const string HttpsPort = "44285";
-        internal const string TcpPort = "809";
-        private const string HttpProtocol = "http://localhost:" + HttpPort + "/";
-        private const string HttpsProtocol = "https://localhost:" + HttpsPort + "/";
-        private const string TcpProtocol = "net.tcp://localhost:" + TcpPort + "/";
 
         public object Put(ResourceRequestContext context)
         {
             throw new NotImplementedException("Cannot PUT on this resource");
         }
 
-        public object Get()
+        public object Get(ResourceRequestContext context)
         {
-            var http = HttpProtocol + AppDomain.CurrentDomain.FriendlyName;
-            var https = HttpsProtocol + AppDomain.CurrentDomain.FriendlyName;
-            var tcp = TcpProtocol + AppDomain.CurrentDomain.FriendlyName;
+            var http = GetHttpProtocol(context) + AppDomain.CurrentDomain.FriendlyName;
+            var https = GetHttpsProtocol(context) + AppDomain.CurrentDomain.FriendlyName;
+            var tcp = GetTcpProtocol(context) + AppDomain.CurrentDomain.FriendlyName;
             return new Dictionary<string, string>()
             {
-                { "HttpServerBaseAddress", HttpProtocol },
+                { "HttpServerBaseAddress", GetHttpProtocol(context) },
                 { "HttpBaseAddress", http },
                 { "HttpsBaseAddress", https },
                 { "HttpsBasicBaseAddress", https },
@@ -40,6 +34,27 @@ namespace WcfService.TestResources
                 { "HttpsWindowsBaseAddress", https },
                 { "TcpBaseAddress", tcp }
             };
+        }
+
+        public static string GetHttpProtocol(ResourceRequestContext context)
+        {
+            return string.Format("http://{0}:{1}/",
+                                context.BridgeConfiguration.BridgeHost,
+                                context.BridgeConfiguration.BridgeHttpPort);
+        }
+
+        public static string GetHttpsProtocol(ResourceRequestContext context)
+        {
+            return string.Format("https://{0}:{1}/",
+                                context.BridgeConfiguration.BridgeHost,
+                                context.BridgeConfiguration.BridgeHttpsPort);
+        }
+
+        public static string GetTcpProtocol(ResourceRequestContext context)
+        {
+            return string.Format("net.tcp://{0}:{1}/",
+                                context.BridgeConfiguration.BridgeHost,
+                                context.BridgeConfiguration.BridgeTcpPort);
         }
     }
 }

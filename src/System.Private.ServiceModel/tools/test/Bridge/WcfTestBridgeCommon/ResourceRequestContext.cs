@@ -12,5 +12,6 @@ namespace WcfTestBridgeCommon
     public class ResourceRequestContext
     {
         public BridgeConfiguration BridgeConfiguration { get; set; }
+        public string ResourceName { get; set; }
     }
 }
