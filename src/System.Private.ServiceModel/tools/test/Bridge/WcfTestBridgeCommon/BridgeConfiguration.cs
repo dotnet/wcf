@@ -21,6 +21,8 @@ namespace WcfTestBridgeCommon
         private const string BridgeHttpsPort_PropertyName = "BridgeHttpsPort";
         private const string BridgeTcpPort_PropertyName = "BridgeTcpPort";
         private const string BridgeWebSocketPort_PropertyName = "BridgeWebSocketPort";
+        private const string BridgeCertificateAuthority_PropertyName = "BridgeCertificateAuthority";
+        private const string BridgeHttpsCertificate_PropertyName = "BridgeHttpsCertificate";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
 
@@ -31,6 +33,8 @@ namespace WcfTestBridgeCommon
         public int BridgeHttpsPort { get; set; }
         public int BridgeTcpPort { get; set; }
         public int BridgeWebSocketPort { get; set; }
+        public string BridgeCertificateAuthority { get; set; }
+        public string BridgeHttpsCertificate { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
 
@@ -50,6 +54,8 @@ namespace WcfTestBridgeCommon
             BridgeHttpsPort = configuration.BridgeHttpsPort;
             BridgeTcpPort = configuration.BridgeTcpPort;
             BridgeWebSocketPort = configuration.BridgeWebSocketPort;
+            BridgeCertificateAuthority = configuration.BridgeCertificateAuthority;
+            BridgeHttpsCertificate = configuration.BridgeHttpsCertificate;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
 
@@ -71,6 +77,16 @@ namespace WcfTestBridgeCommon
                 BridgeHost = propertyValue;
             }
 
+            if (properties.TryGetValue(BridgeCertificateAuthority_PropertyName, out propertyValue))
+            {
+                BridgeCertificateAuthority = propertyValue;
+            }
+
+            if (properties.TryGetValue(BridgeHttpsCertificate_PropertyName, out propertyValue))
+            {
+                BridgeHttpsCertificate = propertyValue;
+            }
+            
             int port;
 
             if (TryParseIntegerProperty(BridgePort_PropertyName, properties, out port))
@@ -152,6 +168,8 @@ namespace WcfTestBridgeCommon
             result[BridgeHttpsPort_PropertyName] = BridgeHttpsPort.ToString();
             result[BridgeTcpPort_PropertyName] = BridgeTcpPort.ToString();
             result[BridgeWebSocketPort_PropertyName] = BridgeWebSocketPort.ToString();
+            result[BridgeCertificateAuthority_PropertyName] = BridgeCertificateAuthority;
+            result[BridgeHttpsCertificate_PropertyName] = BridgeHttpsCertificate;
             result[BridgeMaxIdleTimeSpan_PropertyName] = BridgeMaxIdleTimeSpan.ToString();
             result[UseFiddlerUrl_PropertyName] = UseFiddlerUrl.ToString();
 
@@ -168,6 +186,8 @@ namespace WcfTestBridgeCommon
               .AppendFormat("  {0} : '{1}'{2}", BridgeHttpsPort_PropertyName, BridgeHttpsPort, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeTcpPort_PropertyName, BridgeTcpPort, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeWebSocketPort_PropertyName, BridgeWebSocketPort, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeCertificateAuthority_PropertyName, BridgeCertificateAuthority, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeHttpsCertificate_PropertyName, BridgeHttpsCertificate, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", UseFiddlerUrl_PropertyName, UseFiddlerUrl, Environment.NewLine);
             return sb.ToString();

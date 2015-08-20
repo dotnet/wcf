@@ -26,8 +26,14 @@ namespace WcfService.TestResources
             return binding;
         }
 
-        protected override void ModifyHost(ServiceHost serviceHost)
+        protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
         {
+            // Ensure the https certificate is installed before this endpoint resource is used
+            CertificateManager.InstallMyCertificate(context.BridgeConfiguration,
+                                                    context.BridgeConfiguration.BridgeHttpsCertificate);
+
+            string certThumbprint = HttpsResource.EnsureHttpsCertificateInstalled(context.BridgeConfiguration);
+
             serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine,
                                                       StoreName.My,
                                                       X509FindType.FindByThumbprint,
