@@ -32,6 +32,7 @@ namespace Bridge
             // Register to manage AppDomains in response to changes to the resource folder
             ResourceFolderChanged += (object s, ChangedEventArgs<string> args) =>
             {
+                CertificateManager.OnResourceFolderChanged(args.OldValue, args.NewValue);
                 CurrentAppDomainName = AppDomainManager.OnResourceFolderChanged(args.OldValue, args.NewValue);
             };
         }

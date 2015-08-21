@@ -43,6 +43,14 @@
         <Value>$(BridgeRemoteEnabled)</Value>
         <DefaultValue>false</DefaultValue>
       </TestProperty>
+      <TestProperty Include="BridgeCertificateAuthority">
+        <Value>$(BridgeCertificateAuthority)</Value>
+        <DefaultValue>RootCAWcfBridge.cer</DefaultValue>
+      </TestProperty>
+      <TestProperty Include="BridgeHttpsCertificate">
+        <Value>$(BridgeHttpsCertificate)</Value>
+        <DefaultValue>RootCAWcfBridge.pfx</DefaultValue>
+      </TestProperty>
       <TestProperty Include="UseFiddlerUrl">
         <Value>$(UseFiddlerUrl)</Value>
         <DefaultValue>false</DefaultValue>

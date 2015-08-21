@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="AssemblyLoader.cs" />
     <Compile Include="BridgeConfiguration.cs" />
+    <Compile Include="CertificateManager.cs" />
     <Compile Include="IResource.cs" />
     <Compile Include="PortManager.cs" />
     <Compile Include="ResourceRequestContext.cs" />
