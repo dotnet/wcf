@@ -239,7 +239,7 @@ namespace System.Runtime.Diagnostics
                 {
                     new Tuple<string, string> (DiagnosticStrings.ExceptionTypeTag, XmlEncode(exception.GetType().AssemblyQualifiedName)),
                     new Tuple<string, string> (DiagnosticStrings.MessageTag, XmlEncode(exception.Message)),
-                    new Tuple<string, string> (DiagnosticStrings.StackTraceTag, XmlEncode(StackTraceString(exception))),
+                    new Tuple<string, string> (DiagnosticStrings.StackTraceTag, XmlEncode(StackTraceString(exception))), // Stack trace is sometimes null
                     new Tuple<string, string> (DiagnosticStrings.ExceptionStringTag, XmlEncode(exception.ToString())),
                 };
 
@@ -363,7 +363,7 @@ namespace System.Runtime.Diagnostics
 
         private static bool WriteXmlElementString(XmlWriter xml, string localName, string value, ref int remainingLength)
         {
-            int xmlElementLength = (localName.Length * 2) + EtwDiagnosticTrace.XmlBracketsLength + value.Length;
+            int xmlElementLength = (localName.Length * 2) + EtwDiagnosticTrace.XmlBracketsLength + (value != null ? value.Length : 0);
             if (xmlElementLength <= remainingLength)
             {
                 xml.WriteElementString(localName, value);
