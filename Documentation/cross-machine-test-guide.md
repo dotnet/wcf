@@ -81,7 +81,7 @@ The Bridge deletes these firewall rules when it exits.
 
 After running 'startBridge.cmd', a PowerShell window will start Bridge.exe in elevated mode.
 You will see a CMD window indicating what URL the Bridge is using and confirmation
-whether it is enbled to receive remote requests.  It will remain running until you manually close it or type "exit" in that CMD window.
+whether it is enabled to receive remote requests.  It will remain running until you manually close it or type "exit" in that CMD window.
 
 Running OuterLoop tests when the Bridge is remote
 ------------------------------------------------
@@ -121,7 +121,7 @@ write to the console the incoming configuration and resource requests.
 After all tests have run, the Bridge will continue to run for several minutes.
 The timeout interval can be specified on the client test machine by setting
 the BridgeMaxIdleTimeSpan to some valid TimeSpan value (either as an environment
-variable or on the build.cmd line.  Default is "20:00" (twenty minutes).  After
+variable or on the build.cmd line).  Default is "20:00" (twenty minutes).  After
 no activity for this amount of time, the Bridge will close.  Alternatively, you
 can type "exit" in the Bridge CMD window to close it manually.
 
