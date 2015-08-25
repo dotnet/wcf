@@ -1,13 +1,14 @@
 echo off
 setlocal
-pushd %~dp0
 
 echo BridgeKeepRunning=%BridgeKeepRunning%
 if '%BridgeKeepRunning%' neq 'true' (
-    echo Stopping the Bridge.exe task locally...
-    Taskkill /IM bridge.exe /F
+    echo Stopping the Bridge...
+    pushd %~dp0..\..\..\..\bin\wcf\tools\Bridge
+    call Bridge.exe -stopIfLocal %*
+    popd
 ) else (
-    echo Bridge is left running because BridgeKeepRunning is true
+    echo The Bridge was left running because BridgeKeepRunning is true
 )
 
 exit /b

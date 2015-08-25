@@ -26,10 +26,6 @@ set _buildlog=%~dp0..\..\..\..\msbuildWCFTestService.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
-:Clean Up Test Service
-pushd %~dp0
-start /wait RunElevated.vbs CleanupWCFTestService.cmd
-popd
 call :build %*
 
 :: Build
@@ -52,4 +48,4 @@ echo.
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo Build Exit Code = %BUILDERRORLEVEL%
 
-exit %BUILDERRORLEVEL%
+exit /b %BUILDERRORLEVEL%

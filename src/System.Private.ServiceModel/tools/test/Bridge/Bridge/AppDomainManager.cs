@@ -66,7 +66,7 @@ namespace Bridge
                 throw new ArgumentNullException("appDomainName");
             }
 
-            lock (ConfigController.BridgeLock)
+            lock (ConfigController.ConfigLock)
             {
                 AppDomain appDomain = null;
                 if (TypeCache.AppDomains.TryGetValue(appDomainName, out appDomain))

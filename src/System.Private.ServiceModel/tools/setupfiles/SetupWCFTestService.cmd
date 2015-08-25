@@ -2,20 +2,14 @@ echo off
 setlocal
 
 pushd %~dp0
+echo Building the Bridge...
+call BuildWCFTestService.cmd
+popd
 
-if '%BridgeHost%' neq '' (
-   set _bridgeHostArg=-hostName %BridgeHost%
-)
+echo Starting the Bridge with parameters %*
+pushd %~dp0..\..\..\..\bin\wcf\tools\Bridge
+start /MIN Bridge.exe %*
+popd
 
-if '%BridgePort%' neq '' (
-   set _bridgePortArg=-portNumber %BridgePort%
-)
-
-if '%BridgeAllowRemote%' neq '' (
-   set _bridgeAllowRemoteArg=-allowRemote %BridgeAllowRemote%
-)
-
-echo Executing: start powershell -ExecutionPolicy Bypass -File ..\test\Bridge\bin\ensureBridge.ps1 %_bridgeHostArg% %_bridgePortArg% %_bridgeAllowRemoteArg% %*
-
-start powershell -ExecutionPolicy Bypass -File ..\test\Bridge\bin\ensureBridge.ps1 %_bridgeHostArg% %_bridgePortArg% %_bridgeAllowRemoteArg% %*
 exit /b
+

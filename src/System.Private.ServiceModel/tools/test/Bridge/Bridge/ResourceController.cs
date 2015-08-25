@@ -67,7 +67,7 @@ namespace Bridge
                 Trace.WriteLine(String.Format("{0:T} - Exception executing PUT for resource {1}{2}:{3}",
                                                 DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
                                 this.GetType().Name);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
+                return request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
                 {
                     id = correlationId,
                     details = exception.Message

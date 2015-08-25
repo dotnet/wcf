@@ -17,7 +17,7 @@ namespace Bridge
             }
 
             // Disallow concurrent resource instantation or configuration changes
-            lock (ConfigController.BridgeLock)
+            lock (ConfigController.ConfigLock)
             {
                 AppDomain appDomain;
                 if (String.IsNullOrWhiteSpace(ConfigController.CurrentAppDomainName))
@@ -52,7 +52,7 @@ namespace Bridge
             }
 
             // Disallow concurrent resource instantation or configuration changes
-            lock (ConfigController.BridgeLock)
+            lock (ConfigController.ConfigLock)
             {
                 AppDomain appDomain;
                 if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
