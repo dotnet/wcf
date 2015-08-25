@@ -5,6 +5,7 @@ using NetFwTypeLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace WcfTestBridgeCommon
 {
     // This class exists to create and delete firewall rules to
     // manage which ports are open on behalf of the Bridge.
-    public class PortManager
+    public static class PortManager
     {
         // This prefix is used both to name rules and to discover existing
         // rules created by this class, so it must be unique
@@ -157,7 +158,18 @@ namespace WcfTestBridgeCommon
 
                 foreach (string ruleName in ruleSet)
                 {
-                    NetFwPolicy2.Rules.Remove(ruleName);
+                    try {
+                        NetFwPolicy2.Rules.Remove(ruleName);
+                        Console.WriteLine("Removed firewall rule '{0}'", ruleName);
+                    }
+                    catch (FileNotFoundException fnfe)
+                    {
+                        // This exception can happen when multiple processes
+                        // are cleaning up the rules, and the rule has already
+                        // been removed.
+                        Console.WriteLine("Unable to remove rule '{0}' : {1}",
+                                            ruleName, fnfe.Message);
+                    }
                 }
             }
         }

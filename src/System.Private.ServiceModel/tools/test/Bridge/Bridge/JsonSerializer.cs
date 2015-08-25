@@ -27,7 +27,7 @@ namespace Bridge
 
         internal static Dictionary<string, string> DeserializeDictionary(string data)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            Dictionary<string, string> dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             data = data.Replace("{", String.Empty)
                     .Replace("}", String.Empty)
                     .Trim();

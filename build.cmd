@@ -18,11 +18,6 @@ if %errorlevel% equ 0 (
   set outloop=true
 )
 
-if "%outloop%" equ "true" (
-    start /D %setupFilesFolder% /wait BuildWCFTestService.cmd
-)
-
-
 if not defined VisualStudioVersion (
     if defined VS140COMNTOOLS (
         call "%VS140COMNTOOLS%\VsDevCmd.bat"
@@ -48,7 +43,9 @@ set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
 if "%outloop%" equ "true"  (
-    start /D %setupFilesFolder% /wait RunElevated.vbs SetupWCFTestService.cmd
+    pushd %setupFilesFolder%
+    call SetupWCFTestService.cmd
+    popd
 )
 
 call :build %*
@@ -72,7 +69,9 @@ findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo Build Exit Code = %BUILDERRORLEVEL%
 
 if "%outloop%" equ "true"  (
-    start /D %setupFilesFolder% /wait RunElevated.vbs CleanupWCFTestService.cmd
+    pushd %setupFilesFolder%
+    call CleanupWCFTestService.cmd
+    popd
 )
 
 exit /b %BUILDERRORLEVEL%

@@ -27,7 +27,7 @@ namespace Bridge
 
         static ConfigController()
         {
-            BridgeLock = new object();
+            ConfigLock = new object();
 
             // Register to manage AppDomains in response to changes to the resource folder
             ResourceFolderChanged += (object s, ChangedEventArgs<string> args) =>
@@ -39,7 +39,7 @@ namespace Bridge
 
         // We lock the Bridge when necessary to prevent configuration
         // changes or resource instantiation concurrent execution.
-        public static object BridgeLock { get; private set; }
+        internal static object ConfigLock { get; private set; }
 
         public static BridgeConfiguration BridgeConfiguration
         {
@@ -55,7 +55,7 @@ namespace Bridge
         public HttpResponseMessage POST(HttpRequestMessage request)
         {
             // A configuration change can have wide impact, so we don't allow concurrent use
-            lock(BridgeLock)
+            lock(ConfigLock)
             {
                 try
                 {
@@ -106,7 +106,7 @@ namespace Bridge
                                     typeof(ConfigController).Name);
 
                     // Directly return a json string to avoid use of MediaTypeFormatters
-                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                    HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK);
                     response.Content = new StringContent(configResponse);
                     response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
                     return response;
@@ -118,7 +118,7 @@ namespace Bridge
                                                     DateTime.Now, Environment.NewLine, ex),
                                     typeof(ConfigController).Name);
 
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
+                    return request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
                 }
             }
         }
@@ -134,7 +134,7 @@ namespace Bridge
                             typeof(ConfigController).Name);
 
             // Directly return a json string to avoid use of MediaTypeFormatters
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+            HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(configResponse);
             response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
             return response;
@@ -148,7 +148,7 @@ namespace Bridge
                             typeof(ConfigController).Name);
 
             // A configuration change can have wide impact, so we don't allow concurrent use
-            lock (ConfigController.BridgeLock)
+            lock (ConfigController.ConfigLock)
             {
                 try {
                     if (!String.IsNullOrEmpty(CurrentAppDomainName))
@@ -161,7 +161,7 @@ namespace Bridge
                             ResourceFolderChanged(this, new ChangedEventArgs<string>(oldResourceFolder, null));
                         }
                     }
-                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                    HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK);
                     response.Content = new StringContent("\"Bridge configuration has been cleared.\"");
                     response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
                     return response;
@@ -173,7 +173,7 @@ namespace Bridge
                                                     DateTime.Now, Environment.NewLine, ex),
                                     typeof(ConfigController).Name);
 
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
+                    return request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
                 }
             }
         }

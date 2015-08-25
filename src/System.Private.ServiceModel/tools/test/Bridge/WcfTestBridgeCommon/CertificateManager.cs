@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WcfTestBridgeCommon
 {
-    public class CertificateManager
+    public static class CertificateManager
     {
         private static object s_certificateLock = new object();
         private static bool s_registeredForProcessExit = false;
