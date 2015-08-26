@@ -7,14 +7,38 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    internal class WcfDuplexService : IWcfDuplexService
+    internal class WcfDuplexService : IWcfDuplexService, IWcfDuplexService_DataContract, IWcfDuplexService_Xml
     {
         public static IWcfDuplexServiceCallback callback;
+        public static IWcfDuplexService_DataContract_Callback dc_callback;
+        public static IWcfDuplexService_Xml_Callback xml_callback;
+
         public void Ping(Guid guid)
         {
             callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexServiceCallback>();
             // Schedule the callback on another thread to avoid reentrancy.
             Task.Run(() => callback.OnPingCallback(guid));
+        }
+
+        public void Ping_DataContract(Guid guid)
+        {
+            dc_callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexService_DataContract_Callback>();
+
+            ComplexCompositeTypeDuplexCallbackOnly complexCompositeType = new ComplexCompositeTypeDuplexCallbackOnly();
+            complexCompositeType.GuidValue = guid;
+
+            // Schedule the callback on another thread to avoid reentrancy.
+            Task.Run(() => dc_callback.OnDataContractPingCallback(complexCompositeType));
+        }
+
+        public void Ping_Xml(Guid guid)
+        {
+            xml_callback = OperationContext.Current.GetCallbackChannel<IWcfDuplexService_Xml_Callback>();
+            XmlCompositeTypeDuplexCallbackOnly xmlCompositeType = new XmlCompositeTypeDuplexCallbackOnly();
+            xmlCompositeType.StringValue = guid.ToString();
+
+            // Schedule the callback on another thread to avoid reentrancy.
+            Task.Run(() => xml_callback.OnXmlPingCallback(xmlCompositeType));
         }
     }
 

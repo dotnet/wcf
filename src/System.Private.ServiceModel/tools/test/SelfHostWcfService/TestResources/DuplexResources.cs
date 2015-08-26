@@ -57,4 +57,38 @@ namespace WcfService.TestResources
             return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
         }
     }
+
+    internal class DuplexCallbackDataContractComplexTypeResource : EndpointResource<WcfDuplexService, IWcfDuplexService_DataContract>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Tcp; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeTcpPort + 4;
+        }
+
+        protected override string Address { get { return "tcp-nosecurity-callback"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+        }
+    }
+
+    internal class DuplexCallbackXmlComplexTypeResource : EndpointResource<WcfDuplexService, IWcfDuplexService_Xml>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Tcp; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeTcpPort + 5;
+        }
+
+        protected override string Address { get { return "tcp-nosecurity-callback"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+        }
+    }
 }
