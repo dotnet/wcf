@@ -70,19 +70,48 @@ namespace WcfTestBridgeCommon
             return path;
         }
 
-        private static bool TryFindCertificate(X509Store store, string subjectName, out string thumbprint)
+        // Searches for the thum
+        private static bool TryFindCertificate(X509Store store, string subjectName, string issuerName, out X509Certificate2 certificate)
         {
-            thumbprint = null;
+            certificate = null;
             foreach (var c in store.Certificates)
             {
                 if (String.Equals(c.SubjectName.Name, subjectName, StringComparison.OrdinalIgnoreCase))
                 {
-                    thumbprint = c.Thumbprint;
+                    // Optionally check issuer name
+                    if (issuerName != null && 
+                        !String.Equals(c.IssuerName.Name, issuerName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    certificate = c;
                     return true;
                 }
             }
 
             return false;
+        }
+
+        // Searches the given store for a cert with the given thumbprint
+        private static bool TryFindCertificateByThumbprint(StoreName storeName, StoreLocation storeLocation, string thumbprint, out X509Certificate2 certificate)
+        {
+            X509Store store = new X509Store(storeName, storeLocation);
+            store.Open(OpenFlags.ReadOnly);
+            certificate = null;
+            bool result = false;
+            foreach (var c in store.Certificates)
+            {
+                if (String.Equals(c.Thumbprint, thumbprint, StringComparison.OrdinalIgnoreCase))
+                {
+                    certificate = c;
+                    result = true;
+                    break;
+                }
+            }
+
+            store.Close();
+            return result;
         }
 
         // Install the certificate in the given file path into the Root store and returns its thumbprint.
@@ -102,11 +131,12 @@ namespace WcfTestBridgeCommon
                     }
                 }
 
+                string thumbprint = null;
                 X509Store store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadWrite);
                 X509Certificate2 cert = new X509Certificate2(certificateFilePath);
-                string thumbprint = null;
-                if (!TryFindCertificate(store, cert.SubjectName.Name, out thumbprint))
+                X509Certificate2 foundCert = null;
+                if (!TryFindCertificate(store, cert.SubjectName.Name, null, out foundCert))
                 {
                     store.Add(cert);
                     thumbprint = cert.Thumbprint;
@@ -130,7 +160,7 @@ namespace WcfTestBridgeCommon
         public static string InstallMyCertificate(BridgeConfiguration configuration, string certificateName)
         {
             // Installing any certificate guarantees the certificate authority is loaded first
-            InstallRootCertificate(configuration, configuration.BridgeCertificateAuthority);
+            string issuerThumprint = InstallRootCertificate(configuration, configuration.BridgeCertificateAuthority);
 
             string certificateFilePath = CreateCertificateFilePath(configuration, certificateName);
 
@@ -144,14 +174,23 @@ namespace WcfTestBridgeCommon
                     }
                 }
 
+                // Need to check for correct issuer too
+                X509Certificate2 issuerCertificate = null;
+                string issuerName = null;
+                if (TryFindCertificateByThumbprint(StoreName.Root, StoreLocation.LocalMachine, issuerThumprint, out issuerCertificate))
+                {
+                    issuerName = issuerCertificate.SubjectName.Name;
+                }
+
                 X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadWrite);
 
+                string thumbprint = null;
                 X509Certificate2 cert = new X509Certificate2();
                 // "test" is currently the required password to allow exportable private keys
                 cert.Import(certificateFilePath, "test", X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
-                string thumbprint = null;
-                if (!TryFindCertificate(store, cert.SubjectName.Name, out thumbprint))
+                X509Certificate2 foundCert = null;
+                if (!TryFindCertificate(store, cert.SubjectName.Name, issuerName, out foundCert))
                 {
                     store.Add(cert);
                     thumbprint = cert.Thumbprint;
