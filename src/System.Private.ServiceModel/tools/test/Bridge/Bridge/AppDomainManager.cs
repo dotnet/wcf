@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using WcfTestBridgeCommon;
 
@@ -57,6 +58,14 @@ namespace Bridge
             TypeCache.Cache.Add(friendlyName, loader.GetTypes());
 
             return friendlyName;
+        }
+
+        public static void ShutdownAllAppDomains()
+        {
+            foreach (string domainName in TypeCache.AppDomains.Keys.ToArray())
+            {
+                ShutdownAppDomain(domainName);
+            }
         }
 
         public static void ShutdownAppDomain(string appDomainName)

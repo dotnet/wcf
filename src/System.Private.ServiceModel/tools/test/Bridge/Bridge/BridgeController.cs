@@ -82,6 +82,18 @@ namespace Bridge
 
         public static void ReleaseAllResources()
         {
+            // Cleanly shutdown all AppDomains we own so they have
+            // the chance to release resources they've acquired or installed
+            AppDomainManager.ShutdownAllAppDomains();
+
+            // Force the removal of the SSL cert that may have been added
+            // by another AppDomain or left from a prior run
+            int httpsPort = ConfigController.BridgeConfiguration.BridgeHttpsPort;
+            if (httpsPort != 0)
+            {
+                CertificateManager.UninstallSslPortCertificate(httpsPort);
+            }
+
             CertificateManager.UninstallAllCertificates();
             PortManager.RemoveAllBridgeFirewallRules();
         }
