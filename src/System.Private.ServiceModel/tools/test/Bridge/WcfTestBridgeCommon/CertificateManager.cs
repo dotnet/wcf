@@ -168,7 +168,7 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        private static void UninstallAllRootCertificates()
+        public static void UninstallAllRootCertificates()
         {
             lock (s_certificateLock)
             {
@@ -179,7 +179,7 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        private static void UninstallAllMyCertificates()
+        public static void UninstallAllMyCertificates()
         {
             lock (s_certificateLock)
             {
@@ -237,15 +237,24 @@ namespace WcfTestBridgeCommon
                 {
                     process.WaitForExit();
                     Console.WriteLine("Process exit code was {0}", process.ExitCode);
-                    Console.WriteLine("stdout was: {0}", process.StandardOutput.ReadToEnd());
-                    Console.WriteLine("stderr was: {0}", process.StandardError.ReadToEnd());
+                    string output = process.StandardOutput.ReadToEnd();
+                    if (!String.IsNullOrWhiteSpace(output))
+                    {
+                        Console.WriteLine("stdout was: {0}", output);
+                    }
+
+                    output = process.StandardError.ReadToEnd();
+                    if (!String.IsNullOrWhiteSpace(output))
+                    {
+                        Console.WriteLine("stderr was: {0}", output);
+                    }
                 }
 
                 s_sslPorts[port] = certThumbprint;
             }
         }
 
-        private static void UninstallAllSslPortCertificates()
+        public static void UninstallAllSslPortCertificates()
         {
             foreach (int port in s_sslPorts.Keys.ToArray())
             {
@@ -253,25 +262,37 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        private static void UninstallSslPortCertificate(int port)
+        public static void UninstallSslPortCertificate(int port)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.Arguments = String.Format("http delete sslcert ipport=0.0.0.0:{0}",
-                                                   port);
-            startInfo.FileName = "netsh";
-            Console.WriteLine("Executing: {0} {1}", startInfo.FileName, startInfo.Arguments);
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
-            using (Process process = Process.Start(startInfo))
+            lock (s_certificateLock)
             {
-                process.WaitForExit();
-                Console.WriteLine("Process exit code was {0}", process.ExitCode);
-                Console.WriteLine("stdout was: {0}", process.StandardOutput.ReadToEnd());
-                Console.WriteLine("stderr was: {0}", process.StandardError.ReadToEnd());
-            }
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.Arguments = String.Format("http delete sslcert ipport=0.0.0.0:{0}",
+                                                       port);
+                startInfo.FileName = "netsh";
+                Console.WriteLine("Executing: {0} {1}", startInfo.FileName, startInfo.Arguments);
+                startInfo.UseShellExecute = false;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                using (Process process = Process.Start(startInfo))
+                {
+                    process.WaitForExit();
+                    Console.WriteLine("Process exit code was {0}", process.ExitCode);
+                    string output = process.StandardOutput.ReadToEnd();
+                    if (!String.IsNullOrWhiteSpace(output))
+                    {
+                        Console.WriteLine("stdout was: {0}", output);
+                    }
 
-            s_sslPorts.Remove(port);
+                    output = process.StandardError.ReadToEnd();
+                    if (!String.IsNullOrWhiteSpace(output))
+                    {
+                        Console.WriteLine("stderr was: {0}", output);
+                    }
+                }
+
+                s_sslPorts.Remove(port);
+            }
         }
     }
 }

@@ -13,6 +13,17 @@ namespace WcfTestBridgeCommon
     {
         private const string TypeList = "TypeList";
 
+        public AssemblyLoader()
+        {
+            AppDomain.CurrentDomain.DomainUnload += (s, e) =>
+            {
+                // Uninstall all certificates we explicitly added within this AppDomain
+                CertificateManager.UninstallAllSslPortCertificates();
+                CertificateManager.UninstallAllMyCertificates();
+                CertificateManager.UninstallAllRootCertificates();
+            };
+        }
+
         public List<string> GetTypes()
         {
             return (AppDomain.CurrentDomain.GetData(TypeList) as Dictionary<string, Type>).Keys.ToList();
