@@ -70,7 +70,24 @@ namespace WcfTestBridgeCommon
             return path;
         }
 
-        // Install the certificate in the given file path into the Root store and returns its thumbprint
+        private static bool TryFindCertificate(X509Store store, string subjectName, out string thumbprint)
+        {
+            thumbprint = null;
+            foreach (var c in store.Certificates)
+            {
+                if (String.Equals(c.SubjectName.Name, subjectName, StringComparison.OrdinalIgnoreCase))
+                {
+                    thumbprint = c.Thumbprint;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Install the certificate in the given file path into the Root store and returns its thumbprint.
+        // It will not install the certificate if there is already one with the same full SubjectName present.
+        // It returns the thumbprint of the certificate, regardless whether it was added or found.
         public static string InstallRootCertificate(BridgeConfiguration configuration, string certificateName)
         {
             string certificateFilePath = CreateCertificateFilePath(configuration, certificateName);
@@ -88,15 +105,28 @@ namespace WcfTestBridgeCommon
                 X509Store store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadWrite);
                 X509Certificate2 cert = new X509Certificate2(certificateFilePath);
-                store.Add(cert);
+                string thumbprint = null;
+                if (!TryFindCertificate(store, cert.SubjectName.Name, out thumbprint))
+                {
+                    store.Add(cert);
+                    thumbprint = cert.Thumbprint;
+                    s_rootCertificates[cert.Thumbprint] = certificateName;
+                    Console.WriteLine("Added to root store certificate '{0}' : '{1}'", certificateName, cert.SubjectName.Name);
+                }
+                else
+                {
+                    Console.WriteLine("Reusing existing root store certificate '{0}' : '{1}'", certificateName, cert.SubjectName.Name);
+                }
+
                 store.Close();
 
-                s_rootCertificates[cert.Thumbprint] = certificateName;
-                return cert.Thumbprint;
+                return thumbprint;
             }
         }
 
-        // Install the certificate in the given file path into the My store
+        // Install the certificate in the given file path into the My store.
+        // It will not install the certificate if there is already one with the same full SubjectName present.
+        // It returns the thumbprint of the certificate, regardless whether it was added or found.
         public static string InstallMyCertificate(BridgeConfiguration configuration, string certificateName)
         {
             // Installing any certificate guarantees the certificate authority is loaded first
@@ -118,12 +148,23 @@ namespace WcfTestBridgeCommon
                 store.Open(OpenFlags.ReadWrite);
 
                 X509Certificate2 cert = new X509Certificate2();
-                cert.Import(certificateFilePath, String.Empty, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
-                store.Add(cert);
-                store.Close();
+                // "test" is currently the required password to allow exportable private keys
+                cert.Import(certificateFilePath, "test", X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
+                string thumbprint = null;
+                if (!TryFindCertificate(store, cert.SubjectName.Name, out thumbprint))
+                {
+                    store.Add(cert);
+                    thumbprint = cert.Thumbprint;
+                    s_myCertificates[cert.Thumbprint] = certificateName;
+                    Console.WriteLine("Added to my store certificate '{0}' : '{1}'", certificateName, cert.SubjectName.Name);
+                }
+                else
+                {
+                    Console.WriteLine("Reusing existing my store certificate '{0}' : '{1}'", certificateName, cert.SubjectName.Name);
+                }
 
-                s_myCertificates[cert.Thumbprint] = certificateName;
-                return cert.Thumbprint;
+                store.Close();
+                return thumbprint;
             }
         }
 
