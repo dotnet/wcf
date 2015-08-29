@@ -9,12 +9,14 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 
 public static class TestHelpers
 {
     private const string testString = "Hello";
     public static readonly TimeSpan TestTimeout = TimeSpan.FromSeconds(20);
+    public static ManualResetEvent mre;
 
     public static bool XmlDictionaryReaderQuotasAreEqual(XmlDictionaryReaderQuotas a, XmlDictionaryReaderQuotas b)
     {
@@ -274,5 +276,87 @@ public class CustomBodyWriter : BodyWriter
     protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
     {
         writer.WriteString(_bodyContent);
+    }
+}
+
+public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
+{
+    public Task<Guid> OnPingCallback(Guid guid)
+    {
+        return Task.FromResult<Guid>(guid);
+    }
+
+    void IWcfDuplexServiceCallback.OnPingCallback(Guid guid)
+    {
+
+    }
+}
+
+public class MyOperationBehavior : Attribute, IOperationBehavior
+{
+    public static StringBuilder errorBuilder = new StringBuilder();
+    public static TaskCompletionSource<bool> validateMethodTcs = new TaskCompletionSource<bool>();
+    public static TaskCompletionSource<bool> addBindingParametersMethodTcs = new TaskCompletionSource<bool>();
+    public static TaskCompletionSource<bool> applyClientBehaviorMethodTcs = new TaskCompletionSource<bool>();
+    public string errorMessage = "method was called out-of-order, the correct order is: Validate, AddBindingParameters, ApplyClientBehavior.";
+
+    // Pass data at runtime to bindings to support custom behavior
+    public void AddBindingParameters(OperationDescription operationDescription, BindingParameterCollection bindingParameters)
+    {
+        if ((!validateMethodTcs.Task.IsCompleted) || (applyClientBehaviorMethodTcs.Task.IsCompleted))
+        {
+            errorBuilder.AppendLine(String.Format("AddBindingParameters {1}", errorMessage));
+        }
+        if (operationDescription == null)
+        {
+            errorBuilder.AppendLine(String.Format("A parameter passed into the AddBindingParameters method was null/nThe null parameter is: {0}", typeof(OperationDescription).ToString()));
+        }
+        if (bindingParameters == null)
+        {
+            errorBuilder.AppendLine(String.Format("A parameter passed into the AddBindingParameters method was null/nThe null parameter is: {0}", typeof(BindingParameterCollection).ToString()));
+        }
+
+        addBindingParametersMethodTcs.TrySetResult(true);
+    }
+
+    // Implements a modification or extension of the client across an operation
+    public void ApplyClientBehavior(OperationDescription operationDescription, ClientOperation clientOperation)
+    {
+        if ((!validateMethodTcs.Task.IsCompleted) || (!addBindingParametersMethodTcs.Task.IsCompleted))
+        {
+            errorBuilder.AppendLine(String.Format("ApplyClientBehavior {1}", errorMessage));
+        }
+        if (operationDescription == null)
+        {
+            errorBuilder.AppendLine(String.Format("A parameter passed into the ApplyClientBehavior method was null/nThe null parameter is: {0}", typeof(OperationDescription).ToString()));
+        }
+        if (clientOperation == null)
+        {
+            errorBuilder.AppendLine(String.Format("A parameter passed into the ApplyClientBehavior method was null/nThe null parameter is: {0}", typeof(ClientOperation).ToString()));
+        }
+
+        applyClientBehaviorMethodTcs.TrySetResult(true);
+    }
+
+    // Implements a modification or extension of the service across an operation
+    public void ApplyDispatchBehavior(OperationDescription operationDescription, DispatchOperation dispatchOperation)
+    {
+        // This method does not get called client side.
+    }
+
+    // Implement to confirm that the operation meets some intended criteria
+    public void Validate(OperationDescription operationDescription)
+    {
+        if (addBindingParametersMethodTcs.Task.IsCompleted || applyClientBehaviorMethodTcs.Task.IsCompleted)
+        {
+            errorBuilder.AppendLine(String.Format("Validate {1}", errorMessage));
+        }
+
+        if (operationDescription == null)
+        {
+            errorBuilder.AppendLine(String.Format("The parameter passed into the Validate method was null/nThe null parameter is: {0}", typeof(OperationDescription).ToString()));
+        }
+
+        validateMethodTcs.TrySetResult(true);
     }
 }
