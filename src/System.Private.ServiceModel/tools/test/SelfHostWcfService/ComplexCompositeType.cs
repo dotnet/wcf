@@ -8,7 +8,7 @@ using System.Text;
 namespace WcfService
 {
     [DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
-    internal class ComplexCompositeType : IEquatable<ComplexCompositeType>
+    public class ComplexCompositeType : IEquatable<ComplexCompositeType>
     {
         private bool _boolValue;
         private char _charValue;
@@ -234,6 +234,40 @@ namespace WcfService
             sb.AppendLine("SbyteValue: " + _sbyteValue);
             sb.AppendLine("TimeSpanValue: " + _timeSpanValue);
             sb.AppendLine("DayOfWeekValue: " + _dayOfWeekValue);
+
+            return sb.ToString();
+        }
+    }
+
+    // This type should only be used by test Contract.DataContractTests.NetTcpBinding_DuplexCallback_ReturnsDataContractComplexType
+    // It tests a narrow scenario that returns a DataContract attributed type in the callback method that is not known by the ServiceContract attributed interface
+    // This test is designed to make sure the NET Native toolchain creates the needed serializer
+    [DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
+    public class ComplexCompositeTypeDuplexCallbackOnly : IEquatable<ComplexCompositeTypeDuplexCallbackOnly>
+    {
+        private Guid _guidValue;
+
+        [DataMember]
+        public Guid GuidValue
+        {
+            get { return _guidValue; }
+            set { _guidValue = value; }
+        }
+
+        public bool Equals(ComplexCompositeTypeDuplexCallbackOnly other)
+        {
+            if (other == null) { return false; }
+            if (object.ReferenceEquals(this, other)) { return true; }
+
+            if (_guidValue != other._guidValue) { return false; }
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("GuidValue: " + _guidValue);
 
             return sb.ToString();
         }

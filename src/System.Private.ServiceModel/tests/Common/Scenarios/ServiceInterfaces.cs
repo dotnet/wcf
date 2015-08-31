@@ -275,3 +275,33 @@ public interface IWcfDuplexTaskReturnCallback
         Action = "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallbackFaultDetailFault")]
     Task<Guid> ServicePingFaultCallback(Guid guid);
 }
+
+// ********************************************************************************
+
+[ServiceContract(CallbackContract = typeof(IWcfDuplexService_DataContract_Callback))]
+public interface IWcfDuplexService_DataContract
+{
+    [OperationContract]
+    void Ping_DataContract(Guid guid);
+}
+
+public interface IWcfDuplexService_DataContract_Callback
+{
+    [OperationContract]
+    void OnDataContractPingCallback(ComplexCompositeTypeDuplexCallbackOnly complexCompositeType);
+}
+
+// ********************************************************************************
+
+[ServiceContract(CallbackContract = typeof(IWcfDuplexService_Xml_Callback))]
+public interface IWcfDuplexService_Xml
+{
+    [OperationContract]
+    void Ping_Xml(Guid guid);
+}
+
+public interface IWcfDuplexService_Xml_Callback
+{
+    [OperationContract, XmlSerializerFormat]
+    void OnXmlPingCallback(XmlCompositeTypeDuplexCallbackOnly xmlCompositeType);
+}

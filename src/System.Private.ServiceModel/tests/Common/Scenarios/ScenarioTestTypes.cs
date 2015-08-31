@@ -688,6 +688,61 @@ public class XmlCompositeType
     }
 }
 
+// This type should only be used by test Contract.DataContractTests.NetTcpBinding_DuplexCallback_ReturnsDataContractComplexType
+// It tests a narrow scenario that returns a DataContract attributed type in the callback method that is not known by the ServiceContract attributed interface
+// This test is designed to make sure the NET Native toolchain creates the needed serializer
+[DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
+public class ComplexCompositeTypeDuplexCallbackOnly : IEquatable<ComplexCompositeTypeDuplexCallbackOnly>
+{
+    private Guid _guidValue;
+
+    [DataMember]
+    public Guid GuidValue
+    {
+        get { return _guidValue; }
+        set { _guidValue = value; }
+    }
+
+    public bool Equals(ComplexCompositeTypeDuplexCallbackOnly other)
+    {
+        if (other == null) { return false; }
+        if (object.ReferenceEquals(this, other)) { return true; }
+
+        if (_guidValue != other._guidValue) { return false; }
+
+        return true;
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("GuidValue: " + _guidValue);
+
+        return sb.ToString();
+    }
+}
+
+// This type should only be used by test Contract.DataContractTests.NetTcpBinding_DuplexCallback_ReturnsXmlComplexType
+// It tests a narrow scenario that returns an Xml attributed type in the callback method that is not known by the ServiceContract attributed interface
+// This test is designed to make sure the NET Native toolchain creates the needed serializer
+public class XmlCompositeTypeDuplexCallbackOnly
+{
+    private bool _boolValue = true;
+    private string _stringValue = "Hello ";
+
+    public bool BoolValue
+    {
+        get { return _boolValue; }
+        set { _boolValue = value; }
+    }
+
+    public string StringValue
+    {
+        get { return _stringValue; }
+        set { _stringValue = value; }
+    }
+}
+
 public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
 {
     private bool _wrapExceptionInTask;
@@ -772,13 +827,17 @@ public class MyDuplexClientBase<T> : DuplexClientBase<T> where T : class
     }
 }
 
-public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
+public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback, IWcfDuplexService_DataContract_Callback, IWcfDuplexService_Xml_Callback
 {
     private TaskCompletionSource<Guid> _tcs;
+    private TaskCompletionSource<XmlCompositeTypeDuplexCallbackOnly> _xml_tcs;
+    private TaskCompletionSource<ComplexCompositeTypeDuplexCallbackOnly> _datacontract_tcs;
 
     public WcfDuplexServiceCallback()
     {
         _tcs = new TaskCompletionSource<Guid>();
+        _xml_tcs = new TaskCompletionSource<XmlCompositeTypeDuplexCallbackOnly>();
+        _datacontract_tcs = new TaskCompletionSource<ComplexCompositeTypeDuplexCallbackOnly>();
     }
 
     public Guid CallbackGuid
@@ -793,6 +852,30 @@ public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
         }
     }
 
+    public XmlCompositeTypeDuplexCallbackOnly XmlCallbackGuid
+    {
+        get
+        {
+            if (_xml_tcs.Task.Wait(ScenarioTestHelpers.TestTimeout))
+            {
+                return _xml_tcs.Task.Result;
+            }
+            throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", ScenarioTestHelpers.TestTimeout));
+        }
+    }
+
+    public ComplexCompositeTypeDuplexCallbackOnly DataContractCallbackGuid
+    {
+        get
+        {
+            if (_datacontract_tcs.Task.Wait(ScenarioTestHelpers.TestTimeout))
+            {
+                return _datacontract_tcs.Task.Result;
+            }
+            throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", ScenarioTestHelpers.TestTimeout));
+        }
+    }
+
     public void OnPingCallback(Guid guid)
     {
         // Set the result in an async task with a 100ms delay to prevent a race condition
@@ -801,6 +884,28 @@ public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
         {
             await Task.Delay(100);
             _tcs.SetResult(guid);
+        });
+    }
+
+    public void OnXmlPingCallback(XmlCompositeTypeDuplexCallbackOnly xmlCompositeType)
+    {
+        // Set the result in an async task with a 100ms delay to prevent a race condition
+        // where the OnPingCallback hasn't sent the reply to the server before the channel is closed.
+        Task.Run(async () =>
+        {
+            await Task.Delay(100);
+            _xml_tcs.SetResult(xmlCompositeType);
+        });
+    }
+
+    public void OnDataContractPingCallback(ComplexCompositeTypeDuplexCallbackOnly dataContractCompositeType)
+    {
+        // Set the result in an async task with a 100ms delay to prevent a race condition
+        // where the OnPingCallback hasn't sent the reply to the server before the channel is closed.
+        Task.Run(async () =>
+        {
+            await Task.Delay(100);
+            _datacontract_tcs.SetResult(dataContractCompositeType);
         });
     }
 }

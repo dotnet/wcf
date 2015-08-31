@@ -128,4 +128,14 @@ public static partial class Endpoints
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexCallbackResource"); }
     }
+
+    public static string Tcp_NoSecurity_DataContractDuplexCallback_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexCallbackDataContractComplexTypeResource"); }
+    }
+
+    public static string Tcp_NoSecurity_XmlDuplexCallback_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexCallbackXmlComplexTypeResource"); }
+    }
 }
