@@ -19,8 +19,8 @@ namespace WcfTestBridgeCommon
             {
                 // Uninstall all certificates we explicitly added within this AppDomain
                 CertificateManager.UninstallAllSslPortCertificates();
-                CertificateManager.UninstallAllMyCertificates();
-                CertificateManager.UninstallAllRootCertificates();
+                CertificateManager.UninstallAllMyCertificates(force: false);
+                CertificateManager.UninstallAllRootCertificates(force: false);
             };
         }
 
