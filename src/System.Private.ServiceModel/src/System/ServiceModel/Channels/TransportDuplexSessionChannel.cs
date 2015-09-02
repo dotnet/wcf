@@ -6,6 +6,7 @@ using System.Runtime.Diagnostics;
 using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Diagnostics.Application;
+using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace System.ServiceModel.Channels
         private bool _isOutputSessionClosed;
         private MessageEncoder _messageEncoder;
         private SynchronizedMessageSource _messageSource;
+        private SecurityMessageProperty _remoteSecurity;
         private EndpointAddress _localAddress;
         private SemaphoreSlim _sendLock;
         private Uri _localVia;
@@ -44,6 +46,12 @@ namespace System.ServiceModel.Channels
         public EndpointAddress LocalAddress
         {
             get { return _localAddress; }
+        }
+
+        public SecurityMessageProperty RemoteSecurity
+        {
+            get { return _remoteSecurity; }
+            protected set { _remoteSecurity = value; }
         }
 
         public IDuplexSession Session

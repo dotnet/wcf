@@ -138,4 +138,9 @@ public static partial class Endpoints
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexCallbackXmlComplexTypeResource"); }
     }
+            
+    public static string Tcp_CustomBinding_SslStreamSecurity_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpTransportSecurityWithSslResource"); }
+    }
 }

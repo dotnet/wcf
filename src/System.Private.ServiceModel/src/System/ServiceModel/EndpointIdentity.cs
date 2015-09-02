@@ -52,6 +52,10 @@ namespace System.ServiceModel
 
             throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.CreateIdentity is not supported.");
         }
+        public static EndpointIdentity CreateDnsIdentity(string dnsName)
+        {
+            return new DnsEndpointIdentity(dnsName);
+        }
 
         public static EndpointIdentity CreateSpnIdentity(string spnName)
         {

@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.Net.Security;
+using System.Security.Authentication;
 using System.ServiceModel.Security;
 
 namespace System.ServiceModel.Channels
@@ -11,10 +12,12 @@ namespace System.ServiceModel.Channels
     {
         private IdentityVerifier _identityVerifier;
         private bool _requireClientCertificate;
+        private SslProtocols _sslProtocols;
 
         public SslStreamSecurityBindingElement()
         {
             _requireClientCertificate = TransportDefaults.RequireClientCertificate;
+            _sslProtocols = TransportDefaults.SslProtocols;
         }
 
         protected SslStreamSecurityBindingElement(SslStreamSecurityBindingElement elementToBeCloned)
@@ -22,6 +25,7 @@ namespace System.ServiceModel.Channels
         {
             _identityVerifier = elementToBeCloned._identityVerifier;
             _requireClientCertificate = elementToBeCloned._requireClientCertificate;
+            _sslProtocols = elementToBeCloned._sslProtocols;
         }
 
         public IdentityVerifier IdentityVerifier
@@ -58,6 +62,21 @@ namespace System.ServiceModel.Channels
                 _requireClientCertificate = value;
             }
         }
+
+        [DefaultValue(TransportDefaults.SslProtocols)]
+        public SslProtocols SslProtocols
+        {
+            get
+            {
+                return _sslProtocols;
+            }
+            set
+            {
+                SslProtocolsHelper.Validate(value);
+                _sslProtocols = value;
+            }
+        }
+
 
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
@@ -110,12 +129,22 @@ namespace System.ServiceModel.Channels
 
         public override StreamUpgradeProvider BuildClientStreamUpgradeProvider(BindingContext context)
         {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityBindingElementn.BuildClientStreamUpgradeProvider is not supported.");
+            return SslStreamSecurityUpgradeProvider.CreateClientProvider(this, context);
         }
 
-        public override StreamUpgradeProvider BuildServerStreamUpgradeProvider(BindingContext context)
+        internal override bool IsMatch(BindingElement b)
         {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityBindingElementn.BuildServerStreamUpgradeProvider is not supported.");
+            if (b == null)
+            {
+                return false;
+            }
+            SslStreamSecurityBindingElement ssl = b as SslStreamSecurityBindingElement;
+            if (ssl == null)
+            {
+                return false;
+            }
+
+            return _requireClientCertificate == ssl._requireClientCertificate && _sslProtocols == ssl._sslProtocols;
         }
     }
 }

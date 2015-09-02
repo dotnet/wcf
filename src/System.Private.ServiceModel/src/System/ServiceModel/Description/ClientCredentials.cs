@@ -11,6 +11,10 @@ namespace System.ServiceModel.Description
     public class ClientCredentials : SecurityCredentialsManager, IEndpointBehavior
     {
         private UserNamePasswordClientCredential _userName;
+#if FEATURE_CORECLR // X509Certificates
+        private X509CertificateInitiatorClientCredential _clientCertificate;
+        private X509CertificateRecipientClientCredential _serviceCertificate;
+#endif 
         private WindowsClientCredential _windows;
         private HttpDigestClientCredential _httpDigest;
         private bool _isReadOnly;
@@ -30,6 +34,35 @@ namespace System.ServiceModel.Description
             _isReadOnly = other._isReadOnly;
         }
 
+#if FEATURE_CORECLR // X509Certificates
+        public X509CertificateInitiatorClientCredential ClientCertificate
+        {
+            get
+            {
+                if (_clientCertificate == null)
+                {
+                    _clientCertificate = new X509CertificateInitiatorClientCredential();
+                    if (_isReadOnly)
+                        _clientCertificate.MakeReadOnly();
+                }
+                return _clientCertificate;
+            }
+        }
+
+        public X509CertificateRecipientClientCredential ServiceCertificate
+        {
+            get
+            {
+                if (_serviceCertificate == null)
+                {
+                    _serviceCertificate = new X509CertificateRecipientClientCredential();
+                    if (_isReadOnly)
+                        _serviceCertificate.MakeReadOnly();
+                }
+                return _serviceCertificate;
+            }
+        }
+#endif
 
         public UserNamePasswordClientCredential UserName
         {

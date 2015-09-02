@@ -210,7 +210,10 @@ namespace System.ServiceModel.Channels
 
         private void CancelReceiveTimer()
         {
-            _receiveTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+            if (_receiveTimer != null)
+            {
+                _receiveTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+            }
         }
 
         private void CancelSendTimer()

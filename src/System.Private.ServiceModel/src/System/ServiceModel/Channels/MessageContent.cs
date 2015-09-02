@@ -138,7 +138,7 @@ namespace System.ServiceModel.Channels
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing && !_disposed)
+            if (disposing && !_disposed)
             {
                 _disposed = true;
                 if (_stream != null)
@@ -154,7 +154,7 @@ namespace System.ServiceModel.Channels
 
         internal static HttpContent Create(HttpChannelFactory<IRequestChannel> factory, Message request, TimeoutHelper _timeoutHelper)
         {
-            if(TransferModeHelper.IsRequestStreamed(factory.TransferMode))
+            if (TransferModeHelper.IsRequestStreamed(factory.TransferMode))
             {
                 return new StreamedMessageContent(request, factory.MessageEncoderFactory.Encoder);
             }
@@ -194,7 +194,6 @@ namespace System.ServiceModel.Channels
             length = -1;
             return false;
         }
-
     }
 
     internal class BufferedMessageContent : MessageContent
@@ -255,7 +254,7 @@ namespace System.ServiceModel.Channels
             if (disposing && !_disposed)
             {
                 _disposed = true;
-                if(_buffer.Array != null)
+                if (_buffer.Array != null)
                 {
                     var byteArray = _buffer.Array;
                     _buffer = default(ArraySegment<byte>);
@@ -265,6 +264,5 @@ namespace System.ServiceModel.Channels
 
             base.Dispose(disposing);
         }
-
     }
 }

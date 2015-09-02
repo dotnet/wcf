@@ -82,7 +82,29 @@ namespace System.IdentityModel.Policy
 
         private void Initialize(ClaimSet issuer, ClaimSet issuance, ReadOnlyCollection<ClaimSet> issuances, DateTime expirationTime)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            _issuer = issuer;
+            _issuance = issuance;
+            _issuances = issuances;
+            _expirationTime = expirationTime;
+
+            // We don't yet support WindowsClaimSet
+            //if (issuance != null)
+            //{
+            //    _disposable = issuance is WindowsClaimSet;
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < issuances.Count; ++i)
+            //    {
+            //        if (issuances[i] is WindowsClaimSet)
+            //        {
+            //            this.disposable = true;
+            //            break;
+            //        }
+            //    }
+            //}
+
+            _disposable = false;
         }
 
         public string Id

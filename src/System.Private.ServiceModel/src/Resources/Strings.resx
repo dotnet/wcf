@@ -6747,4 +6747,7 @@
   <data name="ConfigurationFilesNotSupported" xml:space="preserve">
     <value>Configuration files are not supported.</value>
   </data>
+  <data name="X509ChainBuildFail" xml:space="preserve">
+    <value>The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</value>
+  </data>
 </root>

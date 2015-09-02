@@ -11,6 +11,7 @@ using Xunit;
 public class DuplexChannelFactoryTest
 {
     [Fact]
+    [ActiveIssue(301)]
     public static void CreateChannel_EndpointAddress_Null_Throws()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -57,6 +58,7 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
+    [ActiveIssue(301)]
     // valid address, but the scheme is incorrect
     public static void CreateChannel_ExpectedNetTcpScheme_HttpScheme_ThrowsUriFormat()
     {
@@ -71,6 +73,7 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
+    [ActiveIssue(301)]
     // valid address, but the scheme is incorrect
     public static void CreateChannel_ExpectedNetTcpScheme_InvalidScheme_ThrowsUriFormat()
     {
@@ -130,18 +133,17 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
-    [ActiveIssue(81)]
+    [ActiveIssue(300)]
     public static void CreateChannel_Using_NetTcpBinding_Defaults()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
         InstanceContext context = new InstanceContext(callback);
         Binding binding = new NetTcpBinding();
         EndpointAddress endpoint = new EndpointAddress("net.tcp://not-an-endpoint");
-        Assert.Throws<ArgumentNullException>("endpointAddress", () =>
-        {
-            DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
-            factory.CreateChannel();
-        });
+
+        DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
+        IWcfDuplexService proxy = factory.CreateChannel();
+        Assert.NotNull(proxy);
     }
 
     [Fact]

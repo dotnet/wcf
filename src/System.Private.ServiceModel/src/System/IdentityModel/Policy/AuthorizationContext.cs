@@ -17,7 +17,7 @@ namespace System.IdentityModel.Policy
 
         public static AuthorizationContext CreateDefaultAuthorizationContext(IList<IAuthorizationPolicy> authorizationPolicies)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            return SecurityUtils.CreateDefaultAuthorizationContext(authorizationPolicies);
         }
     }
 }

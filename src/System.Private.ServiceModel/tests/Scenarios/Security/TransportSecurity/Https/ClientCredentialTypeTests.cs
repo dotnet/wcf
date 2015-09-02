@@ -156,7 +156,6 @@ public static class Https_ClientCredentialTypeTests
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: NtlmAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    // Issue 53 will enable us optional run this test on domain machines.
     [Fact]
     [ActiveIssue(53)]
     [OuterLoop]

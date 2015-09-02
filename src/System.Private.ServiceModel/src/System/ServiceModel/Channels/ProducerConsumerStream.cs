@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.Contracts;
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -99,7 +102,6 @@ namespace System.ServiceModel.Channels
                 // The stream is no longer usable so converting to an ObjectDisposedException.
                 throw new ObjectDisposedException("ProducerConsumerStream", oce);
             }
-
         }
 
         public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)

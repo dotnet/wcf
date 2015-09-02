@@ -3,6 +3,7 @@
 
 using System.ComponentModel;
 using System.Net.Security;
+using System.Security.Authentication;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
@@ -15,11 +16,13 @@ namespace System.ServiceModel
 
         private TcpClientCredentialType _clientCredentialType;
         private ProtectionLevel _protectionLevel;
+        private SslProtocols _sslProtocols;
 
         public TcpTransportSecurity()
         {
             _clientCredentialType = DefaultClientCredentialType;
             _protectionLevel = DefaultProtectionLevel;
+            _sslProtocols = TransportDefaults.SslProtocols;
         }
 
         [DefaultValue(DefaultClientCredentialType)]
@@ -36,9 +39,29 @@ namespace System.ServiceModel
             }
         }
 
+        [DefaultValue(TransportDefaults.SslProtocols)]
+        public SslProtocols SslProtocols
+        {
+            get { return _sslProtocols; }
+            set
+            {
+                SslProtocolsHelper.Validate(value);
+                _sslProtocols = value;
+            }
+        }
+
         private SslStreamSecurityBindingElement CreateSslBindingElement(bool requireClientCertificate)
         {
-            throw ExceptionHelper.PlatformNotSupported("TcpTransportSecurity.CreateSslBindingElement is not supported.");
+            if (_protectionLevel != ProtectionLevel.EncryptAndSign)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
+                    SR.UnsupportedSslProtectionLevel, _protectionLevel)));
+            }
+
+            SslStreamSecurityBindingElement result = new SslStreamSecurityBindingElement();
+            result.RequireClientCertificate = requireClientCertificate;
+            result.SslProtocols = _sslProtocols;
+            return result;
         }
 
         private static bool IsSslBindingElement(BindingElement element, TcpTransportSecurity transportSecurity, out bool requireClientCertificate)

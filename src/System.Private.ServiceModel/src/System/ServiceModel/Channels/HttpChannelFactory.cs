@@ -625,8 +625,8 @@ namespace System.ServiceModel.Channels
                 {
                     if (_httpRequestMessage != null)
                     {
-						var httpRequestMessageSnapshot = _httpRequestMessage;
-						_httpRequestMessage = null;
+                        var httpRequestMessageSnapshot = _httpRequestMessage;
+                        _httpRequestMessage = null;
                         _timeoutHelper.CancelCancellationToken(false);
                         TryCompleteHttpRequest(httpRequestMessageSnapshot);
                         httpRequestMessageSnapshot.Dispose();

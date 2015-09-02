@@ -19,7 +19,6 @@ namespace System.ServiceModel.Channels
         internal const bool defaultEnableUnsecuredResponse = false;
         internal const bool defaultProtectTokens = false;
 
-
         private SupportingTokenParameters _endpointSupportingTokenParameters;
         private bool _includeTimestamp;
 
@@ -27,6 +26,8 @@ namespace System.ServiceModel.Channels
 
         private MessageSecurityVersion _messageSecurityVersion;
         private SecurityHeaderLayout _securityHeaderLayout;
+        private long _maxReceivedMessageSize = TransportDefaults.MaxReceivedMessageSize;
+        private XmlDictionaryReaderQuotas _readerQuotas;
         private bool _protectTokens = defaultProtectTokens;
 
         internal SecurityBindingElement()
@@ -37,7 +38,6 @@ namespace System.ServiceModel.Channels
             _localClientSettings = new LocalClientSecuritySettings();
             _endpointSupportingTokenParameters = new SupportingTokenParameters();
             _securityHeaderLayout = SecurityProtocolFactory.defaultSecurityHeaderLayout;
-            throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement is not supported");
         }
 
         internal SecurityBindingElement(SecurityBindingElement elementToBeCloned)
@@ -51,7 +51,8 @@ namespace System.ServiceModel.Channels
             _securityHeaderLayout = elementToBeCloned._securityHeaderLayout;
             _endpointSupportingTokenParameters = elementToBeCloned._endpointSupportingTokenParameters.Clone();
             _localClientSettings = elementToBeCloned._localClientSettings.Clone();
-            throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement cloning not supported.");
+            _maxReceivedMessageSize = elementToBeCloned._maxReceivedMessageSize;
+            _readerQuotas = elementToBeCloned._readerQuotas;
         }
 
         public SupportingTokenParameters EndpointSupportingTokenParameters
@@ -126,6 +127,18 @@ namespace System.ServiceModel.Channels
             get { return false; }
         }
 
+        internal long MaxReceivedMessageSize
+        {
+            get { return _maxReceivedMessageSize; }
+            set { _maxReceivedMessageSize = value; }
+        }
+
+        internal XmlDictionaryReaderQuotas ReaderQuotas
+        {
+            get { return _readerQuotas; }
+            set { _readerQuotas = value; }
+        }
+
         private void GetSupportingTokensCapabilities(ICollection<SecurityTokenParameters> parameters, out bool supportsClientAuth, out bool supportsWindowsIdentity)
         {
             supportsClientAuth = false;
@@ -198,7 +211,28 @@ namespace System.ServiceModel.Channels
             if (context == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
 
-            throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement.BuildChannelFactory is not supported.");
+            if (!this.CanBuildChannelFactory<TChannel>(context))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)), "TChannel"));
+            }
+
+            _readerQuotas = context.GetInnerProperty<XmlDictionaryReaderQuotas>();
+            if (_readerQuotas == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EncodingBindingElementDoesNotHandleReaderQuotas)));
+            }
+
+            TransportBindingElement transportBindingElement = null;
+
+            if (context.RemainingBindingElements != null)
+                transportBindingElement = context.RemainingBindingElements.Find<TransportBindingElement>();
+
+            if (transportBindingElement != null)
+                _maxReceivedMessageSize = transportBindingElement.MaxReceivedMessageSize;
+
+            IChannelFactory<TChannel> result = this.BuildChannelFactoryCore<TChannel>(context);
+
+            return result;
         }
 
         protected abstract IChannelFactory<TChannel> BuildChannelFactoryCore<TChannel>(BindingContext context);

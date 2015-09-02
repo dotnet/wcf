@@ -10,12 +10,12 @@ using System.ServiceModel.Security;
 
 namespace System.Security.Cryptography
 {
-    internal abstract class HashAlgorithm {}
+    internal abstract class HashAlgorithm { }
 #pragma warning disable 0436 // HashAlgorithm conflicts with imported types
-    internal abstract class KeyedHashAlgorithm : HashAlgorithm {}
+    internal abstract class KeyedHashAlgorithm : HashAlgorithm { }
 #pragma warning restore 0436 
-    internal interface ICryptoTransform {}
-    internal abstract class SymmetricAlgorithm {}
+    internal interface ICryptoTransform { }
+    internal abstract class SymmetricAlgorithm { }
 }
 
 namespace System.IdentityModel

@@ -17,7 +17,5 @@ namespace System.ServiceModel.Channels
         }
 
         public abstract StreamUpgradeProvider BuildClientStreamUpgradeProvider(BindingContext context);
-
-        public abstract StreamUpgradeProvider BuildServerStreamUpgradeProvider(BindingContext context);
     }
 }
