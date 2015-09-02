@@ -4,6 +4,7 @@
 using System.Net;
 using System.Net.Security;
 using System.Runtime;
+using System.Security.Authentication;
 using System.Security.Principal;
 using System.Text;
 using System.Xml;
@@ -150,6 +151,10 @@ namespace System.ServiceModel.Channels
         public const bool RequireClientCertificate = false;
         public const int MaxFaultSize = MaxBufferSize;
         public const int MaxSecurityFaultSize = 16384;
+        public const SslProtocols SslProtocols = System.Security.Authentication.SslProtocols.Ssl3 |
+                                           System.Security.Authentication.SslProtocols.Tls |
+                                           System.Security.Authentication.SslProtocols.Tls11 |
+                                           System.Security.Authentication.SslProtocols.Tls12;
 
         // Calling CreateFault on an incoming message can expose some DoS-related security 
         // vulnerabilities when a service is in streaming mode.  See MB 47592 for more details. 

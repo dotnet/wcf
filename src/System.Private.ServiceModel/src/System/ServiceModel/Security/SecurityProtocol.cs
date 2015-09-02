@@ -28,6 +28,8 @@ namespace System.ServiceModel.Security
     // of simple return values.
     internal abstract class SecurityProtocol : ISecurityCommunicationObject
     {
+        private WrapperSecurityCommunicationObject _communicationObject;
+
         public TimeSpan DefaultCloseTimeout
         {
             get { throw ExceptionHelper.PlatformNotSupported(); }
@@ -50,5 +52,17 @@ namespace System.ServiceModel.Security
         public void OnOpen(TimeSpan timeout) { throw ExceptionHelper.PlatformNotSupported(); }
         public void OnOpened() { throw ExceptionHelper.PlatformNotSupported(); }
         public void OnOpening() { throw ExceptionHelper.PlatformNotSupported(); }
+
+        public void Close(bool aborted, TimeSpan timeout)
+        {
+            if (aborted)
+            {
+                _communicationObject.Abort();
+            }
+            else
+            {
+                _communicationObject.Close(timeout);
+            }
+        }
     }
 }

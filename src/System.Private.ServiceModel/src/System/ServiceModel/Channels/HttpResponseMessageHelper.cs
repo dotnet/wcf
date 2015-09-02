@@ -133,7 +133,7 @@ namespace System.ServiceModel.Channels
                 _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : -1;
             }
 
-            if(string.IsNullOrEmpty(_contentType))
+            if (string.IsNullOrEmpty(_contentType))
             {
                 Stream contentStream = await GetStreamAsync();
                 if (contentStream != null)
@@ -142,7 +142,7 @@ namespace System.ServiceModel.Channels
                 }
                 return false;
             }
-            else if(_contentLength!=0)
+            else if (_contentLength != 0)
             {
                 if (!_encoder.IsContentTypeSupported(_contentType))
                 {
@@ -297,7 +297,7 @@ namespace System.ServiceModel.Channels
             if (content != null)
             {
                 contentStream = await content.ReadAsStreamAsync();
-                _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : - 1;
+                _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : -1;
                 if (_contentLength <= 0)
                 {
                     var preReadBuffer = new byte[1];
@@ -369,7 +369,6 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     HttpChannelUtilities.TraceResponseException(new MessageSecurityException(message)));
             }
-
         }
     }
 }

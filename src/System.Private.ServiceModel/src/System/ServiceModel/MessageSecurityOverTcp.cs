@@ -9,9 +9,11 @@ namespace System.ServiceModel
     public sealed class MessageSecurityOverTcp
     {
         internal const MessageCredentialType DefaultClientCredentialType = MessageCredentialType.Windows;
+        private MessageCredentialType _messageCredentialType;
 
         public MessageSecurityOverTcp()
         {
+            _messageCredentialType = DefaultClientCredentialType;
         }
 
         [DefaultValue(MessageSecurityOverTcp.DefaultClientCredentialType)]
@@ -19,11 +21,30 @@ namespace System.ServiceModel
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported("MessageSecurityOverTcp.ClientCredentialType is not supported.");
+                if (_messageCredentialType != MessageCredentialType.None)
+                {
+                    throw ExceptionHelper.PlatformNotSupported("MessageSecurityOverTcp.ClientCredentialType is not supported for values other than 'MessageCredentialType.None'.");
+                }
+                else
+                {
+                    return _messageCredentialType;
+                }
             }
             set
             {
-                throw ExceptionHelper.PlatformNotSupported("MessageSecurityOverTcp.ClientCredentialType is not supported.");
+                if (!MessageCredentialTypeHelper.IsDefined(value))
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                }
+
+                if (value != MessageCredentialType.None)
+                {
+                    throw ExceptionHelper.PlatformNotSupported("MessageSecurityOverTcp.ClientCredentialType is not supported for values other than 'MessageCredentialType.None'.");
+                }
+                else
+                {
+                    _messageCredentialType = value;
+                }
             }
         }
 

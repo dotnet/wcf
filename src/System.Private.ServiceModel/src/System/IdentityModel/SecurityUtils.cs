@@ -6,8 +6,12 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.Runtime;
+#if FEATURE_CORECLR
+using System.Security.Cryptography.X509Certificates;
+#endif // FEATURE_CORECLR
 using System.Security.Principal;
 using System.ServiceModel;
+using System.ServiceModel.Diagnostics;
 using System.Text;
 
 namespace System.IdentityModel
@@ -30,7 +34,9 @@ namespace System.IdentityModel
             get
             {
                 if (s_anonymousIdentity == null)
-                    s_anonymousIdentity = SecurityUtils.CreateIdentity(String.Empty);
+                {
+                    s_anonymousIdentity = SecurityUtils.CreateIdentity(string.Empty);
+                }
                 return s_anonymousIdentity;
             }
         }
@@ -41,6 +47,15 @@ namespace System.IdentityModel
             {
                 // + and -  TimeSpan.TicksPerDay is to compensate the DateTime.ParseExact (to localtime) overflow.
                 return new DateTime(DateTime.MaxValue.Ticks - TimeSpan.TicksPerDay, DateTimeKind.Utc);
+            }
+        }
+
+        public static DateTime MinUtcDateTime
+        {
+            get
+            {
+                // + and -  TimeSpan.TicksPerDay is to compensate the DateTime.ParseExact (to localtime) overflow.
+                return new DateTime(DateTime.MinValue.Ticks + TimeSpan.TicksPerDay, DateTimeKind.Utc);
             }
         }
 
@@ -99,6 +114,70 @@ namespace System.IdentityModel
             return true;
         }
 
+        internal static ReadOnlyCollection<IAuthorizationPolicy> CreateAuthorizationPolicies(ClaimSet claimSet)
+        {
+            return CreateAuthorizationPolicies(claimSet, SecurityUtils.MaxUtcDateTime);
+        }
+
+        internal static ReadOnlyCollection<IAuthorizationPolicy> CreateAuthorizationPolicies(ClaimSet claimSet, DateTime expirationTime)
+        {
+            List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>(1);
+            policies.Add(new UnconditionalPolicy(claimSet, expirationTime));
+            return policies.AsReadOnly();
+        }
+
+        internal static AuthorizationContext CreateDefaultAuthorizationContext(IList<IAuthorizationPolicy> authorizationPolicies)
+        {
+            AuthorizationContext _authorizationContext;
+            // This is faster than Policy evaluation.
+            if (authorizationPolicies != null && authorizationPolicies.Count == 1 && authorizationPolicies[0] is UnconditionalPolicy)
+            {
+                _authorizationContext = new SimpleAuthorizationContext(authorizationPolicies);
+            }
+            // degenerate case
+            else if (authorizationPolicies == null || authorizationPolicies.Count <= 0)
+            {
+                return DefaultAuthorizationContext.Empty;
+            }
+            else
+            {
+                // there are some policies, run them until they are all done
+                DefaultEvaluationContext evaluationContext = new DefaultEvaluationContext();
+                object[] policyState = new object[authorizationPolicies.Count];
+                object done = new object();
+
+                int oldContextCount;
+                do
+                {
+                    oldContextCount = evaluationContext.Generation;
+
+                    for (int i = 0; i < authorizationPolicies.Count; i++)
+                    {
+                        if (policyState[i] == done)
+                            continue;
+
+                        IAuthorizationPolicy policy = authorizationPolicies[i];
+                        if (policy == null)
+                        {
+                            policyState[i] = done;
+                            continue;
+                        }
+
+                        if (policy.Evaluate(evaluationContext, ref policyState[i]))
+                        {
+                            policyState[i] = done;
+                        }
+                    }
+
+                } while (oldContextCount < evaluationContext.Generation);
+
+                _authorizationContext = new DefaultAuthorizationContext(evaluationContext);
+            }
+
+            return _authorizationContext;
+        }
+
+
         internal static string ClaimSetToString(ClaimSet claimSet)
         {
             StringBuilder sb = new StringBuilder();
@@ -156,6 +235,40 @@ namespace System.IdentityModel
             throw ExceptionHelper.PlatformNotSupported();
         }
 
+#if FEATURE_CORECLR // X509Certificate
+        internal static string GetCertificateId(X509Certificate2 certificate)
+        {
+            StringBuilder str = new StringBuilder(256);
+            AppendCertificateIdentityName(str, certificate);
+            return str.ToString();
+        }
+
+        internal static void AppendCertificateIdentityName(StringBuilder str, X509Certificate2 certificate)
+        {
+            string value = certificate.SubjectName.Name;
+            if (String.IsNullOrEmpty(value))
+            {
+                value = certificate.GetNameInfo(X509NameType.DnsName, false);
+                if (String.IsNullOrEmpty(value))
+                {
+                    value = certificate.GetNameInfo(X509NameType.SimpleName, false);
+                    if (String.IsNullOrEmpty(value))
+                    {
+                        value = certificate.GetNameInfo(X509NameType.EmailName, false);
+                        if (String.IsNullOrEmpty(value))
+                        {
+                            value = certificate.GetNameInfo(X509NameType.UpnName, false);
+                        }
+                    }
+                }
+            }
+            // Same format as X509Identity
+            str.Append(String.IsNullOrEmpty(value) ? "<x509>" : value);
+            str.Append("; ");
+            str.Append(certificate.Thumbprint);
+        }
+#endif // FEATURE_CORECLR
+
         internal static ReadOnlyCollection<IAuthorizationPolicy> CloneAuthorizationPoliciesIfNecessary(ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
             if (authorizationPolicies != null && authorizationPolicies.Count > 0)
@@ -209,10 +322,66 @@ namespace System.IdentityModel
                 obj.Dispose();
             }
         }
+
+#if FEATURE_CORECLR
+
+        // This is the workaround, Since store.Certificates returns a full collection
+        // of certs in store.  These are holding native resources.
+        internal static void ResetAllCertificates(X509Certificate2Collection certificates)
+        {
+            if (certificates != null)
+            {
+                for (int i = 0; i < certificates.Count; ++i)
+                {
+                    ResetCertificate(certificates[i]);
+                }
+            }
+        }
+
+        internal static void ResetCertificate(X509Certificate2 certificate)
+        {
+            // Check that Dispose() and Reset() do the same thing
+            certificate.Dispose();
+        }
+#endif // FEATURE_CORECLR
     }
 
     internal static class EmptyReadOnlyCollection<T>
     {
         public static ReadOnlyCollection<T> Instance = new ReadOnlyCollection<T>(new List<T>());
+    }
+
+    internal class SimpleAuthorizationContext : AuthorizationContext
+    {
+        private SecurityUniqueId _id;
+        private UnconditionalPolicy _policy;
+        private IDictionary<string, object> _properties;
+
+        public SimpleAuthorizationContext(IList<IAuthorizationPolicy> authorizationPolicies)
+        {
+            _policy = (UnconditionalPolicy)authorizationPolicies[0];
+            Dictionary<string, object> properties = new Dictionary<string, object>();
+            if (_policy.PrimaryIdentity != null && _policy.PrimaryIdentity != SecurityUtils.AnonymousIdentity)
+            {
+                List<IIdentity> identities = new List<IIdentity>();
+                identities.Add(_policy.PrimaryIdentity);
+                properties.Add(SecurityUtils.Identities, identities);
+            }
+            
+            _properties = properties;
+        }
+
+        public override string Id
+        {
+            get
+            {
+                if (_id == null)
+                    _id = SecurityUniqueId.Create();
+                return _id.Value;
+            }
+        }
+        public override ReadOnlyCollection<ClaimSet> ClaimSets { get { return _policy.Issuances; } }
+        public override DateTime ExpirationTime { get { return _policy.ExpirationTime; } }
+        public override IDictionary<string, object> Properties { get { return _properties; } }
     }
 }

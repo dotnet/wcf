@@ -10,8 +10,6 @@ using System.ServiceModel.Security.Tokens;
 using System.Xml;
 using System.ServiceModel.Diagnostics;
 using System.Diagnostics;
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 namespace System.ServiceModel.Security
 {

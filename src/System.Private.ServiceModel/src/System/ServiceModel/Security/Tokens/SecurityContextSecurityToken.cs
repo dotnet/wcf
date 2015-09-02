@@ -278,31 +278,6 @@ namespace System.ServiceModel.Security.Tokens
             _isCookieMode = isCookieMode;
         }
 
-        public override bool CanCreateKeyIdentifierClause<T>()
-        {
-            if (typeof(T) == typeof(SecurityContextKeyIdentifierClause))
-                return true;
-
-            return base.CanCreateKeyIdentifierClause<T>();
-        }
-
-        public override T CreateKeyIdentifierClause<T>()
-        {
-            if (typeof(T) == typeof(SecurityContextKeyIdentifierClause))
-                return new SecurityContextKeyIdentifierClause(_contextId, _keyGeneration) as T;
-
-            return base.CreateKeyIdentifierClause<T>();
-        }
-
-        public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
-        {
-            SecurityContextKeyIdentifierClause sctKeyIdentifierClause = keyIdentifierClause as SecurityContextKeyIdentifierClause;
-            if (sctKeyIdentifierClause != null)
-                return sctKeyIdentifierClause.Matches(_contextId, _keyGeneration);
-
-            return base.MatchesKeyIdentifierClause(keyIdentifierClause);
-        }
-
         public static SecurityContextSecurityToken CreateCookieSecurityContextToken(UniqueId contextId, string id, byte[] key,
             DateTime validFrom, DateTime validTo, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, SecurityStateEncoder securityStateEncoder)
         {
