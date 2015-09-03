@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "System.Reflection.Emit.Lightweight": "4.0.0",
     "System.ServiceModel.Duplex": "4.0.0-beta-*",
     "System.ServiceModel.Http": "4.0.10-beta-*",
     "System.ServiceModel.NetTcp": "4.0.0-beta-*",

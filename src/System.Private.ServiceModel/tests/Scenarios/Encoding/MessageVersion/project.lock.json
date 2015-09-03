@@ -541,31 +541,17 @@
           "lib/DNXCore50/System.Reflection.Emit.dll": {}
         }
       },
-      "System.Reflection.Emit.ILGeneration/4.0.0": {
+      "System.Reflection.Emit.ILGeneration/4.0.0-beta-23127": {
         "dependencies": {
-          "System.Runtime": "4.0.0",
-          "System.Reflection": "4.0.0",
-          "System.Reflection.Primitives": "4.0.0"
+          "System.Runtime": "4.0.0-beta-23127",
+          "System.Reflection": "4.0.0-beta-23127",
+          "System.Reflection.Primitives": "4.0.0-beta-23127"
         },
         "compile": {
           "ref/dotnet/System.Reflection.Emit.ILGeneration.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Reflection.Emit.ILGeneration.dll": {}
-        }
-      },
-      "System.Reflection.Emit.Lightweight/4.0.0": {
-        "dependencies": {
-          "System.Reflection": "4.0.0",
-          "System.Reflection.Primitives": "4.0.0",
-          "System.Runtime": "4.0.0",
-          "System.Reflection.Emit.ILGeneration": "4.0.0"
-        },
-        "compile": {
-          "ref/dotnet/System.Reflection.Emit.Lightweight.dll": {}
-        },
-        "runtime": {
-          "lib/DNXCore50/System.Reflection.Emit.Lightweight.dll": {}
         }
       },
       "System.Reflection.Extensions/4.0.0-beta-23127": {
@@ -1114,7 +1100,7 @@
           "lib/dnxcore50/xunit.execution.dnx.dll": {}
         }
       },
-      "xunit.netcore.extensions/1.0.0-prerelease-00081": {
+      "xunit.netcore.extensions/1.0.0-prerelease-00084": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
           "System.IO": "4.0.10",
@@ -2114,11 +2100,11 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "System.Reflection.Emit.ILGeneration/4.0.0": {
-      "sha512": "02okuusJ0GZiHZSD2IOLIN41GIn6qOr7i5+86C98BPuhlwWqVABwebiGNvhDiXP1f9a6CxEigC7foQD42klcDg==",
+    "System.Reflection.Emit.ILGeneration/4.0.0-beta-23127": {
+      "sha512": "Z953hng7bseRmyedsWYyRMXm6VlKYaAizg/h1bN3Yol+dKcdU1PPNgtyM5lFf1poMQQWedqFrB6wP+PrV9MNFQ==",
       "files": [
-        "System.Reflection.Emit.ILGeneration.4.0.0.nupkg",
-        "System.Reflection.Emit.ILGeneration.4.0.0.nupkg.sha512",
+        "System.Reflection.Emit.ILGeneration.4.0.0-beta-23127.nupkg",
+        "System.Reflection.Emit.ILGeneration.4.0.0-beta-23127.nupkg.sha512",
         "System.Reflection.Emit.ILGeneration.nuspec",
         "lib/DNXCore50/System.Reflection.Emit.ILGeneration.dll",
         "lib/net45/_._",
@@ -2135,31 +2121,6 @@
         "ref/dotnet/ru/System.Reflection.Emit.ILGeneration.xml",
         "ref/dotnet/zh-hans/System.Reflection.Emit.ILGeneration.xml",
         "ref/dotnet/zh-hant/System.Reflection.Emit.ILGeneration.xml",
-        "ref/net45/_._",
-        "ref/wp80/_._"
-      ]
-    },
-    "System.Reflection.Emit.Lightweight/4.0.0": {
-      "sha512": "DJZhHiOdkN08xJgsJfDjkuOreLLmMcU8qkEEqEHqyhkPUZMMQs0lE8R+6+68BAFWgcdzxtNu0YmIOtEug8j00w==",
-      "files": [
-        "System.Reflection.Emit.Lightweight.4.0.0.nupkg",
-        "System.Reflection.Emit.Lightweight.4.0.0.nupkg.sha512",
-        "System.Reflection.Emit.Lightweight.nuspec",
-        "lib/DNXCore50/System.Reflection.Emit.Lightweight.dll",
-        "lib/net45/_._",
-        "lib/netcore50/System.Reflection.Emit.Lightweight.dll",
-        "lib/wp80/_._",
-        "ref/dotnet/System.Reflection.Emit.Lightweight.dll",
-        "ref/dotnet/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/de/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/es/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/fr/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/it/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/ja/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/ko/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/ru/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/zh-hans/System.Reflection.Emit.Lightweight.xml",
-        "ref/dotnet/zh-hant/System.Reflection.Emit.Lightweight.xml",
         "ref/net45/_._",
         "ref/wp80/_._"
       ]
@@ -3284,12 +3245,12 @@
         "lib/Xamarin.iOS/xunit.execution.iOS-Universal.xml"
       ]
     },
-    "xunit.netcore.extensions/1.0.0-prerelease-00081": {
+    "xunit.netcore.extensions/1.0.0-prerelease-00084": {
       "serviceable": true,
-      "sha512": "BzioU7GIbHHiICQLk8q92YeHHaJLA9InRyveaN3QrtwLsoQOToNBJSBHuu2P7YIONkjsQUR1tJYdyDI6p7aX9Q==",
+      "sha512": "z914M/yDSxn26tIhKzrvP2um5rGBhATo94KO9zScORDA9Aw09JGl3Sn2S/kuv/HaqM7zGjbZk5BsrqQPowl05Q==",
       "files": [
-        "xunit.netcore.extensions.1.0.0-prerelease-00081.nupkg",
-        "xunit.netcore.extensions.1.0.0-prerelease-00081.nupkg.sha512",
+        "xunit.netcore.extensions.1.0.0-prerelease-00084.nupkg",
+        "xunit.netcore.extensions.1.0.0-prerelease-00084.nupkg.sha512",
         "xunit.netcore.extensions.nuspec",
         "lib/dotnet/Xunit.NetCore.Extensions.dll"
       ]
@@ -3297,7 +3258,6 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "System.Reflection.Emit.Lightweight >= 4.0.0",
       "System.ServiceModel.Http >= 4.0.10-beta-*",
       "System.ServiceModel.Primitives >= 4.0.0-beta-*",
       "xunit >= 2.1.0-beta3-*",

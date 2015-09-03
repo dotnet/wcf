@@ -158,6 +158,18 @@
           "lib/DNXCore50/System.Globalization.dll": {}
         }
       },
+      "System.Globalization.Calendars/4.0.0": {
+        "dependencies": {
+          "System.Runtime": "4.0.0",
+          "System.Globalization": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Globalization.Calendars.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Globalization.Calendars.dll": {}
+        }
+      },
       "System.Globalization.Extensions/4.0.0": {
         "dependencies": {
           "System.Runtime": "4.0.20",
@@ -321,9 +333,9 @@
           "lib/DNXCore50/System.Net.Http.dll": {}
         }
       },
-      "System.Net.NameResolution/4.0.0-beta-23225": {
+      "System.Net.NameResolution/4.0.0-beta-23304": {
         "dependencies": {
-          "System.Private.Networking": "4.0.1-beta-23225"
+          "System.Private.Networking": "4.0.1-beta-23304"
         },
         "compile": {
           "ref/dotnet/System.Net.NameResolution.dll": {}
@@ -343,9 +355,9 @@
           "lib/DNXCore50/System.Net.Primitives.dll": {}
         }
       },
-      "System.Net.Security/4.0.0-beta-23225": {
+      "System.Net.Security/4.0.0-beta-23304": {
         "dependencies": {
-          "System.Private.Networking": "4.0.1-beta-23225"
+          "System.Private.Networking": "4.0.1-beta-23304"
         },
         "compile": {
           "ref/dotnet/System.Net.Security.dll": {}
@@ -419,25 +431,29 @@
           "lib/DNXCore50/System.Private.DataContractSerialization.dll": {}
         }
       },
-      "System.Private.Networking/4.0.1-beta-23225": {
+      "System.Private.Networking/4.0.1-beta-23304": {
         "dependencies": {
           "System.Runtime": "4.0.20",
           "System.Runtime.InteropServices": "4.0.20",
           "System.Diagnostics.Tracing": "4.0.20",
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime.Handles": "4.0.0",
+          "System.Security.Cryptography.X509Certificates": "4.0.0-beta-23304",
           "System.Collections.Concurrent": "4.0.0",
           "System.Collections.NonGeneric": "4.0.0",
+          "System.Security.SecureString": "4.0.0-beta-23304",
+          "System.Security.Principal.Windows": "4.0.0-beta-23304",
           "Microsoft.Win32.Primitives": "4.0.0",
           "System.IO.FileSystem": "4.0.0",
           "System.Threading.Overlapped": "4.0.0",
-          "System.Security.Cryptography.Primitives": "4.0.0-beta-23225",
+          "System.Security.Cryptography.Primitives": "4.0.0-beta-23304",
           "System.IO.FileSystem.Primitives": "4.0.0",
           "System.Collections": "4.0.10",
           "System.Threading": "4.0.10",
           "System.Threading.Tasks": "4.0.10",
           "System.IO": "4.0.10",
           "System.Diagnostics.Debug": "4.0.10",
+          "System.Threading.ThreadPool": "4.0.10-beta-23304",
           "System.ComponentModel.EventBasedAsync": "4.0.10",
           "System.Runtime.Extensions": "4.0.10",
           "System.Globalization": "4.0.10"
@@ -617,6 +633,20 @@
           "lib/dotnet/System.Runtime.InteropServices.RuntimeInformation.dll": {}
         }
       },
+      "System.Runtime.Numerics/4.0.0": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Globalization": "4.0.10",
+          "System.Runtime.Extensions": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Runtime.Numerics.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Runtime.Numerics.dll": {}
+        }
+      },
       "System.Runtime.Serialization.Primitives/4.0.10": {
         "dependencies": {
           "System.Runtime": "4.0.20",
@@ -659,7 +689,80 @@
           "lib/dotnet/System.Security.Claims.dll": {}
         }
       },
-      "System.Security.Cryptography.Primitives/4.0.0-beta-23225": {
+      "System.Security.Cryptography.Algorithms/4.0.0-beta-23304": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime.Handles": "4.0.0",
+          "System.Security.Cryptography.Primitives": "4.0.0-beta-23304",
+          "System.Text.Encoding.Extensions": "4.0.0",
+          "System.Text.Encoding": "4.0.0",
+          "System.IO": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Security.Cryptography.Algorithms.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Security.Cryptography.Algorithms.dll": {}
+        }
+      },
+      "System.Security.Cryptography.Cng/4.0.0-beta-23304": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Security.Cryptography.Primitives": "4.0.0-beta-23304",
+          "System.Runtime.Handles": "4.0.0",
+          "System.Security.Cryptography.Algorithms": "4.0.0-beta-23304",
+          "System.Runtime.Extensions": "4.0.0",
+          "System.IO": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Security.Cryptography.Cng.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Security.Cryptography.Cng.dll": {}
+        }
+      },
+      "System.Security.Cryptography.Csp/4.0.0-beta-23304": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Security.Cryptography.Encoding": "4.0.0-beta-23304",
+          "System.Security.Cryptography.Algorithms": "4.0.0-beta-23304",
+          "System.Reflection": "4.0.0",
+          "System.Security.Cryptography.Primitives": "4.0.0-beta-23304",
+          "System.Runtime.Handles": "4.0.0",
+          "System.IO": "4.0.10",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Security.Cryptography.Csp.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Security.Cryptography.Csp.dll": {}
+        }
+      },
+      "System.Security.Cryptography.Encoding/4.0.0-beta-23304": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime.Handles": "4.0.0",
+          "System.Security.Cryptography.Primitives": "4.0.0-beta-23304",
+          "System.Diagnostics.Debug": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Security.Cryptography.Encoding.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Security.Cryptography.Encoding.dll": {}
+        }
+      },
+      "System.Security.Cryptography.Primitives/4.0.0-beta-23304": {
         "dependencies": {
           "System.Runtime": "4.0.20",
           "System.Resources.ResourceManager": "4.0.0",
@@ -673,6 +776,34 @@
           "lib/DNXCore50/System.Security.Cryptography.Primitives.dll": {}
         }
       },
+      "System.Security.Cryptography.X509Certificates/4.0.0-beta-23304": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Security.Cryptography.Primitives": "4.0.0-beta-23304",
+          "System.Security.Cryptography.Csp": "4.0.0-beta-23304",
+          "System.Security.Cryptography.Encoding": "4.0.0-beta-23304",
+          "System.Security.Cryptography.Algorithms": "4.0.0-beta-23304",
+          "System.Runtime.Handles": "4.0.0",
+          "System.Runtime.Numerics": "4.0.0",
+          "System.Globalization.Calendars": "4.0.0",
+          "System.IO.FileSystem": "4.0.0",
+          "System.Security.Cryptography.Cng": "4.0.0-beta-23304",
+          "System.Globalization": "4.0.10",
+          "System.Collections": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Text.Encoding": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Security.Cryptography.X509Certificates.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Security.Cryptography.X509Certificates.dll": {}
+        }
+      },
       "System.Security.Principal/4.0.0": {
         "dependencies": {
           "System.Runtime": "4.0.0"
@@ -684,24 +815,42 @@
           "lib/dotnet/System.Security.Principal.dll": {}
         }
       },
-      "System.Security.Principal.Windows/4.0.0-beta-23225": {
+      "System.Security.Principal.Windows/4.0.0-beta-23304": {
         "dependencies": {
           "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
           "System.Resources.ResourceManager": "4.0.0",
           "System.Collections": "4.0.0",
-          "System.Runtime.InteropServices": "4.0.0",
           "System.Security.Claims": "4.0.0",
           "System.Security.Principal": "4.0.0",
-          "System.Diagnostics.Debug": "4.0.0",
-          "System.Reflection": "4.0.0",
+          "System.Runtime.Handles": "4.0.0",
           "System.Runtime.Extensions": "4.0.0",
-          "System.Threading": "4.0.10"
+          "System.Threading": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Reflection": "4.0.10",
+          "System.Text.Encoding": "4.0.10"
         },
         "compile": {
           "ref/dotnet/System.Security.Principal.Windows.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Security.Principal.Windows.dll": {}
+        }
+      },
+      "System.Security.SecureString/4.0.0-beta-23304": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime.Handles": "4.0.0",
+          "System.Security.Cryptography.Primitives": "4.0.0-beta-23304",
+          "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Security.SecureString.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Security.SecureString.dll": {}
         }
       },
       "System.Text.Encoding/4.0.10": {
@@ -776,6 +925,18 @@
         },
         "runtime": {
           "lib/DNXCore50/System.Threading.Tasks.dll": {}
+        }
+      },
+      "System.Threading.ThreadPool/4.0.10-beta-23304": {
+        "dependencies": {
+          "System.Runtime": "4.0.0",
+          "System.Runtime.InteropServices": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Threading.ThreadPool.dll": {}
+        },
+        "runtime": {
+          "lib/DNXCore50/System.Threading.ThreadPool.dll": {}
         }
       },
       "System.Threading.Timer/4.0.0": {
@@ -930,7 +1091,7 @@
           "lib/dnxcore50/xunit.execution.dnx.dll": {}
         }
       },
-      "xunit.netcore.extensions/1.0.0-prerelease-00081": {
+      "xunit.netcore.extensions/1.0.0-prerelease-00084": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
           "System.IO": "4.0.10",
@@ -1340,6 +1501,38 @@
         "runtimes/win8-aot/lib/netcore50/System.Globalization.dll"
       ]
     },
+    "System.Globalization.Calendars/4.0.0": {
+      "sha512": "cL6WrdGKnNBx9W/iTr+jbffsEO4RLjEtOYcpVSzPNDoli6X5Q6bAfWtJYbJNOPi8Q0fXgBEvKK1ncFL/3FTqlA==",
+      "files": [
+        "System.Globalization.Calendars.4.0.0.nupkg",
+        "System.Globalization.Calendars.4.0.0.nupkg.sha512",
+        "System.Globalization.Calendars.nuspec",
+        "lib/DNXCore50/System.Globalization.Calendars.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Globalization.Calendars.dll",
+        "lib/netcore50/System.Globalization.Calendars.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/System.Globalization.Calendars.dll",
+        "ref/dotnet/System.Globalization.Calendars.xml",
+        "ref/dotnet/de/System.Globalization.Calendars.xml",
+        "ref/dotnet/es/System.Globalization.Calendars.xml",
+        "ref/dotnet/fr/System.Globalization.Calendars.xml",
+        "ref/dotnet/it/System.Globalization.Calendars.xml",
+        "ref/dotnet/ja/System.Globalization.Calendars.xml",
+        "ref/dotnet/ko/System.Globalization.Calendars.xml",
+        "ref/dotnet/ru/System.Globalization.Calendars.xml",
+        "ref/dotnet/zh-hans/System.Globalization.Calendars.xml",
+        "ref/dotnet/zh-hant/System.Globalization.Calendars.xml",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Globalization.Calendars.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "runtimes/win8-aot/lib/netcore50/System.Globalization.Calendars.dll"
+      ]
+    },
     "System.Globalization.Extensions/4.0.0": {
       "serviceable": true,
       "sha512": "rqbUXiwpBCvJ18ySCsjh20zleazO+6fr3s5GihC2sVwhyS0MUl6+oc5Rzk0z6CKkS4kmxbZQSeZLsK7cFSO0ng==",
@@ -1634,12 +1827,12 @@
         "ref/wpa81/_._"
       ]
     },
-    "System.Net.NameResolution/4.0.0-beta-23225": {
+    "System.Net.NameResolution/4.0.0-beta-23304": {
       "serviceable": true,
-      "sha512": "U7EQKsf6rcyt57RDcfb95NKM9tALB9CRoztyfGVMv/O3dYTKeBSja8pBiFU9PDke1wRC/HC+CFuivl3Eg/F5FQ==",
+      "sha512": "Jma5J29Ctm8fbzQQv0dzGLzHjqoVsxqEzazWzvqx+R/6XC1+ar1a1aEYfYWM5jtwfF3vMB/E86UmauXD5i2qog==",
       "files": [
-        "System.Net.NameResolution.4.0.0-beta-23225.nupkg",
-        "System.Net.NameResolution.4.0.0-beta-23225.nupkg.sha512",
+        "System.Net.NameResolution.4.0.0-beta-23304.nupkg",
+        "System.Net.NameResolution.4.0.0-beta-23304.nupkg.sha512",
         "System.Net.NameResolution.nuspec",
         "lib/DNXCore50/System.Net.NameResolution.dll",
         "lib/MonoAndroid10/_._",
@@ -1687,12 +1880,11 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "System.Net.Security/4.0.0-beta-23225": {
-      "serviceable": true,
-      "sha512": "uBIzXbOaLKu1NNezv9C/X2RTnbAJHspRmkguMNkr0KfzhznG68kw/1LUpNxfrkMLUTv3UqPoj0cIH4tWPQvqhA==",
+    "System.Net.Security/4.0.0-beta-23304": {
+      "sha512": "z4zmjo9S5AsBi6iJWYdo6brXgmUhputZaSnWy/kPYB0BOOeB5SL5XQz8yhEvMHVdmrsLEbHXs4477pWps1JhxA==",
       "files": [
-        "System.Net.Security.4.0.0-beta-23225.nupkg",
-        "System.Net.Security.4.0.0-beta-23225.nupkg.sha512",
+        "System.Net.Security.4.0.0-beta-23304.nupkg",
+        "System.Net.Security.4.0.0-beta-23304.nupkg.sha512",
         "System.Net.Security.nuspec",
         "lib/DNXCore50/System.Net.Security.dll",
         "lib/MonoAndroid10/_._",
@@ -1813,12 +2005,12 @@
         "runtimes/win8-aot/lib/netcore50/System.Private.DataContractSerialization.dll"
       ]
     },
-    "System.Private.Networking/4.0.1-beta-23225": {
+    "System.Private.Networking/4.0.1-beta-23304": {
       "serviceable": true,
-      "sha512": "oVSynIrR3mIU0b/goscsaZDywr3RLxQijQnaFRKfl/VB3F9rKi5mdr0vHcGVWuq5ALSrG0OLwM8PRA4tM5e3rQ==",
+      "sha512": "veiy3GYy2/Bjtjmoso5EX1ksc3TQfytCNYUlxXVrjgOHSscbsZ6RTdXWUHqb//MjDTiwS5kgvmIOAEfhId/EIQ==",
       "files": [
-        "System.Private.Networking.4.0.1-beta-23225.nupkg",
-        "System.Private.Networking.4.0.1-beta-23225.nupkg.sha512",
+        "System.Private.Networking.4.0.1-beta-23304.nupkg",
+        "System.Private.Networking.4.0.1-beta-23304.nupkg.sha512",
         "System.Private.Networking.nuspec",
         "lib/DNXCore50/System.Private.Networking.dll",
         "lib/netcore50/System.Private.Networking.dll",
@@ -2240,6 +2432,36 @@
         "ref/xamarinmac20/_._"
       ]
     },
+    "System.Runtime.Numerics/4.0.0": {
+      "serviceable": true,
+      "sha512": "aAYGEOE01nabQLufQ4YO8WuSyZzOqGcksi8m1BRW8ppkmssR7en8TqiXcBkB2gTkCnKG/Ai2NQY8CgdmgZw/fw==",
+      "files": [
+        "System.Runtime.Numerics.4.0.0.nupkg",
+        "System.Runtime.Numerics.4.0.0.nupkg.sha512",
+        "System.Runtime.Numerics.nuspec",
+        "lib/dotnet/System.Runtime.Numerics.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.Runtime.Numerics.dll",
+        "lib/win8/_._",
+        "lib/wpa81/_._",
+        "ref/dotnet/System.Runtime.Numerics.dll",
+        "ref/dotnet/System.Runtime.Numerics.xml",
+        "ref/dotnet/de/System.Runtime.Numerics.xml",
+        "ref/dotnet/es/System.Runtime.Numerics.xml",
+        "ref/dotnet/fr/System.Runtime.Numerics.xml",
+        "ref/dotnet/it/System.Runtime.Numerics.xml",
+        "ref/dotnet/ja/System.Runtime.Numerics.xml",
+        "ref/dotnet/ko/System.Runtime.Numerics.xml",
+        "ref/dotnet/ru/System.Runtime.Numerics.xml",
+        "ref/dotnet/zh-hans/System.Runtime.Numerics.xml",
+        "ref/dotnet/zh-hant/System.Runtime.Numerics.xml",
+        "ref/net45/_._",
+        "ref/netcore50/System.Runtime.Numerics.dll",
+        "ref/netcore50/System.Runtime.Numerics.xml",
+        "ref/win8/_._",
+        "ref/wpa81/_._"
+      ]
+    },
     "System.Runtime.Serialization.Primitives/4.0.10": {
       "serviceable": true,
       "sha512": "NPc8DZIomf5tGjYtz/KTHI01IPcVlypfhCux32AbLPDjTotdvL8TpKRwMyQJ6Kh08yprRVH7uBD1PdJiuoFzag==",
@@ -2334,12 +2556,98 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "System.Security.Cryptography.Primitives/4.0.0-beta-23225": {
+    "System.Security.Cryptography.Algorithms/4.0.0-beta-23304": {
       "serviceable": true,
-      "sha512": "acOPCfkrkOFr/NAnA+hIOnY8yQZr94JzJ02heQDIqE0sFKyBITLbgQBoO+gTBVRxGr1o+oiYbFnXY0Q30+SACg==",
+      "sha512": "IZjIx+szJZ075XuCehv7uq02smQLilL6wlpuwQbtbd6sEbFHSKw3JppNonEB/i9hbJu30urq+eG/gltNzW3uGg==",
       "files": [
-        "System.Security.Cryptography.Primitives.4.0.0-beta-23225.nupkg",
-        "System.Security.Cryptography.Primitives.4.0.0-beta-23225.nupkg.sha512",
+        "System.Security.Cryptography.Algorithms.4.0.0-beta-23304.nupkg",
+        "System.Security.Cryptography.Algorithms.4.0.0-beta-23304.nupkg.sha512",
+        "System.Security.Cryptography.Algorithms.nuspec",
+        "lib/DNXCore50/System.Security.Cryptography.Algorithms.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Security.Cryptography.Algorithms.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/System.Security.Cryptography.Algorithms.dll",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Security.Cryptography.Algorithms.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._"
+      ]
+    },
+    "System.Security.Cryptography.Cng/4.0.0-beta-23304": {
+      "serviceable": true,
+      "sha512": "1ZesKgDjPgTmFEPw3Q9m9gKmMd7oHUji2oES/DRm03bOqHjNwIlgB7dCsF20SP/SZSSUQPPBWW1OLAvL+lj52Q==",
+      "files": [
+        "System.Security.Cryptography.Cng.4.0.0-beta-23304.nupkg",
+        "System.Security.Cryptography.Cng.4.0.0-beta-23304.nupkg.sha512",
+        "System.Security.Cryptography.Cng.nuspec",
+        "lib/DNXCore50/System.Security.Cryptography.Cng.dll",
+        "lib/net46/System.Security.Cryptography.Cng.dll",
+        "ref/dotnet/System.Security.Cryptography.Cng.dll",
+        "ref/net46/System.Security.Cryptography.Cng.dll"
+      ]
+    },
+    "System.Security.Cryptography.Csp/4.0.0-beta-23304": {
+      "serviceable": true,
+      "sha512": "AKadPHeqjCkrl3LXigzKxUjJpmeC2ZChzW9XYlO33LkMGtpbcx4TnYG1do4REMYvkVf5ZzO3IFyH8utiGvDBIA==",
+      "files": [
+        "System.Security.Cryptography.Csp.4.0.0-beta-23304.nupkg",
+        "System.Security.Cryptography.Csp.4.0.0-beta-23304.nupkg.sha512",
+        "System.Security.Cryptography.Csp.nuspec",
+        "lib/DNXCore50/System.Security.Cryptography.Csp.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Security.Cryptography.Csp.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/System.Security.Cryptography.Csp.dll",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Security.Cryptography.Csp.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._"
+      ]
+    },
+    "System.Security.Cryptography.Encoding/4.0.0-beta-23304": {
+      "serviceable": true,
+      "sha512": "cAadkllS2rv9Nzpn56ZjqfpenNRRV3/hJSJ+jkgLYMMRC7heFueLDm3UH82aZ9s5TZT8fsgsYKKQ/EX7NxfVGw==",
+      "files": [
+        "System.Security.Cryptography.Encoding.4.0.0-beta-23304.nupkg",
+        "System.Security.Cryptography.Encoding.4.0.0-beta-23304.nupkg.sha512",
+        "System.Security.Cryptography.Encoding.nuspec",
+        "System.Security.Cryptography.Encoding.xml",
+        "de/System.Security.Cryptography.Encoding.xml",
+        "es/System.Security.Cryptography.Encoding.xml",
+        "fr/System.Security.Cryptography.Encoding.xml",
+        "it/System.Security.Cryptography.Encoding.xml",
+        "ja/System.Security.Cryptography.Encoding.xml",
+        "ko/System.Security.Cryptography.Encoding.xml",
+        "lib/DNXCore50/System.Security.Cryptography.Encoding.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Security.Cryptography.Encoding.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/System.Security.Cryptography.Encoding.dll",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Security.Cryptography.Encoding.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ru/System.Security.Cryptography.Encoding.xml",
+        "zh-hans/System.Security.Cryptography.Encoding.xml",
+        "zh-hant/System.Security.Cryptography.Encoding.xml"
+      ]
+    },
+    "System.Security.Cryptography.Primitives/4.0.0-beta-23304": {
+      "serviceable": true,
+      "sha512": "r3TcuzJja1YIDRcIOSdK1OyoWDtJf1p3DadMqBqvP+tnSYk7OOXNHm3SiBEouA36kjZOAw5uOCQ8N9hA3zB0TA==",
+      "files": [
+        "System.Security.Cryptography.Primitives.4.0.0-beta-23304.nupkg",
+        "System.Security.Cryptography.Primitives.4.0.0-beta-23304.nupkg.sha512",
         "System.Security.Cryptography.Primitives.nuspec",
         "lib/DNXCore50/System.Security.Cryptography.Primitives.dll",
         "lib/MonoAndroid10/_._",
@@ -2353,6 +2661,37 @@
         "ref/net46/System.Security.Cryptography.Primitives.dll",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._"
+      ]
+    },
+    "System.Security.Cryptography.X509Certificates/4.0.0-beta-23304": {
+      "serviceable": true,
+      "sha512": "DI7Y3jpCXxXwVAiDvJu91RX+4qbkmNNH8Arvae9MSd9tGK6zpinrLh3Z+NIT0/tSHZfkbcQAYjGshT8ddAgILA==",
+      "files": [
+        "System.Security.Cryptography.X509Certificates.4.0.0-beta-23304.nupkg",
+        "System.Security.Cryptography.X509Certificates.4.0.0-beta-23304.nupkg.sha512",
+        "System.Security.Cryptography.X509Certificates.nuspec",
+        "System.Security.Cryptography.X509Certificates.xml",
+        "de/System.Security.Cryptography.X509Certificates.xml",
+        "es/System.Security.Cryptography.X509Certificates.xml",
+        "fr/System.Security.Cryptography.X509Certificates.xml",
+        "it/System.Security.Cryptography.X509Certificates.xml",
+        "ja/System.Security.Cryptography.X509Certificates.xml",
+        "ko/System.Security.Cryptography.X509Certificates.xml",
+        "lib/DNXCore50/System.Security.Cryptography.X509Certificates.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Security.Cryptography.X509Certificates.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/System.Security.Cryptography.X509Certificates.dll",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Security.Cryptography.X509Certificates.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ru/System.Security.Cryptography.X509Certificates.xml",
+        "zh-hans/System.Security.Cryptography.X509Certificates.xml",
+        "zh-hant/System.Security.Cryptography.X509Certificates.xml"
       ]
     },
     "System.Security.Principal/4.0.0": {
@@ -2387,17 +2726,58 @@
         "ref/wpa81/_._"
       ]
     },
-    "System.Security.Principal.Windows/4.0.0-beta-23225": {
+    "System.Security.Principal.Windows/4.0.0-beta-23304": {
       "serviceable": true,
-      "sha512": "wnV9/UuJ6Vt6RMlp72RtNbzQaqspeHypl7D3TNeLg/Xy+63tJASbVXfNZ9V3Q+TZ9KjJJDFSIpv6e1w6uLJJCA==",
+      "sha512": "ckxicorSDHvX/Bl/Nu2Km5DNXCagliR4zeJcPgEXB+udK+xnIgEvJJuHC46ffkw0GIpsAtM6N1103hrfHKT9Kw==",
       "files": [
-        "System.Security.Principal.Windows.4.0.0-beta-23225.nupkg",
-        "System.Security.Principal.Windows.4.0.0-beta-23225.nupkg.sha512",
+        "System.Security.Principal.Windows.4.0.0-beta-23304.nupkg",
+        "System.Security.Principal.Windows.4.0.0-beta-23304.nupkg.sha512",
         "System.Security.Principal.Windows.nuspec",
+        "System.Security.Principal.Windows.xml",
+        "de/System.Security.Principal.Windows.xml",
+        "es/System.Security.Principal.Windows.xml",
+        "fr/System.Security.Principal.Windows.xml",
+        "it/System.Security.Principal.Windows.xml",
+        "ja/System.Security.Principal.Windows.xml",
+        "ko/System.Security.Principal.Windows.xml",
         "lib/DNXCore50/System.Security.Principal.Windows.dll",
         "lib/net46/System.Security.Principal.Windows.dll",
         "ref/dotnet/System.Security.Principal.Windows.dll",
-        "ref/net46/System.Security.Principal.Windows.dll"
+        "ref/net46/System.Security.Principal.Windows.dll",
+        "ru/System.Security.Principal.Windows.xml",
+        "zh-hans/System.Security.Principal.Windows.xml",
+        "zh-hant/System.Security.Principal.Windows.xml"
+      ]
+    },
+    "System.Security.SecureString/4.0.0-beta-23304": {
+      "serviceable": true,
+      "sha512": "eig2Bxx4j0xYNm1Zkyp9bkd6ix5sk2KR9K3hUSr3AyjTWiFiqzHnMGa5HhWg+lgwW5GI0Rq/+dFnqghzy5Vz0g==",
+      "files": [
+        "System.Security.SecureString.4.0.0-beta-23304.nupkg",
+        "System.Security.SecureString.4.0.0-beta-23304.nupkg.sha512",
+        "System.Security.SecureString.nuspec",
+        "System.Security.SecureString.xml",
+        "de/System.Security.SecureString.xml",
+        "es/System.Security.SecureString.xml",
+        "fr/System.Security.SecureString.xml",
+        "it/System.Security.SecureString.xml",
+        "ja/System.Security.SecureString.xml",
+        "ko/System.Security.SecureString.xml",
+        "lib/DNXCore50/System.Security.SecureString.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Security.SecureString.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/System.Security.SecureString.dll",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Security.SecureString.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ru/System.Security.SecureString.xml",
+        "zh-hans/System.Security.SecureString.xml",
+        "zh-hant/System.Security.SecureString.xml"
       ]
     },
     "System.Text.Encoding/4.0.10": {
@@ -2583,6 +2963,27 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtimes/win8-aot/lib/netcore50/System.Threading.Tasks.dll"
+      ]
+    },
+    "System.Threading.ThreadPool/4.0.10-beta-23304": {
+      "serviceable": true,
+      "sha512": "a9fYGwFN9ytmPRaUuD4dZNokTGzBJZwwmP/ZR246tLanxCrQfLCRIUR1kJJeT3J8TsvKbUUmhzaU9ecrt2CXTA==",
+      "files": [
+        "System.Threading.ThreadPool.4.0.10-beta-23304.nupkg",
+        "System.Threading.ThreadPool.4.0.10-beta-23304.nupkg.sha512",
+        "System.Threading.ThreadPool.nuspec",
+        "lib/DNXCore50/System.Threading.ThreadPool.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Threading.ThreadPool.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/dotnet/System.Threading.ThreadPool.dll",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Threading.ThreadPool.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._"
       ]
     },
     "System.Threading.Timer/4.0.0": {
@@ -2843,12 +3244,12 @@
         "lib/Xamarin.iOS/xunit.execution.iOS-Universal.xml"
       ]
     },
-    "xunit.netcore.extensions/1.0.0-prerelease-00081": {
+    "xunit.netcore.extensions/1.0.0-prerelease-00084": {
       "serviceable": true,
-      "sha512": "BzioU7GIbHHiICQLk8q92YeHHaJLA9InRyveaN3QrtwLsoQOToNBJSBHuu2P7YIONkjsQUR1tJYdyDI6p7aX9Q==",
+      "sha512": "z914M/yDSxn26tIhKzrvP2um5rGBhATo94KO9zScORDA9Aw09JGl3Sn2S/kuv/HaqM7zGjbZk5BsrqQPowl05Q==",
       "files": [
-        "xunit.netcore.extensions.1.0.0-prerelease-00081.nupkg",
-        "xunit.netcore.extensions.1.0.0-prerelease-00081.nupkg.sha512",
+        "xunit.netcore.extensions.1.0.0-prerelease-00084.nupkg",
+        "xunit.netcore.extensions.1.0.0-prerelease-00084.nupkg.sha512",
         "xunit.netcore.extensions.nuspec",
         "lib/dotnet/Xunit.NetCore.Extensions.dll"
       ]
