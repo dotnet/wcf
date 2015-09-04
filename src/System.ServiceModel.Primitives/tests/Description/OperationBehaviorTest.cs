@@ -8,7 +8,6 @@ using Xunit;
 public static class OperationBehaviorTest
 {
     [Fact]
-    [ActiveIssue(315)]
     public static void IOperationBehavior_Methods_AreCalled()
     {
         DuplexClientBase<ICustomOperationBehaviorDuplexService> duplexService = null;
