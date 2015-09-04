@@ -45,11 +45,11 @@
       </TestProperty>
       <TestProperty Include="BridgeCertificateAuthority">
         <Value>$(BridgeCertificateAuthority)</Value>
-        <DefaultValue>RootCAWcfBridge.cer</DefaultValue>
+        <DefaultValue>WcfBridge_RootCA.cer</DefaultValue>
       </TestProperty>
       <TestProperty Include="BridgeHttpsCertificate">
         <Value>$(BridgeHttpsCertificate)</Value>
-        <DefaultValue>RootCAWcfBridge.pfx</DefaultValue>
+        <DefaultValue>WcfBridge_localhost.pfx</DefaultValue>
       </TestProperty>
       <TestProperty Include="UseFiddlerUrl">
         <Value>$(UseFiddlerUrl)</Value>
