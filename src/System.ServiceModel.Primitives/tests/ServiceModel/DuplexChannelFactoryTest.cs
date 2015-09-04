@@ -5,7 +5,6 @@ using System;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Threading.Tasks;
 using Xunit;
 
 public class DuplexChannelFactoryTest
@@ -232,20 +231,6 @@ public class DuplexChannelFactoryTest
             {
                 factory2.Close();
             }
-        }
-    }
-
-    // private to this class for testing purposes 
-    private class WcfDuplexServiceCallback : IWcfDuplexServiceCallback
-    {
-        public Task<Guid> OnPingCallback(Guid guid)
-        {
-            return Task.FromResult<Guid>(guid);
-        }
-
-        void IWcfDuplexServiceCallback.OnPingCallback(Guid guid)
-        {
-
         }
     }
 }
