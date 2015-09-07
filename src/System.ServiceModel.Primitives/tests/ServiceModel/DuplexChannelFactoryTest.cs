@@ -10,12 +10,12 @@ using Xunit;
 public class DuplexChannelFactoryTest
 {
     [Fact]
-    [ActiveIssue(301)]
     public static void CreateChannel_EndpointAddress_Null_Throws()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
         InstanceContext context = new InstanceContext(callback);
-        Binding binding = new NetTcpBinding();
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.None;
         EndpointAddress remoteAddress = null;
 
         DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, remoteAddress);
@@ -57,13 +57,13 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
-    [ActiveIssue(301)]
     // valid address, but the scheme is incorrect
     public static void CreateChannel_ExpectedNetTcpScheme_HttpScheme_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
         InstanceContext context = new InstanceContext(callback);
-        Binding binding = new NetTcpBinding();
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.None;
         Assert.Throws<ArgumentException>("via", () =>
         {
             DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, "http://not-the-right-scheme");
@@ -72,13 +72,13 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
-    [ActiveIssue(301)]
     // valid address, but the scheme is incorrect
     public static void CreateChannel_ExpectedNetTcpScheme_InvalidScheme_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
         InstanceContext context = new InstanceContext(callback);
-        Binding binding = new NetTcpBinding();
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.None;
         Assert.Throws<ArgumentException>("via", () =>
         {
             DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, "qwerty://not-the-right-scheme");
