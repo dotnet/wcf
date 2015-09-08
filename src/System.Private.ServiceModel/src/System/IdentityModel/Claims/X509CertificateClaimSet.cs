@@ -14,7 +14,6 @@ namespace System.IdentityModel.Claims
 {
     public class X509CertificateClaimSet : ClaimSet, IIdentityInfo, IDisposable
     {
-
         private X509Certificate2 _certificate;
         private DateTime _expirationTime = SecurityUtils.MinUtcDateTime;
         private ClaimSet _issuer;
@@ -36,7 +35,12 @@ namespace System.IdentityModel.Claims
             _certificate = clone ? new X509Certificate2(certificate.Handle) : certificate;
         }
 
-        X509CertificateClaimSet(X509ChainElementCollection elements, int index)
+        private X509CertificateClaimSet(X509CertificateClaimSet from)
+            : this(from.X509Certificate, true)
+        {
+        }
+
+        private X509CertificateClaimSet(X509ChainElementCollection elements, int index)
         {
             _elements = elements;
             _index = index;
@@ -126,6 +130,12 @@ namespace System.IdentityModel.Claims
             }
         }
 
+        internal X509CertificateClaimSet Clone()
+        {
+            ThrowIfDisposed();
+            return new X509CertificateClaimSet(this);
+        }
+
         public void Dispose()
         {
             if (!_disposed)
@@ -162,22 +172,14 @@ namespace System.IdentityModel.Claims
             if (!string.IsNullOrEmpty(value))
                 claims.Add(Claim.CreateX500DistinguishedNameClaim(_certificate.SubjectName));
 
-
-            // new behavior as this is the default long term behavior
-            // Since a SAN can have multiple DNS entries
-            string[] entries = GetDnsFromExtensions(_certificate);
-            for (int i = 0; i < entries.Length; ++i)
-            {
-                claims.Add(Claim.CreateDnsClaim(entries[i]));
-            }
+            // #321 - Desktop implmentation > 4.6 replaces this with a SAN check
+            value = _certificate.GetNameInfo(X509NameType.DnsName, false);
+            if (!string.IsNullOrEmpty(value))
+                claims.Add(Claim.CreateDnsClaim(value));
 
             value = _certificate.GetNameInfo(X509NameType.SimpleName, false);
             if (!string.IsNullOrEmpty(value))
                 claims.Add(Claim.CreateNameClaim(value));
-
-            value = _certificate.GetNameInfo(X509NameType.EmailName, false);
-            if (!string.IsNullOrEmpty(value))
-                throw ExceptionHelper.PlatformNotSupported("InitializeClaimsCore - EmailName");
 
             value = _certificate.GetNameInfo(X509NameType.UpnName, false);
             if (!string.IsNullOrEmpty(value))
@@ -238,12 +240,11 @@ namespace System.IdentityModel.Claims
             {
                 if (right == null || Rights.PossessProperty.Equals(right))
                 {
-
-                    // new behavior since this is the default long term behavior
-                    string[] entries = GetDnsFromExtensions(_certificate);
-                    for (int i = 0; i < entries.Length; ++i)
+                    // #321 - Desktop implmentation > 4.6 replaces this with a SAN check
+                    string value = _certificate.GetNameInfo(X509NameType.DnsName, false);
+                    if (!string.IsNullOrEmpty(value))
                     {
-                        yield return Claim.CreateDnsClaim(entries[i]);
+                        yield return Claim.CreateDnsClaim(value);
                     }
                 }
             }
@@ -265,33 +266,6 @@ namespace System.IdentityModel.Claims
                     }
                 }
             }
-        }
-
-        // Fixing Bug 795660: SAN having multiple DNS entries
-        private static string[] GetDnsFromExtensions(X509Certificate2 cert)
-        {
-            foreach (X509Extension ext in cert.Extensions)
-            {
-                // Extension is SAN or SAN2
-                if (ext.Oid.Value == "2.5.29.7" || ext.Oid.Value == "2.5.29.17")
-                {
-                    string asnString = ext.Format(true);
-                    if (string.IsNullOrEmpty(asnString))
-                    {
-                        return new string[0];
-                    }
-
-                    string[] rawDnsEntries = asnString.Split(new string[1] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                    string[] dnsEntries = new string[rawDnsEntries.Length];
-                    for (int i = 0; i < rawDnsEntries.Length; ++i)
-                    {
-                        int equalSignIndex = rawDnsEntries[i].IndexOf('=');
-                        dnsEntries[i] = rawDnsEntries[i].Substring(equalSignIndex + 1).Trim();
-                    }
-                    return dnsEntries;
-                }
-            }
-            return new string[0];
         }
 
         public override IEnumerator<Claim> GetEnumerator()
