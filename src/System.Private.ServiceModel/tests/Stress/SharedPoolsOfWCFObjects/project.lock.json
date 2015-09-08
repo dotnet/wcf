@@ -92,7 +92,7 @@
           "lib/dotnet/System.ComponentModel.EventBasedAsync.dll": {}
         }
       },
-      "System.Console/4.0.0-beta-23304": {
+      "System.Console/4.0.0-beta-23308": {
         "dependencies": {
           "System.Runtime": "4.0.20",
           "System.Runtime.InteropServices": "4.0.20",
@@ -1270,12 +1270,12 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "System.Console/4.0.0-beta-23304": {
+    "System.Console/4.0.0-beta-23308": {
       "serviceable": true,
-      "sha512": "cyjEdYhKrO2NoJpq5k0KHKACkSRmZUYkicjis1IpEuxtdWxDjKfCOQlHKIi92ZF5pM3tScaqJSHnWNza9jUObA==",
+      "sha512": "mN+vKvrUGVG6osNHu1JTwH1/setEQ7PdrQXvRi7YSmz6ZD0zgBc42yj+ZavSgr/23eJ2K/EbRfUguT+CaU50+g==",
       "files": [
-        "System.Console.4.0.0-beta-23304.nupkg",
-        "System.Console.4.0.0-beta-23304.nupkg.sha512",
+        "System.Console.4.0.0-beta-23308.nupkg",
+        "System.Console.4.0.0-beta-23308.nupkg.sha512",
         "System.Console.nuspec",
         "System.Console.xml",
         "de/System.Console.xml",
