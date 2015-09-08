@@ -96,10 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="Certificates\RootCAWcfBridge.cer">
+    <Content Include="Certificates\WcfBridge_RootCA.cer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Certificates\RootCAWcfBridge.pfx">
+    <Content Include="Certificates\WcfBridge_localhost.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -110,7 +110,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Certificates\README.txt" />
+    <Content Include="Certificates\README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild" DependsOnTargets="ReleaseBridgeResources">
