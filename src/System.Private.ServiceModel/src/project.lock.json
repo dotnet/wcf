@@ -1034,6 +1034,18 @@
       }
     },
     ".NETCore,Version=v5.0": {
+      "Microsoft.Win32.Primitives/4.0.0": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20"
+        },
+        "compile": {
+          "ref/dotnet/Microsoft.Win32.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
       "System.Collections/4.0.10": {
         "dependencies": {
           "System.Runtime": "4.0.20",
@@ -1355,12 +1367,16 @@
           "lib/netcore50/System.Net.Http.dll": {}
         }
       },
-      "System.Net.Primitives/4.0.0": {
+      "System.Net.Primitives/4.0.10": {
         "dependencies": {
-          "System.Runtime": "4.0.0"
+          "System.Runtime": "4.0.20",
+          "System.Private.Networking": "4.0.0"
         },
         "compile": {
-          "ref/netcore50/System.Net.Primitives.dll": {}
+          "ref/dotnet/System.Net.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Net.Primitives.dll": {}
         }
       },
       "System.Net.WebHeaderCollection/4.0.0": {
@@ -1415,6 +1431,30 @@
         },
         "runtime": {
           "lib/netcore50/System.Private.DataContractSerialization.dll": {}
+        }
+      },
+      "System.Private.Networking/4.0.0": {
+        "dependencies": {
+          "System.Runtime": "4.0.20",
+          "System.Diagnostics.Tracing": "4.0.20",
+          "System.Runtime.InteropServices": "4.0.20",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime.Handles": "4.0.0",
+          "System.Collections.NonGeneric": "4.0.0",
+          "Microsoft.Win32.Primitives": "4.0.0",
+          "System.IO.FileSystem": "4.0.0",
+          "System.Threading.Overlapped": "4.0.0",
+          "System.IO.FileSystem.Primitives": "4.0.0",
+          "System.Threading": "4.0.10",
+          "System.Threading.Tasks": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Collections": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Globalization": "4.0.10"
+        },
+        "runtime": {
+          "lib/netcore50/System.Private.Networking.dll": {}
         }
       },
       "System.Private.Uri/4.0.0": {
@@ -2546,51 +2586,6 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "System.Net.Primitives/4.0.0": {
-      "sha512": "RcWCfqEPIGdytI4grLSG6LFe270154kMvuOs/pU+VzlKbjnW+h2c6jWf4r/tqzAELiBhibGHE2MGn+SLtl+fZg==",
-      "files": [
-        "License.rtf",
-        "System.Net.Primitives.4.0.0.nupkg",
-        "System.Net.Primitives.4.0.0.nupkg.sha512",
-        "System.Net.Primitives.nuspec",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net45/_._",
-        "lib/win8/_._",
-        "lib/wpa81/_._",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "ref/dotnet/System.Net.Primitives.dll",
-        "ref/dotnet/System.Net.Primitives.xml",
-        "ref/dotnet/de/System.Net.Primitives.xml",
-        "ref/dotnet/es/System.Net.Primitives.xml",
-        "ref/dotnet/fr/System.Net.Primitives.xml",
-        "ref/dotnet/it/System.Net.Primitives.xml",
-        "ref/dotnet/ja/System.Net.Primitives.xml",
-        "ref/dotnet/ko/System.Net.Primitives.xml",
-        "ref/dotnet/ru/System.Net.Primitives.xml",
-        "ref/dotnet/zh-hans/System.Net.Primitives.xml",
-        "ref/dotnet/zh-hant/System.Net.Primitives.xml",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net45/_._",
-        "ref/netcore50/System.Net.Primitives.dll",
-        "ref/netcore50/System.Net.Primitives.xml",
-        "ref/netcore50/de/System.Net.Primitives.xml",
-        "ref/netcore50/es/System.Net.Primitives.xml",
-        "ref/netcore50/fr/System.Net.Primitives.xml",
-        "ref/netcore50/it/System.Net.Primitives.xml",
-        "ref/netcore50/ja/System.Net.Primitives.xml",
-        "ref/netcore50/ko/System.Net.Primitives.xml",
-        "ref/netcore50/ru/System.Net.Primitives.xml",
-        "ref/netcore50/zh-hans/System.Net.Primitives.xml",
-        "ref/netcore50/zh-hant/System.Net.Primitives.xml",
-        "ref/win8/_._",
-        "ref/wpa81/_._",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._"
-      ]
-    },
     "System.Net.Primitives/4.0.10": {
       "serviceable": true,
       "sha512": "YQqIpmMhnKjIbT7rl6dlf7xM5DxaMR+whduZ9wKb9OhMLjoueAJO3HPPJI+Naf3v034kb+xZqdc3zo44o3HWcg==",
@@ -2746,6 +2741,19 @@
         "ref/dnxcore50/_._",
         "ref/netcore50/_._",
         "runtimes/win8-aot/lib/netcore50/System.Private.DataContractSerialization.dll"
+      ]
+    },
+    "System.Private.Networking/4.0.0": {
+      "serviceable": true,
+      "sha512": "RUEqdBdJjISC65dO8l4LdN7vTdlXH+attUpKnauDUHVtLbIKdlDB9LKoLzCQsTQRP7vzUJHWYXznHJBkjAA7yA==",
+      "files": [
+        "System.Private.Networking.4.0.0.nupkg",
+        "System.Private.Networking.4.0.0.nupkg.sha512",
+        "System.Private.Networking.nuspec",
+        "lib/DNXCore50/System.Private.Networking.dll",
+        "lib/netcore50/System.Private.Networking.dll",
+        "ref/dnxcore50/_._",
+        "ref/netcore50/_._"
       ]
     },
     "System.Private.Networking/4.0.1-beta-23308": {
@@ -3915,6 +3923,7 @@
       "System.Linq.Expressions >= 4.0.10",
       "System.Linq.Queryable >= 4.0.0",
       "System.Net.Http >= 4.0.0",
+      "System.Net.Primitives >= 4.0.10",
       "System.Net.WebHeaderCollection >= 4.0.0",
       "System.ObjectModel >= 4.0.10",
       "System.Reflection >= 4.0.10",
