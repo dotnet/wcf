@@ -92,7 +92,7 @@
           "lib/dotnet/System.ComponentModel.EventBasedAsync.dll": {}
         }
       },
-      "System.Console/4.0.0-beta-23225": {
+      "System.Console/4.0.0-beta-23308": {
         "dependencies": {
           "System.Runtime": "4.0.20",
           "System.Runtime.InteropServices": "4.0.20",
@@ -1270,13 +1270,20 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "System.Console/4.0.0-beta-23225": {
+    "System.Console/4.0.0-beta-23308": {
       "serviceable": true,
-      "sha512": "IWF/w/9CKVjopFkBIq6dz3XGMOdPBPRAxdp2tu+UPzr9bDG0nB+5MQ+91MQcjcFWpnenKSiRsJu1BccnnXb/RA==",
+      "sha512": "mN+vKvrUGVG6osNHu1JTwH1/setEQ7PdrQXvRi7YSmz6ZD0zgBc42yj+ZavSgr/23eJ2K/EbRfUguT+CaU50+g==",
       "files": [
-        "System.Console.4.0.0-beta-23225.nupkg",
-        "System.Console.4.0.0-beta-23225.nupkg.sha512",
+        "System.Console.4.0.0-beta-23308.nupkg",
+        "System.Console.4.0.0-beta-23308.nupkg.sha512",
         "System.Console.nuspec",
+        "System.Console.xml",
+        "de/System.Console.xml",
+        "es/System.Console.xml",
+        "fr/System.Console.xml",
+        "it/System.Console.xml",
+        "ja/System.Console.xml",
+        "ko/System.Console.xml",
         "lib/DNXCore50/System.Console.dll",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -1288,7 +1295,10 @@
         "ref/MonoTouch10/_._",
         "ref/net46/System.Console.dll",
         "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._"
+        "ref/xamarinmac20/_._",
+        "ru/System.Console.xml",
+        "zh-hans/System.Console.xml",
+        "zh-hant/System.Console.xml"
       ]
     },
     "System.Diagnostics.Contracts/4.0.0-beta-23127": {
