@@ -64,7 +64,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.AppDomainUnload, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.AppDomainUnload, Level = EventLevel.Informational, Channel = EventChannel.Debug, 
             Keywords = Keywords.Infrastructure,
             Message = "AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.")]
         public void AppDomainUnload(string appdomainName, string processName, string processId)
@@ -77,7 +77,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.HandledException, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledException, Level = EventLevel.Informational, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception.  Exception details: {0}")]
         public void HandledException(string data1, string SerializedException)
@@ -90,7 +90,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ShipAssertExceptionMessage, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ShipAssertExceptionMessage, Level = EventLevel.Error, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "An unexpected failure occurred. Applications should not attempt to handle this error. For diagnostic purposes, this English message is associated with the failure: {0}.")]
         public void ShipAssertExceptionMessage(string data1)
@@ -103,7 +103,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingException(string data1, string data2, string SerializedException)
@@ -116,7 +116,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
         }
 
-        [Event(EventIds.UnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
+        [Event(EventIds.UnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, 
             Keywords = Keywords.Infrastructure,
             Message = "Unhandled exception.  Exception details: {0}")]
         public void UnhandledException(string data1, string SerializedException)
@@ -129,7 +129,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogCritical, Level = EventLevel.Critical, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogCritical, Level = EventLevel.Critical, Channel = EventChannel.Debug, 
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogCritical(string ExtendedData)
@@ -142,7 +142,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogError, Level = EventLevel.Error, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogError, Level = EventLevel.Error, Channel = EventChannel.Debug, 
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogError(string ExtendedData)
@@ -155,7 +155,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogInfo, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogInfo, Level = EventLevel.Informational, Channel = EventChannel.Debug, 
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogInfo(string ExtendedData)
@@ -168,7 +168,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Debug, 
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogVerbose(string ExtendedData)
@@ -181,7 +181,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogWarning, Level = EventLevel.Warning, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogWarning, Level = EventLevel.Warning, Channel = EventChannel.Debug, 
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogWarning(string ExtendedData)
@@ -194,7 +194,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.HandledExceptionWarning, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledExceptionWarning, Level = EventLevel.Warning, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception. Exception details: {0}")]
         public void HandledExceptionWarning(string data1, string SerializedException)
@@ -207,7 +207,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Operational);
         }
 
-        [Event(EventIds.HandledExceptionError, Level = EventLevel.Error, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledExceptionError, Level = EventLevel.Error, Channel = EventChannel.Operational, 
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception. Exception details: {0}")]
         public void HandledExceptionError(string data1, string SerializedException)
@@ -220,7 +220,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.HandledExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception  Exception details: {0}")]
         public void HandledExceptionVerbose(string data1, string SerializedException)
@@ -233,7 +233,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingExceptionVerbose(string data1, string data2, string SerializedException)
@@ -246,7 +246,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
         }
 
-        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
+        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, 
             Keywords = Keywords.Infrastructure,
             Message = "Unhandled exception. Exception details: {0}")]
         public void EtwUnhandledException(string data1, string SerializedException)
@@ -259,7 +259,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException)
@@ -272,7 +272,7 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, 
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingEtwException(string data1, string data2, string SerializedException)
