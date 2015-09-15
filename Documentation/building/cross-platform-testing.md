@@ -18,7 +18,7 @@ instructions assume you are building for Linux, but are easily modifiable for OS
    From the root of your CoreCLR enlistment on Linux, run `./build.sh Release` in
    order to build.
    
-2. A coresponding version of mscorlib.dll, built on Windows but targeting
+2. A corresponding version of mscorlib.dll, built on Windows but targeting
    Linux.  This can be produced by running `build.cmd linuxmscorlib Release` from
    a CoreCLR enlistment on Windows.  Remember that the runtime and mscorlib are
    tightly coupled with respect to object sizes and layout so you need to ensure
