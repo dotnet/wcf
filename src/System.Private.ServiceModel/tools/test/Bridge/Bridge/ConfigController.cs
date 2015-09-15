@@ -23,7 +23,7 @@ namespace Bridge
             BridgeMaxIdleTimeSpan = IdleTimeoutHandler.Default_MaxIdleTimeSpan
         };
 
-        internal static string CurrentAppDomainName;
+        internal static string s_currentAppDomainName;
 
         static ConfigController()
         {
@@ -52,6 +52,29 @@ namespace Bridge
                 s_bridgeConfiguration = value;
             }
         }
+
+        // Gets/sets the friendly name of the AppDomain holding
+        // the allocated resources.  Creates the AppDomain on first use.
+        public static string CurrentAppDomainName
+        {
+            get
+            {
+                lock (ConfigLock)
+                {
+                    if (s_currentAppDomainName == null)
+                    {
+                        s_currentAppDomainName = AppDomainManager.CreateAppDomain(ConfigController.BridgeConfiguration.BridgeResourceFolder);
+                    }
+
+                    return s_currentAppDomainName;
+                }
+            }
+            set
+            {
+                s_currentAppDomainName = value;
+            }
+        }
+
         public HttpResponseMessage POST(HttpRequestMessage request)
         {
             // A configuration change can have wide impact, so we don't allow concurrent use
@@ -138,44 +161,6 @@ namespace Bridge
             response.Content = new StringContent(configResponse);
             response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
             return response;
-        }
-
-        // The DELETE Http verb means release all resources allocated
-        // and return to an initial state
-        public HttpResponseMessage Delete(HttpRequestMessage request)
-        {
-            Trace.WriteLine(String.Format("{0:T} - received DELETE request", DateTime.Now),
-                            typeof(ConfigController).Name);
-
-            // A configuration change can have wide impact, so we don't allow concurrent use
-            lock (ConfigController.ConfigLock)
-            {
-                try {
-                    if (!String.IsNullOrEmpty(CurrentAppDomainName))
-                    {
-                        // Signal change of resource folder from prior value to null.
-                        string oldResourceFolder = BridgeConfiguration.BridgeResourceFolder;
-                        BridgeConfiguration.BridgeResourceFolder = null;
-                        if (ResourceFolderChanged != null)
-                        {
-                            ResourceFolderChanged(this, new ChangedEventArgs<string>(oldResourceFolder, null));
-                        }
-                    }
-                    HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK);
-                    response.Content = new StringContent("\"Bridge configuration has been cleared.\"");
-                    response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
-                    return response;
-                }
-                catch (Exception ex)
-                {
-                    var exceptionResponse = ex.Message;
-                    Trace.WriteLine(String.Format("{0:T} - DELETE config exception:{1}{2}",
-                                                    DateTime.Now, Environment.NewLine, ex),
-                                    typeof(ConfigController).Name);
-
-                    return request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
-                }
-            }
         }
 
         private static string PrepareConfigResponse(IEnumerable<string> types)

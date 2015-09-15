@@ -61,7 +61,7 @@ namespace Bridge.Build.Tasks
                 bridgeIsRunning = true;
 
                 // A DELETE request to the config endpoint releases all allocated resources.
-                response = httpClient.DeleteAsync(bridgeAddress + "/config/").GetAwaiter().GetResult();
+                response = httpClient.DeleteAsync(bridgeAddress + "/resource/").GetAwaiter().GetResult();
                 if (!response.IsSuccessStatusCode)
                 {
                     string reason = String.Format("Failed to release the resources.  The DELETE request to Bridge returned unexpected status code='{0}', reason='{1}'",

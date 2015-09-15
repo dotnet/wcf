@@ -41,19 +41,24 @@ namespace Bridge
                     Environment.Exit(1);
                 }
             }
-            else if (commandLineArgs.StopIfLocal)
+            if (commandLineArgs.StopIfLocal)
             {
                 StopBridgeIfLocal(commandLineArgs);
+                Environment.Exit(0);
             }
-            else if (commandLineArgs.Stop)
+            if (commandLineArgs.Stop)
             {
                 StopBridge(commandLineArgs);
+                Environment.Exit(0);
             }
-            else
+            if (commandLineArgs.Reset)
             {
-                // Default action is starting the Bridge
-                StartBridge(commandLineArgs);
+                ResetBridge(commandLineArgs);
+                Environment.Exit(0);
             }
+
+            // Default action is starting the Bridge
+            StartBridge(commandLineArgs);
         }
 
         // Issues a GET request to the Bridge to determine whether it is alive.
@@ -174,6 +179,67 @@ namespace Bridge
             BridgeController.StopBridgeProcess(0);
         }
 
+        // Asks the Bridge to release all its resources but continue running
+        private static void ResetBridge(CommandLineArguments commandLineArgs)
+        {
+            string errorMessage = null;
+
+            if (!PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
+                                           commandLineArgs.BridgeConfiguration.BridgePort,
+                                           out errorMessage))
+            {
+                Console.WriteLine("The Bridge is not running: {0}", errorMessage);
+                Environment.Exit(0);
+            }
+
+            string bridgeUrl = String.Format("http://{0}:{1}/Resource", commandLineArgs.BridgeConfiguration.BridgeHost, commandLineArgs.BridgeConfiguration.BridgePort);
+            string problem = null;
+
+            // We reset the Bridge using a DELETE request to the /resource endpoint.
+            using (HttpClient httpClient = new HttpClient())
+            {
+                Console.WriteLine("Stopping Bridge at {0}", bridgeUrl);
+                try
+                {
+                    var response = httpClient.DeleteAsync(bridgeUrl).GetAwaiter().GetResult();
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        problem = String.Format("{0}Bridge returned unexpected status code='{1}', reason='{2}'",
+                                                    Environment.NewLine, response.StatusCode, response.ReasonPhrase);
+                        if (response.Content != null)
+                        {
+                            string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                            if (contentAsString.Length > 1000)
+                            {
+                                contentAsString = contentAsString.Substring(0, 999) + "...";
+                            }
+                            problem = String.Format("{0}, content:{1}{2}",
+                                                    problem, Environment.NewLine, contentAsString);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    problem = ex.ToString();
+                }
+            }
+
+            if (problem != null)
+            {
+                Console.WriteLine("A problem was encountered resetting the Bridge:{0}{1}",
+                                    Environment.NewLine, problem);
+                Console.WriteLine("Forcing local resource cleanup...");
+            }
+
+            // A successfull DELETE will have cleaned up all firewall rules,
+            // certificates, etc.  So when using localhost, this cleanup will
+            // be redundant and harmless.  When the Bridge is running remotely,
+            // this cleanup will remove all firewall rules and certificates we
+            // installed on the current machine to talk with that Bridge.
+            BridgeController.ReleaseAllResources(force: false);
+        }
+
+
         // Starts the Bridge locally if it is not already running.
         private static void StartBridge(CommandLineArguments commandLineArgs)
         {
@@ -195,6 +261,22 @@ namespace Bridge
                 Environment.Exit(1);
             }
 
+            string resourceFolder = commandLineArgs.BridgeConfiguration.BridgeResourceFolder;
+            if (String.IsNullOrWhiteSpace(resourceFolder))
+            {
+                Console.WriteLine("Starting the Bridge requires the BridgeResourceFolder to be specified.");
+                Console.WriteLine("Use either -BridgeResourceFolder:folderName or set it as an environment variable.");
+                Environment.Exit(1);
+            }
+
+            resourceFolder = Path.GetFullPath(resourceFolder);
+            if (!Directory.Exists(resourceFolder))
+            {
+                Console.WriteLine("The specified BridgeResourceFolder '{0}' does not exist.");
+                Environment.Exit(1);
+            }
+            commandLineArgs.BridgeConfiguration.BridgeResourceFolder = resourceFolder;
+
             int port = commandLineArgs.BridgeConfiguration.BridgePort;
 
             string hostFormatString = "http://{0}:{1}";
@@ -207,17 +289,13 @@ namespace Bridge
             PortManager.RemoteAddresses = commandLineArgs.AllowRemote ? commandLineArgs.RemoteAddresses : String.Empty;
 
             // Initialize the BridgeConfiguration from command line.
-            // The first POST to the ConfigController will supply the rest.
             ConfigController.BridgeConfiguration = commandLineArgs.BridgeConfiguration;
             ConfigController.BridgeConfiguration.BridgeHost = visibleHost;
 
             // Remove any pre-existing firewall rules or certificates the Bridge
             // may have added in past runs.  We normally clean them up on exit but
             // it is possible a prior Bridge process was terminated prematurely.
-            BridgeController.ReleaseAllResources();
-
-            // Open the port used to communicate with the Bridge itself
-            PortManager.OpenPortInFirewall(port);
+            BridgeController.ReleaseAllResources(force: false);
 
             Console.WriteLine("Starting the Bridge at {0}", visibleAddress);
             OwinSelfhostStartup.Startup(owinAddress);
@@ -292,6 +370,7 @@ namespace Bridge
             public bool Ping { get; private set; }
             public bool Stop { get; private set; }
             public bool StopIfLocal { get; private set; }
+            public bool Reset { get; private set; }
 
             private bool Parse(string[] args)
             {
@@ -420,6 +499,11 @@ namespace Bridge
                     RemoteAddresses = remoteAddresses;
                 }
 
+                if (argumentDictionary.ContainsKey("reset"))
+                {
+                    Reset = true;
+                }
+
                 return true;
             }
 
@@ -430,6 +514,7 @@ namespace Bridge
                 Console.WriteLine("   /stop            Stops the Bridge if it is running");
                 Console.WriteLine("   /stopIfLocal     Stops the Bridge if it is running locally");
                 Console.WriteLine("   /allowRemote     If starting the Bridge, allows access from other than localHost (default is localhost only)");
+                Console.WriteLine("   /reset           Releases all Brige resources without stopping Bridge");
                 Console.WriteLine("   /remoteAddresses If starting the Bridge, comma-separated list of addresses firewall rules will accept (default is 'LocalSubnet')");
                 Console.WriteLine("   /BridgeConfig:file  Treat file as json name/value pairs to initialize any or all other options");
 

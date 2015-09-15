@@ -175,8 +175,6 @@ namespace Infrastructure.Common
 
         private static string CreateConfigRequestContentAsJson()
         {
-            ValidateConfigRequestProperties();
-
             // Create a Json dictionary of name/value pairs from TestProperties
             StringBuilder sb = new StringBuilder("{ ");
             string[] propertyNames = TestProperties.PropertyNames.ToArray();
@@ -185,11 +183,10 @@ namespace Infrastructure.Common
                 string propertyName = propertyNames[i];
                 string propertyValue = TestProperties.GetProperty(propertyName);
 
-                // If the Bridge is remote but the resources folder is local, omit it from the config request.
-                // In remote scenarios, either the Bridge must be started with its own resources folder or
-                // it is placed on a file share that we can reference from this application.
-                if ((String.Equals(propertyName, TestProperties.BridgeResourceFolder_PropertyName)) && 
-                    (!IsBridgeHostedLocally && !IsPathRemote(propertyValue)))
+                // We do not configure the BridgeResourceFolder because the Bridge
+                // is provided one at startup.  Moreover, cross-platform scenarios
+                // would require this folder to be shared across OS boundaries.
+                if (String.Equals(propertyName, TestProperties.BridgeResourceFolder_PropertyName, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
@@ -202,33 +199,6 @@ namespace Infrastructure.Common
             }
             sb.Append(" }");
             return sb.ToString();
-        }
-
-        // Validates some of the name/value pairs that will be sent to the Bridge
-        // via the /config POST request.
-        private static void ValidateConfigRequestProperties()
-        {
-            string bridgeResourceFolder = TestProperties.GetProperty(TestProperties.BridgeResourceFolder_PropertyName);
-
-            // Validate the Bridge resource folder exists (even if UNC).
-            if (String.IsNullOrEmpty(bridgeResourceFolder) || !Directory.Exists(bridgeResourceFolder))
-            {
-                throw new Exception(String.Format("BridgeResourceFolder '{0}' does not exist", bridgeResourceFolder));
-            }
-        }
-
-        // Returns true if the given file path is remote.
-        internal static bool IsPathRemote(string path)
-        {
-            if (String.IsNullOrEmpty(path))
-            {
-                return false;
-            }
-            if (new Uri(path).IsUnc)
-            {
-                return true;
-            }
-            return false;
         }
 
         private static string MakeResourcePutRequest(string resourceName)

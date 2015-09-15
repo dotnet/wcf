@@ -80,7 +80,11 @@ namespace Bridge
             }
         }
 
-        public static void ReleaseAllResources()
+        // Release all Bridge resources.
+        // If 'force' is true, it means the Bridge is shutting down
+        // and even the firewall rules necessary to talk to the Bridge
+        // will be removed.
+        public static void ReleaseAllResources(bool force)
         {
             // Cleanly shutdown all AppDomains we own so they have
             // the chance to release resources they've acquired or installed
@@ -99,11 +103,18 @@ namespace Bridge
 
             // Finally remove all firewall rules we added for the ports
             PortManager.RemoveAllBridgeFirewallRules();
+
+            // If the Bridge is not being shutdown, open a port in the firewall to
+            // communicate with the Bridge itself.
+            if (!force)
+            {
+                PortManager.OpenPortInFirewall(ConfigController.BridgeConfiguration.BridgePort);
+            }
         }
 
         public static void StopBridgeProcess(int exitCode)
         {
-            ReleaseAllResources();
+            ReleaseAllResources(force:true);
             Environment.Exit(exitCode);
         }
 
