@@ -30,7 +30,9 @@ instructions assume you are building for Linux, but are easily modifiable for OS
    CoreCLR (which is exactly what we do in Jenkins).
    
 4. A Linux build of the native CoreFX components.  On Linux, run ./build.sh from
-   src/Native in your CoreFX enlistment.
+   src/Native in your CoreFX enlistment.  Before doing this, ensure the libcurl
+   libraries are are installed using:
+   `apt-get install libcurl4-openssl-dev`
    
 5. A Linux build of WCF.  On Windows, run `build.cmd /p:OSGroup=Linux`. It
    is okay to build a Debug version of WCF and run it on top of a release

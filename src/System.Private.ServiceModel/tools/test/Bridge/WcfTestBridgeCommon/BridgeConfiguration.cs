@@ -12,6 +12,14 @@ namespace WcfTestBridgeCommon
     [Serializable]
     public class BridgeConfiguration
     {
+        private static readonly string Default_BridgeHost = "localhost";
+        private static readonly int Default_BridgePort = 44283;
+        private static readonly int Default_BridgeHttpPort = 8081;
+        private static readonly int Default_BridgeHttpsPort = 44285;
+        private static readonly int Default_BridgeTcpPort = 809;
+        private static readonly int Default_BridgeWebSocketPort = 8083;
+        private static readonly TimeSpan Default_BridgeMaxIdleTimeSpan = TimeSpan.FromHours(24);
+        
         // These property names must match the names used in TestProperties because
         // that is the set of name/value pairs from which this type is created.
         private const string BridgeResourceFolder_PropertyName = "BridgeResourceFolder";
@@ -40,6 +48,13 @@ namespace WcfTestBridgeCommon
 
         public BridgeConfiguration()
         {
+            BridgeHost = Default_BridgeHost;
+            BridgePort = Default_BridgePort;
+            BridgeHttpPort = Default_BridgeHttpPort;
+            BridgeHttpsPort = Default_BridgeHttpsPort;
+            BridgeTcpPort = Default_BridgeTcpPort;
+            BridgeWebSocketPort = Default_BridgeWebSocketPort;
+            BridgeMaxIdleTimeSpan = Default_BridgeMaxIdleTimeSpan;
         }
 
         // This ctor accepts an existing BridgeConfiguration and a set of name/value pairs.

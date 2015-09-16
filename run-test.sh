@@ -33,6 +33,9 @@ usage()
     echo "                                      default: <repo_root>/bin/<OS>.AnyCPU.<Configuration>"
     echo "    --wcf-tests <location>            Location of the root binaries location containing"
     echo "                                      the windows WCF tests"
+    echo "    --bridge-host <machineName>       Machine hosting the Bridge for multi-machine tests"
+    echo
+    echo "    --xunit-args <xunit args>         Additional args to pass to xunit"
     echo
     echo "Flavor/OS options:"
     echo "    --configuration <config>          Configuration to run (Debug/Release)"
@@ -70,6 +73,8 @@ esac
 TestHostVersion="0.0.2-prerelease"
 TestSelection=".*"
 TestsFailed=0
+BridgeHost=""
+XunitArgs="-notrait category=failing -notrait category=OuterLoop"
 OverlayDir="$ProjectRoot/bin/tests/$OS.AnyCPU.$Configuration/TestOverlay/"
 
 create_test_overlay()
@@ -215,9 +220,9 @@ runtest()
 
   echo
   echo "Running tests in $dirName"
-  echo "./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing -notrait category=OuterLoop -notrait category=$xunitOSCategory"
+  echo "./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml $XunitArgs -notrait category=$xunitOSCategory"
   echo
-  ./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing -notrait category=OuterLoop -notrait category=$xunitOSCategory
+  ./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml $XunitArgs -notrait category=$xunitOSCategory
   exitCode=$?
   popd > /dev/null
   exit $exitCode
@@ -249,6 +254,13 @@ do
         ;;
         --wcf-bins)
         WcfBins=$2
+        ;;
+        --bridge-host)
+        BridgeHost=$2
+        export BridgeHost
+        ;;
+        --xunit-args)
+        XunitArgs=$2
         ;;
         --restrict-proj)
         TestSelection=$2

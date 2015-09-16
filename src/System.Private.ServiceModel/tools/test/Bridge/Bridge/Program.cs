@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using WcfTestBridgeCommon;
@@ -14,7 +15,6 @@ namespace Bridge
 {
     internal class Program
     {
-        internal const int DefaultPortNumber = 44283;
         internal const bool DefaultAllowRemote = false;
         internal const string DefaultRemoteAddresses = "LocalSubnet";
 
@@ -422,9 +422,6 @@ namespace Bridge
                 }
 
                 BridgeConfiguration = new BridgeConfiguration();
-                BridgeConfiguration.BridgePort = DefaultPortNumber;
-                BridgeConfiguration.BridgeHost = "localhost";
-                BridgeConfiguration.BridgeMaxIdleTimeSpan = IdleTimeoutHandler.Default_MaxIdleTimeSpan;
 
                 // If the user specified a configuration file, deserialize it as json
                 // and treat each name-value pair as if it had been on the command line.
