@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using WcfTestBridgeCommon;
 
 namespace Bridge
@@ -21,8 +22,8 @@ namespace Bridge
         {
             CommandLineArguments commandLineArgs = new CommandLineArguments(args);
 
-            Console.WriteLine("Specified BridgeConfiguration is:{0}{1}",
-                                Environment.NewLine, commandLineArgs.BridgeConfiguration.ToString());
+            Console.WriteLine("Bridge.exe was launched with:{0}{1}", 
+                              Environment.NewLine, commandLineArgs.ToString());
 
             // If asked to ping (not the default), just ping and return an exit code indicating its state
             if (commandLineArgs.Ping)
@@ -72,7 +73,7 @@ namespace Bridge
 
             using (HttpClient httpClient = new HttpClient())
             {
-                Console.WriteLine("Testing Bridge at {0}", bridgeUrl);
+                Console.WriteLine("Pinging the Bridge by issuing GET request to {0}", bridgeUrl);
                 try
                 {
                     var response = httpClient.GetAsync(bridgeUrl).GetAwaiter().GetResult();
@@ -137,7 +138,7 @@ namespace Bridge
             // in a different process on this machine.
             using (HttpClient httpClient = new HttpClient())
             {
-                Console.WriteLine("Stopping Bridge at {0}", bridgeUrl);
+                Console.WriteLine("Stopping the Bridge by issuing DELETE request to {0}", bridgeUrl);
                 try
                 {
                     var response = httpClient.DeleteAsync(bridgeUrl).GetAwaiter().GetResult();
@@ -195,10 +196,11 @@ namespace Bridge
             string bridgeUrl = String.Format("http://{0}:{1}/Resource", commandLineArgs.BridgeConfiguration.BridgeHost, commandLineArgs.BridgeConfiguration.BridgePort);
             string problem = null;
 
+            Console.WriteLine("Resetting the Bridge by sending DELETE request to {0}", bridgeUrl);
+
             // We reset the Bridge using a DELETE request to the /resource endpoint.
             using (HttpClient httpClient = new HttpClient())
             {
-                Console.WriteLine("Stopping Bridge at {0}", bridgeUrl);
                 try
                 {
                     var response = httpClient.DeleteAsync(bridgeUrl).GetAwaiter().GetResult();
@@ -371,6 +373,21 @@ namespace Bridge
             public bool Stop { get; private set; }
             public bool StopIfLocal { get; private set; }
             public bool Reset { get; private set; }
+
+            public override string ToString()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Options are:")
+                    .AppendLine(String.Format("  -allowRemote = {0}", AllowRemote))
+                    .AppendLine(String.Format("  -remoteAddresses = {0}", RemoteAddresses))
+                    .AppendLine(String.Format("  -ping = {0}", Ping))
+                    .AppendLine(String.Format("  -stop = {0}", Stop))
+                    .AppendLine(String.Format("  -stopIfLocal = {0}", StopIfLocal))
+                    .AppendLine(String.Format("  -reset = {0}", Reset))
+                    .AppendLine(String.Format("BridgeConfiguration is:{0}{1}", 
+                                                Environment.NewLine, BridgeConfiguration.ToString()));
+                return sb.ToString();
+            }
 
             private bool Parse(string[] args)
             {
