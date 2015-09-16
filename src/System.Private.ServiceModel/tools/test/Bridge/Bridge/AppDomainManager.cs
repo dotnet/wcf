@@ -42,6 +42,11 @@ namespace Bridge
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static string CreateAppDomain(string path)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException("path");
+            }
+
             string friendlyName = "BridgeAppDomain" + TypeCache.AppDomains.Count;
             var appDomainSetup = new AppDomainSetup();
             appDomainSetup.ApplicationBase = path;
@@ -57,6 +62,9 @@ namespace Bridge
             TypeCache.AppDomains.Add(friendlyName, newAppDomain);
             TypeCache.Cache.Add(friendlyName, loader.GetTypes());
 
+            Trace.WriteLine(String.Format("{0:T} - Created new AppDomain '{1}'", DateTime.Now, friendlyName),
+                            typeof(AppDomainManager).Name);
+
             return friendlyName;
         }
 
@@ -66,6 +74,8 @@ namespace Bridge
             {
                 ShutdownAppDomain(domainName);
             }
+
+            ConfigController.CurrentAppDomainName = null;
         }
 
         public static void ShutdownAppDomain(string appDomainName)
@@ -85,6 +95,15 @@ namespace Bridge
                     AppDomain.Unload(appDomain);
                     TypeCache.AppDomains.Remove(appDomainName);
                     TypeCache.Cache.Remove(appDomainName);
+                    Trace.WriteLine(String.Format("{0:T} - Shutdown AppDomain '{1}'", DateTime.Now, appDomainName),
+                                    typeof(AppDomainManager).Name);
+                }
+
+                // If this is the main AppDomain known to hold resources,
+                // reset to null to avoid further use.
+                if (String.Equals(appDomainName, ConfigController.CurrentAppDomainName, StringComparison.OrdinalIgnoreCase))
+                {
+                    ConfigController.CurrentAppDomainName = null;
                 }
             }
         }

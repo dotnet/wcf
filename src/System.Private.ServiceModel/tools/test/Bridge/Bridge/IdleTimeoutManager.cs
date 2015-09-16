@@ -13,7 +13,7 @@ namespace Bridge
 {
     public class IdleTimeoutHandler : DelegatingHandler
     {
-        public static readonly TimeSpan Default_MaxIdleTimeSpan = TimeSpan.FromMinutes(30);
+        public static readonly TimeSpan Default_MaxIdleTimeSpan = TimeSpan.FromHours(24);
         private IdleTimeoutManager _timeoutManager;
 
         private IdleTimeoutHandler(TimeSpan idleTimeout)

@@ -116,5 +116,36 @@ namespace Bridge
                 });
             }
         }
+
+        // The DELETE Http verb means release all resources allocated
+        // and return to an initial state
+        public HttpResponseMessage Delete(HttpRequestMessage request)
+        {
+            Trace.WriteLine(String.Format("{0:T} - received DELETE request", DateTime.Now),
+                            typeof(ResourceController).Name);
+
+            // A resource change can have wide impact, so we don't allow concurrent use
+            lock (ConfigController.ConfigLock)
+            {
+                try
+                {
+                    BridgeController.ReleaseAllResources(force: false);
+                    HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK);
+                    response.Content = new StringContent("\"Bridge resources have been released.\"");
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    var exceptionResponse = ex.Message;
+                    Trace.WriteLine(String.Format("{0:T} - DELETE config exception:{1}{2}",
+                                                    DateTime.Now, Environment.NewLine, ex),
+                                    typeof(ResourceController).Name);
+
+                    return request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
+                }
+            }
+        }
+
     }
 }
