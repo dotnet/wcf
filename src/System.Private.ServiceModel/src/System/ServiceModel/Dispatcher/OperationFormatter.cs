@@ -46,6 +46,12 @@ namespace System.ServiceModel.Dispatcher
 
         protected abstract void AddHeadersToMessage(Message message, MessageDescription messageDescription, object[] parameters, bool isRequest);
         protected abstract void SerializeBody(XmlDictionaryWriter writer, MessageVersion version, string action, MessageDescription messageDescription, object returnValue, object[] parameters, bool isRequest);
+        protected virtual Task SerializeBodyAsync(XmlDictionaryWriter writer, MessageVersion version, string action, MessageDescription messageDescription, object returnValue, object[] parameters, bool isRequest)
+        {
+            SerializeBody(writer, version, action, messageDescription, returnValue, parameters, isRequest);
+            return Task.CompletedTask;
+        }
+
         protected abstract void GetHeadersFromMessage(Message message, MessageDescription messageDescription, object[] parameters, bool isRequest);
         protected abstract object DeserializeBody(XmlDictionaryReader reader, MessageVersion version, string action, MessageDescription messageDescription, object[] parameters, bool isRequest);
 
@@ -356,7 +362,7 @@ namespace System.ServiceModel.Dispatcher
                 return;
             }
 
-            SerializeBody(writer, version, RequestAction, messageDescription, returnValue, parameters, isRequest);
+            await SerializeBodyAsync(writer, version, RequestAction, messageDescription, returnValue, parameters, isRequest);
         }
 
         private IAsyncResult BeginSerializeBodyContents(XmlDictionaryWriter writer, MessageVersion version, object[] parameters, object returnValue, bool isRequest,
