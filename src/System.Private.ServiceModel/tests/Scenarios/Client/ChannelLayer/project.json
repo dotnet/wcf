@@ -3,7 +3,7 @@
     "System.ServiceModel.NetTcp": "4.0.0-beta-*",
     "System.ServiceModel.Http": "4.0.10-beta-*",
     "System.ServiceModel.Primitives": "4.0.0-beta-*",
-    "xunit": "2.1.0-beta3-*",
+    "xunit": "2.1.0-rc1-*",
     "xunit.netcore.extensions": "1.0.0-prerelease-*"
   },
   "frameworks": {
