@@ -6,8 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
 
-
-namespace WCFClientStressTests
+namespace SharedPoolsOfWCFObjects
 {
     public static class TestHelpers
     {
@@ -16,13 +15,23 @@ namespace WCFClientStressTests
 
         private static string s_tcpUrl;
         private static string s_httpUrl;
+        private static string s_tcpDupUrl;
+        private static string s_httpDupUrl;
+        private static string s_tcpStreamingUrl;
+        private static string s_httpStreamingUrl;
 
+       
         public static void SetHostAndProtocol(bool useHttp, string hostName, string appName)
         {
             UseHttp = useHttp;
             HostName = hostName;
             s_tcpUrl = "net.tcp://" + hostName + ":808/" + appName + "/Service1.svc";
             s_httpUrl = "http://" + hostName + "/" + appName + "/Service1.svc";
+            s_tcpDupUrl = "net.tcp://" + hostName + ":808/" + appName + "/DuplexService.svc";
+            s_httpDupUrl = "http://" + hostName + "/" + appName + "/DuplexService.svc";
+            s_tcpStreamingUrl = "net.tcp://" + hostName + ":808/" + appName + "/StreamingService.svc";
+            s_httpStreamingUrl = "http://" + hostName + "/" + appName + "/StreamingService.svc";
+            //s_httpUrl = HttpUrl;
         }
 
         public static EndpointAddress CreateEndPointAddress()
@@ -41,6 +50,37 @@ namespace WCFClientStressTests
             return new EndpointAddress(s_httpUrl);
         }
 
+        public static EndpointAddress CreateEndPointDuplexAddress()
+        {
+            return UseHttp ? CreateHttpEndpointDuplexAddress() : CreateNetTcpEndpointDuplexAddress();
+        }
+
+        public static EndpointAddress CreateNetTcpEndpointDuplexAddress()
+        {
+            //string address = "net.tcp://cspod222-04vm4.corp.microsoft.com/WcfService1/Service1.svc";
+            return new EndpointAddress(s_tcpDupUrl);
+        }
+
+        public static EndpointAddress CreateHttpEndpointDuplexAddress()
+        {
+            return new EndpointAddress(s_httpDupUrl);
+        }
+
+        public static EndpointAddress CreateEndPointStreamingAddress()
+        {
+            return UseHttp ? CreateHttpEndpointStreamingAddress() : CreateNetTcpEndpointStreamingAddress();
+        }
+
+        public static EndpointAddress CreateNetTcpEndpointStreamingAddress()
+        {
+            return new EndpointAddress(s_tcpStreamingUrl);
+        }
+
+        public static EndpointAddress CreateHttpEndpointStreamingAddress()
+        {
+            return new EndpointAddress(s_httpStreamingUrl);
+        }
+
         public static Binding CreateBinding()
         {
             return UseHttp ? CreateHttpBinding() : CreateNetTcpBinding();
@@ -52,10 +92,31 @@ namespace WCFClientStressTests
             binding.Security.Mode = SecurityMode.None;
             return binding;
         }
-
         public static Binding CreateHttpBinding()
         {
             return new BasicHttpBinding();
+        }
+
+        public static Binding CreateStreamingBinding(int maxStreamSize)
+        {
+            return UseHttp ? CreateHttpStreamingBinding(maxStreamSize) : CreateNetTcpStreamingBinding(maxStreamSize);
+        }
+        public static NetTcpBinding CreateNetTcpStreamingBinding(int maxStreamSize)
+        {
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.Security = new NetTcpSecurity();
+            binding.Security.Mode = SecurityMode.None;
+            binding.MaxReceivedMessageSize = maxStreamSize * 2;
+            binding.TransferMode = TransferMode.Streamed;
+            return binding;
+        }
+
+        public static Binding CreateHttpStreamingBinding(int maxStreamSize)
+        {
+            var binding = new BasicHttpBinding();
+            binding.MaxReceivedMessageSize = maxStreamSize * 2;
+            binding.TransferMode = TransferMode.Streamed;
+            return binding;
         }
 
         public static ChannelFactory<C> CreateChannelFactory<C>(EndpointAddress a, Binding b)
@@ -63,6 +124,26 @@ namespace WCFClientStressTests
             var factory = new ChannelFactory<C>(b, a);
             new CommunicationObjectEventVerifier(factory);
             return factory;
+        }
+
+        public static DuplexChannelFactory<C> CreateDuplexChannelFactory<C>(EndpointAddress a, Binding b, object duplexCallback)
+        {
+            var instanceContext = new InstanceContext(duplexCallback);
+
+            var factory = new DuplexChannelFactory<C>(instanceContext, b, a);
+            new CommunicationObjectEventVerifier(factory);
+            new CommunicationObjectEventVerifier(instanceContext);
+            return factory;
+        }
+
+        public static void CloseFactory<C>(ChannelFactory<C> factory)
+        {
+            factory.Close();
+        }
+
+        public static async Task CloseFactoryAsync<C>(ChannelFactory<C> factory)
+        {
+            await Task.Factory.FromAsync(factory.BeginClose, factory.EndClose, TaskCreationOptions.None);
         }
 
         public static C CreateChannel<C>(ChannelFactory<C> factory)
@@ -124,38 +205,37 @@ namespace WCFClientStressTests
             }
         }
 
-        private static long s_closeCalls = 0;
         public static void CloseChannel<C>(C channel)
         {
-            Interlocked.Increment(ref s_closeCalls);
             // Getting a null would indicate an issue in harness
             if (channel == null)
             {
                 System.Diagnostics.Debugger.Break();
             }
+            var cc = channel as ICommunicationObject;
             // Getting a null would indicate an issue in tests
-            if (channel as ICommunicationObject == null)
+            if (cc == null)
             {
                 System.Diagnostics.Debugger.Break();
             }
 
-            ((ICommunicationObject)channel).Close();
+            cc.Close();
         }
-
         public static async Task CloseChannelAsync<C>(C channel)
         {
+            // Getting a null would indicate an issue in harness
+            if (channel == null)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
             var cc = (channel as IClientChannel);
+            // Getting a null would indicate an issue in tests
+            if (cc == null)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
             await Task.Factory.FromAsync(cc.BeginClose, cc.EndClose, TaskCreationOptions.None);
         }
 
-        public static void CloseFactory<C>(ChannelFactory<C> factory)
-        {
-            factory.Close();
-        }
-
-        public static async Task CloseFactoryAsync<C>(ChannelFactory<C> factory)
-        {
-            await Task.Factory.FromAsync(factory.BeginClose, factory.EndClose, TaskCreationOptions.None);
-        }
     }
 }

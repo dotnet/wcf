@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WCFClientStressTests
+namespace SharedPoolsOfWCFObjects
 {
     // Pooling of WCF channel factories and channels is a commonly reccomended practice due to its perf benefits.
     // However with pooling come more race condition-like scenarios such as using an already faulted channel or factory.

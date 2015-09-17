@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
 
-namespace WCFClientStressTests
+namespace SharedPoolsOfWCFObjects
 {
     /// <summary>
     /// This class provides a few Call*AndRecordStats() utility methods which will store and aggregate the timing of the delegates they invoke 
