@@ -22,6 +22,7 @@ namespace System.ServiceModel.Dispatcher
         private readonly bool _isOneWay;
         private bool _autoDisposeParameters = true;
         private bool _hasNoDisposableParameters;
+        private bool _isFaultFormatterSetExplicit;
 
         public DispatchOperation(DispatchRuntime parent, string name, string action)
         {
@@ -104,8 +105,14 @@ namespace System.ServiceModel.Dispatcher
                 {
                     _parent.InvalidateRuntime();
                     _faultFormatter = value;
+                    _isFaultFormatterSetExplicit = true;
                 }
             }
+        }
+
+        internal bool IsFaultFormatterSetExplicit
+        {
+            get { return _isFaultFormatterSetExplicit; }
         }
 
         internal bool HasNoDisposableParameters
