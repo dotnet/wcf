@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#if FEATURE_CORECLR // X509Certificates
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
 using System.Security.Claims;
@@ -411,4 +410,3 @@ namespace System.IdentityModel.Claims
         }
     }
 }
-#endif // FEATURE_CORECLR

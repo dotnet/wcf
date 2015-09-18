@@ -3,9 +3,7 @@
 
 using System.Diagnostics.Contracts;
 using System.IdentityModel.Tokens;
-#if FEATURE_CORECLR
 using System.Security.Cryptography.X509Certificates;
-#endif 
 using System.ServiceModel;
 using System.Text;
 
@@ -13,7 +11,6 @@ namespace System.IdentityModel.Selectors
 {
     public abstract class X509CertificateValidator
     {
-#if FEATURE_CORECLR // X509Certificate
         private static X509CertificateValidator s_chainTrust;
         private static X509CertificateValidator s_none;
 
@@ -111,7 +108,6 @@ namespace System.IdentityModel.Selectors
                 return String.Empty;
             }
         }
-#endif // FEATURE_CORECLR
     }
 }
 
