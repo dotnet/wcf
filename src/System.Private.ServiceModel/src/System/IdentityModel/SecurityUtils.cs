@@ -6,9 +6,7 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.Runtime;
-#if FEATURE_CORECLR
 using System.Security.Cryptography.X509Certificates;
-#endif // FEATURE_CORECLR
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
@@ -235,7 +233,6 @@ namespace System.IdentityModel
             throw ExceptionHelper.PlatformNotSupported();
         }
 
-#if FEATURE_CORECLR // X509Certificate
         internal static string GetCertificateId(X509Certificate2 certificate)
         {
             StringBuilder str = new StringBuilder(256);
@@ -267,7 +264,6 @@ namespace System.IdentityModel
             str.Append("; ");
             str.Append(certificate.Thumbprint);
         }
-#endif // FEATURE_CORECLR
 
         internal static ReadOnlyCollection<IAuthorizationPolicy> CloneAuthorizationPoliciesIfNecessary(ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
@@ -323,8 +319,6 @@ namespace System.IdentityModel
             }
         }
 
-#if FEATURE_CORECLR
-
         // This is the workaround, Since store.Certificates returns a full collection
         // of certs in store.  These are holding native resources.
         internal static void ResetAllCertificates(X509Certificate2Collection certificates)
@@ -343,7 +337,6 @@ namespace System.IdentityModel
             // Check that Dispose() and Reset() do the same thing
             certificate.Dispose();
         }
-#endif // FEATURE_CORECLR
     }
 
     internal static class EmptyReadOnlyCollection<T>
