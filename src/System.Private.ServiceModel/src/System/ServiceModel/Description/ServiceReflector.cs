@@ -457,7 +457,17 @@ namespace System.ServiceModel.Description
                 }
                 else
                 {
-                    return Array.Empty<object>();
+                    List<object> attrTypeAttributes = new List<object>();
+                    object[] allCustomAttributes = attrProvider.GetCustomAttributes(inherit);
+                    foreach (object customAttribute in allCustomAttributes)
+                    {
+                        if (attrType.IsAssignableFrom(customAttribute.GetType()))
+                        {
+                            attrTypeAttributes.Add(customAttribute);
+                        }
+                    }
+
+                    return attrTypeAttributes.ToArray();
                 }
             }
             catch (Exception e)
