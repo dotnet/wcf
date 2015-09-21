@@ -328,6 +328,11 @@ then
     CoreClrObjs="$ProjectRoot/bin/obj/$OS.x64.$Configuration"
 fi
 
+if [ "$XunitArgs" != *"-notrait category=OuterLoop"* ]
+then
+    echo "OuterLoop tests will be run using the Bridge at $BridgeHost"
+fi
+
 create_test_overlay
 
 # Walk the directory tree rooted at src bin/tests/Windows_NT.AnyCPU.$Configuration/
