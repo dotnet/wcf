@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -15,7 +14,8 @@ namespace Infrastructure.Common
     {
         private static object s_thisLock = new object();
         private static Dictionary<string, string> _Resources = new Dictionary<string, string>();
-        private static BridgeState _BridgeStatus = BridgeState.NotStarted;
+        private static BridgeState s_BridgeStatus = BridgeState.NotStarted;
+        private static string s_BridgeFaultReason = String.Empty;
         private static readonly Regex regexResource = new Regex(@"details\s*:\s*""([^""]+)""", RegexOptions.IgnoreCase);
 
         private static string BridgeBaseAddress
@@ -28,8 +28,29 @@ namespace Infrastructure.Common
             }
         }
 
-        private static bool IsBridgeHostedLocally { get; set; }
+        private static string BridgeEndpointAddress
+        {
+            get
+            {
+                return String.Format("{0}/{1}/", BridgeBaseAddress, "bridge");
+            }
+        }
 
+        private static string BridgeConfigEndpointAddress
+        {
+            get
+            {
+                return String.Format("{0}/{1}/", BridgeBaseAddress, "config");
+            }
+        }
+
+        private static string BridgeResourceEndpointAddress
+        {
+            get
+            {
+                return String.Format("{0}/{1}/", BridgeBaseAddress, "resource");
+            }
+        }
 
         private static void EnsureBridgeIsRunning()
         {
@@ -37,22 +58,18 @@ namespace Infrastructure.Common
             // request to finish and set state before the rest continue.
             lock (s_thisLock)
             {
-                if (_BridgeStatus == BridgeState.NotStarted)
+                if (s_BridgeStatus == BridgeState.NotStarted)
                 {
                     // The initial ping establishes Bridge state
                     PingBridge();
 
-                    // An optional second ping to localhost determines whether
-                    // the Bridge is running locally but using something other
-                    // than localhost for the host name
-                    IsBridgeHostedLocally = DoesBridgeRespondToLocalHost();
-
                     // Bridge is known running -- configure with our resources
                     MakeConfigRequest();
                 }
-                else if (_BridgeStatus == BridgeState.Faulted)
+                else if (s_BridgeStatus == BridgeState.Faulted)
                 {
-                    throw new Exception("Bridge is not running");
+                    throw new Exception(String.Format("The Bridge is not running, due to this earlier fault:{0}{1}",
+                                        Environment.NewLine, s_BridgeFaultReason));
                 }
             }
         }
@@ -61,76 +78,61 @@ namespace Infrastructure.Common
             EnsureBridgeIsRunning();
 
             string resourceAddress = null;
-            if (_BridgeStatus == BridgeState.Started && !_Resources.TryGetValue(resourceName, out resourceAddress))
+            lock (s_thisLock)
             {
-                resourceAddress = MakeResourcePutRequest(resourceName);
-                _Resources.Add(resourceName, resourceAddress);
+                if (s_BridgeStatus == BridgeState.Started && !_Resources.TryGetValue(resourceName, out resourceAddress))
+                {
+                    resourceAddress = MakeResourcePutRequest(resourceName);
+                    _Resources.Add(resourceName, resourceAddress);
+                }
             }
 
             return resourceAddress;
         }
 
+        // Ensure the given response was successful. If it was not, generate
+        // an explanatory message and throw an exception.
+        private static void EnsureSuccessfulResponse(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                string reason = String.Format("{0}Bridge returned unexpected status code='{1}', reason='{2}'",
+                                          Environment.NewLine, response.StatusCode, response.ReasonPhrase);
+                if (response.Content != null)
+                {
+                    string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    if (contentAsString.Length > 1000)
+                    {
+                        contentAsString = contentAsString.Substring(0, 999) + "...";
+                    }
+                    reason = String.Format("{0}, content:{1}{2}",
+                                            reason, Environment.NewLine, contentAsString);
+                }
+
+                throw new Exception(reason);
+            }
+        }
+
         // Issues a GET request to the Bridge base address to determine
         // whether it is running.  This method also sets state to indicate
-        // whether the bridge is running or unavailable.
+        // whether the bridge is running or unavailable. 
         private static void PingBridge()
         {
             using (HttpClient httpClient = new HttpClient())
             {
                 try
                 {
-                    var response = httpClient.GetAsync(BridgeBaseAddress).GetAwaiter().GetResult();
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        string reason = String.Format("{0}Bridge returned unexpected status code='{1}', reason='{2}'",
-                                                    Environment.NewLine, response.StatusCode, response.ReasonPhrase);
-                        if (response.Content != null)
-                        {
-                            string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                            if (contentAsString.Length > 1000)
-                            {
-                                contentAsString = contentAsString.Substring(0, 999) + "...";
-                            }
-                            reason = String.Format("{0}, content:{1}{2}",
-                                                    reason, Environment.NewLine, contentAsString);
-                        }
-                        throw new Exception(reason);
-                    }
-                    _BridgeStatus = BridgeState.Started;
+                    var response = httpClient.GetAsync(BridgeEndpointAddress).GetAwaiter().GetResult();
+                    EnsureSuccessfulResponse(response);
+                    s_BridgeStatus = BridgeState.Started;
                 }
                 catch (Exception exc)
                 {
-                    _BridgeStatus = BridgeState.Faulted;
-                    throw new Exception("Bridge is not running", exc);
-                }
-            }
-        }
-
-        // Returns true if the Bridge will respond or has responded to localhost.
-        // This is used to determine whether local file paths are acceptable for the BridgeResourceFolder.
-        private static bool DoesBridgeRespondToLocalHost()
-        {
-            // If we have already pinged before and the host is "localhost", no need to repeat it.
-            if (_BridgeStatus == BridgeState.Started && 
-                String.Equals("localhost", TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName), StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            // This ping to localhost may fail if the Bridge is running on a remote machine.
-            // This is acceptable for the purposes of this teste.
-            string localHostAddress = String.Format("http://localhost:{0}",
-                                                    TestProperties.GetProperty(TestProperties.BridgePort_PropertyName));
-            using (HttpClient httpClient = new HttpClient())
-            {
-                try
-                {
-                    var response = httpClient.GetAsync(BridgeBaseAddress).GetAwaiter().GetResult();
-                    return response.IsSuccessStatusCode;
-                }
-                catch
-                {
-                    return false;
+                    s_BridgeStatus = BridgeState.Faulted;
+                    s_BridgeFaultReason = String.Format("A GET request was issued to '{0}' but encountered exception {1}",
+                                                            BridgeEndpointAddress, exc.Message);
+                    
+                    throw new Exception(s_BridgeFaultReason, exc);
                 }
             }
         }
@@ -139,36 +141,22 @@ namespace Infrastructure.Common
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri(BridgeBaseAddress);
                 var content = new StringContent(
                     CreateConfigRequestContentAsJson(),
                     Encoding.UTF8,
                     "application/json");
                 try
                 {
-                    var response = httpClient.PostAsync("/config/", content).GetAwaiter().GetResult();
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        string reason = String.Format("{0}Bridge returned unexpected status code='{1}', reason='{2}'",
-                                                    Environment.NewLine, response.StatusCode, response.ReasonPhrase);
-                        if (response.Content != null)
-                        {
-                            string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                            if (contentAsString.Length > 1000)
-                            {
-                                contentAsString = contentAsString.Substring(0, 999) + "...";
-                            }
-                            reason = String.Format("{0}, content:{1}{2}",
-                                                    reason, Environment.NewLine, contentAsString);
-                        }
-                        throw new Exception(reason);
-                    }
-                    _BridgeStatus = BridgeState.Started;
+                    var response = httpClient.PostAsync(BridgeConfigEndpointAddress, content).GetAwaiter().GetResult();
+                    EnsureSuccessfulResponse(response);
+                    s_BridgeStatus = BridgeState.Started;
                 }
                 catch (Exception exc)
                 {
-                    _BridgeStatus = BridgeState.Faulted;
-                    throw new Exception("Bridge is not running", exc);
+                    s_BridgeStatus = BridgeState.Faulted;
+                    s_BridgeFaultReason = String.Format("A POST request was issued to '{0}' but encountered exception {1}",
+                                        BridgeConfigEndpointAddress, exc.Message);
+                    throw new Exception(s_BridgeFaultReason, exc);
                 }
             }
         }
@@ -207,16 +195,14 @@ namespace Infrastructure.Common
 
             using (HttpClient httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri(BridgeBaseAddress);
                 var content = new StringContent(
                         string.Format(@"{{ name : ""{0}"" }}", resourceName),
                         Encoding.UTF8,
                         "application/json");
                 try
                 {
-                    var response = httpClient.PutAsync("/resource/", content).GetAwaiter().GetResult();
-                    if (!response.IsSuccessStatusCode)
-                        throw new Exception("Unexpected status code: " + response.StatusCode);
+                    var response = httpClient.PutAsync(BridgeResourceEndpointAddress, content).GetAwaiter().GetResult();
+                    EnsureSuccessfulResponse(response);
 
                     var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     var match = regexResource.Match(responseContent);
@@ -227,7 +213,9 @@ namespace Infrastructure.Common
                 }
                 catch (Exception exc)
                 {
-                    throw new Exception("Unable to start resource: " + resourceName, exc);
+                    string failureMessage = String.Format("A PUT request was issued to '{0}' for resource '{1}' but encountered exception {2}",
+                    BridgeResourceEndpointAddress, resourceName, exc.Message);
+                    throw new Exception(failureMessage, exc);
                 }
             }
         }
@@ -238,12 +226,19 @@ namespace Infrastructure.Common
 
             using (HttpClient httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri(BridgeBaseAddress);
-                var response = httpClient.GetAsync("/resource/" + resourceName).GetAwaiter().GetResult();
-                if (!response.IsSuccessStatusCode)
-                    throw new Exception("Unexpected status code: " + response.StatusCode);
+                try
+                {
+                    var response = httpClient.GetAsync(BridgeResourceEndpointAddress + resourceName).GetAwaiter().GetResult();
+                    EnsureSuccessfulResponse(response);
+                    return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                }
+                catch (Exception exc)
+                {
+                    string failureMessage = String.Format("A Get request was issued to '{0}{1}' but encountered exception {2}",
+                                                           BridgeResourceEndpointAddress, resourceName, exc.Message);
+                    throw new Exception(failureMessage, exc);
+                }
 
-                return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
         }
 

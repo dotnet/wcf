@@ -92,6 +92,12 @@ namespace WcfTestBridgeCommon
 
         private static void AddFirewallRule(int port)
         {
+            if (port == 0)
+            {
+                Console.WriteLine("Warning -- request to add firewall rule for port 0 ignored.");
+                return;
+            }
+
             lock (s_portLock)
             {
                 // If we add any rules, register to delete them at process exit.
