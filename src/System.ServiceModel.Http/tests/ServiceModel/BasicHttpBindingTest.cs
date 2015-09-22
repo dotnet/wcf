@@ -349,6 +349,7 @@ public static class BasicHttpBindingTest
 
     [Theory]
     [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
+    [ActiveIssue(333, PlatformID.AnyUnix)]
     public static void TextEncoding_Property_Set_Invalid_Value_Throws(Encoding encoding)
     {
         var binding = new BasicHttpBinding();
