@@ -128,6 +128,23 @@ namespace System.ServiceModel.Description
 
         void IOperationBehavior.ApplyDispatchBehavior(OperationDescription description, DispatchOperation dispatch)
         {
+            if (description == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("description");
+
+            if (dispatch == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("dispatch");
+
+            if (dispatch.Formatter == null)
+            {
+                dispatch.Formatter = (IDispatchMessageFormatter)CreateFormatter();
+                dispatch.DeserializeRequest = _reflector.RequestRequiresSerialization;
+                dispatch.SerializeReply = _reflector.ReplyRequiresSerialization;
+            }
+
+            if (_reflector.Attribute.SupportFaults && !dispatch.IsFaultFormatterSetExplicit)
+            {
+                dispatch.FaultFormatter = (IDispatchFaultFormatter)CreateFaultFormatter(dispatch.FaultContractInfos);
+            }
         }
 
         void IOperationBehavior.ApplyClientBehavior(OperationDescription description, ClientOperation proxy)
