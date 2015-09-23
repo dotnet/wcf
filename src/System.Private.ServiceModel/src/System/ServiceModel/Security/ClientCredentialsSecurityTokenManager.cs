@@ -78,14 +78,12 @@ namespace System.ServiceModel
             SecurityTokenProvider result = null;
             if (tokenRequirement is RecipientServiceModelSecurityTokenRequirement && tokenRequirement.TokenType == SecurityTokenTypes.X509Certificate && tokenRequirement.KeyUsage == SecurityKeyUsage.Exchange)
             {
-#if FEATURE_CORECLR // X509Certificates
                 // this is the uncorrelated duplex case
                 if (_parent.ClientCertificate.Certificate == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientCertificateNotProvidedOnClientCredentials)));
                 }
                 result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate);
-#endif 
             }
             else if (tokenRequirement is InitiatorServiceModelSecurityTokenRequirement)
             {
@@ -103,15 +101,11 @@ namespace System.ServiceModel
                     }
                     else
                     {
-#if FEATURE_CORECLR
                         if (_parent.ClientCertificate.Certificate == null)
                         {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientCertificateNotProvidedOnClientCredentials)));
                         }
                         result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate);
-#else 
-                        throw ExceptionHelper.PlatformNotSupported("CreateSecurityTokenProvider X509Certificate - Client certificate not supported in UAP");
-#endif
                     }
                 }
                 else if (tokenType == SecurityTokenTypes.UserName)
@@ -136,21 +130,17 @@ namespace System.ServiceModel
 
         private X509SecurityTokenAuthenticator CreateServerX509TokenAuthenticator()
         {
-#if FEATURE_CORECLR // X509Certificate
+
             return new X509SecurityTokenAuthenticator(_parent.ServiceCertificate.Authentication.GetCertificateValidator(), false);
-#else 
-            throw ExceptionHelper.PlatformNotSupported("CreateServerX509TokenAuthenticator not supported in UAP");
-#endif
         }
 
         private X509SecurityTokenAuthenticator CreateServerSslX509TokenAuthenticator()
         {
-#if FEATURE_CORECLR // X509Certificate
             if (_parent.ServiceCertificate.SslCertificateAuthentication != null)
             {
                 return new X509SecurityTokenAuthenticator(_parent.ServiceCertificate.SslCertificateAuthentication.GetCertificateValidator(), false);
             }
-#endif 
+
             return CreateServerX509TokenAuthenticator();
         }
 
@@ -178,12 +168,7 @@ namespace System.ServiceModel
                     {
                         // when the client side soap security asks for a token authenticator, its for doing
                         // identity checks on the out of band server certificate
-#if FEATURE_CORECLR // X509Certificates
                         result = new X509SecurityTokenAuthenticator(X509CertificateValidator.None);
-#else
-                        throw ExceptionHelper.PlatformNotSupported("CreateSecurityTokenAuthenticator : initiatorRequirement.IsOutOfBandToken not supported in UAP");
-
-#endif // FEATURE_CORECLR
                     }
                     else if (initiatorRequirement.PreferSslCertificateAuthenticator)
                     {

@@ -11,7 +11,6 @@ namespace System.IdentityModel.Selectors
 {
     public class X509SecurityTokenAuthenticator : SecurityTokenAuthenticator
     {
-#if FEATURE_CORECLR // X509Certificate
         private X509CertificateValidator _validator;
         private bool _mapToWindows;
         private bool _includeWindowsGroups;
@@ -49,20 +48,14 @@ namespace System.IdentityModel.Selectors
             _includeWindowsGroups = includeWindowsGroups;
             _cloneHandle = cloneHandle;
         }
-#endif // FEATURE_CORECLR
 
         protected override bool CanValidateTokenCore(SecurityToken token)
         {
-#if FEATURE_CORECLR
             return token is X509SecurityToken;
-#else
-            return false;
-#endif // FEATURE_CORECLR 
         }
 
         protected override ReadOnlyCollection<IAuthorizationPolicy> ValidateTokenCore(SecurityToken token)
         {
-#if FEATURE_CORECLR
             X509SecurityToken x509Token = (X509SecurityToken)token;
             _validator.Validate(x509Token.Certificate);
 
@@ -75,9 +68,6 @@ namespace System.IdentityModel.Selectors
             {
                 throw ExceptionHelper.PlatformNotSupported("Mapping to Windows identity not supported.");
             }
-#else
-            throw ExceptionHelper.PlatformNotSupported("X509SecurityTokenAuthenticator.ValidateTokenCore not supported on UWP.");
-#endif // FEATURE_CORECLR
         }
     }
 }
