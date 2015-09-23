@@ -10,7 +10,9 @@ using Xunit;
 public static class Tcp_ClientCredentialTypeTests
 {
     // Simple echo of a string using NetTcpBinding on both client and server with all default settings.
-    // Default settings means SecurityMode is set to Transport.
+    // Default settings are:
+    //                         - SecurityMode = Transport
+    //                         - ClientCredentialType = Windows
     [Fact]
     [ActiveIssue(300)]
     [OuterLoop]
@@ -37,7 +39,7 @@ public static class Tcp_ClientCredentialTypeTests
         }
     }
 
-    // Simple echo of a string using NetTcpBinding on both client and server with all default settings.
+    // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=None
     [Fact]
     [OuterLoop]
     public static void SameBinding_SecurityModeNone_EchoString()
@@ -63,6 +65,7 @@ public static class Tcp_ClientCredentialTypeTests
     }
 
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
+    // By default ClientCredentialType will be 'Windows'
     [Fact]
     [ActiveIssue(300)]
     [OuterLoop]
@@ -88,7 +91,8 @@ public static class Tcp_ClientCredentialTypeTests
         }
     }
 
-    // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
+    // Simple echo of a string using a CustomBinding to mimic a NetTcpBinding with Security.Mode = TransportWithMessageCredentials
+    // This does not exactly match the binding elements in a NetTcpBinding which also includes a TransportSecurityBindingElement
     [Fact]
     [ActiveIssue(310)]
     [OuterLoop]
@@ -100,7 +104,7 @@ public static class Tcp_ClientCredentialTypeTests
         try
         {
             CustomBinding binding = new CustomBinding(
-                new SslStreamSecurityBindingElement(),
+                new SslStreamSecurityBindingElement(), // This is the binding element used when Security.Mode  = TransportWithMessageCredentials
                 new BinaryMessageEncodingBindingElement(),
                 new TcpTransportBindingElement());
             
