@@ -52,6 +52,8 @@ namespace WcfTestBridgeCommon
             AppDomain.CurrentDomain.SetData(TypeList, types);
         }
 
+        // The return is a ResourceResponse but we return as object
+        // to avoid dynamic type casting across AppDomain boundaries.
         public object IResourceCall(string typeName, string verb, object[] arguments)
         {
             var types = AppDomain.CurrentDomain.GetData(TypeList) as Dictionary<string, Type>;

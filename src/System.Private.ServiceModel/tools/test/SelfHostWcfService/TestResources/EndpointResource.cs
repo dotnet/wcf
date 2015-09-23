@@ -12,6 +12,8 @@ namespace WcfService.TestResources
 {
     internal abstract class EndpointResource<ServiceType, ContractType> : IResource where ServiceType : class, ContractType
     {
+        private const string ResourceResponseUriKeyName = "uri";
+
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
 
@@ -29,8 +31,9 @@ namespace WcfService.TestResources
 
         #endregion Host Listen Uri components
 
-        public object Put(ResourceRequestContext context)
+        public ResourceResponse Put(ResourceRequestContext context)
         {
+            ResourceResponse response = new ResourceResponse();
             ServiceHost host;
             if (!s_currentHosts.TryGetValue(Address, out host))
             {
@@ -52,18 +55,24 @@ namespace WcfService.TestResources
                 }
             }
 
-            return host.Description.Endpoints.Count != 1 ? null : host.Description.Endpoints[0].ListenUri.ToString();
-        }
-
-        public object Get(ResourceRequestContext context)
-        {
-            ServiceHost host;
-            if (s_currentHosts.TryGetValue(Address, out host))
+            if (host.Description.Endpoints.Count == 1)
             {
-                return host.Description.Endpoints.Count != 1 ? null : host.Description.Endpoints[0].ListenUri.ToString();
+                response.Properties.Add(ResourceResponseUriKeyName, host.Description.Endpoints[0].ListenUri.ToString());
             }
 
-            return null;
+            return response;
+        }
+
+        public ResourceResponse Get(ResourceRequestContext context)
+        {
+            ResourceResponse response = new ResourceResponse();
+            ServiceHost host;
+            if (s_currentHosts.TryGetValue(Address, out host) && (host.Description.Endpoints.Count == 1))
+            {
+                response.Properties.Add(ResourceResponseUriKeyName, host.Description.Endpoints[0].ListenUri.ToString());
+            }
+
+            return response;
         }
 
         protected abstract Binding GetBinding();

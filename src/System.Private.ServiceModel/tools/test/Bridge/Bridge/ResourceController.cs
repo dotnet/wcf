@@ -7,58 +7,70 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Web.Http;
+using WcfTestBridgeCommon;
 
 namespace Bridge
 {
     public class ResourceController : ApiController
     {
         /// <summary>
-        /// Initialize a test
+        /// Invoke the <c>Put</c> method of the <see cref="IResource"/>
+        /// matching the name specified in the content name/value pairs.
         /// </summary>
-        /// <param name="resource"></param>
-        /// <response code="200">Test initialized.</response>
+        /// <param name="request">The incoming request containing the name/value pair content</param>
+        /// <returns>The response to return to the caller.</returns>
         public HttpResponseMessage Put(HttpRequestMessage request)
         {
-            string nameValuePairs = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            Dictionary<string, string> resourceInfo = JsonSerializer.DeserializeDictionary(nameValuePairs);
-            string resourceName = null;
-            resourceInfo.TryGetValue("name", out resourceName);
-            resource resource = resourceName == null ? null : new resource { name = resourceName };
+            // PUT allows name/value pairs in Uri query parameters or in content.
+            // Give precedence to query parameters.
+            Dictionary<string, string> properties = GetNameValuePairsFromQueryParameters(request);
 
-            Trace.WriteLine(String.Format("{0:T} - Received PUT request for resource {1}", 
-                                          DateTime.Now, String.IsNullOrWhiteSpace(resourceName) ? "null" : resourceName),
-                            this.GetType().Name);
-
-            if (String.IsNullOrWhiteSpace(resourceName))
+            // If there were no query parameters, allow the content to provide it.
+            if (properties.Count == 0 && request.Content != null)
             {
-                Trace.WriteLine(String.Format("{0:T} - PUT response is BadRequest due to missing name", DateTime.Now),
-                                this.GetType().Name);
-
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "resource data { name:'...' } not specified.");
+                properties = GetNameValuePairsFromContent(request);
             }
 
-            var correlationId = Guid.NewGuid();
+            StringBuilder sb = new StringBuilder();
+            foreach (var pair in properties)
+            {
+                sb.AppendFormat("{0}  {1} : {2}", Environment.NewLine, pair.Key, pair.Value);
+            }
 
+            string resourceName = null;
+            if (!properties.TryGetValue("name", out resourceName) || String.IsNullOrWhiteSpace(resourceName))
+            {
+                string badRequestMessage = "PUT request content did not contain a resource name";
+                Trace.WriteLine(String.Format("{0:T} - {1}:{2}",
+                                DateTime.Now,
+                                badRequestMessage,
+                                sb.ToString()),
+                this.GetType().Name);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, badRequestMessage);
+            }
+
+            Trace.WriteLine(String.Format("{0:T} - PUT request received for resource name = '{1}', properties:{2}",
+                                          DateTime.Now, 
+                                          String.IsNullOrWhiteSpace(resourceName) ? "null" : resourceName,
+                                          sb.ToString()),    
+                            this.GetType().Name);
             try
             {
+                ResourceResponse result = ResourceInvoker.DynamicInvokePut(resourceName, properties);
+                string contentString = JsonSerializer.SerializeDictionary(result.Properties);
 
-
-                var result = ResourceInvoker.DynamicInvokePut(resource);
-
-                resourceResponse resourceResponse = new resourceResponse
-                {
-                    id = correlationId,
-                    details = result.ToString()
-                };
-
-                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is:{2}{3}", 
-                                              DateTime.Now, resourceName, Environment.NewLine, resourceResponse.ToString()), 
+                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is OK:{2}{3}", 
+                                              DateTime.Now, 
+                                              resourceName, 
+                                              Environment.NewLine, 
+                                              contentString), 
                                 this.GetType().Name);
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(resourceResponse.ToString());
+                response.Content = new StringContent(contentString);
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
                 return response;
             }
@@ -67,39 +79,52 @@ namespace Bridge
                 Trace.WriteLine(String.Format("{0:T} - Exception executing PUT for resource {1}{2}:{3}",
                                                 DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
                                 this.GetType().Name);
-                return request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
-                {
-                    id = correlationId,
-                    details = exception.Message
-                });
+                return request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
         }
 
         /// <summary>
-        /// Gets resource information
+        /// Invoke the <c>Get</c> method of the <see cref="IResource"/>
+        /// matching the name specified in the content name/value pairs.
         /// </summary>
-        /// <param name="name">name of the resource</param>
-        public HttpResponseMessage Get(string name)
+        /// <param name="request">The incoming request containing the name/value pair content</param>
+        /// <returns>The response to return to the caller.</returns>
+        public HttpResponseMessage Get(HttpRequestMessage request)
         {
-            Trace.WriteLine(String.Format("{0:T} - Received GET request for resource {1}", 
-                                          DateTime.Now, String.IsNullOrWhiteSpace(name) ? "null" : name),
-                            this.GetType().Name);
+            // GET allows name/value pairs in Uri query parameters only
+            Dictionary<string, string> properties = GetNameValuePairsFromQueryParameters(request);
 
-            if (string.IsNullOrWhiteSpace(name))
+            StringBuilder sb = new StringBuilder();
+            foreach (var pair in properties)
             {
-                Trace.WriteLine(String.Format("{0:T} - GET response is BadRequest due to missing name", DateTime.Now),
-                                this.GetType().Name);
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "name not specified.");
+                sb.AppendFormat("{0}  {1} : {2}", Environment.NewLine, pair.Key, pair.Value);
             }
+
+            string resourceName = null;
+            if (!properties.TryGetValue("name", out resourceName) || String.IsNullOrWhiteSpace(resourceName))
+            {
+                string badRequestMessage = "GET request content did not contain a resource name";
+                Trace.WriteLine(String.Format("{0:T} - {1}:{2}",
+                                DateTime.Now,
+                                badRequestMessage,
+                                sb.ToString()),
+                this.GetType().Name);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, badRequestMessage);
+            }
+
+            Trace.WriteLine(String.Format("{0:T} - GET request received for resource name = '{1}', properties:{2}",
+                                          DateTime.Now,
+                                          String.IsNullOrWhiteSpace(resourceName) ? "null" : resourceName,
+                                          sb.ToString()),
+                            this.GetType().Name);
 
             try
             {
+                ResourceResponse result = ResourceInvoker.DynamicInvokeGet(resourceName, properties);
+                string contentString = JsonSerializer.SerializeDictionary(result.Properties);
 
-
-                var result = ResourceInvoker.DynamicInvokeGet(name);
-
-                Trace.WriteLine(String.Format("{0:T} - GET response for resource {1} is:{2}{3}", 
-                                              DateTime.Now, name, Environment.NewLine, result),
+                Trace.WriteLine(String.Format("{0:T} - GET response for {1} is OK:{2}{3}",
+                                              DateTime.Now, resourceName, Environment.NewLine, contentString),
                                 this.GetType().Name);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
@@ -107,13 +132,9 @@ namespace Bridge
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing GET for resource {1}{2}:{3}",
-                                                DateTime.Now, name, Environment.NewLine, exception.ToString()), 
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
                                 this.GetType().Name);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new resourceResponse
-                {
-                    id = Guid.NewGuid(),
-                    details = exception.Message
-                });
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
         }
 
@@ -147,5 +168,23 @@ namespace Bridge
             }
         }
 
+        private static Dictionary<string, string> GetNameValuePairsFromContent(HttpRequestMessage request)
+        {
+            string nameValuePairs = request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            Dictionary<string, string> dictionary = JsonSerializer.DeserializeDictionary(nameValuePairs);
+            return dictionary;
+        }
+
+        private static Dictionary<string, string> GetNameValuePairsFromQueryParameters(HttpRequestMessage request)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var pair in request.GetQueryNameValuePairs())
+            {
+                dictionary.Add(pair.Key, pair.Value);
+            }
+
+            return dictionary;
+        }
     }
 }

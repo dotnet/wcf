@@ -6,17 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Infrastructure.Common
 {
     public static class BridgeClient 
     {
+        private const string EndpointResourceResponseUriKeyName = "uri";
+        private const string EndpointResourceRequestNameKeyName = "name";
+
         private static object s_thisLock = new object();
         private static Dictionary<string, string> _Resources = new Dictionary<string, string>();
         private static BridgeState s_BridgeStatus = BridgeState.NotStarted;
         private static string s_BridgeFaultReason = String.Empty;
-        private static readonly Regex regexResource = new Regex(@"details\s*:\s*""([^""]+)""", RegexOptions.IgnoreCase);
 
         private static string BridgeBaseAddress
         {
@@ -205,11 +206,14 @@ namespace Infrastructure.Common
                     EnsureSuccessfulResponse(response);
 
                     var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    var match = regexResource.Match(responseContent);
-                    if (!match.Success || match.Groups.Count != 2)
+                    Dictionary<string, string> properties = JsonSerializer.DeserializeDictionary(responseContent);
+                    string uri = null;
+                    if (!properties.TryGetValue(EndpointResourceResponseUriKeyName, out uri) || String.IsNullOrWhiteSpace(uri))
+                    {
                         throw new Exception("Invalid response from bridge: " + responseContent);
+                    }
 
-                    return match.Groups[1].Value;
+                    return uri;
                 }
                 catch (Exception exc)
                 {
@@ -230,7 +234,15 @@ namespace Infrastructure.Common
                 {
                     var response = httpClient.GetAsync(BridgeResourceEndpointAddress + resourceName).GetAwaiter().GetResult();
                     EnsureSuccessfulResponse(response);
-                    return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    Dictionary<string, string> properties = JsonSerializer.DeserializeDictionary(responseContent);
+                    string uri = null;
+                    if (!properties.TryGetValue(EndpointResourceResponseUriKeyName, out uri) || String.IsNullOrWhiteSpace(uri))
+                    {
+                        throw new Exception("Invalid response from bridge: " + responseContent);
+                    }
+
+                    return uri;
                 }
                 catch (Exception exc)
                 {
@@ -238,7 +250,6 @@ namespace Infrastructure.Common
                                                            BridgeResourceEndpointAddress, resourceName, exc.Message);
                     throw new Exception(failureMessage, exc);
                 }
-
             }
         }
 

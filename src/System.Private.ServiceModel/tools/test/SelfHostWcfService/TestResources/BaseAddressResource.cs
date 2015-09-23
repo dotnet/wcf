@@ -13,17 +13,17 @@ namespace WcfService.TestResources
         internal const string Https = "https";
         internal const string Tcp = "net.tcp";
 
-        public object Put(ResourceRequestContext context)
+        public ResourceResponse Put(ResourceRequestContext context)
         {
             throw new NotImplementedException("Cannot PUT on this resource");
         }
 
-        public object Get(ResourceRequestContext context)
+        public ResourceResponse Get(ResourceRequestContext context)
         {
             var http = GetHttpProtocol(context) + AppDomain.CurrentDomain.FriendlyName;
             var https = GetHttpsProtocol(context) + AppDomain.CurrentDomain.FriendlyName;
             var tcp = GetTcpProtocol(context) + AppDomain.CurrentDomain.FriendlyName;
-            return new Dictionary<string, string>()
+            Dictionary<string, string> resultDictionary = new Dictionary<string, string>()
             {
                 { "HttpServerBaseAddress", GetHttpProtocol(context) },
                 { "HttpBaseAddress", http },
@@ -33,6 +33,11 @@ namespace WcfService.TestResources
                 { "HttpsNtlmBaseAddress", https },
                 { "HttpsWindowsBaseAddress", https },
                 { "TcpBaseAddress", tcp }
+            };
+
+            return new ResourceResponse
+            {
+                Properties = resultDictionary
             };
         }
 

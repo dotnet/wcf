@@ -17,6 +17,7 @@ namespace Bridge
     {
         internal const bool DefaultAllowRemote = false;
         internal const string DefaultRemoteAddresses = "LocalSubnet";
+        internal const string BridgeControllerEndpoint = "Bridge";
 
         private static void Main(string[] args)
         {
@@ -69,7 +70,7 @@ namespace Bridge
         {
             errorMessage = null;
 
-            string bridgeUrl = String.Format("http://{0}:{1}/Bridge", host, port);
+            string bridgeUrl = String.Format("http://{0}:{1}/{2}", host, port, BridgeControllerEndpoint);
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -130,7 +131,10 @@ namespace Bridge
                 Environment.Exit(0);
             }
 
-            string bridgeUrl = String.Format("http://{0}:{1}/Bridge", commandLineArgs.BridgeConfiguration.BridgeHost, commandLineArgs.BridgeConfiguration.BridgePort);
+            string bridgeUrl = String.Format("http://{0}:{1}/{2}", 
+                                             commandLineArgs.BridgeConfiguration.BridgeHost, 
+                                             commandLineArgs.BridgeConfiguration.BridgePort,
+                                             BridgeControllerEndpoint);
             string problem = null;
 
             // We stop the Bridge using a DELETE request.
@@ -312,7 +316,9 @@ namespace Bridge
 
             while (true)
             {
-                Console.WriteLine("The Bridge is running and listening at {0}", visibleAddress);
+                Console.WriteLine("The Bridge is running and listening at {0}/{1}", 
+                                    visibleAddress, BridgeControllerEndpoint);
+
                 if (commandLineArgs.AllowRemote)
                 {
                     Console.WriteLine("Remote access is allowed from '{0}'", commandLineArgs.RemoteAddresses);

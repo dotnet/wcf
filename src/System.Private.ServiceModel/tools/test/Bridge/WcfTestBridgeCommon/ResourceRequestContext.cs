@@ -13,5 +13,6 @@ namespace WcfTestBridgeCommon
     {
         public BridgeConfiguration BridgeConfiguration { get; set; }
         public string ResourceName { get; set; }
+        public Dictionary<string, string> Properties { get; set; }
     }
 }
