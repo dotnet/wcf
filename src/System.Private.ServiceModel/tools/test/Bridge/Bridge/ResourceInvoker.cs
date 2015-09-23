@@ -9,11 +9,11 @@ namespace Bridge
 {
     public class ResourceInvoker
     {
-        public static object DynamicInvokePut(resource resource)
+        public static ResourceResponse DynamicInvokePut(string resourceName, Dictionary<string, string> properties)
         {
-            if (String.IsNullOrEmpty(resource.name))
+            if (String.IsNullOrEmpty(resourceName))
             {
-                throw new ArgumentNullException("resource.name");
+                throw new ArgumentNullException("resourceName");
             }
 
             // Disallow concurrent resource instantation or configuration changes
@@ -38,17 +38,19 @@ namespace Bridge
                 ResourceRequestContext context = new ResourceRequestContext
                 {
                     BridgeConfiguration = ConfigController.BridgeConfiguration,
-                    ResourceName = resource.name
+                    ResourceName = resourceName,
+                    Properties = properties
                 };
-                return loader.IResourceCall(resource.name, "Put", new object[] { context });
+                object result = loader.IResourceCall(resourceName, "Put", new object[] { context });
+                return (ResourceResponse) result;
             }
         }
 
-        public static object DynamicInvokeGet(string name)
+        public static ResourceResponse DynamicInvokeGet(string resourceName, Dictionary<string, string> properties)
         {
-            if (String.IsNullOrWhiteSpace(name))
+            if (String.IsNullOrWhiteSpace(resourceName))
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException("resourceName");
             }
 
             // Disallow concurrent resource instantation or configuration changes
@@ -69,10 +71,12 @@ namespace Bridge
                 ResourceRequestContext context = new ResourceRequestContext
                 {
                     BridgeConfiguration = ConfigController.BridgeConfiguration,
-                    ResourceName = name
+                    ResourceName = resourceName,
+                    Properties = properties
                 };
 
-                return loader.IResourceCall(name, "Get", new object[] { context });
+                object result = loader.IResourceCall(resourceName, "Get", new object[] { context });
+                return (ResourceResponse) result;
             }
         }
     }

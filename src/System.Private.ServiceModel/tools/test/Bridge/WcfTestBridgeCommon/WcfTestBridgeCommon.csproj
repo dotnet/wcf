@@ -41,6 +41,7 @@
     <Compile Include="IResource.cs" />
     <Compile Include="PortManager.cs" />
     <Compile Include="ResourceRequestContext.cs" />
+    <Compile Include="ResourceResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="NetFwTypeLib">
