@@ -19,20 +19,16 @@ namespace System.ServiceModel.Channels
         internal const string TransportUsageMethodName = "TransportUsage";
 
         private WebSocketTransportUsage _transportUsage;
-        private bool _createNotificationOnConnection;
         private TimeSpan _keepAliveInterval;
         private string _subProtocol;
         private bool _disablePayloadMasking;
-        private int _maxPendingConnections;
 
         public WebSocketTransportSettings()
         {
             _transportUsage = WebSocketDefaults.TransportUsage;
-            _createNotificationOnConnection = WebSocketDefaults.CreateNotificationOnConnection;
             _keepAliveInterval = WebSocketDefaults.DefaultKeepAliveInterval;
             _subProtocol = WebSocketDefaults.SubProtocol;
             _disablePayloadMasking = WebSocketDefaults.DisablePayloadMasking;
-            _maxPendingConnections = WebSocketDefaults.DefaultMaxPendingConnections;
         }
 
         private WebSocketTransportSettings(WebSocketTransportSettings settings)
@@ -42,8 +38,6 @@ namespace System.ServiceModel.Channels
             this.SubProtocol = settings.SubProtocol;
             this.KeepAliveInterval = settings.KeepAliveInterval;
             this.DisablePayloadMasking = settings.DisablePayloadMasking;
-            this.CreateNotificationOnConnection = settings.CreateNotificationOnConnection;
-            this.MaxPendingConnections = settings.MaxPendingConnections;
         }
 
         [DefaultValue(WebSocketDefaults.TransportUsage)]
@@ -58,20 +52,6 @@ namespace System.ServiceModel.Channels
             {
                 WebSocketTransportUsageHelper.Validate(value);
                 _transportUsage = value;
-            }
-        }
-
-        [DefaultValue(WebSocketDefaults.CreateNotificationOnConnection)]
-        public bool CreateNotificationOnConnection
-        {
-            get
-            {
-                return _createNotificationOnConnection;
-            }
-
-            set
-            {
-                _createNotificationOnConnection = value;
             }
         }
 
@@ -152,28 +132,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        [DefaultValue(WebSocketDefaults.DefaultMaxPendingConnections)]
-        public int MaxPendingConnections
-        {
-            get
-            {
-                return _maxPendingConnections;
-            }
-
-            set
-            {
-                if (value < 0)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(
-                        "value",
-                        value,
-                        SR.ValueMustBePositive));
-                }
-
-                _maxPendingConnections = value;
-            }
-        }
-
         public bool Equals(WebSocketTransportSettings other)
         {
             if (other == null)
@@ -182,11 +140,9 @@ namespace System.ServiceModel.Channels
             }
 
             return this.TransportUsage == other.TransportUsage
-                && this.CreateNotificationOnConnection == other.CreateNotificationOnConnection
-                && this.KeepAliveInterval == other.KeepAliveInterval
-                && this.DisablePayloadMasking == other.DisablePayloadMasking
-                && StringComparer.OrdinalIgnoreCase.Compare(this.SubProtocol, other.SubProtocol) == 0
-                && this.MaxPendingConnections == other.MaxPendingConnections;
+                   && this.KeepAliveInterval == other.KeepAliveInterval
+                   && this.DisablePayloadMasking == other.DisablePayloadMasking
+                   && StringComparer.OrdinalIgnoreCase.Compare(this.SubProtocol, other.SubProtocol) == 0;
         }
 
         public override bool Equals(object obj)
@@ -203,10 +159,8 @@ namespace System.ServiceModel.Channels
         public override int GetHashCode()
         {
             int hashcode = this.TransportUsage.GetHashCode()
-                        ^ this.CreateNotificationOnConnection.GetHashCode()
-                        ^ this.KeepAliveInterval.GetHashCode()
-                        ^ this.DisablePayloadMasking.GetHashCode()
-                        ^ this.MaxPendingConnections.GetHashCode();
+                           ^ this.KeepAliveInterval.GetHashCode()
+                           ^ this.DisablePayloadMasking.GetHashCode();
             if (this.SubProtocol != null)
             {
                 hashcode ^= this.SubProtocol.ToLowerInvariant().GetHashCode();

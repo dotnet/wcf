@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Net;
@@ -21,15 +22,22 @@ namespace System.ServiceModel.Channels
         IHttpTransportFactorySettings
     {
         private static CacheControlHeaderValue s_requestCacheHeader = new CacheControlHeaderValue { NoCache = true, MaxAge = new TimeSpan(0) };
+
+        readonly ClientWebSocketFactory _clientWebSocketFactory;
+
         private bool _allowCookies;
         private AuthenticationSchemes _authenticationScheme;
         private HttpCookieContainerManager _httpCookieContainerManager;
         private HttpClient _httpClient;
-        private SecurityCredentialsManager _channelCredentials;
-        private ISecurityCapabilities _securityCapabilities;
         private int _maxBufferSize;
+        private SecurityCredentialsManager _channelCredentials;
         private TransferMode _transferMode;
+        private ISecurityCapabilities _securityCapabilities;
+        private WebSocketTransportSettings _webSocketSettings;
+        private ConnectionBufferPool _bufferPool;
         private bool _useDefaultWebProxy;
+        Lazy<string> _webSocketSoapContentType;
+
         internal HttpChannelFactory(HttpTransportBindingElement bindingElement, BindingContext context)
             : base(bindingElement, context, HttpTransportDefaults.GetDefaultMessageEncoderFactory())
         {
@@ -84,6 +92,12 @@ namespace System.ServiceModel.Channels
 
             _channelCredentials = context.BindingParameters.Find<SecurityCredentialsManager>();
             _securityCapabilities = bindingElement.GetProperty<ISecurityCapabilities>(context);
+
+            _webSocketSettings = WebSocketHelper.GetRuntimeWebSocketSettings(bindingElement.WebSocketSettings);
+            int webSocketBufferSize = WebSocketHelper.ComputeClientBufferSize(MaxReceivedMessageSize);
+            _bufferPool = new ConnectionBufferPool(webSocketBufferSize);
+            _clientWebSocketFactory = ClientWebSocketFactory.GetFactory();
+            _webSocketSoapContentType = new Lazy<string>(() => MessageEncoderFactory.CreateSessionEncoder().ContentType, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         public bool AllowCookies
@@ -134,6 +148,34 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        public WebSocketTransportSettings WebSocketSettings
+        {
+            get
+            {
+                return _webSocketSettings;
+            }
+        }
+
+        internal string WebSocketSoapContentType
+        {
+            get
+            {
+                return _webSocketSoapContentType.Value;
+            }
+        }
+
+        protected ConnectionBufferPool WebSocketBufferPool
+        {
+            get { return _bufferPool; }
+        }
+
+        protected ClientWebSocketFactory ClientWebSocketFactory
+        {
+            get
+            {
+                return _clientWebSocketFactory;
+            }
+        }
 
         public override T GetProperty<T>()
         {
@@ -167,45 +209,8 @@ namespace System.ServiceModel.Channels
                     clientHandler.UseProxy = _useDefaultWebProxy;
                 }
 
-                ICredentials creds = null;
                 clientHandler.UseDefaultCredentials = false;
-                if (_authenticationScheme != AuthenticationSchemes.Anonymous)
-                {
-                    creds = CredentialCache.DefaultCredentials;
-                    ClientCredentials credentials = _channelCredentials as ClientCredentials;
-                    if (credentials != null)
-                    {
-                        switch (_authenticationScheme)
-                        {
-                            case AuthenticationSchemes.Basic:
-                                if (credentials.UserName.UserName == null)
-                                {
-                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("userName");
-                                }
-                                if (credentials.UserName.UserName == string.Empty)
-                                {
-                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.UserNameCannotBeEmpty);
-                                }
-
-                                creds = new NetworkCredential(credentials.UserName.UserName, credentials.UserName.Password);
-                                break;
-                            case AuthenticationSchemes.Digest:
-                                if (credentials.HttpDigest.ClientCredential.UserName != string.Empty)
-                                {
-                                    creds = credentials.HttpDigest.ClientCredential;
-                                }
-                                break;
-                            case AuthenticationSchemes.Ntlm:
-                                goto case AuthenticationSchemes.Negotiate;
-                            case AuthenticationSchemes.Negotiate:
-                                if (credentials.Windows.ClientCredential.UserName != string.Empty)
-                                {
-                                    creds = credentials.Windows.ClientCredential;
-                                }
-                                break;
-                        }
-                    }
-                }
+                var creds = GetCredentials();
                 if (creds == CredentialCache.DefaultCredentials)
                 {
                     clientHandler.UseDefaultCredentials = true;
@@ -219,6 +224,49 @@ namespace System.ServiceModel.Channels
                 _httpClient = client;
             }
             return _httpClient;
+        }
+
+        internal ICredentials GetCredentials()
+        {
+            ICredentials creds = null;
+            if (_authenticationScheme != AuthenticationSchemes.Anonymous)
+            {
+                creds = CredentialCache.DefaultCredentials;
+                ClientCredentials credentials = _channelCredentials as ClientCredentials;
+                if (credentials != null)
+                {
+                    switch (_authenticationScheme)
+                    {
+                        case AuthenticationSchemes.Basic:
+                            if (credentials.UserName.UserName == null)
+                            {
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("userName");
+                            }
+                            if (credentials.UserName.UserName == string.Empty)
+                            {
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.UserNameCannotBeEmpty);
+                            }
+
+                            creds = new NetworkCredential(credentials.UserName.UserName, credentials.UserName.Password);
+                            break;
+                        case AuthenticationSchemes.Digest:
+                            if (credentials.HttpDigest.ClientCredential.UserName != string.Empty)
+                            {
+                                creds = credentials.HttpDigest.ClientCredential;
+                            }
+                            break;
+                        case AuthenticationSchemes.Ntlm:
+                            goto case AuthenticationSchemes.Negotiate;
+                        case AuthenticationSchemes.Negotiate:
+                            if (credentials.Windows.ClientCredential.UserName != string.Empty)
+                            {
+                                creds = credentials.Windows.ClientCredential;
+                            }
+                            break;
+                    }
+                }
+            }
+            return creds;
         }
 
 
@@ -235,7 +283,10 @@ namespace System.ServiceModel.Channels
 
         protected virtual void ValidateCreateChannelParameters(EndpointAddress remoteAddress, Uri via)
         {
-            base.ValidateScheme(via);
+            if (string.Compare(via.Scheme, "ws", StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                base.ValidateScheme(via);
+            }
 
             if (MessageVersion.Addressing == AddressingVersion.None && remoteAddress.Uri != via)
             {
@@ -245,13 +296,55 @@ namespace System.ServiceModel.Channels
 
         protected override TChannel OnCreateChannel(EndpointAddress remoteAddress, Uri via)
         {
+            //EndpointAddress httpRemoteAddress = remoteAddress != null && WebSocketHelper.IsWebSocketUri(remoteAddress.Uri) ?
+            //    new EndpointAddress(WebSocketHelper.NormalizeWsSchemeWithHttpScheme(remoteAddress.Uri), remoteAddress) :
+            //    remoteAddress;
+
+            //Uri httpVia = WebSocketHelper.IsWebSocketUri(via) ? WebSocketHelper.NormalizeWsSchemeWithHttpScheme(via) : via;
             return OnCreateChannelCore(remoteAddress, via);
         }
 
         protected virtual TChannel OnCreateChannelCore(EndpointAddress remoteAddress, Uri via)
         {
             ValidateCreateChannelParameters(remoteAddress, via);
-            return (TChannel)(object)new HttpClientRequestChannel((HttpChannelFactory<IRequestChannel>)(object)this, remoteAddress, via, ManualAddressing);
+            ValidateWebSocketTransportUsage();
+
+            if (typeof(TChannel) == typeof(IRequestChannel))
+            {
+                return (TChannel)(object)new HttpClientRequestChannel((HttpChannelFactory<IRequestChannel>)(object)this, remoteAddress, via, ManualAddressing);
+            }
+            else
+            {
+                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, remoteAddress, via, this.WebSocketBufferPool);
+            }
+        }
+
+        protected void ValidateWebSocketTransportUsage()
+        {
+            Type channelType = typeof(TChannel);
+            if (channelType == typeof(IRequestChannel) && this.WebSocketSettings.TransportUsage == WebSocketTransportUsage.Always)
+            {
+                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(
+                            SR.WebSocketCannotCreateRequestClientChannelWithCertainWebSocketTransportUsage,
+                            typeof(TChannel),
+                            WebSocketTransportSettings.TransportUsageMethodName,
+                            typeof(WebSocketTransportSettings).Name,
+                            WebSocketSettings.TransportUsage)));
+
+            }
+
+            if (channelType == typeof(IDuplexSessionChannel))
+            {
+                if (WebSocketSettings.TransportUsage == WebSocketTransportUsage.Never)
+                {
+                    throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(
+                                SR.WebSocketCannotCreateRequestClientChannelWithCertainWebSocketTransportUsage,
+                                typeof(TChannel),
+                                WebSocketTransportSettings.TransportUsageMethodName,
+                                typeof(WebSocketTransportSettings).Name,
+                                WebSocketSettings.TransportUsage)));
+                }
+            }
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

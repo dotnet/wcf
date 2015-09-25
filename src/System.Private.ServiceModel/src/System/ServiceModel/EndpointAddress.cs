@@ -112,6 +112,11 @@ namespace System.ServiceModel
             Init(uri, identity, addressHeaders);
         }
 
+        internal EndpointAddress(Uri newUri, EndpointAddress oldEndpointAddress)
+        {
+            Init(oldEndpointAddress._addressingVersion, newUri, oldEndpointAddress._identity, oldEndpointAddress._headers, oldEndpointAddress._buffer, oldEndpointAddress._metadataSection, oldEndpointAddress._extensionSection, oldEndpointAddress._pspSection);
+        }
+
         internal EndpointAddress(Uri uri, EndpointIdentity identity, AddressHeaderCollection headers, XmlDictionaryReader metadataReader, XmlDictionaryReader extensionReader, XmlDictionaryReader pspReader)
         {
             if (uri == null)

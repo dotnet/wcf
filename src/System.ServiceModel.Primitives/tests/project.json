@@ -6,9 +6,12 @@
     "System.ServiceModel.Primitives": "4.0.0-beta-*",
     "System.ServiceModel.Security": "4.0.0-beta-*",
     "xunit": "2.1.0-rc1-*",
+    "System.Net.WebSockets": "4.0.0-beta-*",
+    "System.Net.WebSockets.Client": "4.0.0-beta-*",
     "xunit.netcore.extensions": "1.0.0-prerelease-*"
   },
   "frameworks": {
-    "dnxcore50": {}
+    "dnxcore50": {
+    }
   }
 }

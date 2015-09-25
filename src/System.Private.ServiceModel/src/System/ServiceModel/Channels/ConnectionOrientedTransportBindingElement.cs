@@ -21,7 +21,6 @@ namespace System.ServiceModel.Channels
         {
             _connectionBufferSize = ConnectionOrientedTransportDefaults.ConnectionBufferSize;
             _maxOutputDelay = ConnectionOrientedTransportDefaults.MaxOutputDelay;
-
             _maxBufferSize = TransportDefaults.MaxBufferSize;
             _transferMode = ConnectionOrientedTransportDefaults.TransferMode;
         }

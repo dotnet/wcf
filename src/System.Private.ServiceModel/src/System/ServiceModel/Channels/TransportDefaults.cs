@@ -3,6 +3,7 @@
 
 using System.Net;
 using System.Net.Security;
+using System.Net.WebSockets;
 using System.Runtime;
 using System.Security.Authentication;
 using System.Security.Principal;
@@ -310,16 +311,6 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class WSHttpBindingDefaults
-    {
-        public const WSMessageEncoding MessageEncoding = WSMessageEncoding.Text;
-    }
-
-    public static class WSDualHttpBindingDefaults
-    {
-        public const WSMessageEncoding MessageEncoding = WSMessageEncoding.Text;
-    }
-
     public static class WebSocketDefaults
     {
         public const WebSocketTransportUsage TransportUsage = WebSocketTransportUsage.Never;
@@ -331,25 +322,12 @@ namespace System.ServiceModel.Channels
         public const int MinReceiveBufferSize = 256;
         public const int MinSendBufferSize = 16;
         public const bool DisablePayloadMasking = false;
-
+        internal const WebSocketMessageType DefaultWebSocketMessageType = WebSocketMessageType.Binary;
 
         public const string SubProtocol = null;
 
-        public const int DefaultMaxPendingConnections = 0;
-        // We set this number larger than that in TCP transport because in WebSocket cases, the connection is already authenticated
-        // after we create the half-open channel. The default value is set as the default one as MaxConcurrentSessions to make it work
-        // well in burst scenarios.
-        public static readonly int MaxPendingConnectionsCpuCount = 100 * Environment.ProcessorCount;
-        // Desktop: ServiceThrottle.DefaultMaxConcurrentSessionsCpuCount;
-
         public const string WebSocketConnectionHeaderValue = "Upgrade";
         public const string WebSocketUpgradeHeaderValue = "websocket";
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(FxCop.Category.Globalization, "CA1303",
-                            Justification = "These strings don't need to be localized.")]
-        static WebSocketDefaults()
-        {
-        }
     }
 
     public static class NetHttpBindingDefaults
