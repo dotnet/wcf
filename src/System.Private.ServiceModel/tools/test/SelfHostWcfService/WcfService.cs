@@ -13,9 +13,9 @@ namespace WcfService
 {
     internal class WcfService : IWcfService
     {
-        public String EchoWithTimeout(String message)
+        public String EchoWithTimeout(String message, TimeSpan timeout)
         {
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(timeout);
             return message;
         }
 

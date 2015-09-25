@@ -139,8 +139,10 @@ public static class ExpectedExceptionTests
     // The client should throw a TimeoutException
     [Fact]
     [OuterLoop]
+    [ActiveIssue(3464)]// Issue is in the corefx repo
     public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
     {
+        TimeSpan serviceOperationTimeout = TimeSpan.FromMilliseconds(10000);
         BasicHttpBinding binding = new BasicHttpBinding();
         binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
         ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
@@ -152,7 +154,7 @@ public static class ExpectedExceptionTests
             {
                 IWcfService proxy = factory.CreateChannel();
                 watch.Start();
-                proxy.EchoWithTimeout("Hello");
+                proxy.EchoWithTimeout("Hello", serviceOperationTimeout);
             });
         }
         finally
@@ -170,6 +172,7 @@ public static class ExpectedExceptionTests
     [OuterLoop]
     public static void SendTimeout_Zero_Throws_TimeoutException_Immediately()
     {
+        TimeSpan serviceOperationTimeout = TimeSpan.FromMilliseconds(10000);
         BasicHttpBinding binding = new BasicHttpBinding();
         binding.SendTimeout = TimeSpan.FromMilliseconds(0);
         ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
@@ -181,7 +184,7 @@ public static class ExpectedExceptionTests
             {
                 IWcfService proxy = factory.CreateChannel();
                 watch.Start();
-                proxy.EchoWithTimeout("Hello");
+                proxy.EchoWithTimeout("Hello", serviceOperationTimeout);
             });
         }
         finally

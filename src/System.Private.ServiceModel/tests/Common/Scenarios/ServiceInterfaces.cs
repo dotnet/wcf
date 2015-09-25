@@ -4,11 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
 using System.Threading.Tasks;
 using TestTypes;
 
@@ -25,7 +22,7 @@ public interface IWcfService
     ComplexCompositeType EchoComplex(ComplexCompositeType message);
 
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoWithTimeout")]
-    String EchoWithTimeout(String message);
+    String EchoWithTimeout(String message, TimeSpan timeout);
 
     [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingDataContract")]
     CompositeType GetDataUsingDataContract(CompositeType composite);
