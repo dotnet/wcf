@@ -22,7 +22,7 @@ public interface IWcfService
     ComplexCompositeType EchoComplex(ComplexCompositeType message);
 
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoWithTimeout")]
-    String EchoWithTimeout(String message, TimeSpan timeout);
+    String EchoWithTimeout(String message, TimeSpan serviceOperationTimeout);
 
     [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingDataContract")]
     CompositeType GetDataUsingDataContract(CompositeType composite);
