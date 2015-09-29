@@ -21,17 +21,9 @@ namespace Bridge
         /// </summary>
         /// <param name="request">The incoming request containing the name/value pair content</param>
         /// <returns>The response to return to the caller.</returns>
-        public HttpResponseMessage Put(HttpRequestMessage request)
+        public HttpResponseMessage Put(string name)
         {
-            // PUT allows name/value pairs in Uri query parameters or in content.
-            // Give precedence to query parameters.
-            Dictionary<string, string> properties = GetNameValuePairsFromQueryParameters(request);
-
-            // If there were no query parameters, allow the content to provide it.
-            if (properties.Count == 0 && request.Content != null)
-            {
-                properties = GetNameValuePairsFromContent(request);
-            }
+            var properties = this.BuildProperites(name);
 
             StringBuilder sb = new StringBuilder();
             foreach (var pair in properties)
@@ -68,18 +60,14 @@ namespace Bridge
                                               contentString), 
                                 this.GetType().Name);
 
-                // Directly return a json string to avoid use of MediaTypeFormatters
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(contentString);
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
-                return response;
+                return BuildJsonContent(contentString);
             }
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing PUT for resource {1}{2}:{3}",
                                                 DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
                                 this.GetType().Name);
-                return request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
         }
 
@@ -89,10 +77,9 @@ namespace Bridge
         /// </summary>
         /// <param name="request">The incoming request containing the name/value pair content</param>
         /// <returns>The response to return to the caller.</returns>
-        public HttpResponseMessage Get(HttpRequestMessage request)
+        public HttpResponseMessage Get(string name)
         {
-            // GET allows name/value pairs in Uri query parameters only
-            Dictionary<string, string> properties = GetNameValuePairsFromQueryParameters(request);
+            var properties = this.BuildProperites(name);
 
             StringBuilder sb = new StringBuilder();
             foreach (var pair in properties)
@@ -127,7 +114,7 @@ namespace Bridge
                                               DateTime.Now, resourceName, Environment.NewLine, contentString),
                                 this.GetType().Name);
 
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+                return BuildJsonContent(contentString);
             }
             catch (Exception exception)
             {
@@ -136,6 +123,15 @@ namespace Bridge
                                 this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
+        }
+
+        private HttpResponseMessage BuildJsonContent(string contentString)
+        {
+            // Directly return a json string to avoid use of MediaTypeFormatters
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(contentString);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+            return response;
         }
 
         // The DELETE Http verb means release all resources allocated
@@ -166,6 +162,30 @@ namespace Bridge
                     return request.CreateResponse(HttpStatusCode.BadRequest, exceptionResponse);
                 }
             }
+        }
+
+
+        private Dictionary<string, string> BuildProperites(string resourceName)
+        {
+            HttpRequestMessage request = this.Request;
+
+            // GET allows name/value pairs in Uri query parameters only
+            Dictionary<string, string> properties = GetNameValuePairsFromQueryParameters(request);
+
+            if (!properties.ContainsKey("name"))
+            {
+                properties["name"] = resourceName;
+            }
+
+            // PUT allows name/value pairs in Uri query parameters or in content.
+            // Give precedence to query parameters.
+            // If there were no query parameters, allow the content to provide it.
+            if (properties.Count == 0 && request.Content != null)
+            {
+                properties = GetNameValuePairsFromContent(request);
+            }
+
+            return properties;
         }
 
         private static Dictionary<string, string> GetNameValuePairsFromContent(HttpRequestMessage request)

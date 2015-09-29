@@ -196,13 +196,11 @@ namespace Infrastructure.Common
 
             using (HttpClient httpClient = new HttpClient())
             {
-                var content = new StringContent(
-                        string.Format(@"{{ name : ""{0}"" }}", resourceName),
-                        Encoding.UTF8,
-                        "application/json");
+                var emptyContent = new StringContent("{}", Encoding.UTF8, "application/json");
+
                 try
-                {
-                    var response = httpClient.PutAsync(BridgeResourceEndpointAddress, content).GetAwaiter().GetResult();
+                {                    
+                    var response = httpClient.PutAsync(BridgeResourceEndpointAddress + resourceName, emptyContent).GetAwaiter().GetResult();
                     EnsureSuccessfulResponse(response);
 
                     var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
