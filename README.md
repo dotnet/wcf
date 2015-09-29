@@ -2,8 +2,8 @@
 
 |   |Windows|
 |:-:|:-:|
-|**Debug**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/dotnet_wcf_windows_debug.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf_windows_debug/) [![Outerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/dotnet_wcf_outerloop.svg?label=outerloop+tests)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf_outerloop/)|
-|**Release**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/dotnet_wcf_windows_release.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf_windows_release/)|
+|**Debug**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/windows_debug.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/windows_debug/) [![Outerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/dotnet_wcf_outerloop.svg?label=outerloop+tests)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf_outerloop/)|
+|**Release**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/windows_release.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/windows_release/)|
 |**Coverage Report**|[![Coverage Status](http://dotnet-ci.cloudapp.net/job/dotnet_wcf_coverage_windows/lastStableBuild/Code_Coverage_Report/badge_combined.svg)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf_coverage_windows/lastStableBuild/Code_Coverage_Report/)|
 
 
