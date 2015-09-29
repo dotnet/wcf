@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Bridge
 {
@@ -11,13 +8,18 @@ namespace Bridge
     {
         internal static readonly string JsonMediaType = "application/json";
 
-        internal static string SerializeDictionary(IDictionary dictionary)
+        internal static string SerializeDictionary(IDictionary<String, string> dictionary)
+        {
+            return Serialize(dictionary);
+        }
+
+        internal static string Serialize(IEnumerable<KeyValuePair<string,string>> items)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("{");
-            foreach (var key in dictionary.Keys)
+            foreach (var kv in items)
             {
-                sb.AppendFormat("   {0} : \"{1}\",\n", key, dictionary[key] == null ? String.Empty : dictionary[key].ToString());
+                sb.AppendFormat("   {0} : \"{1}\",\n", kv.Key, kv.Value == null ? String.Empty : kv.Value.ToString());
             }
 
             sb.Remove(sb.Length - 2, 2);

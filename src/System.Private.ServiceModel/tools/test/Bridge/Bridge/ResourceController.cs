@@ -44,20 +44,20 @@ namespace Bridge
             }
 
             Trace.WriteLine(String.Format("{0:T} - PUT request received for resource name = '{1}', properties:{2}",
-                                          DateTime.Now, 
+                                          DateTime.Now,
                                           String.IsNullOrWhiteSpace(resourceName) ? "null" : resourceName,
-                                          sb.ToString()),    
+                                          sb.ToString()),
                             this.GetType().Name);
             try
             {
                 ResourceResponse result = ResourceInvoker.DynamicInvokePut(resourceName, properties);
                 string contentString = JsonSerializer.SerializeDictionary(result.Properties);
 
-                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is OK:{2}{3}", 
-                                              DateTime.Now, 
-                                              resourceName, 
-                                              Environment.NewLine, 
-                                              contentString), 
+                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is OK:{2}{3}",
+                                              DateTime.Now,
+                                              resourceName,
+                                              Environment.NewLine,
+                                              contentString),
                                 this.GetType().Name);
 
                 return BuildJsonContent(contentString);
@@ -65,10 +65,28 @@ namespace Bridge
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing PUT for resource {1}{2}:{3}",
-                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()),
                                 this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
+        }
+
+
+        public HttpResponseMessage Get()
+        {
+            IList<string> resources = ResourceInvoker.DynamicInvokeGetAllResources();
+            var items = new List<KeyValuePair<string, string>>();
+            foreach (var item in resources)
+            {
+                var name = item.Substring(item.LastIndexOf('.') + 1);
+                var uri = this.Request.RequestUri.GetLeftPart(UriPartial.Path) + "/" + item;
+                items.Add(new KeyValuePair<string, string>(name, uri));
+            }
+            items.Sort((a, b) => string.Compare(a.Key, b.Key));
+
+            string contentString = JsonSerializer.Serialize(items);
+            var response = BuildJsonContent(contentString);
+            return response;
         }
 
         /// <summary>
@@ -119,7 +137,7 @@ namespace Bridge
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing GET for resource {1}{2}:{3}",
-                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()),
                                 this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
