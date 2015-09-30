@@ -29,8 +29,8 @@ namespace WcfTestBridgeCommon
         private const string BridgeHttpsPort_PropertyName = "BridgeHttpsPort";
         private const string BridgeTcpPort_PropertyName = "BridgeTcpPort";
         private const string BridgeWebSocketPort_PropertyName = "BridgeWebSocketPort";
-        private const string BridgeCertificateAuthority_PropertyName = "BridgeCertificateAuthority";
-        private const string BridgeHttpsCertificate_PropertyName = "BridgeHttpsCertificate";
+        private const string BridgeCertificatePassword_PropertyName = "BridgeCertificatePassword";
+        private const string BridgeCertificateValidityPeriod_PropertyName = "BridgeCertificateValidityPeriod";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
 
@@ -41,8 +41,8 @@ namespace WcfTestBridgeCommon
         public int BridgeHttpsPort { get; set; }
         public int BridgeTcpPort { get; set; }
         public int BridgeWebSocketPort { get; set; }
-        public string BridgeCertificateAuthority { get; set; }
-        public string BridgeHttpsCertificate { get; set; }
+        public string BridgeCertificatePassword { get; set; }
+        public TimeSpan BridgeCertificateValidityPeriod { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
 
@@ -69,8 +69,8 @@ namespace WcfTestBridgeCommon
             BridgeHttpsPort = configuration.BridgeHttpsPort;
             BridgeTcpPort = configuration.BridgeTcpPort;
             BridgeWebSocketPort = configuration.BridgeWebSocketPort;
-            BridgeCertificateAuthority = configuration.BridgeCertificateAuthority;
-            BridgeHttpsCertificate = configuration.BridgeHttpsCertificate;
+            BridgeCertificatePassword = configuration.BridgeCertificatePassword;
+            BridgeCertificateValidityPeriod = configuration.BridgeCertificateValidityPeriod;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
 
@@ -91,15 +91,16 @@ namespace WcfTestBridgeCommon
             {
                 BridgeHost = propertyValue;
             }
-
-            if (properties.TryGetValue(BridgeCertificateAuthority_PropertyName, out propertyValue))
+            
+            if (properties.TryGetValue(BridgeCertificatePassword_PropertyName, out propertyValue))
             {
-                BridgeCertificateAuthority = propertyValue;
+                BridgeCertificatePassword = propertyValue;
             }
 
-            if (properties.TryGetValue(BridgeHttpsCertificate_PropertyName, out propertyValue))
+            TimeSpan validity; 
+            if (TryParseTimeSpanProperty(BridgeCertificateValidityPeriod_PropertyName, properties, out validity))
             {
-                BridgeHttpsCertificate = propertyValue;
+                BridgeCertificateValidityPeriod = validity;
             }
             
             int port;
@@ -173,6 +174,23 @@ namespace WcfTestBridgeCommon
             return false;
         }
 
+        private static bool TryParseTimeSpanProperty(string propertyName, Dictionary<string, string> properties, out TimeSpan result)
+        {
+            string propertyValue;
+            result = TimeSpan.Zero;
+            if (properties.TryGetValue(propertyName, out propertyValue))
+            {
+                if (!TimeSpan.TryParse(propertyValue, out result))
+                {
+                    throw new ArgumentException(
+                        String.Format("The {0} value '{1}' is not a valid TimeSpan.", propertyName, propertyValue),
+                        propertyName);
+                }
+                return true;
+            }
+            return false;
+        }
+
         public Dictionary<string, string> ToDictionary()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -183,8 +201,8 @@ namespace WcfTestBridgeCommon
             result[BridgeHttpsPort_PropertyName] = BridgeHttpsPort.ToString();
             result[BridgeTcpPort_PropertyName] = BridgeTcpPort.ToString();
             result[BridgeWebSocketPort_PropertyName] = BridgeWebSocketPort.ToString();
-            result[BridgeCertificateAuthority_PropertyName] = BridgeCertificateAuthority;
-            result[BridgeHttpsCertificate_PropertyName] = BridgeHttpsCertificate;
+            result[BridgeCertificatePassword_PropertyName] = BridgeCertificatePassword;
+            result[BridgeCertificateValidityPeriod_PropertyName] = BridgeCertificateValidityPeriod.ToString();
             result[BridgeMaxIdleTimeSpan_PropertyName] = BridgeMaxIdleTimeSpan.ToString();
             result[UseFiddlerUrl_PropertyName] = UseFiddlerUrl.ToString();
 
@@ -201,8 +219,8 @@ namespace WcfTestBridgeCommon
               .AppendFormat("  {0} : '{1}'{2}", BridgeHttpsPort_PropertyName, BridgeHttpsPort, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeTcpPort_PropertyName, BridgeTcpPort, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeWebSocketPort_PropertyName, BridgeWebSocketPort, Environment.NewLine)
-              .AppendFormat("  {0} : '{1}'{2}", BridgeCertificateAuthority_PropertyName, BridgeCertificateAuthority, Environment.NewLine)
-              .AppendFormat("  {0} : '{1}'{2}", BridgeHttpsCertificate_PropertyName, BridgeHttpsCertificate, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeCertificatePassword_PropertyName, BridgeCertificatePassword, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeCertificateValidityPeriod_PropertyName, BridgeCertificateValidityPeriod, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", UseFiddlerUrl_PropertyName, UseFiddlerUrl, Environment.NewLine);
             return sb.ToString();

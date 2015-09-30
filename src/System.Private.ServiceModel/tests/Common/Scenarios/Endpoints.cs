@@ -46,51 +46,83 @@ public static partial class Endpoints
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexWebSocketResource"); }
     }
+    
+    public static string HttpProtocolError_Address
+    {
+        get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; }
+    }
 
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicAuthResource"); } 
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicAuthResource");
+        } 
     }
 
     public static string Https_DigestAuth_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsDigestResource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsDigestResource");
+        }
     }
 
     public static string Https_NtlmAuth_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsNtlmResource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsNtlmResource");
+        }
     }
 
     public static string Https_WindowsAuth_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsWindowsResource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsWindowsResource");
+        }
     }
 
     public static string Http_WindowsAuth_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpWindowsResource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpWindowsResource");
+        }
     }
 
     public static string Https_DefaultBinding_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicHttpsResource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.BasicHttpsResource");
+        }
     }
 
     public static string HttpsSoap11_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap11Resource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap11Resource");
+        }
     }
 
     public static string HttpsSoap12_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap12Resource"); }
-    }
-
-    public static string HttpProtocolError_Address
-    {
-        get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; } 
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap12Resource");
+        }
     }
 
     // net.tcp Addresses
@@ -106,7 +138,11 @@ public static partial class Endpoints
 
     public static string Tcp_VerifyDNS_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpVerifyDNSResource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallLocalCertificateFromBridge(); 
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpVerifyDNSResource");
+        }
     }
 
     public static string Tcp_NoSecurity_Callback_Address
@@ -141,6 +177,10 @@ public static partial class Endpoints
             
     public static string Tcp_CustomBinding_SslStreamSecurity_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpTransportSecurityWithSslResource"); }
+        get
+        {
+            BridgeClientCertificateManager.InstallLocalCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpTransportSecurityWithSslResource");
+        }
     }
 }

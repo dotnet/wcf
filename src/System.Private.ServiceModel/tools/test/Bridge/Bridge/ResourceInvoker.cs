@@ -72,7 +72,7 @@ namespace Bridge
 
         public static IList<string> DynamicInvokeGetAllResources()
         {
-            // Disallow concurrent resource instantation or configuration changes
+            // Disallow concurrent resource instantation or configuration changes  
             lock (ConfigController.ConfigLock)
             {
                 AssemblyLoader loader = GetLoaderFromAppDomain();
@@ -95,5 +95,6 @@ namespace Bridge
                     loaderType.FullName);
             return loader;
         }
+
     }
 }

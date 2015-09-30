@@ -23,7 +23,7 @@ namespace Bridge
         /// <returns>The response to return to the caller.</returns>
         public HttpResponseMessage Put(string name)
         {
-            var properties = this.BuildProperites(name);
+            var properties = this.BuildProperties(name); 
 
             StringBuilder sb = new StringBuilder();
             foreach (var pair in properties)
@@ -44,34 +44,41 @@ namespace Bridge
             }
 
             Trace.WriteLine(String.Format("{0:T} - PUT request received for resource name = '{1}', properties:{2}",
-                                          DateTime.Now,
+                                          DateTime.Now, 
                                           String.IsNullOrWhiteSpace(resourceName) ? "null" : resourceName,
-                                          sb.ToString()),
+                                          sb.ToString()),    
                             this.GetType().Name);
             try
             {
                 ResourceResponse result = ResourceInvoker.DynamicInvokePut(resourceName, properties);
                 string contentString = JsonSerializer.SerializeDictionary(result.Properties);
 
-                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is OK:{2}{3}",
-                                              DateTime.Now,
-                                              resourceName,
-                                              Environment.NewLine,
-                                              contentString),
+                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is OK:{2}{3}", 
+                                              DateTime.Now, 
+                                              resourceName, 
+                                              Environment.NewLine, 
+                                              contentString), 
                                 this.GetType().Name);
 
+                // Directly return a json string to avoid use of MediaTypeFormatters
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(contentString);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
                 return BuildJsonContent(contentString);
             }
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing PUT for resource {1}{2}:{3}",
-                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()),
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
                                 this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
         }
 
-
+        /// <summary>
+        /// Gets all resources available on the Bridge
+        /// </summary>
+        /// <returns></returns>
         public HttpResponseMessage Get()
         {
             IList<string> resources = ResourceInvoker.DynamicInvokeGetAllResources();
@@ -86,8 +93,10 @@ namespace Bridge
 
             string contentString = JsonSerializer.Serialize(items);
             var response = BuildJsonContent(contentString);
+
             return response;
         }
+
 
         /// <summary>
         /// Invoke the <c>Get</c> method of the <see cref="IResource"/>
@@ -97,7 +106,7 @@ namespace Bridge
         /// <returns>The response to return to the caller.</returns>
         public HttpResponseMessage Get(string name)
         {
-            var properties = this.BuildProperites(name);
+            var properties = this.BuildProperties(name);
 
             StringBuilder sb = new StringBuilder();
             foreach (var pair in properties)
@@ -125,31 +134,35 @@ namespace Bridge
 
             try
             {
-                ResourceResponse result = ResourceInvoker.DynamicInvokeGet(resourceName, properties);
-                string contentString = JsonSerializer.SerializeDictionary(result.Properties);
+                ResourceResponse response = ResourceInvoker.DynamicInvokeGet(resourceName, properties);
 
-                Trace.WriteLine(String.Format("{0:T} - GET response for {1} is OK:{2}{3}",
-                                              DateTime.Now, resourceName, Environment.NewLine, contentString),
+                if (response.RawResponse != null)
+                {
+                    Trace.WriteLine(String.Format("{0:T} - GET response for {1} is OK:{2}{3}",
+                                              DateTime.Now, resourceName, Environment.NewLine, "(raw data)"),
                                 this.GetType().Name);
 
-                return BuildJsonContent(contentString);
+                    var httpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    httpResponse.Content = new ByteArrayContent(response.RawResponse);
+                    httpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octect-stream");
+                    return httpResponse; 
+                }
+                else
+                {
+                    string contentString = JsonSerializer.SerializeDictionary(response.Properties);
+                    Trace.WriteLine(String.Format("{0:T} - GET response for {1} is OK:{2}{3}",
+                                              DateTime.Now, resourceName, Environment.NewLine, contentString),
+                                this.GetType().Name);
+                    return BuildJsonContent(contentString);
+                }
             }
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing GET for resource {1}{2}:{3}",
-                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()),
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
                                 this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
-        }
-
-        private HttpResponseMessage BuildJsonContent(string contentString)
-        {
-            // Directly return a json string to avoid use of MediaTypeFormatters
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-            response.Content = new StringContent(contentString);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
-            return response;
         }
 
         // The DELETE Http verb means release all resources allocated
@@ -182,29 +195,38 @@ namespace Bridge
             }
         }
 
+        private HttpResponseMessage BuildJsonContent(string contentString)
+        {
+            // Directly return a json string to avoid use of MediaTypeFormatters  
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StringContent(contentString);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonSerializer.JsonMediaType);
+            return response;
+        }
 
-        private Dictionary<string, string> BuildProperites(string resourceName)
+        private Dictionary<string, string> BuildProperties(string resourceName)
         {
             HttpRequestMessage request = this.Request;
 
-            // GET allows name/value pairs in Uri query parameters only
+            // GET allows name/value pairs in Uri query parameters only  
             Dictionary<string, string> properties = GetNameValuePairsFromQueryParameters(request);
+
+            // PUT allows name/value pairs in Uri query parameters or in content.  
+            // Give precedence to query parameters.  
+            // If there were no query parameters, allow the content to provide it.  
+            if (properties.Count == 0 && request.Content != null)
+            {
+                properties = GetNameValuePairsFromContent(request);
+            }
 
             if (!properties.ContainsKey("name"))
             {
                 properties["name"] = resourceName;
             }
 
-            // PUT allows name/value pairs in Uri query parameters or in content.
-            // Give precedence to query parameters.
-            // If there were no query parameters, allow the content to provide it.
-            if (properties.Count == 0 && request.Content != null)
-            {
-                properties = GetNameValuePairsFromContent(request);
-            }
-
             return properties;
         }
+
 
         private static Dictionary<string, string> GetNameValuePairsFromContent(HttpRequestMessage request)
         {

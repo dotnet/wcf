@@ -50,9 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CertificateResources\CertificateAuthorityResource.cs" />
+    <Compile Include="CertificateResources\CertificateResourceHelpers.cs" />
+    <Compile Include="CertificateResources\CertificateRevocationListResource.cs" />
     <Compile Include="ComplexCompositeType.cs" />
     <Compile Include="CompositeType.cs" />
     <Compile Include="FaultDetail.cs" />
+    <Compile Include="CertificateResources\MachineCertificateResource.cs" />
     <Compile Include="IWcfCustomUserNameService.cs" />
     <Compile Include="IWcfDuplexService.cs" />
     <Compile Include="IWcfRestartService.cs" />
@@ -61,6 +65,7 @@
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
+    <Compile Include="CertificateResources\CertificateResource.cs" />
     <Compile Include="TestResources\BaseAddressResource.cs" />
     <Compile Include="TestResources\BasicAuthResource.cs" />
     <Compile Include="TestResources\BasicHttpsResource.cs" />
@@ -96,12 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="Certificates\WcfBridge_RootCA.cer">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Certificates\WcfBridge_localhost.pfx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bridge\WcfTestBridgeCommon\WcfTestBridgeCommon.csproj">

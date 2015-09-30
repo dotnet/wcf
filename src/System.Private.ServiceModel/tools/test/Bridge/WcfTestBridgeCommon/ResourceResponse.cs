@@ -14,5 +14,8 @@ namespace WcfTestBridgeCommon
         }
 
         public Dictionary<string, string> Properties { get; set; }
+
+        // RawResponse takes precedence over Properties if it exists
+        public byte[] RawResponse { get; set; }
     }
 }

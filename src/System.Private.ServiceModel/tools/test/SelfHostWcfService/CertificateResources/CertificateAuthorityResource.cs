@@ -1,0 +1,38 @@
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
+using System.Security.Cryptography.X509Certificates;
+using WcfTestBridgeCommon;
+
+namespace WcfService.CertificateResources
+{
+    class CertificateAuthorityResource : CertificateResource
+    {
+        public CertificateAuthorityResource() : base() { }
+
+        public override ResourceResponse Get(ResourceRequestContext context)
+        {
+            X509Certificate2 certificate = 
+                CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration).AuthorityCertificate.Certificate;
+
+            ResourceResponse response = new ResourceResponse();
+            response.Properties.Add(thumbprintResourceString, certificate.Thumbprint);
+            response.Properties.Add(certificateResourceString, Convert.ToBase64String(certificate.RawData));
+
+            return response;
+        }
+
+        // A bit of a misnomer - you can't really "put" a cert here, and Get will always return you the cert anyway 
+        public override ResourceResponse Put(ResourceRequestContext context)
+        {
+            X509Certificate2 certificate =
+                CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration).AuthorityCertificate.Certificate;
+
+            ResourceResponse response = new ResourceResponse();
+            response.Properties.Add(thumbprintResourceString, certificate.Thumbprint);
+
+            return response;
+        }
+    }
+}
