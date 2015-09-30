@@ -56,17 +56,7 @@ namespace Bridge
             // Disallow concurrent resource instantation or configuration changes
             lock (ConfigController.ConfigLock)
             {
-                AppDomain appDomain;
-                if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
-                {
-                    throw new ArgumentException("Resource not found");
-                }
-
-                Type loaderType = typeof(AssemblyLoader);
-                var loader =
-                    (AssemblyLoader)appDomain.CreateInstanceFromAndUnwrap(
-                        loaderType.Assembly.Location,
-                        loaderType.FullName);
+                AssemblyLoader loader = GetLoaderFromAppDomain();
 
                 ResourceRequestContext context = new ResourceRequestContext
                 {
@@ -76,8 +66,34 @@ namespace Bridge
                 };
 
                 object result = loader.IResourceCall(resourceName, "Get", new object[] { context });
-                return (ResourceResponse) result;
+                return (ResourceResponse)result;
             }
+        }
+
+        public static IList<string> DynamicInvokeGetAllResources()
+        {
+            // Disallow concurrent resource instantation or configuration changes
+            lock (ConfigController.ConfigLock)
+            {
+                AssemblyLoader loader = GetLoaderFromAppDomain();
+                return loader.GetTypes();
+            }
+        }
+
+        private static AssemblyLoader GetLoaderFromAppDomain()
+        {
+            AppDomain appDomain;
+            if (!TypeCache.AppDomains.TryGetValue(ConfigController.CurrentAppDomainName, out appDomain))
+            {
+                throw new ArgumentException("Resource not found");
+            }
+
+            Type loaderType = typeof(AssemblyLoader);
+            var loader =
+                (AssemblyLoader)appDomain.CreateInstanceFromAndUnwrap(
+                    loaderType.Assembly.Location,
+                    loaderType.FullName);
+            return loader;
         }
     }
 }
