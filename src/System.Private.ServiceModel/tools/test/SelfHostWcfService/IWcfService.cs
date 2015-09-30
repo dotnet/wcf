@@ -13,7 +13,7 @@ namespace WcfService
     internal interface IWcfService
     {
         [OperationContract]
-        String EchoWithTimeout(String message);
+        String EchoWithTimeout(String message, TimeSpan serviceOperationTimeout);
 
         [OperationContract]
         Message MessageRequestReply(Message message);

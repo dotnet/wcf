@@ -139,8 +139,10 @@ public static class ExpectedExceptionTests
     // The client should throw a TimeoutException
     [Fact]
     [OuterLoop]
+    [ActiveIssue(273)]
     public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
     {
+        TimeSpan serviceOperationTimeout = TimeSpan.FromMilliseconds(10000);
         BasicHttpBinding binding = new BasicHttpBinding();
         binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
         ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
@@ -152,7 +154,7 @@ public static class ExpectedExceptionTests
             {
                 IWcfService proxy = factory.CreateChannel();
                 watch.Start();
-                proxy.EchoWithTimeout("Hello");
+                proxy.EchoWithTimeout("Hello", serviceOperationTimeout);
             });
         }
         finally
@@ -162,7 +164,7 @@ public static class ExpectedExceptionTests
 
         // want to assert that this completed in > 5 s as an upper bound since the SendTimeout is 5 sec
         // (usual case is around 5001-5005 ms) 
-        Assert.InRange<long>(watch.ElapsedMilliseconds, 5000, 10000);
+        Assert.InRange<long>(watch.ElapsedMilliseconds, 4985, 6000);
     }
 
     // SendTimeout is set to 0, this should trigger a TimeoutException before even attempting to call the service.
@@ -170,6 +172,7 @@ public static class ExpectedExceptionTests
     [OuterLoop]
     public static void SendTimeout_Zero_Throws_TimeoutException_Immediately()
     {
+        TimeSpan serviceOperationTimeout = TimeSpan.FromMilliseconds(5000);
         BasicHttpBinding binding = new BasicHttpBinding();
         binding.SendTimeout = TimeSpan.FromMilliseconds(0);
         ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
@@ -181,7 +184,7 @@ public static class ExpectedExceptionTests
             {
                 IWcfService proxy = factory.CreateChannel();
                 watch.Start();
-                proxy.EchoWithTimeout("Hello");
+                proxy.EchoWithTimeout("Hello", serviceOperationTimeout);
             });
         }
         finally
