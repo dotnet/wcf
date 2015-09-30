@@ -33,7 +33,7 @@
     "System.Runtime.Extensions": "4.0.10",
     "System.Runtime.Handles": "4.0.0",
     "System.Runtime.InteropServices": "4.0.20-beta-*",
-    "System.Runtime.Serialization.Xml": "4.0.10",
+    "System.Runtime.Serialization.Xml": "4.0.11-beta-*",
     "System.Security.Claims": "4.0.0",
     "System.Security.Cryptography.X509Certificates": "4.0.0-beta-*",
     "System.Security.Principal": "4.0.0",

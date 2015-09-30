@@ -1045,7 +1045,7 @@
           "lib/dotnet/xunit.execution.dotnet.dll": {}
         }
       },
-      "xunit.netcore.extensions/1.0.0-prerelease-00095": {
+      "xunit.netcore.extensions/1.0.0-prerelease-00098": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
@@ -3022,14 +3022,14 @@
         "xunit.extensibility.execution.nuspec"
       ]
     },
-    "xunit.netcore.extensions/1.0.0-prerelease-00095": {
+    "xunit.netcore.extensions/1.0.0-prerelease-00098": {
       "type": "package",
       "serviceable": true,
-      "sha512": "FuvWmkuxHiqD0cHDggg5MRmBoeM4Uea7OUEmKvZiQu7Fy02hJ6yKKNV7mNW3y4scwSzDNA81Qa+HIS33PeWUog==",
+      "sha512": "3kRPwTbC42YGmsNHpNMKfGVOO5cVfxUD+C7cYbti1aml4UCT/RFZ6lhm5Vym2wNRDxryu0Es78aMf1BaybSrDg==",
       "files": [
         "lib/dotnet/Xunit.NetCore.Extensions.dll",
-        "xunit.netcore.extensions.1.0.0-prerelease-00095.nupkg",
-        "xunit.netcore.extensions.1.0.0-prerelease-00095.nupkg.sha512",
+        "xunit.netcore.extensions.1.0.0-prerelease-00098.nupkg",
+        "xunit.netcore.extensions.1.0.0-prerelease-00098.nupkg.sha512",
         "xunit.netcore.extensions.nuspec"
       ]
     }
