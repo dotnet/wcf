@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System.ServiceModel.Common.Tests</RootNamespace>
-    <AssemblyName>System.ServiceModel.Common.Tests</AssemblyName>
+    <RootNamespace>Infrastructure.Common.Tests</RootNamespace>
+    <AssemblyName>Infrastructure.Common.Tests</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <CLSCompliant>false</CLSCompliant>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
