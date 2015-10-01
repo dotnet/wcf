@@ -112,6 +112,31 @@ namespace System.ServiceModel.Channels
             return builder.Uri;
         }
 
+        internal static Uri NormalizeHttpSchemeWithWsScheme(Uri uri)
+        {
+            Fx.Assert(uri != null, "RemoteAddress.Uri should not be null.");
+            if (IsWebSocketUri(uri))
+            {
+                return uri;
+            }
+
+            UriBuilder builder = new UriBuilder(uri);
+
+            switch (uri.Scheme.ToLowerInvariant())
+            {
+                case UriEx.UriSchemeHttp:
+                    builder.Scheme = SchemeWs;
+                    break;
+                case UriEx.UriSchemeHttps:
+                    builder.Scheme = SchemeWss;
+                    break;
+                default:
+                    break;
+            }
+
+            return builder.Uri;
+        }
+
         internal static bool TryParseSubProtocol(string subProtocolValue, out List<string> subProtocolList)
         {
             subProtocolList = new List<string>();

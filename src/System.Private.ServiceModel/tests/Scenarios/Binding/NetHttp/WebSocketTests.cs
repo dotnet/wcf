@@ -12,7 +12,6 @@ public static class Binding_NetHttp_WebSocketTests
     // Duplex over WebSocket occurs automatically when the service contract is declared with a callback contract.
     [Fact]
     [OuterLoop]
-    [ActiveIssue(275)]
     public static void DuplexOverWebSocket_Echo_RoundTrips_Guid()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;
@@ -51,7 +50,6 @@ public static class Binding_NetHttp_WebSocketTests
     // Force the binding to use WebSocket by setting the WebSocket transport usage to Always.
     [Fact]
     [OuterLoop]
-    [ActiveIssue(275)]
     public static void RequestResponseOverWebSocketManually_Echo_RoundTrips_Guid()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;
@@ -90,7 +88,6 @@ public static class Binding_NetHttp_WebSocketTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(275)]
     public static void TransportUsageAlways_WebSockets_Synchronous_Call()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;

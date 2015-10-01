@@ -156,6 +156,12 @@ namespace System.Runtime
                 return true;
             }
 
+            if (timeout == TimeSpan.MaxValue || timeout == Timeout.InfiniteTimeSpan)
+            {
+                await task;
+                return true;
+            }
+
             using (CancellationTokenSource cts = new CancellationTokenSource())
             {
                 var completedTask = await Task.WhenAny(task, Task.Delay(timeout, cts.Token));

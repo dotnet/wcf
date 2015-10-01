@@ -296,11 +296,14 @@ namespace System.ServiceModel.Channels
 
         protected override TChannel OnCreateChannel(EndpointAddress remoteAddress, Uri via)
         {
-            //EndpointAddress httpRemoteAddress = remoteAddress != null && WebSocketHelper.IsWebSocketUri(remoteAddress.Uri) ?
-            //    new EndpointAddress(WebSocketHelper.NormalizeWsSchemeWithHttpScheme(remoteAddress.Uri), remoteAddress) :
-            //    remoteAddress;
+            if (typeof (TChannel) != typeof (IRequestChannel))
+            {
+                remoteAddress = remoteAddress != null && !WebSocketHelper.IsWebSocketUri(remoteAddress.Uri) ?
+                    new EndpointAddress(WebSocketHelper.NormalizeHttpSchemeWithWsScheme(remoteAddress.Uri), remoteAddress) :
+                    remoteAddress;
+                via = !WebSocketHelper.IsWebSocketUri(via) ? WebSocketHelper.NormalizeHttpSchemeWithWsScheme(via) : via;
+            }
 
-            //Uri httpVia = WebSocketHelper.IsWebSocketUri(via) ? WebSocketHelper.NormalizeWsSchemeWithHttpScheme(via) : via;
             return OnCreateChannelCore(remoteAddress, via);
         }
 

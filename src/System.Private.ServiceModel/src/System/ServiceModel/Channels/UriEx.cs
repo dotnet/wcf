@@ -6,9 +6,8 @@ namespace System.ServiceModel.Channels
     // Normally part of Uri.cs but not available in contract
     internal class UriEx
     {
-        public static readonly string UriSchemeHttp = "http";
-        public static readonly string UriSchemeHttps = "https";
-        public static readonly string UriSchemeNetTcp = "net.tcp";
-        public static readonly string UriSchemeNetPipe = "net.pipe";
+        public const string UriSchemeHttp = "http";
+        public const string UriSchemeHttps = "https";
+        public const string UriSchemeNetTcp = "net.tcp";
     }
 }
