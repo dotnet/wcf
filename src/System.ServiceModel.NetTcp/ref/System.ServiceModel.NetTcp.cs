@@ -51,6 +51,8 @@ namespace System.ServiceModel
         public TcpTransportSecurity() { }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.TcpClientCredentialType)(1))]
         public System.ServiceModel.TcpClientCredentialType ClientCredentialType { get { return default(System.ServiceModel.TcpClientCredentialType); } set { } }
+        [System.ComponentModel.DefaultValueAttribute((System.Security.Authentication.SslProtocols)(4080))]
+        public System.Security.Authentication.SslProtocols SslProtocols { get { return default(System.Security.Authentication.SslProtocols); } set { } }
     }
 }
 namespace System.ServiceModel.Channels
@@ -70,6 +72,8 @@ namespace System.ServiceModel.Channels
     public partial class SslStreamSecurityBindingElement : System.ServiceModel.Channels.BindingElement
     {
         public SslStreamSecurityBindingElement() { }
+        [System.ComponentModel.DefaultValueAttribute((System.Security.Authentication.SslProtocols)(4080))]
+        public System.Security.Authentication.SslProtocols SslProtocols { get { return default(System.Security.Authentication.SslProtocols); } set { } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
         public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(bool); }
         public override System.ServiceModel.Channels.BindingElement Clone() { return default(System.ServiceModel.Channels.BindingElement); }
