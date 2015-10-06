@@ -196,7 +196,7 @@ def project = 'dotnet/wcf'
 // Build the Linux _bld job
 def linuxBuildJob = build(\"dotnet_wcf/''' + jobName + '''_bld\")
 // Pass this to the test job.  Include the parameters
-build(params + [WCF_LINUX_BUILD_NUMBER: $linuxBuildJob.build.number], 
+build(params + [WCF_LINUX_BUILD_NUMBER: linuxBuildJob.build.number], 
     \"dotnet_wcf/linux_''' + configurationJobName + '''_tst\")
             ''')
 
