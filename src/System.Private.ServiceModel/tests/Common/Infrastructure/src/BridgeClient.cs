@@ -199,7 +199,7 @@ namespace Infrastructure.Common
             string uri = null;
             if (!responseContent.TryGetValue(EndpointResourceResponseUriKeyName, out uri) || String.IsNullOrWhiteSpace(uri))
             {
-                throw new Exception("Invalid response from bridge: " + WriteKeyValuePairsForResponseContent(responseContent));
+                throw new Exception("Invalid response from bridge: " + FormatKeyValuePairsAsString(responseContent));
             }
 
             return uri;
@@ -306,10 +306,10 @@ namespace Infrastructure.Common
             return uriBuilder.ToString().TrimEnd('&');
         }
 
-        private static string WriteKeyValuePairsForResponseContent(Dictionary<string, string> responseContent)
+        private static string FormatKeyValuePairsAsString(Dictionary<string, string> dictionary)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var pair in responseContent)
+            foreach (var pair in dictionary)
             {
                 sb.AppendFormat("{0}  {1} : {2}", Environment.NewLine, pair.Key, pair.Value);
             }

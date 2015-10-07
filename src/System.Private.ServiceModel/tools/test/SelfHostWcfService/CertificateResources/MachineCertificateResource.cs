@@ -16,10 +16,10 @@ namespace WcfService.CertificateResources
         public override ResourceResponse Get(ResourceRequestContext context)
         {
             string thumbprint;
-            bool thumbprintPresent = context.Properties.TryGetValue(thumbprintResourceString, out thumbprint) && !string.IsNullOrWhiteSpace(thumbprint);
+            bool thumbprintPresent = context.Properties.TryGetValue(thumbprintKeyName, out thumbprint) && !string.IsNullOrWhiteSpace(thumbprint);
 
             string subject;
-            bool subjectPresent = context.Properties.TryGetValue(subjectResourceString, out subject) && !string.IsNullOrWhiteSpace(subject);
+            bool subjectPresent = context.Properties.TryGetValue(subjectKeyName, out subject) && !string.IsNullOrWhiteSpace(subject);
 
             ResourceResponse response = new ResourceResponse();
 
@@ -44,8 +44,8 @@ namespace WcfService.CertificateResources
                     }
                 }
 
-                response.Properties.Add(subjectssResourceString, string.Join(",", subjects));
-                response.Properties.Add(thumbprintsResourceString, string.Join(",", thumbprints));
+                response.Properties.Add(subjectsKeyName, string.Join(",", subjects));
+                response.Properties.Add(thumbprintsKeyName, string.Join(",", thumbprints));
                 return response;
             }
             else
@@ -70,13 +70,13 @@ namespace WcfService.CertificateResources
 
                 if (certHasBeenCreated)
                 {
-                    response.Properties.Add(thumbprintResourceString, certificate.Thumbprint);
-                    response.Properties.Add(certificateResourceString, Convert.ToBase64String(certificate.RawData));
+                    response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
+                    response.Properties.Add(certificateKeyName, Convert.ToBase64String(certificate.RawData));
                 }
                 else
                 {
-                    response.Properties.Add(thumbprintResourceString, string.Empty);
-                    response.Properties.Add(certificateResourceString, string.Empty);
+                    response.Properties.Add(thumbprintKeyName, string.Empty);
+                    response.Properties.Add(certificateKeyName, string.Empty);
                 }
                 return response;
             }
@@ -94,7 +94,7 @@ namespace WcfService.CertificateResources
             X509Certificate2 certificate;
 
             string subject; 
-            if (!context.Properties.TryGetValue(subjectResourceString, out subject) || string.IsNullOrWhiteSpace(subject))
+            if (!context.Properties.TryGetValue(subjectKeyName, out subject) || string.IsNullOrWhiteSpace(subject))
             {
                 throw new ArgumentException("When PUTting to this resource, specify an non-empty 'subject'", "context.Properties");
             }
@@ -132,8 +132,8 @@ namespace WcfService.CertificateResources
             }
 
             ResourceResponse response = new ResourceResponse();
-            response.Properties.Add(thumbprintResourceString, certificate.Thumbprint);
-            response.Properties.Add(isLocalResourceString, isLocal.ToString());
+            response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
+            response.Properties.Add(isLocalKeyName, isLocal.ToString());
 
             return response;
         }

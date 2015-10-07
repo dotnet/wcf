@@ -11,16 +11,16 @@ namespace WcfService.CertificateResources
 {
     public abstract class CertificateResource : IResource
     {
-        protected const string certificateResourceString = "certificate";
-        protected const string crlResourceString = "crl";
-        protected const string crlUriResourceString = "crlUri";
-        protected const string revokedCertificatesResourceString = "revokedCertificates";
-        protected const string revokeSerialNumberResourceString = "revoke";
-        protected const string subjectResourceString = "subject";
-        protected const string subjectssResourceString = "subjects";
-        protected const string thumbprintResourceString = "thumbprint";
-        protected const string thumbprintsResourceString = "thumbprints";
-        protected const string isLocalResourceString = "isLocal"; 
+        protected const string certificateKeyName = "certificate";
+        protected const string crlKeyName = "crl";
+        protected const string crlUriKeyName = "crlUri";
+        protected const string revokedCertificatesKeyName = "revokedCertificates";
+        protected const string revokeSerialNumberKeyName = "revoke";
+        protected const string subjectKeyName = "subject";
+        protected const string subjectsKeyName = "subjects";
+        protected const string thumbprintKeyName = "thumbprint";
+        protected const string thumbprintsKeyName = "thumbprints";
+        protected const string isLocalKeyName = "isLocal"; 
 
         protected static string s_localHostname; 
         

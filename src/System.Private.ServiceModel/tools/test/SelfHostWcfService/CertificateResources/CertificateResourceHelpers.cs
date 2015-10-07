@@ -18,6 +18,7 @@ namespace WcfService.CertificateResources
     {
         private static object s_certificateHelperLock = new object();
         private volatile static CertificateGenerator s_certificateGenerator;
+        private static string s_crlUriRelativePath = "/resource/WcfService.CertificateResources.CertificateRevocationListResource";
         
         static CertificateResourceHelpers()
         {
@@ -36,6 +37,7 @@ namespace WcfService.CertificateResources
                         {
                             CertificatePassword = config.BridgeCertificatePassword,
                             CrlUriBridgeHost = string.Format("http://{0}:{1}", config.BridgeHost, config.BridgePort),
+                            CrlUriRelativePath = s_crlUriRelativePath,
                             ValidityPeriod = config.BridgeCertificateValidityPeriod
                         };
 
@@ -63,6 +65,7 @@ namespace WcfService.CertificateResources
                         {
                             CertificatePassword = config.BridgeCertificatePassword,
                             CrlUriBridgeHost = string.Format("http://{0}:{1}", config.BridgeHost, config.BridgePort),
+                            CrlUriRelativePath = s_crlUriRelativePath,
                             ValidityPeriod = config.BridgeCertificateValidityPeriod
                         };
 

@@ -30,17 +30,16 @@ namespace WcfService.CertificateResources
 
             lock(s_certificateResourceLock)
             {
-                if (context.Properties.TryGetValue(revokeSerialNumberResourceString, out thumbprint) && !string.IsNullOrWhiteSpace(thumbprint))
+                if (context.Properties.TryGetValue(revokeSerialNumberKeyName, out thumbprint) && !string.IsNullOrWhiteSpace(thumbprint))
                 {
-                    certGenerator.RevokeCertificateByThumbprint(thumbprint);
+                    certGenerator.RevokeCertificateBySerialNumber(thumbprint);
                 }
 
-
                 ResourceResponse response = new ResourceResponse();
-                response.Properties.Add(crlUriResourceString, certGenerator.CrlUri);
+                response.Properties.Add(crlUriKeyName, certGenerator.CrlUri);
 
                 response.Properties.Add(
-                    revokedCertificatesResourceString, 
+                    revokedCertificatesKeyName, 
                     string.Join<string>(",", certGenerator.RevokedCertificates));
 
                 return response;

@@ -20,11 +20,11 @@ namespace Infrastructure.Common
         private const string MachineCertificateResourceName = "WcfService.CertificateResources.MachineCertificateResource";
 
         // key names in request/response keyval pairs
-        private const string EndpointResourceRequestNameResourceString = "name";
-        private const string SubjectKeyResourceString = "subject";
-        private const string ThumbprintKeyResourceString = "thumbprint";
-        private const string CertificateKeyResourceString = "certificate";
-        private const string IsLocalKeyResourceString = "isLocal";
+        private const string EndpointResourceRequestNameKeyName = "name";
+        private const string SubjectKeyName = "subject";
+        private const string ThumbprintKeyName = "thumbprint";
+        private const string CertificateKeyName = "certificate";
+        private const string IsLocalKeyName = "isLocal";
 
         // Keyed by the thumbprint of the certificate
         private static string s_LocalFqdn = string.Empty;
@@ -62,7 +62,7 @@ namespace Infrastructure.Common
 
             lock (s_certificateLock)
             {
-                if (response.TryGetValue(ThumbprintKeyResourceString, out thumbprint))
+                if (response.TryGetValue(ThumbprintKeyName, out thumbprint))
                 {
                     rootCertificateAlreadyInstalled = s_rootCertificates.ContainsKey(thumbprint);
                 }
@@ -91,7 +91,7 @@ namespace Infrastructure.Common
                     response = BridgeClient.MakeResourceGetRequest(CertificateAuthorityResourceName, null);
 
                     string certificateAsBase64;
-                    if (response.TryGetValue(CertificateKeyResourceString, out certificateAsBase64))
+                    if (response.TryGetValue(CertificateKeyName, out certificateAsBase64))
                     {
                         certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64));
                     }
@@ -105,7 +105,7 @@ namespace Infrastructure.Common
 
                         throw new Exception(
                             string.Format("Error retrieving Authority certificate from Bridge. Expected '{0}' key in response. Response contents:{1}{2}",
-                                CertificateKeyResourceString,
+                                CertificateKeyName,
                                 Environment.NewLine,
                                 sb.ToString()));
                     }
@@ -128,7 +128,7 @@ namespace Infrastructure.Common
 
             // PUT the Machine name to the Bridge (returns thumbprint)
             Dictionary<string, string> requestParams = new Dictionary<string, string>();
-            requestParams.Add(SubjectKeyResourceString, LocalFqdn);
+            requestParams.Add(SubjectKeyName, LocalFqdn);
 
             var response = BridgeClient.MakeResourcePutRequest(MachineCertificateResourceName, requestParams);
 
@@ -137,7 +137,7 @@ namespace Infrastructure.Common
 
             lock(s_certificateLock)
             {
-                if (response.TryGetValue(ThumbprintKeyResourceString, out thumbprint))
+                if (response.TryGetValue(ThumbprintKeyName, out thumbprint))
                 {
                     foundLocalCertificate = s_myCertificates.ContainsKey(thumbprint);
 
@@ -145,7 +145,7 @@ namespace Infrastructure.Common
                     // If it has, then the Bridge itself has already installed that cert as part of the PUT request
                     // There's no need for us to do this in the BridgeClient.
                     string isLocalString;
-                    if (response.TryGetValue(IsLocalKeyResourceString, out isLocalString))
+                    if (response.TryGetValue(IsLocalKeyName, out isLocalString))
                     {
                         bool isLocal = false;
                         if (bool.TryParse(isLocalString, out isLocal) && isLocal)
@@ -159,13 +159,13 @@ namespace Infrastructure.Common
                 {
                     // GET the cert with thumbprint from the Bridge (returns cert in base64 format)
                     requestParams = new Dictionary<string, string>();
-                    requestParams.Add(ThumbprintKeyResourceString, thumbprint);
+                    requestParams.Add(ThumbprintKeyName, thumbprint);
 
                     string base64Cert = string.Empty;
                     response = BridgeClient.MakeResourceGetRequest(MachineCertificateResourceName, requestParams);
 
                     string certificateAsBase64;
-                    if (response.TryGetValue(CertificateKeyResourceString, out certificateAsBase64))
+                    if (response.TryGetValue(CertificateKeyName, out certificateAsBase64))
                     {
                         certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64));
                     }
@@ -180,7 +180,7 @@ namespace Infrastructure.Common
                         throw new Exception(
                             string.Format("Error retrieving {0} certificate from Bridge. Expected '{1}' key in response. Response contents:{2}{3}",
                                 s_LocalFqdn,
-                                CertificateKeyResourceString,
+                                CertificateKeyName,
                                 Environment.NewLine,
                                 sb.ToString()));
                     }
@@ -192,19 +192,7 @@ namespace Infrastructure.Common
             // We also need to install the root cert if we install a local cert
             InstallRootCertificateFromBridge();
         }
-
-        // Uninstalls all certificates and SSL port associations
-        // added by this process.  If 'force' is true, removes all,
-        // whether this process created them or not.
-        public static void UninstallAllCertificates(bool force)
-        {
-            lock (s_certificateLock)
-            {
-                UninstallAllMyCertificates(force);
-                UninstallAllRootCertificates(force);
-            }
-        }
-
+        
         // Returns the certificate matching the given thumbprint from the given store.
         // Returns null if not found.
         private static X509Certificate2 CertificateFromThumbprint(X509Store store, string thumbprint)
@@ -221,25 +209,28 @@ namespace Infrastructure.Common
         {
             X509Store store = null;
             X509Certificate2 existingCert = null;
-            try
+            lock(s_certificateLock)
             {
-                store = new X509Store(storeName, storeLocation);
-                store.Open(OpenFlags.ReadWrite);
-                existingCert = CertificateFromThumbprint(store, certificate.Thumbprint);
-                if (existingCert == null)
+                try
                 {
-                    store.Add(certificate);
+                    store = new X509Store(storeName, storeLocation);
+                    store.Open(OpenFlags.ReadWrite);
+                    existingCert = CertificateFromThumbprint(store, certificate.Thumbprint);
+                    if (existingCert == null)
+                    {
+                        store.Add(certificate);
+                    }
                 }
-            }
-            finally
-            {
-                if (store != null)
+                finally
                 {
-                    store.Dispose();
+                    if (store != null)
+                    {
+                        store.Dispose();
+                    }
                 }
-            }
 
-            return existingCert == null;
+                return existingCert == null;
+            }
         }
 
         // Install the certificate into the Root store and returns its thumbprint.
@@ -287,99 +278,6 @@ namespace Infrastructure.Common
                 };
 
                 return certificate.Thumbprint;
-            }
-        }
-        
-        public static void UninstallAllRootCertificates(bool force)
-        {
-            UninstallCertificates(StoreName.Root, StoreLocation.LocalMachine, s_rootCertificates, force);
-        }
-
-        public static void UninstallAllMyCertificates(bool force)
-        {
-
-            UninstallCertificates(StoreName.My, StoreLocation.LocalMachine, s_myCertificates, force);
-        }
-
-        // Uninstalls all certificates in the given store and location that
-        // were installed by this process.  If 'force' is true, uninstalls
-        // all certificates used by this process, whether they already were
-        // added by this process or not.
-        private static void UninstallCertificates(StoreName storeName,
-                                                  StoreLocation storeLocation,
-                                                  Dictionary<string, CertificateCacheEntry> cache,
-                                                  bool force)
-        {
-            lock (s_certificateLock)
-            {
-                if (cache.Count == 0)
-                {
-                    return;
-                }
-
-                X509Store store = null;
-                try
-                {
-                    store = new X509Store(storeName, storeLocation);
-                    store.Open(OpenFlags.ReadWrite);
-                    foreach (var pair in cache)
-                    {
-                        // Remove only if our process was the one that added it
-                        // or if 'force' has asked to remove all.
-                        if (force || pair.Value.AddedToStore)
-                        {
-                            X509Certificate2 cert = CertificateFromThumbprint(store, pair.Value.Thumbprint);
-                            if (cert != null)
-                            {
-                                store.Remove(cert);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    cache.Clear();
-
-                    if (store != null)
-                    {
-                        store.Dispose();
-                    }
-                }
-            }
-        }
-
-        private static void UninstallAllCertificatesByIssuer(StoreName storeName,
-                                                        StoreLocation storeLocation,
-                                                        Dictionary<string, CertificateCacheEntry> cache,
-                                                        string issuerDistinguishedName)
-        {
-            lock (s_certificateLock)
-            {
-                X509Store store = null;
-
-                try
-                {
-                    store = new X509Store(storeName, storeLocation);
-                    store.Open(OpenFlags.ReadWrite);
-
-                    var collection = store.Certificates.Find(X509FindType.FindByIssuerDistinguishedName, issuerDistinguishedName, false);
-                    foreach (var cert in collection)
-                    {
-                        store.Remove(cert);
-                    }
-
-                    
-                }
-                finally
-                {
-                    cache.Clear();
-
-                    if (store != null)
-                    {
-                        store.Dispose();
-                    }
-                }
-
             }
         }
         

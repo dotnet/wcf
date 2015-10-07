@@ -23,7 +23,7 @@ using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509Ke
 
 namespace WcfTestBridgeCommon
 {
-    // Not threadsafe. Callers should lock.
+    // NOT THREADSAFE. Callers should lock before doing work with this class if multithreaded operation is expected
     public class CertificateGenerator
     {
         private bool _isInitialized;
@@ -31,6 +31,7 @@ namespace WcfTestBridgeCommon
         // Settable properties prior to initialization
         private string _crlUri;
         private string _crlUriBridgeHost;
+        private string _crlUriRelativePath;
         private string _password;
         private TimeSpan _validityPeriod = TimeSpan.FromDays(1);
 
@@ -42,7 +43,6 @@ namespace WcfTestBridgeCommon
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
         private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
-        private const string _crlUriRelativePath = "/resource/WcfService.CertificateResources.CertificateRevocationListResource";
         private const string _signatureAlthorithm = "SHA1WithRSAEncryption";
         private const int _keyLengthInBits = 2048;
         
@@ -187,7 +187,15 @@ namespace WcfTestBridgeCommon
 
         public string CrlUriRelativePath
         {
-            get { return _crlUriRelativePath; }
+            get
+            {
+                return _crlUriRelativePath;
+            }
+            set
+            {
+                EnsureNotInitialized("CrlUriRelativePath");
+                _crlUriRelativePath = value;
+            }
         }
 
         public List<string> RevokedCertificates
@@ -418,24 +426,29 @@ namespace WcfTestBridgeCommon
             return authorityX509Name;
         }
 
-        public bool RevokeCertificateByThumbprint(string thumbprint)
+        public bool RevokeCertificateBySerialNumber(string serialNum)
         {
             bool success = false;
             BigInteger thumbprintBigInt = null;
             try
             {
-                thumbprintBigInt = new BigInteger(thumbprint, 16 /* radix */);
+                thumbprintBigInt = new BigInteger(serialNum, 16 /* radix */);
                 success = true;
             }
-            catch
+            catch(FormatException)
             {
+                Trace.WriteLine("[CertificateGenerator] RevokeCertificateBySerialNumber:");
+                Trace.WriteLine(string.Format("    Invalid serial number specified: '{0}'", serialNum));
             }
 
-            if (success && !_revokedCertificates.ContainsKey(thumbprint))
+            if (success && !_revokedCertificates.ContainsKey(serialNum))
             {
-                _revokedCertificates.Add(thumbprint, DateTime.UtcNow);
+                _revokedCertificates.Add(serialNum, DateTime.UtcNow);
             }
 
+            // Note that we don't actually check against the thumbprints here, we just go ahead and stick the serial 
+            // number into the CRL without checking whether or not we've ever generated it
+            Trace.WriteLine(string.Format("[CertificateGenerator] Revoke certificate with serial number {0}: ", success ? "succeeded" : "FAILED"));
             return success;
         }
 

@@ -15,6 +15,8 @@ namespace Bridge
 {
     public class ResourceController : ApiController
     {
+        private const string nameKeyName = "name";
+
         /// <summary>
         /// Invoke the <c>Put</c> method of the <see cref="IResource"/>
         /// matching the name specified in the content name/value pairs.
@@ -32,7 +34,7 @@ namespace Bridge
             }
 
             string resourceName = null;
-            if (!properties.TryGetValue("name", out resourceName) || String.IsNullOrWhiteSpace(resourceName))
+            if (!properties.TryGetValue(nameKeyName, out resourceName) || String.IsNullOrWhiteSpace(resourceName))
             {
                 string badRequestMessage = "PUT request content did not contain a resource name";
                 Trace.WriteLine(String.Format("{0:T} - {1}:{2}",
@@ -115,7 +117,7 @@ namespace Bridge
             }
 
             string resourceName = null;
-            if (!properties.TryGetValue("name", out resourceName) || String.IsNullOrWhiteSpace(resourceName))
+            if (!properties.TryGetValue(nameKeyName, out resourceName) || String.IsNullOrWhiteSpace(resourceName))
             {
                 string badRequestMessage = "GET request content did not contain a resource name";
                 Trace.WriteLine(String.Format("{0:T} - {1}:{2}",
@@ -219,9 +221,9 @@ namespace Bridge
                 properties = GetNameValuePairsFromContent(request);
             }
 
-            if (!properties.ContainsKey("name"))
+            if (!properties.ContainsKey(nameKeyName))
             {
-                properties["name"] = resourceName;
+                properties[nameKeyName] = resourceName;
             }
 
             return properties;

@@ -17,8 +17,8 @@ namespace WcfService.CertificateResources
                 CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration).AuthorityCertificate.Certificate;
 
             ResourceResponse response = new ResourceResponse();
-            response.Properties.Add(thumbprintResourceString, certificate.Thumbprint);
-            response.Properties.Add(certificateResourceString, Convert.ToBase64String(certificate.RawData));
+            response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
+            response.Properties.Add(certificateKeyName, Convert.ToBase64String(certificate.RawData));
 
             return response;
         }
@@ -30,7 +30,7 @@ namespace WcfService.CertificateResources
                 CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration).AuthorityCertificate.Certificate;
 
             ResourceResponse response = new ResourceResponse();
-            response.Properties.Add(thumbprintResourceString, certificate.Thumbprint);
+            response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
 
             return response;
         }
