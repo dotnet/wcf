@@ -20,11 +20,11 @@ namespace Infrastructure.Common
         private const string MachineCertificateResourceName = "WcfService.CertificateResources.MachineCertificateResource";
 
         // key names in request/response keyval pairs
-        private const string EndpointResourceRequestNameKeyName = "name";
-        private const string SubjectKeyName = "subject";
-        private const string ThumbprintKeyName = "thumbprint";
-        private const string CertificateKeyName = "certificate";
-        private const string IsLocalKeyName = "isLocal";
+        private const string EndpointResourceRequestNameResourceString = "name";
+        private const string SubjectKeyResourceString = "subject";
+        private const string ThumbprintKeyResourceString = "thumbprint";
+        private const string CertificateKeyResourceString = "certificate";
+        private const string IsLocalKeyResourceString = "isLocal";
 
         // Keyed by the thumbprint of the certificate
         private static string s_LocalFqdn = string.Empty;
@@ -62,7 +62,7 @@ namespace Infrastructure.Common
 
             lock (s_certificateLock)
             {
-                if (response.TryGetValue(ThumbprintKeyName, out thumbprint))
+                if (response.TryGetValue(ThumbprintKeyResourceString, out thumbprint))
                 {
                     rootCertificateAlreadyInstalled = s_rootCertificates.ContainsKey(thumbprint);
                 }
@@ -91,7 +91,7 @@ namespace Infrastructure.Common
                     response = BridgeClient.MakeResourceGetRequest(CertificateAuthorityResourceName, null);
 
                     string certificateAsBase64;
-                    if (response.TryGetValue(CertificateKeyName, out certificateAsBase64))
+                    if (response.TryGetValue(CertificateKeyResourceString, out certificateAsBase64))
                     {
                         certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64));
                     }
@@ -105,7 +105,7 @@ namespace Infrastructure.Common
 
                         throw new Exception(
                             string.Format("Error retrieving Authority certificate from Bridge. Expected '{0}' key in response. Response contents:{1}{2}",
-                                CertificateKeyName,
+                                CertificateKeyResourceString,
                                 Environment.NewLine,
                                 sb.ToString()));
                     }
@@ -128,7 +128,7 @@ namespace Infrastructure.Common
 
             // PUT the Machine name to the Bridge (returns thumbprint)
             Dictionary<string, string> requestParams = new Dictionary<string, string>();
-            requestParams.Add(SubjectKeyName, LocalFqdn);
+            requestParams.Add(SubjectKeyResourceString, LocalFqdn);
 
             var response = BridgeClient.MakeResourcePutRequest(MachineCertificateResourceName, requestParams);
 
@@ -137,7 +137,7 @@ namespace Infrastructure.Common
 
             lock(s_certificateLock)
             {
-                if (response.TryGetValue(ThumbprintKeyName, out thumbprint))
+                if (response.TryGetValue(ThumbprintKeyResourceString, out thumbprint))
                 {
                     foundLocalCertificate = s_myCertificates.ContainsKey(thumbprint);
 
@@ -145,7 +145,7 @@ namespace Infrastructure.Common
                     // If it has, then the Bridge itself has already installed that cert as part of the PUT request
                     // There's no need for us to do this in the BridgeClient.
                     string isLocalString;
-                    if (response.TryGetValue(IsLocalKeyName, out isLocalString))
+                    if (response.TryGetValue(IsLocalKeyResourceString, out isLocalString))
                     {
                         bool isLocal = false;
                         if (bool.TryParse(isLocalString, out isLocal) && isLocal)
@@ -157,12 +157,15 @@ namespace Infrastructure.Common
 
                 if (!foundLocalCertificate)
                 {
-                    // Request the certificate from the Bridge
+                    // GET the cert with thumbprint from the Bridge (returns cert in base64 format)
+                    requestParams = new Dictionary<string, string>();
+                    requestParams.Add(ThumbprintKeyResourceString, thumbprint);
+
                     string base64Cert = string.Empty;
                     response = BridgeClient.MakeResourceGetRequest(MachineCertificateResourceName, requestParams);
 
                     string certificateAsBase64;
-                    if (response.TryGetValue(CertificateKeyName, out certificateAsBase64))
+                    if (response.TryGetValue(CertificateKeyResourceString, out certificateAsBase64))
                     {
                         certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64));
                     }
@@ -177,7 +180,7 @@ namespace Infrastructure.Common
                         throw new Exception(
                             string.Format("Error retrieving {0} certificate from Bridge. Expected '{1}' key in response. Response contents:{2}{3}",
                                 s_LocalFqdn,
-                                CertificateKeyName,
+                                CertificateKeyResourceString,
                                 Environment.NewLine,
                                 sb.ToString()));
                     }

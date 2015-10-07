@@ -199,18 +199,11 @@ namespace Infrastructure.Common
             string uri = null;
             if (!responseContent.TryGetValue(EndpointResourceResponseUriKeyName, out uri) || String.IsNullOrWhiteSpace(uri))
             {
-                StringBuilder sb = new StringBuilder();
-                foreach (var pair in responseContent)
-                {
-                    sb.AppendFormat("{0}  {1} : {2}", Environment.NewLine, pair.Key, pair.Value);
-                }
-
-                throw new Exception("Invalid response from bridge: " + sb.ToString());
+                throw new Exception("Invalid response from bridge: " + WriteKeyValuePairsForResponseContent(responseContent));
             }
 
             return uri;
         }
-        
 
         internal static Dictionary<string,string> MakeResourcePutRequest(string resourceName, Dictionary<string, string> requestParameters)
         {
@@ -276,17 +269,7 @@ namespace Infrastructure.Common
 
             using (HttpClient httpClient = new HttpClient())
             {
-                StringBuilder uriBuilder = new StringBuilder(BridgeResourceEndpointAddress + resourceName);
-                if (requestParameters != null)
-                {
-                    uriBuilder.Append("?");
-                    foreach (var kvp in requestParameters)
-                    {
-                        // we currently rely on the caller to do any URLEncoding
-                        uriBuilder.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
-                    }
-                }
-                var uri = uriBuilder.ToString().TrimEnd('&');
+                string uri = CreateResourceUri(resourceName, requestParameters);
 
                 try
                 {
@@ -305,6 +288,33 @@ namespace Infrastructure.Common
                     throw new Exception(failureMessage, exc);
                 }
             }
+        }
+
+        private static string CreateResourceUri(string resourceName, Dictionary<string, string> requestParameters)
+        {
+            StringBuilder uriBuilder = new StringBuilder(BridgeResourceEndpointAddress + resourceName);
+            if (requestParameters != null)
+            {
+                uriBuilder.Append("?");
+                foreach (var kvp in requestParameters)
+                {
+                    // we currently rely on the caller to do any URLEncoding
+                    uriBuilder.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
+                }
+            }
+
+            return uriBuilder.ToString().TrimEnd('&');
+        }
+
+        private static string WriteKeyValuePairsForResponseContent(Dictionary<string, string> responseContent)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var pair in responseContent)
+            {
+                sb.AppendFormat("{0}  {1} : {2}", Environment.NewLine, pair.Key, pair.Value);
+            }
+
+            return sb.ToString();
         }
 
         enum BridgeState
