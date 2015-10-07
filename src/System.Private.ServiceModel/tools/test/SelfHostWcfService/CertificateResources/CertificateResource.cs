@@ -13,6 +13,9 @@ namespace WcfService.CertificateResources
     {
         protected const string certificateResourceString = "certificate";
         protected const string crlResourceString = "crl";
+        protected const string crlUriResourceString = "crlUri";
+        protected const string revokedCertificatesResourceString = "revokedCertificates";
+        protected const string revokeSerialNumberResourceString = "revoke";
         protected const string subjectResourceString = "subject";
         protected const string subjectssResourceString = "subjects";
         protected const string thumbprintResourceString = "thumbprint";
@@ -21,8 +24,10 @@ namespace WcfService.CertificateResources
 
         protected static string s_localHostname; 
         
-        // key: subject CN
-        protected static Dictionary<string, X509Certificate2> s_createdCerts = new Dictionary<string, X509Certificate2>();
+        // key: subject CN, value: X509Certificate2
+        protected static Dictionary<string, X509Certificate2> s_createdCertsBySubject = new Dictionary<string, X509Certificate2>();
+        // key: cert thumbprint, value: X509Certificate2
+        protected static Dictionary<string, X509Certificate2> s_createdCertsByThumbprint = new Dictionary<string, X509Certificate2>();
         protected static object s_certificateResourceLock = new object();
 
         public abstract ResourceResponse Get(ResourceRequestContext context);
@@ -46,7 +51,8 @@ namespace WcfService.CertificateResources
         {
             lock (s_certificateResourceLock)
             {
-                s_createdCerts.Clear();
+                s_createdCertsBySubject.Clear();
+                s_createdCertsByThumbprint.Clear();
             }
         }
     }

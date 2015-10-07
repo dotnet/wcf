@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -22,18 +23,34 @@ using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509Ke
 
 namespace WcfTestBridgeCommon
 {
+    // Not threadsafe. Callers should lock.
     public class CertificateGenerator
     {
+        private bool _isInitialized;
+
         // Settable properties prior to initialization
         private string _crlUri;
         private string _crlUriBridgeHost;
         private string _password;
         private TimeSpan _validityPeriod = TimeSpan.FromDays(1);
 
-        private bool _isInitialized;
+        // This can't be too short as there might be a time skew between machines,
+        // but also can't be too long, as the CRL is cached by the machine
+        private TimeSpan _crlValidityPeriod = TimeSpan.FromMinutes(2);
 
+        // Give the cert a grace period in case there's a time skew between machines
+        private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
+
+        private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
+        private const string _crlUriRelativePath = "/resource/WcfService.CertificateResources.CertificateRevocationListResource";
+        private const string _signatureAlthorithm = "SHA1WithRSAEncryption";
+        private const int _keyLengthInBits = 2048;
+        
         private static readonly X509V3CertificateGenerator _certGenerator = new X509V3CertificateGenerator();
         private static readonly X509V2CrlGenerator _crlGenerator = new X509V2CrlGenerator();
+
+        // key: thumbprint, value: revocation time
+        private static Dictionary<string, DateTime> _revokedCertificates = new Dictionary<string,DateTime>(); 
         
         private RsaKeyPairGenerator _keyPairGenerator;
         private SecureRandom _random;
@@ -46,17 +63,6 @@ namespace WcfTestBridgeCommon
         // by this instance will be signed by this Authority certificate and private key
         private AsymmetricCipherKeyPair _authorityKeyPair;
         private X509CertificateContainer _authorityCertificate;
-
-        // Only when requested, generate the CRL. We don't currently modify anything inside the CRL that will 
-        // cause it to be modified, but we might later if we need to generate certificates and revoke them
-        private X509Crl _crl;
-
-        private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
-        private const string _crlUriRelativePath = "/resource?name=WcfService.CertificateResources.CertificateRevocationListResource";
-        private const string _signatureAlthorithm = "SHA1WithRSAEncryption";
-        private const int _keyLengthInBits = 2048;
-        // Give the cert a grace period in case there's a time skew between machines 
-        private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
         public void Initialize()
         {
@@ -123,12 +129,8 @@ namespace WcfTestBridgeCommon
         {
             get
             {
-                if (_crl == null)
-                {
-                    EnsureInitialized(); 
-                    _crl = CreateCrl(_authorityCertificate.InternalCertificate);
-                }
-                return _crl.GetEncoded();
+                EnsureInitialized(); 
+                return CreateCrl(_authorityCertificate.InternalCertificate).GetEncoded();
             }
         }
 
@@ -186,6 +188,15 @@ namespace WcfTestBridgeCommon
         public string CrlUriRelativePath
         {
             get { return _crlUriRelativePath; }
+        }
+
+        public List<string> RevokedCertificates
+        {
+            get
+            {
+                List<string> retVal = new List<string>(_revokedCertificates.Keys);
+                return retVal; 
+            }
         }
 
         public TimeSpan ValidityPeriod
@@ -257,7 +268,7 @@ namespace WcfTestBridgeCommon
 
             _certGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
 
-            _certGenerator.SetSerialNumber(new BigInteger(7 /*sizeInBits*/, _random).Abs());
+            _certGenerator.SetSerialNumber(new BigInteger(64 /*sizeInBits*/, _random).Abs());
             _certGenerator.SetNotBefore(_validityNotBefore);
             _certGenerator.SetNotAfter(_validityNotAfter);
             _certGenerator.SetPublicKey(keyPair.Public);
@@ -336,20 +347,24 @@ namespace WcfTestBridgeCommon
 
         private X509Crl CreateCrl(X509Certificate signingCertificate)
         {
-            Contract.Assert(_crl == null, "We only expect the CRL to be generated once per instance of this class");
             EnsureInitialized();
             
             _crlGenerator.Reset();
 
             _crlGenerator.SetThisUpdate(_initializationDateTime);
-            _crlGenerator.SetNextUpdate(_validityNotAfter);
+            _crlGenerator.SetNextUpdate(DateTime.UtcNow.Add(_crlValidityPeriod));
             _crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
             _crlGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
             _crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
 
-            BigInteger crlNumber = new BigInteger(7, _random).Abs();
+            BigInteger crlNumber = new BigInteger(7 /*bits for the number*/, _random).Abs();
             _crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(crlNumber));
+
+            foreach (var kvp in _revokedCertificates)
+            {
+                _crlGenerator.AddCrlEntry(new BigInteger(kvp.Key, 16), kvp.Value, CrlReason.CessationOfOperation); 
+            }
 
             X509Crl crl = _crlGenerator.Generate(_authorityKeyPair.Private, _random);
             crl.Verify(_authorityKeyPair.Public);
@@ -401,6 +416,27 @@ namespace WcfTestBridgeCommon
             authorityX509Name = new X509Name(authorityKeyIdOrder, authorityKeyIdName);
 
             return authorityX509Name;
+        }
+
+        public bool RevokeCertificateByThumbprint(string thumbprint)
+        {
+            bool success = false;
+            BigInteger thumbprintBigInt = null;
+            try
+            {
+                thumbprintBigInt = new BigInteger(thumbprint, 16 /* radix */);
+                success = true;
+            }
+            catch
+            {
+            }
+
+            if (success && !_revokedCertificates.ContainsKey(thumbprint))
+            {
+                _revokedCertificates.Add(thumbprint, DateTime.UtcNow);
+            }
+
+            return success;
         }
 
         public class X509CertificateContainer

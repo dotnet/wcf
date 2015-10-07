@@ -14,20 +14,37 @@ namespace WcfService.CertificateResources
         {
             var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration); 
 
-            ResourceResponse response = new ResourceResponse();
-            response.RawResponse = certGenerator.CrlEncoded;
-
-            return response;
+            lock (s_certificateResourceLock)
+            {
+                ResourceResponse response = new ResourceResponse();
+                response.RawResponse = certGenerator.CrlEncoded;
+                return response;
+            }
         }
 
         public override ResourceResponse Put(ResourceRequestContext context)
         {
             var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration);
 
-            ResourceResponse response = new ResourceResponse();
-            response.Properties.Add("crlUri", certGenerator.CrlUri);
+            string thumbprint;
 
-            return response; 
+            lock(s_certificateResourceLock)
+            {
+                if (context.Properties.TryGetValue(revokeSerialNumberResourceString, out thumbprint) && !string.IsNullOrWhiteSpace(thumbprint))
+                {
+                    certGenerator.RevokeCertificateByThumbprint(thumbprint);
+                }
+
+
+                ResourceResponse response = new ResourceResponse();
+                response.Properties.Add(crlUriResourceString, certGenerator.CrlUri);
+
+                response.Properties.Add(
+                    revokedCertificatesResourceString, 
+                    string.Join<string>(",", certGenerator.RevokedCertificates));
+
+                return response;
+            }
         }
     }
 }
