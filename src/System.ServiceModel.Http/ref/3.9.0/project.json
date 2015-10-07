@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "System.ServiceModel.Http": "3.9.0"
+  },
+  "frameworks": {
+    "dotnet": {}
+  }
+}

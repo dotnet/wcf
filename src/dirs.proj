@@ -5,6 +5,7 @@
     <ExcludeProjects>System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\WcfService.csproj</ExcludeProjects>
   </PropertyGroup>
   <ItemGroup>
+    <Project Include="*\ref\**\*.*proj" Exclude="@(ExcludeProjects)" />
     <Project Include="*\src\*.csproj" Exclude="$(ExcludeProjects)" />
     <Project Include="*\src\*.vbproj" Exclude="$(ExcludeProjects)" />
     <Project Include="*\tests\**\*.csproj" Exclude="$(ExcludeProjects)" />

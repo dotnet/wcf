@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "System.ServiceModel.Security": "3.9.0"
+  },
+  "frameworks": {
+    "dotnet": {}
+  }
+}
