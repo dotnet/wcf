@@ -316,23 +316,34 @@ namespace Bridge
 
             while (true)
             {
-                Console.WriteLine("The Bridge is running and listening at {0}/{1}", 
+                Console.WriteLine();
+                Console.WriteLine("The Bridge is running");
+                Console.WriteLine("    Listening at {0}/{1}", 
                                     visibleAddress, BridgeControllerEndpoint);
 
                 if (commandLineArgs.AllowRemote)
                 {
-                    Console.WriteLine("Remote access is allowed from '{0}'", commandLineArgs.RemoteAddresses);
+                    Console.WriteLine("    Remote access is allowed from '{0}'", commandLineArgs.RemoteAddresses);
                 }
                 else
                 {
-                    Console.WriteLine("Remote access is disabled.");
+                    Console.WriteLine("    Remote access is disabled.");
                 }
 
-                Console.WriteLine("Type \"exit\" to stop the Bridge.");
+                Console.WriteLine("    Commands:");
+                Console.WriteLine("    \"cls\" to clear the screen");
+                Console.WriteLine("    \"exit\" to stop the Bridge");
+                Console.WriteLine(); 
+                Console.Write("Bridge> ");
+
                 string answer = Console.ReadLine();
-                if (String.Equals(answer, "exit", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(answer, "exit", StringComparison.OrdinalIgnoreCase))
                 {
                     break;
+                }
+                else if (string.Equals(answer, "cls", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.Clear(); 
                 }
             }
 
@@ -491,7 +502,7 @@ namespace Bridge
                 // Finally, apply all our command line arguments to the BridgeConfiguration,
                 // overwriting any values that were the default or came from the optional config file
                 BridgeConfiguration = new BridgeConfiguration(BridgeConfiguration, argumentDictionary);
-                
+
                 // Finish parsing the command line arguments that are not part of BridgeConfiguration
                 if (argumentDictionary.ContainsKey("allowRemote"))
                 {

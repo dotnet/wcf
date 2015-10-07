@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 
@@ -74,6 +75,7 @@ namespace Infrastructure.Common
                 }
             }
         }
+
         public static string GetResourceAddress(string resourceName)
         {
             EnsureBridgeIsRunning();
@@ -83,7 +85,7 @@ namespace Infrastructure.Common
             {
                 if (s_BridgeStatus == BridgeState.Started && !_Resources.TryGetValue(resourceName, out resourceAddress))
                 {
-                    resourceAddress = MakeResourcePutRequest(resourceName);
+                    resourceAddress = MakeEndpointResourcePutRequest(resourceName);
                     _Resources.Add(resourceName, resourceAddress);
                 }
             }
@@ -190,28 +192,57 @@ namespace Infrastructure.Common
             return sb.ToString();
         }
 
-        private static string MakeResourcePutRequest(string resourceName)
+        private static string MakeEndpointResourcePutRequest(string resourceName)
+        {
+            var responseContent = MakeResourcePutRequest(resourceName, null);
+
+            string uri = null;
+            if (!responseContent.TryGetValue(EndpointResourceResponseUriKeyName, out uri) || String.IsNullOrWhiteSpace(uri))
+            {
+                throw new Exception("Invalid response from bridge: " + FormatKeyValuePairsAsString(responseContent));
+            }
+
+            return uri;
+        }
+
+        internal static Dictionary<string,string> MakeResourcePutRequest(string resourceName, Dictionary<string, string> requestParameters)
         {
             EnsureBridgeIsRunning();
 
+            string requestParametersResourceName; 
+            if (requestParameters != null 
+                && requestParameters.TryGetValue(EndpointResourceRequestNameKeyName, out requestParametersResourceName) 
+                && !string.Equals(resourceName, requestParametersResourceName))
+            {
+                throw new ArgumentException(
+                    string.Format("A PUT request to the bridge included parameter 'name' = '{0}' in its requestParameters, but the 'resourceName' = '{1}' specified was different", requestParametersResourceName, resourceName),
+                    "requestParameters");
+            }
+
             using (HttpClient httpClient = new HttpClient())
             {
-                var emptyContent = new StringContent("{}", Encoding.UTF8, "application/json");
+                StringContent content; 
+                if (requestParameters != null)
+                {
+                    content = new StringContent(
+                            JsonSerializer.SerializeDictionary(requestParameters),
+                            Encoding.UTF8,
+                            "application/json");
+                }
+                else
+                {
+                    content  = new StringContent("{}", Encoding.UTF8, "application/json");
+                }
 
                 try
-                {                    
-                    var response = httpClient.PutAsync(BridgeResourceEndpointAddress + resourceName, emptyContent).GetAwaiter().GetResult();
+                {
+                    var response = httpClient.PutAsync(BridgeResourceEndpointAddress + resourceName, content).GetAwaiter().GetResult();
                     EnsureSuccessfulResponse(response);
 
                     var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     Dictionary<string, string> properties = JsonSerializer.DeserializeDictionary(responseContent);
-                    string uri = null;
-                    if (!properties.TryGetValue(EndpointResourceResponseUriKeyName, out uri) || String.IsNullOrWhiteSpace(uri))
-                    {
-                        throw new Exception("Invalid response from bridge: " + responseContent);
-                    }
 
-                    return uri;
+                    return properties;
                 }
                 catch (Exception exc)
                 {
@@ -222,33 +253,68 @@ namespace Infrastructure.Common
             }
         }
 
-        private static string MakeResourceGetRequest(string resourceName)
+        internal static Dictionary<string, string> MakeResourceGetRequest(string resourceName, Dictionary<string, string> requestParameters)
         {
             EnsureBridgeIsRunning();
 
+            string requestParametersResourceName;
+            if (requestParameters != null
+                && requestParameters.TryGetValue(EndpointResourceRequestNameKeyName, out requestParametersResourceName)
+                && !string.Equals(resourceName, requestParametersResourceName))
+            {
+                throw new ArgumentException(
+                    string.Format("A GET request to the bridge included parameter 'name' = '{0}' in its requestParameters, but the 'resourceName' = '{1}' specified was different", requestParametersResourceName, resourceName),
+                    "requestParameters");
+            }
+
             using (HttpClient httpClient = new HttpClient())
             {
+                string uri = CreateResourceUri(resourceName, requestParameters);
+
                 try
                 {
-                    var response = httpClient.GetAsync(BridgeResourceEndpointAddress + resourceName).GetAwaiter().GetResult();
+                    var response = httpClient.GetAsync(uri).GetAwaiter().GetResult();
                     EnsureSuccessfulResponse(response);
-                    string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Dictionary<string, string> properties = JsonSerializer.DeserializeDictionary(responseContent);
-                    string uri = null;
-                    if (!properties.TryGetValue(EndpointResourceResponseUriKeyName, out uri) || String.IsNullOrWhiteSpace(uri))
-                    {
-                        throw new Exception("Invalid response from bridge: " + responseContent);
-                    }
 
-                    return uri;
+                    var responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    Dictionary<string, string> properties = JsonSerializer.DeserializeDictionary(responseContent);
+
+                    return properties;
                 }
                 catch (Exception exc)
                 {
-                    string failureMessage = String.Format("A Get request was issued to '{0}{1}' but encountered exception {2}",
-                                                           BridgeResourceEndpointAddress, resourceName, exc.Message);
+                    string failureMessage = String.Format("A GET request was issued to '{0}' for resource '{1}' but encountered exception {2}",
+                    uri, resourceName, exc.Message);
                     throw new Exception(failureMessage, exc);
                 }
             }
+        }
+
+        private static string CreateResourceUri(string resourceName, Dictionary<string, string> requestParameters)
+        {
+            StringBuilder uriBuilder = new StringBuilder(BridgeResourceEndpointAddress + resourceName);
+            if (requestParameters != null)
+            {
+                uriBuilder.Append("?");
+                foreach (var kvp in requestParameters)
+                {
+                    // we currently rely on the caller to do any URLEncoding
+                    uriBuilder.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
+                }
+            }
+
+            return uriBuilder.ToString().TrimEnd('&');
+        }
+
+        private static string FormatKeyValuePairsAsString(Dictionary<string, string> dictionary)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var pair in dictionary)
+            {
+                sb.AppendFormat("{0}  {1} : {2}", Environment.NewLine, pair.Key, pair.Value);
+            }
+
+            return sb.ToString();
         }
 
         enum BridgeState

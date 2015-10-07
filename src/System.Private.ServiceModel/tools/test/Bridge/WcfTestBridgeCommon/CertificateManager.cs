@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
 namespace WcfTestBridgeCommon
@@ -13,17 +14,26 @@ namespace WcfTestBridgeCommon
     {
         private static object s_certificateLock = new object();
 
-        // Keyed by base file name of the certificate
-        private static Dictionary<string, CertificateCacheEntry> s_rootCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
+        // Dictionary of certificates installed by CertificateManager
+        // Keyed by the Subject of the certificate
         private static Dictionary<string, CertificateCacheEntry> s_myCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
+        private static Dictionary<string, CertificateCacheEntry> s_rootCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
 
         // Keyed by port, value is cert thumbprint
         private static Dictionary<int, string> s_sslPorts = new Dictionary<int, string>();
+        
+        // When we install certificates via CreateAndInstallMachineCertificates, put local cert here 
+        // for reference when we need to add the sslport references
+        private static X509Certificate2 s_localCertificate = null;
+
+        public static EventHandler BridgeConfigurationChanged;
 
         // Any change to the Bridge resource folder uninstalls all the certificates
         // installed by those resources.
         public static void OnResourceFolderChanged(string oldFolder, string newFolder)
         {
+            BridgeConfigurationChanged(null, new EventArgs());
+
             // Unintall only the certificates this process added
             UninstallAllCertificates(force: false);
         }
@@ -41,25 +51,6 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        // Given a certificate base file name, this method will create and
-        // return its full path as found in the Bridge Resource Folder.
-        private static string CreateCertificateFilePath(BridgeConfiguration configuration, string certificateName)
-        {
-            if (String.IsNullOrWhiteSpace(configuration.BridgeResourceFolder))
-            {
-                throw new ArgumentNullException("The BridgeResourceFolder has not been set.", "BridgeResourceFolder");
-            }
-
-            string path = Path.Combine(Path.Combine(configuration.BridgeResourceFolder, "Certificates"), certificateName);
-            if (!File.Exists(path))
-            {
-                throw new InvalidOperationException(String.Format("The requested certificate file at {0} does not exist.",
-                                                    path));
-            }
-
-            return path;
-        }
-
         // Returns the certificate matching the given thumbprint from the given store.
         // Returns null if not found.
         private static X509Certificate2 CertificateFromThumbprint(X509Store store, string thumbprint)
@@ -70,8 +61,8 @@ namespace WcfTestBridgeCommon
 
         // Adds the given certificate to the given store unless it is
         // already present.  Returns 'true' if the certificate was added.
-        private static bool AddToStoreIfNeeded(StoreName storeName, 
-                                               StoreLocation storeLocation, 
+        private static bool AddToStoreIfNeeded(StoreName storeName,
+                                               StoreLocation storeLocation,
                                                X509Certificate2 certificate)
         {
             X509Store store = null;
@@ -84,8 +75,12 @@ namespace WcfTestBridgeCommon
                 if (existingCert == null)
                 {
                     store.Add(certificate);
-                    Console.WriteLine("Added to store '{0}', location '{1}', certificate '{2}'", 
-                                       storeName, storeLocation, certificate.SubjectName.Name);
+                    Trace.WriteLine(string.Format("[CertificateManager] Added certificate to store: "));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreName", storeName));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreLocation", storeLocation));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "CN", certificate.SubjectName.Name));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey", certificate.HasPrivateKey));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", certificate.Thumbprint));
                 }
 
             }
@@ -100,62 +95,95 @@ namespace WcfTestBridgeCommon
             return existingCert == null;
         }
 
-        // Install the certificate in the given file path into the Root store and returns its thumbprint.
+        // Install the certificate into the Root store and returns its thumbprint.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallRootCertificate(BridgeConfiguration configuration, string certificateName)
+        public static string InstallCertificateToRootStore(X509Certificate2 certificate)
         {
             lock (s_certificateLock)
             {
                 CertificateCacheEntry entry = null;
-                if (s_rootCertificates.TryGetValue(certificateName, out entry))
+                if (s_rootCertificates.TryGetValue(certificate.Subject, out entry))
                 {
-                    return entry.ThumbPrint;
+                    return entry.Thumbprint;
                 }
 
-                string certificateFilePath = CreateCertificateFilePath(configuration, certificateName);
-                X509Certificate2 cert = new X509Certificate2(certificateFilePath);
-                bool added = AddToStoreIfNeeded(StoreName.Root, StoreLocation.LocalMachine, cert);
-                s_rootCertificates[certificateName] = new CertificateCacheEntry
+                bool added = AddToStoreIfNeeded(StoreName.Root, StoreLocation.LocalMachine, certificate);
+                s_rootCertificates[certificate.Subject] = new CertificateCacheEntry
                 {
-                    ThumbPrint = cert.Thumbprint,
+                    Thumbprint = certificate.Thumbprint,
                     AddedToStore = added
                 };
 
-                return cert.Thumbprint;
+                return certificate.Thumbprint;
+
             }
         }
 
-        // Install the certificate in the given file path into the My store.
+        // Install the certificate into the My store.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallMyCertificate(BridgeConfiguration configuration, string certificateName)
+        public static string InstallCertificateToMyStore(X509Certificate2 certificate, X509Certificate2 rootCertificate)
         {
             // Installing any MY certificate guarantees the certificate authority is loaded first
-            InstallRootCertificate(configuration, configuration.BridgeCertificateAuthority);
+            InstallCertificateToRootStore(rootCertificate);
 
             lock (s_certificateLock)
             {
                 CertificateCacheEntry entry = null;
-                if (s_myCertificates.TryGetValue(certificateName, out entry))
+                if (s_myCertificates.TryGetValue(certificate.Subject, out entry))
                 {
-                    return entry.ThumbPrint;
+                    return entry.Thumbprint;
                 }
 
-                string certificateFilePath = CreateCertificateFilePath(configuration, certificateName);
-                X509Certificate2 cert = new X509Certificate2();
-                // "test" is currently the required password to allow exportable private keys
-                cert.Import(certificateFilePath, "test", X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
-
-                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, cert);
-                s_myCertificates[certificateName] = new CertificateCacheEntry
+                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+                s_myCertificates[certificate.Subject] = new CertificateCacheEntry
                 {
-                    ThumbPrint = cert.Thumbprint,
+                    Thumbprint = certificate.Thumbprint,
                     AddedToStore = added
                 };
 
-                return cert.Thumbprint;
+                return certificate.Thumbprint;
             }
+        }
+
+        // When called, generates the a cert for the machine DNS name with SAN localhost, and installs both certs
+        // returns thumbprint of the machine certs
+        public static X509Certificate2 CreateAndInstallLocalMachineCertificates(CertificateGenerator certificateGenerator)
+        {
+            if (certificateGenerator == null)
+            {
+                throw new ArgumentNullException("certificateGenerator");
+            }
+
+            lock (s_certificateLock)
+            {
+                if (s_localCertificate != null)
+                {
+                    return s_localCertificate;
+                }
+
+                Trace.WriteLine("[CertificateManager] Installing Root and Machine certificates to machine store.");
+
+                // At this point, we know we haven't generated the certs yet, or the operation is completing on another thread
+                // Certificate generation is time-consuming, so we want to make sure that we don't unnecessarily generate a cert
+
+                var rootCertificate = certificateGenerator.AuthorityCertificate.Certificate;
+
+                var fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
+                var hostname = fqdn.Split('.')[0];
+
+                // always create a certificate locally for the current machine's fully qualified domain name, 
+                // hostname, and "localhost". 
+                var hostCert = certificateGenerator.CreateCertificate(fqdn, hostname, "localhost").Certificate;
+
+                // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
+                // only the first-created cert will win
+                InstallCertificateToMyStore(hostCert, rootCertificate);
+                s_localCertificate = hostCert;
+            }
+
+            return s_localCertificate;
         }
 
         public static void UninstallAllRootCertificates(bool force)
@@ -165,6 +193,11 @@ namespace WcfTestBridgeCommon
 
         public static void UninstallAllMyCertificates(bool force)
         {
+            lock (s_certificateLock)
+            {
+                s_localCertificate = null;
+            }
+
             UninstallCertificates(StoreName.My, StoreLocation.LocalMachine, s_myCertificates, force);
         }
 
@@ -195,12 +228,15 @@ namespace WcfTestBridgeCommon
                         // or if 'force' has asked to remove all.
                         if (force || pair.Value.AddedToStore)
                         {
-                            X509Certificate2 cert = CertificateFromThumbprint(store, pair.Value.ThumbPrint);
+                            X509Certificate2 cert = CertificateFromThumbprint(store, pair.Value.Thumbprint);
                             if (cert != null)
                             {
                                 store.Remove(cert);
-                                Console.WriteLine("Uninstalled from store '{0}', location '{1}', cert '{2}'",
-                                                    storeName, storeLocation, cert.SubjectName.Name);
+                                Trace.WriteLine(string.Format("[CertificateManager] Removed certificate from store: "));
+                                Trace.WriteLine(string.Format("    {0} = {1}", "StoreName", storeName));
+                                Trace.WriteLine(string.Format("    {0} = {1}", "StoreLocation", storeLocation));
+                                Trace.WriteLine(string.Format("    {0} = {1}", "CN", cert.SubjectName.Name));
+                                Trace.WriteLine(string.Format("    {0} = {1}", "Thumbpint", cert.Thumbprint));
                             }
                         }
                     }
@@ -217,6 +253,48 @@ namespace WcfTestBridgeCommon
             }
         }
 
+        private static void UninstallAllCertificatesByIssuer(StoreName storeName, 
+                                                        StoreLocation storeLocation,
+                                                        Dictionary<string, CertificateCacheEntry> cache,
+                                                        string issuerDistinguishedName)
+        {
+            lock (s_certificateLock)
+            {
+                X509Store store = null;
+
+                try
+                {
+                    store = new X509Store(storeName, storeLocation);
+                    store.Open(OpenFlags.ReadWrite);
+
+                    var collection = store.Certificates.Find(X509FindType.FindByIssuerDistinguishedName, issuerDistinguishedName, false);
+
+                    Trace.WriteLine(string.Format("[CertificateManager] Forcibly removing {0} certificates from store where:", collection.Count));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreName", storeName));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "StoreLocation", storeLocation));
+                    Trace.WriteLine(string.Format("    {0} = {1}", "IssuedBy", issuerDistinguishedName));
+
+                    foreach (var cert in collection)
+                    {
+                        Trace.WriteLine(string.Format("        {0} = {1}", "CN", cert.SubjectName.Name));
+                        Trace.WriteLine(string.Format("        {0} = {1}", "Thumbpint", cert.Thumbprint));
+                    }
+
+                    store.RemoveRange(collection);
+                }
+                finally
+                {
+                    cache.Clear(); 
+
+                    if (store != null)
+                    {
+                        store.Close(); 
+                    }
+                }
+
+            }
+        }
+
         public static void InstallSSLPortCertificate(string certThumbprint, int port)
         {
             lock (s_certificateLock)
@@ -230,24 +308,25 @@ namespace WcfTestBridgeCommon
                 startInfo.Arguments = String.Format("http add sslcert ipport=0.0.0.0:{0} certhash={1} appid={2}",
                                                        port, certThumbprint, "{00000000-0000-0000-0000-000000000000}");
                 startInfo.FileName = "netsh";
-                Console.WriteLine("Executing: {0} {1}", startInfo.FileName, startInfo.Arguments);
+                Console.WriteLine("[CertificateManager] Executing {0} to install an SSL port certificate: ", startInfo.FileName);
+                Console.WriteLine("    {0} {1}", startInfo.FileName, startInfo.Arguments);
                 startInfo.UseShellExecute = false;
                 startInfo.RedirectStandardOutput = true;
                 startInfo.RedirectStandardError = true;
                 using (Process process = Process.Start(startInfo))
                 {
                     process.WaitForExit();
-                    Console.WriteLine("Process exit code was {0}", process.ExitCode);
+                    Console.WriteLine("[CertificateManager] Process exit code was {0}", process.ExitCode);
                     string output = process.StandardOutput.ReadToEnd();
                     if (!String.IsNullOrWhiteSpace(output))
                     {
-                        Console.WriteLine("stdout was: {0}", output);
+                        Console.WriteLine("[CertificateManager] stdout was: {0}", output);
                     }
 
                     output = process.StandardError.ReadToEnd();
                     if (!String.IsNullOrWhiteSpace(output))
                     {
-                        Console.WriteLine("stderr was: {0}", output);
+                        Console.WriteLine("[CertificateManager] stderr was: {0}", output);
                     }
                 }
 
@@ -274,7 +353,9 @@ namespace WcfTestBridgeCommon
                 startInfo.Arguments = String.Format("http delete sslcert ipport=0.0.0.0:{0}",
                                                        port);
                 startInfo.FileName = "netsh";
-                Console.WriteLine("Executing: {0} {1}", startInfo.FileName, startInfo.Arguments);
+                Console.WriteLine("[CertificateManager] Executing {0} to uninstall an SSL port certificate: ", startInfo.FileName);
+                Console.WriteLine("    {0} {1}", startInfo.FileName, startInfo.Arguments);
+
                 startInfo.UseShellExecute = false;
                 startInfo.RedirectStandardOutput = true;
                 startInfo.RedirectStandardError = true;
@@ -286,23 +367,23 @@ namespace WcfTestBridgeCommon
                     string output = process.StandardOutput.ReadToEnd();
                     if (!String.IsNullOrWhiteSpace(output))
                     {
-                        Console.WriteLine("stdout was: {0}", output);
+                        Console.WriteLine("[CertificateManager] stdout was: {0}", output);
                     }
 
                     output = process.StandardError.ReadToEnd();
                     if (!String.IsNullOrWhiteSpace(output))
                     {
-                        Console.WriteLine("stderr was: {0}", output);
+                        Console.WriteLine("[CertificateManager] stderr was: {0}", output);
                     }
                 }
 
                 if (exitCode == 0)
                 {
-                    Console.WriteLine("Removed sslCert for port {0}", port);
+                    Console.WriteLine("[CertificateManager] Removed sslCert for port {0}", port);
                 }
                 else
                 {
-                    Console.WriteLine("Did not remove sslCert for port {0}", port);
+                    Console.WriteLine("[CertificateManager] Did not remove sslCert for port {0}", port);
                 }
 
                 s_sslPorts.Remove(port);
@@ -313,9 +394,8 @@ namespace WcfTestBridgeCommon
         // kept in a cache for reuse and eventual removal.
         class CertificateCacheEntry
         {
-            public string ThumbPrint { get; set; }
+            public string Thumbprint { get; set; }
             public bool AddedToStore { get; set; }
-
         }
     }
 }

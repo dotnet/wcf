@@ -43,13 +43,13 @@
         <Value>$(BridgeRemoteEnabled)</Value>
         <DefaultValue>false</DefaultValue>
       </TestProperty>
-      <TestProperty Include="BridgeCertificateAuthority">
-        <Value>$(BridgeCertificateAuthority)</Value>
-        <DefaultValue>WcfBridge_RootCA.cer</DefaultValue>
+      <TestProperty Include="BridgeCertificatePassword">
+        <Value>$(BridgeCertificatePassword)</Value>
+        <DefaultValue>test</DefaultValue>
       </TestProperty>
-      <TestProperty Include="BridgeHttpsCertificate">
-        <Value>$(BridgeHttpsCertificate)</Value>
-        <DefaultValue>WcfBridge_localhost.pfx</DefaultValue>
+      <TestProperty Include="BridgeCertificateValidityPeriod">
+        <Value>$(BridgeCertificateValidityPeriod)</Value>
+        <DefaultValue>1.00:00:00</DefaultValue>
       </TestProperty>
       <TestProperty Include="UseFiddlerUrl">
         <Value>$(UseFiddlerUrl)</Value>
