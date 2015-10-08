@@ -716,7 +716,7 @@
           "lib/DNXCore50/System.Runtime.Serialization.Xml.dll": {}
         }
       },
-      "System.Security.Claims/4.0.0": {
+      "System.Security.Claims/4.0.1-beta-23408": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.0",
@@ -1744,7 +1744,7 @@
           "lib/netcore50/System.Runtime.WindowsRuntime.dll": {}
         }
       },
-      "System.Security.Claims/4.0.0": {
+      "System.Security.Claims/4.0.1-beta-23408": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.0",
@@ -3561,35 +3561,35 @@
         "System.Runtime.WindowsRuntime.nuspec"
       ]
     },
-    "System.Security.Claims/4.0.0": {
+    "System.Security.Claims/4.0.1-beta-23408": {
       "type": "package",
       "serviceable": true,
-      "sha512": "94NFR/7JN3YdyTH7hl2iSvYmdA8aqShriTHectcK+EbizT71YczMaG6LuqJBQP/HWo66AQyikYYM9aw+4EzGXg==",
+      "sha512": "9rsYgMq/0OqUX9xKlNUkOvaBaZETICCGd7SPcFPv+/bMYte2+PMD/tZpxFrbiXpB2211mHYk/wBVwejEyZuGcQ==",
       "files": [
+        "lib/dotnet/de/System.Security.Claims.xml",
+        "lib/dotnet/es/System.Security.Claims.xml",
+        "lib/dotnet/fr/System.Security.Claims.xml",
+        "lib/dotnet/it/System.Security.Claims.xml",
+        "lib/dotnet/ja/System.Security.Claims.xml",
+        "lib/dotnet/ko/System.Security.Claims.xml",
+        "lib/dotnet/ru/System.Security.Claims.xml",
         "lib/dotnet/System.Security.Claims.dll",
+        "lib/dotnet/System.Security.Claims.xml",
+        "lib/dotnet/zh-hans/System.Security.Claims.xml",
+        "lib/dotnet/zh-hant/System.Security.Claims.xml",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
         "lib/net46/System.Security.Claims.dll",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
-        "ref/dotnet/de/System.Security.Claims.xml",
-        "ref/dotnet/es/System.Security.Claims.xml",
-        "ref/dotnet/fr/System.Security.Claims.xml",
-        "ref/dotnet/it/System.Security.Claims.xml",
-        "ref/dotnet/ja/System.Security.Claims.xml",
-        "ref/dotnet/ko/System.Security.Claims.xml",
-        "ref/dotnet/ru/System.Security.Claims.xml",
         "ref/dotnet/System.Security.Claims.dll",
-        "ref/dotnet/System.Security.Claims.xml",
-        "ref/dotnet/zh-hans/System.Security.Claims.xml",
-        "ref/dotnet/zh-hant/System.Security.Claims.xml",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
         "ref/net46/System.Security.Claims.dll",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
-        "System.Security.Claims.4.0.0.nupkg",
-        "System.Security.Claims.4.0.0.nupkg.sha512",
+        "System.Security.Claims.4.0.1-beta-23408.nupkg",
+        "System.Security.Claims.4.0.1-beta-23408.nupkg.sha512",
         "System.Security.Claims.nuspec"
       ]
     },
@@ -4210,7 +4210,7 @@
       "System.Runtime.Handles >= 4.0.0",
       "System.Runtime.InteropServices >= 4.0.20-beta-*",
       "System.Runtime.Serialization.Xml >= 4.0.10",
-      "System.Security.Claims >= 4.0.0",
+      "System.Security.Claims >= 4.0.1-beta-*",
       "System.Security.Cryptography.X509Certificates >= 4.0.0-beta-*",
       "System.Security.Principal >= 4.0.0",
       "System.Security.Principal.Windows >= 4.0.0-beta-*",
