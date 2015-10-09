@@ -28,7 +28,7 @@ def project = 'dotnet/wcf'
             steps {
                 // Copy artifacts from all of the required upstream jobs
             
-                copyArtifacts('dotnet_coreclr_linux_release') {
+                copyArtifacts('dotnet_coreclr/release_ubuntu') {
                     excludePatterns('**/testResults.xml', '**/*.ni.dll')
                     buildSelector {
                         latestSuccessful(true)
@@ -36,15 +36,7 @@ def project = 'dotnet/wcf'
                     targetDirectory('coreclr')
                 }
                 
-                copyArtifacts('dotnet_corefx_windows_debug') {
-                    excludePatterns('**/testResults.xml', '**/*.ni.dll', 'bin/tests/**')
-                    buildSelector {
-                        latestSuccessful(true)
-                    }
-                    targetDirectory('corefx')
-                }
-                
-                copyArtifacts('dotnet_coreclr_windows_release') {
+                copyArtifacts('dotnet_coreclr/release_windows_nt') {
                     includePatterns('bin/Product/Linux*/**')
                     excludePatterns('**/testResults.xml', '**/*.ni.dll')
                     buildSelector {
@@ -192,12 +184,15 @@ def project = 'dotnet/wcf'
         def jobName = "linux_${configurationJobName}"
         
         def linuxFlowJob = buildFlowJob(Utilities.getFullJobName(project, jobName, isPR)) {
+            def buildJobName = Utilities.getFolderName(project) + '/' + Utilities.getFullJobName(project, jobName + '_bld', isPR)
+            def testJobName = Utilities.getFolderName(project) + '/' + Utilities.getFullJobName(project, jobName + '_tst', isPR)
+            
             buildFlow('''
 // Build the Linux _bld job
-def linuxBuildJob = build(\"dotnet_wcf/''' + jobName + '''_bld\")
+def linuxBuildJob = build(\"''' + buildJobName + '''\")
 // Pass this to the test job.  Include the parameters
 build(params + [WCF_LINUX_BUILD_NUMBER: linuxBuildJob.build.number], 
-    \"dotnet_wcf/linux_''' + configurationJobName + '''_tst\")
+    \"''' + testJobName + '''\")
             ''')
 
             // Needs a workspace
