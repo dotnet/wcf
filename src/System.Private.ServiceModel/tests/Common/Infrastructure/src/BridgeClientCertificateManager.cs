@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -26,26 +25,12 @@ namespace Infrastructure.Common
         private const string CertificateKeyName = "certificate";
         private const string IsLocalKeyName = "isLocal";
 
-        // Keyed by the thumbprint of the certificate
-        private static string s_LocalFqdn = string.Empty;
+        private static string s_clientCertSubject = "WCF Client Certificate";
 
         // Dictionary of certificates installed by CertificateManager
         // Keyed by the Thumbprint of the certificate
         private static Dictionary<string, CertificateCacheEntry> s_myCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
         private static Dictionary<string, CertificateCacheEntry> s_rootCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
-
-        private static string LocalFqdn
-        {
-            get
-            {
-                // Get an FQDN for the local machine and cache it
-                if (string.IsNullOrEmpty(s_LocalFqdn))
-                {
-                    s_LocalFqdn = Dns.GetHostEntryAsync("127.0.0.1").GetAwaiter().GetResult().HostName;
-                }
-                return s_LocalFqdn;
-            }
-        }
 
         // Installs the root certificate from the bridge 
         // Needed for all tests so we trust the incoming certificate coming from the service/bridge
@@ -128,7 +113,7 @@ namespace Infrastructure.Common
 
             // PUT the Machine name to the Bridge (returns thumbprint)
             Dictionary<string, string> requestParams = new Dictionary<string, string>();
-            requestParams.Add(SubjectKeyName, LocalFqdn);
+            requestParams.Add(SubjectKeyName, s_clientCertSubject);
 
             var response = BridgeClient.MakeResourcePutRequest(MachineCertificateResourceName, requestParams);
 
@@ -178,8 +163,9 @@ namespace Infrastructure.Common
                         }
 
                         throw new Exception(
-                            string.Format("Error retrieving {0} certificate from Bridge. Expected '{1}' key in response. Response contents:{2}{3}",
-                                s_LocalFqdn,
+                            string.Format("Error retrieving {0} certificate from Bridge, thumbprint '{1}'.\r\nExpected '{2}' key in response. Response contents:{3}{4}",
+                                s_clientCertSubject,
+                                thumbprint,
                                 CertificateKeyName,
                                 Environment.NewLine,
                                 sb.ToString()));
