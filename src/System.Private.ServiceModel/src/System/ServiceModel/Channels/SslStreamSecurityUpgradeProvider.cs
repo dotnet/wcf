@@ -338,6 +338,10 @@ namespace System.ServiceModel.Channels
 
         protected override Stream OnAcceptUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
         {
+#if FEATURE_NETNATIVE
+            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeAcceptor.OnAcceptUpgrade");
+#else // !FEATURE_NETNATIVE
+
             if (TD.SslOnAcceptUpgradeIsEnabled())
             {
                 TD.SslOnAcceptUpgrade(this.EventTraceActivity);
@@ -370,6 +374,7 @@ namespace System.ServiceModel.Channels
             }
 
             return sslStream;
+#endif // !FEATURE_NETNATIVE
         }
 
         protected override IAsyncResult OnBeginAcceptUpgrade(Stream stream, AsyncCallback callback, object state)
@@ -390,7 +395,7 @@ namespace System.ServiceModel.Channels
             {
                 if (certificate == null)
                 {
-                    Contract.Assert(certificate != null, "certificate MUST NOT be null"); 
+                    Contract.Assert(certificate != null, "certificate MUST NOT be null");
                     return false;
                 }
                 // Note: add ref to handle since the caller will reset the cert after the callback return.
@@ -439,7 +444,9 @@ namespace System.ServiceModel.Channels
         private X509SecurityToken _clientToken;
         private SecurityTokenAuthenticator _serverCertificateAuthenticator;
         private ChannelBinding _channelBindingToken;
+#if !FEATURE_NETNATIVE
         private static LocalCertificateSelectionCallback s_clientCertificateSelectionCallback;
+#endif // !FEATURE_NETNATIVE
 
         public SslStreamSecurityUpgradeInitiator(SslStreamSecurityUpgradeProvider parent,
             EndpointAddress remoteAddress, Uri via)
@@ -476,6 +483,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
+#if !FEATURE_NETNATIVE
         private static LocalCertificateSelectionCallback ClientCertificateSelectionCallback
         {
             get
@@ -488,6 +496,7 @@ namespace System.ServiceModel.Channels
                 return s_clientCertificateSelectionCallback;
             }
         }
+#endif //!FEATURE_NETNATIVE
 
         internal ChannelBinding ChannelBinding
         {
@@ -583,6 +592,10 @@ namespace System.ServiceModel.Channels
 
         protected override Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
         {
+#if FEATURE_NETNATIVE
+            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator.InInitiateUpgrade");
+#else // !FEATURE_NETNATIVE
+
             if (TD.SslOnInitiateUpgradeIsEnabled())
             {
                 TD.SslOnInitiateUpgrade();
@@ -628,6 +641,7 @@ namespace System.ServiceModel.Channels
             }
 
             return sslStream;
+#endif //!FEATURE_NETNATIVE
         }
 
         private static X509Certificate SelectClientCertificate(object sender, string targetHost,
