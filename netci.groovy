@@ -28,7 +28,7 @@ def project = 'dotnet/wcf'
             steps {
                 // Copy artifacts from all of the required upstream jobs
             
-                copyArtifacts('dotnet_coreclr_linux_release') {
+                copyArtifacts('dotnet_coreclr/release_ubuntu') {
                     excludePatterns('**/testResults.xml', '**/*.ni.dll')
                     buildSelector {
                         latestSuccessful(true)
@@ -36,15 +36,7 @@ def project = 'dotnet/wcf'
                     targetDirectory('coreclr')
                 }
                 
-                copyArtifacts('dotnet_corefx_windows_debug') {
-                    excludePatterns('**/testResults.xml', '**/*.ni.dll', 'bin/tests/**')
-                    buildSelector {
-                        latestSuccessful(true)
-                    }
-                    targetDirectory('corefx')
-                }
-                
-                copyArtifacts('dotnet_coreclr_windows_release') {
+                copyArtifacts('dotnet_coreclr/release_windows_nt') {
                     includePatterns('bin/Product/Linux*/**')
                     excludePatterns('**/testResults.xml', '**/*.ni.dll')
                     buildSelector {
