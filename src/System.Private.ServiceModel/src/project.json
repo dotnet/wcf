@@ -18,7 +18,6 @@
     "System.Linq.Queryable": "4.0.0",
     "System.Net.Http": "4.0.1-beta-*",
     "System.Net.Primitives": "4.0.10",
-    "System.Net.Security": "4.0.0-beta-*",
     "System.Net.WebHeaderCollection": "4.0.0",
     "System.Net.WebSockets": "4.0.0-beta-*",
     "System.Net.WebSockets.Client": "4.0.0-beta-*",
@@ -51,6 +50,7 @@
     "dnxcore50": {
       "dependencies": {
         "System.Net.NameResolution": "4.0.0-beta-*",
+        "System.Net.Security": "4.0.0-beta-*",
         "System.Net.Sockets": "4.0.10-beta-*"
       }
     },

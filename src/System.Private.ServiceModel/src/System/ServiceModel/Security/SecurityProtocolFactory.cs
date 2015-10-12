@@ -194,12 +194,6 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public ExtendedProtectionPolicy ExtendedProtectionPolicy
-        {
-            get { return _extendedProtectionPolicy; }
-            set { _extendedProtectionPolicy = value; }
-        }
-
         internal bool IsDuplexReply
         {
             get
