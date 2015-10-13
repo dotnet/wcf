@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
 using Infrastructure.Common;
 
 public static partial class Endpoints
@@ -50,6 +49,16 @@ public static partial class Endpoints
     public static string HttpProtocolError_Address
     {
         get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; }
+    }
+
+    public static string WebSocketHttpDuplexBinaryStreamed_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpDuplexBinaryStreamedResource"); }
+    }
+
+    public static string WebSocketHttpRequestReplyBinaryStreamed_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpRequestReplyBinaryStreamedResource"); }
     }
 
     // HTTPS Addresses
@@ -122,6 +131,15 @@ public static partial class Endpoints
         {
             BridgeClientCertificateManager.InstallRootCertificateFromBridge();
             return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsSoap12Resource");
+        }
+    }
+
+    public static string WebSocketHttpsDuplexBinaryStreamed_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsDuplexBinaryStreamedResource");
         }
     }
 
