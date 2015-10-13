@@ -28,7 +28,6 @@ public static class TextMessageEncodingBindingElementTest
 
     [Theory]
     [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
-    [ActiveIssue(333, PlatformID.AnyUnix)]
     public static void WriteEncoding_Property_Set_Throws_For_Invalid_Encodings(Encoding encoding)
     {
         TextMessageEncodingBindingElement element = new TextMessageEncodingBindingElement();
