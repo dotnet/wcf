@@ -548,8 +548,8 @@ namespace System.ServiceModel.Channels
         public AsyncCompletionResult BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout,
             Action<object> callback, object state)
         {
-            Contract.Requires<ArgumentNullException>(callback != null, "Cannot call BeginWrite without a callback");
-            Contract.Requires<Exception>(_writeCallback == null, "BeginWrite cannot be called twice");
+            Contract.Requires(callback != null, "Cannot call BeginWrite without a callback");
+            Contract.Requires(_writeCallback == null, "BeginWrite cannot be called twice");
 
             _writeCallback = callback;
             bool throwing = true;
@@ -605,7 +605,7 @@ namespace System.ServiceModel.Channels
 
         private void OnWrite(Task antecedant, Object state)
         {
-            Contract.Requires<Exception>(_writeResult == null, "StreamConnection: OnWrite called twice.");
+            Contract.Requires(_writeResult == null, "StreamConnection: OnWrite called twice.");
             _writeResult = antecedant;
             this._writeCallback(state);
         }
@@ -712,7 +712,7 @@ namespace System.ServiceModel.Channels
 
         private void OnRead(Task<int> antecedant, object state)
         {
-            Contract.Requires<Exception>(_readResult == null, "StreamConnection: OnRead called twice.");
+            Contract.Requires(_readResult == null, "StreamConnection: OnRead called twice.");
             _readResult = antecedant;
             this._readCallback(state);
         }
