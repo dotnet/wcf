@@ -50,13 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CertificateResources\CertificateResource.cs" />
     <Compile Include="CertificateResources\CertificateAuthorityResource.cs" />
     <Compile Include="CertificateResources\CertificateResourceHelpers.cs" />
     <Compile Include="CertificateResources\CertificateRevocationListResource.cs" />
+    <Compile Include="CertificateResources\EndCertificateResource.cs" />
+    <Compile Include="CertificateResources\MachineCertificateResource.cs" />
+    <Compile Include="CertificateResources\UserCertificateResource.cs" />
     <Compile Include="ComplexCompositeType.cs" />
     <Compile Include="CompositeType.cs" />
     <Compile Include="FaultDetail.cs" />
-    <Compile Include="CertificateResources\MachineCertificateResource.cs" />
     <Compile Include="IWcfCustomUserNameService.cs" />
     <Compile Include="IWcfDuplexService.cs" />
     <Compile Include="IWcfRestartService.cs" />
@@ -65,7 +68,6 @@
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
-    <Compile Include="CertificateResources\CertificateResource.cs" />
     <Compile Include="TestResources\BaseAddressResource.cs" />
     <Compile Include="TestResources\BasicAuthResource.cs" />
     <Compile Include="TestResources\BasicHttpsResource.cs" />

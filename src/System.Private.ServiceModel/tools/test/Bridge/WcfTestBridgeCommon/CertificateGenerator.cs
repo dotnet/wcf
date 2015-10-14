@@ -104,7 +104,7 @@ namespace WcfTestBridgeCommon
                 Trace.WriteLine(string.Format("    {0} = {1}", "ValidityPeriod", _validityPeriod));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Valid to", _validityNotAfter));
 
-                _authorityCertificate = CreateCertificate(true, null, string.Empty);
+                _authorityCertificate = CreateCertificate(true, false, null, string.Empty);
             }
         }
 
@@ -217,14 +217,21 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        public X509CertificateContainer CreateCertificate(params string[] subjects)
+        public X509CertificateContainer CreateMachineCertificate(params string[] subjects)
         {
             EnsureInitialized();
-            return CreateCertificate(false, _authorityCertificate.InternalCertificate, subjects);
+            return CreateCertificate(false, true, _authorityCertificate.InternalCertificate , subjects);
+        }
+
+        public X509CertificateContainer CreateUserCertificate(params string[] subjects)
+        {
+            EnsureInitialized();
+            return CreateCertificate(false, false, _authorityCertificate.InternalCertificate, subjects);
         }
 
         // Only the ctor should be calling with isAuthority = true
-        private X509CertificateContainer CreateCertificate(bool isAuthority, X509Certificate signingCertificate, params string[] subjects)
+        // if isAuthority, value for isMachineCert doesn't matter
+        private X509CertificateContainer CreateCertificate(bool isAuthority, bool isMachineCert, X509Certificate signingCertificate, params string[] subjects)
         {
             if (!isAuthority ^ (signingCertificate != null))
             {
@@ -286,14 +293,39 @@ namespace WcfTestBridgeCommon
 
             if (!isAuthority)
             {
-                var subjectAlternativeNames = new Asn1Encodable[subjects.Length];
-
-                for (int i = 0; i < subjects.Length; i++)
+                if (isMachineCert)
                 {
-                    subjectAlternativeNames[i] = new GeneralName(GeneralName.DnsName, subjects[i]);
-                }
+                    var subjectAlternativeNames = new Asn1Encodable[subjects.Length];
+                    
+                    // All endpoints should also be in the Subject Alt Names 
+                    for (int i = 0; i < subjects.Length; i++)
+                    {
+                        // Machine certs can have additional DNS names
+                        subjectAlternativeNames[i] = new GeneralName(GeneralName.DnsName, subjects[i]);
+                    }
 
-                _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, false, new DerSequence(subjectAlternativeNames));
+                    _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNames));
+                }
+                else
+                {
+                    if (subjects.Length > 1)
+                    {
+                        var subjectAlternativeNames = new Asn1EncodableVector();
+                    
+                        // Only add a SAN for the user if there are any
+                        for (int i = 1; i < subjects.Length; i++)
+                        {
+                            Asn1EncodableVector otherNames = new Asn1EncodableVector();
+                            otherNames.Add(new DerObjectIdentifier("1.3.6.1.4.1.311.20.2.3"));
+                            otherNames.Add(new DerTaggedObject(true, 0, new DerUtf8String(subjects[i])));
+
+                            Asn1Object genName = new DerTaggedObject(false, 0, new DerSequence(otherNames));
+
+                            subjectAlternativeNames.Add(genName);
+                        }
+                        _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNames));
+                    }
+                }
             }
 
             var crlDistributionPoints = new DistributionPoint[1] {
