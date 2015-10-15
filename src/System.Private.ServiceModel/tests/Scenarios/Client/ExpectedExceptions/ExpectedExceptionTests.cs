@@ -35,6 +35,7 @@ public static class ExpectedExceptionTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(398)]
     public static void ServiceRestart_Throws_CommunicationException()
     {
         StringBuilder errorBuilder = new StringBuilder();
