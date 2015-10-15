@@ -140,7 +140,7 @@ namespace System.ServiceModel.Channels
 
         public override string ToString()
         {
-            return SR.Format(_toStringFormat, Namespace);
+            return string.Format(_toStringFormat, Namespace);
         }
     }
 }
