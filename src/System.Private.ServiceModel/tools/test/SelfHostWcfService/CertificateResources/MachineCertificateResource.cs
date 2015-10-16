@@ -9,6 +9,9 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.CertificateResources
 {
+    // Resource for generating machine certificates
+    // X509 extensions are added for Subject Alt Name (alternative DNS Name) support
+    // PUT with a comma-separated list of subject names to create a new certificate
     internal class MachineCertificateResource : EndCertificateResource
     {
         public MachineCertificateResource() : base() { }

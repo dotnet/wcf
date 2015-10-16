@@ -9,6 +9,9 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.CertificateResources
 {
+    // Resource for generating end-user certificates
+    // X509 extensions are added for Subject Alt Name (User Principal Name) support
+    // PUT with a comma-separated list of subject names to create a new certificate
     internal class UserCertificateResource : EndCertificateResource
     {
         public UserCertificateResource() : base() { }

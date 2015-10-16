@@ -44,6 +44,7 @@ namespace WcfTestBridgeCommon
 
         private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
         private const string _signatureAlthorithm = "SHA1WithRSAEncryption";
+        private const string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
         private const int _keyLengthInBits = 2048;
         
         private static readonly X509V3CertificateGenerator _certGenerator = new X509V3CertificateGenerator();
@@ -295,16 +296,19 @@ namespace WcfTestBridgeCommon
             {
                 if (isMachineCert)
                 {
-                    var subjectAlternativeNames = new Asn1Encodable[subjects.Length];
+                    List<Asn1Encodable> subjectAlternativeNames = new List<Asn1Encodable>(); 
                     
                     // All endpoints should also be in the Subject Alt Names 
                     for (int i = 0; i < subjects.Length; i++)
                     {
-                        // Machine certs can have additional DNS names
-                        subjectAlternativeNames[i] = new GeneralName(GeneralName.DnsName, subjects[i]);
+                        if (!string.IsNullOrWhiteSpace(subjects[i]))
+                        {
+                            // Machine certs can have additional DNS names
+                            subjectAlternativeNames.Add(new GeneralName(GeneralName.DnsName, subjects[i]));
+                        }
                     }
 
-                    _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNames));
+                    _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNames.ToArray()));
                 }
                 else
                 {
@@ -315,13 +319,16 @@ namespace WcfTestBridgeCommon
                         // Only add a SAN for the user if there are any
                         for (int i = 1; i < subjects.Length; i++)
                         {
-                            Asn1EncodableVector otherNames = new Asn1EncodableVector();
-                            otherNames.Add(new DerObjectIdentifier("1.3.6.1.4.1.311.20.2.3"));
-                            otherNames.Add(new DerTaggedObject(true, 0, new DerUtf8String(subjects[i])));
+                            if (!string.IsNullOrWhiteSpace(subjects[i]))
+                            {
+                                Asn1EncodableVector otherNames = new Asn1EncodableVector();
+                                otherNames.Add(new DerObjectIdentifier(_upnObjectId));
+                                otherNames.Add(new DerTaggedObject(true, 0, new DerUtf8String(subjects[i])));
 
-                            Asn1Object genName = new DerTaggedObject(false, 0, new DerSequence(otherNames));
+                                Asn1Object genName = new DerTaggedObject(false, 0, new DerSequence(otherNames));
 
-                            subjectAlternativeNames.Add(genName);
+                                subjectAlternativeNames.Add(genName);
+                            }
                         }
                         _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNames));
                     }

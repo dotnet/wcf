@@ -6,6 +6,9 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.CertificateResources
 {
+    // Resource for generating Certificate Revocation Lists
+    // PUT with a serial number to revoke a certificate
+    // GET to retrieve the CRL
     public class CertificateRevocationListResource : CertificateResource
     {
         public CertificateRevocationListResource() : base() { }

@@ -9,6 +9,10 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.CertificateResources
 {
+    // Abstract class for end-user or machine certificates
+    // Class is only for GETting already-created certs - derived classes will handle PUTs
+    // GET with a thumbprint/subject to retrieve the certificate
+    // GET with no params to retrieve all created certs
     internal abstract class EndCertificateResource : CertificateResource
     {
         public override ResourceResponse Get(ResourceRequestContext context)
