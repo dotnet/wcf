@@ -202,6 +202,18 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        protected internal override async Task OnCloseAsync(TimeSpan timeout)
+        {
+            try
+            {
+                await base.OnCloseAsync(timeout);
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
         protected override void ReturnConnectionIfNecessary(bool abort, TimeSpan timeout)
         {
         }
