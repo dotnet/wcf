@@ -40,9 +40,18 @@ name: `WcfService.CertificateResources.MachineCertificateResource`
 
 |HTTP Verb|Action|
 |---------|------|
-|`PUT`| Creates a machine certificate <br/> Parameters: `subject` - comma-separated list of subject names (the first subject will be the CN of the certificate; all others will be listed as DNS Subject Alternative Names) <br/> Returns: `thumbprint` - thumbprint of the machine or user certificate; `isLocal` - if the certificate was generated for a machine name local to the Bridge |
+|`PUT`| Creates a machine certificate <br/> Parameters: `subject` - comma-separated list of subject names (the first subject will be the CN of the certificate; all others will be listed as DNS Subject Alternative Names) <br/> Returns: `thumbprint` - thumbprint of the machine certificate; `isLocal` - if the certificate was generated for a machine name local to the Bridge |
 |`GET`| No parameters <br/> Returns: `subjects` - list of certificate subjects; `thumbprints` - corresponding list of certificate thumbprints |
 |`GET`| Retrieves the certificate with a given `subject` or `thumbprint` from the Bridge <br/> Parameters: `thumbprint` - thumbprint of the certificate; OR `subject` - subject name of the cert to retrieve.  If both are specified, `thumbprint` takes precedence <br/> Returns: `thumbprint` - thumbprint of the certificate, `certificate` - Base64 encoded X509 Certificate |
+
+### User Certificate Resource
+
+name: `WcfService.CertificateResources.UserCertificateResource`
+
+|HTTP Verb|Action|
+|---------|------|
+|`PUT`| Creates a user certificate <br/> Parameters: `subject` - comma-separated list of subject names (the first subject will be the CN of the certificate; all others will be listed as Principal Names in the Subject Alternative Name field) <br/> Returns: `thumbprint` - thumbprint of the user certificate  |
+|`GET`| Same as `MachineCertificateResource`. At the moment, the MachineCertificateResource and UserCertificateResource caches are the same, so issuing a GET to either one will retrieve the machine or user cert, agnostic of the cert type. |
 
 ### Certificate Revocation List Resource 
 

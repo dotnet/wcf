@@ -175,7 +175,7 @@ namespace WcfTestBridgeCommon
 
                 // always create a certificate locally for the current machine's fully qualified domain name, 
                 // hostname, and "localhost". 
-                var hostCert = certificateGenerator.CreateCertificate(fqdn, hostname, "localhost").Certificate;
+                var hostCert = certificateGenerator.CreateMachineCertificate(fqdn, hostname, "localhost").Certificate;
 
                 // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
                 // only the first-created cert will win

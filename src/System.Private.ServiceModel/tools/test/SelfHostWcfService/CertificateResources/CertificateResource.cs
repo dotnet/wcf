@@ -9,6 +9,8 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.CertificateResources
 {
+    // Base class for all Certificate Resources
+    // Provides some helpers and a cache for all certificates created by this instance of the Bridge
     public abstract class CertificateResource : IResource
     {
         protected const string certificateKeyName = "certificate";

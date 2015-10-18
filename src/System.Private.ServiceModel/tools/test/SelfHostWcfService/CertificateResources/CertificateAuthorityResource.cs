@@ -7,6 +7,8 @@ using WcfTestBridgeCommon;
 
 namespace WcfService.CertificateResources
 {
+    // Retrieves a Certificate Authority certificate
+    // GET to retrieve the CA cert
     class CertificateAuthorityResource : CertificateResource
     {
         public CertificateAuthorityResource() : base() { }
