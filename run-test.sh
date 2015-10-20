@@ -15,19 +15,20 @@ wait_on_pids()
 
 usage()
 {
-    echo "Runs tests on linux/mac that don't have native build support"
+    echo "Runs .NET Wcf tests on FreeBSD, Linux or OSX"
     echo "usage: run-test [options]"
     echo
     echo "Input sources:"
     echo "    --coreclr-bins <location>         Location of root of the binaries directory"
-    echo "                                      containing the linux/mac coreclr build"
+    echo "                                      containing the FreeBSD, Linux or OSX coreclr build"
     echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<Configuration>"
     echo "    --mscorlib-bins <location>        Location of the root binaries directory containing"
-    echo "                                      the linux/mac mscorlib.dll"
-    echo "                                      default: <repo_root>/bin/tests/Windows_NT.AnyCPU.<Configuration>"
-    echo "    --corefx-bins <location>          Location of the linux/mac corefx binaries"
-    echo "                                      default: <repo_root>/bin/<OS>.AnyCPU.<Configuration>"
-    echo "    --corefx-native-bins <location>   Location of the linux/mac native corefx binaries"
+    echo "                                      the FreeBSD, Linux or OSX mscorlib.dll"
+    echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<Configuration>"
+    echo "    --corefx-tests <location>         Location of the root binaries location containing"
+    echo "                                      the tests to run"
+    echo "                                      default: <repo_root>/bin/tests/<OS>.AnyCPU.<Configuration>"
+    echo "    --corefx-native-bins <location>   Location of the FreeBSD, Linux or OSX native corefx binaries"
     echo "                                      default: <repo_root>/bin/<OS>.x64.<Configuration>"
     echo "    --wcf-bins <location>             Location of the linux/mac WCF binaries"
     echo "                                      default: <repo_root>/bin/<OS>.AnyCPU.<Configuration>"
@@ -40,7 +41,7 @@ usage()
     echo "Flavor/OS options:"
     echo "    --configuration <config>          Configuration to run (Debug/Release)"
     echo "                                      default: Debug"
-    echo "    --os <os>                         OS to run (OSX/Linux)"
+    echo "    --os <os>                         OS to run (FreeBSD, Linux or OSX)"
     echo "                                      default: detect current OS"
     echo
     echo "Execution options:"
@@ -56,12 +57,16 @@ ProjectRoot="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 Configuration="Debug"
 OSName=$(uname -s)
 case $OSName in
-    Linux)
-        OS=Linux
-        ;;
-
     Darwin)
         OS=OSX
+        ;;
+
+    FreeBSD)
+        OS=FreeBSD
+        ;;
+
+    Linux)
+        OS=Linux
         ;;
 
     *)
@@ -70,7 +75,6 @@ case $OSName in
         ;;
 esac
 # Misc defaults
-TestHostVersion="0.0.2-prerelease"
 TestSelection=".*"
 TestsFailed=0
 BridgeHost=""
@@ -79,22 +83,7 @@ OverlayDir="$ProjectRoot/bin/tests/$OS.AnyCPU.$Configuration/TestOverlay/"
 
 create_test_overlay()
 {
-  # Creates the test overlay that will be copied on top of
-  # Each of the test directories.
-
-  local packageName="Microsoft.DotNet.CoreFx.$OS.TemporaryTestHost.$TestHostVersion.nupkg"
-  local packageDir="packages/Microsoft.DotNet.CoreFx.$OS.TemporaryTestHost.$TestHostVersion"
-  local packageSource="https://www.myget.org/F/dotnet-buildtools/api/v2/package/Microsoft.DotNet.CoreFx.$OS.TemporaryTestHost/$TestHostVersion"
-  rm -rf $packageDir
-  mkdir -p $packageDir
-  pushd $packageDir > /dev/null
-  # Pull down the testhost package and unzip it.
-  echo "Pulling down $packageName"
-  echo " from $packageSource"
-  wget -q $packageSource -O $packageName
-  echo "Unzipping to $packageDir"
-  unzip -q -o $packageName
-  popd > /dev/null
+  local mscorlibLocation="$MscorlibBins/mscorlib.dll"
 
   # Make the overlay
 
@@ -122,7 +111,24 @@ create_test_overlay()
   fi
   cp $packageLibDir/* $OverlayDir
   
-  # Then the CoreCLR native binaries
+  # Copy some binaries from the linux build of corefx
+  if [ ! -d $CoreFxBins ]
+  then
+	echo "Corefx binaries not found at $CoreFxBins"
+	exit 1
+  fi
+  
+# Currently need to overwrite some packaged binaries from CoreFx
+# See issue https://github.com/dotnet/wcf/issues/442
+# echo "Copying selected CoreFxBins..."
+  find $CoreFxBins -name '*.dll' -and -name "*System.IO.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
+  find $CoreFxBins -name '*.dll' -and -name "*System.Console*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
+  find $CoreFxBins -name '*.dll' -and -name "*System.Runtime.Extensions*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp  '{}' "$OverlayDir" ";"
+  find $CoreFxBins -name '*.dll' -and -name "*System.Private.Networking*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
+  find $CoreFxBins -name '*.dll' -and -name "*System.Net.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
+  find $CoreFxBins -name '*.dll' -and -name "*System.Security.Cryptography.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp -v '{}' "$OverlayDir" ";"
+
+  # Copy the CoreCLR native binaries
   if [ ! -d $CoreClrBins ]
   then
 	echo "Coreclr $OS binaries not found at $CoreClrBins"
@@ -139,18 +145,10 @@ create_test_overlay()
   fi
   cp -r $mscorlibLocation $OverlayDir
 
-  # Then the binaries from the linux build of corefx
-  if [ ! -d $CoreFxBins ]
-  then
-	echo "Corefx binaries not found at $CoreFxBins"
-	exit 1
-  fi
-  find $CoreFxBins -name '*.dll' -and -not -name "*Test*" -and -not -wholename "*/ToolRuntime/*"  -exec cp '{}' "$OverlayDir" ";"
-
   # Then the native CoreFX binaries
   if [ ! -d $CoreFxNativeBins ]
   then
-	echo "Corefx native binaries should be built (use build.sh in root)"
+	echo "Corefx native binaries should be built (use build.sh native in root)"
 	exit 1
   fi
   cp $CoreFxNativeBins/* $OverlayDir
@@ -175,7 +173,7 @@ runtest()
 
   # Check here to see whether we should run this project
 
-  if grep "UnsupportedPlatforms.*$OS.*" $1
+  if grep "UnsupportedPlatforms.*$OS.*" $1 > /dev/null
   then
     echo "Test project file $1 indicates this test is not supported on $OS, skipping"
     exit 0
@@ -216,6 +214,8 @@ runtest()
     rm mscorlib.ni.dll
   fi
   
+  chmod +x ./corerun
+  
   # Invoke xunit
 
   echo
@@ -224,6 +224,13 @@ runtest()
   echo
   ./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml $XunitArgs -notrait category=$xunitOSCategory
   exitCode=$?
+  
+  
+  if [ $exitCode -ne 0 ]
+  then
+      echo "One or more tests failed while running tests from '$fileNameWithoutExtension'.  Exit code $exitCode."
+  fi
+  
   popd > /dev/null
   exit $exitCode
 }
@@ -317,9 +324,9 @@ then
     exit 1
 fi
 
-if [ ! "$OS" == "OSX" ] && [ ! "$OS" == "Linux" ]
+if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "OSX" ]
 then
-    echo "OS should be Linux or OSX"
+    echo "OS should be FreeBSD, Linux or OSX"
     exit 1
 fi
 
@@ -328,14 +335,14 @@ then
     CoreClrObjs="$ProjectRoot/bin/obj/$OS.x64.$Configuration"
 fi
 
-if [ "$XunitArgs" != *"-notrait category=OuterLoop"* ]
+if [ "$XunitArgs" != *"OuterLoop"* ]
 then
     echo "OuterLoop tests will be run using the Bridge at $BridgeHost"
 fi
 
 create_test_overlay
 
-# Walk the directory tree rooted at src bin/tests/Windows_NT.AnyCPU.$Configuration/
+# Walk the directory tree rooted at src bin/tests/$OS.AnyCPU.$Configuration/
 
 TestsFailed=0
 numberOfProcesses=0
@@ -358,7 +365,11 @@ wait_on_pids "$pids"
 
 if [ "$TestsFailed" -gt 0 ]
 then
-  echo "$TestsFailed test(s) failed"
+    echo "$TestsFailed test(s) failed"
+else
+    echo "All tests passed."
 fi
+
 exit $TestsFailed
+
 
