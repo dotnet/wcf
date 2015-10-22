@@ -886,13 +886,13 @@
           "lib/DNXCore50/System.ServiceModel.NetTcp.dll": {}
         }
       },
-      "System.ServiceModel.Primitives/4.0.1-beta-23413": {
+      "System.ServiceModel.Primitives/4.1.0-beta-23420": {
         "type": "package",
         "dependencies": {
-          "System.Private.ServiceModel": "4.1.0-beta-23413"
+          "System.Private.ServiceModel": "4.1.0-beta-23420"
         },
         "compile": {
-          "ref/dotnet/System.ServiceModel.Primitives.dll": {}
+          "ref/dotnet5.4/System.ServiceModel.Primitives.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.ServiceModel.Primitives.dll": {}
@@ -1170,7 +1170,7 @@
           "lib/dotnet/xunit.execution.dotnet.dll": {}
         }
       },
-      "xunit.netcore.extensions/1.0.0-prerelease-00108": {
+      "xunit.netcore.extensions/1.0.0-prerelease-00109": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
@@ -2296,13 +2296,13 @@
           "lib/DNXCore50/System.ServiceModel.NetTcp.dll": {}
         }
       },
-      "System.ServiceModel.Primitives/4.0.1-beta-23413": {
+      "System.ServiceModel.Primitives/4.1.0-beta-23420": {
         "type": "package",
         "dependencies": {
-          "System.Private.ServiceModel": "4.1.0-beta-23413"
+          "System.Private.ServiceModel": "4.1.0-beta-23420"
         },
         "compile": {
-          "ref/dotnet/System.ServiceModel.Primitives.dll": {}
+          "ref/dotnet5.4/System.ServiceModel.Primitives.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.ServiceModel.Primitives.dll": {}
@@ -2593,7 +2593,7 @@
           "lib/dotnet/xunit.execution.dotnet.dll": {}
         }
       },
-      "xunit.netcore.extensions/1.0.0-prerelease-00108": {
+      "xunit.netcore.extensions/1.0.0-prerelease-00109": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
@@ -3719,13 +3719,13 @@
           "lib/DNXCore50/System.ServiceModel.NetTcp.dll": {}
         }
       },
-      "System.ServiceModel.Primitives/4.0.1-beta-23413": {
+      "System.ServiceModel.Primitives/4.1.0-beta-23420": {
         "type": "package",
         "dependencies": {
-          "System.Private.ServiceModel": "4.1.0-beta-23413"
+          "System.Private.ServiceModel": "4.1.0-beta-23420"
         },
         "compile": {
-          "ref/dotnet/System.ServiceModel.Primitives.dll": {}
+          "ref/dotnet5.4/System.ServiceModel.Primitives.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.ServiceModel.Primitives.dll": {}
@@ -4016,7 +4016,7 @@
           "lib/dotnet/xunit.execution.dotnet.dll": {}
         }
       },
-      "xunit.netcore.extensions/1.0.0-prerelease-00108": {
+      "xunit.netcore.extensions/1.0.0-prerelease-00109": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
@@ -6006,32 +6006,67 @@
         "System.ServiceModel.NetTcp.nuspec"
       ]
     },
-    "System.ServiceModel.Primitives/4.0.1-beta-23413": {
+    "System.ServiceModel.Primitives/4.1.0-beta-23420": {
       "type": "package",
       "serviceable": true,
-      "sha512": "K01/HbDm3qUWvr0Xy7jrnOKVM0ZnFirc2v2VNi3g74AdVfcig7O0x+FE2ieOM3lCPBfTJCO3RN3h0n9bYSlWXA==",
+      "sha512": "LYlIczzG0RN46W4E7xbdtRCAtBRADIW4R2CUZCbct0gO1rikq2NmDV79dG4xOMgGPco97YHrDSjeJQHV47N0jw==",
       "files": [
         "lib/DNXCore50/System.ServiceModel.Primitives.dll",
         "lib/net45/_._",
+        "lib/net46/System.ServiceModel.Primitives.dll",
         "lib/netcore50/System.ServiceModel.Primitives.dll",
         "lib/win8/_._",
-        "ref/dotnet/de/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/es/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/fr/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/it/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/ja/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/ko/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/ru/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/System.ServiceModel.Primitives.dll",
-        "ref/dotnet/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/zh-hans/System.ServiceModel.Primitives.xml",
-        "ref/dotnet/zh-hant/System.ServiceModel.Primitives.xml",
+        "lib/wp80/_._",
+        "ref/dotnet5.1/de/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/es/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/fr/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/it/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/ja/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/ko/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/ru/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/System.ServiceModel.Primitives.dll",
+        "ref/dotnet5.1/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/zh-hans/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.1/zh-hant/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/de/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/es/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/fr/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/it/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/ja/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/ko/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/ru/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/System.ServiceModel.Primitives.dll",
+        "ref/dotnet5.2/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/zh-hans/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.2/zh-hant/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/de/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/es/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/fr/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/it/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/ja/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/ko/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/ru/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/System.ServiceModel.Primitives.dll",
+        "ref/dotnet5.4/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/zh-hans/System.ServiceModel.Primitives.xml",
+        "ref/dotnet5.4/zh-hant/System.ServiceModel.Primitives.xml",
         "ref/net45/_._",
+        "ref/net46/System.ServiceModel.Primitives.dll",
+        "ref/netcore50/de/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/es/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/fr/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/it/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/ja/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/ko/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/ru/System.ServiceModel.Primitives.xml",
         "ref/netcore50/System.ServiceModel.Primitives.dll",
         "ref/netcore50/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/zh-hans/System.ServiceModel.Primitives.xml",
+        "ref/netcore50/zh-hant/System.ServiceModel.Primitives.xml",
         "ref/win8/_._",
-        "System.ServiceModel.Primitives.4.0.1-beta-23413.nupkg",
-        "System.ServiceModel.Primitives.4.0.1-beta-23413.nupkg.sha512",
+        "ref/wp80/_._",
+        "System.ServiceModel.Primitives.4.1.0-beta-23420.nupkg",
+        "System.ServiceModel.Primitives.4.1.0-beta-23420.nupkg.sha512",
         "System.ServiceModel.Primitives.nuspec"
       ]
     },
@@ -6556,14 +6591,14 @@
         "xunit.extensibility.execution.nuspec"
       ]
     },
-    "xunit.netcore.extensions/1.0.0-prerelease-00108": {
+    "xunit.netcore.extensions/1.0.0-prerelease-00109": {
       "type": "package",
       "serviceable": true,
-      "sha512": "rNaXYaJhr7Vh28CjaKZoUgOXf9wIXYXYEyWvdyCr2NgrjTEaQwx+fn/PYD6BSt6orxNjgwrsQdAGzFJrhallQw==",
+      "sha512": "sOFXc/Fh/SVZKJL9ANFwlRxcKRms5vYUPq1nhvwk7tzPgBunMwFUGJfED9LlYfe5NBb+B3cf+k6C1/n/RajT9w==",
       "files": [
         "lib/dotnet/Xunit.NetCore.Extensions.dll",
-        "xunit.netcore.extensions.1.0.0-prerelease-00108.nupkg",
-        "xunit.netcore.extensions.1.0.0-prerelease-00108.nupkg.sha512",
+        "xunit.netcore.extensions.1.0.0-prerelease-00109.nupkg",
+        "xunit.netcore.extensions.1.0.0-prerelease-00109.nupkg.sha512",
         "xunit.netcore.extensions.nuspec"
       ]
     }
@@ -6573,7 +6608,7 @@
       "System.ServiceModel.Duplex >= 4.0.1-beta-*",
       "System.ServiceModel.NetTcp >= 4.0.1-beta-*",
       "System.ServiceModel.Http >= 4.0.11-beta-*",
-      "System.ServiceModel.Primitives >= 4.0.1-beta-*",
+      "System.ServiceModel.Primitives >= 4.1.0-beta-*",
       "System.ServiceModel.Security >= 4.0.1-beta-*",
       "xunit >= 2.1.0",
       "xunit.netcore.extensions >= 1.0.0-prerelease-*"
