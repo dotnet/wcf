@@ -3,6 +3,6 @@
     "System.ServiceModel.Security": "3.9.0"
   },
   "frameworks": {
-    "dotnet": {}
+    "dotnet5.1": {}
   }
 }
