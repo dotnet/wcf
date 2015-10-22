@@ -195,7 +195,7 @@ namespace System.IdentityModel.Policy
             if (_disposable && !_disposed)
             {
                 _disposed = true;
-                SecurityUtils.DisposeIfNecessary(_primaryIdentity as WindowsIdentity);
+                SecurityUtils.DisposeIfNecessary(_primaryIdentity as IDisposable);
                 SecurityUtils.DisposeClaimSetIfNecessary(_issuance);
                 SecurityUtils.DisposeClaimSetsIfNecessary(_issuances);
             }

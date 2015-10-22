@@ -182,7 +182,11 @@ namespace System.IdentityModel.Claims
 
             value = _certificate.GetNameInfo(X509NameType.UpnName, false);
             if (!string.IsNullOrEmpty(value))
+#if FEATURE_CORECLR
                 claims.Add(Claim.CreateUpnClaim(value));
+#else
+                throw ExceptionHelper.PlatformNotSupported();
+#endif
 
             value = _certificate.GetNameInfo(X509NameType.UrlName, false);
             if (!string.IsNullOrEmpty(value))
