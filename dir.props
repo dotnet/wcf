@@ -79,6 +79,7 @@
   <ItemGroup>
     <DnuRestoreDir Include="&quot;$(MSBuildProjectDirectory)\src&quot;" />
     <DnuRestoreDir Include="&quot;$(ToolsDir)&quot;" />
+	<DnuRestoreDir Include="$(MSBuildProjectDirectory)\src\**\ref\**\project.json" />
   </ItemGroup>
 
   <PropertyGroup>
