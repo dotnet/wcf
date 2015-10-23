@@ -439,11 +439,10 @@
           "lib/dotnet5.4/System.ObjectModel.dll": {}
         }
       },
-      "System.Private.DataContractSerialization/4.1.0-beta-23420": {
+      "System.Private.DataContractSerialization/4.0.0": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
-          "System.Diagnostics.Debug": "4.0.10",
           "System.Globalization": "4.0.10",
           "System.IO": "4.0.10",
           "System.Linq": "4.0.0",
@@ -454,12 +453,11 @@
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20",
           "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
+          "System.Runtime.Serialization.Primitives": "4.0.10",
           "System.Text.Encoding": "4.0.10",
           "System.Text.Encoding.Extensions": "4.0.10",
           "System.Text.RegularExpressions": "4.0.10",
           "System.Threading": "4.0.10",
-          "System.Threading.Tasks": "4.0.10",
           "System.Xml.ReaderWriter": "4.0.10",
           "System.Xml.XmlSerializer": "4.0.10"
         },
@@ -639,27 +637,27 @@
           "lib/DNXCore50/System.Runtime.InteropServices.dll": {}
         }
       },
-      "System.Runtime.Serialization.Primitives/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Primitives/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20"
         },
         "compile": {
-          "ref/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         },
         "runtime": {
-          "lib/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+          "lib/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
-      "System.Runtime.Serialization.Xml/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Xml/4.0.10": {
         "type": "package",
         "dependencies": {
-          "System.Private.DataContractSerialization": "4.1.0-beta-23420",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420"
+          "System.Private.DataContractSerialization": "4.0.0",
+          "System.Runtime.Serialization.Primitives": "4.0.10"
         },
         "compile": {
-          "ref/dotnet5.4/System.Runtime.Serialization.Xml.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Xml.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Runtime.Serialization.Xml.dll": {}
@@ -1385,11 +1383,10 @@
           "lib/netcore50/System.ObjectModel.dll": {}
         }
       },
-      "System.Private.DataContractSerialization/4.1.0-beta-23420": {
+      "System.Private.DataContractSerialization/4.0.0": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
-          "System.Diagnostics.Debug": "4.0.10",
           "System.Globalization": "4.0.10",
           "System.IO": "4.0.10",
           "System.Linq": "4.0.0",
@@ -1400,12 +1397,11 @@
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20",
           "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
+          "System.Runtime.Serialization.Primitives": "4.0.10",
           "System.Text.Encoding": "4.0.10",
           "System.Text.Encoding.Extensions": "4.0.10",
           "System.Text.RegularExpressions": "4.0.10",
           "System.Threading": "4.0.10",
-          "System.Threading.Tasks": "4.0.10",
           "System.Xml.ReaderWriter": "4.0.10",
           "System.Xml.XmlSerializer": "4.0.10"
         },
@@ -1579,31 +1575,27 @@
           "lib/netcore50/System.Runtime.InteropServices.WindowsRuntime.dll": {}
         }
       },
-      "System.Runtime.Serialization.Primitives/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Primitives/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20"
         },
         "compile": {
-          "ref/netcore50/System.Runtime.Serialization.Primitives.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         },
         "runtime": {
-          "lib/netcore50/System.Runtime.Serialization.Primitives.dll": {}
+          "lib/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
-      "System.Runtime.Serialization.Xml/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Xml/4.0.10": {
         "type": "package",
         "dependencies": {
-          "System.IO": "4.0.0",
-          "System.Private.DataContractSerialization": "4.1.0-beta-23420",
-          "System.Runtime": "4.0.0",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
-          "System.Text.Encoding": "4.0.0",
-          "System.Xml.ReaderWriter": "4.0.0"
+          "System.Private.DataContractSerialization": "4.0.0",
+          "System.Runtime.Serialization.Primitives": "4.0.10"
         },
         "compile": {
-          "ref/netcore50/System.Runtime.Serialization.Xml.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Xml.dll": {}
         },
         "runtime": {
           "lib/netcore50/System.Runtime.Serialization.Xml.dll": {}
@@ -2563,11 +2555,10 @@
           "lib/dotnet5.4/System.ObjectModel.dll": {}
         }
       },
-      "System.Private.DataContractSerialization/4.1.0-beta-23420": {
+      "System.Private.DataContractSerialization/4.0.0": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
-          "System.Diagnostics.Debug": "4.0.10",
           "System.Globalization": "4.0.10",
           "System.IO": "4.0.10",
           "System.Linq": "4.0.0",
@@ -2578,12 +2569,11 @@
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20",
           "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
+          "System.Runtime.Serialization.Primitives": "4.0.10",
           "System.Text.Encoding": "4.0.10",
           "System.Text.Encoding.Extensions": "4.0.10",
           "System.Text.RegularExpressions": "4.0.10",
           "System.Threading": "4.0.10",
-          "System.Threading.Tasks": "4.0.10",
           "System.Xml.ReaderWriter": "4.0.10",
           "System.Xml.XmlSerializer": "4.0.10"
         },
@@ -2828,27 +2818,27 @@
           "lib/dotnet/System.Runtime.Numerics.dll": {}
         }
       },
-      "System.Runtime.Serialization.Primitives/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Primitives/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20"
         },
         "compile": {
-          "ref/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         },
         "runtime": {
-          "lib/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+          "lib/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
-      "System.Runtime.Serialization.Xml/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Xml/4.0.10": {
         "type": "package",
         "dependencies": {
-          "System.Private.DataContractSerialization": "4.1.0-beta-23420",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420"
+          "System.Private.DataContractSerialization": "4.0.0",
+          "System.Runtime.Serialization.Primitives": "4.0.10"
         },
         "compile": {
-          "ref/dotnet5.4/System.Runtime.Serialization.Xml.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Xml.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Runtime.Serialization.Xml.dll": {}
@@ -3859,11 +3849,10 @@
           "lib/dotnet5.4/System.ObjectModel.dll": {}
         }
       },
-      "System.Private.DataContractSerialization/4.1.0-beta-23420": {
+      "System.Private.DataContractSerialization/4.0.0": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
-          "System.Diagnostics.Debug": "4.0.10",
           "System.Globalization": "4.0.10",
           "System.IO": "4.0.10",
           "System.Linq": "4.0.0",
@@ -3874,12 +3863,11 @@
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20",
           "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
+          "System.Runtime.Serialization.Primitives": "4.0.10",
           "System.Text.Encoding": "4.0.10",
           "System.Text.Encoding.Extensions": "4.0.10",
           "System.Text.RegularExpressions": "4.0.10",
           "System.Threading": "4.0.10",
-          "System.Threading.Tasks": "4.0.10",
           "System.Xml.ReaderWriter": "4.0.10",
           "System.Xml.XmlSerializer": "4.0.10"
         },
@@ -4124,27 +4112,27 @@
           "lib/dotnet/System.Runtime.Numerics.dll": {}
         }
       },
-      "System.Runtime.Serialization.Primitives/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Primitives/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20"
         },
         "compile": {
-          "ref/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         },
         "runtime": {
-          "lib/dotnet5.4/System.Runtime.Serialization.Primitives.dll": {}
+          "lib/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
-      "System.Runtime.Serialization.Xml/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Xml/4.0.10": {
         "type": "package",
         "dependencies": {
-          "System.Private.DataContractSerialization": "4.1.0-beta-23420",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420"
+          "System.Private.DataContractSerialization": "4.0.0",
+          "System.Runtime.Serialization.Primitives": "4.0.10"
         },
         "compile": {
-          "ref/dotnet5.4/System.Runtime.Serialization.Xml.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Xml.dll": {}
         },
         "runtime": {
           "lib/DNXCore50/System.Runtime.Serialization.Xml.dll": {}
@@ -5109,11 +5097,10 @@
           "lib/netcore50/System.ObjectModel.dll": {}
         }
       },
-      "System.Private.DataContractSerialization/4.1.0-beta-23420": {
+      "System.Private.DataContractSerialization/4.0.0": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
-          "System.Diagnostics.Debug": "4.0.10",
           "System.Globalization": "4.0.10",
           "System.IO": "4.0.10",
           "System.Linq": "4.0.0",
@@ -5124,12 +5111,11 @@
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20",
           "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
+          "System.Runtime.Serialization.Primitives": "4.0.10",
           "System.Text.Encoding": "4.0.10",
           "System.Text.Encoding.Extensions": "4.0.10",
           "System.Text.RegularExpressions": "4.0.10",
           "System.Threading": "4.0.10",
-          "System.Threading.Tasks": "4.0.10",
           "System.Xml.ReaderWriter": "4.0.10",
           "System.Xml.XmlSerializer": "4.0.10"
         },
@@ -5391,31 +5377,27 @@
           "lib/netcore50/System.Runtime.Numerics.dll": {}
         }
       },
-      "System.Runtime.Serialization.Primitives/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Primitives/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20"
         },
         "compile": {
-          "ref/netcore50/System.Runtime.Serialization.Primitives.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         },
         "runtime": {
-          "lib/netcore50/System.Runtime.Serialization.Primitives.dll": {}
+          "lib/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
-      "System.Runtime.Serialization.Xml/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Xml/4.0.10": {
         "type": "package",
         "dependencies": {
-          "System.IO": "4.0.0",
-          "System.Private.DataContractSerialization": "4.1.0-beta-23420",
-          "System.Runtime": "4.0.0",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
-          "System.Text.Encoding": "4.0.0",
-          "System.Xml.ReaderWriter": "4.0.0"
+          "System.Private.DataContractSerialization": "4.0.0",
+          "System.Runtime.Serialization.Primitives": "4.0.10"
         },
         "compile": {
-          "ref/netcore50/System.Runtime.Serialization.Xml.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Xml.dll": {}
         },
         "runtime": {
           "lib/netcore50/System.Runtime.Serialization.Xml.dll": {}
@@ -6349,11 +6331,10 @@
           "lib/netcore50/System.ObjectModel.dll": {}
         }
       },
-      "System.Private.DataContractSerialization/4.1.0-beta-23420": {
+      "System.Private.DataContractSerialization/4.0.0": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
-          "System.Diagnostics.Debug": "4.0.10",
           "System.Globalization": "4.0.10",
           "System.IO": "4.0.10",
           "System.Linq": "4.0.0",
@@ -6364,12 +6345,11 @@
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20",
           "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
+          "System.Runtime.Serialization.Primitives": "4.0.10",
           "System.Text.Encoding": "4.0.10",
           "System.Text.Encoding.Extensions": "4.0.10",
           "System.Text.RegularExpressions": "4.0.10",
           "System.Threading": "4.0.10",
-          "System.Threading.Tasks": "4.0.10",
           "System.Xml.ReaderWriter": "4.0.10",
           "System.Xml.XmlSerializer": "4.0.10"
         },
@@ -6631,31 +6611,27 @@
           "lib/netcore50/System.Runtime.Numerics.dll": {}
         }
       },
-      "System.Runtime.Serialization.Primitives/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Primitives/4.0.10": {
         "type": "package",
         "dependencies": {
           "System.Resources.ResourceManager": "4.0.0",
           "System.Runtime": "4.0.20"
         },
         "compile": {
-          "ref/netcore50/System.Runtime.Serialization.Primitives.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         },
         "runtime": {
-          "lib/netcore50/System.Runtime.Serialization.Primitives.dll": {}
+          "lib/dotnet/System.Runtime.Serialization.Primitives.dll": {}
         }
       },
-      "System.Runtime.Serialization.Xml/4.1.0-beta-23420": {
+      "System.Runtime.Serialization.Xml/4.0.10": {
         "type": "package",
         "dependencies": {
-          "System.IO": "4.0.0",
-          "System.Private.DataContractSerialization": "4.1.0-beta-23420",
-          "System.Runtime": "4.0.0",
-          "System.Runtime.Serialization.Primitives": "4.1.0-beta-23420",
-          "System.Text.Encoding": "4.0.0",
-          "System.Xml.ReaderWriter": "4.0.0"
+          "System.Private.DataContractSerialization": "4.0.0",
+          "System.Runtime.Serialization.Primitives": "4.0.10"
         },
         "compile": {
-          "ref/netcore50/System.Runtime.Serialization.Xml.dll": {}
+          "ref/dotnet/System.Runtime.Serialization.Xml.dll": {}
         },
         "runtime": {
           "lib/netcore50/System.Runtime.Serialization.Xml.dll": {}
@@ -8535,10 +8511,10 @@
         "System.ObjectModel.nuspec"
       ]
     },
-    "System.Private.DataContractSerialization/4.1.0-beta-23420": {
+    "System.Private.DataContractSerialization/4.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "nTuvpiZhzrr2oFCcwW+Q2DtWWh93b9LaygXn5nuBwIMKyIcMZUi21Jeex/IqQJYnOu8bix2R+SARlpuOWW8CPQ==",
+      "sha512": "uQvzoXHXHn/9YqUmPtgD8ZPJIlBuuL3QHegbuik97W/umoI28fOnGLnvjRHhju1VMWvFLRQoh7uZkBaoZ+KpVQ==",
       "files": [
         "lib/DNXCore50/System.Private.DataContractSerialization.dll",
         "lib/netcore50/System.Private.DataContractSerialization.dll",
@@ -8546,8 +8522,8 @@
         "ref/netcore50/_._",
         "runtime.json",
         "runtimes/win8-aot/lib/netcore50/System.Private.DataContractSerialization.dll",
-        "System.Private.DataContractSerialization.4.1.0-beta-23420.nupkg",
-        "System.Private.DataContractSerialization.4.1.0-beta-23420.nupkg.sha512",
+        "System.Private.DataContractSerialization.4.0.0.nupkg",
+        "System.Private.DataContractSerialization.4.0.0.nupkg.sha512",
         "System.Private.DataContractSerialization.nuspec"
       ]
     },
@@ -9189,130 +9165,68 @@
         "System.Runtime.Numerics.nuspec"
       ]
     },
-    "System.Runtime.Serialization.Primitives/4.1.0-beta-23420": {
+    "System.Runtime.Serialization.Primitives/4.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "xKomuJaArLcaYCHzgrWT6DyY1euyhYUvRhNnkmqMW/MagyxtLioH8oo0CwDZhEspok6WpMmKT3PTqs2RF5lcuA==",
+      "sha512": "NPc8DZIomf5tGjYtz/KTHI01IPcVlypfhCux32AbLPDjTotdvL8TpKRwMyQJ6Kh08yprRVH7uBD1PdJiuoFzag==",
       "files": [
-        "lib/dotnet5.4/System.Runtime.Serialization.Primitives.dll",
+        "lib/dotnet/System.Runtime.Serialization.Primitives.dll",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
-        "lib/net45/_._",
-        "lib/net46/System.Runtime.Serialization.Primitives.dll",
-        "lib/netcore50/System.Runtime.Serialization.Primitives.dll",
-        "lib/win8/_._",
-        "lib/wp80/_._",
-        "lib/wpa81/_._",
+        "lib/net46/_._",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
-        "ref/dotnet5.1/de/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/es/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/fr/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/it/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/ja/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/ko/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/ru/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/System.Runtime.Serialization.Primitives.dll",
-        "ref/dotnet5.1/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/zh-hans/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.1/zh-hant/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/de/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/es/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/fr/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/it/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/ja/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/ko/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/ru/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/System.Runtime.Serialization.Primitives.dll",
-        "ref/dotnet5.4/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/zh-hans/System.Runtime.Serialization.Primitives.xml",
-        "ref/dotnet5.4/zh-hant/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/de/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/es/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/fr/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/it/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/ja/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/ko/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/ru/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/System.Runtime.Serialization.Primitives.dll",
+        "ref/dotnet/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/zh-hans/System.Runtime.Serialization.Primitives.xml",
+        "ref/dotnet/zh-hant/System.Runtime.Serialization.Primitives.xml",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
-        "ref/net45/_._",
-        "ref/net46/System.Runtime.Serialization.Primitives.dll",
-        "ref/netcore50/de/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/es/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/fr/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/it/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/ja/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/ko/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/ru/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/System.Runtime.Serialization.Primitives.dll",
-        "ref/netcore50/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/zh-hans/System.Runtime.Serialization.Primitives.xml",
-        "ref/netcore50/zh-hant/System.Runtime.Serialization.Primitives.xml",
-        "ref/win8/_._",
-        "ref/wp80/_._",
-        "ref/wpa81/_._",
+        "ref/net46/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
-        "System.Runtime.Serialization.Primitives.4.1.0-beta-23420.nupkg",
-        "System.Runtime.Serialization.Primitives.4.1.0-beta-23420.nupkg.sha512",
+        "System.Runtime.Serialization.Primitives.4.0.10.nupkg",
+        "System.Runtime.Serialization.Primitives.4.0.10.nupkg.sha512",
         "System.Runtime.Serialization.Primitives.nuspec"
       ]
     },
-    "System.Runtime.Serialization.Xml/4.1.0-beta-23420": {
+    "System.Runtime.Serialization.Xml/4.0.10": {
       "type": "package",
-      "serviceable": true,
-      "sha512": "eVVZxcgMNzBe20suxQTuYFWYY53MfsCWRgrpdKXngOD5SoNlT2+rIaFNXHVjWks5RP8kScW47aslvoJusa+kgg==",
+      "sha512": "xsy7XbH8RTpKoDPNcibSGCOpujsmwUmOWAby3PssqkZFpLBXUbDO2s6JKITRjxejET2g0PK8t+mdIvu3xmUuKA==",
       "files": [
         "lib/DNXCore50/System.Runtime.Serialization.Xml.dll",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
-        "lib/net45/_._",
-        "lib/net46/System.Runtime.Serialization.Xml.dll",
+        "lib/net46/_._",
         "lib/netcore50/System.Runtime.Serialization.Xml.dll",
-        "lib/win8/_._",
-        "lib/wp80/_._",
-        "lib/wpa81/_._",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
-        "ref/dotnet5.1/de/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/es/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/fr/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/it/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/ja/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/ko/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/ru/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/System.Runtime.Serialization.Xml.dll",
-        "ref/dotnet5.1/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/zh-hans/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.1/zh-hant/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/de/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/es/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/fr/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/it/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/ja/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/ko/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/ru/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/System.Runtime.Serialization.Xml.dll",
-        "ref/dotnet5.4/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/zh-hans/System.Runtime.Serialization.Xml.xml",
-        "ref/dotnet5.4/zh-hant/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/de/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/es/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/fr/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/it/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/ja/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/ko/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/ru/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/System.Runtime.Serialization.Xml.dll",
+        "ref/dotnet/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/zh-hans/System.Runtime.Serialization.Xml.xml",
+        "ref/dotnet/zh-hant/System.Runtime.Serialization.Xml.xml",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
-        "ref/net45/_._",
-        "ref/net46/System.Runtime.Serialization.Xml.dll",
-        "ref/netcore50/de/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/es/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/fr/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/it/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/ja/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/ko/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/ru/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/System.Runtime.Serialization.Xml.dll",
-        "ref/netcore50/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/zh-hans/System.Runtime.Serialization.Xml.xml",
-        "ref/netcore50/zh-hant/System.Runtime.Serialization.Xml.xml",
-        "ref/win8/_._",
-        "ref/wp80/_._",
-        "ref/wpa81/_._",
+        "ref/net46/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtimes/win8-aot/lib/netcore50/System.Runtime.Serialization.Xml.dll",
-        "System.Runtime.Serialization.Xml.4.1.0-beta-23420.nupkg",
-        "System.Runtime.Serialization.Xml.4.1.0-beta-23420.nupkg.sha512",
+        "System.Runtime.Serialization.Xml.4.0.10.nupkg",
+        "System.Runtime.Serialization.Xml.4.0.10.nupkg.sha512",
         "System.Runtime.Serialization.Xml.nuspec"
       ]
     },
@@ -10208,7 +10122,7 @@
       "System.Runtime.Extensions >= 4.0.11-beta-*",
       "System.Runtime.Handles >= 4.0.1-beta-*",
       "System.Runtime.InteropServices >= 4.0.21-beta-*",
-      "System.Runtime.Serialization.Xml >= 4.1.0-beta-*",
+      "System.Runtime.Serialization.Xml >= 4.0.10",
       "System.Security.Claims >= 4.0.1-beta-*",
       "System.Security.Cryptography.X509Certificates >= 4.0.0-beta-*",
       "System.Security.Principal >= 4.0.1-beta-*",
