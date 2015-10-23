@@ -299,9 +299,19 @@ namespace System.ServiceModel.Security
         }
 
 #if FEATURE_NETNATIVE
-        private static bool IsSystemAccount(WindowsIdentity self)
+        internal static EndpointIdentity CreateWindowsIdentity(bool spnOnly)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            EndpointIdentity identity = null;
+            if (spnOnly)
+            {
+                identity = EndpointIdentity.CreateSpnIdentity(String.Format(CultureInfo.InvariantCulture, "host/{0}", DnsCache.MachineName));
+            }
+            else
+            {
+                throw ExceptionHelper.PlatformNotSupported();
+            }
+
+            return identity;
         }
 #else
         private static bool IsSystemAccount(WindowsIdentity self)
@@ -317,7 +327,7 @@ namespace System.ServiceModel.Security
                     || sid.IsWellKnown(WellKnownSidType.LocalServiceSid)
                     || self.User.Value.StartsWith("S-1-5-82", StringComparison.OrdinalIgnoreCase));
         }
-#endif // FEATURE_NETNATIVE
+
         internal static EndpointIdentity CreateWindowsIdentity(bool spnOnly)
         {
             EndpointIdentity identity = null;
@@ -337,7 +347,6 @@ namespace System.ServiceModel.Security
 
             return identity;
         }
-
 
         internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid)
         {
@@ -362,7 +371,6 @@ namespace System.ServiceModel.Security
             throw ExceptionHelper.PlatformNotSupported("UnsafeGetWindowsIdentityToken is not supported");
         }
 
-
         private static WindowsIdentity UnsafeCreateWindowsIdentityFromToken(IntPtr token, string authType)
         {
             if (authType != null)
@@ -370,7 +378,7 @@ namespace System.ServiceModel.Security
             else
                 return new WindowsIdentity(token);
         }
-
+#endif // FEATURE_NETNATIVE
 
         internal static bool IsSupportedAlgorithm(string algorithm, SecurityToken token)
         {

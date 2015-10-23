@@ -536,7 +536,7 @@ namespace System.ServiceModel.Channels
                 _useStreaming = useStreaming;
                 _defaultTimeouts = defaultTimeouts;
                 _closeDetails = webSocketTransportDuplexSessionChannel._webSocketCloseDetails;
-                //_receiveTimer = new IOThreadTimer(onAsyncReceiveCancelled, this, true);
+                _asyncReceiveTimeout = _defaultTimeouts.ReceiveTimeout; 
                 _asyncReceiveState = AsyncReceiveState.Finished;
             }
 
