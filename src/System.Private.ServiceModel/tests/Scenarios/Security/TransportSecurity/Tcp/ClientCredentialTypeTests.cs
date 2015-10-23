@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Infrastructure.Common;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
+using System.ServiceModel.Security;
 using Xunit;
 
 public static class Tcp_ClientCredentialTypeTests
@@ -31,11 +33,11 @@ public static class Tcp_ClientCredentialTypeTests
             string result = serviceProxy.Echo(testString);
             Assert.Equal(testString, result);
 
-            factory.Close(); 
+            factory.Close();
         }
-        finally 
+        finally
         {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory); 
+            ScenarioTestHelpers.CloseCommunicationObjects(factory);
         }
     }
 
@@ -83,7 +85,7 @@ public static class Tcp_ClientCredentialTypeTests
             string result = serviceProxy.Echo(testString);
             Assert.Equal(testString, result);
 
-            factory.Close(); 
+            factory.Close();
         }
         finally
         {
@@ -99,9 +101,11 @@ public static class Tcp_ClientCredentialTypeTests
     {
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
         try
         {
+            // *** SETUP *** \\
             CustomBinding binding = new CustomBinding(
                 new SslStreamSecurityBindingElement(), // This is the binding element used when Security.Mode  = TransportWithMessageCredentials
                 new BinaryMessageEncodingBindingElement(),
@@ -109,17 +113,65 @@ public static class Tcp_ClientCredentialTypeTests
             
             var endpointIdentity = new DnsEndpointIdentity(Endpoints.Tcp_CustomBinding_SslStreamSecurity_HostName);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(new Uri(Endpoints.Tcp_CustomBinding_SslStreamSecurity_Address), endpointIdentity));
-            
-            IWcfService serviceProxy = factory.CreateChannel();
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
 
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
         }
         finally
         {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    //[ActiveIssue(458)]
+    [OuterLoop]
+    public static void TcpClientCredentialType_Certificate_EchoString()
+    {
+        string clientCertThumb = null;
+        EndpointAddress endpointAddress = null;
+        string testString = "Hello";
+        NetTcpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            binding = new NetTcpBinding(SecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_Address),
+                new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
+            clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
+            factory.Credentials.ClientCertificate.SetCertificate(
+                StoreLocation.LocalMachine,
+                StoreName.My,
+                X509FindType.FindByThumbprint,
+                clientCertThumb);
+
+            serviceProxy = factory.CreateChannel();
+
+            string result = serviceProxy.Echo(testString);
+            Assert.Equal(testString, result);
+
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 }

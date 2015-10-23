@@ -29,6 +29,8 @@ namespace Infrastructure.Common
         private const string ClientCertificateSubject = "WCF Client Certificate";
         private const string ClientCertificatePassword = "test"; // this needs to be kept in sync with the Bridge configuration 
 
+        public static string LocalCertThumbprint { get; private set; }
+
         // Dictionary of certificates installed by CertificateManager
         // Keyed by the Thumbprint of the certificate
         private static Dictionary<string, CertificateCacheEntry> s_myCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
@@ -127,6 +129,9 @@ namespace Infrastructure.Common
             {
                 if (response.TryGetValue(ThumbprintKeyName, out thumbprint))
                 {
+                    // Set property with the thumbprint so a test case can use it.
+                    LocalCertThumbprint = thumbprint;
+
                     foundUserCertificate = s_myCertificates.ContainsKey(thumbprint);
 
                     // The Bridge tells us if the request has been made for a local certificate local to the bridge. 
