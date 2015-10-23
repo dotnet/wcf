@@ -26,6 +26,7 @@ namespace WcfService.CertificateResources
 
         protected static string s_localHostname; 
         
+        // Cache for certs created via CertificateResources
         // key: subject CN, value: X509Certificate2
         protected static Dictionary<string, X509Certificate2> s_createdCertsBySubject = new Dictionary<string, X509Certificate2>();
         // key: cert thumbprint, value: X509Certificate2

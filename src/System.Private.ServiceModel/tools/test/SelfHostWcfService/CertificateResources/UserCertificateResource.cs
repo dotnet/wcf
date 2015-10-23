@@ -41,6 +41,11 @@ namespace WcfService.CertificateResources
                     // Cache the certificates
                     s_createdCertsBySubject.Add(subjects[0], certificate);
                     s_createdCertsByThumbprint.Add(certificate.Thumbprint, certificate);
+
+                    // Created certs get put onto the local machine
+                    // We ideally don't want this to happen, but until we find a way to have BridgeClient not need elevation for cert installs
+                    // we need this to happen so that running locally doesn't require elevation as it messes up our CI and developer builds
+                    CertificateManager.InstallCertificateToMyStore(certificate);
                 }
             }
 

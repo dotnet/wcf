@@ -5,9 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
-using System.Net;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
@@ -50,8 +48,8 @@ namespace WcfTestBridgeCommon
         private static readonly X509V3CertificateGenerator _certGenerator = new X509V3CertificateGenerator();
         private static readonly X509V2CrlGenerator _crlGenerator = new X509V2CrlGenerator();
 
-        // key: thumbprint, value: revocation time
-        private static Dictionary<string, DateTime> _revokedCertificates = new Dictionary<string,DateTime>(); 
+        // key: serial number, value: revocation time
+        private static Dictionary<string, DateTime> _revokedCertificates = new Dictionary<string, DateTime>(); 
         
         private RsaKeyPairGenerator _keyPairGenerator;
         private SecureRandom _random;
@@ -370,6 +368,8 @@ namespace WcfTestBridgeCommon
             } 
             else
             {
+                // Otherwise, allow encode with the private key. note that X509Certificate2.RawData will not provide the private key
+                // you will have to re-export this cert if needed
                 outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
             }
 

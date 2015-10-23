@@ -46,6 +46,8 @@ namespace WcfService.CertificateResources
                     }
                 }
 
+                // this isn't ideal, as semantically in JSON they aren't grouped together. Our current Json serializer implementation 
+                // doesn't support serializing nested key-val pairs
                 response.Properties.Add(subjectsKeyName, string.Join(",", subjects));
                 response.Properties.Add(thumbprintsKeyName, string.Join(",", thumbprints));
                 return response;
@@ -72,8 +74,10 @@ namespace WcfService.CertificateResources
 
                 if (certHasBeenCreated)
                 {
+                    var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration); 
+
                     response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
-                    response.Properties.Add(certificateKeyName, Convert.ToBase64String(certificate.RawData));
+                    response.Properties.Add(certificateKeyName, Convert.ToBase64String(certificate.Export(X509ContentType.Pfx, certGenerator.CertificatePassword)));
                 }
                 else
                 {
