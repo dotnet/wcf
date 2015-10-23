@@ -73,15 +73,15 @@ namespace System.ServiceModel.Dispatcher
             return streamValue;
         }
 
-        private Task<Stream> GetStreamAndWriteStartWrapperIfNecessaryAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
+        private async Task<Stream> GetStreamAndWriteStartWrapperIfNecessaryAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
         {
             Stream streamValue = GetStreamValue(parameters, returnValue);
             if (streamValue == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(_partName);
             if (WrapperName != null)
-                writer.WriteStartElement(null, WrapperName, WrapperNamespace);
-            writer.WriteStartElement(null, PartName, PartNamespace);
-            return Task.FromResult(streamValue);
+                await writer.WriteStartElementAsync(null, WrapperName, WrapperNamespace);
+            await writer.WriteStartElementAsync(null, PartName, PartNamespace);
+            return streamValue;
         }
 
         private void WriteEndWrapperIfNecessary(XmlDictionaryWriter writer)
