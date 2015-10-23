@@ -59,9 +59,15 @@ namespace WcfService.CertificateResources
                     {
                         certificate = generator.CreateMachineCertificate(subjects).Certificate;
                     }
-                    // Cache the certificates
-                    s_createdCertsBySubject.Add(subjects[0], certificate);
-                    s_createdCertsByThumbprint.Add(certificate.Thumbprint, certificate);
+
+                    X509Certificate2 dummy;
+                    if (!isLocal || !s_createdCertsByThumbprint.TryGetValue(certificate.Thumbprint, out dummy))
+                    {
+                        // when isLocal, it's possible for there to be > 1 subject sharing the same thumbprint
+                        // in this case, we only cache the first isLocal subject, the rest we don't cache
+                        s_createdCertsBySubject.Add(subjects[0], certificate);
+                        s_createdCertsByThumbprint.Add(certificate.Thumbprint, certificate);
+                    }
                 }
             }
 

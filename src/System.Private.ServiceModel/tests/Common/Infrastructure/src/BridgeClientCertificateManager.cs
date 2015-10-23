@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography; 
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
@@ -16,7 +17,7 @@ namespace Infrastructure.Common
 
         // Resource names 
         private const string CertificateAuthorityResourceName = "WcfService.CertificateResources.CertificateAuthorityResource";
-        private const string MachineCertificateResourceName = "WcfService.CertificateResources.MachineCertificateResource";
+        private const string UserCertificateResourceName = "WcfService.CertificateResources.UserCertificateResource";
 
         // key names in request/response keyval pairs
         private const string EndpointResourceRequestNameKeyName = "name";
@@ -25,7 +26,8 @@ namespace Infrastructure.Common
         private const string CertificateKeyName = "certificate";
         private const string IsLocalKeyName = "isLocal";
 
-        private static string s_clientCertSubject = "WCF Client Certificate";
+        private const string ClientCertificateSubject = "WCF Client Certificate";
+        private const string ClientCertificatePassword = "test"; // this needs to be kept in sync with the Bridge configuration 
 
         // Dictionary of certificates installed by CertificateManager
         // Keyed by the Thumbprint of the certificate
@@ -65,7 +67,7 @@ namespace Infrastructure.Common
                         var collection = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
                         if (collection.Count > 0)
                         {
-                            // We don't need to actually add the cert ourselves, because this cert has previously been installed 
+                            // We don't need to add the cert ourselves, because this cert has previously been installed 
                             // Likely BridgeClient is running on the same machine as the Bridge and the Bridge has done the work already.
                             return;
                         }
@@ -78,6 +80,7 @@ namespace Infrastructure.Common
                     string certificateAsBase64;
                     if (response.TryGetValue(CertificateKeyName, out certificateAsBase64))
                     {
+                        // Root cert coming from Bridge doesn't have a password or private key
                         certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64));
                     }
                     else
@@ -109,22 +112,22 @@ namespace Infrastructure.Common
         // if so, we don't try to install the cert as that operation requires admin privileges
         public static void InstallLocalCertificateFromBridge()
         {
-            X509Certificate2 certificateToInstall = null; 
+            X509Certificate2 certificateToInstall = null;
 
-            // PUT the Machine name to the Bridge (returns thumbprint)
+            // PUT the Client Certificate Subject to the Bridge (returns thumbprint)
             Dictionary<string, string> requestParams = new Dictionary<string, string>();
-            requestParams.Add(SubjectKeyName, s_clientCertSubject);
+            requestParams.Add(SubjectKeyName, ClientCertificateSubject);
 
-            var response = BridgeClient.MakeResourcePutRequest(MachineCertificateResourceName, requestParams);
+            var response = BridgeClient.MakeResourcePutRequest(UserCertificateResourceName, requestParams);
 
             string thumbprint;
-            bool foundLocalCertificate = false;
+            bool foundUserCertificate = false;
 
-            lock(s_certificateLock)
+            lock (s_certificateLock)
             {
                 if (response.TryGetValue(ThumbprintKeyName, out thumbprint))
                 {
-                    foundLocalCertificate = s_myCertificates.ContainsKey(thumbprint);
+                    foundUserCertificate = s_myCertificates.ContainsKey(thumbprint);
 
                     // The Bridge tells us if the request has been made for a local certificate local to the bridge. 
                     // If it has, then the Bridge itself has already installed that cert as part of the PUT request
@@ -140,19 +143,19 @@ namespace Infrastructure.Common
                     }
                 }
 
-                if (!foundLocalCertificate)
+                if (!foundUserCertificate)
                 {
                     // GET the cert with thumbprint from the Bridge (returns cert in base64 format)
                     requestParams = new Dictionary<string, string>();
                     requestParams.Add(ThumbprintKeyName, thumbprint);
 
                     string base64Cert = string.Empty;
-                    response = BridgeClient.MakeResourceGetRequest(MachineCertificateResourceName, requestParams);
+                    response = BridgeClient.MakeResourceGetRequest(UserCertificateResourceName, requestParams);
 
                     string certificateAsBase64;
                     if (response.TryGetValue(CertificateKeyName, out certificateAsBase64))
                     {
-                        certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64));
+                        certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64), ClientCertificatePassword);
                     }
                     else
                     {
@@ -163,8 +166,8 @@ namespace Infrastructure.Common
                         }
 
                         throw new Exception(
-                            string.Format("Error retrieving {0} certificate from Bridge, thumbprint '{1}'.\r\nExpected '{2}' key in response. Response contents:{3}{4}",
-                                s_clientCertSubject,
+                            string.Format("Error retrieving '{0}' certificate from Bridge, thumbprint '{1}'.\r\nExpected '{2}' key in response. Response contents:{3}{4}",
+                                ClientCertificateSubject,
                                 thumbprint,
                                 CertificateKeyName,
                                 Environment.NewLine,
@@ -178,7 +181,7 @@ namespace Infrastructure.Common
             // We also need to install the root cert if we install a local cert
             InstallRootCertificateFromBridge();
         }
-        
+
         // Returns the certificate matching the given thumbprint from the given store.
         // Returns null if not found.
         private static X509Certificate2 CertificateFromThumbprint(X509Store store, string thumbprint)
@@ -193,30 +196,41 @@ namespace Infrastructure.Common
                                                StoreLocation storeLocation,
                                                X509Certificate2 certificate)
         {
-            X509Store store = null;
             X509Certificate2 existingCert = null;
-            lock(s_certificateLock)
+            lock (s_certificateLock)
             {
-                try
+                // Open the store as ReadOnly first, as it prevents the need for elevation if opening
+                // a LocalMachine store
+                using (X509Store store = new X509Store(storeName, storeLocation))
                 {
-                    store = new X509Store(storeName, storeLocation);
-                    store.Open(OpenFlags.ReadWrite);
+                    store.Open(OpenFlags.ReadOnly);
                     existingCert = CertificateFromThumbprint(store, certificate.Thumbprint);
-                    if (existingCert == null)
+                }
+
+                if (existingCert == null)
+                {
+                    using (X509Store store = new X509Store(storeName, storeLocation))
                     {
+                        try
+                        {
+                            store.Open(OpenFlags.ReadWrite);
+                        }
+                        catch (CryptographicException inner)
+                        {
+                            StringBuilder exceptionString = new StringBuilder();
+                            exceptionString.AppendFormat("Error opening StoreName: '{0}' certificate store from StoreLocation '{1}' in ReadWrite mode ", storeName, storeLocation);
+                            exceptionString.AppendFormat("while attempting to install cert with thumbprint '{1}'.", Environment.NewLine, certificate.Thumbprint);
+                            exceptionString.AppendFormat("{0}This is usually due to permissions issues if writing to the LocalMachine location", Environment.NewLine);
+                            exceptionString.AppendFormat("{0}Try running the test with elevated or superuser permissions.", Environment.NewLine);
+
+                            throw new InvalidOperationException(exceptionString.ToString(), inner);
+                        }
                         store.Add(certificate);
                     }
                 }
-                finally
-                {
-                    if (store != null)
-                    {
-                        store.Dispose();
-                    }
-                }
-
-                return existingCert == null;
             }
+
+            return existingCert == null;
         }
 
         // Install the certificate into the Root store and returns its thumbprint.

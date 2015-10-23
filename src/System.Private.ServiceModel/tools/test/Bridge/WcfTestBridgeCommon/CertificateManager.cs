@@ -70,6 +70,8 @@ namespace WcfTestBridgeCommon
             try
             {
                 store = new X509Store(storeName, storeLocation);
+
+                // We assume Bridge is running elevated
                 store.Open(OpenFlags.ReadWrite);
                 existingCert = CertificateFromThumbprint(store, certificate.Thumbprint);
                 if (existingCert == null)
@@ -116,18 +118,14 @@ namespace WcfTestBridgeCommon
                 };
 
                 return certificate.Thumbprint;
-
             }
         }
 
         // Install the certificate into the My store.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallCertificateToMyStore(X509Certificate2 certificate, X509Certificate2 rootCertificate)
+        public static string InstallCertificateToMyStore(X509Certificate2 certificate)
         {
-            // Installing any MY certificate guarantees the certificate authority is loaded first
-            InstallCertificateToRootStore(rootCertificate);
-
             lock (s_certificateLock)
             {
                 CertificateCacheEntry entry = null;
@@ -179,7 +177,8 @@ namespace WcfTestBridgeCommon
 
                 // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
                 // only the first-created cert will win
-                InstallCertificateToMyStore(hostCert, rootCertificate);
+                InstallCertificateToRootStore(rootCertificate);
+                InstallCertificateToMyStore(hostCert);
                 s_localCertificate = hostCert;
             }
 
@@ -220,6 +219,7 @@ namespace WcfTestBridgeCommon
                 X509Store store = null;
                 try
                 {
+                    // We assume Bridge is running elevated
                     store = new X509Store(storeName, storeLocation);
                     store.Open(OpenFlags.ReadWrite);
                     foreach (var pair in cache)
@@ -264,6 +264,7 @@ namespace WcfTestBridgeCommon
 
                 try
                 {
+                    // We assume Bridge is running elevated
                     store = new X509Store(storeName, storeLocation);
                     store.Open(OpenFlags.ReadWrite);
 
