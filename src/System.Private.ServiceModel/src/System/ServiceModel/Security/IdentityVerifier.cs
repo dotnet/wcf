@@ -195,10 +195,6 @@ namespace System.ServiceModel.Security
                 }
                 return null;
             }
-            internal Claim CheckSidEquivalence(SecurityIdentifier identitySid, ClaimSet claimSet)
-            {
-                throw ExceptionHelper.PlatformNotSupported("IdentityVerifier.CheckSidEquivalence");
-            }
 
             public override bool CheckAccess(EndpointIdentity identity, AuthorizationContext authContext)
             {
