@@ -145,6 +145,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string Tcp_VerifyDNS_HostName
+    {
+        get
+        {
+            return BridgeClient.GetResourceHostName("WcfService.TestResources.TcpVerifyDNSResource");
+        }
+    }
+
     public static string Tcp_NoSecurity_Callback_Address
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexResource"); }

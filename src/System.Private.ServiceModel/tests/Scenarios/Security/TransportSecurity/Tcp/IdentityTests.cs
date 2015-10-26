@@ -1,43 +1,71 @@
 ﻿using System;
+using System.Collections;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using System.Text;
 using Xunit;
 
-namespace Security.TransportSecurity.Tests.Tcp
+using Infrastructure.Common;
+
+public static class IdentityTests
 {
-    public static class IdentityTests
+    [Fact]
+    [OuterLoop]
+    // The product code will check the Dns identity from the server and throw if it does not match what is specified in DnsEndpointIdentity
+    public static void VerifyServiceIdentityMatchDnsEndpointIdentity()
     {
-        [Fact]
-        [ActiveIssue(12)]
-        [OuterLoop]
-        // The product code will check the Dns identity from the server and throw if it does not match what is specified in DnsEndpointIdentity
-        public static void VerifyServiceIdentityMatchDnsEndpointIdentity()
+        string testString = "Hello";
+
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.Transport;
+        binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+
+        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_VerifyDNS_Address), new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
+        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        IWcfService serviceProxy = factory.CreateChannel();
+
+        try
         {
-            string testString = "Hello";
+            var result = serviceProxy.Echo(testString);
+            Assert.Equal(testString, result);
 
-            NetTcpBinding binding = new NetTcpBinding();
-            //SecurityMode.Transport is not supported yet, we will get an exception here, tracked by issue #81
-            binding.Security.Mode = SecurityMode.Transport;
-            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+            factory.Close();
+        }
+        finally
+        {
+            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+        }
+    }
 
-            EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_VerifyDNS_Address),new DnsEndpointIdentity("localhost"));
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
-            // factory.Credentials.ServiceCertificate is not availabe currently, tracked by issue 243
-            // We need to change the validation mode as we use a test certificate. It does not affect the purpose of this test
-            // factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-            IWcfService serviceProxy = factory.CreateChannel();
+    [Fact]
+    [OuterLoop]
+    // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
+    public static void ServiceIdentityNotMatch_Throw_MessageSecurityException()
+    {
+        string testString = "Hello";
 
-            try
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.Transport;
+        binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+
+        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_VerifyDNS_Address), new DnsEndpointIdentity("wrongone"));
+        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        IWcfService serviceProxy = factory.CreateChannel();
+
+        try
+        {
+            var exception = Assert.Throws<MessageSecurityException>(() =>
             {
                 var result = serviceProxy.Echo(testString);
                 Assert.Equal(testString, result);
-            }
-            finally
-            {
-                if (factory != null && factory.State != CommunicationState.Closed)
-                {factory.Abort();
-                }
-            }
+            });
+
+            Assert.Contains(Endpoints.Tcp_VerifyDNS_HostName, exception.Message);
+        }
+        finally
+        {
+            ScenarioTestHelpers.CloseCommunicationObjects(factory);
         }
     }
+
 }

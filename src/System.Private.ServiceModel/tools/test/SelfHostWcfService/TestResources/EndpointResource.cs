@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -13,6 +14,7 @@ namespace WcfService.TestResources
     internal abstract class EndpointResource<ServiceType, ContractType> : IResource where ServiceType : class, ContractType
     {
         private const string ResourceResponseUriKeyName = "uri";
+        private const string ResourceResponseFQHNKeyName = "hostname";
 
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
@@ -58,6 +60,7 @@ namespace WcfService.TestResources
             if (host.Description.Endpoints.Count == 1)
             {
                 response.Properties.Add(ResourceResponseUriKeyName, host.Description.Endpoints[0].ListenUri.ToString());
+                response.Properties.Add(ResourceResponseFQHNKeyName, Dns.GetHostEntry("127.0.0.1").HostName);
             }
 
             return response;
@@ -70,6 +73,7 @@ namespace WcfService.TestResources
             if (s_currentHosts.TryGetValue(Address, out host) && (host.Description.Endpoints.Count == 1))
             {
                 response.Properties.Add(ResourceResponseUriKeyName, host.Description.Endpoints[0].ListenUri.ToString());
+                response.Properties.Add(ResourceResponseFQHNKeyName, Dns.GetHostEntry("127.0.0.1").HostName);
             }
 
             return response;
