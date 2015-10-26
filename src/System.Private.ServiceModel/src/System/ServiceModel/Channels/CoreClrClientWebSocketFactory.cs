@@ -24,8 +24,7 @@ namespace System.ServiceModel.Channels
                 webSocket.Options.SetRequestHeader(header, headers[header]);
             }
 
-            var cancelToken = await timeoutHelper.GetCancellationTokenAsync();
-            await webSocket.ConnectAsync(address, cancelToken);
+            await webSocket.ConnectAsync(address, timeoutHelper.CancellationToken);
             return webSocket;
         }
     }
