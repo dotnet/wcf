@@ -617,18 +617,6 @@ namespace System.ServiceModel.Channels
 
             internal class HttpClientChannelAsyncRequest : IAsyncRequest
             {
-                private static readonly Action<object> s_cancelCts = state =>
-                {
-
-                    try
-                    {
-                        ((CancellationTokenSource)state).Cancel();
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        // ignore
-                    }
-                };
                 private HttpClientRequestChannel _channel;
                 private HttpChannelFactory<IRequestChannel> _factory;
                 private EndpointAddress _to;
@@ -639,7 +627,6 @@ namespace System.ServiceModel.Channels
                 private TimeoutHelper _timeoutHelper;
                 private int _httpRequestCompleted;
                 private HttpClient _httpClient;
-                private readonly CancellationTokenSource _httpSendCts;
 
                 public HttpClientChannelAsyncRequest(HttpClientRequestChannel channel)
                 {
@@ -648,7 +635,6 @@ namespace System.ServiceModel.Channels
                     _via = channel.Via;
                     _factory = channel.Factory;
                     _httpClient = _factory.GetHttpClient();
-                    _httpSendCts = new CancellationTokenSource();
                 }
 
                 public async Task SendRequestAsync(Message message, TimeoutHelper timeoutHelper)
@@ -687,13 +673,9 @@ namespace System.ServiceModel.Channels
 
                         bool success = false;
 
-                        var cancelTokenTask = _timeoutHelper.GetCancellationTokenAsync();
-
                         try
                         {
-                            var timeoutToken = await cancelTokenTask;
-                            timeoutToken.Register(s_cancelCts, _httpSendCts);
-                            _httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
+                            _httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _timeoutHelper.CancellationToken);
                             // As we have the response message and no exceptions have been thrown, the request message has completed it's job.
                             // Calling Dispose() on the request message to free up resources in HttpContent, but keeping the object around
                             // as we can still query properties once dispose'd.
@@ -707,7 +689,7 @@ namespace System.ServiceModel.Channels
                         }
                         catch (OperationCanceledException)
                         {
-                            if (cancelTokenTask.Result.IsCancellationRequested)
+                            if (_timeoutHelper.CancellationToken.IsCancellationRequested)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(
                                     SR.HttpRequestTimedOut, _httpRequestMessage.RequestUri, _timeoutHelper.OriginalTimeout)));
@@ -737,12 +719,11 @@ namespace System.ServiceModel.Channels
 
                 private void Cleanup()
                 {
-                    s_cancelCts(_httpSendCts);
-
                     if (_httpRequestMessage != null)
                     {
                         var httpRequestMessageSnapshot = _httpRequestMessage;
                         _httpRequestMessage = null;
+                        _timeoutHelper.CancelCancellationToken(false);
                         TryCompleteHttpRequest(httpRequestMessageSnapshot);
                         httpRequestMessageSnapshot.Dispose();
                     }
@@ -771,8 +752,7 @@ namespace System.ServiceModel.Channels
                     }
                     catch (OperationCanceledException)
                     {
-                        var cancelToken = _timeoutHelper.GetCancellationToken();
-                        if (cancelToken.IsCancellationRequested)
+                        if (_timeoutHelper.CancellationToken.IsCancellationRequested)
                         {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(
                                 SR.HttpResponseTimedOut, _httpRequestMessage.RequestUri, timeoutHelper.OriginalTimeout)));
@@ -996,8 +976,7 @@ namespace System.ServiceModel.Channels
                         RequestUri = requestUri
                     };
 
-                    var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
-                    await _httpClient.SendAsync(headHttpRequestMessage, cancelToken);
+                    await _httpClient.SendAsync(headHttpRequestMessage, _timeoutHelper.CancellationToken);
                 }
 
                 private bool AuthenticationSchemeMayRequireResend()
