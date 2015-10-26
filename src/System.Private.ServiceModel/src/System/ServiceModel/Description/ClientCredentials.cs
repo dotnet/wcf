@@ -27,9 +27,27 @@ namespace System.ServiceModel.Description
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("other");
             if (other._userName != null)
                 _userName = new UserNamePasswordClientCredential(other._userName);
+            if (other._clientCertificate != null)
+                _clientCertificate = new X509CertificateInitiatorClientCredential(other._clientCertificate);
+            if (other._serviceCertificate != null)
+                _serviceCertificate = new X509CertificateRecipientClientCredential(other._serviceCertificate);
             if (other._httpDigest != null)
                 _httpDigest = new HttpDigestClientCredential(other._httpDigest);
             _isReadOnly = other._isReadOnly;
+        }
+
+        public UserNamePasswordClientCredential UserName
+        {
+            get
+            {
+                if (_userName == null)
+                {
+                    _userName = new UserNamePasswordClientCredential();
+                    if (_isReadOnly)
+                        _userName.MakeReadOnly();
+                }
+                return _userName;
+            }
         }
 
         public X509CertificateInitiatorClientCredential ClientCertificate
@@ -59,21 +77,6 @@ namespace System.ServiceModel.Description
                 return _serviceCertificate;
             }
         }
-
-        public UserNamePasswordClientCredential UserName
-        {
-            get
-            {
-                if (_userName == null)
-                {
-                    _userName = new UserNamePasswordClientCredential();
-                    if (_isReadOnly)
-                        _userName.MakeReadOnly();
-                }
-                return _userName;
-            }
-        }
-
 
         public WindowsClientCredential Windows
         {
@@ -177,8 +180,18 @@ namespace System.ServiceModel.Description
         // RC0 workaround to freeze credentials when the channel factory is opened
         internal void MakeReadOnly()
         {
+            _isReadOnly = true; 
+
+            if (_clientCertificate != null)
+                _clientCertificate.MakeReadOnly();
+            if (_serviceCertificate != null)
+                _serviceCertificate.MakeReadOnly();
+            if (_userName != null)
+                _userName.MakeReadOnly();
             if (_windows != null)
                 _windows.MakeReadOnly();
+            if (_httpDigest != null)
+                _httpDigest.MakeReadOnly();
         }
     }
 }
