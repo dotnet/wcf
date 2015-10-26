@@ -176,10 +176,13 @@ namespace Infrastructure.Common
                 }
             }
 
-            InstallCertificateToMyStore(certificateToInstall);
-
-            // We also need to install the root cert if we install a local cert
-            InstallRootCertificateFromBridge();
+            // certificateToInstall could be null in the case the user certification exists
+            if (certificateToInstall != null)
+            {
+                InstallCertificateToMyStore(certificateToInstall);
+                // We also need to install the root cert if we install a local cert
+                InstallRootCertificateFromBridge();
+            }
         }
 
         // Returns the certificate matching the given thumbprint from the given store.

@@ -13,10 +13,12 @@ namespace Infrastructure.Common
     public static class BridgeClient 
     {
         private const string EndpointResourceResponseUriKeyName = "uri";
+        private const string EndpointResourceResponseFQHNKeyName = "hostname";
         private const string EndpointResourceRequestNameKeyName = "name";
 
         private static object s_thisLock = new object();
-        private static Dictionary<string, string> _Resources = new Dictionary<string, string>();
+        //The key is resource name, The value are resource properties such as EndpointResourceResponseUriKeyName
+        private static Dictionary<string, Dictionary<string, string>> _Resources = new Dictionary<string, Dictionary<string, string>>();
         private static BridgeState s_BridgeStatus = BridgeState.NotStarted;
         private static string s_BridgeFaultReason = String.Empty;
 
@@ -83,14 +85,45 @@ namespace Infrastructure.Common
             string resourceAddress = null;
             lock (s_thisLock)
             {
-                if (s_BridgeStatus == BridgeState.Started && !_Resources.TryGetValue(resourceName, out resourceAddress))
+                Dictionary<string, string> resources = null;
+                if (s_BridgeStatus == BridgeState.Started)
                 {
-                    resourceAddress = MakeEndpointResourcePutRequest(resourceName);
-                    _Resources.Add(resourceName, resourceAddress);
+                    if (!_Resources.TryGetValue(resourceName, out resources))
+                    {
+                        resources = MakeEndpointResourcePutRequest(resourceName);
+                      
+                        _Resources.Add(resourceName, resources);
+                    }
+                  
+                    resources.TryGetValue(EndpointResourceResponseUriKeyName, out resourceAddress);
                 }
             }
 
             return resourceAddress;
+        }
+
+        public static string GetResourceHostName(string resourceName)
+        {
+            EnsureBridgeIsRunning();
+
+            string hostName = null;
+            lock (s_thisLock)
+            {
+                Dictionary<string, string> resources = null;
+                if (s_BridgeStatus == BridgeState.Started)
+                {
+                    if (!_Resources.TryGetValue(resourceName, out resources))
+                    {
+                        resources = MakeEndpointResourcePutRequest(resourceName);
+                        _Resources.Add(resourceName, resources);
+                    }
+
+                    resources.TryGetValue(EndpointResourceResponseFQHNKeyName, out hostName);
+                    
+                }
+            }
+
+            return hostName;
         }
 
         // Ensure the given response was successful. If it was not, generate
@@ -192,7 +225,7 @@ namespace Infrastructure.Common
             return sb.ToString();
         }
 
-        private static string MakeEndpointResourcePutRequest(string resourceName)
+        private static Dictionary<string, string> MakeEndpointResourcePutRequest(string resourceName)
         {
             var responseContent = MakeResourcePutRequest(resourceName, null);
 
@@ -202,7 +235,7 @@ namespace Infrastructure.Common
                 throw new Exception("Invalid response from bridge: " + FormatKeyValuePairsAsString(responseContent));
             }
 
-            return uri;
+            return responseContent;
         }
 
         internal static Dictionary<string,string> MakeResourcePutRequest(string resourceName, Dictionary<string, string> requestParameters)
