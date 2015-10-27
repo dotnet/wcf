@@ -302,3 +302,86 @@ public interface IWcfDuplexService_Xml_Callback
     [OperationContract, XmlSerializerFormat]
     void OnXmlPingCallback(XmlCompositeTypeDuplexCallbackOnly xmlCompositeType);
 }
+
+// WebSocket Interfaces
+
+[ServiceContract]
+public interface IWSRequestReplyService
+{
+    [OperationContract]
+    void UploadData(string data);
+
+    [OperationContract]
+    string DownloadData();
+
+    [OperationContract]
+    void UploadStream(Stream stream);
+
+    [OperationContract]
+    Stream DownloadStream();
+
+    [OperationContract]
+    Stream DownloadCustomizedStream(TimeSpan readThrottle, TimeSpan streamDuration);
+
+    [OperationContract]
+    void ThrowingOperation(Exception exceptionToThrow);
+
+    [OperationContract]
+    string DelayOperation(TimeSpan delay);
+
+    // Logging
+    [OperationContract]
+    List<string> GetLog();
+}
+
+[ServiceContract(CallbackContract = typeof(IPushCallback))]
+public interface IWSDuplexService
+{
+    // Request-Reply operations
+    [OperationContract]
+    string GetExceptionString();
+
+    [OperationContract]
+    void UploadData(string data);
+
+    [OperationContract]
+    string DownloadData();
+
+    [OperationContract(IsOneWay = true)]
+    void UploadStream(Stream stream);
+
+    [OperationContract]
+    Stream DownloadStream();
+
+    // Duplex operations
+    [OperationContract(IsOneWay = true)]
+    void StartPushingData();
+
+    [OperationContract(IsOneWay = true)]
+    void StopPushingData();
+
+    [OperationContract(IsOneWay = true)]
+    void StartPushingStream();
+
+    [OperationContract(IsOneWay = true)]
+    void StartPushingStreamLongWait();
+
+    [OperationContract(IsOneWay = true)]
+    void StopPushingStream();
+
+    // Logging
+    [OperationContract(IsOneWay = true)]
+    void GetLog();
+}
+
+public interface IPushCallback
+{
+    [OperationContract(IsOneWay = true)]
+    void ReceiveData(string data);
+
+    [OperationContract(IsOneWay = true)]
+    void ReceiveStream(Stream stream);
+
+    [OperationContract(IsOneWay = true)]
+    void ReceiveLog(List<string> log);
+}

@@ -60,10 +60,14 @@
     <Compile Include="ComplexCompositeType.cs" />
     <Compile Include="CompositeType.cs" />
     <Compile Include="FaultDetail.cs" />
+    <Compile Include="FlowControlledStream.cs" />
+    <Compile Include="IPushCallback.cs" />
     <Compile Include="IWcfCustomUserNameService.cs" />
     <Compile Include="IWcfDuplexService.cs" />
     <Compile Include="IWcfRestartService.cs" />
     <Compile Include="IWcfService.cs" />
+    <Compile Include="IWSDuplexService.cs" />
+    <Compile Include="IWSRequestReplyService.cs" />
     <Compile Include="MahojongTypes.cs" />
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
@@ -94,12 +98,15 @@
     <Compile Include="TestResources\BasicHttpResource.cs" />
     <Compile Include="TestResources\EndpointResource.cs" />
     <Compile Include="TestHttpRequestMessageProperty.cs" />
+    <Compile Include="TestResources\WebSocketHttpsResource.cs" />
     <Compile Include="TestResources\WebSocketResources.cs" />
     <Compile Include="WcfDuplexService.cs" />
     <Compile Include="WcfRestartService.cs" />
     <Compile Include="WcfService.cs" />
     <Compile Include="WcfUserNameService.cs" />
     <Compile Include="WcfWebSocketService.cs" />
+    <Compile Include="WSDuplexService.cs" />
+    <Compile Include="WSRequestReplyService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

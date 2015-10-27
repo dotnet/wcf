@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -907,5 +908,199 @@ public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback, IWcfDuplexSer
             await Task.Delay(100);
             _datacontract_tcs.SetResult(dataContractCompositeType);
         });
+    }
+}
+
+public class FlowControlledStream : Stream
+{
+    ManualResetEvent waitEvent = new ManualResetEvent(false);
+    // Used to control when Read will return 0.
+    public bool StopStreaming { get; set; }
+    //bool readCalledWithStopStreaming = false;
+
+    public TimeSpan ReadThrottle { get; set; }
+
+    // Only set this if you don't want to manually control when 
+    // the stream stops.
+    // Keep it low - less than 1 second.  The server can send bytes very quickly, so
+    // sending a continuous stream will easily blow the MaxReceivedMessageSize buffer.
+    public TimeSpan StreamDuration { get; set; }
+
+    DateTime readStartedTime;
+    long totalBytesRead = 0;
+
+    public override bool CanRead
+    {
+        get { return !StopStreaming; }
+    }
+
+    public override bool CanSeek
+    {
+        get { return false; }
+    }
+
+    public override bool CanWrite
+    {
+        get { return false; }
+    }
+
+    public override void Flush()
+    {
+    }
+
+    public override long Length
+    {
+        get { throw new NotImplementedException(); }
+    }
+
+    public override long Position
+    {
+        get
+        {
+            return totalBytesRead;
+        }
+        set
+        {
+            totalBytesRead = value;
+        }
+    }
+
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        // Duration-based streaming logic: Control the "StopStreaming" flag based on a Duration
+        if (StreamDuration != TimeSpan.Zero)
+        {
+            if (readStartedTime == DateTime.MinValue)
+            {
+                readStartedTime = DateTime.Now;
+            }
+            if (DateTime.Now - readStartedTime >= StreamDuration)
+            {
+                StopStreaming = true;
+            }
+        }
+
+        if (StopStreaming)
+        {
+            buffer[offset] = 0;
+            return 0;
+        }
+
+        // Allow Read to continue as long as StopStreaming is false.
+        // Just fill buffer with as many random bytes as necessary.
+        int seed = DateTime.Now.Millisecond;
+        Random rand = new Random(seed);
+        byte[] randomBuffer = new byte[count];
+        rand.NextBytes(randomBuffer);
+        randomBuffer.CopyTo(buffer, offset);
+        totalBytesRead += count;
+
+        if (ReadThrottle != TimeSpan.Zero)
+        {
+            // Thread.Sleep and Thread.CurrentThread.Join are not available in NET Native
+            waitEvent.WaitOne(ReadThrottle);
+        }
+        return count;
+    }
+
+    public override long Seek(long offset, SeekOrigin origin)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void SetLength(long value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Write(byte[] buffer, int offset, int count)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class ClientReceiver : IPushCallback, IDisposable
+{
+    bool disposed = false;
+    
+    public ManualResetEvent LogReceived { get; set; }
+    public ManualResetEvent ReceiveDataInvoked { get; set; }
+    public ManualResetEvent ReceiveDataCompleted { get; set; }
+    public ManualResetEvent ReceiveStreamInvoked { get; set; }
+    public ManualResetEvent ReceiveStreamCompleted { get; set; }
+    public string Name { get; set; }
+
+    public List<string> ServerLog { get; set; }
+
+    public ClientReceiver()
+    {
+        LogReceived = new ManualResetEvent(false);
+        ReceiveDataInvoked = new ManualResetEvent(false);
+        ReceiveDataCompleted = new ManualResetEvent(false);
+        ReceiveStreamInvoked = new ManualResetEvent(false);
+        ReceiveStreamCompleted = new ManualResetEvent(false);
+        Name = "ClientReceiver_" + DateTime.Now;
+    }
+
+    public void ReceiveData(string data)
+    {
+        ReceiveDataInvoked.Set();
+        if (data == ScenarioTestHelpers.LastMessage)
+        {
+            ReceiveDataCompleted.Set();
+        }
+    }
+
+    public void ReceiveStream(Stream stream)
+    {
+        ReceiveStreamInvoked.Set();
+
+        int readResult;
+        byte[] buffer = new byte[1000];
+        do
+        {
+            try
+            {
+                readResult = stream.Read(buffer, 0, buffer.Length);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        while (readResult != 0);
+
+        stream.Dispose();
+
+        ReceiveStreamCompleted.Set();
+    }
+
+    public void ReceiveLog(List<string> log)
+    {
+        ServerLog = log;
+        LogReceived.Set();
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed)
+            return;
+
+        if(disposing)
+        {
+            LogReceived.Dispose();
+            ReceiveDataInvoked.Dispose();
+            ReceiveDataCompleted.Dispose();
+            ReceiveStreamInvoked.Dispose();
+            ReceiveStreamCompleted.Dispose();
+        }
+
+        disposed = true;
     }
 }

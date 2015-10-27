@@ -4,15 +4,22 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 using System.Text;
-using System.Xml;
+
 using Infrastructure.Common;
 
 public static class ScenarioTestHelpers
 {
     private const string testString = "Hello";
+    
+    //WebSocket constants
+    public const int DefaultMaxReceivedMessageSize = 64 * 1024 * 1024;
+    public const string ContentToReplace = "ContentToReplace";
+    public const string ResponseReplaceThisContent = "ResponseReplaceThisContent";
+    public const string ReplacedContent = "ReplacedContent";
+    public const string LastMessage = "LastMessage";
+    public const string RemoteEndpointMessagePropertyFailure = "RemoteEndpointMessageProperty did not contain the address of this machine.";
+
     public static TimeSpan TestTimeout
     {
         get
