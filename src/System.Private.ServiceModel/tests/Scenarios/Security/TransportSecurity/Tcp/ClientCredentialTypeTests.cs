@@ -94,7 +94,6 @@ public static class Tcp_ClientCredentialTypeTests
     // Simple echo of a string using a CustomBinding to mimic a NetTcpBinding with Security.Mode = TransportWithMessageCredentials
     // This does not exactly match the binding elements in a NetTcpBinding which also includes a TransportSecurityBindingElement
     [Fact]
-    [ActiveIssue(310)]
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_ClientCredentialTypeCertificate_EchoString()
     {
@@ -108,7 +107,8 @@ public static class Tcp_ClientCredentialTypeTests
                 new BinaryMessageEncodingBindingElement(),
                 new TcpTransportBindingElement());
             
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_CustomBinding_SslStreamSecurity_Address));
+            var endpointIdentity = new DnsEndpointIdentity(Endpoints.Tcp_CustomBinding_SslStreamSecurity_HostName);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(new Uri(Endpoints.Tcp_CustomBinding_SslStreamSecurity_Address), endpointIdentity));
             
             IWcfService serviceProxy = factory.CreateChannel();
 
