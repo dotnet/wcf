@@ -41,6 +41,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(4077)]//CoreFX
     public static void DefaultSettings_Echo_RoundTrips_String_StreamedRequest()
     {
         string testString = "Hello";
@@ -93,6 +94,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(4077)]//CoreFX
     public static void DefaultSettings_Echo_RoundTrips_String_Streamed()
     {
         string testString = "Hello";
@@ -128,6 +130,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(4077)]//CoreFX
     public static void DefaultSettings_Echo_RoundTrips_String_Streamed_Async()
     {
         string testString = "Hello";
@@ -163,6 +166,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(4077)]//CoreFX
     public static void DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
@@ -177,6 +181,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(4077)]//CoreFX
     public static void DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>

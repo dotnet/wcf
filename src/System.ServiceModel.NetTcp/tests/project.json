@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "System.ServiceModel.NetTcp": "4.0.1-beta-*",
-    "System.ServiceModel.Primitives": "4.0.1-beta-*",
+    "System.ServiceModel.NetTcp": "4.1.0-beta-*",
+    "System.ServiceModel.Primitives": "4.1.0-beta-*",
     "xunit": "2.1.0",
     "xunit.netcore.extensions": "1.0.0-prerelease-*"
   },
