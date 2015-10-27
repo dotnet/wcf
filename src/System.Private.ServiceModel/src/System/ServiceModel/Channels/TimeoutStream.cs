@@ -14,6 +14,7 @@ namespace System.ServiceModel.Channels
     {
         private TimeoutHelper _timeoutHelper;
         private bool _disposed;
+        private byte[] _oneByteArray = new byte[1];
 
         public TimeoutStream(Stream stream, TimeSpan timeout)
             : base(stream)
@@ -31,6 +32,14 @@ namespace System.ServiceModel.Channels
         public override int Read(byte[] buffer, int offset, int count)
         {
             return ReadAsyncInternal(buffer, offset, count, CancellationToken.None).WaitForCompletion();
+        }
+
+        public override int ReadByte()
+        {
+            int r = Read(_oneByteArray, 0, 1);
+            if (r == 0)
+                return -1;
+            return _oneByteArray[0];
         }
 
         public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -51,6 +60,12 @@ namespace System.ServiceModel.Channels
         public override void Write(byte[] buffer, int offset, int count)
         {
             WriteAsyncInternal(buffer, offset, count, CancellationToken.None).WaitForCompletion();
+        }
+
+        public override void WriteByte(byte value)
+        {
+            _oneByteArray[0] = value;
+            Write(_oneByteArray, 0, 1);
         }
 
         public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
