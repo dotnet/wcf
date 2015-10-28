@@ -60,7 +60,7 @@ public static class IdentityTests
                 Assert.Equal(testString, result);
             });
 
-            Assert.Contains(Endpoints.Tcp_VerifyDNS_HostName, exception.Message);
+            Assert.True(exception.Message.Contains(Endpoints.Tcp_VerifyDNS_HostName), string.Format("Expected exception message contains: '{0}', actual: '{1}')", Endpoints.Tcp_VerifyDNS_HostName, exception.Message));
         }
         finally
         {
