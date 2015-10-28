@@ -218,4 +218,13 @@ public static partial class Endpoints
             return BridgeClient.GetResourceHostName("WcfService.TestResources.TcpTransportSecurityWithSslResource");
         }
     }
+
+    public static string Tcp_ClientCredentialType_Certificate_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallLocalCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpTransportSecuritySslClientCredentialTypeCertificate");
+        }
+    }
 }
