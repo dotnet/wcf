@@ -69,6 +69,7 @@
     <Compile Include="IWSDuplexService.cs" />
     <Compile Include="IWSRequestReplyService.cs" />
     <Compile Include="MahojongTypes.cs" />
+    <Compile Include="MyX509CertificateValidator.cs" />
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="TestResources\TcpNoSecurityTextResource.cs" />
     <Compile Include="TestResources\TcpResource.cs" />
     <Compile Include="TestResources\TcpTransportSecuritySslClientCredentialTypeCertificate.cs" />
+    <Compile Include="TestResources\TcpTransportSecuritySslCustomCertValidationResource.cs" />
     <Compile Include="TestResources\TcpTransportSecurityWithSslResource.cs" />
     <Compile Include="TestResources\TcpExpiredServerCertResource.cs" />
     <Compile Include="TestResources\TcpVerifyDNSResource.cs" />

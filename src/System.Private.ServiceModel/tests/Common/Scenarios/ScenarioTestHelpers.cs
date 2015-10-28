@@ -19,6 +19,7 @@ public static class ScenarioTestHelpers
     public const string ReplacedContent = "ReplacedContent";
     public const string LastMessage = "LastMessage";
     public const string RemoteEndpointMessagePropertyFailure = "RemoteEndpointMessageProperty did not contain the address of this machine.";
+    public const string CertificateIssuerName = "DO_NOT_TRUST_WcfBridgeRootCA";
 
     public static TimeSpan TestTimeout
     {
