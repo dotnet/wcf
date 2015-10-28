@@ -121,12 +121,9 @@ create_test_overlay()
 # Currently need to overwrite some packaged binaries from CoreFx
 # See issue https://github.com/dotnet/wcf/issues/442
 # echo "Copying selected CoreFxBins..."
-  find $CoreFxBins -name '*.dll' -and -name "*System.IO.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
-  find $CoreFxBins -name '*.dll' -and -name "*System.Console*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
-  find $CoreFxBins -name '*.dll' -and -name "*System.Runtime.Extensions*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp  '{}' "$OverlayDir" ";"
+
   find $CoreFxBins -name '*.dll' -and -name "*System.Private.Networking*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
   find $CoreFxBins -name '*.dll' -and -name "*System.Net.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
-  find $CoreFxBins -name '*.dll' -and -name "*System.Security.Cryptography.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp -v '{}' "$OverlayDir" ";"
 
   # Copy the CoreCLR native binaries
   if [ ! -d $CoreClrBins ]
