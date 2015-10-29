@@ -18,6 +18,8 @@ namespace WcfService.TestResources
 
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
+        protected static string s_fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
+        protected static string s_hostname = Dns.GetHostEntry("127.0.0.1").HostName.Split('.')[0];
 
         #region Host Listen Uri components
 
@@ -73,7 +75,7 @@ namespace WcfService.TestResources
             if (s_currentHosts.TryGetValue(Address, out host) && (host.Description.Endpoints.Count == 1))
             {
                 response.Properties.Add(ResourceResponseUriKeyName, host.Description.Endpoints[0].ListenUri.ToString());
-                response.Properties.Add(ResourceResponseFQHNKeyName, Dns.GetHostEntry("127.0.0.1").HostName);
+                response.Properties.Add(ResourceResponseFQHNKeyName, s_hostname);
             }
 
             return response;

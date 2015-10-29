@@ -57,7 +57,8 @@ namespace WcfService.CertificateResources
                     }
                     else
                     {
-                        certificate = generator.CreateMachineCertificate(subjects).Certificate;
+                        CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings() { Subjects = subjects, };
+                        certificate = generator.CreateMachineCertificate(certificateCreationSettings).Certificate;
                     }
 
                     X509Certificate2 dummy;

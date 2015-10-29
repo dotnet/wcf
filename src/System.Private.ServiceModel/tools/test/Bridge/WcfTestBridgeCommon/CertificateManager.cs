@@ -17,6 +17,8 @@ namespace WcfTestBridgeCommon
         // Dictionary of certificates installed by CertificateManager
         // Keyed by the Subject of the certificate
         private static Dictionary<string, CertificateCacheEntry> s_myCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
+        //Keyed by endpoint address as each endpoint can only configure one invalid service certificate
+        private static Dictionary<string, CertificateCacheEntry> s_myInvalidCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
         private static Dictionary<string, CertificateCacheEntry> s_rootCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
 
         // Keyed by port, value is cert thumbprint
@@ -124,22 +126,46 @@ namespace WcfTestBridgeCommon
         // Install the certificate into the My store.
         // It will not install the certificate if it is already present in the store.
         // It returns the thumbprint of the certificate, regardless whether it was added or found.
-        public static string InstallCertificateToMyStore(X509Certificate2 certificate)
+        public static string InstallCertificateToMyStore(X509Certificate2 certificate, bool isValidCert = true, string resourceAddress = null)
         {
+            if (!isValidCert && string.IsNullOrEmpty(resourceAddress))
+            {
+                throw new Exception("Parameter resouceAddress cannot be null if isValidCert is false");
+            }
+
             lock (s_certificateLock)
             {
                 CertificateCacheEntry entry = null;
-                if (s_myCertificates.TryGetValue(certificate.Subject, out entry))
+                if (isValidCert)
                 {
-                    return entry.Thumbprint;
+                    if (s_myCertificates.TryGetValue(certificate.Subject, out entry))
+                    {
+                        return entry.Thumbprint;
+                    }
+                }
+                else
+                {
+                    if (s_myInvalidCertificates.TryGetValue(resourceAddress, out entry))
+                    {
+                        return entry.Thumbprint;
+                    }
                 }
 
                 bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
-                s_myCertificates[certificate.Subject] = new CertificateCacheEntry
+                CertificateCacheEntry certCacheEntry = new CertificateCacheEntry()
                 {
                     Thumbprint = certificate.Thumbprint,
                     AddedToStore = added
                 };
+
+                if (isValidCert)
+                {
+                    s_myCertificates[certificate.Subject] = certCacheEntry;
+                }
+                else
+                {
+                    s_myInvalidCertificates[resourceAddress] = certCacheEntry;
+                }
 
                 return certificate.Thumbprint;
             }
@@ -173,16 +199,42 @@ namespace WcfTestBridgeCommon
 
                 // always create a certificate locally for the current machine's fully qualified domain name, 
                 // hostname, and "localhost". 
-                var hostCert = certificateGenerator.CreateMachineCertificate(fqdn, hostname, "localhost").Certificate;
+                CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings() { Subjects = new string[] { fqdn, hostname, "localhost" } };
+                var hostCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
 
                 // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
                 // only the first-created cert will win
                 InstallCertificateToRootStore(rootCertificate);
-                InstallCertificateToMyStore(hostCert);
+                InstallCertificateToMyStore(hostCert, certificateCreationSettings.IsValidCert);
                 s_localCertificate = hostCert;
             }
 
             return s_localCertificate;
+        }
+
+        // We generate a local machine certificate for common usage. This method is usded to generate certs for non common usage, such as an expired cert.
+        public static X509Certificate2 CreateAndInstallNonDefaultMachineCertificates(CertificateGenerator certificateGenerator, CertificateCreationSettings certificateCreationSettings, string resourceAddress)
+        {
+            if (certificateCreationSettings == null)
+            {
+                throw new ArgumentException("certificateCreationSettings cannot be null as we are creating a non default certificate");
+            }
+
+            if (certificateGenerator == null)
+            {
+                throw new ArgumentNullException("certificateGenerator");
+            }
+
+            lock (s_certificateLock)
+            {
+                Trace.WriteLine("[CertificateManager] Installing Non default Machine certificates to machine store.");
+
+                var rootCertificate = certificateGenerator.AuthorityCertificate.Certificate;
+                var hostCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
+                InstallCertificateToRootStore(rootCertificate);
+                InstallCertificateToMyStore(hostCert, certificateCreationSettings.IsValidCert, resourceAddress);
+                return hostCert;
+            }
         }
 
         public static void UninstallAllRootCertificates(bool force)
@@ -198,6 +250,7 @@ namespace WcfTestBridgeCommon
             }
 
             UninstallCertificates(StoreName.My, StoreLocation.LocalMachine, s_myCertificates, force);
+            UninstallCertificates(StoreName.My, StoreLocation.LocalMachine, s_myInvalidCertificates, force);
         }
 
         // Uninstalls all certificates in the given store and location that

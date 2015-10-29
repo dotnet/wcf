@@ -4,7 +4,10 @@
 using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.IdentityModel.Selectors;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -439,6 +442,86 @@ public static class ExpectedExceptionTests
             {
                 factory.Abort();
             }
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
+    public static void TCP_ServiceCertExpired_Throw_MessageSecurityException()
+    {
+        string testString = "Hello";
+
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.Transport;
+        binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+
+        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ExpiredServerCertResource_Address));
+        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        IWcfService serviceProxy = factory.CreateChannel();
+
+        try
+        {
+            var result = serviceProxy.Echo(testString);
+            Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
+        }
+        catch (CommunicationException exception)
+        {
+            string exceptionType = exception.GetType().Name;
+            if (exceptionType != "SecurityNegotiationException")
+            {
+                Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
+            }
+            string exceptionMessage = exception.Message;
+            Assert.True(exceptionMessage.Contains(Endpoints.Tcp_ExpiredServerCertResource_HostName), string.Format("Expected message contains {0}, actual message: {1}", Endpoints.Tcp_ExpiredServerCertResource_HostName, exceptionMessage));
+        }
+        finally
+        {
+            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void TCP_ServiceCertFailedCustomValidate_Throw_Exception()
+    {
+        string testString = "Hello";
+
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.Transport;
+        binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+
+        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_VerifyDNS_Address), new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
+        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+        factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new MyCertificateValidator();
+
+        IWcfService serviceProxy = factory.CreateChannel();
+
+        try
+        {
+            var result = serviceProxy.Echo(testString);
+        }
+        catch (Exception e)
+        {
+            string message = e.Message;
+        }
+        finally
+        {
+            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+        }
+    }
+}
+
+public class MyCertificateValidator : X509CertificateValidator
+{
+    public const string exceptionMsg = "Not issued by a trusted issuer";
+
+    public override void Validate(X509Certificate2 certificate)
+    {
+        if (certificate.IssuerName.Name != "RandomOne")
+        {
+            throw new Exception(exceptionMsg);
         }
     }
 }

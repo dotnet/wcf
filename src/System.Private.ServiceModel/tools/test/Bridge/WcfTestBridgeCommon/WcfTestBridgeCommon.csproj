@@ -38,6 +38,7 @@
     <Compile Include="CertificateManager.cs" />
     <Compile Include="IResource.cs" />
     <Compile Include="PortManager.cs" />
+    <Compile Include="CertificateCreationSettings.cs" />
     <Compile Include="ResourceRequestContext.cs" />
     <Compile Include="ResourceResponse.cs" />
   </ItemGroup>
@@ -64,7 +65,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
-    <Target Name="BeforeBuild">
+  <Target Name="BeforeBuild">
     <Message Text="OutputPath is $(OutputPath)" />
   </Target>
 </Project>

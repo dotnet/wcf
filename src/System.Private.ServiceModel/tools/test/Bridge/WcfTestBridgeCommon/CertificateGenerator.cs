@@ -55,8 +55,8 @@ namespace WcfTestBridgeCommon
         private SecureRandom _random;
 
         private DateTime _initializationDateTime;
-        private DateTime _validityNotBefore;
-        private DateTime _validityNotAfter;
+        private DateTime _defaultValidityNotBefore;
+        private DateTime _defaultValidityNotAfter;
 
         // We need to hang onto the _authorityKeyPair and _authorityCertificate - all certificates generated 
         // by this instance will be signed by this Authority certificate and private key
@@ -86,8 +86,8 @@ namespace WcfTestBridgeCommon
                 _crlUri = string.Format("{0}{1}", _crlUriBridgeHost, _crlUriRelativePath); 
 
                 _initializationDateTime = DateTime.UtcNow;
-                _validityNotBefore = _initializationDateTime.Subtract(_gracePeriod);
-                _validityNotAfter = _initializationDateTime.Add(_validityPeriod);
+                _defaultValidityNotBefore = _initializationDateTime.Subtract(_gracePeriod);
+                _defaultValidityNotAfter = _initializationDateTime.Add(_validityPeriod);
 
                 _random = new SecureRandom(new CryptoApiRandomGenerator());
                 _keyPairGenerator = new RsaKeyPairGenerator();
@@ -101,9 +101,9 @@ namespace WcfTestBridgeCommon
                 Trace.WriteLine(string.Format("    {0} = {1}", "CrlUri", _crlUri));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Password", _password));
                 Trace.WriteLine(string.Format("    {0} = {1}", "ValidityPeriod", _validityPeriod));
-                Trace.WriteLine(string.Format("    {0} = {1}", "Valid to", _validityNotAfter));
+                Trace.WriteLine(string.Format("    {0} = {1}", "Valid to", _defaultValidityNotAfter));
 
-                _authorityCertificate = CreateCertificate(true, false, null, string.Empty);
+                _authorityCertificate = CreateCertificate(isAuthority: true, isMachineCert: false, signingCertificate: null, certificateCreationSettings: null);
             }
         }
 
@@ -216,22 +216,45 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        public X509CertificateContainer CreateMachineCertificate(params string[] subjects)
+        public X509CertificateContainer CreateMachineCertificate(CertificateCreationSettings creationSettings)
         {
             EnsureInitialized();
-            return CreateCertificate(false, true, _authorityCertificate.InternalCertificate , subjects);
+            return CreateCertificate(false, true, _authorityCertificate.InternalCertificate , creationSettings);
         }
 
-        public X509CertificateContainer CreateUserCertificate(params string[] subjects)
+        public X509CertificateContainer CreateUserCertificate(CertificateCreationSettings creationSettings)
         {
             EnsureInitialized();
-            return CreateCertificate(false, false, _authorityCertificate.InternalCertificate, subjects);
+            return CreateCertificate(false, false, _authorityCertificate.InternalCertificate, creationSettings);
         }
 
         // Only the ctor should be calling with isAuthority = true
         // if isAuthority, value for isMachineCert doesn't matter
-        private X509CertificateContainer CreateCertificate(bool isAuthority, bool isMachineCert, X509Certificate signingCertificate, params string[] subjects)
+        private X509CertificateContainer CreateCertificate(bool isAuthority, bool isMachineCert, X509Certificate signingCertificate, CertificateCreationSettings certificateCreationSettings)
         {
+            if (certificateCreationSettings == null)
+            {
+                if (isAuthority)
+                {
+                    certificateCreationSettings = new CertificateCreationSettings();
+                }
+                else
+                {
+                    throw new Exception("Parameter certificateCreationSettings cannot be null when isAuthority is false");
+                }
+            }
+
+            // Set to default cert creation settings if not set
+            if (certificateCreationSettings.ValidityNotBefore == default(DateTime))
+            {
+                certificateCreationSettings.ValidityNotBefore = _defaultValidityNotBefore;
+            }
+            if (certificateCreationSettings.ValidityNotAfter == default(DateTime))
+            {
+                certificateCreationSettings.ValidityNotAfter = _defaultValidityNotAfter;
+            }
+
+            string[] subjects = certificateCreationSettings.Subjects;
             if (!isAuthority ^ (signingCertificate != null))
             {
                 throw new ArgumentException("Either isAuthority == true or signingCertificate is not null");
@@ -244,7 +267,7 @@ namespace WcfTestBridgeCommon
 
             if (!isAuthority && string.IsNullOrWhiteSpace(subjects[0]))
             {
-                throw new ArgumentException("Certificate Subject must not be an empty string or only whitespace", "subjects");
+                throw new ArgumentException("Certificate Subject must not be an empty string or only whitespace", "creationSettings.Subjects");
             }
 
             EnsureInitialized();
@@ -283,8 +306,8 @@ namespace WcfTestBridgeCommon
             _certGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
 
             _certGenerator.SetSerialNumber(new BigInteger(64 /*sizeInBits*/, _random).Abs());
-            _certGenerator.SetNotBefore(_validityNotBefore);
-            _certGenerator.SetNotAfter(_validityNotAfter);
+            _certGenerator.SetNotBefore(certificateCreationSettings.ValidityNotBefore);
+            _certGenerator.SetNotAfter(certificateCreationSettings.ValidityNotAfter);
             _certGenerator.SetPublicKey(keyPair.Public);
 
             _certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
@@ -341,7 +364,10 @@ namespace WcfTestBridgeCommon
             _certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
 
             X509Certificate cert = _certGenerator.Generate(_authorityKeyPair.Private, _random);
-            EnsureCertificateValidity(cert);
+            if (certificateCreationSettings.IsValidCert)
+            {
+                EnsureCertificateValidity(cert);
+            }
 
             // For now, given that we don't know what format to return it in, preserve the formats so we have 
             // the flexibility to do what we need to
