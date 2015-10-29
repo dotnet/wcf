@@ -171,6 +171,22 @@ public static partial class Endpoints
         }
     }
 
+    public static string Tcp_ExpiredServerCertResource_Address
+    {
+        get
+        {
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpExpiredServerCertResource");
+        }
+    }
+
+    public static string Tcp_ExpiredServerCertResource_HostName
+    {
+        get
+        {
+            return BridgeClient.GetResourceHostName("WcfService.TestResources.TcpExpiredServerCertResource");
+        }
+    }
+
     public static string Tcp_NoSecurity_Callback_Address
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexResource"); }

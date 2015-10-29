@@ -89,6 +89,7 @@
     <Compile Include="TestResources\TcpResource.cs" />
     <Compile Include="TestResources\TcpTransportSecuritySslClientCredentialTypeCertificate.cs" />
     <Compile Include="TestResources\TcpTransportSecurityWithSslResource.cs" />
+    <Compile Include="TestResources\TcpExpiredServerCertResource.cs" />
     <Compile Include="TestResources\TcpVerifyDNSResource.cs" />
     <Compile Include="TestResources\HttpsSoap12Resource.cs" />
     <Compile Include="TestResources\HttpSoap12Resource.cs" />
