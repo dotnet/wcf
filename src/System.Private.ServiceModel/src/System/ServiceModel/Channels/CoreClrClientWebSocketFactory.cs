@@ -16,7 +16,11 @@ namespace System.ServiceModel.Channels
         {
             ClientWebSocket webSocket = new ClientWebSocket();
             webSocket.Options.Credentials = credentials;
-            webSocket.Options.AddSubProtocol(settings.SubProtocol);
+            if(!string.IsNullOrEmpty(settings.SubProtocol))
+            {
+                webSocket.Options.AddSubProtocol(settings.SubProtocol);
+            }
+            
             webSocket.Options.KeepAliveInterval = settings.KeepAliveInterval;
             foreach (var headerObj in headers)
             {

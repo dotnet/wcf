@@ -166,27 +166,24 @@ namespace System.ServiceModel.Channels
                     RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
             }
 
-            using (var cts = new CancellationTokenSource(timeout))
+            var helper = new TimeoutHelper(timeout);
+            try
             {
-
-                try
+                await CloseOutputAsync(helper.CancellationToken);
+            }
+            catch (Exception ex)
+            {
+                if (Fx.IsFatal(ex))
                 {
-                    await CloseOutputAsync(cts.Token);
+                    throw;
                 }
-                catch (Exception ex)
+
+                if (helper.CancellationToken.IsCancellationRequested)
                 {
-                    if (Fx.IsFatal(ex))
-                    {
-                        throw;
-                    }
-
-                    if (cts.IsCancellationRequested)
-                    {
-                        throw Fx.Exception.AsError(new TimeoutException(InternalSR.TaskTimedOutError(timeout)));
-                    }
-
-                    throw WebSocketHelper.ConvertAndTraceException(ex, timeout, WebSocketHelper.ReceiveOperation);
+                    throw Fx.Exception.AsError(new TimeoutException(InternalSR.TaskTimedOutError(timeout)));
                 }
+
+                throw WebSocketHelper.ConvertAndTraceException(ex, timeout, WebSocketHelper.ReceiveOperation);
             }
         }
 
@@ -580,7 +577,7 @@ namespace System.ServiceModel.Channels
             // TODO: As we're waiting blocking on a task anyway, should just call ReceiveAsync and block on that task.
             public Message Receive(TimeSpan timeout)
             {
-                bool waitingResult = _receiveTask.Task.Wait(timeout);
+                bool waitingResult = _receiveTask.Task.WaitWithTimeSpan(timeout);
                 ThrowOnPendingException(ref _pendingException);
 
                 if (!waitingResult)
@@ -806,12 +803,10 @@ namespace System.ServiceModel.Channels
                                 try
                                 {
                                     WebSocketReceiveResult result;
-                                    using (CancellationTokenSource cts = new CancellationTokenSource(_asyncReceiveTimeout))
-                                    {
-                                        result = await _webSocket.ReceiveAsync(
-                                                    new ArraySegment<byte>(buffer, 0, _receiveBufferSize),
-                                                    cts.Token);
-                                    }
+                                    TimeoutHelper helper = new TimeoutHelper(_asyncReceiveTimeout);
+                                    result = await _webSocket.ReceiveAsync(
+                                                new ArraySegment<byte>(buffer, 0, _receiveBufferSize),
+                                                helper.CancellationToken);
                                     CheckCloseStatus(result);
                                     _pendingMessage = PrepareMessage(result, buffer, result.Count);
 
@@ -878,7 +873,7 @@ namespace System.ServiceModel.Channels
                     Message message;
                     if (_useStreaming)
                     {
-                        using (var wrappedStream = new MaxMessageSizeStream(
+                        var wrappedStream = new MaxMessageSizeStream(
                             new TimeoutStream(
                                 new WebSocketStream(
                                     this,
@@ -888,10 +883,8 @@ namespace System.ServiceModel.Channels
                                     _bufferManager,
                                     _defaultTimeouts.CloseTimeout),
                                 _defaultTimeouts.ReceiveTimeout),
-                            _maxReceivedMessageSize))
-                        {
-                            message = _encoder.ReadMessage(wrappedStream, _maxBufferSize);
-                        }
+                            _maxReceivedMessageSize);
+                        message = _encoder.ReadMessage(wrappedStream, _maxBufferSize);
                     }
                     else
                     {
@@ -1032,7 +1025,7 @@ namespace System.ServiceModel.Channels
 
                 set
                 {
-                    Contract.Assert(value >= 0, "ReadTimeout should not be negative.");
+                    Contract.Assert(value >= -1, "ReadTimeout should not be negative.");
                     _readTimeout = value;
                     _readTimeoutHelper = new TimeoutHelper(TimeoutHelper.FromMilliseconds(_readTimeout));
                 }
@@ -1047,7 +1040,7 @@ namespace System.ServiceModel.Channels
 
                 set
                 {
-                    Contract.Assert(value >= 0, "WriteTimeout should not be negative.");
+                    Contract.Assert(value >= -1, "WriteTimeout should not be negative.");
                     _writeTimeout = value;
                     _writeTimeoutHelper = new TimeoutHelper(TimeoutHelper.FromMilliseconds(_readTimeout));
                 }
@@ -1173,11 +1166,6 @@ namespace System.ServiceModel.Channels
                 if (_endOfMessageWritten == WebSocketHelper.OperationFinished)
                 {
                     throw FxTrace.Exception.AsError(new InvalidOperationException(SR.WebSocketStreamWriteCalledAfterEOMSent));
-                }
-
-                if (WriteTimeout <= 0)
-                {
-                    throw FxTrace.Exception.AsError(WebSocketHelper.GetTimeoutException(null, TimeoutHelper.FromMilliseconds(WriteTimeout), WebSocketHelper.SendOperation));
                 }
 
                 if (TD.WebSocketAsyncWriteStartIsEnabled())
