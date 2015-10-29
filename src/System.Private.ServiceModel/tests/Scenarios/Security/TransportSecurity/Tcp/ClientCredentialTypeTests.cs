@@ -156,7 +156,7 @@ public static class Tcp_ClientCredentialTypeTests
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
             factory.Credentials.ClientCertificate.SetCertificate(
-                StoreLocation.LocalMachine,
+                StoreLocation.CurrentUser,
                 StoreName.My,
                 X509FindType.FindByThumbprint,
                 clientCertThumb);

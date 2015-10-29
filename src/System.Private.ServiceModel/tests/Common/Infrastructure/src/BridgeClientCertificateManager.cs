@@ -36,6 +36,51 @@ namespace Infrastructure.Common
         private static Dictionary<string, CertificateCacheEntry> s_myCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
         private static Dictionary<string, CertificateCacheEntry> s_rootCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
 
+        private static bool s_PlatformSpecificStoreLocationIsSet = false;
+        private static StoreLocation s_PlatformSpecificRootStoreLocation = StoreLocation.LocalMachine;
+
+        // The location from where to open StoreName.Root
+        //
+        // Since we don't have access to System.Runtime.InteropServices.IsOSPlatform API, we need to find a novel way to switch
+        // the store we use on Linux
+        //
+        // For Linux: 
+        // On Linux, opening stores from the LocalMachine store is not supported yet, so we toggle to use CurrentUser
+        // Furthermore, we don't need to sudo in Linux to install a StoreName.Root : StoreLocation.CurrentUser. So this will allow
+        // tests requiring certs to pass in Linux. 
+        // See dotnet/corefx#3690
+        //
+        // For Windows: 
+        // We don't want to use CurrentUser, as writing to StoreName.Root : StoreLocation.CurrentUser will result in a 
+        // modal dialog box that isn't dismissable if the root cert hasn't already been installed previously. 
+        // If the cert has already been installed, writing to StoreName.Root : StoreLocation.CurrentUser results in a no-op
+        // 
+        // In other words, on Windows, we can bypass the modal dialog box, but only if we install to StoreName.Root : StoreLocation.LocalMachine
+        // To do this though means that we must run certificate-based tests elevated
+        private static StoreLocation PlatformSpecificRootStoreLocation
+        {
+            get
+            {
+                if (!s_PlatformSpecificStoreLocationIsSet)
+                {
+                    try
+                    {
+                        using (var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine))
+                        {
+                            store.Open(OpenFlags.ReadWrite);
+                        }
+                    }
+                    catch (PlatformNotSupportedException)
+                    {
+                        // Linux
+                        s_PlatformSpecificRootStoreLocation = StoreLocation.CurrentUser; 
+                    }
+                    s_PlatformSpecificStoreLocationIsSet = true;
+                }
+                return s_PlatformSpecificRootStoreLocation;
+            }
+        }
+
         // Installs the root certificate from the bridge 
         // Needed for all tests so we trust the incoming certificate coming from the service/bridge
         // We do our best to detect if we're running on the same box as the bridge; if so, we don't try to install the cert
@@ -63,7 +108,8 @@ namespace Infrastructure.Common
                 }
                 else
                 {
-                    using (X509Store store = new X509Store(StoreName.Root, StoreLocation.LocalMachine))
+                    // See explanation of StoreLocation selection at PlatformSpecificRootStoreLocation
+                    using (X509Store store = new X509Store(StoreName.Root, PlatformSpecificRootStoreLocation))
                     {
                         store.Open(OpenFlags.ReadOnly);
                         var collection = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
@@ -254,7 +300,8 @@ namespace Infrastructure.Common
                     return entry.Thumbprint;
                 }
 
-                bool added = AddToStoreIfNeeded(StoreName.Root, StoreLocation.LocalMachine, certificate);
+                // See explanation of StoreLocation selection at PlatformSpecificRootStoreLocation
+                bool added = AddToStoreIfNeeded(StoreName.Root, PlatformSpecificRootStoreLocation, certificate);
                 s_rootCertificates[certificate.Thumbprint] = new CertificateCacheEntry
                 {
                     Thumbprint = certificate.Thumbprint,
@@ -278,7 +325,10 @@ namespace Infrastructure.Common
                     return entry.Thumbprint;
                 }
 
-                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+                // Always install client certs to CurrentUser
+                // StoreLocation.CurrentUser is supported on both Linux and Windows 
+                // Furthermore, installing this cert to this location does not require sudo or admin elevation
+                bool added = AddToStoreIfNeeded(StoreName.My, StoreLocation.CurrentUser, certificate);
                 s_myCertificates[certificate.Thumbprint] = new CertificateCacheEntry
                 {
                     Thumbprint = certificate.Thumbprint,
