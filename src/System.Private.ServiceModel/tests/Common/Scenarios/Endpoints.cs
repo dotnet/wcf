@@ -61,6 +61,16 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpRequestReplyBinaryStreamedResource"); }
     }
 
+    public static string WebSocketHttpRequestReplyTextStreamed_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpRequestReplyTextStreamedResource"); }
+    }
+
+    public static string WebSocketHttpDuplexTextStreamed_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpDuplexTextStreamedResource"); }
+    }
+
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
@@ -140,6 +150,15 @@ public static partial class Endpoints
         {
             BridgeClientCertificateManager.InstallRootCertificateFromBridge();
             return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsDuplexBinaryStreamedResource");
+        }
+    }
+
+    public static string WebSocketHttpsDuplexTextStreamed_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsDuplexTextStreamedResource");
         }
     }
 
