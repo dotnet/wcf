@@ -29,12 +29,17 @@ if not defined VisualStudioVersion (
         goto :EnvSet
     )
 
-    echo Error: build.cmd requires Visual Studio 2013 or 2015.  
+    echo Error: build.cmd requires Visual Studio 2013 or 2015. 
     echo        Please see https://github.com/dotnet/wcf/blob/master/Documentation/developer-guide.md for build instructions.
     exit /b 1
 )
 
 :EnvSet
+:: Clear the 'Platform' env variable for this session,
+:: as it's a per-project setting within the build, and
+:: misleading value (such as 'MCD' in HP PCs) may lead
+:: to build breakage (issue: #69).
+set Platform=
 
 :: Log build command line
 set _buildproj=%~dp0build.proj
