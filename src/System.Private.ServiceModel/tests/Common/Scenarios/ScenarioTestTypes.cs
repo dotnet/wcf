@@ -4,8 +4,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IdentityModel.Selectors;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -1102,5 +1104,39 @@ public class ClientReceiver : IPushCallback, IDisposable
         }
 
         disposed = true;
+    }
+}
+
+public class MyX509CertificateValidator : X509CertificateValidator
+{
+    string allowedIssuerName;
+    public bool validateMethodWasCalled = false;
+
+    public MyX509CertificateValidator(string allowedIssuerName)
+    {
+        if (string.IsNullOrEmpty(allowedIssuerName))
+        {
+            throw new ArgumentNullException("allowedIssuerName", "[MyX509CertificateValidator] The string parameter allowedIssuerName was null or empty.");
+        }
+
+        this.allowedIssuerName = allowedIssuerName;
+    }
+
+    public override void Validate(X509Certificate2 certificate)
+    {
+        validateMethodWasCalled = true;
+
+        // Check that there is a certificate.
+        if (certificate == null)
+        {
+            throw new ArgumentNullException("certificate", "[MyX509CertificateValidator] The X509Certificate2 parameter certificate was null.");
+        }
+
+        // Check that the certificate issuer matches the configured issuer.
+        if (!certificate.IssuerName.Name.Contains(allowedIssuerName))
+        {
+            throw new Exception
+                (string.Format("Certificate was not issued by a trusted issuer. Expected: {0}, Actual: {1}", allowedIssuerName, certificate.IssuerName.Name));
+        }
     }
 }

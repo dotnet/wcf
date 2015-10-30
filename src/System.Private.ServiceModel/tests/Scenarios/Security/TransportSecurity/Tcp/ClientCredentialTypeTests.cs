@@ -22,22 +22,29 @@ public static class Tcp_ClientCredentialTypeTests
     {
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
         try
         {
+            // *** SETUP *** \\
             NetTcpBinding binding = new NetTcpBinding();
-
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_DefaultBinding_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
 
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
         }
         finally
         {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
@@ -48,21 +55,29 @@ public static class Tcp_ClientCredentialTypeTests
     {
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
         try
         {
+            // *** SETUP *** \\
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
 
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
         }
         finally
         {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
@@ -75,21 +90,29 @@ public static class Tcp_ClientCredentialTypeTests
     {
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
         try
         {
+            // *** SETUP *** \\
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
 
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
         }
         finally
         {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
@@ -133,20 +156,19 @@ public static class Tcp_ClientCredentialTypeTests
     }
 
     [Fact]
-    //[ActiveIssue(458)]
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_EchoString()
     {
         string clientCertThumb = null;
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
-        NetTcpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
 
         try
         {
-            binding = new NetTcpBinding(SecurityMode.Transport);
+            // *** SETUP *** \\
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_Address),
@@ -163,14 +185,70 @@ public static class Tcp_ClientCredentialTypeTests
 
             serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
 
+            // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
         }
         finally
         {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void TcpClientCredentialType_Certificate_CustomValidator_EchoString()
+    {
+        string clientCertThumb = null;
+        EndpointAddress endpointAddress = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_CustomValidation_Address),
+                new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
+            clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+
+            MyX509CertificateValidator myX509CertificateValidator = new MyX509CertificateValidator(ScenarioTestHelpers.CertificateIssuerName);
+            factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = myX509CertificateValidator;
+            factory.Credentials.ClientCertificate.SetCertificate(
+                StoreLocation.LocalMachine,
+                StoreName.My,
+                X509FindType.FindByThumbprint,
+                clientCertThumb);
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(myX509CertificateValidator.validateMethodWasCalled, "The Validate method of the X509CertificateValidator was NOT called.");
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
