@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 using Xunit;
 
 public static class WebSocketTests
@@ -12,7 +13,7 @@ public static class WebSocketTests
     [Fact]
     [OuterLoop]
     [ActiveIssue(468)]
-    public static void WebSocketHttpRequestReplyBinaryStreamed()
+    public static void WebSocket_Http_RequestReply_BinaryStreamed()
     {
         NetHttpBinding binding = null;
         ChannelFactory<IWSRequestReplyService> channelFactory = null;
@@ -71,7 +72,7 @@ public static class WebSocketTests
     [Fact]
     [OuterLoop]
     [ActiveIssue(468)]
-    public static void WebSocketHttpDuplexBinaryStreamed()
+    public static void WebSocket_Http_Duplex_BinaryStreamed()
     {
         NetHttpBinding binding = null;
         ClientReceiver clientReceiver = null;
@@ -153,7 +154,7 @@ public static class WebSocketTests
     [Fact]
     [OuterLoop]
     [ActiveIssue(470)]
-    public static void WebSocketHttpsDuplexBinaryStreamed()
+    public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
         BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
         HttpsTransportBindingElement httpsTransportBindingElement = null;
@@ -232,6 +233,130 @@ public static class WebSocketTests
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
             clientReceiver.Dispose();
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(420, PlatformID.AnyUnix)]
+    public static void WebSocket_Http_WSTransportUsageDefault_DuplexCallback_GuidRoundtrip()
+    {
+        DuplexChannelFactory<IWcfDuplexService> factory = null;
+        IWcfDuplexService duplexProxy = null;
+        Guid guid = Guid.NewGuid();
+
+        try
+        {
+            // *** SETUP *** \\
+            NetHttpBinding binding = new NetHttpBinding();
+
+            // NetHttpBinding default value of WebSocketTransportSettings.WebSocketTransportUsage is "WhenDuplex"
+            // Therefore using a Duplex Contract will trigger the use of the WCF implementation of WebSockets.
+            WcfDuplexServiceCallback callbackService = new WcfDuplexServiceCallback();
+            InstanceContext context = new InstanceContext(callbackService);
+
+            factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, new EndpointAddress(Endpoints.NetHttpDuplexWebSocket_Address));
+            duplexProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Task.Run(() => duplexProxy.Ping(guid));
+            Guid returnedGuid = callbackService.CallbackGuid;
+
+            // *** VALIDATE *** \\
+            Assert.True(guid == returnedGuid, string.Format("The sent GUID does not match the returned GUID. Sent '{0}', Received: '{1}'", guid, returnedGuid));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)duplexProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)duplexProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(420, PlatformID.AnyUnix)]
+    public static void WebSocket_Http_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
+    {
+        DuplexChannelFactory<IWcfDuplexService> factory = null;
+        IWcfDuplexService duplexProxy = null;
+        Guid guid = Guid.NewGuid();
+
+        try
+        {
+            // *** SETUP *** \\
+            NetHttpBinding binding = new NetHttpBinding();
+            // Verifying the scenario works when explicitly setting the transport to use WebSockets.
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+
+            WcfDuplexServiceCallback callbackService = new WcfDuplexServiceCallback();
+            InstanceContext context = new InstanceContext(callbackService);
+
+            factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, new EndpointAddress(Endpoints.NetHttpWebSocketTransport_Address));
+            duplexProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Task.Run(() => duplexProxy.Ping(guid));
+            Guid returnedGuid = callbackService.CallbackGuid;
+
+            // *** VALIDATE *** \\
+            Assert.True(guid == returnedGuid, string.Format("The sent GUID does not match the returned GUID. Sent '{0}', Received: '{1}'", guid, returnedGuid));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)duplexProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)duplexProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(420, PlatformID.AnyUnix)]
+    public static void WebSocket_WSScheme_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
+    {
+        DuplexChannelFactory<IWcfDuplexService> factory = null;
+        IWcfDuplexService proxy = null;
+        Guid guid = Guid.NewGuid();
+
+        try
+        {
+            // *** SETUP *** \\
+            NetHttpBinding binding = new NetHttpBinding();
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+
+            WcfDuplexServiceCallback callbackService = new WcfDuplexServiceCallback();
+            InstanceContext context = new InstanceContext(callbackService);
+
+            UriBuilder builder = new UriBuilder(Endpoints.NetHttpWebSocketTransport_Address);
+            // Replacing "http" with "ws" as the uri scheme.
+            builder.Scheme = "ws";
+
+            factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, new EndpointAddress(Endpoints.NetHttpWebSocketTransport_Address));
+            proxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Task.Run(() => proxy.Ping(guid));
+            Guid returnedGuid = callbackService.CallbackGuid;
+
+            // *** VALIDATE *** \\
+            Assert.True(guid == returnedGuid,
+                string.Format("The sent GUID does not match the returned GUID. Sent '{0}', Received: '{1}'", guid, returnedGuid));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)proxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)proxy, factory);
         }
     }
 }

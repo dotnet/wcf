@@ -120,10 +120,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{19B3A13A-9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.Common", "tests\Common\Unit\UnitTests.Common.csproj", "{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetHttp", "NetHttp", "{1A73BF1C-F8DB-47EC-8198-2A6DFFC93333}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Binding.NetHttp.Tests", "tests\Scenarios\Binding\NetHttp\Binding.NetHttp.Tests.csproj", "{BDFD9A8F-949E-4EDE-8917-63589FDBEA16}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensibility", "Extensibility", "{435745F5-810B-4FFB-B1DC-759001AC3BEF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSockets", "WebSockets", "{F3ACFC02-1DE2-4E43-B3B4-A341F761E4B3}"
