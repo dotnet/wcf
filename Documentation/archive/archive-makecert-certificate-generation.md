@@ -1,5 +1,14 @@
-Certificate generation
+(Archive) Certificate generation with makecert
 =======================
+
+## This document is now deprecated
+
+This document is kept as a reference for how to generate certificates using makecert.exe. We do not use makecert-generated certificates for tests anymore.  
+
+Certificates are now generated using Bridge [CertificateResources](https://github.com/dotnet/wcf/blob/master/Documentation/certificate-generation-resources.md).
+
+------
+
 
 This file describes how the certificates were created
 and how they are used.  Basic steps are at:

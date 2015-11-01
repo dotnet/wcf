@@ -121,9 +121,6 @@
       <Name>WcfTestBridgeCommon</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Certificates\README.md" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild" DependsOnTargets="ReleaseBridgeResources">
     <Message Text="BridgeHost is $(BridgeHost)" />
