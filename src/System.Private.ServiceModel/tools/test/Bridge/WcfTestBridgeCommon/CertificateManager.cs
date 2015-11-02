@@ -237,6 +237,19 @@ namespace WcfTestBridgeCommon
             }
         }
 
+        public static void RevocatingACert(CertificateGenerator certificateGenerator, string serialNum)
+        {
+            if (certificateGenerator == null)
+            {
+                throw new ArgumentNullException("certificateGenerator");
+            }
+
+            lock (s_certificateLock)
+            {
+                certificateGenerator.RevokeCertificateBySerialNumber(serialNum);
+            }
+        }
+
         public static void UninstallAllRootCertificates(bool force)
         {
             UninstallCertificates(StoreName.Root, StoreLocation.LocalMachine, s_rootCertificates, force);

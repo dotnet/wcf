@@ -424,8 +424,12 @@ namespace WcfTestBridgeCommon
             
             _crlGenerator.Reset();
 
-            _crlGenerator.SetThisUpdate(_initializationDateTime);
-            _crlGenerator.SetNextUpdate(DateTime.UtcNow.Add(_crlValidityPeriod));
+            // Use UtcNow does not work. current local time works.
+            // Could be a BouncyCastle issue.
+            // We need to assume two test machines are in the same time zone.
+            DateTime now = DateTime.Now;
+            _crlGenerator.SetThisUpdate(now);
+            _crlGenerator.SetNextUpdate(now.Add(_crlValidityPeriod));
             _crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
             _crlGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
