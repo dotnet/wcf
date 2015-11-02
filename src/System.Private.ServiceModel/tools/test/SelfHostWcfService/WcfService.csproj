@@ -85,6 +85,7 @@
     <Compile Include="TestResources\HttpsNtlmResource.cs" />
     <Compile Include="TestResources\HttpsDigestResource.cs" />
     <Compile Include="TestResources\TcpDefaultResource.cs" />
+    <Compile Include="TestResources\TcpRevocatedServerCertResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityTextResource.cs" />
     <Compile Include="TestResources\TcpResource.cs" />

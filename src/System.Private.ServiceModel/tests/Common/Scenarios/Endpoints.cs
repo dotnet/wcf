@@ -179,6 +179,22 @@ public static partial class Endpoints
         }
     }
 
+    public static string Tcp_RevocatedServerCertResource_HostName
+    {
+        get
+        {
+            return BridgeClient.GetResourceHostName("WcfService.TestResources.TcpRevocatedServerCertResource");
+        }
+    }
+
+    public static string Tcp_RevocatedServerCertResource_Address
+    {
+        get
+        {
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpRevocatedServerCertResource");
+        }
+    }
+
     public static string Tcp_ExpiredServerCertResource_HostName
     {
         get
@@ -186,6 +202,7 @@ public static partial class Endpoints
             return BridgeClient.GetResourceHostName("WcfService.TestResources.TcpExpiredServerCertResource");
         }
     }
+
 
     public static string Tcp_NoSecurity_Callback_Address
     {
