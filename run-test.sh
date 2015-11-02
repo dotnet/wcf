@@ -102,7 +102,11 @@ create_test_overlay()
 	echo "WCF binaries not found at $WcfBins"
 	exit 1
   fi
-  find $WcfBins -name '*.dll' -and -not -name "*Test*" -exec cp '{}' "$OverlayDir" ";"
+  # We no longer copy binaries from the WCF bin folder because they can contain
+  # assemblies built from other than the test folders.  The test folders already
+  # contain any WCF-built assemblies they require.  We leave this legacy copy here
+  # in case we need to bring it back.
+#  find $WcfBins -name '*.dll' -and -not -name "*Test*" -exec cp '{}' "$OverlayDir" ";"
 
   if [ ! -d $packageLibDir ]
   then
