@@ -364,6 +364,16 @@ done
 # Wait on the last processes
 wait_on_pids "$pids"
 
+# Cleanup any certificates installed by OuterLoop tests
+# We need to make corerun executable to invoke
+echo "chmod a+x $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun"
+chmod a+x $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun
+
+echo "$WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe"
+$WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe
+
+
+ 	
 if [ "$TestsFailed" -gt 0 ]
 then
     echo "$TestsFailed test(s) failed"
