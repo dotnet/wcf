@@ -4,6 +4,12 @@
  <PropertyGroup>
     <ExcludeProjects>System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\WcfService.csproj</ExcludeProjects>
   </PropertyGroup>
+  
+    <!-- Additional WCF tool projects -->
+  <ItemGroup>
+    <Project Include="$(MSBuildProjectDirectory)\System.Private.ServiceModel\tools\test\CertificateCleanup\CertificateCleanup.csproj" />
+  </ItemGroup>
+  
   <ItemGroup>
     <Project Include="*\ref\**\*.*proj" Exclude="@(ExcludeProjects)" />
     <Project Include="*\src\*.csproj" Exclude="$(ExcludeProjects)" />
