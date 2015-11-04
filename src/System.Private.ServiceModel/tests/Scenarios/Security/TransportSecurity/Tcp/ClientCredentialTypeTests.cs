@@ -228,7 +228,7 @@ public static class Tcp_ClientCredentialTypeTests
             MyX509CertificateValidator myX509CertificateValidator = new MyX509CertificateValidator(ScenarioTestHelpers.CertificateIssuerName);
             factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = myX509CertificateValidator;
             factory.Credentials.ClientCertificate.SetCertificate(
-                StoreLocation.LocalMachine,
+                StoreLocation.CurrentUser,
                 StoreName.My,
                 X509FindType.FindByThumbprint,
                 clientCertThumb);
