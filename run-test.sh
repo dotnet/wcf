@@ -122,12 +122,12 @@ create_test_overlay()
 	exit 1
   fi
   
-# Currently need to overwrite some packaged binaries from CoreFx
-# See issue https://github.com/dotnet/wcf/issues/442
+# In the past we needed to copy some specific binaries from the CoreFx
+# repo due to packaging issues.  This is no longer necessary, but we
+# retain the commented out code below as a reminder how it was done
+# in case we need to do it again.
 # echo "Copying selected CoreFxBins..."
-
-  find $CoreFxBins -name '*.dll' -and -name "*System.Private.Networking*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
-  find $CoreFxBins -name '*.dll' -and -name "*System.Net.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
+# find $CoreFxBins -name '*.dll' -and -name "*System.Net.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
 
   # Copy the CoreCLR native binaries
   if [ ! -d $CoreClrBins ]
@@ -314,7 +314,7 @@ fi
 
 if [ "$WcfBins" == "" ]
 then
-    CoreFxBins="$ProjectRoot/bin/$OS.AnyCPU.$Configuration"
+    WcfBins="$ProjectRoot/bin/$OS.AnyCPU.$Configuration"
 fi
 
 # Check parameters up front for valid values:
