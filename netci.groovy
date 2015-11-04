@@ -187,13 +187,13 @@ def project = 'dotnet/wcf'
             def buildJobName = Utilities.getFolderName(project) + '/' + Utilities.getFullJobName(project, jobName + '_bld', isPR)
             def testJobName = Utilities.getFolderName(project) + '/' + Utilities.getFullJobName(project, jobName + '_tst', isPR)
             
-            buildFlow('''
+            buildFlow("""
 // Build the Linux _bld job
-def linuxBuildJob = build(\"''' + buildJobName + '''\")
+def linuxBuildJob = build(params, \"${buildJobName}\")
 // Pass this to the test job.  Include the parameters
 build(params + [WCF_LINUX_BUILD_NUMBER: linuxBuildJob.build.number], 
-    \"''' + testJobName + '''\")
-            ''')
+    \"${testJobName}\")
+            """)
 
             // Needs a workspace
             configure {
