@@ -100,7 +100,7 @@ namespace WcfService.TestResources
 
         protected override int GetPort(ResourceRequestContext context)
         {
-            return context.BridgeConfiguration.BridgeWebSocketPort;
+            return context.BridgeConfiguration.BridgeSecureWebSocketPort;
         }
 
         protected override string Address { get { return "WebSocketHttpsDuplexBinaryStreamedResource"; } }
