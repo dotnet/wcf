@@ -206,7 +206,7 @@ namespace Infrastructure.Common
                     string certificateAsBase64;
                     if (response.TryGetValue(CertificateKeyName, out certificateAsBase64))
                     {
-                        certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64), ClientCertificatePassword);
+                        certificateToInstall = new X509Certificate2(Convert.FromBase64String(certificateAsBase64), ClientCertificatePassword, X509KeyStorageFlags.PersistKeySet);
                     }
                     else
                     {
@@ -267,7 +267,7 @@ namespace Infrastructure.Common
                     {
                         try
                         {
-                            store.Open(OpenFlags.ReadWrite);
+                            store.Open(OpenFlags.ReadWrite | OpenFlags.OpenExistingOnly);
                         }
                         catch (CryptographicException inner)
                         {
