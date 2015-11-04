@@ -18,6 +18,7 @@ namespace WcfTestBridgeCommon
         private static readonly int Default_BridgeHttpsPort = 44285;
         private static readonly int Default_BridgeTcpPort = 809;
         private static readonly int Default_BridgeWebSocketPort = 8083;
+        private static readonly int Default_BridgeSecureWebSocketPort = 8084;
         private static readonly TimeSpan Default_BridgeMaxIdleTimeSpan = TimeSpan.FromHours(24);
         
         // These property names must match the names used in TestProperties because
@@ -29,6 +30,7 @@ namespace WcfTestBridgeCommon
         private const string BridgeHttpsPort_PropertyName = "BridgeHttpsPort";
         private const string BridgeTcpPort_PropertyName = "BridgeTcpPort";
         private const string BridgeWebSocketPort_PropertyName = "BridgeWebSocketPort";
+        private const string BridgeSecureWebSocketPort_PropertyName = "BridgeSecureWebSocketPort";
         private const string BridgeCertificatePassword_PropertyName = "BridgeCertificatePassword";
         private const string BridgeCertificateValidityPeriod_PropertyName = "BridgeCertificateValidityPeriod";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
@@ -41,6 +43,7 @@ namespace WcfTestBridgeCommon
         public int BridgeHttpsPort { get; set; }
         public int BridgeTcpPort { get; set; }
         public int BridgeWebSocketPort { get; set; }
+        public int BridgeSecureWebSocketPort { get; set; }
         public string BridgeCertificatePassword { get; set; }
         public TimeSpan BridgeCertificateValidityPeriod { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
@@ -54,6 +57,7 @@ namespace WcfTestBridgeCommon
             BridgeHttpsPort = Default_BridgeHttpsPort;
             BridgeTcpPort = Default_BridgeTcpPort;
             BridgeWebSocketPort = Default_BridgeWebSocketPort;
+            BridgeSecureWebSocketPort = Default_BridgeSecureWebSocketPort;
             BridgeMaxIdleTimeSpan = Default_BridgeMaxIdleTimeSpan;
         }
 
@@ -69,6 +73,7 @@ namespace WcfTestBridgeCommon
             BridgeHttpsPort = configuration.BridgeHttpsPort;
             BridgeTcpPort = configuration.BridgeTcpPort;
             BridgeWebSocketPort = configuration.BridgeWebSocketPort;
+            BridgeSecureWebSocketPort = configuration.BridgeSecureWebSocketPort;
             BridgeCertificatePassword = configuration.BridgeCertificatePassword;
             BridgeCertificateValidityPeriod = configuration.BridgeCertificateValidityPeriod;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
@@ -128,6 +133,11 @@ namespace WcfTestBridgeCommon
             if (TryParseIntegerProperty(BridgeWebSocketPort_PropertyName, properties, out port))
             {
                 BridgeWebSocketPort = port;
+            }
+
+            if (TryParseIntegerProperty(BridgeSecureWebSocketPort_PropertyName, properties, out port))
+            {
+                BridgeSecureWebSocketPort = port;
             }
 
             if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
@@ -201,6 +211,7 @@ namespace WcfTestBridgeCommon
             result[BridgeHttpsPort_PropertyName] = BridgeHttpsPort.ToString();
             result[BridgeTcpPort_PropertyName] = BridgeTcpPort.ToString();
             result[BridgeWebSocketPort_PropertyName] = BridgeWebSocketPort.ToString();
+            result[BridgeSecureWebSocketPort_PropertyName] = BridgeSecureWebSocketPort.ToString();
             result[BridgeCertificatePassword_PropertyName] = BridgeCertificatePassword;
             result[BridgeCertificateValidityPeriod_PropertyName] = BridgeCertificateValidityPeriod.ToString();
             result[BridgeMaxIdleTimeSpan_PropertyName] = BridgeMaxIdleTimeSpan.ToString();
@@ -219,6 +230,7 @@ namespace WcfTestBridgeCommon
               .AppendFormat("  {0} : '{1}'{2}", BridgeHttpsPort_PropertyName, BridgeHttpsPort, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeTcpPort_PropertyName, BridgeTcpPort, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeWebSocketPort_PropertyName, BridgeWebSocketPort, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeSecureWebSocketPort_PropertyName, BridgeSecureWebSocketPort, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeCertificatePassword_PropertyName, BridgeCertificatePassword, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeCertificateValidityPeriod_PropertyName, BridgeCertificateValidityPeriod, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan, Environment.NewLine)

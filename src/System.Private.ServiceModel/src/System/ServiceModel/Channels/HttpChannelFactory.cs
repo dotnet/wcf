@@ -23,7 +23,7 @@ namespace System.ServiceModel.Channels
     {
         private static CacheControlHeaderValue s_requestCacheHeader = new CacheControlHeaderValue { NoCache = true, MaxAge = new TimeSpan(0) };
 
-        readonly ClientWebSocketFactory _clientWebSocketFactory;
+        protected readonly ClientWebSocketFactory _clientWebSocketFactory;
 
         private bool _allowCookies;
         private AuthenticationSchemes _authenticationScheme;

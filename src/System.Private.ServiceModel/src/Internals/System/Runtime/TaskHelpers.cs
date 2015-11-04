@@ -189,6 +189,17 @@ namespace System.Runtime
             return task.GetAwaiter().GetResult();
         }
 
+        public static bool WaitWithTimeSpan(this Task task, TimeSpan timeout)
+        {
+            if (timeout >= TimeoutHelper.MaxWait)
+            {
+                task.Wait();
+                return true;
+            }
+
+            return task.Wait(timeout);
+        }
+
         // Used by WebSocketTransportDuplexSessionChannel on the sync code path.
         // TODO: Try and switch as many code paths as possible which use this to async
         public static void Wait(this Task task, TimeSpan timeout, Action<Exception, TimeSpan, string> exceptionConverter, string operationType)

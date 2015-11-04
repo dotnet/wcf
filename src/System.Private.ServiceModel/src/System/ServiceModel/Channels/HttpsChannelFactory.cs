@@ -70,6 +70,7 @@ namespace System.ServiceModel.Channels
         protected override TChannel OnCreateChannelCore(EndpointAddress address, Uri via)
         {
             ValidateCreateChannelParameters(address, via);
+            ValidateWebSocketTransportUsage();
 
             if (typeof(TChannel) == typeof(IRequestChannel))
             {
@@ -77,7 +78,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                throw ExceptionHelper.PlatformNotSupported("Channel shape not supported");
+                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, address, via, this.WebSocketBufferPool);
             }
         }
 
