@@ -76,6 +76,7 @@ echo Build Exit Code = %BUILDERRORLEVEL%
 if "%outloop%" equ "true"  (
     pushd %setupFilesFolder%
     call CleanupWCFTestService.cmd
+    call CleanupCertificates.cmd
     popd
 )
 
