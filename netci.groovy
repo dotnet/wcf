@@ -31,7 +31,7 @@ def project = 'dotnet/wcf'
                 copyArtifacts('dotnet_coreclr/release_ubuntu') {
                     excludePatterns('**/testResults.xml', '**/*.ni.dll')
                     buildSelector {
-                        latestSuccessful(true)
+                        buildNumber('146')
                     }
                     targetDirectory('coreclr')
                 }
