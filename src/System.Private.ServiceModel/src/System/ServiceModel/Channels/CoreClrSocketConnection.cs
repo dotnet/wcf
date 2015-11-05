@@ -892,15 +892,15 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected override Task<IConnection> CreateConnectionAsync(IPAddress address, int port)
+        protected override async Task<IConnection> CreateConnectionAsync(IPAddress address, int port)
         {
             Socket socket = null;
             try
             {
                 AddressFamily addressFamily = address.AddressFamily;
                 socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
-                socket.Connect(new IPEndPoint(address, port));
-                return Task.FromResult<IConnection>(new CoreClrSocketConnection(socket, _connectionBufferPool));
+                await socket.ConnectAsync(new IPEndPoint(address, port));
+                return new CoreClrSocketConnection(socket, _connectionBufferPool);
             }
             catch
             {
