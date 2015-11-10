@@ -42,13 +42,14 @@ namespace System.ServiceModel.Channels
             return _oneByteArray[0];
         }
 
-        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             // Supporting a passed in cancellationToken as well as honoring the timeout token in this class would require
             // creating a linked token source on every call which is extra allocation and needs disposal. As this is an 
             // internal classs, it's okay to add this extra constraint to usage of this method.
             Contract.Assert(!cancellationToken.CanBeCanceled, "cancellationToken shouldn't be cancellable");
-            return base.ReadAsync(buffer, offset, count, _timeoutHelper.CancellationToken);
+            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
+            return await base.ReadAsync(buffer, offset, count, cancelToken);
         }
 
         private async Task<int> ReadAsyncInternal(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -68,13 +69,14 @@ namespace System.ServiceModel.Channels
             Write(_oneByteArray, 0, 1);
         }
 
-        public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             // Supporting a passed in cancellationToken as well as honoring the timeout token in this class would require
             // creating a linked token source on every call which is extra allocation and needs disposal. As this is an 
             // internal classs, it's okay to add this extra constraint to usage of this method.
             Contract.Assert(!cancellationToken.CanBeCanceled, "cancellationToken shouldn't be cancellable");
-            return base.WriteAsync(buffer, offset, count, _timeoutHelper.CancellationToken);
+            var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
+            await base.WriteAsync(buffer, offset, count, cancelToken);
         }
 
         private async Task WriteAsyncInternal(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -89,7 +91,6 @@ namespace System.ServiceModel.Channels
             {
                 if (disposing)
                 {
-                    _timeoutHelper.Dispose();
                     _timeoutHelper = default(TimeoutHelper);
                 }
 
