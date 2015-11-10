@@ -8,70 +8,56 @@ using System.Threading.Tasks;
 
 namespace System.Runtime
 {
-    public struct TimeoutHelper : IDisposable
+    public struct TimeoutHelper
     {
+        public static readonly TimeSpan MaxWait = TimeSpan.FromMilliseconds(Int32.MaxValue);
+        private static readonly CancellationToken s_precancelledToken = new CancellationToken(true);
+
         private bool _cancellationTokenInitialized;
         private bool _deadlineSet;
 
         private CancellationToken _cancellationToken;
-        private CancellationTokenSource _cts;
         private DateTime _deadline;
         private TimeSpan _originalTimeout;
-        public static readonly TimeSpan MaxWait = TimeSpan.FromMilliseconds(Int32.MaxValue);
-        private static Action<object> s_cancelOnTimeout = state => ((TimeoutHelper)state)._cts.Cancel();
 
         public TimeoutHelper(TimeSpan timeout)
         {
             Contract.Assert(timeout >= TimeSpan.Zero, "timeout must be non-negative");
 
             _cancellationTokenInitialized = false;
-            _cts = null;
             _originalTimeout = timeout;
             _deadline = DateTime.MaxValue;
             _deadlineSet = (timeout == TimeSpan.MaxValue);
         }
 
-        // No locks as we expect this class to be used linearly. 
-        // If another CancellationTokenSource is created, we might have a CancellationToken outstanding
-        // that isn't cancelled if _cts.Cancel() is called. This happens only on the Abort paths, so it's not an issue. 
-        private void InitializeCancellationToken(TimeSpan timeout)
+        public CancellationToken GetCancellationToken()
         {
-            if (timeout == TimeSpan.MaxValue || timeout == Timeout.InfiniteTimeSpan)
-            {
-                _cancellationToken = CancellationToken.None;
-            }
-            else if (timeout > TimeSpan.Zero)
-            {
-                _cts = new CancellationTokenSource();
-                _cancellationToken = _cts.Token;
-                TimeoutTokenSource.FromTimeout((int)timeout.TotalMilliseconds).Register(s_cancelOnTimeout, this);
-            }
-            else
-            {
-                _cancellationToken = new CancellationToken(true);
-            }
-            _cancellationTokenInitialized = true;
+            return GetCancellationTokenAsync().Result;
         }
 
-        public CancellationToken CancellationToken
+        public async Task<CancellationToken> GetCancellationTokenAsync()
         {
-            get
+            if (!_cancellationTokenInitialized)
             {
-                if (!_cancellationTokenInitialized)
+                var timeout = RemainingTime();
+                if (timeout >= MaxWait || timeout == Timeout.InfiniteTimeSpan)
                 {
-                    InitializeCancellationToken(this.RemainingTime());
+                    _cancellationToken = CancellationToken.None;
                 }
-                return _cancellationToken;
+                else if (timeout > TimeSpan.Zero)
+                {
+                    _cancellationToken = await TimeoutTokenSource.FromTimeoutAsync((int)timeout.TotalMilliseconds);
+                }
+                else
+                {
+                    _cancellationToken = s_precancelledToken;
+                }
+                _cancellationTokenInitialized = true;
             }
+
+            return _cancellationToken;
         }
 
-        public void CancelCancellationToken(bool throwOnFirstException = false)
-        {
-            if (_cts != null)
-            {
-                _cts.Cancel(throwOnFirstException);
-            }
-        }
 
         public TimeSpan OriginalTimeout
         {
@@ -194,16 +180,6 @@ namespace System.Runtime
             _deadlineSet = true;
         }
 
-        public void Dispose()
-        {
-            if (_cancellationTokenInitialized && _cts !=null)
-            {
-                _cts.Dispose();
-                _cancellationTokenInitialized = false;
-                _cancellationToken = default(CancellationToken);
-            }
-        }
-
         public static void ThrowIfNegativeArgument(TimeSpan timeout)
         {
             ThrowIfNegativeArgument(timeout, "timeout");
@@ -260,9 +236,29 @@ namespace System.Runtime
     /// </summary>
     internal static class TimeoutTokenSource
     {
-        private const int COALESCING_SPAN_MS = 15;
+        /// <summary>
+        /// These are constants use to calculate timeout coalescing, for more description see method FromTimeoutAsync
+        /// </summary>
+        private const int CoalescingFactor = 15;
+        private const int GranularityFactor = 2000;
+        private const int SegmentationFactor = CoalescingFactor * GranularityFactor;
+
         private static readonly ConcurrentDictionary<long, Task<CancellationToken>> s_tokenCache =
             new ConcurrentDictionary<long, Task<CancellationToken>>();
+
+        private static readonly Action<object> s_deregisterToken = (object state) =>
+        {
+            var args = (Tuple<long, CancellationTokenSource>)state;
+            Task<CancellationToken> ignored;
+            try
+            {
+                s_tokenCache.TryRemove(args.Item1, out ignored);
+            }
+            finally
+            {
+                args.Item2.Dispose();
+            }
+        };
 
         public static CancellationToken FromTimeout(int millisecondsTimeout)
         {
@@ -278,10 +274,25 @@ namespace System.Runtime
                 throw new ArgumentOutOfRangeException("Invalid millisecondsTimeout value " + millisecondsTimeout);
             }
 
+            // To prevent s_tokenCache growing too large, we have to adjust the granularity of the our coalesce depending
+            // on the value of millisecondsTimeout. The coalescing span scales proportionally with millisecondsTimeout which
+            // would garentee constant s_tokenCache size in the case where similar millisecondsTimeout values are accepted.
+            // If the method is given a wildly different millisecondsTimeout values all the time, the dictionary would still
+            // only grow logarithmically with respect to the range of the input values
+
             uint currentTime = (uint)Environment.TickCount;
             long targetTime = millisecondsTimeout + currentTime;
-            // round the targetTime up to the next closest 15ms
-            targetTime = ((targetTime + (COALESCING_SPAN_MS - 1)) / COALESCING_SPAN_MS) * COALESCING_SPAN_MS;
+
+            // Formula for our coalescing span:
+            // Divide millisecondsTimeout by SegmentationFactor and take the highest bit and then multiply CoalescingFactor back
+            var segmentValue = millisecondsTimeout / SegmentationFactor;
+            var coalescingSpanMs = CoalescingFactor;
+            while (segmentValue > 0)
+            {
+                segmentValue >>= 1;
+                coalescingSpanMs <<= 1;
+            }
+            targetTime = ((targetTime + (coalescingSpanMs - 1)) / coalescingSpanMs) * coalescingSpanMs;
 
             Task<CancellationToken> tokenTask;
 
@@ -294,14 +305,12 @@ namespace System.Runtime
                 {
                     // Since this thread was successful reserving a spot in the cache, it would be the only thread
                     // that construct the CancellationTokenSource
-                    var token = new CancellationTokenSource((int)(targetTime - currentTime)).Token;
+                    var tokenSource = new CancellationTokenSource((int)(targetTime - currentTime));
+                    var token = tokenSource.Token;
 
                     // Clean up cache when Token is canceled
-                    token.Register(t => {
-                        Task<CancellationToken> ignored;
-                        s_tokenCache.TryRemove((long)t, out ignored);
-                    }, targetTime);
-
+                    token.Register(s_deregisterToken, Tuple.Create(targetTime, tokenSource));
+                    
                     // set the result so other thread may observe the token, and return
                     tcs.TrySetResult(token);
                     tokenTask = tcs.Task;

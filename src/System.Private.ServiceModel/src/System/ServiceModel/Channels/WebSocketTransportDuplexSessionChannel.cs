@@ -167,9 +167,10 @@ namespace System.ServiceModel.Channels
             }
 
             var helper = new TimeoutHelper(timeout);
+            var cancelToken = await helper.GetCancellationTokenAsync();
             try
             {
-                await CloseOutputAsync(helper.CancellationToken);
+                await CloseOutputAsync(cancelToken);
             }
             catch (Exception ex)
             {
@@ -178,7 +179,7 @@ namespace System.ServiceModel.Channels
                     throw;
                 }
 
-                if (helper.CancellationToken.IsCancellationRequested)
+                if (cancelToken.IsCancellationRequested)
                 {
                     throw Fx.Exception.AsError(new TimeoutException(InternalSR.TaskTimedOutError(timeout)));
                 }
@@ -231,7 +232,7 @@ namespace System.ServiceModel.Channels
                     RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
             }
 
-            Task task = WebSocket.SendAsync(messageData, outgoingMessageType, true, helper.CancellationToken);
+            Task task = WebSocket.SendAsync(messageData, outgoingMessageType, true, helper.GetCancellationToken());
             Contract.Assert(_pendingWritingMessageException == null, "'pendingWritingMessageException' MUST be NULL at this point.");
 
             if (task.IsCompleted)
@@ -282,7 +283,7 @@ namespace System.ServiceModel.Channels
             Fx.Assert(callback != null, "callback should not be null.");
 
             var helper = new TimeoutHelper(timeout);
-            Task task = CloseOutputAsync(helper.CancellationToken);
+            Task task = CloseOutputAsync(helper.GetCancellationToken());
             Fx.Assert(_pendingWritingMessageException == null, "'pendingWritingMessageException' MUST be NULL at this point.");
 
             if (task.IsCompleted)
@@ -323,7 +324,7 @@ namespace System.ServiceModel.Channels
                             RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
                     }
 
-                    Task task = WebSocket.SendAsync(messageData, outgoingMessageType, true, helper.CancellationToken);
+                    Task task = WebSocket.SendAsync(messageData, outgoingMessageType, true, helper.GetCancellationToken());
                     task.Wait(helper.RemainingTime(), WebSocketHelper.ThrowCorrectException, WebSocketHelper.SendOperation);
 
                     if (TD.WebSocketAsyncWriteStopIsEnabled())
@@ -804,9 +805,8 @@ namespace System.ServiceModel.Channels
                                 {
                                     WebSocketReceiveResult result;
                                     TimeoutHelper helper = new TimeoutHelper(_asyncReceiveTimeout);
-                                    result = await _webSocket.ReceiveAsync(
-                                                new ArraySegment<byte>(buffer, 0, _receiveBufferSize),
-                                                helper.CancellationToken);
+                                    var cancelToken = await helper.GetCancellationTokenAsync();
+                                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, _receiveBufferSize), cancelToken);
                                     CheckCloseStatus(result);
                                     _pendingMessage = PrepareMessage(result, buffer, result.Count);
 
@@ -1060,7 +1060,8 @@ namespace System.ServiceModel.Channels
             {
                 Contract.Assert(_messageSource != null, "messageSource should not be null in read case.");
 
-                if (_readTimeoutHelper.CancellationToken.IsCancellationRequested)
+                var cancelToken = _readTimeoutHelper.GetCancellationToken();
+                if (cancelToken.IsCancellationRequested)
                 {
                     throw FxTrace.Exception.AsError(WebSocketHelper.GetTimeoutException(null,
                         _readTimeoutHelper.OriginalTimeout, WebSocketHelper.ReceiveOperation));
@@ -1221,7 +1222,7 @@ namespace System.ServiceModel.Channels
 
                 if (Interlocked.CompareExchange(ref _endOfMessageWritten, WebSocketHelper.OperationFinished, WebSocketHelper.OperationNotStarted) == WebSocketHelper.OperationNotStarted)
                 {
-                    Task task = _webSocket.SendAsync(new ArraySegment<byte>(Array.Empty<byte>(), 0, 0), _outgoingMessageType, true, timeoutHelper.CancellationToken);
+                    Task task = _webSocket.SendAsync(new ArraySegment<byte>(Array.Empty<byte>(), 0, 0), _outgoingMessageType, true, timeoutHelper.GetCancellationToken());
                     task.Wait(timeoutHelper.RemainingTime(), WebSocketHelper.ThrowCorrectException, WebSocketHelper.SendOperation);
                 }
 
@@ -1242,40 +1243,38 @@ namespace System.ServiceModel.Channels
                         string.Empty);
                 }
 
-                using (var timeoutHelper = new TimeoutHelper(_closeTimeout))
+                var timeoutHelper = new TimeoutHelper(_closeTimeout);
+                var cancelTokenTask = timeoutHelper.GetCancellationTokenAsync();
+                try
                 {
-                    try
+                    var cancelToken = await cancelTokenTask;
+                    await _webSocket.SendAsync(new ArraySegment<byte>(Array.Empty<byte>(), 0, 0), _outgoingMessageType, true, cancelToken);
+
+                    if (TD.WebSocketAsyncWriteStopIsEnabled())
                     {
-                        await
-                            _webSocket.SendAsync(new ArraySegment<byte>(Array.Empty<byte>(), 0, 0), _outgoingMessageType,
-                                true, timeoutHelper.CancellationToken);
-
-                        if (TD.WebSocketAsyncWriteStopIsEnabled())
-                        {
-                            TD.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
-                        }
+                        TD.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
                     }
-                    catch (Exception ex)
+                }
+                catch (Exception ex)
+                {
+                    if (Fx.IsFatal(ex))
                     {
-                        if (Fx.IsFatal(ex))
-                        {
-                            throw;
-                        }
-
-                        if (timeoutHelper.CancellationToken.IsCancellationRequested)
-                        {
-                            throw Fx.Exception.AsError(
-                                new TimeoutException(InternalSR.TaskTimedOutError(timeoutHelper.OriginalTimeout)));
-                        }
-
-                        throw WebSocketHelper.ConvertAndTraceException(ex, timeoutHelper.OriginalTimeout,
-                            WebSocketHelper.SendOperation);
-
+                        throw;
                     }
-                    finally
+
+                    if (cancelTokenTask.Result.IsCancellationRequested)
                     {
-                        callback.Invoke(state);
+                        throw Fx.Exception.AsError(
+                            new TimeoutException(InternalSR.TaskTimedOutError(timeoutHelper.OriginalTimeout)));
                     }
+
+                    throw WebSocketHelper.ConvertAndTraceException(ex, timeoutHelper.OriginalTimeout,
+                        WebSocketHelper.SendOperation);
+
+                }
+                finally
+                {
+                    callback.Invoke(state);
                 }
             }
 
@@ -1308,20 +1307,18 @@ namespace System.ServiceModel.Channels
                             if (!_endofMessageReceived && (_webSocket.State == WebSocketState.Open || _webSocket.State == WebSocketState.CloseSent))
                             {
                                 // Drain the reading stream
-                                using (var closeTimeoutHelper = new TimeoutHelper(_closeTimeout))
+                                var closeTimeoutHelper = new TimeoutHelper(_closeTimeout);
+                                do
                                 {
-                                    do
-                                    {
-                                        Task<WebSocketReceiveResult> receiveTask =
-                                            _webSocket.ReceiveAsync(new ArraySegment<byte>(_initialReadBuffer.Array),
-                                                closeTimeoutHelper.CancellationToken);
-                                        receiveTask.Wait(closeTimeoutHelper.RemainingTime(),
-                                            WebSocketHelper.ThrowCorrectException, WebSocketHelper.ReceiveOperation);
-                                        _endofMessageReceived = receiveTask.GetAwaiter().GetResult().EndOfMessage;
-                                    } while (!_endofMessageReceived &&
-                                             (_webSocket.State == WebSocketState.Open ||
-                                              _webSocket.State == WebSocketState.CloseSent));
-                                }
+                                    var cancelToken = closeTimeoutHelper.GetCancellationToken();
+                                    Task<WebSocketReceiveResult> receiveTask =
+                                        _webSocket.ReceiveAsync(new ArraySegment<byte>(_initialReadBuffer.Array), cancelToken);
+                                    receiveTask.Wait(closeTimeoutHelper.RemainingTime(),
+                                        WebSocketHelper.ThrowCorrectException, WebSocketHelper.ReceiveOperation);
+                                    _endofMessageReceived = receiveTask.GetAwaiter().GetResult().EndOfMessage;
+                                } while (!_endofMessageReceived &&
+                                         (_webSocket.State == WebSocketState.Open ||
+                                          _webSocket.State == WebSocketState.CloseSent));
                             }
                         }
                         catch (Exception ex)

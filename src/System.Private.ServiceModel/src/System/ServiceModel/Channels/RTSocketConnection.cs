@@ -185,7 +185,7 @@ namespace System.ServiceModel.Channels
                 // All the steps of a socket shutdown are not possible with StreamSocket. As part of a socket shutdown
                 // any pending data to write is given the chance to be sent so we'll attempt that.
                 var toh = new TimeoutHelper(timeout);
-                _outputStream.FlushAsync(toh.CancellationToken).GetAwaiter().GetResult();
+                _outputStream.FlushAsync(toh.GetCancellationToken()).GetAwaiter().GetResult();
             }
             catch (ObjectDisposedException objectDisposedException)
             {
@@ -355,7 +355,7 @@ namespace System.ServiceModel.Channels
             {
                 int bytesToWrite = size;
 
-                using (timeoutHelper.CancellationToken.Register(OnSendTimeout, this))
+                using (timeoutHelper.GetCancellationToken().Register(OnSendTimeout, this))
                 {
                     while (bytesToWrite > 0)
                     {
@@ -402,7 +402,7 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             try
             {
-                using (timeoutHelper.CancellationToken.Register(OnReceiveTimeout, this))
+                using (timeoutHelper.GetCancellationToken().Register(OnReceiveTimeout, this))
                 {
                     bytesRead = _inputStream.Read(buffer, offset, size);
                 }
