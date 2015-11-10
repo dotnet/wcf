@@ -101,6 +101,12 @@ namespace Bridge
                 CertificateManager.UninstallSslPortCertificate(httpsPort);
             }
 
+            int wssPort = ConfigController.BridgeConfiguration.BridgeSecureWebSocketPort;
+            if (wssPort != 0)
+            {
+                CertificateManager.UninstallSslPortCertificate(wssPort);
+            }
+
             // Finally remove all firewall rules we added for the ports
             PortManager.RemoveAllBridgeFirewallRules();
 

@@ -118,6 +118,14 @@ namespace WcfService.TestResources
             CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
             return binding;
         }
+
+        protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
+        {
+            // Ensure the https certificate is installed before this endpoint resource is used
+            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration, context.BridgeConfiguration.BridgeSecureWebSocketPort);
+
+            base.ModifyHost(serviceHost, context);
+        }
     }
 
     internal class WebSocketHttpsDuplexTextStreamedResource : EndpointResource<WSDuplexService, IWSDuplexService>
@@ -126,7 +134,7 @@ namespace WcfService.TestResources
 
         protected override int GetPort(ResourceRequestContext context)
         {
-            return context.BridgeConfiguration.BridgeHttpsPort;
+            return context.BridgeConfiguration.BridgeSecureWebSocketPort;
         }
 
         protected override string Address { get { return "WebSocketHttpsDuplexTextStreamedResource"; } }
@@ -148,7 +156,7 @@ namespace WcfService.TestResources
         protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
         {
             // Ensure the https certificate is installed before this endpoint resource is used
-            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration);
+            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration, context.BridgeConfiguration.BridgeSecureWebSocketPort);
 
             base.ModifyHost(serviceHost, context);
         }
