@@ -3,8 +3,10 @@
 
 using System;
 using System.IO;
+using System.Net.WebSockets;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -153,7 +155,6 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(470)]
     [ActiveIssue(420, PlatformID.AnyUnix)]
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
@@ -243,6 +244,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(4429)] // In #CoreFX
     [ActiveIssue(470)]
     [ActiveIssue(420, PlatformID.AnyUnix)]
     public static void WebSocket_Https_Duplex_TextStreamed()

@@ -102,7 +102,6 @@
     <Compile Include="TestResources\BasicHttpResource.cs" />
     <Compile Include="TestResources\EndpointResource.cs" />
     <Compile Include="TestHttpRequestMessageProperty.cs" />
-    <Compile Include="TestResources\WebSocketHttpsResource.cs" />
     <Compile Include="TestResources\WebSocketResources.cs" />
     <Compile Include="WcfDuplexService.cs" />
     <Compile Include="WcfRestartService.cs" />

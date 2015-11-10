@@ -79,11 +79,16 @@ namespace WcfService.CertificateResources
 
         internal static string EnsureSslPortCertificateInstalled(BridgeConfiguration configuration)
         {
+            return EnsureSslPortCertificateInstalled(configuration, configuration.BridgeHttpsPort);
+        }
+
+        internal static string EnsureSslPortCertificateInstalled(BridgeConfiguration configuration, int port)
+        {
             // Ensure the https certificate is installed before this endpoint resource is used
             X509Certificate2 cert = CertificateManager.CreateAndInstallLocalMachineCertificates(GetCertificateGeneratorInstance(configuration));
 
-            // Ensure http.sys has been told to use this certificate on the https port
-            CertificateManager.InstallSSLPortCertificate(cert.Thumbprint, configuration.BridgeHttpsPort);
+            // Ensure http.sys has been told to use this certificate on the specified port
+            CertificateManager.InstallSSLPortCertificate(cert.Thumbprint, port);
 
             return cert.Thumbprint;
         }
