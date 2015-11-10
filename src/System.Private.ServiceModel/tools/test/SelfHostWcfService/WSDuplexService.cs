@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace WcfService
 {
@@ -77,7 +78,7 @@ namespace WcfService
             log.Add("StartPushingData");
             continuePushingData = true;
             IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
-            ThreadPool.QueueUserWorkItem(new WaitCallback(PushData), pushCallbackChannel);
+            Task.Factory.StartNew(PushData, pushCallbackChannel, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
         }
 
         public void StopPushingData()
@@ -90,14 +91,14 @@ namespace WcfService
         {
             log.Add("StartPushingStream");
             IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
-            ThreadPool.QueueUserWorkItem(new WaitCallback(PushStream), pushCallbackChannel);
+            Task.Factory.StartNew(PushStream, pushCallbackChannel, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
         }
 
         public void StartPushingStreamLongWait()
         {
             log.Add("StartPushingStream");
             IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
-            ThreadPool.QueueUserWorkItem(new WaitCallback(PushStreamLongwait), pushCallbackChannel);
+            Task.Factory.StartNew(PushStreamLongwait, pushCallbackChannel, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
         }
 
         public void StopPushingStream()

@@ -21,6 +21,8 @@ namespace Bridge
 
         private static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException +=
+                new UnhandledExceptionEventHandler(BridgeUnhandledExceptionHandler);
             CommandLineArguments commandLineArgs = new CommandLineArguments(args);
 
             Console.WriteLine("Bridge.exe was launched with:{0}{1}", 
@@ -365,6 +367,18 @@ namespace Bridge
             }
 
             return false;
+        }
+
+        private static void BridgeUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = (Exception) args.ExceptionObject;
+            Console.WriteLine("*** Unhandled exception ***" + Environment.NewLine);
+            Console.WriteLine(e + Environment.NewLine);
+            Console.WriteLine("***                     ***" + Environment.NewLine);
+            if (Debugger.IsAttached)
+            {
+                Debugger.Break();
+            }
         }
 
         class CommandLineArguments
