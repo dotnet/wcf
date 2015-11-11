@@ -1,15 +1,15 @@
 {
     "dependencies": {
-      "Microsoft.NETCore.Platforms": "1.0.1-beta-*",
-      "Microsoft.NETCore.TestHost": "1.0.0-beta-*",
-      "Microsoft.NETCore.Console": "1.0.0-beta-*",
+      "Microsoft.NETCore.Platforms": "1.0.1-beta-23509",
+      "Microsoft.NETCore.TestHost": "1.0.0-beta-23509",
+      "Microsoft.NETCore.Console": "1.0.0-beta-23509",
 
       "coveralls.io": "1.4",
       "OpenCover": "4.6.166",
-      "ReportGenerator": "2.3.1",
-
-      "Microsoft.DotNet.xunit.performance.analysis": "1.0.0-alpha-build0022",
-      "Microsoft.DotNet.xunit.performance.runner.Windows": "1.0.0-alpha-build0022",
+      "ReportGenerator": "2.3.4",
+      
+      "Microsoft.DotNet.xunit.performance.analysis": "1.0.0-alpha-build0025",
+      "Microsoft.DotNet.xunit.performance.runner.Windows": "1.0.0-alpha-build0025",
 
       "System.Collections": "4.0.11-beta-*",
       "System.Collections.Concurrent": "4.0.11-beta-*",
