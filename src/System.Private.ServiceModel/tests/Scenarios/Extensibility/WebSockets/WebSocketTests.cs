@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using System.Net.WebSockets;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
