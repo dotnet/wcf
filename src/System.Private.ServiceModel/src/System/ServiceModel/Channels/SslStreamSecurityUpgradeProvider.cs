@@ -17,6 +17,7 @@ using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -515,26 +516,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private IAsyncResult BaseBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return base.BeginOpen(timeout, callback, state);
-        }
-
-        private void BaseEndOpen(IAsyncResult result)
-        {
-            base.EndOpen(result);
-        }
-
-        internal override IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator async path");
-        }
-
-        internal override void EndOpen(IAsyncResult result)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator async path");
-        }
-
         internal override void Open(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
@@ -549,24 +530,18 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private IAsyncResult BaseBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
+        internal override async Task OpenAsync(TimeSpan timeout)
         {
-            return base.BeginClose(timeout, callback, state);
-        }
-
-        private void BaseEndClose(IAsyncResult result)
-        {
-            base.EndClose(result);
-        }
-
-        internal override IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator async path");
-        }
-
-        internal override void EndClose(IAsyncResult result)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator async path");
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await base.OpenAsync(timeoutHelper.RemainingTime());
+            if (_clientCertificateProvider != null)
+            {
+                SecurityUtils.OpenTokenProviderIfRequired(_clientCertificateProvider, timeoutHelper.RemainingTime());
+                using (CancellationTokenSource cts = new CancellationTokenSource(timeoutHelper.RemainingTime()))
+                {
+                    _clientToken = (X509SecurityToken)(await _clientCertificateProvider.GetTokenAsync(cts.Token));
+                }
+            }
         }
 
         internal override void Close(TimeSpan timeout)
@@ -579,15 +554,14 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected override IAsyncResult OnBeginInitiateUpgrade(Stream stream, AsyncCallback callback, object state)
+        internal override async Task CloseAsync(TimeSpan timeout)
         {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator async path");
-        }
-
-        protected override Stream OnEndInitiateUpgrade(IAsyncResult result,
-            out SecurityMessageProperty remoteSecurity)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator async path");
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await base.CloseAsync(timeoutHelper.RemainingTime());
+            if (_clientCertificateProvider != null)
+            {
+                SecurityUtils.CloseTokenProviderIfRequired(_clientCertificateProvider, timeoutHelper.RemainingTime());
+            }
         }
 
         protected override Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
@@ -634,6 +608,59 @@ namespace System.ServiceModel.Channels
             }
 
             remoteSecurity = _serverSecurity;
+
+            if (this.IsChannelBindingSupportEnabled)
+            {
+                _channelBindingToken = ChannelBindingUtility.GetToken(sslStream);
+            }
+
+            return sslStream;
+#endif //!FEATURE_NETNATIVE
+        }
+
+        protected override async Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurityWrapper)
+        {
+#if FEATURE_NETNATIVE
+            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator.InInitiateUpgradeAsync");
+#else // !FEATURE_NETNATIVE
+            if (TD.SslOnInitiateUpgradeIsEnabled())
+            {
+                TD.SslOnInitiateUpgrade();
+            }
+
+            X509CertificateCollection clientCertificates = null;
+            LocalCertificateSelectionCallback selectionCallback = null;
+
+            if (_clientToken != null)
+            {
+                clientCertificates = new X509CertificateCollection();
+                clientCertificates.Add(_clientToken.Certificate);
+                selectionCallback = ClientCertificateSelectionCallback;
+            }
+
+            SslStream sslStream = new SslStream(stream, false, this.ValidateRemoteCertificate, selectionCallback);
+
+            try
+            {
+                await sslStream.AuthenticateAsClientAsync(string.Empty, clientCertificates, _parent.SslProtocols, false);
+            }
+            catch (SecurityTokenValidationException tokenValidationException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(tokenValidationException.Message,
+                    tokenValidationException));
+            }
+            catch (AuthenticationException exception)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(exception.Message,
+                    exception));
+            }
+            catch (IOException ioException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(
+                    SR.Format(SR.NegotiationFailedIO, ioException.Message), ioException));
+            }
+
+            remoteSecurityWrapper.Value = _serverSecurity;
 
             if (this.IsChannelBindingSupportEnabled)
             {

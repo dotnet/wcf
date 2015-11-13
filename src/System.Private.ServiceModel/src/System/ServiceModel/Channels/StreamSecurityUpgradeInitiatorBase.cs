@@ -2,8 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.IO;
+using System.Runtime;
 using System.ServiceModel;
 using System.ServiceModel.Security;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -37,32 +39,6 @@ namespace System.ServiceModel.Channels
             {
                 return _via;
             }
-        }
-
-        public override IAsyncResult BeginInitiateUpgrade(Stream stream, AsyncCallback callback, object state)
-        {
-            if (stream == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("stream");
-            }
-
-            if (!_isOpen)
-            {
-                this.Open(TimeSpan.Zero);
-            }
-
-            return this.OnBeginInitiateUpgrade(stream, callback, state);
-        }
-
-        public override Stream EndInitiateUpgrade(IAsyncResult result)
-        {
-            if (result == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("result");
-            }
-            Stream retValue = this.OnEndInitiateUpgrade(result, out _remoteSecurity);
-            _securityUpgraded = true;
-            return retValue;
         }
 
         public override string GetNextUpgrade()
@@ -99,33 +75,48 @@ namespace System.ServiceModel.Channels
             return result;
         }
 
-        internal override void EndOpen(IAsyncResult result)
+        internal override async Task<Stream> InitiateUpgradeAsync(Stream stream)
         {
-            base.EndOpen(result);
-            _isOpen = true;
+            if (stream == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("stream");
+            }
+
+            if (!_isOpen)
+            {
+                 Open(TimeSpan.Zero);
+            }
+
+            var remoteSecurityWrapper = new OutWrapper<SecurityMessageProperty>();
+            Stream result = await OnInitiateUpgradeAsync(stream, remoteSecurityWrapper);
+            _remoteSecurity = remoteSecurityWrapper;
+            _securityUpgraded = true;
+            return result;
         }
 
         internal override void Open(TimeSpan timeout)
         {
-            base.Open(timeout);
             _isOpen = true;
         }
 
-        internal override void EndClose(IAsyncResult result)
+        internal override Task OpenAsync(TimeSpan timeout)
         {
-            base.EndClose(result);
-            _isOpen = false;
+            _isOpen = true;
+            return Task.CompletedTask;
         }
 
         internal override void Close(TimeSpan timeout)
         {
-            base.Close(timeout);
             _isOpen = false;
         }
 
-        protected abstract IAsyncResult OnBeginInitiateUpgrade(Stream stream, AsyncCallback callback, object state);
-        protected abstract Stream OnEndInitiateUpgrade(IAsyncResult result,
-            out SecurityMessageProperty remoteSecurity);
+        internal override Task CloseAsync(TimeSpan timeout)
+        {
+            _isOpen = false;
+            return Task.CompletedTask;
+        }
+
         protected abstract Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity);
+        protected abstract Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurity);
     }
 }

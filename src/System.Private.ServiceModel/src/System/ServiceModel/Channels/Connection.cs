@@ -804,3 +804,65 @@ namespace System.ServiceModel.Channels
         }
     }
 }
+
+namespace System.ServiceModel.Channels.ConnectionHelpers
+{
+    internal static class IConnectionExtensions
+    {
+        // This method is a convenience method for the open/close code paths and shouldn't be used on message send/receive.
+        internal static async Task WriteAsync(this IConnection connection, byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            var result = connection.BeginWrite(buffer, offset, size, immediate, timeout, OnIoComplete, tcs);
+            if (result == AsyncCompletionResult.Completed)
+            {
+                tcs.SetResult(true);
+            }
+
+            await tcs.Task;
+            connection.EndWrite();
+        }
+
+        // This method is a convenience method for the open/close code paths and shouldn't be used on message send/receive.
+        internal static async Task<int> ReadAsync(this IConnection connection, int offset, int size, TimeSpan timeout)
+        {
+            // read ACK
+            var tcs = new TaskCompletionSource<bool>();
+            //ackBuffer
+
+            var result = connection.BeginRead(offset, size, timeout, OnIoComplete, tcs);
+            if (result == AsyncCompletionResult.Completed)
+            {
+                tcs.SetResult(true);
+            }
+
+            await tcs.Task;
+            int ackBytesRead = connection.EndRead();
+            return ackBytesRead;
+        }
+
+        // This method is a convenience method for the open/close code paths and shouldn't be used on message send/receive.
+        internal static async Task<int> ReadAsync(this IConnection connection, byte[] buffer, int offset, int size, TimeSpan timeout)
+        {
+            int ackBytesRead = await connection.ReadAsync(0, size, timeout);
+            Buffer.BlockCopy(connection.AsyncReadBuffer, 0, buffer, offset, ackBytesRead);
+            return ackBytesRead;
+        }
+
+        private static void OnIoComplete(object state)
+        {
+            if (state == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("state");
+            }
+
+            var tcs = state as TaskCompletionSource<bool>;
+            if (tcs == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("state", SR.SPS_InvalidAsyncResult);
+            }
+
+            tcs.TrySetResult(true);
+        }
+    }
+}

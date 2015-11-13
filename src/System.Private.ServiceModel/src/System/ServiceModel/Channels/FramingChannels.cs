@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime;
 using System.ServiceModel.Security;
+using System.ServiceModel.Channels.ConnectionHelpers;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -52,33 +53,9 @@ namespace System.ServiceModel.Channels
             Connection.Write(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length, true, timeout);
         }
 
-        protected override async Task CloseOutputSessionCoreAsync(TimeSpan timeout)
+        protected override Task CloseOutputSessionCoreAsync(TimeSpan timeout)
         {
-            var tcs = new TaskCompletionSource<bool>();
-            AsyncCompletionResult result = Connection.BeginWrite(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length, true, timeout, OnIoComplete, tcs);
-            if (result == AsyncCompletionResult.Completed)
-            {
-                tcs.TrySetResult(true);
-            }
-
-            await tcs.Task;
-            Connection.EndWrite();
-        }
-
-        internal static void OnIoComplete(object state)
-        {
-            if (state == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("state");
-            }
-
-            var tcs = state as TaskCompletionSource<bool>;
-            if (tcs == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("state", SR.SPS_InvalidAsyncResult);
-            }
-
-            tcs.TrySetResult(true);
+            return Connection.WriteAsync(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length, true, timeout);
         }
 
         protected override void CompleteClose(TimeSpan timeout)
@@ -267,44 +244,29 @@ namespace System.ServiceModel.Channels
             // initialize a new decoder
             _decoder = new ClientDuplexDecoder(0);
             byte[] ackBuffer = new byte[1];
-            var tcs = new TaskCompletionSource<bool>();
-            var result = connection.BeginWrite(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime(), FramingDuplexSessionChannel.OnIoComplete, tcs);
-            if (result == AsyncCompletionResult.Completed)
-            {
-                tcs.SetResult(true);
-            }
-
-            await tcs.Task;
-            connection.EndWrite();
+            await connection.WriteAsync(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime());
 
             if (_upgrade != null)
             {
                 StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
 
-                upgradeInitiator.Open(timeoutHelper.RemainingTime());
-                if (!ConnectionUpgradeHelper.InitiateUpgrade(upgradeInitiator, ref connection, _decoder, this, ref timeoutHelper))
+                await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime());
+                var connectionWrapper = new OutWrapper<IConnection>();
+                connectionWrapper.Value = connection;
+                bool upgradeInitiated = await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connectionWrapper, _decoder, this, timeoutHelper.RemainingTime());
+                connection = connectionWrapper.Value;
+                if (!upgradeInitiated)
                 {
-                    ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, this.Via, MessageEncoder.ContentType, ref timeoutHelper);
+                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, this.Via, MessageEncoder.ContentType, timeoutHelper.RemainingTime());
                 }
 
                 SetRemoteSecurity(upgradeInitiator);
-                upgradeInitiator.Close(timeoutHelper.RemainingTime());
-                connection.Write(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
+                await upgradeInitiator.CloseAsync(timeoutHelper.RemainingTime());
+
+                await connection.WriteAsync(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
             }
 
-            // read ACK
-            tcs = new TaskCompletionSource<bool>();
-            //ackBuffer
-
-            result = connection.BeginRead(0, ackBuffer.Length, timeoutHelper.RemainingTime(), OnIoComplete, tcs);
-            if (result == AsyncCompletionResult.Completed)
-            {
-                tcs.SetResult(true);
-            }
-
-            await tcs.Task;
-            int ackBytesRead = connection.EndRead();
-            Buffer.BlockCopy((Array)connection.AsyncReadBuffer, 0, (Array)ackBuffer, 0, ackBytesRead);
+            int ackBytesRead = await connection.ReadAsync(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());            
 
             if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
             {
@@ -347,17 +309,6 @@ namespace System.ServiceModel.Channels
             }
 
             return connection;
-        }
-
-        private IAsyncResult BeginSendPreamble(IConnection connection, ArraySegment<byte> preamble, ref TimeoutHelper timeoutHelper,
-            AsyncCallback callback, object state)
-        {
-            return SendPreambleAsync(connection, preamble, timeoutHelper.RemainingTime()).ToApm(callback, state);
-        }
-
-        private IConnection EndSendPreamble(IAsyncResult result)
-        {
-            return result.ToApmEnd<IConnection>();
         }
 
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
@@ -497,18 +448,11 @@ namespace System.ServiceModel.Channels
             var timeoutHelper = new TimeoutHelper(timeout);
             ValidateReadingFaultString(decoder);
 
-            var tcs = new TaskCompletionSource<bool>();
-            var result = connection.BeginRead(0, Math.Min(FaultStringDecoder.FaultSizeQuota, connection.AsyncReadBufferSize),
-                timeoutHelper.RemainingTime(), FramingDuplexSessionChannel.OnIoComplete, tcs);
-            if (result == AsyncCompletionResult.Completed)
-            {
-                tcs.TrySetResult(true);
-            }
-
-            await tcs.Task;
+            int size = await connection.ReadAsync(0, 
+                Math.Min(FaultStringDecoder.FaultSizeQuota, connection.AsyncReadBufferSize),
+                timeoutHelper.RemainingTime());
 
             int offset = 0;
-            int size = connection.EndRead();
             while (size > 0)
             {
                 int bytesDecoded = decoder.Decode(connection.AsyncReadBuffer, offset, size);
@@ -530,16 +474,9 @@ namespace System.ServiceModel.Channels
                     if (size == 0)
                     {
                         offset = 0;
-                        tcs = new TaskCompletionSource<bool>();
-                        result = connection.BeginRead(0, Math.Min(FaultStringDecoder.FaultSizeQuota, connection.AsyncReadBufferSize),
-                            timeoutHelper.RemainingTime(), FramingDuplexSessionChannel.OnIoComplete, tcs);
-                        if (result == AsyncCompletionResult.Completed)
-                        {
-                            tcs.TrySetResult(true);
-                        }
-
-                        await tcs.Task;
-                        size = connection.EndRead();
+                        size = await connection.ReadAsync(0, 
+                            Math.Min(FaultStringDecoder.FaultSizeQuota, connection.AsyncReadBufferSize),
+                            timeoutHelper.RemainingTime());
                     }
                 }
             }
@@ -611,6 +548,41 @@ namespace System.ServiceModel.Channels
 
                 // and re-wrap connection
                 connection = new StreamConnection(upgradedStream, connectionStream);
+
+                upgradeContentType = upgradeInitiator.GetNextUpgrade();
+            }
+
+            return true;
+        }
+
+        public static async Task<bool> InitiateUpgradeAsync(StreamUpgradeInitiator upgradeInitiator, OutWrapper<IConnection> connectionWrapper,
+            ClientFramingDecoder decoder, IDefaultCommunicationTimeouts defaultTimeouts, TimeSpan timeout)
+        {
+            IConnection connection = connectionWrapper.Value;
+            string upgradeContentType = upgradeInitiator.GetNextUpgrade();
+
+            while (upgradeContentType != null)
+            {
+                EncodedUpgrade encodedUpgrade = new EncodedUpgrade(upgradeContentType);
+                // write upgrade request framing for synchronization
+                await connection.WriteAsync(encodedUpgrade.EncodedBytes, 0, encodedUpgrade.EncodedBytes.Length, true, timeout);
+                byte[] buffer = new byte[1];
+
+                // read upgrade response framing 
+                int size = await connection.ReadAsync(buffer, 0, buffer.Length, timeout);
+
+                if (!ValidateUpgradeResponse(buffer, size, decoder)) // we have a problem
+                {
+                    return false;
+                }
+
+                // initiate wire upgrade
+                ConnectionStream connectionStream = new ConnectionStream(connection, defaultTimeouts);
+                Stream upgradedStream = await upgradeInitiator.InitiateUpgradeAsync(connectionStream);
+
+                // and re-wrap connection
+                connection = new StreamConnection(upgradedStream, connectionStream);
+                connectionWrapper.Value = connection;
 
                 upgradeContentType = upgradeInitiator.GetNextUpgrade();
             }
