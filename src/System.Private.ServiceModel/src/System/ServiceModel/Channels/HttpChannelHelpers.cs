@@ -5,7 +5,12 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
 using System.Runtime;
+using System.Runtime.CompilerServices;
+using System.Security.Principal;
+using System.ServiceModel.Security;
+using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,6 +45,84 @@ namespace System.ServiceModel.Channels
         internal const uint WININET_E_NAME_NOT_RESOLVED = 0x80072EE7;
         internal const uint WININET_E_CONNECTION_RESET = 0x80072EFF;
         internal const uint WININET_E_INCORRECT_HANDLE_STATE = 0x80072EF3;
+        internal const uint ERROR_WINHTTP_SECURE_FAILURE = 0x80072f8f;
+
+        public static Task<NetworkCredential> GetCredentialAsync(AuthenticationSchemes authenticationScheme, SecurityTokenProviderContainer credentialProvider, 
+            OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper,
+            CancellationToken cancellationToken)
+        {
+            impersonationLevelWrapper.Value = TokenImpersonationLevel.None;
+            authenticationLevelWrapper.Value = AuthenticationLevel.None;
+
+            if (authenticationScheme == AuthenticationSchemes.Anonymous)
+            {
+                return Task.FromResult((NetworkCredential)null);
+            }
+
+            return GetCredentialCoreAsync(authenticationScheme, credentialProvider, impersonationLevelWrapper,
+                    authenticationLevelWrapper, cancellationToken);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static async Task<NetworkCredential> GetCredentialCoreAsync(AuthenticationSchemes authenticationScheme,
+            SecurityTokenProviderContainer credentialProvider, OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper,
+            OutWrapper<AuthenticationLevel> authenticationLevelWrapper, CancellationToken cancellationToken)
+        {
+            impersonationLevelWrapper.Value = TokenImpersonationLevel.None;
+            authenticationLevelWrapper.Value = AuthenticationLevel.None;
+
+            NetworkCredential result = null;
+
+            switch (authenticationScheme)
+            {
+                case AuthenticationSchemes.Basic:
+                    result = await TransportSecurityHelpers.GetUserNameCredentialAsync(credentialProvider, cancellationToken);
+                    impersonationLevelWrapper.Value = TokenImpersonationLevel.Delegation;
+                    break;
+
+                case AuthenticationSchemes.Digest:
+                    result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
+                        impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+                    ValidateDigestCredential(result, impersonationLevelWrapper.Value);
+                    break;
+
+                case AuthenticationSchemes.Negotiate:
+                    result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
+                        impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+                    break;
+
+                case AuthenticationSchemes.Ntlm:
+                    result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
+                        impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+                    if (authenticationLevelWrapper.Value == AuthenticationLevel.MutualAuthRequired)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                            new InvalidOperationException(SR.CredentialDisallowsNtlm));
+                    }
+                    break;
+
+                default:
+                    // The setter for this property should prevent this.
+                    throw Fx.AssertAndThrow("GetCredential: Invalid authentication scheme");
+            }
+
+            return result;
+        }
+
+        public static void ValidateDigestCredential(NetworkCredential credential, TokenImpersonationLevel impersonationLevel)
+        {
+            if (!SecurityUtils.NetworkCredentialHelper.IsDefault(credential))
+            {
+                // With a non-default credential, Digest will not honor a client impersonation constraint of 
+                // TokenImpersonationLevel.Identification.
+                if (!TokenImpersonationLevelHelper.IsGreaterOrEqual(impersonationLevel,
+                    TokenImpersonationLevel.Impersonation))
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
+                        SR.DigestExplicitCredsImpersonationLevel, impersonationLevel)));
+                }
+            }
+        }
 
         public static HttpResponseMessage ProcessGetResponseWebException(HttpRequestException requestException, HttpRequestMessage request, HttpAbortReason abortReason)
         {
@@ -69,6 +152,8 @@ namespace System.ServiceModel.Channels
                     return new CommunicationException(SR.Format(SR.HttpReceiveFailure, request.RequestUri), exception);
                 case WININET_E_NAME_NOT_RESOLVED:
                     return new EndpointNotFoundException(SR.Format(SR.EndpointNotFound, request.RequestUri.AbsoluteUri), exception);
+                case ERROR_WINHTTP_SECURE_FAILURE:
+                    return new SecurityNegotiationException(SR.Format(SR.TrustFailure, request.RequestUri.Authority), exception);
                 default:
                     return new CommunicationException(exception.Message, exception);
             }

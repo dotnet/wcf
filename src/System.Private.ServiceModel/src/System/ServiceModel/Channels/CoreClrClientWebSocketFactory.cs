@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Net.WebSockets;
 using System.Runtime;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels

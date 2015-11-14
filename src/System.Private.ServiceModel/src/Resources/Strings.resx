@@ -6750,4 +6750,10 @@
   <data name="X509ChainBuildFail" xml:space="preserve">
     <value>The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</value>
   </data>
+  <data name="ImpersonationLevelNotSupported" xml:space="preserve">
+    <value>The authentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</value>
+  </data>
+  <data name="ProvidedNetworkCredentialsForKerberosHasInvalidUserName" xml:space="preserve">
+    <value>The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</value>
+  </data>
 </root>

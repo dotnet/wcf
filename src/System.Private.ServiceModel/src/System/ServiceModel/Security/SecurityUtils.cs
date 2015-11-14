@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
@@ -13,12 +12,12 @@ using System.IdentityModel.Tokens;
 using System.Net;
 using System.Net.Security;
 using System.Runtime;
-using System.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
+using System.ServiceModel.Security.Tokens;
 using System.Threading;
 
 namespace System.ServiceModel.Security
@@ -75,8 +74,7 @@ namespace System.ServiceModel.Security
                         return 4;
                 }
             }
-            else
-                return 1;
+            return 1;
         }
     }
 
@@ -137,19 +135,19 @@ namespace System.ServiceModel.Security
             {
                 return "identification";
             }
-            else if (impersonationLevel == TokenImpersonationLevel.None)
+            if (impersonationLevel == TokenImpersonationLevel.None)
             {
                 return "none";
             }
-            else if (impersonationLevel == TokenImpersonationLevel.Anonymous)
+            if (impersonationLevel == TokenImpersonationLevel.Anonymous)
             {
                 return "anonymous";
             }
-            else if (impersonationLevel == TokenImpersonationLevel.Impersonation)
+            if (impersonationLevel == TokenImpersonationLevel.Impersonation)
             {
                 return "impersonation";
             }
-            else if (impersonationLevel == TokenImpersonationLevel.Delegation)
+            if (impersonationLevel == TokenImpersonationLevel.Delegation)
             {
                 return "delegation";
             }
@@ -161,8 +159,8 @@ namespace System.ServiceModel.Security
 
         internal static bool IsGreaterOrEqual(TokenImpersonationLevel x, TokenImpersonationLevel y)
         {
-            TokenImpersonationLevelHelper.Validate(x);
-            TokenImpersonationLevelHelper.Validate(y);
+            Validate(x);
+            Validate(y);
 
             if (x == y)
                 return true;
@@ -243,7 +241,7 @@ namespace System.ServiceModel.Security
             {
                 if (s_anonymousIdentity == null)
                 {
-                    s_anonymousIdentity = SecurityUtils.CreateIdentity(string.Empty);
+                    s_anonymousIdentity = CreateIdentity(string.Empty);
                 }
                 return s_anonymousIdentity;
             }
@@ -292,10 +290,7 @@ namespace System.ServiceModel.Security
                 }
                 return EndpointIdentity.CreateUpnIdentity(upn);
             }
-            else
-            {
-                return SecurityUtils.CreateWindowsIdentity();
-            }
+            return CreateWindowsIdentity();
         }
 
 #if FEATURE_NETNATIVE
@@ -350,7 +345,7 @@ namespace System.ServiceModel.Security
 
         internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid)
         {
-            return SecurityUtils.CloneWindowsIdentityIfNecessary(wid, null);
+            return CloneWindowsIdentityIfNecessary(wid, null);
         }
 
         internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid, string authType)
@@ -375,10 +370,48 @@ namespace System.ServiceModel.Security
         {
             if (authType != null)
                 return new WindowsIdentity(token, authType);
-            else
-                return new WindowsIdentity(token);
+            return new WindowsIdentity(token);
         }
 #endif // FEATURE_NETNATIVE
+
+        internal static string GetSpnFromIdentity(EndpointIdentity identity, EndpointAddress target)
+        {
+            bool foundSpn = false;
+            string spn = null;
+            if (identity != null)
+            {
+                if (ClaimTypes.Spn.Equals(identity.IdentityClaim.ClaimType))
+                {
+                    spn = (string)identity.IdentityClaim.Resource;
+                    foundSpn = true;
+                }
+                else if (ClaimTypes.Upn.Equals(identity.IdentityClaim.ClaimType))
+                {
+                    spn = (string)identity.IdentityClaim.Resource;
+                    foundSpn = true;
+                }
+                else if (ClaimTypes.Dns.Equals(identity.IdentityClaim.ClaimType))
+                {
+                    spn = string.Format(CultureInfo.InvariantCulture, "host/{0}", (string)identity.IdentityClaim.Resource);
+                    foundSpn = true;
+                }
+            }
+            if (!foundSpn)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.CannotDetermineSPNBasedOnAddress, target)));
+            }
+            return spn;
+        }
+
+        internal static string GetSpnFromTarget(EndpointAddress target)
+        {
+            if (target == null)
+            {
+                throw Fx.AssertAndThrow("target should not be null - expecting an EndpointAddress");
+            }
+
+            return string.Format(CultureInfo.InvariantCulture, "host/{0}", target.Uri.DnsSafeHost);
+        }
 
         internal static bool IsSupportedAlgorithm(string algorithm, SecurityToken token)
         {
@@ -498,6 +531,24 @@ namespace System.ServiceModel.Security
             return new SecurityStandardsManager(securityVersion, tokenSerializer);
         }
 
+        internal static SecurityStandardsManager CreateSecurityStandardsManager(SecurityTokenRequirement requirement, SecurityTokenManager tokenManager)
+        {
+            MessageSecurityTokenVersion securityVersion = (MessageSecurityTokenVersion)requirement.GetProperty<MessageSecurityTokenVersion>(ServiceModelSecurityTokenRequirement.MessageSecurityVersionProperty);
+            if (securityVersion == MessageSecurityTokenVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005BasicSecurityProfile10)
+                return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, tokenManager);
+            if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005)
+                return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11, tokenManager);
+            if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005BasicSecurityProfile10)
+                return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, tokenManager);
+            if (securityVersion == MessageSecurityTokenVersion.WSSecurity10WSTrust13WSSecureConversation13BasicSecurityProfile10)
+                return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity10WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, tokenManager);
+            if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrust13WSSecureConversation13)
+                return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12, tokenManager);
+            if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrust13WSSecureConversation13BasicSecurityProfile10)
+                return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, tokenManager);
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+        }
+
         internal static SecurityStandardsManager CreateSecurityStandardsManager(MessageSecurityVersion securityVersion, SecurityTokenSerializer securityTokenSerializer)
         {
             if (securityVersion == null)
@@ -516,7 +567,7 @@ namespace System.ServiceModel.Security
             NetworkCredential result;
             if (networkCredential != null && !NetworkCredentialHelper.IsDefault(networkCredential))
             {
-                result = new NetworkCredential(NetworkCredentialHelper.UnsafeGetUsername(networkCredential), NetworkCredentialHelper.UnsafeGetPassword(networkCredential), NetworkCredentialHelper.UnsafeGetDomain(networkCredential));
+                result = new NetworkCredential(networkCredential.UserName, networkCredential.Password, networkCredential.Domain);
             }
             else
             {
@@ -527,19 +578,35 @@ namespace System.ServiceModel.Security
 
         internal static NetworkCredential GetNetworkCredentialOrDefault(NetworkCredential credential)
         {
-            // because of VSW 564452, we dont use CredentialCache.DefaultNetworkCredentials in our OM. Instead we
-            // use an empty NetworkCredential to denote the default credentials
+            // Because CredentialCache.DefaultNetworkCredentials is not immutable, we dont use it in our OM. Instead we
+            // use an empty NetworkCredential to denote the default credentials.
             if (NetworkCredentialHelper.IsNullOrEmpty(credential))
             {
-                // FYI: this will fail with SecurityException in PT due to Demand for EnvironmentPermission.
-                // Typically a PT app should not have access to DefaultNetworkCredentials. If there is a valid reason,
-                // see UnsafeGetDefaultNetworkCredentials.
                 return CredentialCache.DefaultNetworkCredentials;
             }
-            else
+
+            return credential;
+        }
+
+        internal static string AppendWindowsAuthenticationInfo(string inputString, NetworkCredential credential,
+            AuthenticationLevel authenticationLevel, TokenImpersonationLevel impersonationLevel)
+        {
+            const string delimiter = "\0"; // nonprintable characters are invalid for SSPI Domain/UserName/Password
+
+            if (NetworkCredentialHelper.IsDefault(credential))
             {
-                return credential;
+                string sid = NetworkCredentialHelper.GetCurrentUserIdAsString(credential);
+                return string.Concat(inputString, delimiter,
+                    sid, delimiter,
+                    AuthenticationLevelHelper.ToString(authenticationLevel), delimiter,
+                    TokenImpersonationLevelHelper.ToString(impersonationLevel));
             }
+            return string.Concat(inputString, delimiter,
+                credential.Domain, delimiter,
+                credential.UserName, delimiter,
+                credential.Password, delimiter,
+                AuthenticationLevelHelper.ToString(authenticationLevel), delimiter,
+                TokenImpersonationLevelHelper.ToString(impersonationLevel));
         }
 
         internal static class NetworkCredentialHelper
@@ -548,35 +615,29 @@ namespace System.ServiceModel.Security
             {
                 return credential == null ||
                         (
-                            String.IsNullOrEmpty(UnsafeGetUsername(credential)) &&
-                            String.IsNullOrEmpty(UnsafeGetDomain(credential)) &&
-                            String.IsNullOrEmpty(UnsafeGetPassword(credential))
+                            string.IsNullOrEmpty(credential.UserName) &&
+                            string.IsNullOrEmpty(credential.Domain) &&
+                            string.IsNullOrEmpty(credential.Password)
                         );
             }
 
             static internal bool IsDefault(NetworkCredential credential)
             {
-                return UnsafeGetDefaultNetworkCredentials().Equals(credential);
+                return CredentialCache.DefaultNetworkCredentials.Equals(credential);
             }
 
-            static internal string UnsafeGetUsername(NetworkCredential credential)
+            internal static string GetCurrentUserIdAsString(NetworkCredential credential)
             {
-                return credential.UserName;
-            }
-
-            static internal string UnsafeGetPassword(NetworkCredential credential)
-            {
-                return credential.Password;
-            }
-
-            static internal string UnsafeGetDomain(NetworkCredential credential)
-            {
-                return credential.Domain;
-            }
-
-            private static NetworkCredential UnsafeGetDefaultNetworkCredentials()
-            {
-                return CredentialCache.DefaultNetworkCredentials;
+#if FEATURE_NETNATIVE
+                // There's no way to retrieve the current logged in user Id in UWP apps
+                // so returning a username which is very unlikely to be a real username;
+                return "_______****currentUser****_______";
+#else
+                using (WindowsIdentity self = WindowsIdentity.GetCurrent())
+                {
+                    return self.User.Value;
+                }
+#endif
             }
         }
         internal static byte[] CloneBuffer(byte[] buffer)
@@ -651,7 +712,7 @@ namespace System.ServiceModel.Security
             }
             finally
             {
-                SecurityUtils.ResetAllCertificates(certs);
+                ResetAllCertificates(certs);
                 store.Dispose();
             }
         }
@@ -665,20 +726,41 @@ namespace System.ServiceModel.Security
                 {
                     return new InvalidOperationException(SR.Format(SR.CannotFindCert, storeName, storeLocation, findType, findValue));
                 }
-                else
-                {
-                    return new InvalidOperationException(SR.Format(SR.CannotFindCertForTarget, storeName, storeLocation, findType, findValue, target));
-                }
+                return new InvalidOperationException(SR.Format(SR.CannotFindCertForTarget, storeName, storeLocation, findType, findValue, target));
             }
-            else
+            if (target == null)
             {
-                if (target == null)
+                return new InvalidOperationException(SR.Format(SR.FoundMultipleCerts, storeName, storeLocation, findType, findValue));
+            }
+            return new InvalidOperationException(SR.Format(SR.FoundMultipleCertsForTarget, storeName, storeLocation, findType, findValue, target));
+        }
+
+        internal static void FixNetworkCredential(ref NetworkCredential credential)
+        {
+            if (credential == null)
+            {
+                return;
+            }
+            string username = credential.UserName;
+            string domain = credential.Domain;
+            if (!string.IsNullOrEmpty(username) && string.IsNullOrEmpty(domain))
+            {
+                // do the splitting only if there is exactly 1 \ or exactly 1 @
+                string[] partsWithSlashDelimiter = username.Split('\\');
+                string[] partsWithAtDelimiter = username.Split('@');
+                if (partsWithSlashDelimiter.Length == 2 && partsWithAtDelimiter.Length == 1)
                 {
-                    return new InvalidOperationException(SR.Format(SR.FoundMultipleCerts, storeName, storeLocation, findType, findValue));
+                    if (!string.IsNullOrEmpty(partsWithSlashDelimiter[0]) && !string.IsNullOrEmpty(partsWithSlashDelimiter[1]))
+                    {
+                        credential = new NetworkCredential(partsWithSlashDelimiter[1], credential.Password, partsWithSlashDelimiter[0]);
+                    }
                 }
-                else
+                else if (partsWithSlashDelimiter.Length == 1 && partsWithAtDelimiter.Length == 2)
                 {
-                    return new InvalidOperationException(SR.Format(SR.FoundMultipleCertsForTarget, storeName, storeLocation, findType, findValue, target));
+                    if (!string.IsNullOrEmpty(partsWithAtDelimiter[0]) && !string.IsNullOrEmpty(partsWithAtDelimiter[1]))
+                    {
+                        credential = new NetworkCredential(partsWithAtDelimiter[0], credential.Password, partsWithAtDelimiter[1]);
+                    }
                 }
             }
         }
@@ -721,7 +803,7 @@ namespace System.ServiceModel.Security
 
         public static SecurityUniqueId Create()
         {
-            return SecurityUniqueId.Create(s_commonPrefix);
+            return Create(s_commonPrefix);
         }
 
         public static SecurityUniqueId Create(string prefix)
@@ -786,7 +868,7 @@ namespace System.ServiceModel.Security
 
         public static void End(IAsyncResult result)
         {
-            AsyncResult.End<OperationWithTimeoutAsyncResult>(result);
+            End<OperationWithTimeoutAsyncResult>(result);
         }
     }
 }

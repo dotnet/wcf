@@ -304,11 +304,11 @@ namespace System.Runtime
 
     // Async methods can't take an out (or ref) argument. This wrapper allows passing in place of an out argument
     // and can be used to return a value via a method argument.
-    public class OutWrapper<T> where T : class
+    public class OutWrapper<T>
     {
         public OutWrapper()
         {
-            Value = null;
+            Value = default(T);
         }
 
         public T Value { get; set; }

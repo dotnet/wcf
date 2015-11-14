@@ -4,10 +4,13 @@
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net;
+using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel
 {
@@ -29,6 +32,27 @@ namespace System.ServiceModel
             get { return _parent; }
         }
 
+        string GetServicePrincipalName(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
+        {
+            EndpointAddress targetAddress = initiatorRequirement.TargetAddress;
+            if (targetAddress == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.TokenRequirementDoesNotSpecifyTargetAddress, initiatorRequirement));
+            }
+            IdentityVerifier identityVerifier;
+            SecurityBindingElement securityBindingElement = initiatorRequirement.SecurityBindingElement;
+            if (securityBindingElement != null)
+            {
+                identityVerifier = securityBindingElement.LocalClientSettings.IdentityVerifier;
+            }
+            else
+            {
+                identityVerifier = IdentityVerifier.CreateDefault();
+            }
+            EndpointIdentity identity;
+            identityVerifier.TryGetIdentity(targetAddress, out identity);
+            return SecurityUtils.GetSpnFromIdentity(identity, targetAddress);
+        }
 
         private bool IsDigestAuthenticationScheme(SecurityTokenRequirement requirement)
         {
@@ -48,7 +72,6 @@ namespace System.ServiceModel
                 return false;
             }
         }
-
 
         internal protected bool IsIssuedSecurityTokenRequirement(SecurityTokenRequirement requirement)
         {
@@ -108,9 +131,36 @@ namespace System.ServiceModel
                         result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate);
                     }
                 }
+                else if (tokenType == SecurityTokenTypes.Kerberos)
+                {
+                    string spn = GetServicePrincipalName(initiatorRequirement);
+                    result = new KerberosSecurityTokenProviderWrapper(
+                        new KerberosSecurityTokenProvider(spn, _parent.Windows.AllowedImpersonationLevel, SecurityUtils.GetNetworkCredentialOrDefault(_parent.Windows.ClientCredential)));
+                }
                 else if (tokenType == SecurityTokenTypes.UserName)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("CreateSecurityTokenProvider SecurityTokenTypes.Username");
+                    if (_parent.UserName.UserName == null)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.UserNamePasswordNotProvidedOnClientCredentials));
+                    }
+                    result = new UserNameSecurityTokenProvider(_parent.UserName.UserName, _parent.UserName.Password);
+                }
+                else if (tokenType == ServiceModelSecurityTokenTypes.SspiCredential)
+                {
+                    if (IsDigestAuthenticationScheme(initiatorRequirement))
+                    {
+                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.HttpDigest.ClientCredential), true, _parent.HttpDigest.AllowedImpersonationLevel);
+                    }
+                    else
+                    {
+
+#pragma warning disable 618   // to disable AllowNtlm obsolete wanring.      
+                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.Windows.ClientCredential),
+
+                            _parent.Windows.AllowNtlm,
+                            _parent.Windows.AllowedImpersonationLevel);
+#pragma warning restore 618
+                    }
                 }
             }
 
@@ -130,7 +180,6 @@ namespace System.ServiceModel
 
         private X509SecurityTokenAuthenticator CreateServerX509TokenAuthenticator()
         {
-
             return new X509SecurityTokenAuthenticator(_parent.ServiceCertificate.Authentication.GetCertificateValidator(), false);
         }
 
@@ -209,4 +258,26 @@ namespace System.ServiceModel
             return result;
         }
     }
+
+    internal class KerberosSecurityTokenProviderWrapper : CommunicationObjectSecurityTokenProvider
+    {
+        private KerberosSecurityTokenProvider innerProvider;
+
+        public KerberosSecurityTokenProviderWrapper(KerberosSecurityTokenProvider innerProvider)
+        {
+            this.innerProvider = innerProvider;
+        }
+
+        internal Task<SecurityToken> GetTokenAsync(CancellationToken cancellationToken, ChannelBinding channelbinding)
+        {
+            return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(this.innerProvider.ServicePrincipalName,
+                this.innerProvider.TokenImpersonationLevel, this.innerProvider.NetworkCredential,
+                SecurityUniqueId.Create().Value));
+        }
+        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        {
+            return GetTokenAsync(cancellationToken, null);
+        }
+    }
 }
+
