@@ -618,11 +618,13 @@ namespace System.ServiceModel.Channels
 #endif //!FEATURE_NETNATIVE
         }
 
-        protected override async Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurityWrapper)
-        {
 #if FEATURE_NETNATIVE
+        protected override Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurityWrapper)
+        {
             throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator.InInitiateUpgradeAsync");
 #else // !FEATURE_NETNATIVE
+        protected override async Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurityWrapper)
+        {
             if (TD.SslOnInitiateUpgradeIsEnabled())
             {
                 TD.SslOnInitiateUpgrade();
