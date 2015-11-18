@@ -57,12 +57,12 @@ namespace WcfService.TestResources
 
         protected override Binding GetBinding()
         {
-            int DefaultMaxReceivedMessageSize = 64 * 1024 * 1024;
-
-            NetHttpBinding binding = new NetHttpBinding();
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = NetHttpMessageEncoding.Binary;
             return binding;
@@ -82,12 +82,12 @@ namespace WcfService.TestResources
 
         protected override Binding GetBinding()
         {
-            int DefaultMaxReceivedMessageSize = 64 * 1024 * 1024;
-
-            NetHttpBinding binding = new NetHttpBinding();
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = NetHttpMessageEncoding.Binary;
             return binding;
@@ -107,14 +107,14 @@ namespace WcfService.TestResources
 
         protected override Binding GetBinding()
         {
-            int DefaultMaxReceivedMessageSize = 64 * 1024 * 1024;
-
             BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement();
+            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+                TransferMode = TransferMode.Streamed
+            };
             httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            httpsTransportBindingElement.MaxReceivedMessageSize = DefaultMaxReceivedMessageSize;
-            httpsTransportBindingElement.MaxBufferSize = DefaultMaxReceivedMessageSize;
-            httpsTransportBindingElement.TransferMode = TransferMode.Streamed;
             CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
             return binding;
         }
@@ -141,14 +141,14 @@ namespace WcfService.TestResources
 
         protected override Binding GetBinding()
         {
-            int DefaultMaxReceivedMessageSize = 64 * 1024 * 1024;
-
             TextMessageEncodingBindingElement textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement();
+            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+                TransferMode = TransferMode.Streamed
+            };
             httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            httpsTransportBindingElement.MaxReceivedMessageSize = DefaultMaxReceivedMessageSize;
-            httpsTransportBindingElement.MaxBufferSize = DefaultMaxReceivedMessageSize;
-            httpsTransportBindingElement.TransferMode = TransferMode.Streamed;
             CustomBinding binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
             return binding;
         }
@@ -175,12 +175,12 @@ namespace WcfService.TestResources
 
         protected override Binding GetBinding()
         {
-            int DefaultMaxReceivedMessageSize = 64 * 1024 * 1024;
-
-            NetHttpBinding binding = new NetHttpBinding();
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = NetHttpMessageEncoding.Text;
             return binding;
@@ -200,15 +200,243 @@ namespace WcfService.TestResources
 
         protected override Binding GetBinding()
         {
-            int DefaultMaxReceivedMessageSize = 64 * 1024 * 1024;
-
-            NetHttpBinding binding = new NetHttpBinding();
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = NetHttpMessageEncoding.Text;
             return binding;
+        }
+    }
+
+    internal class WebSocketHttpRequestReplyTextBufferedResource : EndpointResource<WSRequestReplyService, IWSRequestReplyService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Http; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpRequestReplyTextBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Text;
+            return binding;
+        }
+    }
+
+    internal class WebSocketHttpRequestReplyBinaryBufferedResource : EndpointResource<WSRequestReplyService, IWSRequestReplyService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Http; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpRequestReplyBinaryBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            return binding;
+        }
+    }
+
+    internal class WebSocketHttpDuplexTextBufferedResource : EndpointResource<WSDuplexService, IWSDuplexService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Http; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpDuplexTextBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Text;
+            return binding;
+        }
+    }
+
+    internal class WebSocketHttpDuplexBinaryBufferedResource : EndpointResource<WSDuplexService, IWSDuplexService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Http; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpDuplexBinaryBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            NetHttpBinding binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            return binding;
+        }
+    }
+
+    internal class WebSocketHttpsRequestReplyBinaryBufferedResource : EndpointResource<WSRequestReplyService, IWSRequestReplyService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Https; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeSecureWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpsRequestReplyBinaryBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
+            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
+            return binding;
+        }
+
+        protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
+        {
+            // Ensure the https certificate is installed before this endpoint resource is used
+            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration, context.BridgeConfiguration.BridgeSecureWebSocketPort);
+
+            base.ModifyHost(serviceHost, context);
+        }
+    }
+
+    internal class WebSocketHttpsRequestReplyTextBufferedResource : EndpointResource<WSRequestReplyService, IWSRequestReplyService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Https; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeSecureWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpsRequestReplyTextBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            TextMessageEncodingBindingElement textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
+            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            CustomBinding binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
+            return binding;
+        }
+
+        protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
+        {
+            // Ensure the https certificate is installed before this endpoint resource is used
+            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration, context.BridgeConfiguration.BridgeSecureWebSocketPort);
+
+            base.ModifyHost(serviceHost, context);
+        }
+    }
+
+    internal class WebSocketHttpsDuplexBinaryBufferedResource : EndpointResource<WSDuplexService, IWSDuplexService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Https; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeSecureWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpsDuplexBinaryBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
+            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
+            return binding;
+        }
+
+        protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
+        {
+            // Ensure the https certificate is installed before this endpoint resource is used
+            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration, context.BridgeConfiguration.BridgeSecureWebSocketPort);
+
+            base.ModifyHost(serviceHost, context);
+        }
+    }
+
+    internal class WebSocketHttpsDuplexTextBufferedResource : EndpointResource<WSDuplexService, IWSDuplexService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Https; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeSecureWebSocketPort;
+        }
+
+        protected override string Address { get { return "WebSocketHttpsDuplexTextBufferedResource"; } }
+
+        protected override Binding GetBinding()
+        {
+            TextMessageEncodingBindingElement textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
+            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            CustomBinding binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
+            return binding;
+        }
+
+        protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
+        {
+            // Ensure the https certificate is installed before this endpoint resource is used
+            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration, context.BridgeConfiguration.BridgeSecureWebSocketPort);
+
+            base.ModifyHost(serviceHost, context);
         }
     }
 }

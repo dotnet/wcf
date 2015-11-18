@@ -16,6 +16,7 @@ namespace WcfService.TestResources
         private const string ResourceResponseUriKeyName = "uri";
         private const string ResourceResponseFQHNKeyName = "hostname";
 
+        protected static int SixtyFourMB = 64 * 1024 * 1024;
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
         protected static string s_fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
