@@ -314,7 +314,7 @@ public static class ExpectedExceptionTests
                 if (ce.InnerException == null)
                     throw;
 
-                if (ce.InnerException.GetType() == typeof (HttpRequestException))
+                if (ce.InnerException.GetType() == typeof(HttpRequestException))
                 {
                     var httpReqExcep = ce.InnerException as HttpRequestException;
                     StringBuilder sb = new StringBuilder();
@@ -511,6 +511,46 @@ public static class ExpectedExceptionTests
             ScenarioTestHelpers.CloseCommunicationObjects(factory);
         }
     }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(533)]
+    // Verify product throws MessageSecurityException when the service cert is revoked
+    public static void TCP_ServiceCertRevoked_Throw_MessageSecurityException()
+    {
+        string testString = "Hello";
+
+        NetTcpBinding binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.Transport;
+        binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+
+        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_RevokedServerCertResource_Address), new DnsEndpointIdentity(Endpoints.Tcp_RevokedServerCertResource_HostName));
+        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        IWcfService serviceProxy = factory.CreateChannel();
+
+        //Need to wait for 2 minutes here to ensure the CRL update are in effect as the update frequency is set to 2 minutes
+        Task.Delay(TimeSpan.FromMinutes(2)).Wait();
+        try
+        {
+            var result = serviceProxy.Echo(testString);
+            Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
+        }
+        catch (CommunicationException exception)
+        {
+            string exceptionType = exception.GetType().Name;
+            if (exceptionType != "SecurityNegotiationException")
+            {
+                Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
+            }
+            string exceptionMessage = exception.Message;
+            Assert.True(exceptionMessage.Contains(Endpoints.Tcp_RevokedServerCertResource_HostName), string.Format("Expected message contains {0}, actual message: {1}", Endpoints.Tcp_RevokedServerCertResource_HostName, exception.ToString()));
+        }
+        finally
+        {
+            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+        }
+    }
+
 }
 
 public class MyCertificateValidator : X509CertificateValidator

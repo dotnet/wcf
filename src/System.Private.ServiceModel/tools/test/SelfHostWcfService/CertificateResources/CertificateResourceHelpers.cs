@@ -100,6 +100,11 @@ namespace WcfService.CertificateResources
             return cert.Thumbprint;
         }
 
+        internal static X509Certificate2 EnsureRevokedCertificateInstalled(BridgeConfiguration configuration, CertificateCreationSettings certificateCreationSettings, string resourceAddress)
+        {
+            return CertificateManager.CreateAndInstallNonDefaultMachineCertificates(GetCertificateGeneratorInstance(configuration), certificateCreationSettings, resourceAddress);
+        }
+
         private static void OnResourceFolderChanged(object sender, EventArgs args)
         {
             lock (s_certificateHelperLock)

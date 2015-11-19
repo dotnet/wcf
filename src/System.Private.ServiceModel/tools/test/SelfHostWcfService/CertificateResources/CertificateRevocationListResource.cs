@@ -29,13 +29,13 @@ namespace WcfService.CertificateResources
         {
             var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration);
 
-            string thumbprint;
+            string serialNumber;
 
             lock(s_certificateResourceLock)
             {
-                if (context.Properties.TryGetValue(revokeSerialNumberKeyName, out thumbprint) && !string.IsNullOrWhiteSpace(thumbprint))
+                if (context.Properties.TryGetValue(revokeSerialNumberKeyName, out serialNumber) && !string.IsNullOrWhiteSpace(serialNumber))
                 {
-                    certGenerator.RevokeCertificateBySerialNumber(thumbprint);
+                    certGenerator.RevokeCertificateBySerialNumber(serialNumber);
                 }
 
                 ResourceResponse response = new ResourceResponse();
