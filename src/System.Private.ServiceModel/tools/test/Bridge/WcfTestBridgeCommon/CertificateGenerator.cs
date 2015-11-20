@@ -424,8 +424,9 @@ namespace WcfTestBridgeCommon
             
             _crlGenerator.Reset();
 
-            _crlGenerator.SetThisUpdate(_initializationDateTime);
-            _crlGenerator.SetNextUpdate(DateTime.UtcNow.Add(_crlValidityPeriod));
+            DateTime now = DateTime.UtcNow;
+            _crlGenerator.SetThisUpdate(now);
+            _crlGenerator.SetNextUpdate(now.Add(_crlValidityPeriod));
             _crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
             _crlGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
@@ -494,10 +495,10 @@ namespace WcfTestBridgeCommon
         public bool RevokeCertificateBySerialNumber(string serialNum)
         {
             bool success = false;
-            BigInteger thumbprintBigInt = null;
+            BigInteger serialNumBigInt = null;
             try
             {
-                thumbprintBigInt = new BigInteger(serialNum, 16 /* radix */);
+                serialNumBigInt = new BigInteger(serialNum, 16 /* radix */);
                 success = true;
             }
             catch(FormatException)
