@@ -10,7 +10,5 @@
 
 ### 4.1.0-beta-23516
 
-* RC1 release
-
 * [Release tag](https://github.com/dotnet/wcf/tree/v1.0.0-rc1)
 * [Supported features](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v1.0.0-rc1.md)
