@@ -24,10 +24,12 @@ public static class WebSocketTests
         try
         {
             // *** SETUP *** \\
-            binding = new NetHttpBinding();
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = NetHttpMessageEncoding.Binary;
 
@@ -56,7 +58,8 @@ public static class WebSocketTests
             // *** VALIDATE *** \\
             foreach (string serverLogItem in client.GetLog())
             {
-                Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                Assert.True(!serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
@@ -85,10 +88,12 @@ public static class WebSocketTests
         try
         {
             // *** SETUP *** \\
-            binding = new NetHttpBinding();
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = NetHttpMessageEncoding.Binary;
 
@@ -123,7 +128,8 @@ public static class WebSocketTests
             // This will deadlock if the transfer mode is buffered because the callback will wait for the
             // stream, and the NCL layer will continue to buffer the stream until it reaches the end.
 
-            clientReceiver.ReceiveStreamInvoked.WaitOne();
+            Assert.True(clientReceiver.ReceiveStreamInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamInvoked.Reset();
 
             // Upload the stream while we are downloading a different stream
@@ -134,11 +140,18 @@ public static class WebSocketTests
 
             client.StopPushingStream();
             // Waiting on ReceiveStreamCompleted from the ClientReceiver.
-            clientReceiver.ReceiveStreamCompleted.WaitOne();
+            Assert.True(clientReceiver.ReceiveStreamCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamCompleted.Reset();
 
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
             // *** VALIDATE *** \\
-            // Validation is based on no exceptions being thrown.
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)client).Close();
@@ -172,8 +185,8 @@ public static class WebSocketTests
             binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
             httpsTransportBindingElement = new HttpsTransportBindingElement()
             {
-                MaxReceivedMessageSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize,
-                MaxBufferSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize,
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
                 TransferMode = TransferMode.Streamed
             };
             httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
@@ -211,7 +224,7 @@ public static class WebSocketTests
             // stream, and the NCL layer will continue to buffer the stream until it reaches the end.
 
             Assert.True(clientReceiver.ReceiveStreamInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
-                "Test case timeout was reached while waiting for the stream response from the Service.");
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamInvoked.Reset();
 
             // Upload the stream while we are downloading a different stream
@@ -223,11 +236,17 @@ public static class WebSocketTests
             client.StopPushingStream();
             // Waiting on ReceiveStreamCompleted from the ClientReceiver.
             Assert.True(clientReceiver.ReceiveStreamCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
-                "Test case timeout was reached while waiting for the stream response from the Service to be completed.");
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamCompleted.Reset();
 
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
             // *** VALIDATE *** \\
-            // Validation is based on no exceptions being thrown.
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)client).Close();
@@ -263,8 +282,8 @@ public static class WebSocketTests
             textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
             httpsTransportBindingElement = new HttpsTransportBindingElement()
             {
-                MaxReceivedMessageSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize,
-                MaxBufferSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize,
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
                 TransferMode = TransferMode.Streamed
             };
             httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
@@ -302,7 +321,7 @@ public static class WebSocketTests
             // stream, and the NCL layer will continue to buffer the stream until it reaches the end.
 
             Assert.True(clientReceiver.ReceiveStreamInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
-                "Test case timeout was reached while waiting for the stream response from the Service.");
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamInvoked.Reset();
 
             // Upload the stream while we are downloading a different stream
@@ -314,11 +333,17 @@ public static class WebSocketTests
             client.StopPushingStream();
             // Waiting on ReceiveStreamCompleted from the ClientReceiver.
             Assert.True(clientReceiver.ReceiveStreamCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
-                "Test case timeout was reached while waiting for the stream response from the Service to be completed.");
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamCompleted.Reset();
 
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
             // *** VALIDATE *** \\
-            // Validation is based on no exceptions being thrown.
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)client).Close();
@@ -347,10 +372,12 @@ public static class WebSocketTests
         try
         {
             // *** SETUP *** \\
-            binding = new NetHttpBinding();
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
             binding.MessageEncoding = NetHttpMessageEncoding.Text;
 
@@ -386,7 +413,7 @@ public static class WebSocketTests
             // stream, and the NCL layer will continue to buffer the stream until it reaches the end.
 
             Assert.True(clientReceiver.ReceiveStreamInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
-                "Test case timeout was reached while waiting for the stream response from the Service.");
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamInvoked.Reset();
 
             // Upload the stream while we are downloading a different stream
@@ -398,11 +425,17 @@ public static class WebSocketTests
             client.StopPushingStream();
             // Waiting on ReceiveStreamCompleted from the ClientReceiver.
             Assert.True(clientReceiver.ReceiveStreamCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
-                "Test case timeout was reached while waiting for the stream response from the Service to be completed.");
+                String.Format("Test case timeout was reached while waiting for the stream response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
             clientReceiver.ReceiveStreamCompleted.Reset();
 
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
             // *** VALIDATE *** \\
-            // Validation is based on no exceptions being thrown.
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)client).Close();
@@ -429,14 +462,16 @@ public static class WebSocketTests
         try
         {
             // *** SETUP *** \\
-            binding = new NetHttpBinding();
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MaxReceivedMessageSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
-            binding.MaxBufferSize = ScenarioTestHelpers.DefaultMaxReceivedMessageSize;
             binding.TransferMode = TransferMode.Streamed;
-            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            binding.MessageEncoding = NetHttpMessageEncoding.Text;
 
-            channelFactory = new ChannelFactory<IWSRequestReplyService>(binding, new EndpointAddress(Endpoints.WebSocketHttpRequestReplyBinaryStreamed_Address));
+            channelFactory = new ChannelFactory<IWSRequestReplyService>(binding, new EndpointAddress(Endpoints.WebSocketHttpRequestReplyTextStreamed_Address));
             client = channelFactory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -461,7 +496,8 @@ public static class WebSocketTests
             // *** VALIDATE *** \\
             foreach (string serverLogItem in client.GetLog())
             {
-                Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                Assert.True(!serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
@@ -596,6 +632,462 @@ public static class WebSocketTests
         {
             // *** ENSURE CLEANUP *** \\  
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)proxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Https_RequestReply_BinaryBuffered()
+    {
+        BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
+        HttpsTransportBindingElement httpsTransportBindingElement = null;
+        CustomBinding binding = null;
+        ChannelFactory<IWSRequestReplyService> channelFactory = null;
+        IWSRequestReplyService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
+            httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
+
+            channelFactory = new ChannelFactory<IWSRequestReplyService>(binding, new EndpointAddress(Endpoints.WebSocketHttpsRequestReplyBinaryBuffered_Address));
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking DownloadData
+            string result = client.DownloadData();
+
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // *** VALIDATE *** \\
+            foreach (string serverLogItem in client.GetLog())
+            {
+                //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                Assert.True(!serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+            }
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
+    {
+        TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
+        HttpsTransportBindingElement httpsTransportBindingElement = null;
+        CustomBinding binding = null;
+        ChannelFactory<IWSRequestReplyService> channelFactory = null;
+        IWSRequestReplyService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
+            httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            httpsTransportBindingElement.WebSocketSettings.KeepAliveInterval = TimeSpan.FromSeconds(2);
+            binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
+
+            channelFactory = new ChannelFactory<IWSRequestReplyService>(binding, new EndpointAddress(Endpoints.WebSocketHttpsRequestReplyTextBuffered_Address));
+
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking DownloadData
+            string result = client.DownloadData();
+
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // *** VALIDATE *** \\
+            foreach (string serverLogItem in client.GetLog())
+            {
+                //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                Assert.True(!serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+            }
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Https_Duplex_BinaryBuffered()
+    {
+        BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
+        HttpsTransportBindingElement httpsTransportBindingElement = null;
+        CustomBinding binding = null;
+        ClientReceiver clientReceiver = null;
+        InstanceContext context = null;
+        DuplexChannelFactory<IWSDuplexService> channelFactory = null;
+        IWSDuplexService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
+            httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
+
+            clientReceiver = new ClientReceiver();
+            context = new InstanceContext(clientReceiver);
+
+            channelFactory = new DuplexChannelFactory<IWSDuplexService>(context, binding, new EndpointAddress(Endpoints.WebSocketHttpsDuplexBinaryBuffered_Address));
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // Invoking StartPushingData
+            client.StartPushingData();
+            Assert.True(clientReceiver.ReceiveDataInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataInvoked.Reset();
+            // Invoking StopPushingData
+            client.StopPushingData();
+            Assert.True(clientReceiver.ReceiveDataCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataCompleted.Reset();
+
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
+            // *** VALIDATE *** \\
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
+    {
+        TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
+        HttpsTransportBindingElement httpsTransportBindingElement = null;
+        CustomBinding binding = null;
+        ClientReceiver clientReceiver = null;
+        InstanceContext context = null;
+        DuplexChannelFactory<IWSDuplexService> channelFactory = null;
+        IWSDuplexService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
+            httpsTransportBindingElement = new HttpsTransportBindingElement()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB
+            };
+            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            httpsTransportBindingElement.WebSocketSettings.KeepAliveInterval = TimeSpan.FromSeconds(2);
+            binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
+
+            clientReceiver = new ClientReceiver();
+            context = new InstanceContext(clientReceiver);
+            channelFactory = new DuplexChannelFactory<IWSDuplexService>(context, binding, new EndpointAddress(Endpoints.WebSocketHttpsDuplexTextBuffered_Address));
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // Invoking StartPushingData
+            client.StartPushingData();
+            Assert.True(clientReceiver.ReceiveDataInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataInvoked.Reset();
+            // Invoking StopPushingData
+            client.StopPushingData();
+            Assert.True(clientReceiver.ReceiveDataCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataCompleted.Reset();
+
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
+            // *** VALIDATE *** \\
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Http_RequestReply_TextBuffered()
+    {
+        NetHttpBinding binding = null;
+        ChannelFactory<IWSRequestReplyService> channelFactory = null;
+        IWSRequestReplyService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Text;
+
+            channelFactory = new ChannelFactory<IWSRequestReplyService>(binding, new EndpointAddress(Endpoints.WebSocketHttpRequestReplyTextBuffered_Address));
+
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking DownloadData
+            string result = client.DownloadData();
+
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // *** VALIDATE *** \\
+            foreach (string serverLogItem in client.GetLog())
+            {
+                //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                Assert.True(!serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+            }
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Http_RequestReply_BinaryBuffered_KeepAlive()
+    {
+        NetHttpBinding binding = null;
+        ChannelFactory<IWSRequestReplyService> channelFactory = null;
+        IWSRequestReplyService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            binding.WebSocketSettings.KeepAliveInterval = TimeSpan.FromSeconds(2);
+
+            channelFactory = new ChannelFactory<IWSRequestReplyService>(binding, new EndpointAddress(Endpoints.WebSocketHttpRequestReplyBinaryBuffered_Address));
+
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking DownloadData
+            string result = client.DownloadData();
+
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // *** VALIDATE *** \\
+            foreach (string serverLogItem in client.GetLog())
+            {
+                //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
+                Assert.True(!serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+            }
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Http_Duplex_TextBuffered_KeepAlive()
+    {
+        NetHttpBinding binding = null;
+        ClientReceiver clientReceiver = null;
+        InstanceContext context = null;
+        DuplexChannelFactory<IWSDuplexService> channelFactory = null;
+        IWSDuplexService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Text;
+            binding.WebSocketSettings.KeepAliveInterval = TimeSpan.FromSeconds(2);
+
+            clientReceiver = new ClientReceiver();
+            context = new InstanceContext(clientReceiver);
+            channelFactory = new DuplexChannelFactory<IWSDuplexService>(context, binding, new EndpointAddress(Endpoints.WebSocketHttpDuplexTextBuffered_Address));
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // Invoking StartPushingData
+            client.StartPushingData();
+            Assert.True(clientReceiver.ReceiveDataInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataInvoked.Reset();
+            // Invoking StopPushingData
+            client.StopPushingData();
+            Assert.True(clientReceiver.ReceiveDataCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataCompleted.Reset();
+
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
+            // *** VALIDATE *** \\
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void WebSocket_Http_Duplex_BinaryBuffered()
+    {
+        NetHttpBinding binding = null;
+        ClientReceiver clientReceiver = null;
+        InstanceContext context = null;
+        DuplexChannelFactory<IWSDuplexService> channelFactory = null;
+        IWSDuplexService client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+
+            clientReceiver = new ClientReceiver();
+            context = new InstanceContext(clientReceiver);
+            channelFactory = new DuplexChannelFactory<IWSDuplexService>(context, binding, new EndpointAddress(Endpoints.WebSocketHttpDuplexBinaryBuffered_Address));
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            // Invoking UploadData
+            client.UploadData(ScenarioTestHelpers.CreateInterestingString(123));
+
+            // Invoking StartPushingData
+            client.StartPushingData();
+            Assert.True(clientReceiver.ReceiveDataInvoked.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataInvoked.Reset();
+            // Invoking StopPushingData
+            client.StopPushingData();
+            Assert.True(clientReceiver.ReceiveDataCompleted.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the buffered response from the Service to be completed. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+            clientReceiver.ReceiveDataCompleted.Reset();
+
+            // Getting results from server via callback.
+            client.GetLog();
+            Assert.True(clientReceiver.LogReceived.WaitOne(ScenarioTestHelpers.TestTimeout),
+                String.Format("Test case timeout was reached while waiting for the Logging from the Service to be received. Timeout was: {0}", ScenarioTestHelpers.TestTimeout));
+
+            // *** VALIDATE *** \\
+            Assert.True(clientReceiver.ServerLog.Count > 0,
+                "The logging done by the Server was not returned via the Callback.");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\  
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
         }
     }
 }

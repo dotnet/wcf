@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
@@ -37,20 +38,29 @@ namespace WcfService
 
             // Access the RemoteEndpointMessageProperty
             RemoteEndpointMessageProperty remp = OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-            IPHostEntry hostEntry = Dns.GetHostEntry("PartialTrustEnvironment.GetMachineName()");
             bool success = false;
-            foreach (IPAddress address in hostEntry.AddressList)
+
+            // Get a collection of all IP addresses on the server.
+            // Getting the addresses from the Unicast IPAddress Information collection ensures that a match
+            // will be found regardless of whether the RemoteEndpointMessageProperty resolves to an IPv4 or an IPv6 address.
+            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (NetworkInterface adapter in nics)
             {
-                if (remp.Address == address.ToString())
+                IPInterfaceProperties properties = adapter.GetIPProperties();
+                UnicastIPAddressInformationCollection addressCollection = properties.UnicastAddresses;
+                foreach (UnicastIPAddressInformation address in addressCollection)
                 {
-                    success = true;
-                    break;
+                    if (remp.Address == address.Address.ToString())
+                    {
+                        success = true;
+                        break;
+                    }
                 }
             }
 
-            if (!success)
+                if (!success)
             {
-                log.Add(RemoteEndpointMessagePropertyFailure);
+                log.Add(String.Format(RemoteEndpointMessagePropertyFailure + " Expected to find: {0}", remp.Address));
             }
         }
 

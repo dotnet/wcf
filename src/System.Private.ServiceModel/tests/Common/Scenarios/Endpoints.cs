@@ -71,6 +71,26 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpDuplexTextStreamedResource"); }
     }
 
+    public static string WebSocketHttpRequestReplyTextBuffered_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpRequestReplyTextBufferedResource"); }
+    }
+
+    public static string WebSocketHttpRequestReplyBinaryBuffered_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpRequestReplyBinaryBufferedResource"); }
+    }
+
+    public static string WebSocketHttpDuplexTextBuffered_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpDuplexTextBufferedResource"); }
+    }
+
+    public static string WebSocketHttpDuplexBinaryBuffered_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpDuplexBinaryBufferedResource"); }
+    }
+
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
@@ -159,6 +179,42 @@ public static partial class Endpoints
         {
             BridgeClientCertificateManager.InstallRootCertificateFromBridge();
             return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsDuplexTextStreamedResource");
+        }
+    }
+
+    public static string WebSocketHttpsRequestReplyBinaryBuffered_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsRequestReplyBinaryBufferedResource");
+        }
+    }
+
+    public static string WebSocketHttpsRequestReplyTextBuffered_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsRequestReplyTextBufferedResource");
+        }
+    }
+
+    public static string WebSocketHttpsDuplexBinaryBuffered_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsDuplexBinaryBufferedResource");
+        }
+    }
+
+    public static string WebSocketHttpsDuplexTextBuffered_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsDuplexTextBufferedResource");
         }
     }
 
