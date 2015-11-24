@@ -271,12 +271,12 @@ namespace System.ServiceModel.Channels
 
         public virtual void SetKeyDerivation(bool requireDerivedKeys)
         {
-            throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement.SetKeyDerivation is not supported.");
+            EndpointSupportingTokenParameters.SetKeyDerivation(requireDerivedKeys);
         }
 
         internal virtual bool IsSetKeyDerivation(bool requireDerivedKeys)
         {
-            if (!this.EndpointSupportingTokenParameters.IsSetKeyDerivation(requireDerivedKeys))
+            if (!EndpointSupportingTokenParameters.IsSetKeyDerivation(requireDerivedKeys))
                 return false;
 
             return true;
