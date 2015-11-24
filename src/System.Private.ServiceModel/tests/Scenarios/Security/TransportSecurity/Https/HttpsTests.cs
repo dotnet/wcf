@@ -2,9 +2,15 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.IdentityModel.Selectors;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 using System.Text;
+using System.Threading;
+using Infrastructure.Common;
 using Xunit;
 
 public static class HttpsTests
@@ -152,5 +158,51 @@ public static class HttpsTests
         }
 
         Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
+    }
+
+    [Fact]
+    [ActiveIssue(544, PlatformID.AnyUnix)]
+    [OuterLoop]
+    public static void ServerCertificateValidation_EchoString()
+    {
+        string clientCertThumb = null;
+        EndpointAddress endpointAddress = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
+
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address));
+            clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+
+            MyX509CertificateValidator myX509CertificateValidator = new MyX509CertificateValidator(ScenarioTestHelpers.CertificateIssuerName);
+            factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = myX509CertificateValidator;
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = factory.Credentials.ServiceCertificate.Authentication;
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(myX509CertificateValidator.validateMethodWasCalled, "The Validate method of the X509CertificateValidator was NOT called.");
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
     }
 }

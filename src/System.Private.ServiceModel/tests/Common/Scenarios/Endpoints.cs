@@ -128,6 +128,16 @@ public static partial class Endpoints
         }
     }
 
+    public static string Https_ClientCertificateAuth_Address
+    {
+        get
+        {
+            BridgeClientCertificateManager.InstallRootCertificateFromBridge();
+            BridgeClientCertificateManager.InstallLocalCertificateFromBridge();
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpsClientCertificateResource");
+        }
+    }
+
     public static string Http_WindowsAuth_Address
     {
         get

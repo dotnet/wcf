@@ -22,6 +22,11 @@
   <PropertyGroup Condition="'$(IsNETNativeLibrary)' != 'true'">
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetsWindows)' == 'true'">
+    <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
+    <ProjectJson>$(MsBuildThisFileDirectory)windows\project.json</ProjectJson>
+    <ProjectLockJson>$(MsBuildThisFileDirectory)windows\project.lock.json</ProjectLockJson>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
@@ -30,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+    <None Include="windows\project.json" />
   </ItemGroup>
   <ItemGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />

@@ -1,19 +1,26 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.IdentityModel.Selectors;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Principal;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security;
+using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using SecurityUtils = System.ServiceModel.Security.SecurityUtils;
 
 namespace System.ServiceModel.Channels
 {
@@ -29,14 +36,18 @@ namespace System.ServiceModel.Channels
         private AuthenticationSchemes _authenticationScheme;
         private HttpCookieContainerManager _httpCookieContainerManager;
         private HttpClient _httpClient;
+        private volatile MruCache<string, string> _credentialHashCache;
+        private volatile MruCache<string, HttpClient> _httpClientCache;
         private int _maxBufferSize;
         private SecurityCredentialsManager _channelCredentials;
+        private SecurityTokenManager _securityTokenManager;
         private TransferMode _transferMode;
         private ISecurityCapabilities _securityCapabilities;
         private WebSocketTransportSettings _webSocketSettings;
         private ConnectionBufferPool _bufferPool;
         private bool _useDefaultWebProxy;
-        Lazy<string> _webSocketSoapContentType;
+        private Lazy<string> _webSocketSoapContentType;
+        private SHA512 _hashAlgorithm;
 
         internal HttpChannelFactory(HttpTransportBindingElement bindingElement, BindingContext context)
             : base(bindingElement, context, HttpTransportDefaults.GetDefaultMessageEncoderFactory())
@@ -124,6 +135,14 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        public SecurityTokenManager SecurityTokenManager
+        {
+            get
+            {
+                return _securityTokenManager;
+            }
+        }
+
         public int MaxBufferSize
         {
             get
@@ -169,6 +188,24 @@ namespace System.ServiceModel.Channels
             get { return _bufferPool; }
         }
 
+        private HashAlgorithm HashAlgorithm
+        {
+            [SecurityCritical]
+            get
+            {
+                if (_hashAlgorithm == null)
+                {
+                    _hashAlgorithm = SHA512.Create();
+                }
+                else
+                {
+                    _hashAlgorithm.Initialize();
+                }
+
+                return _hashAlgorithm;
+            }
+        }
+
         protected ClientWebSocketFactory ClientWebSocketFactory
         {
             get
@@ -196,34 +233,82 @@ namespace System.ServiceModel.Channels
             return _httpCookieContainerManager;
         }
 
-        internal HttpClient GetHttpClient()
+        internal async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, SecurityTokenProviderContainer tokenProvider,
+            SecurityTokenContainer clientCertificateToken, CancellationToken cancellationToken)
         {
-            if (_httpClient == null)
+            var impersonationLevelWrapper = new OutWrapper<TokenImpersonationLevel>();
+            var authenticationLevelWrapper = new OutWrapper<AuthenticationLevel>();
+            NetworkCredential credential = await HttpChannelUtilities.GetCredentialAsync(_authenticationScheme,
+                tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+
+            return GetHttpClient(to, credential, impersonationLevelWrapper.Value, authenticationLevelWrapper.Value,
+                        clientCertificateToken);
+        }
+
+        internal HttpClient GetHttpClient(EndpointAddress to, NetworkCredential credential,
+            TokenImpersonationLevel impersonationLevel, AuthenticationLevel authenticationLevel,
+            SecurityTokenContainer clientCertificateToken)
+        {
+            if (_httpClientCache == null)
             {
-                var clientHandler = new HttpClientHandler();
-                clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                clientHandler.UseCookies = _allowCookies;
-                clientHandler.PreAuthenticate = true;
-                if (clientHandler.SupportsProxy)
+                lock (ThisLock)
                 {
-                    clientHandler.UseProxy = _useDefaultWebProxy;
+                    if (_httpClientCache == null)
+                    {
+                        _httpClientCache = new MruCache<string, HttpClient>(10);
+                    }
                 }
-
-                clientHandler.UseDefaultCredentials = false;
-                var creds = GetCredentials();
-                if (creds == CredentialCache.DefaultCredentials)
-                {
-                    clientHandler.UseDefaultCredentials = true;
-                }
-                else
-                {
-                    clientHandler.Credentials = creds;
-                }
-
-                var client = new HttpClient(clientHandler);
-                _httpClient = client;
             }
-            return _httpClient;
+
+            HttpClient httpClient;
+
+            string connectionGroupName = GetConnectionGroupName(credential, authenticationLevel, impersonationLevel,
+                clientCertificateToken);
+
+            X509CertificateEndpointIdentity remoteCertificateIdentity = to.Identity as X509CertificateEndpointIdentity;
+            if (remoteCertificateIdentity != null)
+            {
+                connectionGroupName = string.Format(CultureInfo.InvariantCulture, "{0}[{1}]", connectionGroupName,
+                    remoteCertificateIdentity.Certificates[0].Thumbprint);
+            }
+
+            connectionGroupName = connectionGroupName == null ? string.Empty : connectionGroupName;
+
+            lock (_httpClientCache)
+            {
+                if (!_httpClientCache.TryGetValue(connectionGroupName, out httpClient))
+                {
+                    var clientHandler = GetHttpMessageHandler(to, clientCertificateToken);
+                    clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+                    clientHandler.UseCookies = _allowCookies;
+                    clientHandler.PreAuthenticate = true;
+                    if (clientHandler.SupportsProxy)
+                    {
+                        clientHandler.UseProxy = _useDefaultWebProxy;
+                    }
+
+                    clientHandler.UseDefaultCredentials = false;
+                    if (credential == CredentialCache.DefaultCredentials)
+                    {
+                        clientHandler.UseDefaultCredentials = true;
+                    }
+                    else
+                    {
+                        clientHandler.Credentials = credential;
+                    }
+
+                    httpClient = new HttpClient(clientHandler);
+                    
+                    _httpClientCache.Add(connectionGroupName, httpClient);
+                }
+            }
+
+            return httpClient;
+        }
+
+        internal virtual ServiceModelHttpMessageHandler GetHttpMessageHandler(EndpointAddress to, SecurityTokenContainer clientCertificateToken)
+        {
+            return new ServiceModelHttpMessageHandler();
         }
 
         internal ICredentials GetCredentials()
@@ -281,11 +366,46 @@ namespace System.ServiceModel.Channels
             return MaxBufferSize;
         }
 
+        private SecurityTokenProviderContainer CreateAndOpenTokenProvider(TimeSpan timeout, AuthenticationSchemes authenticationScheme,
+            EndpointAddress target, Uri via, ChannelParameterCollection channelParameters)
+        {
+            SecurityTokenProvider tokenProvider = null;
+            switch (authenticationScheme)
+            {
+                case AuthenticationSchemes.Anonymous:
+                    break;
+                case AuthenticationSchemes.Basic:
+                    tokenProvider = TransportSecurityHelpers.GetUserNameTokenProvider(SecurityTokenManager, target, via, Scheme, authenticationScheme, channelParameters);
+                    break;
+                case AuthenticationSchemes.Negotiate:
+                case AuthenticationSchemes.Ntlm:
+                    tokenProvider = TransportSecurityHelpers.GetSspiTokenProvider(SecurityTokenManager, target, via, Scheme, authenticationScheme, channelParameters);
+                    break;
+                case AuthenticationSchemes.Digest:
+                    tokenProvider = TransportSecurityHelpers.GetDigestTokenProvider(SecurityTokenManager, target, via, Scheme, authenticationScheme, channelParameters);
+                    break;
+                default:
+                    // The setter for this property should prevent this.
+                    throw Fx.AssertAndThrow("CreateAndOpenTokenProvider: Invalid authentication scheme");
+            }
+            SecurityTokenProviderContainer result;
+            if (tokenProvider != null)
+            {
+                result = new SecurityTokenProviderContainer(tokenProvider);
+                result.Open(timeout);
+            }
+            else
+            {
+                result = null;
+            }
+            return result;
+        }
+
         protected virtual void ValidateCreateChannelParameters(EndpointAddress remoteAddress, Uri via)
         {
             if (string.Compare(via.Scheme, "ws", StringComparison.OrdinalIgnoreCase) != 0)
             {
-                base.ValidateScheme(via);
+                ValidateScheme(via);
             }
 
             if (MessageVersion.Addressing == AddressingVersion.None && remoteAddress.Uri != via)
@@ -318,14 +438,14 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, remoteAddress, via, this.WebSocketBufferPool);
+                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, remoteAddress, via, WebSocketBufferPool);
             }
         }
 
         protected void ValidateWebSocketTransportUsage()
         {
             Type channelType = typeof(TChannel);
-            if (channelType == typeof(IRequestChannel) && this.WebSocketSettings.TransportUsage == WebSocketTransportUsage.Always)
+            if (channelType == typeof(IRequestChannel) && WebSocketSettings.TransportUsage == WebSocketTransportUsage.Always)
             {
                 throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(
                             SR.WebSocketCannotCreateRequestClientChannelWithCertainWebSocketTransportUsage,
@@ -357,6 +477,7 @@ namespace System.ServiceModel.Channels
             {
                 _channelCredentials = ClientCredentials.CreateDefaultCredentials();
             }
+            _securityTokenManager = _channelCredentials.CreateSecurityTokenManager();
         }
 
         protected virtual bool IsSecurityTokenManagerRequired()
@@ -411,6 +532,17 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private string AppendWindowsAuthenticationInfo(string inputString, NetworkCredential credential,
+    AuthenticationLevel authenticationLevel, TokenImpersonationLevel impersonationLevel)
+        {
+            return SecurityUtils.AppendWindowsAuthenticationInfo(inputString, credential, authenticationLevel, impersonationLevel);
+        }
+
+        protected virtual string OnGetConnectionGroupPrefix(SecurityTokenContainer clientCertificateToken)
+        {
+            return string.Empty;
+        }
+
         internal static bool IsWindowsAuth(AuthenticationSchemes authScheme)
         {
             Contract.Assert(authScheme.IsSingleton(), "authenticationScheme used in an Http(s)ChannelFactory must be a singleton value.");
@@ -419,13 +551,55 @@ namespace System.ServiceModel.Channels
                 authScheme == AuthenticationSchemes.Ntlm;
         }
 
-        internal HttpRequestMessage GetHttpRequestMessage(EndpointAddress to, Uri via)
+        private string GetConnectionGroupName(NetworkCredential credential, AuthenticationLevel authenticationLevel,
+            TokenImpersonationLevel impersonationLevel, SecurityTokenContainer clientCertificateToken)
+        {
+            if (_credentialHashCache == null)
+            {
+                lock (ThisLock)
+                {
+                    if (_credentialHashCache == null)
+                    {
+                        _credentialHashCache = new MruCache<string, string>(5);
+                    }
+                }
+            }
+
+            string inputString = TransferModeHelper.IsRequestStreamed(this.TransferMode) ? "streamed" : string.Empty;
+
+            if (IsWindowsAuth(_authenticationScheme))
+            {
+                inputString = AppendWindowsAuthenticationInfo(inputString, credential, authenticationLevel, impersonationLevel);
+            }
+
+            inputString = string.Concat(OnGetConnectionGroupPrefix(clientCertificateToken), inputString);
+
+            string credentialHash = null;
+
+            // we have to lock around each call to TryGetValue since the MruCache modifies the
+            // contents of it's mruList in a single-threaded manner underneath TryGetValue
+            if (!string.IsNullOrEmpty(inputString))
+            {
+                lock (_credentialHashCache)
+                {
+                    if (!_credentialHashCache.TryGetValue(inputString, out credentialHash))
+                    {
+                        byte[] inputBytes = new UTF8Encoding().GetBytes(inputString);
+                        byte[] digestBytes = HashAlgorithm.ComputeHash(inputBytes);
+                        credentialHash = Convert.ToBase64String(digestBytes);
+                        _credentialHashCache.Add(inputString, credentialHash);
+                    }
+                }
+            }
+
+            return credentialHash;
+        }
+
+        internal HttpRequestMessage GetHttpRequestMessage(Uri via)
         {
             Uri httpRequestUri = via;
 
-            HttpRequestMessage requestMessage = null;
-
-            requestMessage = new HttpRequestMessage(HttpMethod.Post, httpRequestUri);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, httpRequestUri);
             if (TransferModeHelper.IsRequestStreamed(TransferMode))
             {
                 requestMessage.Headers.TransferEncodingChunked = true;
@@ -475,7 +649,25 @@ namespace System.ServiceModel.Channels
                 }
             }
         }
+
         [MethodImpl(MethodImplOptions.NoInlining)]
+        private void CreateAndOpenTokenProvidersCore(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            tokenProvider = CreateAndOpenTokenProvider(timeoutHelper.RemainingTime(), AuthenticationScheme, to, via, channelParameters);
+        }
+
+        internal void CreateAndOpenTokenProviders(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider)
+        {
+            if (!IsSecurityTokenManagerRequired())
+            {
+                tokenProvider = null;
+            }
+            else
+            {
+                CreateAndOpenTokenProvidersCore(to, via, channelParameters, timeout, out tokenProvider);
+            }
+        }
 
         internal static bool MapIdentity(EndpointAddress target, AuthenticationSchemes authenticationScheme)
         {
@@ -495,7 +687,7 @@ namespace System.ServiceModel.Channels
         protected class HttpClientRequestChannel : RequestChannel
         {
             private HttpChannelFactory<IRequestChannel> _factory;
-
+            private SecurityTokenProviderContainer _tokenProvider;
             private ChannelParameterCollection _channelParameters;
 
             public HttpClientRequestChannel(HttpChannelFactory<IRequestChannel> factory, EndpointAddress to, Uri via, bool manualAddressing)
@@ -533,15 +725,39 @@ namespace System.ServiceModel.Channels
                     }
                     return (T)(object)_channelParameters;
                 }
-                else
-                {
-                    return base.GetProperty<T>();
-                }
+
+                return base.GetProperty<T>();
             }
 
             private void PrepareOpen()
             {
                 Factory.MapIdentity(RemoteAddress);
+            }
+
+            private void CreateAndOpenTokenProviders(TimeSpan timeout)
+            {
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                if (!ManualAddressing)
+                {
+                    Factory.CreateAndOpenTokenProviders(RemoteAddress, Via, _channelParameters, timeoutHelper.RemainingTime(), out _tokenProvider);
+                }
+            }
+
+            private void CloseTokenProviders(TimeSpan timeout)
+            {
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                if (_tokenProvider != null)
+                {
+                    _tokenProvider.Close(timeoutHelper.RemainingTime());
+                }
+            }
+
+            private void AbortTokenProviders()
+            {
+                if (_tokenProvider != null)
+                {
+                    _tokenProvider.Abort();
+                }
             }
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -562,6 +778,7 @@ namespace System.ServiceModel.Channels
             internal protected override Task OnOpenAsync(TimeSpan timeout)
             {
                 PrepareOpen();
+                CreateAndOpenTokenProviders(timeout);
                 return TaskHelpers.CompletedTask();
             }
 
@@ -572,6 +789,7 @@ namespace System.ServiceModel.Channels
             protected override void OnAbort()
             {
                 PrepareClose(true);
+                AbortTokenProviders();
                 base.OnAbort();
             }
 
@@ -594,7 +812,8 @@ namespace System.ServiceModel.Channels
             {
                 var timeoutHelper = new TimeoutHelper(timeout);
                 PrepareClose(false);
-                await base.WaitForPendingRequestsAsync(timeoutHelper.RemainingTime());
+                CloseTokenProviders(timeoutHelper.RemainingTime());
+                await WaitForPendingRequestsAsync(timeoutHelper.RemainingTime());
             }
 
             protected override IAsyncRequest CreateAsyncRequest(Message message)
@@ -602,12 +821,43 @@ namespace System.ServiceModel.Channels
                 return new HttpClientChannelAsyncRequest(this);
             }
 
-            internal Task<HttpRequestMessage> GetHttpRequestMessageAsync(EndpointAddress to, Uri via, TimeoutHelper timeoutHelper)
+            internal virtual Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via, TimeoutHelper timeoutHelper)
             {
-                // This method replaces the method with the following prototyp:
-                //      protected HttpWebRequest GetWebRequest(EndpointAddress to, Uri via, SecurityTokenContainer clientCertificateToken, ref TimeoutHelper timeoutHelper)
-                // SecurityTokenContainer doesn't exist so was excluded from method signature
-                return Task.FromResult(Factory.GetHttpRequestMessage(to, via));
+                return GetHttpClientAsync(to, via, null, timeoutHelper);
+            }
+
+            protected async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via, SecurityTokenContainer clientCertificateToken, TimeoutHelper timeoutHelper)
+            {
+                SecurityTokenProviderContainer requestTokenProvider;
+                if (ManualAddressing)
+                {
+                    Factory.CreateAndOpenTokenProviders(to, via, _channelParameters, timeoutHelper.RemainingTime(),
+                        out requestTokenProvider);
+                }
+                else
+                {
+                    requestTokenProvider = _tokenProvider;
+                }
+
+                try
+                {
+                    return await Factory.GetHttpClientAsync(to, requestTokenProvider, clientCertificateToken, await timeoutHelper.GetCancellationTokenAsync());
+                }
+                finally
+                {
+                    if (ManualAddressing)
+                    {
+                        if (requestTokenProvider != null)
+                        {
+                            requestTokenProvider.Abort();
+                        }
+                    }
+                }
+            }
+
+            internal HttpRequestMessage GetHttpRequestMessage(Uri via)
+            {
+                return Factory.GetHttpRequestMessage(via);
             }
 
             internal virtual void OnHttpRequestCompleted(HttpRequestMessage request)
@@ -647,7 +897,6 @@ namespace System.ServiceModel.Channels
                     _to = channel.RemoteAddress;
                     _via = channel.Via;
                     _factory = channel.Factory;
-                    _httpClient = _factory.GetHttpClient();
                     _httpSendCts = new CancellationTokenSource();
                 }
 
@@ -655,7 +904,8 @@ namespace System.ServiceModel.Channels
                 {
                     _timeoutHelper = timeoutHelper;
                     _factory.ApplyManualAddressing(ref _to, ref _via, message);
-                    _httpRequestMessage = await _channel.GetHttpRequestMessageAsync(_to, _via, _timeoutHelper);
+                    _httpClient = await _channel.GetHttpClientAsync(_to, _via, _timeoutHelper);
+                    _httpRequestMessage = _channel.GetHttpRequestMessage(_via);
 
                     Message request = message;
 

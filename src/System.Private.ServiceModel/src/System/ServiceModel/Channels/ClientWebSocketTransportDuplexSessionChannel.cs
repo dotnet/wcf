@@ -4,10 +4,12 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Net;
 using System.Net.WebSockets;
 using System.Runtime;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
@@ -21,8 +23,8 @@ namespace System.ServiceModel.Channels
         HttpChannelFactory<IDuplexSessionChannel> _channelFactory;
         SecurityTokenProviderContainer _webRequestTokenProvider;
         SecurityTokenProviderContainer _webRequestProxyTokenProvider;
-        //HttpWebRequest httpWebRequest;
         volatile bool _cleanupStarted;
+        volatile bool _cleanupIdentity;
 
         public ClientWebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, ClientWebSocketFactory connectionFactory, EndpointAddress remoteAddresss, Uri via, ConnectionBufferPool bufferPool)
             : base(channelFactory, remoteAddresss, via, bufferPool)
@@ -68,15 +70,27 @@ namespace System.ServiceModel.Channels
 
                 ChannelParameterCollection channelParameterCollection = new ChannelParameterCollection();
 
+                if (HttpChannelFactory<IDuplexSessionChannel>.MapIdentity(this.RemoteAddress, _channelFactory.AuthenticationScheme))
+                {
+                    lock (ThisLock)
+                    {
+                        _cleanupIdentity = HttpTransportSecurityHelpers.AddIdentityMapping(Via, RemoteAddress);
+                    }
+                }
+
+                X509Certificate2 clientCertificate = null;
                 HttpsChannelFactory<IDuplexSessionChannel> httpsChannelFactory = _channelFactory as HttpsChannelFactory<IDuplexSessionChannel>;
                 if (httpsChannelFactory != null && httpsChannelFactory.RequireClientCertificate)
                 {
-                    SecurityTokenProvider certificateProvider = httpsChannelFactory.CreateAndOpenCertificateTokenProvider(RemoteAddress, Via, channelParameterCollection, helper.RemainingTime());
+                    var certificateProvider = httpsChannelFactory.CreateAndOpenCertificateTokenProvider(RemoteAddress, Via, channelParameterCollection, helper.RemainingTime());
+                    var clientCertificateToken = httpsChannelFactory.GetCertificateSecurityToken(certificateProvider, RemoteAddress, Via, channelParameterCollection, ref helper);
+                    var x509Token = (X509SecurityToken)clientCertificateToken.Token;
+                    clientCertificate = x509Token.Certificate;
                 }
 
                 try
                 {
-                    WebSocket = await CreateWebSocketWithFactoryAsync(helper);
+                    WebSocket = await CreateWebSocketWithFactoryAsync(clientCertificate, helper);
                 }
                 finally
                 {
@@ -173,7 +187,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async Task<WebSocket> CreateWebSocketWithFactoryAsync(TimeoutHelper timeoutHelper)
+        private async Task<WebSocket> CreateWebSocketWithFactoryAsync(X509Certificate2 certificate, TimeoutHelper timeoutHelper)
         {
             Contract.Assert(_connectionFactory != null, "Invalid call: CreateWebSocketWithFactory.");
 
@@ -186,7 +200,10 @@ namespace System.ServiceModel.Channels
             WebSocket ws;
             try
             {
-                //(Uri address, WebHeaderCollection headers, ICredentials credentials, WebSocketTransportSettings settings, TimeoutHelper timeoutHelper);
+                if (certificate != null)
+                {
+                    throw ExceptionHelper.PlatformNotSupported("client certificates not supported yet");
+                }
                 var headers = new WebHeaderCollection();
                 headers[WebSocketTransportSettings.SoapContentTypeHeader] = _channelFactory.WebSocketSoapContentType;
                 if (_channelFactory.MessageEncoderFactory is BinaryMessageEncoderFactory)

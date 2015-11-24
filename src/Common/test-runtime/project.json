@@ -61,7 +61,11 @@
       "xunit.runner.utility": "2.1.0"
     },
     "frameworks": {
-       "dnxcore50": { }
+       "dnxcore50": { 
+         "dependencies": {
+           "System.Net.Http.WinHttpHandler": "4.0.0-beta-*"
+		 }
+	   }
     },
     "runtimes": {
        "win7-x64": { },
