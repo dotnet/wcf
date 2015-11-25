@@ -21,14 +21,12 @@ namespace System.ServiceModel.Channels
         private WebSocketTransportUsage _transportUsage;
         private TimeSpan _keepAliveInterval;
         private string _subProtocol;
-        private bool _disablePayloadMasking;
 
         public WebSocketTransportSettings()
         {
             _transportUsage = WebSocketDefaults.TransportUsage;
             _keepAliveInterval = WebSocketDefaults.DefaultKeepAliveInterval;
             _subProtocol = WebSocketDefaults.SubProtocol;
-            _disablePayloadMasking = WebSocketDefaults.DisablePayloadMasking;
         }
 
         private WebSocketTransportSettings(WebSocketTransportSettings settings)
@@ -37,7 +35,6 @@ namespace System.ServiceModel.Channels
             this.TransportUsage = settings.TransportUsage;
             this.SubProtocol = settings.SubProtocol;
             this.KeepAliveInterval = settings.KeepAliveInterval;
-            this.DisablePayloadMasking = settings.DisablePayloadMasking;
         }
 
         [DefaultValue(WebSocketDefaults.TransportUsage)]
@@ -123,12 +120,12 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return _disablePayloadMasking;
+                throw ExceptionHelper.PlatformNotSupported();
             }
 
             set
             {
-                _disablePayloadMasking = value;
+                throw ExceptionHelper.PlatformNotSupported();
             }
         }
 
@@ -141,7 +138,6 @@ namespace System.ServiceModel.Channels
 
             return this.TransportUsage == other.TransportUsage
                    && this.KeepAliveInterval == other.KeepAliveInterval
-                   && this.DisablePayloadMasking == other.DisablePayloadMasking
                    && StringComparer.OrdinalIgnoreCase.Compare(this.SubProtocol, other.SubProtocol) == 0;
         }
 
@@ -159,8 +155,7 @@ namespace System.ServiceModel.Channels
         public override int GetHashCode()
         {
             int hashcode = this.TransportUsage.GetHashCode()
-                           ^ this.KeepAliveInterval.GetHashCode()
-                           ^ this.DisablePayloadMasking.GetHashCode();
+                           ^ this.KeepAliveInterval.GetHashCode();
             if (this.SubProtocol != null)
             {
                 hashcode ^= this.SubProtocol.ToLowerInvariant().GetHashCode();
