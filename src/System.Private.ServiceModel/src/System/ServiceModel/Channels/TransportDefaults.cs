@@ -321,7 +321,6 @@ namespace System.ServiceModel.Channels
         public const int BufferSize = 16 * 1024;
         public const int MinReceiveBufferSize = 256;
         public const int MinSendBufferSize = 16;
-        public const bool DisablePayloadMasking = false;
         internal const WebSocketMessageType DefaultWebSocketMessageType = WebSocketMessageType.Binary;
 
         public const string SubProtocol = null;

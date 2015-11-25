@@ -115,7 +115,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        [DefaultValue(WebSocketDefaults.DisablePayloadMasking)]
         public bool DisablePayloadMasking
         {
             get
