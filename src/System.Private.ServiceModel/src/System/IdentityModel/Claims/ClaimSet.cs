@@ -14,6 +14,7 @@ namespace System.IdentityModel.Claims
     public abstract class ClaimSet : IEnumerable<Claim>
     {
         private static ClaimSet s_system;
+        private static ClaimSet s_windows;
         private static ClaimSet s_anonymous;
 
         public static ClaimSet System
@@ -30,7 +31,21 @@ namespace System.IdentityModel.Claims
                 return s_system;
             }
         }
-
+        public static ClaimSet Windows
+        {
+            get
+            {
+                if (s_windows == null)
+                {
+                    List<Claim> claims = new List<Claim>(2);
+                    SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.NTAuthoritySid, null);
+                    claims.Add(new Claim(ClaimTypes.Sid, sid, Rights.Identity));
+                    claims.Add(Claim.CreateWindowsSidClaim(sid));
+                    s_windows = new DefaultClaimSet(claims);
+                }
+                return s_windows;
+            }
+        }
 
         internal static ClaimSet Anonymous
         {

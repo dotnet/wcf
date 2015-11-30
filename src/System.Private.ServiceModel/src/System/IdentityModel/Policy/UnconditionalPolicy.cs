@@ -87,22 +87,21 @@ namespace System.IdentityModel.Policy
             _issuances = issuances;
             _expirationTime = expirationTime;
 
-            // We don't yet support WindowsClaimSet
-            //if (issuance != null)
-            //{
-            //    _disposable = issuance is WindowsClaimSet;
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < issuances.Count; ++i)
-            //    {
-            //        if (issuances[i] is WindowsClaimSet)
-            //        {
-            //            this.disposable = true;
-            //            break;
-            //        }
-            //    }
-            //}
+            if (issuance != null)
+            {
+                _disposable = issuance is WindowsClaimSet;
+            }
+            else
+            {
+                for (int i = 0; i < issuances.Count; ++i)
+                {
+                    if (issuances[i] is WindowsClaimSet)
+                    {
+                        _disposable = true;
+                        break;
+                    }
+                }
+            }
 
             _disposable = false;
         }

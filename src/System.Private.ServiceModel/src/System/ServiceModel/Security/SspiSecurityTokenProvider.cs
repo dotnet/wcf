@@ -16,7 +16,7 @@ namespace System.ServiceModel.Security
         internal const bool DefaultAllowNtlm = true;
         internal const bool DefaultExtractWindowsGroupClaims = true;
         internal const bool DefaultAllowUnauthenticatedCallers = false;
-        readonly SspiSecurityToken _token;
+        private readonly SspiSecurityToken _token;
 
         // client side ctor
         public SspiSecurityTokenProvider(NetworkCredential credential, bool allowNtlm, TokenImpersonationLevel impersonationLevel)

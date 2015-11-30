@@ -566,56 +566,11 @@ namespace System.ServiceModel.Channels
 
         protected override Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
         {
-#if FEATURE_NETNATIVE
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeInitiator.InInitiateUpgrade");
-#else // !FEATURE_NETNATIVE
+            OutWrapper<SecurityMessageProperty> remoteSecurityWrapper = new OutWrapper<SecurityMessageProperty>(); 
+            Stream retVal = this.OnInitiateUpgradeAsync(stream, remoteSecurityWrapper).GetAwaiter().GetResult();
+            remoteSecurity = remoteSecurityWrapper.Value; 
 
-            if (TD.SslOnInitiateUpgradeIsEnabled())
-            {
-                TD.SslOnInitiateUpgrade();
-            }
-
-            X509CertificateCollection clientCertificates = null;
-            LocalCertificateSelectionCallback selectionCallback = null;
-
-            if (_clientToken != null)
-            {
-                clientCertificates = new X509CertificateCollection();
-                clientCertificates.Add(_clientToken.Certificate);
-                selectionCallback = ClientCertificateSelectionCallback;
-            }
-
-            SslStream sslStream = new SslStream(stream, false, this.ValidateRemoteCertificate, selectionCallback);
-
-            try
-            {
-                sslStream.AuthenticateAsClient(string.Empty, clientCertificates, _parent.SslProtocols, false);
-            }
-            catch (SecurityTokenValidationException tokenValidationException)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(tokenValidationException.Message,
-                    tokenValidationException));
-            }
-            catch (AuthenticationException exception)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(exception.Message,
-                    exception));
-            }
-            catch (IOException ioException)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(
-                    SR.Format(SR.NegotiationFailedIO, ioException.Message), ioException));
-            }
-
-            remoteSecurity = _serverSecurity;
-
-            if (this.IsChannelBindingSupportEnabled)
-            {
-                _channelBindingToken = ChannelBindingUtility.GetToken(sslStream);
-            }
-
-            return sslStream;
-#endif //!FEATURE_NETNATIVE
+            return retVal; 
         }
 
 #if FEATURE_NETNATIVE

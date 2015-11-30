@@ -140,8 +140,8 @@ namespace System.ServiceModel.Channels
 
     public static class TransportDefaults
     {
-        public const bool ExtractGroupsForWindowsAccounts = true;
         //public const bool ExtractGroupsForWindowsAccounts = SspiSecurityTokenProvider.DefaultExtractWindowsGroupClaims;
+        public const bool ExtractGroupsForWindowsAccounts = true;
         public const HostNameComparisonMode HostNameComparisonMode = System.ServiceModel.HostNameComparisonMode.Exact;
         public const TokenImpersonationLevel ImpersonationLevel = TokenImpersonationLevel.Identification;
         public const bool ManualAddressing = false;

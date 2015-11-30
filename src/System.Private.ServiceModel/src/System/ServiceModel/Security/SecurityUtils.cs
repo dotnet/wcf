@@ -18,6 +18,7 @@ using System.Security.Principal;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Threading;
 
 namespace System.ServiceModel.Security
@@ -455,6 +456,157 @@ namespace System.ServiceModel.Security
             return SecurityUniqueId.Create().Value;
         }
 
+        internal static ReadOnlyCollection<IAuthorizationPolicy> CreatePrincipalNameAuthorizationPolicies(string principalName)
+        {
+            if (principalName == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("principalName");
+
+            Claim identityClaim;
+            Claim primaryPrincipal;
+            if (principalName.Contains("@") || principalName.Contains(@"\"))
+            {
+                identityClaim = new Claim(ClaimTypes.Upn, principalName, Rights.Identity);
+                primaryPrincipal = Claim.CreateUpnClaim(principalName);
+            }
+            else
+            {
+                identityClaim = new Claim(ClaimTypes.Spn, principalName, Rights.Identity);
+                primaryPrincipal = Claim.CreateSpnClaim(principalName);
+            }
+
+            List<Claim> claims = new List<Claim>(2);
+            claims.Add(identityClaim);
+            claims.Add(primaryPrincipal);
+
+            List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>(1);
+            policies.Add(new UnconditionalPolicy(SecurityUtils.CreateIdentity(principalName), new DefaultClaimSet(ClaimSet.Anonymous, claims)));
+            return policies.AsReadOnly();
+        }
+
+        internal static string GetIdentityNamesFromContext(AuthorizationContext authContext)
+        {
+            if (authContext == null)
+                return String.Empty;
+
+            StringBuilder str = new StringBuilder(256);
+            for (int i = 0; i < authContext.ClaimSets.Count; ++i)
+            {
+                ClaimSet claimSet = authContext.ClaimSets[i];
+
+                // Windows
+                WindowsClaimSet windows = claimSet as WindowsClaimSet;
+                if (windows != null)
+                {
+                    if (str.Length > 0)
+                        str.Append(", ");
+
+                    AppendIdentityName(str, windows.WindowsIdentity);
+                }
+                else
+                {
+                    // X509
+                    X509CertificateClaimSet x509 = claimSet as X509CertificateClaimSet;
+                    if (x509 != null)
+                    {
+                        if (str.Length > 0)
+                            str.Append(", ");
+
+                        AppendCertificateIdentityName(str, x509.X509Certificate);
+                    }
+                }
+            }
+
+            if (str.Length <= 0)
+            {
+                List<IIdentity> identities = null;
+                object obj;
+                if (authContext.Properties.TryGetValue(SecurityUtils.Identities, out obj))
+                {
+                    identities = obj as List<IIdentity>;
+                }
+                if (identities != null)
+                {
+                    for (int i = 0; i < identities.Count; ++i)
+                    {
+                        IIdentity identity = identities[i];
+                        if (identity != null)
+                        {
+                            if (str.Length > 0)
+                                str.Append(", ");
+
+                            AppendIdentityName(str, identity);
+                        }
+                    }
+                }
+            }
+            return str.Length <= 0 ? String.Empty : str.ToString();
+        }
+
+        internal static void AppendCertificateIdentityName(StringBuilder str, X509Certificate2 certificate)
+        {
+            string value = certificate.SubjectName.Name;
+            if (String.IsNullOrEmpty(value))
+            {
+                value = certificate.GetNameInfo(X509NameType.DnsName, false);
+                if (String.IsNullOrEmpty(value))
+                {
+                    value = certificate.GetNameInfo(X509NameType.SimpleName, false);
+                    if (String.IsNullOrEmpty(value))
+                    {
+                        value = certificate.GetNameInfo(X509NameType.EmailName, false);
+                        if (String.IsNullOrEmpty(value))
+                        {
+                            value = certificate.GetNameInfo(X509NameType.UpnName, false);
+                        }
+                    }
+                }
+            }
+            // Same format as X509Identity
+            str.Append(String.IsNullOrEmpty(value) ? "<x509>" : value);
+            str.Append("; ");
+            str.Append(certificate.Thumbprint);
+        }
+
+        internal static void AppendIdentityName(StringBuilder str, IIdentity identity)
+        {
+            string name = null;
+            try
+            {
+                name = identity.Name;
+            }
+#pragma warning suppress 56500
+            catch (Exception e)
+            {
+                if (Fx.IsFatal(e))
+                {
+                    throw;
+                }
+                // suppress exception, this is just info.
+            }
+
+            str.Append(String.IsNullOrEmpty(name) ? "<null>" : name);
+
+            WindowsIdentity windows = identity as WindowsIdentity;
+            if (windows != null)
+            {
+                if (windows.User != null)
+                {
+                    str.Append("; ");
+                    str.Append(windows.User.ToString());
+                }
+            }
+            else
+            {
+                WindowsSidIdentity sid = identity as WindowsSidIdentity;
+                if (sid != null)
+                {
+                    str.Append("; ");
+                    str.Append(sid.SecurityIdentifier.ToString());
+                }
+            }
+        }
+
+
         internal static void OpenTokenProviderIfRequired(SecurityTokenProvider tokenProvider, TimeSpan timeout)
         {
             OpenCommunicationObject(tokenProvider as ICommunicationObject, timeout);
@@ -762,6 +914,15 @@ namespace System.ServiceModel.Security
                         credential = new NetworkCredential(partsWithAtDelimiter[0], credential.Password, partsWithAtDelimiter[1]);
                     }
                 }
+            }
+        }
+
+        public static void ValidateAnonymityConstraint(WindowsIdentity identity, bool allowUnauthenticatedCallers)
+        {
+            if (!allowUnauthenticatedCallers && identity.User.IsWellKnown(WellKnownSidType.AnonymousSid))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(
+                    new SecurityTokenValidationException(SR.Format(SR.AnonymousLogonsAreNotAllowed)));
             }
         }
 

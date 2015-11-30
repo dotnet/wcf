@@ -37,7 +37,13 @@ namespace System.ServiceModel.Security
                 reference = new EndpointAddress(via);
             }
         }
- 
+
+        internal bool TryGetIdentity(EndpointAddress reference, Uri via, out EndpointIdentity identity)
+        {
+            AdjustAddress(ref reference, via);
+            return this.TryGetIdentity(reference, out identity);
+        }
+
         internal void EnsureOutgoingIdentity(EndpointAddress serviceReference, Uri via, AuthorizationContext authorizationContext)
         {
             AdjustAddress(ref serviceReference, via);

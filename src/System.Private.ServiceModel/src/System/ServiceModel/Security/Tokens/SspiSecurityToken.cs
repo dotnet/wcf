@@ -10,14 +10,14 @@ namespace System.ServiceModel.Security.Tokens
 {
     public class SspiSecurityToken : SecurityToken
     {
-        string _id;
-        readonly TokenImpersonationLevel _impersonationLevel;
-        readonly bool _allowNtlm;
-        readonly NetworkCredential _networkCredential;
-        readonly bool _extractGroupsForWindowsAccounts;
-        readonly bool _allowUnauthenticatedCallers = SspiSecurityTokenProvider.DefaultAllowUnauthenticatedCallers;
-        readonly DateTime _effectiveTime;
-        readonly DateTime _expirationTime;
+        private string _id;
+        private readonly TokenImpersonationLevel _impersonationLevel;
+        private readonly bool _allowNtlm;
+        private readonly NetworkCredential _networkCredential;
+        private readonly bool _extractGroupsForWindowsAccounts;
+        private readonly bool _allowUnauthenticatedCallers = SspiSecurityTokenProvider.DefaultAllowUnauthenticatedCallers;
+        private readonly DateTime _effectiveTime;
+        private readonly DateTime _expirationTime;
 
         public SspiSecurityToken(TokenImpersonationLevel impersonationLevel, bool allowNtlm, NetworkCredential networkCredential)
         {
@@ -105,5 +105,4 @@ namespace System.ServiceModel.Security.Tokens
             }
         }
     }
-
 }

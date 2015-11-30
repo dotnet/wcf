@@ -163,6 +163,14 @@ namespace System.IdentityModel.Claims
             return new Claim(ClaimTypes.Uri, uri, Rights.PossessProperty);
         }
 
+        public static Claim CreateWindowsSidClaim(SecurityIdentifier sid)
+        {
+            if (sid == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("sid");
+
+            return new Claim(ClaimTypes.Sid, sid, Rights.PossessProperty);
+        }
+
         public static Claim CreateX500DistinguishedNameClaim(X500DistinguishedName x500DistinguishedName)
         {
             if (x500DistinguishedName == null)

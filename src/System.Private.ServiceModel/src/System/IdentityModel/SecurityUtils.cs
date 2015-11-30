@@ -6,11 +6,13 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.Runtime;
+using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
 using System.Text;
+using Microsoft.Win32.SafeHandles;
 
 namespace System.IdentityModel
 {
@@ -207,6 +209,61 @@ namespace System.IdentityModel
                 throw ExceptionHelper.PlatformNotSupported();
             }
             return identity;
+        }
+
+        /// <SecurityNote>
+        /// Critical - calls two critical methods: UnsafeGetWindowsIdentityToken and UnsafeCreateWindowsIdentityFromToken
+        /// Safe - "clone" operation is considered safe despite using WindowsIdentity IntPtr token
+        ///        must not let IntPtr token leak in or out
+        /// </SecurityNote>
+        [SecuritySafeCritical]
+        internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid)
+        {
+            return CloneWindowsIdentityIfNecessary(wid, wid.AuthenticationType);
+        }
+
+        [SecuritySafeCritical]
+        internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid, string authenticationType)
+        {
+
+            if (wid != null)
+            {
+                IntPtr token = wid.AccessToken.DangerousGetHandle();
+                if (token != null)
+                {
+                    return UnsafeCreateWindowsIdentityFromToken(token, authenticationType);
+                }
+            }
+            return wid;
+        }
+
+        /// <SecurityNote>
+        /// Critical - elevates in order to return the WindowsIdentity.Token property
+        ///            caller must protect return value
+        /// </SecurityNote>
+        [SecurityCritical]
+        static IntPtr UnsafeGetWindowsIdentityToken(WindowsIdentity wid)
+        {
+            return wid.AccessToken.DangerousGetHandle();
+        }
+
+        /// <SecurityNote>
+        /// Critical - elevates in order to construct a WindowsIdentity instance from an IntPtr
+        ///            caller must protect parameter return value
+        /// </SecurityNote>
+        // We pass the authenticationType in as WindowsIdentity will all into a priviledged call in LSA which could fail
+        // resulting in a null authenticationType.
+        [SecurityCritical]
+        static WindowsIdentity UnsafeCreateWindowsIdentityFromToken(IntPtr token, string authenticationType)
+        {
+            if (authenticationType != null)
+            {
+                return new WindowsIdentity(token, authenticationType);
+            }
+            else
+            {
+                return new WindowsIdentity(token);
+            }
         }
 
         internal static ClaimSet CloneClaimSetIfNecessary(ClaimSet claimSet)
