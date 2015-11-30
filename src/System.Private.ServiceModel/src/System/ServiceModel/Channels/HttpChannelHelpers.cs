@@ -71,7 +71,7 @@ namespace System.ServiceModel.Channels
             impersonationLevelWrapper.Value = TokenImpersonationLevel.None;
             authenticationLevelWrapper.Value = AuthenticationLevel.None;
 
-            NetworkCredential result = null;
+            NetworkCredential result;
 
             switch (authenticationScheme)
             {
@@ -83,7 +83,6 @@ namespace System.ServiceModel.Channels
                 case AuthenticationSchemes.Digest:
                     result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
                         impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
-                    ValidateDigestCredential(result, impersonationLevelWrapper.Value);
                     break;
 
                 case AuthenticationSchemes.Negotiate:
@@ -107,21 +106,6 @@ namespace System.ServiceModel.Channels
             }
 
             return result;
-        }
-
-        public static void ValidateDigestCredential(NetworkCredential credential, TokenImpersonationLevel impersonationLevel)
-        {
-            if (!SecurityUtils.NetworkCredentialHelper.IsDefault(credential))
-            {
-                // With a non-default credential, Digest will not honor a client impersonation constraint of 
-                // TokenImpersonationLevel.Identification.
-                if (!TokenImpersonationLevelHelper.IsGreaterOrEqual(impersonationLevel,
-                    TokenImpersonationLevel.Impersonation))
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
-                        SR.DigestExplicitCredsImpersonationLevel, impersonationLevel)));
-                }
-            }
         }
 
         public static HttpResponseMessage ProcessGetResponseWebException(HttpRequestException requestException, HttpRequestMessage request, HttpAbortReason abortReason)

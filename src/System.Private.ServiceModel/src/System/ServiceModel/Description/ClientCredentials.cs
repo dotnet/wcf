@@ -114,7 +114,7 @@ namespace System.ServiceModel.Description
 
         public override SecurityTokenManager CreateSecurityTokenManager()
         {
-            return new ClientCredentialsSecurityTokenManager(this.Clone());
+            return new ClientCredentialsSecurityTokenManager(Clone());
         }
 
         protected virtual ClientCredentials CloneCore()
@@ -125,9 +125,9 @@ namespace System.ServiceModel.Description
         public ClientCredentials Clone()
         {
             ClientCredentials result = CloneCore();
-            if (result == null || result.GetType() != this.GetType())
+            if (result == null || result.GetType() != GetType())
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(NotImplemented.ByDesignWithMessage(SR.Format(SR.CloneNotImplementedCorrectly, this.GetType(), (result != null) ? result.ToString() : "null")));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(NotImplemented.ByDesignWithMessage(SR.Format(SR.CloneNotImplementedCorrectly, GetType(), (result != null) ? result.ToString() : "null")));
             }
             return result;
         }

@@ -110,6 +110,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string Http_DigestAuth_NoDomain_Address
+    {
+        get
+        {
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpDigestNoDomainResource");
+        }
+    }
+
     public static string Https_NtlmAuth_Address
     {
         get

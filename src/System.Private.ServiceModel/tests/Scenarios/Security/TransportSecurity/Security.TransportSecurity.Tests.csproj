@@ -19,6 +19,7 @@
   <ItemGroup>
     <Compile Include="Https\ClientCredentialTypeTests.cs" />
     <Compile Include="Https\HttpsTests.cs" />
+    <Compile Include="Http\ClientCredentialTypeTests.cs" />
     <Compile Include="Tcp\ClientCredentialTypeTests.cs" />
     <Compile Include="Tcp\IdentityTests.cs" />
   </ItemGroup>

@@ -73,11 +73,15 @@
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
+    <Compile Include="TestResources\AuthenticationResource.cs" />
+    <Compile Include="TestResources\AuthenticationResourceHelper.cs" />
     <Compile Include="TestResources\BaseAddressResource.cs" />
     <Compile Include="TestResources\BasicAuthResource.cs" />
     <Compile Include="TestResources\BasicHttpsResource.cs" />
     <Compile Include="TestResources\DefaultCustomHttpResource.cs" />
+    <Compile Include="TestResources\DigestServiceAuthorizationManager.cs" />
     <Compile Include="TestResources\DuplexResources.cs" />
+    <Compile Include="TestResources\HttpDigestResource.cs" />
     <Compile Include="TestResources\HttpResource.cs" />
     <Compile Include="TestResources\HttpsClientCertificateResource.cs" />
     <Compile Include="TestResources\HttpsResource.cs" />

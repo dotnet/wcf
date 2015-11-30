@@ -80,33 +80,19 @@ namespace Infrastructure.Common
 
         public static string GetResourceAddress(string resourceName)
         {
-            EnsureBridgeIsRunning();
-
-            string resourceAddress = null;
-            lock (s_thisLock)
-            {
-                Dictionary<string, string> resources = null;
-                if (s_BridgeStatus == BridgeState.Started)
-                {
-                    if (!_Resources.TryGetValue(resourceName, out resources))
-                    {
-                        resources = MakeEndpointResourcePutRequest(resourceName);
-                      
-                        _Resources.Add(resourceName, resources);
-                    }
-                  
-                    resources.TryGetValue(EndpointResourceResponseUriKeyName, out resourceAddress);
-                }
-            }
-
-            return resourceAddress;
+            return GetResourceProperty(resourceName, EndpointResourceResponseUriKeyName);
         }
 
         public static string GetResourceHostName(string resourceName)
         {
+            return GetResourceProperty(resourceName, EndpointResourceResponseFQHNKeyName);
+        }
+
+        public static string GetResourceProperty(string resourceName, string propertyName)
+        {
             EnsureBridgeIsRunning();
 
-            string hostName = null;
+            string property = null;
             lock (s_thisLock)
             {
                 Dictionary<string, string> resources = null;
@@ -118,12 +104,12 @@ namespace Infrastructure.Common
                         _Resources.Add(resourceName, resources);
                     }
 
-                    resources.TryGetValue(EndpointResourceResponseFQHNKeyName, out hostName);
-                    
+                    resources.TryGetValue(propertyName, out property);
+
                 }
             }
 
-            return hostName;
+            return property;
         }
 
         // Ensure the given response was successful. If it was not, generate
