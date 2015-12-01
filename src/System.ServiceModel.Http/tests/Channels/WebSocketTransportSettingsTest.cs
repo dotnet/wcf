@@ -18,6 +18,8 @@ public static class WebSocketTransportSettingsTest
     public static void DisablePayloadMasking_Property_Get_PNSE_Throws()
     {
         var setting = new WebSocketTransportSettings();
-        Assert.Throws<PlatformNotSupportedException>(() => setting.DisablePayloadMasking);
+        bool disablePayloadMasking = false;
+        Assert.Throws<PlatformNotSupportedException>(() => disablePayloadMasking = setting.DisablePayloadMasking);
+        Assert.False(disablePayloadMasking);
     }
 }
