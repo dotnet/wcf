@@ -466,7 +466,11 @@ namespace System.ServiceModel.Security
             if (principalName.Contains("@") || principalName.Contains(@"\"))
             {
                 identityClaim = new Claim(ClaimTypes.Upn, principalName, Rights.Identity);
+#if FEATURE_CORECLR
                 primaryPrincipal = Claim.CreateUpnClaim(principalName);
+#else 
+                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported on CoreCLR"); 
+#endif // FEATURE_CORECLR
             }
             else
             {
@@ -497,10 +501,14 @@ namespace System.ServiceModel.Security
                 WindowsClaimSet windows = claimSet as WindowsClaimSet;
                 if (windows != null)
                 {
+#if FEATURE_NETNATIVE
+                    throw ExceptionHelper.PlatformNotSupported("Windows Stream Security not yet supported on UWP");
+#else 
                     if (str.Length > 0)
                         str.Append(", ");
 
                     AppendIdentityName(str, windows.WindowsIdentity);
+#endif // FEATURE_NETNATIVE 
                 }
                 else
                 {
@@ -585,7 +593,9 @@ namespace System.ServiceModel.Security
             }
 
             str.Append(String.IsNullOrEmpty(name) ? "<null>" : name);
-
+#if FEATURE_NETNATIVE // NegotiateStream
+                    throw ExceptionHelper.PlatformNotSupported("Windows Stream Security not yet supported on UWP");
+#else
             WindowsIdentity windows = identity as WindowsIdentity;
             if (windows != null)
             {
@@ -604,6 +614,7 @@ namespace System.ServiceModel.Security
                     str.Append(sid.SecurityIdentifier.ToString());
                 }
             }
+#endif
         }
 
 
@@ -917,6 +928,7 @@ namespace System.ServiceModel.Security
             }
         }
 
+#if !FEATURE_NETNATIVE // NegotiateStream
         public static void ValidateAnonymityConstraint(WindowsIdentity identity, bool allowUnauthenticatedCallers)
         {
             if (!allowUnauthenticatedCallers && identity.User.IsWellKnown(WellKnownSidType.AnonymousSid))
@@ -925,6 +937,7 @@ namespace System.ServiceModel.Security
                     new SecurityTokenValidationException(SR.Format(SR.AnonymousLogonsAreNotAllowed)));
             }
         }
+#endif // !FEATURE_NETNATIVE 
 
         // This is the workaround, Since store.Certificates returns a full collection
         // of certs in store.  These are holding native resources.

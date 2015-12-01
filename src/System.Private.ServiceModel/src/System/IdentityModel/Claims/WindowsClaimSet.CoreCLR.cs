@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+#if !FEATURE_NETNATIVE
+
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
 using System.Runtime;
@@ -17,8 +19,6 @@ namespace System.IdentityModel.Claims
         private DateTime _expirationTime;
         private bool _includeWindowsGroups;
         private IList<Claim> _claims;
-        // Not sure yet if GroupSidClaimCollections are necessary in .NET Core
-        //private GroupSidClaimCollection _groups;
         private bool _disposed = false;
         private string _authenticationType;
 
@@ -116,19 +116,6 @@ namespace System.IdentityModel.Claims
             get { return _expirationTime; }
         }
 
-        // Not sure yet if GroupSidClaimCollections are necessary in .NET Core
-        //internal GroupSidClaimCollection Groups
-        //{
-        //    get
-        //    {
-        //        if (_groups == null)
-        //        {
-        //            _groups = new GroupSidClaimCollection(_windowsIdentity);
-        //        }
-        //        return _groups;
-        //    }
-        //}
-
         internal WindowsClaimSet Clone()
         {
             ThrowIfDisposed();
@@ -220,15 +207,8 @@ namespace System.IdentityModel.Claims
 
                 if (_includeWindowsGroups && (right == null || Rights.PossessProperty == right))
                 {
-                    // Not sure yet if GroupSidClaimCollections are necessary in .NET Core
-                    //for (int i = 0; i < Groups.Count; ++i)
-                    //{
-                    //    Claim sid = Groups[i];
-                    //    if (claimType == sid.ClaimType)
-                    //    {
-                    //        yield return sid;
-                    //    }
-                    //}
+                    // Not sure yet if GroupSidClaimCollections are necessary in .NET Core, but default 
+                    // _includeWindowsGroups is true; don't throw here or we bust the default case on UWP/.NET Core
                 }
             }
             else
@@ -263,39 +243,11 @@ namespace System.IdentityModel.Claims
             return _disposed ? base.ToString() : SecurityUtils.ClaimSetToString(this);
         }
 
-        [Fx.Tag.SecurityNote(Critical = "Uses critical type SafeHGlobalHandle.",
-            Safe = "Performs a Demand for full trust.")]
-        [SecuritySafeCritical]
         public static bool TryCreateWindowsSidClaim(WindowsIdentity windowsIdentity, out Claim claim)
         {
-            throw ExceptionHelper.PlatformNotSupported();
-
-            // Not sure yet if GroupSidClaimCollections are necessary in .NET Core
-            //SafeHGlobalHandle safeAllocHandle = SafeHGlobalHandle.InvalidHandle;
-            //try
-            //{
-            //    uint dwLength;
-            //    safeAllocHandle = GetTokenInformation(windowsIdentity.Token, TokenInformationClass.TokenUser, out dwLength);
-            //    SID_AND_ATTRIBUTES user = (SID_AND_ATTRIBUTES)Marshal.PtrToStructure(safeAllocHandle.DangerousGetHandle(), typeof(SID_AND_ATTRIBUTES));
-            //    uint mask = NativeMethods.SE_GROUP_USE_FOR_DENY_ONLY;
-            //    if (user.Attributes == 0)
-            //    {
-            //        claim = Claim.CreateWindowsSidClaim(new SecurityIdentifier(user.Sid));
-            //        return true;
-            //    }
-            //    else if ((user.Attributes & mask) == NativeMethods.SE_GROUP_USE_FOR_DENY_ONLY)
-            //    {
-            //        claim = Claim.CreateDenyOnlyWindowsSidClaim(new SecurityIdentifier(user.Sid));
-            //        return true;
-            //    }
-            //}
-            //finally
-            //{
-            //    safeAllocHandle.Close();
-            //}
-            //claim = null;
-            //return false;
+            throw ExceptionHelper.PlatformNotSupported("CreateWindowsSidClaim is not yet supported");
         }
-
     }
 }
+
+#endif // !FEATURE_NETNATIVE

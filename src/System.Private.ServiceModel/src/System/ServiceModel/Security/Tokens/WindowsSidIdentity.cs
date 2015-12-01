@@ -8,6 +8,7 @@ using System.Security.Principal;
 
 namespace System.ServiceModel.Security.Tokens
 {
+#if !FEATURE_NETNATIVE // NegotiateStream
     internal class WindowsSidIdentity : IIdentity
     {
         SecurityIdentifier _sid;
@@ -79,4 +80,5 @@ namespace System.ServiceModel.Security.Tokens
             return _sid.GetHashCode();
         }
     }
+#endif // FEATURE_NETNATIVE
 }

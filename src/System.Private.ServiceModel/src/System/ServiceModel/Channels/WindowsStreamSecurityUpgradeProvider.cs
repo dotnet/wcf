@@ -194,6 +194,9 @@ namespace System.ServiceModel.Channels
 
             protected override Stream OnAcceptUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
             {
+#if FEATURE_NETNATIVE // NegotiateStream
+                throw ExceptionHelper.PlatformNotSupported("NegotiateStream is not supported on UWP yet"); 
+#else 
                 // wrap stream
                 NegotiateStream negotiateStream = new NegotiateStream(stream);
 
@@ -221,6 +224,7 @@ namespace System.ServiceModel.Channels
 
                 remoteSecurity = CreateClientSecurity(negotiateStream, _parent.ExtractGroupsForWindowsAccounts);
                 return negotiateStream;
+#endif // FEATURE_NETNATIVE
             }
 
             protected override IAsyncResult OnBeginAcceptUpgrade(Stream stream, AsyncCallback callback, object state)
@@ -234,6 +238,7 @@ namespace System.ServiceModel.Channels
                 throw ExceptionHelper.PlatformNotSupported();
             }
 
+#if !FEATURE_NETNATIVE // NegotiateStream
             SecurityMessageProperty CreateClientSecurity(NegotiateStream negotiateStream,
                 bool extractGroupsForWindowsAccounts)
             {
@@ -252,6 +257,7 @@ namespace System.ServiceModel.Channels
                 _clientSecurity.ServiceSecurityContext = new ServiceSecurityContext(authorizationPolicies);
                 return _clientSecurity;
             }
+#endif // !FEATURE_NETNATIVE
 
             public override SecurityMessageProperty GetRemoteSecurity()
             {
@@ -314,6 +320,7 @@ namespace System.ServiceModel.Channels
                 SecurityUtils.CloseTokenProviderIfRequired(_clientTokenProvider, timeoutHelper.RemainingTime());
             }
 
+#if !FEATURE_NETNATIVE // NegotiateStream
             static SecurityMessageProperty CreateServerSecurity(NegotiateStream negotiateStream)
             {
                 GenericIdentity remoteIdentity = (GenericIdentity)negotiateStream.RemoteIdentity;
@@ -331,6 +338,7 @@ namespace System.ServiceModel.Channels
                     return null;
                 }
             }
+#endif // !FEATURE_NETNATIVE
 
             protected override Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
             {
@@ -342,6 +350,13 @@ namespace System.ServiceModel.Channels
                 return retVal;
             }
 
+
+#if FEATURE_NETNATIVE // NegotiateStream
+            protected override Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurity)
+            {
+                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet"); 
+            }
+#else
             protected override async Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurity)
             {
                 NegotiateStream negotiateStream;
@@ -377,7 +392,9 @@ namespace System.ServiceModel.Channels
 
                 return negotiateStream;
             }
+#endif // FEATURE_NETNATIVE 
 
+#if !FEATURE_NETNATIVE // NegotiateStream
             void InitiateUpgradePrepare(
                 Stream stream,
                 out NegotiateStream negotiateStream,
@@ -420,6 +437,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(SR.Format(SR.StreamMutualAuthNotSatisfied)));
                 }
             }
+#endif // FEATURE_NETNATIVE 
         }
     }
 }

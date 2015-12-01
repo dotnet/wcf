@@ -211,6 +211,7 @@ namespace System.IdentityModel
             return identity;
         }
 
+#if !FEATURE_NETNATIVE // NegotiateStream
         /// <SecurityNote>
         /// Critical - calls two critical methods: UnsafeGetWindowsIdentityToken and UnsafeCreateWindowsIdentityFromToken
         /// Safe - "clone" operation is considered safe despite using WindowsIdentity IntPtr token
@@ -265,6 +266,7 @@ namespace System.IdentityModel
                 return new WindowsIdentity(token);
             }
         }
+#endif // !FEATURE_NETNATIVE 
 
         internal static ClaimSet CloneClaimSetIfNecessary(ClaimSet claimSet)
         {
