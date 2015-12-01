@@ -8,7 +8,6 @@ namespace System.ServiceModel.Security
 {
     public sealed class HttpDigestClientCredential
     {
-        private TokenImpersonationLevel _allowedImpersonationLevel = WindowsClientCredential.DefaultImpersonationLevel;
         private NetworkCredential _digestCredentials;
         private bool _isReadOnly;
 
@@ -19,22 +18,8 @@ namespace System.ServiceModel.Security
 
         internal HttpDigestClientCredential(HttpDigestClientCredential other)
         {
-            _allowedImpersonationLevel = other._allowedImpersonationLevel;
             _digestCredentials = SecurityUtils.GetNetworkCredentialsCopy(other._digestCredentials);
             _isReadOnly = other._isReadOnly;
-        }
-
-        public TokenImpersonationLevel AllowedImpersonationLevel
-        {
-            get
-            {
-                return _allowedImpersonationLevel;
-            }
-            set
-            {
-                ThrowIfImmutable();
-                _allowedImpersonationLevel = value;
-            }
         }
 
         public NetworkCredential ClientCredential

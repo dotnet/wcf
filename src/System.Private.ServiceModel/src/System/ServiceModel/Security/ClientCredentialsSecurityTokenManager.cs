@@ -5,6 +5,7 @@ using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net;
 using System.Security.Authentication.ExtendedProtection;
+using System.Security.Principal;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
@@ -149,7 +150,7 @@ namespace System.ServiceModel
                 {
                     if (IsDigestAuthenticationScheme(initiatorRequirement))
                     {
-                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.HttpDigest.ClientCredential), true, _parent.HttpDigest.AllowedImpersonationLevel);
+                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.HttpDigest.ClientCredential), true, TokenImpersonationLevel.Delegation);
                     }
                     else
                     {
