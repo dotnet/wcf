@@ -75,5 +75,9 @@ namespace WcfService
 
         [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoStream", ReplyAction = "http://tempuri.org/IWcfService/EchoStreamResponse")]
         Stream EchoStream(Stream stream);
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoMessageParameter")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "result")]
+        string EchoMessageParameter(string name);
     }
 }

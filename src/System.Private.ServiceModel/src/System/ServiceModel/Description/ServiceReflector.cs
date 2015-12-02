@@ -527,7 +527,7 @@ namespace System.ServiceModel.Description
         {
             Type attrType = typeof(T);
             object[] attrs = GetCustomAttributes(attrProvider, attrType);
-            if (attrs.Length == 0)
+            if (attrs == null || attrs.Length == 0)
             {
                 return null;
             }

@@ -255,6 +255,11 @@ namespace WcfService
             return StringToStream(data);            
         }
 
+        public string EchoMessageParameter(string name)
+        {
+            return string.Format("Hello {0}", name);
+        }
+
         private static string StreamToString(Stream stream)
         {
             var reader = new StreamReader(stream, Encoding.UTF8);
