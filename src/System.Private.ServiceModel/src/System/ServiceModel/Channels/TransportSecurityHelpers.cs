@@ -19,22 +19,78 @@ namespace System.ServiceModel.Channels
 {
     internal static class TransportSecurityHelpers
     {
-        public static async Task<NetworkCredential> GetSspiCredentialAsync(SecurityTokenProviderContainer tokenProvider, OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper, CancellationToken cancellationToken)
+        // used for HTTP (from HttpChannelUtilities.GetCredential)
+        public static async Task<NetworkCredential> GetSspiCredentialAsync(SecurityTokenProviderContainer tokenProvider, 
+            OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper, 
+            CancellationToken cancellationToken)
         {
+            OutWrapper<bool> dummyExtractWindowsGroupClaimsWrapper = new OutWrapper<bool>(); 
             OutWrapper<bool> allowNtlmWrapper = new OutWrapper<bool>();
             NetworkCredential result = await GetSspiCredentialAsync(tokenProvider.TokenProvider as SspiSecurityTokenProvider,
-                impersonationLevelWrapper, allowNtlmWrapper, cancellationToken);
+                dummyExtractWindowsGroupClaimsWrapper, impersonationLevelWrapper, allowNtlmWrapper, cancellationToken);
             authenticationLevelWrapper.Value = allowNtlmWrapper.Value ?
                 AuthenticationLevel.MutualAuthRequested : AuthenticationLevel.MutualAuthRequired;
             return result;
         }
 
+        // used by client WindowsStream security (from InitiateUpgrade)
+        public static async Task<NetworkCredential> GetSspiCredentialAsync(SspiSecurityTokenProvider tokenProvider,
+            OutWrapper<TokenImpersonationLevel> impersonationLevel, OutWrapper<bool> allowNtlm, CancellationToken cancellationToken)
+        {
+            OutWrapper<bool> dummyExtractWindowsGroupClaimsWrapper = new OutWrapper<bool>();
+            return await GetSspiCredentialAsync(tokenProvider,
+                dummyExtractWindowsGroupClaimsWrapper, impersonationLevel, allowNtlm, cancellationToken);
+        }
+
+        // used by server WindowsStream security (from Open)
+        public static NetworkCredential GetSspiCredential(SecurityTokenManager credentialProvider,
+            SecurityTokenRequirement sspiTokenRequirement, TimeSpan timeout,
+            out bool extractGroupsForWindowsAccounts)
+        {
+            extractGroupsForWindowsAccounts = TransportDefaults.ExtractGroupsForWindowsAccounts;
+            NetworkCredential result = null;
+
+            if (credentialProvider != null)
+            {
+                SecurityTokenProvider tokenProvider = credentialProvider.CreateSecurityTokenProvider(sspiTokenRequirement);
+                if (tokenProvider != null)
+                {
+                    TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                    SecurityUtils.OpenTokenProviderIfRequired(tokenProvider, timeoutHelper.RemainingTime());
+                    bool success = false;
+                    try
+                    {
+                        OutWrapper<TokenImpersonationLevel> dummyImpersonationLevelWrapper = new OutWrapper<TokenImpersonationLevel>();
+                        OutWrapper<bool> dummyAllowNtlmWrapper = new OutWrapper<bool>();
+                        OutWrapper<bool> extractGroupsForWindowsAccountsWrapper = new OutWrapper<bool>();
+                        result = GetSspiCredentialAsync((SspiSecurityTokenProvider)tokenProvider, extractGroupsForWindowsAccountsWrapper,
+                            dummyImpersonationLevelWrapper, dummyAllowNtlmWrapper, timeoutHelper.GetCancellationToken()).GetAwaiter().GetResult();
+
+                        success = true;
+                    }
+                    finally
+                    {
+                        if (!success)
+                        {
+                            SecurityUtils.AbortTokenProviderIfRequired(tokenProvider);
+                        }
+                    }
+                    SecurityUtils.CloseTokenProviderIfRequired(tokenProvider, timeoutHelper.RemainingTime());
+                }
+            }
+
+            return result;
+        }
+
         // core Cred lookup code
-        static async Task<NetworkCredential> GetSspiCredentialAsync(SspiSecurityTokenProvider tokenProvider,
+        public static async Task<NetworkCredential> GetSspiCredentialAsync(SspiSecurityTokenProvider tokenProvider,
+            OutWrapper<bool> extractGroupsForWindowsAccounts,
             OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper,
-            OutWrapper<bool> allowNtlmWrapper, CancellationToken cancellationToken)
+            OutWrapper<bool> allowNtlmWrapper,  
+            CancellationToken cancellationToken)
         {
             NetworkCredential credential = null;
+            extractGroupsForWindowsAccounts.Value = TransportDefaults.ExtractGroupsForWindowsAccounts;
             impersonationLevelWrapper.Value = TokenImpersonationLevel.Identification;
             allowNtlmWrapper.Value = ConnectionOrientedTransportDefaults.AllowNtlm;
 
@@ -43,6 +99,7 @@ namespace System.ServiceModel.Channels
                 SspiSecurityToken token = await TransportSecurityHelpers.GetTokenAsync<SspiSecurityToken>(tokenProvider, cancellationToken);
                 if (token != null)
                 {
+                    extractGroupsForWindowsAccounts.Value = token.ExtractGroupsForWindowsAccounts;
                     impersonationLevelWrapper.Value = token.ImpersonationLevel;
                     allowNtlmWrapper.Value = token.AllowNtlm;
                     if (token.NetworkCredential != null)
@@ -64,7 +121,17 @@ namespace System.ServiceModel.Channels
             return credential;
         }
 
-        static SecurityTokenRequirement CreateSspiTokenRequirement(EndpointAddress target, Uri via, string transportScheme)
+        internal static SecurityTokenRequirement CreateSspiTokenRequirement(string transportScheme, Uri listenUri)
+        {
+            RecipientServiceModelSecurityTokenRequirement tokenRequirement = new RecipientServiceModelSecurityTokenRequirement();
+            tokenRequirement.TransportScheme = transportScheme;
+            tokenRequirement.RequireCryptographicToken = false;
+            tokenRequirement.ListenUri = listenUri;
+            tokenRequirement.TokenType = ServiceModelSecurityTokenTypes.SspiCredential;
+            return tokenRequirement;
+        }
+
+        internal static SecurityTokenRequirement CreateSspiTokenRequirement(EndpointAddress target, Uri via, string transportScheme)
         {
             InitiatorServiceModelSecurityTokenRequirement sspiTokenRequirement = new InitiatorServiceModelSecurityTokenRequirement();
             sspiTokenRequirement.TokenType = ServiceModelSecurityTokenTypes.SspiCredential;
@@ -87,6 +154,26 @@ namespace System.ServiceModel.Channels
                     sspiRequirement.Properties[ServiceModelSecurityTokenRequirement.ChannelParametersCollectionProperty] = channelParameters;
                 }
                 SspiSecurityTokenProvider tokenProvider = tokenManager.CreateSecurityTokenProvider(sspiRequirement) as SspiSecurityTokenProvider;
+                return tokenProvider;
+            }
+            return null;
+        }
+
+        public static SspiSecurityTokenProvider GetSspiTokenProvider(
+            SecurityTokenManager tokenManager, EndpointAddress target, Uri via, string transportScheme,
+            out IdentityVerifier identityVerifier)
+        {
+            identityVerifier = null;
+            if (tokenManager != null)
+            {
+                SspiSecurityTokenProvider tokenProvider =
+                    tokenManager.CreateSecurityTokenProvider(CreateSspiTokenRequirement(target, via, transportScheme)) as SspiSecurityTokenProvider;
+
+                if (tokenProvider != null)
+                {
+                    identityVerifier = IdentityVerifier.CreateDefault();
+                }
+
                 return tokenProvider;
             }
             return null;
@@ -185,6 +272,27 @@ namespace System.ServiceModel.Channels
                 result = tokenManager.CreateSecurityTokenProvider(usernameRequirement);
             }
             return result;
+        }
+
+        public static Uri GetListenUri(Uri baseAddress, string relativeAddress)
+        {
+            Uri fullUri = baseAddress;
+
+            // Ensure that baseAddress Path does end with a slash if we have a relative address
+            if (!string.IsNullOrEmpty(relativeAddress))
+            {
+                if (!baseAddress.AbsolutePath.EndsWith("/", StringComparison.Ordinal))
+                {
+                    UriBuilder uriBuilder = new UriBuilder(baseAddress);
+                    FixIpv6Hostname(uriBuilder, baseAddress);
+                    uriBuilder.Path = uriBuilder.Path + "/";
+                    baseAddress = uriBuilder.Uri;
+                }
+
+                fullUri = new Uri(baseAddress, relativeAddress);
+            }
+
+            return fullUri;
         }
 
         static InitiatorServiceModelSecurityTokenRequirement CreateUserNameTokenRequirement(

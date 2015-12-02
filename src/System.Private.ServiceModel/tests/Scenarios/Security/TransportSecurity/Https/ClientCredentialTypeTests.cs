@@ -157,7 +157,6 @@ public static class Https_ClientCredentialTypeTests
     }
 
     [Fact]
-    [ActiveIssue(53)]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {

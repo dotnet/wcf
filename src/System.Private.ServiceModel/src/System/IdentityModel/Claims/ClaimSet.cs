@@ -14,6 +14,7 @@ namespace System.IdentityModel.Claims
     public abstract class ClaimSet : IEnumerable<Claim>
     {
         private static ClaimSet s_system;
+        private static ClaimSet s_windows;
         private static ClaimSet s_anonymous;
 
         public static ClaimSet System
@@ -28,6 +29,26 @@ namespace System.IdentityModel.Claims
                     s_system = new DefaultClaimSet(claims);
                 }
                 return s_system;
+            }
+        }
+
+        public static ClaimSet Windows
+        {
+            get
+            {
+#if FEATURE_NETNATIVE // NegotiateStream
+                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
+#else 
+                if (s_windows == null)
+                {
+                    List<Claim> claims = new List<Claim>(2);
+                    SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.NTAuthoritySid, null);
+                    claims.Add(new Claim(ClaimTypes.Sid, sid, Rights.Identity));
+                    claims.Add(Claim.CreateWindowsSidClaim(sid));
+                    s_windows = new DefaultClaimSet(claims);
+                }
+                return s_windows;
+#endif // FEATURE_NETNATIVE
             }
         }
 

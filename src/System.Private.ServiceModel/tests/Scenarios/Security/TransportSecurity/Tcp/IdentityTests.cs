@@ -4,7 +4,6 @@ using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.Text;
 using Xunit;
-
 using Infrastructure.Common;
 
 public static class IdentityTests

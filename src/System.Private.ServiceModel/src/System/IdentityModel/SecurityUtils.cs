@@ -6,11 +6,13 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.Runtime;
+using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
 using System.Text;
+using Microsoft.Win32.SafeHandles;
 
 namespace System.IdentityModel
 {
@@ -208,6 +210,45 @@ namespace System.IdentityModel
             }
             return identity;
         }
+
+#if !FEATURE_NETNATIVE // NegotiateStream
+        internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid)
+        {
+            return CloneWindowsIdentityIfNecessary(wid, wid.AuthenticationType);
+        }
+
+        internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid, string authenticationType)
+        {
+
+            if (wid != null)
+            {
+                IntPtr token = wid.AccessToken.DangerousGetHandle();
+                if (token != null)
+                {
+                    return UnsafeCreateWindowsIdentityFromToken(token, authenticationType);
+                }
+            }
+            return wid;
+        }
+
+
+        static IntPtr UnsafeGetWindowsIdentityToken(WindowsIdentity wid)
+        {
+            return wid.AccessToken.DangerousGetHandle();
+        }
+
+        static WindowsIdentity UnsafeCreateWindowsIdentityFromToken(IntPtr token, string authenticationType)
+        {
+            if (authenticationType != null)
+            {
+                return new WindowsIdentity(token, authenticationType);
+            }
+            else
+            {
+                return new WindowsIdentity(token);
+            }
+        }
+#endif // !FEATURE_NETNATIVE 
 
         internal static ClaimSet CloneClaimSetIfNecessary(ClaimSet claimSet)
         {

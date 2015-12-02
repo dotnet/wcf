@@ -84,7 +84,7 @@ public static class Tcp_ClientCredentialTypeTests
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
     [Fact]
-    [ActiveIssue(300)]
+    [ActiveIssue(301)]
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_EchoString()
     {
@@ -96,7 +96,7 @@ public static class Tcp_ClientCredentialTypeTests
         {
             // *** SETUP *** \\
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_DefaultBinding_Address));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

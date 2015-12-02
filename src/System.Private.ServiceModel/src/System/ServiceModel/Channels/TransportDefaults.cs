@@ -7,6 +7,7 @@ using System.Net.WebSockets;
 using System.Runtime;
 using System.Security.Authentication;
 using System.Security.Principal;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Xml;
 
@@ -140,8 +141,7 @@ namespace System.ServiceModel.Channels
 
     public static class TransportDefaults
     {
-        public const bool ExtractGroupsForWindowsAccounts = true;
-        //public const bool ExtractGroupsForWindowsAccounts = SspiSecurityTokenProvider.DefaultExtractWindowsGroupClaims;
+        public const bool ExtractGroupsForWindowsAccounts = SspiSecurityTokenProvider.DefaultExtractWindowsGroupClaims;
         public const HostNameComparisonMode HostNameComparisonMode = System.ServiceModel.HostNameComparisonMode.Exact;
         public const TokenImpersonationLevel ImpersonationLevel = TokenImpersonationLevel.Identification;
         public const bool ManualAddressing = false;
@@ -172,8 +172,7 @@ namespace System.ServiceModel.Channels
 
     public static class ConnectionOrientedTransportDefaults
     {
-        public const bool AllowNtlm = true;
-        //public const bool AllowNtlm = SspiSecurityTokenProvider.DefaultAllowNtlm;
+        public const bool AllowNtlm = SspiSecurityTokenProvider.DefaultAllowNtlm;
         public const int ConnectionBufferSize = 8192;
         public const string ConnectionPoolGroupName = "default";
         public const HostNameComparisonMode HostNameComparisonMode = System.ServiceModel.HostNameComparisonMode.StrongWildcard;

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+#if FEATURE_NETNATIVE
 namespace System.Net.Security
 {
     // This will request security properties of a NegotiateStream
@@ -16,4 +17,4 @@ namespace System.Net.Security
         EncryptAndSign = 2
     }
 }
-
+#endif //FEATURE_NETNATIVE

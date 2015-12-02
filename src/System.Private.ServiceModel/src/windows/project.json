@@ -50,7 +50,7 @@
       "dependencies": {
         "System.Net.Http.WinHttpHandler": "4.0.0-beta-*",
         "System.Net.NameResolution": "4.0.0-beta-*",
-        "System.Net.Security": "4.0.0-beta-*",
+        "System.Net.Security": "4.0.0-rc2-*",
         "System.Net.Sockets": "4.1.0-beta-*",
         "System.Security.Principal.Windows": "4.0.0-beta-*"
       }

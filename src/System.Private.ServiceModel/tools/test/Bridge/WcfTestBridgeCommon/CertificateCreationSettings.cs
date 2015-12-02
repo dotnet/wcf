@@ -16,6 +16,7 @@ namespace WcfTestBridgeCommon
             Subjects = new string[] { string.Empty };
             IsValidCert = true;
         }
+        public string FriendlyName { get; set; }
         public string [] Subjects { get; set; }
         public DateTime ValidityNotBefore { get; set; }
         public DateTime ValidityNotAfter { get; set; }
