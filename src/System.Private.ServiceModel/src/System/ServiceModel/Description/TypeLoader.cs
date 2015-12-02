@@ -1150,7 +1150,7 @@ namespace System.ServiceModel.Description
                 if (responseType.IsDefined(typeof(MessageContractAttribute), false) && parameters.Length == 0)
                 {
                     messageDescription = CreateTypedMessageDescription(responseType,
-                                                         methodInfo.ReturnType,
+                                                         methodInfo.ReturnParameter,
                                                          returnValueName,
                                                          defaultNS,
                                                          action,
@@ -1160,7 +1160,7 @@ namespace System.ServiceModel.Description
                 {
                     messageDescription = CreateParameterMessageDescription(parameters,
                                                          responseType,
-                                                         methodInfo.ReturnType,
+                                                         methodInfo.ReturnParameter,
                                                          returnValueName,
                                                          methodName,
                                                          defaultNS,
@@ -1244,8 +1244,9 @@ namespace System.ServiceModel.Description
         private static MessagePartDescription CreateParameterPartDescription(XmlName defaultName, string defaultNS, int index, CustomAttributeProvider attrProvider, Type type)
         {
             MessagePartDescription parameterPart;
+            MessageParameterAttribute paramAttr = ServiceReflector.GetSingleAttribute<MessageParameterAttribute>(attrProvider);
 
-            XmlName name = defaultName;
+            XmlName name = paramAttr == null || !paramAttr.IsNameSetExplicit ? defaultName : new XmlName(paramAttr.Name);
             parameterPart = new MessagePartDescription(name.EncodedName, defaultNS);
             parameterPart.Type = type;
             parameterPart.Index = index;

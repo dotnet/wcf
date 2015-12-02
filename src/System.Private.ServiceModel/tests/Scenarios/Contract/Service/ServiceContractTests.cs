@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -187,6 +188,49 @@ public static class ServiceContractTests
             });
         }).Wait(ScenarioTestHelpers.TestTimeout);
         Assert.True(success, "Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext timed-out.");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void ServiceContract_Call_Operation_With_MessageParameterAttribute()
+    {
+        // This test verifies the scenario where MessageParameter attribute is used in the contract
+        StringBuilder errorBuilder = new StringBuilder();
+        ChannelFactory<IWcfServiceGenerated> factory = null;
+        IWcfServiceGenerated serviceProxy = null;
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
+
+            // Note the service interface used.  It was manually generated with svcutil.
+            factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string echoString = "you";
+            string result = serviceProxy.EchoMessageParameter(echoString);
+            if (!string.Equals(result, "Hello " + echoString))
+            {
+                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello " + echoString, result));
+            }
+
+            // *** CLEANUP *** \\
+            factory.Close();
+        }
+        catch (Exception ex)
+        {
+            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+
+        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceContract_Call_Operation_With_MessageParameterAttribute FAILED with the following errors: {0}", errorBuilder));
     }
 
     private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)

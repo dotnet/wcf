@@ -105,6 +105,10 @@ public interface IWcfServiceGenerated
 
     [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/Echo", ReplyAction = "http://tempuri.org/IWcfService/EchoResponse")]
     System.Threading.Tasks.Task<string> EchoAsync(string message);
+
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoMessageParameter", ReplyAction = "http://tempuri.org/IWcfService/EchoMessageParameterResponse")]
+    [return: System.ServiceModel.MessageParameterAttribute(Name = "result")]
+    string EchoMessageParameter(string name);
 }
 
 // 

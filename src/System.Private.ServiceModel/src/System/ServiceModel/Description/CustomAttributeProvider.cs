@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -83,7 +84,10 @@ namespace System.ServiceModel.Description
                 case AttributeProviderType.MemberInfo:
                     return this.MemberInfo.GetCustomAttributes(attributeType, inherit).ToArray();
                 case AttributeProviderType.ParameterInfo:
-                    return this.ParameterInfo.GetCustomAttributes(attributeType, inherit).ToArray();
+                    //GetCustomAttributes could return null instead of empty collection for a known System.Relection issue, workaround the issue by explicitly checking the null
+                    IEnumerable<Attribute> customAttributes = null;
+                    customAttributes = this.ParameterInfo.GetCustomAttributes(attributeType, inherit);
+                    return customAttributes == null ? null: customAttributes.ToArray();
             }
             Contract.Assert(false, "This should never execute.");
             throw ExceptionHelper.PlatformNotSupported();
