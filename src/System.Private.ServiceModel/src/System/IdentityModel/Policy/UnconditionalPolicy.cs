@@ -102,8 +102,6 @@ namespace System.IdentityModel.Policy
                     }
                 }
             }
-
-            _disposable = false;
         }
 
         public string Id

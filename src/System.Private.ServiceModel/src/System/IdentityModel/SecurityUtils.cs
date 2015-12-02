@@ -212,18 +212,11 @@ namespace System.IdentityModel
         }
 
 #if !FEATURE_NETNATIVE // NegotiateStream
-        /// <SecurityNote>
-        /// Critical - calls two critical methods: UnsafeGetWindowsIdentityToken and UnsafeCreateWindowsIdentityFromToken
-        /// Safe - "clone" operation is considered safe despite using WindowsIdentity IntPtr token
-        ///        must not let IntPtr token leak in or out
-        /// </SecurityNote>
-        [SecuritySafeCritical]
         internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid)
         {
             return CloneWindowsIdentityIfNecessary(wid, wid.AuthenticationType);
         }
 
-        [SecuritySafeCritical]
         internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid, string authenticationType)
         {
 
@@ -238,23 +231,12 @@ namespace System.IdentityModel
             return wid;
         }
 
-        /// <SecurityNote>
-        /// Critical - elevates in order to return the WindowsIdentity.Token property
-        ///            caller must protect return value
-        /// </SecurityNote>
-        [SecurityCritical]
+
         static IntPtr UnsafeGetWindowsIdentityToken(WindowsIdentity wid)
         {
             return wid.AccessToken.DangerousGetHandle();
         }
 
-        /// <SecurityNote>
-        /// Critical - elevates in order to construct a WindowsIdentity instance from an IntPtr
-        ///            caller must protect parameter return value
-        /// </SecurityNote>
-        // We pass the authenticationType in as WindowsIdentity will all into a priviledged call in LSA which could fail
-        // resulting in a null authenticationType.
-        [SecurityCritical]
         static WindowsIdentity UnsafeCreateWindowsIdentityFromToken(IntPtr token, string authenticationType)
         {
             if (authenticationType != null)

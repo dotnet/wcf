@@ -468,8 +468,8 @@ namespace System.ServiceModel.Security
                 identityClaim = new Claim(ClaimTypes.Upn, principalName, Rights.Identity);
 #if FEATURE_CORECLR
                 primaryPrincipal = Claim.CreateUpnClaim(principalName);
-#else 
-                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported on CoreCLR"); 
+#else
+                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported on UWP"); 
 #endif // FEATURE_CORECLR
             }
             else
@@ -503,7 +503,7 @@ namespace System.ServiceModel.Security
                 {
 #if FEATURE_NETNATIVE
                     throw ExceptionHelper.PlatformNotSupported("Windows Stream Security not yet supported on UWP");
-#else 
+#else
                     if (str.Length > 0)
                         str.Append(", ");
 
