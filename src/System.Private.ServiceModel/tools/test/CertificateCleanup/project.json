@@ -1,8 +1,8 @@
 {
     "dependencies": {
-        "System.Console": "4.0.0-beta-*",
-        "System.Runtime.Extensions": "4.0.0-beta-*",
-        "System.Security.Cryptography.X509Certificates": "4.0.0-beta-*"
+        "System.Console": "4.0.0-rc2-23602",
+        "System.Runtime.Extensions": "4.0.0-rc2-23602",
+        "System.Security.Cryptography.X509Certificates": "4.0.0-rc2-23602"
     },
   "frameworks": {
     "dnxcore50": {}
