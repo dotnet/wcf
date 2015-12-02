@@ -91,6 +91,26 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpDuplexBinaryBufferedResource"); }
     }
 
+    public static string ServiceContractAsyncIntOut_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncIntOutResource"); }
+    }
+
+    public static string ServiceContractAsyncComplexOut_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncComplexOutResource"); }
+    }
+
+    public static string ServiceContractAsyncIntRef_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncIntRefResource"); }
+    }
+
+    public static string ServiceContractAsyncComplexRef_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncComplexRefResource"); }
+    }
+
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {

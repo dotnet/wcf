@@ -73,6 +73,9 @@
     <Compile Include="ReplyBankingData.cs" />
     <Compile Include="ReplyBankingDataNotWrapped.cs" />
     <Compile Include="RequestBankingData.cs" />
+    <Compile Include="ScenarioTestHelpers.cs" />
+    <Compile Include="ServiceContractAsyncInterfaces.cs" />
+    <Compile Include="ServiceContractAsyncServices.cs" />
     <Compile Include="TestResources\AuthenticationResource.cs" />
     <Compile Include="TestResources\AuthenticationResourceHelper.cs" />
     <Compile Include="TestResources\BaseAddressResource.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="TestResources\HttpsWindowsResource.cs" />
     <Compile Include="TestResources\HttpsNtlmResource.cs" />
     <Compile Include="TestResources\HttpsDigestResource.cs" />
+    <Compile Include="TestResources\ServiceContractAsyncResources.cs" />
     <Compile Include="TestResources\TcpDefaultResource.cs" />
     <Compile Include="TestResources\TcpRevokedServerCertResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityResource.cs" />
