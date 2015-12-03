@@ -14,11 +14,19 @@ namespace WcfTestBridgeCommon
         public CertificateCreationSettings()
         {
             Subjects = new string[] { string.Empty };
-            IsValidCert = true;
+            ValidityType = CertificateValidityType.Valid;
         }
         public string [] Subjects { get; set; }
         public DateTime ValidityNotBefore { get; set; }
         public DateTime ValidityNotAfter { get; set; }
-        public bool IsValidCert { get; set; }
+        public CertificateValidityType ValidityType { get; set; }
+    }
+    
+    [Serializable]
+    public enum CertificateValidityType
+    {
+        Valid = 0, 
+        Expired = 1, 
+        Revoked = 2
     }
 }

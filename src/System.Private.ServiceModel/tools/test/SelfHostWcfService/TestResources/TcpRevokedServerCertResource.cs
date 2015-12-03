@@ -30,12 +30,11 @@ namespace WcfService.TestResources
             //Create a certificate and add to the revocation list
             CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
             {
-                IsValidCert = false,
+                ValidityType = CertificateValidityType.Revoked,
                 Subjects = new string[] { s_fqdn, s_hostname, "localhost" }
             };
 
-            X509Certificate2 cert = CertificateResourceHelpers.EnsureRevokedCertificateInstalled(context.BridgeConfiguration, certificateCreationSettings, Address);
-            CertificateManager.RevokeCertificate(CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration), cert.SerialNumber);
+            X509Certificate2 cert = CertificateResourceHelpers.EnsureCustomCertificateInstalled(context.BridgeConfiguration, certificateCreationSettings, Address);
 
             serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine,
                                                         StoreName.My,

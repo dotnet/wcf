@@ -93,14 +93,7 @@ namespace WcfService.CertificateResources
             return cert.Thumbprint;
         }
 
-        internal static string EnsureNonDefaultCertificateInstalled(BridgeConfiguration configuration, CertificateCreationSettings certificateCreationSettings, string resourceAddress)
-        {
-            X509Certificate2 cert = CertificateManager.CreateAndInstallNonDefaultMachineCertificates(GetCertificateGeneratorInstance(configuration), certificateCreationSettings, resourceAddress);
-
-            return cert.Thumbprint;
-        }
-
-        internal static X509Certificate2 EnsureRevokedCertificateInstalled(BridgeConfiguration configuration, CertificateCreationSettings certificateCreationSettings, string resourceAddress)
+        internal static X509Certificate2 EnsureCustomCertificateInstalled(BridgeConfiguration configuration, CertificateCreationSettings certificateCreationSettings, string resourceAddress)
         {
             return CertificateManager.CreateAndInstallNonDefaultMachineCertificates(GetCertificateGeneratorInstance(configuration), certificateCreationSettings, resourceAddress);
         }

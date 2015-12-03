@@ -11,9 +11,9 @@ using System.Collections.Generic;
 
 namespace WcfService.TestResources
 {
-    internal class TcpExpiredServerCertResource : TcpResource
+    internal class TcpCertificateWithServerAltNameResource : TcpResource
     {
-        protected override string Address { get { return "tcp-ExpiredServerCert"; } }
+        protected override string Address { get { return "tcp-server-alt-name-cert"; } }
 
         protected override Binding GetBinding()
         {
@@ -27,18 +27,13 @@ namespace WcfService.TestResources
         protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
         {
             // Ensure the service certificate is installed before this endpoint resource is used
-            //Create an expired certificate
+
+            // CN=not-real-subject-name means that a cert for "not-real-subject-name" will be installed 
+            // Per #422 this shouldn't matter as we now check with SAN
+            
             CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
             {
-                ValidityType = CertificateValidityType.Expired,
-                ValidityNotBefore = DateTime.UtcNow - TimeSpan.FromDays(4),
-                ValidityNotAfter = DateTime.UtcNow - TimeSpan.FromDays(2),
-                //If you specify multiple subjects, the first one becomes the subject, and all of them become Subject Alt Names.
-                //In this case, the certificate subject is  CN=fqdn, OU=..., O=... , and SANs will be  fqdn, hostname, localhost
-                //We do this so that a single bridge setup can deal with all the possible addresses that a client might use.
-                //If we don't put "localhost' here, a long-running bridge will not be able to receive requests from both fqdn  and  localhost
-                //because the certs won't match.
-                Subjects = new string[] { s_fqdn, s_hostname, "localhost" }
+                Subjects = new string[] { "not-real-subject-name", "not-real-subject-name.example.com", s_fqdn, s_hostname, "localhost" }
             };
 
             X509Certificate2 cert = CertificateResourceHelpers.EnsureCustomCertificateInstalled(context.BridgeConfiguration, certificateCreationSettings, Address);
