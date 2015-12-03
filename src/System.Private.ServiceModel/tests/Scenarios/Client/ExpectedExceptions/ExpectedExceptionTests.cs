@@ -528,8 +528,6 @@ public static class ExpectedExceptionTests
         ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
         IWcfService serviceProxy = factory.CreateChannel();
 
-        //Need to wait for 2 minutes here to ensure the CRL update are in effect as the update frequency is set to 2 minutes
-        Task.Delay(TimeSpan.FromMinutes(2)).Wait();
         try
         {
             var result = serviceProxy.Echo(testString);
