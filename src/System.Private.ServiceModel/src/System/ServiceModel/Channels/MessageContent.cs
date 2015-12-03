@@ -167,12 +167,13 @@ namespace System.ServiceModel.Channels
 
     public class StreamedMessageContent : MessageContent
     {
-        private Task _encodingTask;
+        // Using the BufferedWriteStream default buffer size which is 4K. HttpWebRequest uses a 4K buffer internally,
+        // so using the same size to have the same performance characteristics.
+        private const int WriteBufferSize = BufferedWriteStream.DefaultBufferSize; 
 
         public StreamedMessageContent(Message message, MessageEncoder messageEncoder) : base(message, messageEncoder)
         {
         }
-
 
         protected override Task<Stream> CreateContentReadStreamAsync()
         {
@@ -180,13 +181,14 @@ namespace System.ServiceModel.Channels
             // will block on the write until the stream is being read from. The WriteMessageAsync method needs
             // to run on a different thread to prevent a deadlock.
             _stream = new ProducerConsumerStream();
-            _encodingTask = Task.Run(async () => await _messageEncoder.WriteMessageAsync(_message, _stream));
+            var bufferedStream = new BufferedWriteStream(_stream, WriteBufferSize);
+            Task.Run(async () => await _messageEncoder.WriteMessageAsync(_message, bufferedStream));
             return Task.FromResult(_stream);
         }
 
         protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            return _messageEncoder.WriteMessageAsync(_message, stream);
+            return _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, WriteBufferSize));
         }
 
         protected override bool TryComputeLength(out long length)
