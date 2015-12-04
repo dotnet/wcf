@@ -514,7 +514,6 @@ public static class ExpectedExceptionTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(533)]
     // Verify product throws MessageSecurityException when the service cert is revoked
     public static void TCP_ServiceCertRevoked_Throw_MessageSecurityException()
     {

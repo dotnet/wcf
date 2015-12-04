@@ -171,10 +171,12 @@ namespace System.IdentityModel.Claims
             if (!string.IsNullOrEmpty(value))
                 claims.Add(Claim.CreateX500DistinguishedNameClaim(_certificate.SubjectName));
 
-            // #321 - Desktop implmentation > 4.6 replaces this with a SAN check
-            value = _certificate.GetNameInfo(X509NameType.DnsName, false);
-            if (!string.IsNullOrEmpty(value))
-                claims.Add(Claim.CreateDnsClaim(value));
+            // Since a SAN can have multiple DNS entries
+            string[] entries = GetDnsFromExtensions(_certificate);
+            for (int i = 0; i < entries.Length; ++i)
+            {
+                claims.Add(Claim.CreateDnsClaim(entries[i]));
+            }
 
             value = _certificate.GetNameInfo(X509NameType.SimpleName, false);
             if (!string.IsNullOrEmpty(value))
@@ -243,11 +245,10 @@ namespace System.IdentityModel.Claims
             {
                 if (right == null || Rights.PossessProperty.Equals(right))
                 {
-                    // #321 - Desktop implmentation > 4.6 replaces this with a SAN check
-                    string value = _certificate.GetNameInfo(X509NameType.DnsName, false);
-                    if (!string.IsNullOrEmpty(value))
+                    string[] entries = GetDnsFromExtensions(_certificate);
+                    for (int i = 0; i < entries.Length; ++i)
                     {
-                        yield return Claim.CreateDnsClaim(value);
+                        yield return Claim.CreateDnsClaim(entries[i]);
                     }
                 }
             }
@@ -269,6 +270,32 @@ namespace System.IdentityModel.Claims
                     }
                 }
             }
+        }
+
+        private static string[] GetDnsFromExtensions(X509Certificate2 cert)
+        {
+            foreach (X509Extension ext in cert.Extensions)
+            {
+                // Extension is SAN or SAN2
+                if (ext.Oid.Value == "2.5.29.7" || ext.Oid.Value == "2.5.29.17")
+                {
+                    string asnString = ext.Format(true);
+                    if (string.IsNullOrEmpty(asnString))
+                    {
+                        return new string[0];
+                    }
+
+                    string[] rawDnsEntries = asnString.Split(new string[1] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] dnsEntries = new string[rawDnsEntries.Length];
+                    for (int i = 0; i < rawDnsEntries.Length; ++i)
+                    {
+                        int equalSignIndex = rawDnsEntries[i].IndexOf('=');
+                        dnsEntries[i] = rawDnsEntries[i].Substring(equalSignIndex + 1).Trim();
+                    }
+                    return dnsEntries;
+                }
+            }
+            return new string[0];
         }
 
         public override IEnumerator<Claim> GetEnumerator()

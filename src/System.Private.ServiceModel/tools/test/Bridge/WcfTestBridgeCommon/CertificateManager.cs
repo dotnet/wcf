@@ -15,10 +15,16 @@ namespace WcfTestBridgeCommon
         private static object s_certificateLock = new object();
 
         // Dictionary of certificates installed by CertificateManager
-        // Keyed by the Subject of the certificate
+        
+        // Keyed by the Subject of the certificate - there should be only one valid cert per endpoint
+        // Valid certs are shareable across endpoints 
         private static Dictionary<string, CertificateCacheEntry> s_myCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
-        //Keyed by endpoint address as each endpoint can only configure one invalid service certificate
+
+        // Keyed by endpoint address - each endpoint can only configure one invalid service certificate,
+        // Each endpoint address can have a unique cert
         private static Dictionary<string, CertificateCacheEntry> s_myInvalidCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
+
+        // Keyed by CA subject
         private static Dictionary<string, CertificateCacheEntry> s_rootCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
 
         // Keyed by port, value is cert thumbprint
@@ -205,7 +211,7 @@ namespace WcfTestBridgeCommon
                 // Since s_myCertificates keys by subject name, we won't install a cert for the same subject twice
                 // only the first-created cert will win
                 InstallCertificateToRootStore(rootCertificate);
-                InstallCertificateToMyStore(hostCert, certificateCreationSettings.IsValidCert);
+                InstallCertificateToMyStore(hostCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
                 s_localCertificate = hostCert;
             }
 
@@ -232,7 +238,7 @@ namespace WcfTestBridgeCommon
                 var rootCertificate = certificateGenerator.AuthorityCertificate.Certificate;
                 var hostCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
                 InstallCertificateToRootStore(rootCertificate);
-                InstallCertificateToMyStore(hostCert, certificateCreationSettings.IsValidCert, resourceAddress);
+                InstallCertificateToMyStore(hostCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid, resourceAddress);
                 return hostCert;
             }
         }

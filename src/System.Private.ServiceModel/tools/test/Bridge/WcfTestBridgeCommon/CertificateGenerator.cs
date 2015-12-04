@@ -305,7 +305,8 @@ namespace WcfTestBridgeCommon
 
             _certGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
 
-            _certGenerator.SetSerialNumber(new BigInteger(64 /*sizeInBits*/, _random).Abs());
+            var serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
+            _certGenerator.SetSerialNumber(serialNum);
             _certGenerator.SetNotBefore(certificateCreationSettings.ValidityNotBefore);
             _certGenerator.SetNotAfter(certificateCreationSettings.ValidityNotAfter);
             _certGenerator.SetPublicKey(keyPair.Public);
@@ -356,17 +357,30 @@ namespace WcfTestBridgeCommon
                 }
             }
 
+            // Our CRL Distribution Point has the serial number in the query string to fool Windows into doing a fresh query 
+            // rather than using a cached copy of the CRL in the case where the CRL has been previously accessed before
             var crlDistributionPoints = new DistributionPoint[1] {
                 new DistributionPoint(new DistributionPointName(
-                    new GeneralNames(new GeneralName(GeneralName.UniformResourceIdentifier, _crlUri))), null, new GeneralNames(new GeneralName(authorityX509Name)))
+                    new GeneralNames(new GeneralName(
+                        GeneralName.UniformResourceIdentifier, string.Format("{0}?serialNum={1}", _crlUri, serialNum.ToString(radix: 16))))), 
+                        null, 
+                        new GeneralNames(new GeneralName(authorityX509Name)))
                 };
             var revocationListExtension = new CrlDistPoint(crlDistributionPoints);
             _certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
 
             X509Certificate cert = _certGenerator.Generate(_authorityKeyPair.Private, _random);
-            if (certificateCreationSettings.IsValidCert)
+
+            switch(certificateCreationSettings.ValidityType)
             {
-                EnsureCertificateValidity(cert);
+                case CertificateValidityType.Revoked:
+                    RevokeCertificateBySerialNumber(serialNum.ToString(radix: 16));
+                    break;
+                case CertificateValidityType.Expired:
+                    break; 
+                default:
+                    EnsureCertificateIsValid(cert);
+                    break;
             }
 
             // For now, given that we don't know what format to return it in, preserve the formats so we have 
@@ -414,6 +428,7 @@ namespace WcfTestBridgeCommon
             }
             Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey:", outputCert.HasPrivateKey));
             Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", outputCert.Thumbprint));
+            Trace.WriteLine(string.Format("    {0} = {1}", "CertificateValidityType", certificateCreationSettings.ValidityType));
 
             return container;
         }
@@ -450,7 +465,8 @@ namespace WcfTestBridgeCommon
             return crl;
         }
 
-        private void EnsureCertificateValidity(X509Certificate certificate)
+        // Throws an exception if the certificate is invalid
+        private void EnsureCertificateIsValid(X509Certificate certificate)
         {
             certificate.CheckValidity(DateTime.UtcNow);
             certificate.Verify(_authorityKeyPair.Public);
@@ -498,7 +514,7 @@ namespace WcfTestBridgeCommon
             BigInteger serialNumBigInt = null;
             try
             {
-                serialNumBigInt = new BigInteger(serialNum, 16 /* radix */);
+                serialNumBigInt = new BigInteger(str: serialNum, radix: 16);
                 success = true;
             }
             catch(FormatException)
