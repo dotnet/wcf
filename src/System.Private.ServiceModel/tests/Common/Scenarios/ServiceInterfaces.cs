@@ -111,8 +111,6 @@ public interface IWcfServiceGenerated
     string EchoMessageParameter(string name);
 }
 
-// 
-
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
 public interface IWcfServiceBeginEndGenerated
 {
@@ -261,7 +259,7 @@ public interface IWcfDuplexTaskReturnService
     Task<Guid> Ping(Guid guid);
 
     [OperationContract]
-    [FaultContract(typeof (FaultDetail), Name = "FaultDetail",
+    [FaultContract(typeof(FaultDetail), Name = "FaultDetail",
         Action = "http://tempuri.org/IWcfDuplexTaskReturnService/FaultPingFaultDetailFault")]
     Task<Guid> FaultPing(Guid guid);
 }
@@ -272,7 +270,7 @@ public interface IWcfDuplexTaskReturnCallback
     Task<Guid> ServicePingCallback(Guid guid);
 
     [OperationContract]
-    [FaultContract(typeof (FaultDetail), Name = "FaultDetail",
+    [FaultContract(typeof(FaultDetail), Name = "FaultDetail",
         Action = "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallbackFaultDetailFault")]
     Task<Guid> ServicePingFaultCallback(Guid guid);
 }
@@ -388,4 +386,42 @@ public interface IPushCallback
 
     [OperationContract(IsOneWay = true)]
     void ReceiveLog(List<string> log);
+}
+
+// ********************************************************************************
+
+[ServiceContract]
+public interface IServiceContractIntOutService
+{
+    [OperationContract(AsyncPattern = true)]
+    IAsyncResult BeginRequest(string stringRequest, AsyncCallback callback, object asyncState);
+
+    void EndRequest(out int intResponse, IAsyncResult result);
+}
+
+[ServiceContract]
+public interface IServiceContractComplexOutService
+{
+    [OperationContract(AsyncPattern = true)]
+    IAsyncResult BeginRequest(string stringRequest, AsyncCallback callback, object asyncState);
+
+    void EndRequest(out ComplexCompositeType complexResponse, IAsyncResult result);
+}
+
+[ServiceContract]
+public interface IServiceContractIntRefService
+{
+    [OperationContract(AsyncPattern = true)]
+    IAsyncResult BeginRequest(string stringRequest, ref int referencedInteger, AsyncCallback callback, object asyncState);
+
+    void EndRequest(ref int referencedInteger, IAsyncResult result);
+}
+
+[ServiceContract]
+public interface IServiceContractComplexRefService
+{
+    [OperationContract(AsyncPattern = true)]
+    IAsyncResult BeginRequest(string stringRequest, ref ComplexCompositeType complexResponse, AsyncCallback callback, object asyncState);
+
+    void EndRequest(ref ComplexCompositeType complexResponse, IAsyncResult result);
 }

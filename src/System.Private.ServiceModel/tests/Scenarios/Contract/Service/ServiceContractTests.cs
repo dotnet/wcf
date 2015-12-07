@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -231,6 +232,191 @@ public static class ServiceContractTests
         }
 
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceContract_Call_Operation_With_MessageParameterAttribute FAILED with the following errors: {0}", errorBuilder));
+    }
+
+    // End operation includes keyword "out" on an Int as an arg.
+    [Fact]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_AsyncEndOperation_IntOutArg()
+    {
+        string message = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IServiceContractIntOutService> factory = null;
+        IServiceContractIntOutService serviceProxy = null;
+        int number = 0;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IServiceContractIntOutService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncIntOut_Address));
+            serviceProxy = factory.CreateChannel();
+
+            ManualResetEvent waitEvent = new ManualResetEvent(false);
+
+            // *** EXECUTE *** \\
+            // This delegate will execute when the call has completed, which is how we get the result of the call.
+            AsyncCallback callback = (iar) =>
+            {
+                serviceProxy.EndRequest(out number, iar);
+                waitEvent.Set();
+            };
+
+            IAsyncResult ar = serviceProxy.BeginRequest(message, callback, null);
+
+            // *** VALIDATE *** \\
+            Assert.True(waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout), "AsyncCallback was not called.");
+            Assert.True((number == message.Count<char>()), String.Format("The local int variable was not correctly set, expected {0} but got {1}", message.Count<char>(), number));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    // End operation includes keyword "out" on a Complex Type as an arg.
+    // The complex type used must not appear anywhere else in any contracts.
+    [Fact]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_AsyncEndOperation_ComplexOutArg()
+    {
+        string message = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IServiceContractComplexOutService> factory = null;
+        IServiceContractComplexOutService serviceProxy = null;
+        ComplexCompositeType complexType = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IServiceContractComplexOutService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncComplexOut_Address));
+            serviceProxy = factory.CreateChannel();
+
+            ManualResetEvent waitEvent = new ManualResetEvent(false);
+
+            // *** EXECUTE *** \\
+            // This delegate will execute when the call has completed, which is how we get the result of the call.
+            AsyncCallback callback = (iar) =>
+            {
+                serviceProxy.EndRequest(out complexType, iar);
+                waitEvent.Set();
+            };
+
+            IAsyncResult ar = serviceProxy.BeginRequest(message, callback, null);
+
+            // *** VALIDATE *** \\
+            Assert.True(waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout), "AsyncCallback was not called.");
+            Assert.True((complexType.StringValue == message),
+                String.Format("The value of the 'StringValue' field in the complex type was not as expected. expected {0} but got {1}", message, complexType.StringValue));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    // End & Begin operations include keyword "ref" on an Int as an arg.
+    [Fact]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_AsyncEndOperation_IntRefArg()
+    {
+        string message = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IServiceContractIntRefService> factory = null;
+        IServiceContractIntRefService serviceProxy = null;
+        int number = 0;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IServiceContractIntRefService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncIntRef_Address));
+            serviceProxy = factory.CreateChannel();
+
+            ManualResetEvent waitEvent = new ManualResetEvent(false);
+
+            // *** EXECUTE *** \\
+            // This delegate will execute when the call has completed, which is how we get the result of the call.
+            AsyncCallback callback = (iar) =>
+            {
+                serviceProxy.EndRequest(ref number, iar);
+                waitEvent.Set();
+            };
+
+            IAsyncResult ar = serviceProxy.BeginRequest(message, ref number, callback, null);
+
+            // *** VALIDATE *** \\
+            Assert.True(waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout), "AsyncCallback was not called.");
+            Assert.True((number == message.Count<char>()),
+                String.Format("The value of the integer sent by reference was not the expected value. expected {0} but got {1}", message.Count<char>(), number));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    // End & Begin operations include keyword "ref" on a Complex Type as an arg.
+    // The complex type used must not appear anywhere else in any contracts.
+    [Fact]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_AsyncEndOperation_ComplexRefArg()
+    {
+        string message = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IServiceContractComplexRefService> factory = null;
+        IServiceContractComplexRefService serviceProxy = null;
+        ComplexCompositeType complexType = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IServiceContractComplexRefService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncComplexRef_Address));
+            serviceProxy = factory.CreateChannel();
+
+            ManualResetEvent waitEvent = new ManualResetEvent(false);
+
+            // *** EXECUTE *** \\
+            // This delegate will execute when the call has completed, which is how we get the result of the call.
+            AsyncCallback callback = (iar) =>
+            {
+                serviceProxy.EndRequest(ref complexType, iar);
+                waitEvent.Set();
+            };
+
+            IAsyncResult ar = serviceProxy.BeginRequest(message, ref complexType, callback, null);
+
+            // *** VALIDATE *** \\
+            Assert.True(waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout), "AsyncCallback was not called.");
+            Assert.True((complexType.StringValue == message),
+                String.Format("The value of the 'StringValue' field in the complex type was not as expected. expected {0} but got {1}", message, complexType.StringValue));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
     }
 
     private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
