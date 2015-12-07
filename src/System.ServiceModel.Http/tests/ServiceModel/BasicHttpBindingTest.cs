@@ -84,7 +84,7 @@ public static class BasicHttpBindingTest
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, new XmlDictionaryReaderQuotas()), "XmlDictionaryReaderQuotas");
     }
 
-    [Fact(Skip = "SecurityBindingElement Not Supported Yet")]
+    [Fact]
     public static void Ctor_With_BasicHttpSecurityMode_TransportWithMessageCredential_Initializes_Properties()
     {
         var binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
