@@ -19,25 +19,35 @@ public static class ServiceContractTests
     public static void DefaultSettings_Echo_RoundTrips_String_Buffered()
     {
         string testString = "Hello";
-
-        BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-        binding.TransferMode = TransferMode.Buffered;
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-        IWcfService serviceProxy = factory.CreateChannel();
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
 
         try
         {
-            Stream stream = StringToStream(testString);
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.TransferMode = TransferMode.Buffered;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
             var returnStream = serviceProxy.EchoStream(stream);
             var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
         }
         finally
         {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
@@ -46,24 +56,34 @@ public static class ServiceContractTests
     public static void DefaultSettings_Echo_RoundTrips_String_StreamedRequest()
     {
         string testString = "Hello";
-
-        BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-        binding.TransferMode = TransferMode.StreamedRequest;
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-        IWcfService serviceProxy = factory.CreateChannel();
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
 
         try
         {
-            Stream stream = StringToStream(testString);
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.TransferMode = TransferMode.StreamedRequest;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
             var result = serviceProxy.GetStringFromStream(stream);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
         }
         finally
         {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
@@ -72,24 +92,33 @@ public static class ServiceContractTests
     public static void DefaultSettings_Echo_RoundTrips_String_StreamedResponse()
     {
         string testString = "Hello";
-
-        BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-        binding.TransferMode = TransferMode.StreamedResponse;
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-        IWcfService serviceProxy = factory.CreateChannel();
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
         try
         {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.TransferMode = TransferMode.StreamedResponse;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
             var returnStream = serviceProxy.GetStreamFromString(testString);
             var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
         }
         finally
         {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
@@ -98,34 +127,36 @@ public static class ServiceContractTests
     public static void DefaultSettings_Echo_RoundTrips_String_Streamed()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-
-        BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-        binding.TransferMode = TransferMode.Streamed;
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-        IWcfService serviceProxy = factory.CreateChannel();
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
 
         try
         {
-            Stream stream = StringToStream(testString);
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.TransferMode = TransferMode.Streamed;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
             var returnStream = serviceProxy.EchoStream(stream);
             var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
-        }
-        catch (System.ServiceModel.CommunicationException e)
-        {
-            errorBuilder.AppendLine(string.Format("Unexpected exception thrown: '{0}'", e.ToString()));
-            PrintInnerExceptionsHresult(e, errorBuilder);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
         }
         finally
         {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed FAILED with the following errors: {0}", errorBuilder));
     }
 
     [Fact]
@@ -134,33 +165,36 @@ public static class ServiceContractTests
     {
         string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
-
-        BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-        binding.TransferMode = TransferMode.Streamed;
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-        IWcfService serviceProxy = factory.CreateChannel();
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
 
         try
         {
-            Stream stream = StringToStream(testString);
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.TransferMode = TransferMode.Streamed;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
             var returnStream = serviceProxy.EchoStreamAsync(stream).Result;
             var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
             Assert.Equal(testString, result);
-        }
-        catch (System.ServiceModel.CommunicationException e)
-        {
-            errorBuilder.AppendLine(string.Format("Unexpected exception thrown: '{0}'", e.ToString()));
-            PrintInnerExceptionsHresult(e, errorBuilder);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
         }
         finally
         {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed FAILED with the following errors: {0}", errorBuilder));
     }
 
     [Fact]
@@ -213,25 +247,19 @@ public static class ServiceContractTests
             // *** EXECUTE *** \\
             string echoString = "you";
             string result = serviceProxy.EchoMessageParameter(echoString);
-            if (!string.Equals(result, "Hello " + echoString))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello " + echoString, result));
-            }
+
+            // *** VALIDATE *** \\
+            Assert.True(string.Equals(result, "Hello " + echoString), String.Format("Expected response from Service: {0} Actual was: {1}", "Hello " + echoString, result));
 
             // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
         }
         finally
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceContract_Call_Operation_With_MessageParameterAttribute FAILED with the following errors: {0}", errorBuilder));
     }
 
     // End operation includes keyword "out" on an Int as an arg.
