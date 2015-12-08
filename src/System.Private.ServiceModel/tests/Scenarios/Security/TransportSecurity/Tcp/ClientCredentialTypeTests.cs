@@ -84,7 +84,7 @@ public static class Tcp_ClientCredentialTypeTests
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
     [Fact]
-    [ActiveIssue(301)]
+    [ActiveIssue(592)]
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_EchoString()
     {
