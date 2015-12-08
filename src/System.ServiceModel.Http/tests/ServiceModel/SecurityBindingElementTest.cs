@@ -10,13 +10,19 @@ using Xunit;
 public static class SecurityBindingElementTest
 {
     [Fact]
-    public static void Create_HttpBinding_SecurityMode_TransportWithMessageCredential()
+    public static void Create_HttpBinding_SecurityMode_TransportWithMessageCredential_Build_Throws()
     {
         BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
         var bindingElements = binding.CreateBindingElements();
 
         var securityBindingElement = bindingElements.FirstOrDefault(x => x is SecurityBindingElement) as SecurityBindingElement;
-        Assert.True(securityBindingElement != null, "securityBindingElement should not be null when BasicHttpSecurityMode.TransportWithMessageCredential is specified");
+        Assert.True(securityBindingElement != null, "securityBindingElement should not be null when BasicHttpSecurityMode is 'TransportWithMessageCredential'");
+
+        Assert.True(binding.CanBuildChannelFactory<IRequestChannel>(), "CanBuildChannelFactory should return true for BasicHttpSecurityMode:'TransportWithMessageCredential'");
+
+        Assert.Throws<PlatformNotSupportedException>(() => {
+            binding.BuildChannelFactory<IRequestChannel>();
+        });
     }
 
     [Theory]
@@ -29,7 +35,10 @@ public static class SecurityBindingElementTest
         var bindingElements = binding.CreateBindingElements();
 
         var securityBindingElement = bindingElements.FirstOrDefault(x => x is SecurityBindingElement) as SecurityBindingElement;
-        Assert.True(securityBindingElement == null, "securityBindingElement should be null when BasicHttpSecurityMode.TransportCredentialOnly is specified");
+        Assert.True(securityBindingElement == null, string.Format("securityBindingElement should be null when BasicHttpSecurityMode is '{0}'", securityMode));
+
+        Assert.True(binding.CanBuildChannelFactory<IRequestChannel>(), string.Format("CanBuildChannelFactory should return true for BasicHttpSecurityMode:'{0}'", securityMode));
+        binding.BuildChannelFactory<IRequestChannel>();
     }
 
     [Theory]
@@ -43,5 +52,4 @@ public static class SecurityBindingElementTest
             var bindingElements = binding.CreateBindingElements();
         });
     }
-
 }
