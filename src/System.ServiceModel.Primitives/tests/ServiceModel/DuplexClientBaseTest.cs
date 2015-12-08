@@ -61,7 +61,6 @@ public class DuplexClientBaseTest
     }
     
     [Fact]
-    [ActiveIssue(301)]
     public static void CreateDuplexClientBase_Binding_Url_Mismatch_Throws()
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());

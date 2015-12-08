@@ -16,7 +16,7 @@ public static class Tcp_ClientCredentialTypeTests
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
     [Fact]
-    [ActiveIssue(300)]
+    [ActiveIssue(592)]
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
