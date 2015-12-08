@@ -143,7 +143,6 @@ public static class ExpectedExceptionTests
     // The client should throw a TimeoutException
     [Fact]
     [OuterLoop]
-    [ActiveIssue(273)]
     public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
     {
         TimeSpan serviceOperationTimeout = TimeSpan.FromMilliseconds(10000);
