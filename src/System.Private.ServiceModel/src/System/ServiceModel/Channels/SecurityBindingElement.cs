@@ -242,7 +242,19 @@ namespace System.ServiceModel.Channels
             if (context == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
 
-            throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement.CanBuildChannelFactory is not supported.");
+            if (this.SessionMode)
+            {
+                return this.CanBuildSessionChannelFactory<TChannel>(context);
+            }
+
+            if (!context.CanBuildInnerChannelFactory<TChannel>())
+            {
+                return false;
+            }
+
+            return typeof(TChannel) == typeof(IOutputChannel) || typeof(TChannel) == typeof(IOutputSessionChannel) ||
+                (this.SupportsDuplex && (typeof(TChannel) == typeof(IDuplexChannel) || typeof(TChannel) == typeof(IDuplexSessionChannel))) ||
+                (this.SupportsRequestReply && (typeof(TChannel) == typeof(IRequestChannel) || typeof(TChannel) == typeof(IRequestSessionChannel)));
         }
 
         private bool CanBuildSessionChannelFactory<TChannel>(BindingContext context)

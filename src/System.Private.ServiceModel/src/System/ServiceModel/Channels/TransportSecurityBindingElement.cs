@@ -3,6 +3,7 @@
 
 
 using System.Net.Security;
+using System.ServiceModel.Security;
 
 namespace System.ServiceModel.Channels
 {
@@ -56,8 +57,15 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-
-            throw ExceptionHelper.PlatformNotSupported("TransportSecurityBindingElement.GetProperty is not supported.");
+            
+            if (typeof(T) == typeof(ChannelProtectionRequirements))
+            {
+                throw ExceptionHelper.PlatformNotSupported("TransportSecurityBindingElement doesn't support ChannelProtectionRequirements yet.");
+            }
+            else
+            {
+                return base.GetProperty<T>(context);
+            }
         }
 
         public override BindingElement Clone()
