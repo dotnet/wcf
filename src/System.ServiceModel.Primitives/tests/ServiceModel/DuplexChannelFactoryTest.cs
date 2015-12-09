@@ -132,7 +132,6 @@ public class DuplexChannelFactoryTest
     }
 
     [Fact]
-    [ActiveIssue(300)]
     public static void CreateChannel_Using_NetTcpBinding_Defaults()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
