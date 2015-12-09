@@ -242,8 +242,9 @@ namespace System.ServiceModel.Channels
             int bytesRead;
             if (ReadFromBuffer(buffer, offset, count, out bytesRead))
             {
-                return Task.FromResult<int>(bytesRead);
+                return Task.FromResult(bytesRead);
             }
+
             return base.ReadAsync(buffer, offset, count, cancellationToken);
         }
 

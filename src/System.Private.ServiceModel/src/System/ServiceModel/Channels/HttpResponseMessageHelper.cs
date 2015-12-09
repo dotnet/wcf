@@ -162,32 +162,27 @@ namespace System.ServiceModel.Channels
             return true;
         }
 
-        private async Task<Message> ReadStreamAsMessageAsync()
+        private Task<Message> ReadStreamAsMessageAsync()
         {
             var content = _httpResponseMessage.Content;
-            Message message = null;
-            Stream contentStream = await GetStreamAsync();
+            Task<Stream> contentStreamTask = GetStreamAsync();
 
             if (TransferModeHelper.IsResponseStreamed(_factory.TransferMode))
             {
-                message = ReadStreamedMessage(contentStream);
+                return ReadStreamedMessageAsync(contentStreamTask);
             }
-            else if (!content.Headers.ContentLength.HasValue)
+            if (!content.Headers.ContentLength.HasValue)
             {
-                message = ReadChunkedBufferedMessage(contentStream);
+                return ReadChunkedBufferedMessageAsync(contentStreamTask);
             }
-            else
-            {
-                message = await ReadBufferedMessageAsync(contentStream);
-            }
-            return message;
+            return ReadBufferedMessageAsync(contentStreamTask);
         }
 
-        private Message ReadChunkedBufferedMessage(Stream inputStream)
+        private async Task<Message> ReadChunkedBufferedMessageAsync(Task<Stream> inputStreamTask)
         {
             try
             {
-                return _encoder.ReadMessage(inputStream, _factory.BufferManager, _factory.MaxBufferSize, _contentType);
+                return await _encoder.ReadMessageAsync(await inputStreamTask, _factory.BufferManager, _factory.MaxBufferSize, _contentType);
             }
             catch (XmlException xmlException)
             {
@@ -196,8 +191,9 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async Task<Message> ReadBufferedMessageAsync(Stream inputStream)
+        private async Task<Message> ReadBufferedMessageAsync(Task<Stream> inputStreamTask)
         {
+            var inputStream = await inputStreamTask;
             if (_contentLength > _factory.MaxReceivedMessageSize)
             {
                 ThrowMaxReceivedMessageSizeExceeded();
@@ -231,13 +227,13 @@ namespace System.ServiceModel.Channels
             return await DecodeBufferedMessageAsync(new ArraySegment<byte>(buffer, 0, offset), inputStream);
         }
 
-        private Message ReadStreamedMessage(Stream inputStream)
+        private async Task<Message> ReadStreamedMessageAsync(Task<Stream> inputStreamTask)
         {
-            MaxMessageSizeStream maxMessageSizeStream = new MaxMessageSizeStream(inputStream, _factory.MaxReceivedMessageSize);
+            MaxMessageSizeStream maxMessageSizeStream = new MaxMessageSizeStream(await inputStreamTask, _factory.MaxReceivedMessageSize);
 
             try
             {
-                return _encoder.ReadMessage(maxMessageSizeStream, _factory.MaxBufferSize, _contentType);
+                return await _encoder.ReadMessageAsync(maxMessageSizeStream, _factory.MaxBufferSize, _contentType);
             }
             catch (XmlException xmlException)
             {

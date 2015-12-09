@@ -4,6 +4,7 @@
 using System.IO;
 using System.ServiceModel.Diagnostics;
 using System.Runtime;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -52,7 +53,7 @@ namespace System.ServiceModel.Channels
         public abstract Message ReadMessage(ArraySegment<byte> buffer, BufferManager bufferManager, string contentType);
 
         // used for buffered streaming
-        internal ArraySegment<byte> BufferMessageStream(Stream stream, BufferManager bufferManager, int maxBufferSize)
+        internal async Task<ArraySegment<byte>> BufferMessageStreamAsync(Stream stream, BufferManager bufferManager, int maxBufferSize)
         {
             byte[] buffer = bufferManager.TakeBuffer(ConnectionOrientedTransportDefaults.ConnectionBufferSize);
             int offset = 0;
@@ -60,7 +61,7 @@ namespace System.ServiceModel.Channels
 
             while (offset < currentBufferSize)
             {
-                int count = stream.Read(buffer, offset, currentBufferSize - offset);
+                int count = await stream.ReadAsync(buffer, offset, currentBufferSize - offset, CancellationToken.None);
                 if (count == 0)
                 {
                     stream.Dispose();
@@ -87,9 +88,9 @@ namespace System.ServiceModel.Channels
         }
 
         // used for buffered streaming
-        internal virtual Message ReadMessage(Stream stream, BufferManager bufferManager, int maxBufferSize, string contentType)
+        internal virtual async Task<Message> ReadMessageAsync(Stream stream, BufferManager bufferManager, int maxBufferSize, string contentType)
         {
-            return ReadMessage(BufferMessageStream(stream, bufferManager, maxBufferSize), bufferManager, contentType);
+            return ReadMessage(await BufferMessageStreamAsync(stream, bufferManager, maxBufferSize), bufferManager, contentType);
         }
 
         public override string ToString()
