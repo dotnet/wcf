@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     "DNXCore,Version=v5.0": {
-      "System.Console/4.0.0-rc2-23602": {
+      "System.Console/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.0",
@@ -106,18 +106,18 @@
           "lib/DNXCore50/System.Runtime.Handles.dll": {}
         }
       },
-      "System.Security.Cryptography.Algorithms/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Algorithms/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.0",
           "System.Runtime": "4.0.0",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet5.4/System.Security.Cryptography.Algorithms.dll": {}
         }
       },
-      "System.Security.Cryptography.Encoding/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Encoding/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
@@ -126,7 +126,7 @@
           "ref/dotnet5.4/System.Security.Cryptography.Encoding.dll": {}
         }
       },
-      "System.Security.Cryptography.Primitives/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Primitives/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.0",
@@ -144,13 +144,13 @@
           "lib/dotnet5.4/System.Security.Cryptography.Primitives.dll": {}
         }
       },
-      "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0",
           "System.Runtime.Handles": "4.0.0",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet5.4/System.Security.Cryptography.X509Certificates.dll": {}
@@ -186,7 +186,7 @@
       }
     },
     "DNXCore,Version=v5.0/win7-x86": {
-      "runtime.win7.System.Console/4.0.0-rc2-23602": {
+      "runtime.win7.System.Console/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -206,7 +206,7 @@
           "runtimes/win7/lib/dotnet5.4/System.Console.dll": {}
         }
       },
-      "runtime.win7.System.Security.Cryptography.Algorithms/4.0.0-rc2-23602": {
+      "runtime.win7.System.Security.Cryptography.Algorithms/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -214,7 +214,7 @@
           "System.Runtime": "4.0.20",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.0",
           "System.Text.Encoding.Extensions": "4.0.0"
         },
@@ -225,7 +225,7 @@
           "runtimes/win7/lib/dotnet5.4/System.Security.Cryptography.Algorithms.dll": {}
         }
       },
-      "runtime.win7.System.Security.Cryptography.Encoding/4.0.0-rc2-23602": {
+      "runtime.win7.System.Security.Cryptography.Encoding/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.0",
@@ -237,7 +237,7 @@
           "System.Runtime.Extensions": "4.0.10",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet/_._": {}
@@ -246,7 +246,7 @@
           "runtimes/win7/lib/dotnet5.4/System.Security.Cryptography.Encoding.dll": {}
         }
       },
-      "runtime.win7.System.Security.Cryptography.X509Certificates/4.0.0-rc2-23602": {
+      "runtime.win7.System.Security.Cryptography.X509Certificates/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -260,11 +260,11 @@
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
           "System.Runtime.Numerics": "4.0.0",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Cng": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Csp": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Cng": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Csp": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.10",
           "System.Threading": "4.0.10"
         },
@@ -297,7 +297,7 @@
           "ref/dotnet/System.Collections.Concurrent.dll": {}
         }
       },
-      "System.Console/4.0.0-rc2-23602": {
+      "System.Console/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.0",
@@ -504,18 +504,18 @@
           "lib/dotnet/System.Runtime.Numerics.dll": {}
         }
       },
-      "System.Security.Cryptography.Algorithms/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Algorithms/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.0",
           "System.Runtime": "4.0.0",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet5.4/System.Security.Cryptography.Algorithms.dll": {}
         }
       },
-      "System.Security.Cryptography.Cng/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Cng/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -524,8 +524,8 @@
           "System.Runtime.Extensions": "4.0.0",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.0"
         },
         "compile": {
@@ -535,7 +535,7 @@
           "lib/dotnet5.4/System.Security.Cryptography.Cng.dll": {}
         }
       },
-      "System.Security.Cryptography.Csp/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Csp/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -545,9 +545,9 @@
           "System.Runtime.Extensions": "4.0.10",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.10",
           "System.Threading": "4.0.10"
         },
@@ -558,7 +558,7 @@
           "lib/DNXCore50/System.Security.Cryptography.Csp.dll": {}
         }
       },
-      "System.Security.Cryptography.Encoding/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Encoding/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
@@ -567,7 +567,7 @@
           "ref/dotnet5.4/System.Security.Cryptography.Encoding.dll": {}
         }
       },
-      "System.Security.Cryptography.Primitives/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Primitives/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.0",
@@ -585,13 +585,13 @@
           "lib/dotnet5.4/System.Security.Cryptography.Primitives.dll": {}
         }
       },
-      "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0",
           "System.Runtime.Handles": "4.0.0",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet5.4/System.Security.Cryptography.X509Certificates.dll": {}
@@ -662,7 +662,7 @@
       }
     },
     "DNXCore,Version=v5.0/win7-x64": {
-      "runtime.win7.System.Console/4.0.0-rc2-23602": {
+      "runtime.win7.System.Console/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -682,7 +682,7 @@
           "runtimes/win7/lib/dotnet5.4/System.Console.dll": {}
         }
       },
-      "runtime.win7.System.Security.Cryptography.Algorithms/4.0.0-rc2-23602": {
+      "runtime.win7.System.Security.Cryptography.Algorithms/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -690,7 +690,7 @@
           "System.Runtime": "4.0.20",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.0",
           "System.Text.Encoding.Extensions": "4.0.0"
         },
@@ -701,7 +701,7 @@
           "runtimes/win7/lib/dotnet5.4/System.Security.Cryptography.Algorithms.dll": {}
         }
       },
-      "runtime.win7.System.Security.Cryptography.Encoding/4.0.0-rc2-23602": {
+      "runtime.win7.System.Security.Cryptography.Encoding/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.0",
@@ -713,7 +713,7 @@
           "System.Runtime.Extensions": "4.0.10",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet/_._": {}
@@ -722,7 +722,7 @@
           "runtimes/win7/lib/dotnet5.4/System.Security.Cryptography.Encoding.dll": {}
         }
       },
-      "runtime.win7.System.Security.Cryptography.X509Certificates/4.0.0-rc2-23602": {
+      "runtime.win7.System.Security.Cryptography.X509Certificates/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -736,11 +736,11 @@
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
           "System.Runtime.Numerics": "4.0.0",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Cng": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Csp": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Cng": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Csp": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.10",
           "System.Threading": "4.0.10"
         },
@@ -773,7 +773,7 @@
           "ref/dotnet/System.Collections.Concurrent.dll": {}
         }
       },
-      "System.Console/4.0.0-rc2-23602": {
+      "System.Console/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.0",
@@ -980,18 +980,18 @@
           "lib/dotnet/System.Runtime.Numerics.dll": {}
         }
       },
-      "System.Security.Cryptography.Algorithms/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Algorithms/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.0",
           "System.Runtime": "4.0.0",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet5.4/System.Security.Cryptography.Algorithms.dll": {}
         }
       },
-      "System.Security.Cryptography.Cng/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Cng/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -1000,8 +1000,8 @@
           "System.Runtime.Extensions": "4.0.0",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.0"
         },
         "compile": {
@@ -1011,7 +1011,7 @@
           "lib/dotnet5.4/System.Security.Cryptography.Cng.dll": {}
         }
       },
-      "System.Security.Cryptography.Csp/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Csp/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.IO": "4.0.10",
@@ -1021,9 +1021,9 @@
           "System.Runtime.Extensions": "4.0.10",
           "System.Runtime.Handles": "4.0.0",
           "System.Runtime.InteropServices": "4.0.20",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23602",
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Primitives": "4.0.0-rc2-23608",
           "System.Text.Encoding": "4.0.10",
           "System.Threading": "4.0.10"
         },
@@ -1034,7 +1034,7 @@
           "lib/DNXCore50/System.Security.Cryptography.Csp.dll": {}
         }
       },
-      "System.Security.Cryptography.Encoding/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Encoding/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0"
@@ -1043,7 +1043,7 @@
           "ref/dotnet5.4/System.Security.Cryptography.Encoding.dll": {}
         }
       },
-      "System.Security.Cryptography.Primitives/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.Primitives/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.0",
@@ -1061,13 +1061,13 @@
           "lib/dotnet5.4/System.Security.Cryptography.Primitives.dll": {}
         }
       },
-      "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23602": {
+      "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23608": {
         "type": "package",
         "dependencies": {
           "System.Runtime": "4.0.0",
           "System.Runtime.Handles": "4.0.0",
-          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23602",
-          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23602"
+          "System.Security.Cryptography.Algorithms": "4.0.0-rc2-23608",
+          "System.Security.Cryptography.Encoding": "4.0.0-rc2-23608"
         },
         "compile": {
           "ref/dotnet5.4/System.Security.Cryptography.X509Certificates.dll": {}
@@ -1139,53 +1139,53 @@
     }
   },
   "libraries": {
-    "runtime.win7.System.Console/4.0.0-rc2-23602": {
+    "runtime.win7.System.Console/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "r5xii0qUnbk/Xnw1Bua3BvbSk+Vb4HzRh5n+MplmUicEzNP3JhNs8gy5/w3SilNY9aJ8j9iVg6u5XZ6UDFPZcQ==",
+      "sha512": "T8iMm8KDnNS91L9o4oNDCr+4mG0ymE3L3UrBbdJKuTJORuAtqIG3J8AS/tSVDeKIvOAM50VYIqpdLUp4EkPsuw==",
       "files": [
         "ref/dotnet/_._",
-        "runtime.win7.System.Console.4.0.0-rc2-23602.nupkg",
-        "runtime.win7.System.Console.4.0.0-rc2-23602.nupkg.sha512",
+        "runtime.win7.System.Console.4.0.0-rc2-23608.nupkg",
+        "runtime.win7.System.Console.4.0.0-rc2-23608.nupkg.sha512",
         "runtime.win7.System.Console.nuspec",
         "runtimes/win7/lib/dotnet5.4/System.Console.dll",
         "runtimes/win7/lib/net/_._"
       ]
     },
-    "runtime.win7.System.Security.Cryptography.Algorithms/4.0.0-rc2-23602": {
+    "runtime.win7.System.Security.Cryptography.Algorithms/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "w2E1NnI+Viempp/H4zMaOsqMPfvw7Eroyx2kuXZjjcXXxWzdf7sMuHXhg2TQq1B9seUYS0l77lSZ/K+av+lGHg==",
+      "sha512": "7SXhzu45J/61dvpYE8Qydl7+xTnjfEg7VvKiOfFbcwb9+vfqCVtGgUpMdiZDQV2pSfW6sLBYOxXflrHuBoMpyQ==",
       "files": [
         "ref/dotnet/_._",
-        "runtime.win7.System.Security.Cryptography.Algorithms.4.0.0-rc2-23602.nupkg",
-        "runtime.win7.System.Security.Cryptography.Algorithms.4.0.0-rc2-23602.nupkg.sha512",
+        "runtime.win7.System.Security.Cryptography.Algorithms.4.0.0-rc2-23608.nupkg",
+        "runtime.win7.System.Security.Cryptography.Algorithms.4.0.0-rc2-23608.nupkg.sha512",
         "runtime.win7.System.Security.Cryptography.Algorithms.nuspec",
         "runtimes/win7/lib/dotnet5.4/System.Security.Cryptography.Algorithms.dll",
         "runtimes/win7/lib/net/_._"
       ]
     },
-    "runtime.win7.System.Security.Cryptography.Encoding/4.0.0-rc2-23602": {
+    "runtime.win7.System.Security.Cryptography.Encoding/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "L1VbULwMCsh82yFVYgF/R1FFVXluIe6oa7dezLOk8wBSYE4ktd5vSK+9AvZEAclbo+K9fjt15PSHAZxgv6qdGQ==",
+      "sha512": "hLSEiuHKA2+tzg/MJnQhJNh/n4rQm71f76NQ1zhPwPHxsF+krW20a2dN+rBzUnUCce+K6t4xfPVgnsCwe226BQ==",
       "files": [
         "ref/dotnet/_._",
-        "runtime.win7.System.Security.Cryptography.Encoding.4.0.0-rc2-23602.nupkg",
-        "runtime.win7.System.Security.Cryptography.Encoding.4.0.0-rc2-23602.nupkg.sha512",
+        "runtime.win7.System.Security.Cryptography.Encoding.4.0.0-rc2-23608.nupkg",
+        "runtime.win7.System.Security.Cryptography.Encoding.4.0.0-rc2-23608.nupkg.sha512",
         "runtime.win7.System.Security.Cryptography.Encoding.nuspec",
         "runtimes/win7/lib/dotnet5.4/System.Security.Cryptography.Encoding.dll",
         "runtimes/win7/lib/net/_._"
       ]
     },
-    "runtime.win7.System.Security.Cryptography.X509Certificates/4.0.0-rc2-23602": {
+    "runtime.win7.System.Security.Cryptography.X509Certificates/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "TJ0Ozi3Y6dnlXIbur+cIDZlSXtOD0pC4l/u12eL72K/joDYCaU5NysGOMF1ysKUcSJTuy6gJkK3rndPNGY0p6w==",
+      "sha512": "G2oIiWCMvWjwk2w7VqUC+bAAh2hnQtbIq8c/tvwWNEZS9xnJDtn4IN5x0INFnhPTuQqJopEEP0nzFamPrcmGUw==",
       "files": [
         "ref/dotnet/_._",
-        "runtime.win7.System.Security.Cryptography.X509Certificates.4.0.0-rc2-23602.nupkg",
-        "runtime.win7.System.Security.Cryptography.X509Certificates.4.0.0-rc2-23602.nupkg.sha512",
+        "runtime.win7.System.Security.Cryptography.X509Certificates.4.0.0-rc2-23608.nupkg",
+        "runtime.win7.System.Security.Cryptography.X509Certificates.4.0.0-rc2-23608.nupkg.sha512",
         "runtime.win7.System.Security.Cryptography.X509Certificates.nuspec",
         "runtimes/win7/lib/dotnet5.4/System.Security.Cryptography.X509Certificates.dll",
         "runtimes/win7/lib/net/_._",
@@ -1272,10 +1272,10 @@
         "System.Collections.Concurrent.nuspec"
       ]
     },
-    "System.Console/4.0.0-rc2-23602": {
+    "System.Console/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "jVizJRomdFw1HxKjYghuDmb6SVIBBwEgzULbuNYp2oRaE+F9BuieujkmPHwCoCsk+HJY914dEmQdq4BxPMOCFQ==",
+      "sha512": "v3kSxXQ7+3XTjy7yEgiezgYRKrTZZEmoL7Fc82MNDyInmqkACZE9ZToKRG5UJRirTRhdz9p1GCvjnVc/zX9xmA==",
       "files": [
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -1299,8 +1299,8 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtime.json",
-        "System.Console.4.0.0-rc2-23602.nupkg",
-        "System.Console.4.0.0-rc2-23602.nupkg.sha512",
+        "System.Console.4.0.0-rc2-23608.nupkg",
+        "System.Console.4.0.0-rc2-23608.nupkg.sha512",
         "System.Console.nuspec"
       ]
     },
@@ -1991,10 +1991,10 @@
         "System.Runtime.Numerics.nuspec"
       ]
     },
-    "System.Security.Cryptography.Algorithms/4.0.0-rc2-23602": {
+    "System.Security.Cryptography.Algorithms/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "B5ybcBlIzGucB57AwesDIf+W2EkLAJ2maEM+jXX12ewvoC2dQmlxZNDhTpeOGew0Jvd15O3Uw4Ig8VriRu4kCg==",
+      "sha512": "MtCVOI5QhKnbZpRcFl6NLE51KE/xlgqUJxp/zEg3tgM9ZTOBbhrlgc4i1XBN21/TgAhtMRhSWSIACvXMOzVN7Q==",
       "files": [
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -2008,29 +2008,29 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtime.json",
-        "System.Security.Cryptography.Algorithms.4.0.0-rc2-23602.nupkg",
-        "System.Security.Cryptography.Algorithms.4.0.0-rc2-23602.nupkg.sha512",
+        "System.Security.Cryptography.Algorithms.4.0.0-rc2-23608.nupkg",
+        "System.Security.Cryptography.Algorithms.4.0.0-rc2-23608.nupkg.sha512",
         "System.Security.Cryptography.Algorithms.nuspec"
       ]
     },
-    "System.Security.Cryptography.Cng/4.0.0-rc2-23602": {
+    "System.Security.Cryptography.Cng/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "yCEascPaIARKsqGMaST2p9Irju6wdcW4j7Na4vDVQQFZqIMT4W2TlLZxuMIPgmyC5CYKQZV/XhuS9slnRQWkQw==",
+      "sha512": "GhXgA6fLdISrSUfMPXTIBxcXt3hHiSv6CWngrugHcZEPdmHkOW3aQkiR39mtrriXvTdddXaDtSTjX2qZi2pAyg==",
       "files": [
         "lib/dotnet5.4/System.Security.Cryptography.Cng.dll",
         "lib/net46/System.Security.Cryptography.Cng.dll",
         "ref/dotnet5.4/System.Security.Cryptography.Cng.dll",
         "ref/net46/System.Security.Cryptography.Cng.dll",
-        "System.Security.Cryptography.Cng.4.0.0-rc2-23602.nupkg",
-        "System.Security.Cryptography.Cng.4.0.0-rc2-23602.nupkg.sha512",
+        "System.Security.Cryptography.Cng.4.0.0-rc2-23608.nupkg",
+        "System.Security.Cryptography.Cng.4.0.0-rc2-23608.nupkg.sha512",
         "System.Security.Cryptography.Cng.nuspec"
       ]
     },
-    "System.Security.Cryptography.Csp/4.0.0-rc2-23602": {
+    "System.Security.Cryptography.Csp/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "KbVaPutN+QUwjCGQEKj4V67DyHXGUgdSb0xkHfv+jYBk+bOiH1FWlBepZhAjUBLrNxw0GMAwjPx62XM9ok6mww==",
+      "sha512": "vomn0ckxgFCicEtx+q5fqb022maaqBqgA2bzuDgT8ZcJVmN5Rec29DAnHoWfakIufuCwYg+TJ3nj2pwjniPcnA==",
       "files": [
         "lib/DNXCore50/System.Security.Cryptography.Csp.dll",
         "lib/MonoAndroid10/_._",
@@ -2044,15 +2044,15 @@
         "ref/net46/System.Security.Cryptography.Csp.dll",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
-        "System.Security.Cryptography.Csp.4.0.0-rc2-23602.nupkg",
-        "System.Security.Cryptography.Csp.4.0.0-rc2-23602.nupkg.sha512",
+        "System.Security.Cryptography.Csp.4.0.0-rc2-23608.nupkg",
+        "System.Security.Cryptography.Csp.4.0.0-rc2-23608.nupkg.sha512",
         "System.Security.Cryptography.Csp.nuspec"
       ]
     },
-    "System.Security.Cryptography.Encoding/4.0.0-rc2-23602": {
+    "System.Security.Cryptography.Encoding/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "m4RCQ8rbP6rCYsBeObMjZjs7EhtR3kvCX5BpfQOlro1nIp6vpMMVSJUw3zYYUMNwtPl9F9h3l1L0O9aWG6k8ag==",
+      "sha512": "Ls06OjqkMZf9JwhcceT9qh7tQzKYZ3pL5AV7OWB4JZWv58ik8uxWPVv+PNcwSlTniIOH43FM9y3jEK62LKxZBw==",
       "files": [
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -2076,15 +2076,15 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtime.json",
-        "System.Security.Cryptography.Encoding.4.0.0-rc2-23602.nupkg",
-        "System.Security.Cryptography.Encoding.4.0.0-rc2-23602.nupkg.sha512",
+        "System.Security.Cryptography.Encoding.4.0.0-rc2-23608.nupkg",
+        "System.Security.Cryptography.Encoding.4.0.0-rc2-23608.nupkg.sha512",
         "System.Security.Cryptography.Encoding.nuspec"
       ]
     },
-    "System.Security.Cryptography.Primitives/4.0.0-rc2-23602": {
+    "System.Security.Cryptography.Primitives/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "Q8lug8Zb0b7mcU85jlRDZw7qx1WM+IK3VAwbCDQtDN+H97zoMBSJ8vHCdGSUCdYiJm9n93JBwa003pvLiojibQ==",
+      "sha512": "6xgsJiWzfhoG8dBPu7ic8m+Hc50ntl+A+hH3FdYHqeA7LwAMsp4AcZZFCyGFoy/E+OWfmgKARepYOKrT4Ync3w==",
       "files": [
         "lib/dotnet5.4/System.Security.Cryptography.Primitives.dll",
         "lib/MonoAndroid10/_._",
@@ -2098,15 +2098,15 @@
         "ref/net46/System.Security.Cryptography.Primitives.dll",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
-        "System.Security.Cryptography.Primitives.4.0.0-rc2-23602.nupkg",
-        "System.Security.Cryptography.Primitives.4.0.0-rc2-23602.nupkg.sha512",
+        "System.Security.Cryptography.Primitives.4.0.0-rc2-23608.nupkg",
+        "System.Security.Cryptography.Primitives.4.0.0-rc2-23608.nupkg.sha512",
         "System.Security.Cryptography.Primitives.nuspec"
       ]
     },
-    "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23602": {
+    "System.Security.Cryptography.X509Certificates/4.0.0-rc2-23608": {
       "type": "package",
       "serviceable": true,
-      "sha512": "6FBF2NdP7r6QGWhhriUj+gZSBf9MovI8Zqh+SDrqGD7v2yROoY0PbhidXKy0xzjYC93LiQUN/BInNY46eyX0vA==",
+      "sha512": "wTomTW3MQkI51whJl2O8ibvRthtaGnAgUND+wrtTAp4BlHQAu921wrq7kgyHtTqS/00UDcUEXGDgqvnup+xRIg==",
       "files": [
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -2130,8 +2130,8 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "runtime.json",
-        "System.Security.Cryptography.X509Certificates.4.0.0-rc2-23602.nupkg",
-        "System.Security.Cryptography.X509Certificates.4.0.0-rc2-23602.nupkg.sha512",
+        "System.Security.Cryptography.X509Certificates.4.0.0-rc2-23608.nupkg",
+        "System.Security.Cryptography.X509Certificates.4.0.0-rc2-23608.nupkg.sha512",
         "System.Security.Cryptography.X509Certificates.nuspec"
       ]
     },
@@ -2441,9 +2441,9 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "System.Console >= 4.0.0-rc2-23602",
-      "System.Runtime.Extensions >= 4.0.0-rc2-23602",
-      "System.Security.Cryptography.X509Certificates >= 4.0.0-rc2-23602"
+      "System.Console >= 4.0.0-rc2-23608",
+      "System.Runtime.Extensions >= 4.0.0-rc2-23608",
+      "System.Security.Cryptography.X509Certificates >= 4.0.0-rc2-23608"
     ],
     "DNXCore,Version=v5.0": []
   }
