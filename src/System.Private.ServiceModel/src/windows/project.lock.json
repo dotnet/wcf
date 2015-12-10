@@ -897,6 +897,31 @@
       }
     },
     ".NETCore,Version=v5.0": {
+      "Microsoft.TargetingPack.Private.NetNative/1.0.0-rc2-23607": {
+        "type": "package",
+        "compile": {
+          "ref/netcore50/System.Private.CompatQuirks.dll": {},
+          "ref/netcore50/System.Private.CoreLib.dll": {},
+          "ref/netcore50/System.Private.CoreLib.DynamicDelegate.dll": {},
+          "ref/netcore50/System.Private.CoreLib.InteropServices.dll": {},
+          "ref/netcore50/System.Private.DataContractSerialization.dll": {},
+          "ref/netcore50/System.Private.DeveloperExperience.AppX.dll": {},
+          "ref/netcore50/System.Private.DeveloperExperience.Console.dll": {},
+          "ref/netcore50/System.Private.Interop.dll": {},
+          "ref/netcore50/System.Private.PortableServiceModelThunks.dll": {},
+          "ref/netcore50/System.Private.PortableThunks.dll": {},
+          "ref/netcore50/System.Private.Reflection.Core.dll": {},
+          "ref/netcore50/System.Private.Reflection.dll": {},
+          "ref/netcore50/System.Private.Reflection.Execution.dll": {},
+          "ref/netcore50/System.Private.Reflection.Metadata.dll": {},
+          "ref/netcore50/System.Private.ServiceModel.dll": {},
+          "ref/netcore50/System.Private.StackTraceGenerator.dll": {},
+          "ref/netcore50/System.Private.Threading.dll": {},
+          "ref/netcore50/System.Private.TypeLoader.dll": {},
+          "ref/netcore50/System.Private.WinRTInterop.CoreLib.dll": {},
+          "ref/netcore50/windows.winmd": {}
+        }
+      },
       "Microsoft.Win32.Primitives/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -4568,6 +4593,31 @@
       }
     },
     ".NETCore,Version=v5.0/win7-x86": {
+      "Microsoft.TargetingPack.Private.NetNative/1.0.0-rc2-23607": {
+        "type": "package",
+        "compile": {
+          "ref/netcore50/System.Private.CompatQuirks.dll": {},
+          "ref/netcore50/System.Private.CoreLib.dll": {},
+          "ref/netcore50/System.Private.CoreLib.DynamicDelegate.dll": {},
+          "ref/netcore50/System.Private.CoreLib.InteropServices.dll": {},
+          "ref/netcore50/System.Private.DataContractSerialization.dll": {},
+          "ref/netcore50/System.Private.DeveloperExperience.AppX.dll": {},
+          "ref/netcore50/System.Private.DeveloperExperience.Console.dll": {},
+          "ref/netcore50/System.Private.Interop.dll": {},
+          "ref/netcore50/System.Private.PortableServiceModelThunks.dll": {},
+          "ref/netcore50/System.Private.PortableThunks.dll": {},
+          "ref/netcore50/System.Private.Reflection.Core.dll": {},
+          "ref/netcore50/System.Private.Reflection.dll": {},
+          "ref/netcore50/System.Private.Reflection.Execution.dll": {},
+          "ref/netcore50/System.Private.Reflection.Metadata.dll": {},
+          "ref/netcore50/System.Private.ServiceModel.dll": {},
+          "ref/netcore50/System.Private.StackTraceGenerator.dll": {},
+          "ref/netcore50/System.Private.Threading.dll": {},
+          "ref/netcore50/System.Private.TypeLoader.dll": {},
+          "ref/netcore50/System.Private.WinRTInterop.CoreLib.dll": {},
+          "ref/netcore50/windows.winmd": {}
+        }
+      },
       "Microsoft.Win32.Primitives/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -5838,6 +5888,31 @@
       }
     },
     ".NETCore,Version=v5.0/win7-x64": {
+      "Microsoft.TargetingPack.Private.NetNative/1.0.0-rc2-23607": {
+        "type": "package",
+        "compile": {
+          "ref/netcore50/System.Private.CompatQuirks.dll": {},
+          "ref/netcore50/System.Private.CoreLib.dll": {},
+          "ref/netcore50/System.Private.CoreLib.DynamicDelegate.dll": {},
+          "ref/netcore50/System.Private.CoreLib.InteropServices.dll": {},
+          "ref/netcore50/System.Private.DataContractSerialization.dll": {},
+          "ref/netcore50/System.Private.DeveloperExperience.AppX.dll": {},
+          "ref/netcore50/System.Private.DeveloperExperience.Console.dll": {},
+          "ref/netcore50/System.Private.Interop.dll": {},
+          "ref/netcore50/System.Private.PortableServiceModelThunks.dll": {},
+          "ref/netcore50/System.Private.PortableThunks.dll": {},
+          "ref/netcore50/System.Private.Reflection.Core.dll": {},
+          "ref/netcore50/System.Private.Reflection.dll": {},
+          "ref/netcore50/System.Private.Reflection.Execution.dll": {},
+          "ref/netcore50/System.Private.Reflection.Metadata.dll": {},
+          "ref/netcore50/System.Private.ServiceModel.dll": {},
+          "ref/netcore50/System.Private.StackTraceGenerator.dll": {},
+          "ref/netcore50/System.Private.Threading.dll": {},
+          "ref/netcore50/System.Private.TypeLoader.dll": {},
+          "ref/netcore50/System.Private.WinRTInterop.CoreLib.dll": {},
+          "ref/netcore50/windows.winmd": {}
+        }
+      },
       "Microsoft.Win32.Primitives/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -7109,6 +7184,36 @@
     }
   },
   "libraries": {
+    "Microsoft.TargetingPack.Private.NetNative/1.0.0-rc2-23607": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "R3tmtT8HVBG9eKcnlGv2BzGxqLnvRvsMJD1yHe+3K0Rjazp6bQ+/bucWljHoxW/r7KoIVHJAzXyd18e36sHVNA==",
+      "files": [
+        "Microsoft.TargetingPack.Private.NetNative.1.0.0-rc2-23607.nupkg",
+        "Microsoft.TargetingPack.Private.NetNative.1.0.0-rc2-23607.nupkg.sha512",
+        "Microsoft.TargetingPack.Private.NetNative.nuspec",
+        "ref/netcore50/System.Private.CompatQuirks.dll",
+        "ref/netcore50/System.Private.CoreLib.dll",
+        "ref/netcore50/System.Private.CoreLib.DynamicDelegate.dll",
+        "ref/netcore50/System.Private.CoreLib.InteropServices.dll",
+        "ref/netcore50/System.Private.DataContractSerialization.dll",
+        "ref/netcore50/System.Private.DeveloperExperience.AppX.dll",
+        "ref/netcore50/System.Private.DeveloperExperience.Console.dll",
+        "ref/netcore50/System.Private.Interop.dll",
+        "ref/netcore50/System.Private.PortableServiceModelThunks.dll",
+        "ref/netcore50/System.Private.PortableThunks.dll",
+        "ref/netcore50/System.Private.Reflection.Core.dll",
+        "ref/netcore50/System.Private.Reflection.dll",
+        "ref/netcore50/System.Private.Reflection.Execution.dll",
+        "ref/netcore50/System.Private.Reflection.Metadata.dll",
+        "ref/netcore50/System.Private.ServiceModel.dll",
+        "ref/netcore50/System.Private.StackTraceGenerator.dll",
+        "ref/netcore50/System.Private.Threading.dll",
+        "ref/netcore50/System.Private.TypeLoader.dll",
+        "ref/netcore50/System.Private.WinRTInterop.CoreLib.dll",
+        "ref/netcore50/windows.winmd"
+      ]
+    },
     "Microsoft.Win32.Primitives/4.0.0": {
       "type": "package",
       "serviceable": true,
@@ -10461,7 +10566,8 @@
       "System.Security.Principal.Windows >= 4.0.0-rc2-23608"
     ],
     ".NETCore,Version=v5.0": [
-      "System.Runtime.WindowsRuntime >= 4.0.11-rc2-23608"
+      "System.Runtime.WindowsRuntime >= 4.0.11-rc2-23608",
+      "Microsoft.TargetingPack.Private.NetNative >= 1.0.0-rc2-23607"
     ]
   }
 }
