@@ -12,48 +12,44 @@ Packages released
 
 Supported features
 -----------
-:white_check_mark: -- Supported with no known issues  
-:warning: --  Known issues or not fully tested   
-:x: -- Not supported  
-
-
-:question: -- unknown and requires investigation
+:white_check_mark: -- Works with no known major issues  
+:warning: --  Partially works with known issues or only partially tested   
+:x: -- Does not work  
+:question: -- Not yet tested
 
 
 
 |Category | Feature | UWP   |Windows |Linux |Mac OS X  |
 |-----|---------|------|--------|------|----------|
-|Bindings|BasicHttpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||CustomBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||NetHttpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||NetTcpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Transports|Http|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||Https|:question: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/438)| :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||Tcp|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||WebSockets|:warning: [more...](https://github.com/dotnet/wcf/issues/404) | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/420) | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Channel types|Request/Reply|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||Duplex|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Encodings|Text|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||Binary|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Transfer mode|Buffered, sync & async|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||Streamed, sync & async|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|MessageVersion|SOAP 1.1 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-||SOAP 1.2 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Contracts | DataContract | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | XmlSerializer | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | MessageFormat | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | FaultContract | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Security | None | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | Transport | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | Client certificates | :x: | :white_check_mark: | :warning: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Authentication | Basic | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | Digest | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | NTLM | :question: | :white_check_mark: | :x: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | Kerberos | :question: | :question: | :x: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Client types | ChannelFactory\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | ChannelBase\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-|Extensibility | IClientMessageInspector | :white_check_mark: | :white_check_mark: | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-| | IClientMessageFormatter | :warning: [more](https://github.com/dotnet/wcf/issues/535 ) | :warning: [more](https://github.com/dotnet/wcf/issues/535 ) | :warning: [more](https://github.com/dotnet/wcf/issues/535 ) | :warning: [more...](https://github.com/dotnet/wcf/issues/534) |
-
-
-
+|Bindings|BasicHttpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||CustomBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||NetHttpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||NetTcpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+|Transports|Http|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||Https|:warning: [more...](https://github.com/dotnet/wcf/issues/470) | :white_check_mark: | :warning: [more...](https://github.com/dotnet/wcf/issues/438)| :question: |
+||Tcp|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||WebSockets|:warning: [more...](https://github.com/dotnet/wcf/issues/404) | :warning: [more...](https://github.com/dotnet/wcf/issues/468)| :warning: [more...](https://github.com/dotnet/wcf/issues/420) | :question: |
+|Channel types|Request/Reply|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||Duplex|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+|Encodings|Text|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||Binary|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+|Transfer mode|Buffered, sync & async|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||Streamed, sync & async|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+|MessageVersion|SOAP 1.1 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+||SOAP 1.2 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+|Contracts | DataContract | :warning:[more...](https://github.com/dotnet/wcf/issues/325) | :white_check_mark: | :white_check_mark: | :question: |
+| | XmlSerializer | :warning:[more...](https://github.com/dotnet/wcf/issues/555) | :white_check_mark: | :white_check_mark: | :question: |
+| | MessageFormat | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+| | FaultContract | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+|Security | None | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+| | Transport | :warning:[more...](https://github.com/dotnet/wcf/issues/458) | :warning:[more...](https://github.com/dotnet/wcf/issues/458)  | :warning: [more...](https://github.com/dotnet/wcf/issues/458) | :question: |
+| | Message | :x: | :x: | :x: | :x: |
+| | Client certificates | :x: | :x: | :x: | :question:|
+|Authentication | Basic | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+| | Digest | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+| | NTLM | :warning: [more...](https://github.com/dotnet/wcf/issues/568) | :white_check_mark: | :x: | :question: |
+| | Kerberos | :warning:[more...](https://github.com/dotnet/wcf/issues/568) | :white_check_mark: | :x: | :question: |
+|Client types | ChannelFactory\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+| | ChannelBase\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+|Extensibility | IClientMessageInspector | :white_check_mark: | :white_check_mark: | :white_check_mark: | :question: |
+| | IClientMessageFormatter | :warning: [more](https://github.com/dotnet/wcf/issues/535 ) | :warning: [more](https://github.com/dotnet/wcf/issues/535 ) | :warning: [more](https://github.com/dotnet/wcf/issues/535 ) | :question: |
