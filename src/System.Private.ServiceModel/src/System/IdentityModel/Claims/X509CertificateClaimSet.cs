@@ -171,11 +171,23 @@ namespace System.IdentityModel.Claims
             if (!string.IsNullOrEmpty(value))
                 claims.Add(Claim.CreateX500DistinguishedNameClaim(_certificate.SubjectName));
 
-            // Since a SAN can have multiple DNS entries
-            string[] entries = GetDnsFromExtensions(_certificate);
-            for (int i = 0; i < entries.Length; ++i)
+            // A SAN field can have multiple DNS names
+            string[] dnsEntries = GetDnsFromExtensions(_certificate);
+            if (dnsEntries.Length > 0)
             {
-                claims.Add(Claim.CreateDnsClaim(entries[i]));
+                for (int i = 0; i < dnsEntries.Length; ++i)
+                {
+                    claims.Add(Claim.CreateDnsClaim(dnsEntries[i]));
+                }
+            }
+            else
+            {
+                // If no SANs found in certificate, fall back to looking at the CN
+                value = _certificate.GetNameInfo(X509NameType.DnsName, false);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    claims.Add(Claim.CreateDnsClaim(value));
+                }
             }
 
             value = _certificate.GetNameInfo(X509NameType.SimpleName, false);
@@ -245,10 +257,23 @@ namespace System.IdentityModel.Claims
             {
                 if (right == null || Rights.PossessProperty.Equals(right))
                 {
-                    string[] entries = GetDnsFromExtensions(_certificate);
-                    for (int i = 0; i < entries.Length; ++i)
+                    // A SAN field can have multiple DNS names
+                    string[] dnsEntries = GetDnsFromExtensions(_certificate);
+                    if (dnsEntries.Length > 0)
                     {
-                        yield return Claim.CreateDnsClaim(entries[i]);
+                        for (int i = 0; i < dnsEntries.Length; ++i)
+                        {
+                            yield return Claim.CreateDnsClaim(dnsEntries[i]);
+                        }
+                    }
+                    else
+                    {
+                        // If no SANs found in certificate, fall back to looking at the CN
+                        string value = _certificate.GetNameInfo(X509NameType.DnsName, false);
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            yield return Claim.CreateDnsClaim(value);
+                        }
                     }
                 }
             }
