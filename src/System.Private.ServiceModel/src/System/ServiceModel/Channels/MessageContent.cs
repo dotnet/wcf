@@ -13,13 +13,11 @@ using System.Linq;
 
 namespace System.ServiceModel.Channels
 {
-    public abstract class MessageContent : HttpContent
+    internal abstract class MessageContent : HttpContent
     {
-#pragma warning disable 3008	// not CLS-compliant
         protected Message _message;
         protected MessageEncoder _messageEncoder;
         protected Stream _stream = null;
-#pragma warning restore 3008	// not CLS-compliant
         private bool _disposed;
 
         public MessageContent(Message message, MessageEncoder messageEncoder)
@@ -165,7 +163,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public class StreamedMessageContent : MessageContent
+    internal class StreamedMessageContent : MessageContent
     {
         // Using the BufferedWriteStream default buffer size which is 4K. HttpWebRequest uses a 4K buffer internally,
         // so using the same size to have the same performance characteristics.
