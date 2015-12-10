@@ -64,7 +64,7 @@
        "dnxcore50": { 
          "dependencies": {
            "System.Net.Http.WinHttpHandler": "4.0.0-rc2-23608",
-           "System.Net.Security": "4.0.0-rc2-*"
+           "System.Net.Security": "4.0.0-rc2-23608"
 		 }
 	   }
     },

@@ -49,7 +49,7 @@
     "dnxcore50": {
       "dependencies": {
         "System.Net.NameResolution": "4.0.0-rc2-23608",
-        "System.Net.Security": "4.0.0-rc2-*",
+        "System.Net.Security": "4.0.0-rc2-23608",
         "System.Net.Sockets": "4.1.0-rc2-23608",
         "System.Security.Principal.Windows": "4.0.0-rc2-23608"
       }
