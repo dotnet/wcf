@@ -88,6 +88,10 @@ public interface IWcfServiceXmlGenerated
     [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingXmlSerializer"),
     XmlSerializerFormat]
     XmlCompositeType GetDataUsingXmlSerializer(XmlCompositeType composite);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlVeryComplexType"),
+    XmlSerializerFormat]
+    XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex);
 }
 
 
@@ -424,4 +428,13 @@ public interface IServiceContractComplexRefService
     IAsyncResult BeginRequest(string stringRequest, ref ComplexCompositeType complexResponse, AsyncCallback callback, object asyncState);
 
     void EndRequest(ref ComplexCompositeType complexResponse, IAsyncResult result);
+}
+
+[ServiceContract]
+public interface ILoginService
+{
+
+    [OperationContract(Action = "http://www.contoso.com/MtcRequest/loginRequest", ReplyAction = "http://www.contoso.com/MtcRequest/loginResponse")]
+    [XmlSerializerFormat]
+    LoginResponse Login(LoginRequest request);
 }

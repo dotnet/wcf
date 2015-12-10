@@ -107,4 +107,76 @@ public static class XmlSerializerFormatTests
         Assert.Equal("message", response.StringValue);
         Assert.True(!input.BoolValue);
     }
+
+    [Fact]
+    [OuterLoop]
+    public static void XmlSerializerFormat_MessageContract_LoginService()
+    {
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(s_basicEndpointAddress);
+        ChannelFactory<ILoginService> factory = new ChannelFactory<ILoginService>(binding, endpointAddress);
+        ILoginService serviceProxy = factory.CreateChannel();
+        
+        var request = new LoginRequest();
+        request.clientId = "1";
+        request.user = "2";
+        request.pwd = "3";
+
+        try
+        {
+            // *** EXECUTE *** \\
+            var response = serviceProxy.Login(request);
+
+            // *** VALIDATE *** \\
+            Assert.True(response != null);
+            Assert.Equal("123", response.@return);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    // The test is for the case where a paramerter type contains a field 
+    // never used.The test is to make sure the reflection info of the type 
+    // of the unused field would be kept by Net Native toolchain.
+    public static void XmlSerializerFormat_ComplexType_With_FieldType_Never_Used()
+    {
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(s_basicEndpointAddress);
+        ChannelFactory<IWcfServiceXmlGenerated> factory = new ChannelFactory<IWcfServiceXmlGenerated>(binding, endpointAddress);
+        IWcfServiceXmlGenerated serviceProxy = factory.CreateChannel();
+
+        var complex = new XmlVeryComplexType();
+        complex.Id = 1;
+
+        try
+        {
+            // *** EXECUTE *** \\
+            var response = serviceProxy.EchoXmlVeryComplexType(complex);
+
+            // *** VALIDATE *** \\
+            Assert.True(response != null);
+            Assert.True(response.NonInstantiatedField == null);
+            Assert.Equal(complex.Id, response.Id);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }
