@@ -67,6 +67,10 @@ namespace WcfService
         [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingXmlSerializer"), XmlSerializerFormat]
         XmlCompositeType GetDataUsingXmlSerializer(XmlCompositeType composite);
 
+        [OperationContract(Action = "http://www.contoso.com/MtcRequest/loginRequest", ReplyAction = "http://www.contoso.com/MtcRequest/loginResponse")]
+        [XmlSerializerFormat]
+        LoginResponse Login(LoginRequest request);
+
         [OperationContract]
         Stream GetStreamFromString(string data);
 
@@ -79,5 +83,19 @@ namespace WcfService
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoMessageParameter")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "result")]
         string EchoMessageParameter(string name);
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoItems")]
+        [ServiceKnownType(typeof(Widget0))]
+        [ServiceKnownType(typeof(Widget1))]
+        object[] EchoItems(object[] objects);
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoItemsXml")]
+        [ServiceKnownType(typeof(Widget2))]
+        [ServiceKnownType(typeof(Widget3))]
+        [XmlSerializerFormat]
+        object[] EchoItems_Xml(object[] objects);
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlVeryComplexType"), XmlSerializerFormat]
+        XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex);
     }
 }

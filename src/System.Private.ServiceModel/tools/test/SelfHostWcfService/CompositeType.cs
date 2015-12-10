@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Runtime.Serialization;
+using System.ServiceModel;
 
 namespace WcfService
 {
@@ -64,4 +65,115 @@ namespace WcfService
             set { _stringValue = value; }
         }
     }
+}
+
+[MessageContract(WrapperName = "login", WrapperNamespace = "http://www.contoso.com/", IsWrapped = true)]
+public partial class LoginRequest
+{
+
+    [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 0)]
+    [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string clientId;
+
+    [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 1)]
+    [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string user;
+
+    [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 2)]
+    [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string pwd;
+
+    public LoginRequest()
+    {
+    }
+
+    public LoginRequest(string clientId, string user, string pwd)
+    {
+        this.clientId = clientId;
+        this.user = user;
+        this.pwd = pwd;
+    }
+}
+
+[MessageContract(WrapperName = "loginResponse", WrapperNamespace = "http://www.contoso.com/", IsWrapped = true)]
+public partial class LoginResponse
+{
+
+    [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 0)]
+    [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string @return;
+
+    public LoginResponse()
+    {
+    }
+
+    public LoginResponse(string @return)
+    {
+        this.@return = @return;
+    }
+}
+
+[DataContract()]
+public class Widget
+{
+    [DataMember]
+    public string Id;
+    [DataMember]
+    public string Catalog;
+}
+
+[DataContract()]
+public class Widget0 : Widget
+{
+}
+
+[DataContract()]
+public class Widget1 : Widget
+{
+}
+
+[DataContract()]
+public class Widget2 : Widget
+{
+}
+
+[DataContract()]
+public class Widget3 : Widget
+{
+}
+
+public class XmlVeryComplexType
+{
+    private int _id;
+    private NonInstantiatedType _nonInstantiatedField = null;
+
+    public NonInstantiatedType NonInstantiatedField
+    {
+        get
+        {
+            return _nonInstantiatedField;
+        }
+        set
+        {
+            _nonInstantiatedField = value;
+        }
+    }
+
+    public int Id
+    {
+        get
+        {
+            return _id;
+        }
+
+        set
+        {
+            _id = value;
+        }
+    }
+}
+
+public class NonInstantiatedType
+{
+
 }

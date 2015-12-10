@@ -236,6 +236,28 @@ namespace WcfService
             composite.StringValue = composite.StringValue;
             return composite;
         }
+        
+        public LoginResponse Login(LoginRequest request)
+        {
+            var response = new LoginResponse();
+            response.@return = request.clientId + request.user + request.pwd;
+            return response;
+        }
+
+        public object[] EchoItems(object[] objects)
+        {
+            return objects;
+        }
+
+        public object[] EchoItems_Xml(object[] objects)
+        {
+            return objects;
+        }
+
+        public XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex)
+        {
+            return complex;
+        }
 
         public Stream GetStreamFromString(string data)
         {
