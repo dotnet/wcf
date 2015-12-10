@@ -69,12 +69,14 @@ def project = 'dotnet/wcf'
                     Utilities.getFullJobName(project, "linux_${configurationJobName}_bld", isPR)
                 
                 copyArtifacts(linuxBuildName) {
-                    includePatterns('bin/**')
+                    includePatterns('bin/build.pack')
                     buildSelector {
                         buildNumber('${WCF_LINUX_BUILD_NUMBER}')
                     }
                 }
             
+                // Unpack
+                shell("unpacker ./bin/build.pack ./bin")
                 shell("""
 ./run-test.sh --coreclr-bins \${WORKSPACE}/coreclr/bin/Product/Linux.x64.Release \\
 --mscorlib-bins \${WORKSPACE}/coreclr/bin/Product/Linux.x64.Release \\
@@ -129,6 +131,8 @@ def project = 'dotnet/wcf'
             steps {
                 // Use inline replacement
                 batchFile("build.cmd /p:Configuration=${configuration} /p:OSGroup=${os}")
+                // Pack up the results for max efficiency
+                batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
             }
         }
 
@@ -149,6 +153,8 @@ def project = 'dotnet/wcf'
             steps {
                 // Use inline replacement
                 batchFile("build.cmd /p:Configuration=${configuration} /p:OSGroup=${os}")
+                // Pack up the results for max efficiency
+                batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
             }
         }
         
@@ -166,11 +172,11 @@ def project = 'dotnet/wcf'
             
             if (os != 'Linux') {
                 Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
-                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**")
+                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**,bin/build.pack")
             } else {
                 // Include the tests on Linux, since they'll be moved to another
                 // machine for execution
-                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**,bin/tests/**")
+                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**,bin/build.pack")
             }
         }
     }
