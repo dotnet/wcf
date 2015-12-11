@@ -637,6 +637,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
     {
         BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
@@ -687,6 +688,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
     {
         TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
@@ -739,6 +741,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_Duplex_BinaryBuffered()
     {
         BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
@@ -805,6 +808,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
     {
         TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
@@ -871,6 +875,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Http_RequestReply_TextBuffered()
     {
         NetHttpBinding binding = null;
@@ -919,6 +924,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Http_RequestReply_BinaryBuffered_KeepAlive()
     {
         NetHttpBinding binding = null;
@@ -968,6 +974,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Http_Duplex_TextBuffered_KeepAlive()
     {
         NetHttpBinding binding = null;
@@ -1031,6 +1038,7 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Http_Duplex_BinaryBuffered()
     {
         NetHttpBinding binding = null;
