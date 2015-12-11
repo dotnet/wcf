@@ -4,7 +4,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -307,23 +306,24 @@ public static class ServiceContractTests
         }
     }
 
-    // End operation includes keyword "out" on a Complex Type as an arg.
-    // The complex type used must not appear anywhere else in any contracts.
+    // End operation includes keyword "out" on a unique type as an arg.
+    // The unique type used must not appear anywhere else in any contracts in order
+    // test the static analysis logic of the Net Native toolchain.
     [Fact]
     [OuterLoop]
-    public static void ServiceContract_TypedProxy_AsyncEndOperation_ComplexOutArg()
+    public static void ServiceContract_TypedProxy_AsyncEndOperation_UniqueTypeOutArg()
     {
         string message = "Hello";
         BasicHttpBinding binding = null;
-        ChannelFactory<IServiceContractComplexOutService> factory = null;
-        IServiceContractComplexOutService serviceProxy = null;
-        ComplexCompositeType complexType = null;
+        ChannelFactory<IServiceContractUniqueTypeOutService> factory = null;
+        IServiceContractUniqueTypeOutService serviceProxy = null;
+        UniqueType uniqueType = null;
 
         try
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            factory = new ChannelFactory<IServiceContractComplexOutService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncComplexOut_Address));
+            factory = new ChannelFactory<IServiceContractUniqueTypeOutService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncUniqueTypeOut_Address));
             serviceProxy = factory.CreateChannel();
 
             ManualResetEvent waitEvent = new ManualResetEvent(false);
@@ -332,7 +332,7 @@ public static class ServiceContractTests
             // This delegate will execute when the call has completed, which is how we get the result of the call.
             AsyncCallback callback = (iar) =>
             {
-                serviceProxy.EndRequest(out complexType, iar);
+                serviceProxy.EndRequest(out uniqueType, iar);
                 waitEvent.Set();
             };
 
@@ -340,8 +340,8 @@ public static class ServiceContractTests
 
             // *** VALIDATE *** \\
             Assert.True(waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout), "AsyncCallback was not called.");
-            Assert.True((complexType.StringValue == message),
-                String.Format("The value of the 'StringValue' field in the complex type was not as expected. expected {0} but got {1}", message, complexType.StringValue));
+            Assert.True((uniqueType.stringValue == message),
+                String.Format("The 'stringValue' field in the instance of 'UniqueType' was not as expected. expected {0} but got {1}", message, uniqueType.stringValue));
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
@@ -400,23 +400,24 @@ public static class ServiceContractTests
         }
     }
 
-    // End & Begin operations include keyword "ref" on a Complex Type as an arg.
-    // The complex type used must not appear anywhere else in any contracts.
+    // End & Begin operations include keyword "ref" on a unique type as an arg.
+    // The unique type used must not appear anywhere else in any contracts in order
+    // test the static analysis logic of the Net Native toolchain.
     [Fact]
     [OuterLoop]
-    public static void ServiceContract_TypedProxy_AsyncEndOperation_ComplexRefArg()
+    public static void ServiceContract_TypedProxy_AsyncEndOperation_UniqueTypeRefArg()
     {
         string message = "Hello";
         BasicHttpBinding binding = null;
-        ChannelFactory<IServiceContractComplexRefService> factory = null;
-        IServiceContractComplexRefService serviceProxy = null;
-        ComplexCompositeType complexType = null;
+        ChannelFactory<IServiceContractUniqueTypeRefService> factory = null;
+        IServiceContractUniqueTypeRefService serviceProxy = null;
+        UniqueType uniqueType = null;
 
         try
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            factory = new ChannelFactory<IServiceContractComplexRefService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncComplexRef_Address));
+            factory = new ChannelFactory<IServiceContractUniqueTypeRefService>(binding, new EndpointAddress(Endpoints.ServiceContractAsyncUniqueTypeRef_Address));
             serviceProxy = factory.CreateChannel();
 
             ManualResetEvent waitEvent = new ManualResetEvent(false);
@@ -425,16 +426,92 @@ public static class ServiceContractTests
             // This delegate will execute when the call has completed, which is how we get the result of the call.
             AsyncCallback callback = (iar) =>
             {
-                serviceProxy.EndRequest(ref complexType, iar);
+                serviceProxy.EndRequest(ref uniqueType, iar);
                 waitEvent.Set();
             };
 
-            IAsyncResult ar = serviceProxy.BeginRequest(message, ref complexType, callback, null);
+            IAsyncResult ar = serviceProxy.BeginRequest(message, ref uniqueType, callback, null);
 
             // *** VALIDATE *** \\
             Assert.True(waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout), "AsyncCallback was not called.");
-            Assert.True((complexType.StringValue == message),
-                String.Format("The value of the 'StringValue' field in the complex type was not as expected. expected {0} but got {1}", message, complexType.StringValue));
+            Assert.True((uniqueType.stringValue == message),
+                String.Format("The 'stringValue' field in the instance of 'UniqueType' was not as expected. expected {0} but got {1}", message, uniqueType.stringValue));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    // Synchronous operation using the keyword "out" on a unique type as an arg.
+    // The unique type used must not appear anywhere else in any contracts in order
+    // test the static analysis logic of the Net Native toolchain.
+    [Fact]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_SyncOperation_UniqueTypeOutArg()
+    {
+        string message = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IServiceContractUniqueTypeOutSyncService> factory = null;
+        IServiceContractUniqueTypeOutSyncService serviceProxy = null;
+        UniqueType uniqueType = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IServiceContractUniqueTypeOutSyncService>(binding, new EndpointAddress(Endpoints.ServiceContractSyncUniqueTypeOut_Address));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            serviceProxy.Request(message, out uniqueType);
+
+            // *** VALIDATE *** \\
+            Assert.True((uniqueType.stringValue == message),
+                String.Format("The value of the 'stringValue' field in the UniqueType instance was not as expected. expected {0} but got {1}", message, uniqueType.stringValue));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    // Synchronous operation using the keyword "ref" on a unique type as an arg.
+    // The unique type used must not appear anywhere else in any contracts in order
+    // test the static analysis logic of the Net Native toolchain.
+    [Fact]
+    [OuterLoop]
+    public static void ServiceContract_TypedProxy_SyncOperation_UniqueTypeRefArg()
+    {
+        string message = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IServiceContractUniqueTypeRefSyncService> factory = null;
+        IServiceContractUniqueTypeRefSyncService serviceProxy = null;
+        UniqueType uniqueType = new UniqueType();
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IServiceContractUniqueTypeRefSyncService>(binding, new EndpointAddress(Endpoints.ServiceContractSyncUniqueTypeRef_Address));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            serviceProxy.Request(message, ref uniqueType);
+
+            // *** VALIDATE *** \\
+            Assert.True((uniqueType.stringValue == message),
+                String.Format("The value of the 'stringValue' field in the UniqueType instance was not as expected. expected {0} but got {1}", message, uniqueType.stringValue));
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
