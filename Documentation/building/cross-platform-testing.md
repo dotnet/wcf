@@ -11,12 +11,13 @@ together into a test layout and then runs each test project from WCF.
 In order to run tests, you need to build a bunch of different projects.  The
 instructions assume you are building for Linux, but are easily modifiable for OSX.
 
-1. Release or debug CoreCLR.  In Jenkins we use a release CoreCLR build instead
+1. Release or debug [**CoreCLR**](https://github.com/dotnet/coreclr).  In Jenkins we use a release CoreCLR build instead
    of debug CoreCLR since it is much faster at actually running XUnit, but debug
    will work if you have the time.
 
-   From the root of your CoreCLR enlistment on Linux, run `./build.sh Release` in
+   From the root of your CoreCLR enlistment on Linux, run `./build.sh skipmscorlib release` in
    order to build.
+   
    
 2. A corresponding version of mscorlib.dll, built on Windows but targeting
    Linux.  This can be produced by running `build.cmd linuxmscorlib Release` from
@@ -25,18 +26,24 @@ instructions assume you are building for Linux, but are easily modifiable for OS
    you have either a release coreclr and release mscorlib or debug coreclr and
    debug mscorlib.
    
-3. A Linux build of CoreFX.  On Windows, run `build.cmd /p:OSGroup=Linux`.  It
+   
+3. A Linux build of [**CoreFX**](https://github.com/dotnet/corefx).  On Windows, run `build.cmd /p:OSGroup=Linux`.  It
    is okay to build a Debug version of CoreFX and run it on top of a release
    CoreCLR (which is exactly what we do in Jenkins).
    
-4. A Linux build of the native CoreFX components.  On Linux, run ./build.sh from
-   src/Native in your CoreFX enlistment.  Before doing this, ensure the libcurl
+   
+4. A Linux build of the native CoreFX components.  On Linux, run './build.sh native' from
+   root of your CoreFX enlistment.  Before doing this, ensure the libcurl
    libraries are are installed using:
    `apt-get install libcurl4-openssl-dev`
    
-5. A Linux build of WCF.  On Windows, run `build.cmd /p:OSGroup=Linux`. It
+   
+5. A Linux build of [**WCF**](https://github.com/dotnet/wcf).  On Windows, run `build.cmd /p:OSGroup=Linux`. It
    is okay to build a Debug version of WCF and run it on top of a release
-   CoreCLR (which is exactly what we do in Jenkins).  
+   CoreCLR (which is exactly what we do in Jenkins).  You do not need to build
+   the WCF enlistment on Linux -- the binaries build on Windows are enough. But
+   you still want a WCF enlistment on the Linux machine just to have the
+   run-test.sh script.
 
 
 After building all the projects, we need to copy the files we built on Windows
@@ -65,7 +72,7 @@ into the local git bins (I have my Linux enlistments under ~/git):
  rsync -v -r -q ~/Desktop/Share/git/wcf/bin/ ~/git/wcf/bin/ 
 ```
 
-Then, run the tests.  run-test.sh defaults to wanting to use Windows tests (for
+Then, run the tests.  The 'run-test.sh' script defaults to wanting to use Windows tests (for
 historical reasons), so we need to pass an explict path to the tests, as well as
 a path to the location of CoreCLR, CoreFx, WCF and mscorlib.dll.
 
@@ -80,6 +87,8 @@ cd ~/git/wcf
  --wcf-bins ~/git/wcf/bin/Linux.AnyCPU.Debug \
  --wcf-tests ~/git/wcf/bin/tests/Linux.AnyCPU.Debug
 ```
+
+(Depending on your user privileges, you may find you need to run the script as root.  This is done using 'sudo bash ./run-test.sh ...' and providing your password when prompted.
 
 The test run can be restricted to only specific tests using "restrict-proj" like this:
 
@@ -96,16 +105,16 @@ cd ~/git/wcf
 
 To run OuterLoop (aka functional) tests, you need to first start the "Bridge" running on a separate Windows
 machine as described in [The Bridge and cross-machine testing](https://github.com/dotnet/wcf/blob/master/Documentation/cross-machine-test-guide.md).
-On that other machine, start the Bridge and tell it to allow remote access using "/allowRemote".  To lock down the Bridge
+On that other machine (presumably the one where you built the WCF enlistment under Windows), start the Bridge and tell it to allow remote access using "/allowRemote".  To lock down the Bridge
 to accept requests from only the test machine, it is a good idea to use "/remoteAddresses" to specify a single valid client
 IP address. On Linux, use 'ifconfig' to determine the IP address of the machine where the tests will run.
-On the machine where you want the Bridge to run, specify that when starting the Bridge, like this:
+On the machine where you want the Bridge to run, specify that when starting the Bridge.  I use the following command to start the Bridge and to allow communication from only the single IP where Linux is running:
 
 ```
   StartBridge /allowRemote /remoteAddresses:{Linux-test-machine-IP-address}
 ```
 
-Then on the Linux machine where the tests live, run the OuterLoop tests like this:
+Then on the Linux machine where the tests live, run the OuterLoop tests like this.  In my case 'roncain7a' is the name of the Windows machine running the Bridge:
 
 ```
 ./run-test.sh --coreclr-bins ~/git/coreclr/bin/Product/Linux.x64.Release \
@@ -122,3 +131,5 @@ In this case, "bridge-host" identifies the machine where the Bridge is running. 
 not to run tests already marked as "failing" with [ActiveIssue].  If "xunit-args is not specified, it defaults to
 "-notrait category=failing -notrait category=OuterLoop", meaning skip both failing and OuterLoop tests.  We allow OuterLoop
 tests to run by omitting that category from the "-notrait" list in the xunit-args option.
+
+On the Windows machine, the Bridge will appear as a minimized window on the taskbar.  You can click on it to make the window visible and watch it output information as the OuterLoop tests on the Linux machine interact with it. When the tests have completed, type 'exit' in the Bridge console window.
