@@ -19,6 +19,7 @@ namespace System.ServiceModel.Description
     internal class TypeLoader
     {
         private static Type[] s_messageContractMemberAttributes = {
+            typeof(MessageHeaderAttribute),
             typeof(MessageBodyMemberAttribute),
         };
 
@@ -1329,7 +1330,9 @@ namespace System.ServiceModel.Description
                     }
 
 
-                    if (memberInfo.IsDefined(typeof(MessageBodyMemberAttribute), false))
+                    if (memberInfo.IsDefined(typeof(MessageBodyMemberAttribute), false) ||
+                        memberInfo.IsDefined(typeof(MessageHeaderAttribute), false)
+                        )
                     {
                         contractMembers.Add(memberInfo);
                     }
@@ -1355,12 +1358,24 @@ namespace System.ServiceModel.Description
                     memberType = ((FieldInfo)memberInfo).FieldType;
                 }
 
-                bodyPartDescriptionList.Add(CreateMessagePartDescription(memberType,
-                                                                        memberInfo,
-                                                                        new XmlName(memberInfo.Name),
-                                                                        defaultNS,
-                                                                        i,
-                                                                        -1));
+                if (memberInfo.IsDefined(typeof(MessageHeaderAttribute), false))
+                {
+                    headerPartDescriptionList.Add(CreateMessageHeaderDescription(memberType,
+                                                                              memberInfo,
+                                                                              new XmlName(memberInfo.Name),
+                                                                              defaultNS,
+                                                                              i,
+                                                                              -1));
+                }
+                else
+                {
+                    bodyPartDescriptionList.Add(CreateMessagePartDescription(memberType,
+                                                                            memberInfo,
+                                                                            new XmlName(memberInfo.Name),
+                                                                            defaultNS,
+                                                                            i,
+                                                                            -1));
+                }
             }
 
             if (returnAttrProvider != null)
@@ -1422,6 +1437,51 @@ namespace System.ServiceModel.Description
             partDescription.Type = bodyType;
             partDescription.Index = parameterIndex;
             return partDescription;
+        }
+
+        MessageHeaderDescription CreateMessageHeaderDescription(Type headerParameterType,
+                                                                    CustomAttributeProvider attrProvider,
+                                                                    XmlName defaultName,
+                                                                    string defaultNS,
+                                                                    int parameterIndex,
+                                                                    int serializationPosition)
+        {
+            MessageHeaderDescription headerDescription = null;
+            MessageHeaderAttribute headerAttr = ServiceReflector.GetRequiredSingleAttribute<MessageHeaderAttribute>(attrProvider, s_messageContractMemberAttributes);
+            XmlName headerName = headerAttr.IsNameSetExplicit ? new XmlName(headerAttr.Name) : defaultName;
+            string headerNs = headerAttr.IsNamespaceSetExplicit ? headerAttr.Namespace : defaultNS;
+            headerDescription = new MessageHeaderDescription(headerName.EncodedName, headerNs);
+            headerDescription.UniquePartName = defaultName.EncodedName;
+
+            // check on MessageHeaderArrayAttribute is omitted.
+
+            headerDescription.Type = TypedHeaderManager.GetHeaderType(headerParameterType);
+            headerDescription.TypedHeader = (headerParameterType != headerDescription.Type);
+            if (headerDescription.TypedHeader)
+            {
+                if (headerAttr.IsMustUnderstandSet || headerAttr.IsRelaySet || headerAttr.Actor != null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxStaticMessageHeaderPropertiesNotAllowed, defaultName)));
+                }
+            }
+            else
+            {
+                headerDescription.Actor = headerAttr.Actor;
+                headerDescription.MustUnderstand = headerAttr.MustUnderstand;
+                headerDescription.Relay = headerAttr.Relay;
+            }
+            headerDescription.SerializationPosition = serializationPosition;
+            if (headerAttr.HasProtectionLevel)
+            {
+                headerDescription.ProtectionLevel = headerAttr.ProtectionLevel;
+            }
+            if (attrProvider.MemberInfo != null)
+            {
+                headerDescription.MemberInfo = attrProvider.MemberInfo;
+            }
+
+            headerDescription.Index = parameterIndex;
+            return headerDescription;
         }
 
         private MessagePropertyDescription CreateMessagePropertyDescription(CustomAttributeProvider attrProvider,
