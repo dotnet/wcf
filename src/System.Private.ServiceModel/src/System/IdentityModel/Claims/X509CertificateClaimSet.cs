@@ -182,7 +182,7 @@ namespace System.IdentityModel.Claims
             }
             else
             {
-                // If no SANs found in certificate, fall back to looking at the CN
+                // If no SANs found in certificate, fall back to looking for the CN
                 value = _certificate.GetNameInfo(X509NameType.DnsName, false);
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -304,20 +304,31 @@ namespace System.IdentityModel.Claims
                 // Extension is SAN or SAN2
                 if (ext.Oid.Value == "2.5.29.7" || ext.Oid.Value == "2.5.29.17")
                 {
-                    string asnString = ext.Format(true);
-                    if (string.IsNullOrEmpty(asnString))
+                    string asnString = ext.Format(false);
+                    if (string.IsNullOrWhiteSpace(asnString))
                     {
                         return new string[0];
                     }
+                    
+                    // SubjectAlternativeNames might contain something other than a dNSName, 
+                    // so we have to parse through and only use the dNSNames
+                    // <identifier><delimter><value><separator(s)>
 
-                    string[] rawDnsEntries = asnString.Split(new string[1] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                    string[] dnsEntries = new string[rawDnsEntries.Length];
-                    for (int i = 0; i < rawDnsEntries.Length; ++i)
+                    string[] rawDnsEntries = 
+                        asnString.Split(new string[1] { X509SubjectAlternativeNameConstants.Separator }, StringSplitOptions.RemoveEmptyEntries);
+
+                    List<string> dnsEntries = new List<string>(); 
+
+                    for (int i = 0; i < rawDnsEntries.Length; i++)
                     {
-                        int equalSignIndex = rawDnsEntries[i].IndexOf('=');
-                        dnsEntries[i] = rawDnsEntries[i].Substring(equalSignIndex + 1).Trim();
+                        string[] keyval = rawDnsEntries[i].Split(X509SubjectAlternativeNameConstants.Delimiter);
+                        if (string.Equals(keyval[0], X509SubjectAlternativeNameConstants.Identifier))
+                        {
+                            dnsEntries.Add(keyval[1]);
+                        }
                     }
-                    return dnsEntries;
+                    
+                    return dnsEntries.ToArray();
                 }
             }
             return new string[0];
@@ -342,7 +353,7 @@ namespace System.IdentityModel.Claims
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
             }
         }
-
+        
         class X500DistinguishedNameClaimSet : DefaultClaimSet, IIdentityInfo
         {
             IIdentity _identity;
@@ -362,6 +373,58 @@ namespace System.IdentityModel.Claims
             public IIdentity Identity
             {
                 get { return _identity; }
+            }
+        }
+
+        // We don't have a strongly typed extension to parse Subject Alt Names, so we have to do a workaround 
+        // to figure out what the identifier, delimiter, and separator is by using a well-known extension
+        private static class X509SubjectAlternativeNameConstants
+        {
+            public static readonly string Identifier;
+            public static readonly char Delimiter;
+            public static readonly string Separator;
+
+            // static initializer runs only when one of the properties is accessed
+            static X509SubjectAlternativeNameConstants()
+            {
+                // Extracted a well-known X509Extension
+                const string x509ExtensionBase64String = "MCSCFW5vdC1yZWFsLXN1YmplY3QtbmFtZYILZXhhbXBsZS5jb20=";
+                const string subjectName1 = "not-real-subject-name";
+
+                X509Extension x509Extension = new X509Extension("2.5.29.17", Convert.FromBase64String(x509ExtensionBase64String), true);
+                string x509ExtensionFormattedString = x509Extension.Format(false);
+
+                // Each OS has a different dNSName identifier and delimiter
+                // On Windows, dNSName == "DNS Name" (localizable), on Linux, dNSName == "DNS"
+                // e.g.,
+                // Windows: x509ExtensionFormattedString is: "DNS Name=not-real-subject-name, DNS Name=example.com"
+                // Linux:   x509ExtensionFormattedString is: "DNS:not-real-subject-name, DNS:example.com"
+                // Parse: <identifier><delimter><value><separator(s)>
+
+                int delimiterIndex = x509ExtensionFormattedString.IndexOf(subjectName1) - 1;
+                Delimiter = x509ExtensionFormattedString[delimiterIndex];
+
+                // Make an assumption that all characters from the the start of string to the delimiter 
+                // are part of the identifier
+                Identifier = x509ExtensionFormattedString.Substring(0, delimiterIndex);
+
+                int separatorFirstChar = delimiterIndex + subjectName1.Length + 1;
+                int separatorLength = 1;
+                for (int i = separatorFirstChar + 1; i < x509ExtensionFormattedString.Length; i++)
+                {
+                    // We advance until the first character of the identifier to determine what the
+                    // separator is. This assumes that the identifier assumption above is correct
+                    if (x509ExtensionFormattedString[i] == Identifier[0])
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        separatorLength++;
+                    }
+                }
+
+                Separator = x509ExtensionFormattedString.Substring(separatorFirstChar, separatorLength);
             }
         }
     }
