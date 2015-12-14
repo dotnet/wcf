@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Linq;
+using System.ServiceModel;
 
 namespace WcfService
 {
@@ -14,12 +15,13 @@ namespace WcfService
         }
     }
 
-    public class ServiceContractComplexOutService : IServiceContractComplexOutService
+    public class ServiceContractUniqueTypeOutService : IServiceContractUniqueTypeOutService
     {
-        public void Request(string stringRequest, out ComplexCompositeType complexResponse)
+        public void Request(string stringRequest, out UniqueType uniqueTypeResponse)
         {
-            complexResponse = ScenarioTestHelpers.GetInitializedComplexCompositeType();
-            complexResponse.StringValue = stringRequest;
+
+            uniqueTypeResponse = new UniqueType();
+            uniqueTypeResponse.stringValue = stringRequest;
         }
     }
 
@@ -31,12 +33,29 @@ namespace WcfService
         }
     }
 
-    class ServiceContractComplexRefService : IServiceContractComplexRefService
+    class ServiceContractUniqueTypeRefService : IServiceContractUniqueTypeRefService
     {
-        public void Request(string stringRequest, ref ComplexCompositeType complexResponse)
+        public void Request(string stringRequest, ref UniqueType uniqueTypeResponse)
         {
-            complexResponse = ScenarioTestHelpers.GetInitializedComplexCompositeType();
-            complexResponse.StringValue = stringRequest;
+            uniqueTypeResponse = new UniqueType();
+            uniqueTypeResponse.stringValue = stringRequest;
+        }
+    }
+
+    public class ServiceContractUniqueTypeOutSyncService : IServiceContractUniqueTypeOutSyncService
+    {
+        public void Request(string stringRequest, out UniqueType uniqueTypeResponse)
+        {
+            uniqueTypeResponse = new UniqueType();
+            uniqueTypeResponse.stringValue = stringRequest;
+        }
+    }
+
+    public class ServiceContractUniqueTypeRefSyncService : IServiceContractUniqueTypeRefSyncService
+    {
+        public void Request(string stringRequest, ref UniqueType uniqueTypeResponse)
+        {
+            uniqueTypeResponse.stringValue = stringRequest;
         }
     }
 }

@@ -1223,5 +1223,10 @@ public class XmlVeryComplexType
 // The type should not ever be instantiated. 
 public class NonInstantiatedType
 {
+}
 
+// This type is specifically not attributed in order to test default serialize/deserialize behavior.
+public class UniqueType
+{
+    public string stringValue;
 }

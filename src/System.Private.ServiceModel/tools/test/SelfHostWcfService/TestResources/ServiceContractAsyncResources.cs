@@ -23,7 +23,7 @@ namespace WcfService.TestResources
         }
     }
 
-    internal class ServiceContractAsyncComplexOutResource : EndpointResource<ServiceContractComplexOutService, IServiceContractComplexOutService>
+    internal class ServiceContractAsyncUniqueTypeOutResource : EndpointResource<ServiceContractUniqueTypeOutService, IServiceContractUniqueTypeOutService>
     {
         protected override string Protocol { get { return BaseAddressResource.Http; } }
 
@@ -31,7 +31,7 @@ namespace WcfService.TestResources
         {
             return context.BridgeConfiguration.BridgeHttpPort;
         }
-        protected override string Address { get { return "ServiceContractComplexOut"; } }
+        protected override string Address { get { return "ServiceContractUniqueTypeOut"; } }
 
         protected override Binding GetBinding()
         {
@@ -55,7 +55,7 @@ namespace WcfService.TestResources
         }
     }
 
-    internal class ServiceContractAsyncComplexRefResource : EndpointResource<ServiceContractComplexRefService, IServiceContractComplexRefService>
+    internal class ServiceContractAsyncUniqueTypeRefResource : EndpointResource<ServiceContractUniqueTypeRefService, IServiceContractUniqueTypeRefService>
     {
         protected override string Protocol { get { return BaseAddressResource.Http; } }
 
@@ -63,7 +63,39 @@ namespace WcfService.TestResources
         {
             return context.BridgeConfiguration.BridgeHttpPort;
         }
-        protected override string Address { get { return "ServiceContractComplexRef"; } }
+        protected override string Address { get { return "ServiceContractAsyncUniqueTypeRef"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new BasicHttpBinding();
+        }
+    }
+
+    internal class ServiceContractSyncUniqueTypeOutResource : EndpointResource<ServiceContractUniqueTypeOutSyncService, IServiceContractUniqueTypeOutSyncService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Http; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeHttpPort;
+        }
+        protected override string Address { get { return "ServiceContractUniqueTypeOutSync"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new BasicHttpBinding();
+        }
+    }
+
+    internal class ServiceContractSyncUniqueTypeRefResource : EndpointResource<ServiceContractUniqueTypeRefSyncService, IServiceContractUniqueTypeRefSyncService>
+    {
+        protected override string Protocol { get { return BaseAddressResource.Http; } }
+
+        protected override int GetPort(ResourceRequestContext context)
+        {
+            return context.BridgeConfiguration.BridgeHttpPort;
+        }
+        protected override string Address { get { return "ServiceContractUniqueTypeRefSync"; } }
 
         protected override Binding GetBinding()
         {

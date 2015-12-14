@@ -404,12 +404,12 @@ public interface IServiceContractIntOutService
 }
 
 [ServiceContract]
-public interface IServiceContractComplexOutService
+public interface IServiceContractUniqueTypeOutService
 {
     [OperationContract(AsyncPattern = true)]
     IAsyncResult BeginRequest(string stringRequest, AsyncCallback callback, object asyncState);
 
-    void EndRequest(out ComplexCompositeType complexResponse, IAsyncResult result);
+    void EndRequest(out UniqueType uniqueTypeResponse, IAsyncResult result);
 }
 
 [ServiceContract]
@@ -422,12 +422,26 @@ public interface IServiceContractIntRefService
 }
 
 [ServiceContract]
-public interface IServiceContractComplexRefService
+public interface IServiceContractUniqueTypeRefService
 {
     [OperationContract(AsyncPattern = true)]
-    IAsyncResult BeginRequest(string stringRequest, ref ComplexCompositeType complexResponse, AsyncCallback callback, object asyncState);
+    IAsyncResult BeginRequest(string stringRequest, ref UniqueType uniqueTypeResponse, AsyncCallback callback, object asyncState);
 
-    void EndRequest(ref ComplexCompositeType complexResponse, IAsyncResult result);
+    void EndRequest(ref UniqueType uniqueTypeResponse, IAsyncResult result);
+}
+
+[ServiceContract]
+public interface IServiceContractUniqueTypeOutSyncService
+{
+    [OperationContract]
+    void Request(string stringRequest, out UniqueType uniqueTypeResponse);
+}
+
+[ServiceContract]
+public interface IServiceContractUniqueTypeRefSyncService
+{
+    [OperationContract]
+    void Request(string stringRequest, ref UniqueType uniqueTypeResponse);
 }
 
 [ServiceContract]

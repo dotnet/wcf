@@ -96,9 +96,9 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncIntOutResource"); }
     }
 
-    public static string ServiceContractAsyncComplexOut_Address
+    public static string ServiceContractAsyncUniqueTypeOut_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncComplexOutResource"); }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncUniqueTypeOutResource"); }
     }
 
     public static string ServiceContractAsyncIntRef_Address
@@ -106,9 +106,19 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncIntRefResource"); }
     }
 
-    public static string ServiceContractAsyncComplexRef_Address
+    public static string ServiceContractAsyncUniqueTypeRef_Address
     {
-        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncComplexRefResource"); }
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncUniqueTypeRefResource"); }
+    }
+
+    public static string ServiceContractSyncUniqueTypeOut_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractSyncUniqueTypeOutResource"); }
+    }
+
+    public static string ServiceContractSyncUniqueTypeRef_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractSyncUniqueTypeRefResource"); }
     }
 
     // HTTPS Addresses

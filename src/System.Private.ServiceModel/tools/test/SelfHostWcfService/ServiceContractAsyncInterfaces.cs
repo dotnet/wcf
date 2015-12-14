@@ -13,10 +13,10 @@ namespace WcfService
     }
 
     [ServiceContract]
-    public interface IServiceContractComplexOutService
+    public interface IServiceContractUniqueTypeOutService
     {
         [OperationContract]
-        void Request(string stringRequest, out ComplexCompositeType complexResponse);
+        void Request(string stringRequest, out UniqueType uniqueTypeResponse);
     }
 
     [ServiceContract]
@@ -27,9 +27,23 @@ namespace WcfService
     }
 
     [ServiceContract]
-    public interface IServiceContractComplexRefService
+    public interface IServiceContractUniqueTypeRefService
     {
         [OperationContract]
-        void Request(string stringRequest, ref ComplexCompositeType complexResponse);
+        void Request(string stringRequest, ref UniqueType uniqueTypeResponse);
+    }
+
+    [ServiceContract]
+    public interface IServiceContractUniqueTypeOutSyncService
+    {
+        [OperationContract]
+        void Request(string stringRequest, out UniqueType uniqueTypeResponse);
+    }
+
+    [ServiceContract]
+    public interface IServiceContractUniqueTypeRefSyncService
+    {
+        [OperationContract]
+        void Request(string stringRequest, ref UniqueType uniqueTypeResponse);
     }
 }
