@@ -67,13 +67,13 @@
 
   <!-- Package dependency validation -->
   <PropertyGroup>
-    <ValidatePackageVersions>false</ValidatePackageVersions>
-    <ProhibitFloatingDependencies>false</ProhibitFloatingDependencies>
+    <ValidatePackageVersions>true</ValidatePackageVersions>
+    <ProhibitFloatingDependencies>true</ProhibitFloatingDependencies>
   </PropertyGroup>
 
   <ItemGroup>
     <ValidationPattern Include="^((System\..*)|(Microsoft\.CSharp)|(Microsoft\.NETCore.*)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
-      <ExpectedPrerelease>rc2-23604</ExpectedPrerelease>
+      <ExpectedPrerelease>rc2-23608</ExpectedPrerelease>
     </ValidationPattern>
     <ValidationPattern Include="^(System\..*TestData)$">
       <ExpectedVersion>1.0.0-prerelease</ExpectedVersion>
