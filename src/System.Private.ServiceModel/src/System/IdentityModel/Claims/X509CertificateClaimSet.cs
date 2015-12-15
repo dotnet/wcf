@@ -301,8 +301,8 @@ namespace System.IdentityModel.Claims
         {
             foreach (X509Extension ext in cert.Extensions)
             {
-                // Extension is SAN or SAN2
-                if (ext.Oid.Value == "2.5.29.7" || ext.Oid.Value == "2.5.29.17")
+                // Extension is SAN2
+                if (ext.Oid.Value == X509SubjectAlternativeNameConstants.Oid)
                 {
                     string asnString = ext.Format(false);
                     if (string.IsNullOrWhiteSpace(asnString))
@@ -380,6 +380,7 @@ namespace System.IdentityModel.Claims
         // to figure out what the identifier, delimiter, and separator is by using a well-known extension
         private static class X509SubjectAlternativeNameConstants
         {
+            public const string Oid = "2.5.29.17"; 
             public static readonly string Identifier;
             public static readonly char Delimiter;
             public static readonly string Separator;
@@ -391,7 +392,7 @@ namespace System.IdentityModel.Claims
                 const string x509ExtensionBase64String = "MCSCFW5vdC1yZWFsLXN1YmplY3QtbmFtZYILZXhhbXBsZS5jb20=";
                 const string subjectName1 = "not-real-subject-name";
 
-                X509Extension x509Extension = new X509Extension("2.5.29.17", Convert.FromBase64String(x509ExtensionBase64String), true);
+                X509Extension x509Extension = new X509Extension(Oid, Convert.FromBase64String(x509ExtensionBase64String), true);
                 string x509ExtensionFormattedString = x509Extension.Format(false);
 
                 // Each OS has a different dNSName identifier and delimiter
