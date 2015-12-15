@@ -28,11 +28,30 @@ namespace System.ServiceModel
     }
     public enum BasicHttpSecurityMode
     {
-        Message = 2,
         None = 0,
         Transport = 1,
-        TransportCredentialOnly = 4,
+        Message = 2,
         TransportWithMessageCredential = 3,
+        TransportCredentialOnly = 4,
+    }
+    public partial class BasicHttpsBinding : System.ServiceModel.HttpBindingBase
+    {
+        public BasicHttpsBinding() { }
+        public BasicHttpsBinding(System.ServiceModel.BasicHttpsSecurityMode securityMode) { }
+        public System.ServiceModel.BasicHttpsSecurity Security { get { return default(System.ServiceModel.BasicHttpsSecurity); } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+    }
+    public sealed partial class BasicHttpsSecurity
+    {
+        internal BasicHttpsSecurity() { }
+        public System.ServiceModel.BasicHttpsSecurityMode Mode { get { return default(System.ServiceModel.BasicHttpsSecurityMode); } set { } }
+        public System.ServiceModel.HttpTransportSecurity Transport { get { return default(System.ServiceModel.HttpTransportSecurity); } set { } }
+    }
+     public enum BasicHttpsSecurityMode
+    {
+        Transport = 0,
+        TransportWithMessageCredential = 1,
     }
     public abstract partial class HttpBindingBase : System.ServiceModel.Channels.Binding
     {
@@ -79,11 +98,22 @@ namespace System.ServiceModel
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
         public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
     }
+    public partial class NetHttpsBinding : System.ServiceModel.HttpBindingBase
+    {
+        public NetHttpsBinding() { }
+        public NetHttpsBinding(System.ServiceModel.BasicHttpsSecurityMode securityMode) { }
+        [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.NetHttpMessageEncoding)(0))]
+        public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default(System.ServiceModel.NetHttpMessageEncoding); } set { } }
+        public System.ServiceModel.BasicHttpsSecurity Security { get { return default(System.ServiceModel.BasicHttpsSecurity); } set { } }
+        public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default(System.ServiceModel.Channels.WebSocketTransportSettings); } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+    }
     public enum NetHttpMessageEncoding
     {
         Binary = 0,
-        Mtom = 2,
         Text = 1,
+        Mtom = 2,
     }
 }
 namespace System.ServiceModel.Channels
@@ -111,6 +141,7 @@ namespace System.ServiceModel.Channels
     {
         public HttpsTransportBindingElement() { }
         protected HttpsTransportBindingElement(System.ServiceModel.Channels.HttpsTransportBindingElement elementToBeCloned) { }
+        public bool RequireClientCertificate { get { return default(bool); } set { } }
         public override string Scheme { get { return default(string); } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
         public override System.ServiceModel.Channels.BindingElement Clone() { return default(System.ServiceModel.Channels.BindingElement); }

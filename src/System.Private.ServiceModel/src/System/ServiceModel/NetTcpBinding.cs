@@ -195,58 +195,6 @@ namespace System.ServiceModel
             return bindingElements.Clone();
         }
 
-        internal static bool TryCreate(BindingElementCollection elements, out Binding binding)
-        {
-            binding = null;
-            if (elements.Count > 6)
-                return false;
-
-            // collect all binding elements
-            TcpTransportBindingElement transport = null;
-            BinaryMessageEncodingBindingElement encoding = null;
-
-            SecurityBindingElement wsSecurity = null;
-            BindingElement transportSecurity = null;
-
-            foreach (BindingElement element in elements)
-            {
-                if (element is SecurityBindingElement)
-                    wsSecurity = element as SecurityBindingElement;
-                else if (element is TransportBindingElement)
-                    transport = element as TcpTransportBindingElement;
-                else if (element is MessageEncodingBindingElement)
-                    encoding = element as BinaryMessageEncodingBindingElement;
-                else
-                {
-                    if (transportSecurity != null)
-                        return false;
-                    transportSecurity = element;
-                }
-            }
-
-            if (transport == null)
-                return false;
-            if (encoding == null)
-                return false;
-
-            TcpTransportSecurity tcpTransportSecurity = new TcpTransportSecurity();
-            UnifiedSecurityMode mode = GetModeFromTransportSecurity(transportSecurity);
-
-            NetTcpSecurity security;
-            if (!TryCreateSecurity(wsSecurity, mode, false /*session != null*/, transportSecurity, tcpTransportSecurity, out security))
-                return false;
-
-            if (!SetTransportSecurity(transportSecurity, security.Mode, tcpTransportSecurity))
-                return false;
-
-            NetTcpBinding netTcpBinding = new NetTcpBinding(transport, encoding, security);
-            if (!netTcpBinding.IsBindingElementsMatch(transport, encoding))
-                return false;
-
-            binding = netTcpBinding;
-            return true;
-        }
-
         private BindingElement CreateTransportSecurity()
         {
             return _security.CreateTransportSecurity();
@@ -272,22 +220,6 @@ namespace System.ServiceModel
             {
                 return null;
             }
-        }
-
-        private static bool TryCreateSecurity(SecurityBindingElement sbe, UnifiedSecurityMode mode, bool isReliableSession, BindingElement transportSecurity, TcpTransportSecurity tcpTransportSecurity, out NetTcpSecurity security)
-        {
-            if (sbe != null)
-                mode &= UnifiedSecurityMode.Message | UnifiedSecurityMode.TransportWithMessageCredential;
-            else
-                mode &= ~(UnifiedSecurityMode.Message | UnifiedSecurityMode.TransportWithMessageCredential);
-
-            SecurityMode securityMode = SecurityModeHelper.ToSecurityMode(mode);
-            Contract.Assert(SecurityModeHelper.IsDefined(securityMode), string.Format("Invalid SecurityMode value: {0}.", securityMode.ToString()));
-
-            if (NetTcpSecurity.TryCreate(sbe, securityMode, isReliableSession, transportSecurity, tcpTransportSecurity, out security))
-                return true;
-
-            return false;
         }
     }
 }

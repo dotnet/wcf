@@ -9,22 +9,6 @@ using Xunit;
 
 public static class SecurityBindingElementTest
 {
-    [Fact]
-    public static void Create_HttpBinding_SecurityMode_TransportWithMessageCredential_Build_Throws()
-    {
-        BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
-        var bindingElements = binding.CreateBindingElements();
-
-        var securityBindingElement = bindingElements.FirstOrDefault(x => x is SecurityBindingElement) as SecurityBindingElement;
-        Assert.True(securityBindingElement != null, "securityBindingElement should not be null when BasicHttpSecurityMode is 'TransportWithMessageCredential'");
-
-        Assert.True(binding.CanBuildChannelFactory<IRequestChannel>(), "CanBuildChannelFactory should return true for BasicHttpSecurityMode:'TransportWithMessageCredential'");
-
-        Assert.Throws<PlatformNotSupportedException>(() => {
-            binding.BuildChannelFactory<IRequestChannel>();
-        });
-    }
-
     [Theory]
     [InlineData(BasicHttpSecurityMode.TransportCredentialOnly)]
     [InlineData(BasicHttpSecurityMode.Transport)]
@@ -43,13 +27,12 @@ public static class SecurityBindingElementTest
 
     [Theory]
     [InlineData(BasicHttpSecurityMode.Message)]
+    [InlineData(BasicHttpSecurityMode.TransportWithMessageCredential)]
     // BasicHttpSecurityMode.Message is not supported
     public static void Create_HttpBinding_SecurityMode_Message_Throws_NotSupported(BasicHttpSecurityMode securityMode)
     {
-        BasicHttpBinding binding = new BasicHttpBinding(securityMode);
-
-        Assert.Throws<NotSupportedException>(() => {
-            var bindingElements = binding.CreateBindingElements();
+        Assert.Throws<PlatformNotSupportedException>(() => {
+            new BasicHttpBinding(securityMode);
         });
     }
 }

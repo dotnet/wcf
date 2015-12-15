@@ -11,19 +11,17 @@ namespace System.ServiceModel
         internal const BasicHttpSecurityMode DefaultMode = BasicHttpSecurityMode.None;
         private BasicHttpSecurityMode _mode;
         private HttpTransportSecurity _transportSecurity;
-        private BasicHttpMessageSecurity _messageSecurity;
 
         public BasicHttpSecurity()
-            : this(DefaultMode, new HttpTransportSecurity(), new BasicHttpMessageSecurity())
+            : this(DefaultMode, new HttpTransportSecurity())
         {
         }
 
-        private BasicHttpSecurity(BasicHttpSecurityMode mode, HttpTransportSecurity transportSecurity, BasicHttpMessageSecurity messageSecurity)
+        private BasicHttpSecurity(BasicHttpSecurityMode mode, HttpTransportSecurity transportSecurity)
         {
             Fx.Assert(BasicHttpSecurityModeHelper.IsDefined(mode), string.Format("Invalid BasicHttpSecurityMode value: {0}.", mode.ToString()));
             this.Mode = mode;
             _transportSecurity = transportSecurity == null ? new HttpTransportSecurity() : transportSecurity;
-            _messageSecurity = messageSecurity == null ? new BasicHttpMessageSecurity() : messageSecurity;
         }
 
         public BasicHttpSecurityMode Mode
@@ -45,15 +43,6 @@ namespace System.ServiceModel
             set
             {
                 _transportSecurity = (value == null) ? new HttpTransportSecurity() : value;
-            }
-        }
-
-        public BasicHttpMessageSecurity Message
-        {
-            get { return _messageSecurity; }
-            set
-            {
-                _messageSecurity = (value == null) ? new BasicHttpMessageSecurity() : value;
             }
         }
 
@@ -94,36 +83,10 @@ namespace System.ServiceModel
             if (_mode == BasicHttpSecurityMode.Message
                 || _mode == BasicHttpSecurityMode.TransportWithMessageCredential)
             {
-                return _messageSecurity.CreateMessageSecurity(this.Mode == BasicHttpSecurityMode.TransportWithMessageCredential);
+                throw ExceptionHelper.PlatformNotSupported();
             }
-            else
-            {
-                return null;
-            }
-        }
 
-        internal static bool TryCreate(SecurityBindingElement sbe, UnifiedSecurityMode mode, HttpTransportSecurity transportSecurity, out BasicHttpSecurity security)
-        {
-            security = null;
-            BasicHttpMessageSecurity messageSecurity = null;
-            if (sbe != null)
-            {
-                mode &= UnifiedSecurityMode.Message | UnifiedSecurityMode.TransportWithMessageCredential;
-                bool isSecureTransportMode;
-                if (!BasicHttpMessageSecurity.TryCreate(sbe, out messageSecurity, out isSecureTransportMode))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                mode &= ~(UnifiedSecurityMode.Message | UnifiedSecurityMode.TransportWithMessageCredential);
-            }
-            BasicHttpSecurityMode basicHttpSecurityMode = BasicHttpSecurityModeHelper.ToSecurityMode(mode);
-            Fx.Assert(BasicHttpSecurityModeHelper.IsDefined(basicHttpSecurityMode), string.Format("Invalid BasicHttpSecurityMode value: {0}.", basicHttpSecurityMode.ToString()));
-            security = new BasicHttpSecurity(basicHttpSecurityMode, transportSecurity, messageSecurity);
-
-            throw ExceptionHelper.PlatformNotSupported("BasicHttpSecurity MessageSecurity is not supported");
+            return null;
         }
     }
 }

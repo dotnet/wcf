@@ -84,30 +84,6 @@ public static class BasicHttpBindingTest
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, new XmlDictionaryReaderQuotas()), "XmlDictionaryReaderQuotas");
     }
 
-    [Fact]
-    public static void Ctor_With_BasicHttpSecurityMode_TransportWithMessageCredential_Initializes_Properties()
-    {
-        var binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
-        Assert.Equal<string>("BasicHttpBinding", binding.Name);
-        Assert.Equal<string>("http://tempuri.org/", binding.Namespace);
-        Assert.Equal<string>("https", binding.Scheme);
-        Assert.Equal<Encoding>(Encoding.GetEncoding("utf-8"), binding.TextEncoding);
-        Assert.Equal<string>(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
-        Assert.False(binding.AllowCookies);
-        Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.CloseTimeout);
-        Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.OpenTimeout);
-        Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(10), binding.ReceiveTimeout);
-        Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.SendTimeout);
-        Assert.Equal<EnvelopeVersion>(EnvelopeVersion.Soap11, binding.EnvelopeVersion);
-        Assert.Equal<MessageVersion>(MessageVersion.Soap11, binding.MessageVersion);
-        Assert.Equal<long>(524288, binding.MaxBufferPoolSize);
-        Assert.Equal<long>(65536, binding.MaxBufferSize);
-        Assert.Equal<long>(65536, binding.MaxReceivedMessageSize);
-        Assert.Equal<TransferMode>(TransferMode.Buffered, binding.TransferMode);
-
-        Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, new XmlDictionaryReaderQuotas()), "XmlDictionaryReaderQuotas");
-    }
-
     [Theory]
     [InlineData(true)]
     [InlineData(false)]

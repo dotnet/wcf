@@ -102,23 +102,6 @@ namespace System.ServiceModel
             }
             return transport == null;
         }
-
-        internal SecurityBindingElement CreateMessageSecurity(bool isReliableSessionEnabled)
-        {
-            throw ExceptionHelper.PlatformNotSupported("NetTcpSecurity.CreateMesssageSecurity is not supported.");
-        }
-
-        internal static bool TryCreate(SecurityBindingElement wsSecurity, SecurityMode mode, bool isReliableSessionEnabled, BindingElement transportSecurity, TcpTransportSecurity tcpTransportSecurity, out NetTcpSecurity security)
-        {
-            throw ExceptionHelper.PlatformNotSupported("NetTcpSecurity.TryCreate is not supported.");
-        }
-
-        internal bool InternalShouldSerialize()
-        {
-            return this.Mode != NetTcpSecurity.DefaultMode
-                || this.Transport.InternalShouldSerialize()
-                || this.Message.InternalShouldSerialize();
-        }
     }
 }
 
