@@ -30,8 +30,10 @@ namespace WcfService.TestResources
             //Create a certificate and add to the revocation list
             CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
             {
+                FriendlyName = "WCF Bridge - TcpRevokedServerCertResource",
                 ValidityType = CertificateValidityType.Revoked,
-                Subjects = new string[] { s_fqdn, s_hostname, "localhost" }
+                Subject = s_fqdn,
+                SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" }
             };
 
             X509Certificate2 cert = CertificateResourceHelpers.EnsureCustomCertificateInstalled(context.BridgeConfiguration, certificateCreationSettings, Address);

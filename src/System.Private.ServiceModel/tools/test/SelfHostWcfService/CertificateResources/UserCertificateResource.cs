@@ -36,7 +36,12 @@ namespace WcfService.CertificateResources
                 {
                     CertificateGenerator generator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration);
 
-                    CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings() { Subjects = subjects };
+                    CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
+                    {
+                        FriendlyName = "WCF Bridge - UserCertificateResource",
+                        Subject = subjects[0],
+                        SubjectAlternativeNames = subjects
+                    };
                     certificate = generator.CreateUserCertificate(certificateCreationSettings).Certificate;
                     
                     // Cache the certificates

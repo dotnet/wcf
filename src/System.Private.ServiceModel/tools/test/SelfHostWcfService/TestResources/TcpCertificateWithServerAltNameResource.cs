@@ -33,7 +33,9 @@ namespace WcfService.TestResources
             
             CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
             {
-                Subjects = new string[] { "not-real-subject-name", "not-real-subject-name.example.com", s_fqdn, s_hostname, "localhost" }
+                FriendlyName = "WCF Bridge - TcpCertificateWithServerAltNameResource",
+                Subject = "not-real-subject-name",
+                SubjectAlternativeNames = new string[] { "not-real-subject-name", "not-real-subject-name.example.com", s_fqdn, s_hostname, "localhost" }
             };
 
             X509Certificate2 cert = CertificateResourceHelpers.EnsureCustomCertificateInstalled(context.BridgeConfiguration, certificateCreationSettings, Address);

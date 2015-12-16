@@ -13,11 +13,12 @@ namespace WcfTestBridgeCommon
     {
         public CertificateCreationSettings()
         {
-            Subjects = new string[] { string.Empty };
+            Subject = string.Empty;
             ValidityType = CertificateValidityType.Valid;
         }
         public string FriendlyName { get; set; }
-        public string [] Subjects { get; set; }
+        public string[] SubjectAlternativeNames { get; set; }
+        public string Subject { get; set; }
         public DateTime ValidityNotBefore { get; set; }
         public DateTime ValidityNotAfter { get; set; }
         public CertificateValidityType ValidityType { get; set; }
