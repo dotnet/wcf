@@ -259,7 +259,7 @@ public static class BasicHttpBindingTest
 
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, defaultQuota));
 
-        binding.ReaderQuotas = maxQuota;
+        maxQuota.CopyTo(binding.ReaderQuotas);
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, maxQuota), "Setting Max ReaderQuota failed");
     }
 
