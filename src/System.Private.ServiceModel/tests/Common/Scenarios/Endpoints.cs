@@ -391,4 +391,28 @@ public static partial class Endpoints
             return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpCertificateWithServerAltNameResource");
         }
     }
+
+    public static string Tcp_ClientCredentialType_Certificate_With_CanonicalName_Localhost_Address
+    {
+        get
+        {
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpCertificateWithSubjectCanonicalNameLocalhostResource");
+        }
+    }
+
+    public static string Tcp_ClientCredentialType_Certificate_With_CanonicalName_DomainName_Address
+    {
+        get
+        {
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpCertificateWithSubjectCanonicalNameDomainNameResource");
+        }
+    }
+
+    public static string Tcp_ClientCredentialType_Certificate_With_CanonicalName_Fqdn_Address
+    {
+        get
+        {
+            return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpCertificateWithSubjectCanonicalNameFqdnResource");
+        }
+    }
 }
