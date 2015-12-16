@@ -379,13 +379,10 @@ namespace System.ServiceModel
         public InvalidMessageContractException(string message) { }
         public InvalidMessageContractException(string message, System.Exception innerException) { }
     }
-
     [System.AttributeUsageAttribute((System.AttributeTargets)(384), AllowMultiple = false, Inherited = false)]
     public class MessageHeaderAttribute : MessageContractMemberAttribute
     {
         public bool MustUnderstand { get { return default(bool); } set { } } 
-        public bool Relay { get { return default(bool); } set { } } 
-        public string Actor { get { return default(string); } set { } }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(384), Inherited = false)]
     public partial class MessageBodyMemberAttribute : System.ServiceModel.MessageContractMemberAttribute
