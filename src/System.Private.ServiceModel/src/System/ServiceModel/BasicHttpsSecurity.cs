@@ -12,24 +12,22 @@ namespace System.ServiceModel
         private BasicHttpSecurity _basicHttpSecurity;
 
         public BasicHttpsSecurity()
-            : this(DefaultMode, new HttpTransportSecurity(), new BasicHttpMessageSecurity())
+            : this(DefaultMode, new HttpTransportSecurity())
         {
         }
 
-        private BasicHttpsSecurity(BasicHttpsSecurityMode mode, HttpTransportSecurity transportSecurity, BasicHttpMessageSecurity messageSecurity)
+        private BasicHttpsSecurity(BasicHttpsSecurityMode mode, HttpTransportSecurity transportSecurity)
         {
             if (!BasicHttpsSecurityModeHelper.IsDefined(mode))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("mode"));
             }
             HttpTransportSecurity httpTransportSecurity = transportSecurity == null ? new HttpTransportSecurity() : transportSecurity;
-            BasicHttpMessageSecurity httpMessageSecurity = messageSecurity == null ? new BasicHttpMessageSecurity() : messageSecurity;
             BasicHttpSecurityMode basicHttpSecurityMode = BasicHttpsSecurityModeHelper.ToBasicHttpSecurityMode(mode);
             _basicHttpSecurity = new BasicHttpSecurity()
             {
                 Mode = basicHttpSecurityMode,
-                Transport = httpTransportSecurity,
-                Message = httpMessageSecurity
+                Transport = httpTransportSecurity
             };
         }
 
@@ -64,19 +62,6 @@ namespace System.ServiceModel
             }
         }
 
-        public BasicHttpMessageSecurity Message
-        {
-            get
-            {
-                return _basicHttpSecurity.Message;
-            }
-
-            set
-            {
-                _basicHttpSecurity.Message = value;
-            }
-        }
-
         internal BasicHttpSecurity BasicHttpSecurity
         {
             get
@@ -91,7 +76,6 @@ namespace System.ServiceModel
 
             BasicHttpSecurity basicHttpSecurity = new BasicHttpSecurity()
             {
-                Message = basicHttpsSecurity.Message,
                 Transport = basicHttpsSecurity.Transport,
                 Mode = BasicHttpsSecurityModeHelper.ToBasicHttpSecurityMode(basicHttpsSecurity.Mode)
             };
@@ -105,7 +89,6 @@ namespace System.ServiceModel
 
             BasicHttpsSecurity basicHttpsSecurity = new BasicHttpsSecurity()
             {
-                Message = basicHttpSecurity.Message,
                 Transport = basicHttpSecurity.Transport,
                 Mode = BasicHttpsSecurityModeHelper.ToBasicHttpsSecurityMode(basicHttpSecurity.Mode)
             };

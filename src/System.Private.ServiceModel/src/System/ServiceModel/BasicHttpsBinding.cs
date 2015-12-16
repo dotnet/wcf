@@ -1,28 +1,27 @@
-// Copyright (c) Microsoft. All rights reserved.
+﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// 
 
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
-    public class BasicHttpBinding : HttpBindingBase
+    public class BasicHttpsBinding : HttpBindingBase
     {
-        private WSMessageEncoding _messageEncoding = BasicHttpBindingDefaults.MessageEncoding;
-        private BasicHttpSecurity _basicHttpSecurity;
+        WSMessageEncoding _messageEncoding = BasicHttpBindingDefaults.MessageEncoding;
+        private BasicHttpsSecurity _basicHttpsSecurity;
 
-        public BasicHttpBinding() : this(BasicHttpSecurityMode.None) { }
+        public BasicHttpsBinding() : this(BasicHttpsSecurity.DefaultMode) { }
 
-        public BasicHttpBinding(BasicHttpSecurityMode securityMode)
-            : base()
+        public BasicHttpsBinding(BasicHttpsSecurityMode securityMode)
         {
-            if (securityMode == BasicHttpSecurityMode.Message ||
-                securityMode == BasicHttpSecurityMode.TransportWithMessageCredential)
+            if (securityMode == BasicHttpsSecurityMode.TransportWithMessageCredential)
             {
                 throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.UnsupportedSecuritySetting, "securityMode", securityMode));
             }
 
-            Initialize();
-            _basicHttpSecurity.Mode = securityMode;
+            _basicHttpsSecurity = new BasicHttpsSecurity();
+            _basicHttpsSecurity.Mode = securityMode;
         }
 
         internal WSMessageEncoding MessageEncoding
@@ -31,17 +30,21 @@ namespace System.ServiceModel
             set { _messageEncoding = value; }
         }
 
-        public BasicHttpSecurity Security
+        public BasicHttpsSecurity Security
         {
-            get { return _basicHttpSecurity; }
+            get
+            {
+                return _basicHttpsSecurity;
+            }
+
             set
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw FxTrace.Exception.ArgumentNull("value");
                 }
 
-                _basicHttpSecurity = value;
+                _basicHttpsSecurity = value;
             }
         }
 
@@ -49,7 +52,7 @@ namespace System.ServiceModel
         {
             get
             {
-                return _basicHttpSecurity;
+                return _basicHttpsSecurity.BasicHttpSecurity;
             }
         }
 
@@ -90,11 +93,6 @@ namespace System.ServiceModel
             bindingElements.Add(GetTransport());
 
             return bindingElements.Clone();
-        }
-
-        private void Initialize()
-        {
-            _basicHttpSecurity = new BasicHttpSecurity();
         }
     }
 }

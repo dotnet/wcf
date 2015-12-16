@@ -119,7 +119,7 @@ namespace System.ServiceModel
                     bindingElements.Add(this.TextMessageEncodingBindingElement);
                     break;
                 case NetHttpMessageEncoding.Mtom:
-                    throw ExceptionHelper.PlatformNotSupported();
+                    throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.UnsupportedBindingProperty, "MessageEncoding", MessageEncoding));
                 default:
                     bindingElements.Add(_binaryMessageEncodingBindingElement);
                     break;
@@ -129,94 +129,6 @@ namespace System.ServiceModel
             bindingElements.Add(this.GetTransport());
 
             return bindingElements.Clone();
-        }
-
-
-        internal static bool TryCreate(BindingElementCollection elements, out Binding binding)
-        {
-            binding = null;
-            if (elements.Count > 4)
-            {
-                return false;
-            }
-
-            SecurityBindingElement securityElement = null;
-            MessageEncodingBindingElement encoding = null;
-            HttpTransportBindingElement transport = null;
-
-            foreach (BindingElement element in elements)
-            {
-                if (element is SecurityBindingElement)
-                {
-                    securityElement = element as SecurityBindingElement;
-                }
-                else if (element is TransportBindingElement)
-                {
-                    transport = element as HttpTransportBindingElement;
-                }
-                else if (element is MessageEncodingBindingElement)
-                {
-                    encoding = element as MessageEncodingBindingElement;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            if (transport == null || transport.WebSocketSettings.TransportUsage != WebSocketTransportUsage.Always)
-            {
-                return false;
-            }
-
-            HttpsTransportBindingElement httpsTransport = transport as HttpsTransportBindingElement;
-            if ((securityElement != null) && (httpsTransport != null) && (httpsTransport.RequireClientCertificate != TransportDefaults.RequireClientCertificate))
-            {
-                return false;
-            }
-
-            // process transport binding element
-            UnifiedSecurityMode mode;
-            HttpTransportSecurity transportSecurity = new HttpTransportSecurity();
-            if (!GetSecurityModeFromTransport(transport, transportSecurity, out mode))
-            {
-                return false;
-            }
-
-            if (encoding == null)
-            {
-                return false;
-            }
-
-            if (!(encoding is TextMessageEncodingBindingElement ||
-                encoding is BinaryMessageEncodingBindingElement))
-            {
-                return false;
-            }
-
-            if (encoding.MessageVersion != MessageVersion.Soap12WSAddressing10)
-            {
-                return false;
-            }
-
-            BasicHttpSecurity security;
-            if (!TryCreateSecurity(securityElement, mode, transportSecurity, out security))
-            {
-                return false;
-            }
-
-            NetHttpBinding netHttpBinding = new NetHttpBinding(security);
-
-            netHttpBinding.InitializeFrom(transport, encoding);
-
-            // make sure all our defaults match
-            if (!netHttpBinding.IsBindingElementsMatch(transport, encoding))
-            {
-                return false;
-            }
-
-            binding = netHttpBinding;
-            return true;
         }
 
         internal override void SetReaderQuotas(XmlDictionaryReaderQuotas readerQuotas)
@@ -233,9 +145,8 @@ namespace System.ServiceModel
         {
             base.CheckSettings();
 
-            // In the Win8 profile, Mtom is not supported.
-            if ((this.MessageEncoding == NetHttpMessageEncoding.Mtom)
-                )
+            // Mtom is not supported.
+            if (this.MessageEncoding == NetHttpMessageEncoding.Mtom)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedBindingProperty, "MessageEncoding", this.MessageEncoding)));
             }
@@ -249,55 +160,6 @@ namespace System.ServiceModel
             this.WebSocketSettings.TransportUsage = NetHttpBindingDefaults.TransportUsage;
             this.WebSocketSettings.SubProtocol = WebSocketTransportSettings.SoapSubProtocol;
             _basicHttpSecurity = new BasicHttpSecurity();
-        }
-
-        internal override void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding)
-        {
-            base.InitializeFrom(transport, encoding);
-
-            if (encoding is BinaryMessageEncodingBindingElement)
-            {
-                _messageEncoding = NetHttpMessageEncoding.Binary;
-                BinaryMessageEncodingBindingElement binary = (BinaryMessageEncodingBindingElement)encoding;
-                this.ReaderQuotas = binary.ReaderQuotas;
-            }
-
-            if (encoding is TextMessageEncodingBindingElement)
-            {
-                _messageEncoding = NetHttpMessageEncoding.Text;
-            }
-        }
-
-
-        private bool IsBindingElementsMatch(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding)
-        {
-            switch (this.MessageEncoding)
-            {
-                case NetHttpMessageEncoding.Text:
-                    if (!this.TextMessageEncodingBindingElement.IsMatch(encoding))
-                    {
-                        return false;
-                    }
-
-                    break;
-                case NetHttpMessageEncoding.Mtom:
-                    return false;
-
-                default:    // NetHttpMessageEncoding.Binary
-                    if (!_binaryMessageEncodingBindingElement.IsMatch(encoding))
-                    {
-                        return false;
-                    }
-
-                    break;
-            }
-
-            if (!this.GetTransport().IsMatch(transport))
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

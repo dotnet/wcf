@@ -182,7 +182,6 @@ namespace System.ServiceModel
             }
         }
 
-
         internal abstract BasicHttpSecurity BasicHttpSecurity
         {
             get;
@@ -227,11 +226,6 @@ namespace System.ServiceModel
             return true;
         }
 
-        internal static bool TryCreateSecurity(SecurityBindingElement securityElement, UnifiedSecurityMode mode, HttpTransportSecurity transportSecurity, out BasicHttpSecurity security)
-        {
-            return BasicHttpSecurity.TryCreate(securityElement, mode, transportSecurity, out security);
-        }
-
         internal TransportBindingElement GetTransport()
         {
             Fx.Assert(this.BasicHttpSecurity != null, "this.BasicHttpSecurity should not return null from a derived class.");
@@ -261,24 +255,6 @@ namespace System.ServiceModel
         {
         }
 
-        internal virtual void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding)
-        {
-            this.HostNameComparisonMode = transport.HostNameComparisonMode;
-            this.MaxBufferPoolSize = transport.MaxBufferPoolSize;
-            this.MaxBufferSize = transport.MaxBufferSize;
-            this.MaxReceivedMessageSize = transport.MaxReceivedMessageSize;
-            this.TransferMode = transport.TransferMode;
-            _httpTransport.WebSocketSettings = transport.WebSocketSettings;
-            _httpsTransport.WebSocketSettings = transport.WebSocketSettings;
-
-            if (encoding is TextMessageEncodingBindingElement)
-            {
-                TextMessageEncodingBindingElement text = (TextMessageEncodingBindingElement)encoding;
-                this.TextEncoding = text.WriteEncoding;
-                this.ReaderQuotas = text.ReaderQuotas;
-            }
-        }
-
         // In the Win8 profile, some settings for the binding security are not supported.
         internal virtual void CheckSettings()
         {
@@ -293,24 +269,14 @@ namespace System.ServiceModel
             {
                 return;
             }
-            else if (mode == BasicHttpSecurityMode.Message)
+            else if (mode == BasicHttpSecurityMode.Message || mode == BasicHttpSecurityMode.TransportWithMessageCredential)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Mode", mode)));
             }
 
-            // Message.ClientCredentialType = Certificate is not supported.
-            if (mode == BasicHttpSecurityMode.TransportWithMessageCredential)
-            {
-                BasicHttpMessageSecurity message = security.Message;
-                if ((message != null) && (message.ClientCredentialType == BasicHttpMessageCredentialType.Certificate))
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Message.ClientCredentialType", message.ClientCredentialType)));
-                }
-            }
-
             // Transport.ClientCredentialType = Certificate or InheritedFromHost are not supported.
             Fx.Assert(
-                (mode == BasicHttpSecurityMode.Transport) || (mode == BasicHttpSecurityMode.TransportCredentialOnly) || (mode == BasicHttpSecurityMode.TransportWithMessageCredential),
+                (mode == BasicHttpSecurityMode.Transport) || (mode == BasicHttpSecurityMode.TransportCredentialOnly),
                 "Unexpected BasicHttpSecurityMode value: " + mode);
             HttpTransportSecurity transport = security.Transport;
             if ((transport != null) && ((transport.ClientCredentialType == HttpClientCredentialType.Certificate) || (transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)))
