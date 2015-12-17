@@ -15,6 +15,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
+    <IsNETNativeLibrary Condition="'$(TargetGroup)' == 'netcore50'">true</IsNETNativeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
@@ -39,6 +40,7 @@
   </ItemGroup>
   <ItemGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
+    <TargetingPackReference Include="Windows" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
