@@ -32,7 +32,7 @@ instructions assume you are building for Linux, but are easily modifiable for OS
    CoreCLR (which is exactly what we do in Jenkins).
    
    
-4. A Linux build of the native CoreFX components.  On Linux, run './build.sh native' from
+4. A Linux build of the native CoreFX components.  On Linux, run `./build.sh native` from
    root of your CoreFX enlistment.  Before doing this, ensure the libcurl
    libraries are are installed using:
    `apt-get install libcurl4-openssl-dev`
