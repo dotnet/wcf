@@ -1,12 +1,6 @@
 {
   "dependencies": {
-    "System.ObjectModel": "4.0.0",
-    "System.ServiceModel.Primitives": "4.0.0",
-    "System.Runtime": "4.0.0",
-    "System.Runtime.Serialization.Xml": "4.0.0",
-    "System.Text.Encoding": "4.0.0",
-    "System.Net.Primitives": "4.0.0",
-    "System.Net.WebHeaderCollection": "4.0.0"
+    "System.ServiceModel.Http": "4.0.10"
   },
   "frameworks": {
     "dotnet5.4": {}
