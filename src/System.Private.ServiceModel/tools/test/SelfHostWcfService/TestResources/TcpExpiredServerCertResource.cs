@@ -30,6 +30,7 @@ namespace WcfService.TestResources
             //Create an expired certificate
             CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
             {
+                FriendlyName = "WCF Bridge - TcpExpiredServerCertResource",
                 ValidityType = CertificateValidityType.Expired,
                 ValidityNotBefore = DateTime.UtcNow - TimeSpan.FromDays(4),
                 ValidityNotAfter = DateTime.UtcNow - TimeSpan.FromDays(2),
@@ -38,7 +39,8 @@ namespace WcfService.TestResources
                 //We do this so that a single bridge setup can deal with all the possible addresses that a client might use.
                 //If we don't put "localhost' here, a long-running bridge will not be able to receive requests from both fqdn  and  localhost
                 //because the certs won't match.
-                Subjects = new string[] { s_fqdn, s_hostname, "localhost" }
+                Subject = s_fqdn,
+                SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" }
             };
 
             X509Certificate2 cert = CertificateResourceHelpers.EnsureCustomCertificateInstalled(context.BridgeConfiguration, certificateCreationSettings, Address);

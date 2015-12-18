@@ -19,6 +19,7 @@ namespace WcfService.CertificateResources
         protected const string revokedCertificatesKeyName = "revokedCertificates";
         protected const string revokeSerialNumberKeyName = "revoke";
         protected const string subjectKeyName = "subject";
+        protected const string subjectAlternativeNamesKeyName = "subjectAlternativeNames";
         protected const string subjectsKeyName = "subjects";
         protected const string thumbprintKeyName = "thumbprint";
         protected const string thumbprintsKeyName = "thumbprints";

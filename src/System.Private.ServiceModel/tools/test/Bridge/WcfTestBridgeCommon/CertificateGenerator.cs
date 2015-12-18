@@ -254,20 +254,25 @@ namespace WcfTestBridgeCommon
                 certificateCreationSettings.ValidityNotAfter = _defaultValidityNotAfter;
             }
 
-            string[] subjects = certificateCreationSettings.Subjects;
             if (!isAuthority ^ (signingCertificate != null))
             {
                 throw new ArgumentException("Either isAuthority == true or signingCertificate is not null");
             }
+            string subject = certificateCreationSettings.Subject;
 
-            if (!isAuthority && (subjects == null || subjects.Length == 0))
+            // If certificateCreationSettings.SubjectAlternativeNames == null, then we should add exactly one SubjectAlternativeName == Subject
+            // so that the default certificate generated is compatible with mainline scenarios
+            // However, if certificateCreationSettings.SubjectAlternativeNames == string[0], then allow this as this is a legit scenario we want to test out
+            if (certificateCreationSettings.SubjectAlternativeNames == null)
             {
-                throw new ArgumentException("If not creating an authority, must specify at least one Subject", "subjects");
+                certificateCreationSettings.SubjectAlternativeNames = new string[1] { subject };
             }
 
-            if (!isAuthority && string.IsNullOrWhiteSpace(subjects[0]))
+            string[] subjectAlternativeNames = certificateCreationSettings.SubjectAlternativeNames;
+
+            if (!isAuthority && string.IsNullOrWhiteSpace(subject))
             {
-                throw new ArgumentException("Certificate Subject must not be an empty string or only whitespace", "creationSettings.Subjects");
+                throw new ArgumentException("Certificate Subject must not be an empty string or only whitespace", "creationSettings.Subject");
             }
 
             EnsureInitialized();
@@ -294,7 +299,7 @@ namespace WcfTestBridgeCommon
             }
             else
             {
-                X509Name subjectName = CreateX509Name(subjects[0]);
+                X509Name subjectName = CreateX509Name(subject);
                 _certGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
                 _certGenerator.SetSubjectDN(subjectName);
 
@@ -318,41 +323,41 @@ namespace WcfTestBridgeCommon
             {
                 if (isMachineCert)
                 {
-                    List<Asn1Encodable> subjectAlternativeNames = new List<Asn1Encodable>(); 
+                    List<Asn1Encodable> subjectAlternativeNamesAsAsn1EncodableList = new List<Asn1Encodable>(); 
                     
                     // All endpoints should also be in the Subject Alt Names 
-                    for (int i = 0; i < subjects.Length; i++)
+                    for (int i = 0; i < subjectAlternativeNames.Length; i++)
                     {
-                        if (!string.IsNullOrWhiteSpace(subjects[i]))
+                        if (!string.IsNullOrWhiteSpace(subjectAlternativeNames[i]))
                         {
                             // Machine certs can have additional DNS names
-                            subjectAlternativeNames.Add(new GeneralName(GeneralName.DnsName, subjects[i]));
+                            subjectAlternativeNamesAsAsn1EncodableList.Add(new GeneralName(GeneralName.DnsName, subjectAlternativeNames[i]));
                         }
                     }
 
-                    _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNames.ToArray()));
+                    _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList.ToArray()));
                 }
                 else
                 {
-                    if (subjects.Length > 1)
+                    if (subjectAlternativeNames.Length > 1)
                     {
-                        var subjectAlternativeNames = new Asn1EncodableVector();
+                        var subjectAlternativeNamesAsAsn1EncodableList = new Asn1EncodableVector();
                     
                         // Only add a SAN for the user if there are any
-                        for (int i = 1; i < subjects.Length; i++)
+                        for (int i = 1; i < subjectAlternativeNames.Length; i++)
                         {
-                            if (!string.IsNullOrWhiteSpace(subjects[i]))
+                            if (!string.IsNullOrWhiteSpace(subjectAlternativeNames[i]))
                             {
                                 Asn1EncodableVector otherNames = new Asn1EncodableVector();
                                 otherNames.Add(new DerObjectIdentifier(_upnObjectId));
-                                otherNames.Add(new DerTaggedObject(true, 0, new DerUtf8String(subjects[i])));
+                                otherNames.Add(new DerTaggedObject(true, 0, new DerUtf8String(subjectAlternativeNames[i])));
 
                                 Asn1Object genName = new DerTaggedObject(false, 0, new DerSequence(otherNames));
 
-                                subjectAlternativeNames.Add(genName);
+                                subjectAlternativeNamesAsAsn1EncodableList.Add(genName);
                             }
                         }
-                        _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNames));
+                        _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList));
                     }
                 }
             }
@@ -392,7 +397,10 @@ namespace WcfTestBridgeCommon
             chain[0] = new X509CertificateEntry(cert);
 
             Pkcs12Store store = new Pkcs12StoreBuilder().Build();
-            store.SetKeyEntry("", new AsymmetricKeyEntry(keyPair.Private), chain);
+            store.SetKeyEntry(
+                certificateCreationSettings.FriendlyName != null ? certificateCreationSettings.FriendlyName : string.Empty, 
+                new AsymmetricKeyEntry(keyPair.Private), 
+                chain);
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -413,7 +421,7 @@ namespace WcfTestBridgeCommon
                 outputCert = new X509Certificate2(container.Pfx, _password, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
             }
 
-            container.Subject = subjects[0];
+            container.Subject = subject;
             container.InternalCertificate = cert;
             container.Certificate = outputCert;
             container.Thumbprint = outputCert.Thumbprint;
@@ -423,8 +431,9 @@ namespace WcfTestBridgeCommon
             if (!isAuthority)
             {
                 Trace.WriteLine(string.Format("    {0} = {1}", "Signed by", signingCertificate.SubjectDN));
-                Trace.WriteLine(string.Format("    {0} = {1}", "Subject (CN) ", subjects[0]));
-                Trace.WriteLine(string.Format("    {0} = {1}", "Alt names ", string.Join(", ", subjects)));
+                Trace.WriteLine(string.Format("    {0} = {1}", "Subject (CN) ", subject));
+                Trace.WriteLine(string.Format("    {0} = {1}", "Subject Alt names ", string.Join(", ", subjectAlternativeNames)));
+                Trace.WriteLine(string.Format("    {0} = {1}", "Friendly Name ", certificateCreationSettings.FriendlyName));
             }
             Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey:", outputCert.HasPrivateKey));
             Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", outputCert.Thumbprint));

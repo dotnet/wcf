@@ -92,6 +92,10 @@
     <Compile Include="TestResources\HttpsNtlmResource.cs" />
     <Compile Include="TestResources\HttpsDigestResource.cs" />
     <Compile Include="TestResources\ServiceContractAsyncResources.cs" />
+    <Compile Include="TestResources\TcpCertificateWithServerAltNameResource.cs" />
+    <Compile Include="TestResources\TcpCertificateWithSubjectCanonicalNameLocalhostResource.cs" />
+    <Compile Include="TestResources\TcpCertificateWithSubjectCanonicalNameFqdnResource.cs" />
+    <Compile Include="TestResources\TcpCertificateWithSubjectCanonicalNameDomainNameResource.cs" />
     <Compile Include="TestResources\TcpDefaultResource.cs" />
     <Compile Include="TestResources\TcpRevokedServerCertResource.cs" />
     <Compile Include="TestResources\TcpNoSecurityResource.cs" />
@@ -101,7 +105,6 @@
     <Compile Include="TestResources\TcpTransportSecuritySslCustomCertValidationResource.cs" />
     <Compile Include="TestResources\TcpTransportSecurityWithSslResource.cs" />
     <Compile Include="TestResources\TcpExpiredServerCertResource.cs" />
-    <Compile Include="TestResources\TcpCertificateWithServerAltNameResource.cs" />
     <Compile Include="TestResources\TcpVerifyDNSResource.cs" />
     <Compile Include="TestResources\HttpsSoap12Resource.cs" />
     <Compile Include="TestResources\HttpSoap12Resource.cs" />

@@ -33,14 +33,24 @@ namespace WcfService.CertificateResources
                 throw new ArgumentException("When PUTting to this resource, specify an non-empty 'subject'", "context.Properties");
             }
 
-            // There can be multiple subjects, separated by ,
-            string[] subjects = subject.Split(',');
+            string subjectAlternativeNamesString;
+            string[] subjectAlternativeNames;
+            if (context.Properties.TryGetValue(subjectAlternativeNamesKeyName, out subjectAlternativeNamesString) && !string.IsNullOrWhiteSpace(subjectAlternativeNamesString))
+            {
+                // Subject Alt Names specified here 
+                subjectAlternativeNames = subjectAlternativeNamesString.Split(',');
+            }
+            else
+            {
+                // If no SAN is specified, then we want to by default set the SAN to the subject
+                subjectAlternativeNames = new string[1] { subject };
+            }
 
-            bool isLocal = IsLocalMachineResource(subjects[0]);
+            bool isLocal = IsLocalMachineResource(subject);
 
             lock (s_certificateResourceLock)
             {
-                if (!s_createdCertsBySubject.TryGetValue(subjects[0], out certificate))
+                if (!s_createdCertsBySubject.TryGetValue(subject, out certificate))
                 {
                     CertificateGenerator generator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration);
 
@@ -57,7 +67,12 @@ namespace WcfService.CertificateResources
                     }
                     else
                     {
-                        CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings() { Subjects = subjects, };
+                        CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
+                        {
+                            FriendlyName = "WCF Bridge - MachineCertificateResource", 
+                            Subject = subject,
+                            SubjectAlternativeNames = subjectAlternativeNames
+                        };
                         certificate = generator.CreateMachineCertificate(certificateCreationSettings).Certificate;
                     }
 
@@ -66,7 +81,7 @@ namespace WcfService.CertificateResources
                     {
                         // when isLocal, it's possible for there to be > 1 subject sharing the same thumbprint
                         // in this case, we only cache the first isLocal subject, the rest we don't cache
-                        s_createdCertsBySubject.Add(subjects[0], certificate);
+                        s_createdCertsBySubject.Add(subject, certificate);
                         s_createdCertsByThumbprint.Add(certificate.Thumbprint, certificate);
                     }
                 }

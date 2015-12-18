@@ -11,9 +11,9 @@ using System.Collections.Generic;
 
 namespace WcfService.TestResources
 {
-    internal class TcpCertificateWithServerAltNameResource : TcpResource
+    internal class TcpCertificateWithSubjectCanonicalNameFqdnResource : TcpResource
     {
-        protected override string Address { get { return "tcp-server-alt-name-cert"; } }
+        protected override string Address { get { return "tcp-server-subject-cn-fqdn-cert"; } }
 
         protected override Binding GetBinding()
         {
@@ -27,15 +27,14 @@ namespace WcfService.TestResources
         protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
         {
             // Ensure the service certificate is installed before this endpoint resource is used
+            // Exactly one subject name, which is going to be the CN
 
-            // CN=not-real-subject-name means that a cert for "not-real-subject-name" will be installed 
-            // Per #422 this shouldn't matter as we now check with SAN
-            
             CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
             {
-                FriendlyName = "WCF Bridge - TcpCertificateWithServerAltNameResource",
-                Subject = "not-real-subject-name",
-                SubjectAlternativeNames = new string[] { "not-real-subject-name", "not-real-subject-name.example.com", s_fqdn, s_hostname, "localhost" }
+                FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource",
+                Subject = s_fqdn, 
+                SubjectAlternativeNames = new string[0],
+                ValidityType = CertificateValidityType.NonAuthoritativeForMachine
             };
 
             X509Certificate2 cert = CertificateResourceHelpers.EnsureCustomCertificateInstalled(context.BridgeConfiguration, certificateCreationSettings, Address);
