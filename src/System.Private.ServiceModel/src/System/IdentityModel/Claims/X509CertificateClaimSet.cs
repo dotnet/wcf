@@ -4,7 +4,6 @@
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel;
@@ -380,52 +379,108 @@ namespace System.IdentityModel.Claims
         // to figure out what the identifier, delimiter, and separator is by using a well-known extension
         private static class X509SubjectAlternativeNameConstants
         {
-            public const string Oid = "2.5.29.17"; 
-            public static readonly string Identifier;
-            public static readonly char Delimiter;
-            public static readonly string Separator;
+            public const string Oid = "2.5.29.17";
+
+            private static readonly string _identifier;
+            private static readonly char _delimiter;
+            private static readonly string _separator;
+
+            private static bool _successfullyInitialized = false;
+            private static Exception _initializationException;
+
+            public static string Identifier
+            {
+                get
+                {
+                    EnsureInitialized();
+                    return _identifier;
+                }
+            }
+
+            public static char Delimiter
+            {
+                get
+                {
+                    EnsureInitialized();
+                    return _delimiter;
+                }
+            }
+            public static string Separator
+            {
+                get
+                {
+                    EnsureInitialized();
+                    return _separator;
+                }
+            }
+
+            private static void EnsureInitialized()
+            {
+                if (!_successfullyInitialized)
+                {
+                    throw new FormatException(string.Format(
+                        "There was an error detecting the identifier, delimiter, and separator for X509CertificateClaims on this platform.{0}" + 
+                        "Detected values were: Identifier: '{1}'; Delimiter:'{2}'; Separator:'{3}'",
+                        Environment.NewLine,
+                        _identifier,
+                        _delimiter,
+                        _separator
+                    ), _initializationException);
+                }
+            }
 
             // static initializer runs only when one of the properties is accessed
             static X509SubjectAlternativeNameConstants()
             {
                 // Extracted a well-known X509Extension
-                const string x509ExtensionBase64String = "MCSCFW5vdC1yZWFsLXN1YmplY3QtbmFtZYILZXhhbXBsZS5jb20=";
+                byte[] x509ExtensionBytes = new byte[] {
+                    48, 36, 130, 21, 110, 111, 116, 45, 114, 101, 97, 108, 45, 115, 117, 98, 106, 101, 99,
+                    116, 45, 110, 97, 109, 101, 130, 11, 101, 120, 97, 109, 112, 108, 101, 46, 99, 111, 109
+                };
                 const string subjectName1 = "not-real-subject-name";
 
-                X509Extension x509Extension = new X509Extension(Oid, Convert.FromBase64String(x509ExtensionBase64String), true);
-                string x509ExtensionFormattedString = x509Extension.Format(false);
-
-                // Each OS has a different dNSName identifier and delimiter
-                // On Windows, dNSName == "DNS Name" (localizable), on Linux, dNSName == "DNS"
-                // e.g.,
-                // Windows: x509ExtensionFormattedString is: "DNS Name=not-real-subject-name, DNS Name=example.com"
-                // Linux:   x509ExtensionFormattedString is: "DNS:not-real-subject-name, DNS:example.com"
-                // Parse: <identifier><delimter><value><separator(s)>
-
-                int delimiterIndex = x509ExtensionFormattedString.IndexOf(subjectName1) - 1;
-                Delimiter = x509ExtensionFormattedString[delimiterIndex];
-
-                // Make an assumption that all characters from the the start of string to the delimiter 
-                // are part of the identifier
-                Identifier = x509ExtensionFormattedString.Substring(0, delimiterIndex);
-
-                int separatorFirstChar = delimiterIndex + subjectName1.Length + 1;
-                int separatorLength = 1;
-                for (int i = separatorFirstChar + 1; i < x509ExtensionFormattedString.Length; i++)
+                try
                 {
-                    // We advance until the first character of the identifier to determine what the
-                    // separator is. This assumes that the identifier assumption above is correct
-                    if (x509ExtensionFormattedString[i] == Identifier[0])
+                    X509Extension x509Extension = new X509Extension(Oid, x509ExtensionBytes, true);
+                    string x509ExtensionFormattedString = x509Extension.Format(false);
+
+                    // Each OS has a different dNSName identifier and delimiter
+                    // On Windows, dNSName == "DNS Name" (localizable), on Linux, dNSName == "DNS"
+                    // e.g.,
+                    // Windows: x509ExtensionFormattedString is: "DNS Name=not-real-subject-name, DNS Name=example.com"
+                    // Linux:   x509ExtensionFormattedString is: "DNS:not-real-subject-name, DNS:example.com"
+                    // Parse: <identifier><delimter><value><separator(s)>
+
+                    int delimiterIndex = x509ExtensionFormattedString.IndexOf(subjectName1) - 1;
+                    _delimiter = x509ExtensionFormattedString[delimiterIndex];
+
+                    // Make an assumption that all characters from the the start of string to the delimiter 
+                    // are part of the identifier
+                    _identifier = x509ExtensionFormattedString.Substring(0, delimiterIndex);
+
+                    int separatorFirstChar = delimiterIndex + subjectName1.Length + 1;
+                    int separatorLength = 1;
+                    for (int i = separatorFirstChar + 1; i < x509ExtensionFormattedString.Length; i++)
                     {
-                        break;
-                    }
-                    else
-                    {
+                        // We advance until the first character of the identifier to determine what the
+                        // separator is. This assumes that the identifier assumption above is correct
+                        if (x509ExtensionFormattedString[i] == _identifier[0])
+                        {
+                            break;
+                        }
+                        
                         separatorLength++;
                     }
-                }
 
-                Separator = x509ExtensionFormattedString.Substring(separatorFirstChar, separatorLength);
+                    _separator = x509ExtensionFormattedString.Substring(separatorFirstChar, separatorLength);
+
+                    _successfullyInitialized = true;
+                }
+                catch (Exception ex)
+                {
+                    _successfullyInitialized = false;
+                    _initializationException = ex;
+                }
             }
         }
     }
