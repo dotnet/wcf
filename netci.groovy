@@ -45,7 +45,7 @@ def project = 'dotnet/wcf'
                     targetDirectory('coreclr')
                 }
                 
-                copyArtifacts('dotnet_corefx_linux_nativecomp_debug') {
+                copyArtifacts('dotnet_corefx/nativecomp_ubuntu_debug') {
                     includePatterns('bin/**')
                     buildSelector {
                         latestSuccessful(true)
@@ -53,7 +53,7 @@ def project = 'dotnet/wcf'
                     targetDirectory('corefx')
                 }
                 
-                copyArtifacts('dotnet_corefx_linux_debug') {
+                copyArtifacts('dotnet_corefx/ubuntu_debug_bld') {
                     excludePatterns('**/testResults.xml', '**/*.ni.dll')
                     buildSelector {
                         latestSuccessful(true)
