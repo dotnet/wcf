@@ -59,12 +59,6 @@
     <BuildNumberMajor>$(RevisionNumber)</BuildNumberMajor>
   </PropertyGroup>
 
-  <!-- Test runtime -->
-  <PropertyGroup>
-    <TestRuntimeProjectJson Condition="'$(TestRuntimeProjectJson)' == ''">$(SourceDir)Common/test-runtime/project.json</TestRuntimeProjectJson>
-    <TestRuntimeProjectLockJson Condition="'$(TestRuntimeProjectLockJson)' == ''">$(SourceDir)Common/test-runtime/project.lock.json</TestRuntimeProjectLockJson>
-  </PropertyGroup>
-
   <!-- Package dependency validation -->
   <PropertyGroup>
     <ValidatePackageVersions>true</ValidatePackageVersions>
@@ -73,7 +67,7 @@
 
   <ItemGroup>
     <ValidationPattern Include="^((System\..*)|(Microsoft\.CSharp)|(Microsoft\.NETCore.*)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
-      <ExpectedPrerelease>rc2-23608</ExpectedPrerelease>
+      <ExpectedPrerelease>rc2-23628</ExpectedPrerelease>
     </ValidationPattern>
     <ValidationPattern Include="^(System\..*TestData)$">
       <ExpectedVersion>1.0.0-prerelease</ExpectedVersion>
@@ -147,7 +141,8 @@
 
   <!-- Create a collection of all project.json files for dependency updates. -->
   <ItemGroup>
-    <ProjectJsonFiles Include="$(SourceDir)**\project.json" />
+    <ProjectJsonFiles Include="$(SourceDir)**\project.json"
+                      Exclude="$(SourceDir)Common\test-runtime\floating\project.json" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(BuildAllProjects)'=='true'">  
@@ -400,6 +395,30 @@
     <!-- Don't run tests if we're building another platform's binaries on Windows -->
     <SkipTests Condition="'$(SkipTests)'=='' and ('$(OsEnvironment)'=='Windows_NT' and '$(TargetsWindows)'!='true')">true</SkipTests>
   </PropertyGroup>
+
+  <!-- Test runtime -->
+  <PropertyGroup>
+    <TestRuntimePath>$(SourceDir)Common/test-runtime/</TestRuntimePath>
+    
+    <TestFixedRuntimeProjectJson>$(TestRuntimePath)project.json</TestFixedRuntimeProjectJson>
+    <TestFixedRuntimeProjectLockJson>$(TestRuntimePath)project.lock.json</TestFixedRuntimeProjectLockJson>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <TestRuntimeProjectJson Condition="'$(TestRuntimeProjectJson)' == ''">$(TestFixedRuntimeProjectJson)</TestRuntimeProjectJson>
+    <TestRuntimeProjectLockJson Condition="'$(TestRuntimeProjectLockJson)' == ''">$(TestFixedRuntimeProjectLockJson)</TestRuntimeProjectLockJson>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(FloatingTestRuntimeDependencies)'=='true'">
+    <TestRuntimePath>$(IntermediateOutputRootPath)Common/test-runtime/floating/</TestRuntimePath>
+
+    <TestRuntimeProjectJson>$(TestRuntimePath)project.json</TestRuntimeProjectJson>
+    <TestRuntimeProjectLockJson>$(TestRuntimePath)project.lock.json</TestRuntimeProjectLockJson>
+  </PropertyGroup>
+  
+  <ItemGroup Condition="'$(FloatingTestRuntimeDependencies)'=='true'">
+    <DnuRestoreDir Include="$(TestRuntimeProjectJson)" />
+  </ItemGroup>
 
   <PropertyGroup>
     <!-- Work around known Dev14 bug - see
