@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "System.ServiceModel.Duplex": "4.0.1-rc2-23608",
-    "System.ServiceModel.Http": "4.0.11-rc2-23608",
-    "System.ServiceModel.Primitives": "4.1.0-rc2-23608"
+    "System.ServiceModel.Duplex": "4.0.1-rc2-23628",
+    "System.ServiceModel.Http": "4.0.11-rc2-23628",
+    "System.ServiceModel.Primitives": "4.1.0-rc2-23628"
   },
   "frameworks": {
     "dnxcore50": {
-      "System.Net.WebSockets": "4.0.0-rc2-23608",
-      "System.Net.WebSockets.Client": "4.0.0-rc2-23608"
+      "System.Net.WebSockets": "4.0.0-rc2-23628",
+      "System.Net.WebSockets.Client": "4.0.0-rc2-23628"
     }
   }
 }

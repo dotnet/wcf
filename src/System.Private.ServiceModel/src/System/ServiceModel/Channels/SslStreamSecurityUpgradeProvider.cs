@@ -352,8 +352,8 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                sslStream.AuthenticateAsServer(_parent.ServerCertificate, _parent.RequireClientCertificate,
-                    _parent.SslProtocols, false);
+                sslStream.AuthenticateAsServerAsync(_parent.ServerCertificate, _parent.RequireClientCertificate,
+                    _parent.SslProtocols, false).GetAwaiter().GetResult();
 
             }
             catch (AuthenticationException exception)
