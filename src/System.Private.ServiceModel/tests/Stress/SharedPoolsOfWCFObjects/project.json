@@ -7,21 +7,21 @@
   "licenseUrl": "",
 
   "dependencies": {
-    "System.Net.Http": "4.0.1-rc2-23608",
-    "System.Net.Sockets": "4.0.11-rc2-23608",
-    "System.ServiceModel.NetTcp": "4.0.1-rc2-23608",
-    "System.ServiceModel.Http": "4.0.11-rc2-23608",
-    "System.ServiceModel.Primitives": "4.1.0-rc2-23608",
-    "System.ServiceModel.Security": "4.0.1-rc2-23608",
-    "System.Console": "4.0.0-rc2-23608",
-    "System.Collections": "4.0.11-rc2-23608",
-    "System.Linq": "4.0.1-rc2-23608",
-    "System.Threading": "4.0.11-rc2-23608",
-    "System.Diagnostics.Debug": "4.0.11-rc2-23608",
-    "System.Collections.Specialized": "4.0.1-rc2-23608",
-    "System.Private.ServiceModel": "4.0.1-rc2-23608",
-    "System.Diagnostics.Tools": "4.0.1-rc2-23608",
-    "System.ServiceModel.Duplex": "4.0.1-rc2-23608"
+    "System.Net.Http": "4.0.1-rc2-23628",
+    "System.Net.Sockets": "4.0.11-rc2-23628",
+    "System.ServiceModel.NetTcp": "4.0.1-rc2-23628",
+    "System.ServiceModel.Http": "4.0.11-rc2-23628",
+    "System.ServiceModel.Primitives": "4.1.0-rc2-23628",
+    "System.ServiceModel.Security": "4.0.1-rc2-23628",
+    "System.Console": "4.0.0-rc2-23628",
+    "System.Collections": "4.0.11-rc2-23628",
+    "System.Linq": "4.0.1-rc2-23628",
+    "System.Threading": "4.0.11-rc2-23628",
+    "System.Diagnostics.Debug": "4.0.11-rc2-23628",
+    "System.Collections.Specialized": "4.0.1-rc2-23628",
+    "System.Private.ServiceModel": "4.0.1-rc2-23628",
+    "System.Diagnostics.Tools": "4.0.1-rc2-23628",
+    "System.ServiceModel.Duplex": "4.0.1-rc2-23628"
 
   },
 

@@ -208,8 +208,8 @@ namespace System.ServiceModel.Channels
                         TD.WindowsStreamSecurityOnAcceptUpgrade(EventTraceActivity);
                     }
 
-                    negotiateStream.AuthenticateAsServer(_parent.ServerCredential, _parent.ProtectionLevel,
-                        TokenImpersonationLevel.Identification);
+                    negotiateStream.AuthenticateAsServerAsync(_parent.ServerCredential, _parent.ProtectionLevel,
+                        TokenImpersonationLevel.Identification).GetAwaiter().GetResult();
                 }
                 catch (AuthenticationException exception)
                 {
