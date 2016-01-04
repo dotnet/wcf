@@ -109,7 +109,7 @@ public static class Https_ClientCredentialTypeTests
     }
 
     [Fact]
-    [ActiveIssue(69)]
+    [ActiveIssue(270)]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()
     {
