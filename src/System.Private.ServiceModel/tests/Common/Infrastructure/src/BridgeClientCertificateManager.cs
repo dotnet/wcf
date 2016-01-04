@@ -267,7 +267,7 @@ namespace Infrastructure.Common
                     {
                         try
                         {
-                            store.Open(OpenFlags.ReadWrite | OpenFlags.OpenExistingOnly);
+                            store.Open(OpenFlags.ReadWrite);
                         }
                         catch (CryptographicException inner)
                         {
