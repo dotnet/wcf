@@ -2,15 +2,12 @@
 
 usage()
 {
-    echo "Usage: $0 [managed] [native] [BuildArch] [BuildType] [clean] [verbose] [clangx.y] [platform]"
-    echo "managed - optional argument to build the managed code"
-    echo "native - optional argument to build the native code"
+    echo "Usage: $0 [BuildArch] [BuildType] [clean] [verbose] [platform]"
     echo "The following arguments affect native builds only:"
     echo "BuildArch can be: x64, arm"
     echo "BuildType can be: Debug, Release"
     echo "clean - optional argument to force a clean build."
     echo "verbose - optional argument to enable verbose build output."
-    echo "clangx.y - optional argument to build using clang version x.y."
     echo "platform can be: Windows, Linux, OSX, FreeBSD"
 
     exit 1
@@ -44,28 +41,17 @@ check_managed_prereqs()
         # if built from tarball, mono only identifies itself as 4.0.1
         __monoversion=$(mono --version | egrep "version 4.0.[1-9]+(.[0-9]+)?")
         if [ $? -ne 0 ]; then
-            echo "Mono 4.0.1.44 or later is required to build corefx. Please see https://github.com/dotnet/corefx/blob/master/Documentation/building/unix-instructions.md for more details."
+            echo "Mono 4.0.1.44 or later is required to build WCF. Please see https://github.com/dotnet/wcf/blob/master/Documentation/building/unix-instructions.md for more details."
             exit 1
         else
-            echo "WARNING: Mono 4.0.1.44 or later is required to build corefx. Unable to assess if current version is supported."
+            echo "WARNING: Mono 4.0.1.44 or later is required to build WCF. Unable to assess if current version is supported."
         fi
     fi
 
     if [ ! -e "$__referenceassemblyroot/.NETPortable" ]; then
-        echo "PCL reference assemblies not found. Please see https://github.com/dotnet/corefx/blob/master/Documentation/building/unix-instructions.md for more details."
+        echo "PCL reference assemblies not found. Please see https://github.com/dotnet/wcf/blob/master/Documentation/building/unix-instructions.md for more details."
         exit 1
     fi
-}
-
-check_native_prereqs()
-{
-    echo "Checking pre-requisites..."
-
-    # Check presence of CMake on the path
-    hash cmake 2>/dev/null || { echo >&2 "Please install cmake before running this script"; exit 1; }
-
-    # Check for clang
-    hash clang-$__ClangMajorVersion.$__ClangMinorVersion 2>/dev/null ||  hash clang$__ClangMajorVersion$__ClangMinorVersion 2>/dev/null ||  hash clang 2>/dev/null || { echo >&2 "Please install clang before running this script"; exit 1; }
 }
 
 # Prepare the system for building
@@ -76,7 +62,7 @@ prepare_managed_build()
     if [ ! -e "$__nugetpath" ]; then
         which curl wget > /dev/null 2> /dev/null
         if [ $? -ne 0 -a $? -ne 1 ]; then
-            echo "cURL or wget is required to build corefx. Please see https://github.com/dotnet/corefx/blob/master/Documentation/building/unix-instructions.md for more details."
+            echo "cURL or wget is required to build WCF. Please see https://github.com/dotnet/WCF/blob/master/Documentation/building/unix-instructions.md for more details."
             exit 1
         fi
         echo "Restoring NuGet.exe..."
@@ -107,24 +93,7 @@ prepare_managed_build()
     fi
 }
 
-prepare_native_build()
-{
-    # Specify path to be set for CMAKE_INSTALL_PREFIX.
-    # This is where all built CoreClr libraries will copied to.
-    export __CMakeBinDir="$__BinDir"
-
-    # Configure environment if we are doing a clean build.
-    if [ $__CleanBuild == 1 ]; then
-        clean
-    fi
-
-    # Configure environment if we are doing a verbose build
-    if [ $__VerboseBuild == 1 ]; then
-        export VERBOSE=1
-    fi
-}
-
-build_managed_corefx()
+build_managed_wcf()
 {
     __buildproj=$__scriptpath/build.proj
     __buildlog=$__scriptpath/msbuild.log
@@ -137,47 +106,6 @@ build_managed_corefx()
     # Pull the build summary from the log file
     tail -n 4 "$__buildlog"
     echo Build Exit Code = $BUILDERRORLEVEL
-}
-
-build_native_corefx()
-{
-    # All set to commence the build
-
-    echo "Commencing build of corefx native components for $__BuildOS.$__BuildArch.$__BuildType"
-    cd "$__IntermediatesDir"
-
-    # Regenerate the CMake solution
-    echo "Invoking cmake with arguments: \"$__nativeroot\" $__CMakeArgs"
-    "$__nativeroot/gen-buildsys-clang.sh" "$__nativeroot" $__ClangMajorVersion $__ClangMinorVersion $__CMakeArgs
-
-    # Check that the makefiles were created.
-
-    if [ ! -f "$__IntermediatesDir/Makefile" ]; then
-        echo "Failed to generate native component build project!"
-        exit 1
-    fi
-
-    # Get the number of processors available to the scheduler
-    # Other techniques such as `nproc` only get the number of
-    # processors available to a single process.
-    if [ `uname` = "FreeBSD" ]; then
-        NumProc=`sysctl hw.ncpu | awk '{ print $2+1 }'`
-    else
-        NumProc=$(($(getconf _NPROCESSORS_ONLN)+1))
-    fi
-
-    # Build
-
-    echo "Executing make install -j $NumProc"
-
-    make install -j $NumProc
-    if [ $? != 0 ]; then
-        echo "Failed to build corefx native components."
-        exit 1
-    fi
-
-    echo "CoreFX native components successfully built."
-    echo "Product binaries are available at $__BinDir"
 }
 
 __scriptpath=$(cd "$(dirname "$0")"; pwd -P)
@@ -242,8 +170,6 @@ BUILDERRORLEVEL=0
 __UnprocessedBuildArgs=
 __CleanBuild=false
 __VerboseBuild=false
-__ClangMajorVersion=3
-__ClangMinorVersion=5
 
 for i in "$@"
     do
@@ -252,12 +178,6 @@ for i in "$@"
         -?|-h|--help)
             usage
             exit 1
-            ;;
-        managed)
-            __buildmanaged=true
-            ;;
-        native)
-            __buildnative=true
             ;;
         x64)
             __BuildArch=x64
@@ -272,25 +192,12 @@ for i in "$@"
             ;;
         release)
             __BuildType=Release
-            __CMakeArgs=RELEASE
             ;;
         clean)
             __CleanBuild=1
             ;;
         verbose)
             __VerboseBuild=1
-            ;;
-        clang3.5)
-            __ClangMajorVersion=3
-            __ClangMinorVersion=5
-            ;;
-        clang3.6)
-            __ClangMajorVersion=3
-            __ClangMinorVersion=6
-            ;;
-        clang3.7)
-            __ClangMajorVersion=3
-            __ClangMinorVersion=7
             ;;
         windows)
             __BuildOS=Windows_NT
@@ -311,20 +218,6 @@ for i in "$@"
     esac
 done
 
-# If neither managed nor native are passed as arguments, default to building both
-
-if [ "$__buildmanaged" = false -a "$__buildnative" = false ]; then
-    __buildmanaged=true
-    __buildnative=true
-fi
-
-# Disable the native build when targeting Windows.
-
-if [ "$__BuildOS" != "$__HostOS" ]; then
-    echo "Warning: cross compiling native components is not yet supported"
-    __buildnative=false
-fi
-
 # Set the remaining variables based upon the determined build configuration
 __IntermediatesDir="$__rootbinpath/obj/$__BuildOS.$__BuildArch.$__BuildType/Native"
 __BinDir="$__rootbinpath/$__BuildOS.$__BuildArch.$__BuildType/Native"
@@ -333,43 +226,23 @@ __BinDir="$__rootbinpath/$__BuildOS.$__BuildArch.$__BuildType/Native"
 
 setup_dirs
 
-if $__buildmanaged; then
+# Check prereqs.
 
-    # Check prereqs.
+check_managed_prereqs
 
-    check_managed_prereqs
+# Prepare the system
 
-    # Prepare the system
+prepare_managed_build
 
-    prepare_managed_build
+# Build the wcf managed components.
 
-    # Build the corefx native components.
+build_managed_wcf
 
-    build_managed_corefx
-
-    # Build complete
-fi
+# Build complete
 
 # If managed build failed, exit with the status code of the managed build
 if [ $BUILDERRORLEVEL != 0 ]; then
     exit $BUILDERRORLEVEL
-fi
-
-if $__buildnative; then
-
-    # Check prereqs.
-
-    check_native_prereqs
-
-    # Prepare the system
-
-    prepare_native_build
-
-    # Build the corefx native components.
-
-    build_native_corefx
-
-    # Build complete
 fi
 
 exit $BUILDERRORLEVEL
