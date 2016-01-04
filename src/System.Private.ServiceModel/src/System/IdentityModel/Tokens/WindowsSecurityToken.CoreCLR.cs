@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#if !FEATURE_NETNATIVE // NegotiateStream
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
 
 using System.Collections.ObjectModel;
 using System.Security.Principal;
@@ -115,4 +115,4 @@ namespace System.IdentityModel.Tokens
         }
     }
 }
-#endif // !FEATURE_NETNATIVE
+#endif // SUPPORTS_WINDOWSIDENTITY

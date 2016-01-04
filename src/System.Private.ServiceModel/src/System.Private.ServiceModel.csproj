@@ -28,6 +28,9 @@
     <ProjectJson>$(MsBuildThisFileDirectory)windows\project.json</ProjectJson>
     <ProjectLockJson>$(MsBuildThisFileDirectory)windows\project.lock.json</ProjectLockJson>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(IsNETNativeLibrary)' != 'true' AND '$(TargetsWindows)' == 'true'">
+    <DefineConstants>>$(DefineConstants);SUPPORTS_WINDOWSIDENTITY</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>

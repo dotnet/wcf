@@ -1,14 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.IdentityModel.Claims;
-using System.ServiceModel;
-using System.IdentityModel.Policy;
 using System.Security.Principal;
 
 namespace System.ServiceModel.Security.Tokens
 {
-#if !FEATURE_NETNATIVE // NegotiateStream
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
     internal class WindowsSidIdentity : IIdentity
     {
         SecurityIdentifier _sid;
@@ -80,5 +77,5 @@ namespace System.ServiceModel.Security.Tokens
             return _sid.GetHashCode();
         }
     }
-#endif // FEATURE_NETNATIVE
+#endif // SUPPORTS_WINDOWSIDENTITY
 }

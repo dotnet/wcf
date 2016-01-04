@@ -51,7 +51,6 @@
         "System.Net.NameResolution": "4.0.0-rc2-23628",
         "System.Net.Security": "4.0.0-rc2-23628",
         "System.Net.Sockets": "4.1.0-rc2-23628",
-        "System.Security.Principal.Windows": "4.0.0-rc2-23628"
       }
     },
     "netcore50": {

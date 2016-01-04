@@ -7,13 +7,13 @@ namespace System.ServiceModel
 {
     public class UpnEndpointIdentity : EndpointIdentity
     {
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
 #pragma warning disable 0414 // We don't use this yet in the initial stubbing - remove this once we have references again. 
         private SecurityIdentifier _upnSid;
         private bool _hasUpnSidBeenComputed;
         private WindowsIdentity _windowsIdentity;
 #pragma warning restore 0414
-#endif
+#endif // SUPPORTS_WINDOWSIDENTITY
 
         private Object _thisLock = new Object();
 
@@ -25,7 +25,7 @@ namespace System.ServiceModel
             throw ExceptionHelper.PlatformNotSupported("UpnEndpointIdentity is not supported");
         }
 
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
         internal UpnEndpointIdentity(WindowsIdentity windowsIdentity)
         {
             if (windowsIdentity == null)
@@ -35,6 +35,6 @@ namespace System.ServiceModel
             _upnSid = windowsIdentity.User;
             _hasUpnSidBeenComputed = true;
         }
-#endif //FEATURE_CORECLR
+#endif // SUPPORTS_WINDOWSIDENTITY
     }
 }
