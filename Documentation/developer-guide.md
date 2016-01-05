@@ -57,6 +57,19 @@ code coverage numbers:
     build.cmd /p:WithCategories=OuterLoop /p:Coverage=true
 ```
 
+Running tests with latest dependency versions
+=============================================
+Running tests against each dependency's latest version can catch functional issues. The
+`FloatingTestRuntimeDependencies` property enables this. To run unit tests against the
+latest dependencies:
+```
+    build.cmd /p:FloatingTestRuntimeDependencies=true
+```
+To run the scenario tests with latest dependencies:
+```
+    build.cmd /p:FloatingTestRuntimeDependencies=true /p:WithCategories=OuterLoop
+```
+
 Running scenario tests across multiple machines
 ===============================================
 By default scenario tests run against WCF services that are locally self-hosted.
