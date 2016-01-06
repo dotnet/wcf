@@ -117,6 +117,10 @@ namespace WcfService
         {
             throw new FaultException<FaultDetail>(new FaultDetail(faultMsg));
         }
+        public void TestFaultInt(int faultCode)
+        {
+            throw new FaultException<int>(faultCode);
+        }
 
         public void ThrowInvalidOperationException(string message)
         {
