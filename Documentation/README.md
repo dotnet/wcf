@@ -10,6 +10,7 @@ This is the developer documentation for the Windows Communication Foundation rep
 - [Project priorities](developer-guide.md#project-goals-and-priorities)
 - [Developer Guide](developer-guide.md)
 - [Issue Guide](issue-guide.md)
+- [Project NuGet Dependencies](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/project-nuget-dependencies.md)
 
 ### Available WCF Libraries
   * [System.ServiceModel.Primitives](System.ServiceModel.Primitives.md)

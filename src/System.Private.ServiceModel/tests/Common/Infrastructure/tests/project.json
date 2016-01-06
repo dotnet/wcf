@@ -3,7 +3,7 @@
     "System.ServiceModel.Primitives": "4.1.0-rc2-23628",
     "System.ServiceModel.Security": "4.0.1-rc2-23628",
     "xunit": "2.1.0",
-    "xunit.netcore.extensions": "1.0.0-prerelease-*"
+    "xunit.netcore.extensions": "1.0.0-prerelease-00123"
   },
   "frameworks": {
     "dnxcore50": {}

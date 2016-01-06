@@ -115,6 +115,27 @@
            Text="The build tools package was just restored and so we cannot continue the build of an individual project because targets from the build tools package were not able to be imported. Please retry the build the individual project again." />
   </Target>
 
+  <!-- Copy the test-runtime project.json and change it to use floating (*) CoreFX dependencies for testing against the latest packages. -->
+  <Target Name="GenerateFloatingTestRuntimeProjectJson"
+          Inputs="$(TestFixedRuntimeProjectJson)"
+          Outputs="$(TestRuntimeProjectJson)"
+          Condition="'$(FloatingTestRuntimeDependencies)'=='true'"
+          BeforeTargets="RestoreTestRuntimePackage;BatchRestorePackages">
+    <Copy SourceFiles="$(TestFixedRuntimeProjectJson)"
+          DestinationFolder="$(TestRuntimePath)" />
+
+    <ItemGroup>
+      <FixedToFloatingValidationPattern Include="^((System\..*)|(Microsoft\.CSharp)|(Microsoft\.NETCore.*)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
+        <ExpectedPrerelease>*</ExpectedPrerelease>
+      </FixedToFloatingValidationPattern>
+    </ItemGroup>
+
+    <ValidateProjectDependencyVersions ProjectJsons="$(TestRuntimeProjectJson)"
+                                       ProhibitFloatingDependencies="false"
+                                       ValidationPatterns="@(FixedToFloatingValidationPattern)"
+                                       UpdateInvalidDependencies="true" />
+  </Target>
+
   <!-- Provide default targets which can be hooked onto or overridden as necessary -->
   <Target Name="BuildAndTest" DependsOnTargets="Build;Test" />
   <Target Name="RebuildAndTest" DependsOnTargets="Rebuild;Test" />
