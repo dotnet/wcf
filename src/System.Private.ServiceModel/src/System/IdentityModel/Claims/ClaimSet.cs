@@ -36,9 +36,7 @@ namespace System.IdentityModel.Claims
         {
             get
             {
-#if FEATURE_NETNATIVE // NegotiateStream
-                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
-#else 
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
                 if (s_windows == null)
                 {
                     List<Claim> claims = new List<Claim>(2);
@@ -48,7 +46,9 @@ namespace System.IdentityModel.Claims
                     s_windows = new DefaultClaimSet(claims);
                 }
                 return s_windows;
-#endif // FEATURE_NETNATIVE
+#else 
+                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
+#endif // SUPPORTS_WINDOWSIDENTITY
             }
         }
 

@@ -294,7 +294,7 @@ namespace System.ServiceModel.Security
             return CreateWindowsIdentity();
         }
 
-#if FEATURE_NETNATIVE
+#if !SUPPORTS_WINDOWSIDENTITY
         internal static EndpointIdentity CreateWindowsIdentity(bool spnOnly)
         {
             EndpointIdentity identity = null;
@@ -373,7 +373,7 @@ namespace System.ServiceModel.Security
                 return new WindowsIdentity(token, authType);
             return new WindowsIdentity(token);
         }
-#endif // FEATURE_NETNATIVE
+#endif // !SUPPORTS_WINDOWSIDENTITY
 
         internal static string GetSpnFromIdentity(EndpointIdentity identity, EndpointAddress target)
         {
@@ -466,11 +466,11 @@ namespace System.ServiceModel.Security
             if (principalName.Contains("@") || principalName.Contains(@"\"))
             {
                 identityClaim = new Claim(ClaimTypes.Upn, principalName, Rights.Identity);
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
                 primaryPrincipal = Claim.CreateUpnClaim(principalName);
 #else
-                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported on UWP"); 
-#endif // FEATURE_CORECLR
+                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported"); 
+#endif // SUPPORTS_WINDOWSIDENTITY
             }
             else
             {
@@ -501,14 +501,14 @@ namespace System.ServiceModel.Security
                 WindowsClaimSet windows = claimSet as WindowsClaimSet;
                 if (windows != null)
                 {
-#if FEATURE_NETNATIVE
-                    throw ExceptionHelper.PlatformNotSupported("Windows Stream Security not yet supported on UWP");
-#else
+#if SUPPORTS_WINDOWSIDENTITY
                     if (str.Length > 0)
                         str.Append(", ");
 
                     AppendIdentityName(str, windows.WindowsIdentity);
-#endif // FEATURE_NETNATIVE 
+#else
+                    throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
+#endif // SUPPORTS_WINDOWSIDENTITY 
                 }
                 else
                 {
@@ -593,9 +593,7 @@ namespace System.ServiceModel.Security
             }
 
             str.Append(String.IsNullOrEmpty(name) ? "<null>" : name);
-#if FEATURE_NETNATIVE // NegotiateStream
-                    throw ExceptionHelper.PlatformNotSupported("Windows Stream Security not yet supported on UWP");
-#else
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
             WindowsIdentity windows = identity as WindowsIdentity;
             if (windows != null)
             {
@@ -614,7 +612,9 @@ namespace System.ServiceModel.Security
                     str.Append(sid.SecurityIdentifier.ToString());
                 }
             }
-#endif
+#else
+            throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
+#endif // SUPPORTS_WINDOWSIDENTITY
         }
 
 
@@ -791,15 +791,15 @@ namespace System.ServiceModel.Security
 
             internal static string GetCurrentUserIdAsString(NetworkCredential credential)
             {
-#if FEATURE_NETNATIVE
-                // There's no way to retrieve the current logged in user Id in UWP apps
-                // so returning a username which is very unlikely to be a real username;
-                return "_______****currentUser****_______";
-#else
+#if SUPPORTS_WINDOWSIDENTITY
                 using (WindowsIdentity self = WindowsIdentity.GetCurrent())
                 {
                     return self.User.Value;
                 }
+#else
+                // There's no way to retrieve the current logged in user Id in UWP apps or in
+                // *NIX so returning a username which is very unlikely to be a real username;
+                return "____CURRENTUSER_NOT_AVAILABLE____";
 #endif
             }
         }
@@ -928,7 +928,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-#if !FEATURE_NETNATIVE // NegotiateStream
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
         public static void ValidateAnonymityConstraint(WindowsIdentity identity, bool allowUnauthenticatedCallers)
         {
             if (!allowUnauthenticatedCallers && identity.User.IsWellKnown(WellKnownSidType.AnonymousSid))
@@ -937,7 +937,7 @@ namespace System.ServiceModel.Security
                     new SecurityTokenValidationException(SR.Format(SR.AnonymousLogonsAreNotAllowed)));
             }
         }
-#endif // !FEATURE_NETNATIVE 
+#endif // SUPPORTS_WINDOWSIDENTITY 
 
         // This is the workaround, Since store.Certificates returns a full collection
         // of certs in store.  These are holding native resources.

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#if FEATURE_NETNATIVE 
+#if !SUPPORTS_WINDOWSIDENTITY
 
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
@@ -12,7 +12,7 @@ using System.ServiceModel;
 
 namespace System.IdentityModel.Claims
 {
-    // Stub implementation of WindowsClaimSet, since WindowsIdentity is not supported in UWP contracts yet
+    // Stub implementation of WindowsClaimSet, since WindowsIdentity is not supported in UWP contracts or Unix yet
 
     public class WindowsClaimSet : ClaimSet, IIdentityInfo, IDisposable
     {
@@ -68,4 +68,4 @@ namespace System.IdentityModel.Claims
     }
 }
 
-#endif // FEATURE_NETNATIVE 
+#endif // !SUPPORTS_WINDOWSIDENTITY

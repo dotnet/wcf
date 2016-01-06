@@ -19,9 +19,9 @@ namespace System.IdentityModel.Claims
         private static IEqualityComparer<Claim> s_dnsComparer;
         private static IEqualityComparer<Claim> s_rsaComparer;
         private static IEqualityComparer<Claim> s_thumbprintComparer;
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
         private static IEqualityComparer<Claim> s_upnComparer;
-#endif // FEATURE_CORECLR
+#endif // SUPPORTS_WINDOWSIDENTITY
         private static IEqualityComparer<Claim> s_x500DistinguishedNameComparer;
         private IEqualityComparer _resourceComparer;
 
@@ -42,10 +42,10 @@ namespace System.IdentityModel.Claims
                 return Rsa;
             if (claimType == ClaimTypes.Thumbprint)
                 return Thumbprint;
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
             if (claimType == ClaimTypes.Upn)
                 return Upn;
-#endif // FEATURE_CORECLR
+#endif // SUPPORTS_WINDOWSIDENTITY
             if (claimType == ClaimTypes.X500DistinguishedName)
                 return X500DistinguishedName;
             return Default;
@@ -111,7 +111,7 @@ namespace System.IdentityModel.Claims
             }
         }
 
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
         public static IEqualityComparer<Claim> Upn
         {
             get
@@ -123,7 +123,7 @@ namespace System.IdentityModel.Claims
                 return s_upnComparer;
             }
         }
-#endif // FEATURE_CORECLR
+#endif // SUPPORTS_WINDOWSIDENTITY
 
         public static IEqualityComparer<Claim> X500DistinguishedName
         {
@@ -256,7 +256,7 @@ namespace System.IdentityModel.Claims
             }
         }
 
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
         private class UpnObjectComparer : IEqualityComparer
         {
             bool IEqualityComparer.Equals(object obj1, object obj2)
@@ -292,6 +292,6 @@ namespace System.IdentityModel.Claims
                 return sid != null;
             }
         }
-#endif // FEATURE_CORECLR
+#endif // SUPPORTS_WINDOWSIDENTITY
     }
 }

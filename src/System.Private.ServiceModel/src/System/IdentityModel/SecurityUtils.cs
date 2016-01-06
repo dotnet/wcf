@@ -211,7 +211,7 @@ namespace System.IdentityModel
             return identity;
         }
 
-#if !FEATURE_NETNATIVE // NegotiateStream
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
         internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid)
         {
             return CloneWindowsIdentityIfNecessary(wid, wid.AuthenticationType);
@@ -248,7 +248,7 @@ namespace System.IdentityModel
                 return new WindowsIdentity(token);
             }
         }
-#endif // !FEATURE_NETNATIVE 
+#endif // SUPPORTS_WINDOWSIDENTITY 
 
         internal static ClaimSet CloneClaimSetIfNecessary(ClaimSet claimSet)
         {

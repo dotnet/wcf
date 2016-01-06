@@ -145,7 +145,7 @@ namespace System.IdentityModel.Claims
             return new Claim(ClaimTypes.Thumbprint, SecurityUtils.CloneBuffer(thumbprint), Rights.PossessProperty, ClaimComparer.Thumbprint);
         }
 
-#if FEATURE_CORECLR
+#if SUPPORTS_WINDOWSIDENTITY
         public static Claim CreateUpnClaim(string upn)
         {
             if (upn == null)
@@ -153,7 +153,7 @@ namespace System.IdentityModel.Claims
 
             return new Claim(ClaimTypes.Upn, upn, Rights.PossessProperty, ClaimComparer.Upn);
         }
-#endif // FEATURE_CORECLR
+#endif // SUPPORTS_WINDOWSIDENTITY
 
         public static Claim CreateUriClaim(Uri uri)
         {
@@ -163,7 +163,7 @@ namespace System.IdentityModel.Claims
             return new Claim(ClaimTypes.Uri, uri, Rights.PossessProperty);
         }
 
-#if !FEATURE_NETNATIVE // NegotiateStream
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
         public static Claim CreateWindowsSidClaim(SecurityIdentifier sid)
         {
             if (sid == null)
@@ -171,7 +171,7 @@ namespace System.IdentityModel.Claims
 
             return new Claim(ClaimTypes.Sid, sid, Rights.PossessProperty);
         }
-#endif // !FEATURE_NETNATIVE 
+#endif // SUPPORTS_WINDOWSIDENTITY 
 
         public static Claim CreateX500DistinguishedNameClaim(X500DistinguishedName x500DistinguishedName)
         {

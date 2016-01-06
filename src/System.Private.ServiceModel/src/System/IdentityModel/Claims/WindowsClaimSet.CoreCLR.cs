@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#if !FEATURE_NETNATIVE
+#if SUPPORTS_WINDOWSIDENTITY
 
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
@@ -250,4 +250,4 @@ namespace System.IdentityModel.Claims
     }
 }
 
-#endif // !FEATURE_NETNATIVE
+#endif // SUPPORTS_WINDOWSIDENTITY

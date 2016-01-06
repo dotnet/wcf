@@ -31,13 +31,13 @@ namespace System.IdentityModel.Selectors
 
         protected override ReadOnlyCollection<IAuthorizationPolicy> ValidateTokenCore(SecurityToken token)
         {
-#if FEATURE_NETNATIVE // NegotiateStream
-            throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not yet supported on UWP"); 
-#else //FEATURE_NETNATIVE
+#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
             WindowsSecurityToken windowsToken = (WindowsSecurityToken)token;
             WindowsClaimSet claimSet = new WindowsClaimSet(windowsToken.WindowsIdentity, windowsToken.AuthenticationType, this.includeWindowsGroups, windowsToken.ValidTo);
             return SecurityUtils.CreateAuthorizationPolicies(claimSet, windowsToken.ValidTo);
-#endif // FEATURE_NETNATIVE
+#else // SUPPORTS_WINDOWSIDENTITY
+            throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
+#endif // SUPPORTS_WINDOWSIDENTITY
         }
     }
 }
