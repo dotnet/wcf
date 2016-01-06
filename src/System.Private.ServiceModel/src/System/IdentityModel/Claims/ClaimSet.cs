@@ -47,7 +47,7 @@ namespace System.IdentityModel.Claims
                 }
                 return s_windows;
 #else 
-                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
+                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
 #endif // SUPPORTS_WINDOWSIDENTITY
             }
         }

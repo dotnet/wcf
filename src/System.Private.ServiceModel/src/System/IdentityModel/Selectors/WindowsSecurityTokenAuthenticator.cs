@@ -36,7 +36,7 @@ namespace System.IdentityModel.Selectors
             WindowsClaimSet claimSet = new WindowsClaimSet(windowsToken.WindowsIdentity, windowsToken.AuthenticationType, this.includeWindowsGroups, windowsToken.ValidTo);
             return SecurityUtils.CreateAuthorizationPolicies(claimSet, windowsToken.ValidTo);
 #else // SUPPORTS_WINDOWSIDENTITY
-            throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not yet supported on UWP"); 
+            throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
 #endif // SUPPORTS_WINDOWSIDENTITY
         }
     }

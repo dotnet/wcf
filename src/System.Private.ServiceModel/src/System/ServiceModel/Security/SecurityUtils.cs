@@ -469,7 +469,7 @@ namespace System.ServiceModel.Security
 #if SUPPORTS_WINDOWSIDENTITY
                 primaryPrincipal = Claim.CreateUpnClaim(principalName);
 #else
-                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported on UWP"); 
+                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported"); 
 #endif // SUPPORTS_WINDOWSIDENTITY
             }
             else
@@ -507,7 +507,7 @@ namespace System.ServiceModel.Security
 
                     AppendIdentityName(str, windows.WindowsIdentity);
 #else
-                    throw ExceptionHelper.PlatformNotSupported("Windows Stream Security not yet supported on UWP");
+                    throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
 #endif // SUPPORTS_WINDOWSIDENTITY 
                 }
                 else
@@ -613,7 +613,7 @@ namespace System.ServiceModel.Security
                 }
             }
 #else
-            throw ExceptionHelper.PlatformNotSupported("Windows Stream Security not yet supported on UWP");
+            throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
 #endif // SUPPORTS_WINDOWSIDENTITY
         }
 
@@ -797,9 +797,9 @@ namespace System.ServiceModel.Security
                     return self.User.Value;
                 }
 #else
-                // There's no way to retrieve the current logged in user Id in UWP apps
-                // so returning a username which is very unlikely to be a real username;
-                return "_______****currentUser****_______";
+                // There's no way to retrieve the current logged in user Id in UWP apps or in
+                // *NIX so returning a username which is very unlikely to be a real username;
+                return "____CURRENTUSER_NOT_AVAILABLE____";
 #endif
             }
         }

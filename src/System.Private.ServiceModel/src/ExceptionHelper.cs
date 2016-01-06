@@ -8,6 +8,8 @@ namespace System.ServiceModel
 {
     public class ExceptionHelper
     {
+        public const string WinsdowsStreamSecurityNotSupported = "Windows Stream Security is not supported";
+
         public static Exception AsError(Exception exception)
         {
             return exception;

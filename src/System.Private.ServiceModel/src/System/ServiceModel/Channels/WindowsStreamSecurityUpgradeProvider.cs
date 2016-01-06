@@ -223,7 +223,7 @@ namespace System.ServiceModel.Channels
                 remoteSecurity = CreateClientSecurity(negotiateStream, _parent.ExtractGroupsForWindowsAccounts);
                 return negotiateStream;
 #else
-                throw ExceptionHelper.PlatformNotSupported("NegotiateStream is not supported on UWP yet"); 
+                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
 #endif // SUPPORTS_WINDOWSIDENTITY
             }
 
@@ -390,7 +390,7 @@ namespace System.ServiceModel.Channels
 #else
             protected override Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurity)
             {
-                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet"); 
+                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
             }
 #endif // SUPPORTS_WINDOWSIDENTITY 
 
