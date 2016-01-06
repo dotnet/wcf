@@ -46,6 +46,12 @@ namespace WcfService
         [OperationContract(Action = "http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrapped")]
         ReplyBankingDataNotWrapped MessageContractRequestReplyNotWrapped(RequestBankingData bt);
 
+        [OperationContract(Action = "http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeader")]
+        ReplyBankingDataWithMessageHeader MessageContractRequestReplyWithMessageHeader(RequestBankingData bt);
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstood")]
+        ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstood(RequestBankingData bt);
+
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoHttpMessageProperty")]
         TestHttpRequestMessageProperty EchoHttpRequestMessageProperty();
 

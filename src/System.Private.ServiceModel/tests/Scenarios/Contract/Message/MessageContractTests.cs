@@ -3,6 +3,7 @@
 
 using MessageContractCommon;
 using System;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml;
 using Xunit;
@@ -15,7 +16,11 @@ public static class MessageContractTests
     {
         StringBuilder errorBuilder = new StringBuilder();
 
-        XmlDictionaryReader reader = MessageContractHelpers.SetupMessageContractTests(isWrapped: true);
+        MessageContractHelpers.IMessageContract clientProxy;
+        MessageContractTypes.RequestBankingData requestData;
+        MyInspector inspector = MessageContractHelpers.SetupMessageContractTests(out clientProxy, out requestData);
+        clientProxy.MessageContractRequestReply(requestData);
+        XmlDictionaryReader reader = MessageContractHelpers.GetResponseBodyReader(inspector);
 
         Assert.True(reader.LocalName.Equals(MessageContractConstants.wrapperName),
             string.Format("reader.LocalName - Expected: {0}, Actual: {1}", MessageContractConstants.wrapperName, reader.LocalName));
@@ -30,7 +35,11 @@ public static class MessageContractTests
     {
         StringBuilder errorBuilder = new StringBuilder();
 
-        XmlDictionaryReader reader = MessageContractHelpers.SetupMessageContractTests(isWrapped: false);
+        MessageContractHelpers.IMessageContract clientProxy;
+        MessageContractTypes.RequestBankingData requestData;
+        MyInspector inspector = MessageContractHelpers.SetupMessageContractTests(out clientProxy, out requestData);
+        clientProxy.MessageContractRequestReplyNotWrapped(requestData);
+        XmlDictionaryReader reader = MessageContractHelpers.GetResponseBodyReader(inspector);
 
         if (reader.LocalName.Equals(MessageContractConstants.wrapperName))
         {
@@ -44,7 +53,11 @@ public static class MessageContractTests
     [OuterLoop]
     public static void MessageBody_Elements_Ordered()
     {
-        XmlDictionaryReader reader = MessageContractHelpers.SetupMessageContractTests(isWrapped: true);
+        MessageContractHelpers.IMessageContract clientProxy;
+        MessageContractTypes.RequestBankingData requestData;
+        MyInspector inspector = MessageContractHelpers.SetupMessageContractTests(out clientProxy, out requestData);
+        clientProxy.MessageContractRequestReply(requestData);
+        XmlDictionaryReader reader = MessageContractHelpers.GetResponseBodyReader(inspector);
 
         Assert.True(reader.LocalName.Equals(MessageContractConstants.wrapperName),
             string.Format("Unexpected element order (1/5). Expected {0}, Actual: {1}", MessageContractConstants.wrapperName, reader.LocalName));
@@ -85,7 +98,12 @@ public static class MessageContractTests
 
         try
         {
-            XmlDictionaryReader reader = MessageContractHelpers.SetupMessageContractTests(isWrapped: true);
+            MessageContractHelpers.IMessageContract clientProxy;
+            MessageContractTypes.RequestBankingData requestData;
+            MyInspector inspector = MessageContractHelpers.SetupMessageContractTests(out clientProxy, out requestData);
+            clientProxy.MessageContractRequestReply(requestData);
+            XmlDictionaryReader reader = MessageContractHelpers.GetResponseBodyReader(inspector);
+
             bool elementFound = false;
             while (reader.Read())
             {
@@ -118,5 +136,53 @@ public static class MessageContractTests
         }
 
         Assert.True(errorBuilder.Length == 0, errorBuilder.ToString());
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void MessageHeader_MustUnderstand_True()
+    {
+        try
+        {
+            MessageContractHelpers.IMessageContract clientProxy;
+            MessageContractTypes.RequestBankingData requestData;
+            MyInspector inspector = MessageContractHelpers.SetupMessageContractTests(out clientProxy, out requestData);
+            clientProxy.MessageContractRequestReplyWithMessageHeader(requestData);
+            MessageHeaders headers = MessageContractHelpers.GetHeaders(inspector);
+
+            int index = headers.FindHeader(MessageContractConstants.extraValuesName, MessageContractConstants.extraValuesNamespace);
+            var header = headers[index];
+
+            Assert.True(header != null, "There's no header in the message.");
+            Assert.True(header.MustUnderstand, "Expected MustUnderstand to be true, but it was false.");
+        }
+        catch (Exception ex)
+        {
+            Assert.True(false, string.Format("Unexpected exception was caught: {0}", ex.ToString()));
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void MessageHeader_MustUnderstand_False()
+    {
+        try
+        {
+            MessageContractHelpers.IMessageContract clientProxy;
+            MessageContractTypes.RequestBankingData requestData;
+            MyInspector inspector = MessageContractHelpers.SetupMessageContractTests(out clientProxy, out requestData);
+            clientProxy.MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstood(requestData);
+            MessageHeaders headers = MessageContractHelpers.GetHeaders(inspector);
+
+            int index = headers.FindHeader(MessageContractConstants.extraValuesName, MessageContractConstants.extraValuesNamespace);
+            var header = headers[index];
+
+            Assert.True(header != null, "There's no header in the message.");
+            Assert.False(header.MustUnderstand, "Expected MustUnderstand to be false, but it was true.");
+        }
+        catch (Exception ex)
+        {
+            Assert.True(false, string.Format("Unexpected exception was caught: {0}", ex.ToString()));
+        }
     }
 }
