@@ -235,6 +235,22 @@ namespace WcfService
             return value;
         }
 
+        public Dictionary<string, string> GetIncomingMessageHeaders()
+        {
+            Dictionary<string, string> infos = new Dictionary<string, string>();
+            MessageHeaders headers = OperationContext.Current.IncomingMessageHeaders;
+            // look at headers on incoming message
+            for (int i = 0; i < headers.Count; ++i)
+            {
+                MessageHeaderInfo h = headers[i];
+                System.Xml.XmlReader xr = headers.GetReaderAtHeader(i);
+                string value = xr.ReadElementContentAsString();
+                infos.Add(string.Format("{0}//{1}", h.Namespace, h.Name), value);
+            }
+
+            return infos;
+        }
+
         public string EchoXmlSerializerFormat(string message)
         {
             return message;

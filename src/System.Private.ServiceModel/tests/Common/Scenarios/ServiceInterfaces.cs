@@ -50,6 +50,9 @@ public interface IWcfService
     [OperationContract(Action = "http://tempuri.org/IWcfService/GetRequestCustomHeader", ReplyAction = "*")]
     string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace);
 
+    [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeaders", ReplyAction = "*")]
+    Dictionary<string, string> GetIncomingMessageHeaders();
+
     [OperationContract]
     Stream GetStreamFromString(string data);
 
