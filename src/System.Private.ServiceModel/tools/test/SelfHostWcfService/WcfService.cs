@@ -143,6 +143,28 @@ namespace WcfService
             return bankingData;
         }
 
+        public ReplyBankingDataWithMessageHeader MessageContractRequestReplyWithMessageHeader(RequestBankingData bt)
+        {
+            ReplyBankingDataWithMessageHeader bankingData = new ReplyBankingDataWithMessageHeader();
+            bankingData.accountName = bt.accountName;
+            bankingData.transactionDate = bt.transactionDate;
+            bankingData.amount = bt.amount;
+            bankingData.extraValues = bt.accountName;
+
+            return bankingData;
+        }
+
+        public ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstood(RequestBankingData bt)
+        {
+            ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood bankingData = new ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood();
+            bankingData.accountName = bt.accountName;
+            bankingData.transactionDate = bt.transactionDate;
+            bankingData.amount = bt.amount;
+            bankingData.extraValues = bt.accountName;
+
+            return bankingData;
+        }
+
         public TestHttpRequestMessageProperty EchoHttpRequestMessageProperty()
         {
             object obj;

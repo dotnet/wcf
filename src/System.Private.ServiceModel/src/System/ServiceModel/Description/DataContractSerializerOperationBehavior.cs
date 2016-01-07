@@ -90,8 +90,7 @@ namespace System.ServiceModel.Description
 
         public virtual XmlObjectSerializer CreateSerializer(Type type, string name, string ns, IList<Type> knownTypes)
         {
-            throw ExceptionHelper.PlatformNotSupported();
-            // return new DataContractSerializer(type, name, ns, knownTypes);
+            return new DataContractSerializer(type, name, ns, knownTypes);
         }
 
         public virtual XmlObjectSerializer CreateSerializer(Type type, XmlDictionaryString name, XmlDictionaryString ns, IList<Type> knownTypes)

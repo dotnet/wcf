@@ -69,4 +69,14 @@ public static class MessageContractTest
         messageCA.WrapperNamespace = wrapperNamespace;
         Assert.Equal(wrapperNamespace, messageCA.WrapperNamespace);
     }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public static void MessageHeader_MustUnderStand_Sets(bool mustUnderstand)
+    {
+        MessageHeaderAttribute attribute = new MessageHeaderAttribute();
+        attribute.MustUnderstand = mustUnderstand;
+        Assert.Equal(mustUnderstand, attribute.MustUnderstand);
+    }
 }

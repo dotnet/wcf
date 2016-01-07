@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -22,34 +23,39 @@ namespace MessageContractCommon
         public const string customerElementName = "Customer_Name";
         public const string customerElementNamespace = "http://www.contoso.com";
         public const string customerElementValue = "Michael Jordan";
+        public const string extraValuesName = "OutOfBandData";
+        public const string extraValuesNamespace = "http://www.contoso.com";
     }
 
     public class MessageContractHelpers
     {
-        public static XmlDictionaryReader SetupMessageContractTests(bool isWrapped)
+        public static XmlDictionaryReader GetResponseBodyReader(MyInspector inspector)
+        {
+            XmlDictionaryReader reader = inspector.ReceivedMessage.GetReaderAtBodyContents();
+            return reader;
+        }
+
+        public static MessageHeaders GetHeaders(MyInspector inspector)
+        {
+            MessageHeaders headers = inspector.ReceivedMessage.Headers;
+            return headers;
+        }
+
+        public static MyInspector SetupMessageContractTests(out IMessageContract clientProxy,
+            out MessageContractTypes.RequestBankingData transaction)
         {
             MyInspector inspector = new MyInspector();
             BasicHttpBinding binding = new BasicHttpBinding();
             ChannelFactory<IMessageContract> factory = new ChannelFactory<IMessageContract>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             factory.Endpoint.EndpointBehaviors.Add(inspector);
-            IMessageContract clientProxy = factory.CreateChannel();
-            MessageContractTypes.RequestBankingData transaction = new MessageContractTypes.RequestBankingData();
+            clientProxy = factory.CreateChannel();
+            transaction = new MessageContractTypes.RequestBankingData();
             transaction.accountName = MessageContractConstants.customerElementValue;
             transaction.transactionDate = DateTime.Now;
             MessageContractConstants.dateElementValue = transaction.transactionDate.TimeOfDay.ToString();
             transaction.amount = Convert.ToInt32(MessageContractConstants.transactionElementValue);
 
-            if (isWrapped)
-            {
-                MessageContractTypes.ReplyBankingData responseData = clientProxy.MessageContractRequestReply(transaction);
-            }
-            else
-            {
-                MessageContractTypes.ReplyBankingDataNotWrapped responseData = clientProxy.MessageContractRequestReplyNotWrapped(transaction);
-            }
-
-            XmlDictionaryReader reader = inspector.ReceivedMessage.GetReaderAtBodyContents();
-            return reader;
+            return inspector;
         }
 
         [ServiceContract]
@@ -60,6 +66,12 @@ namespace MessageContractCommon
 
             [OperationContract(Action = "http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrapped", ReplyAction = "http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrappedResponse")]
             MessageContractTypes.ReplyBankingDataNotWrapped MessageContractRequestReplyNotWrapped(MessageContractTypes.RequestBankingData bt);
+
+            [OperationContract(Action = "http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeader", ReplyAction = "http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderResponse")]
+            MessageContractTypes.ReplyBankingDataWithMessageHeader MessageContractRequestReplyWithMessageHeader(MessageContractTypes.RequestBankingData bt);
+
+            [OperationContract(Action = "http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstood", ReplyAction = "http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodResponse")]
+            MessageContractTypes.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstood(MessageContractTypes.RequestBankingData bt);
         }
     }
 
@@ -96,6 +108,32 @@ namespace MessageContractCommon
             public string accountName;
             [MessageBodyMember(Order = 2, Name = "Transaction_Amount")]
             public int amount;
+        }
+
+        [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+        public class ReplyBankingDataWithMessageHeader
+        {
+            [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
+            public DateTime transactionDate;
+            [MessageBodyMember(Name = "Customer_Name", Namespace = "http://www.contoso.com", Order = 3)]
+            public string accountName;
+            [MessageBodyMember(Order = 2, Name = "Transaction_Amount")]
+            public int amount;
+            [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = true)]
+            public string extraValues;
+        }
+
+        [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+        public class ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood
+        {
+            [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
+            public DateTime transactionDate;
+            [MessageBodyMember(Name = "Customer_Name", Namespace = "http://www.contoso.com", Order = 3)]
+            public string accountName;
+            [MessageBodyMember(Order = 2, Name = "Transaction_Amount")]
+            public int amount;
+            [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
+            public string extraValues;
         }
     }
 
