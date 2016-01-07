@@ -65,6 +65,9 @@ namespace WcfService
         [OperationContract(Action = "http://tempuri.org/IWcfService/GetRequestCustomHeader", ReplyAction = "*")]
         string GetRequestCustomHeader(string customHeaderName, string customHeaderNamespace);
 
+        [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeaders", ReplyAction = "*")]
+        Dictionary<string, string> GetIncomingMessageHeaders();
+
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormat"), XmlSerializerFormat]
         string EchoXmlSerializerFormat(string message);
 

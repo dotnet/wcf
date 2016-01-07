@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -172,6 +173,65 @@ public static class ClientBaseTests
                 client.Abort();
             }
         }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify()
+    {
+        BasicHttpBinding binding = new BasicHttpBinding();
+        MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+        IWcfService serviceProxy = client.ChannelFactory.CreateChannel();
+
+        string customHeaderName = "OperationContextScopeCustomHeader";
+        string customHeaderNS = "http://tempuri.org/OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify";
+        string customHeaderValue = "CustomHappyValue";
+        try
+        {
+            using (OperationContextScope scope = new OperationContextScope((IContextChannel)serviceProxy))
+            {
+                MessageHeader header
+                  = MessageHeader.CreateHeader(
+                  customHeaderName,
+                  customHeaderNS,
+                  customHeaderValue
+                  );
+                OperationContext.Current.OutgoingMessageHeaders.Add(header);
+
+                Dictionary<string, string> incomingMessageHeaders = serviceProxy.GetIncomingMessageHeaders();
+                string result = GetHeader(customHeaderName, customHeaderNS, incomingMessageHeaders);
+
+                Assert.Equal(customHeaderValue, result);
+            }
+
+            //Call outside of scope should not have the custom header
+            Dictionary<string, string> outofScopeIncomingMessageHeaders = serviceProxy.GetIncomingMessageHeaders();
+            string outofScopeResult = GetHeader(customHeaderName, customHeaderNS, outofScopeIncomingMessageHeaders);
+            Assert.True(string.Empty == outofScopeResult, string.Format("Expect call out of the OperationContextScope does not have the custom header {0}", customHeaderName));
+            ((ICommunicationObject)client).Close();
+        }
+        finally
+        {
+            if (client != null && client.State != CommunicationState.Closed)
+            {
+                client.Abort();
+            }
+        }
+    }
+
+    private static string GetHeader(string customHeaderName, string customHeaderNamespace, Dictionary<string, string> messageHeaders)
+    {
+        // look at headers on incoming message
+        foreach (KeyValuePair<string, string> keyValue in messageHeaders)
+        {
+            string headerFullName = keyValue.Key;
+            if (headerFullName == string.Format("{0}//{1}", customHeaderNamespace, customHeaderName))
+            {
+                return keyValue.Value;
+            }
+        }
+
+        return string.Empty;
     }
 
     private class ClientMessagePropertyBehavior : IEndpointBehavior

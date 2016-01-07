@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -60,6 +61,9 @@ public interface IWcfService
 
     [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoStream", ReplyAction = "http://tempuri.org/IWcfService/EchoStreamResponse")]
     Task<Stream> EchoStreamAsync(Stream stream);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeaders", ReplyAction = "*")]
+    Dictionary<MessageHeaderInfo, string> GetIncomingMessageHeaders();
 }
 
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
