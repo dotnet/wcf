@@ -15,12 +15,24 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
-    <IsNETNativeLibrary Condition="'$(TargetGroup)' == 'netcore50'">true</IsNETNativeLibrary>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
+
+  <!-- Default configurations to help VS understand the options -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux_Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux_Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_Debug|AnyCPU'"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_Release|AnyCPU'"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Debug|AnyCPU'"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Release|AnyCPU'"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net46_Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net46_Release|AnyCPU'" />
+
+  <PropertyGroup Condition="'$(TargetGroup)' == 'netcore50'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(IsNETNativeLibrary)' != 'true'">
+  <PropertyGroup Condition="'$(TargetGroup)' != 'netcore50'">
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetsWindows)' == 'true'">
@@ -41,7 +53,7 @@
     <None Include="project.json" />
     <None Include="windows\project.json" />
   </ItemGroup>
-  <ItemGroup Condition="'$(IsNETNativeLibrary)' == 'true'">
+  <ItemGroup Condition="'$(TargetGroup)' == 'netcore50'">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
     <TargetingPackReference Include="Windows" />
   </ItemGroup>
