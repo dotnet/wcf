@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
@@ -92,9 +91,9 @@ namespace System.ServiceModel.Dispatcher
             bool callFaulted = false;
 
             EventTraceActivity eventTraceActivity = null;
-            if (TD.OperationCompletedIsEnabled() ||
-                    TD.OperationFaultedIsEnabled() ||
-                    TD.OperationFailedIsEnabled())
+            if (WcfEventSource.Instance.OperationCompletedIsEnabled() ||
+                    WcfEventSource.Instance.OperationFaultedIsEnabled() ||
+                    WcfEventSource.Instance.OperationFailedIsEnabled())
             {
                 beginOperation = DateTime.UtcNow.Ticks;
                 OperationContext context = OperationContext.Current;
@@ -138,9 +137,9 @@ namespace System.ServiceModel.Dispatcher
                     {
                         ServiceModelActivity.Start(activity, SR.Format(SR.ActivityExecuteMethod, _method.DeclaringType.FullName, _method.Name), ActivityType.ExecuteUserCode);
                     }
-                    if (TD.OperationInvokedIsEnabled())
+                    if (WcfEventSource.Instance.OperationInvokedIsEnabled())
                     {
-                        TD.OperationInvoked(eventTraceActivity, MethodName, TraceUtility.GetCallerInfo(OperationContext.Current));
+                        WcfEventSource.Instance.OperationInvoked(eventTraceActivity, MethodName, TraceUtility.GetCallerInfo(OperationContext.Current));
                     }
                     returnValue = _invokeDelegate(instance, inputs, outputs);
                     callSucceeded = true;
@@ -157,25 +156,25 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if (callSucceeded)
                     {
-                        if (TD.OperationCompletedIsEnabled())
+                        if (WcfEventSource.Instance.OperationCompletedIsEnabled())
                         {
-                            TD.OperationCompleted(eventTraceActivity, _methodName,
+                            WcfEventSource.Instance.OperationCompleted(eventTraceActivity, _methodName,
                                 TraceUtility.GetUtcBasedDurationForTrace(beginOperation));
                         }
                     }
                     else if (callFaulted)
                     {
-                        if (TD.OperationFaultedIsEnabled())
+                        if (WcfEventSource.Instance.OperationFaultedIsEnabled())
                         {
-                            TD.OperationFaulted(eventTraceActivity, _methodName,
+                            WcfEventSource.Instance.OperationFaulted(eventTraceActivity, _methodName,
                                 TraceUtility.GetUtcBasedDurationForTrace(beginOperation));
                         }
                     }
                     else
                     {
-                        if (TD.OperationFailedIsEnabled())
+                        if (WcfEventSource.Instance.OperationFailedIsEnabled())
                         {
-                            TD.OperationFailed(eventTraceActivity, _methodName,
+                            WcfEventSource.Instance.OperationFailed(eventTraceActivity, _methodName,
                                 TraceUtility.GetUtcBasedDurationForTrace(beginOperation));
                         }
                     }

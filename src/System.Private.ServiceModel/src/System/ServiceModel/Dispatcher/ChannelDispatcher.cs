@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Diagnostics.Application;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -571,10 +570,10 @@ namespace System.ServiceModel.Dispatcher
 
         protected override void OnOpening()
         {
-            if (TD.ListenerOpenStartIsEnabled())
+            if (WcfEventSource.Instance.ListenerOpenStartIsEnabled())
             {
                 _eventTraceActivity = EventTraceActivity.GetFromThreadOrCreate();
-                TD.ListenerOpenStart(_eventTraceActivity,
+                WcfEventSource.Instance.ListenerOpenStart(_eventTraceActivity,
                     (this.Listener != null) ? this.Listener.Uri.ToString() : string.Empty, Guid.Empty);
                 // Desktop: (this.host != null && host.EventTraceActivity != null) ? this.host.EventTraceActivity.ActivityId : Guid.Empty);
             }
@@ -586,9 +585,9 @@ namespace System.ServiceModel.Dispatcher
         {
             base.OnOpened();
 
-            if (TD.ListenerOpenStopIsEnabled())
+            if (WcfEventSource.Instance.ListenerOpenStopIsEnabled())
             {
-                TD.ListenerOpenStop(_eventTraceActivity);
+                WcfEventSource.Instance.ListenerOpenStop(_eventTraceActivity);
                 _eventTraceActivity = null; // clear this since we don't need this anymore.
             }
 

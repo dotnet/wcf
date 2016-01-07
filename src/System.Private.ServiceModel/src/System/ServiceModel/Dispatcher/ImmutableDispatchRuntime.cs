@@ -10,7 +10,6 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -122,9 +121,9 @@ namespace System.ServiceModel.Dispatcher
                 rpc.RequestContextThrewOnReply = false;
                 rpc.SuccessfullySendReply = true;
 
-                if (TD.DispatchMessageStopIsEnabled())
+                if (WcfEventSource.Instance.DispatchMessageStopIsEnabled())
                 {
-                    TD.DispatchMessageStop(rpc.EventTraceActivity);
+                    WcfEventSource.Instance.DispatchMessageStop(rpc.EventTraceActivity);
                 }
             }
             catch (CommunicationException e)
@@ -214,9 +213,9 @@ namespace System.ServiceModel.Dispatcher
                 rpc.RequestContextThrewOnReply = false;
                 success = true;
 
-                if (TD.DispatchMessageStopIsEnabled())
+                if (WcfEventSource.Instance.DispatchMessageStopIsEnabled())
                 {
-                    TD.DispatchMessageStop(rpc.EventTraceActivity);
+                    WcfEventSource.Instance.DispatchMessageStop(rpc.EventTraceActivity);
                 }
             }
             catch (Exception e)

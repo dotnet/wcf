@@ -8,7 +8,6 @@ using System.Runtime;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -130,16 +129,16 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if (_deserializeRequest)
                     {
-                        if (TD.DispatchFormatterDeserializeRequestStartIsEnabled())
+                        if (WcfEventSource.Instance.DispatchFormatterDeserializeRequestStartIsEnabled())
                         {
-                            TD.DispatchFormatterDeserializeRequestStart(rpc.EventTraceActivity);
+                            WcfEventSource.Instance.DispatchFormatterDeserializeRequestStart(rpc.EventTraceActivity);
                         }
 
                         this.Formatter.DeserializeRequest(rpc.Request, rpc.InputParameters);
 
-                        if (TD.DispatchFormatterDeserializeRequestStopIsEnabled())
+                        if (WcfEventSource.Instance.DispatchFormatterDeserializeRequestStopIsEnabled())
                         {
-                            TD.DispatchFormatterDeserializeRequestStop(rpc.EventTraceActivity);
+                            WcfEventSource.Instance.DispatchFormatterDeserializeRequestStop(rpc.EventTraceActivity);
                         }
                     }
                     else
@@ -175,9 +174,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IParameterInspector inspector = this.ParameterInspectors[i];
                 rpc.Correlation[i] = inspector.BeforeCall(this.Name, rpc.InputParameters);
-                if (TD.ParameterInspectorBeforeCallInvokedIsEnabled())
+                if (WcfEventSource.Instance.ParameterInspectorBeforeCallInvokedIsEnabled())
                 {
-                    TD.ParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, this.ParameterInspectors[i].GetType().FullName);
+                    WcfEventSource.Instance.ParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, this.ParameterInspectors[i].GetType().FullName);
                 }
             }
         }
@@ -196,9 +195,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IParameterInspector inspector = this.ParameterInspectors[i];
                 inspector.AfterCall(this.Name, rpc.OutputParameters, rpc.ReturnParameter, rpc.Correlation[i]);
-                if (TD.ParameterInspectorAfterCallInvokedIsEnabled())
+                if (WcfEventSource.Instance.ParameterInspectorAfterCallInvokedIsEnabled())
                 {
-                    TD.ParameterInspectorAfterCallInvoked(rpc.EventTraceActivity, this.ParameterInspectors[i].GetType().FullName);
+                    WcfEventSource.Instance.ParameterInspectorAfterCallInvoked(rpc.EventTraceActivity, this.ParameterInspectors[i].GetType().FullName);
                 }
             }
         }
@@ -283,16 +282,16 @@ namespace System.ServiceModel.Dispatcher
                 Message reply;
                 if (_serializeReply)
                 {
-                    if (TD.DispatchFormatterSerializeReplyStartIsEnabled())
+                    if (WcfEventSource.Instance.DispatchFormatterSerializeReplyStartIsEnabled())
                     {
-                        TD.DispatchFormatterSerializeReplyStart(rpc.EventTraceActivity);
+                        WcfEventSource.Instance.DispatchFormatterSerializeReplyStart(rpc.EventTraceActivity);
                     }
 
                     reply = this.Formatter.SerializeReply(rpc.RequestVersion, rpc.OutputParameters, rpc.ReturnParameter);
 
-                    if (TD.DispatchFormatterSerializeReplyStopIsEnabled())
+                    if (WcfEventSource.Instance.DispatchFormatterSerializeReplyStopIsEnabled())
                     {
-                        TD.DispatchFormatterSerializeReplyStop(rpc.EventTraceActivity);
+                        WcfEventSource.Instance.DispatchFormatterSerializeReplyStop(rpc.EventTraceActivity);
                     }
 
                     if (reply == null)

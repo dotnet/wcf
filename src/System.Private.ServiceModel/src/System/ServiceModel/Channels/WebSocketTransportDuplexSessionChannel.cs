@@ -12,7 +12,6 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.Security.Principal;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
@@ -107,9 +106,9 @@ namespace System.ServiceModel.Channels
 
         protected override void OnAbort()
         {
-            if (TD.WebSocketConnectionAbortedIsEnabled())
+            if (WcfEventSource.Instance.WebSocketConnectionAbortedIsEnabled())
             {
-                TD.WebSocketConnectionAborted(
+                WcfEventSource.Instance.WebSocketConnectionAborted(
                     EventTraceActivity,
                     WebSocket != null ? WebSocket.GetHashCode() : -1);
             }
@@ -119,9 +118,9 @@ namespace System.ServiceModel.Channels
 
         protected override void CompleteClose(TimeSpan timeout)
         {
-            if (TD.WebSocketCloseSentIsEnabled())
+            if (WcfEventSource.Instance.WebSocketCloseSentIsEnabled())
             {
-                TD.WebSocketCloseSent(
+                WcfEventSource.Instance.WebSocketCloseSent(
                     WebSocket.GetHashCode(),
                     _webSocketCloseDetails.OutputCloseStatus.ToString(),
                     RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
@@ -130,9 +129,9 @@ namespace System.ServiceModel.Channels
             Task closeTask = CloseAsync();
             closeTask.Wait(timeout, WebSocketHelper.ThrowCorrectException, WebSocketHelper.CloseOperation);
 
-            if (TD.WebSocketConnectionClosedIsEnabled())
+            if (WcfEventSource.Instance.WebSocketConnectionClosedIsEnabled())
             {
-                TD.WebSocketConnectionClosed(WebSocket.GetHashCode());
+                WcfEventSource.Instance.WebSocketConnectionClosed(WebSocket.GetHashCode());
             }
         }
 
@@ -144,9 +143,9 @@ namespace System.ServiceModel.Channels
 
         protected override void CloseOutputSessionCore(TimeSpan timeout)
         {
-            if (TD.WebSocketCloseOutputSentIsEnabled())
+            if (WcfEventSource.Instance.WebSocketCloseOutputSentIsEnabled())
             {
-                TD.WebSocketCloseOutputSent(
+                WcfEventSource.Instance.WebSocketCloseOutputSent(
                     WebSocket.GetHashCode(),
                     _webSocketCloseDetails.OutputCloseStatus.ToString(),
                     RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
@@ -158,9 +157,9 @@ namespace System.ServiceModel.Channels
 
         protected override async Task CloseOutputSessionCoreAsync(TimeSpan timeout)
         {
-            if (TD.WebSocketCloseOutputSentIsEnabled())
+            if (WcfEventSource.Instance.WebSocketCloseOutputSentIsEnabled())
             {
-                TD.WebSocketCloseOutputSent(
+                WcfEventSource.Instance.WebSocketCloseOutputSent(
                     WebSocket.GetHashCode(),
                     _webSocketCloseDetails.OutputCloseStatus.ToString(),
                     RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
@@ -224,9 +223,9 @@ namespace System.ServiceModel.Channels
             TimeoutHelper helper = new TimeoutHelper(timeout);
             WebSocketMessageType outgoingMessageType = GetWebSocketMessageType(message);
 
-            if (TD.WebSocketAsyncWriteStartIsEnabled())
+            if (WcfEventSource.Instance.WebSocketAsyncWriteStartIsEnabled())
             {
-                TD.WebSocketAsyncWriteStart(
+                WcfEventSource.Instance.WebSocketAsyncWriteStart(
                     WebSocket.GetHashCode(),
                     messageData.Count,
                     RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
@@ -237,9 +236,9 @@ namespace System.ServiceModel.Channels
 
             if (task.IsCompleted)
             {
-                if (TD.WebSocketAsyncWriteStopIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncWriteStopIsEnabled())
                 {
-                    TD.WebSocketAsyncWriteStop(WebSocket.GetHashCode());
+                    WcfEventSource.Instance.WebSocketAsyncWriteStop(WebSocket.GetHashCode());
                 }
 
                 _pendingWritingMessageException = WebSocketHelper.CreateExceptionOnTaskFailure(task, timeout, WebSocketHelper.SendOperation);
@@ -316,9 +315,9 @@ namespace System.ServiceModel.Channels
                 bool success = false;
                 try
                 {
-                    if (TD.WebSocketAsyncWriteStartIsEnabled())
+                    if (WcfEventSource.Instance.WebSocketAsyncWriteStartIsEnabled())
                     {
-                        TD.WebSocketAsyncWriteStart(
+                        WcfEventSource.Instance.WebSocketAsyncWriteStart(
                             WebSocket.GetHashCode(),
                             messageData.Count,
                             RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
@@ -327,9 +326,9 @@ namespace System.ServiceModel.Channels
                     Task task = WebSocket.SendAsync(messageData, outgoingMessageType, true, helper.GetCancellationToken());
                     task.Wait(helper.RemainingTime(), WebSocketHelper.ThrowCorrectException, WebSocketHelper.SendOperation);
 
-                    if (TD.WebSocketAsyncWriteStopIsEnabled())
+                    if (WcfEventSource.Instance.WebSocketAsyncWriteStopIsEnabled())
                     {
-                        TD.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
+                        WcfEventSource.Instance.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
                     }
 
                     success = true;
@@ -461,9 +460,9 @@ namespace System.ServiceModel.Channels
             }
             finally
             {
-                if (TD.WebSocketAsyncWriteStopIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncWriteStopIsEnabled())
                 {
-                    TD.WebSocketAsyncWriteStop(WebSocket.GetHashCode());
+                    WcfEventSource.Instance.WebSocketAsyncWriteStop(WebSocket.GetHashCode());
                 }
 
                 callback.Invoke(state);
@@ -613,9 +612,9 @@ namespace System.ServiceModel.Channels
                         try
                         {
 
-                            if (TD.WebSocketAsyncReadStartIsEnabled())
+                            if (WcfEventSource.Instance.WebSocketAsyncReadStartIsEnabled())
                             {
-                                TD.WebSocketAsyncReadStart(_webSocket.GetHashCode());
+                                WcfEventSource.Instance.WebSocketAsyncReadStart(_webSocket.GetHashCode());
                             }
 
                             result = await _webSocket.ReceiveAsync(
@@ -642,9 +641,9 @@ namespace System.ServiceModel.Channels
                                 internalBuffer = newBuffer;
                             }
 
-                            if (TD.WebSocketAsyncReadStopIsEnabled())
+                            if (WcfEventSource.Instance.WebSocketAsyncReadStopIsEnabled())
                             {
-                                TD.WebSocketAsyncReadStop(
+                                WcfEventSource.Instance.WebSocketAsyncReadStop(
                                     _webSocket.GetHashCode(),
                                     receivedByteCount,
                                     string.Empty);
@@ -704,9 +703,9 @@ namespace System.ServiceModel.Channels
                 }
                 catch (TimeoutException exception)
                 {
-                    if (TD.ReceiveTimeoutIsEnabled())
+                    if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
                     {
-                        TD.ReceiveTimeout(exception.Message);
+                        WcfEventSource.Instance.ReceiveTimeout(exception.Message);
                     }
 
                     return false;
@@ -722,9 +721,9 @@ namespace System.ServiceModel.Channels
                     _pendingMessage = message;
                     return true;
                 }
-                if (TD.ReceiveTimeoutIsEnabled())
+                if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
                 {
-                    TD.ReceiveTimeout(SR.Format(SR.WaitForMessageTimedOut, timeout));
+                    WcfEventSource.Instance.ReceiveTimeout(SR.Format(SR.WaitForMessageTimedOut, timeout));
                 }
                 return false;
             }
@@ -747,9 +746,9 @@ namespace System.ServiceModel.Channels
             {
                 if (result.MessageType == WebSocketMessageType.Close)
                 {
-                    if (TD.WebSocketCloseStatusReceivedIsEnabled())
+                    if (WcfEventSource.Instance.WebSocketCloseStatusReceivedIsEnabled())
                     {
-                        TD.WebSocketCloseStatusReceived(
+                        WcfEventSource.Instance.WebSocketCloseStatusReceived(
                             _webSocket.GetHashCode(),
                             result.CloseStatus.ToString());
                     }
@@ -796,9 +795,9 @@ namespace System.ServiceModel.Channels
                             bool success = false;
                             try
                             {
-                                if (TD.WebSocketAsyncReadStartIsEnabled())
+                                if (WcfEventSource.Instance.WebSocketAsyncReadStartIsEnabled())
                                 {
-                                    TD.WebSocketAsyncReadStart(_webSocket.GetHashCode());
+                                    WcfEventSource.Instance.WebSocketAsyncReadStart(_webSocket.GetHashCode());
                                 }
 
                                 try
@@ -810,9 +809,9 @@ namespace System.ServiceModel.Channels
                                     CheckCloseStatus(result);
                                     _pendingMessage = PrepareMessage(result, buffer, result.Count);
 
-                                    if (TD.WebSocketAsyncReadStopIsEnabled())
+                                    if (WcfEventSource.Instance.WebSocketAsyncReadStopIsEnabled())
                                     {
-                                        TD.WebSocketAsyncReadStop(
+                                        WcfEventSource.Instance.WebSocketAsyncReadStop(
                                             _webSocket.GetHashCode(),
                                             result.Count,
                                             String.Empty);
@@ -1091,9 +1090,9 @@ namespace System.ServiceModel.Channels
             {
                 int receivedBytes = 0;
 
-                if (TD.WebSocketAsyncReadStartIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncReadStartIsEnabled())
                 {
-                    TD.WebSocketAsyncReadStart(_webSocket.GetHashCode());
+                    WcfEventSource.Instance.WebSocketAsyncReadStart(_webSocket.GetHashCode());
                 }
 
                 WebSocketReceiveResult result;
@@ -1125,9 +1124,9 @@ namespace System.ServiceModel.Channels
                 receivedBytes = result.Count;
                 CheckResultAndEnsureNotCloseMessage(_messageSource, result);
 
-                if (TD.WebSocketAsyncReadStopIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncReadStopIsEnabled())
                 {
-                    TD.WebSocketAsyncReadStop(_webSocket.GetHashCode(), receivedBytes, string.Empty);
+                    WcfEventSource.Instance.WebSocketAsyncReadStop(_webSocket.GetHashCode(), receivedBytes, string.Empty);
                 }
 
                 if (_endOfMessageReached)
@@ -1169,9 +1168,9 @@ namespace System.ServiceModel.Channels
                     throw FxTrace.Exception.AsError(new InvalidOperationException(SR.WebSocketStreamWriteCalledAfterEOMSent));
                 }
 
-                if (TD.WebSocketAsyncWriteStartIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncWriteStartIsEnabled())
                 {
-                    TD.WebSocketAsyncWriteStart(
+                    WcfEventSource.Instance.WebSocketAsyncWriteStart(
                             _webSocket.GetHashCode(),
                             count,
                             string.Empty);
@@ -1196,9 +1195,9 @@ namespace System.ServiceModel.Channels
                     throw WebSocketHelper.ConvertAndTraceException(ex, new TimeSpan(WriteTimeout), WebSocketHelper.SendOperation);
                 }
 
-                if (TD.WebSocketAsyncWriteStopIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncWriteStopIsEnabled())
                 {
-                    TD.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
+                    WcfEventSource.Instance.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
                 }
             }
 
@@ -1210,9 +1209,9 @@ namespace System.ServiceModel.Channels
 
             public void WriteEndOfMessage()
             {
-                if (TD.WebSocketAsyncWriteStartIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncWriteStartIsEnabled())
                 {
-                    TD.WebSocketAsyncWriteStart(
+                    WcfEventSource.Instance.WebSocketAsyncWriteStart(
                             _webSocket.GetHashCode(),
                             0,
                             string.Empty);
@@ -1226,18 +1225,18 @@ namespace System.ServiceModel.Channels
                     task.Wait(timeoutHelper.RemainingTime(), WebSocketHelper.ThrowCorrectException, WebSocketHelper.SendOperation);
                 }
 
-                if (TD.WebSocketAsyncWriteStopIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncWriteStopIsEnabled())
                 {
-                    TD.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
+                    WcfEventSource.Instance.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
                 }
             }
 
             public async void WriteEndOfMessageAsync(Action<object> callback, object state)
             {
-                if (TD.WebSocketAsyncWriteStartIsEnabled())
+                if (WcfEventSource.Instance.WebSocketAsyncWriteStartIsEnabled())
                 {
                     // TODO: Open bug about not emitting the hostname/port
-                    TD.WebSocketAsyncWriteStart(
+                    WcfEventSource.Instance.WebSocketAsyncWriteStart(
                         _webSocket.GetHashCode(),
                         0,
                         string.Empty);
@@ -1250,9 +1249,9 @@ namespace System.ServiceModel.Channels
                     var cancelToken = await cancelTokenTask;
                     await _webSocket.SendAsync(new ArraySegment<byte>(Array.Empty<byte>(), 0, 0), _outgoingMessageType, true, cancelToken);
 
-                    if (TD.WebSocketAsyncWriteStopIsEnabled())
+                    if (WcfEventSource.Instance.WebSocketAsyncWriteStopIsEnabled())
                     {
-                        TD.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
+                        WcfEventSource.Instance.WebSocketAsyncWriteStop(_webSocket.GetHashCode());
                     }
                 }
                 catch (Exception ex)

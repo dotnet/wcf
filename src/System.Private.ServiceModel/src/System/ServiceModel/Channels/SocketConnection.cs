@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -274,8 +273,15 @@ namespace System.ServiceModel.Channels
         public AsyncCompletionResult BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout,
             Action<object> callback, object state)
         {
+            if (WcfEventSource.Instance.SocketAsyncWriteStartIsEnabled())
+            {
+                TraceWriteStart(size, true);
+            }
+
             return BeginWriteCore(buffer, offset, size, immediate, timeout, callback, state);
         }
+
+        protected abstract void TraceWriteStart(int size, bool async);
 
         protected abstract AsyncCompletionResult BeginWriteCore(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout,
             Action<object> callback, object state);
@@ -321,7 +327,13 @@ namespace System.ServiceModel.Channels
         {
             ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
             ThrowIfNotOpen();
-            return ReadCore(buffer, offset, size, timeout, false);
+            int bytesRead = ReadCore(buffer, offset, size, timeout, false);
+            if (WcfEventSource.Instance.SocketReadStopIsEnabled())
+            {
+                TraceSocketReadStop(bytesRead, false);
+            }
+
+            return bytesRead;
         }
 
         protected abstract int ReadCore(byte[] buffer, int offset, int size, TimeSpan timeout, bool closing);
@@ -331,14 +343,27 @@ namespace System.ServiceModel.Channels
         {
             ConnectionUtilities.ValidateBufferBounds(AsyncReadBufferSize, offset, size);
             this.ThrowIfNotOpen();
-            return this.BeginReadCore(offset, size, timeout, callback, state);
+            var completionResult = this.BeginReadCore(offset, size, timeout, callback, state);
+            if (completionResult == AsyncCompletionResult.Completed && WcfEventSource.Instance.SocketReadStopIsEnabled())
+            {
+                TraceSocketReadStop(_asyncReadSize, true);
+            }
+
+            return completionResult;
         }
+
+        protected abstract void TraceSocketReadStop(int bytesRead, bool async);
 
         protected abstract AsyncCompletionResult BeginReadCore(int offset, int size, TimeSpan timeout,
             Action<object> callback, object state);
 
         protected void FinishRead()
         {
+            if (_asyncReadException != null && WcfEventSource.Instance.SocketReadStopIsEnabled())
+            {
+                TraceSocketReadStop(_asyncReadSize, true);
+            }
+
             Action<object> asyncReadCallback = _asyncReadCallback;
             object asyncReadState = _asyncReadState;
 

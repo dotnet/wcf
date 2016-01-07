@@ -173,7 +173,47 @@ namespace System.Runtime.Diagnostics
 
         public TracePayload GetSerializedPayload(object source, TraceRecord traceRecord, Exception exception, bool getServiceReference)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            string eventSource = null;
+            string extendedData = null;
+            string serializedException = null;
+
+            if (source != null)
+            {
+                eventSource = CreateSourceString(source);
+            }
+
+            if (traceRecord != null)
+            {
+                StringBuilder sb = StringBuilderPool.Take();
+                try
+                {
+                    using (StringWriter stringWriter = new StringWriter(sb, CultureInfo.CurrentCulture))
+                    {
+                        using (XmlWriter writer = XmlWriter.Create(stringWriter))
+                        {
+                            writer.WriteStartElement(DiagnosticStrings.ExtendedDataTag);
+                            traceRecord.WriteTo(writer);
+                            writer.WriteEndElement();
+                            writer.Flush();
+                            stringWriter.Flush();
+
+                            extendedData = sb.ToString();
+                        }
+                    }
+                }
+                finally
+                {
+                    StringBuilderPool.Return(sb);
+                }
+            }
+
+            if (exception != null)
+            {
+                // We want to keep the ETW trace message to under 32k. So we keep the serialized exception to under 28k bytes.
+                serializedException = ExceptionToTraceString(exception, MaxExceptionStringLength);
+            }
+
+            return new TracePayload(serializedException, eventSource, DiagnosticTraceBase.AppDomainFriendlyName, extendedData, string.Empty);
         }
 
         [Fx.Tag.SecurityNote(Critical = "Usage of EventDescriptor, which is protected by a LinkDemand",

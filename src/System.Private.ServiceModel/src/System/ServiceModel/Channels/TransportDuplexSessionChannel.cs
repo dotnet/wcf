@@ -5,7 +5,6 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
@@ -177,9 +176,9 @@ namespace System.ServiceModel.Channels
             }
             catch (TimeoutException e)
             {
-                if (TD.ReceiveTimeoutIsEnabled())
+                if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
                 {
-                    TD.ReceiveTimeout(e.Message);
+                    WcfEventSource.Instance.ReceiveTimeout(e.Message);
                 }
 
 
@@ -197,9 +196,9 @@ namespace System.ServiceModel.Channels
             }
             catch (TimeoutException e)
             {
-                if (TD.ReceiveTimeoutIsEnabled())
+                if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
                 {
-                    TD.ReceiveTimeout(e.Message);
+                    WcfEventSource.Instance.ReceiveTimeout(e.Message);
                 }
                 message = null;
                 return false;
@@ -283,9 +282,9 @@ namespace System.ServiceModel.Channels
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
             if (!await _sendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
             {
-                if (TD.CloseTimeoutIsEnabled())
+                if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
-                    TD.CloseTimeout(SR.Format(SR.CloseTimedOut, timeout));
+                    WcfEventSource.Instance.CloseTimeout(SR.Format(SR.CloseTimedOut, timeout));
                 }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
@@ -338,9 +337,9 @@ namespace System.ServiceModel.Channels
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
             if (!_sendLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
             {
-                if (TD.CloseTimeoutIsEnabled())
+                if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
-                    TD.CloseTimeout(SR.Format(SR.CloseTimedOut, timeout));
+                    WcfEventSource.Instance.CloseTimeout(SR.Format(SR.CloseTimedOut, timeout));
                 }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
@@ -475,9 +474,9 @@ namespace System.ServiceModel.Channels
                     EventTraceActivityHelper.TryAttachActivity(message, eventTraceActivity);
                 }
 
-                if (TD.MessageReceivedByTransportIsEnabled())
+                if (WcfEventSource.Instance.MessageReceivedByTransportIsEnabled())
                 {
-                    TD.MessageReceivedByTransport(
+                    WcfEventSource.Instance.MessageReceivedByTransport(
                         eventTraceActivity,
                         this.LocalAddress != null && this.LocalAddress.Uri != null ? this.LocalAddress.Uri.AbsoluteUri : string.Empty,
                         relatedActivityId);
@@ -563,10 +562,10 @@ namespace System.ServiceModel.Channels
                     this.FinishWritingMessage();
 
                     success = true;
-                    if (TD.MessageSentByTransportIsEnabled())
+                    if (WcfEventSource.Instance.MessageSentByTransportIsEnabled())
                     {
                         EventTraceActivity eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                        TD.MessageSentByTransport(eventTraceActivity, this.RemoteAddress.Uri.AbsoluteUri);
+                        WcfEventSource.Instance.MessageSentByTransport(eventTraceActivity, this.RemoteAddress.Uri.AbsoluteUri);
                     }
                 }
                 finally
@@ -634,10 +633,10 @@ namespace System.ServiceModel.Channels
 
                     this.OnSendCore(message, timeoutHelper.RemainingTime());
                     success = true;
-                    if (TD.MessageSentByTransportIsEnabled())
+                    if (WcfEventSource.Instance.MessageSentByTransportIsEnabled())
                     {
                         EventTraceActivity eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                        TD.MessageSentByTransport(eventTraceActivity, this.RemoteAddress.Uri.AbsoluteUri);
+                        WcfEventSource.Instance.MessageSentByTransport(eventTraceActivity, this.RemoteAddress.Uri.AbsoluteUri);
                     }
                 }
                 finally

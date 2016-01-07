@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Runtime;
-using System.ServiceModel.Diagnostics.Application; // for QuotaExceededException
 
 namespace System.ServiceModel.Channels
 {
@@ -41,9 +40,9 @@ namespace System.ServiceModel.Channels
         protected override Exception CreateQuotaExceededException(int maxSizeQuota)
         {
             string excMsg = SR.Format(_quotaExceededString, maxSizeQuota);
-            if (TD.MaxSentMessageSizeExceededIsEnabled())
+            if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())
             {
-                TD.MaxSentMessageSizeExceeded(excMsg);
+                WcfEventSource.Instance.MaxSentMessageSizeExceeded(excMsg);
             }
             return new QuotaExceededException(excMsg);
         }

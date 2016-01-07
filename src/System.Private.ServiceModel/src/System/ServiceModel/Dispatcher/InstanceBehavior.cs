@@ -4,7 +4,6 @@
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -93,16 +92,16 @@ namespace System.ServiceModel.Dispatcher
 
         internal void EnsureServiceInstance(ref MessageRpc rpc)
         {
-            if (TD.GetServiceInstanceStartIsEnabled())
+            if (WcfEventSource.Instance.GetServiceInstanceStartIsEnabled())
             {
-                TD.GetServiceInstanceStart(rpc.EventTraceActivity);
+                WcfEventSource.Instance.GetServiceInstanceStart(rpc.EventTraceActivity);
             }
 
             rpc.Instance = rpc.InstanceContext.GetServiceInstance(rpc.Request);
 
-            if (TD.GetServiceInstanceStopIsEnabled())
+            if (WcfEventSource.Instance.GetServiceInstanceStopIsEnabled())
             {
-                TD.GetServiceInstanceStop(rpc.EventTraceActivity);
+                WcfEventSource.Instance.GetServiceInstanceStop(rpc.EventTraceActivity);
             }
         }
     }

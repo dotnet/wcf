@@ -10,7 +10,6 @@ using System.Security;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 using System.Xml;
-using System.ServiceModel.Diagnostics.Application;
 
 namespace System.ServiceModel.Dispatcher
 {

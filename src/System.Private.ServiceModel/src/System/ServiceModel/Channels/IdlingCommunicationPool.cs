@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Threading;
 
 namespace System.ServiceModel.Channels
@@ -327,17 +326,17 @@ namespace System.ServiceModel.Channels
 
                 private void TraceConnectionLeaseTimeoutExpired()
                 {
-                    if (TD.LeaseTimeoutIsEnabled())
+                    if (WcfEventSource.Instance.LeaseTimeoutIsEnabled())
                     {
-                        TD.LeaseTimeout(SR.Format(SR.TraceCodeConnectionPoolLeaseTimeoutReached, _leaseTimeout), _parent.Key.ToString());
+                        WcfEventSource.Instance.LeaseTimeout(SR.Format(SR.TraceCodeConnectionPoolLeaseTimeoutReached, _leaseTimeout), _parent.Key.ToString());
                     }
                 }
 
                 private void TraceConnectionIdleTimeoutExpired()
                 {
-                    if (TD.IdleTimeoutIsEnabled())
+                    if (WcfEventSource.Instance.IdleTimeoutIsEnabled())
                     {
-                        TD.IdleTimeout(SR.Format(SR.TraceCodeConnectionPoolIdleTimeoutReached, _idleTimeout), _parent.Key.ToString());
+                        WcfEventSource.Instance.IdleTimeout(SR.Format(SR.TraceCodeConnectionPoolIdleTimeoutReached, _idleTimeout), _parent.Key.ToString());
                     }
                 }
 

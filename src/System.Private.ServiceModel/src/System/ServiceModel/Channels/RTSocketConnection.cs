@@ -393,7 +393,20 @@ namespace System.ServiceModel.Channels
                 }
                 throw;
             }
+        }
 
+        protected override void TraceWriteStart(int size, bool async)
+        {
+            var socketInfo = _socket.Information;
+            string remoteEndpointAddressString = socketInfo.RemoteAddress.ToString() + ":" + socketInfo.RemotePort.ToString();
+            if (!async)
+            {
+                WcfEventSource.Instance.SocketWriteStart(_socket.GetHashCode(), size, remoteEndpointAddressString);
+            }
+            else
+            {
+                WcfEventSource.Instance.SocketAsyncWriteStart(_socket.GetHashCode(), size, remoteEndpointAddressString);
+            }
         }
 
         protected override int ReadCore(byte[] buffer, int offset, int size, TimeSpan timeout, bool closing)
@@ -431,6 +444,25 @@ namespace System.ServiceModel.Channels
             }
 
             return bytesRead;
+        }
+
+        protected override void TraceSocketReadStop(int bytesRead, bool async)
+        {
+            string remoteEndpointAddressString = string.Empty;
+            if (_socket != null)
+            {
+                var socketInfo = _socket.Information;
+                remoteEndpointAddressString = socketInfo.RemoteAddress.ToString() + ":" + socketInfo.RemotePort.ToString();
+            }
+
+            if (!async)
+            {
+                WcfEventSource.Instance.SocketReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, remoteEndpointAddressString);
+            }
+            else
+            {
+                WcfEventSource.Instance.SocketAsyncReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, remoteEndpointAddressString);
+            }
         }
 
         protected override AsyncCompletionResult BeginReadCore(int offset, int size, TimeSpan timeout,

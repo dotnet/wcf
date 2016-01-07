@@ -5,7 +5,6 @@ using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
 
@@ -375,9 +374,9 @@ namespace System.ServiceModel
 
             _innerFactory = CreateFactory();
 
-            if (TD.ChannelFactoryCreatedIsEnabled())
+            if (WcfEventSource.Instance.ChannelFactoryCreatedIsEnabled())
             {
-                TD.ChannelFactoryCreated(this);
+                WcfEventSource.Instance.ChannelFactoryCreated(this);
             }
 
 

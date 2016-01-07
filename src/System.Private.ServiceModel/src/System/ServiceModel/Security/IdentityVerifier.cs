@@ -7,8 +7,8 @@ using System.IdentityModel.Policy;
 using System.Security.Principal;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Runtime.Diagnostics;
 
 namespace System.ServiceModel.Security
@@ -271,9 +271,9 @@ namespace System.ServiceModel.Security
                     //}
                 }
                 SecurityTraceRecordHelper.TraceIdentityVerificationFailure(identity, authContext, this.GetType());
-                if (TD.SecurityIdentityVerificationFailureIsEnabled())
+                if (WcfEventSource.Instance.SecurityIdentityVerificationFailureIsEnabled())
                 {
-                    TD.SecurityIdentityVerificationFailure(eventTraceActivity);
+                    WcfEventSource.Instance.SecurityIdentityVerificationFailure(eventTraceActivity);
                 }
 
                 return false; 

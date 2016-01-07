@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.IO;
-using System.ServiceModel.Diagnostics.Application;
+using System.Runtime;
 using System.Threading.Tasks;
 using System.Threading;
 
@@ -65,9 +65,9 @@ namespace System.ServiceModel.Channels
             string message = SR.Format(SR.MaxReceivedMessageSizeExceeded, maxMessageSize);
             Exception inner = new QuotaExceededException(message);
 
-            if (TD.MaxReceivedMessageSizeExceededIsEnabled())
+            if (WcfEventSource.Instance.MaxReceivedMessageSizeExceededIsEnabled())
             {
-                TD.MaxReceivedMessageSizeExceeded(message);
+                WcfEventSource.Instance.MaxReceivedMessageSizeExceeded(message);
             }
 
             return new CommunicationException(message, inner);
@@ -78,9 +78,9 @@ namespace System.ServiceModel.Channels
             string message = SR.Format(SR.MaxSentMessageSizeExceeded, maxMessageSize);
             Exception inner = new QuotaExceededException(message);
 
-            if (TD.MaxSentMessageSizeExceededIsEnabled())
+            if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())
             {
-                TD.MaxSentMessageSizeExceeded(message);
+                WcfEventSource.Instance.MaxSentMessageSizeExceeded(message);
             }
 
             return new CommunicationException(message, inner);

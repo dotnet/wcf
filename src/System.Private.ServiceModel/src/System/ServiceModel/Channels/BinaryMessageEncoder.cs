@@ -7,7 +7,6 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -168,9 +167,9 @@ namespace System.ServiceModel.Channels
             if (messageWriter == null)
             {
                 messageWriter = new BinaryBufferedMessageWriter(_binaryVersion.Dictionary);
-                if (TD.WritePoolMissIsEnabled())
+                if (WcfEventSource.Instance.WritePoolMissIsEnabled())
                 {
-                    TD.WritePoolMiss(messageWriter.GetType().Name);
+                    WcfEventSource.Instance.WritePoolMiss(messageWriter.GetType().Name);
                 }
             }
             return messageWriter;
@@ -207,9 +206,9 @@ namespace System.ServiceModel.Channels
             if (messageData == null)
             {
                 messageData = new BinaryBufferedMessageData(this, maxPooledXmlReaderPerMessage);
-                if (TD.ReadPoolMissIsEnabled())
+                if (WcfEventSource.Instance.ReadPoolMissIsEnabled())
                 {
-                    TD.ReadPoolMiss(messageData.GetType().Name);
+                    WcfEventSource.Instance.ReadPoolMiss(messageData.GetType().Name);
                 }
             }
             messageData.SetMessageEncoder(messageEncoder);
@@ -397,9 +396,9 @@ namespace System.ServiceModel.Channels
                     if (remainingMessageSize - dictionarySize < 0)
                     {
                         string excMsg = SR.Format(SR.MaxSentMessageSizeExceeded, maxMessageSize);
-                        if (TD.MaxSentMessageSizeExceededIsEnabled())
+                        if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())
                         {
-                            TD.MaxSentMessageSizeExceeded(excMsg);
+                            WcfEventSource.Instance.MaxSentMessageSizeExceeded(excMsg);
                         }
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new QuotaExceededException(excMsg));
                     }
@@ -467,9 +466,9 @@ namespace System.ServiceModel.Channels
                         if (dictionarySize > _remainingReaderSessionSize)
                         {
                             string message = SR.Format(SR.BinaryEncoderSessionTooLarge, _maxSessionSize);
-                            if (TD.MaxSessionSizeReachedIsEnabled())
+                            if (WcfEventSource.Instance.MaxSessionSizeReachedIsEnabled())
                             {
-                                TD.MaxSessionSizeReached(message);
+                                WcfEventSource.Instance.MaxSessionSizeReached(message);
                             }
                             Exception inner = new QuotaExceededException(message);
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(message, inner));
@@ -522,9 +521,9 @@ namespace System.ServiceModel.Channels
 
                 CompressionFormat compressionFormat = this.CheckContentType(contentType);
 
-                if (TD.BinaryMessageDecodingStartIsEnabled())
+                if (WcfEventSource.Instance.BinaryMessageDecodingStartIsEnabled())
                 {
-                    TD.BinaryMessageDecodingStart();
+                    WcfEventSource.Instance.BinaryMessageDecodingStart();
                 }
 
                 if (compressionFormat != CompressionFormat.None)
@@ -588,9 +587,9 @@ namespace System.ServiceModel.Channels
 
                 CompressionFormat compressionFormat = this.CheckContentType(contentType);
 
-                if (TD.BinaryMessageDecodingStartIsEnabled())
+                if (WcfEventSource.Instance.BinaryMessageDecodingStartIsEnabled())
                 {
-                    TD.BinaryMessageDecodingStart();
+                    WcfEventSource.Instance.BinaryMessageDecodingStart();
                 }
 
                 if (compressionFormat != CompressionFormat.None)
@@ -603,9 +602,9 @@ namespace System.ServiceModel.Channels
                 Message message = Message.CreateMessage(reader, maxSizeOfHeaders, _factory._messageVersion);
                 message.Properties.Encoder = this;
 
-                if (TD.StreamedMessageReadByEncoderIsEnabled())
+                if (WcfEventSource.Instance.StreamedMessageReadByEncoderIsEnabled())
                 {
-                    TD.StreamedMessageReadByEncoder(
+                    WcfEventSource.Instance.StreamedMessageReadByEncoder(
                         EventTraceActivityHelper.TryExtractActivity(message, true));
                 }
 
@@ -635,10 +634,10 @@ namespace System.ServiceModel.Channels
                 }
 
                 EventTraceActivity eventTraceActivity = null;
-                if (TD.BinaryMessageEncodingStartIsEnabled())
+                if (WcfEventSource.Instance.BinaryMessageEncodingStartIsEnabled())
                 {
                     eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                    TD.BinaryMessageEncodingStart(eventTraceActivity);
+                    WcfEventSource.Instance.BinaryMessageEncodingStart(eventTraceActivity);
                 }
 
                 message.Properties.Encoder = this;
@@ -662,9 +661,9 @@ namespace System.ServiceModel.Channels
                 if (messageOffset > maxMessageSize)
                 {
                     string excMsg = SR.Format(SR.MaxSentMessageSizeExceeded, maxMessageSize);
-                    if (TD.MaxSentMessageSizeExceededIsEnabled())
+                    if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())
                     {
-                        TD.MaxSentMessageSizeExceeded(excMsg);
+                        WcfEventSource.Instance.MaxSentMessageSizeExceeded(excMsg);
                     }
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new QuotaExceededException(excMsg));
                 }
@@ -734,10 +733,10 @@ namespace System.ServiceModel.Channels
                 }
 
                 EventTraceActivity eventTraceActivity = null;
-                if (TD.BinaryMessageEncodingStartIsEnabled())
+                if (WcfEventSource.Instance.BinaryMessageEncodingStartIsEnabled())
                 {
                     eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                    TD.BinaryMessageEncodingStart(eventTraceActivity);
+                    WcfEventSource.Instance.BinaryMessageEncodingStart(eventTraceActivity);
                 }
 
                 CompressionFormat compressionFormat = this.CheckCompressedWrite(message);
@@ -752,9 +751,9 @@ namespace System.ServiceModel.Channels
                 message.WriteMessage(xmlWriter);
                 xmlWriter.Flush();
 
-                if (TD.StreamedMessageWrittenByEncoderIsEnabled())
+                if (WcfEventSource.Instance.StreamedMessageWrittenByEncoderIsEnabled())
                 {
-                    TD.StreamedMessageWrittenByEncoder(eventTraceActivity ?? EventTraceActivityHelper.TryExtractActivity(message));
+                    WcfEventSource.Instance.StreamedMessageWrittenByEncoder(eventTraceActivity ?? EventTraceActivityHelper.TryExtractActivity(message));
                 }
 
                 _factory.ReturnStreamedWriter(xmlWriter);
