@@ -89,4 +89,42 @@ public static class FaultExceptionTests
 
         Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
     }
+
+    [Fact]
+    [OuterLoop]
+    public static void FaultException_Throws_With_Int()
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        BasicHttpBinding binding = null;
+
+        int expectedFaultCode = 5;  // arbitrary integer choice
+        FaultException<int> thrownException = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            thrownException = Assert.Throws <FaultException<int>>(() =>
+            {
+                serviceProxy.TestFaultInt(expectedFaultCode);
+            });
+
+            // *** VALIDATE *** \\
+            Assert.Equal(expectedFaultCode, thrownException.Detail);
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }
