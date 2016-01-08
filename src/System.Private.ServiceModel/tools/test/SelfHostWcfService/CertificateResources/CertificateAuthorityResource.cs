@@ -3,6 +3,7 @@
 
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using WcfTestBridgeCommon;
 
 namespace WcfService.CertificateResources
@@ -18,9 +19,20 @@ namespace WcfService.CertificateResources
             X509Certificate2 certificate = 
                 CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration).AuthorityCertificate.Certificate;
 
+            string exportAsPemString = string.Empty;
+            bool exportAsPem;
+
             ResourceResponse response = new ResourceResponse();
-            response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
-            response.Properties.Add(certificateKeyName, Convert.ToBase64String(certificate.RawData));
+
+            if (context.Properties.TryGetValue(exportAsPemKeyName, out exportAsPemString) && bool.TryParse(exportAsPemString, out exportAsPem) && exportAsPem)
+            {
+                response.RawResponse = Encoding.ASCII.GetBytes(GetCertificateAsPem(certificate));
+            }
+            else
+            {
+                response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
+                response.Properties.Add(certificateKeyName, Convert.ToBase64String(certificate.RawData));
+            }
 
             return response;
         }

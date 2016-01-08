@@ -35,7 +35,8 @@ namespace WcfTestBridgeCommon
 
         // This can't be too short as there might be a time skew between machines,
         // but also can't be too long, as the CRL is cached by the machine
-        private TimeSpan _crlValidityPeriod = TimeSpan.FromMinutes(2);
+        private TimeSpan _crlValidityGracePeriodStart = TimeSpan.FromMinutes(5);
+        private TimeSpan _crlValidityGracePeriodEnd = TimeSpan.FromMinutes(5);
 
         // Give the cert a grace period in case there's a time skew between machines
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
@@ -281,7 +282,8 @@ namespace WcfTestBridgeCommon
             _certGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
             X509Name authorityX509Name = CreateX509Name(_authorityCanonicalName);
-            
+            var serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
+
             var keyPair = isAuthority ? _authorityKeyPair : _keyPairGenerator.GenerateKeyPair();
             if (isAuthority)
             {
@@ -291,10 +293,10 @@ namespace WcfTestBridgeCommon
                 var authorityKeyIdentifier = new AuthorityKeyIdentifier(
                     SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(_authorityKeyPair.Public),
                     new GeneralNames(new GeneralName(authorityX509Name)),
-                    new BigInteger(7, _random).Abs());
+                    serialNum);
 
-                _certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, true, authorityKeyIdentifier);
-                _certGenerator.AddExtension(X509Extensions.KeyUsage, true, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyCertSign | X509KeyUsage.KeyEncipherment | X509KeyUsage.CrlSign));
+                _certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, authorityKeyIdentifier);
+                _certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyCertSign | X509KeyUsage.KeyEncipherment | X509KeyUsage.CrlSign));
 
             }
             else
@@ -303,21 +305,20 @@ namespace WcfTestBridgeCommon
                 _certGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
                 _certGenerator.SetSubjectDN(subjectName);
 
-                _certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, true, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
-                _certGenerator.AddExtension(X509Extensions.KeyUsage, true, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyEncipherment));
+                _certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
+                _certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyEncipherment));
 
             }
 
             _certGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
 
-            var serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
             _certGenerator.SetSerialNumber(serialNum);
             _certGenerator.SetNotBefore(certificateCreationSettings.ValidityNotBefore);
             _certGenerator.SetNotAfter(certificateCreationSettings.ValidityNotAfter);
             _certGenerator.SetPublicKey(keyPair.Public);
 
             _certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
-            _certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
+            _certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
 
             if (!isAuthority)
             {
@@ -364,9 +365,14 @@ namespace WcfTestBridgeCommon
 
             // Our CRL Distribution Point has the serial number in the query string to fool Windows into doing a fresh query 
             // rather than using a cached copy of the CRL in the case where the CRL has been previously accessed before
-            var crlDistributionPoints = new DistributionPoint[1] {
+            var crlDistributionPoints = new DistributionPoint[2] {
                 new DistributionPoint(new DistributionPointName(
                     new GeneralNames(new GeneralName(
+                        GeneralName.UniformResourceIdentifier, string.Format("{0}?serialNum={1}", _crlUri, serialNum.ToString(radix: 16))))),
+                        null,
+                        null),
+                    new DistributionPoint(new DistributionPointName(
+                        new GeneralNames(new GeneralName(
                         GeneralName.UniformResourceIdentifier, string.Format("{0}?serialNum={1}", _crlUri, serialNum.ToString(radix: 16))))), 
                         null, 
                         new GeneralNames(new GeneralName(authorityX509Name)))
@@ -412,7 +418,7 @@ namespace WcfTestBridgeCommon
             if (isAuthority)
             {
                 // don't hand out the private key for the cert when it's the authority
-                outputCert = new X509Certificate2(cert.GetEncoded()); 
+                outputCert = new X509Certificate2(cert.GetEncoded());
             } 
             else
             {
@@ -449,14 +455,22 @@ namespace WcfTestBridgeCommon
             _crlGenerator.Reset();
 
             DateTime now = DateTime.UtcNow;
-            _crlGenerator.SetThisUpdate(now);
-            _crlGenerator.SetNextUpdate(now.Add(_crlValidityPeriod));
+
+            DateTime updateTime = now.Subtract(_crlValidityGracePeriodEnd);
+            // Ensure that the update time for the CRL is no greater than the earliest time that the CA is valid for
+            if (_defaultValidityNotBefore > now.Subtract(_crlValidityGracePeriodEnd))
+            {
+                updateTime = _defaultValidityNotBefore;
+            }
+
+            _crlGenerator.SetThisUpdate(updateTime);
+            _crlGenerator.SetNextUpdate(now.Add(_crlValidityGracePeriodStart));
             _crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
             _crlGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
             _crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
 
-            BigInteger crlNumber = new BigInteger(7 /*bits for the number*/, _random).Abs();
+            BigInteger crlNumber = new BigInteger(64 /*bits for the number*/, _random).Abs();
             _crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(crlNumber));
 
             foreach (var kvp in _revokedCertificates)
