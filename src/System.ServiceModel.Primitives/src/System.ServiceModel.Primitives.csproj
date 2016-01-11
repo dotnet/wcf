@@ -21,7 +21,9 @@
     <TargetingPackReference Include="mscorlib" Condition="'$(TargetGroup)' != 'netcore50aot'" />
     <TargetingPackReference Include="System.IdentityModel" Condition="'$(TargetGroup)' == 'net46'" />
     <TargetingPackReference Include="System.ServiceModel" Condition="'$(TargetGroup)' == 'net46'" />
-    <ProjectReference Include="$(SourceDir)System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" Condition="'$(TargetGroup)' != 'net46'" />
+    <ProjectReference Include="$(SourceDir)System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" Condition="'$(TargetGroup)' != 'net46'" >
+      <AdditionalProperties>OSGroup=Windows_NT</AdditionalProperties>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
