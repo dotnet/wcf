@@ -1,6 +1,7 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Condition="Exists('..\dir.props')" Project="..\dir.props" />
-
+  <Import Project="src\BuildValues.props" />
+  
   <!--
     $(OS) is set to Unix/Windows_NT. This comes from an environment variable on Windows and MSBuild on Unix.
   -->
@@ -10,10 +11,6 @@
 
   <!-- Build Tools Versions -->
   <PropertyGroup>
-    <BuildToolsVersion>1.0.25-prerelease-00141</BuildToolsVersion>
-    <DnxVersion>1.0.0-rc2-16128</DnxVersion>
-    <DnxPackageName Condition="'$(DnxPackageName)' == '' and '$(OsEnvironment)'!='Unix'">dnx-coreclr-win-x86.$(DnxVersion)</DnxPackageName>
-    <DnxPackageName Condition="'$(DnxPackageName)' == '' and '$(OsEnvironment)'=='Unix'">dnx-mono.$(DnxVersion)</DnxPackageName>
     <RoslynVersion>1.0.0-rc3-20150510-01</RoslynVersion>
     <RoslynPackageName>Microsoft.Net.ToolsetCompilers</RoslynPackageName>
   </PropertyGroup>
@@ -48,7 +45,10 @@
 
     <!-- Input Directories -->
     <PackagesDir Condition="'$(PackagesDir)'==''">$(ProjectDir)packages/</PackagesDir>
-    <ToolsDir Condition="'$(ToolsDir)'==''">$(PackagesDir)Microsoft.DotNet.BuildTools.$(BuildToolsVersion)/lib/</ToolsDir>
+    <ToolRuntimePath Condition="'$(ToolRuntimePath)'==''">$(ProjectDir)Tools/</ToolRuntimePath>
+    <ToolsDir Condition="'$(UseToolRuntimeForToolsDir)'=='true'">$(ToolRuntimePath)</ToolsDir>
+    <ToolsDir Condition="'$(ToolsDir)'==''">$(ProjectDir)Tools/</ToolsDir>
+    <DotnetCliPath Condition="'$(DotnetCliPath)'==''">$(ToolRuntimePath)dotnetcli/bin/</DotnetCliPath>
     <BuildToolsTaskDir Condition="'$(BuildToolsTargets45)' == 'true'">$(ToolsDir)net45/</BuildToolsTaskDir>
 
     <!-- Packaging configuration -->
@@ -57,8 +57,21 @@
     <!-- Add a condition for this when we are able to run on .NET Core -->
     <PackagingTaskDir>$(ToolsDir)net45/</PackagingTaskDir>
     <BuildNumberMajor Condition="'$(BuildNumberMajor)' == ''">$(RevisionNumber)</BuildNumberMajor>
+    <!-- defined in buildtools packaging.targets, but we need this before targets are imported -->
+    <PackagePlatform Condition="'$(PackagePlatform)' == ''">$(Platform)</PackagePlatform>
+    <PackagePlatform Condition="'$(PackagePlatform)' == 'amd64'">x64</PackagePlatform>
+    <NativePackagePath>$(MSBuildThisFileDirectory)src/Native/pkg</NativePackagePath>
   </PropertyGroup>
 
+  <!-- Import Build tools common props file where repo-independent properties are found -->
+  <Import Project="$(ToolsDir)Build.Common.props" />
+
+  <!-- Test runtime -->
+  <PropertyGroup>
+    <TestRuntimeProjectJson Condition="'$(TestRuntimeProjectJson)' == ''">$(SourceDir)Common/test-runtime/project.json</TestRuntimeProjectJson>
+    <TestRuntimeProjectLockJson Condition="'$(TestRuntimeProjectLockJson)' == ''">$(SourceDir)Common/test-runtime/project.lock.json</TestRuntimeProjectLockJson>
+  </PropertyGroup>
+  
   <!-- Package dependency validation -->
   <PropertyGroup>
     <ValidatePackageVersions>true</ValidatePackageVersions>
@@ -88,7 +101,8 @@
 
   <!-- Common nuget properties -->
   <PropertyGroup>
-    <NuGetToolPath Condition="'$(NuGetToolPath)'==''">$(PackagesDir)NuGet.exe</NuGetToolPath>
+    <!-- <NuGetToolPath Condition="'$(NuGetToolPath)'==''">$(PackagesDir)NuGet.exe</NuGetToolPath> -->
+    <NuGetToolPath Condition="'$(NuGetToolPath)'==''">$(ToolsDir)\NuProj\NuGet.exe</NuGetToolPath>
     <NuGetPackageSource>@(NuGetSourceList -> '-source %(Identity)', ' ')</NuGetPackageSource>
     <NuGetConfigCommandLine>$(NuGetPackageSource)</NuGetConfigCommandLine>
 
@@ -129,6 +143,9 @@
     <DnxPackageDir Condition="'$(DnxPackageDir)'==''">$(PackagesDir)/$(DnxPackageName)/</DnxPackageDir>
     <DnuToolPath Condition="'$(DnuToolPath)'=='' and '$(OsEnvironment)'!='Unix'">$(DnxPackageDir)\bin\dnu.cmd</DnuToolPath>
     <DnuToolPath Condition="'$(DnuToolPath)'=='' and '$(OsEnvironment)'=='Unix'">$(DnxPackageDir)/bin/dnu</DnuToolPath>
+    <DotnetToolCommand Condition="'$(DotnetToolCommand)' == '' and '$(OsEnvironment)'!='Unix'">$(DotnetCliPath)dotnet.exe</DotnetToolCommand>
+    <DotnetToolCommand Condition="'$(DotnetToolCommand)' == '' and '$(OsEnvironment)'=='Unix'">$(DotnetCliPath)dotnet</DotnetToolCommand>
+    <DnuToolPath>$(DotnetToolCommand)</DnuToolPath>
 
     <DnuRestoreSource>@(DnuSourceList -> '--source %(Identity)', ' ')</DnuRestoreSource>
 
