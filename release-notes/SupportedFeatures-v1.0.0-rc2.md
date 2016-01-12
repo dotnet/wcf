@@ -1,4 +1,4 @@
-WCF Features in RC2
+WCF Features in RC2(In Progress)
 ===========================
 
 Packages released
