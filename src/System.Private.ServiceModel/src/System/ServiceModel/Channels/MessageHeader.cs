@@ -49,34 +49,41 @@ namespace System.ServiceModel.Channels
 
         public override string ToString()
         {
-            StringWriter stringWriter = new StringWriter(CultureInfo.InvariantCulture);
             XmlWriterSettings xmlSettings = new XmlWriterSettings() { Indent = true };
-            XmlWriter textWriter = XmlWriter.Create(stringWriter, xmlSettings);
-            XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(textWriter);
 
-            if (IsMessageVersionSupported(MessageVersion.Soap12WSAddressing10))
+            using (StringWriter stringWriter = new StringWriter(CultureInfo.InvariantCulture))
             {
-                WriteHeader(writer, MessageVersion.Soap12WSAddressing10);
-            }
-            else if (IsMessageVersionSupported(MessageVersion.Soap11WSAddressing10))
-            {
-                WriteHeader(writer, MessageVersion.Soap11WSAddressing10);
-            }
-            else if (IsMessageVersionSupported(MessageVersion.Soap12))
-            {
-                WriteHeader(writer, MessageVersion.Soap12);
-            }
-            else if (IsMessageVersionSupported(MessageVersion.Soap11))
-            {
-                WriteHeader(writer, MessageVersion.Soap11);
-            }
-            else
-            {
-                WriteHeader(writer, MessageVersion.None);
-            }
+                using (XmlWriter textWriter = XmlWriter.Create(stringWriter, xmlSettings))
+                {
+                    using (XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(textWriter))
+                    {
 
-            writer.Flush();
-            return stringWriter.ToString();
+                        if (IsMessageVersionSupported(MessageVersion.Soap12WSAddressing10))
+                        {
+                            WriteHeader(writer, MessageVersion.Soap12WSAddressing10);
+                        }
+                        else if (IsMessageVersionSupported(MessageVersion.Soap11WSAddressing10))
+                        {
+                            WriteHeader(writer, MessageVersion.Soap11WSAddressing10);
+                        }
+                        else if (IsMessageVersionSupported(MessageVersion.Soap12))
+                        {
+                            WriteHeader(writer, MessageVersion.Soap12);
+                        }
+                        else if (IsMessageVersionSupported(MessageVersion.Soap11))
+                        {
+                            WriteHeader(writer, MessageVersion.Soap11);
+                        }
+                        else
+                        {
+                            WriteHeader(writer, MessageVersion.None);
+                        }
+
+                        writer.Flush();
+                        return stringWriter.ToString();
+                    }
+                }
+            }
         }
 
         public void WriteHeader(XmlWriter writer, MessageVersion messageVersion)

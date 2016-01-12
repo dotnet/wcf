@@ -451,20 +451,28 @@ namespace System.ServiceModel.Channels
                 return base.ToString();
             }
 
-            StringWriter stringWriter = new StringWriter(CultureInfo.InvariantCulture);
+            
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
-            XmlWriter textWriter = XmlWriter.Create(stringWriter, settings);
-            XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(textWriter);
-            try
+
+            using (StringWriter stringWriter = new StringWriter(CultureInfo.InvariantCulture))
             {
-                ToString(writer);
-                writer.Flush();
-                return stringWriter.ToString();
-            }
-            catch (XmlException e)
-            {
-                return SR.Format(SR.MessageBodyToStringError, e.GetType().ToString(), e.Message);
+                using (XmlWriter textWriter = XmlWriter.Create(stringWriter, settings))
+                {
+                    using (XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(textWriter))
+                    {
+                        try
+                        {
+                            ToString(writer);
+                            writer.Flush();
+                            return stringWriter.ToString();
+                        }
+                        catch (XmlException e)
+                        {
+                            return SR.Format(SR.MessageBodyToStringError, e.GetType().ToString(), e.Message);
+                        }
+                    }
+                }
             }
         }
 
