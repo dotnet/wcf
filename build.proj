@@ -8,7 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Project Include="src\dirs.proj" />
+    <Project Include="src\dirs.proj">
+      <!-- For the root traversal default filter the OSGroup to the OSEnvironment which is the OS we are running on -->
+      <FilterToOSGroup Condition="'$(BuildAllOSGroups)' != 'true'">$(OSEnvironment)</FilterToOSGroup>
+    </Project>
+    <Project Include="src\packages.builds" Condition="'$(BuildPackages)' == 'true'">
+      <!-- When we do a traversal build we build all libraries prior to building packages -->
+      <AdditionalProperties>BuildPackageLibraryReferences=false</AdditionalProperties>
+      <!-- For the root traversal default filter the OSGroup to the OSEnvironment which is the OS we are running on -->
+      <FilterToOSGroup Condition="'$(BuildAllOSGroups)' != 'true'">$(OSEnvironment)</FilterToOSGroup>
+    </Project>
     <Project Include="src\post.msbuild" />
   </ItemGroup>
 
@@ -28,7 +37,7 @@
     <Message Importance="High" Text="Restoring all packages..." />
     <!-- restore all project.jsons in one pass for perf & to avoid concurrency problems with dnu -->
     <!-- include ToolsDir to restore test-runtime\project.json as well -->
-    <Exec Command="$(DnuRestoreCommand) &quot;%(DnuRestoreDir.Identity)&quot;" StandardOutputImportance="Low" CustomErrorRegularExpression="(^Unable to locate .*)|(^Updating the invalid lock file with .*)" />
+    <Exec Command="$(DnuRestoreCommand) &quot;%(DnuRestoreDir.Identity)&quot;" StandardOutputImportance="Low" CustomErrorRegularExpression="(^Unable to locate .*)|(^Updating the invalid lock file with .*)" ContinueOnError="WarnAndContinue" />
 
     <ItemGroup>
       <_allPackagesConfigs Include="$(MSBuildProjectDirectory)\src\**\packages.config"/>
