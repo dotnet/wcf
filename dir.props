@@ -53,10 +53,10 @@
 
     <!-- Packaging configuration -->
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
-    <RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>
+    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1-rc2-23712/runtime.json</RuntimeIdGraphDefinitionFile>
     <!-- Add a condition for this when we are able to run on .NET Core -->
     <PackagingTaskDir>$(ToolsDir)net45/</PackagingTaskDir>
-    <BuildNumberMajor>$(RevisionNumber)</BuildNumberMajor>
+    <BuildNumberMajor Condition="'$(BuildNumberMajor)' == ''">$(RevisionNumber)</BuildNumberMajor>
   </PropertyGroup>
 
   <!-- Package dependency validation -->
