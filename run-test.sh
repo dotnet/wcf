@@ -21,15 +21,15 @@ usage()
     echo "Input sources:"
     echo "    --coreclr-bins <location>         Location of root of the binaries directory"
     echo "                                      containing the FreeBSD, Linux or OSX coreclr build"
-    echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<Configuration>"
+    echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<ConfigurationGroup>"
     echo "    --mscorlib-bins <location>        Location of the root binaries directory containing"
     echo "                                      the FreeBSD, Linux or OSX mscorlib.dll"
-    echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<Configuration>"
+    echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<ConfigurationGroup>"
     echo "    --corefx-tests <location>         Location of the root binaries location containing"
     echo "                                      the tests to run"
-    echo "                                      default: <repo_root>/bin/tests/<OS>.AnyCPU.<Configuration>"
+    echo "                                      default: <repo_root>/bin/tests/<OS>.AnyCPU.<ConfigurationGroup>"
     echo "    --corefx-native-bins <location>   Location of the FreeBSD, Linux or OSX native corefx binaries"
-    echo "                                      default: <repo_root>/bin/<OS>.x64.<Configuration>"
+    echo "                                      default: <repo_root>/bin/<OS>.x64.<ConfigurationGroup>"
     echo "    --wcf-bins <location>             Location of the linux/mac WCF binaries"
     echo "                                      default: <repo_root>/bin/<OS>.AnyCPU.<Configuration>"
     echo "    --wcf-tests <location>            Location of the root binaries location containing"
@@ -39,7 +39,7 @@ usage()
     echo "    --xunit-args <xunit args>         Additional args to pass to xunit"
     echo
     echo "Flavor/OS options:"
-    echo "    --configuration <config>          Configuration to run (Debug/Release)"
+    echo "    --configurationGroup <config>     ConfigurationGroup to run (Debug/Release)"
     echo "                                      default: Debug"
     echo "    --os <os>                         OS to run (FreeBSD, Linux or OSX)"
     echo "                                      default: detect current OS"
@@ -48,13 +48,21 @@ usage()
     echo "    --restrict-proj <regex>       Run test projects that match regex"
     echo "                                  default: .* (all projects)"
     echo
+	    echo "Runtime Code Coverage options:"
+    echo "    --coreclr-coverage                Optional argument to get coreclr code coverage reports"
+    echo "    --coreclr-objs <location>         Location of root of the object directory"
+    echo "                                      containing the FreeBSD, Linux or OSX coreclr build"
+    echo "                                      default: <repo_root>/bin/obj/<OS>.x64.<ConfigurationGroup"
+    echo "    --coreclr-src <location>          Location of root of the directory"
+    echo "                                      containing the coreclr source files"
+    echo
     exit 1
 }
 
 ProjectRoot="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Location parameters
-# OS/Configuration defaults
-Configuration="Debug"
+# OS/ConfigurationGroup defaults
+ConfigurationGroup="Debug"
 OSName=$(uname -s)
 case $OSName in
     Darwin)
@@ -77,6 +85,7 @@ esac
 # Misc defaults
 TestSelection=".*"
 TestsFailed=0
+OverlayDir="$ProjectRoot/bin/tests/$OS.AnyCPU.$ConfigurationGroup/TestOverlay/"
 BridgeHost=""
 XunitArgs="-notrait category=failing -notrait category=OuterLoop"
 OverlayDir="$ProjectRoot/bin/tests/$OS.AnyCPU.$Configuration/TestOverlay/"
@@ -90,7 +99,7 @@ create_test_overlay()
   rm -rf $OverlayDir
   mkdir -p $OverlayDir
   
-  local LowerConfiguration="$(echo $Configuration | awk '{print tolower($0)}')"
+  local LowerConfigurationGroup="$(echo $ConfigurationGroup | awk '{print tolower($0)}')"
 
   # First the temporary test host binaries
   local packageLibDir="$packageDir/lib"
@@ -132,7 +141,7 @@ create_test_overlay()
   # Copy the CoreCLR native binaries
   if [ ! -d $CoreClrBins ]
   then
-	echo "Coreclr $OS binaries not found at $CoreClrBins"
+	echo "error: Coreclr $OS binaries not found at $CoreClrBins"
 	exit 1
   fi
   cp -r $CoreClrBins/* $OverlayDir
@@ -141,7 +150,7 @@ create_test_overlay()
   # TODO When the mscorlib flavors get properly changed then
   if [ ! -f $mscorlibLocation ]
   then
-	echo "Mscorlib not found at $mscorlibLocation"
+	echo "error: Mscorlib not found at $mscorlibLocation"
 	exit 1
   fi
   cp -r $mscorlibLocation $OverlayDir
@@ -149,7 +158,7 @@ create_test_overlay()
   # Then the native CoreFX binaries
   if [ ! -d $CoreFxNativeBins ]
   then
-	echo "Corefx native binaries should be built (use build.sh native in root)"
+	echo "error: Corefx native binaries should be built (use build.sh native in root)"
 	exit 1
   fi
   cp $CoreFxNativeBins/* $OverlayDir
@@ -200,7 +209,7 @@ runtest()
 
   if [ ! -d "$dirName" ] || [ ! -f "$dirName/$testDllName" ]
   then
-    echo "Did not find corresponding test dll for $testProject at $dirName/$testDllName"
+    echo "error: Did not find corresponding test dll for $testProject at $dirName/$testDllName"
     exit 1
   fi
 
@@ -221,16 +230,68 @@ runtest()
 
   echo
   echo "Running tests in $dirName"
-  echo "./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml $XunitArgs -notrait category=$xunitOSCategory"
+  echo "./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing -notrait category=OuterLoop -notrait category=$xunitOSCategory" -notrait Benchmark=true
   echo
-  ./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml $XunitArgs -notrait category=$xunitOSCategory
+  ./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing -notrait category=OuterLoop -notrait category=$xunitOSCategory -notrait Benchmark=true
   exitCode=$?
   
   
   if [ $exitCode -ne 0 ]
   then
-      echo "One or more tests failed while running tests from '$fileNameWithoutExtension'.  Exit code $exitCode."
+      echo "error: One or more tests failed while running tests from '$fileNameWithoutExtension'.  Exit code $exitCode."
   fi
+  
+  popd > /dev/null
+  exit $exitCode
+}
+
+coreclr_code_coverage()
+{
+  if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "OSX" ]
+  then
+      echo "error: Code Coverage not supported on $OS"
+      exit 1
+  fi
+
+  if [ "$CoreClrSrc" == "" ]
+    then
+      echo "error: Coreclr source files are required to generate code coverage reports"
+      echo "Coreclr source files root path can be passed using '--coreclr-src' argument"
+      exit 1
+  fi
+
+  local coverageDir="$ProjectRoot/bin/Coverage"
+  local toolsDir="$ProjectRoot/bin/Coverage/tools"
+  local reportsDir="$ProjectRoot/bin/Coverage/reports"
+  local packageName="unix-code-coverage-tools.1.0.0.nupkg"
+  rm -rf $coverageDir
+  mkdir -p $coverageDir
+  mkdir -p $toolsDir
+  mkdir -p $reportsDir
+  pushd $toolsDir > /dev/null
+
+  echo "Pulling down code coverage tools"
+
+  which curl > /dev/null 2> /dev/null
+  if [ $? -ne 0 ]; then
+    wget -q -O $packageName https://www.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
+  else
+    curl -sSL -o $packageName https://www.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
+  fi
+
+  echo "Unzipping to $toolsDir"
+  unzip -q -o $packageName
+
+  # Invoke gcovr
+  chmod a+rwx ./gcovr
+  chmod a+rwx ./$OS/llvm-cov
+
+  echo
+  echo "Generating coreclr code coverage reports at $reportsDir/coreclr.html"
+  echo "./gcovr $CoreClrObjs --gcov-executable=$toolsDir/$OS/llvm-cov -r $CoreClrSrc --html --html-details -o $reportsDir/coreclr.html"
+  echo
+  ./gcovr $CoreClrObjs --gcov-executable=$toolsDir/$OS/llvm-cov -r $CoreClrSrc --html --html-details -o $reportsDir/coreclr.html
+  exitCode=$?
   
   popd > /dev/null
   exit $exitCode
@@ -251,6 +312,8 @@ do
         --mscorlib-bins)
         MscorlibBins=$2
         ;;
+		--corefx-tests)
+        CoreFxTests=$2
         --corefx-bins)
         CoreFxBins=$2
         ;;
@@ -273,12 +336,21 @@ do
         --restrict-proj)
         TestSelection=$2
         ;;
-        --configuration)
-        Configuration=$2
+		--configurationGroup)
+        ConfigurationGroup=$2
         ;;
         --os)
         OS=$2
-        ;;        
+        ;;
+		--coreclr-coverage)
+        CoreClrCoverage=ON
+        ;;
+        --coreclr-objs)
+        CoreClrObjs=$2
+        ;;
+        --coreclr-src)
+        CoreClrSrc=$2
+        ;;
         *)
         ;;
     esac
@@ -289,22 +361,22 @@ done
 
 if [ "$CoreClrBins" == "" ]
 then
-    CoreClrBins="$ProjectRoot/bin/Product/$OS.x64.$Configuration"
+    CoreClrBins="$ProjectRoot/bin/Product/$OS.x64.$ConfigurationGroup"
 fi
 
 if [ "$MscorlibBins" == "" ]
 then
-    MscorlibBins="$ProjectRoot/bin/Product/$OS.x64.$Configuration"
+    MscorlibBins="$ProjectRoot/bin/Product/$OS.x64.$ConfigurationGroup"
 fi
 
-if [ "$CoreFxBins" == "" ]
+if [ "$CoreFxTests" == "" ]
 then
-    CoreFxBins="$ProjectRoot/bin/$OS.AnyCPU.$Configuration"
+    CoreFxTests="$ProjectRoot/bin/tests/$OS.AnyCPU.$ConfigurationGroup"
 fi
 
 if [ "$CoreFxNativeBins" == "" ]
 then
-    CoreFxNativeBins="$ProjectRoot/bin/$OS.x64.$Configuration/Native"
+    CoreFxNativeBins="$ProjectRoot/bin/$OS.x64.$ConfigurationGroup/Native"
 fi
 
 if [ "$WcfTests" == "" ]
@@ -319,15 +391,16 @@ fi
 
 # Check parameters up front for valid values:
 
-if [ ! "$Configuration" == "Debug" ] && [ ! "$Configuration" == "Release" ]
+if [ ! "$ConfigurationGroup" == "Debug" ] && [ ! "$ConfigurationGroup" == "Release" ]
 then
-    echo "Configuration should be Debug or Release"
+    echo "error: ConfigurationGroup should be Debug or Release"
     exit 1
 fi
 
 if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "OSX" ]
 then
-    echo "OS should be FreeBSD, Linux or OSX"
+then
+    echo "error: OS should be FreeBSD, Linux or OSX"
     exit 1
 fi
 
@@ -343,7 +416,7 @@ fi
 
 create_test_overlay
 
-# Walk the directory tree rooted at src bin/tests/$OS.AnyCPU.$Configuration/
+# Walk the directory tree rooted at src bin/tests/$OS.AnyCPU.$ConfigurationGroup/
 
 TestsFailed=0
 numberOfProcesses=0
@@ -364,6 +437,10 @@ done
 # Wait on the last processes
 wait_on_pids "$pids"
 
+if [ "$CoreClrCoverage" == "ON" ]
+then
+    coreclr_code_coverage
+fi
 # Cleanup any certificates installed by OuterLoop tests
 # We need to make corerun executable to invoke
 echo "chmod a+x $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun"
