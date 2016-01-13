@@ -15,63 +15,6 @@
 
   <Import Project="$(ToolsDir)/Build.Common.targets" />
   
- 
-  <!--
-    Use a semaphore file to determine the need to restore build tools to avoid conflicts with locked binaries.
-  -->
-  <PropertyGroup>
-    <BuildToolsSemaphore>$(ToolsDir)BuildTools.semaphore</BuildToolsSemaphore>
-  </PropertyGroup>
-
-  <!--
-    Needed to avoid the IntialTargets from having an Output which ends up getting
-    added to the output references when you have a project to project reference.
-  -->
-  <Target Name="_RestoreBuildToolsWrapper" DependsOnTargets="_RestoreBuildTools" Condition="'$(RestorePackages)' != 'false'" />
-
-  <Target Name="_RestoreBuildTools"
-          Inputs="$(MSBuildThisFileDirectory)dir.props;$(SourceDir).nuget/packages.$(OsEnvironment).config"
-          Outputs="$(BuildToolsSemaphore)">
-    <Message Importance="High" Text="Restoring build tools..." />
-
-    <Copy Condition="Exists('$(NuGetCachedPath)')" SourceFiles="$(NuGetCachedPath)" DestinationFiles="$(NuGetToolPath)" SkipUnchangedFiles="true" />
-
-    <!-- Download latest nuget.exe -->
-    <DownloadFile FileName="$(NuGetToolPath)"
-                  Address="https://www.nuget.org/nuget.exe"
-                  Condition="!Exists('$(NuGetToolPath)') and '$(OsEnvironment)'=='Windows_NT'" />
-
-    <Exec Command="curl -sSL --create-dirs -o $(NuGetToolPath) https://api.nuget.org/downloads/nuget.exe"
-          Condition="!Exists('$(NuGetToolPath)') and '$(OsEnvironment)'=='Unix'" />
-
-    <PropertyGroup>
-      <_RestoreBuildToolsCommand>$(NugetRestoreCommand) "$(SourceDir).nuget/packages.$(OsEnvironment).config"</_RestoreBuildToolsCommand>
-    </PropertyGroup>
-
-    <!-- Restore build tools -->
-    <Exec Command="$(_RestoreBuildToolsCommand)" StandardOutputImportance="Low" />
-
-    <!-- Add DNU and Roslyn tool execute rights -->
-    <Exec Condition="'$(OsEnvironment)'=='Unix'"
-          Command="chmod a+x &quot;$(DnxPackageDir)/bin/dnu&quot;" />
-    <Exec Condition="'$(OsEnvironment)'=='Unix'"
-          Command="chmod a+x &quot;$(DnxPackageDir)/bin/dnx&quot;" />
-    <Exec Condition="'$(OsEnvironment)'=='Unix'"
-          Command="find '$(RoslynPackageDir)tools' -name &quot;*.exe&quot; -exec chmod &quot;+x&quot; '{}' ';'" />
-
-    <!--
-      Touch our semaphore file to ensure Inputs/Outputs comparison for this target will show that we're up to date.
-      Ignore failures in the unlikely, but possible, event that we hit this from two projects simultaneously.
-    -->
-    <Touch Files="$(BuildToolsSemaphore)"
-           ContinueOnError="WarnAndContinue"
-           AlwaysCreate="true"
-           ForceTouch="true" />
-
-    <Error Condition="'$(ErrorIfBuildToolsRestoredFromIndividualProject)'=='true'"
-           Text="The build tools package was just restored and so we cannot continue the build of an individual project because targets from the build tools package were not able to be imported. Please retry the build the individual project again." />
-  </Target>
-
   <!-- Copy the test-runtime project.json and change it to use floating (*) CoreFX dependencies for testing against the latest packages. -->
   <Target Name="GenerateFloatingTestRuntimeProjectJson"
           Inputs="$(TestFixedRuntimeProjectJson)"
