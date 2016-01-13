@@ -16,7 +16,7 @@ public static class Tcp_ClientCredentialTypeTests
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
     [Fact]
-    [ActiveIssue(592)]
+    [ActiveIssue(592, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
@@ -84,7 +84,7 @@ public static class Tcp_ClientCredentialTypeTests
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
     [Fact]
-    [ActiveIssue(592)]
+    [ActiveIssue(592, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_EchoString()
     {
