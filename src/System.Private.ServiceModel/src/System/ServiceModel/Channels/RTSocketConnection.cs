@@ -22,7 +22,7 @@ namespace System.ServiceModel.Channels
     internal class RTSocketConnection : SocketConnection
     {
         // callback static delegates
-        private static Action<Task, object> s_flushWriteImmedaite = new Action<Task, object>(FlushWriteImmediate);
+        private static Func<Task, object, Task> s_flushWriteImmedaite = new Func<Task, object, Task>(FlushWriteImmediate);
         private static Action<Task, object> s_onSendAsyncCompleted = new Action<Task, object>(OnSendAsyncCompleted);
         private static Action<Task<int>, object> s_onReceiveAsyncCompleted = new Action<Task<int>, object>(OnReceiveAsyncCompleted);
 
@@ -66,11 +66,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private static async void FlushWriteImmediate(Task antecedant, object state)
+        private static Task FlushWriteImmediate(Task antecedant, object state)
         {
-            await antecedant;
+            antecedant.GetAwaiter().GetResult();
             RTSocketConnection thisPtr = (RTSocketConnection)state;
-            await thisPtr._outputStream.FlushAsync(thisPtr._sendCts.Token);
+            return thisPtr._outputStream.FlushAsync(thisPtr._sendCts.Token);
         }
 
         private static void OnReceiveAsyncCompleted(Task<int> antecedant, object state)
@@ -232,7 +232,7 @@ namespace System.ServiceModel.Channels
                 Task writeTask = _outputStream.WriteAsync(buffer, offset, size, _sendCts.Token);
                 if (immediate)
                 {
-                    writeTask = writeTask.ContinueWith(s_flushWriteImmedaite, this, CancellationToken.None);
+                    writeTask = writeTask.ContinueWith(s_flushWriteImmedaite, this, CancellationToken.None).Unwrap();
                 }
 
                 if (!writeTask.IsCompleted)
