@@ -5,7 +5,7 @@
     <Project Include="System.ServiceModel.NetTcp.csproj" >
       <TargetGroup>net46</TargetGroup>
     </Project>
-    <Project Include="System.Private.NetTcp.csproj">
+    <Project Include="System.ServiceModel.NetTcp.csproj">
       <OSGroup>Windows_NT</OSGroup>
     </Project>
     <Project Include="System.ServiceModel.NetTcp.csproj" >
