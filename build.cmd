@@ -35,6 +35,9 @@ if not defined VisualStudioVersion (
 )
 
 :EnvSet
+
+call init-tools.cmd
+
 :: Clear the 'Platform' env variable for this session,
 :: as it's a per-project setting within the build, and
 :: misleading value (such as 'MCD' in HP PCs) may lead

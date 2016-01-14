@@ -15,7 +15,11 @@
   <Target Name="GetDocumentationFile"
           Returns="$(DocumentationFile)"/>
 
-  <Import Project="$(ToolsDir)Build.Common.targets" Condition="Exists('$(ToolsDir)Build.Common.targets')" />
+  <Import Project="..\override.targets" Condition="Exists('..\override.targets')"/>
   <Import Project="..\wcf.targets" Condition="Exists('..\wcf.targets')"/>
 
+  <Target Name="DumpTargets">
+    <Message Text="$(MSBuildProjectName), OS=$(OSGroup), Target=$(TargetGroup)" Importance="High"/>
+  </Target>
+  
 </Project>
