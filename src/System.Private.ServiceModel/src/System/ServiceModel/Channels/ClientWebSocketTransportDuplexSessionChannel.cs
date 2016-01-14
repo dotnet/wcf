@@ -10,7 +10,6 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Runtime;
 using System.Security.Cryptography.X509Certificates;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Threading.Tasks;
@@ -61,9 +60,9 @@ namespace System.ServiceModel.Channels
             bool success = false;
             try
             {
-                if (TD.WebSocketConnectionRequestSendStartIsEnabled())
+                if (WcfEventSource.Instance.WebSocketConnectionRequestSendStartIsEnabled())
                 {
-                    TD.WebSocketConnectionRequestSendStart(
+                    WcfEventSource.Instance.WebSocketConnectionRequestSendStart(
                         EventTraceActivity,
                         RemoteAddress != null ? RemoteAddress.ToString() : string.Empty);
                 }
@@ -114,18 +113,18 @@ namespace System.ServiceModel.Channels
 
                 success = true;
 
-                if (TD.WebSocketConnectionRequestSendStopIsEnabled())
+                if (WcfEventSource.Instance.WebSocketConnectionRequestSendStopIsEnabled())
                 {
-                    TD.WebSocketConnectionRequestSendStop(
+                    WcfEventSource.Instance.WebSocketConnectionRequestSendStop(
                         EventTraceActivity,
                         WebSocket != null ? WebSocket.GetHashCode() : -1);
                 }
             }
             catch (WebSocketException ex)
             {
-                if (TD.WebSocketConnectionFailedIsEnabled())
+                if (WcfEventSource.Instance.WebSocketConnectionFailedIsEnabled())
                 {
-                    TD.WebSocketConnectionFailed(EventTraceActivity, ex.Message);
+                    WcfEventSource.Instance.WebSocketConnectionFailed(EventTraceActivity, ex.Message);
                 }
 
                 TryConvertAndThrow(ex);
@@ -191,9 +190,9 @@ namespace System.ServiceModel.Channels
         {
             Contract.Assert(_connectionFactory != null, "Invalid call: CreateWebSocketWithFactory.");
 
-            if (TD.WebSocketCreateClientWebSocketWithFactoryIsEnabled())
+            if (WcfEventSource.Instance.WebSocketCreateClientWebSocketWithFactoryIsEnabled())
             {
-                TD.WebSocketCreateClientWebSocketWithFactory(EventTraceActivity, _connectionFactory.GetType().FullName);
+                WcfEventSource.Instance.WebSocketCreateClientWebSocketWithFactory(EventTraceActivity, _connectionFactory.GetType().FullName);
             }
 
             // Create the client WebSocket with the factory.

@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Runtime;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
 using System.Xml;
@@ -249,9 +248,9 @@ namespace System.ServiceModel.Channels
             }
             catch (TimeoutException e)
             {
-                if (TD.ReceiveTimeoutIsEnabled())
+                if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
                 {
-                    TD.ReceiveTimeout(e.Message);
+                    WcfEventSource.Instance.ReceiveTimeout(e.Message);
                 }
 
                 return false;
@@ -268,9 +267,9 @@ namespace System.ServiceModel.Channels
             }
             catch (TimeoutException e)
             {
-                if (TD.ReceiveTimeoutIsEnabled())
+                if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
                 {
-                    TD.ReceiveTimeout(e.Message);
+                    WcfEventSource.Instance.ReceiveTimeout(e.Message);
                 }
                 return false;
             }

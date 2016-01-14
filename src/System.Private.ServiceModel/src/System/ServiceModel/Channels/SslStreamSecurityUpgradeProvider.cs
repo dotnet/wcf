@@ -13,7 +13,6 @@ using System.Security.Authentication;
 using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Description;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Threading;
@@ -343,9 +342,9 @@ namespace System.ServiceModel.Channels
             throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeAcceptor.OnAcceptUpgrade");
 #else // !FEATURE_NETNATIVE
 
-            if (TD.SslOnAcceptUpgradeIsEnabled())
+            if (WcfEventSource.Instance.SslOnAcceptUpgradeIsEnabled())
             {
-                TD.SslOnAcceptUpgrade(this.EventTraceActivity);
+                WcfEventSource.Instance.SslOnAcceptUpgrade(this.EventTraceActivity);
             }
 
             SslStream sslStream = new SslStream(stream, false, this.ValidateRemoteCertificate);
@@ -580,9 +579,9 @@ namespace System.ServiceModel.Channels
 #else // !FEATURE_NETNATIVE
         protected override async Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurityWrapper)
         {
-            if (TD.SslOnInitiateUpgradeIsEnabled())
+            if (WcfEventSource.Instance.SslOnInitiateUpgradeIsEnabled())
             {
-                TD.SslOnInitiateUpgrade();
+                WcfEventSource.Instance.SslOnInitiateUpgrade();
             }
 
             X509CertificateCollection clientCertificates = null;

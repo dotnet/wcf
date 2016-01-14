@@ -4,8 +4,8 @@
 using System.Collections.ObjectModel;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
+using System.Runtime;
 using System.Runtime.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel;
 
 namespace System.IdentityModel.Selectors
@@ -37,32 +37,32 @@ namespace System.IdentityModel.Selectors
             EventTraceActivity eventTraceActivity = null;
             string tokenType = null;
 
-            if (TD.TokenValidationStartedIsEnabled())
+            if (WcfEventSource.Instance.TokenValidationStartedIsEnabled())
             {
                 eventTraceActivity = eventTraceActivity ?? EventTraceActivity.GetFromThreadOrCreate();
                 tokenType = tokenType ?? token.GetType().ToString();
-                TD.TokenValidationStarted(eventTraceActivity, tokenType, token.Id);
+                WcfEventSource.Instance.TokenValidationStarted(eventTraceActivity, tokenType, token.Id);
             }
 
             ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies = ValidateTokenCore(token);
             if (authorizationPolicies == null)
             {
                 string errorMsg = SR.Format(SR.CannotValidateSecurityTokenType, this, token.GetType());
-                if (TD.TokenValidationFailureIsEnabled())
+                if (WcfEventSource.Instance.TokenValidationFailureIsEnabled())
                 {
                     eventTraceActivity = eventTraceActivity ?? EventTraceActivity.GetFromThreadOrCreate();
                     tokenType = tokenType ?? token.GetType().ToString();
-                    TD.TokenValidationFailure(eventTraceActivity, tokenType, token.Id, errorMsg);
+                    WcfEventSource.Instance.TokenValidationFailure(eventTraceActivity, tokenType, token.Id, errorMsg);
                 }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenValidationException(errorMsg));
             }
 
-            if (TD.TokenValidationSuccessIsEnabled())
+            if (WcfEventSource.Instance.TokenValidationSuccessIsEnabled())
             {
                 eventTraceActivity = eventTraceActivity ?? EventTraceActivity.GetFromThreadOrCreate();
                 tokenType = tokenType ?? token.GetType().ToString();
-                TD.TokenValidationSuccess(eventTraceActivity, tokenType, token.Id);
+                WcfEventSource.Instance.TokenValidationSuccess(eventTraceActivity, tokenType, token.Id);
             }
 
             return authorizationPolicies;

@@ -4,7 +4,6 @@
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -118,9 +117,9 @@ namespace System.ServiceModel.Dispatcher
                 Message m = faultInfo.Fault;
                 _handlers[i].ProvideFault(e, _messageVersion, ref m);
                 faultInfo.Fault = m;
-                if (TD.FaultProviderInvokedIsEnabled())
+                if (WcfEventSource.Instance.FaultProviderInvokedIsEnabled())
                 {
-                    TD.FaultProviderInvoked(_handlers[i].GetType().FullName, e.Message);
+                    WcfEventSource.Instance.FaultProviderInvoked(_handlers[i].GetType().FullName, e.Message);
                 }
             }
             this.ProvideFaultOfLastResort(e, ref faultInfo);
@@ -181,17 +180,17 @@ namespace System.ServiceModel.Dispatcher
 
             try
             {
-                if (TD.ServiceExceptionIsEnabled())
+                if (WcfEventSource.Instance.ServiceExceptionIsEnabled())
                 {
-                    TD.ServiceException(null, error.ToString(), error.GetType().FullName);
+                    WcfEventSource.Instance.ServiceException(error.ToString(), error.GetType().FullName);
                 }
                 for (int i = 0; i < _handlers.Length; i++)
                 {
                     bool handledByThis = _handlers[i].HandleError(error);
                     handled = handledByThis || handled;
-                    if (TD.ErrorHandlerInvokedIsEnabled())
+                    if (WcfEventSource.Instance.ErrorHandlerInvokedIsEnabled())
                     {
-                        TD.ErrorHandlerInvoked(_handlers[i].GetType().FullName, handledByThis, error.GetType().FullName);
+                        WcfEventSource.Instance.ErrorHandlerInvoked(_handlers[i].GetType().FullName, handledByThis, error.GetType().FullName);
                     }
                 }
             }

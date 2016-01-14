@@ -51,7 +51,7 @@ namespace System.Runtime.Diagnostics
         [SecuritySafeCritical]
         public static EventTraceActivity GetFromThreadOrCreate(bool clearIdOnThread = false)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            return new EventTraceActivity(Guid.Empty);
         }
 
         [Fx.Tag.SecurityNote(Critical = "Critical because the CorrelationManager property has a link demand on UnmanagedCode.",

@@ -8,7 +8,6 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.Threading;
@@ -68,7 +67,7 @@ namespace System.ServiceModel.Channels
                         (innerChannel is ISessionChannel<IInputSession>) ||
                         (innerChannel is ISessionChannel<IOutputSession>);
 
-            this.IncrementActivity();
+            IncrementActivity();
             _openBinder = (binder.Channel.State == CommunicationState.Created);
 
             _operationTimeout = timeouts.SendTimeout;
@@ -80,7 +79,7 @@ namespace System.ServiceModel.Channels
             _factory = factory;
             _clientRuntime = factory.ClientRuntime;
 
-            this.SetupInnerChannelFaultHandler();
+            SetupInnerChannelFaultHandler();
 
             DispatchRuntime dispatch = factory.ClientRuntime.DispatchRuntime;
             if (dispatch != null)
@@ -106,7 +105,7 @@ namespace System.ServiceModel.Channels
             _endpointDispatcher = endpointDispatcher;
             _clientRuntime = endpointDispatcher.DispatchRuntime.CallbackClientRuntime;
 
-            this.SetupInnerChannelFaultHandler();
+            SetupInnerChannelFaultHandler();
 
             _autoClose = endpointDispatcher.DispatchRuntime.AutomaticInputSessionShutdown;
             _isPending = true;
@@ -123,7 +122,7 @@ namespace System.ServiceModel.Channels
                 _idleManager.RegisterChannel(this, out didIdleAbort);
                 if (didIdleAbort)
                 {
-                    this.Abort();
+                    Abort();
                 }
             }
         }
@@ -134,7 +133,7 @@ namespace System.ServiceModel.Channels
             {
                 if (!_explicitlyOpened && (_autoOpenManager == null))
                 {
-                    this.EnsureAutoOpenManagers();
+                    EnsureAutoOpenManagers();
                 }
                 return _autoOpenManager;
             }
@@ -146,7 +145,7 @@ namespace System.ServiceModel.Channels
             {
                 if (!_explicitlyOpened && (_autoDisplayUIManager == null))
                 {
-                    this.EnsureAutoOpenManagers();
+                    EnsureAutoOpenManagers();
                 }
                 return _autoDisplayUIManager;
             }
@@ -174,12 +173,12 @@ namespace System.ServiceModel.Channels
 
         protected override TimeSpan DefaultCloseTimeout
         {
-            get { return this.CloseTimeout; }
+            get { return CloseTimeout; }
         }
 
         protected override TimeSpan DefaultOpenTimeout
         {
-            get { return this.OpenTimeout; }
+            get { return OpenTimeout; }
         }
 
         internal DispatchRuntime DispatchRuntime
@@ -212,13 +211,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (this.IsClient)
+                if (IsClient)
                 {
                     return _factory.InternalCloseTimeout;
                 }
                 else
                 {
-                    return this.ChannelDispatcher.InternalCloseTimeout;
+                    return ChannelDispatcher.InternalCloseTimeout;
                 }
             }
         }
@@ -233,7 +232,7 @@ namespace System.ServiceModel.Channels
             get { return _endpointDispatcher; }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     _endpointDispatcher = value;
                     _clientRuntime = value.DispatchRuntime.CallbackClientRuntime;
@@ -303,13 +302,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (this.IsClient)
+                if (IsClient)
                 {
                     return _factory.InternalOpenTimeout;
                 }
                 else
                 {
-                    return this.ChannelDispatcher.InternalOpenTimeout;
+                    return ChannelDispatcher.InternalOpenTimeout;
                 }
             }
         }
@@ -347,7 +346,7 @@ namespace System.ServiceModel.Channels
             set
             {
                 _proxy = value;
-                base.EventSender = value;   // need to use "proxy" as open/close event source
+                EventSender = value;   // need to use "proxy" as open/close event source
             }
         }
 
@@ -360,11 +359,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                IOutputChannel outputChannel = this.InnerChannel as IOutputChannel;
+                IOutputChannel outputChannel = InnerChannel as IOutputChannel;
                 if (outputChannel != null)
                     return outputChannel.RemoteAddress;
 
-                IRequestChannel requestChannel = this.InnerChannel as IRequestChannel;
+                IRequestChannel requestChannel = InnerChannel as IRequestChannel;
                 if (requestChannel != null)
                     return requestChannel.RemoteAddress;
 
@@ -374,18 +373,18 @@ namespace System.ServiceModel.Channels
 
         private ProxyOperationRuntime UnhandledProxyOperation
         {
-            get { return this.ClientRuntime.GetRuntime().UnhandledProxyOperation; }
+            get { return ClientRuntime.GetRuntime().UnhandledProxyOperation; }
         }
 
         public Uri Via
         {
             get
             {
-                IOutputChannel outputChannel = this.InnerChannel as IOutputChannel;
+                IOutputChannel outputChannel = InnerChannel as IOutputChannel;
                 if (outputChannel != null)
                     return outputChannel.Via;
 
-                IRequestChannel requestChannel = this.InnerChannel as IRequestChannel;
+                IRequestChannel requestChannel = InnerChannel as IRequestChannel;
                 if (requestChannel != null)
                     return requestChannel.Via;
 
@@ -409,7 +408,7 @@ namespace System.ServiceModel.Channels
 
         private void BindDuplexCallbacks()
         {
-            IDuplexChannel duplexChannel = this.InnerChannel as IDuplexChannel;
+            IDuplexChannel duplexChannel = InnerChannel as IDuplexChannel;
             if ((duplexChannel != null) && (_factory != null) && (_instanceContext != null))
             {
                 if (_binder is DuplexChannelBinder)
@@ -423,7 +422,7 @@ namespace System.ServiceModel.Channels
                 return true;
 
             if (t.IsAssignableFrom(typeof(IDuplexContextChannel)))
-                return this.InnerChannel is IDuplexChannel;
+                return InnerChannel is IDuplexChannel;
 
             if (t.IsAssignableFrom(typeof(IServiceChannel)))
                 return true;
@@ -441,7 +440,7 @@ namespace System.ServiceModel.Channels
 
         private void EnsureAutoOpenManagers()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (!_explicitlyOpened)
                 {
@@ -459,17 +458,17 @@ namespace System.ServiceModel.Channels
 
         private void EnsureDisplayUI()
         {
-            CallOnceManager manager = this.AutoDisplayUIManager;
+            CallOnceManager manager = AutoDisplayUIManager;
             if (manager != null)
             {
                 manager.CallOnce(TimeSpan.MaxValue, null);
             }
-            this.ThrowIfInitializationUINotCalled();
+            ThrowIfInitializationUINotCalled();
         }
 
         private IAsyncResult BeginEnsureDisplayUI(AsyncCallback callback, object state)
         {
-            CallOnceManager manager = this.AutoDisplayUIManager;
+            CallOnceManager manager = AutoDisplayUIManager;
             if (manager != null)
             {
                 return manager.BeginCallOnce(TimeSpan.MaxValue, null, callback, state);
@@ -482,7 +481,7 @@ namespace System.ServiceModel.Channels
 
         private void EndEnsureDisplayUI(IAsyncResult result)
         {
-            CallOnceManager manager = this.AutoDisplayUIManager;
+            CallOnceManager manager = AutoDisplayUIManager;
             if (manager != null)
             {
                 manager.EndCallOnce(result);
@@ -491,32 +490,32 @@ namespace System.ServiceModel.Channels
             {
                 CallOnceCompletedAsyncResult.End(result);
             }
-            this.ThrowIfInitializationUINotCalled();
+            ThrowIfInitializationUINotCalled();
         }
 
         private void EnsureOpened(TimeSpan timeout)
         {
-            CallOnceManager manager = this.AutoOpenManager;
+            CallOnceManager manager = AutoOpenManager;
             if (manager != null)
             {
                 manager.CallOnce(timeout, _autoDisplayUIManager);
             }
 
-            this.ThrowIfOpening();
-            this.ThrowIfDisposedOrNotOpen();
+            ThrowIfOpening();
+            ThrowIfDisposedOrNotOpen();
         }
 
         private IAsyncResult BeginEnsureOpened(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            CallOnceManager manager = this.AutoOpenManager;
+            CallOnceManager manager = AutoOpenManager;
             if (manager != null)
             {
                 return manager.BeginCallOnce(timeout, _autoDisplayUIManager, callback, state);
             }
             else
             {
-                this.ThrowIfOpening();
-                this.ThrowIfDisposedOrNotOpen();
+                ThrowIfOpening();
+                ThrowIfDisposedOrNotOpen();
 
                 return new CallOnceCompletedAsyncResult(callback, state);
             }
@@ -524,7 +523,7 @@ namespace System.ServiceModel.Channels
 
         private void EndEnsureOpened(IAsyncResult result)
         {
-            CallOnceManager manager = this.AutoOpenManager;
+            CallOnceManager manager = AutoOpenManager;
             if (manager != null)
             {
                 manager.EndCallOnce(result);
@@ -537,7 +536,7 @@ namespace System.ServiceModel.Channels
 
         public T GetProperty<T>() where T : class
         {
-            IChannel innerChannel = this.InnerChannel;
+            IChannel innerChannel = InnerChannel;
             if (innerChannel != null)
                 return innerChannel.GetProperty<T>();
             return null;
@@ -550,7 +549,7 @@ namespace System.ServiceModel.Channels
             // We never receive the reply until we finish processing the current message.
             if (!oneway)
             {
-                DispatchRuntime dispatchBehavior = this.ClientRuntime.DispatchRuntime;
+                DispatchRuntime dispatchBehavior = ClientRuntime.DispatchRuntime;
                 if ((dispatchBehavior != null) && (dispatchBehavior.ConcurrencyMode == ConcurrencyMode.Single))
                 {
                     if ((context != null) && (!context.IsUserContext) && (context.InternalServiceChannel == this))
@@ -561,7 +560,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            if ((this.State == CommunicationState.Created) && !operation.IsInitiating)
+            if ((State == CommunicationState.Created) && !operation.IsInitiating)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxNonInitiatingOperation1, operation.Name)));
             }
@@ -573,12 +572,12 @@ namespace System.ServiceModel.Channels
 
             operation.BeforeRequest(ref rpc);
             AddMessageProperties(rpc.Request, context);
-            if (!oneway && !this.ClientRuntime.ManualAddressing && rpc.Request.Version.Addressing != AddressingVersion.None)
+            if (!oneway && !ClientRuntime.ManualAddressing && rpc.Request.Version.Addressing != AddressingVersion.None)
             {
                 RequestReplyCorrelator.PrepareRequest(rpc.Request);
 
                 MessageHeaders headers = rpc.Request.Headers;
-                EndpointAddress localAddress = this.LocalAddress;
+                EndpointAddress localAddress = LocalAddress;
                 EndpointAddress replyTo = headers.ReplyTo;
 
                 if (replyTo == null)
@@ -586,7 +585,7 @@ namespace System.ServiceModel.Channels
                     headers.ReplyTo = localAddress ?? EndpointAddress.AnonymousAddress;
                 }
 
-                if (this.IsClient && (localAddress != null) && !localAddress.IsAnonymous)
+                if (IsClient && (localAddress != null) && !localAddress.IsAnonymous)
                 {
                     Uri localUri = localAddress.Uri;
 
@@ -653,14 +652,14 @@ namespace System.ServiceModel.Channels
             }
             rpc.EventTraceActivity = requestActivity;
 
-            if (TD.ClientOperationPreparedIsEnabled())
+            if (WcfEventSource.Instance.ClientOperationPreparedIsEnabled())
             {
                 string remoteAddress = string.Empty;
-                if (this.RemoteAddress != null && this.RemoteAddress.Uri != null)
+                if (RemoteAddress != null && RemoteAddress.Uri != null)
                 {
-                    remoteAddress = this.RemoteAddress.Uri.AbsoluteUri;
+                    remoteAddress = RemoteAddress.Uri.AbsoluteUri;
                 }
-                TD.ClientOperationPrepared(rpc.EventTraceActivity,
+                WcfEventSource.Instance.ClientOperationPrepared(rpc.EventTraceActivity,
                                             rpc.Action,
                                             _clientRuntime.ContractName,
                                             remoteAddress,
@@ -677,14 +676,14 @@ namespace System.ServiceModel.Channels
 
         internal IAsyncResult BeginCall(string action, bool oneway, ProxyOperationRuntime operation, object[] ins, AsyncCallback callback, object asyncState)
         {
-            return this.BeginCall(action, oneway, operation, ins, _operationTimeout, callback, asyncState);
+            return BeginCall(action, oneway, operation, ins, _operationTimeout, callback, asyncState);
         }
 
         internal IAsyncResult BeginCall(string action, bool oneway, ProxyOperationRuntime operation, object[] ins, TimeSpan timeout, AsyncCallback callback, object asyncState)
         {
-            this.ThrowIfDisallowedInitializationUI();
-            this.ThrowIfIdleAborted(operation);
-            this.ThrowIfIsConnectionOpened(operation);
+            ThrowIfDisallowedInitializationUI();
+            ThrowIfIdleAborted(operation);
+            ThrowIfIsConnectionOpened(operation);
 
             ServiceModelActivity serviceModelActivity = null;
 
@@ -719,14 +718,14 @@ namespace System.ServiceModel.Channels
 
         internal object Call(string action, bool oneway, ProxyOperationRuntime operation, object[] ins, object[] outs)
         {
-            return this.Call(action, oneway, operation, ins, outs, _operationTimeout);
+            return Call(action, oneway, operation, ins, outs, _operationTimeout);
         }
 
         internal object Call(string action, bool oneway, ProxyOperationRuntime operation, object[] ins, object[] outs, TimeSpan timeout)
         {
-            this.ThrowIfDisallowedInitializationUI();
-            this.ThrowIfIdleAborted(operation);
-            this.ThrowIfIsConnectionOpened(operation);
+            ThrowIfDisallowedInitializationUI();
+            ThrowIfIdleAborted(operation);
+            ThrowIfIsConnectionOpened(operation);
 
             ProxyRpc rpc = new ProxyRpc(this, operation, action, ins, timeout);
 
@@ -739,17 +738,17 @@ namespace System.ServiceModel.Channels
                     ServiceModelActivity.Start(rpc.Activity, SR.Format(SR.ActivityProcessAction, action), ActivityType.ProcessAction);
                 }
 
-                this.PrepareCall(operation, oneway, ref rpc);
+                PrepareCall(operation, oneway, ref rpc);
 
                 if (!_explicitlyOpened)
                 {
-                    this.EnsureDisplayUI();
-                    this.EnsureOpened(rpc.TimeoutHelper.RemainingTime());
+                    EnsureDisplayUI();
+                    EnsureOpened(rpc.TimeoutHelper.RemainingTime());
                 }
                 else
                 {
-                    this.ThrowIfOpening();
-                    this.ThrowIfDisposedOrNotOpen();
+                    ThrowIfOpening();
+                    ThrowIfDisposedOrNotOpen();
                 }
 
                 try
@@ -766,20 +765,20 @@ namespace System.ServiceModel.Channels
 
                         if (rpc.Reply == null)
                         {
-                            this.ThrowIfFaulted();
+                            ThrowIfFaulted();
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SR.SFxServerDidNotReply));
                         }
                     }
                 }
                 finally
                 {
-                    this.CompletedIOOperation();
+                    CompletedIOOperation();
                     CallOnceManager.SignalNextIfNonNull(_autoOpenManager);
                     ConcurrencyBehavior.LockInstanceAfterCallout(OperationContext.Current);
                 }
 
                 rpc.OutputParameters = outs;
-                this.HandleReply(operation, ref rpc);
+                HandleReply(operation, ref rpc);
             }
             return rpc.ReturnValue;
         }
@@ -807,7 +806,7 @@ namespace System.ServiceModel.Channels
                     SendAsyncResult.End(sendResult);
 
                     sendResult.Rpc.OutputParameters = outs;
-                    this.HandleReply(sendResult.Rpc.Operation, ref sendResult.Rpc);
+                    HandleReply(sendResult.Rpc.Operation, ref sendResult.Rpc);
 
                     if (sendResult.Rpc.Activity != null)
                     {
@@ -831,20 +830,20 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    if (this.State == CommunicationState.Opened)
+                    if (State == CommunicationState.Opened)
                     {
-                        if (this.IsClient)
+                        if (IsClient)
                         {
-                            ISessionChannel<IDuplexSession> duplexSessionChannel = this.InnerChannel as ISessionChannel<IDuplexSession>;
+                            ISessionChannel<IDuplexSession> duplexSessionChannel = InnerChannel as ISessionChannel<IDuplexSession>;
                             if (duplexSessionChannel != null)
                             {
                                 _hasChannelStartedAutoClosing = true;
-                                duplexSessionChannel.Session.CloseOutputSession(this.CloseTimeout);
+                                duplexSessionChannel.Session.CloseOutputSession(CloseTimeout);
                             }
                         }
                         else
                         {
-                            this.Close(this.CloseTimeout);
+                            Close(CloseTimeout);
                         }
                     }
                 }
@@ -853,9 +852,9 @@ namespace System.ServiceModel.Channels
                 }
                 catch (TimeoutException e)
                 {
-                    if (TD.CloseTimeoutIsEnabled())
+                    if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                     {
-                        TD.CloseTimeout(e.Message);
+                        WcfEventSource.Instance.CloseTimeout(e.Message);
                     }
                 }
                 catch (ObjectDisposedException)
@@ -876,7 +875,7 @@ namespace System.ServiceModel.Channels
 
         private TimeoutException GetOpenTimeoutException(TimeSpan timeout)
         {
-            EndpointAddress address = this.RemoteAddress ?? this.LocalAddress;
+            EndpointAddress address = RemoteAddress ?? LocalAddress;
             if (address != null)
             {
                 return new TimeoutException(SR.Format(SR.TimeoutServiceChannelConcurrentOpen2, address, timeout));
@@ -892,7 +891,7 @@ namespace System.ServiceModel.Channels
             if (context == null && HasSession)
             {
                 bool first;
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     first = !_doneReceiving;
                     _doneReceiving = true;
@@ -900,8 +899,8 @@ namespace System.ServiceModel.Channels
 
                 if (first)
                 {
-                    DispatchRuntime dispatchBehavior = this.ClientRuntime.DispatchRuntime;
-                    this.DecrementActivity();
+                    DispatchRuntime dispatchBehavior = ClientRuntime.DispatchRuntime;
+                    DecrementActivity();
                 }
             }
         }
@@ -913,7 +912,7 @@ namespace System.ServiceModel.Channels
                 //set the ID after response
                 if (TraceUtility.MessageFlowTracingOnly && rpc.ActivityId != Guid.Empty)
                 {
-                    System.Runtime.Diagnostics.DiagnosticTraceBase.ActivityId = rpc.ActivityId;
+                    DiagnosticTraceBase.ActivityId = rpc.ActivityId;
                 }
 
                 if (rpc.Reply != null)
@@ -977,20 +976,20 @@ namespace System.ServiceModel.Channels
                     if (rpc.ActivityId != Guid.Empty)
                     {
                         //reset the ID as it was created internally - ensures each call is uniquely correlatable
-                        System.Runtime.Diagnostics.DiagnosticTraceBase.ActivityId = Guid.Empty;
+                        DiagnosticTraceBase.ActivityId = Guid.Empty;
                         rpc.ActivityId = Guid.Empty;
                     }
                 }
             }
 
-            if (TD.ServiceChannelCallStopIsEnabled())
+            if (WcfEventSource.Instance.ServiceChannelCallStopIsEnabled())
             {
                 string remoteAddress = string.Empty;
-                if (this.RemoteAddress != null && this.RemoteAddress.Uri != null)
+                if (RemoteAddress != null && RemoteAddress.Uri != null)
                 {
-                    remoteAddress = this.RemoteAddress.Uri.AbsoluteUri;
+                    remoteAddress = RemoteAddress.Uri.AbsoluteUri;
                 }
-                TD.ServiceChannelCallStop(rpc.EventTraceActivity, rpc.Action,
+                WcfEventSource.Instance.ServiceChannelCallStop(rpc.EventTraceActivity, rpc.Action,
                                             _clientRuntime.ContractName,
                                             remoteAddress);
             }
@@ -1057,9 +1056,9 @@ namespace System.ServiceModel.Channels
                 {
                     if (string.Compare(code.Name, FaultCodeConstants.Codes.InternalServiceFault, StringComparison.Ordinal) == 0)
                     {
-                        if (this.HasSession)
+                        if (HasSession)
                         {
-                            this.Fault();
+                            Fault();
                         }
                         if (fault.HasDetail)
                         {
@@ -1098,9 +1097,9 @@ namespace System.ServiceModel.Channels
 
         private void ThrowIfInitializationUINotCalled()
         {
-            if (!_didInteractiveInitialization && (this.ClientRuntime.InteractiveChannelInitializers.Count > 0))
+            if (!_didInteractiveInitialization && (ClientRuntime.InteractiveChannelInitializers.Count > 0))
             {
-                IInteractiveChannelInitializer example = this.ClientRuntime.InteractiveChannelInitializers[0];
+                IInteractiveChannelInitializer example = ClientRuntime.InteractiveChannelInitializers[0];
                 string text = SR.Format(SR.SFxInitializationUINotCalled, example.GetType().ToString());
                 Exception error = new InvalidOperationException(text);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
@@ -1111,15 +1110,15 @@ namespace System.ServiceModel.Channels
         {
             if (!_allowInitializationUI)
             {
-                this.ThrowIfDisallowedInitializationUICore();
+                ThrowIfDisallowedInitializationUICore();
             }
         }
 
         private void ThrowIfDisallowedInitializationUICore()
         {
-            if (this.ClientRuntime.InteractiveChannelInitializers.Count > 0)
+            if (ClientRuntime.InteractiveChannelInitializers.Count > 0)
             {
-                IInteractiveChannelInitializer example = this.ClientRuntime.InteractiveChannelInitializers[0];
+                IInteractiveChannelInitializer example = ClientRuntime.InteractiveChannelInitializers[0];
                 string text = SR.Format(SR.SFxInitializationUIDisallowed, example.GetType().ToString());
                 Exception error = new InvalidOperationException(text);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
@@ -1128,7 +1127,7 @@ namespace System.ServiceModel.Channels
 
         private void ThrowIfOpening()
         {
-            if (this.State == CommunicationState.Opening)
+            if (State == CommunicationState.Opening)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxCannotCallAutoOpenWhenExplicitOpenCalled));
             }
@@ -1141,16 +1140,16 @@ namespace System.ServiceModel.Channels
 
         private void OnInnerChannelFaulted(object sender, EventArgs e)
         {
-            this.Fault();
+            Fault();
 
-            if (this.HasSession)
+            if (HasSession)
             {
-                DispatchRuntime dispatchRuntime = this.ClientRuntime.DispatchRuntime;
+                DispatchRuntime dispatchRuntime = ClientRuntime.DispatchRuntime;
             }
 
-            if (_autoClose && !this.IsClient)
+            if (_autoClose && !IsClient)
             {
-                this.Abort();
+                Abort();
             }
         }
 
@@ -1185,56 +1184,56 @@ namespace System.ServiceModel.Channels
         #region IChannel Members
         public void Send(Message message)
         {
-            this.Send(message, this.OperationTimeout);
+            Send(message, OperationTimeout);
         }
 
         public void Send(Message message, TimeSpan timeout)
         {
             ProxyOperationRuntime operation = UnhandledProxyOperation;
-            this.Call(message.Headers.Action, true, operation, new object[] { message }, Array.Empty<object>(), timeout);
+            Call(message.Headers.Action, true, operation, new object[] { message }, Array.Empty<object>(), timeout);
         }
 
         public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state)
         {
-            return this.BeginSend(message, this.OperationTimeout, callback, state);
+            return BeginSend(message, OperationTimeout, callback, state);
         }
 
         public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
         {
             ProxyOperationRuntime operation = UnhandledProxyOperation;
-            return this.BeginCall(message.Headers.Action, true, operation, new object[] { message }, timeout, callback, state);
+            return BeginCall(message.Headers.Action, true, operation, new object[] { message }, timeout, callback, state);
         }
 
         public void EndSend(IAsyncResult result)
         {
-            this.EndCall(MessageHeaders.WildcardAction, Array.Empty<object>(), result);
+            EndCall(MessageHeaders.WildcardAction, Array.Empty<object>(), result);
         }
 
         public Message Request(Message message)
         {
-            return this.Request(message, this.OperationTimeout);
+            return Request(message, OperationTimeout);
         }
 
         public Message Request(Message message, TimeSpan timeout)
         {
             ProxyOperationRuntime operation = UnhandledProxyOperation;
-            return (Message)this.Call(message.Headers.Action, false, operation, new object[] { message }, Array.Empty<object>(), timeout);
+            return (Message)Call(message.Headers.Action, false, operation, new object[] { message }, Array.Empty<object>(), timeout);
         }
 
         public IAsyncResult BeginRequest(Message message, AsyncCallback callback, object state)
         {
-            return this.BeginRequest(message, this.OperationTimeout, callback, state);
+            return BeginRequest(message, OperationTimeout, callback, state);
         }
 
         public IAsyncResult BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state)
         {
-            ProxyOperationRuntime operation = this.UnhandledProxyOperation;
-            return this.BeginCall(message.Headers.Action, false, operation, new object[] { message }, timeout, callback, state);
+            ProxyOperationRuntime operation = UnhandledProxyOperation;
+            return BeginCall(message.Headers.Action, false, operation, new object[] { message }, timeout, callback, state);
         }
 
         public Message EndRequest(IAsyncResult result)
         {
-            return (Message)this.EndCall(MessageHeaders.WildcardAction, Array.Empty<object>(), result);
+            return (Message)EndCall(MessageHeaders.WildcardAction, Array.Empty<object>(), result);
         }
 
         protected override void OnAbort()
@@ -1289,14 +1288,14 @@ namespace System.ServiceModel.Channels
 
             if (_closeBinder)
             {
-                var asyncInnerChannel = this.InnerChannel as IAsyncCommunicationObject;
+                var asyncInnerChannel = InnerChannel as IAsyncCommunicationObject;
                 if (asyncInnerChannel != null)
                 {
                     await asyncInnerChannel.CloseAsync(timeoutHelper.RemainingTime());
                 }
                 else
                 {
-                    this.InnerChannel.Close(timeoutHelper.RemainingTime());
+                    InnerChannel.Close(timeoutHelper.RemainingTime());
                 }
             }
 
@@ -1333,46 +1332,46 @@ namespace System.ServiceModel.Channels
 
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
         {
-            this.ThrowIfDisallowedInitializationUI();
-            this.ThrowIfInitializationUINotCalled();
+            ThrowIfDisallowedInitializationUI();
+            ThrowIfInitializationUINotCalled();
 
             if (_autoOpenManager == null)
             {
                 _explicitlyOpened = true;
             }
 
-            this.TraceChannelOpenStarted();
+            TraceChannelOpenStarted();
 
             if (_openBinder)
             {
-                var asyncInnerChannel = this.InnerChannel as IAsyncCommunicationObject;
+                var asyncInnerChannel = InnerChannel as IAsyncCommunicationObject;
                 if (asyncInnerChannel != null)
                 {
                     await asyncInnerChannel.OpenAsync(timeout);
                 }
                 else
                 {
-                    this.InnerChannel.Open(timeout);
+                    InnerChannel.Open(timeout);
                 }
             }
 
-            this.BindDuplexCallbacks();
-            this.CompletedIOOperation();
+            BindDuplexCallbacks();
+            CompletedIOOperation();
 
-            this.TraceChannelOpenCompleted();
+            TraceChannelOpenCompleted();
         }
 
         private void CleanupChannelCollections()
         {
             if (!_hasCleanedUpChannelCollections)
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     if (!_hasCleanedUpChannelCollections)
                     {
-                        if (this.InstanceContext != null)
+                        if (InstanceContext != null)
                         {
-                            this.InstanceContext.OutgoingChannels.Remove((IChannel)_proxy);
+                            InstanceContext.OutgoingChannels.Remove((IChannel)_proxy);
                         }
 
                         _hasCleanedUpChannelCollections = true;
@@ -1396,7 +1395,7 @@ namespace System.ServiceModel.Channels
             get { return _allowInitializationUI; }
             set
             {
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _allowInitializationUI = value;
             }
         }
@@ -1429,12 +1428,12 @@ namespace System.ServiceModel.Channels
 
         private IDuplexSession GetDuplexSessionOrThrow()
         {
-            if (this.InnerChannel == null)
+            if (InnerChannel == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.channelIsNotAvailable0));
             }
 
-            ISessionChannel<IDuplexSession> duplexSessionChannel = this.InnerChannel as ISessionChannel<IDuplexSession>;
+            ISessionChannel<IDuplexSession> duplexSessionChannel = InnerChannel as ISessionChannel<IDuplexSession>;
             if (duplexSessionChannel == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.channelDoesNotHaveADuplexSession0));
@@ -1447,10 +1446,10 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     if (_extensions == null)
-                        _extensions = new ExtensionCollection<IContextChannel>((IContextChannel)this.Proxy, this.ThisLock);
+                        _extensions = new ExtensionCollection<IContextChannel>((IContextChannel)Proxy, ThisLock);
                     return _extensions;
                 }
             }
@@ -1461,7 +1460,7 @@ namespace System.ServiceModel.Channels
             get { return _instanceContext; }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     if (_instanceContext != null)
                     {
@@ -1482,13 +1481,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (this.InnerChannel != null)
+                if (InnerChannel != null)
                 {
-                    ISessionChannel<IInputSession> inputSession = this.InnerChannel as ISessionChannel<IInputSession>;
+                    ISessionChannel<IInputSession> inputSession = InnerChannel as ISessionChannel<IInputSession>;
                     if (inputSession != null)
                         return inputSession.Session;
 
-                    ISessionChannel<IDuplexSession> duplexSession = this.InnerChannel as ISessionChannel<IDuplexSession>;
+                    ISessionChannel<IDuplexSession> duplexSession = InnerChannel as ISessionChannel<IDuplexSession>;
                     if (duplexSession != null)
                         return duplexSession.Session;
                 }
@@ -1501,13 +1500,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (this.InnerChannel != null)
+                if (InnerChannel != null)
                 {
-                    ISessionChannel<IOutputSession> outputSession = this.InnerChannel as ISessionChannel<IOutputSession>;
+                    ISessionChannel<IOutputSession> outputSession = InnerChannel as ISessionChannel<IOutputSession>;
                     if (outputSession != null)
                         return outputSession.Session;
 
-                    ISessionChannel<IDuplexSession> duplexSession = this.InnerChannel as ISessionChannel<IDuplexSession>;
+                    ISessionChannel<IDuplexSession> duplexSession = InnerChannel as ISessionChannel<IDuplexSession>;
                     if (duplexSession != null)
                         return duplexSession.Session;
                 }
@@ -1520,17 +1519,17 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (this.InnerChannel != null)
+                if (InnerChannel != null)
                 {
-                    ISessionChannel<IInputSession> inputSession = this.InnerChannel as ISessionChannel<IInputSession>;
+                    ISessionChannel<IInputSession> inputSession = InnerChannel as ISessionChannel<IInputSession>;
                     if (inputSession != null)
                         return inputSession.Session.Id;
 
-                    ISessionChannel<IOutputSession> outputSession = this.InnerChannel as ISessionChannel<IOutputSession>;
+                    ISessionChannel<IOutputSession> outputSession = InnerChannel as ISessionChannel<IOutputSession>;
                     if (outputSession != null)
                         return outputSession.Session.Id;
 
-                    ISessionChannel<IDuplexSession> duplexSession = this.InnerChannel as ISessionChannel<IDuplexSession>;
+                    ISessionChannel<IDuplexSession> duplexSession = InnerChannel as ISessionChannel<IDuplexSession>;
                     if (duplexSession != null)
                         return duplexSession.Session.Id;
                 }
@@ -1543,14 +1542,14 @@ namespace System.ServiceModel.Channels
         {
             add
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     _unknownMessageReceived += value;
                 }
             }
             remove
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     _unknownMessageReceived -= value;
                 }
@@ -1559,77 +1558,77 @@ namespace System.ServiceModel.Channels
 
         public void DisplayInitializationUI()
         {
-            this.ThrowIfDisallowedInitializationUI();
+            ThrowIfDisallowedInitializationUI();
 
             if (_autoDisplayUIManager == null)
             {
                 _explicitlyOpened = true;
             }
 
-            this.ClientRuntime.GetRuntime().DisplayInitializationUI(this);
+            ClientRuntime.GetRuntime().DisplayInitializationUI(this);
             _didInteractiveInitialization = true;
         }
 
         public IAsyncResult BeginDisplayInitializationUI(AsyncCallback callback, object state)
         {
-            this.ThrowIfDisallowedInitializationUI();
+            ThrowIfDisallowedInitializationUI();
 
             if (_autoDisplayUIManager == null)
             {
                 _explicitlyOpened = true;
             }
 
-            return this.ClientRuntime.GetRuntime().BeginDisplayInitializationUI(this, callback, state);
+            return ClientRuntime.GetRuntime().BeginDisplayInitializationUI(this, callback, state);
         }
 
         public void EndDisplayInitializationUI(IAsyncResult result)
         {
-            this.ClientRuntime.GetRuntime().EndDisplayInitializationUI(result);
+            ClientRuntime.GetRuntime().EndDisplayInitializationUI(result);
             _didInteractiveInitialization = true;
         }
 
         void IDisposable.Dispose()
         {
-            this.Close();
+            Close();
         }
 
         #endregion
 
         private void TraceChannelOpenStarted()
         {
-            if (TD.ClientChannelOpenStartIsEnabled() && _endpointDispatcher == null)
+            if (WcfEventSource.Instance.ClientChannelOpenStartIsEnabled() && _endpointDispatcher == null)
             {
-                TD.ClientChannelOpenStart(this.EventActivity);
+                WcfEventSource.Instance.ClientChannelOpenStart(EventActivity);
             }
-            else if (TD.ServiceChannelOpenStartIsEnabled())
+            else if (WcfEventSource.Instance.ServiceChannelOpenStartIsEnabled())
             {
-                TD.ServiceChannelOpenStart(this.EventActivity);
+                WcfEventSource.Instance.ServiceChannelOpenStart(EventActivity);
             }
         }
 
         private void TraceChannelOpenCompleted()
         {
-            if (_endpointDispatcher == null && TD.ClientChannelOpenStopIsEnabled())
+            if (_endpointDispatcher == null && WcfEventSource.Instance.ClientChannelOpenStopIsEnabled())
             {
-                TD.ClientChannelOpenStop(this.EventActivity);
+                WcfEventSource.Instance.ClientChannelOpenStop(EventActivity);
             }
-            else if (TD.ServiceChannelOpenStopIsEnabled())
+            else if (WcfEventSource.Instance.ServiceChannelOpenStopIsEnabled())
             {
-                TD.ServiceChannelOpenStop(this.EventActivity);
+                WcfEventSource.Instance.ServiceChannelOpenStop(EventActivity);
             }
         }
 
         private static void TraceServiceChannelCallStart(EventTraceActivity eventTraceActivity, bool isSynchronous)
         {
-            if (TD.ServiceChannelCallStartIsEnabled())
+            if (WcfEventSource.Instance.ServiceChannelCallStartIsEnabled())
             {
                 if (isSynchronous)
                 {
-                    TD.ServiceChannelCallStart(eventTraceActivity);
+                    WcfEventSource.Instance.ServiceChannelCallStart(eventTraceActivity);
                 }
                 else
                 {
-                    TD.ServiceChannelBeginCallStart(eventTraceActivity);
+                    WcfEventSource.Instance.ServiceChannelBeginCallStart(eventTraceActivity);
                 }
             }
         }
@@ -1660,7 +1659,7 @@ namespace System.ServiceModel.Channels
                                      AsyncCallback userCallback, object userState)
                 : base(userCallback, userState)
             {
-                this.Rpc = new ProxyRpc(channel, operation, action, inputParameters, timeout);
+                Rpc = new ProxyRpc(channel, operation, action, inputParameters, timeout);
                 _isOneWay = isOneWay;
                 _operation = operation;
                 _operationContext = OperationContext.Current;
@@ -1668,27 +1667,27 @@ namespace System.ServiceModel.Channels
 
             internal void Begin()
             {
-                this.Rpc.Channel.PrepareCall(_operation, _isOneWay, ref this.Rpc);
+                Rpc.Channel.PrepareCall(_operation, _isOneWay, ref Rpc);
 
-                if (this.Rpc.Channel._explicitlyOpened)
+                if (Rpc.Channel._explicitlyOpened)
                 {
-                    this.Rpc.Channel.ThrowIfOpening();
-                    this.Rpc.Channel.ThrowIfDisposedOrNotOpen();
-                    this.StartSend(true);
+                    Rpc.Channel.ThrowIfOpening();
+                    Rpc.Channel.ThrowIfDisposedOrNotOpen();
+                    StartSend(true);
                 }
                 else
                 {
-                    this.StartEnsureInteractiveInit();
+                    StartEnsureInteractiveInit();
                 }
             }
 
             private void StartEnsureInteractiveInit()
             {
-                IAsyncResult result = this.Rpc.Channel.BeginEnsureDisplayUI(s_ensureInteractiveInitCallback, this);
+                IAsyncResult result = Rpc.Channel.BeginEnsureDisplayUI(s_ensureInteractiveInitCallback, this);
 
                 if (result.CompletedSynchronously)
                 {
-                    this.FinishEnsureInteractiveInit(result, true);
+                    FinishEnsureInteractiveInit(result, true);
                 }
             }
 
@@ -1706,7 +1705,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    this.Rpc.Channel.EndEnsureDisplayUI(result);
+                    Rpc.Channel.EndEnsureDisplayUI(result);
                 }
                 catch (Exception e)
                 {
@@ -1719,23 +1718,23 @@ namespace System.ServiceModel.Channels
 
                 if (exception != null)
                 {
-                    this.CallComplete(completedSynchronously, exception);
+                    CallComplete(completedSynchronously, exception);
                 }
                 else
                 {
-                    this.StartEnsureOpen(completedSynchronously);
+                    StartEnsureOpen(completedSynchronously);
                 }
             }
 
             private void StartEnsureOpen(bool completedSynchronously)
             {
-                TimeSpan timeout = this.Rpc.TimeoutHelper.RemainingTime();
+                TimeSpan timeout = Rpc.TimeoutHelper.RemainingTime();
                 IAsyncResult result = null;
                 Exception exception = null;
 
                 try
                 {
-                    result = this.Rpc.Channel.BeginEnsureOpened(timeout, s_ensureOpenCallback, this);
+                    result = Rpc.Channel.BeginEnsureOpened(timeout, s_ensureOpenCallback, this);
                 }
                 catch (Exception e)
                 {
@@ -1748,11 +1747,11 @@ namespace System.ServiceModel.Channels
 
                 if (exception != null)
                 {
-                    this.CallComplete(completedSynchronously, exception);
+                    CallComplete(completedSynchronously, exception);
                 }
                 else if (result.CompletedSynchronously)
                 {
-                    this.FinishEnsureOpen(result, completedSynchronously);
+                    FinishEnsureOpen(result, completedSynchronously);
                 }
             }
 
@@ -1767,11 +1766,11 @@ namespace System.ServiceModel.Channels
             private void FinishEnsureOpen(IAsyncResult result, bool completedSynchronously)
             {
                 Exception exception = null;
-                using (ServiceModelActivity.BoundOperation(this.Rpc.Activity))
+                using (ServiceModelActivity.BoundOperation(Rpc.Activity))
                 {
                     try
                     {
-                        this.Rpc.Channel.EndEnsureOpened(result);
+                        Rpc.Channel.EndEnsureOpened(result);
                     }
                     catch (Exception e)
                     {
@@ -1784,18 +1783,18 @@ namespace System.ServiceModel.Channels
 
                     if (exception != null)
                     {
-                        this.CallComplete(completedSynchronously, exception);
+                        CallComplete(completedSynchronously, exception);
                     }
                     else
                     {
-                        this.StartSend(completedSynchronously);
+                        StartSend(completedSynchronously);
                     }
                 }
             }
 
             private void StartSend(bool completedSynchronously)
             {
-                TimeSpan timeout = this.Rpc.TimeoutHelper.RemainingTime();
+                TimeSpan timeout = Rpc.TimeoutHelper.RemainingTime();
                 IAsyncResult result = null;
                 Exception exception = null;
 
@@ -1805,11 +1804,11 @@ namespace System.ServiceModel.Channels
 
                     if (_isOneWay)
                     {
-                        result = this.Rpc.Channel._binder.BeginSend(this.Rpc.Request, timeout, s_sendCallback, this);
+                        result = Rpc.Channel._binder.BeginSend(Rpc.Request, timeout, s_sendCallback, this);
                     }
                     else
                     {
-                        result = this.Rpc.Channel._binder.BeginRequest(this.Rpc.Request, timeout, s_sendCallback, this);
+                        result = Rpc.Channel._binder.BeginRequest(Rpc.Request, timeout, s_sendCallback, this);
                     }
                 }
                 catch (Exception e)
@@ -1827,16 +1826,16 @@ namespace System.ServiceModel.Channels
                 }
                 finally
                 {
-                    CallOnceManager.SignalNextIfNonNull(this.Rpc.Channel._autoOpenManager);
+                    CallOnceManager.SignalNextIfNonNull(Rpc.Channel._autoOpenManager);
                 }
 
                 if (exception != null)
                 {
-                    this.CallComplete(completedSynchronously, exception);
+                    CallComplete(completedSynchronously, exception);
                 }
                 else if (result.CompletedSynchronously)
                 {
-                    this.FinishSend(result, completedSynchronously);
+                    FinishSend(result, completedSynchronously);
                 }
             }
 
@@ -1856,15 +1855,15 @@ namespace System.ServiceModel.Channels
                 {
                     if (_isOneWay)
                     {
-                        this.Rpc.Channel._binder.EndSend(result);
+                        Rpc.Channel._binder.EndSend(result);
                     }
                     else
                     {
-                        this.Rpc.Reply = this.Rpc.Channel._binder.EndRequest(result);
+                        Rpc.Reply = Rpc.Channel._binder.EndRequest(result);
 
-                        if (this.Rpc.Reply == null)
+                        if (Rpc.Reply == null)
                         {
-                            this.Rpc.Channel.ThrowIfFaulted();
+                            Rpc.Channel.ThrowIfFaulted();
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SR.SFxServerDidNotReply));
                         }
                     }
@@ -1883,13 +1882,13 @@ namespace System.ServiceModel.Channels
                     exception = e;
                 }
 
-                this.CallComplete(completedSynchronously, exception);
+                CallComplete(completedSynchronously, exception);
             }
 
             private void CallComplete(bool completedSynchronously, Exception exception)
             {
-                this.Rpc.Channel.CompletedIOOperation();
-                this.Complete(completedSynchronously, exception);
+                Rpc.Channel.CompletedIOOperation();
+                Complete(completedSynchronously, exception);
             }
 
             public static void End(SendAsyncResult result)
@@ -1920,11 +1919,11 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    if (CallDisplayUIOnce.s_instance == null)
+                    if (s_instance == null)
                     {
-                        CallDisplayUIOnce.s_instance = new CallDisplayUIOnce();
+                        s_instance = new CallDisplayUIOnce();
                     }
-                    return CallDisplayUIOnce.s_instance;
+                    return s_instance;
                 }
             }
             [Conditional("DEBUG")]
@@ -1939,13 +1938,13 @@ namespace System.ServiceModel.Channels
 
             void ICallOnce.Call(ServiceChannel channel, TimeSpan timeout)
             {
-                this.ValidateTimeoutIsMaxValue(timeout);
+                ValidateTimeoutIsMaxValue(timeout);
                 channel.DisplayInitializationUI();
             }
 
             IAsyncResult ICallOnce.BeginCall(ServiceChannel channel, TimeSpan timeout, AsyncCallback callback, object state)
             {
-                this.ValidateTimeoutIsMaxValue(timeout);
+                ValidateTimeoutIsMaxValue(timeout);
                 return channel.BeginDisplayInitializationUI(callback, state);
             }
 
@@ -1963,11 +1962,11 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    if (CallOpenOnce.s_instance == null)
+                    if (s_instance == null)
                     {
-                        CallOpenOnce.s_instance = new CallOpenOnce();
+                        s_instance = new CallOpenOnce();
                     }
-                    return CallOpenOnce.s_instance;
+                    return s_instance;
                 }
             }
 
@@ -1994,7 +1993,7 @@ namespace System.ServiceModel.Channels
             private bool _isFirst = true;
             private Queue<IWaiter> _queue;
 
-            private static Action<object> s_signalWaiter = new Action<object>(CallOnceManager.SignalWaiter);
+            private static Action<object> s_signalWaiter = new Action<object>(SignalWaiter);
 
             internal CallOnceManager(ServiceChannel channel, ICallOnce callOnce)
             {
@@ -2015,7 +2014,7 @@ namespace System.ServiceModel.Channels
 
                 if (_queue != null)
                 {
-                    lock (this.ThisLock)
+                    lock (ThisLock)
                     {
                         if (_queue != null)
                         {
@@ -2033,7 +2032,7 @@ namespace System.ServiceModel.Channels
                     }
                 }
 
-                CallOnceManager.SignalNextIfNonNull(cascade);
+                SignalNextIfNonNull(cascade);
 
                 if (first)
                 {
@@ -2047,7 +2046,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (throwing)
                         {
-                            this.SignalNext();
+                            SignalNext();
                         }
                     }
                 }
@@ -2065,7 +2064,7 @@ namespace System.ServiceModel.Channels
 
                 if (_queue != null)
                 {
-                    lock (this.ThisLock)
+                    lock (ThisLock)
                     {
                         if (_queue != null)
                         {
@@ -2083,7 +2082,7 @@ namespace System.ServiceModel.Channels
                     }
                 }
 
-                CallOnceManager.SignalNextIfNonNull(cascade);
+                SignalNextIfNonNull(cascade);
 
                 if (first)
                 {
@@ -2098,7 +2097,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (throwing)
                         {
-                            this.SignalNext();
+                            SignalNext();
                         }
                     }
                 }
@@ -2134,7 +2133,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (throwing)
                         {
-                            this.SignalNext();
+                            SignalNext();
                         }
                     }
                 }
@@ -2157,7 +2156,7 @@ namespace System.ServiceModel.Channels
 
                 IWaiter waiter = null;
 
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     if (_queue != null)
                     {
@@ -2174,7 +2173,7 @@ namespace System.ServiceModel.Channels
 
                 if (waiter != null)
                 {
-                    ActionItem.Schedule(CallOnceManager.s_signalWaiter, waiter);
+                    ActionItem.Schedule(s_signalWaiter, waiter);
                 }
             }
 
@@ -2209,13 +2208,13 @@ namespace System.ServiceModel.Channels
                 void IWaiter.Signal()
                 {
                     _wait.Set();
-                    this.CloseWaitHandle();
+                    CloseWaitHandle();
 
                     bool signalNext;
                     lock (_manager.ThisLock)
                     {
                         _isSignaled = true;
-                        signalNext = this.ShouldSignalNext;
+                        signalNext = ShouldSignalNext;
                     }
                     if (signalNext)
                     {
@@ -2233,7 +2232,7 @@ namespace System.ServiceModel.Channels
                             lock (_manager.ThisLock)
                             {
                                 _isTimedOut = true;
-                                signalNext = this.ShouldSignalNext;
+                                signalNext = ShouldSignalNext;
                             }
                             if (signalNext)
                             {
@@ -2243,7 +2242,7 @@ namespace System.ServiceModel.Channels
                     }
                     finally
                     {
-                        this.CloseWaitHandle();
+                        CloseWaitHandle();
                     }
 
                     return !_isTimedOut;
@@ -2260,7 +2259,7 @@ namespace System.ServiceModel.Channels
 
             internal class AsyncWaiter : AsyncResult, IWaiter
             {
-                private static Action<object> s_timerCallback = new Action<object>(AsyncWaiter.TimerCallback);
+                private static Action<object> s_timerCallback = new Action<object>(TimerCallback);
 
                 private CallOnceManager _manager;
                 private TimeSpan _timeout;
@@ -2288,8 +2287,8 @@ namespace System.ServiceModel.Channels
                 {
                     if ((_timer == null) || _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1)))
                     {
-                        this.Complete(false);
-                        _manager._channel.Closed -= this.OnClosed;
+                        Complete(false);
+                        _manager._channel.Closed -= OnClosed;
                     }
                     else
                     {
@@ -2301,7 +2300,7 @@ namespace System.ServiceModel.Channels
                 {
                     if ((_timer == null) || _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1)))
                     {
-                        this.Complete(false, _manager._channel.CreateClosedException());
+                        Complete(false, _manager._channel.CreateClosedException());
                     }
                 }
 
@@ -2318,7 +2317,7 @@ namespace System.ServiceModel.Channels
             internal CallOnceCompletedAsyncResult(AsyncCallback callback, object state)
                 : base(callback, state)
             {
-                this.Complete(true);
+                Complete(true);
             }
 
             static internal void End(IAsyncResult result)
@@ -2395,11 +2394,11 @@ namespace System.ServiceModel.Channels
 
             private static Action<object> GetTimerCallback()
             {
-                if (SessionIdleManager.s_timerCallback == null)
+                if (s_timerCallback == null)
                 {
-                    SessionIdleManager.s_timerCallback = SessionIdleManager.TimerCallback;
+                    s_timerCallback = TimerCallback;
                 }
-                return SessionIdleManager.s_timerCallback;
+                return s_timerCallback;
             }
 
             private static void TimerCallback(object state)
@@ -2419,7 +2418,7 @@ namespace System.ServiceModel.Channels
                     long ticksNow = Ticks.Now;
                     if (ticksNow > abortTime)
                     {
-                        if (TD.SessionIdleTimeoutIsEnabled())
+                        if (WcfEventSource.Instance.SessionIdleTimeoutIsEnabled())
                         {
                             string listenUri = string.Empty;
                             if (_binder.ListenUri != null)
@@ -2427,7 +2426,7 @@ namespace System.ServiceModel.Channels
                                 listenUri = _binder.ListenUri.AbsoluteUri;
                             }
 
-                            TD.SessionIdleTimeout(listenUri);
+                            WcfEventSource.Instance.SessionIdleTimeout(listenUri);
                         }
 
                         _didIdleAbort = true;

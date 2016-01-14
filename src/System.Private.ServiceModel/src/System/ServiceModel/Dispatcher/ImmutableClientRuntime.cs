@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Diagnostics.Application;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -92,9 +91,9 @@ namespace System.ServiceModel.Dispatcher
                 for (int i = 0; i < _messageInspectors.Length; i++)
                 {
                     _messageInspectors[i].AfterReceiveReply(ref rpc.Reply, rpc.Correlation[offset + i]);
-                    if (TD.ClientMessageInspectorAfterReceiveInvokedIsEnabled())
+                    if (WcfEventSource.Instance.ClientMessageInspectorAfterReceiveInvokedIsEnabled())
                     {
-                        TD.ClientMessageInspectorAfterReceiveInvoked(rpc.EventTraceActivity, _messageInspectors[i].GetType().FullName);
+                        WcfEventSource.Instance.ClientMessageInspectorAfterReceiveInvoked(rpc.EventTraceActivity, _messageInspectors[i].GetType().FullName);
                     }
                 }
             }
@@ -121,9 +120,9 @@ namespace System.ServiceModel.Dispatcher
                 {
                     ServiceChannel clientChannel = ServiceChannelFactory.GetServiceChannel(rpc.Channel.Proxy);
                     rpc.Correlation[offset + i] = _messageInspectors[i].BeforeSendRequest(ref rpc.Request, clientChannel);
-                    if (TD.ClientMessageInspectorBeforeSendInvokedIsEnabled())
+                    if (WcfEventSource.Instance.ClientMessageInspectorBeforeSendInvokedIsEnabled())
                     {
-                        TD.ClientMessageInspectorBeforeSendInvoked(rpc.EventTraceActivity, _messageInspectors[i].GetType().FullName);
+                        WcfEventSource.Instance.ClientMessageInspectorBeforeSendInvoked(rpc.EventTraceActivity, _messageInspectors[i].GetType().FullName);
                     }
                 }
             }

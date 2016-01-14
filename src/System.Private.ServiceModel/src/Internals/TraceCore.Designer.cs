@@ -57,29 +57,6 @@ namespace System.Runtime
         
         /// <summary>
         /// Check if trace definition is enabled
-        /// Event description ID=57393, Level=informational, Channel=Debug
-        /// </summary>
-        /// <param name="trace">The trace provider</param>
-        internal static bool AppDomainUnloadIsEnabled(EtwDiagnosticTrace trace)
-        {
-            return WcfEventSource.Instance.AppDomainUnloadIsEnabled();
-        }
-
-        /// <summary>
-        /// Gets trace definition like: AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.
-        /// Event description ID=57393, Level=informational, Channel=Debug
-        /// </summary>
-        /// <param name="trace">The trace provider</param>
-        /// <param name="appdomainName">Parameter 0 for event: AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.</param>
-        /// <param name="processName">Parameter 1 for event: AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.</param>
-        /// <param name="processId">Parameter 2 for event: AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.</param>
-        internal static void AppDomainUnload(EtwDiagnosticTrace trace, string appdomainName, string processName, string processId)
-        {
-            WcfEventSource.Instance.AppDomainUnload(appdomainName, processName, processId);
-        }
-
-        /// <summary>
-        /// Check if trace definition is enabled
         /// Event description ID=57394, Level=informational, Channel=Analytic
         /// </summary>
         /// <param name="trace">The trace provider</param>

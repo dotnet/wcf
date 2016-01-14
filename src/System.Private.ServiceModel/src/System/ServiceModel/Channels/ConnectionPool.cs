@@ -8,7 +8,6 @@ using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 
 namespace System.ServiceModel.Channels
 {
@@ -180,9 +179,9 @@ namespace System.ServiceModel.Channels
                 }
                 catch (TimeoutException exception)
                 {
-                    if (TD.CloseTimeoutIsEnabled())
+                    if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                     {
-                        TD.CloseTimeout(exception.Message);
+                        WcfEventSource.Instance.CloseTimeout(exception.Message);
                     }
                 }
             }
@@ -457,11 +456,11 @@ namespace System.ServiceModel.Channels
                     }
                 }
 
-                if (TD.ConnectionPoolMissIsEnabled())
+                if (WcfEventSource.Instance.ConnectionPoolMissIsEnabled())
                 {
                     if (item == null && _busyConnections != null)
                     {
-                        TD.ConnectionPoolMiss(_key != null ? _key.ToString() : string.Empty, _busyConnections.Count);
+                        WcfEventSource.Instance.ConnectionPoolMiss(_key != null ? _key.ToString() : string.Empty, _busyConnections.Count);
                     }
                 }
 
@@ -567,14 +566,14 @@ namespace System.ServiceModel.Channels
 
                     if (!result)
                     {
-                        if (TD.MaxOutboundConnectionsPerEndpointExceededIsEnabled())
+                        if (WcfEventSource.Instance.MaxOutboundConnectionsPerEndpointExceededIsEnabled())
                         {
-                            TD.MaxOutboundConnectionsPerEndpointExceeded(SR.Format(SR.TraceCodeConnectionPoolMaxOutboundConnectionsPerEndpointQuotaReached, _maxCount));
+                            WcfEventSource.Instance.MaxOutboundConnectionsPerEndpointExceeded(SR.Format(SR.TraceCodeConnectionPoolMaxOutboundConnectionsPerEndpointQuotaReached, _maxCount));
                         }
                     }
-                    else if (TD.OutboundConnectionsPerEndpointRatioIsEnabled())
+                    else if (WcfEventSource.Instance.OutboundConnectionsPerEndpointRatioIsEnabled())
                     {
-                        TD.OutboundConnectionsPerEndpointRatio(_idleConnections.Count, _maxCount);
+                        WcfEventSource.Instance.OutboundConnectionsPerEndpointRatio(_idleConnections.Count, _maxCount);
                     }
 
                     return result;
@@ -584,9 +583,9 @@ namespace System.ServiceModel.Channels
                 {
                     closeItem = false;
                     TItem ret = _idleConnections.Take();
-                    if (TD.OutboundConnectionsPerEndpointRatioIsEnabled())
+                    if (WcfEventSource.Instance.OutboundConnectionsPerEndpointRatioIsEnabled())
                     {
-                        TD.OutboundConnectionsPerEndpointRatio(_idleConnections.Count, _maxCount);
+                        WcfEventSource.Instance.OutboundConnectionsPerEndpointRatio(_idleConnections.Count, _maxCount);
                     }
                     return ret;
                 }

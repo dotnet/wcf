@@ -6,7 +6,6 @@ using System.IO;
 using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Text;
 using System.Xml;
 using System.Diagnostics.Contracts;
@@ -403,9 +402,9 @@ namespace System.ServiceModel.Channels
                 if (bufferManager == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("bufferManager"));
 
-                if (TD.TextMessageDecodingStartIsEnabled())
+                if (WcfEventSource.Instance.TextMessageDecodingStartIsEnabled())
                 {
-                    TD.TextMessageDecodingStart();
+                    WcfEventSource.Instance.TextMessageDecodingStart();
                 }
 
                 Message message;
@@ -420,9 +419,9 @@ namespace System.ServiceModel.Channels
 
                 message.Properties.Encoder = this;
 
-                if (TD.MessageReadByEncoderIsEnabled())
+                if (WcfEventSource.Instance.MessageReadByEncoderIsEnabled())
                 {
-                    TD.MessageReadByEncoder(
+                    WcfEventSource.Instance.MessageReadByEncoder(
                         EventTraceActivityHelper.TryExtractActivity(message, true),
                         buffer.Count,
                         this);
@@ -439,18 +438,18 @@ namespace System.ServiceModel.Channels
                 if (stream == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("stream"));
 
-                if (TD.TextMessageDecodingStartIsEnabled())
+                if (WcfEventSource.Instance.TextMessageDecodingStartIsEnabled())
                 {
-                    TD.TextMessageDecodingStart();
+                    WcfEventSource.Instance.TextMessageDecodingStart();
                 }
 
                 XmlReader reader = TakeStreamedReader(stream, GetEncodingFromContentType(contentType, _contentEncodingMap));
                 Message message = Message.CreateMessage(reader, maxSizeOfHeaders, _version);
                 message.Properties.Encoder = this;
 
-                if (TD.StreamedMessageReadByEncoderIsEnabled())
+                if (WcfEventSource.Instance.StreamedMessageReadByEncoderIsEnabled())
                 {
-                    TD.StreamedMessageReadByEncoder(EventTraceActivityHelper.TryExtractActivity(message, true));
+                    WcfEventSource.Instance.StreamedMessageReadByEncoder(EventTraceActivityHelper.TryExtractActivity(message, true));
                 }
 
                 if (MessageLogger.LogMessagesAtTransportLevel)
@@ -484,10 +483,10 @@ namespace System.ServiceModel.Channels
                 ThrowIfMismatchedMessageVersion(message);
 
                 EventTraceActivity eventTraceActivity = null;
-                if (TD.TextMessageEncodingStartIsEnabled())
+                if (WcfEventSource.Instance.TextMessageEncodingStartIsEnabled())
                 {
                     eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                    TD.TextMessageEncodingStart(eventTraceActivity);
+                    WcfEventSource.Instance.TextMessageEncodingStart(eventTraceActivity);
                 }
 
                 message.Properties.Encoder = this;
@@ -496,9 +495,9 @@ namespace System.ServiceModel.Channels
                 ArraySegment<byte> messageData = messageWriter.WriteMessage(message, bufferManager, messageOffset, maxMessageSize);
                 ReturnMessageWriter(messageWriter);
 
-                if (TD.MessageWrittenByEncoderIsEnabled())
+                if (WcfEventSource.Instance.MessageWrittenByEncoderIsEnabled())
                 {
-                    TD.MessageWrittenByEncoder(
+                    WcfEventSource.Instance.MessageWrittenByEncoder(
                         eventTraceActivity ?? EventTraceActivityHelper.TryExtractActivity(message),
                         messageData.Count,
                         this);
@@ -528,10 +527,10 @@ namespace System.ServiceModel.Channels
                 ThrowIfMismatchedMessageVersion(message);
 
                 EventTraceActivity eventTraceActivity = null;
-                if (TD.TextMessageEncodingStartIsEnabled())
+                if (WcfEventSource.Instance.TextMessageEncodingStartIsEnabled())
                 {
                     eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                    TD.TextMessageEncodingStart(eventTraceActivity);
+                    WcfEventSource.Instance.TextMessageEncodingStart(eventTraceActivity);
                 }
 
                 message.Properties.Encoder = this;
@@ -550,9 +549,9 @@ namespace System.ServiceModel.Channels
                 await xmlWriter.FlushAsync();
                 ReturnStreamedWriter(xmlWriter);
 
-                if (TD.StreamedMessageWrittenByEncoderIsEnabled())
+                if (WcfEventSource.Instance.StreamedMessageWrittenByEncoderIsEnabled())
                 {
-                    TD.StreamedMessageWrittenByEncoder(eventTraceActivity ?? EventTraceActivityHelper.TryExtractActivity(message));
+                    WcfEventSource.Instance.StreamedMessageWrittenByEncoder(eventTraceActivity ?? EventTraceActivityHelper.TryExtractActivity(message));
                 }
 
                 if (MessageLogger.LogMessagesAtTransportLevel)
@@ -599,9 +598,9 @@ namespace System.ServiceModel.Channels
                 if (messageWriter == null)
                 {
                     messageWriter = new TextBufferedMessageWriter(this);
-                    if (TD.WritePoolMissIsEnabled())
+                    if (WcfEventSource.Instance.WritePoolMissIsEnabled())
                     {
-                        TD.WritePoolMiss(messageWriter.GetType().Name);
+                        WcfEventSource.Instance.WritePoolMiss(messageWriter.GetType().Name);
                     }
                 }
                 return messageWriter;
@@ -639,9 +638,9 @@ namespace System.ServiceModel.Channels
                 if (messageData == null)
                 {
                     messageData = new UTF8BufferedMessageData(this, maxPooledXmlReadersPerMessage);
-                    if (TD.ReadPoolMissIsEnabled())
+                    if (WcfEventSource.Instance.ReadPoolMissIsEnabled())
                     {
-                        TD.ReadPoolMiss(messageData.GetType().Name);
+                        WcfEventSource.Instance.ReadPoolMiss(messageData.GetType().Name);
                     }
                 }
                 return messageData;

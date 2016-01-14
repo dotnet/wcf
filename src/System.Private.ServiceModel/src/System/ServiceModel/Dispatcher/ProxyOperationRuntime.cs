@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.ServiceModel.Diagnostics.Application;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -149,16 +148,16 @@ namespace System.ServiceModel.Dispatcher
 
                 if (_deserializeReply)
                 {
-                    if (TD.ClientFormatterDeserializeReplyStartIsEnabled())
+                    if (WcfEventSource.Instance.ClientFormatterDeserializeReplyStartIsEnabled())
                     {
-                        TD.ClientFormatterDeserializeReplyStart(rpc.EventTraceActivity);
+                        WcfEventSource.Instance.ClientFormatterDeserializeReplyStart(rpc.EventTraceActivity);
                     }
 
                     rpc.ReturnValue = _formatter.DeserializeReply(reply, rpc.OutputParameters);
 
-                    if (TD.ClientFormatterDeserializeReplyStopIsEnabled())
+                    if (WcfEventSource.Instance.ClientFormatterDeserializeReplyStopIsEnabled())
                     {
-                        TD.ClientFormatterDeserializeReplyStop(rpc.EventTraceActivity);
+                        WcfEventSource.Instance.ClientFormatterDeserializeReplyStop(rpc.EventTraceActivity);
                     }
                 }
                 else
@@ -175,9 +174,9 @@ namespace System.ServiceModel.Dispatcher
                                                               rpc.OutputParameters,
                                                               rpc.ReturnValue,
                                                               rpc.Correlation[offset + i]);
-                        if (TD.ClientParameterInspectorAfterCallInvokedIsEnabled())
+                        if (WcfEventSource.Instance.ClientParameterInspectorAfterCallInvokedIsEnabled())
                         {
-                            TD.ClientParameterInspectorAfterCallInvoked(rpc.EventTraceActivity, _parameterInspectors[i].GetType().FullName);
+                            WcfEventSource.Instance.ClientParameterInspectorAfterCallInvoked(rpc.EventTraceActivity, _parameterInspectors[i].GetType().FullName);
                         }
                     }
                 }
@@ -213,9 +212,9 @@ namespace System.ServiceModel.Dispatcher
                 for (int i = 0; i < _parameterInspectors.Length; i++)
                 {
                     rpc.Correlation[offset + i] = _parameterInspectors[i].BeforeCall(_name, rpc.InputParameters);
-                    if (TD.ClientParameterInspectorBeforeCallInvokedIsEnabled())
+                    if (WcfEventSource.Instance.ClientParameterInspectorBeforeCallInvokedIsEnabled())
                     {
-                        TD.ClientParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, _parameterInspectors[i].GetType().FullName);
+                        WcfEventSource.Instance.ClientParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, _parameterInspectors[i].GetType().FullName);
                     }
                 }
             }
@@ -234,18 +233,18 @@ namespace System.ServiceModel.Dispatcher
 
             if (_serializeRequest)
             {
-                if (TD.ClientFormatterSerializeRequestStartIsEnabled())
+                if (WcfEventSource.Instance.ClientFormatterSerializeRequestStartIsEnabled())
                 {
-                    TD.ClientFormatterSerializeRequestStart(rpc.EventTraceActivity);
+                    WcfEventSource.Instance.ClientFormatterSerializeRequestStart(rpc.EventTraceActivity);
                 }
 
                 rpc.Request = _formatter.SerializeRequest(rpc.MessageVersion, rpc.InputParameters);
 
 
 
-                if (TD.ClientFormatterSerializeRequestStopIsEnabled())
+                if (WcfEventSource.Instance.ClientFormatterSerializeRequestStopIsEnabled())
                 {
-                    TD.ClientFormatterSerializeRequestStop(rpc.EventTraceActivity);
+                    WcfEventSource.Instance.ClientFormatterSerializeRequestStop(rpc.EventTraceActivity);
                 }
             }
             else

@@ -4,7 +4,6 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Collections.Generic;
-using System.ServiceModel.Diagnostics.Application;
 using System.Runtime.Diagnostics;
 
 namespace System.ServiceModel.Diagnostics

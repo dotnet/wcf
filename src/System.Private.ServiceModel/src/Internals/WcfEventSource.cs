@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics.Tracing;
+using System.Runtime.Diagnostics;
 
 namespace System.Runtime
 {
     [EventSource(Name = "Microsoft-Windows-Application Server-Applications", Guid = "c651f5f6-1c0d-492e-8ae1-b4efd7c9d503")]
-    sealed class WcfEventSource : EventSource
+    internal sealed class WcfEventSource : EventSource
     {
         public static WcfEventSource Instance = new WcfEventSource();
 
@@ -12,12 +13,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.BufferPoolAllocation, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.Allocate, Task = Tasks.BufferPooling,
+        [Event(EventIds.BufferPoolAllocation, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.BufferPoolingAllocate, Task = Tasks.BufferPooling,
             Keywords = Keywords.Infrastructure,
             Message = "Pool allocating {0} Bytes.")]
+        public void BufferPoolAllocation(int Size, string AppDomain)
+        {
+            WriteEvent(EventIds.BufferPoolAllocation, Size, AppDomain);
+        }
+
+        [NonEvent]
         public void BufferPoolAllocation(int Size)
         {
-            WriteEvent(EventIds.BufferPoolAllocation, Size);
+            BufferPoolAllocation(Size, "");
         }
 
         public bool BufferPoolChangeQuotaIsEnabled()
@@ -25,12 +32,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.BufferPoolChangeQuota, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.Tune, Task = Tasks.BufferPooling,
+        [Event(EventIds.BufferPoolChangeQuota, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.BufferPoolingTune, Task = Tasks.BufferPooling,
             Keywords = Keywords.Infrastructure,
             Message = "BufferPool of size {0}, changing quota by {1}.")]
+        public void BufferPoolChangeQuota(int PoolSize, int Delta, string AppDomain)
+        {
+            WriteEvent(EventIds.BufferPoolChangeQuota, PoolSize, Delta, AppDomain);
+        }
+
+        [NonEvent]
         public void BufferPoolChangeQuota(int PoolSize, int Delta)
         {
-            WriteEvent(EventIds.BufferPoolChangeQuota, PoolSize, Delta);
+            BufferPoolChangeQuota(PoolSize, Delta, "");
         }
 
         public bool ActionItemScheduledIsEnabled()
@@ -41,9 +54,15 @@ namespace System.Runtime
         [Event(EventIds.ActionItemScheduled, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ThreadScheduling,
             Keywords = Keywords.Threading,
             Message = "IO Thread scheduler callback invoked.")]
+        public void ActionItemScheduled(string AppDomain)
+        {
+            WriteEvent(EventIds.ActionItemScheduled, AppDomain);
+        }
+
+        [NonEvent]
         public void ActionItemScheduled()
         {
-            WriteEvent(EventIds.ActionItemScheduled);
+            ActionItemScheduled("");
         }
 
         public bool ActionItemCallbackInvokedIsEnabled()
@@ -54,22 +73,1748 @@ namespace System.Runtime
         [Event(EventIds.ActionItemCallbackInvoked, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ThreadScheduling,
             Keywords = Keywords.Threading,
             Message = "IO Thread scheduler callback invoked.")]
+        public void ActionItemCallbackInvoked(string AppDomain)
+        {
+            WriteEvent(EventIds.ActionItemCallbackInvoked, AppDomain);
+        }
+
+        [NonEvent]
         public void ActionItemCallbackInvoked()
         {
-            WriteEvent(EventIds.ActionItemCallbackInvoked);
+            ActionItemCallbackInvoked("");
         }
 
-        public bool AppDomainUnloadIsEnabled()
+        public bool ClientMessageInspectorAfterReceiveInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Debug);
         }
 
-        [Event(EventIds.AppDomainUnload, Level = EventLevel.Informational, Channel = EventChannel.Debug, 
-            Keywords = Keywords.Infrastructure,
-            Message = "AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.")]
-        public void AppDomainUnload(string appdomainName, string processName, string processId)
+        [Event(EventIds.ClientMessageInspectorAfterReceiveInvoked, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ClientRuntimeClientMessageInspectorAfterReceiveInvoked, Task = Tasks.ClientRuntime,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'AfterReceiveReply' on a ClientMessageInspector of type '{0}'.")]
+        public void ClientMessageInspectorAfterReceiveInvoked(string TypeName, string HostReference, string AppDomain)
         {
-            WriteEvent(EventIds.AppDomainUnload, appdomainName, processName, processId);
+            WriteEvent(EventIds.ClientMessageInspectorAfterReceiveInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientMessageInspectorAfterReceiveInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientMessageInspectorAfterReceiveInvoked(TypeName, "", "");
+        }
+
+        public bool ClientMessageInspectorBeforeSendInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ClientMessageInspectorBeforeSendInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientMessageInspectorBeforeSendInvoked, Task = Tasks.ClientRuntime,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'BeforeSendRequest' on a ClientMessageInspector of type  '{0}'.")]
+        public void ClientMessageInspectorBeforeSendInvoked(string TypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientMessageInspectorBeforeSendInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientMessageInspectorBeforeSendInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientMessageInspectorBeforeSendInvoked(TypeName, "", "");
+        }
+
+        public bool ClientParameterInspectorAfterCallInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ClientParameterInspectorAfterCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientParameterInspectorStop, Task = Tasks.ClientRuntime,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'AfterCall' on a ClientParameterInspector of type '{0}'.")]
+        public void ClientParameterInspectorAfterCallInvoked(string TypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientParameterInspectorAfterCallInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientParameterInspectorAfterCallInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientParameterInspectorAfterCallInvoked(TypeName, "", "");
+        }
+
+        public bool ClientParameterInspectorBeforeCallInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ClientParameterInspectorBeforeCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientParameterInspectorStart, Task = Tasks.ClientRuntime,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'BeforeCall' on a ClientParameterInspector of type '{0}'.")]
+        public void ClientParameterInspectorBeforeCallInvoked(string TypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientParameterInspectorBeforeCallInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientParameterInspectorBeforeCallInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientParameterInspectorBeforeCallInvoked(TypeName, "", "");
+        }
+
+        public bool OperationInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.OperationInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageOperationInvokerStart, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "An OperationInvoker invoked the '{0}' method. Caller information: '{1}'.")]
+        public void OperationInvoked(string MethodName, string CallerInfo, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.OperationInvoked, MethodName, CallerInfo, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void OperationInvoked(EventTraceActivity eventTraceActivity, string MethodName, string CallerInfo)
+        {
+            SetActivityId(eventTraceActivity);
+            OperationInvoked(MethodName, CallerInfo, "", "");
+        }
+
+        public bool ErrorHandlerInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ErrorHandlerInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked an ErrorHandler of type  '{0}' with an exception of type '{2}'.  ErrorHandled == '{1}'.")]
+        public void ErrorHandlerInvoked(string TypeName, bool Handled, string ExceptionTypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ErrorHandlerInvoked, TypeName, Handled, ExceptionTypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ErrorHandlerInvoked(string TypeName, bool Handled, string ExceptionTypeName)
+        {
+            ErrorHandlerInvoked(TypeName, Handled, ExceptionTypeName, "", "");
+        }
+
+        public bool FaultProviderInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.FaultProviderInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked a FaultProvider of type '{0}' with an exception of type '{1}'.")]
+        public void FaultProviderInvoked(string TypeName, string ExceptionTypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.FaultProviderInvoked, TypeName, ExceptionTypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void FaultProviderInvoked(string TypeName, string ExceptionTypeName)
+        {
+            FaultProviderInvoked(TypeName, ExceptionTypeName, "", "");
+        }
+
+        public bool ParameterInspectorAfterCallInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ParameterInspectorAfterCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageParameterInspectorStop, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'AfterCall' on a ParameterInspector of type '{0}'.")]
+        public void ParameterInspectorAfterCallInvoked(string TypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ParameterInspectorAfterCallInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ParameterInspectorAfterCallInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            ParameterInspectorAfterCallInvoked(TypeName, "", "");
+        }
+
+        public bool ParameterInspectorBeforeCallInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ParameterInspectorBeforeCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageParameterInspectorStart, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'BeforeCall' on a ParameterInspector of type '{0}'.")]
+        public void ParameterInspectorBeforeCallInvoked(string TypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ParameterInspectorBeforeCallInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ParameterInspectorBeforeCallInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            ParameterInspectorBeforeCallInvoked(TypeName, "", "");
+        }
+
+        public bool OperationCompletedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.HealthMonitoring | Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.OperationCompleted, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageOperationInvokerStop, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.HealthMonitoring | Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "An OperationInvoker completed the call to the '{0}' method.  The method call duration was '{1}' ms.")]
+        public void OperationCompleted(string MethodName, long Duration, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.OperationCompleted, MethodName, Duration, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void OperationCompleted(EventTraceActivity eventTraceActivity, string MethodName, long Duration)
+        {
+            SetActivityId(eventTraceActivity);
+            OperationCompleted(MethodName, Duration, "", "");
+        }
+
+        public bool MessageReceivedByTransportIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MessageReceivedByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+            Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral,
+            Message = "The transport received a message from '{0}'.")]
+        public void MessageReceivedByTransport(string ListenAddress, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageReceivedByTransport, ListenAddress, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageReceivedByTransport(EventTraceActivity eventTraceActivity, string ListenAddress, Guid relatedActivityId)
+        {
+            TransferActivityId(eventTraceActivity);
+            MessageReceivedByTransport(ListenAddress, "", "");
+        }
+
+        public bool MessageSentByTransportIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MessageSentByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
+            Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral,
+            Message = "The transport sent a message to '{0}'.")]
+        public void MessageSentByTransport(string DestinationAddress, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageSentByTransport, DestinationAddress, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageSentByTransport(EventTraceActivity eventTraceActivity, string DestinationAddress)
+        {
+            SetActivityId(eventTraceActivity);
+            MessageSentByTransport(DestinationAddress, "", "");
+        }
+
+        public bool ClientOperationPreparedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientOperationPrepared, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ClientRuntimeOperationPrepared, Task = Tasks.ClientRuntime,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Client is executing Action '{0}' associated with the '{1}' contract. The message will be sent to '{2}'.")]
+        public void ClientOperationPrepared(string Action, string ContractName, string Destination, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientOperationPrepared, Action, ContractName, Destination, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientOperationPrepared(EventTraceActivity eventTraceActivity, string Action, string ContractName, string Destination, Guid relatedActivityId)
+        {
+            TransferActivityId(eventTraceActivity);
+            ClientOperationPrepared(Action, ContractName, Destination, "", "");
+        }
+
+        public bool ServiceChannelCallStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ServiceChannelCallStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelCall,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Client completed executing Action '{0}' associated with the '{1}' contract. The message was sent to '{2}'.")]
+        public void ServiceChannelCallStop(string Action, string ContractName, string Destination, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ServiceChannelCallStop, Action, ContractName, Destination, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ServiceChannelCallStop(EventTraceActivity eventTraceActivity, string Action, string ContractName, string Destination)
+        {
+            SetActivityId(eventTraceActivity);
+            ServiceChannelCallStop(Action, ContractName, Destination, "", "");
+        }
+
+        public bool ServiceExceptionIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ServiceException, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel,
+            Message = "There was an unhandled exception of type '{1}' during message processing.  Full Exception Details: {0}.")]
+        public void ServiceException(string ExceptionToString, string ExceptionTypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.ServiceException, ExceptionToString, ExceptionTypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void ServiceException(string ExceptionToString, string ExceptionTypeName)
+        {
+            ServiceException(ExceptionToString, ExceptionTypeName, "", "");
+        }
+
+        public bool MessageSentToTransportIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MessageSentToTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+            Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral,
+            Message = "The Dispatcher sent a message to the transport. Correlation ID == '{0}'.")]
+        public void MessageSentToTransport(Guid CorrelationId, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageSentToTransport, CorrelationId, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageSentToTransport(EventTraceActivity eventTraceActivity, Guid CorrelationId)
+        {
+            SetActivityId(eventTraceActivity);
+            MessageSentToTransport(CorrelationId, "", "");
+        }
+
+        public bool MessageReceivedFromTransportIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MessageReceivedFromTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+            Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral,
+            Message = "The Dispatcher received a message from the transport. Correlation ID == '{0}'.")]
+        public void MessageReceivedFromTransport(Guid CorrelationId, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageReceivedFromTransport, CorrelationId, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageReceivedFromTransport(EventTraceActivity eventTraceActivity, Guid CorrelationId, string HostReference)
+        {
+            SetActivityId(eventTraceActivity);
+            MessageReceivedFromTransport(CorrelationId, HostReference, "");
+        }
+
+        public bool OperationFailedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Warning, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.OperationFailed, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel,
+            Message = "The '{0}' method threw an unhandled exception when invoked by the OperationInvoker. The method call duration was '{1}' ms.")]
+        public void OperationFailed(string MethodName, long Duration, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.OperationFailed, MethodName, Duration, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void OperationFailed(EventTraceActivity eventTraceActivity, string MethodName, long Duration)
+        {
+            SetActivityId(eventTraceActivity);
+            OperationFailed(MethodName, Duration, "", "");
+        }
+
+        public bool OperationFaultedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Warning, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.OperationFaulted, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel,
+            Message = "The '{0}' method threw a FaultException when invoked by the OperationInvoker. The method call duration was '{1}' ms.")]
+        public void OperationFaulted(string MethodName, long Duration, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.OperationFaulted, MethodName, Duration, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void OperationFaulted(EventTraceActivity eventTraceActivity, string MethodName, long Duration)
+        {
+            SetActivityId(eventTraceActivity);
+            OperationFaulted(MethodName, Duration, "", "");
+        }
+
+        public bool ServiceChannelOpenStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ServiceChannelOpenStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelOpen,
+            Keywords = Keywords.ServiceModel,
+            Message = "ServiceChannelOpen started.")]
+        public void ServiceChannelOpenStart(string AppDomain)
+        {
+            WriteEvent(EventIds.ServiceChannelOpenStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void ServiceChannelOpenStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ServiceChannelOpenStart("");
+        }
+
+        public bool ServiceChannelOpenStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ServiceChannelOpenStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelOpen,
+            Keywords = Keywords.ServiceModel,
+            Message = "ServiceChannelOpen completed.")]
+        public void ServiceChannelOpenStop(string AppDomain)
+        {
+            WriteEvent(EventIds.ServiceChannelOpenStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void ServiceChannelOpenStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ServiceChannelOpenStop("");
+        }
+
+        public bool ServiceChannelCallStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ServiceChannelCallStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
+            Keywords = Keywords.ServiceModel,
+            Message = "ServiceChannelCall started.")]
+        public void ServiceChannelCallStart(string AppDomain)
+        {
+            WriteEvent(EventIds.ServiceChannelCallStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void ServiceChannelCallStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ServiceChannelCallStart("");
+        }
+
+        [Event(EventIds.ServiceChannelBeginCallStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
+            Keywords = Keywords.ServiceModel,
+            Message = "ServiceChannel asynchronous calls started.")]
+        public void ServiceChannelBeginCallStart(string AppDomain)
+        {
+            WriteEvent(EventIds.ServiceChannelBeginCallStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void ServiceChannelBeginCallStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ServiceChannelBeginCallStart("");
+        }
+
+        public bool DispatchMessageStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.DispatchMessageStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageDispatchStart, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.ServiceModel,
+            Message = "Message dispatching started.")]
+        public void DispatchMessageStart(string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.DispatchMessageStart, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void DispatchMessageStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            DispatchMessageStart("", "");
+        }
+
+        public bool DispatchMessageStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.DispatchMessageStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageDispatchStop, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.ServiceModel,
+            Message = "Message dispatching completed")]
+        public void DispatchMessageStop(string AppDomain)
+        {
+            WriteEvent(EventIds.DispatchMessageStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void DispatchMessageStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            DispatchMessageStop("");
+        }
+
+        public bool ClientChannelOpenStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ClientChannelOpenStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientChannelOpenStart, Task = Tasks.ClientRuntime,
+            Keywords = Keywords.ServiceModel,
+            Message = "ServiceChannel Open Start.")]
+        public void ClientChannelOpenStart(string AppDomain)
+        {
+            WriteEvent(EventIds.ClientChannelOpenStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientChannelOpenStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientChannelOpenStart("");
+        }
+
+        public bool ClientChannelOpenStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ClientChannelOpenStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientChannelOpenStop, Task = Tasks.ClientRuntime,
+            Keywords = Keywords.ServiceModel,
+            Message = "ServiceChannel Open Stop.")]
+        public void ClientChannelOpenStop(string AppDomain)
+        {
+            WriteEvent(EventIds.ClientChannelOpenStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientChannelOpenStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientChannelOpenStop("");
+        }
+
+        [Event(EventIds.ScheduleRuntimeWorkItem, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.ScheduleWorkItemScheduleRuntime, Task = Tasks.ScheduleWorkItem,
+            Keywords = Keywords.WFRuntime,
+            Message = "A runtime work item has been scheduled for Activity '{0}', DisplayName: '{1}', InstanceId: '{2}'.")]
+        public void ScheduleRuntimeWorkItem(string data1, string data2, string data3, string AppDomain)
+        {
+            WriteEvent(EventIds.ScheduleRuntimeWorkItem, data1, data2, data3, AppDomain);
+        }
+
+        public bool CloseTimeoutIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.CloseTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+            Keywords = Keywords.ServiceModel,
+            Message = "{0}")]
+        public void CloseTimeout(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.CloseTimeout, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void CloseTimeout(string data1)
+        {
+            CloseTimeout(data1, "");
+        }
+
+        public bool IdleTimeoutIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.IdleTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+            Keywords = Keywords.ServiceModel,
+            Message = "{0} Connection pool key: {1}")]
+        public void IdleTimeout(string msg, string key, string AppDomain)
+        {
+            WriteEvent(EventIds.IdleTimeout, msg, key, AppDomain);
+        }
+
+        [NonEvent]
+        public void IdleTimeout(string msg, string key)
+        {
+            IdleTimeout(msg, key, "");
+        }
+
+        public bool LeaseTimeoutIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.LeaseTimeout, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+            Keywords = Keywords.ServiceModel,
+            Message = "{0} Connection pool key: {1}")]
+        public void LeaseTimeout(string msg, string key, string AppDomain)
+        {
+            WriteEvent(EventIds.LeaseTimeout, msg, key, AppDomain);
+        }
+
+        [NonEvent]
+        public void LeaseTimeout(string msg, string key)
+        {
+            LeaseTimeout(msg, key, "");
+        }
+
+        public bool ReceiveTimeoutIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ReceiveTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+            Keywords = Keywords.ServiceModel,
+            Message = "{0}")]
+        public void ReceiveTimeout(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.ReceiveTimeout, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void ReceiveTimeout(string data1)
+        {
+            ReceiveTimeout(data1, "");
+        }
+
+        public bool MaxReceivedMessageSizeExceededIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MaxReceivedMessageSizeExceeded, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+            Keywords = Keywords.Quota,
+            Message = "{0}")]
+        public void MaxReceivedMessageSizeExceeded(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.MaxReceivedMessageSizeExceeded, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void MaxReceivedMessageSizeExceeded(string data1)
+        {
+            MaxReceivedMessageSizeExceeded(data1, "");
+        }
+
+        public bool MaxSentMessageSizeExceededIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MaxSentMessageSizeExceeded, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+            Keywords = Keywords.Quota,
+            Message = "{0}")]
+        public void MaxSentMessageSizeExceeded(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.MaxSentMessageSizeExceeded, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void MaxSentMessageSizeExceeded(string data1)
+        {
+            MaxSentMessageSizeExceeded(data1, "");
+        }
+
+        public bool MaxOutboundConnectionsPerEndpointExceededIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Quota, EventChannel.Debug);
+        }
+
+        [Event(EventIds.MaxOutboundConnectionsPerEndpointExceeded, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+            Keywords = Keywords.Quota,
+            Message = "{0}")]
+        public void MaxOutboundConnectionsPerEndpointExceeded(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.MaxOutboundConnectionsPerEndpointExceeded, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void MaxOutboundConnectionsPerEndpointExceeded(string data1)
+        {
+            MaxOutboundConnectionsPerEndpointExceeded(data1, "");
+        }
+
+        public bool OutboundConnectionsPerEndpointRatioIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.OutboundConnectionsPerEndpointRatio, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+            Keywords = Keywords.Quota,
+            Message = "Outbound connections per endpoint ratio: {0}/{1}")]
+        public void OutboundConnectionsPerEndpointRatio(int cur, int max, string AppDomain)
+        {
+            WriteEvent(EventIds.OutboundConnectionsPerEndpointRatio, cur, max, AppDomain);
+        }
+
+        [NonEvent]
+        public void OutboundConnectionsPerEndpointRatio(int cur, int max)
+        {
+            OutboundConnectionsPerEndpointRatio(cur, max, "");
+        }
+
+        public bool MaxSessionSizeReachedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Warning, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MaxSessionSizeReached, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+            Keywords = Keywords.Quota,
+            Message = "{0}")]
+        public void MaxSessionSizeReached(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.MaxSessionSizeReached, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void MaxSessionSizeReached(string data1)
+        {
+            MaxSessionSizeReached(data1, "");
+        }
+
+        public bool ReadPoolMissIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.ReadPoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+            Keywords = Keywords.Quota,
+            Message = "Created new '{0}'")]
+        public void ReadPoolMiss(string itemTypeName, string AppDomain)
+        {
+            WriteEvent(EventIds.ReadPoolMiss, itemTypeName, AppDomain);
+        }
+
+        [NonEvent]
+        public void ReadPoolMiss(string itemTypeName)
+        {
+            ReadPoolMiss(itemTypeName, "");
+        }
+
+        public bool WritePoolMissIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.WritePoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+            Keywords = Keywords.Quota,
+            Message = "Created new '{0}'")]
+        public void WritePoolMiss(string itemTypeName, string AppDomain)
+        {
+            WriteEvent(EventIds.WritePoolMiss, itemTypeName, AppDomain);
+        }
+
+        [NonEvent]
+        public void WritePoolMiss(string itemTypeName)
+        {
+            WritePoolMiss(itemTypeName, "");
+        }
+
+        public bool MessageReadByEncoderIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.MessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
+            Keywords = Keywords.Channel,
+            Message = "A message with size '{0}' bytes was read by the encoder.")]
+        public void MessageReadByEncoder(int Size, string EventSource, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageReadByEncoder, Size, EventSource, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageReadByEncoder(EventTraceActivity eventTraceActivity, int Size, object source)
+        {
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            SetActivityId(eventTraceActivity);
+            MessageReadByEncoder(Size, payload.EventSource, "");
+        }
+
+        public bool MessageWrittenByEncoderIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.MessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
+            Keywords = Keywords.Channel,
+            Message = "A message with size '{0}' bytes was written by the encoder.")]
+        public void MessageWrittenByEncoder(int Size, string EventSource, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageWrittenByEncoder, Size, EventSource, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageWrittenByEncoder(EventTraceActivity eventTraceActivity, int Size, object source)
+        {
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            SetActivityId(eventTraceActivity);
+            MessageWrittenByEncoder(Size, payload.EventSource, "");
+        }
+
+        public bool SessionIdleTimeoutIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.SessionIdleTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Timeout,
+            Keywords = Keywords.ServiceModel,
+            Message = "Session aborting for idle channel to uri:'{0}'.")]
+        public void SessionIdleTimeout(string RemoteAddress, string AppDomain)
+        {
+            WriteEvent(EventIds.SessionIdleTimeout, RemoteAddress, AppDomain);
+        }
+
+        [NonEvent]
+        public void SessionIdleTimeout(string RemoteAddress)
+        {
+            SessionIdleTimeout(RemoteAddress, "");
+        }
+
+        public bool ConnectionPoolMissIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ConnectionPoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ConnectionPooling,
+            Keywords = Keywords.Channel,
+            Message = "Pool for {0} has no available connection and {1} busy connections.")]
+        public void ConnectionPoolMiss(string PoolKey, int busy, string AppDomain)
+        {
+            WriteEvent(EventIds.ConnectionPoolMiss, PoolKey, busy, AppDomain);
+        }
+
+        [NonEvent]
+        public void ConnectionPoolMiss(string PoolKey, int busy)
+        {
+            ConnectionPoolMiss(PoolKey, busy, "");
+        }
+
+        public bool DispatchFormatterDeserializeRequestStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.DispatchFormatterDeserializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeRequest,
+            Keywords = Keywords.ServiceModel,
+            Message = "Dispatcher started deserialization the request message.")]
+        public void DispatchFormatterDeserializeRequestStart(string AppDomain)
+        {
+            WriteEvent(EventIds.DispatchFormatterDeserializeRequestStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void DispatchFormatterDeserializeRequestStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            DispatchFormatterDeserializeRequestStart("");
+        }
+
+        public bool DispatchFormatterDeserializeRequestStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.DispatchFormatterDeserializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeRequest,
+            Keywords = Keywords.ServiceModel,
+            Message = "Dispatcher completed deserialization the request message.")]
+        public void DispatchFormatterDeserializeRequestStop(string AppDomain)
+        {
+            WriteEvent(EventIds.DispatchFormatterDeserializeRequestStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void DispatchFormatterDeserializeRequestStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            DispatchFormatterDeserializeRequestStop("");
+        }
+
+        public bool DispatchFormatterSerializeReplyStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.DispatchFormatterSerializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeReply,
+            Keywords = Keywords.ServiceModel,
+            Message = "Dispatcher started serialization of the reply message.")]
+        public void DispatchFormatterSerializeReplyStart(string AppDomain)
+        {
+            WriteEvent(EventIds.DispatchFormatterSerializeReplyStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void DispatchFormatterSerializeReplyStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            DispatchFormatterSerializeReplyStart("");
+        }
+
+        public bool DispatchFormatterSerializeReplyStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.DispatchFormatterSerializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeReply,
+            Keywords = Keywords.ServiceModel,
+            Message = "Dispatcher completed serialization of the reply message.")]
+        public void DispatchFormatterSerializeReplyStop(string AppDomain)
+        {
+            WriteEvent(EventIds.DispatchFormatterSerializeReplyStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void DispatchFormatterSerializeReplyStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            DispatchFormatterSerializeReplyStop("");
+        }
+
+        public bool ClientFormatterSerializeRequestStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientFormatterSerializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeRequest,
+            Keywords = Keywords.ServiceModel,
+            Message = "Client request serialization started.")]
+        public void ClientFormatterSerializeRequestStart(string AppDomain)
+        {
+            WriteEvent(EventIds.ClientFormatterSerializeRequestStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientFormatterSerializeRequestStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientFormatterSerializeRequestStart("");
+        }
+
+        public bool ClientFormatterSerializeRequestStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientFormatterSerializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeRequest,
+            Keywords = Keywords.ServiceModel,
+            Message = "Client completed serialization of the request message.")]
+        public void ClientFormatterSerializeRequestStop(string AppDomain)
+        {
+            WriteEvent(EventIds.ClientFormatterSerializeRequestStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientFormatterSerializeRequestStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientFormatterSerializeRequestStop("");
+        }
+
+        public bool ClientFormatterDeserializeReplyStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientFormatterDeserializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeReply,
+            Keywords = Keywords.ServiceModel,
+            Message = "Client started deserializing the reply message.")]
+        public void ClientFormatterDeserializeReplyStart(string AppDomain)
+        {
+            WriteEvent(EventIds.ClientFormatterDeserializeReplyStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientFormatterDeserializeReplyStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientFormatterDeserializeReplyStart("");
+        }
+
+        public bool ClientFormatterDeserializeReplyStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientFormatterDeserializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeReply,
+            Keywords = Keywords.ServiceModel,
+            Message = "Client completed deserializing the reply message.")]
+        public void ClientFormatterDeserializeReplyStop(string AppDomain)
+        {
+            WriteEvent(EventIds.ClientFormatterDeserializeReplyStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientFormatterDeserializeReplyStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ClientFormatterDeserializeReplyStop("");
+        }
+
+        public bool GetServiceInstanceStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.GetServiceInstanceStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ServiceInstance,
+            Keywords = Keywords.ServiceModel,
+            Message = "Service instance retrieval started.")]
+        public void GetServiceInstanceStart(string AppDomain)
+        {
+            WriteEvent(EventIds.GetServiceInstanceStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void GetServiceInstanceStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            GetServiceInstanceStart("");
+        }
+
+        public bool GetServiceInstanceStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.GetServiceInstanceStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ServiceInstance,
+            Keywords = Keywords.ServiceModel,
+            Message = "Service instance retrieved.")]
+        public void GetServiceInstanceStop(string AppDomain)
+        {
+            WriteEvent(EventIds.GetServiceInstanceStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void GetServiceInstanceStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            GetServiceInstanceStop("");
+        }
+
+        public bool ChannelReceiveStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ChannelReceiveStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ChannelReceive,
+            Keywords = Keywords.Channel,
+            Message = "ChannelHandlerId:{0} - Message receive loop started.")]
+        public void ChannelReceiveStart(int ChannelId, string AppDomain)
+        {
+            WriteEvent(EventIds.ChannelReceiveStart, ChannelId, AppDomain);
+        }
+
+        [NonEvent]
+        public void ChannelReceiveStart(EventTraceActivity eventTraceActivity, int ChannelId)
+        {
+            SetActivityId(eventTraceActivity);
+            ChannelReceiveStart(ChannelId, "");
+        }
+
+        public bool ChannelReceiveStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ChannelReceiveStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ChannelReceive,
+            Keywords = Keywords.Channel,
+            Message = "ChannelHandlerId:{0} - Message receive loop stopped.")]
+        public void ChannelReceiveStop(int ChannelId, string AppDomain)
+        {
+            WriteEvent(EventIds.ChannelReceiveStop, ChannelId, AppDomain);
+        }
+
+        [NonEvent]
+        public void ChannelReceiveStop(EventTraceActivity eventTraceActivity, int ChannelId)
+        {
+            SetActivityId(eventTraceActivity);
+            ChannelReceiveStop(ChannelId, "");
+        }
+
+        public bool ChannelFactoryCreatedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ChannelFactoryCreated, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ChannelFactoryCreate,
+            Keywords = Keywords.ServiceModel,
+            Message = "ChannelFactory created .")]
+        public void ChannelFactoryCreated(string EventSource, string AppDomain)
+        {
+            WriteEvent(EventIds.ChannelFactoryCreated, EventSource, AppDomain);
+        }
+
+        [NonEvent]
+        public void ChannelFactoryCreated(object source)
+        {
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            ChannelFactoryCreated(payload.EventSource, "");
+        }
+
+        public bool ListenerOpenStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ListenerOpenStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ListenerOpen,
+            Keywords = Keywords.Channel,
+            Message = "Listener opening for '{0}'.")]
+        public void ListenerOpenStart(string Uri, string AppDomain)
+        {
+            WriteEvent(EventIds.ListenerOpenStart, Uri, AppDomain);
+        }
+
+        [NonEvent]
+        public void ListenerOpenStart(EventTraceActivity eventTraceActivity, string Uri, Guid relatedActivityId)
+        {
+            TransferActivityId(eventTraceActivity);
+            ListenerOpenStart(Uri, "");
+        }
+
+        public bool ListenerOpenStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ListenerOpenStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ListenerOpen,
+            Keywords = Keywords.Channel,
+            Message = "Listener open completed.")]
+        public void ListenerOpenStop(string AppDomain)
+        {
+            WriteEvent(EventIds.ListenerOpenStop, AppDomain);
+        }
+
+        [NonEvent]
+        public void ListenerOpenStop(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            ListenerOpenStop("");
+        }
+
+        public bool SecurityIdentityVerificationFailureIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.Security, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.SecurityIdentityVerificationFailure, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.SecurityVerification,
+            Keywords = Keywords.Security,
+            Message = "Security verification failed.")]
+        public void SecurityIdentityVerificationFailure(string AppDomain)
+        {
+            WriteEvent(EventIds.SecurityIdentityVerificationFailure, AppDomain);
+        }
+
+        [NonEvent]
+        public void SecurityIdentityVerificationFailure(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            SecurityIdentityVerificationFailure("");
+        }
+
+        public bool SslOnInitiateUpgradeIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.SslOnInitiateUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeInitiate, Task = Tasks.SessionUpgrade,
+            Keywords = Keywords.Security,
+            Message = "SslOnAcceptUpgradeStart")]
+        public void SslOnInitiateUpgrade(string AppDomain)
+        {
+            WriteEvent(EventIds.SslOnInitiateUpgrade, AppDomain);
+        }
+
+        [NonEvent]
+        public void SslOnInitiateUpgrade()
+        {
+            SslOnInitiateUpgrade("");
+        }
+
+        public bool SslOnAcceptUpgradeIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.SslOnAcceptUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeAccept, Task = Tasks.SessionUpgrade,
+            Keywords = Keywords.Security,
+            Message = "SslOnAcceptUpgradeStop")]
+        public void SslOnAcceptUpgrade(string AppDomain)
+        {
+            WriteEvent(EventIds.SslOnAcceptUpgrade, AppDomain);
+        }
+
+        [NonEvent]
+        public void SslOnAcceptUpgrade(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            SslOnAcceptUpgrade("");
+        }
+
+        public bool BinaryMessageEncodingStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.BinaryMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
+            Keywords = Keywords.Channel,
+            Message = "BinaryMessageEncoder started encoding the message.")]
+        public void BinaryMessageEncodingStart(string AppDomain)
+        {
+            WriteEvent(EventIds.BinaryMessageEncodingStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void BinaryMessageEncodingStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            BinaryMessageEncodingStart("");
+        }
+
+        public bool TextMessageEncodingStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.TextMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
+            Keywords = Keywords.Channel,
+            Message = "TextMessageEncoder started encoding the message.")]
+        public void TextMessageEncodingStart(string AppDomain)
+        {
+            WriteEvent(EventIds.TextMessageEncodingStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void TextMessageEncodingStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            TextMessageEncodingStart("");
+        }
+
+        public bool BinaryMessageDecodingStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.BinaryMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
+            Keywords = Keywords.Channel,
+            Message = "BinaryMessageEncoder started decoding the message.")]
+        public void BinaryMessageDecodingStart(string AppDomain)
+        {
+            WriteEvent(EventIds.BinaryMessageDecodingStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void BinaryMessageDecodingStart()
+        {
+            BinaryMessageDecodingStart("");
+        }
+
+        public bool TextMessageDecodingStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.TextMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
+            Keywords = Keywords.Channel,
+            Message = "TextMessageEncoder started decoding the message.")]
+        public void TextMessageDecodingStart(string AppDomain)
+        {
+            WriteEvent(EventIds.TextMessageDecodingStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void TextMessageDecodingStart()
+        {
+            TextMessageDecodingStart("");
+        }
+
+        public bool SocketReadStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.SocketReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+            Keywords = Keywords.TCP,
+            Message = "SocketId:{0} read '{1}' bytes read from '{2}'.")]
+        public void SocketReadStop(int SocketId, int Size, string Endpoint, string AppDomain)
+        {
+            WriteEvent(EventIds.SocketReadStop, SocketId, Size, Endpoint, AppDomain);
+        }
+
+        [NonEvent]
+        public void SocketReadStop(int SocketId, int Size, string Endpoint)
+        {
+            SocketReadStop(SocketId, Size, Endpoint, "");
+        }
+
+        public bool SocketAsyncReadStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.SocketAsyncReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+            Keywords = Keywords.TCP,
+            Message = "SocketId:{0} read '{1}' bytes read from '{2}'.")]
+        public void SocketAsyncReadStop(int SocketId, int Size, string Endpoint, string AppDomain)
+        {
+            WriteEvent(EventIds.SocketAsyncReadStop, SocketId, Size, Endpoint, AppDomain);
+        }
+
+        [NonEvent]
+        public void SocketAsyncReadStop(int SocketId, int Size, string Endpoint)
+        {
+            SocketAsyncReadStop(SocketId, Size, Endpoint, "");
+        }
+
+        public bool SocketWriteStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.SocketWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
+            Keywords = Keywords.TCP,
+            Message = "SocketId:{0} writing '{1}' bytes to '{2}'.")]
+        public void SocketWriteStart(int SocketId, int Size, string Endpoint, string AppDomain)
+        {
+            WriteEvent(EventIds.SocketWriteStart, SocketId, Size, Endpoint, AppDomain);
+        }
+
+        [NonEvent]
+        public void SocketWriteStart(int SocketId, int Size, string Endpoint)
+        {
+            SocketWriteStart(SocketId, Size, Endpoint, "");
+        }
+
+        public bool SocketAsyncWriteStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.SocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
+            Keywords = Keywords.TCP,
+            Message = "SocketId:{0} writing '{1}' bytes to '{2}'.")]
+        public void SocketAsyncWriteStart(int SocketId, int Size, string Endpoint, string AppDomain)
+        {
+            WriteEvent(EventIds.SocketAsyncWriteStart, SocketId, Size, Endpoint, AppDomain);
+        }
+
+        [NonEvent]
+        public void SocketAsyncWriteStart(int SocketId, int Size, string Endpoint)
+        {
+            SocketAsyncWriteStart(SocketId, Size, Endpoint, "");
+        }
+
+        public bool WindowsStreamSecurityOnInitiateUpgradeIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.WindowsStreamSecurityOnInitiateUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeInitiate, Task = Tasks.SessionUpgrade,
+            Keywords = Keywords.Security,
+            Message = "WindowsStreamSecurity initiating security upgrade.")]
+        public void WindowsStreamSecurityOnInitiateUpgrade(string AppDomain)
+        {
+            WriteEvent(EventIds.WindowsStreamSecurityOnInitiateUpgrade, AppDomain);
+        }
+
+        [NonEvent]
+        public void WindowsStreamSecurityOnInitiateUpgrade()
+        {
+            WindowsStreamSecurityOnInitiateUpgrade("");
+        }
+
+        public bool WindowsStreamSecurityOnAcceptUpgradeIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.WindowsStreamSecurityOnAcceptUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeAccept, Task = Tasks.SessionUpgrade,
+            Keywords = Keywords.Security,
+            Message = "Windows streaming security on accepting upgrade.")]
+        public void WindowsStreamSecurityOnAcceptUpgrade(string AppDomain)
+        {
+            WriteEvent(EventIds.WindowsStreamSecurityOnAcceptUpgrade, AppDomain);
+        }
+
+        [NonEvent]
+        public void WindowsStreamSecurityOnAcceptUpgrade(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            WindowsStreamSecurityOnAcceptUpgrade("");
+        }
+
+        public bool StreamedMessageReadByEncoderIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.StreamedMessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
+            Keywords = Keywords.Channel,
+            Message = "A streamed message was read by the encoder.")]
+        public void StreamedMessageReadByEncoder(string AppDomain)
+        {
+            WriteEvent(EventIds.StreamedMessageReadByEncoder, AppDomain);
+        }
+
+        [NonEvent]
+        public void StreamedMessageReadByEncoder(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            StreamedMessageReadByEncoder("");
+        }
+
+        public bool StreamedMessageWrittenByEncoderIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.StreamedMessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
+            Keywords = Keywords.Channel,
+            Message = "A streamed message was written by the encoder.")]
+        public void StreamedMessageWrittenByEncoder(string AppDomain)
+        {
+            WriteEvent(EventIds.StreamedMessageWrittenByEncoder, AppDomain);
+        }
+
+        [NonEvent]
+        public void StreamedMessageWrittenByEncoder(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            StreamedMessageWrittenByEncoder("");
+        }
+
+        public bool WebSocketConnectionRequestSendStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketConnectionRequestSendStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocket connection request to '{0}' send start.")]
+        public void WebSocketConnectionRequestSendStart(string remoteAddress, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketConnectionRequestSendStart, remoteAddress, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketConnectionRequestSendStart(EventTraceActivity eventTraceActivity, string remoteAddress)
+        {
+            SetActivityId(eventTraceActivity);
+            WebSocketConnectionRequestSendStart(remoteAddress, "");
+        }
+
+        public bool WebSocketConnectionRequestSendStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketConnectionRequestSendStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} connection request sent.")]
+        public void WebSocketConnectionRequestSendStop(int websocketId, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketConnectionRequestSendStop, websocketId, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketConnectionRequestSendStop(EventTraceActivity eventTraceActivity, int websocketId)
+        {
+            SetActivityId(eventTraceActivity);
+            WebSocketConnectionRequestSendStop(websocketId, "");
+        }
+
+        public bool WebSocketConnectionFailedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.HTTP, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.WebSocketConnectionFailed, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocket connection request failed: '{0}'")]
+        public void WebSocketConnectionFailed(string errorMessage, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketConnectionFailed, errorMessage, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketConnectionFailed(EventTraceActivity eventTraceActivity, string errorMessage)
+        {
+            SetActivityId(eventTraceActivity);
+            WebSocketConnectionFailed(errorMessage, "");
+        }
+
+        public bool WebSocketConnectionAbortedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.HTTP, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.WebSocketConnectionAborted, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} connection is aborted.")]
+        public void WebSocketConnectionAborted(int websocketId, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketConnectionAborted, websocketId, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketConnectionAborted(EventTraceActivity eventTraceActivity, int websocketId)
+        {
+            SetActivityId(eventTraceActivity);
+            WebSocketConnectionAborted(websocketId, "");
+        }
+
+        public bool WebSocketAsyncWriteStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} writing '{1}' bytes to '{2}'.")]
+        public void WebSocketAsyncWriteStart(int websocketId, int byteCount, string remoteAddress, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketAsyncWriteStart, websocketId, byteCount, remoteAddress, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketAsyncWriteStart(int websocketId, int byteCount, string remoteAddress)
+        {
+            WebSocketAsyncWriteStart(websocketId, byteCount, remoteAddress, "");
+        }
+
+        public bool WebSocketAsyncWriteStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketAsyncWriteStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} asynchronous write stop.")]
+        public void WebSocketAsyncWriteStop(int websocketId, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketAsyncWriteStop, websocketId, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketAsyncWriteStop(int websocketId)
+        {
+            WebSocketAsyncWriteStop(websocketId, "");
+        }
+
+        public bool WebSocketAsyncReadStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketAsyncReadStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportReceive,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} read start.")]
+        public void WebSocketAsyncReadStart(int websocketId, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketAsyncReadStart, websocketId, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketAsyncReadStart(int websocketId)
+        {
+            WebSocketAsyncReadStart(websocketId, "");
+        }
+
+        public bool WebSocketAsyncReadStopIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketAsyncReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} read '{1}' bytes from '{2}'.")]
+        public void WebSocketAsyncReadStop(int websocketId, int byteCount, string remoteAddress, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketAsyncReadStop, websocketId, byteCount, remoteAddress, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketAsyncReadStop(int websocketId, int byteCount, string remoteAddress)
+        {
+            WebSocketAsyncReadStop(websocketId, byteCount, remoteAddress, "");
+        }
+
+        public bool WebSocketCloseSentIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketCloseSent, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} sending close message to '{1}' with close status '{2}'.")]
+        public void WebSocketCloseSent(int websocketId, string remoteAddress, string closeStatus, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketCloseSent, websocketId, remoteAddress, closeStatus, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketCloseSent(int websocketId, string remoteAddress, string closeStatus)
+        {
+            WebSocketCloseSent(websocketId, remoteAddress, closeStatus, "");
+        }
+
+        public bool WebSocketCloseOutputSentIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketCloseOutputSent, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} sending close output message to '{1}' with close status '{2}'.")]
+        public void WebSocketCloseOutputSent(int websocketId, string remoteAddress, string closeStatus, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketCloseOutputSent, websocketId, remoteAddress, closeStatus, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketCloseOutputSent(int websocketId, string remoteAddress, string closeStatus)
+        {
+            WebSocketCloseOutputSent(websocketId, remoteAddress, closeStatus, "");
+        }
+
+        public bool WebSocketConnectionClosedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketConnectionClosed, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} connection closed.")]
+        public void WebSocketConnectionClosed(int websocketId, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketConnectionClosed, websocketId, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketConnectionClosed(int websocketId)
+        {
+            WebSocketConnectionClosed(websocketId, "");
+        }
+
+        public bool WebSocketCloseStatusReceivedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketCloseStatusReceived, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "WebSocketId:{0} connection close message received with status '{1}'.")]
+        public void WebSocketCloseStatusReceived(int websocketId, string closeStatus, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketCloseStatusReceived, websocketId, closeStatus, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketCloseStatusReceived(int websocketId, string closeStatus)
+        {
+            WebSocketCloseStatusReceived(websocketId, closeStatus, "");
+        }
+
+        public bool WebSocketCreateClientWebSocketWithFactoryIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+        }
+
+        [Event(EventIds.WebSocketCreateClientWebSocketWithFactory, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+            Keywords = Keywords.HTTP,
+            Message = "Creating the client WebSocket with a factory of type '{0}'.")]
+        public void WebSocketCreateClientWebSocketWithFactory(string clientWebSocketFactoryType, string AppDomain)
+        {
+            WriteEvent(EventIds.WebSocketCreateClientWebSocketWithFactory, clientWebSocketFactoryType, AppDomain);
+        }
+
+        [NonEvent]
+        public void WebSocketCreateClientWebSocketWithFactory(EventTraceActivity eventTraceActivity, string clientWebSocketFactoryType)
+        {
+            SetActivityId(eventTraceActivity);
+            WebSocketCreateClientWebSocketWithFactory(clientWebSocketFactoryType, "");
+        }
+
+        public bool TokenValidationStartedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Debug);
+        }
+
+        [Event(EventIds.TokenValidationStarted, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
+            Keywords = Keywords.Security,
+            Message = "SecurityToken (type '{0}' and id '{1}') validation started.")]
+        public void TokenValidationStarted(string tokenType, string tokenID, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.TokenValidationStarted, tokenType, tokenID, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void TokenValidationStarted(EventTraceActivity eventTraceActivity, string tokenType, string tokenID)
+        {
+            SetActivityId(eventTraceActivity);
+            TokenValidationStarted(tokenType, tokenID, "", "");
+        }
+
+        public bool TokenValidationSuccessIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Debug);
+        }
+
+        [Event(EventIds.TokenValidationSuccess, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
+            Keywords = Keywords.Security,
+            Message = "SecurityToken (type '{0}' and id '{1}') validation succeeded.")]
+        public void TokenValidationSuccess(string tokenType, string tokenID, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.TokenValidationSuccess, tokenType, tokenID, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void TokenValidationSuccess(EventTraceActivity eventTraceActivity, string tokenType, string tokenID)
+        {
+            SetActivityId(eventTraceActivity);
+            TokenValidationSuccess(tokenType, tokenID, "", "");
+        }
+
+        public bool TokenValidationFailureIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.Security, EventChannel.Debug);
+        }
+
+        [Event(EventIds.TokenValidationFailure, Level = EventLevel.Error, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
+            Keywords = Keywords.Security,
+            Message = "SecurityToken (type '{0}' and id '{1}') validation failed. {2}")]
+        public void TokenValidationFailure(string tokenType, string tokenID, string errorMessage, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.TokenValidationFailure, tokenType, tokenID, errorMessage, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void TokenValidationFailure(EventTraceActivity eventTraceActivity, string tokenType, string tokenID, string errorMessage)
+        {
+            SetActivityId(eventTraceActivity);
+            TokenValidationFailure(tokenType, tokenID, errorMessage, "", "");
         }
 
         public bool HandledExceptionIsEnabled()
@@ -77,12 +1822,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.HandledException, Level = EventLevel.Informational, Channel = EventChannel.Analytic, 
+        [Event(EventIds.HandledException, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception.  Exception details: {0}")]
+        public void HandledException(string data1, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.HandledException, data1, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void HandledException(string data1, string SerializedException)
         {
-            WriteEvent(EventIds.HandledException, data1, SerializedException);
+            HandledException(data1, SerializedException, "");
         }
 
         public bool ShipAssertExceptionMessageIsEnabled()
@@ -90,12 +1841,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ShipAssertExceptionMessage, Level = EventLevel.Error, Channel = EventChannel.Analytic, 
+        [Event(EventIds.ShipAssertExceptionMessage, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "An unexpected failure occurred. Applications should not attempt to handle this error. For diagnostic purposes, this English message is associated with the failure: {0}.")]
+        public void ShipAssertExceptionMessage(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.ShipAssertExceptionMessage, data1, AppDomain);
+        }
+
+        [NonEvent]
         public void ShipAssertExceptionMessage(string data1)
         {
-            WriteEvent(EventIds.ShipAssertExceptionMessage, data1);
+            ShipAssertExceptionMessage(data1, "");
         }
 
         public bool ThrowingExceptionIsEnabled()
@@ -103,12 +1860,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, 
+        [Event(EventIds.ThrowingException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
+        public void ThrowingException(string data1, string data2, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.ThrowingException, data1, data2, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void ThrowingException(string data1, string data2, string SerializedException)
         {
-            WriteEvent(EventIds.ThrowingException, data1, data2, SerializedException);
+            ThrowingException(data1, data2, SerializedException, "");
         }
 
         public bool UnhandledExceptionIsEnabled()
@@ -116,12 +1879,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
         }
 
-        [Event(EventIds.UnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, 
+        [Event(EventIds.UnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Unhandled exception.  Exception details: {0}")]
+        public void UnhandledException(string data1, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.UnhandledException, data1, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void UnhandledException(string data1, string SerializedException)
         {
-            WriteEvent(EventIds.UnhandledException, data1, SerializedException);
+            UnhandledException(data1, SerializedException, "");
         }
 
         public bool TraceCodeEventLogCriticalIsEnabled()
@@ -129,12 +1898,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogCritical, Level = EventLevel.Critical, Channel = EventChannel.Debug, 
+        [Event(EventIds.TraceCodeEventLogCritical, Level = EventLevel.Critical, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
+        public void TraceCodeEventLogCritical(string ExtendedData, string AppDomain)
+        {
+            WriteEvent(EventIds.TraceCodeEventLogCritical, ExtendedData, AppDomain);
+        }
+
+        [NonEvent]
         public void TraceCodeEventLogCritical(string ExtendedData)
         {
-            WriteEvent(EventIds.TraceCodeEventLogCritical, ExtendedData);
+            TraceCodeEventLogCritical(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogErrorIsEnabled()
@@ -142,12 +1917,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogError, Level = EventLevel.Error, Channel = EventChannel.Debug, 
+        [Event(EventIds.TraceCodeEventLogError, Level = EventLevel.Error, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
+        public void TraceCodeEventLogError(string ExtendedData, string AppDomain)
+        {
+            WriteEvent(EventIds.TraceCodeEventLogError, ExtendedData, AppDomain);
+        }
+
+        [NonEvent]
         public void TraceCodeEventLogError(string ExtendedData)
         {
-            WriteEvent(EventIds.TraceCodeEventLogError, ExtendedData);
+            TraceCodeEventLogError(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogInfoIsEnabled()
@@ -155,12 +1936,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogInfo, Level = EventLevel.Informational, Channel = EventChannel.Debug, 
+        [Event(EventIds.TraceCodeEventLogInfo, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
+        public void TraceCodeEventLogInfo(string ExtendedData, string AppDomain)
+        {
+            WriteEvent(EventIds.TraceCodeEventLogInfo, ExtendedData, AppDomain);
+        }
+
+        [NonEvent]
         public void TraceCodeEventLogInfo(string ExtendedData)
         {
-            WriteEvent(EventIds.TraceCodeEventLogInfo, ExtendedData);
+            TraceCodeEventLogInfo(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogVerboseIsEnabled()
@@ -168,12 +1955,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Debug, 
+        [Event(EventIds.TraceCodeEventLogVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
+        public void TraceCodeEventLogVerbose(string ExtendedData, string AppDomain)
+        {
+            WriteEvent(EventIds.TraceCodeEventLogVerbose, ExtendedData, AppDomain);
+        }
+
+        [NonEvent]
         public void TraceCodeEventLogVerbose(string ExtendedData)
         {
-            WriteEvent(EventIds.TraceCodeEventLogVerbose, ExtendedData);
+            TraceCodeEventLogVerbose(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogWarningIsEnabled()
@@ -181,12 +1974,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Debug);
         }
 
-        [Event(EventIds.TraceCodeEventLogWarning, Level = EventLevel.Warning, Channel = EventChannel.Debug, 
+        [Event(EventIds.TraceCodeEventLogWarning, Level = EventLevel.Warning, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
+        public void TraceCodeEventLogWarning(string ExtendedData, string AppDomain)
+        {
+            WriteEvent(EventIds.TraceCodeEventLogWarning, ExtendedData, AppDomain);
+        }
+
+        [NonEvent]
         public void TraceCodeEventLogWarning(string ExtendedData)
         {
-            WriteEvent(EventIds.TraceCodeEventLogWarning, ExtendedData);
+            TraceCodeEventLogWarning(ExtendedData, "");
         }
 
         public bool HandledExceptionWarningIsEnabled()
@@ -194,12 +1993,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.HandledExceptionWarning, Level = EventLevel.Warning, Channel = EventChannel.Analytic, 
+        [Event(EventIds.HandledExceptionWarning, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception. Exception details: {0}")]
+        public void HandledExceptionWarning(string data1, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.HandledExceptionWarning, data1, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void HandledExceptionWarning(string data1, string SerializedException)
         {
-            WriteEvent(EventIds.HandledExceptionWarning, data1, SerializedException);
+            HandledExceptionWarning(data1, SerializedException, "");
         }
 
         public bool HandledExceptionErrorIsEnabled()
@@ -207,12 +2012,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Operational);
         }
 
-        [Event(EventIds.HandledExceptionError, Level = EventLevel.Error, Channel = EventChannel.Operational, 
+        [Event(EventIds.HandledExceptionError, Level = EventLevel.Error, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception. Exception details: {0}")]
+        public void HandledExceptionError(string data1, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.HandledExceptionError, data1, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void HandledExceptionError(string data1, string SerializedException)
         {
-            WriteEvent(EventIds.HandledExceptionError, data1, SerializedException);
+            HandledExceptionError(data1, SerializedException, "");
         }
 
         public bool HandledExceptionVerboseIsEnabled()
@@ -220,12 +2031,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.HandledExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, 
+        [Event(EventIds.HandledExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception  Exception details: {0}")]
+        public void HandledExceptionVerbose(string data1, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.HandledExceptionVerbose, data1, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void HandledExceptionVerbose(string data1, string SerializedException)
         {
-            WriteEvent(EventIds.HandledExceptionVerbose, data1, SerializedException);
+            HandledExceptionVerbose(data1, SerializedException, "");
         }
 
         public bool ThrowingExceptionVerboseIsEnabled()
@@ -233,12 +2050,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, 
+        [Event(EventIds.ThrowingExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
+        public void ThrowingExceptionVerbose(string data1, string data2, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.ThrowingExceptionVerbose, data1, data2, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void ThrowingExceptionVerbose(string data1, string data2, string SerializedException)
         {
-            WriteEvent(EventIds.ThrowingExceptionVerbose, data1, data2, SerializedException);
+            ThrowingExceptionVerbose(data1, data2, SerializedException, "");
         }
 
         public bool EtwUnhandledExceptionIsEnabled()
@@ -246,12 +2069,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
         }
 
-        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, 
+        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Unhandled exception. Exception details: {0}")]
+        public void EtwUnhandledException(string data1, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.EtwUnhandledException, data1, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void EtwUnhandledException(string data1, string SerializedException)
         {
-            WriteEvent(EventIds.EtwUnhandledException, data1, SerializedException);
+            EtwUnhandledException(data1, SerializedException, "");
         }
 
         public bool ThrowingEtwExceptionVerboseIsEnabled()
@@ -259,12 +2088,18 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, 
+        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
+        public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.ThrowingEtwExceptionVerbose, data1, data2, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException)
         {
-            WriteEvent(EventIds.ThrowingEtwExceptionVerbose, data1, data2, SerializedException);
+            ThrowingEtwExceptionVerbose(data1, data2, SerializedException, "");
         }
 
         public bool ThrowingEtwExceptionIsEnabled()
@@ -272,18 +2107,62 @@ namespace System.Runtime
             return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
         }
 
-        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, 
+        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
+        public void ThrowingEtwException(string data1, string data2, string SerializedException, string AppDomain)
+        {
+            WriteEvent(EventIds.ThrowingEtwException, data1, data2, SerializedException, AppDomain);
+        }
+
+        [NonEvent]
         public void ThrowingEtwException(string data1, string data2, string SerializedException)
         {
-            WriteEvent(EventIds.ThrowingEtwException, data1, data2, SerializedException);
+            ThrowingEtwException(data1, data2, SerializedException, "");
+        }
+
+        [NonEvent]
+        private void SetActivityId(EventTraceActivity eventTraceActivity)
+        {
+            if (eventTraceActivity != null)
+            {
+                SetCurrentThreadActivityId(eventTraceActivity.ActivityId);
+            }
+        }
+
+        [NonEvent]
+        private void TransferActivityId(EventTraceActivity eventTraceActivity)
+        {
+            if (eventTraceActivity != null)
+            {
+                Guid oldGuid;
+                SetCurrentThreadActivityId(eventTraceActivity.ActivityId, out oldGuid);
+            }
         }
 
         #region Keywords / Tasks / Opcodes
 
         public class EventIds
         {
+            public const int WorkflowInstanceRecord = 100;
+            public const int WorkflowInstanceUnhandledExceptionRecord = 101;
+            public const int WorkflowInstanceAbortedRecord = 102;
+            public const int ActivityStateRecord = 103;
+            public const int ActivityScheduledRecord = 104;
+            public const int FaultPropagationRecord = 105;
+            public const int CancelRequestedRecord = 106;
+            public const int BookmarkResumptionRecord = 107;
+            public const int CustomTrackingRecordInfo = 108;
+            public const int CustomTrackingRecordWarning = 110;
+            public const int CustomTrackingRecordError = 111;
+            public const int WorkflowInstanceSuspendedRecord = 112;
+            public const int WorkflowInstanceTerminatedRecord = 113;
+            public const int WorkflowInstanceRecordWithId = 114;
+            public const int WorkflowInstanceAbortedRecordWithId = 115;
+            public const int WorkflowInstanceSuspendedRecordWithId = 116;
+            public const int WorkflowInstanceTerminatedRecordWithId = 117;
+            public const int WorkflowInstanceUnhandledExceptionRecordWithId = 118;
+            public const int WorkflowInstanceUpdatedRecord = 119;
             public const int BufferPoolAllocation = 131;
             public const int BufferPoolChangeQuota = 132;
             public const int ActionItemScheduled = 133;
@@ -316,7 +2195,7 @@ namespace System.Runtime
             public const int IdleServicesClosed = 226;
             public const int UserDefinedErrorOccurred = 301;
             public const int UserDefinedWarningOccurred = 302;
-            public const int UserDefinedInformationEventOccurred = 303;
+            public const int UserDefinedInformationEventOccured = 303;
             public const int StopSignpostEvent = 401;
             public const int StartSignpostEvent = 402;
             public const int SuspendSignpostEvent = 403;
@@ -872,145 +2751,146 @@ namespace System.Runtime
 
         public class Opcodes
         {
-            public const EventOpcode NoBookmark = (EventOpcode)10;
-            public const EventOpcode Begin = (EventOpcode)11;
-            public const EventOpcode NoInstance = (EventOpcode)11;
-            public const EventOpcode Allocate = (EventOpcode)12;
-            public const EventOpcode Tune = (EventOpcode)13;
-            public const EventOpcode ClientChannelOpenStart = (EventOpcode)14;
-            public const EventOpcode ClientChannelOpenStop = (EventOpcode)15;
-            public const EventOpcode ClientMessageInspectorAfterReceiveInvoked = (EventOpcode)16;
-            public const EventOpcode ClientMessageInspectorBeforeSendInvoked = (EventOpcode)17;
-            public const EventOpcode ClientParameterInspectorStart = (EventOpcode)18;
-            public const EventOpcode ClientParameterInspectorStop = (EventOpcode)19;
-            public const EventOpcode OperationPrepared = (EventOpcode)20;
-            public const EventOpcode CompleteBookmark = (EventOpcode)21;
-            public const EventOpcode CompleteCancelActivity = (EventOpcode)22;
-            public const EventOpcode CompleteCompletion = (EventOpcode)23;
-            public const EventOpcode CompleteExecuteActivity = (EventOpcode)24;
-            public const EventOpcode CompleteFault = (EventOpcode)25;
-            public const EventOpcode CompleteRuntime = (EventOpcode)26;
-            public const EventOpcode CompleteTransactionContext = (EventOpcode)27;
-            public const EventOpcode DuplicateQuery = (EventOpcode)28;
-            public const EventOpcode ExceptionSuppressed = (EventOpcode)29;
-            public const EventOpcode FailedToClose = (EventOpcode)30;
-            public const EventOpcode ReceivedMulticastSuppression = (EventOpcode)31;
-            public const EventOpcode CreationFailed = (EventOpcode)32;
-            public const EventOpcode FindInitiated = (EventOpcode)33;
-            public const EventOpcode OpenFailed = (EventOpcode)34;
-            public const EventOpcode OpenSucceeded = (EventOpcode)35;
-            public const EventOpcode Duplicate = (EventOpcode)36;
-            public const EventOpcode InvalidContent = (EventOpcode)37;
-            public const EventOpcode InvalidRelatesToOrOperationCompleted = (EventOpcode)38;
-            public const EventOpcode InvalidReplyTo = (EventOpcode)39;
-            public const EventOpcode NoContent = (EventOpcode)40;
-            public const EventOpcode NullMessageId = (EventOpcode)41;
-            public const EventOpcode NullMessageSequence = (EventOpcode)42;
-            public const EventOpcode NullRelatesTo = (EventOpcode)43;
-            public const EventOpcode NullReplyTo = (EventOpcode)44;
-            public const EventOpcode ReceivedAfterOperationCompleted = (EventOpcode)45;
-            public const EventOpcode Reset = (EventOpcode)46;
-            public const EventOpcode SetToNull = (EventOpcode)47;
-            public const EventOpcode BeforeAuthorization = (EventOpcode)48;
-            public const EventOpcode DispatchStart = (EventOpcode)49;
-            public const EventOpcode DispatchStop = (EventOpcode)50;
-            public const EventOpcode DispathMessageInspectorAfterReceiveInvoked = (EventOpcode)51;
-            public const EventOpcode DispathMessageInspectorBeforeSendInvoked = (EventOpcode)52;
-            public const EventOpcode OperationInvokerStart = (EventOpcode)53;
-            public const EventOpcode OperationInvokerStop = (EventOpcode)54;
-            public const EventOpcode ParameterInspectorStart = (EventOpcode)55;
-            public const EventOpcode ParameterInspectorStop = (EventOpcode)56;
-            public const EventOpcode TransactionScopeCreate = (EventOpcode)57;
-            public const EventOpcode Disabled = (EventOpcode)58;
-            public const EventOpcode Enabled = (EventOpcode)59;
-            public const EventOpcode Empty = (EventOpcode)60;
-            public const EventOpcode NextNull = (EventOpcode)61;
-            public const EventOpcode SwitchCase = (EventOpcode)62;
-            public const EventOpcode SwitchCaseNotFound = (EventOpcode)63;
-            public const EventOpcode SwitchDefault = (EventOpcode)64;
-            public const EventOpcode Contract = (EventOpcode)69;
-            public const EventOpcode Operation = (EventOpcode)70;
-            public const EventOpcode DoesNotUseAsyncPattern = (EventOpcode)71;
-            public const EventOpcode IsNotStatic = (EventOpcode)72;
-            public const EventOpcode IsStatic = (EventOpcode)73;
-            public const EventOpcode ThrewException = (EventOpcode)74;
-            public const EventOpcode UseAsyncPattern = (EventOpcode)75;
-            public const EventOpcode Missed = (EventOpcode)76;
-            public const EventOpcode Faulted = (EventOpcode)77;
-            public const EventOpcode Reconnect = (EventOpcode)78;
-            public const EventOpcode SequenceAck = (EventOpcode)79;
-            public const EventOpcode AbortingChannel = (EventOpcode)80;
-            public const EventOpcode CloseFailed = (EventOpcode)81;
-            public const EventOpcode ConfigurationApplied = (EventOpcode)82;
-            public const EventOpcode DuplexCallbackException = (EventOpcode)83;
-            public const EventOpcode HandledException = (EventOpcode)84;
-            public const EventOpcode TransmitFailed = (EventOpcode)85;
-            public const EventOpcode ChannelFaulted = (EventOpcode)86;
-            public const EventOpcode Closing = (EventOpcode)87;
-            public const EventOpcode CreatingForEndpoint = (EventOpcode)88;
-            public const EventOpcode CompletingOneWay = (EventOpcode)89;
-            public const EventOpcode CompletingTwoWay = (EventOpcode)90;
-            public const EventOpcode MovedToBackup = (EventOpcode)91;
-            public const EventOpcode ProcessingFailure = (EventOpcode)92;
-            public const EventOpcode ProcessingMessage = (EventOpcode)93;
-            public const EventOpcode RoutedToEndpoints = (EventOpcode)94;
-            public const EventOpcode SendingFaultResponse = (EventOpcode)95;
-            public const EventOpcode SendingResponse = (EventOpcode)96;
-            public const EventOpcode TransmitSucceeded = (EventOpcode)97;
-            public const EventOpcode TransmittingMessage = (EventOpcode)98;
-            public const EventOpcode Abandoning = (EventOpcode)99;
-            public const EventOpcode Completing = (EventOpcode)100;
-            public const EventOpcode CommittingTransaction = (EventOpcode)101;
-            public const EventOpcode Creating = (EventOpcode)102;
-            public const EventOpcode UsingExisting = (EventOpcode)103;
-            public const EventOpcode Complete = (EventOpcode)104;
-            public const EventOpcode CompletionRequested = (EventOpcode)105;
-            public const EventOpcode Set = (EventOpcode)106;
-            public const EventOpcode ScheduleBookmark = (EventOpcode)107;
-            public const EventOpcode ScheduleCancelActivity = (EventOpcode)108;
-            public const EventOpcode ScheduleCompletion = (EventOpcode)109;
-            public const EventOpcode ScheduleExecuteActivity = (EventOpcode)110;
-            public const EventOpcode ScheduleFault = (EventOpcode)111;
-            public const EventOpcode ScheduleRuntime = (EventOpcode)112;
-            public const EventOpcode ScheduleTransactionContext = (EventOpcode)113;
-            public const EventOpcode Accept = (EventOpcode)114;
-            public const EventOpcode Initiate = (EventOpcode)115;
-            public const EventOpcode StartBookmark = (EventOpcode)117;
-            public const EventOpcode StartCancelActivity = (EventOpcode)118;
-            public const EventOpcode StartCompletion = (EventOpcode)119;
-            public const EventOpcode StartExecuteActivity = (EventOpcode)120;
-            public const EventOpcode StartFault = (EventOpcode)121;
-            public const EventOpcode StartRuntime = (EventOpcode)122;
-            public const EventOpcode StartTransactionContext = (EventOpcode)123;
-            public const EventOpcode NotFound = (EventOpcode)124;
-            public const EventOpcode Dropped = (EventOpcode)125;
-            public const EventOpcode Raised = (EventOpcode)126;
-            public const EventOpcode Truncated = (EventOpcode)127;
-            public const EventOpcode BeforeAuthentication = (EventOpcode)128;
-            public const EventOpcode DuringCancelation = (EventOpcode)129;
-            public const EventOpcode FromCatchOrFinally = (EventOpcode)130;
-            public const EventOpcode FromTry = (EventOpcode)131;
-            public const EventOpcode Connected = (EventOpcode)132;
-            public const EventOpcode Disconnect = (EventOpcode)133;
-            public const EventOpcode Completed = (EventOpcode)134;
-            public const EventOpcode Idled = (EventOpcode)135;
-            public const EventOpcode InstanceAborted = (EventOpcode)136;
-            public const EventOpcode InstanceCanceled = (EventOpcode)137;
-            public const EventOpcode PersistableIdle = (EventOpcode)138;
-            public const EventOpcode Persisted = (EventOpcode)139;
-            public const EventOpcode Terminated = (EventOpcode)140;
-            public const EventOpcode UnhandledException = (EventOpcode)141;
-            public const EventOpcode Unloaded = (EventOpcode)142;
-            public const EventOpcode suspend = (EventOpcode)143;
-            public const EventOpcode AbortedRecord = (EventOpcode)144;
-            public const EventOpcode AbortedWithId = (EventOpcode)145;
-            public const EventOpcode SuspendedRecord = (EventOpcode)146;
-            public const EventOpcode SuspendedWithId = (EventOpcode)147;
-            public const EventOpcode TerminatedRecord = (EventOpcode)148;
-            public const EventOpcode TerminatedWithId = (EventOpcode)149;
-            public const EventOpcode UnhandledExceptionRecord = (EventOpcode)150;
-            public const EventOpcode UnhandledExceptionWithId = (EventOpcode)151;
-            public const EventOpcode UpdatedRecord = (EventOpcode)152;
+            public const EventOpcode BufferOutOfOrderNoBookmark = (EventOpcode)10;
+            public const EventOpcode RoutingServiceReceiveContextCompleting = (EventOpcode)100;
+            public const EventOpcode RoutingServiceTransactionCommittingTransaction = (EventOpcode)101;
+            public const EventOpcode RoutingServiceTransactionCreating = (EventOpcode)102;
+            public const EventOpcode RoutingServiceTransactionUsingExisting = (EventOpcode)103;
+            public const EventOpcode RuntimeTransactionComplete = (EventOpcode)104;
+            public const EventOpcode RuntimeTransactionCompletionRequested = (EventOpcode)105;
+            public const EventOpcode RuntimeTransactionSet = (EventOpcode)106;
+            public const EventOpcode ScheduleWorkItemScheduleBookmark = (EventOpcode)107;
+            public const EventOpcode ScheduleWorkItemScheduleCancelActivity = (EventOpcode)108;
+            public const EventOpcode ScheduleWorkItemScheduleCompletion = (EventOpcode)109;
+            public const EventOpcode ExecuteFlowchartBegin = (EventOpcode)11;
+            public const EventOpcode BufferOutOfOrderNoInstance = (EventOpcode)11;
+            public const EventOpcode ScheduleWorkItemScheduleExecuteActivity = (EventOpcode)110;
+            public const EventOpcode ScheduleWorkItemScheduleFault = (EventOpcode)111;
+            public const EventOpcode ScheduleWorkItemScheduleRuntime = (EventOpcode)112;
+            public const EventOpcode ScheduleWorkItemScheduleTransactionContext = (EventOpcode)113;
+            public const EventOpcode SessionUpgradeAccept = (EventOpcode)114;
+            public const EventOpcode SessionUpgradeInitiate = (EventOpcode)115;
+            public const EventOpcode Signpostsuspend = (EventOpcode)116;
+            public const EventOpcode StartWorkItemStartBookmark = (EventOpcode)117;
+            public const EventOpcode StartWorkItemStartCancelActivity = (EventOpcode)118;
+            public const EventOpcode StartWorkItemStartCompletion = (EventOpcode)119;
+            public const EventOpcode BufferPoolingAllocate = (EventOpcode)12;
+            public const EventOpcode StartWorkItemStartExecuteActivity = (EventOpcode)120;
+            public const EventOpcode StartWorkItemStartFault = (EventOpcode)121;
+            public const EventOpcode StartWorkItemStartRuntime = (EventOpcode)122;
+            public const EventOpcode StartWorkItemStartTransactionContext = (EventOpcode)123;
+            public const EventOpcode TrackingProfileNotFound = (EventOpcode)124;
+            public const EventOpcode TrackingRecordDropped = (EventOpcode)125;
+            public const EventOpcode TrackingRecordRaised = (EventOpcode)126;
+            public const EventOpcode TrackingRecordTruncated = (EventOpcode)127;
+            public const EventOpcode TransportReceiveBeforeAuthentication = (EventOpcode)128;
+            public const EventOpcode TryCatchExceptionDuringCancelation = (EventOpcode)129;
+            public const EventOpcode BufferPoolingTune = (EventOpcode)13;
+            public const EventOpcode TryCatchExceptionFromCatchOrFinally = (EventOpcode)130;
+            public const EventOpcode TryCatchExceptionFromTry = (EventOpcode)131;
+            public const EventOpcode WASActivationConnected = (EventOpcode)132;
+            public const EventOpcode WASActivationDisconnect = (EventOpcode)133;
+            public const EventOpcode WFApplicationStateChangeCompleted = (EventOpcode)134;
+            public const EventOpcode WFApplicationStateChangeIdled = (EventOpcode)135;
+            public const EventOpcode WFApplicationStateChangeInstanceAborted = (EventOpcode)136;
+            public const EventOpcode WFApplicationStateChangeInstanceCanceled = (EventOpcode)137;
+            public const EventOpcode WFApplicationStateChangePersistableIdle = (EventOpcode)138;
+            public const EventOpcode WFApplicationStateChangePersisted = (EventOpcode)139;
+            public const EventOpcode ClientRuntimeClientChannelOpenStart = (EventOpcode)14;
+            public const EventOpcode WFApplicationStateChangeTerminated = (EventOpcode)140;
+            public const EventOpcode WFApplicationStateChangeUnhandledException = (EventOpcode)141;
+            public const EventOpcode WFApplicationStateChangeUnloaded = (EventOpcode)142;
+            public const EventOpcode WorkflowActivitysuspend = (EventOpcode)143;
+            public const EventOpcode WorkflowInstanceRecordAbortedRecord = (EventOpcode)144;
+            public const EventOpcode WorkflowInstanceRecordAbortedWithId = (EventOpcode)145;
+            public const EventOpcode WorkflowInstanceRecordSuspendedRecord = (EventOpcode)146;
+            public const EventOpcode WorkflowInstanceRecordSuspendedWithId = (EventOpcode)147;
+            public const EventOpcode WorkflowInstanceRecordTerminatedRecord = (EventOpcode)148;
+            public const EventOpcode WorkflowInstanceRecordTerminatedWithId = (EventOpcode)149;
+            public const EventOpcode ClientRuntimeClientChannelOpenStop = (EventOpcode)15;
+            public const EventOpcode WorkflowInstanceRecordUnhandledExceptionRecord = (EventOpcode)150;
+            public const EventOpcode WorkflowInstanceRecordUnhandledExceptionWithId = (EventOpcode)151;
+            public const EventOpcode WorkflowInstanceRecordUpdatedRecord = (EventOpcode)152;
+            public const EventOpcode ClientRuntimeClientMessageInspectorAfterReceiveInvoked = (EventOpcode)16;
+            public const EventOpcode ClientRuntimeClientMessageInspectorBeforeSendInvoked = (EventOpcode)17;
+            public const EventOpcode ClientRuntimeClientParameterInspectorStart = (EventOpcode)18;
+            public const EventOpcode ClientRuntimeClientParameterInspectorStop = (EventOpcode)19;
+            public const EventOpcode ClientRuntimeOperationPrepared = (EventOpcode)20;
+            public const EventOpcode CompleteWorkItemCompleteBookmark = (EventOpcode)21;
+            public const EventOpcode CompleteWorkItemCompleteCancelActivity = (EventOpcode)22;
+            public const EventOpcode CompleteWorkItemCompleteCompletion = (EventOpcode)23;
+            public const EventOpcode CompleteWorkItemCompleteExecuteActivity = (EventOpcode)24;
+            public const EventOpcode CompleteWorkItemCompleteFault = (EventOpcode)25;
+            public const EventOpcode CompleteWorkItemCompleteRuntime = (EventOpcode)26;
+            public const EventOpcode CompleteWorkItemCompleteTransactionContext = (EventOpcode)27;
+            public const EventOpcode CorrelationDuplicateQuery = (EventOpcode)28;
+            public const EventOpcode DiscoveryClientExceptionSuppressed = (EventOpcode)29;
+            public const EventOpcode DiscoveryClientFailedToClose = (EventOpcode)30;
+            public const EventOpcode DiscoveryClientReceivedMulticastSuppression = (EventOpcode)31;
+            public const EventOpcode DiscoveryClientChannelCreationFailed = (EventOpcode)32;
+            public const EventOpcode DiscoveryClientChannelFindInitiated = (EventOpcode)33;
+            public const EventOpcode DiscoveryClientChannelOpenFailed = (EventOpcode)34;
+            public const EventOpcode DiscoveryClientChannelOpenSucceeded = (EventOpcode)35;
+            public const EventOpcode DiscoveryMessageDuplicate = (EventOpcode)36;
+            public const EventOpcode DiscoveryMessageInvalidContent = (EventOpcode)37;
+            public const EventOpcode DiscoveryMessageInvalidRelatesToOrOperationCompleted = (EventOpcode)38;
+            public const EventOpcode DiscoveryMessageInvalidReplyTo = (EventOpcode)39;
+            public const EventOpcode DiscoveryMessageNoContent = (EventOpcode)40;
+            public const EventOpcode DiscoveryMessageNullMessageId = (EventOpcode)41;
+            public const EventOpcode DiscoveryMessageNullMessageSequence = (EventOpcode)42;
+            public const EventOpcode DiscoveryMessageNullRelatesTo = (EventOpcode)43;
+            public const EventOpcode DiscoveryMessageNullReplyTo = (EventOpcode)44;
+            public const EventOpcode DiscoveryMessageReceivedAfterOperationCompleted = (EventOpcode)45;
+            public const EventOpcode DiscoverySynchronizationContextReset = (EventOpcode)46;
+            public const EventOpcode DiscoverySynchronizationContextSetToNull = (EventOpcode)47;
+            public const EventOpcode DispatchMessageBeforeAuthorization = (EventOpcode)48;
+            public const EventOpcode DispatchMessageDispatchStart = (EventOpcode)49;
+            public const EventOpcode DispatchMessageDispatchStop = (EventOpcode)50;
+            public const EventOpcode DispatchMessageDispathMessageInspectorAfterReceiveInvoked = (EventOpcode)51;
+            public const EventOpcode DispatchMessageDispathMessageInspectorBeforeSendInvoked = (EventOpcode)52;
+            public const EventOpcode DispatchMessageOperationInvokerStart = (EventOpcode)53;
+            public const EventOpcode DispatchMessageOperationInvokerStop = (EventOpcode)54;
+            public const EventOpcode DispatchMessageParameterInspectorStart = (EventOpcode)55;
+            public const EventOpcode DispatchMessageParameterInspectorStop = (EventOpcode)56;
+            public const EventOpcode DispatchMessageTransactionScopeCreate = (EventOpcode)57;
+            public const EventOpcode EndpointDiscoverabilityDisabled = (EventOpcode)58;
+            public const EventOpcode EndpointDiscoverabilityEnabled = (EventOpcode)59;
+            public const EventOpcode ExecuteFlowchartEmpty = (EventOpcode)60;
+            public const EventOpcode ExecuteFlowchartNextNull = (EventOpcode)61;
+            public const EventOpcode ExecuteFlowchartSwitchCase = (EventOpcode)62;
+            public const EventOpcode ExecuteFlowchartSwitchCaseNotFound = (EventOpcode)63;
+            public const EventOpcode ExecuteFlowchartSwitchDefault = (EventOpcode)64;
+            public const EventOpcode InferDescriptionContract = (EventOpcode)69;
+            public const EventOpcode InferDescriptionOperation = (EventOpcode)70;
+            public const EventOpcode InvokeMethodDoesNotUseAsyncPattern = (EventOpcode)71;
+            public const EventOpcode InvokeMethodIsNotStatic = (EventOpcode)72;
+            public const EventOpcode InvokeMethodIsStatic = (EventOpcode)73;
+            public const EventOpcode InvokeMethodThrewException = (EventOpcode)74;
+            public const EventOpcode InvokeMethodUseAsyncPattern = (EventOpcode)75;
+            public const EventOpcode MessageChannelCacheMissed = (EventOpcode)76;
+            public const EventOpcode ReliableSessionFaulted = (EventOpcode)77;
+            public const EventOpcode ReliableSessionReconnect = (EventOpcode)78;
+            public const EventOpcode ReliableSessionSequenceAck = (EventOpcode)79;
+            public const EventOpcode RoutingServiceAbortingChannel = (EventOpcode)80;
+            public const EventOpcode RoutingServiceCloseFailed = (EventOpcode)81;
+            public const EventOpcode RoutingServiceConfigurationApplied = (EventOpcode)82;
+            public const EventOpcode RoutingServiceDuplexCallbackException = (EventOpcode)83;
+            public const EventOpcode RoutingServiceHandledException = (EventOpcode)84;
+            public const EventOpcode RoutingServiceTransmitFailed = (EventOpcode)85;
+            public const EventOpcode RoutingServiceClientChannelFaulted = (EventOpcode)86;
+            public const EventOpcode RoutingServiceClientClosing = (EventOpcode)87;
+            public const EventOpcode RoutingServiceClientCreatingForEndpoint = (EventOpcode)88;
+            public const EventOpcode RoutingServiceMessageCompletingOneWay = (EventOpcode)89;
+            public const EventOpcode RoutingServiceMessageCompletingTwoWay = (EventOpcode)90;
+            public const EventOpcode RoutingServiceMessageMovedToBackup = (EventOpcode)91;
+            public const EventOpcode RoutingServiceMessageProcessingFailure = (EventOpcode)92;
+            public const EventOpcode RoutingServiceMessageProcessingMessage = (EventOpcode)93;
+            public const EventOpcode RoutingServiceMessageRoutedToEndpoints = (EventOpcode)94;
+            public const EventOpcode RoutingServiceMessageSendingFaultResponse = (EventOpcode)95;
+            public const EventOpcode RoutingServiceMessageSendingResponse = (EventOpcode)96;
+            public const EventOpcode RoutingServiceMessageTransmitSucceeded = (EventOpcode)97;
+            public const EventOpcode RoutingServiceMessageTransmittingMessage = (EventOpcode)98;
+            public const EventOpcode RoutingServiceReceiveContextAbandoning = (EventOpcode)99;
         }
 
         public class Keywords

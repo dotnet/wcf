@@ -5,7 +5,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.ServiceModel.Diagnostics.Application;
+using System.Runtime;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
 using System.Xml;
@@ -244,9 +244,9 @@ namespace System.ServiceModel.Channels
 
         private void ThrowMaxReceivedMessageSizeExceeded()
         {
-            if (TD.MaxReceivedMessageSizeExceededIsEnabled())
+            if (WcfEventSource.Instance.MaxReceivedMessageSizeExceededIsEnabled())
             {
-                TD.MaxReceivedMessageSizeExceeded(SR.Format(SR.MaxReceivedMessageSizeExceeded, _factory.MaxReceivedMessageSize));
+                WcfEventSource.Instance.MaxReceivedMessageSizeExceeded(SR.Format(SR.MaxReceivedMessageSizeExceeded, _factory.MaxReceivedMessageSize));
             }
 
             string message = SR.Format(SR.MaxReceivedMessageSizeExceeded, _factory.MaxReceivedMessageSize);

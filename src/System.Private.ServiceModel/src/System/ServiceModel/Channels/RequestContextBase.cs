@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Runtime;
 using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 
 namespace System.ServiceModel.Channels
 {
@@ -317,9 +316,9 @@ namespace System.ServiceModel.Channels
             }
             catch (TimeoutException e)
             {
-                if (TD.CloseTimeoutIsEnabled())
+                if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
-                    TD.CloseTimeout(e.Message);
+                    WcfEventSource.Instance.CloseTimeout(e.Message);
                 }
             }
             finally

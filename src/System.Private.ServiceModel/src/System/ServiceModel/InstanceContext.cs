@@ -9,7 +9,6 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
 using System.Threading;
-using System.ServiceModel.Diagnostics.Application;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel

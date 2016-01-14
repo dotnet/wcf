@@ -10,7 +10,6 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.Threading;
 using System.Security;
-using System.ServiceModel.Diagnostics.Application;
 using System.Globalization;
 using System.Collections.Generic;
 
@@ -385,9 +384,9 @@ namespace System.ServiceModel.Diagnostics
                     }
                 }
 
-                if (TD.MessageSentToTransportIsEnabled())
+                if (WcfEventSource.Instance.MessageSentToTransportIsEnabled())
                 {
-                    TD.MessageSentToTransport(eventTraceActivity, correlationId);
+                    WcfEventSource.Instance.MessageSentToTransport(eventTraceActivity, correlationId);
                 }
             }
         }
@@ -417,14 +416,14 @@ namespace System.ServiceModel.Diagnostics
                         FxTrace.Trace.SetAndTraceTransfer(activityId, !createNewActivityId);
                     }
                 }
-                if (TD.MessageReceivedFromTransportIsEnabled())
+                if (WcfEventSource.Instance.MessageReceivedFromTransportIsEnabled())
                 {
                     if (context == null)
                     {
                         context = OperationContext.Current;
                     }
 
-                    TD.MessageReceivedFromTransport(eventTraceActivity, correlationId, TraceUtility.GetAnnotation(context));
+                    WcfEventSource.Instance.MessageReceivedFromTransport(eventTraceActivity, correlationId, TraceUtility.GetAnnotation(context));
                 }
             }
         }

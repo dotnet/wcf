@@ -14,7 +14,6 @@ using System.Security.Authentication;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using System.ServiceModel.Diagnostics.Application;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Threading.Tasks;
@@ -201,9 +200,9 @@ namespace System.ServiceModel.Channels
                 // authenticate
                 try
                 {
-                    if (TD.WindowsStreamSecurityOnAcceptUpgradeIsEnabled())
+                    if (WcfEventSource.Instance.WindowsStreamSecurityOnAcceptUpgradeIsEnabled())
                     {
-                        TD.WindowsStreamSecurityOnAcceptUpgrade(EventTraceActivity);
+                        WcfEventSource.Instance.WindowsStreamSecurityOnAcceptUpgrade(EventTraceActivity);
                     }
 
                     negotiateStream.AuthenticateAsServerAsync(_parent.ServerCredential, _parent.ProtectionLevel,
@@ -358,9 +357,9 @@ namespace System.ServiceModel.Channels
                 string targetName;
                 EndpointIdentity identity;
 
-                if (TD.WindowsStreamSecurityOnInitiateUpgradeIsEnabled())
+                if (WcfEventSource.Instance.WindowsStreamSecurityOnInitiateUpgradeIsEnabled())
                 {
-                    TD.WindowsStreamSecurityOnInitiateUpgrade();
+                    WcfEventSource.Instance.WindowsStreamSecurityOnInitiateUpgrade();
                 }
 
                 // prepare

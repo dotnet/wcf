@@ -8,7 +8,6 @@ using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Diagnostics.Application;
 using System.Threading;
 using System.Xml;
 using SessionIdleManager = System.ServiceModel.Channels.ServiceChannel.SessionIdleManager;
@@ -192,9 +191,9 @@ namespace System.ServiceModel.Dispatcher
 
         private void AsyncMessagePump(IAsyncResult result)
         {
-            if (TD.ChannelReceiveStopIsEnabled())
+            if (WcfEventSource.Instance.ChannelReceiveStopIsEnabled())
             {
-                TD.ChannelReceiveStop(this.EventTraceActivity, this.GetHashCode());
+                WcfEventSource.Instance.ChannelReceiveStop(this.EventTraceActivity, this.GetHashCode());
             }
 
             for (; ;)
@@ -234,9 +233,9 @@ namespace System.ServiceModel.Dispatcher
         {
             _requestInfo.Cleanup();
 
-            if (TD.ChannelReceiveStartIsEnabled())
+            if (WcfEventSource.Instance.ChannelReceiveStartIsEnabled())
             {
-                TD.ChannelReceiveStart(this.EventTraceActivity, this.GetHashCode());
+                WcfEventSource.Instance.ChannelReceiveStart(this.EventTraceActivity, this.GetHashCode());
             }
 
             return _receiver.BeginTryReceive(TimeSpan.MaxValue, ChannelHandler.s_onAsyncReceiveComplete, this);
@@ -738,9 +737,9 @@ namespace System.ServiceModel.Dispatcher
         {
             ChannelHandler handler = state as ChannelHandler;
 
-            if (TD.ChannelReceiveStopIsEnabled())
+            if (WcfEventSource.Instance.ChannelReceiveStopIsEnabled())
             {
-                TD.ChannelReceiveStop(handler.EventTraceActivity, state.GetHashCode());
+                WcfEventSource.Instance.ChannelReceiveStop(handler.EventTraceActivity, state.GetHashCode());
             }
             handler.SyncMessagePump();
         }
@@ -1274,9 +1273,9 @@ namespace System.ServiceModel.Dispatcher
             if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled && message != null)
             {
                 EventTraceActivity eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                if (TD.DispatchMessageStartIsEnabled())
+                if (WcfEventSource.Instance.DispatchMessageStartIsEnabled())
                 {
-                    TD.DispatchMessageStart(eventTraceActivity);
+                    WcfEventSource.Instance.DispatchMessageStart(eventTraceActivity);
                 }
                 return eventTraceActivity;
             }
