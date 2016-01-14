@@ -18,6 +18,7 @@
     <InboxOnTargetFramework Include="MonoTouch10" />
     <InboxOnTargetFramework Include="net45" />
     <InboxOnTargetFramework Include="win8" />
+    <InboxOnTargetFramework Include="wp8" />
     <InboxOnTargetFramework Include="xamarinios10" />
     <InboxOnTargetFramework Include="xamarinmac20" />
 
