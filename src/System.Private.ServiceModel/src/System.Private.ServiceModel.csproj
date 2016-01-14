@@ -40,7 +40,7 @@
     <ProjectLockJson>$(MsBuildThisFileDirectory)windows\project.lock.json</ProjectLockJson>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetGroup)' != 'netcore50' AND '$(TargetsWindows)' == 'true'">
-    <DefineConstants>>$(DefineConstants);SUPPORTS_WINDOWSIDENTITY</DefineConstants>
+    <DefineConstants>$(DefineConstants);SUPPORTS_WINDOWSIDENTITY</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
