@@ -238,6 +238,11 @@
     <OSGroup Condition="'$(OSGroup)'=='' and $(Configuration.StartsWith('Linux'))">Linux</OSGroup>
     <OSGroup Condition="'$(OSGroup)'=='' and $(Configuration.StartsWith('OSX'))">OSX</OSGroup>
     <OSGroup Condition="'$(OSGroup)'=='' and $(Configuration.StartsWith('FreeBSD'))">FreeBSD</OSGroup>
+
+    <!-- 
+    This logic differs from corefx's dir.props. Most things we build are not "AnyOS", so unless explicilty specified, we want to 
+    inherit the OS environment that we are building under 
+    --> 
     <OSGroup Condition="'$(OSGroup)'==''">$(OSEnvironment)</OSGroup>
 
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('netcore50aot'))">netcore50aot</TargetGroup>
