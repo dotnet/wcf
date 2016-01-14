@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\ref\3.9.0\System.ServiceModel.Http.depproj">
+      <SupportedFramework>wp8</SupportedFramework>
+    </ProjectReference>
+    <ProjectReference Include="..\ref\4.0.0\System.ServiceModel.Http.depproj">
+      <SupportedFramework>net45;win8</SupportedFramework>
+    </ProjectReference>
+    <ProjectReference Include="..\ref\System.ServiceModel.Http.csproj">
+      <SupportedFramework>net46;netcore50;dnxcore50</SupportedFramework>
+    </ProjectReference>
+    <ProjectReference Include="..\src\System.ServiceModel.Http.builds" />
+
+    <InboxOnTargetFramework Include="MonoAndroid10" />
+    <InboxOnTargetFramework Include="MonoTouch10" />
+    <InboxOnTargetFramework Include="net45" />
+    <InboxOnTargetFramework Include="win8" />
+    <InboxOnTargetFramework Include="wp80" />
+    <InboxOnTargetFramework Include="xamarinios10" />
+    <InboxOnTargetFramework Include="xamarinmac20" />
+
+    <!-- the reference assembly for System.ServiceModel.Http depends on 
+         System.Net.WebHeaderCollection which is implemented as a pure PCL,
+         as such it's implementation depedencies are listed as dotnet.
+         Since the System.ServiceModel.Http reference assembly depends on 
+         System.Runtime 4.0.0 and System.Net.WebHeaderCollection impl 
+         depends on System.Runtime 4.0.20 this results in a downgrade.
+         To workaround, list raise the dependency on System.Runtime. -->
+    <AdditionalAssemblyReference Include="System.Runtime">
+      <TargetFramework>dotnet</TargetFramework>
+      <Version>4.0.20.0</Version>
+    </AdditionalAssemblyReference>
+
+    <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
+      <PackageTargetFramework>dnxcore50</PackageTargetFramework>
+    </ProjectReference>
+    <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
+      <PackageTargetFramework>netcore50</PackageTargetFramework>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+</Project>

@@ -14,6 +14,7 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
+    <PackageTargetFramework Condition="'$(TargetGroup)' == ''">DNXCore50</PackageTargetFramework>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
   </PropertyGroup>
 
@@ -26,8 +27,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_Release|AnyCPU'"/>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Debug|AnyCPU'"/>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Release|AnyCPU'"/>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net46_Debug|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net46_Release|AnyCPU'" />
 
   <PropertyGroup Condition="'$(TargetGroup)' == 'netcore50'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
@@ -40,8 +39,8 @@
     <ProjectJson>$(MsBuildThisFileDirectory)windows\project.json</ProjectJson>
     <ProjectLockJson>$(MsBuildThisFileDirectory)windows\project.lock.json</ProjectLockJson>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(IsNETNativeLibrary)' != 'true' AND '$(TargetsWindows)' == 'true'">
-    <DefineConstants>>$(DefineConstants);SUPPORTS_WINDOWSIDENTITY</DefineConstants>
+  <PropertyGroup Condition="'$(TargetGroup)' != 'netcore50' AND '$(TargetsWindows)' == 'true'">
+    <DefineConstants>$(DefineConstants);SUPPORTS_WINDOWSIDENTITY</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
