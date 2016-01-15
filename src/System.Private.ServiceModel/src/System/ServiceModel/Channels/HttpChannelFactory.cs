@@ -44,7 +44,6 @@ namespace System.ServiceModel.Channels
         private TransferMode _transferMode;
         private ISecurityCapabilities _securityCapabilities;
         private WebSocketTransportSettings _webSocketSettings;
-        private ConnectionBufferPool _bufferPool;
         private bool _useDefaultWebProxy;
         private Lazy<string> _webSocketSoapContentType;
         private SHA512 _hashAlgorithm;
@@ -105,8 +104,6 @@ namespace System.ServiceModel.Channels
             _securityCapabilities = bindingElement.GetProperty<ISecurityCapabilities>(context);
 
             _webSocketSettings = WebSocketHelper.GetRuntimeWebSocketSettings(bindingElement.WebSocketSettings);
-            int webSocketBufferSize = WebSocketHelper.ComputeClientBufferSize(MaxReceivedMessageSize);
-            _bufferPool = new ConnectionBufferPool(webSocketBufferSize);
             _clientWebSocketFactory = ClientWebSocketFactory.GetFactory();
             _webSocketSoapContentType = new Lazy<string>(() => MessageEncoderFactory.CreateSessionEncoder().ContentType, LazyThreadSafetyMode.ExecutionAndPublication);
         }
@@ -181,11 +178,6 @@ namespace System.ServiceModel.Channels
             {
                 return _webSocketSoapContentType.Value;
             }
-        }
-
-        protected ConnectionBufferPool WebSocketBufferPool
-        {
-            get { return _bufferPool; }
         }
 
         private HashAlgorithm HashAlgorithm
@@ -438,7 +430,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, remoteAddress, via, WebSocketBufferPool);
+                return (TChannel)(object)new ClientWebSocketTransportDuplexSessionChannel((HttpChannelFactory<IDuplexSessionChannel>)(object)this, _clientWebSocketFactory, remoteAddress, via);
             }
         }
 

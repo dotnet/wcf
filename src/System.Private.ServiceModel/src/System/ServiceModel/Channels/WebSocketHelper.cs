@@ -28,25 +28,10 @@ namespace System.ServiceModel.Channels
 
         internal static readonly char[] ProtocolSeparators = new char[] { ',' };
 
-        private const string WebSocketKeyPostString = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-
         private const string SchemeWs = "ws";
         private const string SchemeWss = "wss";
 
-        private static readonly int s_PropertyBufferSize = ((2 * Marshal.SizeOf<uint>()) + Marshal.SizeOf<bool>()) + IntPtr.Size;
         private static readonly HashSet<char> s_InvalidSeparatorSet = new HashSet<char>(new char[] { '(', ')', '<', '>', '@', ',', ';', ':', '\\', '"', '/', '[', ']', '?', '=', '{', '}', ' ' });
-        private static string s_currentWebSocketVersion;
-
-        internal static string ComputeAcceptHeader(string webSocketKey)
-        {
-            Fx.Assert(webSocketKey != null, "webSocketKey should not be null.");
-            throw ExceptionHelper.PlatformNotSupported();
-        }
-
-        internal static int ComputeClientBufferSize(long maxReceivedMessageSize)
-        {
-            return ComputeInternalBufferSize(maxReceivedMessageSize, false);
-        }
 
         internal static int GetReceiveBufferSize(long maxReceivedMessageSize)
         {
@@ -60,56 +45,11 @@ namespace System.ServiceModel.Channels
                 || (transportUsage == WebSocketTransportUsage.WhenDuplex && isContractDuplex);
         }
 
-        internal static Uri GetWebSocketUri(Uri httpUri)
-        {
-            Fx.Assert(httpUri != null, "RemoteAddress.Uri should not be null.");
-            UriBuilder builder = new UriBuilder(httpUri);
-
-            if (UriEx.UriSchemeHttp.Equals(httpUri.Scheme, StringComparison.OrdinalIgnoreCase))
-            {
-                builder.Scheme = SchemeWs;
-            }
-            else
-            {
-                Fx.Assert(
-                    UriEx.UriSchemeHttps.Equals(httpUri.Scheme, StringComparison.OrdinalIgnoreCase),
-                    "httpUri.Scheme should be http or https.");
-                builder.Scheme = SchemeWss;
-            }
-
-            return builder.Uri;
-        }
-
         internal static bool IsWebSocketUri(Uri uri)
         {
             return uri != null &&
                 (WebSocketHelper.SchemeWs.Equals(uri.Scheme, StringComparison.OrdinalIgnoreCase) ||
                  WebSocketHelper.SchemeWss.Equals(uri.Scheme, StringComparison.OrdinalIgnoreCase));
-        }
-
-        internal static Uri NormalizeWsSchemeWithHttpScheme(Uri uri)
-        {
-            Fx.Assert(uri != null, "RemoteAddress.Uri should not be null.");
-            if (!IsWebSocketUri(uri))
-            {
-                return uri;
-            }
-
-            UriBuilder builder = new UriBuilder(uri);
-
-            switch (uri.Scheme.ToLowerInvariant())
-            {
-                case SchemeWs:
-                    builder.Scheme = UriEx.UriSchemeHttp;
-                    break;
-                case SchemeWss:
-                    builder.Scheme = UriEx.UriSchemeHttps;
-                    break;
-                default:
-                    break;
-            }
-
-            return builder.Uri;
         }
 
         internal static Uri NormalizeHttpSchemeWithWsScheme(Uri uri)
@@ -137,40 +77,6 @@ namespace System.ServiceModel.Channels
             return builder.Uri;
         }
 
-        internal static bool TryParseSubProtocol(string subProtocolValue, out List<string> subProtocolList)
-        {
-            subProtocolList = new List<string>();
-            if (subProtocolValue != null)
-            {
-                string[] parsedTokens = subProtocolValue.Split(ProtocolSeparators, StringSplitOptions.RemoveEmptyEntries);
-
-                string invalidChar;
-                for (int i = 0; i < parsedTokens.Length; i++)
-                {
-                    string token = parsedTokens[i];
-                    if (!string.IsNullOrWhiteSpace(token))
-                    {
-                        token = token.Trim();
-                        if (!IsSubProtocolInvalid(token, out invalidChar))
-                        {
-                            // Note that we could be adding a duplicate to this list. According to the specification the header should not include
-                            // duplicates but we aim to be "robust in what we receive" so we will allow it. The matching code that consumes this list
-                            // will take the first match so duplicates will not affect the outcome of the negotiation process.
-                            subProtocolList.Add(token);
-                        }
-                        else
-                        {
-                            FxTrace.Exception.AsWarning(new HttpRequestException(
-                                SR.Format(SR.WebSocketInvalidProtocolInvalidCharInProtocolString, token, invalidChar)));
-                            return false;
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
         internal static bool IsSubProtocolInvalid(string protocol, out string invalidChar)
         {
             Fx.Assert(protocol != null, "protocol should not be null");
@@ -193,17 +99,6 @@ namespace System.ServiceModel.Channels
 
             invalidChar = null;
             return false;
-        }
-
-        internal static string GetCurrentVersion()
-        {
-            if (s_currentWebSocketVersion == null)
-            {
-                s_currentWebSocketVersion = string.Empty;
-                throw ExceptionHelper.PlatformNotSupported();
-            }
-
-            return s_currentWebSocketVersion;
         }
 
         internal static WebSocketTransportSettings GetRuntimeWebSocketSettings(WebSocketTransportSettings settings)
@@ -339,21 +234,6 @@ namespace System.ServiceModel.Channels
             }
 
             return innerException == null ? new TimeoutException(errorMsg) : new TimeoutException(errorMsg, innerException);
-        }
-
-        private static int ComputeInternalBufferSize(long maxReceivedMessageSize, bool isServerBuffer)
-        {
-            const int NativeOverheadBufferSize = 144;
-            /* LAYOUT:
-            | Native buffer              | PayloadReceiveBuffer | PropertyBuffer |
-            | RBS + SBS + 144            | RBS                  | PBS            |
-            | Only WSPC may modify       | Only WebSocketBase may modify         | 
-
-             *RBS = ReceiveBufferSize, *SBS = SendBufferSize
-             *PBS = PropertyBufferSize (32-bit: 16, 64 bit: 20 bytes) */
-
-            int nativeSendBufferSize = isServerBuffer ? WebSocketDefaults.MinSendBufferSize : WebSocketDefaults.BufferSize;
-            return (2 * GetReceiveBufferSize(maxReceivedMessageSize)) + nativeSendBufferSize + NativeOverheadBufferSize + s_PropertyBufferSize;
         }
     }
 }
