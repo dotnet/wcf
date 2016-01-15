@@ -70,7 +70,7 @@ namespace System.ServiceModel.Channels
             get { return this; }
         }
 
-        protected abstract EndPoint RemoteEndPoint { get; }
+        protected abstract IPEndPoint RemoteEndPoint { get; }
 
         protected static void OnReceiveTimeout(object state)
         {
