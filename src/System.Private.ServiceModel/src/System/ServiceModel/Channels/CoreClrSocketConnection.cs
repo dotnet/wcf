@@ -86,11 +86,16 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected override EndPoint RemoteEndPoint
+        protected override IPEndPoint RemoteEndPoint
         {
             get
             {
-                return _socket.RemoteEndPoint;
+                if (!_socket.Connected)
+                {
+                    return null;
+                }
+
+                return (IPEndPoint)_socket.RemoteEndPoint;
             }
         }
 
@@ -597,11 +602,11 @@ namespace System.ServiceModel.Channels
 
         protected override void TraceSocketReadStop(int bytesRead, bool async)
         {
+            IPEndPoint remote = RemoteEndPoint;
             string remoteEndpointAddressString = string.Empty;
-            if (_socket != null)
+            if (remote != null)
             {
-                var remoteEndpoint = (IPEndPoint) _socket.RemoteEndPoint;
-                remoteEndpointAddressString = remoteEndpoint.Address + ":" + remoteEndpoint.Port;
+                remoteEndpointAddressString = remote.Address + ":" + remote.Port;
             }
 
             if (!async)

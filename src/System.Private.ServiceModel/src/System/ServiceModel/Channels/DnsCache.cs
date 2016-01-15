@@ -1,17 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime;
-using System.ServiceModel;
-using System.ServiceModel.Dispatcher;
-using System.Text;
 using System.Threading.Tasks;
 #if FEATURE_NETNATIVE
+using System.Collections.Generic;
+
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 using Windows.Networking.Sockets;

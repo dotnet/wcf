@@ -50,7 +50,7 @@ namespace System.ServiceModel.Channels
             _sendCts = new CancellationTokenSource();
         }
 
-        protected override EndPoint RemoteEndPoint {
+        protected override IPEndPoint RemoteEndPoint {
             get
             {
                 IPAddress ip;
@@ -448,11 +448,11 @@ namespace System.ServiceModel.Channels
 
         protected override void TraceSocketReadStop(int bytesRead, bool async)
         {
+            IPEndPoint remote = RemoteEndPoint;
             string remoteEndpointAddressString = string.Empty;
-            if (_socket != null)
+            if (remote != null)
             {
-                var socketInfo = _socket.Information;
-                remoteEndpointAddressString = socketInfo.RemoteAddress.ToString() + ":" + socketInfo.RemotePort.ToString();
+                remoteEndpointAddressString = remote.Address + ":" + remote.Port;
             }
 
             if (!async)

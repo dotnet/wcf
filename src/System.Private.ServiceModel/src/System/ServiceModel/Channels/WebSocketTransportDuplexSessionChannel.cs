@@ -1,18 +1,10 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Net.Http;
 using System.Net.WebSockets;
 using System.Runtime;
-using System.Runtime.Diagnostics;
-using System.Security.Principal;
-using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,26 +16,23 @@ namespace System.ServiceModel.Channels
         readonly WebSocketTransportSettings _webSocketSettings;
         readonly TransferMode _transferMode;
         readonly int _maxBufferSize;
-        readonly ConnectionBufferPool _bufferPool;
         readonly ITransportFactorySettings _transportFactorySettings;
         readonly WebSocketCloseDetails _webSocketCloseDetails = new WebSocketCloseDetails();
         Action<object> _waitCallback;
         WebSocket _webSocket;
         WebSocketStream _webSocketStream;
         object _state;
-        byte[] _internalBuffer;
         int _cleanupStatus = WebSocketHelper.OperationNotStarted;
         bool _shouldDisposeWebSocketAfterClosed = true;
         Exception _pendingWritingMessageException;
 
-        public WebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, EndpointAddress remoteAddresss, Uri via, ConnectionBufferPool bufferPool)
+        public WebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, EndpointAddress remoteAddresss, Uri via)
             : base(channelFactory, channelFactory, EndpointAddress.AnonymousAddress, channelFactory.MessageVersion.Addressing.AnonymousUri, remoteAddresss, via)
         {
             Fx.Assert(channelFactory.WebSocketSettings != null, "channelFactory.WebSocketTransportSettings should not be null.");
             _webSocketSettings = channelFactory.WebSocketSettings;
             _transferMode = channelFactory.TransferMode;
             _maxBufferSize = channelFactory.MaxBufferSize;
-            _bufferPool = bufferPool;
             _transportFactorySettings = channelFactory;
         }
 
@@ -88,22 +77,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected byte[] InternalBuffer
-        {
-            get
-            {
-                return _internalBuffer;
-            }
-
-            set
-            {
-                // We allow setting the property to null as long as we don't overwrite an existing non-null 'internalBuffer'. Because otherwise 
-                // we get NullRefs in other places. So if you change/remove the assert below, make sure we still assert for this case.
-                Fx.Assert(_internalBuffer == null, "internalBuffer should not be set twice.");
-                _internalBuffer = value;
-            }
-        }
-
         protected override void OnAbort()
         {
             if (WcfEventSource.Instance.WebSocketConnectionAbortedIsEnabled())
@@ -133,12 +106,6 @@ namespace System.ServiceModel.Channels
             {
                 WcfEventSource.Instance.WebSocketConnectionClosed(WebSocket.GetHashCode());
             }
-        }
-
-        protected byte[] TakeBuffer()
-        {
-            Fx.Assert(_bufferPool != null, "'bufferPool' MUST NOT be NULL.");
-            return _bufferPool.Take();
         }
 
         protected override void CloseOutputSessionCore(TimeSpan timeout)
@@ -372,12 +339,6 @@ namespace System.ServiceModel.Channels
             if (_shouldDisposeWebSocketAfterClosed && _webSocket != null)
             {
                 _webSocket.Dispose();
-            }
-
-            if (_internalBuffer != null)
-            {
-                _bufferPool.Return(_internalBuffer);
-                _internalBuffer = null;
             }
         }
 
