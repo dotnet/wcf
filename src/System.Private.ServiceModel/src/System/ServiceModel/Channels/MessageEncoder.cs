@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.IO;
+using System.Net.Http.Headers;
 using System.ServiceModel.Diagnostics;
 using System.Runtime;
 using System.Threading;
@@ -194,8 +195,23 @@ namespace System.ServiceModel.Channels
 
             // sometimes we get a contentType that has parameters, but our encoders
             // merely expose the base content-type, so we will check a stripped version
+            try
+            {
+                MediaTypeHeaderValue parsedContentType = MediaTypeHeaderValue.Parse(contentType);
 
-            throw ExceptionHelper.PlatformNotSupported("MessageEncoder content type parsing is not supported.");
+                if (supportedMediaType.Length > 0 && !supportedMediaType.Equals(parsedContentType.MediaType, StringComparison.OrdinalIgnoreCase))
+                    return false;
+
+                if (!IsCharSetSupported(parsedContentType.CharSet))
+                    return false;
+            }
+            catch (FormatException)
+            {
+                // bad content type, so we definitely don't support it!
+                return false;
+            }
+
+            return true;
         }
 
         internal virtual bool IsCharSetSupported(string charset)
