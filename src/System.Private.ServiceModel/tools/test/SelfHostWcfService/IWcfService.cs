@@ -110,5 +110,8 @@ namespace WcfService
 
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlVeryComplexType"), XmlSerializerFormat]
         XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex);
+
+        [OperationContract]
+        void ReturnContentType(string contentType);
     }
 }
