@@ -3,6 +3,7 @@
 
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Diagnostics;
@@ -205,6 +206,36 @@ namespace System.Runtime
         public void TraceUnhandledException(Exception exception)
         {
             TraceCore.UnhandledException(_diagnosticTrace, exception != null ? exception.ToString() : string.Empty, exception);
+        }
+
+        public void TraceEtwException(Exception exception, EventLevel eventLevel)
+        {
+            switch (eventLevel)
+            {
+                case EventLevel.Error:
+                case EventLevel.Warning:
+                    if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
+                    {
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+                    }
+                    break;
+                case EventLevel.Critical:
+                    if (WcfEventSource.Instance.UnhandledExceptionIsEnabled())
+                    {
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
+                    }
+                    break;
+                default:
+                    if (WcfEventSource.Instance.ThrowingExceptionVerboseIsEnabled())
+                    {
+                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+                        WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+                    }
+
+                    break;
+            }
         }
 
         private TException TraceException<TException>(TException exception)
