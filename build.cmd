@@ -36,7 +36,7 @@ if not defined VisualStudioVersion (
 
 :EnvSet
 
-call init-tools.cmd
+call %~dp0init-tools.cmd
 
 :: Clear the 'Platform' env variable for this session,
 :: as it's a per-project setting within the build, and
@@ -61,6 +61,7 @@ call :build %*
 :: Build
 set _buildprefix=
 set _buildpostfix=
+echo [%time%] Building Managed Libraries...
 call :build %*
 
 goto :AfterBuild
@@ -74,7 +75,7 @@ goto :eof
 echo.
 :: Pull the build summary from the log file
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
-echo Build Exit Code = %BUILDERRORLEVEL%
+echo [%time%] Build Exit Code = %BUILDERRORLEVEL%
 
 if "%outloop%" equ "true"  (
     pushd %setupFilesFolder%
