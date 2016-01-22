@@ -21,14 +21,6 @@ namespace SharedPoolsOfWCFObjects
         public CallTimingStatsCollector SunnyDay { get; set; }
         public CallTimingStatsCollector RainyDay { get; set; }
 
-        public static int SunnyDaySamples = 1000000;
-        public static int RainyDaySamples = 10000;
-
-        public CallStats()
-            : this(SunnyDaySamples, RainyDaySamples, CallTimingStatsCollector.CalculateSomePercentiles, CallTimingStatsCollector.CalculateSomePercentiles)
-        {
-        }
-
         public CallStats(int samples, int errorSamples)
             : this(samples, errorSamples, CallTimingStatsCollector.CalculateSomePercentiles, CallTimingStatsCollector.CalculateSomePercentiles)
         {
@@ -40,7 +32,7 @@ namespace SharedPoolsOfWCFObjects
             RainyDay = new CallTimingStatsCollector(errorSamples, errorStatsCalculator);
         }
 
-        public void CallActionAndRecordStats(Action action)
+        public void CallActionAndRecordStats(Action action, bool hideExceptions = false)
         {
             Stopwatch sw = new Stopwatch();
             try
@@ -49,13 +41,17 @@ namespace SharedPoolsOfWCFObjects
                 action();
                 SunnyDay.AddCallTiming(sw.ElapsedTicks);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 RainyDay.AddCallTiming(sw.ElapsedTicks);
+                if (!hideExceptions)
+                {
+                    throw;
+                }
             }
         }
 
-        public T CallFuncAndRecordStats<T>(Func<T> func)
+        public T CallFuncAndRecordStats<T>(Func<T> func, bool hideExceptions = false)
         {
             T result = default(T);
             Stopwatch sw = new Stopwatch();
@@ -65,14 +61,18 @@ namespace SharedPoolsOfWCFObjects
                 result = func();
                 SunnyDay.AddCallTiming(sw.ElapsedTicks);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 RainyDay.AddCallTiming(sw.ElapsedTicks);
+                if (!hideExceptions)
+                {
+                    throw;
+                }
             }
             return result;
         }
 
-        public T CallFuncAndRecordStats<T, P>(Func<P, T> func, P param)
+        public T CallFuncAndRecordStats<T, P>(Func<P, T> func, P param, bool hideExceptions = false)
         {
             T result = default(T);
             Stopwatch sw = new Stopwatch();
@@ -82,14 +82,18 @@ namespace SharedPoolsOfWCFObjects
                 result = func(param);
                 SunnyDay.AddCallTiming(sw.ElapsedTicks);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 RainyDay.AddCallTiming(sw.ElapsedTicks);
+                if (!hideExceptions)
+                {
+                    throw;
+                }
             }
             return result;
         }
 
-        public async Task CallAsyncFuncAndRecordStatsAsync(Func<Task> func)
+        public async Task CallAsyncFuncAndRecordStatsAsync(Func<Task> func, bool hideExceptions = false)
         {
             Stopwatch sw = new Stopwatch();
             try
@@ -98,13 +102,17 @@ namespace SharedPoolsOfWCFObjects
                 await func();
                 SunnyDay.AddCallTiming(sw.ElapsedTicks);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 RainyDay.AddCallTiming(sw.ElapsedTicks);
+                if (!hideExceptions)
+                {
+                    throw;
+                }
             }
         }
 
-        public async Task CallAsyncFuncAndRecordStatsAsync<P>(Func<P, Task> func, P param)
+        public async Task CallAsyncFuncAndRecordStatsAsync<P>(Func<P, Task> func, P param, bool hideExceptions = false)
         {
             Stopwatch sw = new Stopwatch();
             try
@@ -113,9 +121,13 @@ namespace SharedPoolsOfWCFObjects
                 await func(param);
                 SunnyDay.AddCallTiming(sw.ElapsedTicks);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 RainyDay.AddCallTiming(sw.ElapsedTicks);
+                if (!hideExceptions)
+                {
+                    throw;
+                }
             }
         }
     }
@@ -195,8 +207,6 @@ namespace SharedPoolsOfWCFObjects
                     int topXPctNum = (timingArr.Length * stats.Centile[i]) / 100;
                     stats.AvgTiming[i] = timingArr.OrderByDescending(t1 => t1).Take(topXPctNum).Sum(t2 => t2) / topXPctNum;
                 }
-
-                //Console.WriteLine(String.Format("Percentile {0}, time {1}", stats.Centile[i], stats.AvgTiming[i]));
             }
 
             return stats;
