@@ -274,7 +274,7 @@ Utilities.addGithubPRTrigger(prCCJob, 'Code Coverage Windows Debug', '@dotnet-bo
     def newRollingJob = job(Utilities.getFullJobName(project, jobName, false)) {
         label('windows-elevated')
         steps {
-            batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:WithCategories=OuterLoop")
+            batchFile("build.cmd /p:Configuration=Windows_NT_${configuration} /p:WithCategories=OuterLoop")
         }
     }
 
