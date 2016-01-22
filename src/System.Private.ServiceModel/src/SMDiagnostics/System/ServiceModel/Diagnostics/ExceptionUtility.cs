@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.Xml;
@@ -85,16 +87,23 @@ namespace System.ServiceModel.Diagnostics
 
         public Exception ThrowHelperCritical(Exception exception)
         {
-            return exception;
+            return ThrowHelper(exception, EventLevel.Critical);
         }
 
         public Exception ThrowHelperError(Exception exception)
         {
-            return exception;
+            return ThrowHelper(exception, EventLevel.Error);
         }
 
         public Exception ThrowHelperWarning(Exception exception)
         {
+            return ThrowHelper(exception, EventLevel.Warning);
+        }
+
+        internal Exception ThrowHelper(Exception exception, EventLevel eventLevel)
+        {
+            FxTrace.Exception.TraceEtwException(exception, eventLevel);
+
             return exception;
         }
 

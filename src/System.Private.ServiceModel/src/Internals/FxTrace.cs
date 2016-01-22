@@ -11,7 +11,7 @@ namespace System
 {
     internal static partial class FxTrace
     {
-        private const string baseEventSourceName = "TRACESOURCE_NAME";
+        private const string baseEventSourceName = "System.ServiceModel";
         private const string EventSourceVersion = "4.0.0.0";
 
         private static Guid s_etwProviderId;
