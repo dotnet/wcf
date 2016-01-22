@@ -130,7 +130,7 @@ def project = 'dotnet/wcf'
             label('windows')
             steps {
                 // Use inline replacement
-                batchFile("build.cmd /p:Configuration=${configuration} /p:OSGroup=${os}")
+                batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:OSGroup=${os}")
                 // Pack up the results for max efficiency
                 batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
             }
@@ -152,7 +152,7 @@ def project = 'dotnet/wcf'
             label('windows')
             steps {
                 // Use inline replacement
-                batchFile("build.cmd /p:Configuration=${configuration} /p:OSGroup=${os}")
+                batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:OSGroup=${os}")
                 // Pack up the results for max efficiency
                 batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
             }
@@ -274,7 +274,7 @@ Utilities.addGithubPRTrigger(prCCJob, 'Code Coverage Windows Debug', '@dotnet-bo
     def newRollingJob = job(Utilities.getFullJobName(project, jobName, false)) {
         label('windows-elevated')
         steps {
-            batchFile("build.cmd /p:Configuration=${configuration} /p:WithCategories=OuterLoop")
+            batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:WithCategories=OuterLoop")
         }
     }
 
@@ -289,7 +289,7 @@ Utilities.addGithubPRTrigger(prCCJob, 'Code Coverage Windows Debug', '@dotnet-bo
     def newPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
         label('windows-elevated')
         steps {
-            batchFile("build.cmd /p:Configuration=${configuration} /p:WithCategories=OuterLoop")
+            batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:WithCategories=OuterLoop")
         }
     }
     
