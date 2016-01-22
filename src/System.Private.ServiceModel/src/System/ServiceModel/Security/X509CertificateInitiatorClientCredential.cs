@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace System.ServiceModel.Security
 {
-    public sealed class X509CertificateInitiatorClientCredential
+    public sealed partial class X509CertificateInitiatorClientCredential
     {
         internal const StoreLocation DefaultStoreLocation = StoreLocation.CurrentUser;
         internal const StoreName DefaultStoreName = StoreName.My;
@@ -25,19 +25,6 @@ namespace System.ServiceModel.Security
             _isReadOnly = other._isReadOnly;
         }
 
-        public X509Certificate2 Certificate
-        {
-            get
-            {
-                return _certificate;
-            }
-            set
-            {
-                ThrowIfImmutable();
-                _certificate = value;
-            }
-        }
-
         public void SetCertificate(string subjectName, StoreLocation storeLocation, StoreName storeName)
         {
             if (subjectName == null)
@@ -45,16 +32,6 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("subjectName");
             }
             SetCertificate(storeLocation, storeName, DefaultFindType, subjectName);
-        }
-
-        public void SetCertificate(StoreLocation storeLocation, StoreName storeName, X509FindType findType, object findValue)
-        {
-            if (findValue == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("findValue");
-            }
-            ThrowIfImmutable();
-            _certificate = SecurityUtils.GetCertificateFromStore(storeName, storeLocation, findType, findValue, null);
         }
 
         internal void MakeReadOnly()

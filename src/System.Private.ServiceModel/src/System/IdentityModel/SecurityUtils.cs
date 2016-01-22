@@ -6,13 +6,10 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.Runtime;
-using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel;
-using System.ServiceModel.Diagnostics;
 using System.Text;
-using Microsoft.Win32.SafeHandles;
 
 namespace System.IdentityModel
 {

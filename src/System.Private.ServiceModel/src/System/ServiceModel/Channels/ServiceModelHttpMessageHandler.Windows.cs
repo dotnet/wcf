@@ -22,18 +22,6 @@ namespace System.ServiceModel.Channels
             InnerHandler = _innerHandler;
         }
 
-        public bool AllowAutoRedirect
-        {
-            get { return _innerHandler.AutomaticRedirection; }
-            set { _innerHandler.AutomaticRedirection = value; }
-        }
-
-        public ClientCertificateOption ClientCertificateOptions
-        {
-            get { return _innerHandler.ClientCertificateOption; }
-            set { _innerHandler.ClientCertificateOption = value; }
-        }
-
         public ICredentials Credentials
         {
             get { return _innerHandler.ServerCredentials; }
@@ -99,8 +87,12 @@ namespace System.ServiceModel.Channels
             get { return true; }
         }
 
-
         public virtual bool SupportsClientCertificates
+        {
+            get { return true; }
+        }
+
+        public bool SupportsCertificateValidationCallback
         {
             get { return true; }
         }

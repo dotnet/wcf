@@ -10,7 +10,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -99,9 +98,9 @@ namespace System.ServiceModel.Channels
 
         private void OnOpenCore()
         {
-            if (_requireClientCertificate)
+            if (_requireClientCertificate && SecurityTokenManager == null)
             {
-                throw ExceptionHelper.PlatformNotSupported("Client certificates");
+                throw Fx.AssertAndThrow("HttpsChannelFactory: SecurityTokenManager is null on open.");
             }
         }
 
@@ -114,6 +113,12 @@ namespace System.ServiceModel.Channels
         protected override void OnOpen(TimeSpan timeout)
         {
             base.OnOpen(timeout);
+            OnOpenCore();
+        }
+
+        protected internal override async Task OnOpenAsync(TimeSpan timeout)
+        {
+            await base.OnOpenAsync(timeout);
             OnOpenCore();
         }
 
@@ -167,9 +172,9 @@ namespace System.ServiceModel.Channels
             Fx.Assert(messageHandler != null, "httpMessageHandler should not be null.");
             if (_sslCertificateValidator != null)
             {
-                if (!messageHandler.SupportsClientCertificates)
+                if (!messageHandler.SupportsCertificateValidationCallback)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("Client certificates not supported yet");
+                    throw ExceptionHelper.PlatformNotSupported("Server certificate validation not supported yet");
                 }
                 messageHandler.ServerCertificateValidationCallback = _remoteCertificateValidationCallback;
             }
@@ -286,6 +291,13 @@ namespace System.ServiceModel.Channels
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 CreateAndOpenTokenProvider(timeoutHelper.RemainingTime());
                 base.OnOpen(timeoutHelper.RemainingTime());
+            }
+
+            internal protected override Task OnOpenAsync(TimeSpan timeout)
+            {
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                CreateAndOpenTokenProvider(timeoutHelper.RemainingTime());
+                return base.OnOpenAsync(timeoutHelper.RemainingTime());
             }
 
             protected override void OnAbort()

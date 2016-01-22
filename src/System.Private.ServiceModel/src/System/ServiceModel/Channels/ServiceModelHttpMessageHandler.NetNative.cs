@@ -13,24 +13,12 @@ namespace System.ServiceModel.Channels
 #if FEATURE_NETNATIVE
     public partial class ServiceModelHttpMessageHandler
     {
-        private HttpClientHandler _innerHandler;
+        private RTHttpClientHandler _innerHandler;
 
         public ServiceModelHttpMessageHandler()
         {
-            _innerHandler = new HttpClientHandler();
+            _innerHandler = new RTHttpClientHandler();
             InnerHandler = _innerHandler;
-        }
-
-        public bool AllowAutoRedirect
-        {
-            get { return _innerHandler.AllowAutoRedirect; }
-            set { _innerHandler.AllowAutoRedirect = value; }
-        }
-
-        public ClientCertificateOption ClientCertificateOptions
-        {
-            get { return _innerHandler.ClientCertificateOptions; }
-            set { _innerHandler.ClientCertificateOptions = value; }
         }
 
         public ICredentials Credentials
@@ -53,8 +41,8 @@ namespace System.ServiceModel.Channels
 
         public bool UseProxy
         {
-            get { return _innerHandler.UseProxy; }
-            set { _innerHandler.UseProxy = value; }
+            get { return true; }
+            set { /* RTHttpClient can only use the system defined proxy so this is a no-op */ }
         }
 
         public bool CheckCertificateRevocationList
@@ -65,7 +53,7 @@ namespace System.ServiceModel.Channels
 
         public X509Certificate2Collection ClientCertificates
         {
-            get { return null; }
+            get { return _innerHandler.ClientCertificates; }
         }
 
         public Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool>
@@ -75,16 +63,20 @@ namespace System.ServiceModel.Channels
             set { throw ExceptionHelper.PlatformNotSupported("Certificate validation not supported yet"); }
         }
 
-        public virtual bool SupportsProxy
+        public bool SupportsProxy
         {
-            get { return _innerHandler.SupportsProxy; }
+            get { return false; /* Only uses wininet configured proxy */ }
         }
 
-        public virtual bool SupportsClientCertificates
+        public bool SupportsClientCertificates
         {
-            get { return false; } 
+            get { return true; } 
         }
 
+        public bool SupportsCertificateValidationCallback
+        {
+            get { return false; }
+        }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

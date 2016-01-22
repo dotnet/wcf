@@ -5,8 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -19,18 +17,6 @@ namespace System.ServiceModel.Channels
         {
             _innerHandler = new HttpClientHandler();
             InnerHandler = _innerHandler;
-        }
-
-        public bool AllowAutoRedirect
-        {
-            get { return _innerHandler.AllowAutoRedirect; }
-            set { _innerHandler.AllowAutoRedirect = value; }
-        }
-
-        public ClientCertificateOption ClientCertificateOptions
-        {
-            get { return _innerHandler.ClientCertificateOptions; }
-            set { _innerHandler.ClientCertificateOptions = value; }
         }
 
         public ICredentials Credentials
@@ -75,14 +61,19 @@ namespace System.ServiceModel.Channels
             set { throw ExceptionHelper.PlatformNotSupported("Certificate validation not supported yet"); }
         }
 
-        public virtual bool SupportsProxy
+        public bool SupportsProxy
         {
             get { return _innerHandler.SupportsProxy; }
         }
 
-        public virtual bool SupportsClientCertificates
+        public bool SupportsClientCertificates
         {
             get { return false; } 
+        }
+
+        public bool SupportsCertificateValidationCallback
+        {
+            get { return false; }
         }
     }
 #endif
