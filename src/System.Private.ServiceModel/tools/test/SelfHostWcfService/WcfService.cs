@@ -324,6 +324,20 @@ namespace WcfService
             return string.Format("Hello {0}", name);
         }
 
+        public void ReturnContentType(string contentType)
+        {
+            var outgoingMessageProperties = OperationContext.Current.OutgoingMessageProperties;
+            object httpResponseMessagePropertyObj;
+            if (!outgoingMessageProperties.TryGetValue(HttpResponseMessageProperty.Name, out httpResponseMessagePropertyObj))
+            {
+                httpResponseMessagePropertyObj = new HttpResponseMessageProperty();
+                outgoingMessageProperties.Add(HttpResponseMessageProperty.Name, httpResponseMessagePropertyObj);
+            }
+
+            var httpRespononseMessageProperty = (HttpResponseMessageProperty)httpResponseMessagePropertyObj;
+            httpRespononseMessageProperty.Headers[HttpResponseHeader.ContentType] = contentType;
+        }
+
         private static string StreamToString(Stream stream)
         {
             var reader = new StreamReader(stream, Encoding.UTF8);

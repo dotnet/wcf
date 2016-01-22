@@ -48,4 +48,36 @@ public static class TextEncodingTests
 
         Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
+
+    [Fact]
+    [OuterLoop]
+    public static void TextMessageEncoder_WrongContentTypeResponse_Throws_ProtocolException()
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string testContentType = "text/blah";
+        Binding binding = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Assert.Throws<ProtocolException>(() => { serviceProxy.ReturnContentType(testContentType); });
+
+            // *** VALIDATE *** \\
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }

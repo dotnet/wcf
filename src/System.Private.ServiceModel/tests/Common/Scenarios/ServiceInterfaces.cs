@@ -64,6 +64,9 @@ public interface IWcfService
 
     [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoStream", ReplyAction = "http://tempuri.org/IWcfService/EchoStreamResponse")]
     Task<Stream> EchoStreamAsync(Stream stream);
+    
+    [OperationContract]
+    void ReturnContentType(string contentType);
 }
 
 [ServiceContract]
