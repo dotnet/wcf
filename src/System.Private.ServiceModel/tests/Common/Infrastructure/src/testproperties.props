@@ -53,7 +53,7 @@
       </TestProperty>
       <TestProperty Include="BridgeCertificateValidityPeriod">
         <Value>$(BridgeCertificateValidityPeriod)</Value>
-        <DefaultValue>1.00:00:00</DefaultValue>
+        <DefaultValue>7.00:00:00</DefaultValue>
       </TestProperty>
       <TestProperty Include="UseFiddlerUrl">
         <Value>$(UseFiddlerUrl)</Value>
