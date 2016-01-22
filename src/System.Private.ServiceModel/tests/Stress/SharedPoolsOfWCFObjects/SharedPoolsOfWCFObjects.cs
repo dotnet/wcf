@@ -15,66 +15,105 @@ using WcfService1;
 namespace SharedPoolsOfWCFObjects
 {
     #region Actual tests
-    // A full cycle of creating a pool of channel factories, using each factory to create
-    // a pool of channels, using all channels once and then closing all of them
-    public static class CreateAndCloseFactoryAndChannelFullCycleTest<ChannelType, TestTemplate>
+    // Consider making classes non static and inherit RecyclablePooled* from Pooled*
+    // While this will increase the code reuse it will likely require additional wrappers 
+    // to be able to simply call methods without prior initialization steps
+    public static class CreateAndCloseFactoryAndChannelFullCycleTest<ChannelType, TestTemplate, TestParams>
         where ChannelType : class
-        where TestTemplate : ITestTemplate<ChannelType>, new()
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
+        where TestParams : IPoolTestParameter
     {
-        private static CallStats s_CreateChannelStats = new CallStats();
-        private static CallStats s_CallChannelStats = new CallStats();
-        private static CallStats s_CloseChannelStats = new CallStats();
-        private static CallStats s_CloseFactoryStats = new CallStats();
-
-        private static ITestTemplate<ChannelType> s_test;
-
+        private static ITestTemplate<ChannelType, TestParams> s_test;
         static CreateAndCloseFactoryAndChannelFullCycleTest()
         {
             s_test = new TestTemplate();
         }
+
+        // A full cycle of creating a pool of channel factories, using each factory to create
+        // a pool of channels, using all channels once and then closing all of them
         public static void CreateFactoriesAndChannelsUseAllOnceCloseAll()
         {
             using (var theOneTimeThing = new PoolOfThings<FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>>(
-                    maxSize: 3, // # of pooled FactoryAndPoolOfItsObjects
+                    maxSize: s_test.TestParameters.MaxPooledFactories, // # of pooled FactoryAndPoolOfItsObjects
                     createInstance: () => new FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>(
                         createFactoryInstance: () =>
                             s_test.CreateChannelFactory(),
                         destroyFactoryInstance: (chf) =>
-                            s_CloseFactoryStats.CallActionAndRecordStats(() => s_test.CloseFactory(chf)),
-                        maxPooledObjects: 3, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
+                            s_test.CloseFactory(chf),
+                        maxPooledObjects: s_test.TestParameters.MaxPooledChannels, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
                         createObject: (chf) =>
-                            s_CreateChannelStats.CallFuncAndRecordStats(func: () => s_test.CreateChannel(chf)),
+                            s_test.CreateChannel(chf),
                         destroyObject: (ch) =>
-                            s_CloseChannelStats.CallActionAndRecordStats(() => s_test.CloseChannel(ch))
-                        ),
-                    destroyInstance: (_fapoic) => _fapoic.Destroy()))
+                            s_test.CloseChannel(ch)),
+                    destroyInstance: (_fapoio) => _fapoio.Destroy()))
             {
                 foreach (var factoryAndPoolOfItsChannels in theOneTimeThing.GetAllPooledInstances())
                 {
                     foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                     {
-                        s_CallChannelStats.CallActionAndRecordStats(() =>
-                        {
-                            s_test.UseChannel()(channel);
-                        });
+                        s_test.UseChannel()(channel);
                     }
                 }
             }
         }
     }
 
-    // One of the most common scenario: create a pool of channel factories, use each factory to create a pool of channels,
-    // and then use all pooled channels for the duration of the stress run
-    public class PooledFactories<ChannelType, TestTemplate>
-    where ChannelType : class
-    where TestTemplate : ITestTemplate<ChannelType>, new()
+    public static class CreateAndCloseFactoryAndChannelFullCycleTestAsync<ChannelType, TestTemplate, TestParams>
+        where ChannelType : class
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
+        where TestParams : IPoolTestParameter
     {
-        private static CallStats s_CreateChannelStats = new CallStats();
-        private static CallStats s_CallChannelStats = new CallStats();
-        private static CallStats s_CloseChannelStats = new CallStats();
-        private static CallStats s_CloseFactoryStats = new CallStats();
+        private static ITestTemplate<ChannelType, TestParams> s_test;
+        static CreateAndCloseFactoryAndChannelFullCycleTestAsync()
+        {
+            s_test = new TestTemplate();
+        }
+        public static async Task CreateFactoriesAndChannelsUseAllOnceCloseAllAsync()
+        {
+            PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>> oneTimeAsyncThing = null;
+            var allTasksFromOneTimeAsyncThing = new List<Task>();
+            try
+            {
+                oneTimeAsyncThing = new PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>>(
+                    maxSize: s_test.TestParameters.MaxPooledFactories, // # of pooled FactoryAndPoolOfItsObjects
+                    createInstance: () => new FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>(
+                        createFactoryInstance: () =>
+                            s_test.CreateChannelFactory(),
+                        destroyFactoryInstanceAsync: async (chf) =>
+                            await s_test.CloseFactoryAsync(chf),
+                        maxPooledObjects: s_test.TestParameters.MaxPooledChannels, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
+                        createObject: (chf) =>
+                            s_test.CreateChannel(chf),
+                        destroyObjectAsync: async (ch) =>
+                            await s_test.CloseChannelAsync(ch)
+                        ),
+                    destroyInstanceAsync: (_fapoiao) => _fapoiao.DestroyAsync());
 
-        private static ITestTemplate<ChannelType> s_test;
+                foreach (var factoryAndPoolOfItsChannels in oneTimeAsyncThing.GetAllPooledInstances())
+                {
+                    foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
+                    {
+                        allTasksFromOneTimeAsyncThing.Add(s_test.UseAsyncChannel()(channel));
+                    }
+                }
+            }
+            finally
+            {
+                if (oneTimeAsyncThing != null)
+                {
+                    await Task.WhenAll(allTasksFromOneTimeAsyncThing);
+                    await oneTimeAsyncThing.DestoryAllPooledInstancesAsync();
+                }
+            }
+        }
+    }
+
+    public class PooledFactories<ChannelType, TestTemplate, TestParams>
+        where ChannelType : class
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
+        where TestParams : IPoolTestParameter
+    {
+        private static ITestTemplate<ChannelType, TestParams> s_test;
         private static PoolOfThings<ChannelFactory<ChannelType>> s_pooledChannelFactories;
 
         static PooledFactories()
@@ -82,41 +121,68 @@ namespace SharedPoolsOfWCFObjects
             s_test = new TestTemplate();
             s_pooledChannelFactories = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<ChannelFactory<ChannelType>>(
-                    maxSize: 10,
-                    createInstance: () =>
-                        s_test.CreateChannelFactory(),
-                    destroyInstance: (chf) =>
-                         s_CloseFactoryStats.CallActionAndRecordStats(() => s_test.CloseFactory(chf))));
+                    maxSize: s_test.TestParameters.MaxPooledFactories,
+                    createInstance: () => s_test.CreateChannelFactory(),
+                    destroyInstance: (chf) => s_test.CloseFactory(chf)));
         }
         public static void CreateUseAndCloseChannels()
         {
             foreach (var factory in s_pooledChannelFactories.GetAllPooledInstances())
             {
-                ChannelType channel = null;
-                s_CreateChannelStats.CallActionAndRecordStats(() =>
-                    channel = s_test.CreateChannel(factory));
-
+                ChannelType channel = s_test.CreateChannel(factory);
                 if (channel != null)
                 {
-                    s_CallChannelStats.CallActionAndRecordStats(() =>
-                        s_test.UseChannel()(channel));
-
-                    s_CloseChannelStats.CallActionAndRecordStats(() =>
-                        s_test.CloseChannel(channel));
+                    s_test.UseChannel()(channel);
+                    s_test.CloseChannel(channel);
                 }
             }
         }
     }
 
-    public class PooledFactoriesAndChannels<ChannelType, TestTemplate>
-        where ChannelType : class
-        where TestTemplate : ITestTemplate<ChannelType>, new()
+    public class PooledFactoriesAsync<ChannelType, TestTemplate, TestParams>
+      where ChannelType : class
+      where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
+      where TestParams : IPoolTestParameter
     {
-        private static CallStats s_CreateChannelStats = new CallStats();
-        private static CallStats s_CallChannelStats = new CallStats();
-        private static CallStats s_CloseChannelStats = new CallStats();
-        private static CallStats s_CloseFactoryStats = new CallStats();
-        private static ITestTemplate<ChannelType> s_test;
+        private static ITestTemplate<ChannelType, TestParams> s_test;
+        private static PoolOfAsyncThings<ChannelFactory<ChannelType>> s_pooledChannelFactories;
+
+        static PooledFactoriesAsync()
+        {
+            s_test = new TestTemplate();
+            s_pooledChannelFactories = StaticDisposablesHelper.AddDisposable(
+                new PoolOfAsyncThings<ChannelFactory<ChannelType>>(
+                    maxSize: s_test.TestParameters.MaxPooledFactories,
+                    createInstance: () => s_test.CreateChannelFactory(),
+                    destroyInstanceAsync: async (chf) => await s_test.CloseFactoryAsync(chf)));
+        }
+        public static async Task CreateUseAndCloseChannelsAsync()
+        {
+            var allTasks = new List<Task>();
+            foreach (var factory in s_pooledChannelFactories.GetAllPooledInstances())
+            {
+                ChannelType channel = s_test.CreateChannel(factory);
+                if (channel != null)
+                {
+                    allTasks.Add(UseAndCloseChannelAsync(channel));
+                }
+            }
+            await Task.WhenAll(allTasks);
+        }
+
+        private static async Task UseAndCloseChannelAsync(ChannelType channel)
+        {
+            await s_test.UseAsyncChannel()(channel);
+            await s_test.CloseChannelAsync(channel);
+        }
+    }
+
+    public class PooledFactoriesAndChannels<ChannelType, TestTemplate, TestParams>
+        where ChannelType : class
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
+        where TestParams : IPoolTestParameter
+    {
+        private static ITestTemplate<ChannelType, TestParams> s_test;
 
         private static PoolOfThings<
             FactoryAndPoolOfItsObjects<
@@ -129,19 +195,19 @@ namespace SharedPoolsOfWCFObjects
             s_test = new TestTemplate();
             s_pooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>>(
-                    maxSize: 3, // # of pooled FactoryAndPoolOfItsObjects
+                    maxSize: s_test.TestParameters.MaxPooledFactories, // # of pooled FactoryAndPoolOfItsObjects
                     createInstance: () => new FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>(
                         createFactoryInstance:
                             s_test.CreateChannelFactory,
                         destroyFactoryInstance: (chf) =>
-                            s_CloseFactoryStats.CallActionAndRecordStats(() => s_test.CloseFactory(chf)),
-                        maxPooledObjects: 3, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
+                            s_test.CloseFactory(chf),
+                        maxPooledObjects: s_test.TestParameters.MaxPooledChannels, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
                         createObject: (chf) =>
-                            s_CreateChannelStats.CallFuncAndRecordStats(s_test.CreateChannel, chf),
+                            s_test.CreateChannel(chf),
                         destroyObject: (ch) =>
-                            s_CloseChannelStats.CallActionAndRecordStats(() => s_test.CloseChannel(ch))
+                            s_test.CloseChannel(ch)
                         ),
-                    destroyInstance: (_fapoic) => _fapoic.Destroy()));
+                    destroyInstance: (_fapoio) => _fapoio.Destroy()));
         }
 
         public static void UseChannelsInPooledFactoriesAndChannels()
@@ -150,55 +216,92 @@ namespace SharedPoolsOfWCFObjects
             {
                 foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    s_CallChannelStats.CallActionAndRecordStats(() =>
-                    {
-                        s_test.UseChannel()(channel);
-                    });
+                    s_test.UseChannel()(channel);
                 }
             }
         }
     }
 
-    public class RecyclablePooledFactories<ChannelType, TestTemplate>
+    public class PooledFactoriesAndChannelsAsync<ChannelType, TestTemplate, TestParams>
         where ChannelType : class
-        where TestTemplate : ITestTemplate<ChannelType>, new()
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
+        where TestParams : IPoolTestParameter
+    {
+        private static ITestTemplate<ChannelType, TestParams> s_test;
+
+        private static PoolOfAsyncThings<
+            FactoryAndPoolOfItsAsyncObjects<
+                ChannelFactory<ChannelType>,
+                ChannelType>
+            > s_pooledFactoriesAndChannels;
+
+        static PooledFactoriesAndChannelsAsync()
+        {
+            s_test = new TestTemplate();
+            s_pooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
+                new PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>>(
+                    maxSize: s_test.TestParameters.MaxPooledFactories, // # of pooled FactoryAndPoolOfItsObjects
+                    createInstance: () => new FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>(
+                        createFactoryInstance:
+                            s_test.CreateChannelFactory,
+                        destroyFactoryInstanceAsync: async (chf) =>
+                            await s_test.CloseFactoryAsync(chf),
+                        maxPooledObjects: s_test.TestParameters.MaxPooledChannels, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
+                        createObject: (chf) =>
+                            s_test.CreateChannel(chf),
+                        destroyObjectAsync: async (ch) =>
+                            await s_test.CloseChannelAsync(ch)
+                        ),
+                    destroyInstanceAsync: async (_fapoiao) => await _fapoiao.DestroyAsync()));
+        }
+
+        public static async Task UseChannelsInPooledFactoriesAndChannelsAsync()
+        {
+            var allTasks = new List<Task>();
+            foreach (var factoryAndPoolOfItsChannels in s_pooledFactoriesAndChannels.GetAllPooledInstances())
+            {
+                foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
+                {
+                    allTasks.Add(s_test.UseAsyncChannel()(channel));
+                }
+            }
+            await Task.WhenAll(allTasks);
+        }
+    }
+
+    public class RecyclablePooledFactories<ChannelType, TestTemplate, TestParams>
+        where ChannelType : class
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy, new()
+        where TestParams : IPoolTestParameter
     {
         private static int s_iteration = 0;
-        private static CallStats s_CreateChannelStats = new CallStats();
-        private static CallStats s_CallChannelStats = new CallStats();
-        private static CallStats s_CloseChannelStats = new CallStats();
-        private static CallStats s_CloseFactoryStats = new CallStats();
-        private static ITestTemplate<ChannelType> s_test;
+        private static ITestTemplate<ChannelType, TestParams> s_test;
         private static PoolOfThings<ChannelFactory<ChannelType>> s_recyclablePooledChannelFactories;
 
         static RecyclablePooledFactories()
         {
             s_test = new TestTemplate();
+            // It is expected to see various exceptions when we use factories while recycling them
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = true;
+
             s_recyclablePooledChannelFactories = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<ChannelFactory<ChannelType>>(
-                    maxSize: 10,
+                    maxSize: s_test.TestParameters.MaxPooledFactories,
                     createInstance:
                         s_test.CreateChannelFactory,
                     destroyInstance: (chf) =>
-                         s_CloseFactoryStats.CallActionAndRecordStats(() => s_test.CloseFactory(chf))));
+                         s_test.CloseFactory(chf)));
         }
         public static void CreateUseAndCloseChannels()
         {
             foreach (var factory in s_recyclablePooledChannelFactories.GetAllPooledInstances())
             {
-                ChannelType channel = null;
-                s_CreateChannelStats.CallActionAndRecordStats(() =>
-                       channel = s_test.CreateChannel(factory));
+                ChannelType channel = s_test.CreateChannel(factory);
 
                 if (channel != null)
                 {
-                    s_CallChannelStats.CallActionAndRecordStats(() =>
-                            s_test.UseChannel()(channel));
-
-                    s_CloseChannelStats.CallActionAndRecordStats(() =>
-                    {
-                        s_test.CloseChannel(channel);
-                    });
+                    s_test.UseChannel()(channel);
+                    s_test.CloseChannel(channel);
                 }
             }
         }
@@ -221,17 +324,74 @@ namespace SharedPoolsOfWCFObjects
         }
     }
 
-    public static class RecyclablePooledFactoriesAndChannels<ChannelType, TestTemplate>
-        where ChannelType : class
-        where TestTemplate : ITestTemplate<ChannelType>, new()
+    public class RecyclablePooledFactoriesAsync<ChannelType, TestTemplate, TestParams>
+    where ChannelType : class
+    where TestTemplate : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy, new()
+    where TestParams : IPoolTestParameter
     {
         private static int s_iteration = 0;
-        private static CallStats s_CreateChannelStats = new CallStats();
-        private static CallStats s_CallChannelStats = new CallStats();
-        private static CallStats s_CloseChannelStats = new CallStats();
-        private static CallStats s_CloseFactoryStats = new CallStats();
+        private static ITestTemplate<ChannelType, TestParams> s_test;
+        private static PoolOfAsyncThings<ChannelFactory<ChannelType>> s_recyclablePooledChannelFactories;
 
-        private static ITestTemplate<ChannelType> s_test;
+        static RecyclablePooledFactoriesAsync()
+        {
+            s_test = new TestTemplate();
+            // It is expected to see various exceptions when we use factories while recycling them
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = true;
+
+            s_recyclablePooledChannelFactories = StaticDisposablesHelper.AddDisposable(
+                new PoolOfAsyncThings<ChannelFactory<ChannelType>>(
+                    maxSize: s_test.TestParameters.MaxPooledFactories,
+                    createInstance: s_test.CreateChannelFactory,
+                    destroyInstanceAsync: async (chf) => await s_test.CloseFactoryAsync(chf)));
+        }
+        public static async Task CreateUseAndCloseChannelsAsync()
+        {
+            var allTasks = new List<Task>();
+            foreach (var factory in s_recyclablePooledChannelFactories.GetAllPooledInstances())
+            {
+                ChannelType channel = s_test.CreateChannel(factory);
+
+                if (channel != null)
+                {
+                    allTasks.Add(UseAndCloseChannelAsync(channel));
+                }
+            }
+            await Task.WhenAll(allTasks);
+        }
+
+        private static async Task UseAndCloseChannelAsync(ChannelType channel)
+        {
+            await s_test.UseAsyncChannel()(channel);
+            await s_test.CloseChannelAsync(channel);
+        }
+
+        public static async Task RecycleFactoriesAsync()
+        {
+            await s_recyclablePooledChannelFactories.DestoryAllPooledInstancesAsync();
+        }
+        public static async Task RunAllScenariosWithWeightsAsync(int createUseAndCloseChannelsWeight, int recycleFactoriesWeight)
+        {
+            int seed = Interlocked.Increment(ref s_iteration) % (createUseAndCloseChannelsWeight + recycleFactoriesWeight);
+            if (seed < createUseAndCloseChannelsWeight)
+            {
+                await CreateUseAndCloseChannelsAsync();
+            }
+            else if (seed < createUseAndCloseChannelsWeight + recycleFactoriesWeight)
+            {
+                await RecycleFactoriesAsync();
+            }
+        }
+    }
+
+    // not used - *_OpenOnce is used instead as a workaround for #108
+    public static class RecyclablePooledFactoriesAndChannels<ChannelType, TestTemplate, TestParams>
+        where ChannelType : class
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
+        where TestParams : IPoolTestParameter, IExceptionPolicy
+    {
+        private static int s_iteration = 0;
+        private static ITestTemplate<ChannelType, TestParams> s_test;
 
         private static PoolOfThings<FactoryAndPoolOfItsObjects<
                 ChannelFactory<ChannelType>,
@@ -241,21 +401,19 @@ namespace SharedPoolsOfWCFObjects
         static RecyclablePooledFactoriesAndChannels()
         {
             s_test = new TestTemplate();
+            // It is expected to see various exceptions when we use factories while recycling them
+            s_test.TestParameters.RelaxedExceptionPolicy = true;
 
             s_recyclablePooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>>(
-                    maxSize: 3, // # of pooled FactoryAndPoolOfItsObjects
+                    maxSize: s_test.TestParameters.MaxPooledFactories,
                     createInstance: () => new FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>(
                         createFactoryInstance: () =>
                             s_test.CreateChannelFactory(),
-                        destroyFactoryInstance: (chf) =>
-                            s_CloseFactoryStats.CallActionAndRecordStats(() => s_test.CloseFactory(chf)),
-                        maxPooledObjects: 3, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
-                        createObject: (chf) =>
-                            s_CreateChannelStats.CallFuncAndRecordStats(func: s_test.CreateChannel, param: chf),
-                        destroyObject: (ch) =>
-                            s_CloseChannelStats.CallActionAndRecordStats(action: () => s_test.CloseChannel(ch))
-                        ),
+                        destroyFactoryInstance: (chf) => s_test.CloseFactory(chf),
+                        maxPooledObjects: s_test.TestParameters.MaxPooledChannels,
+                        createObject: (chf) => s_test.CreateChannel(chf),
+                        destroyObject: (ch) => s_test.CloseChannel(ch)),
                     destroyInstance: (_fapoic) => _fapoic.Destroy()));
         }
 
@@ -282,10 +440,7 @@ namespace SharedPoolsOfWCFObjects
             {
                 foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    s_CallChannelStats.CallActionAndRecordStats(() =>
-                    {
-                        s_test.UseChannel()(channel);
-                    });
+                    s_test.UseChannel()(channel);
                 }
             }
         }
@@ -308,22 +463,19 @@ namespace SharedPoolsOfWCFObjects
             {
                 if (factoryAndPoolOfItsChannels.Factory.State == CommunicationState.Closed)
                 {
-                    System.Diagnostics.Debugger.Break();
+                    TestUtils.ReportFailure("Factory.State == CommunicationState.Closed");
                 }
             }
         }
     }
 
-    public static class RecyclablePooledFactoriesAndChannels_OpenOnce<ChannelType, TestTemplate>
-        where TestTemplate : ITestTemplate<ChannelType>, new()
+    public static class RecyclablePooledFactoriesAndChannels_OpenOnce<ChannelType, TestTemplate, TestParams>
+        where ChannelType : class
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy, new()
+        where TestParams : IPoolTestParameter
     {
         private static int s_iteration = 0;
-        private static CallStats s_CreateChannelStats;
-        private static CallStats s_CallChannelStats;
-        private static CallStats s_CloseChannelStats;
-        private static CallStats s_CloseFactoryStats;
-
-        private static ITestTemplate<ChannelType> s_test;
+        private static ITestTemplate<ChannelType, TestParams> s_test;
 
         private static PoolOfThings<FactoryAndPoolOfItsObjects<
                 ChannelFactory<ChannelType>,
@@ -332,31 +484,20 @@ namespace SharedPoolsOfWCFObjects
 
         static RecyclablePooledFactoriesAndChannels_OpenOnce()
         {
-            // moving the following magic numbers to the test template interface will help each test to collect different type of stats
-            s_CreateChannelStats = new CallStats(samples: 1000, errorSamples: 1000);
-            s_CallChannelStats = new CallStats(samples: 1000000, errorSamples: 10000);
-            s_CloseChannelStats = new CallStats(samples: 1000, errorSamples: 1000);
-            s_CloseFactoryStats = new CallStats(samples: 1000, errorSamples: 1000);
-
             s_test = new TestTemplate();
-            Console.WriteLine(s_test.GetType().ToString());
+            // It is expected to see various exceptions when we use factories while recycling them
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = true;
 
-            // Perhaps a helper (extension?) method to hide new PoolOfThings would make things more readable
             s_recyclablePooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, OpenOnceChannelWrapper<ChannelType>>>(
-                    maxSize: 3, // # of pooled FactoryAndPoolOfItsObjects
+                    maxSize: s_test.TestParameters.MaxPooledFactories,
                     createInstance: () => new FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, OpenOnceChannelWrapper<ChannelType>>(
-                        createFactoryInstance: () =>
-                            s_test.CreateChannelFactory(),
-                        destroyFactoryInstance: (chf) =>
-                            s_CloseFactoryStats.CallActionAndRecordStats(() => s_test.CloseFactory(chf)),
-                        maxPooledObjects: 3, // # of pooled channels within each pooled FactoryAndPoolOfItsObjects
-                        createObject: (chf) =>
-                            s_CreateChannelStats.CallFuncAndRecordStats(func: () => new OpenOnceChannelWrapper<ChannelType>(s_test.CreateChannel(chf))),
-                        destroyObject: (chWr) =>
-                            s_CloseChannelStats.CallActionAndRecordStats(action: () => s_test.CloseChannel(chWr.Channel))
-                        ),
-                    destroyInstance: (_fapoic) => _fapoic.Destroy()));
+                        createFactoryInstance: () => s_test.CreateChannelFactory(),
+                        destroyFactoryInstance: (chf) => s_test.CloseFactory(chf),
+                        maxPooledObjects: s_test.TestParameters.MaxPooledChannels,
+                        createObject: (chf) => new OpenOnceChannelWrapper<ChannelType>(s_test.CreateChannel(chf)),
+                        destroyObject: (chWr) => s_test.CloseChannel(chWr.Channel)),
+                    destroyInstance: (_fapoio) => _fapoio.Destroy()));
         }
 
         public static void RunAllScenariosWithWeights(int useWeight, int recycleChannelsWeight, int recycleFactoriesWeight)
@@ -374,51 +515,6 @@ namespace SharedPoolsOfWCFObjects
             {
                 RecyclePooledFactories();
             }
-
-            // move this outside of the test - an external code should query the test for its call stats
-            if (Interlocked.Increment(ref s_iteration) % 1000000 == 0)
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine("CreateChannelStats: ");
-                PrintStats(s_CreateChannelStats, sb);
-                sb.AppendLine();
-
-                sb.AppendLine("CallChannelStats: ");
-                PrintStats(s_CallChannelStats, sb);
-                sb.AppendLine();
-
-                sb.AppendLine("CloseChannelStats: ");
-                PrintStats(s_CloseChannelStats, sb);
-                sb.AppendLine();
-
-                sb.AppendLine("CloseFactoryStats: ");
-                PrintStats(s_CloseFactoryStats, sb);
-                sb.AppendLine();
-
-                Console.WriteLine(sb.ToString());
-            }
-        }
-
-        // move this outside of the test - an external code should query the test for its call stats
-        private static void PrintStats(CallStats stats, StringBuilder sb)
-        {
-            sb.AppendLine("Sunny:");
-            AppendStats(stats.SunnyDay, sb);
-            sb.AppendLine("Rainy:");
-            AppendStats(stats.RainyDay, sb);
-        }
-
-        // move this outside of the test - an external code should query the test for its call stats
-        private static void AppendStats(CallTimingStatsCollector tstats, StringBuilder sb)
-        {
-            foreach (var stat in tstats.PercentileStats)
-            {
-                sb.AppendLine("Time: " + stat.Time);
-                for (int i = 0; i < stat.Centile.Length; i++)
-                {
-                    sb.AppendLine(stat.Centile[i] + ": " + stat.AvgTiming[i]);
-                }
-            }
         }
 
         public static void UsePooledChannels()
@@ -427,11 +523,8 @@ namespace SharedPoolsOfWCFObjects
             {
                 foreach (var channelWrapper in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    s_CallChannelStats.CallActionAndRecordStats(() =>
-                    {
-                        channelWrapper.OpenChannelOnce();
-                        s_test.UseChannel()(channelWrapper.Channel);
-                    });
+                    channelWrapper.OpenChannelOnce();
+                    s_test.UseChannel()(channelWrapper.Channel);
                 }
             }
         }
@@ -442,15 +535,11 @@ namespace SharedPoolsOfWCFObjects
             {
                 foreach (var channelWrapper in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    s_CallChannelStats.CallActionAndRecordStats(() =>
-                    {
-                        var co = (ICommunicationObject)channelWrapper.Channel;
-                        co.Abort();
-                    });
+                    var co = (ICommunicationObject)channelWrapper.Channel;
+                    co.Abort();
                 }
             }
         }
-
 
         public static void RecyclePooledChannels()
         {
@@ -469,24 +558,19 @@ namespace SharedPoolsOfWCFObjects
             {
                 if (factoryAndPoolOfItsChannels.Factory.State == CommunicationState.Closed)
                 {
-                    System.Diagnostics.Debugger.Break();
+                    TestUtils.ReportFailure("Factory.State == CommunicationState.Closed");
                 }
             }
         }
     }
 
-    public class RecyclablePooledFactoriesAndChannelsAsync_OpenOnce<ChannelType, TestTemplate>
+    public class RecyclablePooledFactoriesAndChannelsAsync_OpenOnce<ChannelType, TestTemplate, TestParams>
         where ChannelType : class
-        where TestTemplate : ITestTemplate<ChannelType>, new()
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy, new()
+        where TestParams : IPoolTestParameter
     {
         private static int s_iteration = 0;
-        private static CallStats s_CreateChannelStats = new CallStats();
-        private static CallStats s_CallChannelStats = new CallStats();
-        private static CallStats s_CloseChannelStats = new CallStats();
-        private static CallStats s_CloseFactoryStats = new CallStats();
-
-        private static ITestTemplate<ChannelType> s_test;
-
+        private static ITestTemplate<ChannelType, TestParams> s_test;
         private static PoolOfAsyncThings<
             FactoryAndPoolOfItsAsyncObjects<
                 ChannelFactory<ChannelType>,
@@ -496,22 +580,22 @@ namespace SharedPoolsOfWCFObjects
         static RecyclablePooledFactoriesAndChannelsAsync_OpenOnce()
         {
             s_test = new TestTemplate();
+            // It is expected to see various exceptions when we use factories while recycling them
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = true;
+
             s_recyclablePooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
                 new PoolOfAsyncThings<
                     FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, OpenAsyncOnceChannelWrapper<ChannelType>>>(
-                        maxSize: 3, // # of pooled FactoryAndPoolOfItsChannels
+                        maxSize: s_test.TestParameters.MaxPooledFactories,
                         createInstance: () => new FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, OpenAsyncOnceChannelWrapper<ChannelType>>(
                             createFactoryInstance:
                                 s_test.CreateChannelFactory,
                             destroyFactoryInstanceAsync: async (chf) =>
-                                await s_CloseFactoryStats.CallAsyncFuncAndRecordStatsAsync(s_test.CloseFactoryAsync, chf),
-                            maxPooledObjects: 3, // # of pooled channels within each pooled FactoryAndPoolOfItsAsyncObjects
-                            createObject: (chf) =>
-                                s_CreateChannelStats.CallFuncAndRecordStats(func: () => new OpenAsyncOnceChannelWrapper<ChannelType>(s_test.CreateChannel(chf))),
-                            destroyObjectAsync: async (chWr) =>
-                                await s_CloseChannelStats.CallAsyncFuncAndRecordStatsAsync(func: () => s_test.CloseChannelAsync(chWr.Channel))
-                        ),
-                    destroyInstanceAsync: async (_fapoic) => await _fapoic.DestroyAsync()));
+                                await s_test.CloseFactoryAsync(chf),
+                            maxPooledObjects: s_test.TestParameters.MaxPooledChannels,
+                            createObject: (chf) => new OpenAsyncOnceChannelWrapper<ChannelType>(s_test.CreateChannel(chf)),
+                            destroyObjectAsync: async (chWr) => await s_test.CloseChannelAsync(chWr.Channel)),
+                    destroyInstanceAsync: async (_fapoio) => await _fapoio.DestroyAsync()));
         }
 
         public static async Task RunAllScenariosWithWeightsAsync(int useWeight, int recycleChannelsWeight, int recycleFactoriesWeight)
@@ -539,23 +623,24 @@ namespace SharedPoolsOfWCFObjects
             {
                 foreach (var channelWrapper in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    allTasks.Add(s_CallChannelStats.CallAsyncFuncAndRecordStatsAsync(async () =>
-                    {
-                        if (channelWrapper.Channel != null)
-                        {
-                            await channelWrapper.OpenChannelOnceAsync();
-                            await s_test.UseAsyncChannel()(channelWrapper.Channel);
-                            //Console.WriteLine(s);
-                        }
-                    }));
+                    allTasks.Add(UseChannelWrapperAsync(channelWrapper));
                 }
             }
             await Task.WhenAll(allTasks);
         }
 
+        private static async Task UseChannelWrapperAsync(OpenAsyncOnceChannelWrapper<ChannelType> channelWrapper)
+        {
+            if (channelWrapper.Channel != null)
+            {
+                await channelWrapper.OpenChannelOnceAsync();
+                await s_test.UseAsyncChannel()(channelWrapper.Channel);
+            }
+        }
+
         public static async Task RecyclePooledChannelsAsync()
         {
-            Console.WriteLine("RecyclePooledChannels");
+            Console.WriteLine("RecyclePooledChannelsAsync");
             var allTasks = new List<Task>();
             foreach (var factoryAndPoolOfItsChannels in s_recyclablePooledFactoriesAndChannels.GetAllPooledInstances())
             {
@@ -566,7 +651,7 @@ namespace SharedPoolsOfWCFObjects
 
         public static async Task RecyclePooledFactoriesAsync()
         {
-            Console.WriteLine("RecyclePooledFactories");
+            Console.WriteLine("RecyclePooledFactoriesAsync");
             await s_recyclablePooledFactoriesAndChannels.DestoryAllPooledInstancesAsync();
         }
     }

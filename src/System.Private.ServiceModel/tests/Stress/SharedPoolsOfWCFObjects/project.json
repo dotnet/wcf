@@ -1,14 +1,4 @@
-{
-  "version": "1.0.0-*",
-  "description": "",
-  "authors": [
-    ""
-  ],
-  "tags": [
-    ""
-  ],
-  "projectUrl": "",
-  "licenseUrl": "",
+﻿{
   "dependencies": {
     "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
     "System.Collections": "4.0.11-rc3-23809",

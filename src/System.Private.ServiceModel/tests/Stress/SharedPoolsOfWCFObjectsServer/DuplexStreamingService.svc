@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WcfService1.DuplexStreamingService" CodeBehind="DuplexStreamingService.svc.cs" %>

@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace SharedPoolsOfWCFObjects
 {
-    // Pooling of WCF channel factories and channels is a commonly reccomended practice due to its perf benefits.
-    // However with pooling come more race condition-like scenarios such as using an already faulted channel or factory.
+    // Pooling of WCF channel factories and channels is a commonly recommended practice due to its performance benefits.
+    // However with pooling come more race condition-like scenarios such as using the same factory on multiple threads
+    // or using a channel or a factory while it changes its state.
     // 
     // The number of such scenarios is rather significant:
     // - create and use a pool of channels using a pool of channel factories
@@ -107,28 +108,19 @@ namespace SharedPoolsOfWCFObjects
             var instance = _thePool[i];
             while (instance == null)
             {
-                //try
+                instance = _createInstance();
+                if (instance == null)
                 {
-                    instance = _createInstance();
-                    if (instance == null)
-                    {
-                        break;
-                    }
-                    if (Interlocked.CompareExchange<T>(ref _thePool[i], instance, null) != null)
-                    {
-                        _destroyInstance(instance);
-                        instance = _thePool[i];
-                        // Somebody stored the new instance before us - dispose ours and re-read theirs
-                        // Since the whole pool can also be replaced we can still get a null from _thePool[index]
-                        // so we retry while (instance == null)
-                        // Note that _destroyInstance(instance) should not throw since nobody uses it yet
-
-                        //Interlocked.Increment(ref _numPoolSetRetries);
-                    }
+                    break;
                 }
-                //catch (Exception)
+                if (Interlocked.CompareExchange<T>(ref _thePool[i], instance, null) != null)
                 {
-                    //    break;
+                    _destroyInstance(instance);
+                    instance = _thePool[i];
+                    // Somebody stored the new instance before us - dispose ours and re-read theirs
+                    // Since the whole pool can also be replaced we can still get a null from _thePool[index]
+                    // so we retry while (instance == null)
+                    // Note that _destroyInstance(instance) should not throw since nobody uses it yet
                 }
             }
             return instance;
@@ -142,12 +134,10 @@ namespace SharedPoolsOfWCFObjects
                 {
                     try
                     {
-                        //Interlocked.Increment(ref _stats.FactoriesClosed);
                         destroyInstance(instance);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        //Interlocked.Increment(ref _stats.ExceptionsClosingFactories);
                     }
                 }
             }
@@ -268,12 +258,10 @@ namespace SharedPoolsOfWCFObjects
                 {
                     try
                     {
-                        //Interlocked.Increment(ref _stats.FactoriesClosed);
                         await destroyInstanceAsync(instance);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        //Interlocked.Increment(ref _stats.ExceptionsClosingFactories);
                     }
                 }
             }
@@ -322,10 +310,10 @@ namespace SharedPoolsOfWCFObjects
 
         public void Destroy()
         {
-            // should never be recycled more than once
             if (Factory == null)
             {
-                System.Diagnostics.Debugger.Break();
+                // This would likely indicate an issue in the test framework
+                TestUtils.ReportFailure("An instance of the factory should never be recycled more than once.");
             }
             _destroyFactoryInstance(Factory);
             Factory = null;
@@ -362,10 +350,9 @@ namespace SharedPoolsOfWCFObjects
 
         public async Task DestroyAsync()
         {
-            // should never be recycled more than once
             if (Factory == null)
             {
-                System.Diagnostics.Debugger.Break();
+                TestUtils.ReportFailure("A factory instance should never be recycled more than once");
             }
             await _destroyFactoryInstanceAsync(Factory);
             Factory = null;
