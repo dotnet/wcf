@@ -80,11 +80,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ValidationPattern Include="^((System\..*)|(Microsoft\.CSharp)|(Microsoft\.NETCore.*)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
+    <ValidationPattern Include="^((System\..%2A)|(Microsoft\.CSharp)|(Microsoft\.NETCore.%2A)|(Microsoft\.Win32\..%2A)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
       <ExpectedPrerelease>rc2-23712</ExpectedPrerelease>
-    </ValidationPattern>
-    <ValidationPattern Include="^(System\..*TestData)$">
-      <ExpectedVersion>1.0.0-prerelease</ExpectedVersion>
     </ValidationPattern>
     <ValidationPattern Include="^xunit$">
       <ExpectedVersion>2.1.0</ExpectedVersion>
