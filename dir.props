@@ -52,6 +52,7 @@
     <BuildToolsTaskDir Condition="'$(BuildToolsTargets45)' == 'true'">$(ToolsDir)net45/</BuildToolsTaskDir>
 
     <!-- Packaging configuration -->
+    <PreReleaseLabel>rc3</PreReleaseLabel> 
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1-rc2-23712/runtime.json</RuntimeIdGraphDefinitionFile>
     <!-- Add a condition for this when we are able to run on .NET Core -->
