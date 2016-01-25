@@ -347,6 +347,9 @@ namespace Bridge
                 {
                     Console.Clear(); 
                 }
+
+                // Key presses to the Bridge restart the idle timeout
+                IdleTimeoutHandler.RestartTimer();
             }
 
             BridgeController.StopBridgeProcess(0);
