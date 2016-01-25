@@ -16,11 +16,11 @@
     "System.Linq": "4.0.0",
     "System.Linq.Expressions": "4.0.0",
     "System.Linq.Queryable": "4.0.0",
-    "System.Net.Http": "4.0.1-rc2-23712",
+    "System.Net.Http": "4.0.1-rc3-23725",
     "System.Net.Primitives": "4.0.10",
     "System.Net.WebHeaderCollection": "4.0.0",
-    "System.Net.WebSockets": "4.0.0-rc2-23712",
-    "System.Net.WebSockets.Client": "4.0.0-rc2-23712",
+    "System.Net.WebSockets": "4.0.0-rc3-23725",
+    "System.Net.WebSockets.Client": "4.0.0-rc3-23725",
     "System.ObjectModel": "4.0.0",
     "System.Reflection": "4.0.0",
     "System.Reflection.DispatchProxy": "4.0.0",
@@ -32,9 +32,9 @@
     "System.Runtime.Extensions": "4.0.10",
     "System.Runtime.Handles": "4.0.0",
     "System.Runtime.InteropServices": "4.0.0",
-    "System.Runtime.Serialization.Xml": "4.1.0-rc2-23712",
+    "System.Runtime.Serialization.Xml": "4.1.0-rc3-23725",
     "System.Security.Claims": "4.0.0",
-    "System.Security.Cryptography.X509Certificates": "4.0.0-rc2-23712",
+    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23725",
     "System.Security.Principal": "4.0.0",
     "System.Text.Encoding": "4.0.10",
     "System.Threading": "4.0.0",
@@ -48,9 +48,9 @@
   "frameworks": {
     "dnxcore50": {
       "dependencies": {
-        "System.Net.NameResolution": "4.0.0-rc2-23712",
-        "System.Net.Security": "4.0.0-rc2-23712",
-        "System.Net.Sockets": "4.1.0-rc2-23712"
+        "System.Net.NameResolution": "4.0.0-rc3-23725",
+        "System.Net.Security": "4.0.0-rc3-23725",
+        "System.Net.Sockets": "4.1.0-rc3-23725"
       }
     }
   }

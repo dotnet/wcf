@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "System.Net.Http": "4.0.1-rc2-23712",
-    "System.Net.Primitives": "4.0.11-rc2-23712",
-    "System.ServiceModel.Duplex": "4.0.1-rc2-23712",
-    "System.ServiceModel.Http": "4.0.11-rc2-23712",
-    "System.ServiceModel.Primitives": "4.1.0-rc2-23712"
+    "System.Net.Http": "4.0.1-rc3-23725",
+    "System.Net.Primitives": "4.0.11-rc3-23725",
+    "System.ServiceModel.Duplex": "4.0.1-rc3-23725",
+    "System.ServiceModel.Http": "4.0.11-rc3-23725",
+    "System.ServiceModel.Primitives": "4.1.0-rc3-23725"
   },
   "frameworks": {
     "dnxcore50": {}
