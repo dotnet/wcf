@@ -44,6 +44,8 @@
         <Type Name="ExceptionDetail" Dynamic="Required All" DataContractJsonSerializer="Public" DataContractSerializer="Public" />
         <!-- Allowing Reflection on FaultException{Object} permits type instantiation of FaultException{TDetail} -->
         <Type Name="FaultException{System.Object}" Dynamic="Required All" />
+        <!-- Allow instantiation of generic FaultException for both classes and value types -->
+        <Type Name="FaultException`1" Dynamic="Required All" />
       </Namespace>
       <Namespace Name="System.ServiceModel.Channels">
         <Type Name="Binding" Dynamic="Required All" >
