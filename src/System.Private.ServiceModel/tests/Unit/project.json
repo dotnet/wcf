@@ -47,6 +47,7 @@
   },
   "frameworks": {
     "dnxcore50": {
+      "imports": "portable-net45+win8",
       "dependencies": {
         "System.Net.NameResolution": "4.0.0-rc3-23725",
         "System.Net.Security": "4.0.0-rc3-23725",
