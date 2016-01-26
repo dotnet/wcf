@@ -58,7 +58,8 @@
     "netcore50": {
       "dependencies": {
         "System.Runtime.WindowsRuntime": "4.0.0",
-        "Microsoft.TargetingPack.Private.NetNative": "1.0.0-rc3-23725"
+        "Microsoft.TargetingPack.Private.NetNative": "1.0.0-rc3-23725",
+        "Microsoft.TargetingPack.Private.WinRT": "1.0.0"
       }
     }
   }
