@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace TestTypes
 {
@@ -1229,4 +1230,24 @@ public class NonInstantiatedType
 public class UniqueType
 {
     public string stringValue;
+}
+
+// This type should be exclusively used by test OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify.
+[XmlType(Namespace = "urn:TestWebServices/MyWebService/")]
+public class MesssageHeaderCreateHeaderWithXmlSerializerTestType
+{
+    private string message;
+
+    [XmlElement(Order = 0)]
+    public string Message
+    {
+        get
+        {
+            return message;
+        }
+        set
+        {
+            message = value;
+        }
+    }
 }
