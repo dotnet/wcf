@@ -3,6 +3,7 @@
 
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.Xml.Serialization;
 
 namespace WcfService
 {
@@ -177,3 +178,24 @@ public class NonInstantiatedType
 {
 
 }
+
+[XmlType(Namespace = "urn:TestWebServices/MyWebService/")]
+public partial class MesssageHeaderCreateHeaderWithXmlSerializerTestType
+{
+    private string message;
+
+    /// <remarks/>
+    [XmlElement(Order = 0)]
+    public string Message
+    {
+        get
+        {
+            return message;
+        }
+        set
+        {
+            message = value;
+        }
+    }
+}
+

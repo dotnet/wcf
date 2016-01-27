@@ -53,6 +53,11 @@
         </Type>
         <Type Name="CustomBinding" Dynamic="Required All" />
         <Type Name="IRequestChannel" Dynamic="Required All" />
+        <Type Name="MessageHeader" Dynamic="Required All">
+          <Method Name="CreateHeader">
+            <Parameter Name="value" Dynamic="Required All" DataContractSerializer="Public" />
+          </Method>
+        </Type>
       </Namespace>
     </Assembly>
   </Library>

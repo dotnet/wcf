@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -177,6 +178,48 @@ public static class XmlSerializerFormatTests
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify()
+    {
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        MyClientBase<IWcfServiceXmlGenerated> client = new MyClientBase<IWcfServiceXmlGenerated>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+        IWcfServiceXmlGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+
+        string customHeaderName = "TestSessionHeader";
+        string customHeaderNS = "xmlns=urn:TestWebServices/MyWebService/";
+        var customHeaderValue = new MesssageHeaderCreateHeaderWithXmlSerializerTestType { Message = "secret" };
+
+        try
+        {
+            using (OperationContextScope scope = new OperationContextScope((IContextChannel)serviceProxy))
+            {
+                // *** EXECUTE *** \\
+                MessageHeader header
+                  = MessageHeader.CreateHeader(
+                  customHeaderName,
+                  customHeaderNS,
+                  customHeaderValue
+                  );
+                OperationContext.Current.OutgoingMessageHeaders.Add(header);
+
+                string result = serviceProxy.GetIncomingMessageHeadersMessage(customHeaderName, customHeaderNS);
+
+                // *** VALIDATE *** \\
+                Assert.Equal(customHeaderValue.Message, result);
+            }
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, client);
         }
     }
 }

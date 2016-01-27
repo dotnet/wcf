@@ -251,6 +251,18 @@ namespace WcfService
             return infos;
         }
 
+        public string GetIncomingMessageHeadersMessage(string customHeaderName, string customHeaderNS)
+        {
+            MessageHeaders headers = OperationContext.Current.IncomingMessageHeaders;
+            MesssageHeaderCreateHeaderWithXmlSerializerTestType header = headers.GetHeader<MesssageHeaderCreateHeaderWithXmlSerializerTestType>(customHeaderName, customHeaderNS);
+            if (header != null)
+            {
+                return header.Message;
+            }
+
+            return string.Empty;
+        }
+
         public string EchoXmlSerializerFormat(string message)
         {
             return message;

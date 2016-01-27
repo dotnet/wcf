@@ -102,8 +102,12 @@ public interface IWcfServiceXmlGenerated
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlVeryComplexType"),
     XmlSerializerFormat]
     XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex);
-}
 
+    [XmlSerializerFormat]
+    [ServiceKnownType(typeof(MesssageHeaderCreateHeaderWithXmlSerializerTestType))]
+    [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction = "*")]
+    string GetIncomingMessageHeadersMessage(string customHeaderName, string customHeaderNS);
+}
 
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
 public interface IWcfServiceGenerated

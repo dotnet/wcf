@@ -84,6 +84,11 @@ namespace WcfService
         [XmlSerializerFormat]
         LoginResponse Login(LoginRequest request);
 
+        [XmlSerializerFormat]
+        [ServiceKnownType(typeof(MesssageHeaderCreateHeaderWithXmlSerializerTestType))]
+        [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction = "http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessageResponse")]
+        string GetIncomingMessageHeadersMessage(string customHeaderName, string customHeaderNS);
+
         [OperationContract]
         Stream GetStreamFromString(string data);
 
