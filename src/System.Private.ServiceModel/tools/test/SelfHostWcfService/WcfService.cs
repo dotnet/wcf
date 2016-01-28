@@ -263,6 +263,18 @@ namespace WcfService
             return string.Empty;
         }
 
+        public XmlMessageContractTestResponse EchoMessageResponseWithMessageHeader(XmlMessageContractTestRequest request)
+        {
+            var result = new XmlMessageContractTestResponse(request.Message);
+            return result;
+        }
+
+        public XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request)
+        {
+            var result = new XmlMessageContractTestResponse(request.Message);
+            return result;
+        }
+
         public string EchoXmlSerializerFormat(string message)
         {
             return message;

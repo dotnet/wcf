@@ -222,4 +222,59 @@ public static class XmlSerializerFormatTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, client);
         }
     }
+
+    [Fact]
+    [OuterLoop]
+    public static void MessageHeader_ResponseTypeWithUsesMessageHeaderAttribute()
+    {
+        // *** SETUP *** \\
+        var binding = new BasicHttpBinding();
+        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+        var factory = new ChannelFactory<IXmlMessageContarctTestService>(binding, endpointAddress);
+        IXmlMessageContarctTestService serviceProxy = factory.CreateChannel();
+        var input = new XmlMessageContractTestRequest("1");
+
+        try
+        {
+            // *** EXECUTE *** \\
+            XmlMessageContractTestResponse response = serviceProxy.EchoMessageResponseWithMessageHeader(input);
+
+            // *** VALIDATE *** \\
+            Assert.NotNull(response);
+            Assert.Equal(input.Message, response.Message);
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(702)]
+    public static void MessageHeader_RequestTypeWithUsesMessageHeaderAttribute()
+    {
+        // *** SETUP *** \\
+        var binding = new BasicHttpBinding();
+        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+        var factory = new ChannelFactory<IXmlMessageContarctTestService>(binding, endpointAddress);
+        IXmlMessageContarctTestService serviceProxy = factory.CreateChannel();
+        var input = new XmlMessageContractTestRequestWithMessageHeader("1");
+
+        try
+        {
+            // *** EXECUTE *** \\
+            XmlMessageContractTestResponse response = serviceProxy.EchoMessageResquestWithMessageHeader(input);
+
+            // *** VALIDATE *** \\
+            Assert.NotNull(response);
+            Assert.Equal(input.Message, response.Message);
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }

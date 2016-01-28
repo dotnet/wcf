@@ -199,3 +199,66 @@ public partial class MesssageHeaderCreateHeaderWithXmlSerializerTestType
     }
 }
 
+[MessageContract(WrapperName = "XmlMessageContractTestRequest", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
+public partial class XmlMessageContractTestRequest
+{
+
+    [MessageBodyMember(Namespace = "http://www.contoso.com/XmlMessageContarctTestMessages", Order = 0)]
+    public string Message;
+
+    public XmlMessageContractTestRequest()
+    {
+    }
+
+    public XmlMessageContractTestRequest(string message)
+    {
+        this.Message = message;
+    }
+}
+
+[MessageContract(WrapperName = "XmlMessageContractTestRequestWithMessageHeader", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
+public partial class XmlMessageContractTestRequestWithMessageHeader
+{
+
+    [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
+    public string Message;
+
+    public XmlMessageContractTestRequestWithMessageHeader()
+    {
+    }
+
+    public XmlMessageContractTestRequestWithMessageHeader(string message)
+    {
+        this.Message = message;
+    }
+}
+
+[MessageContract(WrapperName = "XmlMessageContractTestResponse", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
+public partial class XmlMessageContractTestResponse
+{
+
+    [MessageBodyMember(Namespace = "http://www.contoso.com/XmlMessageContarctTestMessages", Order = 0)]
+    public string _message;
+
+    public XmlMessageContractTestResponse()
+    {
+    }
+
+    public XmlMessageContractTestResponse(string message)
+    {
+        this._message = message;
+    }
+
+    [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
+    public string Message
+    {
+        get
+        {
+            return _message;
+        }
+        set
+        {
+            _message = value;
+        }
+    }
+}
