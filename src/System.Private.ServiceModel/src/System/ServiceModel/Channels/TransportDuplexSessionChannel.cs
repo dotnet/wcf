@@ -533,7 +533,7 @@ namespace System.ServiceModel.Channels
                     AsyncCompletionResult completionResult;
                     if (this.IsStreamedOutput)
                     {
-                        completionResult = this.StartWritingStreamedMessage(message, timeoutHelper.RemainingTime(), s_onWriteComplete, this);
+                        completionResult = this.StartWritingStreamedMessage(message, timeoutHelper.RemainingTime(), s_onWriteComplete, tcs);
                     }
                     else
                     {
