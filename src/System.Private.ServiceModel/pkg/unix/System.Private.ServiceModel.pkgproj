@@ -3,14 +3,14 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
 
   <PropertyGroup>
-    <!-- Ideally we'd harvest this from the runtime dependencies -->
-    <Version>4.0.1</Version>
+    <PackageTargetRuntime>unix</PackageTargetRuntime>
     <PreventImplementationReference>true</PreventImplementationReference>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="win\System.Private.ServiceModel.pkgproj" />
-    <ProjectReference Include="unix\System.Private.ServiceModel.pkgproj" />
+    <ProjectReference Include="..\..\src\System.Private.ServiceModel.builds">
+      <AdditionalProperties>FilterToOSGroup=Linux</AdditionalProperties>
+    </ProjectReference>
   </ItemGroup>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
