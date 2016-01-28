@@ -14,23 +14,30 @@ namespace Bridge
     public class IdleTimeoutHandler : DelegatingHandler
     {
         public static readonly TimeSpan Default_MaxIdleTimeSpan = TimeSpan.FromHours(24);
-        private IdleTimeoutManager _timeoutManager;
+        private static IdleTimeoutManager _timeoutManager = new IdleTimeoutManager(Default_MaxIdleTimeSpan);
 
         private IdleTimeoutHandler(TimeSpan idleTimeout)
         {
-            _timeoutManager = new IdleTimeoutManager(idleTimeout); ;
+            _timeoutManager.IdleTimeout = idleTimeout;
+            _timeoutManager.Restart();
+
             _timeoutManager.OnTimeOut += (s, e) =>
             {
                 Trace.WriteLine(String.Format("{0:T} - Timed out as there were no messages to the bridge for {1} seconds", DateTime.Now, (int)e.TotalSeconds),
                                 this.GetType().Name);
-                Environment.Exit(-1);
+                BridgeController.StopBridgeProcess(0);
             };
         }
 
         internal static void Register(HttpConfiguration config)
         {
-            var waitTimeout = Default_MaxIdleTimeSpan;            
+            var waitTimeout = ConfigController.BridgeConfiguration.BridgeMaxIdleTimeSpan;            
             config.MessageHandlers.Add(new IdleTimeoutHandler(waitTimeout));
+        }
+
+        public static void RestartTimer()
+        {
+            _timeoutManager.Restart();
         }
 
         protected async override Task<HttpResponseMessage> SendAsync(
@@ -52,12 +59,11 @@ namespace Bridge
         {
             bool _disposed = false;
             Timer _timer;
-            TimeSpan _waitTimeout;
             public event EventHandler<TimeSpan> OnTimeOut;
 
             public IdleTimeoutManager(TimeSpan idleTimeout)
             {
-                _waitTimeout = idleTimeout;
+                IdleTimeout = idleTimeout;
                 _timer = new Timer(this.TimeOutCallback);
                 this.Restart();
 
@@ -65,21 +71,19 @@ namespace Bridge
                 ConfigController.IdleTimeoutChanged += (object s, ChangedEventArgs<TimeSpan> args) =>
                 {
                     TimeSpan newTimeout = args.NewValue;
-
-                    // When this notification is received, we will already have
-                    // restarted the timer with its prior timeout.  There is no
-                    // need to restart again if the timeout span is the same.
-                    if (!newTimeout.Equals(_waitTimeout))
-                    {
-                        _waitTimeout = newTimeout;
-                        Restart();
-                    }
+                    Trace.WriteLine(String.Format("{0:T} - Bridge idle timeout changed to {1}.", 
+                                                  DateTime.Now, newTimeout),
+                                    this.GetType().Name);
+                    IdleTimeout = newTimeout;
+                    Restart();
                 };
             }
 
+            public TimeSpan IdleTimeout { get; set; }
+
             public IDisposable Start()
             {
-                if (Update(Timeout.Infinite))
+                if (Update((int)IdleTimeout.TotalMilliseconds))
                 {
                     return new OperationScope(this);
                 }
@@ -89,11 +93,13 @@ namespace Bridge
 
             public void Restart()
             {
-                Update((int)_waitTimeout.TotalMilliseconds);
+                Update((int)IdleTimeout.TotalMilliseconds);
             }
 
             private bool Update(int interval)
             {
+                Trace.WriteLine(String.Format("{0:T} Restarting timer for {1} ms", DateTime.Now, interval), this.GetType().Name);
+
                 lock (_timer)
                 {
                     if (!_disposed)
@@ -120,7 +126,7 @@ namespace Bridge
 
                 if (OnTimeOut != null)
                 {
-                    OnTimeOut(this, _waitTimeout);
+                    OnTimeOut(this, IdleTimeout);
                 }
             }
 
