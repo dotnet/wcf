@@ -363,7 +363,7 @@ namespace System.ServiceModel.Channels
 
         public static void SetServerCertificateValidationCallback(ServiceModelHttpMessageHandler handler)
         {
-            if (!handler.SupportsClientCertificates)
+            if (!handler.SupportsCertificateValidationCallback)
             {
                 throw ExceptionHelper.PlatformNotSupported("Server certificate validation not supported yet");
             }

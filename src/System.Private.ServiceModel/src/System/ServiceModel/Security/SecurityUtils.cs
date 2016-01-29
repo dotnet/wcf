@@ -880,7 +880,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        private static Exception CreateCertificateLoadException(StoreName storeName, StoreLocation storeLocation,
+        internal static Exception CreateCertificateLoadException(StoreName storeName, StoreLocation storeLocation,
             X509FindType findType, object findValue, EndpointAddress target, int certCount)
         {
             if (certCount == 0)

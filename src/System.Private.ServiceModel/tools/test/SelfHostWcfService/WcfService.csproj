@@ -91,6 +91,7 @@
     <Compile Include="TestResources\HttpsWindowsResource.cs" />
     <Compile Include="TestResources\HttpsNtlmResource.cs" />
     <Compile Include="TestResources\HttpsDigestResource.cs" />
+    <Compile Include="TestResources\RequestLoggingServiceBehavior.cs" />
     <Compile Include="TestResources\ServiceContractAsyncResources.cs" />
     <Compile Include="TestResources\TcpCertificateWithServerAltNameResource.cs" />
     <Compile Include="TestResources\TcpCertificateWithSubjectCanonicalNameLocalhostResource.cs" />

@@ -107,7 +107,7 @@ namespace System.ServiceModel
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientCertificateNotProvidedOnClientCredentials)));
                 }
-                result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate);
+                result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate, _parent.ClientCertificate.CloneCertificate);
             }
             else if (tokenRequirement is InitiatorServiceModelSecurityTokenRequirement)
             {
@@ -129,7 +129,7 @@ namespace System.ServiceModel
                         {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientCertificateNotProvidedOnClientCredentials)));
                         }
-                        result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate);
+                        result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate, _parent.ClientCertificate.CloneCertificate);
                     }
                 }
                 else if (tokenType == SecurityTokenTypes.Kerberos)
