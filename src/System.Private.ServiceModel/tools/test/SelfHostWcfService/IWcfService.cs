@@ -118,5 +118,17 @@ namespace WcfService
 
         [OperationContract]
         void ReturnContentType(string contentType);
+
+        [OperationContract(
+            Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMessageHeader",
+            ReplyAction = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMessageHeaderResponse")]
+        [XmlSerializerFormat(SupportFaults = true)]
+        XmlMessageContractTestResponse EchoMessageResponseWithMessageHeader(XmlMessageContractTestRequest request);
+
+        [OperationContract(
+            Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMessageHeader",
+            ReplyAction = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMessageHeaderResponse")]
+        [XmlSerializerFormat(SupportFaults = true)]
+        XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
     }
 }

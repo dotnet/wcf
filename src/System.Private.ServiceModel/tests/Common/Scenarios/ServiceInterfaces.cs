@@ -466,3 +466,19 @@ public interface ILoginService
     [XmlSerializerFormat]
     LoginResponse Login(LoginRequest request);
 }
+
+[ServiceContract(Namespace = "http://www.contoso.com/IXmlMessageContarctTestService")]
+public interface IXmlMessageContarctTestService
+{
+    [OperationContract(
+        Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMessageHeader",
+        ReplyAction = "*")]
+    [XmlSerializerFormat(SupportFaults = true)]
+    XmlMessageContractTestResponse EchoMessageResponseWithMessageHeader(XmlMessageContractTestRequest request);
+
+    [OperationContract(
+        Action = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMessageHeader",
+        ReplyAction = "*")]
+    [XmlSerializerFormat(SupportFaults = true)]
+    XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
+}
