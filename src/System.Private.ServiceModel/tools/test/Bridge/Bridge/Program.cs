@@ -27,16 +27,18 @@ namespace Bridge
                 new UnhandledExceptionEventHandler(BridgeUnhandledExceptionHandler);
             CommandLineArguments commandLineArgs = new CommandLineArguments(args);
 
-            Console.WriteLine("Bridge.exe was launched with:{0}{1}", 
-                              Environment.NewLine, commandLineArgs.ToString());
+            Console.WriteLine("Bridge.exe was launched with:{0}{1} which configured the Bridge like this:{1}{2}", 
+                              String.Join(" ", args), Environment.NewLine, commandLineArgs.ToString());
 
             // If asked to ping (not the default), just ping and return an exit code indicating its state
             if (commandLineArgs.Ping)
             {
                 string errorMessage = null;
+                Dictionary<string, string> properties;
                 if (PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
                                commandLineArgs.BridgeConfiguration.BridgePort,
-                               out errorMessage))
+                               out errorMessage,
+                               out properties))
                 {
                     Console.WriteLine("The Bridge is running.");
                     Environment.Exit(0);
@@ -50,6 +52,11 @@ namespace Bridge
             if (commandLineArgs.StopIfLocal)
             {
                 StopBridgeIfLocal(commandLineArgs);
+                Environment.Exit(0);
+            }
+            if (commandLineArgs.StopIfAutoStart)
+            {
+                StopBridgeIfAutoStart(commandLineArgs);
                 Environment.Exit(0);
             }
             if (commandLineArgs.Stop)
@@ -74,9 +81,11 @@ namespace Bridge
         // Issues a GET request to the Bridge to determine whether it is alive.
         // A return of 'true' means the Bridge is healthy.  A return of 'false'
         // indicates the Bridge is not healthy, and 'errorMessage' describes the problem.
-        private static bool PingBridge(string host, int port, out string errorMessage)
+        // A healthy response will also populate properties with the current Bridge configuration.
+        private static bool PingBridge(string host, int port, out string errorMessage, out Dictionary<string, string> properties)
         {
             errorMessage = null;
+            properties = null;
 
             string bridgeUrl = String.Format("http://{0}:{1}/{2}", host, port, BridgeControllerEndpoint);
 
@@ -99,8 +108,14 @@ namespace Bridge
                             }
                             errorMessage = String.Format("{0}, content:{1}{2}",
                                                     errorMessage, Environment.NewLine, contentAsString);
+
                         }
                         return false;
+                    }
+                    else if (response.Content != null)
+                    {
+                        string contentAsString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        properties = JsonSerializer.DeserializeDictionary(contentAsString);
                     }
                 }
                 catch (Exception ex)
@@ -127,13 +142,43 @@ namespace Bridge
             }
         }
 
-        private static void StopBridge(CommandLineArguments commandLineArgs)
+        private static void StopBridgeIfAutoStart(CommandLineArguments commandLineArgs)
         {
             string errorMessage = null;
+            Dictionary<string, string> properties;
 
             if (!PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
                                            commandLineArgs.BridgeConfiguration.BridgePort,
-                                           out errorMessage))
+                                           out errorMessage,
+                                           out properties))
+            {
+                Console.WriteLine("The Bridge is not running: {0}", errorMessage);
+                return;
+            }
+
+            BridgeConfiguration bridgeConfiguration = new BridgeConfiguration(properties);
+            if (!bridgeConfiguration.BridgeManualStart)
+            {
+                Console.WriteLine("Stopping the Bridge because it was not started manually.");
+                StopBridge(commandLineArgs);
+            }
+            else
+            {
+                Console.WriteLine("The Bridge on host {0} was started manually and will not be stopped.",
+                                    commandLineArgs.BridgeConfiguration.BridgeHost);
+                Console.WriteLine("Use 'Bridge.exe /stop' to stop the Bridge unconditionally or type 'exit' into the Bridge console window.");
+            }
+        }
+
+        private static void StopBridge(CommandLineArguments commandLineArgs)
+        {
+            string errorMessage = null;
+            Dictionary<string, string> properties;
+
+            if (!PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
+                                           commandLineArgs.BridgeConfiguration.BridgePort,
+                                           out errorMessage,
+                                           out properties))
             {
                 Console.WriteLine("The Bridge is not running: {0}", errorMessage);
                 Environment.Exit(0);
@@ -196,10 +241,12 @@ namespace Bridge
         private static void ResetBridge(CommandLineArguments commandLineArgs)
         {
             string errorMessage = null;
+            Dictionary<string, string> properties;
 
             if (!PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
                                            commandLineArgs.BridgeConfiguration.BridgePort,
-                                           out errorMessage))
+                                           out errorMessage,
+                                           out properties))
             {
                 Console.WriteLine("The Bridge is not running: {0}", errorMessage);
                 Environment.Exit(0);
@@ -257,10 +304,12 @@ namespace Bridge
         private static void RequireBridge(CommandLineArguments commandLineArgs)
         {
             string errorMessage = null;
+            Dictionary<string, string> properties;
 
             if (PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
                                            commandLineArgs.BridgeConfiguration.BridgePort,
-                                           out errorMessage))
+                                           out errorMessage,
+                                           out properties))
             {
                 Console.WriteLine("The Bridge is already running.");
                 Environment.Exit(0);
@@ -279,7 +328,8 @@ namespace Bridge
 
                 if (PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
                                commandLineArgs.BridgeConfiguration.BridgePort,
-                               out errorMessage))
+                               out errorMessage,
+                               out properties))
                 {
                     Console.WriteLine("The Bridge has been started successfully.");
                     Environment.Exit(0);
@@ -318,10 +368,12 @@ namespace Bridge
         private static void StartBridge(CommandLineArguments commandLineArgs)
         {
             string errorMessage = null;
+            Dictionary<string, string> properties;
 
             if (PingBridge(commandLineArgs.BridgeConfiguration.BridgeHost,
                                            commandLineArgs.BridgeConfiguration.BridgePort,
-                                           out errorMessage))
+                                           out errorMessage,
+                                           out properties))
             {
                 Console.WriteLine("The Bridge is already running.");
                 Environment.Exit(0);
@@ -376,7 +428,7 @@ namespace Bridge
 
             // Now test whether the Bridge is running.  Failure cleans up
             // all resources and terminates the process.
-            if (!PingBridge(visibleHost, port, out errorMessage))
+            if (!PingBridge(visibleHost, port, out errorMessage, out properties))
             {
                 Console.WriteLine("The Bridge failed to start or is not responding: {0}", errorMessage);
                 BridgeController.StopBridgeProcess(1);
@@ -478,16 +530,17 @@ namespace Bridge
             public bool StopIfLocal { get; private set; }
             public bool Reset { get; private set; }
             public int? RequireBridgeTimeoutSeconds { get; private set; }
+            public bool StopIfAutoStart { get; private set; }
 
             public override string ToString()
             {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("Options are:")
+                StringBuilder sb = new StringBuilder()
                     .AppendLine(String.Format("  -allowRemote = {0}", AllowRemote))
                     .AppendLine(String.Format("  -remoteAddresses = {0}", RemoteAddresses))
                     .AppendLine(String.Format("  -ping = {0}", Ping))
                     .AppendLine(String.Format("  -stop = {0}", Stop))
                     .AppendLine(String.Format("  -stopIfLocal = {0}", StopIfLocal))
+                    .AppendLine(String.Format("  -stopIfAutoStart = {0}", StopIfAutoStart))
                     .AppendLine(String.Format("  -reset = {0}", Reset))
                     .AppendLine(String.Format("  -require = {0}", RequireBridgeTimeoutSeconds))
                     .AppendLine(String.Format("BridgeConfiguration is:{0}{1}", 
@@ -613,6 +666,11 @@ namespace Bridge
                     StopIfLocal = true;
                 }
 
+                if (argumentDictionary.ContainsKey("stopIfAutoStart"))
+                {
+                    StopIfAutoStart = true;
+                }
+
                 string remoteAddresses;
                 if (argumentDictionary.TryGetValue("remoteAddresses", out remoteAddresses))
                 {
@@ -657,6 +715,7 @@ namespace Bridge
                 Console.WriteLine("                       Exit code 0 indicates it is running.");
                 Console.WriteLine("   -stop               Stops the Bridge if it is running.");
                 Console.WriteLine("   -stopIfLocal        Stops the Bridge only if it is running locally.");
+                Console.WriteLine("   -stopIfAutoStart    Stops the Bridge only if it was launched automatically by a test run.");
                 Console.WriteLine("   -allowRemote        If starting the Bridge, allows access from other than localHost (default is localhost only).");
                 Console.WriteLine("   -reset              Releases all Bridge resources without stopping the Bridge.");
                 Console.WriteLine("   -remoteAddresses:addresses  If starting the Bridge, comma-separated list of addresses firewall rules will accept.");

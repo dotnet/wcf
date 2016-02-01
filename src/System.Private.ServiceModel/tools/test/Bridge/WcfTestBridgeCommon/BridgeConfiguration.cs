@@ -20,7 +20,7 @@ namespace WcfTestBridgeCommon
         private static readonly int Default_BridgeWebSocketPort = 8083;
         private static readonly int Default_BridgeSecureWebSocketPort = 8084;
         private static readonly TimeSpan Default_BridgeMaxIdleTimeSpan = TimeSpan.FromHours(24);
-        
+
         // These property names must match the names used in TestProperties because
         // that is the set of name/value pairs from which this type is created.
         private const string BridgeResourceFolder_PropertyName = "BridgeResourceFolder";
@@ -35,6 +35,7 @@ namespace WcfTestBridgeCommon
         private const string BridgeCertificateValidityPeriod_PropertyName = "BridgeCertificateValidityPeriod";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
+        private const string BridgeManualStart_PropertyName = "BridgeManualStart";
 
         public string BridgeResourceFolder { get; set; }
         public string BridgeHost { get; set; }
@@ -48,6 +49,7 @@ namespace WcfTestBridgeCommon
         public TimeSpan BridgeCertificateValidityPeriod { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
+        public bool BridgeManualStart { get; set; }
 
         public BridgeConfiguration()
         {
@@ -59,6 +61,10 @@ namespace WcfTestBridgeCommon
             BridgeWebSocketPort = Default_BridgeWebSocketPort;
             BridgeSecureWebSocketPort = Default_BridgeSecureWebSocketPort;
             BridgeMaxIdleTimeSpan = Default_BridgeMaxIdleTimeSpan;
+        }
+
+        public BridgeConfiguration(Dictionary<string, string> properties) : this(new BridgeConfiguration(), properties)
+        {
         }
 
         // This ctor accepts an existing BridgeConfiguration and a set of name/value pairs.
@@ -78,92 +84,102 @@ namespace WcfTestBridgeCommon
             BridgeCertificateValidityPeriod = configuration.BridgeCertificateValidityPeriod;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
+            BridgeManualStart = configuration.BridgeManualStart;
 
-            string propertyValue = null;
-            if (properties.TryGetValue(BridgeResourceFolder_PropertyName, out propertyValue))
+            if (properties != null)
             {
-                if (string.IsNullOrEmpty(propertyValue) || !Directory.Exists(propertyValue))
+                string propertyValue = null;
+                if (properties.TryGetValue(BridgeResourceFolder_PropertyName, out propertyValue))
                 {
-                    throw new ArgumentException(
-                        String.Format("The BridgeResourceFolder '{0}' does not exist.", propertyValue),
-                        BridgeResourceFolder_PropertyName);
+                    if (string.IsNullOrEmpty(propertyValue) || !Directory.Exists(propertyValue))
+                    {
+                        throw new ArgumentException(
+                            String.Format("The BridgeResourceFolder '{0}' does not exist.", propertyValue),
+                            BridgeResourceFolder_PropertyName);
+                    }
+
+                    BridgeResourceFolder = Path.GetFullPath(propertyValue);
                 }
 
-                BridgeResourceFolder = Path.GetFullPath(propertyValue);
-            }
-
-            if (properties.TryGetValue(BridgeHost_PropertyName, out propertyValue))
-            {
-                BridgeHost = propertyValue;
-            }
-            
-            if (properties.TryGetValue(BridgeCertificatePassword_PropertyName, out propertyValue))
-            {
-                BridgeCertificatePassword = propertyValue;
-            }
-
-            TimeSpan validity; 
-            if (TryParseTimeSpanProperty(BridgeCertificateValidityPeriod_PropertyName, properties, out validity))
-            {
-                BridgeCertificateValidityPeriod = validity;
-            }
-            
-            int port;
-
-            if (TryParseIntegerProperty(BridgePort_PropertyName, properties, out port))
-            {
-                BridgePort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeHttpPort_PropertyName, properties, out port))
-            {
-                BridgeHttpPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeHttpsPort_PropertyName, properties, out port))
-            {
-                BridgeHttpsPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeTcpPort_PropertyName, properties, out port))
-            {
-                BridgeTcpPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeWebSocketPort_PropertyName, properties, out port))
-            {
-                BridgeWebSocketPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeSecureWebSocketPort_PropertyName, properties, out port))
-            {
-                BridgeSecureWebSocketPort = port;
-            }
-
-            if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
-            {
-                TimeSpan span;
-                if (!TimeSpan.TryParse(propertyValue, out span))
+                if (properties.TryGetValue(BridgeHost_PropertyName, out propertyValue))
                 {
-                    throw new ArgumentException(
-                        String.Format("The BridgeMaxIdleTimeSpan value '{0}' is not a valid TimeSpan.", propertyValue),
-                        BridgeMaxIdleTimeSpan_PropertyName);
+                    BridgeHost = propertyValue;
                 }
 
-                BridgeMaxIdleTimeSpan = span;
-            }
-
-            if (properties.TryGetValue(UseFiddlerUrl_PropertyName, out propertyValue))
-            {
-                bool boolValue = false;
-                if (!bool.TryParse(propertyValue, out boolValue))
+                if (properties.TryGetValue(BridgeCertificatePassword_PropertyName, out propertyValue))
                 {
-                    throw new ArgumentException(
-                        String.Format("The UseFiddlerUrl value '{0}' is not a valid boolean.", propertyValue),
-                        UseFiddlerUrl_PropertyName);
+                    BridgeCertificatePassword = propertyValue;
                 }
 
-                UseFiddlerUrl = boolValue;
+                TimeSpan validity;
+                if (TryParseTimeSpanProperty(BridgeCertificateValidityPeriod_PropertyName, properties, out validity))
+                {
+                    BridgeCertificateValidityPeriod = validity;
+                }
+
+                int port;
+
+                if (TryParseIntegerProperty(BridgePort_PropertyName, properties, out port))
+                {
+                    BridgePort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeHttpPort_PropertyName, properties, out port))
+                {
+                    BridgeHttpPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeHttpsPort_PropertyName, properties, out port))
+                {
+                    BridgeHttpsPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeTcpPort_PropertyName, properties, out port))
+                {
+                    BridgeTcpPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeWebSocketPort_PropertyName, properties, out port))
+                {
+                    BridgeWebSocketPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeSecureWebSocketPort_PropertyName, properties, out port))
+                {
+                    BridgeSecureWebSocketPort = port;
+                }
+
+                if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
+                {
+                    TimeSpan span;
+                    if (!TimeSpan.TryParse(propertyValue, out span))
+                    {
+                        throw new ArgumentException(
+                            String.Format("The BridgeMaxIdleTimeSpan value '{0}' is not a valid TimeSpan.", propertyValue),
+                            BridgeMaxIdleTimeSpan_PropertyName);
+                    }
+
+                    BridgeMaxIdleTimeSpan = span;
+                }
+
+                if (properties.TryGetValue(UseFiddlerUrl_PropertyName, out propertyValue))
+                {
+                    bool boolValue = false;
+                    if (!bool.TryParse(propertyValue, out boolValue))
+                    {
+                        throw new ArgumentException(
+                            String.Format("The UseFiddlerUrl value '{0}' is not a valid boolean.", propertyValue),
+                            UseFiddlerUrl_PropertyName);
+                    }
+
+                    UseFiddlerUrl = boolValue;
+                }
+
+                bool bridgeManualStart;
+                if (TryParseBooleanProperty(BridgeManualStart_PropertyName, properties, out bridgeManualStart))
+                {
+                    BridgeManualStart = bridgeManualStart;
+                }
             }
         }
 
@@ -201,6 +217,22 @@ namespace WcfTestBridgeCommon
             return false;
         }
 
+        private static bool TryParseBooleanProperty(string propertyName, Dictionary<string, string> properties, out bool result)
+        {
+            string propertyValue;
+            result = false;
+            if (properties.TryGetValue(propertyName, out propertyValue))
+            {
+                if (!bool.TryParse(propertyValue, out result))
+                {
+                    throw new ArgumentException(
+                        String.Format("The {0} value '{1}' is not a valid boolean.", propertyName, propertyValue),
+                        propertyName);
+                }
+                return true;
+            }
+            return false;
+        }
         public Dictionary<string, string> ToDictionary()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -216,6 +248,7 @@ namespace WcfTestBridgeCommon
             result[BridgeCertificateValidityPeriod_PropertyName] = BridgeCertificateValidityPeriod.ToString();
             result[BridgeMaxIdleTimeSpan_PropertyName] = BridgeMaxIdleTimeSpan.ToString();
             result[UseFiddlerUrl_PropertyName] = UseFiddlerUrl.ToString();
+            result[BridgeManualStart_PropertyName] = BridgeManualStart.ToString();
 
             return result;
         }
@@ -234,7 +267,8 @@ namespace WcfTestBridgeCommon
               .AppendFormat("  {0} : '{1}'{2}", BridgeCertificatePassword_PropertyName, BridgeCertificatePassword, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeCertificateValidityPeriod_PropertyName, BridgeCertificateValidityPeriod, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan, Environment.NewLine)
-              .AppendFormat("  {0} : '{1}'{2}", UseFiddlerUrl_PropertyName, UseFiddlerUrl, Environment.NewLine);
+              .AppendFormat("  {0} : '{1}'{2}", UseFiddlerUrl_PropertyName, UseFiddlerUrl, Environment.NewLine)
+              .AppendFormat("  {0} : '{1}'{2}", BridgeManualStart_PropertyName, BridgeManualStart, Environment.NewLine);
             return sb.ToString();
         }
     }
