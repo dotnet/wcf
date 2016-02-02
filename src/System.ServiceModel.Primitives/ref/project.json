@@ -13,7 +13,7 @@
     "System.Reflection": "4.0.0",
     "System.Net.Primitives": "4.0.0",
     "System.Security.Principal": "4.0.0",
-    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23725",
+    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23729",
     "System.Collections": "4.0.0",
     "System.Runtime.Serialization.Primitives": "4.0.0"
   },
