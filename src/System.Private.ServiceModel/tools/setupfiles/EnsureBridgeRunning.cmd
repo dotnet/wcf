@@ -1,18 +1,6 @@
 echo off
 setlocal
 
-REM Ensure that the Bridge is running.
-REM If the Bridge is already running, this script simply exits.
-REM If the Bridge is not running, it will be started in a new process,
-REM and this script will block until it is started (or the wait times out).
-REM If this script does start the Bridge, it sets BridgeAutoStart to true
-REM so that test scripts have permission to stop the Bridge as needed.
-
-tasklist /FI "IMAGENAME eq Bridge.exe" 2>NUL | find /I /N "Bridge.exe">NUL
-if "%ERRORLEVEL%"=="0" (
-  goto built
-)
-
 REM The Bridge process is not running, so ensure it is built
 pushd %~dp0
 echo Building the Bridge...
@@ -31,10 +19,30 @@ if '%BridgeResourceFolder%' == '' (
 )
 
 pushd %~dp0..\..\..\..\bin\wcf\tools\Bridge
-echo Invoking Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder% -BridgeAutoStart:true %*
-call Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder% -BridgeAutoStart:true %*
+echo Invoking Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder% %*
+call Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder%  %*
+set BridgeReturnCode=%ERRORLEVEL%
+
+echo Bridge.exe returned exit code %BridgeReturnCode%
+
+if '%BridgeReturnCode%' == '2' goto weStartedBridge
+if '%BridgeReturnCode%' == '1' goto bridgeAlreadyRunning
+echo EnsureBridgeRunning: The attempt to start the Bridge failed with exit code %BridgeReturnCode%
+goto done
+
+:weStartedBridge
+  echo EnsureBridgeRunning: The Bridge was started in response to this request
+  set BridgeStartedByScript=true
+  goto done
+  
+:bridgeAlreadyRunning
+  echo EnsureBridgeRunning: The Bridge was already running
+  set BridgeStartedByScript=false
+  goto done
+  
+:done
 popd
 
-
+endlocal & set BridgeStartedByScript=%BridgeStartedByScript%
 exit /b
 

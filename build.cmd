@@ -52,7 +52,7 @@ set _buildpostfix=^> "%_buildlog%"
 
 if "%outloop%" equ "true"  (
     pushd %setupFilesFolder%
-    call SetupWCFTestService.cmd
+    call EnsureBridgeRunning.cmd
     popd
 )
 
@@ -79,7 +79,7 @@ echo [%time%] Build Exit Code = %BUILDERRORLEVEL%
 
 if "%outloop%" equ "true"  (
     pushd %setupFilesFolder%
-    call CleanupWCFTestService.cmd
+    call ReleaseBridge.cmd
     call CleanupCertificates.cmd
     popd
 )

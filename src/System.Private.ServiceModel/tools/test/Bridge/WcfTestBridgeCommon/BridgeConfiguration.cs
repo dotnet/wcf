@@ -20,7 +20,6 @@ namespace WcfTestBridgeCommon
         private static readonly int Default_BridgeWebSocketPort = 8083;
         private static readonly int Default_BridgeSecureWebSocketPort = 8084;
         private static readonly TimeSpan Default_BridgeMaxIdleTimeSpan = TimeSpan.FromHours(24);
-        private static readonly bool Default_BridgeAutoStart = true;
 
         // These property names must match the names used in TestProperties because
         // that is the set of name/value pairs from which this type is created.
@@ -36,7 +35,6 @@ namespace WcfTestBridgeCommon
         private const string BridgeCertificateValidityPeriod_PropertyName = "BridgeCertificateValidityPeriod";
         private const string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan";
         private const string UseFiddlerUrl_PropertyName = "UseFiddlerUrl";
-        private const string BridgeAutoStart_PropertyName = "BridgeAutoStart";
 
         public string BridgeResourceFolder { get; set; }
         public string BridgeHost { get; set; }
@@ -50,7 +48,6 @@ namespace WcfTestBridgeCommon
         public TimeSpan BridgeCertificateValidityPeriod { get; set; }
         public TimeSpan BridgeMaxIdleTimeSpan { get; set; }
         public bool UseFiddlerUrl { get; set; }
-        public bool BridgeAutoStart { get; set; }
 
         public BridgeConfiguration()
         {
@@ -62,7 +59,6 @@ namespace WcfTestBridgeCommon
             BridgeWebSocketPort = Default_BridgeWebSocketPort;
             BridgeSecureWebSocketPort = Default_BridgeSecureWebSocketPort;
             BridgeMaxIdleTimeSpan = Default_BridgeMaxIdleTimeSpan;
-            BridgeAutoStart = Default_BridgeAutoStart;
         }
 
         public BridgeConfiguration(Dictionary<string, string> properties) : this(new BridgeConfiguration(), properties)
@@ -86,7 +82,6 @@ namespace WcfTestBridgeCommon
             BridgeCertificateValidityPeriod = configuration.BridgeCertificateValidityPeriod;
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
-            BridgeAutoStart = configuration.BridgeAutoStart;
 
             if (properties != null)
             {
@@ -176,12 +171,6 @@ namespace WcfTestBridgeCommon
 
                     UseFiddlerUrl = boolValue;
                 }
-
-                bool bridgeAutoStart;
-                if (TryParseBooleanProperty(BridgeAutoStart_PropertyName, properties, out bridgeAutoStart))
-                {
-                    BridgeAutoStart = bridgeAutoStart;
-                }
             }
         }
 
@@ -219,22 +208,6 @@ namespace WcfTestBridgeCommon
             return false;
         }
 
-        private static bool TryParseBooleanProperty(string propertyName, Dictionary<string, string> properties, out bool result)
-        {
-            string propertyValue;
-            result = false;
-            if (properties.TryGetValue(propertyName, out propertyValue))
-            {
-                if (!bool.TryParse(propertyValue, out result))
-                {
-                    throw new ArgumentException(
-                        String.Format("The {0} value '{1}' is not a valid boolean.", propertyName, propertyValue),
-                        propertyName);
-                }
-                return true;
-            }
-            return false;
-        }
         public Dictionary<string, string> ToDictionary()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -250,7 +223,6 @@ namespace WcfTestBridgeCommon
             result[BridgeCertificateValidityPeriod_PropertyName] = BridgeCertificateValidityPeriod.ToString();
             result[BridgeMaxIdleTimeSpan_PropertyName] = BridgeMaxIdleTimeSpan.ToString();
             result[UseFiddlerUrl_PropertyName] = UseFiddlerUrl.ToString();
-            result[BridgeAutoStart_PropertyName] = BridgeAutoStart.ToString();
 
             return result;
         }
@@ -269,8 +241,7 @@ namespace WcfTestBridgeCommon
               .AppendFormat("  {0} : '{1}'{2}", BridgeCertificatePassword_PropertyName, BridgeCertificatePassword, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeCertificateValidityPeriod_PropertyName, BridgeCertificateValidityPeriod, Environment.NewLine)
               .AppendFormat("  {0} : '{1}'{2}", BridgeMaxIdleTimeSpan_PropertyName, BridgeMaxIdleTimeSpan, Environment.NewLine)
-              .AppendFormat("  {0} : '{1}'{2}", UseFiddlerUrl_PropertyName, UseFiddlerUrl, Environment.NewLine)
-              .AppendFormat("  {0} : '{1}'{2}", BridgeAutoStart_PropertyName, BridgeAutoStart, Environment.NewLine);
+              .AppendFormat("  {0} : '{1}'{2}", UseFiddlerUrl_PropertyName, UseFiddlerUrl, Environment.NewLine);
             return sb.ToString();
         }
     }
