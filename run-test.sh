@@ -48,7 +48,7 @@ usage()
     echo "    --restrict-proj <regex>       Run test projects that match regex"
     echo "                                  default: .* (all projects)"
     echo
-	    echo "Runtime Code Coverage options:"
+    echo "Runtime Code Coverage options:"
     echo "    --coreclr-coverage                Optional argument to get coreclr code coverage reports"
     echo "    --coreclr-objs <location>         Location of root of the object directory"
     echo "                                      containing the FreeBSD, Linux or OSX coreclr build"
@@ -108,8 +108,8 @@ create_test_overlay()
   # First copy the binaries from the linux build of WCF
   if [ ! -d $WcfBins ]
   then
-	echo "WCF binaries not found at $WcfBins"
-	exit 1
+    echo "WCF binaries not found at $WcfBins"
+    exit 1
   fi
   # We no longer copy binaries from the WCF bin folder because they can contain
   # assemblies built from other than the test folders.  The test folders already
@@ -119,16 +119,16 @@ create_test_overlay()
 
   if [ ! -d $packageLibDir ]
   then
-	echo "Package not laid out as expected"
-	exit 1
+    echo "Package not laid out as expected"
+    exit 1
   fi
   cp $packageLibDir/* $OverlayDir
   
   # Copy some binaries from the linux build of corefx
   if [ ! -d $CoreFxBins ]
   then
-	echo "Corefx binaries not found at $CoreFxBins"
-	exit 1
+    echo "Corefx binaries not found at $CoreFxBins"
+    exit 1
   fi
   
 # In the past we needed to copy some specific binaries from the CoreFx
@@ -141,8 +141,8 @@ create_test_overlay()
   # Copy the CoreCLR native binaries
   if [ ! -d $CoreClrBins ]
   then
-	echo "error: Coreclr $OS binaries not found at $CoreClrBins"
-	exit 1
+    echo "error: Coreclr $OS binaries not found at $CoreClrBins"
+    exit 1
   fi
   cp -r $CoreClrBins/* $OverlayDir
   
@@ -150,16 +150,16 @@ create_test_overlay()
   # TODO When the mscorlib flavors get properly changed then
   if [ ! -f $mscorlibLocation ]
   then
-	echo "error: Mscorlib not found at $mscorlibLocation"
-	exit 1
+    echo "error: Mscorlib not found at $mscorlibLocation"
+    exit 1
   fi
   cp -r $mscorlibLocation $OverlayDir
 
   # Then the native CoreFX binaries
   if [ ! -d $CoreFxNativeBins ]
   then
-	echo "error: Corefx native binaries should be built (use build.sh native in root)"
-	exit 1
+    echo "error: Corefx native binaries should be built (use build.sh native in root)"
+    exit 1
   fi
   cp $CoreFxNativeBins/* $OverlayDir
 
@@ -312,8 +312,9 @@ do
         --mscorlib-bins)
         MscorlibBins=$2
         ;;
-		--corefx-tests)
+        --corefx-tests)
         CoreFxTests=$2
+        ;;
         --corefx-bins)
         CoreFxBins=$2
         ;;
@@ -336,13 +337,13 @@ do
         --restrict-proj)
         TestSelection=$2
         ;;
-		--configurationGroup)
+        --configurationGroup)
         ConfigurationGroup=$2
         ;;
         --os)
         OS=$2
         ;;
-		--coreclr-coverage)
+        --coreclr-coverage)
         CoreClrCoverage=ON
         ;;
         --coreclr-objs)
@@ -399,7 +400,6 @@ fi
 
 if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "OSX" ]
 then
-then
     echo "error: OS should be FreeBSD, Linux or OSX"
     exit 1
 fi
@@ -450,7 +450,7 @@ echo "$WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/Certifica
 $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe
 
 
- 	
+     
 if [ "$TestsFailed" -gt 0 ]
 then
     echo "$TestsFailed test(s) failed"
