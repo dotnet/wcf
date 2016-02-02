@@ -1,7 +1,9 @@
 @echo off
 
+REM StartBridge explicitly sets BridgeAutoStart false to prevent
+REM test scripts from closing it.  It must be closed manually.
 pushd %~dp0src\System.Private.ServiceModel\tools\setupfiles
-call SetupWCFTestService.cmd /BridgeManualStart:true %*
+call SetupWCFTestService.cmd /BridgeAutoStart:false %*
 if ERRORLEVEL 1 goto error
 
 echo Because you started the Bridge manually, it will remain running until you stop it manually.

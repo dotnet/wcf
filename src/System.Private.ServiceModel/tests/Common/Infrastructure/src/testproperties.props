@@ -67,9 +67,9 @@
         <Value>$(MaxTestTimeSpan)</Value>
         <DefaultValue>00:20</DefaultValue>
       </TestProperty>
-      <TestProperty Include="BridgeManualStart">
-        <Value>$(BridgeManualStart)</Value>
-        <DefaultValue>false</DefaultValue>
+      <TestProperty Include="BridgeAutoStart">
+        <Value>$(BridgeAutoStart)</Value>
+        <DefaultValue>true</DefaultValue>
       </TestProperty>
     </ItemGroup>
 

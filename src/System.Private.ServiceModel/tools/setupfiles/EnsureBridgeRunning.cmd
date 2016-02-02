@@ -5,6 +5,8 @@ REM Ensure that the Bridge is running.
 REM If the Bridge is already running, this script simply exits.
 REM If the Bridge is not running, it will be started in a new process,
 REM and this script will block until it is started (or the wait times out).
+REM If this script does start the Bridge, it sets BridgeAutoStart to true
+REM so that test scripts have permission to stop the Bridge as needed.
 
 tasklist /FI "IMAGENAME eq Bridge.exe" 2>NUL | find /I /N "Bridge.exe">NUL
 if "%ERRORLEVEL%"=="0" (
@@ -29,8 +31,8 @@ if '%BridgeResourceFolder%' == '' (
 )
 
 pushd %~dp0..\..\..\..\bin\wcf\tools\Bridge
-echo Invoking Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder% %*
-call Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder% %*
+echo Invoking Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder% -BridgeAutoStart:true %*
+call Bridge.exe -require -BridgeResourceFolder:%_bridgeResourceFolder% -BridgeAutoStart:true %*
 popd
 
 

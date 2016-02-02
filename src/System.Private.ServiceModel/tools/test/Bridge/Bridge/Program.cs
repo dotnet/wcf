@@ -49,20 +49,21 @@ namespace Bridge
                     Environment.Exit(1);
                 }
             }
+
+            // Any 'stop' command that does stop the Bridge will also
+            // terminate the process.  Those that conditionally don't
+            // stop the Bridge are allowed to process other commands.
             if (commandLineArgs.StopIfLocal)
             {
                 StopBridgeIfLocal(commandLineArgs);
-                Environment.Exit(0);
             }
             if (commandLineArgs.StopIfAutoStart)
             {
                 StopBridgeIfAutoStart(commandLineArgs);
-                Environment.Exit(0);
             }
             if (commandLineArgs.Stop)
             {
                 StopBridge(commandLineArgs);
-                Environment.Exit(0);
             }
             if (commandLineArgs.Reset)
             {
@@ -157,9 +158,9 @@ namespace Bridge
             }
 
             BridgeConfiguration bridgeConfiguration = new BridgeConfiguration(properties);
-            if (!bridgeConfiguration.BridgeManualStart)
+            if (bridgeConfiguration.BridgeAutoStart)
             {
-                Console.WriteLine("Stopping the Bridge because it was not started manually.");
+                Console.WriteLine("Stopping the Bridge because it was started automatically.");
                 StopBridge(commandLineArgs);
             }
             else
