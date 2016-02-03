@@ -1,20 +1,12 @@
 @echo off
 
-set BridgeKeepRunning=true
-
+REM EnsureBridgeRunning will guarantee the Bridge is built and started.
 pushd %~dp0src\System.Private.ServiceModel\tools\setupfiles
-call SetupWCFTestService.cmd %*
-if ERRORLEVEL 1 goto error
+call EnsureBridgeRunning.cmd %*
 popd
 
-echo Because you started the Bridge manually, it will remain running until you close it manually.
-echo Set the BridgeKeepRunning environment variable to 'false' to allow it to be closed by OuterLoop tests.
-goto done
+echo You can stop the Bridge using stopBridge.cmd or type 'exit' in the Bridge console window.
 
-:error
-echo An error occurred starting the Bridge
-popd
-exit /b l
+exit /b
 
-:done
-popd
+

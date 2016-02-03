@@ -1,5 +1,6 @@
 @echo off
-setlocal
+setlocal ENABLEDELAYEDEXPANSION
+REM DelayedExpansion needed to allow %ERRORLEVEL% to be set/used multiple times
 
 :: Note: We've disabled node reuse because it causes file locking issues.
 ::       The issue is that we extend the build with our own targets which
@@ -52,7 +53,9 @@ set _buildpostfix=^> "%_buildlog%"
 
 if "%outloop%" equ "true"  (
     pushd %setupFilesFolder%
-    call SetupWCFTestService.cmd
+    call EnsureBridgeRunning.cmd
+    set _bridgeReturnCode=!ERRORLEVEL!
+    echo EnsureBridgeRunning returned !_bridgeReturnCode!
     popd
 )
 
@@ -68,7 +71,7 @@ goto :AfterBuild
 
 :build
 %_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
-set BUILDERRORLEVEL=%ERRORLEVEL%
+set BUILDERRORLEVEL=!ERRORLEVEL!
 goto :eof
 
 :AfterBuild
@@ -77,11 +80,22 @@ echo.
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo [%time%] Build Exit Code = %BUILDERRORLEVEL%
 
+:doneBridge
 if "%outloop%" equ "true"  (
+    pushd %~dp0bin\wcf\tools\Bridge
+    if '!_bridgeReturnCode!' == '0' (
+      echo Stopping the Bridge ...
+      call Bridge.exe -stop %*
+    ) else (
+      echo Releasing Bridge resources ...
+      call Bridge.exe -reset %*
+    )
+    popd
+
     pushd %setupFilesFolder%
-    call CleanupWCFTestService.cmd
     call CleanupCertificates.cmd
     popd
 )
 
+endlocal
 exit /b %BUILDERRORLEVEL%

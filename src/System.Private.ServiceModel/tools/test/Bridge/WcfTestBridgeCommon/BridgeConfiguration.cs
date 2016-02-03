@@ -20,7 +20,7 @@ namespace WcfTestBridgeCommon
         private static readonly int Default_BridgeWebSocketPort = 8083;
         private static readonly int Default_BridgeSecureWebSocketPort = 8084;
         private static readonly TimeSpan Default_BridgeMaxIdleTimeSpan = TimeSpan.FromHours(24);
-        
+
         // These property names must match the names used in TestProperties because
         // that is the set of name/value pairs from which this type is created.
         private const string BridgeResourceFolder_PropertyName = "BridgeResourceFolder";
@@ -61,6 +61,10 @@ namespace WcfTestBridgeCommon
             BridgeMaxIdleTimeSpan = Default_BridgeMaxIdleTimeSpan;
         }
 
+        public BridgeConfiguration(Dictionary<string, string> properties) : this(new BridgeConfiguration(), properties)
+        {
+        }
+
         // This ctor accepts an existing BridgeConfiguration and a set of name/value pairs.
         // It will create a new BridgeConfiguration instance that is a clone of the existing
         // one and will overwrite any properties with corresponding entries found in the name/value pairs.
@@ -79,91 +83,94 @@ namespace WcfTestBridgeCommon
             BridgeMaxIdleTimeSpan = configuration.BridgeMaxIdleTimeSpan;
             UseFiddlerUrl = configuration.UseFiddlerUrl;
 
-            string propertyValue = null;
-            if (properties.TryGetValue(BridgeResourceFolder_PropertyName, out propertyValue))
+            if (properties != null)
             {
-                if (string.IsNullOrEmpty(propertyValue) || !Directory.Exists(propertyValue))
+                string propertyValue = null;
+                if (properties.TryGetValue(BridgeResourceFolder_PropertyName, out propertyValue))
                 {
-                    throw new ArgumentException(
-                        String.Format("The BridgeResourceFolder '{0}' does not exist.", propertyValue),
-                        BridgeResourceFolder_PropertyName);
+                    if (string.IsNullOrEmpty(propertyValue) || !Directory.Exists(propertyValue))
+                    {
+                        throw new ArgumentException(
+                            String.Format("The BridgeResourceFolder '{0}' does not exist.", propertyValue),
+                            BridgeResourceFolder_PropertyName);
+                    }
+
+                    BridgeResourceFolder = Path.GetFullPath(propertyValue);
                 }
 
-                BridgeResourceFolder = Path.GetFullPath(propertyValue);
-            }
-
-            if (properties.TryGetValue(BridgeHost_PropertyName, out propertyValue))
-            {
-                BridgeHost = propertyValue;
-            }
-            
-            if (properties.TryGetValue(BridgeCertificatePassword_PropertyName, out propertyValue))
-            {
-                BridgeCertificatePassword = propertyValue;
-            }
-
-            TimeSpan validity; 
-            if (TryParseTimeSpanProperty(BridgeCertificateValidityPeriod_PropertyName, properties, out validity))
-            {
-                BridgeCertificateValidityPeriod = validity;
-            }
-            
-            int port;
-
-            if (TryParseIntegerProperty(BridgePort_PropertyName, properties, out port))
-            {
-                BridgePort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeHttpPort_PropertyName, properties, out port))
-            {
-                BridgeHttpPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeHttpsPort_PropertyName, properties, out port))
-            {
-                BridgeHttpsPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeTcpPort_PropertyName, properties, out port))
-            {
-                BridgeTcpPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeWebSocketPort_PropertyName, properties, out port))
-            {
-                BridgeWebSocketPort = port;
-            }
-
-            if (TryParseIntegerProperty(BridgeSecureWebSocketPort_PropertyName, properties, out port))
-            {
-                BridgeSecureWebSocketPort = port;
-            }
-
-            if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
-            {
-                TimeSpan span;
-                if (!TimeSpan.TryParse(propertyValue, out span))
+                if (properties.TryGetValue(BridgeHost_PropertyName, out propertyValue))
                 {
-                    throw new ArgumentException(
-                        String.Format("The BridgeMaxIdleTimeSpan value '{0}' is not a valid TimeSpan.", propertyValue),
-                        BridgeMaxIdleTimeSpan_PropertyName);
+                    BridgeHost = propertyValue;
                 }
 
-                BridgeMaxIdleTimeSpan = span;
-            }
-
-            if (properties.TryGetValue(UseFiddlerUrl_PropertyName, out propertyValue))
-            {
-                bool boolValue = false;
-                if (!bool.TryParse(propertyValue, out boolValue))
+                if (properties.TryGetValue(BridgeCertificatePassword_PropertyName, out propertyValue))
                 {
-                    throw new ArgumentException(
-                        String.Format("The UseFiddlerUrl value '{0}' is not a valid boolean.", propertyValue),
-                        UseFiddlerUrl_PropertyName);
+                    BridgeCertificatePassword = propertyValue;
                 }
 
-                UseFiddlerUrl = boolValue;
+                TimeSpan validity;
+                if (TryParseTimeSpanProperty(BridgeCertificateValidityPeriod_PropertyName, properties, out validity))
+                {
+                    BridgeCertificateValidityPeriod = validity;
+                }
+
+                int port;
+
+                if (TryParseIntegerProperty(BridgePort_PropertyName, properties, out port))
+                {
+                    BridgePort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeHttpPort_PropertyName, properties, out port))
+                {
+                    BridgeHttpPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeHttpsPort_PropertyName, properties, out port))
+                {
+                    BridgeHttpsPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeTcpPort_PropertyName, properties, out port))
+                {
+                    BridgeTcpPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeWebSocketPort_PropertyName, properties, out port))
+                {
+                    BridgeWebSocketPort = port;
+                }
+
+                if (TryParseIntegerProperty(BridgeSecureWebSocketPort_PropertyName, properties, out port))
+                {
+                    BridgeSecureWebSocketPort = port;
+                }
+
+                if (properties.TryGetValue(BridgeMaxIdleTimeSpan_PropertyName, out propertyValue))
+                {
+                    TimeSpan span;
+                    if (!TimeSpan.TryParse(propertyValue, out span))
+                    {
+                        throw new ArgumentException(
+                            String.Format("The BridgeMaxIdleTimeSpan value '{0}' is not a valid TimeSpan.", propertyValue),
+                            BridgeMaxIdleTimeSpan_PropertyName);
+                    }
+
+                    BridgeMaxIdleTimeSpan = span;
+                }
+
+                if (properties.TryGetValue(UseFiddlerUrl_PropertyName, out propertyValue))
+                {
+                    bool boolValue = false;
+                    if (!bool.TryParse(propertyValue, out boolValue))
+                    {
+                        throw new ArgumentException(
+                            String.Format("The UseFiddlerUrl value '{0}' is not a valid boolean.", propertyValue),
+                            UseFiddlerUrl_PropertyName);
+                    }
+
+                    UseFiddlerUrl = boolValue;
+                }
             }
         }
 
