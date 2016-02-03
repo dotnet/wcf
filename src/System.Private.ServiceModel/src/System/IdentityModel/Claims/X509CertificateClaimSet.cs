@@ -3,6 +3,8 @@
 
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
+using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -28,6 +30,11 @@ namespace System.IdentityModel.Claims
 
         internal X509CertificateClaimSet(X509Certificate2 certificate, bool clone)
         {
+            Fx.Assert(
+                !clone || RuntimeInformation.IsOSPlatform(OSPlatform.Windows),
+                "Certificates MUST NOT be cloned on non-Windows platforms"
+            );
+
             if (certificate == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
             _certificate = clone ? new X509Certificate2(certificate.Handle) : certificate;
@@ -509,6 +516,11 @@ namespace System.IdentityModel.Claims
         internal X509Identity(X509Certificate2 certificate, bool clone, bool disposable)
             : base(X509, X509)
         {
+            Fx.Assert(
+                !clone || RuntimeInformation.IsOSPlatform(OSPlatform.Windows),
+                "Certificates MUST NOT be cloned on non-Windows platforms"
+            );
+
             _certificate = clone ? new X509Certificate2(certificate.Handle) : certificate;
             _disposable = clone || disposable;
         }

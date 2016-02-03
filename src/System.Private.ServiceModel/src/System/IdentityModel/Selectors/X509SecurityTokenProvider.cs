@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.IdentityModel.Tokens;
+using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.Threading;
@@ -18,20 +20,18 @@ namespace System.IdentityModel.Selectors
 
         internal X509SecurityTokenProvider(X509Certificate2 certificate, bool clone)
         {
+            Fx.Assert(
+                !clone || RuntimeInformation.IsOSPlatform(OSPlatform.Windows),
+                "Certificates MUST NOT be cloned on non-Windows platforms"
+            );
+
             if (certificate == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
             }
 
             _clone = clone;
-            if (_clone)
-            {
-                _certificate = new X509Certificate2(certificate.Handle);
-            }
-            else
-            {
-                _certificate = certificate;
-            }
+            _certificate = _clone ? new X509Certificate2(certificate.Handle) : _certificate = certificate;
         }
 
         protected override async Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
