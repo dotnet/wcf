@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Infrastructure.Common;
 
-public static class BridgeCertificateBootstrapper
+public static class BridgeCertificateInstaller
 {
     public static int Main(string[] args)
     {
@@ -24,7 +24,35 @@ public static class BridgeCertificateBootstrapper
         byte[] certificateBytes; 
         if (GetCertificate(out certificateBytes))
         {
-            File.WriteAllBytes(filename, certificateBytes);
+            var directory = Path.GetDirectoryName(filename);
+            try
+            {
+                Directory.CreateDirectory(directory);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("  An exception while creating the directory '{0}.'{1}  {2}",
+                    directory,
+                    Environment.NewLine,
+                    ex.ToString());
+
+                return -1;
+            }
+
+            try
+            {
+                File.WriteAllBytes(filename, certificateBytes);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("  An exception while writing the file '{0}.'{1}  {2}",
+                    filename,
+                    Environment.NewLine,
+                    ex.ToString());
+
+                return -1;
+            }
+
             return 0;
         }
 
@@ -56,10 +84,20 @@ public static class BridgeCertificateBootstrapper
                 HttpClient client = new HttpClient();
                 var response = client.GetAsync(certAsPemUri).GetAwaiter().GetResult();
 
-                certificateBytes = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
-
-                Console.WriteLine("   ... success");
-                return true; 
+                if (response.IsSuccessStatusCode)
+                {
+                    certificateBytes = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+                    Console.WriteLine("    ... read {0} bytes from Bridge", certificateBytes.Length);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("  Received an unexpected response from Bridge:{0}  HTTP Status code {1}: '{2}'",
+                        Environment.NewLine,
+                        response.StatusCode,
+                        response.ReasonPhrase);
+                    return false; 
+                }
             }
             else
             {
@@ -80,7 +118,7 @@ public static class BridgeCertificateBootstrapper
 
     public static void DisplayBanner()
     {
-        Console.WriteLine("  WCF for .NET Core - Linux certificate test bootstrapper tool");
+        Console.WriteLine("  WCF for .NET Core - Linux test certificate installer tool");
         Console.WriteLine("  https://github.com/dotnet/wcf");
         Console.WriteLine();
         Console.WriteLine("  Makes a call to the Bridge to bootstrap the bridge and allow the certificate ");
@@ -91,7 +129,7 @@ public static class BridgeCertificateBootstrapper
     public static void DisplayUsage()
     {
         Console.WriteLine("  Required parameter missing.");
-        Console.WriteLine("  BridgeCertificateBootstrapper [outputfile]");
+        Console.WriteLine("  BridgeCertificateInstaller [outputfile]");
         Console.WriteLine("  outputfile should be the desired output file for the root CA cert, e.g., ~/tmp/wcf-ca.crt");
     }
 }

@@ -10,14 +10,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BridgeCertificateBootstrapper</RootNamespace>
-    <AssemblyName>BridgeCertificateBootstrapper</AssemblyName>
+    <RootNamespace>BridgeCertificateInstaller</RootNamespace>
+    <AssemblyName>BridgeCertificateInstaller</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{5AC60BBF-8007-46D8-9BDC-CD137409E45B}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="CertificateInstaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
