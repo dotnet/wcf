@@ -76,6 +76,7 @@ def project = 'dotnet/wcf'
                 }
             
                 // Unpack
+                shell("unpacker ./corefx/bin/build.pack ./corefx/bin")
                 shell("unpacker ./bin/build.pack ./bin")
                 shell("""
 ./run-test.sh --coreclr-bins \${WORKSPACE}/coreclr/bin/Product/Linux.x64.Release \\
