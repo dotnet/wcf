@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23729",
-    "System.Console": "4.0.0-rc3-23729",
-    "System.Runtime.Extensions": "4.0.0-rc3-23729",
-    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23729"
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
+    "System.Console": "4.0.0-rc3-23809",
+    "System.Runtime.Extensions": "4.0.0-rc3-23809",
+    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809"
   },
   "frameworks": {
     "dnxcore50": {}
