@@ -58,6 +58,7 @@ namespace Bridge
                     Path.Combine(path, "WcfTestBridgeCommon.dll"),
                     loaderType.FullName);
             loader.LoadAssemblies();
+            loader.SetPortManagerRemoteAddresses(PortManager.RemoteAddresses);
 
             TypeCache.AppDomains.Add(friendlyName, newAppDomain);
             TypeCache.Cache.Add(friendlyName, loader.GetTypes());
