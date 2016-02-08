@@ -425,8 +425,8 @@
   <PropertyGroup>
     <TestRuntimePath>$(SourceDir)Common/test-runtime/</TestRuntimePath>
 
-    <TestFixedRuntimeProjectJson>$(TestRuntimePath)project.json</TestFixedRuntimeProjectJson>
-    <TestFixedRuntimeProjectLockJson>$(TestRuntimePath)project.lock.json</TestFixedRuntimeProjectLockJson>
+    <TestFixedRuntimeProjectJson Condition="'$(TestFixedRuntimeProjectJson)' == ''">$(TestRuntimePath)project.json</TestFixedRuntimeProjectJson>
+    <TestFixedRuntimeProjectLockJson  Condition="'$(TestFixedRuntimeProjectJson)' == ''">$(TestRuntimePath)project.lock.json</TestFixedRuntimeProjectLockJson>
   </PropertyGroup>
 
   <PropertyGroup>

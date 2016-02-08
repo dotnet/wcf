@@ -1,0 +1,75 @@
+{
+  "dependencies": {
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23729",
+    "Microsoft.NETCore.TestHost": "1.0.0-rc3-23729",
+    "Microsoft.NETCore.Console": "1.0.0-rc3-23729",
+    "coveralls.io": "1.4",
+    "OpenCover": "4.6.166",
+    "ReportGenerator": "2.3.4",
+    "Microsoft.DotNet.xunit.performance.analysis": "1.0.0-alpha-build0025",
+    "Microsoft.DotNet.xunit.performance.runner.Windows": "1.0.0-alpha-build0025",
+    "System.Collections": "4.0.11-rc3-23729",
+    "System.Collections.Concurrent": "4.0.11-rc3-23729",
+    "System.Collections.NonGeneric": "4.0.1-rc3-23729",
+    "System.Collections.Specialized": "4.0.1-rc3-23729",
+    "System.ComponentModel": "4.0.1-rc3-23729",
+    "System.ComponentModel.EventBasedAsync": "4.0.11-rc3-23729",
+    "System.Diagnostics.Contracts": "4.0.1-rc3-23729",
+    "System.Diagnostics.Debug": "4.0.11-rc3-23729",
+    "System.Diagnostics.Tools": "4.0.1-rc3-23729",
+    "System.Diagnostics.Tracing": "4.0.21-rc3-23729",
+    "System.Globalization": "4.0.11-rc3-23729",
+    "System.IO": "4.0.11-rc3-23729",
+    "System.IO.Compression": "4.1.0-rc3-23729",
+    "System.Linq": "4.0.1-rc3-23729",
+    "System.Linq.Expressions": "4.0.11-rc3-23729",
+    "System.Linq.Queryable": "4.0.1-rc3-23729",
+    "System.Net.Http": "4.0.1-rc3-23729",
+    "System.Net.Primitives": "4.0.11-rc3-23729",
+    "System.Net.WebHeaderCollection": "4.0.1-rc3-23729",
+    "System.Net.WebSockets": "4.0.0-rc3-23729",
+    "System.Net.WebSockets.Client": "4.0.0-rc3-23729",
+    "System.ObjectModel": "4.0.11-rc3-23729",
+    "System.Reflection": "4.0.11",
+    "System.Reflection.DispatchProxy": "4.0.1-rc3-23729",
+    "System.Reflection.Extensions": "4.0.1-rc3-23729",
+    "System.Reflection.Primitives": "4.0.1-rc3-23729",
+    "System.Reflection.TypeExtensions": "4.0.1-rc3-23729",
+    "System.Resources.ResourceManager": "4.0.1-rc3-23729",
+    "System.Runtime": "4.0.21-rc3-23729",
+    "System.Runtime.Extensions": "4.0.11-rc3-23729",
+    "System.Runtime.Handles": "4.0.1-rc3-23729",
+    "System.Runtime.InteropServices": "4.0.21-rc3-23729",
+    "System.Runtime.Serialization.Xml": "4.1.0-rc3-23729",
+    "System.Security.Claims": "4.0.1-rc3-23729",
+    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23729",
+    "System.Security.Principal": "4.0.1-rc3-23729",
+    "System.Text.Encoding": "4.0.11-rc3-23729",
+    "System.Threading": "4.0.11-rc3-23729",
+    "System.Threading.Tasks": "4.0.11-rc3-23729",
+    "System.Threading.Timer": "4.0.1-rc3-23729",
+    "System.Xml.ReaderWriter": "4.0.11-rc3-23729",
+    "System.Xml.XDocument": "4.0.11-rc3-23729",
+    "System.Xml.XmlDocument": "4.0.1-rc3-23729",
+    "System.Xml.XmlSerializer": "4.0.11-rc3-23729",
+    "xunit": "2.1.0",
+    "xunit.console.netcore": "1.0.2-prerelease-00120",
+    "xunit.runner.utility": "2.1.0"
+  },
+  "frameworks": {
+    "dnxcore50": {
+      "imports": "portable-net45+win8", 
+      "dependencies": {
+        "System.Net.Http.WinHttpHandler": "4.0.0-rc3-23729",
+        "System.Net.Security": "4.0.0-rc3-23729"
+      }
+    }
+  },
+  "runtimes": {
+    "win7-x64": {},
+    "win7-x86": {},
+    "ubuntu.14.04-x64": {},
+    "osx.10.10-x64": {}
+  }
+}
+
