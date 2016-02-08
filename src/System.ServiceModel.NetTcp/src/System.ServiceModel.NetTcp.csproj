@@ -5,7 +5,7 @@
     <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
     <AssemblyVersion>4.1.0.0</AssemblyVersion>
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
-    <PackageTargetFramework Condition="'$(TargetGroup)' == ''">dnxcore50</PackageTargetFramework>
+    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">dotnet5.4</PackageTargetFramework>
   </PropertyGroup>
 
   <!-- Help VS understand available configurations -->
@@ -19,10 +19,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net46_Release|AnyCPU'" />
 
   <ItemGroup>
-    <TargetingPackReference Include="mscorlib" Condition="'$(TargetGroup)' != 'netcore50aot'" />
+    <TargetingPackReference Include="mscorlib" Condition="'$(TargetGroup)' == 'net46'" />
     <TargetingPackReference Include="System.ServiceModel" Condition="'$(TargetGroup)' == 'net46'" />
     <ProjectReference Include="$(SourceDir)System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" Condition="'$(TargetGroup)' != 'net46'" >
-      <AdditionalProperties>OSGroup=Windows_NT</AdditionalProperties>
     </ProjectReference>
   </ItemGroup>
 

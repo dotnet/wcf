@@ -15,7 +15,7 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
-    <PackageTargetFramework Condition="'$(TargetGroup)' == ''">DNXCore50</PackageTargetFramework>
+    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">dotnet5.4</PackageTargetFramework>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
   </PropertyGroup>
 
