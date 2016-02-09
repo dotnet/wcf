@@ -72,5 +72,10 @@ namespace WcfTestBridgeCommon
         {
             return t.FullName == "WcfTestBridgeCommon.IResource";
         }
+
+        public void SetPortManagerRemoteAddresses(string remoteAddresses)
+        {
+            PortManager.RemoteAddresses = remoteAddresses;
+        }
     }
 }
