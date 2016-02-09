@@ -19,6 +19,16 @@ if %errorlevel% equ 0 (
   set outloop=true
 )
 
+echo %* | findstr /i /C:"FloatingTestRuntimeDependencies=true"  1>nul
+set _FloatingDependencies=!ERRORLEVEL!
+if '!_FloatingDependencies!'=='0' (
+  set TestFixedRuntimeProjectJson=%~dp0src\Common\test-runtime\LatestDependencies\project.json
+  echo %* | findstr /i /C:"/p:Configuration="  1>nul
+  if !ERRORLEVEL! neq 0 (
+  set _defaultBuildConfig=/p:Configuration=Windows_NT_Debug
+  )
+)
+
 if not defined VisualStudioVersion (
     if defined VS140COMNTOOLS (
         call "%VS140COMNTOOLS%\VsDevCmd.bat"
@@ -70,7 +80,7 @@ call :build %*
 goto :AfterBuild
 
 :build
-%_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
+%_buildprefix% msbuild "%_buildproj%" %_defaultBuildConfig% /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
 set BUILDERRORLEVEL=!ERRORLEVEL!
 goto :eof
 
