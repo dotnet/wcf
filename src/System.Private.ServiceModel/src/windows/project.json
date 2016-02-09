@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23729",
     "System.Collections": "4.0.10",
     "System.Collections.Concurrent": "4.0.0",
     "System.Collections.NonGeneric": "4.0.0",
@@ -61,8 +62,12 @@
       "dependencies": {
         "System.Runtime.WindowsRuntime": "4.0.0",
         "Microsoft.TargetingPack.Private.NetNative": "1.0.0-rc3-23729",
-        "Microsoft.TargetingPack.Private.WinRT": "1.0.0"
+        "Microsoft.TargetingPack.Private.WinRT": "1.0.1"
       }
     }
+  },
+  "runtimes": {
+    "win8-x86": {},
+    "win8-x64": {}
   }
 }
