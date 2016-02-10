@@ -3,6 +3,8 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 
@@ -45,6 +47,11 @@ namespace System.IdentityModel.Tokens
 
         internal X509SecurityToken(X509Certificate2 certificate, string id, bool clone, bool disposable)
         {
+            Fx.Assert(
+                !clone || RuntimeInformation.IsOSPlatform(OSPlatform.Windows),
+                "Certificates MUST NOT be cloned on non-Windows platforms"
+            );
+
             if (certificate == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
             if (id == null)
@@ -68,13 +75,6 @@ namespace System.IdentityModel.Tokens
             {
                 ThrowIfDisposed();
                 throw ExceptionHelper.PlatformNotSupported("X509SecurityToken.SecurityKeys");
-                //if (_securityKeys == null)
-                //{
-                //    List<SecurityKey> temp = new List<SecurityKey>(1);
-                //    temp.Add(new X509AsymmetricSecurityKey(_certificate));
-                //    _securityKeys = temp.AsReadOnly();
-                //}
-                //return _securityKeys;
             }
         }
 

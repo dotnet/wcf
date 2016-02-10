@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens;
 using System.Net;
 using System.Net.Security;
 using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
@@ -861,7 +862,14 @@ namespace System.ServiceModel.Security
                 certs = store.Certificates.Find(findType, findValue, false);
                 if (certs.Count == 1)
                 {
-                    return new X509Certificate2(certs[0].Handle);
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        return new X509Certificate2(certs[0].Handle);
+                    }
+                    else
+                    {
+                        return certs[0];
+                    }
                 }
                 if (throwIfMultipleOrNoMatch)
                 {

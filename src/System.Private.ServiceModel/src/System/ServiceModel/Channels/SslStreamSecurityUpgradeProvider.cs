@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens;
 using System.IO;
 using System.Net.Security;
 using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
@@ -24,7 +25,6 @@ namespace System.ServiceModel.Channels
     {
         private SecurityTokenAuthenticator _clientCertificateAuthenticator;
         private SecurityTokenManager _clientSecurityTokenManager;
-        private SecurityTokenProvider _serverTokenProvider;
         private EndpointIdentity _identity;
         private IdentityVerifier _identityVerifier;
         private X509Certificate2 _serverCertificate;
@@ -40,17 +40,6 @@ namespace System.ServiceModel.Channels
             _scheme = scheme;
             _clientSecurityTokenManager = clientSecurityTokenManager;
             _requireClientCertificate = requireClientCertificate;
-            _sslProtocols = sslProtocols;
-        }
-
-        private SslStreamSecurityUpgradeProvider(IDefaultCommunicationTimeouts timeouts, SecurityTokenProvider serverTokenProvider, bool requireClientCertificate, SecurityTokenAuthenticator clientCertificateAuthenticator, string scheme, IdentityVerifier identityVerifier, SslProtocols sslProtocols)
-            : base(timeouts)
-        {
-            _serverTokenProvider = serverTokenProvider;
-            _requireClientCertificate = requireClientCertificate;
-            _clientCertificateAuthenticator = clientCertificateAuthenticator;
-            _identityVerifier = identityVerifier;
-            _scheme = scheme;
             _sslProtocols = sslProtocols;
         }
 
@@ -253,18 +242,6 @@ namespace System.ServiceModel.Channels
             throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeProvider async path");
         }
 
-        private void SetupServerCertificate(SecurityToken token)
-        {
-            X509SecurityToken x509Token = token as X509SecurityToken;
-            if (x509Token == null)
-            {
-                SecurityUtils.AbortTokenProviderIfRequired(_serverTokenProvider);
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
-                    SR.InvalidTokenProvided, _serverTokenProvider.GetType(), typeof(X509SecurityToken))));
-            }
-            _serverCertificate = new X509Certificate2(x509Token.Certificate.Handle);
-        }
-
         private void CleanupServerCertificate()
         {
             if (_serverCertificate != null)
@@ -280,15 +257,6 @@ namespace System.ServiceModel.Channels
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityUtils.OpenTokenAuthenticatorIfRequired(this.ClientCertificateAuthenticator, timeoutHelper.RemainingTime());
-
-                if (_serverTokenProvider != null)
-                {
-                    SecurityUtils.OpenTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
-                    SecurityToken token = _serverTokenProvider.GetTokenAsync(cts.Token).GetAwaiter().GetResult();
-                    SetupServerCertificate(token);
-                    SecurityUtils.CloseTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
-                    _serverTokenProvider = null;
-                }
             }
         }
 
@@ -317,7 +285,6 @@ namespace System.ServiceModel.Channels
             _parent = parent;
             _clientSecurity = new SecurityMessageProperty();
         }
-
 
         internal ChannelBinding ChannelBinding
         {
@@ -398,9 +365,21 @@ namespace System.ServiceModel.Channels
                     Contract.Assert(certificate != null, "certificate MUST NOT be null");
                     return false;
                 }
+
                 // Note: add ref to handle since the caller will reset the cert after the callback return.
-                X509Certificate2 certificate2 = new X509Certificate2(certificate.Handle);
+                X509Certificate2 certificate2;
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    certificate2 = new X509Certificate2(certificate.Handle);
+                }
+                else
+                {
+                    certificate2 = new X509Certificate2(certificate.Export(X509ContentType.Pkcs12));
+                }
+
                 _clientCertificate = certificate2;
+
                 try
                 {
                     SecurityToken token = new X509SecurityToken(certificate2, false);
@@ -637,8 +616,20 @@ namespace System.ServiceModel.Channels
             SslPolicyErrors sslPolicyErrors)
         {
             // Note: add ref to handle since the caller will reset the cert after the callback return.
-            X509Certificate2 certificate2 = new X509Certificate2(certificate.Handle);
+
+            X509Certificate2 certificate2;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                certificate2 = new X509Certificate2(certificate.Handle);
+            }
+            else
+            {
+                certificate2 = new X509Certificate2(certificate.Export(X509ContentType.Pkcs12));
+            }
+
             SecurityToken token = new X509SecurityToken(certificate2, false);
+
             ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies = _serverCertificateAuthenticator.ValidateToken(token);
             _serverSecurity = new SecurityMessageProperty();
             _serverSecurity.TransportToken = new SecurityTokenSpecification(token, authorizationPolicies);

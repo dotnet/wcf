@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 
 namespace System.IdentityModel.Selectors
@@ -32,7 +33,7 @@ namespace System.IdentityModel.Selectors
         }
 
         public X509SecurityTokenAuthenticator(X509CertificateValidator validator, bool mapToWindows, bool includeWindowsGroups)
-            : this(validator, mapToWindows, includeWindowsGroups, true)
+            : this(validator, mapToWindows, includeWindowsGroups, cloneHandle: RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
         }
 
