@@ -274,9 +274,10 @@ coreclr_code_coverage()
 
   which curl > /dev/null 2> /dev/null
   if [ $? -ne 0 ]; then
-    wget -q -O $packageName https://www.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
+    wget -q -O $packageName https://dotnet.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
+    export BridgeHost=$__bridge_host
   else
-    curl -sSL -o $packageName https://www.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
+    curl -sSL -o $packageName https://dotnet.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
   fi
 
   echo "Unzipping to $toolsDir"
