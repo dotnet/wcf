@@ -1,12 +1,14 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23729",
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
+    "System.Net.Http": "4.0.1-rc3-23809",
     "System.Reflection.Emit.Lightweight": "4.0.0",
-    "System.ServiceModel.Duplex": "4.0.1-rc3-23729",
-    "System.ServiceModel.Http": "4.0.11-rc3-23729",
-    "System.ServiceModel.NetTcp": "4.0.1-rc3-23729",
-    "System.ServiceModel.Primitives": "4.1.0-rc3-23729",
-    "System.ServiceModel.Security": "4.0.1-rc3-23729",
+    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809",
+    "System.ServiceModel.Duplex": "4.0.1-rc3-23809",
+    "System.ServiceModel.Http": "4.0.11-rc3-23809",
+    "System.ServiceModel.NetTcp": "4.0.1-rc3-23809",
+    "System.ServiceModel.Primitives": "4.1.0-rc3-23809",
+    "System.ServiceModel.Security": "4.0.1-rc3-23809",
     "xunit": "2.1.0",
     "xunit.netcore.extensions": "1.0.0-prerelease-00123"
   },

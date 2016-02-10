@@ -1,13 +1,15 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23729",
-    "System.Net.WebSockets": "4.0.0-rc3-23729",
-    "System.Net.WebSockets.Client": "4.0.0-rc3-23729",
-    "System.ServiceModel.Duplex": "4.0.1-rc3-23729",
-    "System.ServiceModel.Http": "4.1.0-rc3-23729",
-    "System.ServiceModel.NetTcp": "4.1.0-rc3-23729",
-    "System.ServiceModel.Primitives": "4.1.0-rc3-23729",
-    "System.ServiceModel.Security": "4.0.1-rc3-23729",
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
+    "System.Net.WebSockets": "4.0.0-rc3-23809",
+    "System.Net.WebSockets.Client": "4.0.0-rc3-23809",
+    "System.Runtime.Serialization.Xml": "4.1.0-rc3-23809",
+    "System.ServiceModel.Duplex": "4.0.1-rc3-23809",
+    "System.ServiceModel.Http": "4.1.0-rc3-23809",
+    "System.ServiceModel.NetTcp": "4.1.0-rc3-23809",
+    "System.ServiceModel.Primitives": "4.1.0-rc3-23809",
+    "System.ServiceModel.Security": "4.0.1-rc3-23809",
+    "System.Xml.ReaderWriter": "4.0.0",
     "xunit": "2.1.0",
     "xunit.netcore.extensions": "1.0.0-prerelease-00123"
   },
