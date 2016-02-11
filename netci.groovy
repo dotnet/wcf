@@ -10,104 +10,7 @@ def project = 'dotnet/wcf'
 // Define the basic inner loop builds for PR 
 // **************************
 
-// Create the test only builds for Linux
-// The test only build utilizes the artifacts from other jobs
-// as well as an upstream job in order to execute the runs on Linux.
-// Create one for PR and one for Regular
-[true, false].each { isPR ->
-    ['Debug', 'Release'].each { configuration ->
-        def configurationJobName = configuration.toLowerCase()
-        def jobName = "linux_${configurationJobName}_tst"
-        
-        def linuxTestJob = job(Utilities.getFullJobName(project, jobName, isPR)) {
-            label('ubuntu')
-            
-            parameters {
-                stringParam('WCF_LINUX_BUILD_NUMBER', '', 'Build number to copy WCF Linux build artifacts from')
-            }
-            steps {
-                // Copy artifacts from all of the required upstream jobs
-            
-                copyArtifacts('dotnet_coreclr/release_ubuntu') {
-                    excludePatterns('**/testResults.xml', '**/*.ni.dll')
-                    buildSelector {
-                        latestSuccessful(true)
-                    }
-                    targetDirectory('coreclr')
-                }
-                
-                copyArtifacts('dotnet_coreclr/release_windows_nt') {
-                    includePatterns('bin/Product/Linux*/**')
-                    excludePatterns('**/testResults.xml', '**/*.ni.dll')
-                    buildSelector {
-                        latestSuccessful(true)
-                    }
-                    targetDirectory('coreclr')
-                }
-                
-                copyArtifacts('dotnet_corefx/nativecomp_ubuntu_debug') {
-                    includePatterns('bin/**')
-                    buildSelector {
-                        latestSuccessful(true)
-                    }
-                    targetDirectory('corefx')
-                }
-                
-                copyArtifacts('dotnet_corefx/ubuntu_debug_bld') {
-                    excludePatterns('**/testResults.xml', '**/*.ni.dll')
-                    buildSelector {
-                        latestSuccessful(true)
-                    }
-                    targetDirectory('corefx')
-                }
-                
-                // The input WCF build is specified by parameter.  See below for the flow job
-                // that triggers the Linux build, then passes that build result to this build.
-                // Upstream job is the PR test job.  Note we need the fully qualified job name
-                // in order to copy artifacts.
-                def linuxBuildName = Utilities.getFolderName(project) + '/' + 
-                    Utilities.getFullJobName(project, "linux_${configurationJobName}_bld", isPR)
-                
-                copyArtifacts(linuxBuildName) {
-                    includePatterns('bin/build.pack')
-                    buildSelector {
-                        buildNumber('${WCF_LINUX_BUILD_NUMBER}')
-                    }
-                }
-            
-                // Unpack
-                shell("unpacker ./corefx/bin/build.pack ./corefx/bin")
-                shell("unpacker ./bin/build.pack ./bin")
-                shell("""
-./run-test.sh --coreclr-bins \${WORKSPACE}/coreclr/bin/Product/Linux.x64.Release \\
---mscorlib-bins \${WORKSPACE}/coreclr/bin/Product/Linux.x64.Release \\
---corefx-bins \${WORKSPACE}/corefx/bin/Linux.AnyCPU.Debug/ \\
---corefx-native-bins \${WORKSPACE}/corefx/bin/Linux.x64.Debug/Native \\
---wcf-bins \${WORKSPACE}/bin/Linux.AnyCPU.${configuration} \\
---wcf-tests \${WORKSPACE}/bin/tests/Linux.AnyCPU.${configuration}""")
-            }
-        }
-        
-        // Finish off the job with the usual options
-        if (isPR) {
-            Utilities.addPRTestSCM(linuxTestJob, project)
-            Utilities.addStandardPRParameters(linuxTestJob, project)
-        }
-        else {
-            Utilities.addScm(linuxTestJob, project)
-            Utilities.addStandardNonPRParameters(linuxTestJob)
-        }
-        
-        Utilities.addStandardOptions(linuxTestJob)
-        Utilities.addXUnitDotNETResults(linuxTestJob, 'bin/tests/**/testResults.xml')
-    }
-}
-
 // Loop over the options and build up the innerloop build matrix.
-// When we go to create the Linux build, in addition to creating the regular job,
-// we should create a flow job that launches the build on Windows, followed by the
-// test on Linux, passing the build parameter to the linux test job.  Then, instead
-// of adding the PR/commit triggers to the build job, we should add it to the flow job.
 
 ['Debug', 'Release'].each { configuration ->
     ['Linux', 'Windows_NT'].each { os ->
@@ -118,51 +21,71 @@ def project = 'dotnet/wcf'
         }
         def configurationJobName = configuration.toLowerCase()
         def jobName = "${osJobName}_${configurationJobName}"
-        // The flow job name will be free of the suffix below
-        def flowJobName = jobName
         
-        // If Linux, append _bld to the end.
-        if (os == 'Linux') {
-            jobName += '_bld'
+        def osAffinityName = os; 
+        if (osAffinityName == 'Linux') {
+            // our Linux runs should only ever run on Ubuntu14.04; we don't run on other flavours yet
+            osAffinityName = 'Ubuntu14.04'
         }
         
-        // Create the new job
-        def newCommitJob = job(Utilities.getFullJobName(project, jobName, false)) {
-            label('windows')
-            steps {
-                // Use inline replacement
-                batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:OSGroup=${os}")
-                // Pack up the results for max efficiency
-                batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
+        // **************************
+        // Create the new commit job
+        // **************************
+        def newCommitJob
+
+        if (osJobName == 'linux') {
+            // Jobs run as a service in unix, which means that HOME variable is not set, and it is required for restoring packages
+            // so we set it first, and then call build.sh
+            newCommitJob = job(Utilities.getFullJobName(project, jobName, false)) {
+                steps {
+                    shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:OSGroup=${os} /p:Configuration=${os}_${configuration}")
+                }
+            }
+        } else {
+            // On other platforms, we run the build under Windows and then pack the results
+            newCommitJob = job(Utilities.getFullJobName(project, jobName, false)) {
+                steps {
+                    // Use inline replacement
+                    batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:OSGroup=${os}")
+                    // Pack up the results for max efficiency
+                    batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
+                }
             }
         }
+        
+        Utilities.setMachineAffinity(newCommitJob, osAffinityName, 'latest-or-auto')
 
         // Add commit job options
         Utilities.addScm(newCommitJob, project)
         Utilities.addStandardNonPRParameters(newCommitJob)
+        Utilities.addGithubPushTrigger(newCommitJob)
         
-        // Don't add the push trigger if on Linux, since we'll run it through the
-        // flow job defined below
-        if (os != 'Linux') {
-            Utilities.addGithubPushTrigger(newCommitJob)
-        }
-        
+        // **************************
         // Create the new PR job
-        
-        def newPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
-            label('windows')
-            steps {
-                // Use inline replacement
-                batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:OSGroup=${os}")
-                // Pack up the results for max efficiency
-                batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
+        // **************************
+        def newPRJob
+
+        if (osJobName == 'linux') {
+            newPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
+                steps {
+                    shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:OSGroup=${os} /p:Configuration=${os}_${configuration}")
+                }
+            }
+        } else {
+            newPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
+                steps {
+                    // Use inline replacement
+                    batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:OSGroup=${os}")
+                    // Pack up the results for max efficiency
+                    batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
+                }
             }
         }
         
-        // Add a PR trigger
-        if (os != 'Linux') {
-            Utilities.addGithubPRTrigger(newPRJob, "${os} ${configuration} Build")
-        }
+        Utilities.setMachineAffinity(newPRJob, osAffinityName, 'latest-or-auto')
+        
+        // Add a PR job options
+        Utilities.addGithubPRTrigger(newPRJob, "${os} ${configuration} Build")
         Utilities.addPRTestSCM(newPRJob, project)
         Utilities.addStandardPRParameters(newPRJob, project)
         
@@ -171,56 +94,13 @@ def project = 'dotnet/wcf'
         [newPRJob, newCommitJob].each { newJob ->
             Utilities.addStandardOptions(newJob)
             
-            if (os != 'Linux') {
-                Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
-                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**,bin/build.pack")
-            } else {
-                // Include the tests on Linux, since they'll be moved to another
-                // machine for execution
-                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**,bin/build.pack")
-            }
-        }
-    }
-}
-
-// Add flow jobs for Linux bld/tst
-
-[true, false].each { isPR ->
-    ['Debug', 'Release'].each { configuration ->
-        def configurationJobName = configuration.toLowerCase()
-        def jobName = "linux_${configurationJobName}"
-        
-        def linuxFlowJob = buildFlowJob(Utilities.getFullJobName(project, jobName, isPR)) {
-            def buildJobName = Utilities.getFolderName(project) + '/' + Utilities.getFullJobName(project, jobName + '_bld', isPR)
-            def testJobName = Utilities.getFolderName(project) + '/' + Utilities.getFullJobName(project, jobName + '_tst', isPR)
+            Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
             
-            buildFlow("""
-// Build the Linux _bld job
-def linuxBuildJob = build(params, \"${buildJobName}\")
-// Pass this to the test job.  Include the parameters
-build(params + [WCF_LINUX_BUILD_NUMBER: linuxBuildJob.build.number], 
-    \"${testJobName}\")
-            """)
-
-            // Needs a workspace
-            configure {
-                def buildNeedsWorkspace = it / 'buildNeedsWorkspace'
-                buildNeedsWorkspace.setValue('true')
+            if (os != 'Linux') {
+                // We do not do the pack step on non-Linux builds
+                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**,bin/build.pack")
             }
         }
-        
-        if (isPR) {
-            Utilities.addPRTestSCM(linuxFlowJob, project)
-            Utilities.addStandardPRParameters(linuxFlowJob, project)
-            Utilities.addGithubPRTrigger(linuxFlowJob, "Linux ${configuration} Build and Test")
-        }
-        else {
-            Utilities.addScm(linuxFlowJob, project)
-            Utilities.addStandardNonPRParameters(linuxFlowJob)
-            Utilities.addGithubPushTrigger(linuxFlowJob)
-        }
-        
-        Utilities.addStandardOptions(linuxFlowJob)
     }
 }
 
@@ -229,7 +109,7 @@ build(params + [WCF_LINUX_BUILD_NUMBER: linuxBuildJob.build.number],
 // **************************
 
 // Define build string
-def codeCoverageBuildString = '''build.cmd /p:Coverage=true /p:WithCategories=OuterLoop'''
+def codeCoverageBuildString = '''build.cmd /p:OSGroup=Windows /p:Coverage=true /p:WithCategories=\"\\\"InnerLoop;OuterLoop\\\"\"'''
 
 // Generate a rolling (12 hr job) and a PR job that can be run on demand
 
