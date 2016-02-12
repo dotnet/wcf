@@ -59,6 +59,11 @@
           </Method>
         </Type>
       </Namespace>
+      <Namespace Name="System.ServiceModel.Dispatcher">
+          <Type Name="FaultFormatter">
+            <Type Name="OperationFault{T}" Dynamic="Required All" />
+          </Type>
+      </Namespace>
     </Assembly>
   </Library>
 </Directives>
