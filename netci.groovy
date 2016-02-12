@@ -109,7 +109,7 @@ def project = 'dotnet/wcf'
 // **************************
 
 // Define build string
-def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=Windows_NT /p:Configuration=Windows_NT_Debug /p:Coverage=true /p:WithCategories=\"\\\"InnerLoop;OuterLoop\\\"\"'''
+def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=Windows_NT /p:Configuration=Windows_NT_Debug /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
 
 // Generate a rolling (12 hr job) and a PR job that can be run on demand
 
