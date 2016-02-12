@@ -38,7 +38,7 @@ def project = 'dotnet/wcf'
             // so we set it first, and then call build.sh
             newCommitJob = job(Utilities.getFullJobName(project, jobName, false)) {
                 steps {
-                    shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:OSGroup=${os} /p:Configuration=${os}_${configuration}")
+                    shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${os} /p:Configuration=${os}_${configuration}")
                 }
             }
         } else {
@@ -68,7 +68,7 @@ def project = 'dotnet/wcf'
         if (osJobName == 'linux') {
             newPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
                 steps {
-                    shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:OSGroup=${os} /p:Configuration=${os}_${configuration}")
+                    shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${os} /p:Configuration=${os}_${configuration}")
                 }
             }
         } else {
@@ -109,7 +109,7 @@ def project = 'dotnet/wcf'
 // **************************
 
 // Define build string
-def codeCoverageBuildString = '''build.cmd /p:OSGroup=Windows /p:Coverage=true /p:WithCategories=\"\\\"InnerLoop;OuterLoop\\\"\"'''
+def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=Windows_NT /p:Configuration=Windows_NT_Debug /p:Coverage=true /p:WithCategories=\"\\\"InnerLoop;OuterLoop\\\"\"'''
 
 // Generate a rolling (12 hr job) and a PR job that can be run on demand
 
