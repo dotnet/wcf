@@ -85,7 +85,7 @@ def project = 'dotnet/wcf'
         Utilities.setMachineAffinity(newPRJob, osAffinityName, 'latest-or-auto')
         
         // Add a PR job options
-        Utilities.addGithubPRTrigger(newPRJob, "${os} ${configuration} Build")
+        Utilities.addGithubPRTrigger(newPRJob, "Innerloop ${os} ${configuration} Build and Test")
         Utilities.addPRTestSCM(newPRJob, project)
         Utilities.addStandardPRParameters(newPRJob, project)
         
@@ -175,7 +175,7 @@ Utilities.addGithubPRTrigger(prCCJob, 'Code Coverage Windows Debug', '@dotnet-bo
     }
     
     // Add a PR trigger
-    Utilities.addGithubPRTrigger(newPRJob, "Outerloop Windows ${configuration} Build", '@dotnet-bot test outerloop please')
+    Utilities.addGithubPRTrigger(newPRJob, "Outerloop Windows ${configuration} Build and Test", '@dotnet-bot test outerloop please')
     Utilities.addPRTestSCM(newPRJob, project)
     Utilities.addStandardPRParameters(newPRJob, project)
     
