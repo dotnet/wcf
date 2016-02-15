@@ -1,10 +1,10 @@
 # WCF -- Windows Communication Foundation Client Libraries
 
-|   |Windows|
-|:-:|:-:|
-|**Debug**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/windows_debug.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/windows_debug/) [![Outerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/outerloop_windows_debug.svg?label=outerloop+tests)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/outerloop_windows_debug/)|
-|**Release**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/windows_release.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/windows_release/)|
-|**Coverage Report**|[![Coverage Status](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/code_coverage_windows/lastStableBuild/Code_Coverage_Report/badge_combined.svg)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/code_coverage_windows/)|
+|   |Windows|Linux|
+|:-:|:-:|:-:|
+|**Debug**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/windows_debug.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/windows_debug/) [![Outerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/outerloop_windows_debug.svg?label=outerloop+tests)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/outerloop_windows_debug/)|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/linux_debug.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/linux_debug/)|
+|**Release**|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/windows_release.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/windows_release/) [![Outerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/outerloop_windows_release.svg?label=outerloop+tests)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/outerloop_windows_release/)|[![Build and Innerloop test status](https://img.shields.io/jenkins/s/http/dotnet-ci.cloudapp.net/job/dotnet_wcf/linux_release.svg?label=build+%26+innerloop+test)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/linux_release/)|
+|**Coverage Report**|[![Coverage Status](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/code_coverage_windows/lastStableBuild/Code_Coverage_Report/badge_combined.svg)](http://dotnet-ci.cloudapp.net/job/dotnet_wcf/job/code_coverage_windows/)||
 
 
 
@@ -47,11 +47,11 @@ This repo contains the following library components.
 
 |Component|Description|
 |:--------|:----------|
-|**System.ServiceModel.Primitives**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Primitives.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the common types used by all of the WCF libraries.|
-|**System.ServiceModel.Http**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Http.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).|
-|**System.ServiceModel.NetTcp**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.NetTcp.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).|
-|**System.ServiceModel.Duplex**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Duplex.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that permit 2-way ("duplex") exchanges of messages.  This library is currently under construction and not yet fully functional.|
-|**System.ServiceModel.Security**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Security.svg)](https://www.myget.org/gallery/dotnet-core)|Provides the types that support additional security features. This library is currently under construction and not yet fully functional|
+|**System.ServiceModel.Primitives**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Primitives.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the common types used by all of the WCF libraries.|
+|**System.ServiceModel.Http**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Http.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).|
+|**System.ServiceModel.NetTcp**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.NetTcp.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).|
+|**System.ServiceModel.Duplex**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Duplex.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit 2-way ("duplex") exchanges of messages.  This library is currently under construction and not yet fully functional.|
+|**System.ServiceModel.Security**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Security.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that support additional security features. This library is currently under construction and not yet fully functional|
 
 ## License
 
