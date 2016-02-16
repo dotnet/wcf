@@ -3,13 +3,15 @@
     "dnxcore50": {
       "dependencies": {
         "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
-        "Microsoft.TargetingPack.Private.CoreCLR": "1.0.0-rc3-23809"
+		"Microsoft.TargetingPack.Private.CoreCLR": "1.0.0-rc3-23809",
+		"System.Private.ServiceModel": "4.1.0-rc3-23809"
       }
     },
     "netcore50": {
       "dependencies": {
         "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
-        "Microsoft.TargetingPack.Private.CoreCLR": "1.0.0-rc3-23809"
+		"Microsoft.TargetingPack.Private.CoreCLR": "1.0.0-rc3-23809",
+		"System.Private.ServiceModel": "4.1.0-rc3-23809"
       }
     },
     "net46": {

@@ -47,4 +47,9 @@
      <WcfToolsOutputPath>$(WcfRootFolder)bin\Wcf\tools\</WcfToolsOutputPath>
   </PropertyGroup>
 
+  <!-- Override ValidateIgnoreReference from Target 'ValidatePackageTargetFramework' in PackageLibs.targets -->
+  <ItemGroup>
+    <ValidateIgnoreReference Include="System.Private.ServiceModel" />
+  </ItemGroup>
+
 </Project>
