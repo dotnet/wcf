@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="$(SourceDir)System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" >
+      <AdditionalProperties>OSGroup=Windows_NT</AdditionalProperties>
     </ProjectReference>
   </ItemGroup>
 
