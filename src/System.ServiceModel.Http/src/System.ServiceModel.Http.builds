@@ -5,7 +5,13 @@
     <Project Include="System.ServiceModel.Http.csproj" >
       <TargetGroup>net46</TargetGroup>
     </Project>
-    <Project Include="System.ServiceModel.Http.csproj" />
+    <Project Include="System.ServiceModel.Http.csproj" >
+      <OSGroup>Windows_NT</OSGroup>
+    </Project>
+    <Project Include="System.ServiceModel.Http.csproj" >
+      <OSGroup>Windows_NT</OSGroup>
+      <TargetGroup>netcore50</TargetGroup>
+    </Project>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.traversal.targets))\dir.traversal.targets" />
 </Project>
