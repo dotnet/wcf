@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "System.Runtime": "4.0.0",
+    "System.Runtime": "4.0.20",
     "System.Runtime.Handles": "4.0.0",
     "System.ComponentModel.EventBasedAsync": "4.0.0",
     "System.ObjectModel": "4.0.0",
@@ -10,7 +10,7 @@
     "System.Globalization": "4.0.0",
     "System.IO": "4.0.0",
     "System.Text.Encoding": "4.0.0",
-    "System.Reflection": "4.0.0",
+    "System.Reflection": "4.0.10",
     "System.Net.Primitives": "4.0.0",
     "System.Security.Principal": "4.0.0",
     "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809",

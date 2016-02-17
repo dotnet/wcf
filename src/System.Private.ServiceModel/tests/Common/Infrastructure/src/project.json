@@ -4,7 +4,7 @@
     "System.Collections": "4.0.10",
     "System.Linq": "4.0.0",
     "System.Net.Http": "4.0.1-rc3-23809",
-    "System.Net.Primitives": "4.0.11-rc3-23809",
+    "System.Net.Primitives": "4.0.10.0",
     "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809",
     "System.ServiceModel.Duplex": "4.0.1-rc3-23809",
     "System.ServiceModel.Http": "4.0.11-rc3-23809",
