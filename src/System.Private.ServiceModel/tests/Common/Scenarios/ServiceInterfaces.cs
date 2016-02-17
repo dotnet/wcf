@@ -109,6 +109,16 @@ public interface IWcfServiceXmlGenerated
     string GetIncomingMessageHeadersMessage(string customHeaderName, string customHeaderNS);
 }
 
+// This type share the same name space with IWcfServiceXmlGenerated.
+// And this type contains a method which is also defined in IWcfServiceXmlGenerated.
+[ServiceContract(ConfigurationName = "IWcfService")]
+public interface ISameNamespaceWithIWcfServiceXmlGenerated
+{
+    [OperationContractAttribute(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormat", ReplyAction = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatResponse"),
+    XmlSerializerFormat]
+    string EchoXmlSerializerFormat(string message);
+}
+
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IWcfService")]
 public interface IWcfServiceGenerated
 {
