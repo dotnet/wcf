@@ -15,7 +15,7 @@ public static class ServiceContractTests
 {
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String_Buffered()
+    public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Buffered()
     {
         string testString = "Hello";
         BasicHttpBinding binding = null;
@@ -52,7 +52,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String_StreamedRequest()
+    public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_StreamedRequest()
     {
         string testString = "Hello";
         BasicHttpBinding binding = null;
@@ -88,7 +88,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String_StreamedResponse()
+    public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_StreamedResponse()
     {
         string testString = "Hello";
         BasicHttpBinding binding = null;
@@ -123,7 +123,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String_Streamed()
+    public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed()
     {
         string testString = "Hello";
         BasicHttpBinding binding = null;
@@ -160,7 +160,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String_Streamed_Async()
+    public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async()
     {
         string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
@@ -198,31 +198,249 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext()
+    public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
         {
             TestTypes.SingleThreadSynchronizationContext.Run(() =>
             {
-                Task.Factory.StartNew(() => ServiceContractTests.DefaultSettings_Echo_RoundTrips_String_Streamed(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+                Task.Factory.StartNew(() => ServiceContractTests.BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
         }).Wait(ScenarioTestHelpers.TestTimeout);
-        Assert.True(success, "Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext timed-out.");
+        Assert.True(success, "Test Scenario: BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext timed-out.");
     }
 
     [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext()
+    public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
         {
             TestTypes.SingleThreadSynchronizationContext.Run(() =>
             {
-                Task.Factory.StartNew(() => ServiceContractTests.DefaultSettings_Echo_RoundTrips_String_Streamed_Async(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+                Task.Factory.StartNew(() => ServiceContractTests.BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
             });
         }).Wait(ScenarioTestHelpers.TestTimeout);
-        Assert.True(success, "Test Scenario: DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext timed-out.");
+        Assert.True(success, "Test Scenario: BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext timed-out.");
     }
+
+    [Fact]
+    [OuterLoop]
+    public static void NetTcp_NoSecurity_Echo_RoundTrips_String_Buffered()
+    {
+        string testString = "Hello";
+        NetTcpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetTcpBinding(SecurityMode.None);
+            binding.TransferMode = TransferMode.Buffered;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
+            var returnStream = serviceProxy.EchoStream(stream);
+            var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(713)]
+    public static void NetTcp_NoSecuritys_Echo_RoundTrips_String_StreamedRequest()
+    {
+        string testString = "Hello";
+        NetTcpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = binding = new NetTcpBinding(SecurityMode.None);
+            binding.TransferMode = TransferMode.StreamedRequest;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
+            var result = serviceProxy.GetStringFromStream(stream);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(713)]
+    public static void NetTcp_NoSecurity_Echo_RoundTrips_String_StreamedResponse()
+    {
+        string testString = "Hello";
+        NetTcpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetTcpBinding(SecurityMode.None);
+            binding.TransferMode = TransferMode.StreamedResponse;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            var returnStream = serviceProxy.GetStreamFromString(testString);
+            var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(713)]
+    public static void NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed()
+    {
+        string testString = "Hello";
+        NetTcpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetTcpBinding(SecurityMode.None);
+            binding.TransferMode = TransferMode.Streamed;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
+            var returnStream = serviceProxy.EchoStream(stream);
+            var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(713)]
+    public static void NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed_Async()
+    {
+        string testString = "Hello";
+        StringBuilder errorBuilder = new StringBuilder();
+        NetTcpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetTcpBinding(SecurityMode.None);
+            binding.TransferMode = TransferMode.Streamed;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
+            var returnStream = serviceProxy.EchoStreamAsync(stream).Result;
+            var result = StreamToString(returnStream);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(713)]
+    public static void NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(ScenarioTestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext timed-out.");
+    }
+
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(713)]
+    public static void NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed_Async(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(ScenarioTestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: NetTcp_NoSecurity_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext timed-out.");
+    }
+
 
     [Fact]
     [OuterLoop]
