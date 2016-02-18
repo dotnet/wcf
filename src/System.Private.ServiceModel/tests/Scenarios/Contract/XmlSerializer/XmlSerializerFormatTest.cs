@@ -277,4 +277,33 @@ public static class XmlSerializerFormatTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [Fact]
+    [OuterLoop]
+    public static void XmlSerializerFormat_SameNamespace_SameOperation() {
+        // This test covers the scenariow where two service contracts share
+        // the same namespace and have the same method.
+
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(s_basicEndpointAddress);
+        ChannelFactory<ISameNamespaceWithIWcfServiceXmlGenerated> factory = new ChannelFactory<ISameNamespaceWithIWcfServiceXmlGenerated>(binding, endpointAddress);
+        ISameNamespaceWithIWcfServiceXmlGenerated serviceProxy = factory.CreateChannel();
+
+        try {
+            // *** EXECUTE *** \\
+            string response = serviceProxy.EchoXmlSerializerFormat("message");
+
+            // *** VALIDATE *** \\
+            Assert.Equal("message", response);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }
