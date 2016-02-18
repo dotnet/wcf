@@ -349,13 +349,9 @@
 
   <!-- If there is a target group, try to find project.json and lockfile in a subfolder named as that target. -->
   <PropertyGroup Condition="'$(TargetGroup)'!=''">
-    <ProjectJson Condition="Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.json')">
-      $(MSBuildProjectDirectory)/$(TargetGroup)/project.json
-    </ProjectJson>
+    <ProjectJson Condition="Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.json')">$(MSBuildProjectDirectory)/$(TargetGroup)/project.json</ProjectJson>
     <!-- Check for both project.json and lockfile to avoid using a stale lockfile. -->
-    <ProjectLockJson Condition="Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.json') AND Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.lock.json')">
-      $(MSBuildProjectDirectory)/$(TargetGroup)/project.lock.json
-    </ProjectLockJson>
+    <ProjectLockJson Condition="Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.json') AND Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.lock.json')">$(MSBuildProjectDirectory)/$(TargetGroup)/project.lock.json</ProjectLockJson>
   </PropertyGroup>
 
   <!-- Provide defaults for ToolNugetRuntimeId -->
