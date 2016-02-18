@@ -31,8 +31,11 @@ namespace System.ServiceModel.Description
                 _clientCertificate = new X509CertificateInitiatorClientCredential(other._clientCertificate);
             if (other._serviceCertificate != null)
                 _serviceCertificate = new X509CertificateRecipientClientCredential(other._serviceCertificate);
+            if (other._windows != null)
+                _windows = new WindowsClientCredential(other._windows);
             if (other._httpDigest != null)
                 _httpDigest = new HttpDigestClientCredential(other._httpDigest);
+
             _isReadOnly = other._isReadOnly;
         }
 
