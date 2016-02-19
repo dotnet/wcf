@@ -108,7 +108,7 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
         def jobName = "outerloop_windows_${configurationJobName}"
         
         // Create the new rolling job
-        def newRollingJob = job(Utilities.getFullJobName(project, jobName, isPR)) {
+        def newJob = job(Utilities.getFullJobName(project, jobName, isPR)) {
             label('windows-elevated')
             steps {
                 batchFile("build.cmd /p:Configuration=Windows_NT_${configuration} /p:WithCategories=OuterLoop")
