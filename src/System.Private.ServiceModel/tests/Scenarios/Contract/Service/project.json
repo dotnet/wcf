@@ -4,6 +4,7 @@
     "System.IO": "4.0.10",
     "System.Runtime.Serialization.Xml": "4.1.0-rc3-23809",
     "System.ServiceModel.Http": "4.0.11-rc3-23809",
+    "System.ServiceModel.NetTcp": "4.0.1-rc3-23809",
     "System.ServiceModel.Primitives": "4.1.0-rc3-23809",
     "System.Text.Encoding": "4.0.10",
     "xunit": "2.1.0",
