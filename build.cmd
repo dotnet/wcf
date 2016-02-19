@@ -63,7 +63,7 @@ set _buildpostfix=^> "%_buildlog%"
 
 if "%outloop%" equ "true"  (
     pushd %setupFilesFolder%
-    call EnsureBridgeRunning.cmd
+    call EnsureBridgeRunning.cmd %*
     set _bridgeReturnCode=!ERRORLEVEL!
     echo EnsureBridgeRunning returned !_bridgeReturnCode!
     popd

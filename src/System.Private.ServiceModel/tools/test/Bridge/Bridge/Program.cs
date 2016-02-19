@@ -610,6 +610,21 @@ namespace Bridge
                         return false;
                     }
 
+                    // Accept MsBuild /p:x=y style properties to allow this program to be
+                    // invoked from a script using MsBuild.
+                    // This allows /BridgeHost:xyz and /p:BridgeHost=xyz to be equivalent.
+                    if (String.Equals(argName, "p", StringComparison.OrdinalIgnoreCase) ||
+                        String.Equals(argName, "property", StringComparison.OrdinalIgnoreCase))
+                    {
+                        index = argValue.IndexOf("=");
+                        if (index < 1)
+                        {
+                            continue;
+                        }
+                        argName = argValue.Substring(0, index);
+                        argValue = argValue.Substring(index + 1);
+                    }
+
                     argumentDictionary[argName] = argValue;
                 }
 
@@ -755,6 +770,8 @@ namespace Bridge
                     helpBuilder.AppendLine(String.Format("   -{0}:value", propertyName));
                 }
                 Console.WriteLine(helpBuilder.ToString());
+                Console.WriteLine();
+                Console.WriteLine("It is also acceptable to use MsBuild syntax for arguments, such as /p:BridgeHost=xyz");
                 Console.WriteLine();
                 Console.WriteLine("If no other option is specified, and the Bridge is not already running, it will be started.");
                 Console.WriteLine("Whenever the Bridge is started, it will block the current process until it is stopped.");
