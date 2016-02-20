@@ -6,6 +6,7 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 public class ChannelFactoryTest
@@ -197,6 +198,33 @@ public class ChannelFactoryTest
             if (factory != null)
             {
                 factory.Close();
+            }
+        }
+    }
+
+    [Fact]
+    public static void ChannelFactory_Async_Open_Close()
+    {
+        ChannelFactory<IRequestChannel> factory = null;
+        try
+        {
+            BasicHttpBinding binding = new BasicHttpBinding();
+
+            // Create the channel factory
+            factory = new ChannelFactory<IRequestChannel>(binding, new EndpointAddress(FakeAddress.HttpAddress));
+            Assert.True(CommunicationState.Created == factory.State, "The factory was not created.");
+
+            Task.Factory.FromAsync(factory.BeginOpen(null, null), factory.EndOpen).GetAwaiter().GetResult();
+            Assert.True(CommunicationState.Opened == factory.State, "The factory was not opened.");
+
+            Task.Factory.FromAsync(factory.BeginClose(null, null), factory.EndClose).GetAwaiter().GetResult();
+            Assert.True(CommunicationState.Closed == factory.State, "The factory was not closed.");
+        }
+        finally
+        {
+            if (factory != null && factory.State != CommunicationState.Closed)
+            {
+                factory.Abort();
             }
         }
     }
