@@ -320,6 +320,11 @@ namespace WcfService
             return objects;
         }
 
+        public object[] EchoItems_Xml1(object[] objects)
+        {
+            return objects;
+        }
+
         public XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex)
         {
             return complex;

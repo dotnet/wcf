@@ -554,6 +554,7 @@ namespace System.ServiceModel.Description
                 private readonly string _defaultNs;
                 private XmlReflectionImporter _xmlImporter;
                 private Dictionary<string, XmlMembersMapping> _xmlMappings;
+                private HashSet<Type> _includedTypes;
 
                 internal XmlSerializerImporter(string defaultNs)
                 {
@@ -585,6 +586,18 @@ namespace System.ServiceModel.Description
                     }
                 }
 
+                private HashSet<Type> IncludedTypes
+                {
+                    get
+                    {
+                        if (_includedTypes == null)
+                        {
+                            _includedTypes = new HashSet<Type>();
+                        }
+                        return _includedTypes;
+                    }
+                }
+
                 internal XmlMembersMapping ImportMembersMapping(XmlName elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement, bool rpc, string mappingKey)
                 {
                     XmlMembersMapping mapping;
@@ -607,7 +620,21 @@ namespace System.ServiceModel.Description
 
                 internal void IncludeType(Type knownType)
                 {
+                    // XmlReflectionImporter.IncludeTypes calls XmlReflectionImporter.ImportTypeMapping to generate mappings
+                    // for types and store those mappings.
+                    // XmlReflectionImporter.ImportTypeMapping internally uses HashTables for caching imported mappings.
+                    // But it's still very costly to call XmlReflectionImporter.ImportTypeMapping because XmlReflectionImporter.ImportTypeMapping
+                    // method takes many params and the generated mapping can vary on all those params. XmlReflectionImporter 
+                    // needs to do some work before it can use its caches.
+                    //
+                    // In this case, the mapping should only vary on the value of the knownType. 
+                    // Including a type twice doesn't make any difference than including the type once. Therefore we use 
+                    // IncludedTypes to store the types that have been included and skip them later.
+                    if (IncludedTypes.Contains(knownType))
+                        return;
+
                     this.XmlImporter.IncludeType(knownType);
+                    IncludedTypes.Add(knownType);
                 }
             }
 

@@ -113,6 +113,12 @@ namespace WcfService
         [XmlSerializerFormat]
         object[] EchoItems_Xml(object[] objects);
 
+        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoItemsXml1")]
+        [ServiceKnownType(typeof(Widget2))]
+        [ServiceKnownType(typeof(Widget3))]
+        [XmlSerializerFormat]
+        object[] EchoItems_Xml1(object[] objects);
+
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlVeryComplexType"), XmlSerializerFormat]
         XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex);
 
