@@ -212,13 +212,16 @@ public class ChannelFactoryTest
 
             // Create the channel factory
             factory = new ChannelFactory<IRequestChannel>(binding, new EndpointAddress(FakeAddress.HttpAddress));
-            Assert.True(CommunicationState.Created == factory.State, "The factory was not created.");
+            Assert.True(CommunicationState.Created == factory.State,
+                string.Format("factory.State - Expected: {0}, Actual: {1}.", CommunicationState.Created, factory.State));
 
             Task.Factory.FromAsync(factory.BeginOpen(null, null), factory.EndOpen).GetAwaiter().GetResult();
-            Assert.True(CommunicationState.Opened == factory.State, "The factory was not opened.");
+            Assert.True(CommunicationState.Opened == factory.State, 
+                string.Format("factory.State - Expected: {0}, Actual: {1}.", CommunicationState.Opened, factory.State));
 
             Task.Factory.FromAsync(factory.BeginClose(null, null), factory.EndClose).GetAwaiter().GetResult();
-            Assert.True(CommunicationState.Closed == factory.State, "The factory was not closed.");
+            Assert.True(CommunicationState.Closed == factory.State, 
+                string.Format("factory.State - Expected: {0}, Actual: {1}.", CommunicationState.Closed, factory.State));
         }
         finally
         {
