@@ -1,40 +1,41 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System.Runtime;
+using System.Security.Authentication.ExtendedProtection;
+using System.ServiceModel;
+using System.ServiceModel.Channels.ConnectionHelpers;
+using System.ServiceModel.Security;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    using System.Runtime;
-    using System.Security.Authentication.ExtendedProtection;
-    using System.ServiceModel;
-    using System.ServiceModel.Security;
-    using System.Threading;
-
-    class StreamedFramingRequestChannel : RequestChannel
+    internal class StreamedFramingRequestChannel : RequestChannel
     {
-        IConnectionInitiator connectionInitiator;
-        ConnectionPool connectionPool;
-        MessageEncoder messageEncoder;
-        IConnectionOrientedTransportFactorySettings settings;
-        byte[] startBytes;
-        StreamUpgradeProvider upgrade;
-        ChannelBinding channelBindingToken;
+        internal IConnectionInitiator connectionInitiator;
+        internal ConnectionPool connectionPool;
+        private MessageEncoder _messageEncoder;
+        private IConnectionOrientedTransportFactorySettings _settings;
+        private byte[] _startBytes;
+        private StreamUpgradeProvider _upgrade;
+        private ChannelBinding _channelBindingToken;
 
         public StreamedFramingRequestChannel(ChannelManagerBase factory, IConnectionOrientedTransportChannelFactorySettings settings,
             EndpointAddress remoteAddresss, Uri via, IConnectionInitiator connectionInitiator, ConnectionPool connectionPool)
             : base(factory, remoteAddresss, via, settings.ManualAddressing)
         {
-            this.settings = settings;
+            _settings = settings;
             this.connectionInitiator = connectionInitiator;
             this.connectionPool = connectionPool;
 
-            this.messageEncoder = settings.MessageEncoderFactory.Encoder;
-            this.upgrade = settings.Upgrade;
+            _messageEncoder = settings.MessageEncoderFactory.Encoder;
+            _upgrade = settings.Upgrade;
         }
 
-        byte[] Preamble
+        private byte[] Preamble
         {
-            get { return this.startBytes; }
+            get { return _startBytes; }
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -55,57 +56,54 @@ namespace System.ServiceModel.Channels
         {
             // setup our preamble which we'll use for all connections we establish
             EncodedVia encodedVia = new EncodedVia(this.Via.AbsoluteUri);
-            EncodedContentType encodedContentType = EncodedContentType.Create(settings.MessageEncoderFactory.Encoder.ContentType);
+            EncodedContentType encodedContentType = EncodedContentType.Create(_settings.MessageEncoderFactory.Encoder.ContentType);
             int startSize = ClientSingletonEncoder.ModeBytes.Length + ClientSingletonEncoder.CalcStartSize(encodedVia, encodedContentType);
             int preambleEndOffset = 0;
-            if (this.upgrade == null)
+            if (_upgrade == null)
             {
                 preambleEndOffset = startSize;
                 startSize += ClientDuplexEncoder.PreambleEndBytes.Length;
             }
-            this.startBytes = DiagnosticUtility.Utility.AllocateByteArray(startSize);
-            Buffer.BlockCopy(ClientSingletonEncoder.ModeBytes, 0, startBytes, 0, ClientSingletonEncoder.ModeBytes.Length);
-            ClientSingletonEncoder.EncodeStart(this.startBytes, ClientSingletonEncoder.ModeBytes.Length, encodedVia, encodedContentType);
+            _startBytes = Fx.AllocateByteArray(startSize);
+            Buffer.BlockCopy(ClientSingletonEncoder.ModeBytes, 0, _startBytes, 0, ClientSingletonEncoder.ModeBytes.Length);
+            ClientSingletonEncoder.EncodeStart(_startBytes, ClientSingletonEncoder.ModeBytes.Length, encodedVia, encodedContentType);
             if (preambleEndOffset > 0)
             {
-                Buffer.BlockCopy(ClientSingletonEncoder.PreambleEndBytes, 0, startBytes, preambleEndOffset, ClientSingletonEncoder.PreambleEndBytes.Length);
+                Buffer.BlockCopy(ClientSingletonEncoder.PreambleEndBytes, 0, _startBytes, preambleEndOffset, ClientSingletonEncoder.PreambleEndBytes.Length);
             }
 
             // and then transition to the Opened state
             base.OnOpened();
         }
 
-        protected override IAsyncRequest CreateAsyncRequest(Message message, AsyncCallback callback, object state)
+        protected override IAsyncRequest CreateAsyncRequest(Message message)
         {
-            return new StreamedFramingAsyncRequest(this, callback, state);
+            return new StreamedConnectionPoolHelper.StreamedFramingAsyncRequest(this);
         }
 
-        protected override IRequest CreateRequest(Message message)
-        {
-            return new StreamedFramingRequest(this);
-        }
-
-        IConnection SendPreamble(IConnection connection, ref TimeoutHelper timeoutHelper,
+        internal IConnection SendPreamble(IConnection connection, ref TimeoutHelper timeoutHelper,
             ClientFramingDecoder decoder, out SecurityMessageProperty remoteSecurity)
         {
             connection.Write(Preamble, 0, Preamble.Length, true, timeoutHelper.RemainingTime());
 
-            if (upgrade != null)
+            if (_upgrade != null)
             {
-                IStreamUpgradeChannelBindingProvider channelBindingProvider = upgrade.GetProperty<IStreamUpgradeChannelBindingProvider>();
+                IStreamUpgradeChannelBindingProvider channelBindingProvider = _upgrade.GetProperty<IStreamUpgradeChannelBindingProvider>();
 
-                StreamUpgradeInitiator upgradeInitiator = upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
 
                 if (!ConnectionUpgradeHelper.InitiateUpgrade(upgradeInitiator, ref connection, decoder,
                     this, ref timeoutHelper))
                 {
-                    ConnectionUpgradeHelper.DecodeFramingFault(decoder, connection, Via, messageEncoder.ContentType, ref timeoutHelper);
+                    ConnectionUpgradeHelper.DecodeFramingFault(decoder, connection, Via, _messageEncoder.ContentType, ref timeoutHelper);
                 }
 
+#if FEATURE_CORECLR // ExtendedProtection
                 if (channelBindingProvider != null && channelBindingProvider.IsChannelBindingSupportEnabled)
                 {
-                    this.channelBindingToken = channelBindingProvider.GetChannelBinding(upgradeInitiator, ChannelBindingKind.Endpoint);
+                    _channelBindingToken = channelBindingProvider.GetChannelBinding(upgradeInitiator, ChannelBindingKind.Endpoint);
                 }
+#endif // FEATURE_CORECLR // ExtendedProtection
 
                 remoteSecurity = StreamSecurityUpgradeInitiator.GetRemoteSecurity(upgradeInitiator);
 
@@ -122,7 +120,42 @@ namespace System.ServiceModel.Channels
             int ackBytesRead = connection.Read(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
             if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, decoder, this.Via))
             {
-                ConnectionUpgradeHelper.DecodeFramingFault(decoder, connection, Via, messageEncoder.ContentType, ref timeoutHelper);
+                ConnectionUpgradeHelper.DecodeFramingFault(decoder, connection, Via, _messageEncoder.ContentType, ref timeoutHelper);
+            }
+
+            return connection;
+        }
+
+        internal async Task<IConnection> SendPreambleAsync(IConnection connection, TimeoutHelper timeoutHelper, ClientFramingDecoder decoder)
+        {
+            await connection.WriteAsync(Preamble, 0, Preamble.Length, true, timeoutHelper.RemainingTime());
+
+            if (_upgrade != null)
+            {
+                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+
+                await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime());
+                var connectionWrapper = new OutWrapper<IConnection>();
+                connectionWrapper.Value = connection;
+                bool upgradeInitiated = await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connectionWrapper, decoder, this, timeoutHelper.RemainingTime());
+                connection = connectionWrapper.Value;
+                if (!upgradeInitiated)
+                {
+                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(decoder, connection, this.Via, _messageEncoder.ContentType, timeoutHelper.RemainingTime());
+                }
+
+                await upgradeInitiator.CloseAsync(timeoutHelper.RemainingTime());
+
+                await connection.WriteAsync(ClientSingletonEncoder.PreambleEndBytes, 0, ClientSingletonEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
+            }
+
+            byte[] ackBuffer = new byte[1];
+            int ackBytesRead = await connection.ReadAsync(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
+
+            if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, decoder, Via))
+            {
+                await ConnectionUpgradeHelper.DecodeFramingFaultAsync(decoder, connection, Via,
+                    _messageEncoder.ContentType, timeoutHelper.RemainingTime());
             }
 
             return connection;
@@ -138,7 +171,7 @@ namespace System.ServiceModel.Channels
             base.OnClosed();
 
             // clean up the CBT after transitioning to the closed state
-            ChannelBindingUtility.Dispose(ref this.channelBindingToken);
+            ChannelBindingUtility.Dispose(ref _channelBindingToken);
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -153,724 +186,183 @@ namespace System.ServiceModel.Channels
 
         internal class StreamedConnectionPoolHelper : ConnectionPoolHelper
         {
-            StreamedFramingRequestChannel channel;
-            ClientSingletonDecoder decoder;
-            SecurityMessageProperty remoteSecurity;
+            private StreamedFramingRequestChannel _channel;
+            private ClientSingletonDecoder _decoder;
+            private SecurityMessageProperty _remoteSecurity;
 
             public StreamedConnectionPoolHelper(StreamedFramingRequestChannel channel)
                 : base(channel.connectionPool, channel.connectionInitiator, channel.Via)
             {
-                this.channel = channel;
+                _channel = channel;
             }
 
             public ClientSingletonDecoder Decoder
             {
-                get { return this.decoder; }
+                get { return _decoder; }
             }
 
             public SecurityMessageProperty RemoteSecurity
             {
-                get { return this.remoteSecurity; }
+                get { return _remoteSecurity; }
             }
 
             protected override TimeoutException CreateNewConnectionTimeoutException(TimeSpan timeout, TimeoutException innerException)
             {
-                return new TimeoutException(SR.GetString(SR.RequestTimedOutEstablishingTransportSession,
-                        timeout, channel.Via.AbsoluteUri), innerException);
+                return new TimeoutException(SR.Format(SR.RequestTimedOutEstablishingTransportSession,
+                        timeout, _channel.Via.AbsoluteUri), innerException);
             }
 
             protected override IConnection AcceptPooledConnection(IConnection connection, ref TimeoutHelper timeoutHelper)
             {
-                this.decoder = new ClientSingletonDecoder(0);
-                return channel.SendPreamble(connection, ref timeoutHelper, this.decoder, out this.remoteSecurity);
+                _decoder = new ClientSingletonDecoder(0);
+                return _channel.SendPreamble(connection, ref timeoutHelper, _decoder, out _remoteSecurity);
             }
 
-            protected override IAsyncResult BeginAcceptPooledConnection(IConnection connection, ref TimeoutHelper timeoutHelper, AsyncCallback callback, object state)
+            protected override Task<IConnection> AcceptPooledConnectionAsync(IConnection connection, ref TimeoutHelper timeoutHelper)
             {
-                this.decoder = new ClientSingletonDecoder(0);
-                return new SendPreambleAsyncResult(channel, connection, ref timeoutHelper, decoder, callback, state);
+                _decoder = new ClientSingletonDecoder(0);
+                return _channel.SendPreambleAsync(connection, timeoutHelper, _decoder);
             }
 
-            protected override IConnection EndAcceptPooledConnection(IAsyncResult result)
+            private class ClientSingletonConnectionReader : SingletonConnectionReader
             {
-                return SendPreambleAsyncResult.End(result, out this.remoteSecurity);
+                private StreamedConnectionPoolHelper _connectionPoolHelper;
+
+                public ClientSingletonConnectionReader(IConnection connection, StreamedConnectionPoolHelper connectionPoolHelper,
+                    IConnectionOrientedTransportFactorySettings settings)
+                    : base(connection, 0, 0, connectionPoolHelper.RemoteSecurity, settings, null)
+                {
+                    _connectionPoolHelper = connectionPoolHelper;
+                }
+
+                protected override long StreamPosition
+                {
+                    get { return _connectionPoolHelper.Decoder.StreamPosition; }
+                }
+
+                protected override bool DecodeBytes(byte[] buffer, ref int offset, ref int size, ref bool isAtEof)
+                {
+                    while (size > 0)
+                    {
+                        int bytesRead = _connectionPoolHelper.Decoder.Decode(buffer, offset, size);
+                        if (bytesRead > 0)
+                        {
+                            offset += bytesRead;
+                            size -= bytesRead;
+                        }
+
+                        switch (_connectionPoolHelper.Decoder.CurrentState)
+                        {
+                            case ClientFramingDecoderState.EnvelopeStart:
+                                // we're at the envelope
+                                return true;
+
+                            case ClientFramingDecoderState.End:
+                                isAtEof = true;
+                                return false;
+                        }
+                    }
+
+                    return false;
+                }
+
+                protected override void OnClose(TimeSpan timeout)
+                {
+                    _connectionPoolHelper.Close(timeout);
+                }
             }
 
-            class SendPreambleAsyncResult : AsyncResult
+
+            internal class StreamedFramingAsyncRequest : IAsyncRequest
             {
-                StreamedFramingRequestChannel channel;
-                IConnection connection;
-                ClientFramingDecoder decoder;
-                StreamUpgradeInitiator upgradeInitiator;
-                SecurityMessageProperty remoteSecurity;
-                TimeoutHelper timeoutHelper;
-                static WaitCallback onWritePreamble = Fx.ThunkCallback(new WaitCallback(OnWritePreamble));
-                static WaitCallback onWritePreambleEnd;
-                static WaitCallback onReadPreambleAck = new WaitCallback(OnReadPreambleAck);
-                static AsyncCallback onUpgrade;
-                static AsyncCallback onFailedUpgrade;
-                IStreamUpgradeChannelBindingProvider channelBindingProvider;
+                private StreamedFramingRequestChannel _channel;
+                private IConnection _connection;
+                private StreamedConnectionPoolHelper _connectionPoolHelper;
+                private Message _message;
+                private TimeoutHelper _timeoutHelper;
+                private ClientSingletonConnectionReader _connectionReader;
 
-                public SendPreambleAsyncResult(StreamedFramingRequestChannel channel, IConnection connection,
-                    ref TimeoutHelper timeoutHelper, ClientFramingDecoder decoder, AsyncCallback callback, object state)
-                    : base(callback, state)
+                public StreamedFramingAsyncRequest(StreamedFramingRequestChannel channel)
                 {
-                    this.channel = channel;
-                    this.connection = connection;
-                    this.timeoutHelper = timeoutHelper;
-                    this.decoder = decoder;
-
-                    AsyncCompletionResult writePreambleResult = connection.BeginWrite(channel.Preamble, 0, channel.Preamble.Length,
-                        true, timeoutHelper.RemainingTime(), onWritePreamble, this);
-
-                    if (writePreambleResult == AsyncCompletionResult.Queued)
-                    {
-                        return;
-                    }
-
-                    if (HandleWritePreamble())
-                    {
-                        base.Complete(true);
-                    }
+                    _channel = channel;
+                    _connectionPoolHelper = new StreamedConnectionPoolHelper(channel);
                 }
 
-                public static IConnection End(IAsyncResult result, out SecurityMessageProperty remoteSecurity)
+                public async Task SendRequestAsync(Message message, TimeoutHelper timeoutHelper)
                 {
-                    SendPreambleAsyncResult thisPtr = AsyncResult.End<SendPreambleAsyncResult>(result);
-                    remoteSecurity = thisPtr.remoteSecurity;
-                    return thisPtr.connection;
-                }
-
-                bool HandleWritePreamble()
-                {
-                    connection.EndWrite();
-
-                    if (channel.upgrade == null)
-                    {
-                        return ReadPreambleAck();
-                    }
-                    else
-                    {
-                        this.channelBindingProvider = channel.upgrade.GetProperty<IStreamUpgradeChannelBindingProvider>();
-                        this.upgradeInitiator = channel.upgrade.CreateUpgradeInitiator(channel.RemoteAddress, channel.Via);
-                        if (onUpgrade == null)
-                        {
-                            onUpgrade = Fx.ThunkCallback(new AsyncCallback(OnUpgrade));
-                        }
-
-                        IAsyncResult initiateUpgradeResult = ConnectionUpgradeHelper.BeginInitiateUpgrade(channel.settings, channel.RemoteAddress,
-                            connection, decoder, this.upgradeInitiator, channel.messageEncoder.ContentType, null,
-                            this.timeoutHelper, onUpgrade, this);
-
-                        if (!initiateUpgradeResult.CompletedSynchronously)
-                        {
-                            return false;
-                        }
-                        return HandleUpgrade(initiateUpgradeResult);
-                    }
-                }
-
-                bool HandleUpgrade(IAsyncResult result)
-                {
-                    connection = ConnectionUpgradeHelper.EndInitiateUpgrade(result);
-
-                    if (this.channelBindingProvider != null && this.channelBindingProvider.IsChannelBindingSupportEnabled)
-                    {
-                        this.channel.channelBindingToken = this.channelBindingProvider.GetChannelBinding(this.upgradeInitiator, ChannelBindingKind.Endpoint);
-                    }
-
-                    this.remoteSecurity = StreamSecurityUpgradeInitiator.GetRemoteSecurity(this.upgradeInitiator);
-                    this.upgradeInitiator = null; // we're done with the initiator
-                    if (onWritePreambleEnd == null)
-                    {
-                        onWritePreambleEnd = Fx.ThunkCallback(new WaitCallback(OnWritePreambleEnd));
-                    }
-
-                    AsyncCompletionResult writePreambleResult = connection.BeginWrite(
-                        ClientSingletonEncoder.PreambleEndBytes, 0, ClientSingletonEncoder.PreambleEndBytes.Length, true,
-                        timeoutHelper.RemainingTime(), onWritePreambleEnd, this);
-
-                    if (writePreambleResult == AsyncCompletionResult.Queued)
-                    {
-                        return false;
-                    }
-
-                    connection.EndWrite();
-                    return ReadPreambleAck();
-                }
-
-                bool ReadPreambleAck()
-                {
-                    AsyncCompletionResult readAckResult = connection.BeginRead(0, 1,
-                        timeoutHelper.RemainingTime(), onReadPreambleAck, this);
-
-                    if (readAckResult == AsyncCompletionResult.Queued)
-                    {
-                        return false;
-                    }
-
-                    return HandlePreambleAck();
-                }
-
-                bool HandlePreambleAck()
-                {
-                    int ackBytesRead = connection.EndRead();
-                    if (!ConnectionUpgradeHelper.ValidatePreambleResponse(
-                        connection.AsyncReadBuffer, ackBytesRead, decoder, channel.Via))
-                    {
-                        if (onFailedUpgrade == null)
-                        {
-                            onFailedUpgrade = Fx.ThunkCallback(new AsyncCallback(OnFailedUpgrade));
-                        }
-                        IAsyncResult decodeFaultResult = ConnectionUpgradeHelper.BeginDecodeFramingFault(decoder,
-                            connection, channel.Via, channel.messageEncoder.ContentType, ref timeoutHelper,
-                            onFailedUpgrade, this);
-
-                        if (!decodeFaultResult.CompletedSynchronously)
-                        {
-                            return false;
-                        }
-
-                        ConnectionUpgradeHelper.EndDecodeFramingFault(decodeFaultResult);
-                        return true;
-                    }
-
-                    return true;
-                }
-
-                static void OnWritePreamble(object asyncState)
-                {
-                    SendPreambleAsyncResult thisPtr = (SendPreambleAsyncResult)asyncState;
-
-                    Exception completionException = null;
-                    bool completeSelf;
-                    try
-                    {
-                        completeSelf = thisPtr.HandleWritePreamble();
-                    }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                    catch (Exception e)
-                    {
-                        if (Fx.IsFatal(e))
-                        {
-                            throw;
-                        }
-
-                        completeSelf = true;
-                        completionException = e;
-                    }
-
-                    if (completeSelf)
-                    {
-                        thisPtr.Complete(false, completionException);
-                    }
-                }
-
-                static void OnWritePreambleEnd(object asyncState)
-                {
-                    SendPreambleAsyncResult thisPtr = (SendPreambleAsyncResult)asyncState;
-
-                    Exception completionException = null;
-                    bool completeSelf;
-                    try
-                    {
-                        thisPtr.connection.EndWrite();
-                        completeSelf = thisPtr.ReadPreambleAck();
-                    }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                    catch (Exception e)
-                    {
-                        if (Fx.IsFatal(e))
-                        {
-                            throw;
-                        }
-
-                        completeSelf = true;
-                        completionException = e;
-                    }
-
-                    if (completeSelf)
-                    {
-                        thisPtr.Complete(false, completionException);
-                    }
-                }
-
-                static void OnReadPreambleAck(object state)
-                {
-                    SendPreambleAsyncResult thisPtr = (SendPreambleAsyncResult)state;
-
-                    Exception completionException = null;
-                    bool completeSelf;
-                    try
-                    {
-                        completeSelf = thisPtr.HandlePreambleAck();
-                    }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                    catch (Exception e)
-                    {
-                        if (Fx.IsFatal(e))
-                        {
-                            throw;
-                        }
-
-                        completeSelf = true;
-                        completionException = e;
-                    }
-
-                    if (completeSelf)
-                    {
-                        thisPtr.Complete(false, completionException);
-                    }
-                }
-
-                static void OnUpgrade(IAsyncResult result)
-                {
-                    if (result.CompletedSynchronously)
-                    {
-                        return;
-                    }
-
-                    SendPreambleAsyncResult thisPtr = (SendPreambleAsyncResult)result.AsyncState;
-
-                    Exception completionException = null;
-                    bool completeSelf;
-                    try
-                    {
-                        completeSelf = thisPtr.HandleUpgrade(result);
-                    }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                    catch (Exception e)
-                    {
-                        if (Fx.IsFatal(e))
-                        {
-                            throw;
-                        }
-
-                        completeSelf = true;
-                        completionException = e;
-                    }
-
-                    if (completeSelf)
-                    {
-                        thisPtr.Complete(false, completionException);
-                    }
-                }
-
-                static void OnFailedUpgrade(IAsyncResult result)
-                {
-                    if (result.CompletedSynchronously)
-                    {
-                        return;
-                    }
-
-                    SendPreambleAsyncResult thisPtr = (SendPreambleAsyncResult)result.AsyncState;
-
-                    Exception completionException = null;
-                    try
-                    {
-                        ConnectionUpgradeHelper.EndDecodeFramingFault(result);
-                    }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                    catch (Exception e)
-                    {
-                        if (Fx.IsFatal(e))
-                        {
-                            throw;
-                        }
-
-                        completionException = e;
-                    }
-
-                    thisPtr.Complete(false, completionException);
-                }
-            }
-        }
-
-        class ClientSingletonConnectionReader : SingletonConnectionReader
-        {
-            StreamedConnectionPoolHelper connectionPoolHelper;
-
-            public ClientSingletonConnectionReader(IConnection connection, StreamedConnectionPoolHelper connectionPoolHelper,
-                IConnectionOrientedTransportFactorySettings settings)
-                : base(connection, 0, 0, connectionPoolHelper.RemoteSecurity, settings, null)
-            {
-                this.connectionPoolHelper = connectionPoolHelper;
-            }
-
-            protected override long StreamPosition
-            {
-                get { return connectionPoolHelper.Decoder.StreamPosition; }
-            }
-
-            protected override bool DecodeBytes(byte[] buffer, ref int offset, ref int size, ref bool isAtEof)
-            {
-                while (size > 0)
-                {
-                    int bytesRead = connectionPoolHelper.Decoder.Decode(buffer, offset, size);
-                    if (bytesRead > 0)
-                    {
-                        offset += bytesRead;
-                        size -= bytesRead;
-                    }
-
-                    switch (connectionPoolHelper.Decoder.CurrentState)
-                    {
-                        case ClientFramingDecoderState.EnvelopeStart:
-                            // we're at the envelope
-                            return true;
-
-                        case ClientFramingDecoderState.End:
-                            isAtEof = true;
-                            return false;
-                    }
-                }
-
-                return false;
-            }
-
-            protected override void OnClose(TimeSpan timeout)
-            {
-                connectionPoolHelper.Close(timeout);
-            }
-        }
-
-        class StreamedFramingRequest : IRequest
-        {
-            StreamedFramingRequestChannel channel;
-            StreamedConnectionPoolHelper connectionPoolHelper;
-            IConnection connection;
-
-            public StreamedFramingRequest(StreamedFramingRequestChannel channel)
-            {
-                this.channel = channel;
-                this.connectionPoolHelper = new StreamedConnectionPoolHelper(channel);
-            }
-
-            public void SendRequest(Message message, TimeSpan timeout)
-            {
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-
-                try
-                {
-                    this.connection = connectionPoolHelper.EstablishConnection(timeoutHelper.RemainingTime());
-
-                    ChannelBindingUtility.TryAddToMessage(this.channel.channelBindingToken, message, false);
+                    _timeoutHelper = timeoutHelper;
+                    _message = message;
 
                     bool success = false;
                     try
                     {
-                        StreamingConnectionHelper.WriteMessage(message, this.connection, true, channel.settings, ref timeoutHelper);
+                        try
+                        {
+                            _connection = await _connectionPoolHelper.EstablishConnectionAsync(timeoutHelper.RemainingTime());
+
+                            ChannelBindingUtility.TryAddToMessage(_channel._channelBindingToken, _message, false);
+                            await StreamingConnectionHelper.WriteMessageAsync(_message, _connection, true, _channel._settings, timeoutHelper);
+                        }
+                        catch (TimeoutException exception)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                                new TimeoutException(SR.Format(SR.TimeoutOnRequest, timeoutHelper.RemainingTime()), exception));
+                        }
+
                         success = true;
                     }
                     finally
                     {
                         if (!success)
                         {
-                            connectionPoolHelper.Abort();
+                            Cleanup();
                         }
                     }
                 }
-                catch (TimeoutException exception)
+
+                public void Abort(RequestChannel requestChannel)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new TimeoutException(SR.GetString(SR.TimeoutOnRequest, timeout), exception));
-                }
-            }
-
-            public Message WaitForReply(TimeSpan timeout)
-            {
-                ClientSingletonConnectionReader connectionReader = new ClientSingletonConnectionReader(
-                    connection, connectionPoolHelper, channel.settings);
-
-                connectionReader.DoneSending(TimeSpan.Zero); // we still need to receive
-                Message message = connectionReader.Receive(timeout);
-
-                if (message != null)
-                {
-                    ChannelBindingUtility.TryAddToMessage(this.channel.channelBindingToken, message, false);
+                    Cleanup();
                 }
 
-                return message;
-            }
+                public void Fault(RequestChannel requestChannel)
+                {
+                    Cleanup();
+                }
 
-            void Cleanup()
-            {
-                this.connectionPoolHelper.Abort();
-            }
+                private void Cleanup()
+                {
+                    _connectionPoolHelper.Abort();
+                }
 
-            public void Abort(RequestChannel requestChannel)
-            {
-                Cleanup();
-            }
 
-            public void Fault(RequestChannel requestChannel)
-            {
-                Cleanup();
-            }
+                public void OnReleaseRequest()
+                {
+                }
 
-            public void OnReleaseRequest()
-            {                
-            }
-        }
-
-        class StreamedFramingAsyncRequest : AsyncResult, IAsyncRequest
-        {
-            StreamedFramingRequestChannel channel;
-            IConnection connection;
-            StreamedConnectionPoolHelper connectionPoolHelper;
-            Message message;
-            Message replyMessage;
-            TimeoutHelper timeoutHelper;
-            static AsyncCallback onEstablishConnection = Fx.ThunkCallback(new AsyncCallback(OnEstablishConnection));
-            static AsyncCallback onWriteMessage = Fx.ThunkCallback(new AsyncCallback(OnWriteMessage));
-            static AsyncCallback onReceiveReply = Fx.ThunkCallback(new AsyncCallback(OnReceiveReply));
-            ClientSingletonConnectionReader connectionReader;
-
-            public StreamedFramingAsyncRequest(StreamedFramingRequestChannel channel, AsyncCallback callback, object state)
-                : base(callback, state)
-            {
-                this.channel = channel;
-                this.connectionPoolHelper = new StreamedConnectionPoolHelper(channel);
-            }
-
-            public void BeginSendRequest(Message message, TimeSpan timeout)
-            {
-                this.timeoutHelper = new TimeoutHelper(timeout);
-                this.message = message;
-
-                bool completeSelf = false;
-                bool success = false;
-                try
+                public Task<Message> ReceiveReplyAsync(TimeoutHelper timeoutHelper)
                 {
                     try
                     {
-                        IAsyncResult result = connectionPoolHelper.BeginEstablishConnection(timeoutHelper.RemainingTime(), onEstablishConnection, this);
-                        if (result.CompletedSynchronously)
+                        _connectionReader = new ClientSingletonConnectionReader(_connection, _connectionPoolHelper, _channel._settings);
+                        return _connectionReader.ReceiveAsync(timeoutHelper);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        var cancelToken = _timeoutHelper.GetCancellationToken();
+                        if (cancelToken.IsCancellationRequested)
                         {
-                            completeSelf = HandleEstablishConnection(result);
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(
+                                SR.RequestChannelWaitForReplyTimedOut, timeoutHelper.OriginalTimeout)));
+                        }
+                        else
+                        {
+                            // Cancellation came from somewhere other than timeoutCts and needs to be handled differently.
+                            throw;
                         }
                     }
-                    catch (TimeoutException exception)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                            new TimeoutException(SR.GetString(SR.TimeoutOnRequest, timeout), exception));
-                    }
-
-                    success = true;
                 }
-                finally
-                {
-                    if (!success)
-                    {
-                        Cleanup();
-                    }
-                }
-
-                if (completeSelf)
-                {
-                    base.Complete(true);
-                }
-            }
-
-            bool HandleEstablishConnection(IAsyncResult result)
-            {
-                this.connection = connectionPoolHelper.EndEstablishConnection(result);
-
-                ChannelBindingUtility.TryAddToMessage(this.channel.channelBindingToken, this.message, false);
-
-                IAsyncResult writeResult = StreamingConnectionHelper.BeginWriteMessage(this.message, this.connection, true, this.channel.settings, ref timeoutHelper, onWriteMessage, this);
-                if (!writeResult.CompletedSynchronously)
-                {
-                    return false;
-                }
-
-                return HandleWriteMessage(writeResult);
-            }
-
-            public Message End()
-            {
-                try
-                {
-                    AsyncResult.End<StreamedFramingAsyncRequest>(this);
-                }
-                catch (TimeoutException exception)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new TimeoutException(SR.GetString(SR.TimeoutOnRequest, this.timeoutHelper.OriginalTimeout), exception));
-                }
-                return replyMessage;
-            }
-
-            public void Abort(RequestChannel requestChannel)
-            {
-                Cleanup();
-            }
-
-            public void Fault(RequestChannel requestChannel)
-            {
-                Cleanup();
-            }
-
-            void Cleanup()
-            {
-                connectionPoolHelper.Abort();
-            }
-
-            bool HandleWriteMessage(IAsyncResult result)
-            {
-                // write out the streamed message
-                StreamingConnectionHelper.EndWriteMessage(result);
-
-                connectionReader = new ClientSingletonConnectionReader(connection, connectionPoolHelper, channel.settings);
-                connectionReader.DoneSending(TimeSpan.Zero); // we still need to receive
-
-                IAsyncResult receiveResult = connectionReader.BeginReceive(timeoutHelper.RemainingTime(), onReceiveReply, this);
-
-                if (!receiveResult.CompletedSynchronously)
-                {
-                    return false;
-                }
-
-                return CompleteReceiveReply(receiveResult);
-            }
-
-            bool CompleteReceiveReply(IAsyncResult result)
-            {
-                this.replyMessage = connectionReader.EndReceive(result);
-
-                if (this.replyMessage != null)
-                {
-                    ChannelBindingUtility.TryAddToMessage(this.channel.channelBindingToken, this.replyMessage, false);
-                }
-
-                return true;
-            }
-
-            static void OnEstablishConnection(IAsyncResult result)
-            {
-                if (result.CompletedSynchronously)
-                {
-                    return;
-                }
-
-                StreamedFramingAsyncRequest thisPtr = (StreamedFramingAsyncRequest)result.AsyncState;
-
-                Exception completionException = null;
-                bool completeSelf;
-                bool throwing = true;
-                try
-                {
-                    completeSelf = thisPtr.HandleEstablishConnection(result);
-                    throwing = false;
-                }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                catch (Exception e)
-                {
-                    if (Fx.IsFatal(e))
-                    {
-                        throw;
-                    }
-
-                    completeSelf = true;
-                    completionException = e;
-                }
-                finally
-                {
-                    if (throwing)
-                    {
-                        thisPtr.Cleanup();
-                    }
-                }
-
-                if (completeSelf)
-                {
-                    thisPtr.Complete(false, completionException);
-                }
-            }
-
-            static void OnWriteMessage(IAsyncResult result)
-            {
-                if (result.CompletedSynchronously)
-                {
-                    return;
-                }
-
-                StreamedFramingAsyncRequest thisPtr = (StreamedFramingAsyncRequest)result.AsyncState;
-
-                Exception completionException = null;
-                bool completeSelf;
-                bool throwing = true;
-                try
-                {
-                    completeSelf = thisPtr.HandleWriteMessage(result);
-                    throwing = false;
-                }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                catch (Exception e)
-                {
-                    if (Fx.IsFatal(e))
-                    {
-                        throw;
-                    }
-
-                    completeSelf = true;
-                    completionException = e;
-                }
-                finally
-                {
-                    if (throwing)
-                    {
-                        thisPtr.Cleanup();
-                    }
-                }
-
-                if (completeSelf)
-                {
-                    thisPtr.Complete(false, completionException);
-                }
-            }
-
-            static void OnReceiveReply(IAsyncResult result)
-            {
-                StreamedFramingAsyncRequest thisPtr = (StreamedFramingAsyncRequest)result.AsyncState;
-
-                Exception completionException = null;
-                bool completeSelf;
-                bool throwing = true;
-                try
-                {
-                    completeSelf = thisPtr.CompleteReceiveReply(result);
-                    throwing = false;
-                }
-#pragma warning suppress 56500 // elliotw, transferring exception to another thread
-                catch (Exception e)
-                {
-                    if (Fx.IsFatal(e))
-                    {
-                        throw;
-                    }
-
-                    completeSelf = true;
-                    completionException = e;
-                }
-                finally
-                {
-                    if (throwing)
-                    {
-                        thisPtr.Cleanup();
-                    }
-                }
-
-                if (completeSelf)
-                {
-                    thisPtr.Complete(false, completionException);
-                }
-            }
-
-            public void OnReleaseRequest()
-            {                
             }
         }
     }
 }
-
