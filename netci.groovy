@@ -185,3 +185,47 @@ Utilities.addGithubPRTrigger(prCCJob, 'Code Coverage Windows Debug', '@dotnet-bo
         Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
     }
 }
+
+// **************************
+// Outerloop and Innerloop against the latest dependencies on Windows. Rolling daily for debug and release
+// **************************
+
+['Debug', 'Release'].each { configuration ->
+    def configurationJobName = configuration.toLowerCase()
+    def jobName = "latest_dependencies_windows_${configurationJobName}"
+    def latestDepBuildString = '''build.cmd /p:Configuration=Windows_NT_${configuration}  /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
+
+    // Create the new rolling job
+    def newLatestDepRollingJob = job(Utilities.getFullJobName(project, jobName, false)) {
+        label('windows-elevated')
+        steps {
+            batchFile(latestDepBuildString)
+        }
+    }
+
+    // Add commit job options
+    Utilities.addScm(newLatestDepRollingJob, project)
+    Utilities.addStandardNonPRParameters(newLatestDepRollingJob)
+    Utilities.addPeriodicTrigger(newLatestDepRollingJob, '@daily')
+
+    // Create the new PR job for on demand execution.  No automatic PR trigger.
+    // Triggered with '@dotnet-bot test latest dependencies please'
+
+    def newLatestDepPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
+        label('windows-elevated')
+        steps {
+            batchFile(latestDepBuildString)
+        }
+    }
+
+    // Add a PR trigger
+    Utilities.addGithubPRTrigger(newLatestDepPRJob, "Latest dependencies Windows ${configuration} Build and Test", '@dotnet-bot test latest dependencies please')
+    Utilities.addPRTestSCM(newLatestDepPRJob, project)
+    Utilities.addStandardPRParameters(newLatestDepPRJob, project)
+
+    // Add common options
+    [newLatestDepPRJob, newLatestDepRollingJob].each { newJob ->
+        Utilities.addStandardOptions(newJob)
+        Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
+    }
+}
