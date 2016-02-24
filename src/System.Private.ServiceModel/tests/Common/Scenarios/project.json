@@ -3,7 +3,7 @@
     "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
 	"System.Collections.Concurrent": "4.0.0",
 	"System.ComponentModel.EventBasedAsync": "4.0.10",
-	"System.Net.Http": "4.0.1-rc3-23809",
+	"System.Net.Http": "4.0.0",
 	"System.Net.Primitives": "4.0.10",
 	"System.Net.WebHeaderCollection": "4.0.0",
     "System.Runtime.Serialization.Xml": "4.1.0-rc3-23809",
@@ -23,9 +23,6 @@
   "frameworks": {
 	"dnxcore50": {
 		"imports": "portable-net45+win8"
-	},
-	"dotnet5.4": {
-		"System.ServiceModel.Primitives": "4.1.0.0"
 	}
   }
 }
