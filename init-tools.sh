@@ -37,7 +37,7 @@ if [ ! -e $__PROJECT_JSON_FILE ]; then
 
  if [ ! -e $__DOTNET_PATH ]; then
     mkdir -p "$__DOTNET_PATH"
-    wget -q -O $__DOTNET_PATH/dotnet.tar https://dotnetcli.blob.core.windows.net/dotnet/dev/Binaries/${__DOTNET_TOOLS_VERSION}/${__DOTNET_PKG}.${__DOTNET_TOOLS_VERSION}.tar.gz
+    wget -q -O $__DOTNET_PATH/dotnet.tar https://dotnetcli.blob.core.windows.net/dotnet/beta/Binaries/${__DOTNET_TOOLS_VERSION}/${__DOTNET_PKG}.${__DOTNET_TOOLS_VERSION}.tar.gz
     cd $__DOTNET_PATH
     tar -xf $__DOTNET_PATH/dotnet.tar
     if [ -n "$BUILDTOOLS_OVERRIDE_RUNTIME" ]; then
