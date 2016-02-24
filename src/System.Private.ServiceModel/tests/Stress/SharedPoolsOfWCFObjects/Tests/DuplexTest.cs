@@ -4,133 +4,97 @@
 using System;
 using System.IO;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Threading;
 using System.Threading.Tasks;
 using WcfService1;
 
 namespace SharedPoolsOfWCFObjects
 {
-    public class DuplexTest : ITestTemplate<WcfService1.IDuplexService>
+    public interface IDuplexParams
     {
-        const int MaxCallbacksToExpect = 100;
-        int _callbacksToExpect = 0;
+        int CallbacksToExpect { get; }
+    }
+    public class DuplexStressTestParams : CommonStressTestParams, IDuplexParams
+    {
+        public const int MaxCallbacksToExpect = 100;
+        private int _callbacksToExpect = 0;
 
-        public DuplexTest() { }
-        public EndpointAddress CreateEndPointAddress()
+        // For stress we want to iterate through a wide variety of number of callbacks to exercise all possible timings
+        public int CallbacksToExpect
+        {
+            get
+            {
+                return Interlocked.Increment(ref _callbacksToExpect) % MaxCallbacksToExpect;
+            }
+        }
+    }
+
+    public class DuplexPerfStartupTestParams : CommonPerfStartupTestParams, IDuplexParams
+    {
+        // For perf measurements we want a constant number of duplex callbacks
+        public const int NumberOfDuplexCallbacks = 1;
+        public int CallbacksToExpect { get { return NumberOfDuplexCallbacks; } }
+    }
+
+    public class DuplexPerfThroughputTestParams : CommonPerfThroughputTestParams, IDuplexParams
+    {
+        public const int NumberOfDuplexCallbacks = 3;
+        public int CallbacksToExpect { get { return NumberOfDuplexCallbacks; } }
+    }
+
+    public class DuplexTest<TestParams> : CommonTest<WcfService1.IDuplexService, TestParams>
+        where TestParams : IPoolTestParameter, IStatsCollectingTestParameter, IDuplexParams, new()
+    {
+        public override EndpointAddress CreateEndPointAddress()
         {
             return TestHelpers.CreateEndPointDuplexAddress();
         }
-
-        public Binding CreateBinding()
-        {
-            return TestHelpers.CreateBinding();
-        }
-
-        public ChannelFactory<WcfService1.IDuplexService> CreateChannelFactory()
+        public override ChannelFactory<IDuplexService> CreateChannelFactory()
         {
             var duplexCallback = new DuplexCallback();
             return TestHelpers.CreateDuplexChannelFactory<WcfService1.IDuplexService>(CreateEndPointAddress(), CreateBinding(), duplexCallback);
         }
-        public void CloseFactory(ChannelFactory<WcfService1.IDuplexService> factory)
+        public override Action<WcfService1.IDuplexService> UseChannel()
         {
-            TestHelpers.CloseFactory(factory);
+            return (channel) =>
+            {
+                int callbacks = _params.CallbacksToExpect;
+                int result = _useChannelStats.CallFuncAndRecordStats(() => { return channel.GetAsyncCallbackData(1, callbacks); }, RelaxedExceptionPolicy);
+                if (!RelaxedExceptionPolicy)
+                {
+                    int expected = (1 + callbacks) * callbacks / 2;
+                    if (result != expected)
+                    {
+                        TestUtils.ReportFailure("Unexpected result. Expected: " + expected + " result: " + result);
+                    }
+                }
+            };
         }
-
-        public Task CloseFactoryAsync(ChannelFactory<WcfService1.IDuplexService> factory)
+        public override Func<WcfService1.IDuplexService, Task> UseAsyncChannel()
         {
-            return TestHelpers.CloseFactoryAsync(factory);
-        }
-
-        public WcfService1.IDuplexService CreateChannel(ChannelFactory<WcfService1.IDuplexService> factory)
-        {
-            return TestHelpers.CreateChannel(factory);
-        }
-        public void CloseChannel(WcfService1.IDuplexService channel)
-        {
-            TestHelpers.CloseChannel<WcfService1.IDuplexService>(channel);
-        }
-        public Task CloseChannelAsync(WcfService1.IDuplexService channel)
-        {
-            return TestHelpers.CloseChannelAsync<WcfService1.IDuplexService>(channel);
-        }
-
-        public Action<WcfService1.IDuplexService> UseChannel()
-        {
-            return (channel) => {
-                //int callbacks = GetCallbacksToExpect();
-                //int result = channel.SetData(44, callbacks);
-                //// rather than counting the number of the callabacks 
-                //// we check the return value which should be incremented by the number of the callaback calls
-                //if (result != 44 + callbacks)
-                //{
-                //    Console.WriteLine("Unexpected number of callbacks!");
-                //    System.Diagnostics.Debugger.Break();
-                //}
-
-
-                int callbacks = GetCallbacksToExpect();
-                int result = channel.GetAsyncCallbackData(1, callbacks);
-                //Console.WriteLine("callbacks: " + callbacks + ", result " + result);
+            return async (channel) =>
+            {
+                int callbacks = _params.CallbacksToExpect;
+                int result = await channel.GetAsyncCallbackDataAsync(1, callbacks);
                 if (result != (1 + callbacks) * callbacks / 2)
                 {
-                    Console.WriteLine("Unexpected result.");
-                    System.Diagnostics.Debugger.Break();
+                    TestUtils.ReportFailure("Unexpected result. Expected: " + (1 + callbacks) * callbacks / 2 + "result: " + result);
                 }
             };
-        }
-
-        public Func<WcfService1.IDuplexService, Task> UseAsyncChannel()
-        {
-            return async (channel) => {
-                int callbacks = GetCallbacksToExpect();
-                int result = await channel.SetDataAsync(1, callbacks);
-                if (result != 1 + callbacks)
-                {
-                    Console.WriteLine("Unexpected number of callbacks!");
-                    System.Diagnostics.Debugger.Break();
-                }
-            };
-        }
-
-        private void RunAllScenarios()
-        {
-        }
-
-        private int GetCallbacksToExpect()
-        {
-            return Interlocked.Increment(ref _callbacksToExpect) % MaxCallbacksToExpect;
         }
     }
 
-
     public class DuplexCallback : IDuplexCallback
     {
-
-        //public Task<int> EchoSetData(int value)
-        //{
-        //    System.Console.WriteLine("EchoSetData: " + value);
-        //    return Task.FromResult(value + 1);
-        //}
-
         public int EchoSetData(int value)
         {
-            //System.Console.WriteLine("EchoSetData: " + value);
             return value;
         }
 
         public async Task<int> EchoGetAsyncCallbackData(int value)
         {
             await Task.Yield();
-            //Console.WriteLine("returning "+ value);
             return value;
         }
-
-        /*
-        public async Task<int> NestedEchoCallback(int value, int nestedCallsRemaining)
-        {
-            // we need a channel here...
-        }
-        */
     }
 }
