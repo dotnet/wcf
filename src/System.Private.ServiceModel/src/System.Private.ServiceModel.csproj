@@ -31,7 +31,7 @@
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetGroup)' != 'netcore50'">
-    <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_CORECLR;SUPPORTS_WINDOWSIDENTITY</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetsWindows)' == 'true'">
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
