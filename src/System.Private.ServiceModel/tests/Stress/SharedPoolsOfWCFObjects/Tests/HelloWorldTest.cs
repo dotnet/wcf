@@ -8,53 +8,18 @@ using System.Threading.Tasks;
 
 namespace SharedPoolsOfWCFObjects
 {
-    public class HelloWorldTest : ITestTemplate<WcfService1.IService1>
+    public class HelloWorldTest<TestParams> : CommonTest<WcfService1.IService1, TestParams>
+        where TestParams : IPoolTestParameter, IStatsCollectingTestParameter, new()
     {
-        public HelloWorldTest() { }
-        public EndpointAddress CreateEndPointAddress()
+        public override Action<WcfService1.IService1> UseChannel()
         {
-            return TestHelpers.CreateEndPointAddress();
+            return (channel) =>
+                _useChannelStats.CallActionAndRecordStats(() => channel.GetData(44), RelaxedExceptionPolicy);
         }
-
-        public Binding CreateBinding()
+        public override Func<WcfService1.IService1, Task> UseAsyncChannel()
         {
-            return TestHelpers.CreateBinding();
-        }
-
-        public ChannelFactory<WcfService1.IService1> CreateChannelFactory()
-        {
-            return TestHelpers.CreateChannelFactory<WcfService1.IService1>(CreateEndPointAddress(), CreateBinding());
-        }
-        public void CloseFactory(ChannelFactory<WcfService1.IService1> factory)
-        {
-            TestHelpers.CloseFactory(factory);
-        }
-        public Task CloseFactoryAsync(ChannelFactory<WcfService1.IService1> factory)
-        {
-            return TestHelpers.CloseFactoryAsync(factory);
-        }
-
-        public WcfService1.IService1 CreateChannel(ChannelFactory<WcfService1.IService1> factory)
-        {
-            return TestHelpers.CreateChannel(factory);
-        }
-        public void CloseChannel(WcfService1.IService1 channel)
-        {
-            TestHelpers.CloseChannel(channel);
-        }
-        public Task CloseChannelAsync(WcfService1.IService1 channel)
-        {
-            return TestHelpers.CloseChannelAsync(channel);
-        }
-
-        public Action<WcfService1.IService1> UseChannel()
-        {
-            return (channel) => { channel.GetData(44); };
-        }
-        public Func<WcfService1.IService1, Task> UseAsyncChannel()
-        {
-            return (channel) => { return channel.GetDataAsync(44); };
+            return (channel) =>
+                _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(() => channel.GetDataAsync(44), RelaxedExceptionPolicy);
         }
     }
-
 }

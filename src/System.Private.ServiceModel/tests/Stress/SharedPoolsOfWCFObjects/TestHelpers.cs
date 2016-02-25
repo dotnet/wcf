@@ -1,89 +1,155 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Threading.Tasks;
+using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace SharedPoolsOfWCFObjects
 {
+    public enum TestBinding
+    {
+        Http = 0,
+        NetTcp = 1,
+        NetHttpBinding = 2
+    }
     public static class TestHelpers
     {
-        private static bool UseHttp { get; set; }
+        private static TestBinding UseBinding { get; set; }
         private static string HostName { get; set; }
 
-        private static string s_tcpUrl;
-        private static string s_httpUrl;
+        private static string s_tcpHelloUrl;
+        private static string s_httpHelloUrl;
+        private static string s_netHttpHelloUrl;
+
         private static string s_tcpDupUrl;
         private static string s_httpDupUrl;
+        private static string s_netHttpDupUrl;
+
         private static string s_tcpStreamingUrl;
         private static string s_httpStreamingUrl;
+        private static string s_netHttpDupStreamingUrl;
 
-       
-        public static void SetHostAndProtocol(bool useHttp, string hostName, string appName)
+        public static int MaxPooledFactories { get; set; }
+        public static int MaxPooledChannels { get; set; }
+
+        public static void SetHostAndProtocol(TestBinding useBinding, string hostName, string appName)
         {
-            UseHttp = useHttp;
+            UseBinding = useBinding;
             HostName = hostName;
-            s_tcpUrl = "net.tcp://" + hostName + ":808/" + appName + "/Service1.svc";
-            s_httpUrl = "http://" + hostName + "/" + appName + "/Service1.svc";
-            s_tcpDupUrl = "net.tcp://" + hostName + ":808/" + appName + "/DuplexService.svc";
+            s_httpHelloUrl = "http://" + hostName + "/" + appName + "/Service1.svc";
             s_httpDupUrl = "http://" + hostName + "/" + appName + "/DuplexService.svc";
-            s_tcpStreamingUrl = "net.tcp://" + hostName + ":808/" + appName + "/StreamingService.svc";
             s_httpStreamingUrl = "http://" + hostName + "/" + appName + "/StreamingService.svc";
-            //s_httpUrl = HttpUrl;
+
+            s_netHttpHelloUrl = "http://" + hostName + "/" + appName + "/Service1.svc/nethttp";
+            s_netHttpDupUrl = "ws://" + hostName + "/" + appName + "/DuplexService.svc/websocket";
+            s_netHttpDupStreamingUrl = "ws://" + hostName + "/" + appName + "/DuplexStreamingService.svc";
+
+            s_tcpHelloUrl = "net.tcp://" + hostName + ":808/" + appName + "/Service1.svc";
+            s_tcpDupUrl = "net.tcp://" + hostName + ":808/" + appName + "/DuplexService.svc";
+            s_tcpStreamingUrl = "net.tcp://" + hostName + ":808/" + appName + "/StreamingService.svc";
         }
 
-        public static EndpointAddress CreateEndPointAddress()
+        public static EndpointAddress CreateEndPointHelloAddress()
         {
-            return UseHttp ? CreateHttpEndpointAddress() : CreateNetTcpEndpointAddress();
+            switch (UseBinding)
+            {
+                case TestBinding.Http:
+                    return CreateHttpEndpointAddress();
+                case TestBinding.NetHttpBinding:
+                    return CreateNetHttpEndpointAddress();
+                case TestBinding.NetTcp:
+                    return CreateNetTcpEndpointAddress();
+                default:
+                    return null;
+            }
         }
-
-        public static EndpointAddress CreateNetTcpEndpointAddress()
-        {
-            //string address = "net.tcp://cspod222-04vm4.corp.microsoft.com/WcfService1/Service1.svc";
-            return new EndpointAddress(s_tcpUrl);
-        }
-
         public static EndpointAddress CreateHttpEndpointAddress()
         {
-            return new EndpointAddress(s_httpUrl);
+            return new EndpointAddress(s_httpHelloUrl);
         }
+        public static EndpointAddress CreateNetHttpEndpointAddress()
+        {
+            return new EndpointAddress(s_netHttpHelloUrl);
+        }
+        public static EndpointAddress CreateNetTcpEndpointAddress()
+        {
+            return new EndpointAddress(s_tcpHelloUrl);
+        }
+
 
         public static EndpointAddress CreateEndPointDuplexAddress()
         {
-            return UseHttp ? CreateHttpEndpointDuplexAddress() : CreateNetTcpEndpointDuplexAddress();
+            switch (UseBinding)
+            {
+                case TestBinding.Http:
+                    return CreateHttpEndpointDuplexAddress();
+                case TestBinding.NetHttpBinding:
+                    return CreateNetHttpEndpointDuplexAddress();
+                case TestBinding.NetTcp:
+                    return CreateNetTcpEndpointDuplexAddress();
+                default:
+                    return null;
+            }
         }
 
-        public static EndpointAddress CreateNetTcpEndpointDuplexAddress()
-        {
-            //string address = "net.tcp://cspod222-04vm4.corp.microsoft.com/WcfService1/Service1.svc";
-            return new EndpointAddress(s_tcpDupUrl);
-        }
 
         public static EndpointAddress CreateHttpEndpointDuplexAddress()
         {
             return new EndpointAddress(s_httpDupUrl);
         }
+        public static EndpointAddress CreateNetHttpEndpointDuplexAddress()
+        {
+            return new EndpointAddress(s_netHttpDupUrl);
+        }
+        public static EndpointAddress CreateNetTcpEndpointDuplexAddress()
+        {
+            return new EndpointAddress(s_tcpDupUrl);
+        }
 
         public static EndpointAddress CreateEndPointStreamingAddress()
         {
-            return UseHttp ? CreateHttpEndpointStreamingAddress() : CreateNetTcpEndpointStreamingAddress();
+            switch (UseBinding)
+            {
+                case TestBinding.Http:
+                    return CreateHttpEndpointStreamingAddress();
+                case TestBinding.NetHttpBinding:
+                    return CreateNetHttpEndpointDuplexStreamingAddress();
+                case TestBinding.NetTcp:
+                    return CreateNetTcpEndpointStreamingAddress();
+                default:
+                    return null;
+            }
         }
-
+        public static EndpointAddress CreateHttpEndpointStreamingAddress()
+        {
+            return new EndpointAddress(s_httpStreamingUrl);
+        }
+        public static EndpointAddress CreateNetHttpEndpointDuplexStreamingAddress()
+        {
+            return new EndpointAddress(s_netHttpDupStreamingUrl);
+        }
         public static EndpointAddress CreateNetTcpEndpointStreamingAddress()
         {
             return new EndpointAddress(s_tcpStreamingUrl);
         }
 
-        public static EndpointAddress CreateHttpEndpointStreamingAddress()
-        {
-            return new EndpointAddress(s_httpStreamingUrl);
-        }
-
         public static Binding CreateBinding()
         {
-            return UseHttp ? CreateHttpBinding() : CreateNetTcpBinding();
+            switch (UseBinding)
+            {
+                case TestBinding.Http:
+                    return CreateHttpBinding();
+                case TestBinding.NetHttpBinding:
+                    return CreateNetHttpBinding();
+                case TestBinding.NetTcp:
+                    return CreateNetTcpBinding();
+                default:
+                    return null;
+            }
         }
         public static NetTcpBinding CreateNetTcpBinding()
         {
@@ -97,9 +163,33 @@ namespace SharedPoolsOfWCFObjects
             return new BasicHttpBinding();
         }
 
+        public static Binding CreateNetHttpBinding()
+        {
+            Binding netHttp = new NetHttpBinding();
+            return netHttp;
+        }
+
         public static Binding CreateStreamingBinding(int maxStreamSize)
         {
-            return UseHttp ? CreateHttpStreamingBinding(maxStreamSize) : CreateNetTcpStreamingBinding(maxStreamSize);
+            switch (UseBinding)
+            {
+                case TestBinding.Http:
+                    return CreateHttpStreamingBinding(maxStreamSize);
+                case TestBinding.NetHttpBinding:
+                    return CreateNetHttpStreamingBinding(maxStreamSize);
+                case TestBinding.NetTcp:
+                    return CreateNetTcpStreamingBinding(maxStreamSize);
+                default:
+                    //Debug.Break
+                    return null;
+            }
+        }
+        public static Binding CreateHttpStreamingBinding(int maxStreamSize)
+        {
+            var binding = new BasicHttpBinding();
+            binding.MaxReceivedMessageSize = maxStreamSize * 2;
+            binding.TransferMode = TransferMode.Streamed;
+            return binding;
         }
         public static NetTcpBinding CreateNetTcpStreamingBinding(int maxStreamSize)
         {
@@ -110,12 +200,13 @@ namespace SharedPoolsOfWCFObjects
             binding.TransferMode = TransferMode.Streamed;
             return binding;
         }
-
-        public static Binding CreateHttpStreamingBinding(int maxStreamSize)
+        public static Binding CreateNetHttpStreamingBinding(int maxStreamSize)
         {
-            var binding = new BasicHttpBinding();
+            var binding = new NetHttpBinding();
+
             binding.MaxReceivedMessageSize = maxStreamSize * 2;
             binding.TransferMode = TransferMode.Streamed;
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
             return binding;
         }
 
@@ -167,7 +258,7 @@ namespace SharedPoolsOfWCFObjects
                 {
                     if (Interlocked.CompareExchange(ref _openedFired, 1, 0) != 0)
                     {
-                        System.Diagnostics.Debugger.Break();
+                        TestUtils.ReportFailure("ICommunicationObject.Opened event fired more than once");
                     }
                 };
 
@@ -175,7 +266,7 @@ namespace SharedPoolsOfWCFObjects
                 {
                     if (Interlocked.CompareExchange(ref _openingFired, 1, 0) != 0)
                     {
-                        System.Diagnostics.Debugger.Break();
+                        TestUtils.ReportFailure("ICommunicationObject.Opening event fired more than once");
                     }
                 };
 
@@ -183,7 +274,7 @@ namespace SharedPoolsOfWCFObjects
                 {
                     if (Interlocked.CompareExchange(ref _closedFired, 1, 0) != 0)
                     {
-                        System.Diagnostics.Debugger.Break();
+                        TestUtils.ReportFailure("ICommunicationObject.Closed event fired more than once");
                     }
                 };
 
@@ -191,7 +282,7 @@ namespace SharedPoolsOfWCFObjects
                 {
                     if (Interlocked.CompareExchange(ref _closingFired, 1, 0) != 0)
                     {
-                        System.Diagnostics.Debugger.Break();
+                        TestUtils.ReportFailure("ICommunicationObject.Closing event fired more than once");
                     }
                 };
 
@@ -199,7 +290,7 @@ namespace SharedPoolsOfWCFObjects
                 {
                     if (Interlocked.CompareExchange(ref _faultedFired, 1, 0) != 0)
                     {
-                        System.Diagnostics.Debugger.Break();
+                        TestUtils.ReportFailure("ICommunicationObject.Faulted event fired more than once");
                     }
                 };
             }
@@ -210,13 +301,13 @@ namespace SharedPoolsOfWCFObjects
             // Getting a null would indicate an issue in harness
             if (channel == null)
             {
-                System.Diagnostics.Debugger.Break();
+                TestUtils.ReportFailure("channel == null");
             }
             var cc = channel as ICommunicationObject;
             // Getting a null would indicate an issue in tests
             if (cc == null)
             {
-                System.Diagnostics.Debugger.Break();
+                TestUtils.ReportFailure("channel is not ICommunicationObject");
             }
 
             cc.Close();
@@ -226,16 +317,25 @@ namespace SharedPoolsOfWCFObjects
             // Getting a null would indicate an issue in harness
             if (channel == null)
             {
-                System.Diagnostics.Debugger.Break();
+                TestUtils.ReportFailure("channel == null");
             }
             var cc = (channel as IClientChannel);
             // Getting a null would indicate an issue in tests
             if (cc == null)
             {
-                System.Diagnostics.Debugger.Break();
+                TestUtils.ReportFailure("channel is not IClientChannel");
             }
             await Task.Factory.FromAsync(cc.BeginClose, cc.EndClose, TaskCreationOptions.None);
         }
+    }
 
+    public static class TestUtils
+    {
+        public static void ReportFailure(string message)
+        {
+            Console.WriteLine(message);
+            Debugger.Break();
+            GC.KeepAlive(message);
+        }
     }
 }
