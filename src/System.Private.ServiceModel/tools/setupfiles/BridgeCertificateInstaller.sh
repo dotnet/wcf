@@ -23,7 +23,10 @@ run_installer()
     echo "Running installer and making a call to '$BridgeHost'"
     # echo $__corerun_exe $__installer_path $__cafile
    
-    $__corerun_exe $__installer_path $__cafile
+    # Need to make a call as the original user as we need to write to the cert store for the current 
+    # user, not as root
+    echo "Making a call to the Bridge as user '$SUDO_USER'"
+    sudo -E -u $SUDO_USER $__corerun_exe $__installer_path $__cafile
     
     return $?
 }
