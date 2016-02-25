@@ -1,20 +1,19 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Diagnostics.Contracts;
 using System.Runtime;
 using System.Security.Authentication.ExtendedProtection;
-using System.ServiceModel;
 using System.ServiceModel.Channels.ConnectionHelpers;
 using System.ServiceModel.Security;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
     internal class StreamedFramingRequestChannel : RequestChannel
     {
-        internal IConnectionInitiator connectionInitiator;
-        internal ConnectionPool connectionPool;
+        internal IConnectionInitiator _connectionInitiator;
+        internal ConnectionPool _connectionPool;
         private MessageEncoder _messageEncoder;
         private IConnectionOrientedTransportFactorySettings _settings;
         private byte[] _startBytes;
@@ -26,8 +25,8 @@ namespace System.ServiceModel.Channels
             : base(factory, remoteAddresss, via, settings.ManualAddressing)
         {
             _settings = settings;
-            this.connectionInitiator = connectionInitiator;
-            this.connectionPool = connectionPool;
+            _connectionInitiator = connectionInitiator;
+            _connectionPool = connectionPool;
 
             _messageEncoder = settings.MessageEncoderFactory.Encoder;
             _upgrade = settings.Upgrade;
@@ -191,7 +190,7 @@ namespace System.ServiceModel.Channels
             private SecurityMessageProperty _remoteSecurity;
 
             public StreamedConnectionPoolHelper(StreamedFramingRequestChannel channel)
-                : base(channel.connectionPool, channel.connectionInitiator, channel.Via)
+                : base(channel._connectionPool, channel._connectionInitiator, channel.Via)
             {
                 _channel = channel;
             }
@@ -232,6 +231,7 @@ namespace System.ServiceModel.Channels
                     IConnectionOrientedTransportFactorySettings settings)
                     : base(connection, 0, 0, connectionPoolHelper.RemoteSecurity, settings, null)
                 {
+                    Contract.Assert(connectionPoolHelper != null);
                     _connectionPoolHelper = connectionPoolHelper;
                 }
 

@@ -1,18 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
-using System.Net;
 using System.Runtime;
-using System.Runtime.CompilerServices;
-using System.Security.Authentication.ExtendedProtection;
-using System.ServiceModel;
 using System.ServiceModel.Channels.ConnectionHelpers;
-using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,6 +31,8 @@ namespace System.ServiceModel.Channels
         protected SingletonConnectionReader(IConnection connection, int offset, int size, SecurityMessageProperty security,
             IConnectionOrientedTransportFactorySettings transportSettings, Uri via)
         {
+            Contract.Assert(connection != null);
+
             _connection = connection;
             _offset = offset;
             _size = size;
@@ -545,7 +540,7 @@ namespace System.ServiceModel.Channels
                 endBytes = SingletonEncoder.EndBytes;
             }
 
-            if (endBytes != null)
+            if (endBytes != null && endBytes.Length > 0)
             {
                 await connection.WriteAsync(endBytes, 0, endBytes.Length,
                     true, timeoutHelper.RemainingTime());
