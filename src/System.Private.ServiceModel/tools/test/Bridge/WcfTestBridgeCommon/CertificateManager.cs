@@ -36,6 +36,8 @@ namespace WcfTestBridgeCommon
 
         public static EventHandler BridgeConfigurationChanged;
 
+        private const string CloudServerDomain = "cloudapp.net";
+
         // Any change to the Bridge resource folder uninstalls all the certificates
         // installed by those resources.
         public static void OnResourceFolderChanged(string oldFolder, string newFolder)
@@ -202,6 +204,10 @@ namespace WcfTestBridgeCommon
 
                 var fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
                 var hostname = fqdn.Split('.')[0];
+                if (fqdn == hostname)
+                {
+                    fqdn = string.Format("{0}.{1}", fqdn, CloudServerDomain);
+                }
 
                 // always create a certificate locally for the current machine's fully qualified domain name, 
                 // hostname, and "localhost". 
