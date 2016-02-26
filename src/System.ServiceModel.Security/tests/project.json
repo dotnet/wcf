@@ -9,7 +9,10 @@
   },
   "frameworks": {
     "dnxcore50": {
-      "imports": "portable-net45+win8"
+		"imports": "portable-net45+win8",
+		"dependencies": {
+			"System.Net.Security": "4.0.0-rc3-23809"
+		}
     }
   }
 }

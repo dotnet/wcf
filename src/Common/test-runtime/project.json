@@ -30,7 +30,7 @@
     "System.Net.WebSockets": "4.0.0-rc3-23809",
     "System.Net.WebSockets.Client": "4.0.0-rc3-23809",
     "System.ObjectModel": "4.0.0",
-    "System.Reflection": "4.0.0",
+    "System.Reflection": "4.0.10",
     "System.Reflection.DispatchProxy": "4.0.0",
     "System.Reflection.Extensions": "4.0.0",
     "System.Reflection.Primitives": "4.0.0",
