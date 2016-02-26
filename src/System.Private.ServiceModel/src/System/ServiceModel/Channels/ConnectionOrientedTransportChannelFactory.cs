@@ -207,7 +207,9 @@ namespace System.ServiceModel.Channels
                     ConnectionInitiator, _connectionPool, _exposeConnectionProperty, _flowIdentity);
             }
 
-            throw ExceptionHelper.PlatformNotSupported("StreamedFramingRequestChannel not yet implemented");
+            // typeof(TChannel) == typeof(IRequestChannel)
+            return (TChannel)(object)new StreamedFramingRequestChannel(this, this, address, via,
+                ConnectionInitiator, _connectionPool);
         }
 
         private bool GetUpgradeAndConnectionPool(out StreamUpgradeProvider upgradeCopy, out ConnectionPool poolCopy)

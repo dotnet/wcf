@@ -277,6 +277,11 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpNoSecurityResource"); }
     }
 
+    public static string Tcp_Streamed_NoSecurity_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpStreamedNoSecurityResource"); }
+    }
+
     public static string Tcp_VerifyDNS_Address
     {
         get
