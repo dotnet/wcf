@@ -69,6 +69,11 @@ public static class ServiceKnownTypeTests
     [OuterLoop]
     public static void ServiceKnownType_XmlSerializerFormat_TwoOperationsShareKnownTypes_Test()
     {
+        // In XmlSerializerOperationBehavior.cs we made a performance improvement change for the scenario
+        // where multiple operations of one service contract share the same ServiceKnownTypeAttribute(s).
+        // The fix was to skip parsing duplicate ServiceKnownTypeAttribute(s). This test was to verify that
+        // scenario still works after the fix.
+
         // *** SETUP *** \\
         ChannelFactory<IServiceKnownTypeTest_AttrOnType_Xml> factory = GetChannelFactory<IServiceKnownTypeTest_AttrOnType_Xml>();
         IServiceKnownTypeTest_AttrOnType_Xml serviceProxy = factory.CreateChannel();
