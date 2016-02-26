@@ -1,9 +1,6 @@
 <Project ToolsVersion="12.0" DefaultTargets="BuildAndTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="dir.props" />
- <PropertyGroup>
-    <ExcludeProjects>System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\WcfService.csproj</ExcludeProjects>
-  </PropertyGroup>
-  
+
   <ItemGroup>
     <Project Include="ref.builds" />
     <Project Include="src.builds" />
@@ -14,17 +11,8 @@
   <ItemGroup>
     <Project Include="$(MSBuildProjectDirectory)\System.Private.ServiceModel\tools\test\CertificateCleanup\CertificateCleanup.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Project Include="*\ref\**\*.*proj" Exclude="@(ExcludeProjects)" />
-    <Project Include="*\src\*.csproj" Exclude="$(ExcludeProjects)" />
-    <Project Include="*\src\*.vbproj" Exclude="$(ExcludeProjects)" />
-    <Project Include="*\tests\**\*.csproj" Exclude="$(ExcludeProjects)" />
-    <Project Include="*\tests\**\*.vbproj" Exclude="$(ExcludeProjects)" />
-  </ItemGroup>
 
   <Import Project="..\dir.targets" />
-
   <Import Project="..\dir.traversal.targets" />
 
   <Import Project="$(ToolsDir)packages.targets" Condition="Exists('$(ToolsDir)packages.targets') and '$(ImportGetNuGetPackageVersions)' != 'false'" />
