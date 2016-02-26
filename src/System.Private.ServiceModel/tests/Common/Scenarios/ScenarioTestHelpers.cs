@@ -31,6 +31,12 @@ public static class ScenarioTestHelpers
         }
     }
 
+    public static bool BridgeIsLocalHost()
+    {
+        string bridgeHost = TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName);
+        return String.Equals("localhost", bridgeHost, StringComparison.OrdinalIgnoreCase);
+    }
+
     public static string GenerateStringValue(int length)
     {
         // There's no great reason why we use this set of characters - we just want to be able to generate a longish string
