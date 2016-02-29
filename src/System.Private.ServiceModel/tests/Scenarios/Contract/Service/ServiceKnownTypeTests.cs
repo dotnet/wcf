@@ -65,6 +65,25 @@ public static class ServiceKnownTypeTests
         RunTestMethodAndCleanup(factory, serviceProxy, serviceProxy.EchoItems_Xml, new Widget3());
     }
 
+    [Fact]
+    [OuterLoop]
+    public static void ServiceKnownType_XmlSerializerFormat_TwoOperationsShareKnownTypes_Test()
+    {
+        // In XmlSerializerOperationBehavior.cs we made a performance improvement change for the scenario
+        // where multiple operations of one service contract share the same ServiceKnownTypeAttribute(s).
+        // The fix was to skip parsing duplicate ServiceKnownTypeAttribute(s). This test was to verify that
+        // scenario still works after the fix.
+
+        // *** SETUP *** \\
+        ChannelFactory<IServiceKnownTypeTest_AttrOnType_Xml> factory = GetChannelFactory<IServiceKnownTypeTest_AttrOnType_Xml>();
+        IServiceKnownTypeTest_AttrOnType_Xml serviceProxy = factory.CreateChannel();
+
+        // *** EXECUTE *** \\
+        // *** VALIDATE *** \\
+        // *** CLEANUP *** \\
+        RunTestMethodAndCleanup(factory, serviceProxy, serviceProxy.EchoItems_Xml1, new Widget3());
+    }
+
     private static ChannelFactory<ServiceContractType> GetChannelFactory<ServiceContractType>()
     {
         var binding = new BasicHttpBinding();
@@ -141,6 +160,10 @@ public interface IServiceKnownTypeTest_AttrOnType_Xml
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoItemsXml", ReplyAction = "http://tempuri.org/IWcfService/EchoItemsXmlResponse")]
     [XmlSerializerFormat]
     object[] EchoItems_Xml(object[] objects);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoItemsXml1", ReplyAction = "http://tempuri.org/IWcfService/EchoItemsXml1Response")]
+    [XmlSerializerFormat]
+    object[] EchoItems_Xml1(object[] objects);
 }
 
 [DataContract()]
