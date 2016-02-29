@@ -15,12 +15,11 @@ namespace WcfService.TestResources
     {
         private const string ResourceResponseUriKeyName = "uri";
         private const string ResourceResponseFQHNKeyName = "hostname";
-        private const string CloudServerDomain = "cloudapp.net";
 
         protected static int SixtyFourMB = 64 * 1024 * 1024;
         private static Dictionary<string, ServiceHost> s_currentHosts = new Dictionary<string, ServiceHost>();
         private static object s_currentHostLock = new object();
-        protected static string s_fqdn = Getfqdn();
+        protected static string s_fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
         protected static string s_hostname = Dns.GetHostEntry("127.0.0.1").HostName.Split('.')[0];
 
         #region Host Listen Uri components
@@ -110,18 +109,6 @@ namespace WcfService.TestResources
             builder.Path = AppDomain.CurrentDomain.FriendlyName + "/" + Address;
             builder.Scheme = Protocol;
             return builder.Uri;
-        }
-
-        private static string Getfqdn()
-        {
-            IPHostEntry hostEntry = Dns.GetHostEntry("127.0.0.1");
-            string fqdn = hostEntry.HostName;
-            if (fqdn == fqdn.Split('.')[0])
-            {
-                fqdn = string.Format("{0}.{1}", fqdn, CloudServerDomain);
-            }
-
-            return fqdn;
         }
     }
 }
