@@ -82,7 +82,7 @@ call :build %*
 goto :AfterBuild
 
 :build
-%_buildprefix% msbuild "%_buildproj%" %_defaultBuildConfig% /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=diag;LogFile="%_buildlog%";Append "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" %__args% %_buildpostfix%
+%_buildprefix% msbuild "%_buildproj%" %_defaultBuildConfig% /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=diag;LogFile="%_buildlog%";Append %* "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" %__args% %_buildpostfix%
 set BUILDERRORLEVEL=!ERRORLEVEL!
 goto :eof
 
