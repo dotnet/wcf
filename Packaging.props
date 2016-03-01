@@ -1,11 +1,15 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <!-- Packaging configuration -->
-    <PreReleaseLabel>rc3</PreReleaseLabel> 
+    <PreReleaseLabel>rc3</PreReleaseLabel>
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)pkg/dotnet_library_license.txt</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)pkg/ThirdPartyNotices.txt</PackageThirdPartyNoticesFile>
+    
+    <!-- *** start WCF Content *** -->
+    <!-- *** this file is located differently in corefx *** -->
     <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1-rc3-23809/runtime.json</RuntimeIdGraphDefinitionFile>
+    <!-- *** end WCF Content *** -->
+
     <!-- Add a condition for this when we are able to run on .NET Core -->
     <PackagingTaskDir>$(ToolsDir)net45/</PackagingTaskDir>
     <BuildNumberMajor Condition="'$(BuildNumberMajor)' == ''">$(RevisionNumber)</BuildNumberMajor>
@@ -25,14 +29,14 @@
   </PropertyGroup>
 
   <!-- Add required legal files to packages -->
-  <ItemGroup  Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
-    <File Condition="Exists('$(PackageLicenseFile)')" 
-          Include="$(PackageLicenseFile)" >
-        <SkipPackageFileCheck>true</SkipPackageFileCheck>
-    </File>        
+  <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
+    <File Condition="Exists('$(PackageLicenseFile)')"
+	  	    Include="$(PackageLicenseFile)" >
+      <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
     <File Condition="Exists('$(PackageThirdPartyNoticesFile)')"
-          Include="$(PackageThirdPartyNoticesFile)" >
-        <SkipPackageFileCheck>true</SkipPackageFileCheck>
-    </File>        
+	        Include="$(PackageThirdPartyNoticesFile)" >
+      <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
   </ItemGroup>
 </Project>

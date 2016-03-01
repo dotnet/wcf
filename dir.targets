@@ -14,7 +14,11 @@
   <Target Name="Test" />
 
   <Import Project="$(ToolsDir)/Build.Common.targets" />
-  
+
+  <!-- permit a wrapping build system to contribute targets to this build -->
+  <Import Condition="Exists('$(MSBuildThisFileDirectory)..\open.targets')" Project="$(MSBuildThisFileDirectory)..\open.targets" />
+
+  <!-- *** start WCF Content *** -->
   <!-- Copy the test-runtime project.json and change it to use floating (*) CoreFX dependencies for testing against the latest packages. -->
   <Target Name="GenerateFloatingTestRuntimeProjectJson"
           Inputs="$(TestFixedRuntimeProjectJson)"
@@ -35,5 +39,6 @@
                                        ValidationPatterns="@(FixedToFloatingValidationPattern)"
                                        UpdateInvalidDependencies="true" />
   </Target>
+  <!-- *** end WCF Content *** -->
 
 </Project>

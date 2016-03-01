@@ -1,11 +1,13 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Condition="Exists('..\dir.props')" Project="..\dir.props" />
   <Import Project="src\BuildValues.props" />
-  
+
   <!--
     $(OS) is set to Unix/Windows_NT. This comes from an environment variable on Windows and MSBuild on Unix.
   -->
   <PropertyGroup>
+    <!-- Temp change to make OS X build behave as a Linux build -->
+    <OsEnvironment Condition="'$(OsEnvironment)'=='' AND '$(OS)'=='OSX'">Unix</OsEnvironment>
     <OsEnvironment Condition="'$(OsEnvironment)'==''">$(OS)</OsEnvironment>
   </PropertyGroup>
 
@@ -23,7 +25,7 @@
       <Value>True</Value>
     </AssemblyMetadata>
   </ItemGroup>
-  
+
   <!-- 
     Switching to the .NET Core version of the BuildTools tasks seems to break numerous scenarios, such as VS intellisense and resource designer 
     as well as runnning the build on mono. Until we can get these sorted out we will continue using the .NET 4.5 version of the tasks. 
@@ -35,7 +37,7 @@
   <!-- Common repo directories -->
   <PropertyGroup>
     <ProjectDir>$(MSBuildThisFileDirectory)</ProjectDir>
-    <SourceDir>$(ProjectDir)src\</SourceDir>
+    <SourceDir>$(ProjectDir)src/</SourceDir>
 
     <!-- Output directories -->
     <BinDir Condition="'$(BinDir)'==''">$(ProjectDir)bin/</BinDir>
@@ -50,7 +52,14 @@
     <ToolsDir Condition="'$(ToolsDir)'==''">$(ProjectDir)Tools/</ToolsDir>
     <DotnetCliPath Condition="'$(DotnetCliPath)'==''">$(ToolRuntimePath)dotnetcli/bin/</DotnetCliPath>
     <BuildToolsTaskDir Condition="'$(BuildToolsTargets45)' == 'true'">$(ToolsDir)net45/</BuildToolsTaskDir>
+    <UseRoslynCompilers Condition="'$(UseRoslynCompilers)'=='' and '$(OSEnvironment)'!='Windows_NT'">false</UseRoslynCompilers>
   </PropertyGroup>
+
+  <!-- Use Roslyn Compilers to build -->
+  <PropertyGroup Condition="'$(UseRoslynCompilers)'!='false'">
+    <UseSharedCompilation>true</UseSharedCompilation>
+  </PropertyGroup>
+  <Import Project="$(ToolRuntimePath)/net45/roslyn/build/Microsoft.Net.Compilers.props" Condition="'$(UseRoslynCompilers)'!='false'" />
 
   <!-- Import packaging props -->
   <Import Project="$(MSBuildThisFileDirectory)Packaging.props" />
@@ -71,7 +80,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ValidationPattern Include="^(?i)((System\..%2A)|(Microsoft\.CSharp)|(Microsoft\.NETCore.%2A)|(Microsoft\.TargetingPack\.Private\.(CoreCLR|NETNative))|(Microsoft\.Win32\..%2A)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
+    <ValidationPattern Include="^(?i)((System\..%2A)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore.%2A)|(Microsoft\.TargetingPack\.Private\.(CoreCLR|NETNative))|(Microsoft\.Win32\..%2A)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
       <ExpectedPrerelease>rc3-23809</ExpectedPrerelease>
     </ValidationPattern>
     <ValidationPattern Include="^(?i)Microsoft\.TargetingPack\.(NetFramework.%2A|Private\.WinRT)$">
@@ -90,19 +99,18 @@
     <!-- Need to escape double forward slash (%2F) or MSBuild will normalize to one slash on Unix. -->
 
     <DnuSourceList Include="https:%2F%2Fdotnet.myget.org/F/dotnet-core/api/v3/index.json" />
-    <DnuSourceList Include="https:%2F%2Fdotnet.myget.org/F/dotnet-corefxtestdata/api/v3/index.json" />
-    <DnuSourceList Include="https:%2F%2Fdotnet.myget.org/F/dotnet-buildtools/api/v3/index.json" />
     <DnuSourceList Include="https:%2F%2Fwww.nuget.org/api/v2/" />
   </ItemGroup>
 
   <!-- list of directories to perform batch restore -->
   <ItemGroup>
-    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)\src" />
+    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)/src" />
+    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)/pkg" />
   </ItemGroup>
 
   <PropertyGroup>
     <DnxPackageDir Condition="'$(DnxPackageDir)'==''">$(PackagesDir)/$(DnxPackageName)/</DnxPackageDir>
-    <DnuToolPath Condition="'$(DnuToolPath)'=='' and '$(OsEnvironment)'!='Unix'">$(DnxPackageDir)\bin\dnu.cmd</DnuToolPath>
+    <DnuToolPath Condition="'$(DnuToolPath)'=='' and '$(OsEnvironment)'!='Unix'">$(DnxPackageDir)/bin/dnu.cmd</DnuToolPath>
     <DnuToolPath Condition="'$(DnuToolPath)'=='' and '$(OsEnvironment)'=='Unix'">$(DnxPackageDir)/bin/dnu</DnuToolPath>
     <DotnetToolCommand Condition="'$(DotnetToolCommand)' == '' and '$(OsEnvironment)'!='Unix'">$(DotnetCliPath)dotnet.exe</DotnetToolCommand>
     <DotnetToolCommand Condition="'$(DotnetToolCommand)' == '' and '$(OsEnvironment)'=='Unix'">$(DotnetCliPath)dotnet</DotnetToolCommand>
@@ -120,12 +128,13 @@
 
   <!-- Create a collection of all project.json files for dependency updates. -->
   <ItemGroup>
-    <ProjectJsonFiles Include="$(SourceDir)**\project.json" />
+    <ProjectJsonFiles Include="$(SourceDir)**/project.json" />
+    <ProjectJsonFiles Include="$(MSBuildThisFileDirectory)/pkg/**/project.json" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(BuildAllProjects)'=='true'">  
-    <!-- When we do a traversal build we get all packages up front, don't restore them again -->  
-    <RestorePackages>false</RestorePackages>  
+  <PropertyGroup Condition="'$(BuildAllProjects)'=='true'">
+    <!-- When we do a traversal build we get all packages up front, don't restore them again -->
+    <RestorePackages>false</RestorePackages>
   </PropertyGroup>
 
   <!--
@@ -136,11 +145,9 @@
     <RoslynPropsFile>$(RoslynPackageDir)build/Microsoft.Net.ToolsetCompilers.props</RoslynPropsFile>
 
     <!--
-      PDB support isn't implemented yet. https://github.com/dotnet/roslyn/issues/2449
-      Note that both DebugSymbols and DebugType need set or project references will assume they need to copy pdbs and fail.
+      Portable PDBs are now supported in Linux and OSX with .Net Core MSBuild.
     -->
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
+    <DebugType>Portable</DebugType>
 
     <!--
       Delay signing with the ECMA key currently doesn't work.
@@ -149,12 +156,18 @@
     <UseECMAKey>false</UseECMAKey>
 
     <!--
+      Full signing with Open key doesn't work with Portable Csc.
+      https://github.com/dotnet/roslyn/issues/8210
+    -->
+    <UseOpenKey>false</UseOpenKey>
+
+    <!--
       Mono currently doesn't include VB targets for portable, notably /lib/mono/xbuild/Microsoft/Portable/v4.5/Microsoft.Portable.VisualBasic.targets.
       Fixed in https://github.com/mono/mono/pull/1726.
     -->
     <IncludeVbProjects>false</IncludeVbProjects>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <!-- By default make all libraries to be AnyCPU but individual projects can override it if they need to -->
     <Platform>AnyCPU</Platform>
@@ -344,17 +357,6 @@
     <ProjectLockJson Condition="Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.json') AND Exists('$(MSBuildProjectDirectory)/$(TargetGroup)/project.lock.json')">$(MSBuildProjectDirectory)/$(TargetGroup)/project.lock.json</ProjectLockJson>
   </PropertyGroup>
 
-  <!-- Provide defaults for ToolNugetRuntimeId -->
-  <PropertyGroup Condition="'$(ToolNugetRuntimeId)'== ''">
-    <ToolNugetRuntimeId Condition="'$(OsEnvironment)'=='Windows_NT'">win7-x64</ToolNugetRuntimeId>
-
-    <!-- This is a bit of a hack because inside MSBuild we have no real concept of the host distro, so we'll assume
-         that if you are building on not windows, your host OS is the same as your target.  If that's not
-         the case, you'll have to provide your own ToolNugetRuntimeId, which is not the end of the world (build.sh will
-         do this for you, for example). -->
-    <ToolNugetRuntimeId Condition="'$(OsEnvironment)'=='Unix'">$(TestNugetRuntimeId)</ToolNugetRuntimeId>
-  </PropertyGroup>
-
   <!-- Disable some standard properties for building our projects -->
   <PropertyGroup>
     <NoStdLib>true</NoStdLib>
@@ -367,11 +369,6 @@
   <PropertyGroup>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
-  <!-- Temporary until build/CI system is upgraded to C# 6: disable C# 6 features -->
-  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj' OR '$(Language)' == 'C#'">
-    <LangVersion>5</LangVersion>
   </PropertyGroup>
 
   <!-- Set up some common paths -->
@@ -402,6 +399,7 @@
     <SkipTests Condition="'$(SkipTests)'=='' and ('$(OsEnvironment)'=='Windows_NT' and '$(TargetsWindows)'!='true' and '$(OSGroup)'!='AnyOS')">true</SkipTests>
   </PropertyGroup>
 
+  <!-- *** start WCF Content *** -->
   <!-- Test runtime -->
   <PropertyGroup>
     <TestRuntimePath>$(SourceDir)Common/test-runtime/</TestRuntimePath>
@@ -425,6 +423,7 @@
   <ItemGroup Condition="'$(FloatingTestRuntimeDependencies)'=='true'">
     <DnuRestoreDir Include="$(TestRuntimeProjectJson)" />
   </ItemGroup>
+  <!-- *** end WCF Content *** -->
 
   <Import Project="$(RoslynPropsFile)" Condition="'$(OsEnvironment)'=='Unix' and Exists('$(RoslynPropsFile)')" />
 
