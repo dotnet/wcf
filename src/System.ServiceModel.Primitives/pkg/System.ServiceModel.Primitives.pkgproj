@@ -9,11 +9,11 @@
       <SupportedFramework>net45;win8</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\ref\System.ServiceModel.Primitives.csproj">
-      <SupportedFramework>net46;netcore50;dnxcore50</SupportedFramework>
+      <SupportedFramework>net46;netcore50;netstandardapp1.5</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.Primitives.builds" />
 
-	<!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
+    <!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
     <InboxOnTargetFramework Include="MonoAndroid10" />
     <InboxOnTargetFramework Include="MonoTouch10" />
     <InboxOnTargetFramework Include="net45" />
@@ -21,9 +21,11 @@
     <InboxOnTargetFramework Include="wp8" />
     <InboxOnTargetFramework Include="xamarinios10" />
     <InboxOnTargetFramework Include="xamarinmac20" />
+    <InboxOnTargetFramework Include="xamarintvos10" />
+    <InboxOnTargetFramework Include="xamarinwatchos10" />
 
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
-      <PackageTargetFramework>dnxcore50</PackageTargetFramework>
+      <PackageTargetFramework>netstandardapp1.5</PackageTargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
       <PackageTargetFramework>netcore50</PackageTargetFramework>

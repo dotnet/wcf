@@ -6,16 +6,16 @@
       <SupportedFramework>net45;win8</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\ref\System.ServiceModel.NetTcp.csproj">
-      <SupportedFramework>net46;netcore50;dnxcore50</SupportedFramework>
+      <SupportedFramework>net46;netcore50;netstandardapp1.5</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.NetTcp.builds" />
 
-	<!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
+    <!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
     <InboxOnTargetFramework Include="net45" />
     <InboxOnTargetFramework Include="win8" />
 
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
-      <PackageTargetFramework>dnxcore50</PackageTargetFramework>
+      <PackageTargetFramework>netstandardapp1.5</PackageTargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
       <PackageTargetFramework>netcore50</PackageTargetFramework>
