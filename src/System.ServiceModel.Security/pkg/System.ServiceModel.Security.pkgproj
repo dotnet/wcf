@@ -6,7 +6,7 @@
       <SupportedFramework>wp8</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\ref\System.ServiceModel.Security.csproj">
-      <SupportedFramework>net45;netcore45;dnxcore50</SupportedFramework>
+      <SupportedFramework>net45;netcore45;netstandardapp1.5</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.Security.builds" />
 
@@ -16,7 +16,7 @@
     <InboxOnTargetFramework Include="wp80" />
 
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
-      <PackageTargetFramework>dnxcore50</PackageTargetFramework>
+      <PackageTargetFramework>netstandardapp1.5</PackageTargetFramework>
     </ProjectReference>
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
       <PackageTargetFramework>netcore50</PackageTargetFramework>
