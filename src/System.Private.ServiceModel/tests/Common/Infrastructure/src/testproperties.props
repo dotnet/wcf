@@ -65,7 +65,7 @@
       </TestProperty>
       <TestProperty Include="MaxTestTimeSpan">
         <Value>$(MaxTestTimeSpan)</Value>
-        <DefaultValue>00:20</DefaultValue>
+        <DefaultValue>00:01:00</DefaultValue>
       </TestProperty>
     </ItemGroup>
 
