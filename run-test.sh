@@ -15,21 +15,24 @@ wait_on_pids()
 
 usage()
 {
-    echo "Runs .NET Wcf tests on FreeBSD, Linux or OSX"
+	# *** start WCF Content ***
+    echo "Runs .NET tests on FreeBSD, Linux or OSX"
+	# *** start WCF Content ***
     echo "usage: run-test [options]"
     echo
     echo "Input sources:"
     echo "    --coreclr-bins <location>         Location of root of the binaries directory"
-    echo "                                      containing the FreeBSD, Linux or OSX coreclr build"
+    echo "                                      containing the FreeBSD, Linux, NetBSD or OSX coreclr build"
     echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<ConfigurationGroup>"
     echo "    --mscorlib-bins <location>        Location of the root binaries directory containing"
-    echo "                                      the FreeBSD, Linux or OSX mscorlib.dll"
+    echo "                                      the FreeBSD, Linux, NetBSD or OSX mscorlib.dll"
     echo "                                      default: <repo_root>/bin/Product/<OS>.x64.<ConfigurationGroup>"
     echo "    --corefx-tests <location>         Location of the root binaries location containing"
     echo "                                      the tests to run"
     echo "                                      default: <repo_root>/bin/tests/<OS>.AnyCPU.<ConfigurationGroup>"
-    echo "    --corefx-native-bins <location>   Location of the FreeBSD, Linux or OSX native corefx binaries"
+    echo "    --corefx-native-bins <location>   Location of the FreeBSD, Linux, NetBSD or OSX native corefx binaries"
     echo "                                      default: <repo_root>/bin/<OS>.x64.<ConfigurationGroup>"
+	# *** start WCF Content ***
     echo "    --wcf-bins <location>             Location of the linux/mac WCF binaries"
     echo "                                      default: <repo_root>/bin/<OS>.AnyCPU.<Configuration>"
     echo "    --wcf-tests <location>            Location of the root binaries location containing"
@@ -37,21 +40,23 @@ usage()
     echo "    --bridge-host <machineName>       Machine hosting the Bridge for multi-machine tests"
     echo
     echo "    --xunit-args <xunit args>         Additional args to pass to xunit"
+	# *** end WCF Content ***
     echo
     echo "Flavor/OS options:"
     echo "    --configurationGroup <config>     ConfigurationGroup to run (Debug/Release)"
     echo "                                      default: Debug"
-    echo "    --os <os>                         OS to run (FreeBSD, Linux or OSX)"
+    echo "    --os <os>                         OS to run (FreeBSD, Linux, NetBSD or OSX)"
     echo "                                      default: detect current OS"
     echo
     echo "Execution options:"
     echo "    --restrict-proj <regex>       Run test projects that match regex"
     echo "                                  default: .* (all projects)"
+	echo "    --useServerGC                     Enable Server GC for this test run"
     echo
     echo "Runtime Code Coverage options:"
     echo "    --coreclr-coverage                Optional argument to get coreclr code coverage reports"
     echo "    --coreclr-objs <location>         Location of root of the object directory"
-    echo "                                      containing the FreeBSD, Linux or OSX coreclr build"
+    echo "                                      containing the FreeBSD, Linux, NetBSD or OSX coreclr build"
     echo "                                      default: <repo_root>/bin/obj/<OS>.x64.<ConfigurationGroup"
     echo "    --coreclr-src <location>          Location of root of the directory"
     echo "                                      containing the coreclr source files"
@@ -77,6 +82,10 @@ case $OSName in
         OS=Linux
         ;;
 
+		NetBSD)
+        OS=NetBSD
+        ;;
+
     *)
         echo "Unsupported OS $OSName detected, configuring as if for Linux"
         OS=Linux
@@ -86,9 +95,11 @@ esac
 TestSelection=".*"
 TestsFailed=0
 OverlayDir="$ProjectRoot/bin/tests/$OS.AnyCPU.$ConfigurationGroup/TestOverlay/"
+# *** start WCF Content ***
 BridgeHost=""
 XunitArgs="-notrait category=failing -notrait category=OuterLoop"
 OverlayDir="$ProjectRoot/bin/tests/$OS.AnyCPU.$Configuration/TestOverlay/"
+# *** end WCF Content ***
 
 create_test_overlay()
 {
@@ -101,6 +112,7 @@ create_test_overlay()
   
   local LowerConfigurationGroup="$(echo $ConfigurationGroup | awk '{print tolower($0)}')"
 
+  # *** start WCF Content ***
   # First the temporary test host binaries
   local packageLibDir="$packageDir/lib"
   local mscorlibLocation="$MscorlibBins/mscorlib.dll"
@@ -137,6 +149,7 @@ create_test_overlay()
 # in case we need to do it again.
 # echo "Copying selected CoreFxBins..."
 # find $CoreFxBins -name '*.dll' -and -name "*System.Net.*" -and -not -wholename "*Test*" -and -not -wholename "*/ToolRuntime/*" -and -not -wholename "*/RemoteExecutorConsoleApp/*"  -exec cp '{}' "$OverlayDir" ";"
+# *** end WCF Content ***
 
   # Copy the CoreCLR native binaries
   if [ ! -d $CoreClrBins ]
@@ -163,10 +176,12 @@ create_test_overlay()
   fi
   cp $CoreFxNativeBins/* $OverlayDir
 
+  # *** start WCF Content ***
   # Remove from the OverlayDir any ServiceModel assemblies.
   # The versions in the ServiceModel tests folders are the ones we want.
   rm -f $OverlayDir/System.Private.ServiceModel.dll
   rm -f $OverlayDir/System.ServiceModel.*.dll
+  # *** end WCF Content ***
 }
 
 copy_test_overlay()
@@ -205,7 +220,9 @@ runtest()
   xunitOSCategory="non$lowerOS"
   xunitOSCategory+="tests"
 
+  # *** start WCF Content ***
   dirName="$WcfTests/$fileNameWithoutExtension/dnxcore50"
+  # *** end WCF Content ***
 
   if [ ! -d "$dirName" ] || [ ! -f "$dirName/$testDllName" ]
   then
@@ -230,9 +247,9 @@ runtest()
 
   echo
   echo "Running tests in $dirName"
-  echo "./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing -notrait category=OuterLoop -notrait category=$xunitOSCategory" -notrait Benchmark=true
+  echo "./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing $OuterLoop -notrait category=$xunitOSCategory" -notrait Benchmark=true
   echo
-  ./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing -notrait category=OuterLoop -notrait category=$xunitOSCategory -notrait Benchmark=true
+    ./corerun xunit.console.netcore.exe $testDllName -xml testResults.xml -notrait category=failing $OuterLoop -notrait category=$xunitOSCategory -notrait Benchmark=true
   exitCode=$?
   
   
@@ -247,7 +264,7 @@ runtest()
 
 coreclr_code_coverage()
 {
-  if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "OSX" ]
+  if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "NetBSD" ] && [ ! "$OS" == "OSX" ]
   then
       echo "error: Code Coverage not supported on $OS"
       exit 1
@@ -274,10 +291,13 @@ coreclr_code_coverage()
 
   which curl > /dev/null 2> /dev/null
   if [ $? -ne 0 ]; then
+  # *** start WCF Content ***
+  # *** using enterprise myget feed, corefx hasn't done this yet in their repo ***
     wget -q -O $packageName https://dotnet.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
     export BridgeHost=$__bridge_host
   else
     curl -sSL -o $packageName https://dotnet.myget.org/F/dotnet-buildtools/api/v2/package/unix-code-coverage-tools/1.0.0
+  # *** end WCF Content ***
   fi
 
   echo "Unzipping to $toolsDir"
@@ -300,6 +320,9 @@ coreclr_code_coverage()
 
 # Parse arguments
 
+((serverGC = 0))
+OuterLoop="-notrait category=outerloop"
+
 while [[ $# > 0 ]]
 do
     opt="$1"
@@ -316,12 +339,10 @@ do
         --corefx-tests)
         CoreFxTests=$2
         ;;
-        --corefx-bins)
-        CoreFxBins=$2
-        ;;
         --corefx-native-bins)
         CoreFxNativeBins=$2
         ;;
+		# *** start WCF Content ***
         --wcf-tests)
         WcfTests=$2
         ;;
@@ -335,6 +356,7 @@ do
         --xunit-args)
         XunitArgs=$2
         ;;
+		# *** end WCF Content ***
         --restrict-proj)
         TestSelection=$2
         ;;
@@ -352,6 +374,12 @@ do
         ;;
         --coreclr-src)
         CoreClrSrc=$2
+        ;;
+		--useServerGC)
+        ((serverGC = 1))
+        ;;
+		        --outerloop)
+        OuterLoop="-trait category=outerloop"
         ;;
         *)
         ;;
@@ -381,6 +409,7 @@ then
     CoreFxNativeBins="$ProjectRoot/bin/$OS.x64.$ConfigurationGroup/Native"
 fi
 
+# *** start WCF Content ***
 if [ "$WcfTests" == "" ]
 then
     WcfTests="$ProjectRoot/bin/tests/Windows_NT.AnyCPU.$Configuration"
@@ -390,6 +419,7 @@ if [ "$WcfBins" == "" ]
 then
     WcfBins="$ProjectRoot/bin/$OS.AnyCPU.$Configuration"
 fi
+# *** end WCF Content ***
 
 # Check parameters up front for valid values:
 
@@ -399,21 +429,31 @@ then
     exit 1
 fi
 
-if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "OSX" ]
+if [ ! "$OS" == "FreeBSD" ] && [ ! "$OS" == "Linux" ] && [ ! "$OS" == "NetBSD" ] && [ ! "$OS" == "OSX" ]
 then
-    echo "error: OS should be FreeBSD, Linux or OSX"
+    echo "error: OS should be FreeBSD, Linux, NetBSD or OSX"
     exit 1
 fi
 
 if [ "$CoreClrObjs" == "" ]
 then
-    CoreClrObjs="$ProjectRoot/bin/obj/$OS.x64.$Configuration"
+    CoreClrObjs="$ProjectRoot/bin/obj/$OS.x64.$ConfigurationGroup"
 fi
 
+export CORECLR_SERVER_GC="$serverGC"
+export PAL_OUTPUTDEBUGSTRING="1"
+
+if [ "$LANG" == "" ]
+then
+    export LANG="en_US.UTF-8"
+fi
+
+# *** start WCF Content ***
 if [ "$XunitArgs" != *"OuterLoop"* ]
 then
     echo "OuterLoop tests will be run using the Bridge at $BridgeHost"
 fi
+# *** end WCF Content ***
 
 create_test_overlay
 
@@ -421,7 +461,12 @@ create_test_overlay
 
 TestsFailed=0
 numberOfProcesses=0
-maxProcesses=$(($(getconf _NPROCESSORS_ONLN)+1))
+if [ `uname` = "NetBSD" ]; then
+  maxProcesses=$(($(getconf NPROCESSORS_ONLN)+1))
+else
+  maxProcesses=$(($(getconf _NPROCESSORS_ONLN)+1))
+fi
+
 TestProjects=($(find . -regex ".*/src/.*/tests/.*\.Tests\.csproj"))
 for file in ${TestProjects[@]}
 do
@@ -442,6 +487,8 @@ if [ "$CoreClrCoverage" == "ON" ]
 then
     coreclr_code_coverage
 fi
+
+# *** start WCF Content ***
 # Cleanup any certificates installed by OuterLoop tests
 # We need to make corerun executable to invoke
 echo "chmod a+x $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun"
@@ -449,9 +496,8 @@ chmod a+x $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun
 
 echo "$WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe"
 $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe
+# *** end WCF Content ***
 
-
-     
 if [ "$TestsFailed" -gt 0 ]
 then
     echo "$TestsFailed test(s) failed"
@@ -460,5 +506,3 @@ else
 fi
 
 exit $TestsFailed
-
-
