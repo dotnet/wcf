@@ -23,6 +23,7 @@
     <Compile Include="Tcp\ClientCredentialTypeTests.cs" />
     <Compile Include="Tcp\ClientCredentialTypeCertificateCanonicalNameTests.cs" />
     <Compile Include="Tcp\IdentityTests.cs" />
+    <Compile Include="Tcp\StreamingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

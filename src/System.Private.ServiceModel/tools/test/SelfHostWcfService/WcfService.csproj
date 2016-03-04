@@ -104,6 +104,7 @@
     <Compile Include="TestResources\TcpStreamedNoSecurityResource.cs" />
     <Compile Include="TestResources\TcpTransportSecuritySslClientCredentialTypeCertificate.cs" />
     <Compile Include="TestResources\TcpTransportSecuritySslCustomCertValidationResource.cs" />
+    <Compile Include="TestResources\TcpTransportSecurityStreamedResource.cs" />
     <Compile Include="TestResources\TcpTransportSecurityWithSslResource.cs" />
     <Compile Include="TestResources\TcpExpiredServerCertResource.cs" />
     <Compile Include="TestResources\TcpVerifyDNSResource.cs" />
