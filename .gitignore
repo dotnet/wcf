@@ -3,7 +3,10 @@ syntax: glob
 ### VisualStudio ###
 
 # Tool Runtime Dir
+# *** start WCF Content ***
+# The syntax used in the corefx version would also ignore WCF changes under "wcf\src\System.Private.ServiceModel\tools"
 /[Tt]ools/
+# *** end WCF Content ***
 
 # User-specific files
 *.suo
@@ -23,6 +26,9 @@ bld/
 [Bb]in/
 [Oo]bj/
 msbuild.log
+
+# Cross building rootfs
+cross/rootfs/
 
 # Visual Studio 2015
 .vs/

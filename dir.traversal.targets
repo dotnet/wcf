@@ -66,6 +66,7 @@
              Properties="DefaultBuildAllTarget=$(DefaultBuildAllTarget);BuildAllProjects=true"
              ContinueOnError="ErrorAndContinue" />
 
+    <!-- *** start WCF Content *** -->
     <!-- WCF differs from CoreFx for BuildInParallel because there is a race condition in CoreResGen updating the same file -->
     <MSBuild Targets="$(DefaultBuildAllTarget)"
              Projects="@(Project)"
@@ -73,6 +74,7 @@
              Properties="DefaultBuildAllTarget=$(DefaultBuildAllTarget);BuildAllProjects=true"
              BuildInParallel="false"
              ContinueOnError="ErrorAndContinue" />
+    <!-- *** end WCF Content *** -->
 
     <!-- Given we ErrorAndContinue we need to propagate the error if the overall task failed -->
     <Error Condition="'$(MSBuildLastTaskResult)'=='false'" />
