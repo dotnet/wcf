@@ -41,6 +41,27 @@ clean()
 
 # Check the system to ensure the right pre-reqs are in place
 
+check_managed_prereqs()  
+{  
+    __monoversion=$(mono --version | grep "version 4.[1-9]")  
+  
+    if [ $? -ne 0 ]; then  
+        # if built from tarball, mono only identifies itself as 4.0.1  
+        __monoversion=$(mono --version | egrep "version 4.0.[1-9]+(.[0-9]+)?")  
+        if [ $? -ne 0 ]; then  
+            echo "Mono 4.0.1.44 or later is required to build corefx. Please see https://github.com/dotnet/corefx/blob/master/Documentation/building/unix-instructions.md for more details."  
+            exit 1  
+        else  
+            echo "WARNING: Mono 4.0.1.44 or later is required to build corefx. Unable to assess if current version is supported."  
+        fi  
+    fi  
+  
+    if [ ! -e "$__referenceassemblyroot/.NETPortable" ]; then  
+        echo "PCL reference assemblies not found. Please see https://github.com/dotnet/corefx/blob/master/Documentation/building/unix-instructions.md for more details."  
+        exit 1  
+    fi  
+}  
+
 check_native_prereqs()
 {
     echo "Checking pre-requisites..."
@@ -82,6 +103,16 @@ prepare_managed_build()
         fi
     fi
 
+	    # Grab the MSBuild package if we don't have it already  
+    if [ ! -e "$__msbuildpath" ]; then  
+        echo "Restoring MSBuild..."  
+        mono "$__nugetpath" install $__msbuildpackageid -Version $__msbuildpackageversion -source "https://www.myget.org/F/dotnet-buildtools/" -OutputDirectory "$__packageroot"  
+        if [ $? -ne 0 ]; then  
+            echo "Failed to restore MSBuild."  
+            exit 1  
+        fi  
+    fi  
+
     # Run Init-Tools to restore BuildTools and ToolRuntime
     $__scriptpath/init-tools.sh
 }
@@ -110,7 +141,10 @@ build_managed_corefx()
     __binclashlog=$__scriptpath/binclash.log
     __binclashloggerdll=$__scriptpath/Tools/Microsoft.DotNet.Build.Tasks.dll
 
-    $__scriptpath/Tools/corerun $__scriptpath/Tools/MSBuild.exe "$__buildproj" /nologo /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__buildlog" "/l:BinClashLogger,$__binclashloggerdll;LogFile=$__binclashlog" /t:Build /p:ConfigurationGroup=$__BuildType /p:OSGroup=$__BuildOS /p:COMPUTERNAME=$(hostname) /p:USERNAME=$(id -un) /p:TestNugetRuntimeId=$__TestNugetRuntimeId $__UnprocessedBuildArgs
+	# Reverting to prior version of msbuild
+	# MONO29679=1 
+	ReferenceAssemblyRoot=$__referenceassemblyroot mono $__msbuildpath "$__buildproj" /nologo /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__buildlog" /t:Build /p:OSGroup=$__BuildOS /p:COMPUTERNAME=$(hostname) /p:USERNAME=$(id -un) /p:TestNugetRuntimeId=$__TestNugetRuntimeId /p:ToolNugetRuntimeId=$__TestNugetRuntimeId $__UnprocessedBuildArgs
+    # $__scriptpath/Tools/corerun $__scriptpath/Tools/MSBuild.exe "$__buildproj" /nologo /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__buildlog" "/l:BinClashLogger,$__binclashloggerdll;LogFile=$__binclashlog" /t:Build /p:ConfigurationGroup=$__BuildType /p:OSGroup=$__BuildOS /p:COMPUTERNAME=$(hostname) /p:USERNAME=$(id -un) /p:TestNugetRuntimeId=$__TestNugetRuntimeId $__UnprocessedBuildArgs
     BUILDERRORLEVEL=$?
 
     echo
@@ -254,6 +288,19 @@ __BuildOS=$__HostOS
 __BuildType=Debug
 __CMakeArgs=DEBUG
 
+case $__HostOS in  
+    FreeBSD)  
+        __monoroot=/usr/local  
+        ;;  
+    OSX)  
+        __monoroot=/Library/Frameworks/Mono.framework/Versions/Current  
+        ;;  
+    *)  
+        __monoroot=/usr  
+        ;;  
+esac  
+  
+__referenceassemblyroot=$__monoroot/lib/mono/xbuild-frameworks  
 BUILDERRORLEVEL=0
 
 # Set the various build properties here so that CMake and MSBuild can pick them up
@@ -374,6 +421,10 @@ __BinDir="$__rootbinpath/$__BuildOS.$__BuildArch.$__BuildType/Native"
 setup_dirs
 
 if $__buildmanaged; then
+
+    # Check prereqs.  
+  
+    check_managed_prereqs 
 
     # Prepare the system
 
