@@ -41,7 +41,7 @@
     "System.Runtime.Handles": "4.0.0",
     "System.Runtime.InteropServices": "4.0.0",
     "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-rc3-23809",
-    "System.Runtime.Serialization.Xml": "4.1.0-rc3-23809",
+    "System.Runtime.Serialization.Xml": "4.1.0",
     "System.Security.Claims": "4.0.0",
     "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809",
     "System.Security.Principal": "4.0.0",

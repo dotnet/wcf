@@ -8,7 +8,7 @@
 		"System.Net.WebHeaderCollection": "4.0.0",
 		"System.Reflection.Emit.Lightweight": "4.0.0",
 		"System.Runtime.Serialization.Primitives": "4.1.0-rc3-23809",
-		"System.Runtime.Serialization.Xml": "4.1.0-rc3-23809",
+		"System.Runtime.Serialization.Xml": "4.1.0",
 		"System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809",
 		"System.Security.Principal": "4.0.0",
 		"System.ServiceModel.Duplex": "4.0.1-rc3-23809",
