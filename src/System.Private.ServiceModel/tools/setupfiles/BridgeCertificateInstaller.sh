@@ -35,6 +35,7 @@ install_root_cert()
 {
     __cafile=$1
 
+    chmod a+r "$__cafile"
     cp -f "$__cafile" /usr/local/share/ca-certificates
 
     if [ $? -ne 0 ]; then 
