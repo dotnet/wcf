@@ -112,7 +112,7 @@ goto :AfterBuild
 
 :build
 :: *** start WCF Content <WCF uses additional msbuild args> ***
-%_buildprefix% msbuild "%_buildproj%" %_defaultBuildConfig% /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=diag;LogFile="%_buildlog%";Append %* "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" %__args% %_buildpostfix%
+%_buildprefix% msbuild "%_buildproj%" %_defaultBuildConfig% /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=diag;LogFile="%_buildlog%";Append "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" %__args% %_buildpostfix%
 set BUILDERRORLEVEL=!ERRORLEVEL!
 :: *** end WCF Content ***
 goto :eof
