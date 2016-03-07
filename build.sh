@@ -83,7 +83,7 @@ prepare_managed_build()
         if [ $? -ne 0 -a $? -ne 1 ]; then
             # *** start WCF Content ***
             echo "cURL or wget is required to build wcf. Please see https://github.com/dotnet/wcf/blob/master/Documentation/building/unix-instructions.md for more details."
-			# *** end WCF Content ***
+            # *** end WCF Content ***
             exit 1
         fi
         echo "Restoring NuGet.exe..."
@@ -141,9 +141,9 @@ build_managed_corefx()
     __binclashlog=$__scriptpath/binclash.log
     __binclashloggerdll=$__scriptpath/Tools/Microsoft.DotNet.Build.Tasks.dll
 
-	# Reverting to prior version of msbuild
-	# MONO29679=1 
-	ReferenceAssemblyRoot=$__referenceassemblyroot mono $__msbuildpath "$__buildproj" /nologo /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__buildlog" /t:Build /p:OSGroup=$__BuildOS /p:COMPUTERNAME=$(hostname) /p:USERNAME=$(id -un) /p:TestNugetRuntimeId=$__TestNugetRuntimeId /p:ToolNugetRuntimeId=$__TestNugetRuntimeId $__UnprocessedBuildArgs
+    # Reverting to prior version of msbuild
+    # MONO29679=1 
+    ReferenceAssemblyRoot=$__referenceassemblyroot mono $__msbuildpath "$__buildproj" /nologo /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__buildlog" /t:Build /p:OSGroup=$__BuildOS /p:COMPUTERNAME=$(hostname) /p:USERNAME=$(id -un) /p:TestNugetRuntimeId=$__TestNugetRuntimeId /p:ToolNugetRuntimeId=$__TestNugetRuntimeId $__UnprocessedBuildArgs
     # $__scriptpath/Tools/corerun $__scriptpath/Tools/MSBuild.exe "$__buildproj" /nologo /verbosity:minimal "/fileloggerparameters:Verbosity=normal;LogFile=$__buildlog" "/l:BinClashLogger,$__binclashloggerdll;LogFile=$__binclashlog" /t:Build /p:ConfigurationGroup=$__BuildType /p:OSGroup=$__BuildOS /p:COMPUTERNAME=$(hostname) /p:USERNAME=$(id -un) /p:TestNugetRuntimeId=$__TestNugetRuntimeId $__UnprocessedBuildArgs
     BUILDERRORLEVEL=$?
 
@@ -461,8 +461,12 @@ if $__buildnative; then
     prepare_native_build
 
     # Build the corefx native components.
+    # *** start WCF Content ***
 
-    build_native_corefx
+    # WCF does not have a native component, comment out next command
+    # build_native_corefx
+    
+    # *** end WCF Content ***
 
     # Build complete
 fi
