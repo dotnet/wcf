@@ -239,6 +239,36 @@ namespace System.ServiceModel.Security
                             return true;
                         }
                     }
+
+                    // Allow a Sid claim to support UPN, and SPN identities
+                    
+                    // SID claims not available yet 
+                    //SecurityIdentifier identitySid = null;
+                    //if (ClaimTypes.Sid.Equals(identity.IdentityClaim.ClaimType))
+                    //{
+                    //    throw ExceptionHelper.PlatformNotSupported("DefaultIdentityVerifier - ClaimTypes.Sid");
+                    //}
+                    //else if (ClaimTypes.Upn.Equals(identity.IdentityClaim.ClaimType))
+                    //{
+                    //    throw ExceptionHelper.PlatformNotSupported("DefaultIdentityVerifier - ClaimTypes.Upn");
+                    //}
+                    //else if (ClaimTypes.Spn.Equals(identity.IdentityClaim.ClaimType))
+                    //{
+                    //    throw ExceptionHelper.PlatformNotSupported("DefaultIdentityVerifier - ClaimTypes.Spn");
+                    //}
+                    //else if (ClaimTypes.Dns.Equals(identity.IdentityClaim.ClaimType))
+                    //{
+                    //    throw ExceptionHelper.PlatformNotSupported("DefaultIdentityVerifier - ClaimTypes.Dns");
+                    //}
+                    //if (identitySid != null)
+                    //{
+                    //    Claim claim = CheckSidEquivalence(identitySid, claimSet);
+                    //    if (claim != null)
+                    //    {
+                    //        SecurityTraceRecordHelper.TraceIdentityVerificationSuccess(eventTraceActivity, identity, claim, this.GetType());
+                    //        return true;
+                    //    }
+                    //}
                 }
                 SecurityTraceRecordHelper.TraceIdentityVerificationFailure(identity, authContext, this.GetType());
                 if (WcfEventSource.Instance.SecurityIdentityVerificationFailureIsEnabled())
