@@ -1,74 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <!-- 
-      TestProperty:
-        This item collection gives the name and value for each property to generate
-        into TestProperties.Properties. The included ItemSpec for each item will
-        become the property's key.  The value for the property will be taken from
-        the "Value" metadata, or if it is blank, from the "DefaultValue" metadata.
-        This pattern permits properties to specify their defaults here but to be
-        overridden from the command line.
-        Example: 'msbuild /p:UseFiddlerUrl=true' will override the default false.
-    -->
-    <ItemGroup>
-      <TestProperty Include="BridgeResourceFolder">
-        <Value>$(BridgeResourceFolder)</Value>
-        <DefaultValue>$(OutputPath)</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeHost">
-        <Value>$(BridgeHost)</Value>
-        <DefaultValue>localhost</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgePort">
-        <Value>$(BridgePort)</Value>
-        <DefaultValue>44283</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeHttpPort">
-        <Value>$(BridgeHttpPort)</Value>
-        <DefaultValue>8081</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeHttpsPort">
-        <Value>$(BridgeHttpsPort)</Value>
-        <DefaultValue>44285</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeTcpPort">
-        <Value>$(BridgeTcpPort)</Value>
-        <DefaultValue>809</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeWebSocketPort">
-        <Value>$(BridgeWebSocketPort)</Value>
-        <DefaultValue>8083</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeSecureWebSocketPort">
-        <Value>$(BridgeSecureWebSocketPort)</Value>
-        <DefaultValue>8084</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeRemoteEnabled">
-        <Value>$(BridgeRemoteEnabled)</Value>
-        <DefaultValue>false</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeCertificatePassword">
-        <Value>$(BridgeCertificatePassword)</Value>
-        <DefaultValue>test</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeCertificateValidityPeriod">
-        <Value>$(BridgeCertificateValidityPeriod)</Value>
-        <DefaultValue>7.00:00:00</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="UseFiddlerUrl">
-        <Value>$(UseFiddlerUrl)</Value>
-        <DefaultValue>false</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="BridgeMaxIdleTimeSpan">
-        <Value>$(BridgeMaxIdleTimeSpan)</Value>
-        <DefaultValue>24:00:00</DefaultValue>
-      </TestProperty>
-      <TestProperty Include="MaxTestTimeSpan">
-        <Value>$(MaxTestTimeSpan)</Value>
-        <DefaultValue>00:01:00</DefaultValue>
-      </TestProperty>
-    </ItemGroup>
 
+
+    <!-- Set default values for any TestProperties not already specified.
+           When adding or removing TestProperties, update testproperties.targets
+           to generate code at build time.
+    -->
+    <PropertyGroup Condition="'$(BridgeResourceFolder)' == ''">
+      <BridgeResourceFolder>$(OutputPath)</BridgeResourceFolder>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeHost)' == ''">
+      <BridgeHost>localhost</BridgeHost>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgePort)' == ''">
+      <BridgePort>44283</BridgePort>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeHttpPort)' == ''">
+      <BridgeHttpPort>8081</BridgeHttpPort>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeHttpsPort)' == ''">
+      <BridgeHttpsPort>44285</BridgeHttpsPort>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeTcpPort)' == ''">
+      <BridgeTcpPort>809</BridgeTcpPort>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeWebSocketPort)' == ''">
+      <BridgeWebSocketPort>8083</BridgeWebSocketPort>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeSecureWebSocketPort)' == ''">
+      <BridgeSecureWebSocketPort>8084</BridgeSecureWebSocketPort>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeRemoteEnabled)' == ''">
+      <BridgeRemoteEnabled>false</BridgeRemoteEnabled>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeCertificatePassword)' == ''">
+      <BridgeCertificatePassword>test</BridgeCertificatePassword>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeCertificateValidityPeriod)' == ''">
+      <BridgeCertificateValidityPeriod>7.00:00:00</BridgeCertificateValidityPeriod>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(UseFiddlerUrl)' == ''">
+      <UseFiddlerUrl>false</UseFiddlerUrl>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BridgeMaxIdleTimeSpan)' == ''">
+      <BridgeMaxIdleTimeSpan>24:00:00</BridgeMaxIdleTimeSpan>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(MaxTestTimeSpan)' == ''">
+      <MaxTestTimeSpan>00:01:00</MaxTestTimeSpan>
+    </PropertyGroup>
+  
   <!--
      GeneratedTestPropertiesFileName:
      The full path of the C# file that will be generated at build time to
