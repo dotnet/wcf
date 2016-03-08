@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Web;
 using System.Text;
 
 namespace WcfService
@@ -365,6 +366,22 @@ namespace WcfService
 
             var httpRespononseMessageProperty = (HttpResponseMessageProperty)httpResponseMessagePropertyObj;
             httpRespononseMessageProperty.Headers[HttpResponseHeader.ContentType] = contentType;
+        }
+
+        public string EchoCookie()
+        {
+            string cookie = WebOperationContext.Current.IncomingRequest.Headers[HttpRequestHeader.Cookie];
+            return cookie;
+        }
+
+        // Returns the current time and also sets the cookie named 'name' to be the same time returned.
+        public string EchoTimeAndSetCookie(string name)
+        {
+            string cookie = WebOperationContext.Current.IncomingRequest.Headers[HttpRequestHeader.Cookie];
+            string value = DateTime.Now.ToString();
+            cookie = string.Format("{0}={1}", name, value);
+            WebOperationContext.Current.OutgoingResponse.Headers.Add(string.Format("Set-Cookie: {0};", cookie));
+            return value;
         }
 
         private static string StreamToString(Stream stream)

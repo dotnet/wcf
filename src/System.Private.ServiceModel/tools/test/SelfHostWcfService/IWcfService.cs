@@ -68,6 +68,12 @@ namespace WcfService
         [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeaders", ReplyAction = "*")]
         Dictionary<string, string> GetIncomingMessageHeaders();
 
+        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoCookie", ReplyAction = "*")]
+        string EchoCookie();
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoTimeAndSetCookie", ReplyAction = "*")]
+        string EchoTimeAndSetCookie(string name);
+
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormat"), XmlSerializerFormat]
         string EchoXmlSerializerFormat(string message);
 

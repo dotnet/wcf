@@ -19,5 +19,11 @@ namespace System.ServiceModel.Channels
             get { return _innerHandler.PreAuthenticate; }
             set { _innerHandler.PreAuthenticate = value; }
         }
+
+        public CookieContainer CookieContainer
+        {
+            get { return _innerHandler.CookieContainer; }
+            set { _innerHandler.CookieContainer = value; }
+        }
     }
 }
