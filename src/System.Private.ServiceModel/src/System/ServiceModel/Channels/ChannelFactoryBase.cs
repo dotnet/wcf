@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    public abstract class ChannelFactoryBase : ChannelManagerBase, IChannelFactory
+    public abstract class ChannelFactoryBase : ChannelManagerBase, IChannelFactory, IAsyncChannelFactory
     {
         private TimeSpan _closeTimeout = ServiceDefaults.CloseTimeout;
         private TimeSpan _openTimeout = ServiceDefaults.OpenTimeout;
