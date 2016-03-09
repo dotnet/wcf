@@ -44,8 +44,7 @@ namespace System.ServiceModel
                         new ArgumentOutOfRangeException("value", value.Ticks, SR.Format(SR.ValueMustBeNonNegative)));
                 }
                 _spnLookupTime = value;
-            }
+            }            
         }
-
     }
 }
