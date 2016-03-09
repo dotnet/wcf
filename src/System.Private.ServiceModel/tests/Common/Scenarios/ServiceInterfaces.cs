@@ -492,3 +492,13 @@ public interface IXmlMessageContarctTestService
     [XmlSerializerFormat(SupportFaults = true)]
     XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
 }
+
+[ServiceContract]
+public interface IWcfAspNetCompatibleService
+{
+    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoCookie", ReplyAction = "http://tempuri.org/IWcfService/EchoCookieResponse")]
+    string EchoCookie();
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoTimeAndSetCookie", ReplyAction = "http://tempuri.org/IIWcfService/EchoTimeAndSetCookieResponse")]
+    string EchoTimeAndSetCookie(string name);
+}

@@ -231,4 +231,41 @@ public class ChannelFactoryTest
             }
         }
     }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public static void ChannelFactory_AllowCookies(bool allowCookies)
+    {
+        ChannelFactory<IWcfService> factory = null;
+
+        try
+        {
+            factory = new ChannelFactory<IWcfService>(
+                     new BasicHttpBinding()
+                     {
+                         AllowCookies = allowCookies
+                     },
+                     new EndpointAddress(FakeAddress.HttpAddress));
+
+            IWcfService serviceProxy = factory.CreateChannel();
+
+            IHttpCookieContainerManager cookieManager = ((IChannel)serviceProxy).GetProperty<IHttpCookieContainerManager>();
+            Assert.True(allowCookies == (cookieManager != null),
+                string.Format($"AllowCookies was '{0}', 'cookieManager != null' was expected to be '{0}', but it was '{1}'.", allowCookies, cookieManager != null));
+
+            if (allowCookies)
+            {
+                Assert.True(allowCookies == (cookieManager.CookieContainer != null),
+                    string.Format($"AllowCookies was '{0}', 'cookieManager.CookieContainer != null' was expected to be '{0}', but it was '{1}'.", allowCookies, cookieManager != null));
+            }
+        }
+        finally
+        {
+            if (factory != null)
+            {
+                factory.Close();
+            }
+        }
+    }
 }

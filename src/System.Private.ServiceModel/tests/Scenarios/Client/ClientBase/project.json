@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
+    "System.Net.Primitives": "4.0.10",
     "System.Net.WebHeaderCollection": "4.0.0",
     "System.Reflection.Emit.Lightweight": "4.0.0",
     "System.ServiceModel.Duplex": "4.0.1-rc3-23809",
