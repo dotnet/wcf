@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "Microsoft.NETCore.Platforms": "1.0.1-rc3-23915",
-    "System.Collections.Concurrent": "4.0.10.0",
+    "System.Collections.Concurrent": "4.0.10",
     "System.ComponentModel.EventBasedAsync": "4.0.10",
-    "System.Net.Http": "4.0.1-rc3-23915",
+    "System.Net.Http": "4.0.0",
     "System.Net.Primitives": "4.0.10",
     "System.Net.WebHeaderCollection": "4.0.0",
     "System.Reflection.Emit.Lightweight": "4.0.0",
