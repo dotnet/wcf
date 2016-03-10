@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Security.Principal;
-using System.IdentityModel.Claims;
 
 namespace System.ServiceModel
 {
@@ -22,23 +21,8 @@ namespace System.ServiceModel
         {
             if (upnName == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("upnName");
-#if SUPPORTS_WINDOWSIDENTITY
-            base.Initialize(Claim.CreateUpnClaim(upnName));
-#else 
-            throw ExceptionHelper.PlatformNotSupported("UpnEndpointIdentity is not supported on this platform");
-#endif // SUPPORTS_WINDOWSIDENTITY
-        }
 
-        public UpnEndpointIdentity(Claim identity)
-        {
-            if (identity == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identity");
-
-            // PreSharp Bug: Parameter 'identity.ResourceType' to this public method must be validated: A null-dereference can occur here.
-            if (!identity.ClaimType.Equals(ClaimTypes.Upn))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.UnrecognizedClaimTypeForIdentity, identity.ClaimType, ClaimTypes.Upn));
-
-            base.Initialize(identity);
+            throw ExceptionHelper.PlatformNotSupported("UpnEndpointIdentity is not supported");
         }
 
 #if SUPPORTS_WINDOWSIDENTITY
