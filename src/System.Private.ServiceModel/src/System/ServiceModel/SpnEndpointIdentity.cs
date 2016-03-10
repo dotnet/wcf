@@ -27,5 +27,8 @@ namespace System.ServiceModel
 
             base.Initialize(identity);
         }
+        
+        public static TimeSpan SpnLookupTime {get;set;}
+        
     }
 }
