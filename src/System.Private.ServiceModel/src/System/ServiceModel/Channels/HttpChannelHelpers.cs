@@ -134,6 +134,8 @@ namespace System.ServiceModel.Channels
                     goto case WININET_E_CONNECTION_RESET;
                 case WININET_E_CONNECTION_RESET:
                     return new CommunicationException(SR.Format(SR.HttpReceiveFailure, request.RequestUri), exception);
+                // Linux HttpClient returns ERROR_INVALID_HANDLE in the endpoint-not-found case, so map to EndpointNotFoundException
+                case UnsafeNativeMethods.ERROR_INVALID_HANDLE:
                 case WININET_E_NAME_NOT_RESOLVED:
                     return new EndpointNotFoundException(SR.Format(SR.EndpointNotFound, request.RequestUri.AbsoluteUri), exception);
                 case ERROR_WINHTTP_SECURE_FAILURE:
