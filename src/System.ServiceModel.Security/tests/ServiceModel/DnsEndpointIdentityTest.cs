@@ -5,13 +5,14 @@ using System;
 using System.ServiceModel;
 using Xunit;
 
-public static class DnsEndpointEntityTest
+public static class DnsEndpointIdentityTest
 {
-    //Can only verify the Ctor does not throw as Claim is not in contract
-    [Fact]
-    public static void Ctor_DnsName()
+    [Theory]
+    [InlineData("")]
+    [InlineData("wcf")]
+    [InlineData("wcf.example.com")]
+    public static void Ctor_DnsName(string dnsName)
     {
-        string dnsName = "MyDns";
         DnsEndpointIdentity dnsEndpointEntity = new DnsEndpointIdentity(dnsName);
     }
 
