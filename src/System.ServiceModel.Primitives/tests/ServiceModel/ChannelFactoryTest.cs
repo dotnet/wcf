@@ -252,12 +252,12 @@ public class ChannelFactoryTest
 
             IHttpCookieContainerManager cookieManager = ((IChannel)serviceProxy).GetProperty<IHttpCookieContainerManager>();
             Assert.True(allowCookies == (cookieManager != null),
-                string.Format($"AllowCookies was '{0}', 'cookieManager != null' was expected to be '{0}', but it was '{1}'.", allowCookies, cookieManager != null));
+                string.Format("AllowCookies was '{0}', 'cookieManager != null' was expected to be '{0}', but it was '{1}'.", allowCookies, cookieManager != null));
 
             if (allowCookies)
             {
                 Assert.True(allowCookies == (cookieManager.CookieContainer != null),
-                    string.Format($"AllowCookies was '{0}', 'cookieManager.CookieContainer != null' was expected to be '{0}', but it was '{1}'.", allowCookies, cookieManager != null));
+                    string.Format("AllowCookies was '{0}', 'cookieManager.CookieContainer != null' was expected to be '{0}', but it was '{1}'.", allowCookies, cookieManager != null));
             }
         }
         finally
