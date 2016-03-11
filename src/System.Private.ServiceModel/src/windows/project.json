@@ -62,6 +62,7 @@
       "dependencies": {
         "System.Runtime.WindowsRuntime": "4.0.0",
         "Microsoft.TargetingPack.Private.NetNative": "1.0.0-rc3-23809",
+        "Microsoft.NETCore.Portable.Compatibility": "1.0.1-rc3-23809",
         "Microsoft.TargetingPack.Private.WinRT": "1.0.1"
       }
     }
