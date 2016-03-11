@@ -273,7 +273,11 @@ namespace System.ServiceModel.Channels
                     var clientHandler = GetHttpMessageHandler(to, clientCertificateToken);
                     clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                     clientHandler.UseCookies = _allowCookies;
-                    clientHandler.CookieContainer = _allowCookies ? _httpCookieContainerManager.CookieContainer : null;
+                    if (_allowCookies)
+                    {
+                        clientHandler.CookieContainer = _httpCookieContainerManager.CookieContainer;
+                    }
+
                     clientHandler.PreAuthenticate = true;
                     if (clientHandler.SupportsProxy)
                     {
