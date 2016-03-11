@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="win\System.Private.ServiceModel.pkgproj" />
-    <ProjectReference Include="unix\System.Private.ServiceModel.pkgproj" />
+    <ProjectReference Include="..\src\System.Private.ServiceModel.builds" />
   </ItemGroup>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
