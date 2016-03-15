@@ -1,29 +1,29 @@
 {
-	"dependencies": {
-		"Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
-		"System.Collections.Concurrent": "4.0.10.0",
-		"System.ComponentModel.EventBasedAsync": "4.0.10",
-		"System.Net.Http": "4.0.1-rc3-23809",
-		"System.Net.Primitives": "4.0.10",
-		"System.Net.WebHeaderCollection": "4.0.0",
-		"System.Reflection.Emit.Lightweight": "4.0.0",
-		"System.Runtime.Serialization.Primitives": "4.1.0-rc3-23809",
-		"System.Runtime.Serialization.Xml": "4.1.0",
-		"System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809",
-		"System.Security.Principal": "4.0.0",
-		"System.ServiceModel.Duplex": "4.0.1-rc3-23809",
-		"System.ServiceModel.Http": "4.0.11-rc3-23809",
-		"System.ServiceModel.NetTcp": "4.0.1-rc3-23809",
-		"System.ServiceModel.Primitives": "4.1.0-rc3-23809",
-		"System.ServiceModel.Security": "4.0.1-rc3-23809",
-		"System.Xml.ReaderWriter": "4.0.10",
-		"System.Xml.XmlSerializer": "4.0.10",
-		"xunit": "2.1.0",
-		"xunit.netcore.extensions": "1.0.0-prerelease-00123"
-	},
-	"frameworks": {
-		"dnxcore50": {
-			"imports": "portable-net45+win8"
-		}
-	}
+  "dependencies": {
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23915",
+    "System.Collections.Concurrent": "4.0.10.0",
+    "System.ComponentModel.EventBasedAsync": "4.0.10",
+    "System.Net.Http": "4.0.1-rc3-23915",
+    "System.Net.Primitives": "4.0.10",
+    "System.Net.WebHeaderCollection": "4.0.0",
+    "System.Reflection.Emit.Lightweight": "4.0.0",
+    "System.Runtime.Serialization.Primitives": "4.1.0-rc3-23915",
+    "System.Runtime.Serialization.Xml": "4.1.0",
+    "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-23915",
+    "System.Security.Principal": "4.0.0",
+    "System.ServiceModel.Duplex": "4.0.1-rc3-23915",
+    "System.ServiceModel.Http": "4.0.11-rc3-23915",
+    "System.ServiceModel.NetTcp": "4.0.1-rc3-23915",
+    "System.ServiceModel.Primitives": "4.1.0-rc3-23915",
+    "System.ServiceModel.Security": "4.0.1-rc3-23915",
+    "System.Xml.ReaderWriter": "4.0.10",
+    "System.Xml.XmlSerializer": "4.0.10",
+    "xunit": "2.1.0",
+    "xunit.netcore.extensions": "1.0.0-prerelease-00123"
+  },
+  "frameworks": {
+    "dnxcore50": {
+      "imports": "portable-net45+win8"
+    }
+  }
 }

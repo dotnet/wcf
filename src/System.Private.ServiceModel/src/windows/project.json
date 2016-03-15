@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23809",
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23915",
     "System.Collections": "4.0.10",
     "System.Collections.Concurrent": "4.0.0",
     "System.Collections.NonGeneric": "4.0.0",
@@ -20,8 +20,8 @@
     "System.Net.Http": "4.0.0",
     "System.Net.Primitives": "4.0.10",
     "System.Net.WebHeaderCollection": "4.0.0",
-    "System.Net.WebSockets": "4.0.0-rc3-23809",
-    "System.Net.WebSockets.Client": "4.0.0-rc3-23809",
+    "System.Net.WebSockets": "4.0.0-rc3-23915",
+    "System.Net.WebSockets.Client": "4.0.0-rc3-23915",
     "System.ObjectModel": "4.0.0",
     "System.Reflection": "4.0.10",
     "System.Reflection.DispatchProxy": "4.0.0",
@@ -33,10 +33,10 @@
     "System.Runtime.Extensions": "4.0.10",
     "System.Runtime.Handles": "4.0.0",
     "System.Runtime.InteropServices": "4.0.0",
-    "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-rc3-23809",
+    "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-rc3-23915",
     "System.Runtime.Serialization.Xml": "4.1.0",
     "System.Security.Claims": "4.0.0",
-    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23809",
+    "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-23915",
     "System.Security.Principal": "4.0.0",
     "System.Text.Encoding": "4.0.10",
     "System.Text.Encoding.Extensions": "4.0.10",
@@ -49,20 +49,21 @@
     "System.Xml.XmlSerializer": "4.0.0"
   },
   "frameworks": {
-    "dnxcore50": {
+    "netstandard1.3": {
+      "imports": [ "dotnet5.4" ],
       "dependencies": {
-        "System.Net.Http.WinHttpHandler": "4.0.0-rc3-23809",
-        "System.Net.NameResolution": "4.0.0-rc3-23809",
-        "System.Net.Security": "4.0.0-rc3-23809",
-        "System.Net.Sockets": "4.1.0-rc3-23809",
-        "System.Security.Principal.Windows": "4.0.0-rc3-23809"
+        "System.Net.Http.WinHttpHandler": "4.0.0-rc3-23915",
+        "System.Net.NameResolution": "4.0.0-rc3-23915",
+        "System.Net.Security": "4.0.0-rc3-23915",
+        "System.Net.Sockets": "4.1.0-rc3-23915",
+        "System.Security.Principal.Windows": "4.0.0-rc3-23915"
       }
     },
     "netcore50": {
       "dependencies": {
         "System.Runtime.WindowsRuntime": "4.0.0",
-        "Microsoft.TargetingPack.Private.NetNative": "1.0.0-rc3-23809",
-        "Microsoft.NETCore.Portable.Compatibility": "1.0.1-rc3-23809",
+        "Microsoft.TargetingPack.Private.NetNative": "1.0.0-rc3-23915",
+        "Microsoft.NETCore.Portable.Compatibility": "1.0.1-rc3-23915",
         "Microsoft.TargetingPack.Private.WinRT": "1.0.1"
       }
     }

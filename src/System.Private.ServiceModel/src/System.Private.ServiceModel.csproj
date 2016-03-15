@@ -19,6 +19,7 @@
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
     <PackageTargetRuntime Condition="'$(OSGroup)' == 'Unix'">unix</PackageTargetRuntime>
     <PackageTargetRuntime Condition="'$(OSGroup)' == 'Windows_NT'">win7</PackageTargetRuntime>
+    <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v1.3</NuGetTargetMoniker>
   </PropertyGroup>
 
   <!-- Default configurations to help VS understand the options -->
