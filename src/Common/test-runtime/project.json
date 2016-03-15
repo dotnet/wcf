@@ -20,7 +20,7 @@
     "System.Diagnostics.Tracing": "4.0.20",
     "System.Globalization": "4.0.0",
     "System.IO": "4.0.10",
-    "System.IO.Compression": "4.0.0",
+    "System.IO.Compression": "4.1.0-rc3-23915",
     "System.Linq": "4.0.0",
     "System.Linq.Expressions": "4.0.0",
     "System.Linq.Queryable": "4.0.0",
