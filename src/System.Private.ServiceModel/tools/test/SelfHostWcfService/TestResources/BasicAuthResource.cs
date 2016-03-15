@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
+using WcfService.CertificateResources;
 using WcfTestBridgeCommon;
 
 namespace WcfService.TestResources
@@ -43,6 +44,14 @@ namespace WcfService.TestResources
 
             desc.Behaviors.Remove<ServiceCredentials>();
             desc.Behaviors.Add(GetServiceCredentials());
+        }
+        
+        protected override void ModifyHost(ServiceHost serviceHost, ResourceRequestContext context)
+        {
+            // Ensure the https certificate is installed before this endpoint resource is used
+            CertificateResourceHelpers.EnsureSslPortCertificateInstalled(context.BridgeConfiguration);
+
+            base.ModifyHost(serviceHost, context);
         }
     }
 }
