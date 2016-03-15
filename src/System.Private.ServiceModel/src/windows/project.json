@@ -36,7 +36,7 @@
     "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-rc3-23915",
     "System.Runtime.Serialization.Xml": "4.1.0",
     "System.Security.Claims": "4.0.0",
-    "System.Security.Cryptography.X509Certificates": "4.0.0-rc3-23915",
+    "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-23915",
     "System.Security.Principal": "4.0.0",
     "System.Text.Encoding": "4.0.10",
     "System.Text.Encoding.Extensions": "4.0.10",
@@ -49,7 +49,8 @@
     "System.Xml.XmlSerializer": "4.0.0"
   },
   "frameworks": {
-    "dnxcore50": {
+    "netstandard1.3": {
+      "imports": [ "dotnet5.4" ],
       "dependencies": {
         "System.Net.Http.WinHttpHandler": "4.0.0-rc3-23915",
         "System.Net.NameResolution": "4.0.0-rc3-23915",
