@@ -8,7 +8,9 @@ using System.Security.Principal;
 namespace System.ServiceModel
 {
     public class SpnEndpointIdentity : EndpointIdentity
-    { 
+    {
+        private static TimeSpan _spnLookupTime = TimeSpan.FromMinutes(1);
+
         public SpnEndpointIdentity(string spnName)
         {
             if (spnName == null)
@@ -27,8 +29,23 @@ namespace System.ServiceModel
 
             base.Initialize(identity);
         }
-        
-        public static TimeSpan SpnLookupTime {get;set;}
-        
+
+        public static TimeSpan SpnLookupTime
+        {
+            get
+            {
+                return _spnLookupTime;
+            }
+            set
+            {
+                if (value.Ticks < 0)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                        new ArgumentOutOfRangeException("value", value.Ticks, SR.Format(SR.ValueMustBeNonNegative)));
+                }
+                _spnLookupTime = value;
+            }
+        }
+
     }
 }
