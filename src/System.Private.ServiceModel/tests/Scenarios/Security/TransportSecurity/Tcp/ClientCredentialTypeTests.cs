@@ -16,7 +16,11 @@ public static class Tcp_ClientCredentialTypeTests
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
     [Fact]
-    [ActiveIssue(592, PlatformID.AnyUnix)]
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
@@ -84,7 +88,11 @@ public static class Tcp_ClientCredentialTypeTests
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
     [Fact]
-    [ActiveIssue(592, PlatformID.AnyUnix)]
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_EchoString()
     {
@@ -119,6 +127,9 @@ public static class Tcp_ClientCredentialTypeTests
     // Simple echo of a string using a CustomBinding to mimic a NetTcpBinding with Security.Mode = TransportWithMessageCredentials
     // This does not exactly match the binding elements in a NetTcpBinding which also includes a TransportSecurityBindingElement
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(833)] // Not supported in NET Native
+#endif
     [OuterLoop]
     public static void SameBinding_SecurityModeTransport_ClientCredentialTypeCertificate_EchoString()
     {
@@ -133,7 +144,7 @@ public static class Tcp_ClientCredentialTypeTests
                 new SslStreamSecurityBindingElement(), // This is the binding element used when Security.Mode  = TransportWithMessageCredentials
                 new BinaryMessageEncodingBindingElement(),
                 new TcpTransportBindingElement());
-            
+
             var endpointIdentity = new DnsEndpointIdentity(Endpoints.Tcp_CustomBinding_SslStreamSecurity_HostName);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(new Uri(Endpoints.Tcp_CustomBinding_SslStreamSecurity_Address), endpointIdentity));
             serviceProxy = factory.CreateChannel();
@@ -156,6 +167,9 @@ public static class Tcp_ClientCredentialTypeTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(834)] // Not supported in NET Native
+#endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_EchoString()
     {
@@ -203,6 +217,9 @@ public static class Tcp_ClientCredentialTypeTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(834)] // Not supported in NET Native
+#endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_CustomValidator_EchoString()
     {
@@ -254,6 +271,9 @@ public static class Tcp_ClientCredentialTypeTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(833)] // Not supported in NET Native
+#endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_With_ServerAltName_EchoString()
     {
@@ -272,7 +292,7 @@ public static class Tcp_ClientCredentialTypeTests
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
-            
+
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

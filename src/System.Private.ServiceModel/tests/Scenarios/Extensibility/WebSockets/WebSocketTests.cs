@@ -75,7 +75,11 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+#if !FEATURE_NETNATIVE
     [ActiveIssue(420, PlatformID.AnyUnix)]
+#else
+    [ActiveIssue(526)]
+#endif
     public static void WebSocket_Http_Duplex_BinaryStreamed()
     {
         NetHttpBinding binding = null;
@@ -167,7 +171,11 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+#if !FEATURE_NETNATIVE
     [ActiveIssue(420, PlatformID.AnyUnix)]
+#else
+    [ActiveIssue(526)]
+#endif
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
         BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
@@ -262,9 +270,13 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+#if !FEATURE_NETNATIVE
     [ActiveIssue(4429)] // In #CoreFX
     [ActiveIssue(470)]
     [ActiveIssue(420, PlatformID.AnyUnix)]
+#else
+    [ActiveIssue(526)]
+#endif
     public static void WebSocket_Https_Duplex_TextStreamed()
     {
         TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
@@ -359,7 +371,13 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(4429)] // In #CoreFX
+    [ActiveIssue(470)]
     [ActiveIssue(420, PlatformID.AnyUnix)]
+#else
+    [ActiveIssue(526)]
+#endif
     public static void WebSocket_Http_Duplex_TextStreamed()
     {
         NetHttpBinding binding = null;
