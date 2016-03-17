@@ -355,6 +355,9 @@ public static class ExpectedExceptionTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(769)] // Blocked from working in NET Native due to a toolchain issue.
+#endif
     [OuterLoop]
     public static void DuplexCallback_Throws_FaultException_DirectThrow()
     {
@@ -400,6 +403,9 @@ public static class ExpectedExceptionTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(769)] // Blocked from working in NET Native due to a toolchain issue.
+#endif
     [OuterLoop]
     public static void DuplexCallback_Throws_FaultException_ReturnsFaultedTask()
     {
@@ -445,6 +451,9 @@ public static class ExpectedExceptionTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(833)] // Not supported in NET Native
+#endif
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
     public static void TCP_ServiceCertExpired_Throw_MessageSecurityException()
@@ -512,6 +521,9 @@ public static class ExpectedExceptionTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(833)] // Not supported in NET Native
+#endif
     [OuterLoop]
     // Verify product throws MessageSecurityException when the service cert is revoked
     public static void TCP_ServiceCertRevoked_Throw_MessageSecurityException()

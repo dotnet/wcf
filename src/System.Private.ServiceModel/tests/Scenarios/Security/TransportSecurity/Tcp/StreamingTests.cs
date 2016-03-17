@@ -16,7 +16,11 @@ public static class StreamingTests
 {
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_StreamedRequest_RoundTrips_String()
     {
         string testString = "Hello";
@@ -53,7 +57,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_StreamedResponse_RoundTrips_String()
     {
         string testString = "Hello";
@@ -89,7 +97,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_Streamed_RoundTrips_String()
     {
         string testString = "Hello";
@@ -127,7 +139,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_Streamed_TimeOut_Long_Running_Operation()
     {
         string testString = "Hello";
@@ -181,7 +197,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String()
     {
         string testString = "Hello";
@@ -220,7 +240,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_StreamedRequest_Async_RoundTrips_String()
     {
         string testString = "Hello";
@@ -259,7 +283,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_StreamedResponse_Async_RoundTrips_String()
     {
         string testString = "Hello";
@@ -298,7 +326,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_Streamed_RoundTrips_String_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
@@ -313,7 +345,11 @@ public static class StreamingTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(851, PlatformID.AnyUnix)] 
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
+#else
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
     public static void NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
@@ -325,7 +361,7 @@ public static class StreamingTests
         }).Wait(ScenarioTestHelpers.TestTimeout);
         Assert.True(success, "Test Scenario: NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String_WithSingleThreadedSyncContext timed-out.");
     }
-    
+
     private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
     {
         if (e.InnerException != null)

@@ -161,7 +161,9 @@ public static class HttpsTests
     }
 
     [Fact]
-    [ActiveIssue(544, PlatformID.AnyUnix)]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(544)] // Server certificate validation not supported in NET Native
+#endif
     [OuterLoop]
     public static void ServerCertificateValidation_EchoString()
     {
@@ -222,7 +224,7 @@ public static class HttpsTests
             // *** SETUP *** \\
             BasicHttpsBinding basicHttpsBinding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
             basicHttpsBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
-            
+
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_ClientCertificateAuth_Address));
             clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
 

@@ -9,6 +9,9 @@ using Infrastructure.Common;
 public static class IdentityTests
 {
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(833)] // Not supported in NET Native
+#endif
     [OuterLoop]
     // The product code will check the Dns identity from the server and throw if it does not match what is specified in DnsEndpointIdentity
     public static void VerifyServiceIdentityMatchDnsEndpointIdentity()
@@ -37,6 +40,9 @@ public static class IdentityTests
     }
 
     [Fact]
+#if FEATURE_NETNATIVE
+    [ActiveIssue(833)] // Not supported in NET Native
+#endif
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
     public static void ServiceIdentityNotMatch_Throw_MessageSecurityException()
