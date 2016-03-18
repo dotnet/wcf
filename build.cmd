@@ -8,7 +8,7 @@ REM DelayedExpansion needed to allow %ERRORLEVEL% to be set/used multiple times
 :: Note: We've disabled node reuse because it causes file locking issues.
 ::       The issue is that we extend the build with our own targets which
 ::       means that that rebuilding cannot successfully delete the task
-::       assembly. 
+::       assembly.
 
 :: *** start WCF Content ***
 set outloop=false
@@ -65,11 +65,13 @@ if "%__buildSpec%"=="managed"  goto :BuildManaged
 :BuildNative
 :: Run the Native Windows build
 echo [%time%] Building Native Libraries...
-call %~dp0src\native\Windows\build-native.cmd %__args% >nativebuild.log
-IF ERRORLEVEL 1 (
-    echo Native component build failed see nativebuild.log for more details.
-) else (
-    echo [%time%] Successfully built Native Libraries.
+IF EXIST "%~dp0src\native\Windows\build-native.cmd" (
+    call %~dp0src\native\Windows\build-native.cmd %__args% >nativebuild.log
+    IF ERRORLEVEL 1 (
+        echo Native component build failed see nativebuild.log for more details.
+    ) else (
+        echo [%time%] Successfully built Native Libraries.
+    )
 )
 
 :: If we only wanted to build the native components, exit
@@ -85,8 +87,8 @@ set Platform=
 :: Log build command line
 set _buildproj=%~dp0build.proj
 set _buildlog=%~dp0msbuild.log
-set _binclashLoggerDll=%~dp0Tools\net45\Microsoft.DotNet.Build.Tasks.dll  
-set _binclashlog=%~dp0binclash.log  
+set _binclashLoggerDll=%~dp0Tools\net45\Microsoft.DotNet.Build.Tasks.dll
+set _binclashlog=%~dp0binclash.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
@@ -118,6 +120,7 @@ set BUILDERRORLEVEL=!ERRORLEVEL!
 goto :eof
 
 :AfterBuild
+
 echo.
 :: Pull the build summary from the log file
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
