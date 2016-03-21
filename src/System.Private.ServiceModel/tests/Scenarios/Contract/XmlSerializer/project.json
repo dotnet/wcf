@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23915",
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-23921",
     "System.Reflection.Emit.Lightweight": "4.0.0",
-    "System.ServiceModel.Http": "4.0.11-rc3-23915",
-    "System.ServiceModel.Primitives": "4.1.0-rc3-23915",
+    "System.ServiceModel.Http": "4.0.11-rc3-23921",
+    "System.ServiceModel.Primitives": "4.1.0-rc3-23921",
     "xunit": "2.1.0",
     "xunit.netcore.extensions": "1.0.0-prerelease-00123"
   },
