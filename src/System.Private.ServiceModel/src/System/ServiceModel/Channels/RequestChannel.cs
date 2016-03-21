@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -196,10 +197,15 @@ namespace System.ServiceModel.Channels
                 _outstandingRequests.Remove(request);
                 if (_outstandingRequests.Count == 0)
                 {
-                    if (!_closed && _closedTcs != null)
+                    // When we are closed or closing, _closedTcs is managed by the close logic.
+                    if (!_closed && State != CommunicationState.Closing)
                     {
-                        _closedTcs.TrySetResult(null);
-                        _closedTcs = null;
+                        // Protect against close altering _closedTcs concurrently
+                        var closedTcs = Interlocked.CompareExchange(ref _closedTcs, null, _closedTcs);
+                        if (closedTcs != null)
+                        {
+                            closedTcs.TrySetResult(null);
+                        }
                     }
                 }
             }
