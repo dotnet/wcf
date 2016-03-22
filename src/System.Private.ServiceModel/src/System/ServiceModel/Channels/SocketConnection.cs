@@ -40,6 +40,7 @@ namespace System.ServiceModel.Channels
         protected string _timeoutErrorString;
         protected TransferOperation _timeoutErrorTransferOperation;
         private ConnectionBufferPool _connectionBufferPool;
+        private string _remoteEndpointAddressString;
 
         public SocketConnection(ConnectionBufferPool connectionBufferPool)
         {
@@ -59,10 +60,7 @@ namespace System.ServiceModel.Channels
 
         public byte[] AsyncReadBuffer
         {
-            get
-            {
-                return _readBuffer;
-            }
+            get { return _readBuffer; }
         }
 
         protected object ThisLock
@@ -72,7 +70,26 @@ namespace System.ServiceModel.Channels
 
         protected abstract IPEndPoint RemoteEndPoint { get; }
 
-        protected static void OnReceiveTimeout(object state)
+        protected string RemoteEndpointAddressString {
+            get
+            {
+                if (_remoteEndpointAddressString == null)
+                {
+                    IPEndPoint remote = RemoteEndPoint;
+                    if (remote == null)
+                    {
+                        return string.Empty;
+                    }
+                    _remoteEndpointAddressString = remote.Address + ":" + remote.Port;
+                }
+
+                return _remoteEndpointAddressString;
+            }
+        }
+
+
+
+    protected static void OnReceiveTimeout(object state)
         {
             SocketConnection thisPtr = (SocketConnection)state;
             thisPtr.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, thisPtr._receiveTimeout), TransferOperation.Read);
