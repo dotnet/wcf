@@ -1,26 +1,28 @@
 {
   "frameworks": {
     "netstandard1.3": {
-      "imports": [ "dotnet5.4" ],
+      "imports": [
+        "dotnet5.4"
+      ],
       "dependencies": {
         "System.Collections.NonGeneric": "4.0.0",
         "System.Collections.Specialized": "4.0.0",
-        "System.Net.WebSockets": "4.0.0-rc3-23915",
-        "System.Net.WebSockets.Client": "4.0.0-rc3-23915",
+        "System.Net.WebSockets": "4.0.0-rc3-23921",
+        "System.Net.WebSockets.Client": "4.0.0-rc3-23921",
         "System.Reflection.DispatchProxy": "4.0.0",
         "System.Reflection.TypeExtensions": "4.0.0",
-        "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-rc3-23915",
+        "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-rc3-23921",
         "System.Security.Claims": "4.0.0",
-        "System.Security.Cryptography.Algorithms": "4.1.0-rc3-23915",
-        "System.Security.Cryptography.Encoding": "4.0.0-rc3-23915",
-        "System.Security.Cryptography.Primitives": "4.0.0-rc3-23915",
-        "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-23915",
+        "System.Security.Cryptography.Algorithms": "4.1.0-rc3-23921",
+        "System.Security.Cryptography.Encoding": "4.0.0-rc3-23921",
+        "System.Security.Cryptography.Primitives": "4.0.0-rc3-23921",
+        "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-23921",
         "System.Xml.XmlDocument": "4.0.0",
-        "Microsoft.NETCore.Platforms": "1.0.1-rc3-23915",
-        "System.Net.Http.WinHttpHandler": "4.0.0-rc3-23915",
-        "System.Net.NameResolution": "4.0.0-rc3-23915",
-        "System.Net.Security": "4.0.0-rc3-23915",
-        "System.Security.Principal.Windows": "4.0.0-rc3-23915"
+        "Microsoft.NETCore.Platforms": "1.0.1-rc3-23921",
+        "System.Net.Http.WinHttpHandler": "4.0.0-rc3-23921",
+        "System.Net.NameResolution": "4.0.0-rc3-23921",
+        "System.Net.Security": "4.0.0-rc3-23921",
+        "System.Security.Principal.Windows": "4.0.0-rc3-23921"
       }
     },
     "net46": {
