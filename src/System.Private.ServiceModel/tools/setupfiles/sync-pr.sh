@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+# This notifies a the test web service, specified on the command line,
+# that a test is about to start
+# This script is meant to be called from a GitHub Pull Request.
+
 show_banner()
 {
     echo ""
-    echo "WCF Remote Github Repo sync script"
+    echo "WCF Test Service Pull Request sync script"
     echo ""
 }
 
@@ -14,6 +18,7 @@ show_usage()
     echo "    sync-url  - URL on remote server for PR synchronization"
     echo "    pr-number - PR to sync to"
     echo ""
+    echo "    Example:  $0 http://wcfci-sync-server/repo/sync.ashx"
     echo "    Example:  $0 http://wcfci-sync-server/repo/sync.ashx 404"
     echo ""
 }
