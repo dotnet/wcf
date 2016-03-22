@@ -1,3 +1,7 @@
+set 
+
+exit /b 1
+
 @echo off
 setlocal
 
