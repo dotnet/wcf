@@ -904,6 +904,9 @@ namespace System.ServiceModel.Channels
                     _httpClient = await _channel.GetHttpClientAsync(_to, _via, _timeoutHelper);
                     _httpRequestMessage = _channel.GetHttpRequestMessage(_via);
 
+                    // The _httpRequestMessage field will be set to null by Cleanup() due to faulting
+                    // or aborting, so use a local copy for exception handling within this method.
+                    HttpRequestMessage httpRequestMessage = _httpRequestMessage;
                     Message request = message;
 
                     try
@@ -949,7 +952,7 @@ namespace System.ServiceModel.Channels
                         }
                         catch (HttpRequestException requestException)
                         {
-                            HttpChannelUtilities.ProcessGetResponseWebException(requestException, _httpRequestMessage,
+                            HttpChannelUtilities.ProcessGetResponseWebException(requestException, httpRequestMessage,
                                 _abortReason);
                         }
                         catch (OperationCanceledException)
@@ -957,7 +960,7 @@ namespace System.ServiceModel.Channels
                             if (cancelTokenTask.Result.IsCancellationRequested)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(
-                                    SR.HttpRequestTimedOut, _httpRequestMessage.RequestUri, _timeoutHelper.OriginalTimeout)));
+                                    SR.HttpRequestTimedOut, httpRequestMessage.RequestUri, _timeoutHelper.OriginalTimeout)));
                             }
                             else
                             {
