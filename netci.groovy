@@ -5,6 +5,35 @@ import jobs.generation.Utilities;
 def project = GithubProject
 def branch = GithubBranchName
 
+class WcfUtilities
+{
+    def wcfRepoSyncServiceCount = 0 
+    def addWcfOuterloopTestServiceSync(def job, String os) { 
+        wcfRepoSyncServiceCount++
+    
+        job.with { 
+            parameters {
+                stringParam('WcfRepoSyncServiceUrl', "http://wcfcore-ci.westus.cloudapp.azure.com/wcfpr${wcfRepoSyncServiceCount}/sync.ashx", 'Wcf OuterLoop Test Service PR Sync Url')
+            }
+        }
+        if (os.toLowerCase().contains("windows")) {
+            job.with { 
+                steps {
+                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\setupfiles\\sync-pr.cmd %WcfRepoSyncServiceUrl%")
+                }           
+            }
+        } else {
+            job.with { 
+                steps {
+                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/setupfiles/sync-pr.cmd \$WcfRepoSyncServiceUrl")
+                }
+            }
+        }
+    }
+} 
+
+wcfUtilities = new WcfUtilities()
+
 // **************************
 // Define the basic inner loop builds for PR 
 // **************************
@@ -77,6 +106,7 @@ def branch = GithubBranchName
 // Define build string
 def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=Windows_NT /p:Configuration=Windows_NT_Debug /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
 
+
 // Generate a rolling (12 hr job) and a PR job that can be run on demand
 [true, false].each { isPR ->
     def newJob = job(Utilities.getFullJobName(project, 'code_coverage_windows', isPR)) {
@@ -89,6 +119,8 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
     Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
     Utilities.addHtmlPublisher(newJob, 'bin/tests/coverage', 'Code Coverage Report', 'index.htm')
     Utilities.addArchival(newJob, '**/coverage/*,msbuild.log')
+    
+    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, "windows")
     
     if (isPR) {
         Utilities.addGithubPRTriggerForBranch(newJob, branch, 'Code Coverage Windows Debug', '(?i).*test\\W+code\\W*coverage.*')
@@ -119,6 +151,8 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
         
+        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, "windows")
+
         if (isPR) {
             Utilities.addGithubPRTriggerForBranch(newJob, branch, "Outerloop Windows ${configuration} Build and Test", '(?i).*test\\W+outerloop.*')
         }
@@ -150,6 +184,8 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
     Utilities.addStandardNonPRParameters(newLatestDepRollingJob)
     Utilities.addPeriodicTrigger(newLatestDepRollingJob, '@daily')
 
+    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepRollingJob, "windows")
+
     // Create the new PR job for on demand execution.  No automatic PR trigger.
     // Triggered with '@dotnet-bot test latest dependencies please'
 
@@ -165,6 +201,8 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
     Utilities.addPRTestSCM(newLatestDepPRJob, project)
     Utilities.addStandardPRParameters(newLatestDepPRJob, project)
 
+    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepPRJob, "windows")
+    
     // Add common options
     [newLatestDepPRJob, newLatestDepRollingJob].each { newJob ->
         Utilities.addStandardOptions(newJob)
