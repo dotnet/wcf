@@ -397,15 +397,13 @@ namespace System.ServiceModel.Channels
 
         protected override void TraceWriteStart(int size, bool async)
         {
-            var socketInfo = _socket.Information;
-            string remoteEndpointAddressString = socketInfo.RemoteAddress.ToString() + ":" + socketInfo.RemotePort.ToString();
             if (!async)
             {
-                WcfEventSource.Instance.SocketWriteStart(_socket.GetHashCode(), size, remoteEndpointAddressString);
+                WcfEventSource.Instance.SocketWriteStart(_socket.GetHashCode(), size, RemoteEndpointAddressString);
             }
             else
             {
-                WcfEventSource.Instance.SocketAsyncWriteStart(_socket.GetHashCode(), size, remoteEndpointAddressString);
+                WcfEventSource.Instance.SocketAsyncWriteStart(_socket.GetHashCode(), size, RemoteEndpointAddressString);
             }
         }
 
@@ -448,20 +446,13 @@ namespace System.ServiceModel.Channels
 
         protected override void TraceSocketReadStop(int bytesRead, bool async)
         {
-            IPEndPoint remote = RemoteEndPoint;
-            string remoteEndpointAddressString = string.Empty;
-            if (remote != null)
-            {
-                remoteEndpointAddressString = remote.Address + ":" + remote.Port;
-            }
-
             if (!async)
             {
-                WcfEventSource.Instance.SocketReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, remoteEndpointAddressString);
+                WcfEventSource.Instance.SocketReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, RemoteEndpointAddressString);
             }
             else
             {
-                WcfEventSource.Instance.SocketAsyncReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, remoteEndpointAddressString);
+                WcfEventSource.Instance.SocketAsyncReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, RemoteEndpointAddressString);
             }
         }
 

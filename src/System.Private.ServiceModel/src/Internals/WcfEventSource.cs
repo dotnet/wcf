@@ -52,7 +52,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ActionItemScheduled, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ThreadScheduling,
-            Keywords = Keywords.Threading,
+            Keywords = Keywords.Threading, ActivityOptions = EventActivityOptions.Disable,
             Message = "IO Thread scheduler callback invoked.")]
         public void ActionItemScheduled(string AppDomain)
         {
@@ -71,7 +71,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ActionItemCallbackInvoked, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ThreadScheduling,
-            Keywords = Keywords.Threading,
+            Keywords = Keywords.Threading, ActivityOptions = EventActivityOptions.Disable,
             Message = "IO Thread scheduler callback invoked.")]
         public void ActionItemCallbackInvoked(string AppDomain)
         {
@@ -288,7 +288,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.MessageReceivedByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
-            Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral,
+            Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral, ActivityOptions = EventActivityOptions.Disable,
             Message = "The transport received a message from '{0}'.")]
         public void MessageReceivedByTransport(string ListenAddress, string HostReference, string AppDomain)
         {
@@ -308,7 +308,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.MessageSentByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
-            Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral,
+            Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral, ActivityOptions = EventActivityOptions.Disable,
             Message = "The transport sent a message to '{0}'.")]
         public void MessageSentByTransport(string DestinationAddress, string HostReference, string AppDomain)
         {
@@ -348,7 +348,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ServiceChannelCallStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelCall,
-            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "The Client completed executing Action '{0}' associated with the '{1}' contract. The message was sent to '{2}'.")]
         public void ServiceChannelCallStop(string Action, string ContractName, string Destination, string HostReference, string AppDomain)
         {
@@ -467,7 +467,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ServiceChannelOpenStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelOpen,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannelOpen started.")]
         public void ServiceChannelOpenStart(string AppDomain)
         {
@@ -487,7 +487,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ServiceChannelOpenStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelOpen,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannelOpen completed.")]
         public void ServiceChannelOpenStop(string AppDomain)
         {
@@ -507,7 +507,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ServiceChannelCallStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannelCall started.")]
         public void ServiceChannelCallStart(string AppDomain)
         {
@@ -522,7 +522,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ServiceChannelBeginCallStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannel asynchronous calls started.")]
         public void ServiceChannelBeginCallStart(string AppDomain)
         {
@@ -839,7 +839,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.MessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A message with size '{0}' bytes was read by the encoder.")]
         public void MessageReadByEncoder(int Size, string EventSource, string AppDomain)
         {
@@ -860,7 +860,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.MessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A message with size '{0}' bytes was written by the encoder.")]
         public void MessageWrittenByEncoder(int Size, string EventSource, string AppDomain)
         {
@@ -919,7 +919,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.DispatchFormatterDeserializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeRequest,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher started deserialization the request message.")]
         public void DispatchFormatterDeserializeRequestStart(string AppDomain)
         {
@@ -939,7 +939,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.DispatchFormatterDeserializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeRequest,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher completed deserialization the request message.")]
         public void DispatchFormatterDeserializeRequestStop(string AppDomain)
         {
@@ -959,7 +959,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.DispatchFormatterSerializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeReply,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher started serialization of the reply message.")]
         public void DispatchFormatterSerializeReplyStart(string AppDomain)
         {
@@ -979,7 +979,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.DispatchFormatterSerializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeReply,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher completed serialization of the reply message.")]
         public void DispatchFormatterSerializeReplyStop(string AppDomain)
         {
@@ -999,7 +999,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ClientFormatterSerializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeRequest,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client request serialization started.")]
         public void ClientFormatterSerializeRequestStart(string AppDomain)
         {
@@ -1019,7 +1019,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ClientFormatterSerializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeRequest,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client completed serialization of the request message.")]
         public void ClientFormatterSerializeRequestStop(string AppDomain)
         {
@@ -1039,7 +1039,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ClientFormatterDeserializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeReply,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client started deserializing the reply message.")]
         public void ClientFormatterDeserializeReplyStart(string AppDomain)
         {
@@ -1059,7 +1059,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ClientFormatterDeserializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeReply,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client completed deserializing the reply message.")]
         public void ClientFormatterDeserializeReplyStop(string AppDomain)
         {
@@ -1079,7 +1079,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.GetServiceInstanceStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ServiceInstance,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Service instance retrieval started.")]
         public void GetServiceInstanceStart(string AppDomain)
         {
@@ -1099,7 +1099,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.GetServiceInstanceStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ServiceInstance,
-            Keywords = Keywords.ServiceModel,
+            Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Service instance retrieved.")]
         public void GetServiceInstanceStop(string AppDomain)
         {
@@ -1119,7 +1119,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ChannelReceiveStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ChannelReceive,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ChannelHandlerId:{0} - Message receive loop started.")]
         public void ChannelReceiveStart(int ChannelId, string AppDomain)
         {
@@ -1139,7 +1139,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ChannelReceiveStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ChannelReceive,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ChannelHandlerId:{0} - Message receive loop stopped.")]
         public void ChannelReceiveStop(int ChannelId, string AppDomain)
         {
@@ -1179,7 +1179,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ListenerOpenStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ListenerOpen,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Listener opening for '{0}'.")]
         public void ListenerOpenStart(string Uri, string AppDomain)
         {
@@ -1199,7 +1199,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.ListenerOpenStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ListenerOpen,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Listener open completed.")]
         public void ListenerOpenStop(string AppDomain)
         {
@@ -1278,7 +1278,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.BinaryMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "BinaryMessageEncoder started encoding the message.")]
         public void BinaryMessageEncodingStart(string AppDomain)
         {
@@ -1298,7 +1298,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.TextMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "TextMessageEncoder started encoding the message.")]
         public void TextMessageEncodingStart(string AppDomain)
         {
@@ -1318,7 +1318,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.BinaryMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "BinaryMessageEncoder started decoding the message.")]
         public void BinaryMessageDecodingStart(string AppDomain)
         {
@@ -1337,7 +1337,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.TextMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "TextMessageEncoder started decoding the message.")]
         public void TextMessageDecodingStart(string AppDomain)
         {
@@ -1356,7 +1356,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.SocketReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
-            Keywords = Keywords.TCP,
+            Keywords = Keywords.TCP, ActivityOptions = EventActivityOptions.Disable,
             Message = "SocketId:{0} read '{1}' bytes read from '{2}'.")]
         public void SocketReadStop(int SocketId, int Size, string Endpoint, string AppDomain)
         {
@@ -1413,7 +1413,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.SocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
-            Keywords = Keywords.TCP,
+            Keywords = Keywords.TCP, ActivityOptions = EventActivityOptions.Disable,
             Message = "SocketId:{0} writing '{1}' bytes to '{2}'.")]
         public void SocketAsyncWriteStart(int SocketId, int Size, string Endpoint, string AppDomain)
         {
@@ -1471,7 +1471,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.StreamedMessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A streamed message was read by the encoder.")]
         public void StreamedMessageReadByEncoder(string AppDomain)
         {
@@ -1491,7 +1491,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.StreamedMessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
-            Keywords = Keywords.Channel,
+            Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A streamed message was written by the encoder.")]
         public void StreamedMessageWrittenByEncoder(string AppDomain)
         {
@@ -1511,7 +1511,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.WebSocketConnectionRequestSendStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.Connect,
-            Keywords = Keywords.HTTP,
+            Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocket connection request to '{0}' send start.")]
         public void WebSocketConnectionRequestSendStart(string remoteAddress, string AppDomain)
         {
@@ -1531,7 +1531,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.WebSocketConnectionRequestSendStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.Connect,
-            Keywords = Keywords.HTTP,
+            Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} connection request sent.")]
         public void WebSocketConnectionRequestSendStop(int websocketId, string AppDomain)
         {
@@ -1591,7 +1591,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.WebSocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
-            Keywords = Keywords.HTTP,
+            Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} writing '{1}' bytes to '{2}'.")]
         public void WebSocketAsyncWriteStart(int websocketId, int byteCount, string remoteAddress, string AppDomain)
         {
@@ -1610,7 +1610,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.WebSocketAsyncWriteStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
-            Keywords = Keywords.HTTP,
+            Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} asynchronous write stop.")]
         public void WebSocketAsyncWriteStop(int websocketId, string AppDomain)
         {
@@ -1629,7 +1629,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.WebSocketAsyncReadStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportReceive,
-            Keywords = Keywords.HTTP,
+            Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} read start.")]
         public void WebSocketAsyncReadStart(int websocketId, string AppDomain)
         {
@@ -1648,7 +1648,7 @@ namespace System.Runtime
         }
 
         [Event(EventIds.WebSocketAsyncReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
-            Keywords = Keywords.HTTP,
+            Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} read '{1}' bytes from '{2}'.")]
         public void WebSocketAsyncReadStop(int websocketId, int byteCount, string remoteAddress, string AppDomain)
         {
