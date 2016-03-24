@@ -32,6 +32,13 @@ namespace Infrastructure.Common
         public static readonly string UseFiddlerUrl_PropertyName = "UseFiddlerUrl"%3B
         public static readonly string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan"%3B
         public static readonly string MaxTestTimeSpan_PropertyName = "MaxTestTimeSpan"%3B
+        public static readonly string NegotiateTestRealm_PropertyName = "NegotiateTestRealm"%3B
+        public static readonly string NegotiateTestDomain_PropertyName = "NegotiateTestDomain"%3B
+        public static readonly string NegotiateTestUserName_PropertyName = "NegotiateTestUserName"%3B
+        public static readonly string NegotiateTestPassword_PropertyName = "NegotiateTestPassword"%3B
+        public static readonly string NegotiateTestSpn_PropertyName = "NegotiateTestSpn"%3B
+        public static readonly string NegotiateTestUpn_PropertyName = "NegotiateTestUpn"%3B
+        
         static partial void Initialize(Dictionary<string, string> properties)
         {
             properties["BridgeResourceFolder"] = @"$(BridgeResourceFolder)"%3B
@@ -48,6 +55,12 @@ namespace Infrastructure.Common
             properties["UseFiddlerUrl"] = "$(UseFiddlerUrl)"%3B
             properties["BridgeMaxIdleTimeSpan"] = "$(BridgeMaxIdleTimeSpan)"%3B
             properties["MaxTestTimeSpan"] = "$(MaxTestTimeSpan)"%3B
+            properties["NegotiateTestRealm"] = "$(NegotiateTestRealm)"%3B
+            properties["NegotiateTestDomain"] = "$(NegotiateTestDomain)"%3B
+            properties["NegotiateTestUserName"] = "$(NegotiateTestUserName)"%3B
+            properties["NegotiateTestPassword"] = "$(NegotiateTestPassword)"%3B
+            properties["NegotiateTestSpn"] = "$(NegotiateTestSpn)"%3B
+            properties["NegotiateTestUpn"] = "$(NegotiateTestUpn)"%3B
         }
     }
 }

@@ -22,14 +22,14 @@ public static class NegotiateStream_Http_Tests
     //              prior Kerberos tickets
     // 
     // NegotiateStream_*_With_ExplicitUserNameAndPassword
-    //     Windows: Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
-    //       Linux: Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
+    //     Windows: Edit the NegotiateStreamTestConfiguration.UserName and .Password variables to a user valid on your Kerberos realm
+    //       Linux: Edit the NegotiateStreamTestConfiguration.UserName and .Password variables to a user valid on your Kerberos realm
     //              If previous tests were run, it may be necessary to run 'kdestroy -A' to remove all
     //              prior Kerberos tickets
     // 
     // NegotiateStream_*_With_ExplicitSpn
-    //     Windows: Edit the s_Spn variable to match a valid SPN for the server 
-    //       Linux: Edit the s_Spn variable to match a valid SPN for the server 
+    //     Windows: Edit the NegotiateStreamTestConfiguration.Spn variable to match a valid SPN for the server 
+    //       Linux: Edit the NegotiateStreamTestConfiguration.Spn variable to match a valid SPN for the server 
     //   
     //     By default, the SPN is the same as the host's fully qualified domain name, for example, 
     //     'host.domain.com'
@@ -37,26 +37,20 @@ public static class NegotiateStream_Http_Tests
     //     by using a tool like psexec and running 'psexec -s -h <WcfBridge.exe>' 
     // 
     // NegotiateStream_*_With_Upn
-    //     Windows: Edit the s_Upn field to match a valid UPN for the server in the form of 
+    //     Windows: Edit the NegotiateStreamTestConfiguration.Upn field to match a valid UPN for the server in the form of 
     //              'user@DOMAIN.COM'
     //       Linux: This scenario is not yet supported - dotnet/corefx#6606
     //
     // NegotiateStream_*_With_ExplicitUserNameAndPassword_With_Spn
-    //     Windows: Edit the s_Spn variable to match a valid SPN for the server
-    //              Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
-    //       Linux: Edit the s_Spn variable to match a valid SPN for the server
-    //              Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
+    //     Windows: Edit the NegotiateStreamTestConfiguration.Spn variable to match a valid SPN for the server
+    //              Edit the NegotiateStreamTestConfiguration.UserName and .Password variables to a user valid on your Kerberos realm
+    //       Linux: Edit the NegotiateStreamTestConfiguration.Spn variable to match a valid SPN for the server
+    //              Edit the NegotiateStreamTestConfiguration.UserName and .Password variables to a user valid on your Kerberos realm
     // 
     // NegotiateStream_*_With_ExplicitUserNameAndPassword_With_Upn
-    //     Windows: Edit the s_Upn variable to match a valid UPN for the server
-    //              Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
+    //     Windows: Edit the NegotiateStreamTestConfiguration.Upn variable to match a valid UPN for the server
+    //              Edit the NegotiateStreamTestConfiguration.UserName and .Password variables to a user valid on your Kerberos realm
     //       Linux: This scenario is not yet supported - dotnet/corefx#6606
-
-    private const string s_Domain = "domain";
-    private const string s_Username = "azureuser";
-    private const string s_Password = "hunter2";
-    private const string s_Spn = "host";
-    private const string s_Upn = "azureuser@DOMAIN.COM";
 
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
@@ -112,9 +106,9 @@ public static class NegotiateStream_Http_Tests
                 binding, 
                 new EndpointAddress(Endpoints.Https_WindowsAuth_Address));
 
-            factory.Credentials.Windows.ClientCredential.Domain = s_Domain;
-            factory.Credentials.Windows.ClientCredential.UserName = s_Username;
-            factory.Credentials.Windows.ClientCredential.Password = s_Password;
+            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.NegotiateTestDomain;
+            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.NegotiateTestUserName;
+            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.NegotiateTestPassword;
 
             serviceProxy = factory.CreateChannel();
 
@@ -152,7 +146,7 @@ public static class NegotiateStream_Http_Tests
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Https_WindowsAuth_Address),
-                    new SpnEndpointIdentity(s_Spn)
+                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestSpn)
             ));
 
             serviceProxy = factory.CreateChannel();
@@ -191,7 +185,7 @@ public static class NegotiateStream_Http_Tests
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Https_WindowsAuth_Address),
-                    new UpnEndpointIdentity(s_Upn)
+                    new UpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestUpn)
             ));
 
             serviceProxy = factory.CreateChannel();
@@ -230,12 +224,12 @@ public static class NegotiateStream_Http_Tests
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Https_WindowsAuth_Address),
-                    new SpnEndpointIdentity(s_Spn)
+                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestSpn)
             ));
 
-            factory.Credentials.Windows.ClientCredential.Domain = s_Domain;
-            factory.Credentials.Windows.ClientCredential.UserName = s_Username;
-            factory.Credentials.Windows.ClientCredential.Password = s_Password;
+            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.NegotiateTestDomain;
+            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.NegotiateTestUserName;
+            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.NegotiateTestPassword;
 
             serviceProxy = factory.CreateChannel();
 
@@ -273,12 +267,12 @@ public static class NegotiateStream_Http_Tests
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Https_WindowsAuth_Address),
-                    new UpnEndpointIdentity(s_Upn)
+                    new UpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestUpn)
             ));
 
-            factory.Credentials.Windows.ClientCredential.Domain = s_Domain;
-            factory.Credentials.Windows.ClientCredential.UserName = s_Username;
-            factory.Credentials.Windows.ClientCredential.Password = s_Password;
+            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.NegotiateTestDomain;
+            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.NegotiateTestUserName;
+            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.NegotiateTestPassword;
 
             serviceProxy = factory.CreateChannel();
 

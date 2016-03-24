@@ -61,7 +61,31 @@
     <PropertyGroup Condition="'$(MaxTestTimeSpan)' == ''">
       <MaxTestTimeSpan>00:01:00</MaxTestTimeSpan>
     </PropertyGroup>
-  
+
+    <PropertyGroup Condition="'$(NegotiateTestRealm)' == ''">
+      <NegotiateTestRealm>DOMAIN.CONTOSO.COM</NegotiateTestRealm>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(NegotiateTestDomain)' == ''">
+      <NegotiateTestDomain>DOMAIN</NegotiateTestDomain>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(NegotiateTestUserName)' == ''">
+      <NegotiateTestUserName>testuser</NegotiateTestUserName>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(NegotiateTestPassword)' == ''">
+      <NegotiateTestPassword>hunter2</NegotiateTestPassword>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(NegotiateTestSpn)' == ''">
+      <NegotiateTestSpn>testhost.domain.contoso.com</NegotiateTestSpn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(NegotiateTestUpn)' == ''">
+      <NegotiateTestUpn>testuser@DOMAIN.CONTOSO.COM</NegotiateTestUpn>
+    </PropertyGroup>
+
   <!--
      GeneratedTestPropertiesFileName:
      The full path of the C# file that will be generated at build time to

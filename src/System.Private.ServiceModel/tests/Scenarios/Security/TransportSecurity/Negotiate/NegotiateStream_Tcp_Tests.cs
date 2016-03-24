@@ -52,12 +52,6 @@ public static class NegotiateStream_Tcp_Tests
     //              Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
     //       Linux: This scenario is not yet supported - dotnet/corefx#6606
 
-    private const string s_Domain = "domain";
-    private const string s_Username = "azureuser";
-    private const string s_Password = "hunter2";
-    private const string s_Spn = "host";
-    private const string s_Upn = "azureuser@DOMAIN.COM";
-
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
     [Fact]
@@ -71,8 +65,8 @@ public static class NegotiateStream_Tcp_Tests
 
         try
         {
-            // *** SETUP *** \\
-            NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
+               // *** SETUP *** \\
+               NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_DefaultBinding_Address));
             serviceProxy = factory.CreateChannel();
 
@@ -109,9 +103,9 @@ public static class NegotiateStream_Tcp_Tests
             factory = new ChannelFactory<IWcfService>(binding, 
                 new EndpointAddress(Endpoints.Tcp_DefaultBinding_Address));
 
-            factory.Credentials.Windows.ClientCredential.Domain = s_Domain;
-            factory.Credentials.Windows.ClientCredential.UserName = s_Username;
-            factory.Credentials.Windows.ClientCredential.Password = s_Password;
+            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.NegotiateTestDomain;
+            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.NegotiateTestUserName;
+            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.NegotiateTestPassword;
 
             serviceProxy = factory.CreateChannel();
 
@@ -148,7 +142,7 @@ public static class NegotiateStream_Tcp_Tests
             factory = new ChannelFactory<IWcfService>(binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new SpnEndpointIdentity(s_Spn)
+                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestSpn)
             ));
 
             serviceProxy = factory.CreateChannel();
@@ -187,7 +181,7 @@ public static class NegotiateStream_Tcp_Tests
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new SpnEndpointIdentity(s_Spn)
+                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestSpn)
             ));
 
             serviceProxy = factory.CreateChannel();
@@ -226,12 +220,12 @@ public static class NegotiateStream_Tcp_Tests
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new SpnEndpointIdentity(s_Spn)
+                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestSpn)
             ));
 
-            factory.Credentials.Windows.ClientCredential.Domain = s_Domain;
-            factory.Credentials.Windows.ClientCredential.UserName = s_Username;
-            factory.Credentials.Windows.ClientCredential.Password = s_Password;
+            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.NegotiateTestDomain;
+            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.NegotiateTestUserName;
+            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.NegotiateTestPassword;
 
             serviceProxy = factory.CreateChannel();
 
@@ -269,12 +263,12 @@ public static class NegotiateStream_Tcp_Tests
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new UpnEndpointIdentity(s_Upn)
+                    new UpnEndpointIdentity(NegotiateStreamTestConfiguration.NegotiateTestUpn)
             ));
 
-            factory.Credentials.Windows.ClientCredential.Domain = s_Domain;
-            factory.Credentials.Windows.ClientCredential.UserName = s_Username;
-            factory.Credentials.Windows.ClientCredential.Password = s_Password;
+            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.NegotiateTestDomain;
+            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.NegotiateTestUserName;
+            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.NegotiateTestPassword;
 
             serviceProxy = factory.CreateChannel();
 
