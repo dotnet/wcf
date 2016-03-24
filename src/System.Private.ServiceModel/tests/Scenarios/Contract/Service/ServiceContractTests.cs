@@ -9,7 +9,9 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ScenarioTests.Common;
 using Xunit;
+
 
 public static class ServiceContractTests
 {
@@ -222,6 +224,68 @@ public static class ServiceContractTests
             });
         }).Wait(ScenarioTestHelpers.TestTimeout);
         Assert.True(success, "Test Scenario: BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext timed-out.");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Echo_Streamed_Async_Delayed_Throws_TimeoutException()
+    {
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
+        int sendTimeoutMs = 3000;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.TransferMode = TransferMode.Streamed;
+            binding.SendTimeout = TimeSpan.FromMilliseconds(sendTimeoutMs);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // Create a read stream that will abort the proxy channel when the async read is called.
+            // We also intercept the synchronous read because that path can also be executed during
+            // an async read.
+            stream = new TestMockStream()
+            {
+                CopyToAsyncFunc = (Stream destination, int bufferSize, CancellationToken ct) =>
+                {
+                    // Abort to force the internal HttpClientChannelAsyncRequest.Cleanup()
+                    // to clear its data structures before it cancels its timeout task.
+                    ((ICommunicationObject)serviceProxy).Abort();
+                    Task.Delay(sendTimeoutMs * 2).Wait();
+                    return null;
+                },
+
+                ReadFunc = (byte[] buffer, int offset, int count) =>
+                {
+                    // Abort to force the internal HttpClientChannelAsyncRequest.Cleanup()
+                    // to clear its data structures before it cancels its timeout task.
+                    ((ICommunicationObject)serviceProxy).Abort();
+                    Task.Delay(sendTimeoutMs * 2).Wait();
+                    return -1;
+                }
+            };
+
+            // *** EXECUTE *** \\
+            Assert.Throws<TimeoutException>(() =>
+            {
+                var unused = serviceProxy.EchoStreamAsync(stream).GetAwaiter().GetResult();
+            });
+
+            // *** VALIDATE *** \\
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
     }
 
     [Fact]
