@@ -32,7 +32,7 @@ namespace System.ServiceModel.Channels
             _encoder = factory.MessageEncoderFactory.Encoder;
         }
 
-        internal async Task<Message> ParseIncomingResponse()
+        internal async Task<Message> ParseIncomingResponse(TimeoutHelper timeoutHelper)
         {
             ValidateAuthentication();
             ValidateResponseStatusCode();
@@ -52,7 +52,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                message = await ReadStreamAsMessageAsync();
+                message = await ReadStreamAsMessageAsync(timeoutHelper);
             }
 
             var exception = ProcessHttpAddressing(message);
@@ -162,7 +162,7 @@ namespace System.ServiceModel.Channels
             return true;
         }
 
-        private Task<Message> ReadStreamAsMessageAsync()
+        private Task<Message> ReadStreamAsMessageAsync(TimeoutHelper timeoutHelper)
         {
             var content = _httpResponseMessage.Content;
             Task<Stream> contentStreamTask = GetStreamAsync();
@@ -173,16 +173,16 @@ namespace System.ServiceModel.Channels
             }
             if (!content.Headers.ContentLength.HasValue)
             {
-                return ReadChunkedBufferedMessageAsync(contentStreamTask);
+                return ReadChunkedBufferedMessageAsync(contentStreamTask, timeoutHelper);
             }
             return ReadBufferedMessageAsync(contentStreamTask);
         }
 
-        private async Task<Message> ReadChunkedBufferedMessageAsync(Task<Stream> inputStreamTask)
+        private async Task<Message> ReadChunkedBufferedMessageAsync(Task<Stream> inputStreamTask, TimeoutHelper timeoutHelper)
         {
             try
             {
-                return await _encoder.ReadMessageAsync(await inputStreamTask, _factory.BufferManager, _factory.MaxBufferSize, _contentType);
+                return await _encoder.ReadMessageAsync(await inputStreamTask, _factory.BufferManager, _factory.MaxBufferSize, _contentType, await timeoutHelper.GetCancellationTokenAsync());
             }
             catch (XmlException xmlException)
             {

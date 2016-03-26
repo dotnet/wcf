@@ -598,9 +598,12 @@ namespace System.ServiceModel.Channels
                         MessageEncoderCompressionHandler.GetDecompressStream(stream, compressionFormat), _maxReceivedMessageSize);
                 }
 
-                XmlDictionaryReader reader = _factory.TakeStreamedReader(stream);
+                var wrappingStream = new ReadAheadWrappingStream(stream, 4096);
+                wrappingStream.EnsureBuffered();
+                XmlDictionaryReader reader = _factory.TakeStreamedReader(wrappingStream);
                 Message message = Message.CreateMessage(reader, maxSizeOfHeaders, _factory._messageVersion);
                 message.Properties.Encoder = this;
+                message.Properties[ReadAheadWrappingStream.ReadAheadWrappingStreamPropertyName] = wrappingStream;
 
                 if (WcfEventSource.Instance.StreamedMessageReadByEncoderIsEnabled())
                 {
