@@ -20,6 +20,9 @@ public static class TestPropertiesTest
         Assert.NotNull(TestProperties.BridgeHost_PropertyName);
         Assert.NotNull(TestProperties.BridgePort_PropertyName);
         Assert.NotNull(TestProperties.UseFiddlerUrl_PropertyName);
+        Assert.NotNull(TestProperties.NegotiateTestDomain_PropertyName);
+        Assert.NotNull(TestProperties.NegotiateTestUserName_PropertyName);
+        Assert.NotNull(TestProperties.NegotiateTestPassword_PropertyName);
     }
 
     [Fact]
