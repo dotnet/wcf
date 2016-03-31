@@ -162,7 +162,9 @@ public static class HttpsTests
 
     [Fact]
 #if FEATURE_NETNATIVE
-    [ActiveIssue(544)] // Server certificate validation not supported in NET Native
+    [ActiveIssue(959)] // Server certificate validation not supported in NET Native
+#else
+    [ActiveIssue(959, PlatformID.AnyUnix)] // Server certificate validation not supported on Linux and OS X
 #endif
     [OuterLoop]
     public static void ServerCertificateValidation_EchoString()
@@ -209,7 +211,7 @@ public static class HttpsTests
     }
 
     [Fact]
-    [ActiveIssue(544, PlatformID.AnyUnix)]
+    [ActiveIssue(960, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void ClientCertificate_EchoString()
     {
