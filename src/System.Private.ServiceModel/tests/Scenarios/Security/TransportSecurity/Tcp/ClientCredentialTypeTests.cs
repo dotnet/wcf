@@ -55,6 +55,7 @@ public static class Tcp_ClientCredentialTypeTests
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=None
     [Fact]
     [OuterLoop]
+    [ActiveIssue(951, PlatformID.OSX)]
     public static void SameBinding_SecurityModeNone_EchoString()
     {
         string testString = "Hello";
@@ -169,6 +170,8 @@ public static class Tcp_ClientCredentialTypeTests
     [Fact]
 #if FEATURE_NETNATIVE
     [ActiveIssue(834)] // Not supported in NET Native
+#else
+    [ActiveIssue(951, PlatformID.OSX)]
 #endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_EchoString()
@@ -219,6 +222,8 @@ public static class Tcp_ClientCredentialTypeTests
     [Fact]
 #if FEATURE_NETNATIVE
     [ActiveIssue(834)] // Not supported in NET Native
+#else
+    [ActiveIssue(951, PlatformID.OSX)]
 #endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_CustomValidator_EchoString()

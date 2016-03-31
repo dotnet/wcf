@@ -21,6 +21,7 @@ public static class DuplexChannelShapeTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(951, PlatformID.OSX)]
     public static void IDuplexSessionChannel_Tcp_NetTcpBinding()
     {
         StringBuilder errorBuilder = new StringBuilder();
