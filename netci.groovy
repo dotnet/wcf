@@ -106,11 +106,16 @@ wcfUtilities = new WcfUtilities()
 // Define build string
 def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=Windows_NT /p:Configuration=Windows_NT_Debug /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
 
-
 // Generate a rolling (12 hr job) and a PR job that can be run on demand
 [true, false].each { isPR ->
+    def buildLabel = 'windows-elevated'
     def newJob = job(Utilities.getFullJobName(project, 'code_coverage_windows', isPR)) {
-      label('windows-elevated')
+      label(buildLabel)
+    }
+    
+    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel)
+    
+    newJob.with{
       steps {
         batchFile(codeCoverageBuildString)
       }
@@ -119,8 +124,6 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
     Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
     Utilities.addHtmlPublisher(newJob, 'bin/tests/coverage', 'Code Coverage Report', 'index.htm')
     Utilities.addArchival(newJob, '**/coverage/*,msbuild.log')
-    
-    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, "windows")
     
     if (isPR) {
         Utilities.addGithubPRTriggerForBranch(newJob, branch, 'Code Coverage Windows Debug', '(?i).*test\\W+code\\W*coverage.*')
@@ -138,10 +141,16 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
     ['Debug', 'Release'].each { configuration ->
         def configurationJobName = configuration.toLowerCase()
         def jobName = "outerloop_windows_${configurationJobName}"
+        def buildLabel = 'windows-elevated'
         
         // Create the new rolling job
         def newJob = job(Utilities.getFullJobName(project, jobName, isPR)) {
-            label('windows-elevated')
+            label(buildLabel)    
+        }
+        
+        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel)
+
+        newJob.with {
             steps {
                 batchFile("build.cmd /p:Configuration=Windows_NT_${configuration} /p:WithCategories=OuterLoop")
             }
@@ -150,8 +159,6 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
         // Add commit job options
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
-        
-        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, "windows")
 
         if (isPR) {
             Utilities.addGithubPRTriggerForBranch(newJob, branch, "Outerloop Windows ${configuration} Build and Test", '(?i).*test\\W+outerloop.*')
@@ -169,11 +176,17 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
 ['Debug', 'Release'].each { configuration ->
     def configurationJobName = configuration.toLowerCase()
     def jobName = "latest_dependencies_windows_${configurationJobName}"
-    def latestDepBuildString = '''build.cmd /p:Configuration=Windows_NT_${configuration}  /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
+    def latestDepBuildString = '''build.cmd /p:Configuration=Windows_NT_${configur ation}  /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
+    def buildLabel = 'windows-elevated'
 
     // Create the new rolling job
     def newLatestDepRollingJob = job(Utilities.getFullJobName(project, jobName, false)) {
-        label('windows-elevated')
+        label(buildLabel)
+    }
+    
+    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepRollingJob, buildLabel)
+    
+    newLatestDepRollingJob.with {
         steps {
             batchFile(latestDepBuildString)
         }
@@ -184,13 +197,16 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
     Utilities.addStandardNonPRParameters(newLatestDepRollingJob)
     Utilities.addPeriodicTrigger(newLatestDepRollingJob, '@daily')
 
-    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepRollingJob, "windows")
-
     // Create the new PR job for on demand execution.  No automatic PR trigger.
     // Triggered with '@dotnet-bot test latest dependencies please'
 
     def newLatestDepPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
-        label('windows-elevated')
+        label(buildLabel)
+    }
+    
+    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepPRJob, buildLabel)
+    
+    newLatestDepPRJob.with {
         steps {
             batchFile(latestDepBuildString)
         }
@@ -200,8 +216,6 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
     Utilities.addGithubPRTrigger(newLatestDepPRJob, "Latest dependencies Windows ${configuration} Build and Test", '@dotnet-bot test latest dependencies please')
     Utilities.addPRTestSCM(newLatestDepPRJob, project)
     Utilities.addStandardPRParameters(newLatestDepPRJob, project)
-
-    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepPRJob, "windows")
     
     // Add common options
     [newLatestDepPRJob, newLatestDepRollingJob].each { newJob ->
