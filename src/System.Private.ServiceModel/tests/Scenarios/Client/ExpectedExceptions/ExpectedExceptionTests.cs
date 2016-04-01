@@ -491,33 +491,46 @@ public static class ExpectedExceptionTests
 
     [Fact]
     [OuterLoop]
+    // Confirm that the Validate method of the custom X509CertificateValidator is called and that an exception thrown there is handled correctly.
     public static void TCP_ServiceCertFailedCustomValidate_Throw_Exception()
     {
         string testString = "Hello";
+        NetTcpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
-        NetTcpBinding binding = new NetTcpBinding();
-        binding.Security.Mode = SecurityMode.Transport;
-        binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
-
-        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_VerifyDNS_Address), new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
-        factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
-        factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new MyCertificateValidator();
-
-        IWcfService serviceProxy = factory.CreateChannel();
-
-        try
+        // *** VALIDATE *** \\
+        var exception = Assert.Throws<Exception>(() =>
         {
-            var result = serviceProxy.Echo(testString);
-        }
-        catch (Exception e)
-        {
-            string message = e.Message;
-        }
-        finally
-        {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory);
-        }
+            // *** SETUP *** \\
+            binding = new NetTcpBinding();
+            binding.Security.Mode = SecurityMode.Transport;
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_VerifyDNS_Address), new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+            factory.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new MyCertificateValidator();
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            try
+            {
+                var result = serviceProxy.Echo(testString);
+
+                // *** CLEANUP *** \\
+                ((ICommunicationObject)serviceProxy).Close();
+                factory.Close();
+            }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            }
+        });
+
+        // *** ADDITIONAL VALIDATION *** \\
+        Assert.Equal(MyCertificateValidator.exceptionMsg, exception.Message);
     }
 
     [Fact]
@@ -565,13 +578,12 @@ public static class ExpectedExceptionTests
 
 public class MyCertificateValidator : X509CertificateValidator
 {
-    public const string exceptionMsg = "Not issued by a trusted issuer";
+    public const string exceptionMsg = "Throwing exception from Validate method on purpose.";
 
     public override void Validate(X509Certificate2 certificate)
     {
-        if (certificate.IssuerName.Name != "RandomOne")
-        {
-            throw new Exception(exceptionMsg);
-        }
+        // Always throw an exception.
+        // MSDN guidance also uses a simple Exception when an exception is thrown from this method.
+        throw new Exception(exceptionMsg);
     }
 }
