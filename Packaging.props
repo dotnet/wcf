@@ -7,7 +7,7 @@
     
     <!-- *** start WCF Content *** -->
     <!-- *** this file is located differently in corefx *** -->
-    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1-rc3-23921/runtime.json</RuntimeIdGraphDefinitionFile>
+    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1-rc3-23931-00/runtime.json</RuntimeIdGraphDefinitionFile>
     <!-- *** end WCF Content *** -->
 
     <!-- Add a condition for this when we are able to run on .NET Core -->
