@@ -17,6 +17,11 @@
     <RoslynPackageName>Microsoft.Net.ToolsetCompilers</RoslynPackageName>
   </PropertyGroup>
 
+  <!-- Informs build tools to apply .NET Framework metadata if not a test project -->
+  <PropertyGroup>
+    <IsDotNetFrameworkProductAssembly>true</IsDotNetFrameworkProductAssembly>
+  </PropertyGroup>
+  
   <ItemGroup>
     <AssemblyMetadata Include=".NETFrameworkAssembly">
       <Value></Value>
