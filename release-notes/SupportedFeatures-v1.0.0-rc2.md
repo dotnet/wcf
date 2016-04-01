@@ -1,20 +1,20 @@
-WCF Features in RC2(In Progress)
+WCF Features in RC2
 ===========================
 
 Packages released
 ------------
 
-[System.ServiceModel.Duplex 4.0.1-beta-23516](http://www.nuget.org/packages/System.ServiceModel.Duplex/4.0.1-beta-23516)    
-[System.ServiceModel.Http 4.0.11-beta-23516 ](http://www.nuget.org/packages/System.ServiceModel.Http/4.0.11-beta-23516)  
-[System.ServiceModel.Primitives 4.1.0-beta-23516](http://www.nuget.org/packages/System.ServiceModel.Primitives/4.1.0-beta-23516)  
-[System.ServiceModel.Security 4.0.1-beta-23516 ](http://www.nuget.org/packages/System.ServiceModel.Security/4.0.1-beta-23516)  
-[System.ServiceModel.NetTcp 4.1.0-beta-23516](http://www.nuget.org/packages/System.ServiceModel.NetTcp/4.1.0-beta-23516)  
+[System.ServiceModel.Duplex 4.0.1-rc2-*****](<NEED LINK>)    
+[System.ServiceModel.Http 4.0.11-rc2-*****](<NEED LINK>)  
+[System.ServiceModel.Primitives 4.1.0-rc2-*****](<NEED LINK>)  
+[System.ServiceModel.Security 4.0.1-rc2-*****](<NEED LINK>)  
+[System.ServiceModel.NetTcp 4.1.0-rc2-*****](<NEED LINK>)  
 
 Supported features
 ------------
 :white_check_mark: -- Works with no known major issues  
 :warning: --  Partially works with known issues or only partially tested  
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;**Tip:** Click on warning symbol to see related Issue.  
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;**Tip:** Click on symbol for more details.  
 :no_entry_sign: -- Not Supported  
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;**Tip:** Click on symbol for more details.  
 :grey_question: -- Not yet tested
@@ -23,36 +23,37 @@ Supported features
 | :------- | :-------- | :------------: | :-------: |  :------:  |   :-----:  |   :-----:  |   :-----:  |   :-----:   |
 |Bindings|BasicHttpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 ||CustomBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||NetHttpBinding|:white_check_mark: | :white_check_mark: | [:warning:] (https://github.com/dotnet/wcf/issues/420) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||NetTcpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :no_entry_sign: |
+||NetHttpBinding|:white_check_mark: | :white_check_mark: | [:warning:](#bindings_nethttpbinding) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||NetTcpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | [:no_entry_sign:](#NetTcp) |
 |Transports|Http|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||Https| [:warning:] (https://github.com/dotnet/wcf/issues/470) | :white_check_mark: | [:warning:] (https://github.com/dotnet/wcf/issues/438) | :grey_question: | :grey_question: | :grey_question: | :no_entry_sign: |
-||Tcp|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :no_entry_sign: |
-||WebSockets|[:warning:](https://github.com/dotnet/wcf/issues/526) | :white_check_mark: | [:warning:] (https://github.com/dotnet/wcf/issues/463) | :grey_question: | :grey_question: | :grey_question: |[:warning:] (https://github.com/dotnet/wcf/issues/463) |
+||Https| [:warning:](#transports_https) | :white_check_mark: | [:warning:](#transports_https) | :grey_question: | :grey_question: | :grey_question: | [:warning:](#transports_https) |
+||Tcp|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | [:no_entry_sign:](#NetTcp) |
+||WebSockets|[:warning:](#transports_websockets) | :white_check_mark: | [:warning:](#transports_websockets) | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
 |Channel types|Request/Reply|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 ||Duplex|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 |Encodings|Text|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 ||Binary|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-|Transfer mode|Buffered, sync & async|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||Streamed, sync & async|[:warning:](https://github.com/dotnet/wcf/issues/470) | [:warning:](https://github.com/dotnet/wcf/issues/470) | [:warning:](https://github.com/dotnet/wcf/issues/470) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|TransferMode|Buffered (sync/async)|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||Streamed (sync/async)|[:warning:](#transfermode_streamed) | [:warning:](#transfermode_streamed) | [:warning:](#transfermode_streamed) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 |MessageVersion|SOAP 1.1 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 ||SOAP 1.2 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 |Contracts | DataContract | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 | | XmlSerializer | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 | | MessageFormat | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | FaultContract | [:warning:](https://github.com/dotnet/wcf/issues/769) | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | FaultContract | [:warning:](#contracts_faultcontract) | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 |Security | None | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 | | Transport | :white_check_mark: | :white_check_mark:  | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | Message | [:no_entry_sign:](#message-security) | [:no_entry_sign:](#message-security) | [:no_entry_sign:](#message-security) | [:no_entry_sign:](#message-security) | [:no_entry_sign:](#message-security) | [:no_entry_sign:](#message-security) | [:no_entry_sign:](#message-security) |
+| | Message | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) |
 | | Client certificates | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
-|Authentication | Basic | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :no_entry_sign: |
+|Authentication | Basic | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
 | | Digest | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
-| | NTLM | :white_check_mark: | :white_check_mark: | [:no_entry_sign:](#ntlm-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#ntlm-authentication) | :no_entry_sign: |
-| | Kerberos | :white_check_mark: | :white_check_mark: | [:no_entry_sign:](#kerberos-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#kerberos-authentication) | :no_entry_sign: |
+| | NTLM | :white_check_mark: | :white_check_mark: | [:no_entry_sign:](#ntlm-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#ntlm-authentication) | :grey_question: |
+| | Kerberos | :white_check_mark: | :white_check_mark: | [:no_entry_sign:](#kerberos-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#kerberos-authentication) | :grey_question: |
 |Client types | ChannelFactory\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 | | ChannelBase\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 |Extensibility | IClientMessageInspector | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 | | IClientMessageFormatter | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|Management | ETW Tracing | [:no_entry_sign:](#etw-tracing) | :white_check_mark: | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) |
 
 
 Platforms
@@ -90,19 +91,57 @@ Supported Versions...
 Supported Versions...  
 &ensp;&ensp;&ensp;> Mac OS X 10.11  
 
+Partially Working Features
+------------
+:bangbang: *Linked issues are open in RC-2 time-frame, as they are closed look for the fixes in the next release.*  
+#### Bindings_NetHttpBinding  
+
+> **On Platform:** *Ubuntu*  
+>&ensp;&ensp; Active issues: https://github.com/dotnet/wcf/issues/420
+
+#### Transports_Https  
+> **On Platform:** *UWP/Windows/Ubuntu*  
+>&ensp;&ensp;&ensp;&ensp; Active Issue: https://github.com/dotnet/corefx/issues/4429  
+>&ensp;&ensp;&ensp;&ensp; This is the same core issue as listed for the Transports_WebSockets and TransferMode_Streamed features.  
+
+> **On Platform:** *OS X*  
+>&ensp;&ensp;&ensp;&ensp; Active Issue: https://github.com/dotnet/wcf/issues/954  
+>&ensp;&ensp;&ensp;&ensp; This is most likely a machine setup issue.
+
+#### Transports_WebSockets  
+> **On Platform:** *UWP/Windows/Ubuntu*  
+>&ensp;&ensp;&ensp;&ensp; Active Issue: https://github.com/dotnet/corefx/issues/4429  
+>&ensp;&ensp;&ensp;&ensp; This is the same core issue as listed for the Transports_Https and TransferMode_Streamed features.  
+
+#### TransferMode_Streamed  
+> **On Platform:** *UWP/Windows/Ubuntu*  
+>&ensp;&ensp;&ensp;&ensp; Active Issue: https://github.com/dotnet/corefx/issues/4429  
+>&ensp;&ensp;&ensp;&ensp; This is the same core issue as listed for the Transports_Https and Transports_WebSockets features.  
+
+#### Contracts_FaultContract  
+> **On Platform:** *UWP*  
+>&ensp;&ensp;&ensp;&ensp; Active Issue: https://github.com/dotnet/wcf/issues/769  
+
 Not Supported Features
 ------------
 
-#### Message Security
+#### Security_Message  
 Fill in with details.  
 
-#### NTLM Authentication
+#### NTLM Authentication  
 &ensp;&ensp; Support is built into CentOS, RedHat and Mac OS X but it hasn't been tested yet.  
 &ensp;&ensp; Support is not built in to Ubuntu and Debian by default.  
 &ensp;&ensp; For more details see [Issue #943](https://github.com/dotnet/wcf/issues/943)  
 
-#### Kerberos Authentication
+#### Kerberos Authentication  
 &ensp;&ensp; Support is built into CentOS, RedHat and Mac OS X but it hasn't been tested yet.  
 &ensp;&ensp; Support is not built in to Ubuntu and Debian by default.  
 &ensp;&ensp;&ensp;&ensp; A solution has been tested on Ubuntu that works if an SPN is specified.  
 &ensp;&ensp;&ensp;&ensp; The User2User scenario (i.e., when a UPN is specified) is not yet supported.  
+
+#### NetTcp  
+&ensp;&ensp; SetLingerOption isn't working correctly on OS X. This is only used on the Close(timeout) code path so the test itself is likely passing. This api required special handling on linux as this is a windows socket concept.  
+&ensp;&ensp;&ensp;&ensp; Active Issue: https://github.com/dotnet/corefx/issues/7403  
+
+#### ETW Tracing
+&ensp;&ensp; ETW Tracing has been enabled for Windows in this release, support on other platforms will be available in future releases.
