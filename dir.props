@@ -17,6 +17,11 @@
     <RoslynPackageName>Microsoft.Net.ToolsetCompilers</RoslynPackageName>
   </PropertyGroup>
 
+  <!-- Informs build tools to apply .NET Framework metadata if not a test project -->
+  <PropertyGroup>
+    <IsDotNetFrameworkProductAssembly>true</IsDotNetFrameworkProductAssembly>
+  </PropertyGroup>
+  
   <ItemGroup>
     <AssemblyMetadata Include=".NETFrameworkAssembly">
       <Value></Value>
@@ -81,7 +86,7 @@
 
   <ItemGroup>
     <ValidationPattern Include="^(?i)((System\..%2A)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore.%2A)|(Microsoft\.TargetingPack\.Private\.(CoreCLR|NETNative))|(Microsoft\.Win32\..%2A)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
-      <ExpectedPrerelease>rc3-23921</ExpectedPrerelease>
+      <ExpectedPrerelease>rc3-23931-00</ExpectedPrerelease>
     </ValidationPattern>
     <ValidationPattern Include="^(?i)Microsoft\.TargetingPack\.(NetFramework.%2A|Private\.WinRT)$">
       <ExpectedVersion>1.0.1</ExpectedVersion>
