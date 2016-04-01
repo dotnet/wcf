@@ -349,6 +349,7 @@ public static class ServiceContractTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(951, PlatformID.OSX)]
     public static void NetTcp_NoSecurity_Buffered_RoundTrips_String()
     {
         string testString = "Hello";

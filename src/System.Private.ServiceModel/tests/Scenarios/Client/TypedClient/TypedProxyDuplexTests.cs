@@ -17,6 +17,7 @@ public static class TypedProxyDuplexTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(951, PlatformID.OSX)]
     public static void ServiceContract_TypedProxy_AsyncTask_CallbackReturn()
     {
         DuplexChannelFactory<IWcfDuplexTaskReturnService> factory = null;
