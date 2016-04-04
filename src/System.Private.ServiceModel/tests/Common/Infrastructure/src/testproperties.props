@@ -86,6 +86,26 @@
       <NegotiateTestUpn>testuser@DOMAIN.CONTOSO.COM</NegotiateTestUpn>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Domain_Joined)' == ''">
+      <Domain_Joined>false</Domain_Joined>
+    </PropertyGroup>
+  
+    <PropertyGroup Condition="'$(Root_Certificate_Installed)' == ''">
+      <Root_Certificate_Installed>false</Root_Certificate_Installed>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Client_Certificate_Installed)' == ''">
+      <Client_Certificate_Installed>false</Client_Certificate_Installed>
+    </PropertyGroup>
+  
+    <PropertyGroup Condition="'$(SPN_Available)' == ''">
+      <SPN_Available>false</SPN_Available>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Kerberos_Available)' == ''">
+      <Kerberos_Available>false</Kerberos_Available>
+    </PropertyGroup>
+  
   <!--
      GeneratedTestPropertiesFileName:
      The full path of the C# file that will be generated at build time to
