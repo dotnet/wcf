@@ -62,7 +62,6 @@ public static class NegotiateStream_Tcp_Tests
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
-        bool success = false; 
 
         try
         {
@@ -80,17 +79,11 @@ public static class NegotiateStream_Tcp_Tests
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
-            success = true; 
         }
         finally
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-
-            if (!success)
-            {
-                Assert.True(false, string.Format("Credentials passed:{0}{1}", Environment.NewLine, NegotiateStreamTestConfiguration.Instance.ToString()));
-            }
         }
     }
 
