@@ -25,10 +25,8 @@
     <InboxOnTargetFramework Include="xamarinwatchos10" />
 
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
-      <PackageTargetFramework>netstandardapp1.5</PackageTargetFramework>
-    </ProjectReference>
-    <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
-      <PackageTargetFramework>netcore50</PackageTargetFramework>
+      <!-- this needs to match the PackageTargetFramework of the facade -->
+      <PackageTargetFramework>netstandard1.3</PackageTargetFramework>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
