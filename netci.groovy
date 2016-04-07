@@ -13,7 +13,7 @@ class WcfUtilities
     
         job.with { 
             parameters {
-                stringParam('WcfRepoSyncServiceUrl', "http://wcfcore-ci.westus.cloudapp.azure.com/wcfpr${wcfRepoSyncServiceCount}/sync.ashx", 'Wcf OuterLoop Test Service PR Sync Url')
+                stringParam('WcfRepoSyncServiceUrl', "http://wcfcoresrv2.cloudapp.net/PRService${wcfRepoSyncServiceCount}/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
             }
         }
         if (os.toLowerCase().contains("windows")) {
