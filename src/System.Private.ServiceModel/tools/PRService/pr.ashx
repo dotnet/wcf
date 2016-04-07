@@ -11,9 +11,11 @@
 //   - 
 //   - The Git repo is set up as follows: 
 //     [remote "origin"]
-//	       url = https://github.com/dotnet/wcf
-//	       fetch = +refs/heads/*:refs/remotes/origin/*
-//	       fetch = +refs/pull/*/head:refs/remotes/origin/pr/*      <-- allows us to run git checkout pr/{id} 
+//         url = https://github.com/dotnet/wcf
+//         fetch = +refs/heads/*:refs/remotes/origin/*
+//         fetch = +refs/pull/*/head:refs/remotes/origin/pr/*      <-- allows us to run git checkout pr/{id} 
+//
+// We also support checking out branches, but we limit the the branches we can check out
 
 using System;
 using System.Collections.Generic;
@@ -21,8 +23,6 @@ using System.Diagnostics;
 using System.Web;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
 
 public class PullRequestHandler : IHttpHandler
 {
@@ -32,13 +32,11 @@ public class PullRequestHandler : IHttpHandler
 
     public void ProcessRequest(HttpContext context)
     {
-        _gitRepoPath = context.Request.PhysicalApplicationPath + "..\\..\\..\\..";
-        string prString = context.Request.QueryString["pr"];
+        // Check for prerequisites needed before this script can execute
 
-        context.Response.Write(string.Format("PR = {0}<br/>", HttpUtility.HtmlEncode(prString) ?? "Unspecified"));
+        _gitRepoPath = context.Request.PhysicalApplicationPath + "..\\..\\..\\..";
 
         StringBuilder result = new StringBuilder();
-
         bool success = CheckPrerequisites(result);
 
         if (!success)
@@ -48,10 +46,8 @@ public class PullRequestHandler : IHttpHandler
             context.Response.Write(HttpUtility.HtmlEncode(result));
             return;
         }
-        else  
-        {
-            success = CleanupMergedBranches(result); 
-        }
+
+        success = CleanupMergedBranches(result);
 
         if (!success)
         {
@@ -60,26 +56,63 @@ public class PullRequestHandler : IHttpHandler
             context.Response.Write(HttpUtility.HtmlEncode(result));
             return;
         }
-        else
+
+        // Parameter verification
+
+        success = false;
+
+        string branchString = context.Request.QueryString["branch"];
+        string prString = context.Request.QueryString["pr"];
+
+        if (string.IsNullOrWhiteSpace(prString) && string.IsNullOrWhiteSpace(branchString))
         {
-            // Check inputs to the script
-            uint pr;
-            if (!string.IsNullOrEmpty(prString) && uint.TryParse(prString, out pr))
+            context.Response.StatusCode = 400;
+            context.Response.Write("No PR or branch specified");
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(prString) && !string.IsNullOrWhiteSpace(branchString))
+        {
+            context.Response.StatusCode = 400;
+            context.Response.Write("PR and branch specified; please specify only one of them to sync to <br/>");
+            return;
+        }
+
+        context.Response.Write(string.Format("PR = {0}<br/>", HttpUtility.HtmlEncode(prString) ?? "Unspecified"));
+        context.Response.Write(string.Format("branch = {0}<br/>", HttpUtility.HtmlEncode(branchString) ?? "Unspecified"));
+
+        // Do stuff
+
+        uint pr;
+        if (!string.IsNullOrEmpty(prString) && uint.TryParse(prString, out pr))
+        {
+            success = SyncToPr(pr, result);
+        }
+        else if (!string.IsNullOrEmpty(branchString))
+        {
+            // We only want to support limited branches as we only use this for PR purposes
+            // This should be opened up later once we decide we need to (e.g., for testing release branches), but for now, 
+            // whitelist what we need
+            // for example, we could use the output from "git branch -r" to figure out what branches are valid
+
+            switch (branchString)
             {
-                success = SyncToPr(pr, result);
+                case "master":
+                case "origin/master":
+                    success = SyncToBranch(branchString, result);
+                    break;
+                default:
+                    context.Response.Write(string.Format("Branch name specified, '{0}' is not supported by this script<br/>", HttpUtility.HtmlEncode(branchString)));
+                    break;
             }
-            else
-            {
-                context.Response.Write("Invalid PR ID specified<br/>");
-                success = false;
-            }
-        } 
-        
+        }
+
         if (!success)
         {
             // it's most likely that the client supplied a bad PR ID, but there could potentially 
-            // be other errors in SyncToPr. For now, return 400
+            // be other errors in SyncToPr or SyncToBranch. For now, return 400 in this path
             context.Response.StatusCode = 400;
+            context.Response.Write(string.Format("Invalid PR ID, '{0}' or branch, '{1}' specified <br/>", HttpUtility.HtmlEncode(prString), HttpUtility.HtmlEncode(branchString)));
         }
 
         context.Response.Write(HttpUtility.HtmlEncode(result));
@@ -101,7 +134,7 @@ public class PullRequestHandler : IHttpHandler
         }
 
         // Do a sanity execute of the git executable 
-        bool success = false; 
+        bool success = false;
 
         try
         {
@@ -137,22 +170,36 @@ public class PullRequestHandler : IHttpHandler
         return RunGitCommands(gitCommands, executionResult);
     }
 
+    private bool SyncToBranch(string branch, StringBuilder executionResult)
+    {
+        string[] gitCommands = new string[]
+        {
+            "clean -fdx",
+            "checkout master",
+            "fetch --all --prune",
+            "merge --ff-only origin/master",
+            string.Format("checkout {0}", branch)
+        };
+
+        return RunGitCommands(gitCommands, executionResult);
+    }
+
     // Cleans up branches that aren't currently used except "master" from the repo
     // If not done, we'll end up with dozens of branches that aren't used after a while
     // because we don't nuke and re-create the repo after each PR
     private bool CleanupMergedBranches(StringBuilder executionResult)
     {
-        bool success = false; 
-        
+        bool success = false;
+
         success = RunGitCommands(new string[] { "checkout master" }, executionResult);
-        
+
         StringBuilder branches = new StringBuilder();
-        if (success) 
+        if (success)
         {
             success = RunGitCommands(new string[] { "branch" }, branches);
         }
 
-        if (success) 
+        if (success)
         {
             var branchesList =
                 branches.ToString().Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
@@ -170,15 +217,15 @@ public class PullRequestHandler : IHttpHandler
 
             success = RunGitCommands(commands.ToArray(), executionResult);
         }
-        
-        return success; 
+
+        return success;
     }
 
     private bool RunGitCommands(string[] gitCommands, StringBuilder executionResult)
     {
-        if (gitCommands == null || gitCommands.Length == 0) 
+        if (gitCommands == null || gitCommands.Length == 0)
         {
-            return true; 
+            return true;
         }
 
         ProcessStartInfo psi = new ProcessStartInfo()
@@ -195,7 +242,7 @@ public class PullRequestHandler : IHttpHandler
 
         foreach (string gitCommand in gitCommands)
         {
-            success = false; 
+            success = false;
             psi.Arguments = gitCommand;
 
             Process p = Process.Start(psi);
@@ -203,7 +250,7 @@ public class PullRequestHandler : IHttpHandler
             {
                 executionResult.Append(string.Format("Git executable '{0}' took more than '{1}' ms to execute <br/>", _gitExecutablePath, _gitExecutionTimeoutMilliseconds));
                 executionResult.Append(string.Format("Git command was: '{0}' ", gitCommand));
-                
+
                 // return early if !WaitForExit, as p.ExitCode will not be usable in this case (it throws an exception) 
                 return success;
             }
@@ -217,7 +264,7 @@ public class PullRequestHandler : IHttpHandler
             {
                 executionResult.Append(string.Format("Git executable '{0}' exited with code '{1}', expected '{2}' <br/>", _gitExecutablePath, p.ExitCode, "0"));
                 executionResult.Append(string.Format("Git command was: '{0}' ", gitCommand));
-                
+
                 return success;
             }
         }
@@ -232,5 +279,4 @@ public class PullRequestHandler : IHttpHandler
             return false;
         }
     }
-
 }
