@@ -176,6 +176,11 @@ public class PullRequestHandler : IHttpHandler
 
     private bool RunGitCommands(string[] gitCommands, StringBuilder executionResult)
     {
+        if (gitCommands == null || gitCommands.Length == 0) 
+        {
+            return true; 
+        }
+
         ProcessStartInfo psi = new ProcessStartInfo()
         {
             CreateNoWindow = true,
@@ -186,10 +191,11 @@ public class PullRequestHandler : IHttpHandler
             WorkingDirectory = _gitRepoPath
         };
 
-        bool success = false;
+        bool success = true;
 
         foreach (string gitCommand in gitCommands)
         {
+            success = false; 
             psi.Arguments = gitCommand;
 
             Process p = Process.Start(psi);
@@ -198,7 +204,7 @@ public class PullRequestHandler : IHttpHandler
                 executionResult.Append(string.Format("Git executable '{0}' took more than '{1}' ms to execute <br/>", _gitExecutablePath, _gitExecutionTimeoutMilliseconds));
                 executionResult.Append(string.Format("Git command was: '{0}' ", gitCommand));
                 
-                // return early if !success, as p.ExitCode will not be usable in this case
+                // return early if !WaitForExit, as p.ExitCode will not be usable in this case (it throws an exception) 
                 return success;
             }
 
