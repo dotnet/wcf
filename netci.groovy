@@ -25,7 +25,7 @@ class WcfUtilities
         } else {
             job.with { 
                 steps {
-                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/setupfiles/sync-pr.cmd \$WcfRepoSyncServiceUrl")
+                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/setupfiles/sync-pr.sh \$WcfRepoSyncServiceUrl")
                 }
             }
         }
