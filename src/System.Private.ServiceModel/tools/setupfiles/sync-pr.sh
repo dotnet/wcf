@@ -14,21 +14,30 @@ show_banner()
 show_usage() 
 {
     echo "    A URL must be specified for the pull request synchronization URL"
-    echo "    Usage: $0 [sync-url] [pr-number (optional)]"
-    echo "    sync-url  - URL on remote server for PR synchronization"
-    echo "    pr-number - PR to sync to"
+    echo "    Usage: $0 [branch|pr] [sync-url] [branch-name | pr-number (optional)]"
+
+    echo "    branch|pr   - Sync to branch or PR (choose one)"
+    echo "    sync-url    - URL on remote server for PR synchronization"
+    echo "    branch-name - branch name to sync to"
+    echo "    pr-number   - PR to sync to"
     echo ""
-    echo "    Example:  $0 http://wcfci-sync-server/repo/sync.ashx"
-    echo "    Example:  $0 http://wcfci-sync-server/repo/sync.ashx 404"
+    echo "    If branch-name or pr-number are left blank, then the script will use"
+    echo "    \$GIT_BRANCH or \$ghprbPullId by default depending on the operation mode"
+    echo ""
+    echo "    Example:  $0 branch http://wcfci-sync-server/PRService/pr.ashx"
+    echo "    Example:  $0 branch http://wcfci-sync-server/PRService/pr.ashx master"
+    echo "    Example:  $0 pr http://wcfci-sync-server/PRService/pr.ashx"
+    echo "    Example:  $0 pr http://wcfci-sync-server/PRService/pr.ashx 404"
     echo ""
 }
 
 run_request() 
 {
-    __sync_url=$1
-    __ghprbPullId=$2
+    __operation_mode=$1
+    __sync_url=$2
+    __branch_or_pullid=$3
 
-    __request_uri=${__sync_url}?pr=${__ghprbPullId}
+    __request_uri=${__sync_url}?${__operation_mode}=${__branch_or_pullid}
 
     echo "    Making a call to '${__request_uri}'" 
 
@@ -49,6 +58,7 @@ run_request()
     fi
 
     return $?
+
 }
 
 # Main execution
@@ -60,29 +70,53 @@ show_banner
 if [ -z "$1" ]; then 
     show_usage
     exit 1
+else 
+    if [ "$1" == "branch" ] || [ "$1" == "pr" ]; then 
+        __operation_mode=$1
+    else 
+        show_usage
+        exit 1
+    fi 
 fi 
 
-__sync_url=$1
-
 if [ -z "$2" ]; then 
-    if [ -z "$ghprbPullId" ]; then 
-        show_usage
-        echo "    This script should only be called only from the context of a GitHub Pull Request"
-        echo "    'ghprbPullId' environment variable not set"
-    
-        exit 1
-    else 
-        __pr_id=$ghprbPullId
-    fi  
+    show_usage
+    exit 1
+fi 
+
+__sync_url=$2
+
+if [ -z "$3" ]; then 
+    if [ "$__operation_mode" == "branch" ]; then 
+        if [ -z "$GIT_BRANCH" ]; then 
+            show_usage
+            echo "    This script should only be called only from the context of a GitHub Pull Request"
+            echo "    'GIT_BRANCH' environment variable not set and no branch specified"
+        
+            exit 1 
+        else
+            __pr_or_branch=$GIT_BRANCH
+        fi 
+    elif [ "$__operation_mode" == "pr" ]; then 
+        if [ -z "$ghprbPullId" ]; then 
+            show_usage
+            echo "    This script should only be called only from the context of a GitHub Pull Request"
+            echo "    'ghprbPullId' environment variable not set and no PR ID specified"
+        
+            exit 1
+        else 
+            __pr_or_branch=$ghprbPullId
+        fi  
+    fi
 else  
-    __pr_id=$2
+    __pr_or_branch=$3
     show_usage 
     echo "    WARNING: This script should usually only be called only from the context of a GitHub Pull Request"
-    echo "    PR ID overridden '${__pr_id}'"
+    echo "    Branch or PR ID overridden '${__pr_or_branch}'"
 fi
 
 # Run 
-run_request $__sync_url $__pr_id
+run_request $__operation_mode $__sync_url $__pr_or_branch
 
 __exit_code=$?
 
