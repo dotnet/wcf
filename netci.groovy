@@ -8,9 +8,11 @@ def branch = GithubBranchName
 class WcfUtilities
 {
     def wcfRepoSyncServiceCount = 0 
-    def addWcfOuterloopTestServiceSync(def job, String os) { 
+    def addWcfOuterloopTestServiceSync(def job, String os, boolean isPR) { 
         wcfRepoSyncServiceCount++
-    
+
+        def operation = isPR ? "pr" : "branch"
+
         job.with { 
             parameters {
                 stringParam('WcfRepoSyncServiceUrl', "http://wcfcoresrv2.cloudapp.net/PRService${wcfRepoSyncServiceCount}/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
@@ -19,13 +21,13 @@ class WcfUtilities
         if (os.toLowerCase().contains("windows")) {
             job.with { 
                 steps {
-                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\setupfiles\\sync-pr.cmd %WcfRepoSyncServiceUrl%")
+                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\setupfiles\\sync-pr.cmd ${operation} %WcfRepoSyncServiceUrl%")
                 }           
             }
         } else {
             job.with { 
                 steps {
-                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/setupfiles/sync-pr.sh \$WcfRepoSyncServiceUrl")
+                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/setupfiles/sync-pr.sh ${operation} \$WcfRepoSyncServiceUrl")
                 }
             }
         }
@@ -113,7 +115,7 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
       label(buildLabel)
     }
     
-    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel)
+    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel, isPR)
     
     newJob.with{
       steps {
@@ -148,7 +150,7 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
             label(buildLabel)    
         }
         
-        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel)
+        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel, isPR)
 
         newJob.with {
             steps {
@@ -184,7 +186,7 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
         label(buildLabel)
     }
     
-    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepRollingJob, buildLabel)
+    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepRollingJob, buildLabel, false)
     
     newLatestDepRollingJob.with {
         steps {
@@ -204,7 +206,7 @@ def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:Shoul
         label(buildLabel)
     }
     
-    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepPRJob, buildLabel)
+    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepPRJob, buildLabel, true)
     
     newLatestDepPRJob.with {
         steps {
