@@ -3,11 +3,68 @@
 import jobs.generation.Utilities;
 
 def project = GithubProject
+
+// Globals
+
+// Map of os -> osGroup.
+def osGroupMap = ['Ubuntu':'Linux',
+                  'Ubuntu15.10':'Linux',
+                  'Debian8.2':'Linux',
+                  'OSX':'OSX',
+                  'Windows_NT':'Windows_NT',
+                  'CentOS7.1': 'Linux',
+                  'OpenSUSE13.2': 'Linux',
+                  'RHEL7.2': 'Linux']
+// Map of os -> nuget runtime
+def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
+                             'Ubuntu' : 'ubuntu.14.04-x64',
+                             'Ubuntu15.10' : 'ubuntu.14.04-x64',
+                             'Debian8.2' : 'ubuntu.14.04-x64',
+                             'CentOS7.1' : 'centos.7-x64',
+                             'OpenSUSE13.2' : 'ubuntu.14.04-x64',
+                             'RHEL7.2': 'rhel.7-x64']
+def branchList = ['master', 'pr']
+def osShortName = ['Windows 10': 'win10',
+                   'Windows 7' : 'win7',
+                   'Windows_NT' : 'windows_nt',
+                   'Ubuntu14.04' : 'ubuntu14.04',
+                   'OSX' : 'osx',
+                   'Windows Nano' : 'winnano',
+                   'Ubuntu15.10' : 'ubuntu15.10',
+                   'CentOS7.1' : 'centos7.1',
+                   'OpenSUSE13.2' : 'opensuse13.2',
+                   'RHEL7.2' : 'rhel7.2']                  
+
+def static getFullBranchName(def branch) {
+    def branchMap = ['master':'*/master',
+        'rc2':'*/release/1.0.0-rc2',
+        'pr':'*/master']
+    def fullBranchName = branchMap.get(branch, null)
+    assert fullBranchName != null : "Could not find a full branch name for ${branch}"
+    return branchMap[branch]
+}
+
+def static getJobName(def name, def branchName) {
+    def baseName = name
+    if (branchName == 'rc2') {
+        baseName += "_rc2"
+    }
+    return baseName
+}
+
+def configurationGroupList = ['Debug', 'Release']
+
 def branch = GithubBranchName
 
+// **************************
+// Utilities shared for WCF Core builds
+// **************************
 class WcfUtilities
 {
     def wcfRepoSyncServiceCount = 0 
+    
+    // Outerloop jobs for WCF Core require an external server reference
+    // This should be run 
     def addWcfOuterloopTestServiceSync(def job, String os, boolean isPR) { 
         wcfRepoSyncServiceCount++
 
@@ -24,7 +81,8 @@ class WcfUtilities
                     batchFile(".\\src\\System.Private.ServiceModel\\tools\\setupfiles\\sync-pr.cmd ${operation} %WcfRepoSyncServiceUrl%")
                 }           
             }
-        } else {
+        } 
+        else {
             job.with { 
                 steps {
                    shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/setupfiles/sync-pr.sh ${operation} \$WcfRepoSyncServiceUrl")
@@ -32,196 +90,207 @@ class WcfUtilities
             }
         }
     }
-} 
+}
 
 wcfUtilities = new WcfUtilities()
-
-// **************************
-// Define the basic inner loop builds for PR 
-// **************************
-
-// Loop over the options and build up the innerloop build matrix.
-
-[true, false].each { isPR ->
-    ['Debug', 'Release'].each { configuration ->
-        ['Linux', 'Windows_NT'].each { os ->
-            // Calculate job name
-            def osJobName = os.toLowerCase()
-            if (osJobName == 'windows_nt') {
-                osJobName = 'windows'
-            }
-            def configurationJobName = configuration.toLowerCase()
-            def jobName = "${osJobName}_${configurationJobName}"
-            
-            def osAffinityName = os; 
-            if (osAffinityName == 'Linux') {
-                // our Linux runs should only ever run on Ubuntu14.04; we don't run on other flavours yet
-                osAffinityName = 'Ubuntu14.04'
-            }
-            
-            // **************************
-            // Create the new commit job
-            // **************************
-            def newJob = null
-
-            if (osJobName == 'linux') {
-                // Jobs run as a service in unix, which means that HOME variable is not set, and it is required for restoring packages
-                // so we set it first, and then call build.sh
-                newJob = job(Utilities.getFullJobName(project, jobName, isPR)) {
-                    steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${os} /p:Configuration=${os}_${configuration}")
-                    }
-                }
-            } else {
-                // On other platforms, we run the build under Windows and then pack the results
-                newJob = job(Utilities.getFullJobName(project, jobName, isPR)) {
-                    steps {
-                        // Use inline replacement
-                        batchFile("build.cmd /p:Configuration=${os}_${configuration} /p:OSGroup=${os}")
-                        // Pack up the results for max efficiency
-                        batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
-                    }
-                }
-            }
-            
-            Utilities.setMachineAffinity(newJob, osAffinityName, 'latest-or-auto')
-            Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
-            Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
-            if (os != 'Linux') {
-                // We do not do the pack step on non-Linux builds
-                Utilities.addArchival(newJob, "bin/${os}.AnyCPU.${configuration}/**,bin/build.pack")
-            }
-            if (isPR) {
-                Utilities.addGithubPRTriggerForBranch(newJob, branch, "Innerloop ${os} ${configuration} Build and Test")
-            }
-            else {
-                Utilities.addGithubPushTrigger(newJob)
-            }
-        }
-    }
-}
 
 // **************************
 // Define the code coverage jobs
 // **************************
 
-// Define build string
-def codeCoverageBuildString = '''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=Windows_NT /p:Configuration=Windows_NT_Debug /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
+branchList.each { branchName -> 
+    def isPR = (branchName == 'pr')
+    def osGroup = "Windows_NT"
+    def configurationGroup = "Debug"
+    def newJobName = "code_coverage_${osGroup.toLowerCase()}_${configurationGroup.toLowerCase()}"
+    
+    // Create the new rolling job
+    def newJob = job(Utilities.getFullJobName(project, newJobName, isPR)) {
+        label('windows-elevated')
+    }
+    
+    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, osGroup, isPR)
+    
+    newJob.with {
+        steps {
+            batchFile('''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroup} /p:ConfigurationGroup=${configurationGroup} /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"''')
+        }
+    }
 
-// Generate a rolling (12 hr job) and a PR job that can be run on demand
-[true, false].each { isPR ->
-    def buildLabel = 'windows-elevated'
-    def newJob = job(Utilities.getFullJobName(project, 'code_coverage_windows', isPR)) {
-      label(buildLabel)
-    }
-    
-    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel, isPR)
-    
-    newJob.with{
-      steps {
-        batchFile(codeCoverageBuildString)
-      }
-    }
-    
-    Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
+    // Set up standard options.
+    Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+    // Add code coverage report
     Utilities.addHtmlPublisher(newJob, 'bin/tests/coverage', 'Code Coverage Report', 'index.htm')
+    // Archive results
     Utilities.addArchival(newJob, '**/coverage/*,msbuild.log')
     
-    if (isPR) {
-        Utilities.addGithubPRTriggerForBranch(newJob, branch, 'Code Coverage Windows Debug', '(?i).*test\\W+code\\W*coverage.*')
-    }
+    // Set triggers
+    if (isPR)
+    {
+        Utilities.addGithubPRTrigger(newJob, "Code Coverage Windows ${configurationGroup}", '(?i).*test\\W+code\\W*coverage.*')
+    } 
     else {
         Utilities.addPeriodicTrigger(newJob, '@daily')
     }
 }
 
 // **************************
-// Outerloop.  Rolling every 4 hours for debug and release
+// WCF only
+// Outerloop and Innerloop against the latest dependencies on Windows. Rolling daily for debug and release
 // **************************
 
-[true, false].each { isPR ->
-    ['Debug', 'Release'].each { configuration ->
-        def configurationJobName = configuration.toLowerCase()
-        def jobName = "outerloop_windows_${configurationJobName}"
-        def buildLabel = 'windows-elevated'
+['master', 'pr' ].each { branchName ->     // don't use branchList here, latest deps won't run on any branches except master
+    configurationGroupList.each { configurationGroup ->
+        def isPR = (branchName == 'pr')
+        def osGroup = "Windows_NT"
+        def newJobName = "latest_dependencies_${osGroup.toLowerCase()}_${configurationGroup.toLowerCase()}"
         
         // Create the new rolling job
-        def newJob = job(Utilities.getFullJobName(project, jobName, isPR)) {
-            label(buildLabel)    
+        def newJob = job(Utilities.getFullJobName(project, newJobName, isPR)) {
+            label('windows-elevated')
         }
         
-        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, buildLabel, isPR)
-
+        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, osGroup, isPR)
+        
         newJob.with {
             steps {
-                batchFile("build.cmd /p:Configuration=Windows_NT_${configuration} /p:WithCategories=OuterLoop")
+                batchFile('''build.cmd /p:OSGroup=${osGroup} /p:ConfigurationGroup=${configurationGroup} /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"''')
             }
         }
-
-        // Add commit job options
-        Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
+    
+        // Set up standard options.
+        Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+        // Add the unit test results
         Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
-
-        if (isPR) {
-            Utilities.addGithubPRTriggerForBranch(newJob, branch, "Outerloop Windows ${configuration} Build and Test", '(?i).*test\\W+outerloop.*')
-        }
+        
+        // Add commit job options
+        if (isPR)
+        {
+            Utilities.addGithubPRTrigger(newJob, "Latest dependencies ${osGroup} ${configurationGroup} Build and Test", '(?i).*test\\W+latest\\W*dependencies.*')
+        } 
         else {
-            Utilities.addPeriodicTrigger(newJob, 'H H/4 * * *')
+            Utilities.addPeriodicTrigger(newJob, '@daily')
         }
     }
 }
 
 // **************************
-// Outerloop and Innerloop against the latest dependencies on Windows. Rolling daily for debug and release
+// Define outerloop testing for OSes that can build and run.  Run locally on each machine.
 // **************************
 
-['Debug', 'Release'].each { configuration ->
-    def configurationJobName = configuration.toLowerCase()
-    def jobName = "latest_dependencies_windows_${configurationJobName}"
-    def latestDepBuildString = '''build.cmd /p:Configuration=Windows_NT_${configur ation}  /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"'''
-    def buildLabel = 'windows-elevated'
-
-    // Create the new rolling job
-    def newLatestDepRollingJob = job(Utilities.getFullJobName(project, jobName, false)) {
-        label(buildLabel)
-    }
-    
-    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepRollingJob, buildLabel, false)
-    
-    newLatestDepRollingJob.with {
-        steps {
-            batchFile(latestDepBuildString)
+def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04']
+branchList.each { branchName ->
+    configurationGroupList.each { configurationGroup ->
+        supportedFullCycleOuterloopPlatforms.each { osGroup ->
+            def isPR = (branchName == 'pr')
+            def newJobName = "outerloop_${osGroup.toLowerCase()}_${configurationGroup.toLowerCase()}"
+            def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
+            
+            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, osGroup, isPR)
+            
+            if (osGroupMap[osGroup] == 'Windows_NT') {
+                newJob.with {
+                    steps {
+                        batchFile("build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroup} /p:WithCategories=OuterLoop")
+                    }
+                    
+                    label('windows-elevated') // on Windows, must run on this build label
+                }
+            } 
+            else {
+                newJob.with {
+                    steps {
+                        batchFile("HOME=\$WORKSPACE/tempHome ./build.sh /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroup} /p:WithCategories=OuterLoop /p:TestWithLocalLibraries=true")
+                    }
+                }
+                
+                // Set the affinity.  OS name matches the machine affinity.
+                if (osGroup == 'Ubuntu14.04') {
+                    Utilities.setMachineAffinity(newJob, osGroup, "outer-latest-or-auto")    
+                } 
+                else {
+                    Utilities.setMachineAffinity(newJob, osGroup, 'latest-or-auto')
+                }
+            }
+            
+            // Set up standard options.
+            Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+            // Add the unit test results
+            Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
+            
+            // Set up appropriate triggers. PR on demand, otherwise daily
+            if (isPR) {
+                // Set PR trigger.
+                if (osGroupMap[osGroup] == 'Windows_NT') 
+                {
+                    // Maintains the behavior "test outerloop please" for Windows_NT until we start testing more branches
+                    Utilities.addGithubPRTrigger(newJob, "OuterLoop ${osGroup} ${configurationGroup}", "(?i).*test\\W+outerloop\\W+please.*")
+                }
+                else {
+                    Utilities.addGithubPRTrigger(newJob, "OuterLoop ${osGroup} ${configurationGroup}", "(?i).*test\\W+outerloop\\W+${osGroup}\\W+${configurationGroup}.*")
+                }
+            } 
+            else {
+                // Set a periodic trigger
+                Utilities.addPeriodicTrigger(newJob, '@daily')
+            }
         }
-    }
+    } 
+} 
 
-    // Add commit job options
-    Utilities.addScm(newLatestDepRollingJob, project)
-    Utilities.addStandardNonPRParameters(newLatestDepRollingJob)
-    Utilities.addPeriodicTrigger(newLatestDepRollingJob, '@daily')
+// **************************
+// Define innerloop testing for OSes that can build and run.  Run locally on each machine.
+// **************************
 
-    // Create the new PR job for on demand execution.  No automatic PR trigger.
-    // Triggered with '@dotnet-bot test latest dependencies please'
-
-    def newLatestDepPRJob = job(Utilities.getFullJobName(project, jobName, true)) {
-        label(buildLabel)
-    }
-    
-    wcfUtilities.addWcfOuterloopTestServiceSync(newLatestDepPRJob, buildLabel, true)
-    
-    newLatestDepPRJob.with {
-        steps {
-            batchFile(latestDepBuildString)
+def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
+branchList.each { branchName ->
+    configurationGroupList.each { configurationGroup ->
+        supportedFullCycleInnerloopPlatforms.each { osGroup -> 
+            def isPR = (branchName == 'pr')
+            def newJobName = "${osGroup.toLowerCase()}_${configurationGroup.toLowerCase()}"
+            
+            def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName)) 
+            
+            if (osGroupMap[osGroup] == 'Windows_NT')
+            {
+                newJob.with {
+                    steps {
+                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroup}")
+                        batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
+                    }
+                }
+            } 
+            else {
+                newJob.with {
+                    steps {
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroup} /p:ConfigurationGroup=${configurationGroup}")
+                    }
+                }
+            }
+            
+            // Set the affinity.  All of these run on Windows currently.
+            Utilities.setMachineAffinity(newJob, osGroup, 'latest-or-auto')
+            // Set up standard options.
+            Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+            // Add the unit test results
+            Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
+            // Add archival for the built data
+            if (osGroupMap[osGroup] == 'Windows_NT') {
+                Utilities.addArchival(newJob, "bin/build.pack,bin/${osGroup}.AnyCPU.${configurationGroup}/**,bin/ref/**,bin/packages/**,msbuild.log")
+            } 
+            else {
+                Utilities.addArchival(newJob, "bin/${osGroup}.AnyCPU.${configurationGroup}/**,bin/ref/**,bin/packages/**,msbuild.log")
+            }
+            
+            // Set up triggers
+            if (isPR) {
+                // Set PR trigger.
+                Utilities.addGithubPRTrigger(newJob, "Innerloop ${osGroup} ${configurationGroup} Build and Test")
+            } 
+            else {
+                // Set a push trigger
+                Utilities.addGithubPushTrigger(newJob)
+            }
         }
-    }
-
-    // Add a PR trigger
-    Utilities.addGithubPRTrigger(newLatestDepPRJob, "Latest dependencies Windows ${configuration} Build and Test", '@dotnet-bot test latest dependencies please')
-    Utilities.addPRTestSCM(newLatestDepPRJob, project)
-    Utilities.addStandardPRParameters(newLatestDepPRJob, project)
-    
-    // Add common options
-    [newLatestDepPRJob, newLatestDepRollingJob].each { newJob ->
-        Utilities.addStandardOptions(newJob)
-        Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
     }
 }
