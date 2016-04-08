@@ -6,8 +6,9 @@ using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.Text;
 using Xunit;
+using Infrastructure.Common;
 
-public static class Https_ClientCredentialTypeTests
+public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 {
     private static string s_username;
     private static string s_password;
@@ -108,8 +109,7 @@ public static class Https_ClientCredentialTypeTests
         Assert.True(exception.Message.ToLower().Contains(paraMessage), string.Format("Expected exception message to contain: '{0}', actual: '{1}'", paraMessage, exception.Message));
     }
 
-    [Fact]
-    [ActiveIssue(270)]
+    [ConditionalFact(nameof(Domain_Joined))]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()
     {
