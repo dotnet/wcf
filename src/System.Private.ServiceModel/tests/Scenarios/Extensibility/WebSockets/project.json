@@ -9,11 +9,21 @@
     "System.ServiceModel.NetTcp": "4.1.0-rc3-23931-00",
     "System.ServiceModel.Primitives": "4.1.0-rc3-23931-00",
     "xunit": "2.1.0",
-    "xunit.netcore.extensions": "1.0.0-prerelease-00231-07"
+    "xunit.netcore.extensions": "1.0.0-prerelease-00231-07",
+    "test-runtime": {
+      "target": "project",
+      "exclude": "compile"
+    }
   },
   "frameworks": {
     "dnxcore50": {
       "imports": "portable-net45+win8"
     }
+  },
+  "runtimes": {
+    "win7-x64": {},
+    "win7-x86": {},
+    "ubuntu.14.04-x64": {},
+    "osx.10.10-x64": {}
   }
 }

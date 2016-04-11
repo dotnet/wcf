@@ -15,14 +15,25 @@
     "System.ServiceModel.NetTcp": "4.1.0-rc3-23931-00",
     "System.ServiceModel.Primitives": "4.1.0-rc3-23931-00",
     "System.ServiceModel.Security": "4.0.1-rc3-23931-00",
-    "System.Threading": "4.0.11-rc3-23931-00"
+    "System.Threading": "4.0.11-rc3-23931-00",
+    "test-runtime": {
+      "target": "project",
+      "exclude": "compile"
+    }
   },
   "commands": {
     "SharedPoolsOfWCFObjects": "SharedPoolsOfWCFObjects"
   },
   "frameworks": {
     "dnxcore50": {
+      "imports": "portable-net45+win8",
       "dependencies": {}
     }
+  },
+  "runtimes": {
+    "win7-x64": {},
+    "win7-x86": {},
+    "ubuntu.14.04-x64": {},
+    "osx.10.10-x64": {}
   }
 }
