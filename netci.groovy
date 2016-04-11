@@ -8,6 +8,7 @@ def project = GithubProject
 
 // Map of os -> osGroup.
 def osGroupMap = ['Ubuntu':'Linux',
+                  'Ubuntu14.04':'Linux',
                   'Ubuntu15.10':'Linux',
                   'Debian8.2':'Linux',
                   'OSX':'OSX',
@@ -78,14 +79,14 @@ class WcfUtilities
         if (os.toLowerCase().contains("windows")) {
             job.with { 
                 steps {
-                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\scripts\\pr.cmd ${operation} %WcfRepoSyncServiceUrl%")
+                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\scripts\\sync-pr.cmd ${operation} %WcfRepoSyncServiceUrl%")
                 }           
             }
         } 
         else {
             job.with { 
                 steps {
-                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/scripts/pr.sh ${operation} \$WcfRepoSyncServiceUrl")
+                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/scripts/sync-pr.sh ${operation} \$WcfRepoSyncServiceUrl")
                 }
             }
         }
@@ -113,7 +114,7 @@ branchList.each { branchName ->
     
     newJob.with {
         steps {
-            batchFile('''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${os} /p:ConfigurationGroup=${configurationGroup} /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"''')
+            batchFile('''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"''')
         }
     }
 
@@ -178,7 +179,7 @@ branchList.each { branchName ->
 // Define outerloop testing for OSes that can build and run.  Run locally on each machine.
 // **************************
 
-def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04']
+def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
 branchList.each { branchName ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleOuterloopPlatforms.each { os ->
@@ -212,7 +213,13 @@ branchList.each { branchName ->
                     Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
                 }
             }
-            
+
+            // Disable the builds for non Windows_NT, since outerloops don't work yet
+            if (os != 'Windows_NT') 
+            {
+                newJob.disabled(true)
+            }            
+
             // Set up standard options.
             Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
             // Add the unit test results
@@ -268,6 +275,12 @@ branchList.each { branchName ->
                 }
             }
             
+            // Disable the builds for CentOS because it doesn't fully work yet
+            if (os == 'CentOS7.1') 
+            {
+                newJob.disabled(true)
+            }
+
             // Set the affinity.  All of these run on Windows currently.
             Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             // Set up standard options.
