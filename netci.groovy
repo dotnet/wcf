@@ -114,7 +114,7 @@ branchList.each { branchName ->
     
     newJob.with {
         steps {
-            batchFile('''build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"''')
+            batchFile("build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\"")
         }
     }
 
@@ -155,7 +155,7 @@ branchList.each { branchName ->
         
         newJob.with {
             steps {
-                batchFile('''build.cmd /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"''')
+                batchFile("build.cmd /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"")
             }
         }
     
