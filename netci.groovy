@@ -138,42 +138,13 @@ branchList.each { branchName ->
 // **************************
 // WCF only
 // Outerloop and Innerloop against the latest dependencies on Windows. Rolling daily for debug and release
+// 
+// We don't need this for the time being, however, in case we do need it in the near future, preserving the 
+// build command that we use to do the testing
+//
+// batchFile("build.cmd /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"")
 // **************************
 
-['master', 'pr' ].each { branchName ->     // don't use branchList here, latest deps won't run on any branches except master
-    configurationGroupList.each { configurationGroup ->
-        def isPR = (branchName == 'pr')
-        def os = "Windows_NT"
-        def newJobName = "latest_dependencies_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
-        
-        // Create the new rolling job
-        def newJob = job(Utilities.getFullJobName(project, newJobName, isPR)) {
-            label('windows-elevated')
-        }
-        
-        wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, isPR)
-        
-        newJob.with {
-            steps {
-                batchFile("build.cmd /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"")
-            }
-        }
-    
-        // Set up standard options.
-        Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
-        // Add the unit test results
-        Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
-        
-        // Add commit job options
-        if (isPR)
-        {
-            Utilities.addGithubPRTrigger(newJob, "Latest dependencies ${os} ${configurationGroup} Build and Test", '(?i).*test\\W+latest\\W*dependencies.*')
-        } 
-        else {
-            Utilities.addPeriodicTrigger(newJob, '@daily')
-        }
-    }
-}
 
 // **************************
 // Define outerloop testing for OSes that can build and run.  Run locally on each machine.
