@@ -105,7 +105,11 @@
     <PropertyGroup Condition="'$(Kerberos_Available)' == ''">
       <Kerberos_Available>false</Kerberos_Available>
     </PropertyGroup>
-  
+
+    <PropertyGroup Condition="'$(ServiceUri)' == ''">
+      <ServiceUri >localhost</ServiceUri >
+    </PropertyGroup>
+
   <!--
      GeneratedTestPropertiesFileName:
      The full path of the C# file that will be generated at build time to

@@ -29,7 +29,7 @@ namespace Infrastructure.Common
         private const string ClientCertificateSubject = "WCF Client Certificate";
         private const string ClientCertificatePassword = "test"; // this needs to be kept in sync with the Bridge configuration 
 
-        public static string LocalCertThumbprint { get; private set; }
+        public static string LocalCertThumbprint { get; set; }
 
         // Dictionary of certificates installed by CertificateManager
         // Keyed by the Thumbprint of the certificate
@@ -246,7 +246,7 @@ namespace Infrastructure.Common
 
         // Adds the given certificate to the given store unless it is
         // already present.  Returns 'true' if the certificate was added.
-        private static bool AddToStoreIfNeeded(StoreName storeName,
+        public static bool AddToStoreIfNeeded(StoreName storeName,
                                                StoreLocation storeLocation,
                                                X509Certificate2 certificate)
         {
