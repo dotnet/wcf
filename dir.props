@@ -21,15 +21,6 @@
     <IsDotNetFrameworkProductAssembly>true</IsDotNetFrameworkProductAssembly>
   </PropertyGroup>
   
-  <ItemGroup>
-    <AssemblyMetadata Include=".NETFrameworkAssembly">
-      <Value></Value>
-    </AssemblyMetadata>
-    <AssemblyMetadata Include="Serviceable">
-      <Value>True</Value>
-    </AssemblyMetadata>
-  </ItemGroup>
-
   <!--
     Switching to the .NET Core version of the BuildTools tasks seems to break numerous scenarios, such as VS intellisense and resource designer
     as well as runnning the build on mono. Until we can get these sorted out we will continue using the .NET 4.5 version of the tasks.
@@ -62,6 +53,14 @@
 
   <Import Project="$(ToolRuntimePath)BuildVersion.targets" />
   
+  <PropertyGroup>
+    <!-- temporarily increase assembly version of corefx impl of desktop inbox contracts to allow folks 
+         to move to the latest packages.  Remove once the full stack is on the latest packages
+         https://github.com/dotnet/corefx/issues/7114 -->
+    <AssemblyVersionTransition>true</AssemblyVersionTransition>
+    <GenFacadesArgs>-ignoreBuildAndRevisionMismatch</GenFacadesArgs>
+  </PropertyGroup>
+
   <!-- Use Roslyn Compilers to build -->
   <PropertyGroup Condition="'$(UseRoslynCompilers)'!='false'">
     <UseSharedCompilation>true</UseSharedCompilation>
@@ -70,7 +69,7 @@
 
   <!-- Import packaging props -->
   <Import Project="$(MSBuildThisFileDirectory)Packaging.props"/>
-  
+
   <!-- Import Build tools common props file where repo-independent properties are found -->
   <Import Project="$(ToolsDir)Build.Common.props" />
 
@@ -83,20 +82,25 @@
   <PropertyGroup>
     <ValidatePackageVersions>true</ValidatePackageVersions>
     <ProhibitFloatingDependencies>true</ProhibitFloatingDependencies>
+    <CoreFxExpectedPrerelease>rc3-23931-00</CoreFxExpectedPrerelease>
   </PropertyGroup>
 
   <ItemGroup>
-    <ValidationPattern Include="^(?i)((System\..%2A)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore.%2A)|(Microsoft\.TargetingPack\.Private\.(CoreCLR|NETNative))|(Microsoft\.Win32\..%2A)|(Microsoft\.VisualBasic))(?&lt;!TestData)$">
-      <ExpectedPrerelease>rc3-23931-00</ExpectedPrerelease>
+    <ValidationPattern Include="CoreFxVersions">
+      <IdentityRegex>^(?i)((System\..*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore.*)|(Microsoft\.TargetingPack\.Private\.(CoreCLR|NETNative))|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$</IdentityRegex>
+      <ExpectedPrerelease>$(CoreFxExpectedPrerelease)</ExpectedPrerelease>
     </ValidationPattern>
-    <ValidationPattern Include="^(?i)Microsoft\.TargetingPack\.(NetFramework.%2A|Private\.WinRT)$">
+    <ValidationPattern Include="TargetingPackVersions">
+      <IdentityRegex>^(?i)Microsoft\.TargetingPack\.(NetFramework.*|Private\.WinRT)$</IdentityRegex>
       <ExpectedVersion>1.0.1</ExpectedVersion>
     </ValidationPattern>
-    <ValidationPattern Include="^(?i)xunit$">
+    <ValidationPattern Include="xUnitStableVersions">
+      <IdentityRegex>^(?i)xunit$</IdentityRegex>
       <ExpectedVersion>2.1.0</ExpectedVersion>
     </ValidationPattern>
-    <ValidationPattern Include="^(?i)xunit\.netcore\.extensions$">
-      <ExpectedVersion>1.0.0-prerelease-00123</ExpectedVersion>
+    <ValidationPattern Include="xUnitExtensionsVersions">
+      <IdentityRegex>^(?i)xunit\.netcore\.extensions$</IdentityRegex>
+      <ExpectedVersion>1.0.0-prerelease-00231-07</ExpectedVersion>
     </ValidationPattern>
   </ItemGroup>
 
@@ -181,7 +185,7 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-  <!-- 
+  <!--
   Projects that have no OS-specific implementations just use Debug and Release for $(Configuration).
   Projects that do have OS-specific implementations use OS_Debug and OS_Release, for all OS's we support even
   if the code is the same between some OS's (so if you have some project that just calls POSIX APIs, we still have
@@ -189,7 +193,7 @@
   a single binary folder and can have a similar experience between the command line and Visual Studio.
   -->
 
-  <!-- 
+  <!--
   If Configuration is empty that means we are not being built in VS and so folks need to explicitly pass the different
   values for $(ConfigurationGroup), $(TargetGroup), or $(OSGroup) or accept the defaults for them.
   -->
