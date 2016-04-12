@@ -45,6 +45,7 @@
     <TraversalBuildDependsOn>
       ValidateAllProjectDependencies;
       BatchRestorePackages;
+      CreateOrUpdateCurrentVersionFile;
       $(TraversalBuildDependsOn);
     </TraversalBuildDependsOn>
   </PropertyGroup>
