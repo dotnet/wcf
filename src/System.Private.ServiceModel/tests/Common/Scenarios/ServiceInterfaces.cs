@@ -24,6 +24,9 @@ public interface IWcfService
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoWithTimeout")]
     String EchoWithTimeout(String message, TimeSpan serviceOperationTimeout);
 
+    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoWithTimeout")]
+    Task<String> EchoWithTimeoutAsync(String message, TimeSpan serviceOperationTimeout);
+
     [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingDataContract")]
     CompositeType GetDataUsingDataContract(CompositeType composite);
 
