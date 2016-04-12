@@ -18,6 +18,7 @@
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{5AC60BBF-8007-46D8-9BDC-CD137409E45B}</ProjectGuid>
+    <CopyNuGetImplementations>false</CopyNuGetImplementations>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CertificateInstaller.cs" />
