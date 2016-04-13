@@ -402,7 +402,7 @@ public static partial class Endpoints
     // net.tcp Addresses
     public static string Tcp_DefaultBinding_Address
     {
-        get { return GetEndpointAdddress("TcpDefault.svc//tcp-nosecurity", protocol: "net.tcp"); }
+        get { return GetEndpointAdddress("TcpDefault.svc//tcp-default", protocol: "net.tcp"); }
     }
 
     public static string Tcp_NoSecurity_Address
