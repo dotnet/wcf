@@ -17,8 +17,6 @@
     <RestoreDuringBuild Condition="'$(RestoreDuringBuild)'==''">true</RestoreDuringBuild>
     <!-- To disable building packages, set BuildPackages=false or pass /p:BuildPackages=false.-->
     <BuildPackages Condition="'$(BuildPackages)'==''">true</BuildPackages>
-    <!-- To disable building tests, set BuildTests=false or pass /p:BuildTests=false.-->
-    <BuildTests Condition="'$(BuildTests)'==''">true</BuildTests>
   </PropertyGroup>
 
   <PropertyGroup>
