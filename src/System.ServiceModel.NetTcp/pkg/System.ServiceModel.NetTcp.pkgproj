@@ -13,6 +13,7 @@
     <!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
     <InboxOnTargetFramework Include="net45" />
     <InboxOnTargetFramework Include="win8" />
+    <InboxOnTargetFramework Include="portable-net45+win8" />
 
     <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
       <!-- this needs to match the PackageTargetFramework of the facade -->
