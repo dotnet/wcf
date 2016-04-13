@@ -1,4 +1,4 @@
-@echo off
+@if "%_echo%" neq "on" echo off
 setlocal
 
 set INIT_TOOLS_LOG=%~dp0init-tools.log
