@@ -24,7 +24,7 @@ def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
                              'CentOS7.1' : 'centos.7-x64',
                              'OpenSUSE13.2' : 'ubuntu.14.04-x64',
                              'RHEL7.2': 'rhel.7-x64']
-def branchList = ['master', 'pr']
+def branchList = ['master', 'pr', 'rc2', 'infrastructure']
 def osShortName = ['Windows 10': 'win10',
                    'Windows 7' : 'win7',
                    'Windows_NT' : 'windows_nt',
@@ -39,6 +39,7 @@ def osShortName = ['Windows 10': 'win10',
 def static getFullBranchName(def branch) {
     def branchMap = ['master':'*/master',
         'rc2':'*/release/1.0.0-rc2',
+        'infrastructure':'*/infrastructure',
         'pr':'*/master']
     def fullBranchName = branchMap.get(branch, null)
     assert fullBranchName != null : "Could not find a full branch name for ${branch}"
@@ -49,6 +50,9 @@ def static getJobName(def name, def branchName) {
     def baseName = name
     if (branchName == 'rc2') {
         baseName += "_rc2"
+    }
+    else if (branchName == "infrastructure") {
+        baseName += "_infrastructure"
     }
     return baseName
 }
@@ -66,13 +70,20 @@ class WcfUtilities
     
     // Outerloop jobs for WCF Core require an external server reference
     // This should be run 
-    def addWcfOuterloopTestServiceSync(def job, String os, boolean isPR) { 
+    def addWcfOuterloopTestServiceSync(def job, String os, String branch, boolean isPR) { 
+
+        // Exclude rc2 branch, since that branch will not have the sync scripts in
+        if (branch.toLowerCase().contains("rc2")) {
+            return 
+        }
+
         wcfRepoSyncServiceCount++
 
         def operation = isPR ? "pr" : "branch"
 
         job.with { 
             parameters {
+                stringParam('WcfServiceUrl', "http://wcfcoresrv2.cloudapp.net/WcfService${wcfRepoSyncServiceCount}", 'Wcf OuterLoop Test Service Uri')
                 stringParam('WcfRepoSyncServiceUrl', "http://wcfcoresrv2.cloudapp.net/PRService${wcfRepoSyncServiceCount}/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
             }
         }
@@ -110,7 +121,7 @@ branchList.each { branchName ->
         label('windows-elevated')
     }
     
-    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, isPR)
+    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branchName, isPR)
     
     newJob.with {
         steps {
@@ -156,9 +167,9 @@ branchList.each { branchName ->
         supportedFullCycleOuterloopPlatforms.each { os ->
             def isPR = (branchName == 'pr')
             def newJobName = "outerloop_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
-            def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
+            def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
             
-            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, isPR)
+            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branchName, isPR)
             
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
