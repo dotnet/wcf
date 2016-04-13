@@ -338,6 +338,42 @@
         <NuGetTargetMoniker>.NETCore,Version=v5.0</NuGetTargetMoniker>
       </PropertyGroup>
     </When>
+    <When Condition="'$(TargetGroup)'=='netstandard1.0'">
+      <PropertyGroup>
+        <PackageTargetFramework>netstandard1.0</PackageTargetFramework>
+        <NuGetTargetMoniker>.NETStandard,Version=v1.0</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetGroup)'=='netstandard1.1'">
+      <PropertyGroup>
+        <PackageTargetFramework>netstandard1.1</PackageTargetFramework>
+        <NuGetTargetMoniker>.NETStandard,Version=v1.1</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetGroup)'=='netstandard1.2'">
+      <PropertyGroup>
+        <PackageTargetFramework>netstandard1.2</PackageTargetFramework>
+        <NuGetTargetMoniker>.NETStandard,Version=v1.2</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetGroup)'=='netstandard1.3'">
+      <PropertyGroup>
+        <PackageTargetFramework>netstandard1.3</PackageTargetFramework>
+        <NuGetTargetMoniker>.NETStandard,Version=v1.3</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetGroup)'=='netstandard1.4'">
+      <PropertyGroup>
+        <PackageTargetFramework>netstandard1.4</PackageTargetFramework>
+        <NuGetTargetMoniker>.NETStandard,Version=v1.4</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetGroup)'=='netstandard1.5'">
+      <PropertyGroup>
+        <PackageTargetFramework>netstandard1.5</PackageTargetFramework>
+        <NuGetTargetMoniker>.NETStandard,Version=v1.5</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
     <When Condition="'$(TargetGroup)'=='netstandard13aot'">
       <PropertyGroup>
         <PackageTargetFramework>netstandard1.3</PackageTargetFramework>
@@ -393,14 +429,14 @@
       </PropertyGroup>
     </Otherwise>
   </Choose>
-  
+
   <PropertyGroup>
     <IsRedistAssembly Condition="'$(IsRedistAssembly)'=='' AND ($(MSBuildProjectFullPath.Contains('\redist\')) OR $(MSBuildProjectFullPath.Contains('/redist/')))">true</IsRedistAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(IsRedistAssembly)'=='true'">
     <NuGetRuntimeIdentifier Condition="'$(TargetGroup)' == 'netcore50'">win8</NuGetRuntimeIdentifier>
     <NuGetRuntimeIdentifier Condition="'$(TargetGroup)' == 'netcore50aot'">win8-aot</NuGetRuntimeIdentifier>
-    
+
     <!-- workaround Dev14 issue with nuget targets -->
     <RuntimeIndentifier>$(NuGetRuntimeIdentifier)</RuntimeIndentifier>
   </PropertyGroup>
