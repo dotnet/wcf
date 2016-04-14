@@ -16,11 +16,11 @@ namespace WcfService
     }
     public class TcpDefaultResourceTestServiceHost : TestServiceHostBase<IWcfService>
     {
-        protected override string Address { get { return "tcp-nosecurity"; } }
+        protected override string Address { get { return "tcp-default"; } }
 
         protected override Binding GetBinding()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            return new NetTcpBinding() { PortSharingEnabled = false };
         }
 
         public TcpDefaultResourceTestServiceHost(Type serviceType, params Uri[] baseAddresses)
