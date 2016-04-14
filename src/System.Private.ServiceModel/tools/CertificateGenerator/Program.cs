@@ -1,0 +1,173 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using WcfTestBridgeCommon;
+using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
+using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509KeyStorageFlags;
+using System.IO;
+using System.Net;
+using System.Configuration;
+
+namespace CertUtil
+{
+    class Program
+    {
+        private const string ClientCertificateSubject = "WCF Client Certificate";
+        private const string CertificateIssuer = "DO_NOT_TRUST_WcfBridgeRootCA";
+
+        private static string s_fqdn = Dns.GetHostEntry("127.0.0.1").HostName;
+        private static string s_hostname = Dns.GetHostEntry("127.0.0.1").HostName.Split('.')[0];
+        private static string s_testserverbase = string.Empty;
+        private static string s_CrlFileLocation = string.Empty;
+        private static TimeSpan s_ValidatePeriod;
+
+        private static void RemoveCertificatesFromStore(StoreName storeName, StoreLocation storeLocation)
+        {
+            Console.WriteLine("  Checking StoreName '{0}', StoreLocation '{1}'", storeName, storeLocation);
+
+            X509Store store = new X509Store(storeName, storeLocation);
+            {
+                store.Open(OpenFlags.ReadWrite | OpenFlags.IncludeArchived);
+
+                foreach (var cert in store.Certificates.Find(X509FindType.FindByIssuerName, CertificateIssuer, false))
+                {
+                    Console.Write("    {0}. Subject: '{1}'", cert.Thumbprint, cert.SubjectName.Name);
+                    store.Remove(cert);
+                    Console.Write(" ... removed");
+                }
+
+            }
+            Console.WriteLine();
+        }
+
+        static void UninstallAllCerts()
+        {
+            RemoveCertificatesFromStore(StoreName.My, StoreLocation.CurrentUser);
+            RemoveCertificatesFromStore(StoreName.My, StoreLocation.LocalMachine);
+
+            RemoveCertificatesFromStore(StoreName.Root, StoreLocation.LocalMachine);
+            RemoveCertificatesFromStore(StoreName.Root, StoreLocation.CurrentUser);
+        }
+
+        static void Main(string[] args)
+        {
+            ApplyAppSettings();
+
+            UninstallAllCerts();
+
+            CertificateGenerator certificateGenerate = new CertificateGenerator();
+            certificateGenerate.CertificatePassword = "test";
+            certificateGenerate.CrlUriBridgeHost = s_fqdn;
+            certificateGenerate.ValidityPeriod = s_ValidatePeriod;
+
+            if (!string.IsNullOrEmpty(s_testserverbase))
+            {
+                certificateGenerate.CrlUriRelativePath += "/" + s_testserverbase;
+            }
+            certificateGenerate.CrlUriRelativePath += "/CrlService.svc/GetCrl";
+
+            //Create and install root and server cert
+            CertificateManager.CreateAndInstallLocalMachineCertificates(certificateGenerate);
+
+            //Create and Install expired cert
+            CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - TcpExpiredServerCertResource",
+                ValidityType = CertificateValidityType.Expired,
+                ValidityNotBefore = DateTime.UtcNow - TimeSpan.FromDays(4),
+                ValidityNotAfter = DateTime.UtcNow - TimeSpan.FromDays(2),
+                //If you specify multiple subjects, the first one becomes the subject, and all of them become Subject Alt Names.
+                //In this case, the certificate subject is  CN=fqdn, OU=..., O=... , and SANs will be  fqdn, hostname, localhost
+                //We do this so that a single bridge setup can deal with all the possible addresses that a client might use.
+                //If we don't put "localhost' here, a long-running bridge will not be able to receive requests from both fqdn  and  localhost
+                //because the certs won't match.
+                Subject = s_fqdn,
+                SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" }
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
+
+            //Create and Install TcpCertificateWithServerAltNameResource
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - TcpCertificateWithServerAltNameResource",
+                Subject = "not-real-subject-name",
+                SubjectAlternativeNames = new string[] { "not-real-subject-name", "not-real-subject-name.example.com", s_fqdn, s_hostname, "localhost" }
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
+            //TcpCertificateWithSubjectCanonicalNameDomainNameResource
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameDomainNameResource",
+                Subject = s_hostname,
+                SubjectAlternativeNames = new string[0],
+                ValidityType = CertificateValidityType.NonAuthoritativeForMachine
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
+            //WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource",
+                Subject = s_fqdn,
+                SubjectAlternativeNames = new string[0],
+                ValidityType = CertificateValidityType.NonAuthoritativeForMachine
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
+            //TcpCertificateWithSubjectCanonicalNameLocalhostResource
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameLocalhostResource",
+                Subject = "localhost",
+                SubjectAlternativeNames = new string[0],
+                ValidityType = CertificateValidityType.NonAuthoritativeForMachine
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
+            //TcpRevokedServerCertResource
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - TcpRevokedServerCertResource",
+                ValidityType = CertificateValidityType.Revoked,
+                Subject = s_fqdn,
+                SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" }
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
+            //Create and install client cert
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - UserCertificateResource",
+                Subject = "WCF Client Certificate",
+            };
+            X509Certificate2 certificate = certificateGenerate.CreateUserCertificate(certificateCreationSettings).Certificate;
+            CertificateManager.AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate);
+            CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+
+
+            //Create CRL and save it
+            File.WriteAllBytes(s_CrlFileLocation, certificateGenerate.CrlEncoded);
+
+        }
+
+        private static void ApplyAppSettings()
+        {
+            var appSettings = ConfigurationManager.AppSettings;
+            s_testserverbase = appSettings["testserverbase"] ?? string.Empty;
+            s_ValidatePeriod = TimeSpan.FromDays(int.Parse(appSettings["CertExpirationInDay"]));
+            s_CrlFileLocation = appSettings["CrlFileLocation"];
+        }
+
+        private static void CreateAndInstallMachineCertificate(CertificateGenerator certificateGenerate, CertificateCreationSettings certificateCreationSettings)
+        {
+            X509Certificate2 certificate = certificateGenerate.CreateMachineCertificate(certificateCreationSettings).Certificate;
+            CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
+        }
+    }
+}
