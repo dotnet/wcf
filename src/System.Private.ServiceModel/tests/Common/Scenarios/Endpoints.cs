@@ -5,6 +5,7 @@ using Infrastructure.Common;
 
 public static partial class Endpoints
 {
+    #region HTTP Addresses
     // HTTP Addresses
     public static string DefaultCustomHttp_Address
     {
@@ -36,6 +37,12 @@ public static partial class Endpoints
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.HttpBinaryResource"); }
     }
 
+    public static string HttpProtocolError_Address
+    {
+        get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; }
+    }
+
+    #region WebSocket Addresses
     public static string NetHttpWebSocketTransport_Address
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketTransportResource"); }
@@ -44,11 +51,6 @@ public static partial class Endpoints
     public static string NetHttpDuplexWebSocket_Address
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.DuplexWebSocketResource"); }
-    }
-    
-    public static string HttpProtocolError_Address
-    {
-        get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; }
     }
 
     public static string WebSocketHttpDuplexBinaryStreamed_Address
@@ -90,7 +92,9 @@ public static partial class Endpoints
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpDuplexBinaryBufferedResource"); }
     }
+    #endregion WebSocket Addresses
 
+    #region Service Contract Addresses
     public static string ServiceContractAsyncIntOut_Address
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractAsyncIntOutResource"); }
@@ -120,7 +124,23 @@ public static partial class Endpoints
     {
         get { return BridgeClient.GetResourceAddress("WcfService.TestResources.ServiceContractSyncUniqueTypeRefResource"); }
     }
+    #endregion Service Contract Addresses
 
+    #region Custom Message Encoder Addresses
+
+    public static string CustomTextEncoderBuffered_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.CustomTextEncoderBufferedResource"); }
+    }
+
+    public static string CustomTextEncoderStreamed_Address
+    {
+        get { return BridgeClient.GetResourceAddress("WcfService.TestResources.CustomTextEncoderStreamedResource"); }
+    }
+    #endregion Custom Message Encoder Addresses
+    #endregion HTTP Addresses
+
+    #region HTTPS Addresses
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
@@ -212,6 +232,7 @@ public static partial class Endpoints
         }
     }
 
+    #region Secure WebSocket Addresses
     public static string WebSocketHttpsDuplexBinaryStreamed_Address
     {
         get
@@ -265,7 +286,10 @@ public static partial class Endpoints
             return BridgeClient.GetResourceAddress("WcfService.TestResources.WebSocketHttpsDuplexTextBufferedResource");
         }
     }
+    #endregion Secure WebSocket Addresses
+    #endregion  HTTPS Addresses
 
+    #region net.tcp Addresses
     // net.tcp Addresses
     public static string Tcp_DefaultBinding_Address
     {
@@ -439,4 +463,5 @@ public static partial class Endpoints
             return BridgeClient.GetResourceAddress("WcfService.TestResources.TcpTransportSecurityStreamedResource");
         }
     }
+    #endregion net.tcp Addresses
 }
