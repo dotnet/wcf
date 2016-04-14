@@ -1,4 +1,4 @@
-@echo off
+@if "%_echo%" neq "on" echo off
 
 :: *** start WCF Content ***
 setlocal ENABLEDELAYEDEXPANSION

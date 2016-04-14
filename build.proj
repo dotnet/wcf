@@ -17,8 +17,6 @@
     <RestoreDuringBuild Condition="'$(RestoreDuringBuild)'==''">true</RestoreDuringBuild>
     <!-- To disable building packages, set BuildPackages=false or pass /p:BuildPackages=false.-->
     <BuildPackages Condition="'$(BuildPackages)'==''">true</BuildPackages>
-    <!-- To disable building tests, set BuildTests=false or pass /p:BuildTests=false.-->
-    <BuildTests Condition="'$(BuildTests)'==''">true</BuildTests>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -59,6 +57,8 @@
   <UsingTask TaskName="GatherDirectoriesToRestore" AssemblyFile="$(BuildToolsTaskDir)Microsoft.DotNet.Build.Tasks.dll" />
 
   <Target Name="BatchRestorePackages">
+    <MakeDir Directories="$(PackagesDir)" Condition="!Exists('$(PackagesDir)')" /> 
+
     <Message Importance="High" Text="[$([System.DateTime]::Now.ToString('HH:mm:ss.ff'))] Restoring all packages..." />
 
     <Exec Command="$(DnuRestoreCommand) @(DnuRestoreDir->'&quot;%(Identity)&quot;', ' ')"
