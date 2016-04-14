@@ -2,21 +2,7 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
-    <Project Include="Binding\Custom\Binding.Custom.Tests.csproj" />
-    <Project Include="Binding\Http\Binding.Http.Tests.csproj" />
-    <Project Include="Client\ChannelLayer\Client.ChannelLayer.Tests.csproj" />
-    <Project Include="Client\ClientBase\Client.ClientBase.Tests.csproj" />
-    <Project Include="Client\ExpectedExceptions\Client.ExpectedExceptions.Tests.csproj" />
-    <Project Include="Client\TypedClient\Client.TypedClient.Tests.csproj" />
-    <Project Include="Contract\Data\Contract.Data.Tests.csproj" />
-    <Project Include="Contract\Fault\Contract.Fault.Tests.csproj" />
-    <Project Include="Contract\Message\Contract.Message.Tests.csproj" />
-    <Project Include="Contract\Service\Contract.Service.Tests.csproj" />
-    <Project Include="Contract\XmlSerializer\Contract.XmlSerializer.Tests.csproj" />
-    <Project Include="Encoding\Encoders\Encoding.Encoders.Tests.csproj" />
-    <Project Include="Encoding\MessageVersion\Encoding.MessageVersion.Tests.csproj" />
-    <Project Include="Extensibility\WebSockets\Extensibility.WebSockets.Tests.csproj" />
-    <Project Include="Security\TransportSecurity\Security.TransportSecurity.Tests.csproj" />
+    <Project Include="**\*.csproj" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.traversal.targets))\dir.traversal.targets" />
 </Project>
