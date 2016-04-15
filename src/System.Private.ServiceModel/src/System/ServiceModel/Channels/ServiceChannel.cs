@@ -2000,11 +2000,35 @@ namespace System.ServiceModel.Channels
                 _callOnce = callOnce;
                 _channel = channel;
                 _queue = new Queue<IWaiter>();
+
+                // Detect when the channel becomes unusable
+                ChannelIsAvailable = true;
+                _channel.Closing += (s, e) =>
+                {
+                    SetChannelUnavailable();
+                };
+
+                _channel.Faulted += (s, e) =>
+                {
+                    SetChannelUnavailable();
+                };
             }
 
             private object ThisLock
             {
                 get { return this; }
+            }
+
+            internal bool ChannelIsAvailable { get; private set; }
+
+            // Called when the channel becomes unusable during the open
+            // or waiting for queued waiters to complete.  This method
+            // ensures any waiters' WaitHandles are set so they complete
+            // rather than timing out.
+            private void SetChannelUnavailable()
+            {
+                ChannelIsAvailable = false;
+                SignalNext();
             }
 
             internal void CallOnce(TimeSpan timeout, CallOnceManager cascade)
@@ -2202,7 +2226,7 @@ namespace System.ServiceModel.Channels
 
                 private bool ShouldSignalNext
                 {
-                    get { return _isTimedOut && _isSignaled; }
+                    get { return (_isTimedOut || !_manager.ChannelIsAvailable) && _isSignaled; }
                 }
 
                 void IWaiter.Signal()
@@ -2226,12 +2250,15 @@ namespace System.ServiceModel.Channels
                 {
                     try
                     {
-                        if (!TimeoutHelper.WaitOne(_wait, timeout))
+                        // The wait can be ended by success, a timeout, or the
+                        // channel becoming unavailable for further use
+                        bool timedOut = !TimeoutHelper.WaitOne(_wait, timeout);
+                        if (timedOut || !_manager.ChannelIsAvailable)
                         {
                             bool signalNext;
                             lock (_manager.ThisLock)
                             {
-                                _isTimedOut = true;
+                                _isTimedOut = timedOut;
                                 signalNext = ShouldSignalNext;
                             }
                             if (signalNext)
