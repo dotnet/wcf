@@ -161,7 +161,7 @@ branchList.each { branchName ->
 // Define outerloop testing for OSes that can build and run.  Run locally on each machine.
 // **************************
 
-def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
+def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'OSX']
 branchList.each { branchName ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleOuterloopPlatforms.each { os ->
