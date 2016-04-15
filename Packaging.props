@@ -29,13 +29,13 @@
 
   <!-- Add required legal files to packages -->
   <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
-    <File Condition="Exists('$(PackageLicenseFile)')"
+    <File Condition="Exists('$(PackageLicenseFile)')" 
 	  	    Include="$(PackageLicenseFile)" >
-      <SkipPackageFileCheck>true</SkipPackageFileCheck>
-    </File>
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>        
     <File Condition="Exists('$(PackageThirdPartyNoticesFile)')"
 	        Include="$(PackageThirdPartyNoticesFile)" >
-      <SkipPackageFileCheck>true</SkipPackageFileCheck>
-    </File>
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>        
   </ItemGroup>
 </Project>
