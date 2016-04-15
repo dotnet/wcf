@@ -109,12 +109,14 @@ public static partial class Endpoints
     {
         get
         {
-            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName)==("localhost"))
+            // We assume the self hosted service does not have test service base addess, only the host name passed
+            // This will satisfy all current requirements
+            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
             {
-                return false;
+                return true;
             };
 
-            return true;
+            return false;
         }
     }
 
