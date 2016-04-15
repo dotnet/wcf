@@ -210,14 +210,7 @@ branchList.each { branchName ->
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
                 // Set PR trigger.
-                if (osGroupMap[os] == 'Windows_NT') 
-                {
-                    // Maintains the behavior "test outerloop please" for Windows_NT until we start testing more branches
-                    Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+outerloop\\W+please.*")
-                }
-                else {
-                    Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+outerloop\\W+${os}\\W+${configurationGroup}.*")
-                }
+                Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+outerloop\\W+${os}\\W+${configurationGroup}.*")
             } 
             else {
                 // Set a periodic trigger
