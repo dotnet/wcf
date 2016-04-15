@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WcfService</RootNamespace>
     <AssemblyName>WcfService</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <OutputPath>$(BridgeResourceFolder)</OutputPath>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -80,6 +81,11 @@
     <Compile Include="TestResources\BaseAddressResource.cs" />
     <Compile Include="TestResources\BasicAuthResource.cs" />
     <Compile Include="TestResources\BasicHttpsResource.cs" />
+    <Compile Include="TestResources\CustomBindings\CustomTextMessageBindingElement.cs" />
+    <Compile Include="TestResources\CustomBindings\CustomTextMessageEncoder.cs" />
+    <Compile Include="TestResources\CustomBindings\CustomTextMessageEncoderFactory.cs" />
+    <Compile Include="TestResources\CustomTextEncoderBufferedResource.cs" />
+    <Compile Include="TestResources\CustomTextEncoderStreamedResource.cs" />
     <Compile Include="TestResources\DefaultCustomHttpResource.cs" />
     <Compile Include="TestResources\DigestServiceAuthorizationManager.cs" />
     <Compile Include="TestResources\DuplexResources.cs" />

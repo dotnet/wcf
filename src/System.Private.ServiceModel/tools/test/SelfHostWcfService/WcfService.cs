@@ -393,7 +393,7 @@ namespace WcfService
         private static Stream StringToStream(string str)
         {
             var ms = new MemoryStream();
-            var sw = new StreamWriter(ms, Encoding.UTF8);
+            var sw = new StreamWriter(ms, new UTF8Encoding(false));
 
             sw.Write(str);
             sw.Flush();

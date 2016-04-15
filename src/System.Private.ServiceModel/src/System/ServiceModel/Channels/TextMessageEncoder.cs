@@ -443,9 +443,12 @@ namespace System.ServiceModel.Channels
                     WcfEventSource.Instance.TextMessageDecodingStart();
                 }
 
-                XmlReader reader = TakeStreamedReader(stream, GetEncodingFromContentType(contentType, _contentEncodingMap));
+                var wrappingStream = new ReadAheadWrappingStream(stream, 4096);
+                wrappingStream.EnsureBuffered();
+                XmlReader reader = TakeStreamedReader(wrappingStream, GetEncodingFromContentType(contentType, _contentEncodingMap));
                 Message message = Message.CreateMessage(reader, maxSizeOfHeaders, _version);
                 message.Properties.Encoder = this;
+                message.Properties[ReadAheadWrappingStream.ReadAheadWrappingStreamPropertyName] = wrappingStream;
 
                 if (WcfEventSource.Instance.StreamedMessageReadByEncoderIsEnabled())
                 {
