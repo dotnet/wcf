@@ -23,11 +23,6 @@
     <InboxOnTargetFramework Include="xamarinmac20" />
     <InboxOnTargetFramework Include="xamarintvos10" />
     <InboxOnTargetFramework Include="xamarinwatchos10" />
-
-    <ProjectReference Include="..\..\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
-      <!-- this needs to match the PackageTargetFramework of the facade -->
-      <PackageTargetFramework>netstandard1.3</PackageTargetFramework>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
