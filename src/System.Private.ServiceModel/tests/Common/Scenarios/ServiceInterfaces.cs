@@ -511,4 +511,7 @@ public interface IUtil
 
     [OperationContract]
     byte[] GetRootCert(bool exportAsPem);
+
+    [OperationContract]
+    string GetFQDN();
 }

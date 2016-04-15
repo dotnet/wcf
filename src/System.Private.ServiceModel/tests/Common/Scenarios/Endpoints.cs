@@ -13,6 +13,7 @@ public static partial class Endpoints
     private static X509Certificate2 clientCert;
     private static object rootCertLock = new object();
     private static object clientCertLock = new object();
+    private static string serviceHostName = string.Empty;
     //Install Root certificate, this is required for all https test
     private static void EnsureRootCertificateInstalled()
     {
@@ -78,16 +79,37 @@ public static partial class Endpoints
         }
     }
 
-    private static string GetServiceHostName()
+    private static string ServiceHostName
     {
-        return TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName);
+        get
+        {
+            //Get the host name from server
+            if (string.IsNullOrEmpty(serviceHostName))
+            {
+                BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
+                ChannelFactory<IUtil> factory = null;
+                IUtil serviceProxy = null;
+                try
+                {
+                    factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
+                    serviceProxy = factory.CreateChannel();
+                    serviceHostName = serviceProxy.GetFQDN();
+                }
+                finally
+                {
+                    ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+                }
+            }
+
+            return serviceHostName;
+        }
     }
 
     private static bool IISHosted
     {
         get
         {
-            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).ToLower()==("localhost"))
+            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName)==("localhost"))
             {
                 return false;
             };
@@ -428,7 +450,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetServiceHostName();
+            return ServiceHostName;
         }
     }
 
@@ -445,7 +467,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetServiceHostName();
+            return ServiceHostName;
         }
     }
 
@@ -462,7 +484,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetServiceHostName();
+            return ServiceHostName;
         }
     }
 
@@ -511,7 +533,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetServiceHostName();
+            return ServiceHostName;
         }
     }
 
