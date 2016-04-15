@@ -99,10 +99,11 @@ public class PullRequestHandler : IHttpHandler
             {
                 case "master":
                 case "origin/master":
+                case "origin/infrastructure":
                     success = SyncToBranch(branchString, result);
                     break;
                 default:
-                    context.Response.Write(string.Format("Branch name specified, '{0}' is not supported by this script<br/>", HttpUtility.HtmlEncode(branchString)));
+                    context.Response.Write(string.Format("Branch name specified, '{0}' is not supported by this service<br/>", HttpUtility.HtmlEncode(branchString)));
                     break;
             }
         }
