@@ -34,9 +34,9 @@ namespace System.IdentityModel.Selectors
             }
         }
 
-        protected override async Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
         {
-            return await Task.FromResult<SecurityToken>(new X509SecurityToken(certificate: _certificate, clone: _clone, disposable:_clone));
+            return Task.FromResult<SecurityToken>(new X509SecurityToken(certificate: _certificate, clone: _clone, disposable:_clone));
         }
 
         public void Dispose()
