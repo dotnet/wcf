@@ -169,7 +169,7 @@ public static class Tcp_ClientCredentialTypeTests
 
     [Fact]
 #if FEATURE_NETNATIVE
-    [ActiveIssue(834)] // Not supported in NET Native
+    [ActiveIssue(833)] // Not supported in NET Native
 #else
     [ActiveIssue(951, PlatformID.OSX)]
 #endif
@@ -221,7 +221,7 @@ public static class Tcp_ClientCredentialTypeTests
 
     [Fact]
 #if FEATURE_NETNATIVE
-    [ActiveIssue(834)] // Not supported in NET Native
+    [ActiveIssue(833)] // Not supported in NET Native
 #else
     [ActiveIssue(951, PlatformID.OSX)]
 #endif
