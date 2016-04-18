@@ -83,21 +83,21 @@ class WcfUtilities
 
         job.with { 
             parameters {
-                stringParam('WcfServiceUrl', "http://wcfcoresrv2.cloudapp.net/WcfService${wcfRepoSyncServiceCount}", 'Wcf OuterLoop Test Service Uri')
-                stringParam('WcfRepoSyncServiceUrl', "http://wcfcoresrv2.cloudapp.net/PRService${wcfRepoSyncServiceCount}/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
+                stringParam('WcfServiceUri', "wcfcoresrv2.cloudapp.net/WcfService${wcfRepoSyncServiceCount}", 'Wcf OuterLoop Test Service Uri')
+                stringParam('WcfRepoSyncServiceUri', "http://wcfcoresrv2.cloudapp.net/PRService${wcfRepoSyncServiceCount}/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
             }
         }
         if (os.toLowerCase().contains("windows")) {
             job.with { 
                 steps {
-                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\scripts\\sync-pr.cmd ${operation} %WcfRepoSyncServiceUrl%")
+                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\scripts\\sync-pr.cmd ${operation} %WcfRepoSyncServiceUri%")
                 }           
             }
         } 
         else {
             job.with { 
                 steps {
-                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/scripts/sync-pr.sh ${operation} \$WcfRepoSyncServiceUrl")
+                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/scripts/sync-pr.sh ${operation} \$WcfRepoSyncServiceUri")
                 }
             }
         }
@@ -174,7 +174,7 @@ branchList.each { branchName ->
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
                     steps {
-                        batchFile("build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop")
+                        batchFile("build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop /p:ServiceUri=%WcfServiceUri%")
                     }
                     
                     label('windows-elevated') // on Windows, must run on this build label
@@ -183,13 +183,13 @@ branchList.each { branchName ->
             else {
                 newJob.with {
                     steps {
-                        batchFile("HOME=\$WORKSPACE/tempHome ./build.sh /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop /p:TestWithLocalLibraries=true")
+                        batchFile("HOME=\$WORKSPACE/tempHome ./build.sh /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop /p:TestWithLocalLibraries=true /p:ServiceUri=\$WcfServiceUri")
                     }
                 }
                 
                 // Set the affinity.  OS name matches the machine affinity.
                 if (os == 'Ubuntu14.04') {
-                    Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")    
+                    Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
                 } 
                 else {
                     Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
