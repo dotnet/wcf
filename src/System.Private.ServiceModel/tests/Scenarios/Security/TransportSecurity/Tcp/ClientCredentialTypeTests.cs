@@ -15,7 +15,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     // Default settings are:
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
 #else
@@ -88,7 +88,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
 #else

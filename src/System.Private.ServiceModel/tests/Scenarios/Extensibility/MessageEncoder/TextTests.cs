@@ -17,6 +17,7 @@ public static class TextTests
 {
     [Fact]
     [OuterLoop]
+    [ActiveIssue(1042)]
     public static void CustomTextMessageEncoder_Http_RequestReply_Buffered()
     {
         ChannelFactory<IWcfService> channelFactory = null;
@@ -55,6 +56,7 @@ public static class TextTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(1042)]
     public static void CustomTextMessageEncoder_Http_RequestReply_Streamed()
     {
         // 84K, larger than any buffers, but won't allocate in LOH

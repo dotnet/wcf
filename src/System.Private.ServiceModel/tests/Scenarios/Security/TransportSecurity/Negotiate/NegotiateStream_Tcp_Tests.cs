@@ -55,6 +55,7 @@ public static class NegotiateStream_Tcp_Tests
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
     [Fact]
+    [ActiveIssue(1046)]
     [ActiveIssue(851, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void NegotiateStream_Tcp_AmbientCredentials()
