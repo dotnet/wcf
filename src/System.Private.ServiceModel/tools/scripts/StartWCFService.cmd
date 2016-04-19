@@ -24,10 +24,9 @@ REM Config Certs
 REM we need the direcotry to save the test.crl file. We are investigate a way to get rid of it
 REM
 md c:\wcftest
-pushd ..\..\..\..\bin\Wcf\tools\CertificateGenerator
-call CertificateGenerator.exe
+call %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe %*
 set __EXITCODE=%ERRORLEVEL%
-popd
+
 if NOT [%__EXITCODE%]==[0] (
     echo Warning: An error occurred while running certificate generator.
   )
@@ -41,10 +40,8 @@ if NOT [%ERRORLEVEL%]==[0] (
   )
 
 REM Start the self hosted WCF Test Service
-pushd ..\..\..\..\bin\Wcf\tools\SelfHostedWcfService
-call SelfHostedWcfService.exe %*
+call %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe %*
 set __EXITCODE=%ERRORLEVEL%
-popd
 
 :done
 
