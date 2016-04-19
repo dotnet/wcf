@@ -117,7 +117,7 @@ branchList.each { branchName ->
     def newJobName = "code_coverage_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
     
     // Create the new rolling job
-    def newJob = job(Utilities.getFullJobName(project, newJobName, isPR)) {
+    def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName)) {
         label('windows-elevated')
     }
     
