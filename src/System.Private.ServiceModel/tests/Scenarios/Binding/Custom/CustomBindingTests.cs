@@ -8,11 +8,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Infrastructure.Common;
 
-public static class CustomBindingTests
+public class CustomBindingTests : ConditionalWcfTest
 {
     // Client and Server bindings setup exactly the same using default settings.
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void DefaultSettings_Https_Text_Echo_RoundTrips_String()
     {

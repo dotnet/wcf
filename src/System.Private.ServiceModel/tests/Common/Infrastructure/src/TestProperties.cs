@@ -16,7 +16,7 @@ namespace Infrastructure.Common
         // partial method in generated code.
         private static Lazy<Dictionary<String, String>> _properties = new Lazy<Dictionary<String, String>>(() =>
         {
-            Dictionary<String, String> properties = new Dictionary<String, String>();
+            Dictionary<String, String> properties = new Dictionary<String, String>(StringComparer.OrdinalIgnoreCase);
             Initialize(properties);
             return properties;
         });

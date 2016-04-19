@@ -9,7 +9,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using Xunit;
 
-public static class NegotiateStream_Http_Tests
+public class NegotiateStream_Http_Tests : ConditionalWcfTest
 {
     // The tests are as follows:
     //
@@ -54,7 +54,7 @@ public static class NegotiateStream_Http_Tests
 
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
-    [Fact]
+    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [ActiveIssue(851, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void NegotiateStream_Http_AmbientCredentials()
@@ -89,7 +89,7 @@ public static class NegotiateStream_Http_Tests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [ActiveIssue(851)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword()
@@ -129,7 +129,7 @@ public static class NegotiateStream_Http_Tests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [ActiveIssue(851)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_ExplicitSpn()
@@ -168,7 +168,7 @@ public static class NegotiateStream_Http_Tests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [ActiveIssue(851)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_Upn()
@@ -207,7 +207,7 @@ public static class NegotiateStream_Http_Tests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [ActiveIssue(851)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword_With_Spn()
@@ -250,7 +250,7 @@ public static class NegotiateStream_Http_Tests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [ActiveIssue(851)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword_With_Upn()

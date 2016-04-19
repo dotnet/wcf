@@ -19,7 +19,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         s_password = "wcfSaysHell0World!";
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
@@ -55,7 +55,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: BasicAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()
     {
@@ -84,7 +84,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(exception.Message.ToLower().Contains(message), string.Format("Expected exception message to contain: '{0}', actual message is: '{1}'", message, exception.Message));
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthenticationEmptyUser_throw_ArgumentException()
     {
@@ -109,7 +109,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(exception.Message.ToLower().Contains(paraMessage), string.Format("Expected exception message to contain: '{0}', actual: '{1}'", paraMessage, exception.Message));
     }
 
-    [ConditionalFact(nameof(Domain_Joined))]
+    [ActiveIssue(979)]
+    [ConditionalFact(nameof(Domain_Joined), nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()
     {
@@ -135,7 +136,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: DigestAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    [Fact]
+    [ConditionalFact(nameof(NTLM_Available), nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void NtlmAuthentication_RoundTrips_Echo()
     {
@@ -156,7 +157,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: NtlmAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {

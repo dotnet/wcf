@@ -14,7 +14,10 @@ using Xunit;
 using System.Threading;
 using System.IO;
 
-public static class ExpectedExceptionTests
+using Infrastructure.Common;
+
+
+public class ExpectedExceptionTests : ConditionalWcfTest
 {
     [Fact]
     [OuterLoop]
@@ -491,7 +494,7 @@ public static class ExpectedExceptionTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     // Confirm that the Validate method of the custom X509CertificateValidator is called and that an exception thrown there is handled correctly.
     public static void TCP_ServiceCertFailedCustomValidate_Throw_Exception()

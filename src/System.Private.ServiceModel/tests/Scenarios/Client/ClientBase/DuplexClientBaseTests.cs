@@ -5,11 +5,12 @@ using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Xunit;
+using Infrastructure.Common;
 
-public static class DuplexClientBaseTests
+public class DuplexClientBaseTests : ConditionalWcfTest
 {
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void DuplexClientBaseOfT_OverHttp_Call_Throws_InvalidOperation()
     {
