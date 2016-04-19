@@ -11,7 +11,7 @@ using Xunit;
 using System.Collections.Generic;
 using System.Text;
 
-public static class Tcp_ClientCredentialTypeCertificateCanonicalNameTests
+public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : ConditionalWcfTest
 {
     // We set up three endpoints on the Bridge (server) side, each with a different certificate: 
     // Tcp_ClientCredentialType_Certificate_With_CanonicalName_Localhost_Address - is bound to a cert where CN=localhost
@@ -22,10 +22,9 @@ public static class Tcp_ClientCredentialTypeCertificateCanonicalNameTests
     // Hence, we are only able to determine at runtime whether a particular endpoint presented by the Bridge is going 
     // to pass a variation or fail a variation. 
 
-    [Theory]
+    [ConditionalTheory(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [MemberData("TcpClientCredentialType_Certificate_With_Only_CanonicalName_MemberData")]
-    [ActiveIssue(1047)]
     public static void TcpClientCredentialType_Certificate_With_Only_CanonicalName_EchoString(Uri endpointUri, bool shouldCallSucceed)
     {
         var endpointAddress = new EndpointAddress(endpointUri);
