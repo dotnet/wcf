@@ -180,7 +180,7 @@ namespace System.ServiceModel.Channels
             // to run on a different thread to prevent a deadlock.
             _stream = new ProducerConsumerStream();
             var bufferedStream = new BufferedWriteStream(_stream, WriteBufferSize);
-            Task.Run(async () => await _messageEncoder.WriteMessageAsync(_message, bufferedStream));
+            Task.Run(() => _messageEncoder.WriteMessageAsync(_message, bufferedStream));
             return Task.FromResult(_stream);
         }
 

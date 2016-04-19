@@ -34,11 +34,11 @@ namespace System.ServiceModel.Channels
         }
 
         // used by client WindowsStream security (from InitiateUpgrade)
-        public static async Task<NetworkCredential> GetSspiCredentialAsync(SspiSecurityTokenProvider tokenProvider,
+        public static Task<NetworkCredential> GetSspiCredentialAsync(SspiSecurityTokenProvider tokenProvider,
             OutWrapper<TokenImpersonationLevel> impersonationLevel, OutWrapper<bool> allowNtlm, CancellationToken cancellationToken)
         {
             OutWrapper<bool> dummyExtractWindowsGroupClaimsWrapper = new OutWrapper<bool>();
-            return await GetSspiCredentialAsync(tokenProvider,
+            return GetSspiCredentialAsync(tokenProvider,
                 dummyExtractWindowsGroupClaimsWrapper, impersonationLevel, allowNtlm, cancellationToken);
         }
 
