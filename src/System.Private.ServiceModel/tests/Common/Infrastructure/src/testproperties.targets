@@ -45,6 +45,7 @@ namespace Infrastructure.Common
         public static readonly string Kerberos_Available_PropertyName = "Kerberos_Available"%3B
         public static readonly string Windows_Authentication_Available_PropertyName = "Windows_Authentication_Available"%3B
         public static readonly string NTLM_Available_PropertyName = "NTLM_Available"%3B
+        public static readonly string ServiceUri_PropertyName = "ServiceUri"%3B
                 
         static partial void Initialize(Dictionary<string, string> properties)
         {
@@ -75,6 +76,7 @@ namespace Infrastructure.Common
             properties["Kerberos_Available"] = "$(Kerberos_Available)"%3B
             properties["Windows_Authentication_Available"] = "$(Windows_Authentication_Available)"%3B
             properties["NTLM_Available"] = "$(NTLM_Available)"%3B
+            properties["ServiceUri"] = "$(ServiceUri)"%3B
         }
     }
 }

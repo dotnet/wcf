@@ -118,7 +118,11 @@
     <PropertyGroup Condition="'$(Windows_Authentication_Available)' == ''">
       <Windows_Authentication_Available></Windows_Authentication_Available>
     </PropertyGroup>
-  
+
+    <PropertyGroup Condition="'$(ServiceUri)' == ''">
+      <ServiceUri >localhost</ServiceUri >
+    </PropertyGroup>
+
   <!--
      GeneratedTestPropertiesFileName:
      The full path of the C# file that will be generated at build time to

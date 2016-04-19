@@ -505,3 +505,16 @@ public interface IWcfAspNetCompatibleService
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoTimeAndSetCookie", ReplyAction = "http://tempuri.org/IIWcfService/EchoTimeAndSetCookieResponse")]
     string EchoTimeAndSetCookie(string name);
 }
+
+[ServiceContract]
+public interface IUtil
+{
+    [OperationContract]
+    byte[] GetClientCert(bool exportAsPem);
+
+    [OperationContract]
+    byte[] GetRootCert(bool exportAsPem);
+
+    [OperationContract]
+    string GetFQDN();
+}

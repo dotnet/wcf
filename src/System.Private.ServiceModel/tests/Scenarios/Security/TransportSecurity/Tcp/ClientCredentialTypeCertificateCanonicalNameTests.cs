@@ -25,6 +25,7 @@ public static class Tcp_ClientCredentialTypeCertificateCanonicalNameTests
     [Theory]
     [OuterLoop]
     [MemberData("TcpClientCredentialType_Certificate_With_Only_CanonicalName_MemberData")]
+    [ActiveIssue(1047)]
     public static void TcpClientCredentialType_Certificate_With_Only_CanonicalName_EchoString(Uri endpointUri, bool shouldCallSucceed)
     {
         var endpointAddress = new EndpointAddress(endpointUri);
