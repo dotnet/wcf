@@ -86,24 +86,37 @@
       <NegotiateTestUpn>testuser@DOMAIN.CONTOSO.COM</NegotiateTestUpn>
     </PropertyGroup>
 
+    <!-- Convention for TestProperties values to use by [ConditionalFact]:
+      'true' = yes, the condition is satisfied
+      'false' = no, the condition is not satisfied
+      empty string = self-detect at runtime if possible, else assume 'false'
+    -->
     <PropertyGroup Condition="'$(Domain_Joined)' == ''">
-      <Domain_Joined>false</Domain_Joined>
+      <Domain_Joined></Domain_Joined>
     </PropertyGroup>
   
     <PropertyGroup Condition="'$(Root_Certificate_Installed)' == ''">
-      <Root_Certificate_Installed>false</Root_Certificate_Installed>
+      <Root_Certificate_Installed></Root_Certificate_Installed>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Client_Certificate_Installed)' == ''">
-      <Client_Certificate_Installed>false</Client_Certificate_Installed>
+      <Client_Certificate_Installed></Client_Certificate_Installed>
     </PropertyGroup>
   
     <PropertyGroup Condition="'$(SPN_Available)' == ''">
-      <SPN_Available>false</SPN_Available>
+      <SPN_Available></SPN_Available>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Kerberos_Available)' == ''">
-      <Kerberos_Available>false</Kerberos_Available>
+      <Kerberos_Available></Kerberos_Available>
+    </PropertyGroup>
+    
+     <PropertyGroup Condition="'$(NTLM_Available)' == ''">
+      <NTLM_Available></NTLM_Available>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Windows_Authentication_Available)' == ''">
+      <Windows_Authentication_Available></Windows_Authentication_Available>
     </PropertyGroup>
   
   <!--

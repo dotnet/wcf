@@ -13,11 +13,11 @@ using System.Threading;
 using Infrastructure.Common;
 using Xunit;
 
-public static class HttpsTests
+public class HttpsTests : ConditionalWcfTest
 {
     // Client: CustomBinding set MessageVersion to Soap11
     // Server: BasicHttpsBinding default value is Soap11
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void CrossBinding_Soap11_EchoString()
     {
@@ -53,7 +53,7 @@ public static class HttpsTests
     }
 
     // Client and Server bindings setup exactly the same using default settings.
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
@@ -89,7 +89,7 @@ public static class HttpsTests
     }
 
     // Client and Server bindings setup exactly the same using Soap11
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void SameBinding_Soap11_EchoString()
     {
@@ -125,7 +125,7 @@ public static class HttpsTests
     }
 
     // Client and Server bindings setup exactly the same using Soap12
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void SameBinding_Soap12_EchoString()
     {
@@ -160,7 +160,7 @@ public static class HttpsTests
         Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
 #else
@@ -210,7 +210,7 @@ public static class HttpsTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [ActiveIssue(960, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void ClientCertificate_EchoString()

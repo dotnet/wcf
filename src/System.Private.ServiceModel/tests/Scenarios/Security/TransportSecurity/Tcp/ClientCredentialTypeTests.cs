@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Infrastructure.Common;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
+using Infrastructure.Common;
 using Xunit;
 
-public static class Tcp_ClientCredentialTypeTests
+public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 {
     // Simple echo of a string using NetTcpBinding on both client and server with all default settings.
     // Default settings are:
@@ -127,7 +127,7 @@ public static class Tcp_ClientCredentialTypeTests
 
     // Simple echo of a string using a CustomBinding to mimic a NetTcpBinding with Security.Mode = TransportWithMessageCredentials
     // This does not exactly match the binding elements in a NetTcpBinding which also includes a TransportSecurityBindingElement
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
 #endif
@@ -167,7 +167,7 @@ public static class Tcp_ClientCredentialTypeTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
 #else
@@ -219,7 +219,7 @@ public static class Tcp_ClientCredentialTypeTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
 #else
@@ -275,7 +275,7 @@ public static class Tcp_ClientCredentialTypeTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
 #endif

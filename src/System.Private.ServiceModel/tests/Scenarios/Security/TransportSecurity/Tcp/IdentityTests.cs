@@ -6,9 +6,9 @@ using System.Text;
 using Xunit;
 using Infrastructure.Common;
 
-public static class IdentityTests
+public class IdentityTests : ConditionalWcfTest
 {
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
 #endif
@@ -39,7 +39,7 @@ public static class IdentityTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
 #endif
