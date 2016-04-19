@@ -1,9 +1,5 @@
 @if "%_echo%" neq "on" echo off
-
-:: *** start WCF Content ***
-setlocal ENABLEDELAYEDEXPANSION
-REM DelayedExpansion needed to allow %ERRORLEVEL% to be set/used multiple times
-:: *** end WCF Content ***
+setlocal EnableDelayedExpansion
 
 :: Note: We've disabled node reuse because it causes file locking issues.
 ::       The issue is that we extend the build with our own targets which
@@ -22,23 +18,50 @@ echo %* | findstr /i /C:"OuterLoop"  1>nul
 if %errorlevel% equ 0 (
   set outloop=true
 )
-
-echo %* | findstr /i /C:"FloatingTestRuntimeDependencies=true"  1>nul
-set _FloatingDependencies=!ERRORLEVEL!
-if '!_FloatingDependencies!'=='0' (
-  set TestFixedRuntimeProjectJson=%~dp0src\Common\test-runtime\LatestDependencies\project.json
-  echo %* | findstr /i /C:"/p:Configuration="  1>nul
-  if !ERRORLEVEL! neq 0 (
-  set _defaultBuildConfig=/p:Configuration=Windows_NT_Debug
-  )
-)
 :: *** end WCF Content ***
 
 :ReadArguments
 :: Read in the args to determine whether to run the native build, managed build, or both (default)
-set "__args=%*"
-if /i [%1] == [native] (set __buildSpec=native&&set "__args=%__args:~6%"&&shift&&goto Tools)
-if /i [%1] == [managed] (set __buildSpec=managed&&set "__args=%__args:~7%"&&shift&&goto Tools)
+set OfficialBuildIdArg=
+set "__args= %*"
+set processedArgs=
+set unprocessedBuildArgs=
+
+:Loop
+if [%1]==[] goto Tools
+
+if /I [%1]==[native] (
+    set __buildSpec=native
+    set processedArgs=!processedArgs! %1
+    goto Next
+)
+
+if /I [%1] == [managed] (
+    set __buildSpec=managed
+    set processedArgs=!processedArgs! %1
+    goto Next
+)
+
+if /I [%1] == [/p:OfficialBuildId] (
+    if /I [%2]==[] (
+        echo Error: officialbuildid arg should have a value
+        exit /b 1
+    )
+    set processedArgs=!processedArgs! %1=%2
+    set OfficialBuildIdArg=/p:OfficialBuildId=%2
+    shift /1
+    goto Next
+)
+
+if [!processedArgs!]==[] (
+  call set unprocessedBuildArgs=!__args!
+) else (
+  call set unprocessedBuildArgs=%%__args:*!processedArgs!=%%
+)
+
+:Next
+shift /1
+goto Loop
 
 :Tools
 :: Setup VS
@@ -65,6 +88,10 @@ if "%__buildSpec%"=="managed"  goto :BuildManaged
 :BuildNative
 :: Run the Native Windows build
 echo [%time%] Building Native Libraries...
+:: Generate Native versioning assets
+set __binDir=%~dp0bin
+set __versionLog=%~dp0version.log
+msbuild "%~dp0build.proj" /nologo /t:GenerateVersionHeader /p:NativeVersionHeaderFile="%__binDir%\obj\_version.h" /p:GenerateVersionHeader=true %OfficialBuildIdArg% > "%__versionLog%"
 IF EXIST "%~dp0src\native\Windows\build-native.cmd" (
     call %~dp0src\native\Windows\build-native.cmd %__args% >nativebuild.log
     IF ERRORLEVEL 1 (
@@ -113,10 +140,8 @@ call :build %__args%
 goto :AfterBuild
 
 :build
-:: *** start WCF Content <WCF uses additional msbuild args> ***
-%_buildprefix% msbuild "%_buildproj%" %_defaultBuildConfig% /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=diag;LogFile="%_buildlog%";Append "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" %__args% %_buildpostfix%
+%_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=normal;LogFile="%_buildlog%";Append "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" !unprocessedBuildArgs! %_buildpostfix% %OfficialBuildIdArg%
 set BUILDERRORLEVEL=!ERRORLEVEL!
-:: *** end WCF Content ***
 goto :eof
 
 :AfterBuild

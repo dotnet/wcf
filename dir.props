@@ -502,32 +502,6 @@
     <SkipTests Condition="'$(SkipTests)'=='' and ('$(OsEnvironment)'=='Windows_NT' and '$(TargetsWindows)'!='true' and '$(OSGroup)'!='AnyOS')">true</SkipTests>
   </PropertyGroup>
 
-  <!-- *** start WCF Content *** -->
-  <!-- Test runtime -->
-  <PropertyGroup>
-    <TestRuntimePath>$(SourceDir)Common/test-runtime/</TestRuntimePath>
-
-    <TestFixedRuntimeProjectJson Condition="'$(TestFixedRuntimeProjectJson)' == ''">$(TestRuntimePath)project.json</TestFixedRuntimeProjectJson>
-    <TestFixedRuntimeProjectLockJson  Condition="'$(TestFixedRuntimeProjectJson)' == ''">$(TestRuntimePath)project.lock.json</TestFixedRuntimeProjectLockJson>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <TestRuntimeProjectJson Condition="'$(TestRuntimeProjectJson)' == ''">$(TestFixedRuntimeProjectJson)</TestRuntimeProjectJson>
-    <TestRuntimeProjectLockJson Condition="'$(TestRuntimeProjectLockJson)' == ''">$(TestFixedRuntimeProjectLockJson)</TestRuntimeProjectLockJson>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(FloatingTestRuntimeDependencies)'=='true'">
-    <TestRuntimePath>$(IntermediateOutputRootPath)Common/test-runtime/floating/</TestRuntimePath>
-
-    <TestRuntimeProjectJson>$(TestRuntimePath)project.json</TestRuntimeProjectJson>
-    <TestRuntimeProjectLockJson>$(TestRuntimePath)project.lock.json</TestRuntimeProjectLockJson>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(FloatingTestRuntimeDependencies)'=='true'">
-    <DnuRestoreDir Include="$(TestRuntimeProjectJson)" />
-  </ItemGroup>
-  <!-- *** end WCF Content *** -->
-
   <Import Project="$(RoslynPropsFile)" Condition="'$(OsEnvironment)'=='Unix' and Exists('$(RoslynPropsFile)')" />
 
 </Project>
