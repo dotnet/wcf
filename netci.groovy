@@ -24,7 +24,7 @@ def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
                              'CentOS7.1' : 'centos.7-x64',
                              'OpenSUSE13.2' : 'ubuntu.14.04-x64',
                              'RHEL7.2': 'rhel.7-x64']
-def branchList = ['master', 'pr', 'rc2', 'infrastructure']
+def branchList = ['master', 'pr', 'rc2']
 def osShortName = ['Windows 10': 'win10',
                    'Windows 7' : 'win7',
                    'Windows_NT' : 'windows_nt',
@@ -39,7 +39,6 @@ def osShortName = ['Windows 10': 'win10',
 def static getFullBranchName(def branch) {
     def branchMap = ['master':'*/master',
         'rc2':'*/release/1.0.0-rc2',
-        'infrastructure':'*/infrastructure',
         'pr':'*/master']
     def fullBranchName = branchMap.get(branch, null)
     assert fullBranchName != null : "Could not find a full branch name for ${branch}"
@@ -50,9 +49,6 @@ def static getJobName(def name, def branchName) {
     def baseName = name
     if (branchName == 'rc2') {
         baseName += "_rc2"
-    }
-    else if (branchName == "infrastructure") {
-        baseName += "_infrastructure"
     }
     return baseName
 }
