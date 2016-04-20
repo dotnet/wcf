@@ -6,20 +6,6 @@ setlocal EnableDelayedExpansion
 ::       means that that rebuilding cannot successfully delete the task
 ::       assembly.
 
-:: *** start WCF Content ***
-set outloop=false
-set setupFilesFolder=%~dp0src\System.Private.ServiceModel\tools\setupfiles
-
-REM this is a temporary step until the build tools provide a proper hook. 
-REM it will need to deal with multiple include and exclude categories.
-REM See dotnet/corefx#1477
-
-echo %* | findstr /i /C:"OuterLoop"  1>nul
-if %errorlevel% equ 0 (
-  set outloop=true
-)
-:: *** end WCF Content ***
-
 :ReadArguments
 :: Read in the args to determine whether to run the native build, managed build, or both (default)
 set OfficialBuildIdArg=
@@ -119,16 +105,6 @@ set _binclashlog=%~dp0binclash.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
-:: *** start WCF Content ***
-if "%outloop%" equ "true"  (
-    pushd %setupFilesFolder%
-    call EnsureBridgeRunning.cmd %*
-    set _bridgeReturnCode=!ERRORLEVEL!
-    echo EnsureBridgeRunning returned !_bridgeReturnCode!
-    popd
-)
-:: *** end WCF Content ***
-
 call :build %__args%
 
 :: Build
@@ -150,26 +126,5 @@ echo.
 :: Pull the build summary from the log file
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo [%time%] Build Exit Code = %BUILDERRORLEVEL%
-
-:: *** start WCF Content ***
-:doneBridge
-if "%outloop%" equ "true"  (
-    pushd %~dp0bin\wcf\tools\Bridge
-    if '!_bridgeReturnCode!' == '0' (
-      echo Stopping the Bridge ...
-      call Bridge.exe -stop %*
-    ) else (
-      echo Releasing Bridge resources ...
-      call Bridge.exe -reset %*
-    )
-    popd
-
-    pushd %setupFilesFolder%
-    call CleanupCertificates.cmd
-    popd
-)
-
-endlocal
-:: *** end WCF Content ***
 
 exit /b %BUILDERRORLEVEL%
