@@ -55,7 +55,6 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=None
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void SameBinding_SecurityModeNone_EchoString()
     {
         string testString = "Hello";
@@ -170,8 +169,6 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
-#else
-    [ActiveIssue(951, PlatformID.OSX)]
 #endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_EchoString()
@@ -222,8 +219,6 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
-#else
-    [ActiveIssue(951, PlatformID.OSX)]
 #endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_CustomValidator_EchoString()

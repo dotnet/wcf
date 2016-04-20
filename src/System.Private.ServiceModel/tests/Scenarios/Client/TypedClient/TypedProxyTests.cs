@@ -35,7 +35,6 @@ public static class TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call()
     {
         NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
@@ -55,7 +54,6 @@ public static class TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback()
     {
         NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
@@ -78,7 +76,6 @@ public static class TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
@@ -104,7 +101,6 @@ public static class TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call()
     {
         NetTcpBinding netTcpBinding = new NetTcpBinding();
@@ -129,7 +125,6 @@ public static class TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext()
     {
         bool success = Task.Run(() =>
@@ -419,7 +414,6 @@ public static class TypedProxyTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void ServiceContract_TypedProxy_DuplexCallback()
     {
         DuplexChannelFactory<IDuplexChannelService> factory = null;

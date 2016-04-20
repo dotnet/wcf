@@ -56,7 +56,6 @@ public static class DataContractTests
     // Verify that a callback contract correctly returns a complex type when this type is not part of the contract with the ServiceContract attribute.
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void NetTcpBinding_DuplexCallback_ReturnsDataContractComplexType()
     {
         DuplexChannelFactory<IWcfDuplexService_DataContract> factory = null;
@@ -95,7 +94,6 @@ public static class DataContractTests
     // Verify that a callback contract correctly returns a complex type using Xml instead of DataContract when this type is not part of the contract with the ServiceContract attribute.
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void NetTcpBinding_DuplexCallback_ReturnsXmlComplexType()
     {
         DuplexChannelFactory<IWcfDuplexService_Xml> factory = null;
