@@ -269,7 +269,7 @@ branchList.each { branchName ->
             // Set up triggers
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTrigger(newJob, "Innerloop ${os} ${configurationGroup}","(?i).*test\\W+innerloop\\W+${os}.*")
+                Utilities.addGithubPRTrigger(newJob, "Innerloop ${os} ${configurationGroup} Build and Test")
             } 
             else {
                 // Set a push trigger
