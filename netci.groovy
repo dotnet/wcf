@@ -206,7 +206,7 @@ branchList.each { branchName ->
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+outerloop\\W+${os}\\W+${configurationGroup}.*")
+                Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+outerloop\\W+${os}.*")
             } 
             else {
                 // Set a periodic trigger
@@ -269,7 +269,7 @@ branchList.each { branchName ->
             // Set up triggers
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTrigger(newJob, "Innerloop ${os} ${configurationGroup} Build and Test")
+                Utilities.addGithubPRTrigger(newJob, "Innerloop ${os} ${configurationGroup}","(?i).*test\\W+innerloop\\W+${os}.*")
             } 
             else {
                 // Set a push trigger
