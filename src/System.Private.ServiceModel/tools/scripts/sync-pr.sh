@@ -14,8 +14,8 @@ show_banner()
 show_usage() 
 {
     echo "    A URL must be specified for the pull request synchronization URL"
-    echo "    Usage: $0 [branch|pr] [sync-url] [branch-name | pr-number (optional)]"
-
+    echo "    Usage: $0 [repo] [branch|pr] [sync-url] [branch-name | pr-number (optional)]"
+    echo "    repo        - ID of the repo on the PR service"
     echo "    branch|pr   - Sync to branch or PR (choose one)"
     echo "    sync-url    - URL on remote server for PR synchronization"
     echo "    branch-name - branch name to sync to"
@@ -24,20 +24,21 @@ show_usage()
     echo "    If branch-name or pr-number are left blank, then the script will use"
     echo "    \$GIT_BRANCH or \$ghprbPullId by default depending on the operation mode"
     echo ""
-    echo "    Example:  $0 branch http://wcfci-sync-server/PRService/pr.ashx"
-    echo "    Example:  $0 branch http://wcfci-sync-server/PRService/pr.ashx master"
-    echo "    Example:  $0 pr http://wcfci-sync-server/PRService/pr.ashx"
-    echo "    Example:  $0 pr http://wcfci-sync-server/PRService/pr.ashx 404"
+    echo "    Example:  $0 1 branch http://wcfci-sync-server/PRService/pr.ashx"
+    echo "    Example:  $0 2 branch http://wcfci-sync-server/PRService/pr.ashx master"
+    echo "    Example:  $0 3 pr http://wcfci-sync-server/PRService/pr.ashx"
+    echo "    Example:  $0 4 pr http://wcfci-sync-server/PRService/pr.ashx 404"
     echo ""
 }
 
 run_request() 
 {
-    __operation_mode=$1
-    __sync_url=$2
-    __branch_or_pullid=$3
+    __repo_id=$1
+    __operation_mode=$2
+    __sync_url=$3
+    __branch_or_pullid=$4
 
-    __request_uri=${__sync_url}?${__operation_mode}=${__branch_or_pullid}
+    __request_uri=${__sync_url}?repo=${__repo_id}\&${__operation_mode}=${__branch_or_pullid}
 
     echo "    Making a call to '${__request_uri}'" 
 
@@ -67,26 +68,24 @@ show_banner
 
 # Check parameters
 
-if [ -z "$1" ]; then 
+# We expect at least three parameters, with $4 optional
+if [ -z "$3" ]; then
     show_usage
     exit 1
+fi 
+
+__repo_id=$1
+
+if [ "$2" == "branch" ] || [ "$2" == "pr" ]; then 
+    __operation_mode=$2
 else 
-    if [ "$1" == "branch" ] || [ "$1" == "pr" ]; then 
-        __operation_mode=$1
-    else 
-        show_usage
-        exit 1
-    fi 
-fi 
-
-if [ -z "$2" ]; then 
     show_usage
     exit 1
 fi 
 
-__sync_url=$2
+__sync_url=$3
 
-if [ -z "$3" ]; then 
+if [ -z "$4" ]; then 
     if [ "$__operation_mode" == "branch" ]; then 
         if [ -z "$GIT_BRANCH" ]; then 
             show_usage
@@ -109,14 +108,14 @@ if [ -z "$3" ]; then
         fi  
     fi
 else  
-    __pr_or_branch=$3
+    __pr_or_branch=$4
     show_usage 
     echo "    WARNING: This script should usually only be called only from the context of a GitHub Pull Request"
     echo "    Branch or PR ID overridden '${__pr_or_branch}'"
 fi
 
 # Run 
-run_request $__operation_mode $__sync_url $__pr_or_branch
+run_request $__repo_id $__operation_mode $__sync_url $__pr_or_branch
 
 __exit_code=$?
 
