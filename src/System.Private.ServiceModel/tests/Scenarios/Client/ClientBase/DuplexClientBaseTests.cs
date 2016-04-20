@@ -52,7 +52,6 @@ public class DuplexClientBaseTests : ConditionalWcfTest
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(951, PlatformID.OSX)]
     public static void DuplexClientBaseOfT_OverNetTcp_Synchronous_Call()
     {
         DuplexClientBase<IWcfDuplexService> duplexService = null;
