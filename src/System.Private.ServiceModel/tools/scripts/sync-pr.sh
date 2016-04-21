@@ -14,8 +14,8 @@ show_banner()
 show_usage() 
 {
     echo "    A URL must be specified for the pull request synchronization URL"
-    echo "    Usage: $0 [repo] [branch|pr] [sync-url] [branch-name | pr-number (optional)]"
-    echo "    repo        - ID of the repo on the PR service"
+    echo "    Usage: $0 [id] [branch|pr] [sync-url] [branch-name | pr-number (optional)]"
+    echo "    id          - ID of the repo on the PR service"
     echo "    branch|pr   - Sync to branch or PR (choose one)"
     echo "    sync-url    - URL on remote server for PR synchronization"
     echo "    branch-name - branch name to sync to"
@@ -38,7 +38,7 @@ run_request()
     __sync_url=$3
     __branch_or_pullid=$4
 
-    __request_uri=${__sync_url}?repo=${__repo_id}\&${__operation_mode}=${__branch_or_pullid}
+    __request_uri=${__sync_url}?id=${__repo_id}\&${__operation_mode}=${__branch_or_pullid}
 
     echo "    Making a call to '${__request_uri}'" 
 
