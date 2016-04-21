@@ -181,18 +181,18 @@ branchList.each { branchName ->
                         shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop /p:TestWithLocalLibraries=true /p:ServiceUri=\$WcfServiceUri")
                     }
                 }
-                
-                // Set the affinity.  OS name matches the machine affinity.
-                if (os == 'Windows_NT') {
-                    // Set affinity for elevated machines on Windows
-                    Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
-                } 
-                else if (os == 'Ubuntu14.04') {
-                    Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
-                } 
-                else {
-                    Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
-                }
+            }                
+
+            // Set the affinity.  OS name matches the machine affinity.
+            if (os == 'Windows_NT') {
+                // Set affinity for elevated machines on Windows
+                Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
+            } 
+            else if (os == 'Ubuntu14.04') {
+                Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
+            } 
+            else {
+                Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             }
 
             // Disable the builds for non Windows_NT, since outerloops don't work yet
