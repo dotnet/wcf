@@ -114,9 +114,7 @@ branchList.each { branchName ->
     def newJobName = "code_coverage_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
     
     // Create the new rolling job
-    def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName)) {
-        label('windows-elevated')
-    }
+    def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
     
     wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branchName, isPR)
     
@@ -126,6 +124,8 @@ branchList.each { branchName ->
         }
     }
 
+    // Set affinity for elevated machines
+    Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
     // Set up standard options.
     Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
     // Add code coverage report
@@ -173,8 +173,6 @@ branchList.each { branchName ->
                     steps {
                         batchFile("build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop /p:ServiceUri=%WcfServiceUri%")
                     }
-                    
-                    label('windows-elevated') // on Windows, must run on this build label
                 }
             } 
             else {
@@ -185,7 +183,11 @@ branchList.each { branchName ->
                 }
                 
                 // Set the affinity.  OS name matches the machine affinity.
-                if (os == 'Ubuntu14.04') {
+                if (os == 'Windows_NT') {
+                    // Set affinity for elevated machines on Windows
+                    Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
+                } 
+                else if (os == 'Ubuntu14.04') {
                     Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
                 } 
                 else {
