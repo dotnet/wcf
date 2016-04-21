@@ -195,12 +195,6 @@ branchList.each { branchName ->
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             }
 
-            // Disable the builds for non Windows_NT, since outerloops don't work yet
-            if (os != 'Windows_NT') 
-            {
-                newJob.disabled(true)
-            }            
-
             // Set up standard options.
             Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
             // Add the unit test results
