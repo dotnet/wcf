@@ -31,10 +31,13 @@ public static class ScenarioTestHelpers
         }
     }
 
-    public static bool BridgeIsLocalHost()
+    // Returns true only if the test services are accessed via "localhost".
+    // This test is not intended to be used to determine whether test services 
+    // are running on the same machine as the tests.
+    public static bool IsLocalHost()
     {
-        string bridgeHost = TestProperties.GetProperty(TestProperties.BridgeHost_PropertyName);
-        return String.Equals("localhost", bridgeHost, StringComparison.OrdinalIgnoreCase);
+        string serviceUri = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+        return String.Equals("localhost", serviceUri, StringComparison.OrdinalIgnoreCase);
     }
 
     public static string GenerateStringValue(int length)
