@@ -15,9 +15,9 @@ echo.
 
 if "%__args%"=="" (
     echo   [%~n0] A URL must be specified for the pull request synchronization URL
-    echo     Usage:  %~n0 [repo] [branch/pr] [sync-url] [optional branch-name / pr-number]
+    echo     Usage:  %~n0 [id] [branch/pr] [sync-url] [optional branch-name / pr-number]
     echo   
-    echo   repo        - ID of the repo on the PR Service
+    echo   id          - ID of the repo on the PR Service
     echo   branch/pr   - Sync to branch or PR [choose one]
     echo   sync-url    - URL on remote server for PR synchronization
     echo   branch-name - branch name to sync to
@@ -75,8 +75,8 @@ REM Disregard the chevrons and quotataions in the next line - it's to output the
 REM We have to duplicate the request URL below for output and for PowerShell because of Powershell's crazy escape sequences interacting 
 REM badly with cmd's crazy and conflicting escape sequences
 
-echo   [%~n0] Making call to %__SYNC_HOST_URL%?repo=%__REPO_ID%^&%__OPERATION_MODE%=%__BRANCH_OR_PR_ID%
-powershell -NoProfile -ExecutionPolicy unrestricted -Command "(New-Object Net.WebClient).DownloadString('%__SYNC_HOST_URL%?repo=%__REPO_ID%&%__OPERATION_MODE%=%__BRANCH_OR_PR_ID%');"
+echo   [%~n0] Making call to %__SYNC_HOST_URL%?id=%__REPO_ID%^&%__OPERATION_MODE%=%__BRANCH_OR_PR_ID%
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "(New-Object Net.WebClient).DownloadString('%__SYNC_HOST_URL%?id=%__REPO_ID%&%__OPERATION_MODE%=%__BRANCH_OR_PR_ID%');"
 
 set __EXITCODE=%ERRORLEVEL% 
 
