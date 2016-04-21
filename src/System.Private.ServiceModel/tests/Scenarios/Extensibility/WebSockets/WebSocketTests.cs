@@ -13,7 +13,6 @@ public static class WebSocketTests
 {
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1043)]
     [ActiveIssue(420, PlatformID.AnyUnix)]
     public static void WebSocket_Http_RequestReply_BinaryStreamed()
     {
@@ -60,7 +59,7 @@ public static class WebSocketTests
             foreach (string serverLogItem in client.GetLog())
             {
                 //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
-                Assert.True(!ScenarioTestHelpers.BridgeIsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+                Assert.True(!ScenarioTestHelpers.IsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
@@ -470,7 +469,6 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1043)]
     [ActiveIssue(420, PlatformID.AnyUnix)]
     public static void WebSocket_Http_RequestReply_TextStreamed()
     {
@@ -517,7 +515,7 @@ public static class WebSocketTests
             foreach (string serverLogItem in client.GetLog())
             {
                 //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
-                Assert.True(!ScenarioTestHelpers.BridgeIsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+                Assert.True(!ScenarioTestHelpers.IsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
@@ -657,7 +655,6 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1043)]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
     {
@@ -693,7 +690,7 @@ public static class WebSocketTests
             foreach (string serverLogItem in client.GetLog())
             {
                 //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
-                Assert.True(!ScenarioTestHelpers.BridgeIsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+                Assert.True(!ScenarioTestHelpers.IsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
@@ -709,7 +706,6 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1043)]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
     {
@@ -747,7 +743,7 @@ public static class WebSocketTests
             foreach (string serverLogItem in client.GetLog())
             {
                 //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
-                Assert.True(!ScenarioTestHelpers.BridgeIsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+                Assert.True(!ScenarioTestHelpers.IsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
@@ -897,7 +893,6 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1043)]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Http_RequestReply_TextBuffered()
     {
@@ -931,7 +926,7 @@ public static class WebSocketTests
             foreach (string serverLogItem in client.GetLog())
             {
                 //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
-                Assert.True(!ScenarioTestHelpers.BridgeIsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+                Assert.True(!ScenarioTestHelpers.IsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
@@ -947,7 +942,6 @@ public static class WebSocketTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1043)]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Http_RequestReply_BinaryBuffered_KeepAlive()
     {
@@ -982,7 +976,7 @@ public static class WebSocketTests
             foreach (string serverLogItem in client.GetLog())
             {
                 //Assert.True(serverLogItem != ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure, ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure);
-                Assert.True(!ScenarioTestHelpers.BridgeIsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
+                Assert.True(!ScenarioTestHelpers.IsLocalHost() || !serverLogItem.Contains(ScenarioTestHelpers.RemoteEndpointMessagePropertyFailure), serverLogItem);
             }
 
             // *** CLEANUP *** \\
