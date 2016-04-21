@@ -62,7 +62,7 @@ def branch = GithubBranchName
 // **************************
 class WcfUtilities
 {
-    def wcfRepoSyncServiceCount = 0 
+    def wcfPRServiceCount = 0 
     
     // Outerloop jobs for WCF Core require an external server reference
     // This should be run 
@@ -73,27 +73,28 @@ class WcfUtilities
             return 
         }
 
-        wcfRepoSyncServiceCount++
+        wcfPRServiceCount++
 
         def operation = isPR ? "pr" : "branch"
 
         job.with { 
             parameters {
-                stringParam('WcfServiceUri', "wcfcoresrv2.cloudapp.net/WcfService${wcfRepoSyncServiceCount}", 'Wcf OuterLoop Test Service Uri')
-                stringParam('WcfRepoSyncServiceUri', "http://wcfcoresrv2.cloudapp.net/PRService${wcfRepoSyncServiceCount}/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
+                stringParam('WcfServiceUri', "wcfcoresrv2.cloudapp.net/WcfService${wcfPRServiceCount}", 'Wcf OuterLoop Test Service Uri')
+                stringParam('WcfPRServiceUri', "http://wcfcoresrv2.cloudapp.net/PRServiceMaster/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
+                stringParam('WcfPRServiceId', "${wcfPRServiceCount}", 'Wcf OuterLoop Test PR Service Id')
             }
         }
         if (os.toLowerCase().contains("windows")) {
             job.with { 
                 steps {
-                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\scripts\\sync-pr.cmd ${operation} %WcfRepoSyncServiceUri%")
+                    batchFile(".\\src\\System.Private.ServiceModel\\tools\\scripts\\sync-pr.cmd %WcfPRServiceId% ${operation} %WcfPRServiceUri%")
                 }           
             }
         } 
         else {
             job.with { 
                 steps {
-                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/scripts/sync-pr.sh ${operation} \$WcfRepoSyncServiceUri")
+                   shell("HOME=\$WORKSPACE/tempHome ./src/System.Private.ServiceModel/tools/scripts/sync-pr.sh \$WcfPRServiceId ${operation} \$WcfPRServiceUri")
                 }
             }
         }
