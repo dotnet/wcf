@@ -200,6 +200,13 @@ branchList.each { branchName ->
             // Add the unit test results
             Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
             
+            // Our outerloops rely on us calling WcfPRServiceUri to sync server code, after which the client 
+            // will test against WcfServiceUri.
+            // The current design limitation means that if we allow concurrent builds, it becomes possible to pave over 
+            // the server endpoint with mismatched code while another test is running.
+            // Due to this design limitation, we have to disable concurrent builds for outerloops 
+            newJob.concurrentBuild(false)
+
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
                 // Set PR trigger.
