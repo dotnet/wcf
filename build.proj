@@ -59,6 +59,7 @@
     <TraversalBuildDependsOn>
       ValidateAllProjectDependencies;
       BatchRestorePackages;
+      ValidateExactRestore;
       CreateOrUpdateCurrentVersionFile;
       $(TraversalBuildDependsOn);
     </TraversalBuildDependsOn>
@@ -82,6 +83,9 @@
           CustomErrorRegularExpression="(^Unable to locate .*)|(^Updating the invalid lock file with .*)"
           ContinueOnError="ErrorAndContinue" />
 
+    <!-- Given we ErrorAndContinue we need to propagate the error if the overall task failed -->
+    <Error Condition="'$(MSBuildLastTaskResult)'=='false'" />
+    
     <Message Importance="High" Text="[$([System.DateTime]::Now.ToString('HH:mm:ss.ff'))] Restoring all packages...Done." />
   </Target>
 
@@ -94,6 +98,14 @@
       <MSBuild Targets="GenerateAllTestProjectJsons"
                Projects="src\tests.builds" />
       <Message Importance="High" Text="[$([System.DateTime]::Now.ToString('HH:mm:ss.ff'))] Generating Test project.json's...done" />
+  </Target>
+
+  <!-- Task from buildtools that uses lockfiles to validate that packages restored are exactly what were specified. -->
+  <UsingTask TaskName="ValidateExactRestore" AssemblyFile="$(BuildToolsTaskDir)Microsoft.DotNet.Build.Tasks.dll" />
+
+  <Target Name="ValidateExactRestore"
+          Condition="'$(AllowInexactRestore)'!='true'">
+    <ValidateExactRestore ProjectLockJsons="@(ProjectJsonFiles->'%(RootDir)%(Directory)%(Filename).lock.json')" />
   </Target>
 
   <!-- Task from buildtools that validates dependencies contained in project.json files. -->

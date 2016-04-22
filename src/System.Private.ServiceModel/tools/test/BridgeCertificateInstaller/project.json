@@ -5,7 +5,7 @@
     "System.Console": "4.0.0-rc3-24015-00",
     "System.IO.FileSystem": "4.0.0",
     "System.IO": "4.0.10",
-    "System.Net.Http": "4.0.1-rc3-24015-00",
+    "System.Net.Http": "4.1.0-rc3-24015-00",
     "System.Net.Primitives": "4.0.10"
   },
   "frameworks": {
