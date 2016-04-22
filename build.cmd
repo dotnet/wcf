@@ -104,7 +104,6 @@ set _binclashLoggerDll=%~dp0Tools\net45\Microsoft.DotNet.Build.Tasks.dll
 set _binclashlog=%~dp0binclash.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
-
 call :build %__args%
 
 :: Build
