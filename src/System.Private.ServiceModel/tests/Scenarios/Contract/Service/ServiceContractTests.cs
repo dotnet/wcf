@@ -935,6 +935,213 @@ public static class ServiceContractTests
         }
     }
 
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Open_ChannelFactory()
+    {
+        string testString = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.OpenTimeout = ScenarioTestHelpers.TestTimeout;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+
+            // *** EXECUTE *** \\
+            Task t = Task.Factory.FromAsync(factory.BeginOpen, factory.EndOpen, TaskCreationOptions.None);
+
+            // *** VALIDATE *** \\
+            t.GetAwaiter().GetResult();
+            Assert.True(factory.State == CommunicationState.Opened,
+                        String.Format("Expected factory state 'Opened', actual was '{0}'", factory.State));
+
+            serviceProxy = factory.CreateChannel();
+            result = serviceProxy.Echo(testString); // verifies factory did open correctly
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Open_ChannelFactory_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.BasicHttp_Async_Open_ChannelFactory(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(ScenarioTestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: BasicHttp_Async_Open_ChannelFactory_WithSingleThreadedSyncContext timed-out.");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Open_Proxy()
+    {
+        string testString = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            ICommunicationObject proxyAsCommunicationObject = (ICommunicationObject)serviceProxy;
+            Task t = Task.Factory.FromAsync(proxyAsCommunicationObject.BeginOpen, proxyAsCommunicationObject.EndOpen, TaskCreationOptions.None);
+
+            // *** VALIDATE *** \\
+            t.GetAwaiter().GetResult();
+            Assert.True(proxyAsCommunicationObject.State == CommunicationState.Opened,
+                        String.Format("Expected proxy state 'Opened', actual was '{0}'", proxyAsCommunicationObject.State));
+
+            result = serviceProxy.Echo(testString); // verifies proxy did open correctly
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Open_Proxy_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.BasicHttp_Async_Open_Proxy(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(ScenarioTestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: BasicHttp_Async_Open_Proxy_WithSingleThreadedSyncContext timed-out.");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Close_ChannelFactory()
+    {
+        string testString = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.CloseTimeout = ScenarioTestHelpers.TestTimeout;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+            result = serviceProxy.Echo(testString);         // force proxy and factory to open as part of setup
+            ((ICommunicationObject)serviceProxy).Close();   // force proxy closed before close factory
+
+            // *** EXECUTE *** \\
+            Task t = Task.Factory.FromAsync(factory.BeginClose, factory.EndClose, TaskCreationOptions.None);
+
+            // *** VALIDATE *** \\
+            t.GetAwaiter().GetResult();
+            Assert.True(factory.State == CommunicationState.Closed,
+                        String.Format("Expected factory state 'Closed', actual was '{0}'", factory.State));
+
+            // *** CLEANUP *** \\
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Close_ChannelFactory_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.BasicHttp_Async_Close_ChannelFactory(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(ScenarioTestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: BasicHttp_Async_Close_ChannelFactory_WithSingleThreadedSyncContext timed-out.");
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Close_Proxy()
+    {
+        string testString = "Hello";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+            serviceProxy.Echo(testString);  // force sync open as part of setup
+
+            // *** EXECUTE *** \\
+            ICommunicationObject proxyAsCommunicationObject = (ICommunicationObject)serviceProxy;
+            Task t = Task.Factory.FromAsync(proxyAsCommunicationObject.BeginClose, proxyAsCommunicationObject.EndClose, TaskCreationOptions.None);
+
+            // *** VALIDATE *** \\
+            t.GetAwaiter().GetResult();
+            Assert.True(proxyAsCommunicationObject.State == CommunicationState.Closed,
+                        String.Format("Expected proxy state 'Closed', actual was '{0}'", proxyAsCommunicationObject.State));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+    public static void BasicHttp_Async_Close_Proxy_WithSingleThreadedSyncContext()
+    {
+        bool success = Task.Run(() =>
+        {
+            TestTypes.SingleThreadSynchronizationContext.Run(() =>
+            {
+                Task.Factory.StartNew(() => ServiceContractTests.BasicHttp_Async_Close_Proxy(), CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext()).Wait();
+            });
+        }).Wait(ScenarioTestHelpers.TestTimeout);
+        Assert.True(success, "Test Scenario: BasicHttp_Async_Close_Proxy_WithSingleThreadedSyncContext timed-out.");
+    }
+
     private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
     {
         if (e.InnerException != null)
