@@ -58,6 +58,14 @@ namespace SelfHostedWCFService
             BasicHttpTestServiceHost basicHttpTestServiceHostServiceHost = new BasicHttpTestServiceHost(typeof(WcfService.WcfService), basicHttpTestServiceHostbaseAddress);
             basicHttpTestServiceHostServiceHost.Open();
 
+            Uri[] CustomTextEncoderBufferedTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/CustomTextEncoderBuffered.svc", httpBaseAddress)) };
+            CustomTextEncoderBufferedTestServiceHost customTextMessageEncoderBufferedTestServiceHost = new CustomTextEncoderBufferedTestServiceHost(typeof(WcfService.WcfService), CustomTextEncoderBufferedTestServiceHostbaseAddress);
+            customTextMessageEncoderBufferedTestServiceHost.Open();
+
+            Uri[] CustomTextEncoderStreamedTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/CustomTextEncoderStreamed.svc", httpBaseAddress)) };
+            CustomTextEncoderStreamedTestServiceHost customTextMessageEncoderStreamedTestServiceHost = new CustomTextEncoderStreamedTestServiceHost(typeof(WcfService.WcfService), CustomTextEncoderStreamedTestServiceHostbaseAddress);
+            customTextMessageEncoderStreamedTestServiceHost.Open();
+
             Uri[] defaultCustomHttpTestServiceHostbaseAddress = new Uri[]  { new Uri(string.Format("{0}/DefaultCustomHttp.svc", httpBaseAddress))};
             DefaultCustomHttpTestServiceHost defaultCustomHttpTestServiceHostServiceHost = new DefaultCustomHttpTestServiceHost(typeof(WcfService.WcfService), defaultCustomHttpTestServiceHostbaseAddress);
             defaultCustomHttpTestServiceHostServiceHost.Open();

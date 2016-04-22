@@ -17,7 +17,6 @@ public static class TextTests
 {
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1042)]
     public static void CustomTextMessageEncoder_Http_RequestReply_Buffered()
     {
         ChannelFactory<IWcfService> channelFactory = null;
@@ -56,7 +55,6 @@ public static class TextTests
 
     [Fact]
     [OuterLoop]
-    [ActiveIssue(1042)]
     public static void CustomTextMessageEncoder_Http_RequestReply_Streamed()
     {
         // 84K, larger than any buffers, but won't allocate in LOH
@@ -109,7 +107,11 @@ public static class TextTests
             // *** VALIDATE *** \\
             MemoryStream ms = new MemoryStream(streamLength);
             returnStream.CopyTo(ms);
-            Assert.Equal(ms.Length, streamLength);
+
+            Assert.True(streamLength == ms.Length, 
+                        String.Format("Expected returned stream length = {0}, actual = {1}", 
+                                        streamLength, ms.Length));
+
             ArraySegment<byte> returnedByteArraySegment;
             ms.TryGetBuffer(out returnedByteArraySegment);
             Assert.True(requestBytes.SequenceEqual(returnedByteArraySegment.Array), "Returned bytes are different than sent bytes");
