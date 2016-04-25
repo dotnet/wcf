@@ -165,7 +165,7 @@ branchList.each { branchName ->
 // Define outerloop testing for OSes that can build and run.  Run locally on each machine.
 // **************************
 
-def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'OSX']
+def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
 branchList.each { branchName ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleOuterloopPlatforms.each { os ->
@@ -195,7 +195,7 @@ branchList.each { branchName ->
                 // Set affinity for elevated machines on Windows
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
             } 
-            else if (os == 'Ubuntu14.04') {
+            else if (os == 'Ubuntu14.04' || os == 'CentOS7.1') {
                 Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
             } 
             else {
@@ -257,12 +257,6 @@ branchList.each { branchName ->
                 }
             }
             
-            // Disable the builds for CentOS because it doesn't fully work yet
-            if (os == 'CentOS7.1') 
-            {
-                newJob.disabled(true)
-            }
-
             // Set the affinity.  All of these run on Windows currently.
             Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             // Set up standard options.
