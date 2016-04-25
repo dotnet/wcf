@@ -143,7 +143,7 @@ branchList.each { branchName ->
     // Set triggers
     if (isPR)
     {
-        Utilities.addGithubPRTrigger(newJob, "Code Coverage Windows ${configurationGroup}", '(?i).*test\\W+code\\W*coverage.*')
+        Utilities.addGithubPRTrigger(newJob, "Code Coverage Windows_NT ${configurationGroup}", '(?i).*test\\W+code\\W*coverage.*')
     } 
     else {
         Utilities.addPeriodicTrigger(newJob, '@daily')
@@ -151,21 +151,10 @@ branchList.each { branchName ->
 }
 
 // **************************
-// WCF only
-// Outerloop and Innerloop against the latest dependencies on Windows. Rolling daily for debug and release
-// 
-// We don't need this for the time being, however, in case we do need it in the near future, preserving the 
-// build command that we use to do the testing
-//
-// batchFile("build.cmd /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:FloatingTestRuntimeDependencies=true /p:WithCategories=\"InnerLoop;OuterLoop\"")
-// **************************
-
-
-// **************************
 // Define outerloop testing for OSes that can build and run.  Run locally on each machine.
 // **************************
 
-def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'OSX']
+def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
 branchList.each { branchName ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleOuterloopPlatforms.each { os ->
@@ -195,7 +184,7 @@ branchList.each { branchName ->
                 // Set affinity for elevated machines on Windows
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
             } 
-            else if (os == 'Ubuntu14.04') {
+            else if (os == 'Ubuntu14.04' || os == 'CentOS7.1') {
                 Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
             } 
             else {
@@ -213,6 +202,12 @@ branchList.each { branchName ->
             // the server endpoint with mismatched code while another test is running.
             // Due to this design limitation, we have to disable concurrent builds for outerloops 
             newJob.concurrentBuild(false)
+
+            // Skip outerloop testing on rc2 branch on non-WinNT platforms
+            // we are incapable of running outerloops in CI due to the dependency on the Bridge
+            if (branchName == 'rc2' && os != 'Windows_NT') {
+                newJob.disabled(true)
+            }
 
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
@@ -257,12 +252,6 @@ branchList.each { branchName ->
                 }
             }
             
-            // Disable the builds for CentOS because it doesn't fully work yet
-            if (os == 'CentOS7.1') 
-            {
-                newJob.disabled(true)
-            }
-
             // Set the affinity.  All of these run on Windows currently.
             Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             // Set up standard options.
@@ -280,7 +269,7 @@ branchList.each { branchName ->
             // Set up triggers
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTrigger(newJob, "Innerloop ${os} ${configurationGroup} Build and Test")
+                Utilities.addGithubPRTrigger(newJob, "Innerloop ${os} ${configurationGroup}")
             } 
             else {
                 // Set a push trigger
