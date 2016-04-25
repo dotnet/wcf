@@ -9,15 +9,15 @@ using System.ServiceModel.Security;
 
 namespace WcfService
 {
-    public class TcpTransportSecuritySslClientCredentialTypeCertificateFactory : ServiceHostFactory
+    public class TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHostFactory : ServiceHostFactory
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            TcpTransportSecuritySslClientCredentialTypeCertificate serviceHost = new TcpTransportSecuritySslClientCredentialTypeCertificate(serviceType, baseAddresses);
+            TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost serviceHost = new TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
-    public class TcpTransportSecuritySslClientCredentialTypeCertificate : TestServiceHostBase<IWcfService>
+    public class TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "tcp-server-ssl-security-clientcredentialtype-certificate"; } }
 
@@ -41,7 +41,7 @@ namespace WcfService
                                                       thumbprint);
         }
 
-        public TcpTransportSecuritySslClientCredentialTypeCertificate(Type serviceType, params Uri[] baseAddresses)
+        public TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
         }
