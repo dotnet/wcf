@@ -335,7 +335,7 @@ public static partial class Endpoints
         get
         {
             EnsureLocalClientCertifciateInstalled();
-            return GetEndpointAdddress("HttpsNtlm.svc//https-ntlm.svc//");
+            return GetEndpointAdddress("HttpsNtlm.svc//https-ntlm", protocol: "https");
         }
     }
 
