@@ -29,6 +29,8 @@ namespace System.ServiceModel.Channels
         int Read(byte[] buffer, int offset, int size, TimeSpan timeout);
         AsyncCompletionResult BeginRead(int offset, int size, TimeSpan timeout, Action<object> callback, object state);
         int EndRead();
+
+        object GetCoreTransport();
     }
 
     // Low level abstraction for connecting a socket/pipe
@@ -108,6 +110,11 @@ namespace System.ServiceModel.Channels
         public virtual int EndRead()
         {
             return _connection.EndRead();
+        }
+
+        public virtual object GetCoreTransport()
+        {
+            return _connection.GetCoreTransport();
         }
     }
 
@@ -210,8 +217,8 @@ namespace System.ServiceModel.Channels
         {
             _connection = connection;
             _closeTimeout = defaultTimeouts.CloseTimeout;
-            this.ReadTimeout = TimeoutHelper.ToMilliseconds(defaultTimeouts.ReceiveTimeout);
-            this.WriteTimeout = TimeoutHelper.ToMilliseconds(defaultTimeouts.SendTimeout);
+            ReadTimeout = TimeoutHelper.ToMilliseconds(defaultTimeouts.ReceiveTimeout);
+            WriteTimeout = TimeoutHelper.ToMilliseconds(defaultTimeouts.SendTimeout);
             _immediate = true;
         }
 
@@ -312,7 +319,7 @@ namespace System.ServiceModel.Channels
         {
             if (disposing)
             {
-                _connection.Close(this.CloseTimeout, false);
+                _connection.Close(CloseTimeout, false);
             }
         }
 
@@ -328,8 +335,8 @@ namespace System.ServiceModel.Channels
             // completed Task in the success case to also avoid allocation. The race condition of completing async but 
             // running the callback before the tcs has been allocated would need to be accounted for.
             var tcs = new TaskCompletionSource<bool>(this);
-            var asyncCompletionResult = _connection.BeginWrite(buffer, offset, count, this.Immediate,
-                TimeoutHelper.FromMilliseconds(this.WriteTimeout), s_onWriteComplete, tcs);
+            var asyncCompletionResult = _connection.BeginWrite(buffer, offset, count, Immediate,
+                TimeoutHelper.FromMilliseconds(WriteTimeout), s_onWriteComplete, tcs);
             if (asyncCompletionResult == AsyncCompletionResult.Completed)
             {
                 _connection.EndWrite();
@@ -371,21 +378,23 @@ namespace System.ServiceModel.Channels
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            _connection.Write(buffer, offset, count, this.Immediate, TimeoutHelper.FromMilliseconds(this.WriteTimeout));
+            _connection.Write(buffer, offset, count, Immediate, TimeoutHelper.FromMilliseconds(WriteTimeout));
         }
 
-        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<int>(this);
             AsyncCompletionResult asyncCompletionResult = _connection.BeginRead(0, Math.Min(count, _connection.AsyncReadBufferSize),
-                TimeoutHelper.FromMilliseconds(this.ReadTimeout), s_onReadComplete, tcs);
+                TimeoutHelper.FromMilliseconds(ReadTimeout), s_onReadComplete, tcs);
 
             if (asyncCompletionResult == AsyncCompletionResult.Completed)
             {
                 tcs.TrySetResult(_connection.EndRead());
             }
 
-            return tcs.Task;
+            int bytesRead = await tcs.Task;
+            Buffer.BlockCopy(_connection.AsyncReadBuffer, 0, buffer, offset, bytesRead);
+            return bytesRead;
         }
 
         private static void OnReadComplete(object state)
@@ -419,7 +428,7 @@ namespace System.ServiceModel.Channels
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return this.Read(buffer, offset, count, TimeoutHelper.FromMilliseconds(this.ReadTimeout));
+            return Read(buffer, offset, count, TimeoutHelper.FromMilliseconds(ReadTimeout));
         }
 
         protected int Read(byte[] buffer, int offset, int count, TimeSpan timeout)
@@ -607,7 +616,7 @@ namespace System.ServiceModel.Channels
         {
             Contract.Requires(_writeResult == null, "StreamConnection: OnWrite called twice.");
             _writeResult = antecedant;
-            this._writeCallback(state);
+            _writeCallback(state);
         }
 
         public void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
@@ -714,7 +723,12 @@ namespace System.ServiceModel.Channels
         {
             Contract.Requires(_readResult == null, "StreamConnection: OnRead called twice.");
             _readResult = antecedant;
-            this._readCallback(state);
+            _readCallback(state);
+        }
+
+        public virtual object GetCoreTransport()
+        {
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException());
         }
     }
 

@@ -158,14 +158,6 @@ namespace System.ServiceModel
                     }
                 }
             }
-
-            // Transport.ClientCredentialType = Certificate is not supported.
-            Contract.Assert((mode == SecurityMode.Transport) || (mode == SecurityMode.TransportWithMessageCredential), "Unexpected SecurityMode value: " + mode);
-            TcpTransportSecurity transport = security.Transport;
-            if ((transport != null) && (transport.ClientCredentialType == TcpClientCredentialType.Certificate))
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Transport.ClientCredentialType", transport.ClientCredentialType)));
-            }
 #endif // FEATURE_NETNATIVE
         }
 

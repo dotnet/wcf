@@ -12,7 +12,6 @@ namespace System.ServiceModel.Channels
 #if FEATURE_CORECLR // ExtendedProtection
 
         ChannelBinding GetChannelBinding(StreamUpgradeInitiator upgradeInitiator, ChannelBindingKind kind);
-        ChannelBinding GetChannelBinding(StreamUpgradeAcceptor upgradeAcceptor, ChannelBindingKind kind);
 #endif
     }
 }

@@ -899,6 +899,11 @@ namespace System.ServiceModel.Channels
                 this._asyncWriteEventArgs.Completed += s_onSocketSendCompleted;
             }
         }
+
+        public override object GetCoreTransport()
+        {
+            return _socket;
+        }
     }
 
     internal class CoreClrSocketConnectionInitiator : SocketConnectionInitiator
