@@ -290,14 +290,12 @@ public static partial class Endpoints
 
     public static string CustomTextEncoderBuffered_Address
     {
-        get { return GetEndpointAdddress("CustomTextEncoderBuffered.svc//CustomTextEncoderBuffered"); }
-        //get { return BridgeClient.GetResourceAddress("WcfService.TestResources.CustomTextEncoderBufferedResource"); }
+        get { return GetEndpointAdddress("CustomTextEncoderBuffered.svc//http-customtextencoder"); }
     }
 
     public static string CustomTextEncoderStreamed_Address
     {
-        get { return GetEndpointAdddress("CustomTextEncoderStreamed.svc//CustomTextEncoderStreamed"); }
-        //get { return BridgeClient.GetResourceAddress("WcfService.TestResources.CustomTextEncoderStreamedResource"); }
+        get { return GetEndpointAdddress("CustomTextEncoderStreamed.svc//http-customtextencoder-streamed"); }
     }
     #endregion Custom Message Encoder Addresses
     #endregion HTTP Addresses
