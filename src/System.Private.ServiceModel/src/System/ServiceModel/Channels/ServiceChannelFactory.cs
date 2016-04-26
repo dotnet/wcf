@@ -282,6 +282,11 @@ namespace System.ServiceModel.Channels
             CloseCollectionAsyncResult.End(result);
         }
 
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return OnCloseAsyncInternal(timeout);
+        }
+
         protected override void OnOpened()
         {
             base.OnOpened();
@@ -390,6 +395,33 @@ namespace System.ServiceModel.Channels
                 return null;
         }
 
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            while (true)
+            {
+                int count;
+                IChannel channel;
+                lock (ThisLock)
+                {
+                    count = _channelsList.Count;
+                    if (count == 0)
+                        return;
+                    channel = _channelsList[0];
+                }
+
+                IAsyncCommunicationObject asyncChannel = channel as IAsyncCommunicationObject;
+                if (asyncChannel != null)
+                {
+                    await asyncChannel.CloseAsync(timeoutHelper.RemainingTime());
+                }
+                else
+                {
+                    await Task.Factory.FromAsync(channel.BeginClose, channel.EndClose, TaskCreationOptions.None);
+                }
+            }
+        }
+
         protected abstract IChannelBinder CreateInnerChannelBinder(EndpointAddress address, Uri via);
 
         internal abstract class TypedServiceChannelFactory<TChannel> : ServiceChannelFactory
@@ -450,8 +482,7 @@ namespace System.ServiceModel.Channels
 
             protected internal override Task OnCloseAsync(TimeSpan timeout)
             {
-                this.OnClose(timeout);
-                return TaskHelpers.CompletedTask();
+                return OnCloseAsyncInternal(timeout);
             }
 
             protected internal override Task OnOpenAsync(TimeSpan timeout)
@@ -474,6 +505,21 @@ namespace System.ServiceModel.Channels
                 }
 
                 return _innerChannelFactory.GetProperty<T>();
+            }
+
+            private new async Task OnCloseAsyncInternal(TimeSpan timeout)
+            {
+                await base.OnCloseAsync(timeout);
+
+                IAsyncChannelFactory asyncChannelFactory = _innerChannelFactory as IAsyncChannelFactory;
+                if (asyncChannelFactory != null)
+                {
+                    await asyncChannelFactory.CloseAsync(timeout);
+                }
+                else
+                {
+                    await Task.Factory.FromAsync(_innerChannelFactory.BeginClose, _innerChannelFactory.EndClose, TaskCreationOptions.None);
+                }
             }
         }
 
