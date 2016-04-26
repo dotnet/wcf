@@ -104,7 +104,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    this.ReturnReadBuffer();
+                    ReturnReadBuffer();
                 }
 
                 if (_asyncWritePending)
@@ -170,7 +170,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (!_asyncReadPending)
                     {
-                        this.ReturnReadBuffer();
+                        ReturnReadBuffer();
                     }
                 }
 
@@ -190,7 +190,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Undefined);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -222,7 +222,7 @@ namespace System.ServiceModel.Channels
                 lock (ThisLock)
                 {
                     Contract.Assert(!_asyncWritePending, "Called BeginWrite twice.");
-                    this.ThrowIfClosed();
+                    ThrowIfClosed();
                     SetWriteTimeout(timeout, false);
                     _asyncWritePending = true;
                     _asyncWriteCallback = callback;
@@ -248,8 +248,9 @@ namespace System.ServiceModel.Channels
             }
             catch (ObjectDisposedException objectDisposedException)
             {
-                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException,
+                    TransferOperation.Write);
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -257,6 +258,10 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (Exception exception) 
             {
@@ -272,7 +277,7 @@ namespace System.ServiceModel.Channels
             {
                 if (abortWrite)
                 {
-                    this.AbortWrite();
+                    AbortWrite();
                 }
             }
         }
@@ -281,7 +286,7 @@ namespace System.ServiceModel.Channels
         {
             if (_asyncWriteException != null)
             {
-                this.AbortWrite();
+                AbortWrite();
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(_asyncWriteException);
             }
 
@@ -300,7 +305,7 @@ namespace System.ServiceModel.Channels
         private void OnSendAsync(Task antecedent)
         {
             Contract.Assert(antecedent != null, "Argument 'antecedent' cannot be NULL.");
-            this.CancelSendTimer();
+            CancelSendTimer();
 
             try
             {
@@ -324,7 +329,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            this.FinishWrite();
+            FinishWrite();
         }
 
         private void AbortWrite()
@@ -336,7 +341,7 @@ namespace System.ServiceModel.Channels
                     if (_closeState != CloseState.Closed)
                     {
                         _asyncWritePending = false;
-                        this.CancelSendTimer();
+                        CancelSendTimer();
                     }
                 }
             }
@@ -374,7 +379,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -421,7 +426,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -463,11 +468,11 @@ namespace System.ServiceModel.Channels
 
             lock (ThisLock)
             {
-                this.ThrowIfClosed();
+                ThrowIfClosed();
                 _asyncReadState = state;
                 _asyncReadCallback = callback;
                 _asyncReadPending = true;
-                this.SetReadTimeout(timeout, false, false);
+                SetReadTimeout(timeout, false, false);
             }
 
             try
@@ -481,14 +486,17 @@ namespace System.ServiceModel.Channels
                     return AsyncCompletionResult.Queued;
                 }
 
-                _asyncReadSize = readTask.Result;
+                // Task has completed but might have timed out so need to use
+                // GetAwaiter to get result so the correct exception is thrown.
+                _asyncReadSize = readTask.GetAwaiter().GetResult();
                 abortRead = false;
                 return AsyncCompletionResult.Completed;
             }
             catch (ObjectDisposedException objectDisposedException)
             {
-                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException,
+                    TransferOperation.Read);
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -496,6 +504,10 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (Exception exception) 
             {
@@ -517,7 +529,7 @@ namespace System.ServiceModel.Channels
 
         private void OnReceiveAsync(Task<int> antecedent)
         {
-            this.CancelReceiveTimer();
+            CancelReceiveTimer();
 
             try
             {
@@ -564,7 +576,7 @@ namespace System.ServiceModel.Channels
 
                 if (_closeState == CloseState.Closed)
                 {
-                    this.ReturnReadBuffer();
+                    ReturnReadBuffer();
                 }
             }
 
@@ -674,6 +686,11 @@ namespace System.ServiceModel.Channels
             long delta = Math.Max(oldTimeout.Ticks, newTimeout.Ticks) - Math.Min(oldTimeout.Ticks, newTimeout.Ticks);
 
             return delta > threshold;
+        }
+
+        public override object GetCoreTransport()
+        {
+            return _socket;
         }
     }
 

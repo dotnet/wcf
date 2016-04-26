@@ -418,6 +418,8 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        public abstract object GetCoreTransport();
+
         protected enum CloseState
         {
             Open,

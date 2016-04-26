@@ -112,12 +112,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public override StreamUpgradeAcceptor CreateUpgradeAcceptor()
-        {
-            ThrowIfDisposedOrNotOpen();
-            return new WindowsStreamSecurityUpgradeAcceptor(this);
-        }
-
         public override StreamUpgradeInitiator CreateUpgradeInitiator(EndpointAddress remoteAddress, Uri via)
         {
             ThrowIfDisposedOrNotOpen();
@@ -176,95 +170,6 @@ namespace System.ServiceModel.Channels
             if (_serverCredential == null)
             {
                 _serverCredential = CredentialCache.DefaultNetworkCredentials;
-            }
-        }
-
-        private class WindowsStreamSecurityUpgradeAcceptor : StreamSecurityUpgradeAcceptorBase
-        {
-            private WindowsStreamSecurityUpgradeProvider _parent;
-            private SecurityMessageProperty _clientSecurity;
-
-            public WindowsStreamSecurityUpgradeAcceptor(WindowsStreamSecurityUpgradeProvider parent)
-                : base(FramingUpgradeString.Negotiate)
-            {
-                _parent = parent;
-                _clientSecurity = new SecurityMessageProperty();
-            }
-
-            protected override Stream OnAcceptUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
-            {
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
-                // wrap stream
-                NegotiateStream negotiateStream = new NegotiateStream(stream);
-
-                // authenticate
-                try
-                {
-                    if (WcfEventSource.Instance.WindowsStreamSecurityOnAcceptUpgradeIsEnabled())
-                    {
-                        WcfEventSource.Instance.WindowsStreamSecurityOnAcceptUpgrade(EventTraceActivity);
-                    }
-
-                    negotiateStream.AuthenticateAsServerAsync(_parent.ServerCredential, _parent.ProtectionLevel,
-                        TokenImpersonationLevel.Identification).GetAwaiter().GetResult();
-                }
-                catch (AuthenticationException exception)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(exception.Message,
-                        exception));
-                }
-                catch (IOException ioException)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(
-                        SR.Format(SR.NegotiationFailedIO, ioException.Message), ioException));
-                }
-
-                remoteSecurity = CreateClientSecurity(negotiateStream, _parent.ExtractGroupsForWindowsAccounts);
-                return negotiateStream;
-#else
-                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
-#endif // SUPPORTS_WINDOWSIDENTITY
-            }
-
-            protected override IAsyncResult OnBeginAcceptUpgrade(Stream stream, AsyncCallback callback, object state)
-            {
-                throw ExceptionHelper.PlatformNotSupported(); 
-            }
-
-            protected override Stream OnEndAcceptUpgrade(IAsyncResult result,
-                out SecurityMessageProperty remoteSecurity)
-            {
-                throw ExceptionHelper.PlatformNotSupported();
-            }
-
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
-            SecurityMessageProperty CreateClientSecurity(NegotiateStream negotiateStream,
-                bool extractGroupsForWindowsAccounts)
-            {
-                WindowsIdentity remoteIdentity = (WindowsIdentity)negotiateStream.RemoteIdentity;
-                SecurityUtils.ValidateAnonymityConstraint(remoteIdentity, false);
-                WindowsSecurityTokenAuthenticator authenticator = new WindowsSecurityTokenAuthenticator(extractGroupsForWindowsAccounts);
-
-                // When NegotiateStream returns a WindowsIdentity the AuthenticationType is passed in the constructor to WindowsIdentity
-                // by it's internal NegoState class.  If this changes, then the call to remoteIdentity.AuthenticationType could fail if the 
-                // current process token doesn't have sufficient priviledges.  It is a first class exception, and caught by the CLR
-                // null is returned.
-                SecurityToken token = new WindowsSecurityToken(remoteIdentity, SecurityUniqueId.Create().Value, remoteIdentity.AuthenticationType);
-                ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies = authenticator.ValidateToken(token);
-                _clientSecurity = new SecurityMessageProperty();
-                _clientSecurity.TransportToken = new SecurityTokenSpecification(token, authorizationPolicies);
-                _clientSecurity.ServiceSecurityContext = new ServiceSecurityContext(authorizationPolicies);
-                return _clientSecurity;
-            }
-#endif // SUPPORTS_WINDOWSIDENTITY
-
-            public override SecurityMessageProperty GetRemoteSecurity()
-            {
-                if (_clientSecurity.TransportToken != null)
-                {
-                    return _clientSecurity;
-                }
-                return base.GetRemoteSecurity();
             }
         }
 

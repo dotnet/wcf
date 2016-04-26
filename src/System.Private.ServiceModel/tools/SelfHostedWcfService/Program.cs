@@ -214,6 +214,10 @@ namespace SelfHostedWCFService
             TcpTransportSecurityWithSslTestServiceHost tcpTransportSecurityWithSslTestServiceHostServiceHost = new TcpTransportSecurityWithSslTestServiceHost(typeof(WcfService.WcfService), tcpTransportSecurityWithSslTestServiceHostbaseAddress);
             tcpTransportSecurityWithSslTestServiceHostServiceHost.Open();
 
+            Uri[] tcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/TcpTransportSecuritySslClientCredentialTypeCertificate.svc", tcpBaseAddress))};
+            TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost tcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost = new TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost(typeof(WcfService.WcfService), tcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHostbaseAddress);
+            tcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost.Open();
+
             Uri[] tcpVerifyDNSTestServiceHostbaseAddress = new Uri[]  { new Uri(string.Format("{0}/TcpVerifyDNS.svc", tcpBaseAddress))};
             TcpVerifyDNSTestServiceHost tcpVerifyDNSTestServiceHostServiceHost = new TcpVerifyDNSTestServiceHost(typeof(WcfService.WcfService), tcpVerifyDNSTestServiceHostbaseAddress);
             tcpVerifyDNSTestServiceHostServiceHost.Open();

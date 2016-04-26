@@ -43,6 +43,5 @@ namespace System.ServiceModel.Channels
         }
 
         public abstract StreamUpgradeInitiator CreateUpgradeInitiator(EndpointAddress remoteAddress, Uri via);
-        public abstract StreamUpgradeAcceptor CreateUpgradeAcceptor();
     }
 }
