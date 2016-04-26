@@ -1450,7 +1450,7 @@ namespace System.ServiceModel.Security
         public System.Net.NetworkCredential ClientCredential { get { return default(System.Net.NetworkCredential); } set { } }
     }
     public sealed partial class X509ServiceCertificateAuthentication {
-        internal X509ServiceCertificateAuthentication() { }
+        public X509ServiceCertificateAuthentication() { }
         public System.ServiceModel.Security.X509CertificateValidationMode CertificateValidationMode { get { return default(System.ServiceModel.Security.X509CertificateValidationMode); } set { } }
         public System.IdentityModel.Selectors.X509CertificateValidator CustomCertificateValidator { get { return default(System.IdentityModel.Selectors.X509CertificateValidator); } set { } }
         public System.Security.Cryptography.X509Certificates.X509RevocationMode RevocationMode { get { return default(System.Security.Cryptography.X509Certificates.X509RevocationMode); } set { } }
