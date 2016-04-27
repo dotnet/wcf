@@ -31,10 +31,10 @@ namespace System.ServiceModel.Channels
         // write state
         private SocketAsyncEventArgs _asyncWriteEventArgs;
 
-        private Timer _receiveTimer;
-        private static TimerCallback s_onReceiveTimeout;
-        private Timer _sendTimer;
-        private static TimerCallback s_onSendTimeout;
+        private IOTimer<SocketConnection> _receiveTimer;
+        private static Action<SocketConnection> s_onReceiveTimeout;
+        private IOTimer<SocketConnection> _sendTimer;
+        private static Action<SocketConnection> s_onSendTimeout;
 
         public CoreClrSocketConnection(Socket socket, ConnectionBufferPool connectionBufferPool)
             : base(connectionBufferPool)
@@ -50,7 +50,7 @@ namespace System.ServiceModel.Channels
             _sendTimeout = _receiveTimeout = TimeSpan.MaxValue;
         }
 
-        private Timer SendTimer
+        private IOTimer<SocketConnection> SendTimer
         {
             get
             {
@@ -58,17 +58,17 @@ namespace System.ServiceModel.Channels
                 {
                     if (s_onSendTimeout == null)
                     {
-                        s_onSendTimeout = new TimerCallback(OnSendTimeout);
+                        s_onSendTimeout = OnSendTimeout;
                     }
 
-                    _sendTimer = new Timer(s_onSendTimeout, this, TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                    _sendTimer = new IOTimer<SocketConnection>(s_onSendTimeout, this);
                 }
 
                 return _sendTimer;
             }
         }
 
-        private Timer ReceiveTimer
+        private IOTimer<SocketConnection> ReceiveTimer
         {
             get
             {
@@ -76,10 +76,10 @@ namespace System.ServiceModel.Channels
                 {
                     if (s_onReceiveTimeout == null)
                     {
-                        s_onReceiveTimeout = new TimerCallback(OnReceiveTimeout);
+                        s_onReceiveTimeout = OnReceiveTimeout;
                     }
 
-                    _receiveTimer = new Timer(s_onReceiveTimeout, this, TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                    _receiveTimer = new IOTimer<SocketConnection>(s_onReceiveTimeout, this);
                 }
 
                 return _receiveTimer;
@@ -169,23 +169,18 @@ namespace System.ServiceModel.Channels
                 _aborted = true;
                 _closeState = CloseState.Closed;
 
-                if (_asyncReadPending)
+                if (!_asyncReadPending)
                 {
-                    CancelReceiveTimer();
-                }
-                else
-                {
-                    this.DisposeReadEventArgs();
+                    DisposeReadEventArgs();
                 }
 
-                if (_asyncWritePending)
+                if (!_asyncWritePending)
                 {
-                    CancelSendTimer();
+                    DisposeWriteEventArgs();
                 }
-                else
-                {
-                    this.DisposeWriteEventArgs();
-                }
+
+                DisposeReceiveTimer();
+                DisposeSendTimer();
             }
 
             _socket.LingerState = new LingerOption(true, 0);
@@ -201,13 +196,13 @@ namespace System.ServiceModel.Channels
                 {
                     if (_closeState != CloseState.Closed)
                     {
-                        this.SetUserToken(_asyncReadEventArgs, null);
+                        SetUserToken(_asyncReadEventArgs, null);
                         _asyncReadPending = false;
                         CancelReceiveTimer();
                     }
                     else
                     {
-                        this.DisposeReadEventArgs();
+                        DisposeReadEventArgs();
                     }
                 }
             }
@@ -217,13 +212,13 @@ namespace System.ServiceModel.Channels
         {
             if (_receiveTimer != null)
             {
-                _receiveTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                _receiveTimer.Cancel();
             }
         }
 
         private void CancelSendTimer()
         {
-            _sendTimer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+            _sendTimer.Cancel();
         }
 
         private void CloseAsyncAndLinger()
@@ -321,16 +316,18 @@ namespace System.ServiceModel.Channels
                 {
                     if (!_asyncReadPending)
                     {
-                        this.DisposeReadEventArgs();
+                        DisposeReadEventArgs();
                     }
 
                     if (!_asyncWritePending)
                     {
-                        this.DisposeWriteEventArgs();
+                        DisposeWriteEventArgs();
                     }
                 }
 
                 _closeState = CloseState.Closed;
+                DisposeReceiveTimer();
+                DisposeSendTimer();
             }
         }
 
@@ -349,7 +346,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Undefined);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -371,11 +368,11 @@ namespace System.ServiceModel.Channels
                 lock (ThisLock)
                 {
                     Contract.Assert(!_asyncWritePending, "Called BeginWrite twice.");
-                    this.ThrowIfClosed();
-                    this.EnsureWriteEventArgs();
+                    ThrowIfClosed();
+                    EnsureWriteEventArgs();
                     SetImmediate(immediate);
                     SetWriteTimeout(timeout, false);
-                    this.SetUserToken(_asyncWriteEventArgs, this);
+                    SetUserToken(_asyncWriteEventArgs, this);
                     _asyncWritePending = true;
                     _asyncWriteCallback = callback;
                     _asyncWriteState = state;
@@ -389,7 +386,7 @@ namespace System.ServiceModel.Channels
                     return AsyncCompletionResult.Queued;
                 }
 
-                this.HandleSendAsyncCompleted();
+                HandleSendAsyncCompleted();
                 abortWrite = false;
                 return AsyncCompletionResult.Completed;
             }
@@ -401,7 +398,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -414,7 +411,7 @@ namespace System.ServiceModel.Channels
             {
                 if (abortWrite)
                 {
-                    this.AbortWrite();
+                    AbortWrite();
                 }
             }
         }
@@ -423,7 +420,7 @@ namespace System.ServiceModel.Channels
         {
             if (_asyncWriteException != null)
             {
-                this.AbortWrite();
+                AbortWrite();
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(_asyncWriteException);
             }
 
@@ -435,12 +432,12 @@ namespace System.ServiceModel.Channels
                     throw new Exception("SocketConnection.EndWrite called with no write pending.");
                 }
 
-                this.SetUserToken(_asyncWriteEventArgs, null);
+                SetUserToken(_asyncWriteEventArgs, null);
                 _asyncWritePending = false;
 
                 if (_closeState == CloseState.Closed)
                 {
-                    this.DisposeWriteEventArgs();
+                    DisposeWriteEventArgs();
                 }
             }
         }
@@ -448,11 +445,11 @@ namespace System.ServiceModel.Channels
         private void OnSendAsync(object sender, SocketAsyncEventArgs eventArgs)
         {
             Contract.Assert(eventArgs != null, "Argument 'eventArgs' cannot be NULL.");
-            this.CancelSendTimer();
+            CancelSendTimer();
 
             try
             {
-                this.HandleSendAsyncCompleted();
+                HandleSendAsyncCompleted();
                 Contract.Assert(eventArgs.BytesTransferred == _asyncWriteEventArgs.Count, "The socket SendAsync did not send all the bytes.");
             }
             catch (SocketException socketException)
@@ -469,7 +466,7 @@ namespace System.ServiceModel.Channels
                 _asyncWriteException = exception;
             }
 
-            this.FinishWrite();
+            FinishWrite();
         }
 
         private void HandleSendAsyncCompleted()
@@ -487,8 +484,18 @@ namespace System.ServiceModel.Channels
         {
             if (_asyncWriteEventArgs != null)
             {
-                this._asyncWriteEventArgs.Completed -= s_onSocketSendCompleted;
+                _asyncWriteEventArgs.Completed -= s_onSocketSendCompleted;
                 _asyncWriteEventArgs.Dispose();
+            }
+        }
+
+        // This method should be called inside ThisLock
+        private void DisposeSendTimer()
+        {
+            if (_sendTimer != null)
+            {
+                _sendTimer.Dispose();
+                _sendTimer = null;
             }
         }
 
@@ -500,13 +507,13 @@ namespace System.ServiceModel.Channels
                 {
                     if (_closeState != CloseState.Closed)
                     {
-                        this.SetUserToken(_asyncWriteEventArgs, null);
+                        SetUserToken(_asyncWriteEventArgs, null);
                         _asyncWritePending = false;
-                        this.CancelSendTimer();
+                        CancelSendTimer();
                     }
                     else
                     {
-                        this.DisposeWriteEventArgs();
+                        DisposeWriteEventArgs();
                     }
                 }
             }
@@ -544,7 +551,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -585,7 +592,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -617,13 +624,13 @@ namespace System.ServiceModel.Channels
 
             lock (ThisLock)
             {
-                this.ThrowIfClosed();
-                this.EnsureReadEventArgs();
+                ThrowIfClosed();
+                EnsureReadEventArgs();
                 _asyncReadState = state;
                 _asyncReadCallback = callback;
-                this.SetUserToken(_asyncReadEventArgs, this);
+                SetUserToken(_asyncReadEventArgs, this);
                 _asyncReadPending = true;
-                this.SetReadTimeout(timeout, false, false);
+                SetReadTimeout(timeout, false, false);
             }
 
             try
@@ -634,13 +641,13 @@ namespace System.ServiceModel.Channels
                     _asyncReadEventArgs.SetBuffer(offset, size);
                 }
 
-                if (this.ReceiveAsync())
+                if (ReceiveAsync())
                 {
                     abortRead = false;
                     return AsyncCompletionResult.Queued;
                 }
 
-                this.HandleReceiveAsyncCompleted();
+                HandleReceiveAsyncCompleted();
                 _asyncReadSize = _asyncReadEventArgs.BytesTransferred;
 
                 abortRead = false;
@@ -653,7 +660,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -679,11 +686,11 @@ namespace System.ServiceModel.Channels
         private void OnReceiveAsync(object sender, SocketAsyncEventArgs eventArgs)
         {
             Contract.Assert(eventArgs != null, "Argument 'eventArgs' cannot be NULL.");
-            this.CancelReceiveTimer();
+            CancelReceiveTimer();
 
             try
             {
-                this.HandleReceiveAsyncCompleted();
+                HandleReceiveAsyncCompleted();
                 _asyncReadSize = eventArgs.BytesTransferred;
             }
             catch (SocketException socketException)
@@ -729,12 +736,12 @@ namespace System.ServiceModel.Channels
                     throw new Exception("SocketConnection.EndRead called with no read pending.");
                 }
 
-                this.SetUserToken(_asyncReadEventArgs, null);
+                SetUserToken(_asyncReadEventArgs, null);
                 _asyncReadPending = false;
 
                 if (_closeState == CloseState.Closed)
                 {
-                    this.DisposeReadEventArgs();
+                    DisposeReadEventArgs();
                 }
             }
 
@@ -746,13 +753,24 @@ namespace System.ServiceModel.Channels
         {
             if (_asyncReadEventArgs != null)
             {
-                this._asyncReadEventArgs.Completed -= s_onReceiveAsyncCompleted;
+                _asyncReadEventArgs.Completed -= s_onReceiveAsyncCompleted;
                 _asyncReadEventArgs.Dispose();
             }
 
             // We release the buffer only if there is no outstanding I/O
-            this.TryReturnReadBuffer();
+            TryReturnReadBuffer();
         }
+
+        // This method should be called inside ThisLock
+        private void DisposeReceiveTimer()
+        {
+            if (_receiveTimer != null)
+            {
+                _receiveTimer.Dispose();
+                _receiveTimer = null;
+            }
+        }
+
 
         private void SetUserToken(SocketAsyncEventArgs args, object userToken)
         {
@@ -812,7 +830,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    ReceiveTimer.Change(timeout, TimeSpan.FromMilliseconds(-1));
+                    ReceiveTimer.ScheduleAfter(timeout);
                 }
             }
         }
@@ -849,7 +867,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    SendTimer.Change(timeout, TimeSpan.FromMilliseconds(-1));
+                    SendTimer.ScheduleAfter(timeout);
                 }
             }
         }
@@ -880,7 +898,7 @@ namespace System.ServiceModel.Channels
 
                 _asyncReadEventArgs = new SocketAsyncEventArgs();
                 _asyncReadEventArgs.SetBuffer(_readBuffer, 0, _readBuffer.Length);
-                this._asyncReadEventArgs.Completed += s_onReceiveAsyncCompleted;
+                _asyncReadEventArgs.Completed += s_onReceiveAsyncCompleted;
             }
         }
 
@@ -896,7 +914,7 @@ namespace System.ServiceModel.Channels
                 }
 
                 _asyncWriteEventArgs = new SocketAsyncEventArgs();
-                this._asyncWriteEventArgs.Completed += s_onSocketSendCompleted;
+                _asyncWriteEventArgs.Completed += s_onSocketSendCompleted;
             }
         }
 

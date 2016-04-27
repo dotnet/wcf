@@ -78,10 +78,20 @@ namespace System.ServiceModel.Channels
             ((RTSocketConnection)state).OnReceiveAsync(antecedant);
         }
 
+        private static void ReceiveCancellationCallback(object state)
+        {
+            OnReceiveTimeout((SocketConnection)state);
+        }
+
         private static void OnSendAsyncCompleted(Task antecedant, object state)
         {
             RTSocketConnection thisPtr = (RTSocketConnection)state;
             thisPtr.OnSendAsync(antecedant);
+        }
+
+        private static void SendCancellationCallback(object state)
+        {
+            OnSendTimeout((SocketConnection)state);
         }
 
         protected override void Abort(int traceEventType, string timeoutErrorString, TransferOperation transferOperation)
@@ -360,7 +370,7 @@ namespace System.ServiceModel.Channels
             {
                 int bytesToWrite = size;
 
-                using (timeoutHelper.GetCancellationToken().Register(OnSendTimeout, this))
+                using (timeoutHelper.GetCancellationToken().Register(SendCancellationCallback, this))
                 {
                     while (bytesToWrite > 0)
                     {
@@ -418,7 +428,7 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             try
             {
-                using (timeoutHelper.GetCancellationToken().Register(OnReceiveTimeout, this))
+                using (timeoutHelper.GetCancellationToken().Register(ReceiveCancellationCallback, this))
                 {
                     bytesRead = _inputStream.Read(buffer, offset, size);
                 }
