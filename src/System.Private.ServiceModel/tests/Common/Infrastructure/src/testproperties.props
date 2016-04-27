@@ -115,6 +115,18 @@
       <NTLM_Available></NTLM_Available>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Server_Accepts_Certificates)' == ''">
+      <Server_Accepts_Certificates></Server_Accepts_Certificates>
+    </PropertyGroup>
+  
+    <PropertyGroup Condition="'$(Basic_Authentication_Available)' == ''">
+      <Basic_Authentication_Available></Basic_Authentication_Available>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Digest_Authentication_Available)' == ''">
+      <Digest_Authentication_Available></Digest_Authentication_Available>
+    </PropertyGroup>
+  
     <PropertyGroup Condition="'$(Windows_Authentication_Available)' == ''">
       <Windows_Authentication_Available></Windows_Authentication_Available>
     </PropertyGroup>
@@ -123,6 +135,14 @@
       <ServiceUri >localhost</ServiceUri >
     </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TestUserName)' == ''">
+    <TestUserName ></TestUserName >
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TestPassword)' == ''">
+    <TestPassword ></TestPassword >
+  </PropertyGroup>
+  
   <!--
      GeneratedTestPropertiesFileName:
      The full path of the C# file that will be generated at build time to

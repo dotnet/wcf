@@ -15,7 +15,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     // Default settings are:
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Server_Accepts_Certificates))]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
 #else
@@ -87,7 +87,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Server_Accepts_Certificates))]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
 #else
@@ -184,7 +184,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_Address),
                 new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
-            clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
+            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
@@ -231,7 +231,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_CustomValidation_Address),
                 new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
-            clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
+            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;

@@ -506,15 +506,3 @@ public interface IWcfAspNetCompatibleService
     string EchoTimeAndSetCookie(string name);
 }
 
-[ServiceContract]
-public interface IUtil
-{
-    [OperationContract]
-    byte[] GetClientCert(bool exportAsPem);
-
-    [OperationContract]
-    byte[] GetRootCert(bool exportAsPem);
-
-    [OperationContract]
-    string GetFQDN();
-}

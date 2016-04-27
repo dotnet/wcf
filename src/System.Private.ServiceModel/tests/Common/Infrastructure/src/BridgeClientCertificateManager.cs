@@ -11,7 +11,7 @@ namespace Infrastructure.Common
 {
     // This class manages the adding and removal of certificates.
     // It also handles informing http.sys of which certificate to associate with SSL ports.
-    public static class BridgeClientCertificateManager
+    internal static class BridgeClientCertificateManager
     {
         private static object s_certificateLock = new object();
 

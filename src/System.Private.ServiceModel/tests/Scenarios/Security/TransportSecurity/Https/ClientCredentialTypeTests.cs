@@ -19,7 +19,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         s_password = "wcfSaysHell0World!";
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Basic_Authentication_Available))]
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
@@ -55,7 +55,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: BasicAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Basic_Authentication_Available))]
     [OuterLoop]
     public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()
     {

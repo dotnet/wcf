@@ -26,7 +26,10 @@ public static class Http_ClientCredentialTypeTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Digest;
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Http_DigestAuth_NoDomain_Address));
-            factory.Credentials.HttpDigest.ClientCredential = BridgeClientAuthenticationManager.NetworkCredential;
+
+            // https://github.com/dotnet/wcf/issues/1045 needs to supply a replacement for NetworkCredential below
+            //factory.Credentials.HttpDigest.ClientCredential = BridgeClientAuthenticationManager.NetworkCredential;
+
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

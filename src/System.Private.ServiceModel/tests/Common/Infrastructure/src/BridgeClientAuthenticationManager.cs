@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Infrastructure.Common
 {
-    public static class BridgeClientAuthenticationManager
+    internal static class BridgeClientAuthenticationManager
     {
         private const string AuthenticationResourceName = "WcfService.TestResources.AuthenticationResource";
         private const string UsernameKeyName = "authUsername";

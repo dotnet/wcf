@@ -51,6 +51,7 @@ public class CustomBindingTests : ConditionalWcfTest
     // Https: Client and Server bindings setup exactly the same using default settings.
     [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void DefaultSettings_Https_Text_Echo_RoundTrips_String()
     {
         string testString = "Hello";

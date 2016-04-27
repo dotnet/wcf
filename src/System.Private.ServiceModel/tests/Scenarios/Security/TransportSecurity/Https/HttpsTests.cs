@@ -19,6 +19,7 @@ public class HttpsTests : ConditionalWcfTest
     // Server: BasicHttpsBinding default value is Soap11
     [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void CrossBinding_Soap11_EchoString()
     {
         string variationDetails = "Client:: CustomBinding/MessageVersion=Soap11\nServer:: BasicHttpsBinding/DefaultValues";
@@ -53,7 +54,7 @@ public class HttpsTests : ConditionalWcfTest
     }
 
     // Client and Server bindings setup exactly the same using default settings.
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Server_Accepts_Certificates))]
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
@@ -91,6 +92,7 @@ public class HttpsTests : ConditionalWcfTest
     // Client and Server bindings setup exactly the same using Soap11
     [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void SameBinding_Soap11_EchoString()
     {
         string variationDetails = "Client:: CustomBinding/MessageVersion=Soap11\nServer:: CustomBinding/MessageVersion=Soap11";
@@ -127,6 +129,7 @@ public class HttpsTests : ConditionalWcfTest
     // Client and Server bindings setup exactly the same using Soap12
     [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void SameBinding_Soap12_EchoString()
     {
         string variationDetails = "Client:: CustomBinding/MessageVersion=Soap12\nServer:: CustomBinding/MessageVersion=Soap12";
@@ -181,7 +184,7 @@ public class HttpsTests : ConditionalWcfTest
             CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address));
-            clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
+            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication = factory.Credentials.ServiceCertificate.Authentication;
@@ -210,7 +213,7 @@ public class HttpsTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
     [ActiveIssue(960, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void ClientCertificate_EchoString()
@@ -228,7 +231,7 @@ public class HttpsTests : ConditionalWcfTest
             basicHttpsBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_ClientCertificateAuth_Address));
-            clientCertThumb = BridgeClientCertificateManager.LocalCertThumbprint; // ClientCert as given by the Bridge
+            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
 
             factory = new ChannelFactory<IWcfService>(basicHttpsBinding, endpointAddress);
             factory.Credentials.ClientCertificate.SetCertificate(

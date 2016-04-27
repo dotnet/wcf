@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Infrastructure.Common
 {
-    public static class BridgeClient 
+    internal static class BridgeClient 
     {
         private const string EndpointResourceResponseUriKeyName = "uri";
         private const string EndpointResourceResponseFQHNKeyName = "hostname";
