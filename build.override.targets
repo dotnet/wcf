@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <TraversalBuildDependsOn>
+      WcfSetup;
+      $(TraversalBuildDependsOn);
+      WcfCleanup;
+    </TraversalBuildDependsOn>
+  </PropertyGroup>
+  <!--if ServiceUri is set, the service has been already started on another machine-->
+  <Target Name="WcfSetup" Condition="($(WithCategories.Contains('OuterLoop')) or '$(OuterLoop)' == 'true') and ('$(ServiceUri)' == '') and $(OSEnvironment) == 'Windows_NT'" >
+    <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\StartWCFSelfHostedSvc.cmd" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="WcfSetupErrorCode"/>
+    </Exec>
+    <Message Text="WcfSetupErrorCode: $(WcfSetupErrorCode)" />
+  </Target>
+
+  <Target Name="WcfCleanUp" Condition="$(WcfSetupErrorCode)!='-1' and $(WcfSetupErrorCode)!=''" >
+    <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\CleanUpWCFSelfHostedSvc.cmd" ContinueOnError="true">
+    </Exec>
+  </Target>
+</Project>

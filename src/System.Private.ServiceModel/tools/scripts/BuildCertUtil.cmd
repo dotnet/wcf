@@ -37,5 +37,4 @@ echo.
 findstr /ir /c:".*Warning(s)" /c:".*Error(s)" /c:"Time Elapsed.*" "%_buildlog%"
 echo Build Exit Code = %BUILDERRORLEVEL%
 
-endlocal
 exit /b %BUILDERRORLEVEL%
