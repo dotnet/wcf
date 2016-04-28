@@ -34,14 +34,6 @@ namespace SelfHostedWCFService
             string websocketsBaseAddress = string.Format(@"https://localhost:{0}", websocketsPort);
 
             //Do not need to catch exceptions and dispose service hosts as the process will terminate
-            Uri crlUrl = new Uri(string.Format("http://localhost/CrlService.svc", httpPort));
-            WebServiceHost host = new WebServiceHost(typeof(CrlService), crlUrl);
-            WebHttpBinding binding = new WebHttpBinding();
-            host.AddServiceEndpoint(typeof(ICrlService), binding, "");
-            ServiceDebugBehavior stp = host.Description.Behaviors.Find<ServiceDebugBehavior>();
-            stp.HttpHelpPageEnabled = false;
-            host.Open();
-
             Uri[] utilTestServiceHostbaseAddress = new Uri[]  { new Uri(string.Format("{0}/Util.svc", httpBaseAddress))};
             UtilTestServiceHost utilTestServiceHostServiceHost = new UtilTestServiceHost(typeof(WcfService.Util), utilTestServiceHostbaseAddress);
             utilTestServiceHostServiceHost.Open();
@@ -286,9 +278,26 @@ namespace SelfHostedWCFService
             WebSocketHttpsDuplexTextBufferedTestServiceHost webSocketHttpsDuplexTextBufferedTestServiceHostServiceHost = new WebSocketHttpsDuplexTextBufferedTestServiceHost(typeof(WcfService.WSDuplexService), webSocketHttpsDuplexTextBufferedTestServiceHostbaseAddress);
             webSocketHttpsDuplexTextBufferedTestServiceHostServiceHost.Open();
 
+            //Start the crlUrl service last as the client use it to ensure all services have been started
+            Uri crlUrl = new Uri(string.Format("http://localhost/CrlService.svc", httpPort));
+            WebServiceHost host = new WebServiceHost(typeof(CrlService), crlUrl);
+            WebHttpBinding binding = new WebHttpBinding();
+            host.AddServiceEndpoint(typeof(ICrlService), binding, "");
+            ServiceDebugBehavior serviceDebugBehavior = host.Description.Behaviors.Find<ServiceDebugBehavior>();
+            serviceDebugBehavior.HttpHelpPageEnabled = false;
+            host.Open();
+
             Console.WriteLine("All service hosts have started.");
-            Console.WriteLine("Press <ENTER> to terminate the self service Host.");
-            Console.ReadLine();
+            do
+            {
+                Console.WriteLine("Type <Exit> to terminate the self service Host.");
+                string input = Console.ReadLine();
+                if (string.Compare(input, "exit", true) == 0)
+                {
+                    return;
+                }
+            } while (true);
+
         }
     }
 }

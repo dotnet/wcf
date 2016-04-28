@@ -51,11 +51,37 @@ namespace CertUtil
 
             RemoveCertificatesFromStore(StoreName.Root, StoreLocation.LocalMachine);
             RemoveCertificatesFromStore(StoreName.Root, StoreLocation.CurrentUser);
+
+            RemoveCertificatesFromStore(StoreName.TrustedPeople, StoreLocation.LocalMachine);
         }
 
-        static void Main(string[] args)
+        static void Usage()
+        {
+            Console.WriteLine("Supported argument is -Uninstall");
+            Console.WriteLine("                      -help");
+        }
+        static int Main(string[] args)
         {
             ApplyAppSettings();
+
+            if (args.Length > 0)
+            {
+                if (string.Compare(args[0], "-Uninstall", true) == 0)
+                {
+                    UninstallAllCerts();
+                    return 0;
+                }
+                else if (string.Compare(args[0], "-help", true) == 0)
+                {
+                    Usage();
+                    return 0;
+                }
+                else
+                {
+                    Usage();
+                    return 1;
+                }
+            }
 
             UninstallAllCerts();
 
@@ -153,6 +179,8 @@ namespace CertUtil
 
             //Create CRL and save it
             File.WriteAllBytes(s_CrlFileLocation, certificateGenerate.CrlEncoded);
+
+            return 0;
 
         }
 
