@@ -125,6 +125,25 @@ namespace WcfService
         {
             throw new FaultException<int>(faultCode);
         }
+        public void TestFaults(string faultMsg, bool throwFaultDetail)
+        {
+            if (throwFaultDetail)
+            {
+                throw new FaultException<FaultDetail>(new FaultDetail(faultMsg));
+            }
+            else
+            {
+                throw new FaultException<FaultDetail2>(new FaultDetail2(faultMsg));
+            }
+        }
+        public object[] TestFaultWithKnownType(string faultMsg, object[] objects)
+        {
+            if (objects == null)
+            {
+                throw new FaultException<FaultDetail>(new FaultDetail(faultMsg));
+            }
+            return objects;
+        }
 
         public void ThrowInvalidOperationException(string message)
         {
