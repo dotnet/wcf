@@ -151,6 +151,44 @@ branchList.each { branchName ->
 }
 
 // **************************
+// Define outerloop testing on Windows_NT for seflhosted service
+// Note: This outerloop run can run concurrently unlike other ones due to the run being entirely self-contained 
+// **************************
+
+['master', 'pr'].each { branchName ->   // only master and pr for now for branches to test 
+    configurationGroupList.each { configurationGroup ->
+        def os = 'Windows_NT'
+        def isPR = (branchName == 'pr')
+        def newJobName = "outerloop_selfhost_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
+        def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
+        
+        newJob.with {
+            steps {
+                batchFile("build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop")
+            }
+        }
+
+        // Set affinity for elevated machines
+        Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
+
+        // Set up standard options.
+        Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+        // Add the unit test results
+        Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
+        
+        // Set up appropriate triggers. PR on demand, otherwise daily
+        if (isPR) {
+            // Set PR trigger.
+            Utilities.addGithubPRTrigger(newJob, "OuterLoop Selfhost ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+selfhost\\W+${os}).*")
+        } 
+        else {
+            // Set a periodic trigger
+            Utilities.addPeriodicTrigger(newJob, '@daily')
+        }
+    } 
+} 
+
+// **************************
 // Define outerloop testing for OSes that can build and run.  Run locally on each machine.
 // **************************
 
