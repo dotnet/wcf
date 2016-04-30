@@ -24,6 +24,7 @@ if '%1'=='/help' goto :Usage
 if '%1'=='-help' goto :Usage
 
 :: Make sure this script is running in elevated
+if EXIST %_logFile% del %_logFile% /f /q
 net session>nul 2>&1
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Please run this script with elevated permission.
@@ -46,7 +47,6 @@ echo Deleting WCF repo at %_currentRepo% if exists and associated application po
 %_appcmd% delete apppool %_wcfServiceName% >nul
 if EXIST %_currentRepo% rmdir /s /q %_currentRepo%
 if EXIST %_wcfTestDir% if /I '%_masterRepo%'=='%_currentRepo%' rmdir /s /q %_wcfTestDir%
-if EXIST %_logFile% del %_logFile% /f /q
 echo Clean up done.
 if /I '%2'=='/c' goto :Done
 
