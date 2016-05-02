@@ -12,6 +12,13 @@ if NOT [%__EXITCODE%]==[0] (
 	goto :done
 )
 
+netsh advfirewall firewall add rule name="_WCF Test Server PortHttp80"  dir=in action=allow profile=any localport=80 protocol=tcp
+set __EXITCODE=%ERRORLEVEL%
+if NOT [%__EXITCODE%]==[0] (
+  echo Error: error adding rule name _WCF Test Server PortHttp80
+  goto :done
+  )
+
 netsh advfirewall firewall add rule name="_WCF Test Server PortHttp"  dir=in action=allow profile=any localport=8081 protocol=tcp
 set __EXITCODE=%ERRORLEVEL%
 if NOT [%__EXITCODE%]==[0] (

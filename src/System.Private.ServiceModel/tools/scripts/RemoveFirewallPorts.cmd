@@ -12,6 +12,8 @@ if NOT [%__EXITCODE%]==[0] (
 	goto :done
 )
 
+call :DeleteRule "_WCF Test Server PortHttp80"
+
 call :DeleteRule "_WCF Test Server PortHttp"
 
 call :DeleteRule "_WCF Test Server PortHttps"
