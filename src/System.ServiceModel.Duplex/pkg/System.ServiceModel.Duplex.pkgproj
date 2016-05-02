@@ -3,7 +3,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
     <ProjectReference Include="..\ref\System.ServiceModel.Duplex.csproj">
-      <SupportedFramework>net45;win8;netstandardapp1.5</SupportedFramework>
+      <SupportedFramework>net45;win8;netcoreapp1.0</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.Duplex.builds" />
 
