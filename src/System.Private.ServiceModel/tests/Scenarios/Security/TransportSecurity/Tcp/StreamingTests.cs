@@ -18,6 +18,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -59,6 +60,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -99,6 +101,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -141,6 +144,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -199,6 +203,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -242,6 +247,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -285,6 +291,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -328,6 +335,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -347,6 +355,7 @@ public class StreamingTests : ConditionalWcfTest
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
