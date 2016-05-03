@@ -24,9 +24,10 @@ if '%1'=='/help' goto :Usage
 if '%1'=='-help' goto :Usage
 
 :: Make sure this script is running in elevated
-net session>nul
+if EXIST %_logFile% del %_logFile% /f /q
+net session>nul 2>&1
 if ERRORLEVEL 1 (
-    echo Exiting... Please run this script with elevated permission.
+    echo. & echo ERROR: Please run this script with elevated permission.
     goto :Failure
 )
 
@@ -44,8 +45,8 @@ echo Deleting WCF repo at %_currentRepo% if exists and associated application po
 %_appcmd% delete apppool %_prServiceName% >nul
 %_appcmd% delete app "Default Web Site/%_wcfServiceName%" >nul
 %_appcmd% delete apppool %_wcfServiceName% >nul
-if exist %_currentRepo% rmdir /s /q %_currentRepo%
-if exist %_wcfTestDir% if /I '%_masterRepo%'=='%_currentRepo%' rmdir /s /q %_wcfTestDir%
+if EXIST %_currentRepo% rmdir /s /q %_currentRepo%
+if EXIST %_wcfTestDir% if /I '%_masterRepo%'=='%_currentRepo%' rmdir /s /q %_wcfTestDir%
 echo Clean up done.
 if /I '%2'=='/c' goto :Done
 
@@ -180,16 +181,12 @@ goto :Done
 :Run
 set _cmd=%*
 if EXIST %_logFile% del %_logFile% /f /q
-call %_cmd%>%_logFile%
+call %_cmd% >%_logFile% 2>&1
 exit /b
 
 :Failure
 set _exitCode=1
-if NOT '%_cmd%'=='' (
-    echo.
-    echo Failed to run:
-    echo %_cmd%
-)
+if DEFINED _cmd echo. & echo Failed to run: & echo %_cmd%
 if EXIST %_logFile% type %_logFile%
 
 :Done
