@@ -281,12 +281,14 @@
       <PropertyGroup>
         <TargetsWindows>true</TargetsWindows>
         <TestNugetRuntimeId>win7-x64</TestNugetRuntimeId>
+        <PackageTargetRuntime>win</PackageTargetRuntime>
       </PropertyGroup>
     </When>
     <When Condition="'$(OSGroup)'=='Unix'">
       <PropertyGroup>
         <TargetsUnix>true</TargetsUnix>
         <TestNugetRuntimeId>ubuntu.14.04-x64</TestNugetRuntimeId>
+        <PackageTargetRuntime>unix</PackageTargetRuntime>
       </PropertyGroup>
     </When>
     <When Condition="'$(OSGroup)'=='Linux'">
@@ -294,6 +296,7 @@
         <TargetsUnix>true</TargetsUnix>
         <TargetsLinux>true</TargetsLinux>
         <TestNugetRuntimeId>ubuntu.14.04-x64</TestNugetRuntimeId>
+        <PackageTargetRuntime>linux</PackageTargetRuntime>
       </PropertyGroup>
     </When>
     <When Condition="'$(OSGroup)'=='OSX'">
@@ -301,6 +304,7 @@
         <TargetsUnix>true</TargetsUnix>
         <TargetsOSX>true</TargetsOSX>
         <TestNugetRuntimeId>osx.10.10-x64</TestNugetRuntimeId>
+        <PackageTargetRuntime>osx</PackageTargetRuntime>
       </PropertyGroup>
     </When>
     <When Condition="'$(OSGroup)'=='FreeBSD'">
