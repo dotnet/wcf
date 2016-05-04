@@ -20,19 +20,21 @@ public static class RequestReplyChannelShapeTests
     [OuterLoop]
     public static void IRequestChannel_Http_BasicHttpBinding()
     {
+        IChannelFactory<IRequestChannel> factory = null;
+        IRequestChannel channel = null;
+        Message replyMessage = null;
+
         try
         {
+            // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
 
             // Create the channel factory
-            IChannelFactory<IRequestChannel> factory =
-            binding.BuildChannelFactory<IRequestChannel>(
-                            new BindingParameterCollection());
+            factory = binding.BuildChannelFactory<IRequestChannel>(new BindingParameterCollection());
             factory.Open();
 
             // Create the channel.
-            IRequestChannel channel = factory.CreateChannel(
-               new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             channel.Open();
 
             // Create the Message object to send to the service.
@@ -41,27 +43,27 @@ public static class RequestReplyChannelShapeTests
                 action,
                 new CustomBodyWriter(clientMessage));
 
+            // *** EXECUTE *** \\
             // Send the Message and receive the Response.
-            Message replyMessage = channel.Request(requestMessage);
+            replyMessage = channel.Request(requestMessage);
 
+            // *** VALIDATE *** \\
             // BasicHttpBinding uses SOAP1.1 which doesn't return the Headers.Action property in the Response
             // Therefore not validating this property as we do in the test "InvokeIRequestChannelCreatedViaBinding"
             var replyReader = replyMessage.GetReaderAtBodyContents();
             string actualResponse = replyReader.ReadElementContentAsString();
             string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                Assert.True(false, String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
+            Assert.Equal(expectedResponse, actualResponse);
 
+            // *** CLEANUP *** \\
             replyMessage.Close();
             channel.Close();
             factory.Close();
         }
-
-        catch (Exception ex)
+        finally
         {
-            Assert.True(false, String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
         }
     }
 
@@ -69,22 +71,24 @@ public static class RequestReplyChannelShapeTests
     [OuterLoop]
     public static void IRequestChannel_Http_CustomBinding()
     {
+        IChannelFactory<IRequestChannel> factory = null;
+        IRequestChannel channel = null;
+        Message replyMessage = null;
+
         try
         {
+            // *** SETUP *** \\
             BindingElement[] bindingElements = new BindingElement[2];
             bindingElements[0] = new TextMessageEncodingBindingElement();
             bindingElements[1] = new HttpTransportBindingElement();
             CustomBinding binding = new CustomBinding(bindingElements);
 
             // Create the channel factory for the request-reply message exchange pattern.
-            IChannelFactory<IRequestChannel> factory =
-            binding.BuildChannelFactory<IRequestChannel>(
-                             new BindingParameterCollection());
+            factory = binding.BuildChannelFactory<IRequestChannel>(new BindingParameterCollection());
             factory.Open();
 
             // Create the channel.
-            IRequestChannel channel = factory.CreateChannel(
-               new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             channel.Open();
 
             // Create the Message object to send to the service.
@@ -93,32 +97,28 @@ public static class RequestReplyChannelShapeTests
                 action,
                 new CustomBodyWriter(clientMessage));
 
+            // *** EXECUTE *** \\
             // Send the Message and receive the Response.
-            Message replyMessage = channel.Request(requestMessage);
+            replyMessage = channel.Request(requestMessage);
+
+            // *** VALIDATE *** \\
             string replyMessageAction = replyMessage.Headers.Action;
-
-            if (!string.Equals(replyMessageAction, action + "Response"))
-            {
-                Assert.True(false, String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}", action + "Response", replyMessageAction));
-            }
-
+            Assert.Equal(action + "Response", replyMessageAction);
 
             var replyReader = replyMessage.GetReaderAtBodyContents();
             string actualResponse = replyReader.ReadElementContentAsString();
             string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                Assert.True(false, String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
+            Assert.Equal(expectedResponse, actualResponse);
 
+            // *** CLEANUP *** \\
             replyMessage.Close();
             channel.Close();
             factory.Close();
         }
-
-        catch (Exception ex)
+        finally
         {
-            Assert.True(false, String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
         }
     }
 }

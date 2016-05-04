@@ -17,36 +17,35 @@ public class CustomBindingTests : ConditionalWcfTest
     [OuterLoop]
     public static void DefaultSettings_Http_Text_Echo_RoundTrips_String()
     {
-        string variationDetails = "Client:: CustomBinding/DefaultValues\nServer:: CustomBinding/DefaultValues";
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
-        
+        CustomBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
         try
         {
-            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(), new HttpTransportBindingElement());
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(), new HttpTransportBindingElement());
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            serviceProxy = factory.CreateChannel();
 
-            IWcfService serviceProxy = factory.CreateChannel();
-
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** VALIDATE *** \\
+            Assert.NotNull(result);
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
     // Https: Client and Server bindings setup exactly the same using default settings.
@@ -54,36 +53,33 @@ public class CustomBindingTests : ConditionalWcfTest
     [OuterLoop]
     public static void DefaultSettings_Https_Text_Echo_RoundTrips_String()
     {
-        string variationDetails = "Client:: CustomBinding/DefaultValues\nServer:: CustomBinding/DefaultValues";
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
+        CustomBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(), new HttpsTransportBindingElement());
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpsSoap12_Address));
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(), new HttpsTransportBindingElement());
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpsSoap12_Address));
+            serviceProxy = factory.CreateChannel();
 
-            IWcfService serviceProxy = factory.CreateChannel();
-
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** VALIDATE *** \\
+            Assert.NotNull(result);
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
-
 }

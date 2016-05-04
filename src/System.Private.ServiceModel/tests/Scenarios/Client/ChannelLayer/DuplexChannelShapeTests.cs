@@ -23,21 +23,21 @@ public static class DuplexChannelShapeTests
     [OuterLoop]
     public static void IDuplexSessionChannel_Tcp_NetTcpBinding()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        IChannelFactory<IDuplexSessionChannel> factory = null;
+        IDuplexSessionChannel channel = null;
+        Message replyMessage = null;
 
         try
         {
+            // *** SETUP *** \\
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
 
             // Create the channel factory
-            IChannelFactory<IDuplexSessionChannel> factory =
-            binding.BuildChannelFactory<IDuplexSessionChannel>(
-                            new BindingParameterCollection());
+            factory = binding.BuildChannelFactory<IDuplexSessionChannel>(new BindingParameterCollection());
             factory.Open();
 
             // Create the channel.
-            IDuplexSessionChannel channel = factory.CreateChannel(
-               new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
             channel.Open();
 
             // Create the Message object to send to the service.
@@ -47,35 +47,30 @@ public static class DuplexChannelShapeTests
                 new CustomBodyWriter(clientMessage));
             requestMessage.Headers.MessageId = new UniqueId(Guid.NewGuid());
 
+            // *** EXECUTE *** \\
             // Send the Message and receive the Response.
             channel.Send(requestMessage);
-            Message replyMessage = channel.Receive(TimeSpan.FromSeconds(5));
+            replyMessage = channel.Receive(TimeSpan.FromSeconds(5));
 
+            // *** VALIDATE *** \\
             // If the incoming Message did not contain the same UniqueId used for the MessageId of the outgoing Message we would have received a Fault from the Service
-            if (!String.Equals(replyMessage.Headers.RelatesTo.ToString(), requestMessage.Headers.MessageId.ToString()))
-            {
-                errorBuilder.AppendLine(String.Format("The MessageId of the incoming Message does not match the MessageId of the outgoing Message, expected: {0} but got: {1}", requestMessage.Headers.MessageId, replyMessage.Headers.RelatesTo));
-            }
+            Assert.Equal(requestMessage.Headers.MessageId.ToString(), replyMessage.Headers.RelatesTo.ToString());
 
             // Validate the Response
             var replyReader = replyMessage.GetReaderAtBodyContents();
             string actualResponse = replyReader.ReadElementContentAsString();
             string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                errorBuilder.AppendLine(String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
+            Assert.Equal(expectedResponse, actualResponse);
 
+            // *** CLEANUP *** \\
             replyMessage.Close();
             channel.Close();
             factory.Close();
         }
-
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: CustomBindingTest FAILED with the following errors: {0}", errorBuilder));
     }
 }
