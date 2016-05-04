@@ -15,7 +15,6 @@ REM If it's already running, we will not set up/clean up service
 tasklist /FI "imagename eq SelfHostedWCFService.exe" | findstr /i /C:"SelfHostedWCFService.exe" 1>nul
 if [%ERRORLEVEL%]==[0] (
     set __EXITCODE=-1
-    echo Detected Self hosted WCF Test Service is already running.
     echo Detected Self hosted WCF Test Service is already running. >>%_setuplog%
     goto :PingService
 )

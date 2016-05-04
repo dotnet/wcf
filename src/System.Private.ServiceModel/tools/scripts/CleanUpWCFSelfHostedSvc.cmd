@@ -12,15 +12,13 @@ REM This is to improve the debugging experience
 net session >nul 2>&1
 if NOT [%ERRORLEVEL%]==[0] (
     echo Upgrading to elevated...
-    set runelvated=%~dp0RunElevated.vbs
+    set _runelevated=%~dp0RunElevated.vbs
 )
 
-echo Stopping SelfHostedWCFService.exe... 
-call %runelvated% %~dp0StopWcfSelfHostedSvc.cmd
-REM error 128 will be returned if The process not found
-if NOT [%ERRORLEVEL%]==[0]  if NOT [%ERRORLEVEL%]==[128] (
-	echo Warning: An error occurred while killing the SelfHostedWCFService.exe. >%_cleanuplog%
-	)
+REM Stop the Self hosted WCF services.
+REM The CMD we call self-elevates and logs its results to %_cleanuplog%
+REM Errors stopping the service are logged but do not stop processing
+call %~dp0StopWcfSelfHostedSvc.cmd
 
 If NOT exist %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe (
   echo Building certificate generator...
@@ -31,20 +29,37 @@ If NOT exist %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGene
 	 )
 )
 
-echo Cleaning up the Https ports...
-call %runelvated% %~dp0CleanUpHttpsPort.cmd >>%_cleanuplog%
+REM Note: when elevating, we don't redirect output to the _cleanuplog
+REM due to contention for the log file.  Normal use is already elevated
+REM and captures everything to the log file
+
+echo Cleaning up the Https port. >>%_cleanuplog%
+if '%_runelevated%' == '' (
+  call %~dp0CleanUpHttpsPort.cmd >>%_cleanuplog%
+) else (
+  call %_runelevated% %~dp0CleanUpHttpsPort.cmd >nul
+)
 if NOT [%ERRORLEVEL%]==[0] (
 	echo Warning: An error occurred while removing https port. >>%_cleanuplog%
 	)
 
-echo Removing firewall rules...
-call %runelvated% %~dp0RemoveFirewallPorts.cmd >>%_cleanuplog%
+echo Removing firewall rules. >>%_cleanuplog%
+if '%_runelevated%' == '' (
+  call %~dp0RemoveFirewallPorts.cmd >>%_cleanuplog%
+) else (
+  call %_runelevated% %~dp0RemoveFirewallPorts.cmd >nul
+)
 if NOT [%ERRORLEVEL%]==[0] (
 	echo Warning: An error occurred while removing Firewall ports. >>%_cleanuplog%
 	)
 
-echo Removing certificates...
-call %runelvated% %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe -Uninstall >>%_cleanuplog%
+echo Removing certificates. >>%_cleanuplog%
+if '%_runelevated%' == '' (
+  call %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe -Uninstall >>%_cleanuplog%
+) else (
+  call %_runelevated% %~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe -Uninstall >nul
+)
+
 if NOT [%ERRORLEVEL%]==[0] (
 	echo Warning: An error occurred while removing test certificates. >>%_cleanuplog%
 	)
