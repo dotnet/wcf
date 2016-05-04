@@ -116,7 +116,7 @@ goto :AfterBuild
 
 :build
 %_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=normal;LogFile="%_buildlog%";Append "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" !unprocessedBuildArgs! %_buildpostfix% %OfficialBuildIdArg%
-set BUILDERRORLEVEL=!ERRORLEVEL!
+set BUILDERRORLEVEL=%ERRORLEVEL%
 goto :eof
 
 :AfterBuild
