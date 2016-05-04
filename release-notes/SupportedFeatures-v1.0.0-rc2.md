@@ -21,38 +21,38 @@ Supported features
 
 | Category |  Feature  |   [UWP](#uwp)   |  [Win](#windows)  |   [Ubuntu](#ubuntu)   |   [CentOS](#centos)   |   [RedHat](#redhat)   |   [Debian](#debian)   |   [Mac OS X](#mac-os-x)   |
 | :------- | :-------- | :------------: | :-------: |  :------:  |   :-----:  |   :-----:  |   :-----:  |   :-----:   |
-|Bindings|BasicHttpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||CustomBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||NetHttpBinding|:white_check_mark: | :white_check_mark: | [:warning:](#bindings_nethttpbinding) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||NetTcpBinding|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | [:no_entry_sign:](#NetTcp) |
-|Transports|Http|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||Https| [:warning:](#transports_https) | :white_check_mark: | [:warning:](#transports_https) | :grey_question: | :grey_question: | :grey_question: | [:warning:](#transports_https) |
-||Tcp|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | [:no_entry_sign:](#NetTcp) |
-||WebSockets|[:warning:](#transports_websockets) | :white_check_mark: | [:warning:](#transports_websockets) | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
-|Channel types|Request/Reply|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||Duplex|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-|Encodings|Text|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||Binary|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-|TransferMode|Buffered (sync/async)|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||Streamed (sync/async)|[:warning:](#transfermode_streamed) | [:warning:](#transfermode_streamed) | [:warning:](#transfermode_streamed) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-|MessageVersion|SOAP 1.1 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-||SOAP 1.2 UTF8|:white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-|Contracts | DataContract | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | XmlSerializer | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | MessageFormat | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | FaultContract | [:warning:](#contracts_faultcontract) | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-|Security | None | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | Transport | :white_check_mark: | :white_check_mark:  | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|Bindings|BasicHttpBinding|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||CustomBinding|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||NetHttpBinding|:no_entry_sign: | :white_check_mark: | [:warning:](#bindings_nethttpbinding) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||NetTcpBinding|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | [:no_entry_sign:](#NetTcp) |
+|Transports|Http|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||Https| no_entry_sign | :white_check_mark: | [:warning:](#transports_https) | :grey_question: | :grey_question: | :grey_question: | [:warning:](#transports_https) |
+||Tcp|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | [:no_entry_sign:](#NetTcp) |
+||WebSockets|no_entry_sign | :white_check_mark: | [:warning:](#transports_websockets) | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
+|Channel types|Request/Reply|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||Duplex|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|Encodings|Text|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||Binary|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|TransferMode|Buffered (sync/async)|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||Streamed (sync/async)|no_entry_sign | [:warning:](#transfermode_streamed) | [:warning:](#transfermode_streamed) | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|MessageVersion|SOAP 1.1 UTF8|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+||SOAP 1.2 UTF8|:no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|Contracts | DataContract | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | XmlSerializer | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | MessageFormat | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | FaultContract | no_entry_sign | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|Security | None | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | Transport | :no_entry_sign: | :white_check_mark:  | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 | | Message | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) | [:no_entry_sign:](#security_message) |
-| | Client certificates | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
-|Authentication | Basic | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
-| | Digest | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
-| | NTLM | :white_check_mark: | :white_check_mark: | [:no_entry_sign:](#ntlm-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#ntlm-authentication) | :grey_question: |
-| | Kerberos | :white_check_mark: | :white_check_mark: | [:no_entry_sign:](#kerberos-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#kerberos-authentication) | :grey_question: |
-|Client types | ChannelFactory\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | ChannelBase\<T\> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-|Extensibility | IClientMessageInspector | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
-| | IClientMessageFormatter | :white_check_mark: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | Client certificates | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
+|Authentication | Basic | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
+| | Digest | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :grey_question: |
+| | NTLM | :no_entry_sign: | :white_check_mark: | [:no_entry_sign:](#ntlm-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#ntlm-authentication) | :grey_question: |
+| | Kerberos | :no_entry_sign: | :white_check_mark: | [:no_entry_sign:](#kerberos-authentication) | :grey_question: | :grey_question: | [:no_entry_sign:](#kerberos-authentication) | :grey_question: |
+|Client types | ChannelFactory\<T\> | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | ChannelBase\<T\> | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+|Extensibility | IClientMessageInspector | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
+| | IClientMessageFormatter | :no_entry_sign: | :white_check_mark: | :white_check_mark: | :grey_question: | :grey_question: | :grey_question: | :white_check_mark: |
 |Management | ETW Tracing | [:no_entry_sign:](#etw-tracing) | :white_check_mark: | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) | [:no_entry_sign:](#etw-tracing) |
 
 
