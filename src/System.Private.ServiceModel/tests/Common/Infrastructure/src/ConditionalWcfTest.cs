@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Infrastructure.Common
 {
@@ -76,58 +75,41 @@ namespace Infrastructure.Common
             }
         }
 
-        private static bool Is_Server_Local()
+        private static bool Server_Is_LocalHost()
         {
-            // Temporary workaround to detect whether this test is using localhost
-            // for either new or old test infrastructure.
-            // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
-            // to use centralized helper method.
-            string host = null;
-            if (TestProperties.PropertyNames.Contains("ServiceUri"))
-            {
-                host = TestProperties.GetProperty("ServiceUri");
-            }
-            else if (TestProperties.PropertyNames.Contains("BridgeHost"))
-            {
-                host = TestProperties.GetProperty("BridgeHost");
-            }
-
-            if (String.IsNullOrWhiteSpace(host))
-            {
-                return false;
-            }
-
-            int index = host.IndexOf("localhost", 0, StringComparison.OrdinalIgnoreCase);
-            return index >= 0;
+            return GetConditionValue(nameof(Server_Is_LocalHost),
+                                     ConditionalTestDetectors.IsServerLocalHost);
         }
         
         private static bool Is_Windows()
         {
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            return GetConditionValue(nameof(Is_Windows),
+                                     ConditionalTestDetectors.IsWindows);
         }
 
         public static bool Domain_Joined()
         {
-            // Temporarily use the simple heuristic that if we are running the services locally, it is.
-            // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(Domain_Joined),
-                                     Is_Server_Local);
+                                     () => ConditionalTestDetectors.IsClientDomainJoined() && 
+                                           ConditionalTestDetectors.IsServerDomainJoined());
         }
 
         public static bool Root_Certificate_Installed()
         {
-            // Temporarily use the simple heuristic that if we are running the services locally, it is.
-            // Refactor this to test only when solving https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(Root_Certificate_Installed),
-                                     Is_Server_Local);
+                                     ConditionalTestDetectors.IsRootCertificateInstalled);
         }
 
         public static bool Client_Certificate_Installed()
         {
-            // Temporarily use the simple heuristic that if we are running the services locally, it is.
-            // Refactor this to test only when solving https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(Client_Certificate_Installed),
-                                     Is_Server_Local);
+                                     ConditionalTestDetectors.IsClientCertificateInstalled);
+        }
+
+        public static bool UserName_And_Password_Available()
+        {
+            return GetConditionValue(nameof(UserName_And_Password_Available),
+                                     ConditionalTestDetectors.AreUserNameAndPasswordAvailable);
         }
 
         public static bool SPN_Available()
@@ -135,7 +117,7 @@ namespace Infrastructure.Common
             // Temporarily use the simple heuristic that if we are running the services locally, it is.
             // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(SPN_Available),
-                                     Is_Server_Local);
+                                     Server_Is_LocalHost);
         }
 
         public static bool Kerberos_Available()
@@ -143,7 +125,31 @@ namespace Infrastructure.Common
             // Temporarily use the simple heuristic that if we are running the services locally, it is.
             // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(Kerberos_Available),
-                                     Is_Server_Local);
+                                     Server_Is_LocalHost);
+        }
+
+        public static bool Server_Accepts_Certificates()
+        {
+            // Temporarily use the simple heuristic that if we are running the services locally, it does.
+            // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
+            return GetConditionValue(nameof(Server_Accepts_Certificates),
+                                     Server_Is_LocalHost);
+        }
+
+        public static bool Basic_Authentication_Available()
+        {
+            // Temporarily use the simple heuristic that if we are running the services locally, it is.
+            // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
+            return GetConditionValue(nameof(Basic_Authentication_Available),
+                                     Server_Is_LocalHost);
+        }
+
+        public static bool Digest_Authentication_Available()
+        {
+            // Temporarily use the simple heuristic that if we are running the services locally, it is.
+            // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
+            return GetConditionValue(nameof(Digest_Authentication_Available),
+                                     Server_Is_LocalHost);
         }
 
         public static bool Windows_Authentication_Available()
@@ -151,7 +157,7 @@ namespace Infrastructure.Common
             // Temporarily use the simple heuristic that if we are running the services locally, it is.
             // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(Windows_Authentication_Available),
-                                     Is_Server_Local);
+                                     Server_Is_LocalHost);
         }
 
         public static bool NTLM_Available()
@@ -159,7 +165,7 @@ namespace Infrastructure.Common
             // Temporarily use the simple heuristic that if we are running the services locally, it is.
             // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(NTLM_Available),
-                                     Is_Server_Local);
+                                     Server_Is_LocalHost);
         }
     }
 }
