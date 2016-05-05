@@ -17,34 +17,42 @@ public static class ClientBaseTests
     [OuterLoop]
     public static void MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify()
     {
+        MyClientBase<IWcfService> client = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
             CustomBinding customBinding = new CustomBinding();
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
-            MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
             client.Endpoint.EndpointBehaviors.Add(new ClientMessagePropertyBehavior());
+            serviceProxy = client.ChannelFactory.CreateChannel();
 
-        try
-        {
-            IWcfService serviceProxy = client.ChannelFactory.CreateChannel();
+            // *** EXECUTE *** \\
             TestHttpRequestMessageProperty property = serviceProxy.EchoHttpRequestMessageProperty();
 
+            // *** VALIDATE *** \\
             Assert.NotNull(property);
             Assert.True(property.SuppressEntityBody == false, "Expected SuppressEntityBody to be 'false'");
             Assert.Equal("POST", property.Method);
             Assert.Equal("My%20address", property.QueryString);
             Assert.True(property.Headers.Count > 0, "TestHttpRequestMessageProperty.Headers should not have empty headers");
             Assert.Equal("my value", property.Headers["customer"]);
-            }
-        finally
-            {
-            if (client != null && client.State != CommunicationState.Closed)
-                {
-                client.Abort(); 
-                }
-                }
-                }
 
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
+        }
+    }
+    
     [Fact]
     [OuterLoop]
     public static void ClientMessageInspector_Verify_Invoke()
@@ -52,99 +60,130 @@ public static class ClientBaseTests
         // This test verifies ClientMessageInspector can be added to the client endpoint behaviors
         // and this is it called properly when a message is sent.
 
+        MyClientBase client = null;
+        IWcfServiceGenerated serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
             CustomBinding customBinding = new CustomBinding();
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
-            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
 
             // Add the ClientMessageInspector and give it an instance where it can record what happens when it is called.
             ClientMessageInspectorData data = new ClientMessageInspectorData();
             client.Endpoint.EndpointBehaviors.Add(new ClientMessageInspectorBehavior(data));
 
-        try
-        {
-            IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+            serviceProxy = client.ChannelFactory.CreateChannel();
 
+            // *** EXECUTE *** \\
             // This proxy call should invoke the client message inspector
             string result = serviceProxy.Echo("Hello");
 
+            // *** VALIDATE *** \\
             Assert.Equal("Hello", result);
             Assert.True(data.BeforeSendRequestCalled, "BeforeSendRequest should have been called");
             Assert.True(data.Request != null, "Did not call pass Request to BeforeSendRequest");
             Assert.True(data.Channel != null, "Did not call pass Channel to BeforeSendRequest");
             Assert.True(data.AfterReceiveReplyCalled, "AfterReceiveReplyCalled should have been called");
             Assert.True(data.Reply != null, "Did not call pass Reply to AfterReceiveReplyCalled");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
         finally
-            {
-            if (client != null && client.State != CommunicationState.Closed)
-            {
-                client.Abort();
-            }
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
         }
     }
 
     [Fact]
     [OuterLoop]
     public static void ClientBaseOfT_Sync_RoundTrip_Check_CommunicationState()
-            {
-        CustomBinding customBinding = new CustomBinding();
-        customBinding.Elements.Add(new TextMessageEncodingBindingElement());
-        customBinding.Elements.Add(new HttpTransportBindingElement());
-
-        MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
-        Assert.Equal(CommunicationState.Created, client.State);
-
-        IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
-        Assert.Equal(CommunicationState.Opened, client.State);
+    {
+        MyClientBase client = null;
+        IWcfServiceGenerated serviceProxy = null;
 
         try
-            {
-            string result = serviceProxy.Echo("Hello");
+        {
+            // *** SETUP *** \\
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
+
+            client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
+            // *** VALIDATE *** \\
+            Assert.Equal(CommunicationState.Created, client.State);
+
+            serviceProxy = client.ChannelFactory.CreateChannel();
+            // *** VALIDATE *** \\
             Assert.Equal(CommunicationState.Opened, client.State);
 
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo("Hello");
+            // *** VALIDATE *** \\
+            Assert.Equal(CommunicationState.Opened, client.State);
+
+            // *** CLEANUP *** \\
             ((ICommunicationObject)client).Close();
+            ((ICommunicationObject)serviceProxy).Close();
+            // *** VALIDATE *** \\
             Assert.Equal(CommunicationState.Closed, client.State);
-            }
+        }
         finally
-            {
+        {
             // normally we'd also check for if (client != null && client.State != CommuncationState.Closed), 
             // but this is a test and it'd be good to have the Abort happen and the channel is still Closed
             if (client != null)
             {
                 client.Abort();
                 Assert.Equal(CommunicationState.Closed, client.State);
-        }
+            }
+
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
         }
     }
 
     [Fact]
     [OuterLoop]
     public static void ClientBaseOfT_Sync_RoundTrip_Call_Using_HttpTransport()
-        {
+    {
         // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation over Http
 
+        MyClientBase client = null;
+        IWcfServiceGenerated serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
             CustomBinding customBinding = new CustomBinding();
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
-            MyClientBase client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
-            IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+            client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
+            serviceProxy = client.ChannelFactory.CreateChannel();
 
-        try
-        {
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo("Hello");
+
+            // *** VALIDATE *** \\
             Assert.Equal("Hello", result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
         finally
         {
-            if (client != null && client.State != CommunicationState.Closed)
-            {
-                client.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
         }
-            }
+    }
 
     [Fact]
     [OuterLoop]
@@ -153,26 +192,31 @@ public static class ClientBaseTests
         // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation over Tcp
         // (request reply over Tcp) 
 
-        // This test verifies ClientBase<T> can be used to create a proxy and invoke an operation over Http
-
-        CustomBinding binding = new CustomBinding(
-                new TextMessageEncodingBindingElement(),
-                new TcpTransportBindingElement());
-
-        MyClientBase client = new MyClientBase(binding, new EndpointAddress(Endpoints.Tcp_CustomBinding_NoSecurity_Text_Address));
-        IWcfServiceGenerated serviceProxy = client.ChannelFactory.CreateChannel();
+        MyClientBase client = null;
+        IWcfServiceGenerated serviceProxy = null;
 
         try
         {
+            // *** SETUP *** \\
+            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(), new TcpTransportBindingElement());
+
+            client = new MyClientBase(binding, new EndpointAddress(Endpoints.Tcp_CustomBinding_NoSecurity_Text_Address));
+            serviceProxy = client.ChannelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo("Hello");
+
+            // *** VALIDATE *** \\
             Assert.Equal("Hello", result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
         finally
         {
-            if (client != null && client.State != CommunicationState.Closed)
-        {
-                client.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
         }
     }
 
@@ -180,15 +224,21 @@ public static class ClientBaseTests
     [OuterLoop]
     public static void OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify()
     {
-        BasicHttpBinding binding = new BasicHttpBinding();
-        MyClientBase<IWcfService> client = new MyClientBase<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
-        IWcfService serviceProxy = client.ChannelFactory.CreateChannel();
-
         string customHeaderName = "OperationContextScopeCustomHeader";
         string customHeaderNS = "http://tempuri.org/OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify";
         string customHeaderValue = "CustomHappyValue";
+
+        MyClientBase<IWcfService> client = null;
+        IWcfService serviceProxy = null;
+
         try
         {
+            // *** SETUP *** \\
+            BasicHttpBinding binding = new BasicHttpBinding();
+
+            client = new MyClientBase<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = client.ChannelFactory.CreateChannel();
+
             using (OperationContextScope scope = new OperationContextScope((IContextChannel)serviceProxy))
             {
                 MessageHeader header
@@ -199,24 +249,30 @@ public static class ClientBaseTests
                   );
                 OperationContext.Current.OutgoingMessageHeaders.Add(header);
 
+                // *** EXECUTE *** \\
                 Dictionary<string, string> incomingMessageHeaders = serviceProxy.GetIncomingMessageHeaders();
                 string result = GetHeader(customHeaderName, customHeaderNS, incomingMessageHeaders);
 
+                // *** VALIDATE *** \\
                 Assert.Equal(customHeaderValue, result);
             }
 
+            // *** EXECUTE *** \\
             //Call outside of scope should not have the custom header
             Dictionary<string, string> outofScopeIncomingMessageHeaders = serviceProxy.GetIncomingMessageHeaders();
             string outofScopeResult = GetHeader(customHeaderName, customHeaderNS, outofScopeIncomingMessageHeaders);
+
+            // *** VALIDATE *** \\
             Assert.True(string.Empty == outofScopeResult, string.Format("Expect call out of the OperationContextScope does not have the custom header {0}", customHeaderName));
+
+            // *** CLEANUP *** \\
             ((ICommunicationObject)client).Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
         finally
         {
-            if (client != null && client.State != CommunicationState.Closed)
-            {
-                client.Abort();
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
         }
     }
 
@@ -284,7 +340,7 @@ public static class ClientBaseTests
         try
         {
             string cookieName = "cookie_time";
-            
+
 
             // *** EXECUTE *** \\
             // EchoTimeAndSetCookie returns the current time and also sets the cookie named 'cookieName' to be the same time returned.

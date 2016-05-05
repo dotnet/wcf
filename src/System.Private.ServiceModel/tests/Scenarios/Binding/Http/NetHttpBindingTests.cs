@@ -15,30 +15,32 @@ public static class Binding_Http_NetHttpBindingTests
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()
     {
-        string variationDetails = "Client:: NetHttpBinding/DefaultValues\nServer:: NetHttpBinding/DefaultValues";
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
-
-        NetHttpBinding binding = new NetHttpBinding();
-
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        
         try
         {
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp));
-            IWcfService serviceProxy = factory.CreateChannel();
+            // *** SETUP *** \\
+            NetHttpBinding binding = new NetHttpBinding();
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** VALIDATE *** \\
+            Assert.NotNull(result);
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 }
