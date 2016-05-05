@@ -17,6 +17,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     //                         - ClientCredentialType = Windows
     [ConditionalFact(nameof(Root_Certificate_Installed))]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
@@ -89,6 +90,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     // By default ClientCredentialType will be 'Windows'
     [ConditionalFact(nameof(Root_Certificate_Installed))]
 #if !FEATURE_NETNATIVE
+    [ActiveIssue(1108)] // Does not work cross-machine
     [ActiveIssue(592, PlatformID.AnyUnix)] // NegotiateStream works on Windows but is not yet supported on Unix
 #else
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
