@@ -10,16 +10,20 @@
   </PropertyGroup>
   
   <PropertyGroup>
+    <TraversalCleanDependsOn>
+      WcfClean;
+      $(TraversalCleanDependsOn);
+    </TraversalCleanDependsOn>
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <WcfSelfHostSetupLog>$(MSBuildThisFileDirectory)\SelfHostedWcfServiceSetup.log</WcfSelfHostSetupLog>
     <WcfSelfHostCleanupLog>$(MSBuildThisFileDirectory)\SelfHostedWcfServiceCleanup.log</WcfSelfHostCleanupLog>
   </PropertyGroup>
   
   <!--if ServiceUri is set, the service has been already started on another machine-->
   <Target Name="WcfSetup" Condition="($(WithCategories.Contains('OuterLoop')) or '$(OuterLoop)' == 'true') and ('$(ServiceUri)' == '') and $(OSEnvironment) == 'Windows_NT'" >
-  
-    <Delete Files="$(WcfSelfHostSetupLog)" Condition="Exists('$(WcfSelfHostSetupLog)')" />
-    <Delete Files="$(WcfSelfHostCleanupLog)" Condition="Exists('$(WcfSelfHostCleanupLog)')" />
-  
+    <Delete Files="$(WcfSelfHostSetupLog)" Condition="Exists('$(WcfSelfHostSetupLog)')" /> 
     <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\StartWCFSelfHostedSvc.cmd" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="WcfSetupErrorCode"/>
     </Exec>
@@ -33,12 +37,22 @@
   </Target>
 
   <Target Name="WcfCleanUp" Condition="$(WcfSetupErrorCode)!='-1' and $(WcfSetupErrorCode)!=''" >
-    <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\CleanUpWCFSelfHostedSvc.cmd" ContinueOnError="true">
-    </Exec>
-
     <Message Text="-------------- WCF self-host outerloop cleanup start --------------" Importance="High" />
+    <Delete Files="$(WcfSelfHostCleanupLog)" Condition="Exists('$(WcfSelfHostCleanupLog)')" />
+    <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\StopWcfSelfHostedSvc.cmd" ContinueOnError="true" />
     <Message Text="$([System.IO.File]::ReadAllText($(WcfSelfHostCleanupLog)))" Condition="Exists('$(WcfSelfHostCleanupLog)')" Importance="High" />
     <Message Text="-------------- WCF self-host outerloop cleanup end --------------" Importance="High" />
-    
+  </Target>
+  
+  <!-- The WcfClean target executes via clean.cmd or build /t:Clean.
+       Currently it runs only on Windows in order to ensure the SelfHost
+       WCF service has been closed to ensure the bin folder can be deleted.
+  -->
+  <Target Name="WcfClean" Condition="$(OSEnvironment) == 'Windows_NT'">
+    <Message Text="-------------- WCF clean start --------------" Importance="High" />
+    <Delete Files="$(WcfSelfHostCleanupLog)" Condition="Exists('$(WcfSelfHostCleanupLog)')" />
+    <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\StopWcfSelfHostedSvc.cmd" ContinueOnError="true" />
+    <Message Text="$([System.IO.File]::ReadAllText($(WcfSelfHostCleanupLog)))" Condition="Exists('$(WcfSelfHostCleanupLog)')" Importance="High" />
+    <Message Text="-------------- WCF clean end --------------" Importance="High" />
   </Target>
 </Project>

@@ -4,8 +4,11 @@ setlocal
 REM This script should always be called from StartWCFSelfHostedSvc.cmd
 
 set _setuplog=%~dp0..\..\..\..\SelfHostedWcfServiceSetup.log
+set _setupSemaphoreFile=%~dp0..\..\..\..\SelfHostedWcfServiceSemaphore.log
 
 echo Preparing to launch the WCF self hosted service
+
+if EXIST %_setupSemaphoreFile% del %_setupSemaphoreFile%
 
 REM Build tools
 echo Building the WCF Self hosted service...
@@ -46,6 +49,9 @@ if NOT [%ERRORLEVEL%]==[0] (
     echo Warning: An error occurred while configuration https port. >>%_setuplog%
   )
 
+REM Write into our semaphore file to indicate our SelfHost test is running
+echo Started Self host WCF service >>%_setupSemaphoreFile%
+
 REM
 REM Start the self hosted WCF Test Service
 echo Starting the WCF Self hosted service...
@@ -54,7 +60,13 @@ set __EXITCODE=%ERRORLEVEL%
 
 :Cleanup
 echo Cleaning up after the Self hosted service has completed
+REM Update our semaphore file to indicate our SelfHost test is cleaning up
+echo Cleaning up after Self host WCF service terminated. >>%_setupSemaphoreFile%
 call %~dp0CleanUpWCFSelfHostedSvc.cmd
 :done
+
+REM Deleting the semaphore file is an indication the cleanup script is done
+REM and no longer writing to the setup log file.
+if EXIST %_setupSemaphoreFile% del %_setupSemaphoreFile%
 
 exit /b %__EXITCODE%
