@@ -15,8 +15,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
     static Https_ClientCredentialTypeTests()
     {
-        s_username = "wcf-test";
-        s_password = "wcfSaysHell0World!";
+        s_username = TestProperties.GetProperty(TestProperties.TestUserName_PropertyName);
+        s_password = TestProperties.GetProperty(TestProperties.TestPassword_PropertyName);
     }
 
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Basic_Authentication_Available))]
@@ -109,8 +109,10 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(exception.Message.ToLower().Contains(paraMessage), string.Format("Expected exception message to contain: '{0}', actual: '{1}'", paraMessage, exception.Message));
     }
 
-    [ActiveIssue(979)]
-    [ConditionalFact(nameof(Domain_Joined), nameof(Root_Certificate_Installed))]
+    [ConditionalFact(nameof(Domain_Joined), 
+                     nameof(Root_Certificate_Installed),
+                     nameof(Digest_Authentication_Available), 
+                     nameof(UserName_And_Password_Available))]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()
     {
