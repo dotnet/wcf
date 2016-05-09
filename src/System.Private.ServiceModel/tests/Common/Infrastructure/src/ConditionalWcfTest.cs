@@ -96,12 +96,24 @@ namespace Infrastructure.Common
                                            ConditionalTestDetectors.IsServerDomainJoined());
         }
 
+        // Returns true iff a root certificate is installed in the root store.
+        // This condition will attempt to install the certificate if it is not
+        // already in the store, but will still succeed as long as it can find
+        // a valid root certificate in the store after the attempt.  If this
+        // condition returns 'true', it is a guarantee the root certificate is
+        // in the store.
         public static bool Root_Certificate_Installed()
         {
             return GetConditionValue(nameof(Root_Certificate_Installed),
                                      ConditionalTestDetectors.IsRootCertificateInstalled);
         }
 
+        // Returns true iff a client certificate is installed in the certificate store.
+        // This condition will attempt to install the certificate if it is not
+        // already in the store, but will still succeed as long as it can find
+        // a valid client certificate in the store after the attempt.  If this
+        // condition returns 'true', it is a guarantee the client certificate is
+        // in the store.
         public static bool Client_Certificate_Installed()
         {
             return GetConditionValue(nameof(Client_Certificate_Installed),

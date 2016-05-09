@@ -186,7 +186,7 @@ public class HttpsTests : ConditionalWcfTest
             CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address));
-            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication = factory.Credentials.ServiceCertificate.Authentication;
@@ -233,7 +233,7 @@ public class HttpsTests : ConditionalWcfTest
             basicHttpsBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_ClientCertificateAuth_Address));
-            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(basicHttpsBinding, endpointAddress);
             factory.Credentials.ClientCertificate.SetCertificate(
