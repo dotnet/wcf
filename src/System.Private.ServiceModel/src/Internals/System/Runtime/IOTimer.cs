@@ -5,14 +5,14 @@ using System.Threading;
 
 namespace System.Runtime
 {
-    public class IOTimer<TState> : IDisposable
+    internal class IOTimer<TState> : IDisposable
     {
         private readonly Action<TState> _callback;
         private readonly TState _state;
         private Timer _timer;
         private bool _enabled;
         private DateTime _dueDateTime;
-        private readonly double MaxSkew = 100.0; // Milliseconds
+        private const double MaxSkew = 100.0; // Milliseconds
 
         public IOTimer(Action<TState> callback, TState state)
         {
