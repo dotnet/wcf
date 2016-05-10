@@ -9,6 +9,8 @@
     "System.Net.Primitives": "4.0.10"
   },
   "frameworks": {
-    "dnxcore50": {}
+    "dnxcore50": {
+      "imports": [ "netstandard1.6" ]
+    }
   }
 }

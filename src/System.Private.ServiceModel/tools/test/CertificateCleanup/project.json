@@ -6,6 +6,8 @@
     "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-24109-00"
   },
   "frameworks": {
-    "dnxcore50": {}
+    "dnxcore50": {
+      "imports": [ "netstandard1.6" ]
+    }
   }
 }
