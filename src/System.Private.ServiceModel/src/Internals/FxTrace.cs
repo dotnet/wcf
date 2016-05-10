@@ -20,7 +20,7 @@ namespace System
         private static string s_eventSourceName;
         private static EtwDiagnosticTrace s_diagnosticTrace;
         private static ExceptionTrace s_exceptionTrace;
-        private static object s_lockObject = new object();
+        private static readonly object s_lockObject = new object();
 
         [SuppressMessage(FxCop.Category.Performance, FxCop.Rule.AvoidUncalledPrivateCode,
             Justification = "This template is shared across all assemblies, some of which use this accessor.")]
