@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using NetFwTypeLib;
 using System;
@@ -51,7 +53,7 @@ namespace WcfTestBridgeCommon
                 s_remoteAddresses = value;
             }
         }
- 
+
         // We listen for ProcessExit so we can delete the firewall
         // rules we added while the Bridge was running.
         private static void RegisterForProcessExit()
@@ -164,7 +166,8 @@ namespace WcfTestBridgeCommon
 
                 foreach (string ruleName in ruleSet)
                 {
-                    try {
+                    try
+                    {
                         NetFwPolicy2.Rules.Remove(ruleName);
                         Console.WriteLine("Removed firewall rule '{0}'", ruleName);
                     }

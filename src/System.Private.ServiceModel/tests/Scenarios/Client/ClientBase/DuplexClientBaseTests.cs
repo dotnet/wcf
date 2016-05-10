@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -9,7 +11,6 @@ using Infrastructure.Common;
 
 public class DuplexClientBaseTests : ConditionalWcfTest
 {
-
     [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void DuplexClientBaseOfT_OverHttp_Call_Throws_InvalidOperation()
@@ -20,7 +21,7 @@ public class DuplexClientBaseTests : ConditionalWcfTest
         try
         {
             // *** SETUP *** \\
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None); 
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
 
             WcfDuplexServiceCallback callbackService = new WcfDuplexServiceCallback();
             InstanceContext context = new InstanceContext(callbackService);
@@ -28,8 +29,8 @@ public class DuplexClientBaseTests : ConditionalWcfTest
             duplexService = new MyDuplexClientBase<IWcfDuplexService>(context, binding, new EndpointAddress(Endpoints.Https_DefaultBinding_Address));
 
             // *** EXECUTE *** \\
-            var exception = Assert.Throws<InvalidOperationException>(() => 
-            { 
+            var exception = Assert.Throws<InvalidOperationException>(() =>
+            {
                 proxy = duplexService.ChannelFactory.CreateChannel();
             });
 
@@ -38,7 +39,7 @@ public class DuplexClientBaseTests : ConditionalWcfTest
             // "Contract requires Duplex, but Binding 'BasicHttpBinding' doesn't support it or isn't configured properly to support it"
             Assert.True(exception.Message.Contains("BasicHttpBinding"));
 
-            Assert.Throws<CommunicationObjectFaultedException>(() => 
+            Assert.Throws<CommunicationObjectFaultedException>(() =>
             {
                 // You can't gracefully close a Faulted CommunicationObject, so we should make sure it throws here too
                 ((ICommunicationObject)duplexService).Close();
@@ -81,7 +82,7 @@ public class DuplexClientBaseTests : ConditionalWcfTest
             Guid returnedGuid = callbackService.CallbackGuid;
 
             // *** VALIDATE *** \\
-            Assert.True(guid == returnedGuid, 
+            Assert.True(guid == returnedGuid,
                 string.Format("The sent GUID does not match the returned GUID. Sent '{0}', Received: '{1}'", guid, returnedGuid));
 
             // *** CLEANUP *** \\

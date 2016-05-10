@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -118,7 +120,7 @@ public static partial class XmlSerializerFormatTests
         EndpointAddress endpointAddress = new EndpointAddress(s_basicEndpointAddress);
         ChannelFactory<ILoginService> factory = new ChannelFactory<ILoginService>(binding, endpointAddress);
         ILoginService serviceProxy = factory.CreateChannel();
-        
+
         var request = new LoginRequest();
         request.clientId = "1";
         request.user = "2";
@@ -183,7 +185,8 @@ public static partial class XmlSerializerFormatTests
 
     [Fact]
     [OuterLoop]
-    public static void XmlSerializerFormat_SameNamespace_SameOperation() {
+    public static void XmlSerializerFormat_SameNamespace_SameOperation()
+    {
         // This test covers the scenariow where two service contracts share
         // the same namespace and have the same method.
 
@@ -193,7 +196,8 @@ public static partial class XmlSerializerFormatTests
         ChannelFactory<ISameNamespaceWithIWcfServiceXmlGenerated> factory = new ChannelFactory<ISameNamespaceWithIWcfServiceXmlGenerated>(binding, endpointAddress);
         ISameNamespaceWithIWcfServiceXmlGenerated serviceProxy = factory.CreateChannel();
 
-        try {
+        try
+        {
             // *** EXECUTE *** \\
             string response = serviceProxy.EchoXmlSerializerFormat("message");
 

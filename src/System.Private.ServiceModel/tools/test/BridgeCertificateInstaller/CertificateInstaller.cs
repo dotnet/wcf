@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.IO;
@@ -11,7 +13,7 @@ public static class BridgeCertificateInstaller
 {
     public static int Main(string[] args)
     {
-        DisplayBanner(); 
+        DisplayBanner();
 
         if (args.Length < 1)
         {
@@ -21,7 +23,7 @@ public static class BridgeCertificateInstaller
 
         var filename = args[0];
 
-        byte[] certificateBytes; 
+        byte[] certificateBytes;
         if (GetCertificate(out certificateBytes))
         {
             var directory = Path.GetDirectoryName(filename);
@@ -57,14 +59,14 @@ public static class BridgeCertificateInstaller
         }
 
         Console.WriteLine();
-        return -1; 
+        return -1;
     }
 
     public static bool GetCertificate(out byte[] certificateBytes)
     {
         string endpoint = Endpoints.Https_DefaultBinding_Address;
         string bridgePort = TestProperties.GetProperty(TestProperties.BridgePort_PropertyName);
-        
+
         certificateBytes = default(byte[]);
 
         Uri uri;
@@ -77,7 +79,7 @@ public static class BridgeCertificateInstaller
 
                 Console.WriteLine("  Bridge hostname is: '{0}'", uri.Host);
                 Console.WriteLine("  Retrieving certificate from:");
-                
+
                 Console.WriteLine(certAsPemUri);
                 Console.WriteLine();
 
@@ -96,14 +98,14 @@ public static class BridgeCertificateInstaller
                         Environment.NewLine,
                         response.StatusCode,
                         response.ReasonPhrase);
-                    return false; 
+                    return false;
                 }
             }
             else
             {
                 Console.WriteLine("  The Bridge uri specified: '{0}' is an invalid uri", endpoint);
                 certificateBytes = null;
-                return false; 
+                return false;
             }
         }
         catch (Exception ex)
@@ -113,7 +115,7 @@ public static class BridgeCertificateInstaller
             Console.WriteLine(ex);
         }
 
-        return false; 
+        return false;
     }
 
     public static void DisplayBanner()

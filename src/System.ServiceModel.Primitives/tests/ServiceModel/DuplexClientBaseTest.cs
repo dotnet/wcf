@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -41,7 +43,7 @@ public class DuplexClientBaseTest
     {
         Binding binding = new NetTcpBinding();
         EndpointAddress endpoint = new EndpointAddress(FakeAddress.TcpAddress);
-        Assert.Throws<ArgumentNullException>("callbackInstance", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(null, binding, endpoint); }); 
+        Assert.Throws<ArgumentNullException>("callbackInstance", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(null, binding, endpoint); });
     }
 
     [Fact]
@@ -59,16 +61,17 @@ public class DuplexClientBaseTest
         Binding binding = new NetTcpBinding();
         Assert.Throws<ArgumentNullException>("remoteAddress", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, binding, null); });
     }
-    
+
     [Fact]
     public static void CreateDuplexClientBase_Binding_Url_Mismatch_Throws()
     {
         InstanceContext context = new InstanceContext(new WcfDuplexServiceCallback());
         Binding binding = new NetTcpBinding();
         EndpointAddress endpoint = new EndpointAddress(FakeAddress.HttpAddress);
-        Assert.Throws<ArgumentException>("via", () => {
+        Assert.Throws<ArgumentException>("via", () =>
+        {
             MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, binding, endpoint);
-            ((ICommunicationObject)duplexClientBase).Open(); 
+            ((ICommunicationObject)duplexClientBase).Open();
         });
     }
 
@@ -82,7 +85,6 @@ public class DuplexClientBaseTest
 
         void IWcfDuplexServiceCallback.OnPingCallback(Guid guid)
         {
-
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +18,7 @@ using System.Configuration;
 
 namespace CertUtil
 {
-    class Program
+    internal class Program
     {
         private const string ClientCertificateSubject = "WCF Client Certificate";
         private const string CertificateIssuer = "DO_NOT_TRUST_WcfBridgeRootCA";
@@ -39,12 +43,11 @@ namespace CertUtil
                     store.Remove(cert);
                     Console.Write(" ... removed");
                 }
-
             }
             Console.WriteLine();
         }
 
-        static void UninstallAllCerts()
+        private static void UninstallAllCerts()
         {
             RemoveCertificatesFromStore(StoreName.My, StoreLocation.CurrentUser);
             RemoveCertificatesFromStore(StoreName.My, StoreLocation.LocalMachine);
@@ -55,12 +58,12 @@ namespace CertUtil
             RemoveCertificatesFromStore(StoreName.TrustedPeople, StoreLocation.LocalMachine);
         }
 
-        static void Usage()
+        private static void Usage()
         {
             Console.WriteLine("Supported argument is -Uninstall");
             Console.WriteLine("                      -help");
         }
-        static int Main(string[] args)
+        private static int Main(string[] args)
         {
             ApplyAppSettings();
 
@@ -181,7 +184,6 @@ namespace CertUtil
             File.WriteAllBytes(s_CrlFileLocation, certificateGenerate.CrlEncoded);
 
             return 0;
-
         }
 
         private static void ApplyAppSettings()

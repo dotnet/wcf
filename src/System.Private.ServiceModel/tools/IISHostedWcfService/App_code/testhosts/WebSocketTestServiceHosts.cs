@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -29,7 +31,6 @@ namespace WcfService
             : base(serviceType, baseAddresses)
         {
         }
-
     }
 
     public class WebSocketTransportTestServiceHostFactory : ServiceHostFactory
@@ -42,7 +43,6 @@ namespace WcfService
     }
     public class WebSocketTransportTestServiceHost : TestServiceHostBase<IWcfDuplexService>
     {
-
         protected override string Address { get { return "http-requestreplywebsockets-transportusagealways"; } }
 
         protected override Binding GetBinding()
@@ -182,7 +182,6 @@ namespace WcfService
             : base(serviceType, baseAddresses)
         {
         }
-
     }
 
     public class WebSocketHttpRequestReplyTextStreamedTestServiceHostFactory : ServiceHostFactory
@@ -275,7 +274,6 @@ namespace WcfService
             : base(serviceType, baseAddresses)
         {
         }
-
     }
 
     public class WebSocketHttpRequestReplyBinaryBufferedTestServiceHostFactory : ServiceHostFactory
@@ -486,8 +484,8 @@ namespace WcfService
             return binding;
         }
 
-         public WebSocketHttpsDuplexTextBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpsDuplexTextBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
+           : base(serviceType, baseAddresses)
         {
         }
     }

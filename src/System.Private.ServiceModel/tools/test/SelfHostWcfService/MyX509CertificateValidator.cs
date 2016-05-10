@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.IdentityModel.Selectors;
@@ -10,7 +12,7 @@ namespace WcfService
 {
     public class MyX509CertificateValidator : X509CertificateValidator
     {
-        string allowedIssuerName;
+        private string _allowedIssuerName;
 
         public MyX509CertificateValidator(string allowedIssuerName)
         {
@@ -19,7 +21,7 @@ namespace WcfService
                 throw new ArgumentNullException("allowedIssuerName", "[MyX509CertificateValidator] The string parameter allowedIssuerName was null or empty.");
             }
 
-            this.allowedIssuerName = allowedIssuerName;
+            _allowedIssuerName = allowedIssuerName;
         }
 
         public override void Validate(X509Certificate2 certificate)
@@ -31,10 +33,10 @@ namespace WcfService
             }
 
             // Check that the certificate issuer matches the configured issuer.
-            if (!certificate.IssuerName.Name.Contains(allowedIssuerName))
+            if (!certificate.IssuerName.Name.Contains(_allowedIssuerName))
             {
                 throw new SecurityTokenValidationException
-                  (string.Format("Certificate was not issued by a trusted issuer. Expected: {0}, Actual: {1}", allowedIssuerName, certificate.IssuerName.Name));
+                  (string.Format("Certificate was not issued by a trusted issuer. Expected: {0}, Actual: {1}", _allowedIssuerName, certificate.IssuerName.Name));
             }
         }
     }

@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -13,36 +15,36 @@ namespace WcfService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class WSDuplexService : IWSDuplexService
     {
-        private static string ContentToReplace = "ContentToReplace";
-        private static string ResponseReplaceThisContent = "ResponseReplaceThisContent";
-        private static string ReplacedContent = "ReplacedContent";
-        private static string LastMessage = "LastMessage";
+        private static string s_contentToReplace = "ContentToReplace";
+        private static string s_responseReplaceThisContent = "ResponseReplaceThisContent";
+        private static string s_replacedContent = "ReplacedContent";
+        private static string s_lastMessage = "LastMessage";
 
-        private string exceptionstring = string.Empty;
-        List<string> log = new List<string>();
-        static bool continuePushingData;
+        private string _exceptionstring = string.Empty;
+        private List<string> _log = new List<string>();
+        private static bool s_continuePushingData;
 
-        static int seed = DateTime.Now.Millisecond;
-        static Random rand = new Random(seed);
+        private static int s_seed = DateTime.Now.Millisecond;
+        private static Random s_rand = new Random(s_seed);
 
-        static FlowControlledStream localStream;
+        private static FlowControlledStream s_localStream;
 
         public void UploadData(string data)
         {
-            if (data.Contains(ContentToReplace) || data.Contains(ReplacedContent) || data.Contains(ResponseReplaceThisContent))
+            if (data.Contains(s_contentToReplace) || data.Contains(s_replacedContent) || data.Contains(s_responseReplaceThisContent))
             {
-                log.Add(string.Format("UploadData received {0}", data));
+                _log.Add(string.Format("UploadData received {0}", data));
             }
             else
             {
-                log.Add(string.Format("UploadData received {0} length string.", data.Length));
+                _log.Add(string.Format("UploadData received {0} length string.", data.Length));
             }
         }
 
         public string DownloadData()
         {
-            string data = CreateInterestingString(rand.Next(512, 4096));
-            log.Add(string.Format("DownloadData returning {0} length string", data.Length));
+            string data = CreateInterestingString(s_rand.Next(512, 4096));
+            _log.Add(string.Format("DownloadData returning {0} length string", data.Length));
             return data;
         }
 
@@ -60,13 +62,13 @@ namespace WcfService
 
             stream.Close();
 
-            log.Add(string.Format("UploadStream read {0} bytes from client's stream", bytesRead));
+            _log.Add(string.Format("UploadStream read {0} bytes from client's stream", bytesRead));
         }
 
         // Not using the localStream because this is the request-reply operation.
         public Stream DownloadStream()
         {
-            log.Add("DownloadStream");
+            _log.Add("DownloadStream");
             FlowControlledStream stream = new FlowControlledStream();
             stream.StreamDuration = TimeSpan.FromSeconds(1);
             stream.ReadThrottle = TimeSpan.FromMilliseconds(500);
@@ -75,75 +77,75 @@ namespace WcfService
 
         public void StartPushingData()
         {
-            log.Add("StartPushingData");
-            continuePushingData = true;
+            _log.Add("StartPushingData");
+            s_continuePushingData = true;
             IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
             Task.Factory.StartNew(PushData, pushCallbackChannel, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
         }
 
         public void StopPushingData()
         {
-            log.Add("StopPushingData");
-            continuePushingData = false;
+            _log.Add("StopPushingData");
+            s_continuePushingData = false;
         }
 
         public void StartPushingStream()
         {
-            log.Add("StartPushingStream");
+            _log.Add("StartPushingStream");
             IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
             Task.Factory.StartNew(PushStream, pushCallbackChannel, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
         }
 
         public void StartPushingStreamLongWait()
         {
-            log.Add("StartPushingStream");
+            _log.Add("StartPushingStream");
             IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
             Task.Factory.StartNew(PushStreamLongwait, pushCallbackChannel, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
         }
 
         public void StopPushingStream()
         {
-            log.Add("StopPushingStream");
-            localStream.StopStreaming = true;
+            _log.Add("StopPushingStream");
+            s_localStream.StopStreaming = true;
         }
 
-        void PushData(object state)
+        private void PushData(object state)
         {
             IPushCallback pushCallbackChannel = state as IPushCallback;
 
             do
             {
-                pushCallbackChannel.ReceiveData(CreateInterestingString(rand.Next(4, 256)));
+                pushCallbackChannel.ReceiveData(CreateInterestingString(s_rand.Next(4, 256)));
             }
-            while (continuePushingData);
+            while (s_continuePushingData);
 
-            pushCallbackChannel.ReceiveData(LastMessage);
+            pushCallbackChannel.ReceiveData(s_lastMessage);
         }
 
-        void PushStream(object state)
+        private void PushStream(object state)
         {
             IPushCallback pushCallbackChannel = state as IPushCallback;
-            localStream = new FlowControlledStream();
-            localStream.ReadThrottle = TimeSpan.FromMilliseconds(800);
+            s_localStream = new FlowControlledStream();
+            s_localStream.ReadThrottle = TimeSpan.FromMilliseconds(800);
 
-            pushCallbackChannel.ReceiveStream(localStream);
+            pushCallbackChannel.ReceiveStream(s_localStream);
         }
 
-        void PushStreamLongwait(object state)
+        private void PushStreamLongwait(object state)
         {
             IPushCallback pushCallbackChannel = state as IPushCallback;
-            localStream = new FlowControlledStream();
-            localStream.ReadThrottle = TimeSpan.FromMilliseconds(3000);
-            localStream.StreamDuration = TimeSpan.FromSeconds(2);
+            s_localStream = new FlowControlledStream();
+            s_localStream.ReadThrottle = TimeSpan.FromMilliseconds(3000);
+            s_localStream.StreamDuration = TimeSpan.FromSeconds(2);
 
             try
             {
-                pushCallbackChannel.ReceiveStreamWithException(localStream);
+                pushCallbackChannel.ReceiveStreamWithException(s_localStream);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(String.Format("Server got the following exception: {0}", ex));
-                this.exceptionstring = ex.GetType().Name;
+                _exceptionstring = ex.GetType().Name;
             }
         }
 
@@ -153,13 +155,13 @@ namespace WcfService
         /// <returns></returns>
         public string GetExceptionString()
         {
-            return this.exceptionstring;
+            return _exceptionstring;
         }
 
         public void GetLog()
         {
             IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
-            pushCallbackChannel.ReceiveLog(log);
+            pushCallbackChannel.ReceiveLog(_log);
         }
 
         public static string CreateInterestingString(int length)

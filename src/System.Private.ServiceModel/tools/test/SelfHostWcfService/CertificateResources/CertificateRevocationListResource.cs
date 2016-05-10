@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using WcfTestBridgeCommon;
@@ -15,7 +17,7 @@ namespace WcfService.CertificateResources
 
         public override ResourceResponse Get(ResourceRequestContext context)
         {
-            var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration); 
+            var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration);
 
             lock (s_certificateResourceLock)
             {
@@ -31,7 +33,7 @@ namespace WcfService.CertificateResources
 
             string serialNumber;
 
-            lock(s_certificateResourceLock)
+            lock (s_certificateResourceLock)
             {
                 if (context.Properties.TryGetValue(revokeSerialNumberKeyName, out serialNumber) && !string.IsNullOrWhiteSpace(serialNumber))
                 {
@@ -42,7 +44,7 @@ namespace WcfService.CertificateResources
                 response.Properties.Add(crlUriKeyName, certGenerator.CrlUri);
 
                 response.Properties.Add(
-                    revokedCertificatesKeyName, 
+                    revokedCertificatesKeyName,
                     string.Join<string>(",", certGenerator.RevokedCertificates));
 
                 return response;

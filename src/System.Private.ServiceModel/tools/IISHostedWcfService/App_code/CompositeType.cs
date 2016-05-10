@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -71,7 +73,6 @@ namespace WcfService
 [MessageContract(WrapperName = "login", WrapperNamespace = "http://www.contoso.com/", IsWrapped = true)]
 public partial class LoginRequest
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 0)]
     [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string clientId;
@@ -99,7 +100,6 @@ public partial class LoginRequest
 [MessageContract(WrapperName = "loginResponse", WrapperNamespace = "http://www.contoso.com/", IsWrapped = true)]
 public partial class LoginResponse
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 0)]
     [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string @return;
@@ -176,13 +176,12 @@ public class XmlVeryComplexType
 
 public class NonInstantiatedType
 {
-
 }
 
 [XmlType(Namespace = "urn:TestWebServices/MyWebService/")]
 public partial class MesssageHeaderCreateHeaderWithXmlSerializerTestType
 {
-    private string message;
+    private string _message;
 
     /// <remarks/>
     [XmlElement(Order = 0)]
@@ -190,11 +189,11 @@ public partial class MesssageHeaderCreateHeaderWithXmlSerializerTestType
     {
         get
         {
-            return message;
+            return _message;
         }
         set
         {
-            message = value;
+            _message = value;
         }
     }
 }
@@ -202,7 +201,6 @@ public partial class MesssageHeaderCreateHeaderWithXmlSerializerTestType
 [MessageContract(WrapperName = "XmlMessageContractTestRequest", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
 public partial class XmlMessageContractTestRequest
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/XmlMessageContarctTestMessages", Order = 0)]
     public string Message;
 
@@ -219,7 +217,6 @@ public partial class XmlMessageContractTestRequest
 [MessageContract(WrapperName = "XmlMessageContractTestRequestWithMessageHeader", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
 public partial class XmlMessageContractTestRequestWithMessageHeader
 {
-
     [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
     public string Message;
 
@@ -236,7 +233,6 @@ public partial class XmlMessageContractTestRequestWithMessageHeader
 [MessageContract(WrapperName = "XmlMessageContractTestResponse", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
 public partial class XmlMessageContractTestResponse
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/XmlMessageContarctTestMessages", Order = 0)]
     public string _message;
 

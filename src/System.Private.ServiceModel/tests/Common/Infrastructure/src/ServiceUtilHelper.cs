@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -9,20 +11,20 @@ using Infrastructure.Common;
 
 public static class ServiceUtilHelper
 {
-    private static X509Certificate2 rootCert;
-    private static X509Certificate2 clientCert;
-    private static object rootCertLock = new object();
-    private static object clientCertLock = new object();
-    private static string serviceHostName = string.Empty;
+    private static X509Certificate2 s_rootCert;
+    private static X509Certificate2 s_clientCert;
+    private static object s_rootCertLock = new object();
+    private static object s_clientCertLock = new object();
+    private static string s_serviceHostName = string.Empty;
 
     public static string LocalCertThumbprint { get; set; }
 
     //Install Root certificate, this is required for all https test
     public static void EnsureRootCertificateInstalled()
     {
-        lock (rootCertLock)
+        lock (s_rootCertLock)
         {
-            if (rootCert == null)
+            if (s_rootCert == null)
             {
                 BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
                 ChannelFactory<IUtil> factory = null;
@@ -31,15 +33,15 @@ public static class ServiceUtilHelper
                 {
                     factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
                     serviceProxy = factory.CreateChannel();
-                    rootCert = new X509Certificate2(serviceProxy.GetRootCert(false));
+                    s_rootCert = new X509Certificate2(serviceProxy.GetRootCert(false));
 
-                    if (rootCert == null)
+                    if (s_rootCert == null)
                     {
                         //throw
                         throw new Exception("Failed to obtain root cert from the server");
                     }
 
-                    BridgeClientCertificateManager.InstallCertificateToRootStore(rootCert);
+                    BridgeClientCertificateManager.InstallCertificateToRootStore(s_rootCert);
                 }
                 finally
                 {
@@ -53,9 +55,9 @@ public static class ServiceUtilHelper
     public static void EnsureLocalClientCertificateInstalled()
     {
         EnsureRootCertificateInstalled();
-        lock (clientCertLock)
+        lock (s_clientCertLock)
         {
-            if (clientCert == null)
+            if (s_clientCert == null)
             {
                 BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
                 ChannelFactory<IUtil> factory = null;
@@ -64,15 +66,15 @@ public static class ServiceUtilHelper
                 {
                     factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
                     serviceProxy = factory.CreateChannel();
-                    clientCert = new X509Certificate2(serviceProxy.GetClientCert(false), "test", X509KeyStorageFlags.PersistKeySet);
-                    if (clientCert == null)
+                    s_clientCert = new X509Certificate2(serviceProxy.GetClientCert(false), "test", X509KeyStorageFlags.PersistKeySet);
+                    if (s_clientCert == null)
                     {
                         //throw
                         throw new Exception("Failed to obtain client cert from the server");
                     }
 
-                    BridgeClientCertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.CurrentUser, clientCert);
-                    LocalCertThumbprint = clientCert.Thumbprint;
+                    BridgeClientCertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.CurrentUser, s_clientCert);
+                    LocalCertThumbprint = s_clientCert.Thumbprint;
                 }
                 finally
                 {
@@ -119,7 +121,7 @@ public static class ServiceUtilHelper
         get
         {
             //Get the host name from server
-            if (string.IsNullOrEmpty(serviceHostName))
+            if (string.IsNullOrEmpty(s_serviceHostName))
             {
                 BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
                 ChannelFactory<IUtil> factory = null;
@@ -128,7 +130,7 @@ public static class ServiceUtilHelper
                 {
                     factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
                     serviceProxy = factory.CreateChannel();
-                    serviceHostName = serviceProxy.GetFQDN();
+                    s_serviceHostName = serviceProxy.GetFQDN();
                 }
                 finally
                 {
@@ -136,7 +138,7 @@ public static class ServiceUtilHelper
                 }
             }
 
-            return serviceHostName;
+            return s_serviceHostName;
         }
     }
 
@@ -173,7 +175,7 @@ public static class ServiceUtilHelper
                     builder.Scheme = "http";
                     break;
                 case "https":
-                     builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeHttpsPort_PropertyName));
+                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeHttpsPort_PropertyName));
                     break;
                 case "wss":
                     builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeSecureWebSocketPort_PropertyName));

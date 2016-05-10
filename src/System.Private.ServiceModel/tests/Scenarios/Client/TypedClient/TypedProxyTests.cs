@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -21,7 +23,7 @@ public static class TypedProxyTests
 
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
-    static TimeSpan maxTestWaitTime = TimeSpan.FromSeconds(10);
+    private static TimeSpan s_maxTestWaitTime = TimeSpan.FromSeconds(10);
 
     [Fact]
     [OuterLoop]
@@ -476,11 +478,11 @@ public static class TypedProxyTests
         {
             get
             {
-                if (_tcs.Task.Wait(maxTestWaitTime))
+                if (_tcs.Task.Wait(s_maxTestWaitTime))
                 {
                     return _tcs.Task.Result;
                 }
-                throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", maxTestWaitTime));
+                throw new TimeoutException(string.Format("Not completed within the alloted time of {0}", s_maxTestWaitTime));
             }
         }
 

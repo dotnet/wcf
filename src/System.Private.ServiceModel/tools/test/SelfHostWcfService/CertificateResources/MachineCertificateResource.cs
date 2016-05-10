@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -27,7 +29,7 @@ namespace WcfService.CertificateResources
         {
             X509Certificate2 certificate;
 
-            string subject; 
+            string subject;
             if (!context.Properties.TryGetValue(subjectKeyName, out subject) || string.IsNullOrWhiteSpace(subject))
             {
                 throw new ArgumentException("When PUTting to this resource, specify an non-empty 'subject'", "context.Properties");
@@ -69,7 +71,7 @@ namespace WcfService.CertificateResources
                     {
                         CertificateCreationSettings certificateCreationSettings = new CertificateCreationSettings()
                         {
-                            FriendlyName = "WCF Bridge - MachineCertificateResource", 
+                            FriendlyName = "WCF Bridge - MachineCertificateResource",
                             Subject = subject,
                             SubjectAlternativeNames = subjectAlternativeNames
                         };

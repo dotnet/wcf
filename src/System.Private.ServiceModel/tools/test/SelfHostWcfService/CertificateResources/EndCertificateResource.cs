@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -74,7 +76,7 @@ namespace WcfService.CertificateResources
 
                 if (certHasBeenCreated)
                 {
-                    var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration); 
+                    var certGenerator = CertificateResourceHelpers.GetCertificateGeneratorInstance(context.BridgeConfiguration);
 
                     response.Properties.Add(thumbprintKeyName, certificate.Thumbprint);
                     response.Properties.Add(certificateKeyName, Convert.ToBase64String(certificate.Export(X509ContentType.Pfx, certGenerator.CertificatePassword)));
@@ -88,6 +90,6 @@ namespace WcfService.CertificateResources
             }
         }
 
-        public abstract override ResourceResponse Put(ResourceRequestContext context); 
+        public abstract override ResourceResponse Put(ResourceRequestContext context);
     }
 }

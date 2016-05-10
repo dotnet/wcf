@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -13,7 +15,7 @@ public static partial class Endpoints
     {
         return ServiceUtilHelper.GetEndpointAddress(endpoint, protocol);
     }
-    
+
     #region HTTP Addresses
     // HTTP Addresses
     public static string DefaultCustomHttp_Address
@@ -50,11 +52,11 @@ public static partial class Endpoints
     {
         get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; }
     }
-    
+
     #region WebSocket Addresses
     public static string NetHttpWebSocketTransport_Address
     {
-        get { return GetEndpointAddress("WebSocketTransport.svc//http-requestreplywebsockets-transportusagealways", protocol:"ws"); }
+        get { return GetEndpointAddress("WebSocketTransport.svc//http-requestreplywebsockets-transportusagealways", protocol: "ws"); }
     }
 
     public static string NetHttpDuplexWebSocket_Address
@@ -69,7 +71,7 @@ public static partial class Endpoints
 
     public static string WebSocketHttpRequestReplyBinaryStreamed_Address
     {
-        get { return GetEndpointAddress("WebSocketHttpRequestReplyBinaryStreamed.svc//WebSocketHttpRequestReplyBinaryStreamedResource", protocol: "ws");}
+        get { return GetEndpointAddress("WebSocketHttpRequestReplyBinaryStreamed.svc//WebSocketHttpRequestReplyBinaryStreamedResource", protocol: "ws"); }
     }
 
     public static string WebSocketHttpRequestReplyTextStreamed_Address
@@ -102,13 +104,13 @@ public static partial class Endpoints
         get { return GetEndpointAddress("WebSocketHttpDuplexBinaryBuffered.svc//WebSocketHttpDuplexBinaryBufferedResource", protocol: "ws"); }
     }
     #endregion WebSocket Addresses
-    
+
     #region Service Contract Addresses
     public static string ServiceContractAsyncIntOut_Address
     {
         get { return GetEndpointAddress("ServiceContractAsyncIntOut.svc//ServiceContractIntOut"); }
     }
-    
+
     public static string ServiceContractAsyncUniqueTypeOut_Address
     {
         get { return GetEndpointAddress("ServiceContractAsyncUniqueTypeOut.svc//ServiceContractUniqueTypeOut"); }
@@ -133,9 +135,9 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("ServiceContractSyncUniqueTypeRef.svc//ServiceContractUniqueTypeRefSync"); }
     }
-    
+
     #endregion Service Contract Addresses
-    
+
     #region Custom Message Encoder Addresses
 
     public static string CustomTextEncoderBuffered_Address
@@ -149,15 +151,15 @@ public static partial class Endpoints
     }
     #endregion Custom Message Encoder Addresses
     #endregion HTTP Addresses
-    
+
     #region HTTPS Addresses
     // HTTPS Addresses
     public static string Https_BasicAuth_Address
     {
         get
         {
-            return GetEndpointAddress("BasicAuth.svc//https-basic", protocol:"https");
-        } 
+            return GetEndpointAddress("BasicAuth.svc//https-basic", protocol: "https");
+        }
     }
 
     public static string Https_DigestAuth_Address
@@ -282,7 +284,7 @@ public static partial class Endpoints
     }
     #endregion Secure WebSocket Addresses
     #endregion  HTTPS Addresses
-    
+
     #region net.tcp Addresses
     // net.tcp Addresses
     public static string Tcp_DefaultBinding_Address

@@ -1,4 +1,7 @@
-﻿//  Copyright (c) Microsoft Corporation.  All Rights Reserved.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -6,13 +9,13 @@ using System.ServiceModel.Description;
 
 namespace WcfService
 {
-    public abstract class TestServiceHostBase<ContractType>: ServiceHost
+    public abstract class TestServiceHostBase<ContractType> : ServiceHost
     {
         protected static int SixtyFourMB = 64 * 1024 * 1024;
         protected abstract string Address { get; }
 
         protected abstract Binding GetBinding();
-       
+
 
         public TestServiceHostBase(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
@@ -66,7 +69,6 @@ namespace WcfService
                                             "mex");
                 }
             }
-
         }
     }
 }

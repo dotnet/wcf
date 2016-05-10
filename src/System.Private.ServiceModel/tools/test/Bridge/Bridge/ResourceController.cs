@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,7 @@ namespace Bridge
         /// <returns>The response to return to the caller.</returns>
         public HttpResponseMessage Put(string name)
         {
-            var properties = this.BuildProperties(name); 
+            var properties = this.BuildProperties(name);
 
             StringBuilder sb = new StringBuilder();
             foreach (var pair in properties)
@@ -46,20 +48,20 @@ namespace Bridge
             }
 
             Trace.WriteLine(String.Format("{0:T} - PUT request received for resource name = '{1}', properties:{2}",
-                                          DateTime.Now, 
+                                          DateTime.Now,
                                           String.IsNullOrWhiteSpace(resourceName) ? "null" : resourceName,
-                                          sb.ToString()),    
+                                          sb.ToString()),
                             this.GetType().Name);
             try
             {
                 ResourceResponse result = ResourceInvoker.DynamicInvokePut(resourceName, properties);
                 string contentString = JsonSerializer.SerializeDictionary(result.Properties);
 
-                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is OK:{2}{3}", 
-                                              DateTime.Now, 
-                                              resourceName, 
-                                              Environment.NewLine, 
-                                              contentString), 
+                Trace.WriteLine(String.Format("{0:T} - PUT response for {1} is OK:{2}{3}",
+                                              DateTime.Now,
+                                              resourceName,
+                                              Environment.NewLine,
+                                              contentString),
                                 this.GetType().Name);
 
                 // Directly return a json string to avoid use of MediaTypeFormatters
@@ -71,7 +73,7 @@ namespace Bridge
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing PUT for resource {1}{2}:{3}",
-                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()),
                                 this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }
@@ -147,7 +149,7 @@ namespace Bridge
                     var httpResponse = new HttpResponseMessage(HttpStatusCode.OK);
                     httpResponse.Content = new ByteArrayContent(response.RawResponse);
                     httpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octect-stream");
-                    return httpResponse; 
+                    return httpResponse;
                 }
                 else
                 {
@@ -161,7 +163,7 @@ namespace Bridge
             catch (Exception exception)
             {
                 Trace.WriteLine(String.Format("{0:T} - Exception executing GET for resource {1}{2}:{3}",
-                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()), 
+                                                DateTime.Now, resourceName, Environment.NewLine, exception.ToString()),
                                 this.GetType().Name);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.ToString());
             }

@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Diagnostics;
@@ -14,14 +16,14 @@ namespace Bridge
     public class IdleTimeoutHandler : DelegatingHandler
     {
         public static readonly TimeSpan Default_MaxIdleTimeSpan = TimeSpan.FromHours(24);
-        private static IdleTimeoutManager _timeoutManager = new IdleTimeoutManager(Default_MaxIdleTimeSpan);
+        private static IdleTimeoutManager s_timeoutManager = new IdleTimeoutManager(Default_MaxIdleTimeSpan);
 
         private IdleTimeoutHandler(TimeSpan idleTimeout)
         {
-            _timeoutManager.IdleTimeout = idleTimeout;
-            _timeoutManager.Restart();
+            s_timeoutManager.IdleTimeout = idleTimeout;
+            s_timeoutManager.Restart();
 
-            _timeoutManager.OnTimeOut += (s, e) =>
+            s_timeoutManager.OnTimeOut += (s, e) =>
             {
                 Trace.WriteLine(String.Format("{0:T} - Timed out as there were no messages to the bridge for {1} seconds", DateTime.Now, (int)e.TotalSeconds),
                                 this.GetType().Name);
@@ -31,21 +33,21 @@ namespace Bridge
 
         internal static void Register(HttpConfiguration config)
         {
-            var waitTimeout = ConfigController.BridgeConfiguration.BridgeMaxIdleTimeSpan;            
+            var waitTimeout = ConfigController.BridgeConfiguration.BridgeMaxIdleTimeSpan;
             config.MessageHandlers.Add(new IdleTimeoutHandler(waitTimeout));
         }
 
         public static void RestartTimer()
         {
-            _timeoutManager.Restart();
+            s_timeoutManager.Restart();
         }
 
         protected async override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            Trace.WriteLine(String.Format("{0:T} - Bridge received {1} {2}", DateTime.Now, request.Method, request.RequestUri), 
-                            this.GetType().Name);            
-            using (_timeoutManager.Start())
+            Trace.WriteLine(String.Format("{0:T} - Bridge received {1} {2}", DateTime.Now, request.Method, request.RequestUri),
+                            this.GetType().Name);
+            using (s_timeoutManager.Start())
             {
                 // Call the inner handler.
                 var response = await base.SendAsync(request, cancellationToken);
@@ -55,10 +57,10 @@ namespace Bridge
             }
         }
 
-        class IdleTimeoutManager
+        private class IdleTimeoutManager
         {
-            bool _disposed = false;
-            Timer _timer;
+            private bool _disposed = false;
+            private Timer _timer;
             public event EventHandler<TimeSpan> OnTimeOut;
 
             public IdleTimeoutManager(TimeSpan idleTimeout)
@@ -71,7 +73,7 @@ namespace Bridge
                 ConfigController.IdleTimeoutChanged += (object s, ChangedEventArgs<TimeSpan> args) =>
                 {
                     TimeSpan newTimeout = args.NewValue;
-                    Trace.WriteLine(String.Format("{0:T} - Bridge idle timeout changed to {1}.", 
+                    Trace.WriteLine(String.Format("{0:T} - Bridge idle timeout changed to {1}.",
                                                   DateTime.Now, newTimeout),
                                     this.GetType().Name);
                     IdleTimeout = newTimeout;

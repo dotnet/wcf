@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Reflection;
@@ -19,7 +21,8 @@ public class DuplexChannelFactoryTest
         EndpointAddress remoteAddress = null;
 
         DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, remoteAddress);
-        try {
+        try
+        {
             Assert.Throws<InvalidOperationException>(() =>
                {
                    factory.Open();
@@ -27,7 +30,7 @@ public class DuplexChannelFactoryTest
                });
         }
         finally
-        { 
+        {
             factory.Abort();
         }
     }
@@ -101,7 +104,7 @@ public class DuplexChannelFactoryTest
             factory.CreateChannel();
         });
 
-        Assert.True(exception.Message.Contains("BasicHttpBinding"), 
+        Assert.True(exception.Message.Contains("BasicHttpBinding"),
             string.Format("InvalidOperationException exception string should contain 'BasicHttpBinding'. Actual message:\r\n" + exception.ToString()));
     }
 
@@ -127,7 +130,7 @@ public class DuplexChannelFactoryTest
 
         Assert.Throws<InvalidOperationException>(() =>
         {
-            factory.CreateChannel(); 
+            factory.CreateChannel();
         });
     }
 
@@ -152,7 +155,7 @@ public class DuplexChannelFactoryTest
         Binding binding = new NetTcpBinding(SecurityMode.None);
         EndpointAddress endpoint = new EndpointAddress("net.tcp://not-an-endpoint");
         DuplexChannelFactory<IWcfDuplexService> factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpoint);
-        factory.CreateChannel(); 
+        factory.CreateChannel();
     }
 
     [Fact]

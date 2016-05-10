@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -34,7 +36,7 @@ namespace Bridge
                 new UnhandledExceptionEventHandler(BridgeUnhandledExceptionHandler);
             CommandLineArguments commandLineArgs = new CommandLineArguments(args);
 
-            Console.WriteLine("Bridge.exe was launched with: {0}{1}", 
+            Console.WriteLine("Bridge.exe was launched with: {0}{1}",
                               String.Join(" ", args), Environment.NewLine);
 
             // If asked to ping (not the default), just ping and return an exit code indicating its state
@@ -123,7 +125,6 @@ namespace Bridge
                             }
                             errorMessage = String.Format("{0}, content:{1}{2}",
                                                     errorMessage, Environment.NewLine, contentAsString);
-
                         }
                         return false;
                     }
@@ -171,8 +172,8 @@ namespace Bridge
                 return Bridge_ExitCode_Success;
             }
 
-            string bridgeUrl = String.Format("http://{0}:{1}/{2}", 
-                                             commandLineArgs.BridgeConfiguration.BridgeHost, 
+            string bridgeUrl = String.Format("http://{0}:{1}/{2}",
+                                             commandLineArgs.BridgeConfiguration.BridgeHost,
                                              commandLineArgs.BridgeConfiguration.BridgePort,
                                              BridgeControllerEndpoint);
             string problem = null;
@@ -366,7 +367,7 @@ namespace Bridge
                 }
             }
 
-            Console.WriteLine("The Bridge did not respond in the required {0} seconds.", 
+            Console.WriteLine("The Bridge did not respond in the required {0} seconds.",
                               commandLineArgs.RequireBridgeTimeoutSeconds);
             return Bridge_ExitCode_Failure;
         }
@@ -378,7 +379,7 @@ namespace Bridge
             // Pass through the original command line arguments except for the -require switch.
             // Otherwise we would recursively start this same logic in a new process.
             List<string> originalArgList = new List<string>(commandLineArgs.OriginalArgs);
-            for (int i = originalArgList.Count-1; i >= 0; --i)
+            for (int i = originalArgList.Count - 1; i >= 0; --i)
             {
                 string[] argParts = (originalArgList[i].Substring(1)).Split(':');
                 if (argParts.Length > 0 && String.Equals(argParts[0], "require", StringComparison.OrdinalIgnoreCase))
@@ -473,7 +474,7 @@ namespace Bridge
             {
                 Console.WriteLine();
                 Console.WriteLine("The Bridge is running");
-                Console.WriteLine("    Listening at {0}/{1}", 
+                Console.WriteLine("    Listening at {0}/{1}",
                                     visibleAddress, BridgeControllerEndpoint);
 
                 if (commandLineArgs.AllowRemote)
@@ -488,7 +489,7 @@ namespace Bridge
                 Console.WriteLine("    Commands:");
                 Console.WriteLine("    \"cls\" to clear the screen");
                 Console.WriteLine("    \"exit\" to stop the Bridge");
-                Console.WriteLine(); 
+                Console.WriteLine();
                 Console.Write("Bridge> ");
 
                 string answer = Console.ReadLine();
@@ -498,7 +499,7 @@ namespace Bridge
                 }
                 else if (string.Equals(answer, "cls", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.Clear(); 
+                    Console.Clear();
                 }
 
                 // Key presses to the Bridge restart the idle timeout
@@ -527,7 +528,7 @@ namespace Bridge
 
         private static void BridgeUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {
-            Exception e = (Exception) args.ExceptionObject;
+            Exception e = (Exception)args.ExceptionObject;
             Console.WriteLine("*** Unhandled exception ***" + Environment.NewLine);
             Console.WriteLine(e + Environment.NewLine);
             Console.WriteLine("***                     ***" + Environment.NewLine);
@@ -537,10 +538,8 @@ namespace Bridge
             }
         }
 
-        class CommandLineArguments
+        private class CommandLineArguments
         {
-
-
             public CommandLineArguments(string[] args)
             {
                 OriginalArgs = args;
@@ -576,7 +575,7 @@ namespace Bridge
                     .AppendLine(String.Format("  -stopIfLocal = {0}", StopIfLocal))
                     .AppendLine(String.Format("  -reset = {0}", Reset))
                     .AppendLine(String.Format("  -require = {0}", RequireBridgeTimeoutSeconds))
-                    .AppendLine(String.Format("BridgeConfiguration is:{0}{1}", 
+                    .AppendLine(String.Format("BridgeConfiguration is:{0}{1}",
                                                 Environment.NewLine, BridgeConfiguration.ToString()));
                 return sb.ToString();
             }
@@ -603,7 +602,7 @@ namespace Bridge
                     // Cannot use split because some argument values could contain colons
                     int index = arg.IndexOf(':');
                     string argName = (index < 0) ? arg.Substring(1) : arg.Substring(1, index - 1);
-                    string argValue = (index < 0) ? String.Empty : arg.Substring(index+1);
+                    string argValue = (index < 0) ? String.Empty : arg.Substring(index + 1);
 
                     if (String.Equals(argName, "?", StringComparison.OrdinalIgnoreCase))
                     {

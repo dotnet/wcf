@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Text;
 
 namespace Infrastructure.Common
 {
-    internal static class BridgeClient 
+    internal static class BridgeClient
     {
         private const string EndpointResourceResponseUriKeyName = "uri";
         private const string EndpointResourceResponseFQHNKeyName = "hostname";
@@ -18,7 +20,7 @@ namespace Infrastructure.Common
 
         private static object s_thisLock = new object();
         //The key is resource name, The value are resource properties such as EndpointResourceResponseUriKeyName
-        private static Dictionary<string, Dictionary<string, string>> _Resources = new Dictionary<string, Dictionary<string, string>>();
+        private static Dictionary<string, Dictionary<string, string>> s_resources = new Dictionary<string, Dictionary<string, string>>();
         private static BridgeState s_BridgeStatus = BridgeState.NotStarted;
         private static string s_BridgeFaultReason = String.Empty;
 
@@ -98,14 +100,13 @@ namespace Infrastructure.Common
                 Dictionary<string, string> resources = null;
                 if (s_BridgeStatus == BridgeState.Started)
                 {
-                    if (!_Resources.TryGetValue(resourceName, out resources))
+                    if (!s_resources.TryGetValue(resourceName, out resources))
                     {
                         resources = MakeEndpointResourcePutRequest(resourceName);
-                        _Resources.Add(resourceName, resources);
+                        s_resources.Add(resourceName, resources);
                     }
 
                     resources.TryGetValue(propertyName, out property);
-
                 }
             }
 
@@ -153,7 +154,7 @@ namespace Infrastructure.Common
                     s_BridgeStatus = BridgeState.Faulted;
                     s_BridgeFaultReason = String.Format("A GET request was issued to '{0}' but encountered exception {1}",
                                                             BridgeEndpointAddress, exc.Message);
-                    
+
                     throw new Exception(s_BridgeFaultReason, exc);
                 }
             }
@@ -224,13 +225,13 @@ namespace Infrastructure.Common
             return responseContent;
         }
 
-        internal static Dictionary<string,string> MakeResourcePutRequest(string resourceName, Dictionary<string, string> requestParameters)
+        internal static Dictionary<string, string> MakeResourcePutRequest(string resourceName, Dictionary<string, string> requestParameters)
         {
             EnsureBridgeIsRunning();
 
-            string requestParametersResourceName; 
-            if (requestParameters != null 
-                && requestParameters.TryGetValue(EndpointResourceRequestNameKeyName, out requestParametersResourceName) 
+            string requestParametersResourceName;
+            if (requestParameters != null
+                && requestParameters.TryGetValue(EndpointResourceRequestNameKeyName, out requestParametersResourceName)
                 && !string.Equals(resourceName, requestParametersResourceName))
             {
                 throw new ArgumentException(
@@ -240,7 +241,7 @@ namespace Infrastructure.Common
 
             using (HttpClient httpClient = new HttpClient())
             {
-                StringContent content; 
+                StringContent content;
                 if (requestParameters != null)
                 {
                     content = new StringContent(
@@ -250,7 +251,7 @@ namespace Infrastructure.Common
                 }
                 else
                 {
-                    content  = new StringContent("{}", Encoding.UTF8, "application/json");
+                    content = new StringContent("{}", Encoding.UTF8, "application/json");
                 }
 
                 try
@@ -336,7 +337,7 @@ namespace Infrastructure.Common
             return sb.ToString();
         }
 
-        enum BridgeState
+        private enum BridgeState
         {
             NotStarted,
             Started,

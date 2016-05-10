@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ using System.Text;
 
 namespace WcfService
 {
-    [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]  
+    [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]
     public class WcfService : IWcfService
     {
         public String EchoWithTimeout(String message, TimeSpan serviceOperationTimeout)
@@ -304,7 +306,7 @@ namespace WcfService
             composite.StringValue = composite.StringValue;
             return composite;
         }
-        
+
         public LoginResponse Login(LoginRequest request)
         {
             var response = new LoginResponse();
@@ -347,7 +349,7 @@ namespace WcfService
         public Stream EchoStream(Stream stream)
         {
             string data = StreamToString(stream);
-            return StringToStream(data);            
+            return StringToStream(data);
         }
 
         public string EchoMessageParameter(string name)

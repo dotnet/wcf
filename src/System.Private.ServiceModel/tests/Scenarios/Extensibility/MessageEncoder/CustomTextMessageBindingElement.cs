@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel.Channels;
@@ -14,7 +16,7 @@ namespace Extensibility.MessageEncoder.Tests
         private string _encoding;
         private XmlDictionaryReaderQuotas _readerQuotas;
 
-        CustomTextMessageBindingElement(CustomTextMessageBindingElement binding)
+        private CustomTextMessageBindingElement(CustomTextMessageBindingElement binding)
             : this(binding.Encoding, binding.MediaType, binding.MessageVersion)
         {
             _readerQuotas = new XmlDictionaryReaderQuotas();
@@ -46,7 +48,6 @@ namespace Extensibility.MessageEncoder.Tests
         public CustomTextMessageBindingElement(string encoding)
             : this(encoding, "text/xml")
         {
-
         }
 
         public override MessageVersion MessageVersion

@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Diagnostics;
@@ -729,8 +731,8 @@ public class ExpectedExceptionTests : ConditionalWcfTest
                 }
             }
 
-            Assert.True(nFailures > 0, 
-                String.Format("Expected at least one operation to throw an exception, but none did. Elapsed time = {0} ms.", 
+            Assert.True(nFailures > 0,
+                String.Format("Expected at least one operation to throw an exception, but none did. Elapsed time = {0} ms.",
                     elapsedMs));
 
             Assert.True(nFailures < operationCount,
@@ -934,8 +936,6 @@ public class ExpectedExceptionTests : ConditionalWcfTest
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
-
-
 }
 
 public class MyCertificateValidator : X509CertificateValidator

@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Reflection;
@@ -35,7 +37,7 @@ public class ChannelFactoryTest
             channel = factory.CreateChannel();
             Assert.True(typeof(IRequestChannel).GetTypeInfo().IsAssignableFrom(channel.GetType().GetTypeInfo()),
                 String.Format("Channel type '{0}' was not assignable to '{1}'", channel.GetType(), typeof(IRequestChannel)));
-            
+
             channel2 = factory2.CreateChannel();
             Assert.True(typeof(IRequestChannel).GetTypeInfo().IsAssignableFrom(channel2.GetType().GetTypeInfo()),
                 String.Format("Channel type '{0}' was not assignable to '{1}'", channel2.GetType(), typeof(IRequestChannel)));
@@ -216,11 +218,11 @@ public class ChannelFactoryTest
                 string.Format("factory.State - Expected: {0}, Actual: {1}.", CommunicationState.Created, factory.State));
 
             Task.Factory.FromAsync(factory.BeginOpen(null, null), factory.EndOpen).GetAwaiter().GetResult();
-            Assert.True(CommunicationState.Opened == factory.State, 
+            Assert.True(CommunicationState.Opened == factory.State,
                 string.Format("factory.State - Expected: {0}, Actual: {1}.", CommunicationState.Opened, factory.State));
 
             Task.Factory.FromAsync(factory.BeginClose(null, null), factory.EndClose).GetAwaiter().GetResult();
-            Assert.True(CommunicationState.Closed == factory.State, 
+            Assert.True(CommunicationState.Closed == factory.State,
                 string.Format("factory.State - Expected: {0}, Actual: {1}.", CommunicationState.Closed, factory.State));
         }
         finally

@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceContract (CallbackContract = typeof(IWcfDuplexServiceCallback))]
+    [ServiceContract(CallbackContract = typeof(IWcfDuplexServiceCallback))]
     public interface IWcfDuplexService
     {
         [OperationContract]
@@ -40,7 +42,7 @@ namespace WcfService
         Task<Guid> Ping(Guid guid);
 
         [OperationContract]
-        [FaultContract(typeof (FaultDetail), Name = "FaultDetail",
+        [FaultContract(typeof(FaultDetail), Name = "FaultDetail",
             Action = "http://tempuri.org/IWcfDuplexTaskReturnService/FaultPingFaultDetailFault")]
         Task<Guid> FaultPing(Guid guid);
     }
@@ -51,7 +53,7 @@ namespace WcfService
         Task<Guid> ServicePingCallback(Guid guid);
 
         [OperationContract]
-        [FaultContract(typeof (FaultDetail), Name = "FaultDetail",
+        [FaultContract(typeof(FaultDetail), Name = "FaultDetail",
             Action = "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallbackFaultDetailFault")]
         Task<Guid> ServicePingFaultCallback(Guid guid);
     }

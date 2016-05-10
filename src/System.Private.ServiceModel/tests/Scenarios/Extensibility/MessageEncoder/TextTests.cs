@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.IO;
@@ -26,7 +28,7 @@ public static class TextTests
         try
         {
             // *** SETUP *** \\
-            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement("ISO-8859-1"), 
+            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement("ISO-8859-1"),
                 new HttpTransportBindingElement
                 {
                     MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
@@ -69,7 +71,7 @@ public static class TextTests
         try
         {
             // *** SETUP *** \\
-            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement("ISO-8859-1"), 
+            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement("ISO-8859-1"),
                 new HttpTransportBindingElement
                 {
                     MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
@@ -93,7 +95,7 @@ public static class TextTests
                     {
                         // Force the value to be between ' ' and '~'
                         int temp1 = val % printableRange;
-                        val = (byte) (temp1 + lowestPrintable);
+                        val = (byte)(temp1 + lowestPrintable);
                     }
 
                     requestBytes[pos++] = val;
@@ -108,8 +110,8 @@ public static class TextTests
             MemoryStream ms = new MemoryStream(streamLength);
             returnStream.CopyTo(ms);
 
-            Assert.True(streamLength == ms.Length, 
-                        String.Format("Expected returned stream length = {0}, actual = {1}", 
+            Assert.True(streamLength == ms.Length,
+                        String.Format("Expected returned stream length = {0}, actual = {1}",
                                         streamLength, ms.Length));
 
             ArraySegment<byte> returnedByteArraySegment;
@@ -126,5 +128,4 @@ public static class TextTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
-
 }

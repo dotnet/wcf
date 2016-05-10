@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.IO;
@@ -13,7 +15,6 @@ using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certi
 
 namespace WcfService
 {
-
     [ServiceContract]
     public interface ICrlService
     {
@@ -45,8 +46,7 @@ namespace WcfService
         byte[] GetRootCert(bool exportAsPem);
 
         [OperationContract]
-         string GetFQDN();
-
+        string GetFQDN();
     }
 
     public class Util : IUtil
@@ -62,7 +62,6 @@ namespace WcfService
             {
                 return clientCert.Export(X509ContentType.Pfx, "test");
             }
- 
         }
 
         public byte[] GetRootCert(bool exportAsPem)
@@ -76,7 +75,6 @@ namespace WcfService
             {
                 return rootCert.RawData;
             }
- 
         }
 
         public string GetFQDN()
@@ -87,7 +85,6 @@ namespace WcfService
         // All certificates have installed on the server machine, including client cert by the cert util tool.
         public static X509Certificate2 CertificateFromSubject(StoreName name, StoreLocation location, string subjectName)
         {
-
             X509Store store = null;
 
             try
@@ -108,7 +105,6 @@ namespace WcfService
 
         public static X509Certificate2 CertificateFromFridendlyName(StoreName name, StoreLocation location, string fridendlyName)
         {
-
             X509Store store = null;
 
             try
