@@ -105,11 +105,6 @@ public interface IWcfServiceXmlGenerated
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlVeryComplexType"),
     XmlSerializerFormat]
     XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex);
-
-    [XmlSerializerFormat]
-    [ServiceKnownType(typeof(MesssageHeaderCreateHeaderWithXmlSerializerTestType))]
-    [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction = "*")]
-    string GetIncomingMessageHeadersMessage(string customHeaderName, string customHeaderNS);
 }
 
 // This type share the same name space with IWcfServiceXmlGenerated.
@@ -506,3 +501,11 @@ public interface IWcfAspNetCompatibleService
     string EchoTimeAndSetCookie(string name);
 }
 
+[ServiceContract(ConfigurationName = "IWcfService")]
+public interface IWcfServiceXml_OperationContext
+{
+    [XmlSerializerFormat]
+    [ServiceKnownType(typeof (MesssageHeaderCreateHeaderWithXmlSerializerTestType))]
+    [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction = "*")]
+    string GetIncomingMessageHeadersMessage(string customHeaderName, string customHeaderNS);
+}
