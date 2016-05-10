@@ -187,8 +187,7 @@ public class HttpsTests : ConditionalWcfTest
             clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
-            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = factory.Credentials.ServiceCertificate.Authentication;
-            //factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
             MyX509CertificateValidator myX509CertificateValidator = new MyX509CertificateValidator(ScenarioTestHelpers.CertificateIssuerName);
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CustomCertificateValidator = myX509CertificateValidator;
