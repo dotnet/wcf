@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -313,7 +315,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        ImmutableDispatchRuntime GetRuntimeCore()
+        private ImmutableDispatchRuntime GetRuntimeCore()
         {
             lock (this.ThisLock)
             {
@@ -347,7 +349,7 @@ namespace System.ServiceModel.Dispatcher
 
         internal class UnhandledActionInvoker : IOperationInvoker
         {
-            readonly DispatchRuntime _dispatchRuntime;
+            private readonly DispatchRuntime _dispatchRuntime;
 
             public UnhandledActionInvoker(DispatchRuntime dispatchRuntime)
             {
@@ -528,7 +530,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        class CallbackInstanceProvider : IInstanceProvider
+        private class CallbackInstanceProvider : IInstanceProvider
         {
             object IInstanceProvider.GetInstance(InstanceContext instanceContext)
             {

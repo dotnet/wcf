@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +11,7 @@ namespace System.IdentityModel.Policy
 {
     internal class DefaultAuthorizationContext : AuthorizationContext
     {
-        private static DefaultAuthorizationContext _empty;
+        private static DefaultAuthorizationContext s_empty;
         private SecurityUniqueId _id;
         private ReadOnlyCollection<ClaimSet> _claimSets;
         private DateTime _expirationTime;
@@ -26,9 +28,9 @@ namespace System.IdentityModel.Policy
         {
             get
             {
-                if (_empty == null)
-                    _empty = new DefaultAuthorizationContext(new DefaultEvaluationContext());
-                return _empty;
+                if (s_empty == null)
+                    s_empty = new DefaultAuthorizationContext(new DefaultEvaluationContext());
+                return s_empty;
             }
         }
 

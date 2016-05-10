@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -295,7 +297,7 @@ namespace System.ServiceModel.Channels
                     }
 
                     httpClient = new HttpClient(clientHandler);
-                    
+
                     _httpClientCache.Add(connectionGroupName, httpClient);
                 }
             }
@@ -413,7 +415,7 @@ namespace System.ServiceModel.Channels
 
         protected override TChannel OnCreateChannel(EndpointAddress remoteAddress, Uri via)
         {
-            if (typeof (TChannel) != typeof (IRequestChannel))
+            if (typeof(TChannel) != typeof(IRequestChannel))
             {
                 remoteAddress = remoteAddress != null && !WebSocketHelper.IsWebSocketUri(remoteAddress.Uri) ?
                     new EndpointAddress(WebSocketHelper.NormalizeHttpSchemeWithWsScheme(remoteAddress.Uri), remoteAddress) :
@@ -450,7 +452,6 @@ namespace System.ServiceModel.Channels
                             WebSocketTransportSettings.TransportUsageMethodName,
                             typeof(WebSocketTransportSettings).Name,
                             WebSocketSettings.TransportUsage)));
-
             }
 
             if (channelType == typeof(IDuplexSessionChannel))

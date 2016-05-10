@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -47,7 +49,7 @@ namespace System.ServiceModel.Channels
         internal const uint WININET_E_INCORRECT_HANDLE_STATE = 0x80072EF3;
         internal const uint ERROR_WINHTTP_SECURE_FAILURE = 0x80072f8f;
 
-        public static Task<NetworkCredential> GetCredentialAsync(AuthenticationSchemes authenticationScheme, SecurityTokenProviderContainer credentialProvider, 
+        public static Task<NetworkCredential> GetCredentialAsync(AuthenticationSchemes authenticationScheme, SecurityTokenProviderContainer credentialProvider,
             OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper,
             CancellationToken cancellationToken)
         {
@@ -64,7 +66,7 @@ namespace System.ServiceModel.Channels
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        static async Task<NetworkCredential> GetCredentialCoreAsync(AuthenticationSchemes authenticationScheme,
+        private static async Task<NetworkCredential> GetCredentialCoreAsync(AuthenticationSchemes authenticationScheme,
             SecurityTokenProviderContainer credentialProvider, OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper,
             OutWrapper<AuthenticationLevel> authenticationLevelWrapper, CancellationToken cancellationToken)
         {

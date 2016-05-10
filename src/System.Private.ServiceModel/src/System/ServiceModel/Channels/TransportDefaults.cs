@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Net;
 using System.Net.Security;
@@ -152,7 +154,7 @@ namespace System.ServiceModel.Channels
         public const bool RequireClientCertificate = false;
         public const int MaxFaultSize = MaxBufferSize;
         public const int MaxSecurityFaultSize = 16384;
-        public const SslProtocols SslProtocols = 
+        public const SslProtocols SslProtocols =
                                            // SSL3 is not supported in CoreFx.
                                            System.Security.Authentication.SslProtocols.Tls |
                                            System.Security.Authentication.SslProtocols.Tls11 |

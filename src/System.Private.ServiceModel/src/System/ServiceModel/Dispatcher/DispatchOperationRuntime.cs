@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -13,9 +15,9 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
 {
-    class DispatchOperationRuntime
+    internal class DispatchOperationRuntime
     {
-        static AsyncCallback invokeCallback = Fx.ThunkCallback(DispatchOperationRuntime.InvokeCallback);
+        private static AsyncCallback s_invokeCallback = Fx.ThunkCallback(DispatchOperationRuntime.InvokeCallback);
         private readonly string _action;
         private IDispatchFaultFormatter _faultFormatter;
         private readonly IDispatchMessageFormatter _formatter;
@@ -116,7 +118,7 @@ namespace System.ServiceModel.Dispatcher
             get { return _replyAction; }
         }
 
-        void DeserializeInputs(ref MessageRpc rpc)
+        private void DeserializeInputs(ref MessageRpc rpc)
         {
             bool success = false;
             try
@@ -160,7 +162,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void InspectInputs(ref MessageRpc rpc)
+        private void InspectInputs(ref MessageRpc rpc)
         {
             if (this.ParameterInspectors.Length > 0)
             {
@@ -168,7 +170,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void InspectInputsCore(ref MessageRpc rpc)
+        private void InspectInputsCore(ref MessageRpc rpc)
         {
             for (int i = 0; i < this.ParameterInspectors.Length; i++)
             {
@@ -181,7 +183,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void InspectOutputs(ref MessageRpc rpc)
+        private void InspectOutputs(ref MessageRpc rpc)
         {
             if (this.ParameterInspectors.Length > 0)
             {
@@ -189,7 +191,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void InspectOutputsCore(ref MessageRpc rpc)
+        private void InspectOutputsCore(ref MessageRpc rpc)
         {
             for (int i = this.ParameterInspectors.Length - 1; i >= 0; i--)
             {
@@ -218,7 +220,7 @@ namespace System.ServiceModel.Dispatcher
                 IResumeMessageRpc resumeRpc = rpc.Pause();
                 try
                 {
-                    result = Invoker.InvokeBegin(target, rpc.InputParameters, invokeCallback, resumeRpc);
+                    result = Invoker.InvokeBegin(target, rpc.InputParameters, s_invokeCallback, resumeRpc);
                     isBeginSuccessful = true;
                 }
                 finally
@@ -245,7 +247,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        static void InvokeCallback(IAsyncResult result)
+        private static void InvokeCallback(IAsyncResult result)
         {
             if (result.CompletedSynchronously)
             {
@@ -275,7 +277,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void SerializeOutputs(ref MessageRpc rpc)
+        private void SerializeOutputs(ref MessageRpc rpc)
         {
             if (!this.IsOneWay && _parent.EnableFaults)
             {
@@ -356,7 +358,7 @@ namespace System.ServiceModel.Dispatcher
         }
 
 
-        void ValidateMustUnderstand(ref MessageRpc rpc)
+        private void ValidateMustUnderstand(ref MessageRpc rpc)
         {
             if (_parent.ValidateMustUnderstand)
             {
@@ -368,6 +370,5 @@ namespace System.ServiceModel.Dispatcher
                 }
             }
         }
-
     }
 }

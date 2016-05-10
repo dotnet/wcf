@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
@@ -33,7 +35,7 @@ namespace System.ServiceModel
             get { return _parent; }
         }
 
-        string GetServicePrincipalName(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
+        private string GetServicePrincipalName(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
         {
             EndpointAddress targetAddress = initiatorRequirement.TargetAddress;
             if (targetAddress == null)
@@ -154,7 +156,6 @@ namespace System.ServiceModel
                     }
                     else
                     {
-
 #pragma warning disable 618   // to disable AllowNtlm obsolete wanring.      
                         result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.Windows.ClientCredential),
 
@@ -262,17 +263,17 @@ namespace System.ServiceModel
 
     internal class KerberosSecurityTokenProviderWrapper : CommunicationObjectSecurityTokenProvider
     {
-        private KerberosSecurityTokenProvider innerProvider;
+        private KerberosSecurityTokenProvider _innerProvider;
 
         public KerberosSecurityTokenProviderWrapper(KerberosSecurityTokenProvider innerProvider)
         {
-            this.innerProvider = innerProvider;
+            _innerProvider = innerProvider;
         }
 
         internal Task<SecurityToken> GetTokenAsync(CancellationToken cancellationToken, ChannelBinding channelbinding)
         {
-            return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(this.innerProvider.ServicePrincipalName,
-                this.innerProvider.TokenImpersonationLevel, this.innerProvider.NetworkCredential,
+            return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
+                _innerProvider.TokenImpersonationLevel, _innerProvider.NetworkCredential,
                 SecurityUniqueId.Create().Value));
         }
         protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)

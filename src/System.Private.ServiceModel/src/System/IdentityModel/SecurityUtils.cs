@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -165,7 +167,6 @@ namespace System.IdentityModel
                             policyState[i] = done;
                         }
                     }
-
                 } while (oldContextCount < evaluationContext.Generation);
 
                 _authorizationContext = new DefaultAuthorizationContext(evaluationContext);
@@ -216,7 +217,6 @@ namespace System.IdentityModel
 
         internal static WindowsIdentity CloneWindowsIdentityIfNecessary(WindowsIdentity wid, string authenticationType)
         {
-
             if (wid != null)
             {
                 IntPtr token = wid.AccessToken.DangerousGetHandle();
@@ -229,12 +229,12 @@ namespace System.IdentityModel
         }
 
 
-        static IntPtr UnsafeGetWindowsIdentityToken(WindowsIdentity wid)
+        private static IntPtr UnsafeGetWindowsIdentityToken(WindowsIdentity wid)
         {
             return wid.AccessToken.DangerousGetHandle();
         }
 
-        static WindowsIdentity UnsafeCreateWindowsIdentityFromToken(IntPtr token, string authenticationType)
+        private static WindowsIdentity UnsafeCreateWindowsIdentityFromToken(IntPtr token, string authenticationType)
         {
             if (authenticationType != null)
             {
@@ -398,7 +398,7 @@ namespace System.IdentityModel
                 identities.Add(_policy.PrimaryIdentity);
                 properties.Add(SecurityUtils.Identities, identities);
             }
-            
+
             _properties = properties;
         }
 
