@@ -87,19 +87,15 @@ namespace System.ServiceModel.Channels
             }
         }
 
-
-
-    protected static void OnReceiveTimeout(object state)
+        protected static void OnReceiveTimeout(SocketConnection socketConnection)
         {
-            SocketConnection thisPtr = (SocketConnection)state;
-            thisPtr.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, thisPtr._receiveTimeout), TransferOperation.Read);
+            socketConnection.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, socketConnection._receiveTimeout), TransferOperation.Read);
         }
 
-        protected static void OnSendTimeout(object state)
+        protected static void OnSendTimeout(SocketConnection socketConnection)
         {
-            SocketConnection thisPtr = (SocketConnection)state;
-            thisPtr.Abort(4,	// TraceEventType.Warning
-                SR.Format(SR.SocketAbortedSendTimedOut, thisPtr._sendTimeout), TransferOperation.Write);
+            socketConnection.Abort(4,	// TraceEventType.Warning
+                SR.Format(SR.SocketAbortedSendTimedOut, socketConnection._sendTimeout), TransferOperation.Write);
         }
 
         public void Abort()

@@ -881,7 +881,8 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if (_timer != null)
                     {
-                        _timer.Change(TimeSpan.FromMilliseconds(-1), TimeSpan.FromMilliseconds(-1));
+                        _timer.Dispose();
+                        _timer = null;
                     }
 
                     lock (_parent.ThisLock)
