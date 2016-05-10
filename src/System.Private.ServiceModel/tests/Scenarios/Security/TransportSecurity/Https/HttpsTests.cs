@@ -165,7 +165,7 @@ public class HttpsTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #if FEATURE_NETNATIVE
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
 #else
