@@ -128,6 +128,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageEncoder", "MessageEn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensibility.MessageEncoder.Tests", "tests\Scenarios\Extensibility\MessageEncoder\Extensibility.MessageEncoder.Tests.csproj", "{79551997-6C99-446E-B4BF-6F3659FA6B64}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tcp", "Tcp", "{FE92F800-1650-4352-85A9-A6D58BDF4D15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Binding.Tcp.Tests", "tests\Scenarios\Binding\Tcp\Binding.Tcp.Tests.csproj", "{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -556,6 +560,22 @@ Global
 		{79551997-6C99-446E-B4BF-6F3659FA6B64}.Windows_netcore50_Release|Any CPU.Build.0 = Debug|Any CPU
 		{79551997-6C99-446E-B4BF-6F3659FA6B64}.Windows_Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{79551997-6C99-446E-B4BF-6F3659FA6B64}.Windows_Release|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Unix_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Unix_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Unix_Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Unix_Release|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_netcore50_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_netcore50_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_netcore50_Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_netcore50_Release|Any CPU.Build.0 = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5}.Windows_Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -618,5 +638,7 @@ Global
 		{BAF18A70-9EDA-46E9-80A1-7B5F62215C02} = {F3ACFC02-1DE2-4E43-B3B4-A341F761E4B3}
 		{4FAE4347-07FD-4323-AF48-71FE45FC64F7} = {435745F5-810B-4FFB-B1DC-759001AC3BEF}
 		{79551997-6C99-446E-B4BF-6F3659FA6B64} = {4FAE4347-07FD-4323-AF48-71FE45FC64F7}
+		{FE92F800-1650-4352-85A9-A6D58BDF4D15} = {AAA09ED1-478F-4101-849E-95A0F39A0E12}
+		{B10E2B70-C5B6-4824-B8F1-691B1170E4F5} = {FE92F800-1650-4352-85A9-A6D58BDF4D15}
 	EndGlobalSection
 EndGlobal
