@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +18,7 @@ namespace System.IdentityModel.Policy
         private DateTime _expirationTime = SecurityUtils.MaxUtcDateTime;
         private int _generation;
 
-        ReadOnlyCollection<ClaimSet> readOnlyClaimSets;
+        private ReadOnlyCollection<ClaimSet> _readOnlyClaimSets;
 
         public DefaultEvaluationContext()
         {
@@ -31,15 +33,15 @@ namespace System.IdentityModel.Policy
 
         public override ReadOnlyCollection<ClaimSet> ClaimSets
         {
-            get 
+            get
             {
                 if (_claimSets == null)
                     return EmptyReadOnlyCollection<ClaimSet>.Instance;
 
-                if (readOnlyClaimSets == null)
-                    readOnlyClaimSets = new ReadOnlyCollection<ClaimSet>(_claimSets);
+                if (_readOnlyClaimSets == null)
+                    _readOnlyClaimSets = new ReadOnlyCollection<ClaimSet>(_claimSets);
 
-                return readOnlyClaimSets; 
+                return _readOnlyClaimSets;
             }
         }
 

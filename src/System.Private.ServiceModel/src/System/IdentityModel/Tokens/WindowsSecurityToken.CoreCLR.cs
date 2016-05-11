@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 #if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
 
@@ -31,7 +33,7 @@ namespace System.IdentityModel.Tokens
         public WindowsSecurityToken(WindowsIdentity windowsIdentity, string id, string authenticationType)
         {
             DateTime effectiveTime = DateTime.UtcNow;
-            Initialize( id, authenticationType, effectiveTime, DateTime.UtcNow.AddHours( 10 ), windowsIdentity, true );
+            Initialize(id, authenticationType, effectiveTime, DateTime.UtcNow.AddHours(10), windowsIdentity, true);
         }
 
         protected WindowsSecurityToken()
@@ -40,12 +42,11 @@ namespace System.IdentityModel.Tokens
 
         protected void Initialize(string id, DateTime effectiveTime, DateTime expirationTime, WindowsIdentity windowsIdentity, bool clone)
         {
-            Initialize( id, null, effectiveTime, expirationTime, windowsIdentity, clone );
+            Initialize(id, null, effectiveTime, expirationTime, windowsIdentity, clone);
         }
 
         protected void Initialize(string id, string authenticationType, DateTime effectiveTime, DateTime expirationTime, WindowsIdentity windowsIdentity, bool clone)
         {
-
             if (windowsIdentity == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("windowsIdentity");
 

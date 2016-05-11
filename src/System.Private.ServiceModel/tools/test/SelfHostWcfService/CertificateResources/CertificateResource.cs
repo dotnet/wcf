@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -27,8 +29,8 @@ namespace WcfService.CertificateResources
         protected const string isLocalKeyName = "isLocal";
         protected const string exportAsPemKeyName = "exportAsPem";
 
-        protected static string s_localHostname; 
-        
+        protected static string s_localHostname;
+
         // Cache for certs created via CertificateResources
         // key: subject CN, value: X509Certificate2
         protected static Dictionary<string, X509Certificate2> s_createdCertsBySubject = new Dictionary<string, X509Certificate2>();
@@ -47,9 +49,9 @@ namespace WcfService.CertificateResources
 
         protected bool IsLocalMachineResource(string subject)
         {
-            return string.Compare("127.0.0.1", subject, StringComparison.OrdinalIgnoreCase) == 0 
-                || string.Compare("localhost", subject, StringComparison.OrdinalIgnoreCase) == 0 
-                || string.Compare(subject, s_localHostname,StringComparison.OrdinalIgnoreCase) == 0 
+            return string.Compare("127.0.0.1", subject, StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare("localhost", subject, StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare(subject, s_localHostname, StringComparison.OrdinalIgnoreCase) == 0
                 || string.Compare(subject, s_localHostname.Split('.')[0], StringComparison.OrdinalIgnoreCase) == 0;
         }
 
@@ -71,7 +73,7 @@ namespace WcfService.CertificateResources
 
             StringBuilder builder = new StringBuilder(base64String.Length + header.Length + footer.Length);
 
-            int base64StringIndex = 0; 
+            int base64StringIndex = 0;
             builder.Append(header);
             while (base64StringIndex < base64String.Length)
             {

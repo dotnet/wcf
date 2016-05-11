@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -11,7 +13,7 @@ using Infrastructure.Common;
 public static class ScenarioTestHelpers
 {
     private const string testString = "Hello";
-    
+
     //WebSocket constants
     public const int SixtyFourMB = 64 * 1024 * 1024;
     public const string ContentToReplace = "ContentToReplace";
@@ -179,30 +181,30 @@ public static class ScenarioTestHelpers
     /// In the order in which they need to be cleaned up.</param>
     public static void CloseCommunicationObjects(params ICommunicationObject[] objects)
     {
-        foreach(ICommunicationObject comObj in objects)
+        foreach (ICommunicationObject comObj in objects)
         {
             try
             {
-                if(comObj == null)
+                if (comObj == null)
                 {
                     continue;
                 }
                 // Only want to call Close if it is in the Opened state
-                if(comObj.State == CommunicationState.Opened)
+                if (comObj.State == CommunicationState.Opened)
                 {
                     comObj.Close();
                 }
                 // Anything not closed by this point should be aborted
-                if(comObj.State != CommunicationState.Closed)
+                if (comObj.State != CommunicationState.Closed)
                 {
                     comObj.Abort();
                 }
             }
-            catch(TimeoutException)
+            catch (TimeoutException)
             {
                 comObj.Abort();
             }
-            catch(CommunicationException)
+            catch (CommunicationException)
             {
                 comObj.Abort();
             }

@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Concurrent;
@@ -703,8 +705,8 @@ public class DuplexTaskReturnServiceCallback : IWcfDuplexTaskReturnCallback
     public Task<Guid> ServicePingFaultCallback(Guid guid)
     {
         throw new FaultException<FaultDetail>(
-          new FaultDetail("Throwing a Fault Exception from the Callback method."), 
-          new FaultReason("Reason: Testing FaultException returned from Duplex Callback"), 
+          new FaultDetail("Throwing a Fault Exception from the Callback method."),
+          new FaultReason("Reason: Testing FaultException returned from Duplex Callback"),
           new FaultCode("ServicePingFaultCallback"),
           "http://tempuri.org/IWcfDuplexTaskReturnCallback/ServicePingFaultCallback");
     }

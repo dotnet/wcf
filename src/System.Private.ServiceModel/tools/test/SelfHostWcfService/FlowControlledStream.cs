@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.IO;
@@ -21,8 +23,8 @@ namespace WcfService
         // sending a continuous stream will easily blow the MaxReceivedMessageSize buffer.
         public TimeSpan StreamDuration { get; set; }
 
-        DateTime readStartedTime;
-        long totalBytesRead = 0;
+        private DateTime _readStartedTime;
+        private long _totalBytesRead = 0;
 
         public override bool CanRead
         {
@@ -52,11 +54,11 @@ namespace WcfService
         {
             get
             {
-                return totalBytesRead;
+                return _totalBytesRead;
             }
             set
             {
-                totalBytesRead = value;
+                _totalBytesRead = value;
             }
         }
 
@@ -65,11 +67,11 @@ namespace WcfService
             // Duration-based streaming logic: Control the "StopStreaming" flag based on a Duration
             if (StreamDuration != TimeSpan.Zero)
             {
-                if (readStartedTime == DateTime.MinValue)
+                if (_readStartedTime == DateTime.MinValue)
                 {
-                    readStartedTime = DateTime.Now;
+                    _readStartedTime = DateTime.Now;
                 }
-                if (DateTime.Now - readStartedTime >= StreamDuration)
+                if (DateTime.Now - _readStartedTime >= StreamDuration)
                 {
                     StopStreaming = true;
                 }
@@ -88,7 +90,7 @@ namespace WcfService
             byte[] randomBuffer = new byte[count];
             rand.NextBytes(randomBuffer);
             randomBuffer.CopyTo(buffer, offset);
-            totalBytesRead += count;
+            _totalBytesRead += count;
 
             if (ReadThrottle != TimeSpan.Zero)
             {

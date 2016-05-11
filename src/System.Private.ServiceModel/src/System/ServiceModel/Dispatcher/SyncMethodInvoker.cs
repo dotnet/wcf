@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Reflection;
 using System.Runtime;
@@ -11,10 +13,10 @@ namespace System.ServiceModel.Dispatcher
 {
     public class SyncMethodInvoker : IOperationInvoker
     {
-        readonly MethodInfo _method;
-        InvokeDelegate _invokeDelegate;
-        int _inputParameterCount;
-        int _outputParameterCount;
+        private readonly MethodInfo _method;
+        private InvokeDelegate _invokeDelegate;
+        private int _inputParameterCount;
+        private int _outputParameterCount;
         private string _methodName;
 
         public SyncMethodInvoker(MethodInfo method)
@@ -70,7 +72,7 @@ namespace System.ServiceModel.Dispatcher
             return tuple.Item1;
         }
 
-        private Task<Tuple<object,object[]>> InvokeAsync(object instance, object[] inputs)
+        private Task<Tuple<object, object[]>> InvokeAsync(object instance, object[] inputs)
         {
             EnsureIsInitialized();
 
@@ -184,7 +186,7 @@ namespace System.ServiceModel.Dispatcher
             return Task.FromResult(Tuple.Create(returnValue, outputs));
         }
 
-        void EnsureIsInitialized()
+        private void EnsureIsInitialized()
         {
             if (_invokeDelegate == null)
             {
@@ -192,7 +194,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void EnsureIsInitializedCore()
+        private void EnsureIsInitializedCore()
         {
             // Only pass locals byref because InvokerUtil may store temporary results in the byref.
             // If two threads both reference this.count, temporary results may interact.

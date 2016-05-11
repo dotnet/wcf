@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Concurrent;
@@ -916,7 +918,7 @@ public class WcfDuplexServiceCallback : IWcfDuplexServiceCallback, IWcfDuplexSer
 
 public class FlowControlledStream : Stream
 {
-    ManualResetEvent waitEvent = new ManualResetEvent(false);
+    private ManualResetEvent _waitEvent = new ManualResetEvent(false);
     // Used to control when Read will return 0.
     public bool StopStreaming { get; set; }
     //bool readCalledWithStopStreaming = false;
@@ -929,8 +931,8 @@ public class FlowControlledStream : Stream
     // sending a continuous stream will easily blow the MaxReceivedMessageSize buffer.
     public TimeSpan StreamDuration { get; set; }
 
-    DateTime readStartedTime;
-    long totalBytesRead = 0;
+    private DateTime _readStartedTime;
+    private long _totalBytesRead = 0;
 
     public override bool CanRead
     {
@@ -960,11 +962,11 @@ public class FlowControlledStream : Stream
     {
         get
         {
-            return totalBytesRead;
+            return _totalBytesRead;
         }
         set
         {
-            totalBytesRead = value;
+            _totalBytesRead = value;
         }
     }
 
@@ -973,11 +975,11 @@ public class FlowControlledStream : Stream
         // Duration-based streaming logic: Control the "StopStreaming" flag based on a Duration
         if (StreamDuration != TimeSpan.Zero)
         {
-            if (readStartedTime == DateTime.MinValue)
+            if (_readStartedTime == DateTime.MinValue)
             {
-                readStartedTime = DateTime.Now;
+                _readStartedTime = DateTime.Now;
             }
-            if (DateTime.Now - readStartedTime >= StreamDuration)
+            if (DateTime.Now - _readStartedTime >= StreamDuration)
             {
                 StopStreaming = true;
             }
@@ -996,12 +998,12 @@ public class FlowControlledStream : Stream
         byte[] randomBuffer = new byte[count];
         rand.NextBytes(randomBuffer);
         randomBuffer.CopyTo(buffer, offset);
-        totalBytesRead += count;
+        _totalBytesRead += count;
 
         if (ReadThrottle != TimeSpan.Zero)
         {
             // Thread.Sleep and Thread.CurrentThread.Join are not available in NET Native
-            waitEvent.WaitOne(ReadThrottle);
+            _waitEvent.WaitOne(ReadThrottle);
         }
         return count;
     }
@@ -1024,8 +1026,8 @@ public class FlowControlledStream : Stream
 
 public class ClientReceiver : IPushCallback, IDisposable
 {
-    bool disposed = false;
-    
+    private bool _disposed = false;
+
     public ManualResetEvent LogReceived { get; set; }
     public ManualResetEvent ReceiveDataInvoked { get; set; }
     public ManualResetEvent ReceiveDataCompleted { get; set; }
@@ -1092,10 +1094,10 @@ public class ClientReceiver : IPushCallback, IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (disposed)
+        if (_disposed)
             return;
 
-        if(disposing)
+        if (disposing)
         {
             LogReceived.Dispose();
             ReceiveDataInvoked.Dispose();
@@ -1104,13 +1106,13 @@ public class ClientReceiver : IPushCallback, IDisposable
             ReceiveStreamCompleted.Dispose();
         }
 
-        disposed = true;
+        _disposed = true;
     }
 }
 
 public class MyX509CertificateValidator : X509CertificateValidator
 {
-    string allowedIssuerName;
+    private string _allowedIssuerName;
     public bool validateMethodWasCalled = false;
 
     public MyX509CertificateValidator(string allowedIssuerName)
@@ -1120,7 +1122,7 @@ public class MyX509CertificateValidator : X509CertificateValidator
             throw new ArgumentNullException("allowedIssuerName", "[MyX509CertificateValidator] The string parameter allowedIssuerName was null or empty.");
         }
 
-        this.allowedIssuerName = allowedIssuerName;
+        _allowedIssuerName = allowedIssuerName;
     }
 
     public override void Validate(X509Certificate2 certificate)
@@ -1134,10 +1136,10 @@ public class MyX509CertificateValidator : X509CertificateValidator
         }
 
         // Check that the certificate issuer matches the configured issuer.
-        if (!certificate.IssuerName.Name.Contains(allowedIssuerName))
+        if (!certificate.IssuerName.Name.Contains(_allowedIssuerName))
         {
             throw new Exception
-                (string.Format("Certificate was not issued by a trusted issuer. Expected: {0}, Actual: {1}", allowedIssuerName, certificate.IssuerName.Name));
+                (string.Format("Certificate was not issued by a trusted issuer. Expected: {0}, Actual: {1}", _allowedIssuerName, certificate.IssuerName.Name));
         }
     }
 }
@@ -1145,7 +1147,6 @@ public class MyX509CertificateValidator : X509CertificateValidator
 [MessageContract(WrapperName = "login", WrapperNamespace = "http://www.contoso.com/", IsWrapped = true)]
 public partial class LoginRequest
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 0)]
     [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string clientId;
@@ -1173,7 +1174,6 @@ public partial class LoginRequest
 [MessageContract(WrapperName = "loginResponse", WrapperNamespace = "http://www.contoso.com/", IsWrapped = true)]
 public partial class LoginResponse
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/", Order = 0)]
     [System.Xml.Serialization.XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
     public string @return;
@@ -1236,18 +1236,18 @@ public class UniqueType
 [XmlType(Namespace = "urn:TestWebServices/MyWebService/")]
 public class MesssageHeaderCreateHeaderWithXmlSerializerTestType
 {
-    private string message;
+    private string _message;
 
     [XmlElement(Order = 0)]
     public string Message
     {
         get
         {
-            return message;
+            return _message;
         }
         set
         {
-            message = value;
+            _message = value;
         }
     }
 }
@@ -1257,7 +1257,6 @@ public class MesssageHeaderCreateHeaderWithXmlSerializerTestType
 [MessageContract(WrapperName = "XmlMessageContractTestRequest", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
 public partial class XmlMessageContractTestRequest
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/XmlMessageContarctTestMessages", Order = 0)]
     public string Message;
 
@@ -1276,7 +1275,6 @@ public partial class XmlMessageContractTestRequest
 [MessageContract(WrapperName = "XmlMessageContractTestRequestWithMessageHeader", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
 public partial class XmlMessageContractTestRequestWithMessageHeader
 {
-
     [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
     public string Message;
 
@@ -1295,7 +1293,6 @@ public partial class XmlMessageContractTestRequestWithMessageHeader
 [MessageContract(WrapperName = "XmlMessageContractTestResponse", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
 public partial class XmlMessageContractTestResponse
 {
-
     [MessageBodyMember(Namespace = "http://www.contoso.com/XmlMessageContarctTestMessages", Order = 0)]
     public string _message;
 

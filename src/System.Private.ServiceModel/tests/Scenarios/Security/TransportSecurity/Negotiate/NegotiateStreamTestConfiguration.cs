@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -33,11 +35,11 @@ public class NegotiateStreamTestConfiguration
     public string NegotiateTestSpn { get; set; }
     public string NegotiateTestUpn { get; set; }
 
-    private static NegotiateStreamTestConfiguration s_instance; 
+    private static NegotiateStreamTestConfiguration s_instance;
 
     private NegotiateStreamTestConfiguration()
     {
-        NegotiateTestRealm = TestProperties.GetProperty(NegotiateTestRealm_PropertyName); 
+        NegotiateTestRealm = TestProperties.GetProperty(NegotiateTestRealm_PropertyName);
         NegotiateTestDomain = TestProperties.GetProperty(NegotiateTestDomain_PropertyName);
         NegotiateTestUserName = TestProperties.GetProperty(NegotiateTestUserName_PropertyName);
         NegotiateTestPassword = TestProperties.GetProperty(NegotiateTestPassword_PropertyName);
@@ -51,7 +53,7 @@ public class NegotiateStreamTestConfiguration
         {
             if (s_instance == null)
             {
-                s_instance = new NegotiateStreamTestConfiguration(); 
+                s_instance = new NegotiateStreamTestConfiguration();
             }
             return s_instance;
         }
@@ -119,7 +121,7 @@ public class NegotiateStreamTestConfiguration
         result[NegotiateTestPassword_PropertyName] = NegotiateTestPassword;
         result[NegotiateTestSpn_PropertyName] = NegotiateTestSpn;
         result[NegotiateTestUpn_PropertyName] = NegotiateTestUpn;
-        
+
         return result;
     }
 

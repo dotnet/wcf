@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -15,25 +17,25 @@ namespace WcfService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class WSRequestReplyService : IWSRequestReplyService
     {
-        private static string ContentToReplace = "ContentToReplace";
-        private static string ResponseReplaceThisContent = "ResponseReplaceThisContent";
-        private static string ReplacedContent = "ReplacedContent";
-        private static string RemoteEndpointMessagePropertyFailure = "RemoteEndpointMessageProperty did not contain the address of this machine.";
+        private static string s_contentToReplace = "ContentToReplace";
+        private static string s_responseReplaceThisContent = "ResponseReplaceThisContent";
+        private static string s_replacedContent = "ReplacedContent";
+        private static string s_remoteEndpointMessagePropertyFailure = "RemoteEndpointMessageProperty did not contain the address of this machine.";
 
-        static List<string> log = new List<string>();
-        static int seed = DateTime.Now.Millisecond;
-        static Random rand = new Random(seed);
-        FlowControlledStream localStream;
+        private static List<string> s_log = new List<string>();
+        private static int s_seed = DateTime.Now.Millisecond;
+        private static Random s_rand = new Random(s_seed);
+        private FlowControlledStream _localStream;
 
         public void UploadData(string data)
         {
-            if (data.Contains(ContentToReplace) || data.Contains(ReplacedContent) || data.Contains(ResponseReplaceThisContent))
+            if (data.Contains(s_contentToReplace) || data.Contains(s_replacedContent) || data.Contains(s_responseReplaceThisContent))
             {
-                log.Add(string.Format("UploadData received {0}", data));
+                s_log.Add(string.Format("UploadData received {0}", data));
             }
             else
             {
-                log.Add(string.Format("UploadData received {0} length string.", data.Length));
+                s_log.Add(string.Format("UploadData received {0} length string.", data.Length));
             }
 
             // Access the RemoteEndpointMessageProperty
@@ -58,16 +60,16 @@ namespace WcfService
                 }
             }
 
-                if (!success)
+            if (!success)
             {
-                log.Add(String.Format(RemoteEndpointMessagePropertyFailure + " Expected to find: {0}", remp.Address));
+                s_log.Add(String.Format(s_remoteEndpointMessagePropertyFailure + " Expected to find: {0}", remp.Address));
             }
         }
 
         public string DownloadData()
         {
-            string data = CreateInterestingString(rand.Next(512, 4096));
-            log.Add(string.Format("DownloadData returning {0} length string.", data.Length));
+            string data = CreateInterestingString(s_rand.Next(512, 4096));
+            s_log.Add(string.Format("DownloadData returning {0} length string.", data.Length));
             return data;
         }
 
@@ -85,45 +87,45 @@ namespace WcfService
 
             stream.Close();
 
-            log.Add(string.Format("UploadStream read {0} bytes from the client's stream.", bytesRead));
+            s_log.Add(string.Format("UploadStream read {0} bytes from the client's stream.", bytesRead));
         }
 
         public Stream DownloadStream()
         {
-            log.Add("DownloadStream");
-            localStream = new FlowControlledStream();
-            localStream.ReadThrottle = TimeSpan.FromMilliseconds(500);
-            localStream.StreamDuration = TimeSpan.FromSeconds(1);
+            s_log.Add("DownloadStream");
+            _localStream = new FlowControlledStream();
+            _localStream.ReadThrottle = TimeSpan.FromMilliseconds(500);
+            _localStream.StreamDuration = TimeSpan.FromSeconds(1);
 
-            return localStream;
+            return _localStream;
         }
 
         public Stream DownloadCustomizedStream(TimeSpan readThrottle, TimeSpan streamDuration)
         {
-            log.Add("DownloadStream");
-            localStream = new FlowControlledStream();
-            localStream.ReadThrottle = readThrottle;
-            localStream.StreamDuration = streamDuration;
+            s_log.Add("DownloadStream");
+            _localStream = new FlowControlledStream();
+            _localStream.ReadThrottle = readThrottle;
+            _localStream.StreamDuration = streamDuration;
 
-            return localStream;
+            return _localStream;
         }
 
         public void ThrowingOperation(Exception exceptionToThrow)
         {
-            log.Add("ThrowingOperation");
+            s_log.Add("ThrowingOperation");
             throw exceptionToThrow;
         }
 
         public string DelayOperation(TimeSpan delay)
         {
-            log.Add("DelayOperation");
+            s_log.Add("DelayOperation");
             Thread.CurrentThread.Join(delay);
             return "Done with delay.";
         }
 
         public List<string> GetLog()
         {
-            return log;
+            return s_log;
         }
 
         public static string CreateInterestingString(int length)

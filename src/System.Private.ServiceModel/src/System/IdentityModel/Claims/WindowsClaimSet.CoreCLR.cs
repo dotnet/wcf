@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 #if SUPPORTS_WINDOWSIDENTITY
 
@@ -43,12 +45,12 @@ namespace System.IdentityModel.Claims
         }
 
         public WindowsClaimSet(WindowsIdentity windowsIdentity, string authenticationType, bool includeWindowsGroups, DateTime expirationTime)
-            : this( windowsIdentity, authenticationType, includeWindowsGroups, expirationTime, true )
+            : this(windowsIdentity, authenticationType, includeWindowsGroups, expirationTime, true)
         {
         }
 
         internal WindowsClaimSet(WindowsIdentity windowsIdentity, string authenticationType, bool includeWindowsGroups, bool clone)
-            : this( windowsIdentity, authenticationType, includeWindowsGroups, DateTime.UtcNow.AddHours( 10 ), clone )
+            : this(windowsIdentity, authenticationType, includeWindowsGroups, DateTime.UtcNow.AddHours(10), clone)
         {
         }
 
@@ -57,7 +59,7 @@ namespace System.IdentityModel.Claims
             if (windowsIdentity == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("windowsIdentity");
 
-            _windowsIdentity = clone ? SecurityUtils.CloneWindowsIdentityIfNecessary(windowsIdentity,  authenticationType) : windowsIdentity;
+            _windowsIdentity = clone ? SecurityUtils.CloneWindowsIdentityIfNecessary(windowsIdentity, authenticationType) : windowsIdentity;
             _includeWindowsGroups = includeWindowsGroups;
             _expirationTime = expirationTime;
             _authenticationType = authenticationType;
@@ -105,7 +107,7 @@ namespace System.IdentityModel.Claims
                 return _windowsIdentity;
             }
         }
-       
+
         public override ClaimSet Issuer
         {
             get { return ClaimSet.Windows; }
@@ -131,7 +133,7 @@ namespace System.IdentityModel.Claims
             }
         }
 
-        IList<Claim> InitializeClaimsCore()
+        private IList<Claim> InitializeClaimsCore()
         {
             if (_windowsIdentity.AccessToken == null)
                 return new List<Claim>();
@@ -151,7 +153,7 @@ namespace System.IdentityModel.Claims
             return claims;
         }
 
-        void EnsureClaims()
+        private void EnsureClaims()
         {
             if (_claims != null)
                 return;
@@ -159,7 +161,7 @@ namespace System.IdentityModel.Claims
             _claims = InitializeClaimsCore();
         }
 
-        void ThrowIfDisposed()
+        private void ThrowIfDisposed()
         {
             if (_disposed)
             {
@@ -167,7 +169,7 @@ namespace System.IdentityModel.Claims
             }
         }
 
-        static bool SupportedClaimType(string claimType)
+        private static bool SupportedClaimType(string claimType)
         {
             return claimType == null ||
                 ClaimTypes.Sid == claimType ||

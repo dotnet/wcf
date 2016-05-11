@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]  
+    [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]
     public class WcfDuplexService : IWcfDuplexService, IWcfDuplexService_DataContract, IWcfDuplexService_Xml
     {
         public static IWcfDuplexServiceCallback callback;
@@ -51,7 +53,6 @@ namespace WcfService
             IDuplexChannelCallback callback = OperationContext.Current.GetCallbackChannel<IDuplexChannelCallback>();
             callback.OnPingCallback(guid);
         }
-
     }
 
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, AddressFilterMode = AddressFilterMode.Any)]

@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Diagnostics.Contracts;
 using System.IdentityModel.Tokens;
@@ -79,7 +81,7 @@ namespace System.IdentityModel.Selectors
 
                 // implies _useMachineContext = false
                 // ctor for X509Chain(_useMachineContext, _chainPolicyOID) not present in CoreCLR
-                X509Chain chain = new X509Chain(); 
+                X509Chain chain = new X509Chain();
 
                 if (_chainPolicy != null)
                 {

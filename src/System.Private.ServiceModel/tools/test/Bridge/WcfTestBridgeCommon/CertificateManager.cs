@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -15,7 +19,7 @@ namespace WcfTestBridgeCommon
         private static object s_certificateLock = new object();
 
         // Dictionary of certificates installed by CertificateManager
-        
+
         // Keyed by the Subject of the certificate - there should be only one valid cert per endpoint
         // Valid certs are shareable across endpoints 
         private static Dictionary<string, CertificateCacheEntry> s_myCertificates = new Dictionary<string, CertificateCacheEntry>(StringComparer.OrdinalIgnoreCase);
@@ -29,7 +33,7 @@ namespace WcfTestBridgeCommon
 
         // Keyed by port, value is cert thumbprint
         private static Dictionary<int, string> s_sslPorts = new Dictionary<int, string>();
-        
+
         // When we install certificates via CreateAndInstallMachineCertificates, put local cert here 
         // for reference when we need to add the sslport references
         private static X509Certificate2 s_localCertificate = null;
@@ -92,7 +96,6 @@ namespace WcfTestBridgeCommon
                     Trace.WriteLine(string.Format("    {0} = {1}", "HasPrivateKey", certificate.HasPrivateKey));
                     Trace.WriteLine(string.Format("    {0} = {1}", "Thumbprint", certificate.Thumbprint));
                 }
-
             }
             finally
             {
@@ -330,7 +333,7 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        private static void UninstallAllCertificatesByIssuer(StoreName storeName, 
+        private static void UninstallAllCertificatesByIssuer(StoreName storeName,
                                                         StoreLocation storeLocation,
                                                         Dictionary<string, CertificateCacheEntry> cache,
                                                         string issuerDistinguishedName)
@@ -362,14 +365,13 @@ namespace WcfTestBridgeCommon
                 }
                 finally
                 {
-                    cache.Clear(); 
+                    cache.Clear();
 
                     if (store != null)
                     {
-                        store.Close(); 
+                        store.Close();
                     }
                 }
-
             }
         }
 
@@ -470,7 +472,7 @@ namespace WcfTestBridgeCommon
 
         // Certificates that are used or added by this process are
         // kept in a cache for reuse and eventual removal.
-        class CertificateCacheEntry
+        private class CertificateCacheEntry
         {
             public string Thumbprint { get; set; }
             public bool AddedToStore { get; set; }

@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.ServiceModel;
@@ -80,7 +82,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
             string testString = "I am a test";
             string result = serviceProxy.Echo(testString);
         });
-      
+
         Assert.True(exception.Message.ToLower().Contains(message), string.Format("Expected exception message to contain: '{0}', actual message is: '{1}'", message, exception.Message));
     }
 
@@ -109,9 +111,9 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(exception.Message.ToLower().Contains(paraMessage), string.Format("Expected exception message to contain: '{0}', actual: '{1}'", paraMessage, exception.Message));
     }
 
-    [ConditionalFact(nameof(Domain_Joined), 
+    [ConditionalFact(nameof(Domain_Joined),
                      nameof(Root_Certificate_Installed),
-                     nameof(Digest_Authentication_Available), 
+                     nameof(Digest_Authentication_Available),
                      nameof(UserName_And_Password_Available))]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()

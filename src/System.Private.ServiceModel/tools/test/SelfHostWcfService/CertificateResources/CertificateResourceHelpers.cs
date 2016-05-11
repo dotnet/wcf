@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Security.Cryptography.X509Certificates;
@@ -19,7 +21,7 @@ namespace WcfService.CertificateResources
         private static object s_certificateHelperLock = new object();
         private volatile static CertificateGenerator s_certificateGenerator;
         private static string s_crlUriRelativePath = "/resource/WcfService.CertificateResources.CertificateRevocationListResource";
-        
+
         static CertificateResourceHelpers()
         {
             CertificateManager.BridgeConfigurationChanged += (object s, EventArgs a) => OnResourceFolderChanged(s, a);

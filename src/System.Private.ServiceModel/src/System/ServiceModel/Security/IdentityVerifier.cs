@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
@@ -19,7 +21,7 @@ namespace System.ServiceModel.Security
         {
             // empty
         }
- 
+
         public static IdentityVerifier CreateDefault()
         {
             return DefaultIdentityVerifier.Instance;
@@ -29,7 +31,7 @@ namespace System.ServiceModel.Security
 
         public abstract bool TryGetIdentity(EndpointAddress reference, out EndpointIdentity identity);
 
-        static void AdjustAddress(ref EndpointAddress reference, Uri via)
+        private static void AdjustAddress(ref EndpointAddress reference, Uri via)
         {
             // if we don't have an identity and we have differing Uris, we should use the Via
             if (reference.Identity == null && reference.Uri != via)
@@ -49,7 +51,7 @@ namespace System.ServiceModel.Security
             AdjustAddress(ref serviceReference, via);
             this.EnsureIdentity(serviceReference, authorizationContext, SR.IdentityCheckFailedForOutgoingMessage);
         }
- 
+
         internal void EnsureOutgoingIdentity(EndpointAddress serviceReference, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
             if (authorizationPolicies == null)
@@ -59,7 +61,7 @@ namespace System.ServiceModel.Security
             AuthorizationContext ac = AuthorizationContext.CreateDefaultAuthorizationContext(authorizationPolicies);
             EnsureIdentity(serviceReference, ac, SR.IdentityCheckFailedForOutgoingMessage);
         }
- 
+
         private void EnsureIdentity(EndpointAddress serviceReference, AuthorizationContext authorizationContext, String errorString)
         {
             if (authorizationContext == null)
@@ -86,7 +88,7 @@ namespace System.ServiceModel.Security
         private Exception CreateIdentityCheckException(EndpointIdentity identity, AuthorizationContext authorizationContext, string errorString, EndpointAddress serviceReference)
         {
             Exception result;
- 
+
             if (identity.IdentityClaim != null
                 && identity.IdentityClaim.ClaimType == ClaimTypes.Dns
                 && identity.IdentityClaim.Right == Rights.PossessProperty
@@ -141,31 +143,31 @@ namespace System.ServiceModel.Security
             {
                 result = new MessageSecurityException(SR.Format(errorString, identity, serviceReference));
             }
- 
+
             return result;
         }
 
         private class DefaultIdentityVerifier : IdentityVerifier
         {
-            static readonly DefaultIdentityVerifier instance = new DefaultIdentityVerifier();
- 
+            private static readonly DefaultIdentityVerifier s_instance = new DefaultIdentityVerifier();
+
             public static DefaultIdentityVerifier Instance
             {
-                get { return instance; }
+                get { return s_instance; }
             }
- 
+
             public override bool TryGetIdentity(EndpointAddress reference, out EndpointIdentity identity)
             {
                 if (reference == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reference");
- 
+
                 identity = reference.Identity;
- 
+
                 if (identity == null)
                 {
                     identity = this.TryCreateDnsIdentity(reference);
                 }
- 
+
                 if (identity == null)
                 {
                     SecurityTraceRecordHelper.TraceIdentityDeterminationFailure(reference, typeof(DefaultIdentityVerifier));
@@ -178,7 +180,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            EndpointIdentity TryCreateDnsIdentity(EndpointAddress reference)
+            private EndpointIdentity TryCreateDnsIdentity(EndpointAddress reference)
             {
                 Uri toAddress = reference.Uri;
 
@@ -205,19 +207,19 @@ namespace System.ServiceModel.Security
             public override bool CheckAccess(EndpointIdentity identity, AuthorizationContext authContext)
             {
                 EventTraceActivity eventTraceActivity = null;
- 
+
                 if (identity == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identity");
- 
+
                 if (authContext == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authContext");
- 
- 
+
+
                 if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled)
                 {
                     eventTraceActivity = EventTraceActivityHelper.TryExtractActivity((OperationContext.Current != null) ? OperationContext.Current.IncomingMessage : null);
                 }
- 
+
                 for (int i = 0; i < authContext.ClaimSets.Count; ++i)
                 {
                     ClaimSet claimSet = authContext.ClaimSets[i];
@@ -226,7 +228,7 @@ namespace System.ServiceModel.Security
                         SecurityTraceRecordHelper.TraceIdentityVerificationSuccess(eventTraceActivity, identity, identity.IdentityClaim, this.GetType());
                         return true;
                     }
- 
+
                     // try Claim equivalence
                     string expectedSpn = null;
                     if (ClaimTypes.Dns.Equals(identity.IdentityClaim.ClaimType))
@@ -241,7 +243,7 @@ namespace System.ServiceModel.Security
                     }
 
                     // Allow a Sid claim to support UPN, and SPN identities
-                    
+
                     // SID claims not available yet 
                     //SecurityIdentifier identitySid = null;
                     //if (ClaimTypes.Sid.Equals(identity.IdentityClaim.ClaimType))
@@ -276,7 +278,7 @@ namespace System.ServiceModel.Security
                     WcfEventSource.Instance.SecurityIdentityVerificationFailure(eventTraceActivity);
                 }
 
-                return false; 
+                return false;
             }
         }
     }

@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -12,14 +14,14 @@ namespace WcfTestBridgeCommon
     [Serializable]
     public class BridgeConfiguration
     {
-        private static readonly string Default_BridgeHost = "localhost";
-        private static readonly int Default_BridgePort = 44283;
-        private static readonly int Default_BridgeHttpPort = 8081;
-        private static readonly int Default_BridgeHttpsPort = 44285;
-        private static readonly int Default_BridgeTcpPort = 809;
-        private static readonly int Default_BridgeWebSocketPort = 8083;
-        private static readonly int Default_BridgeSecureWebSocketPort = 8084;
-        private static readonly TimeSpan Default_BridgeMaxIdleTimeSpan = TimeSpan.FromHours(24);
+        private static readonly string s_default_BridgeHost = "localhost";
+        private static readonly int s_default_BridgePort = 44283;
+        private static readonly int s_default_BridgeHttpPort = 8081;
+        private static readonly int s_default_BridgeHttpsPort = 44285;
+        private static readonly int s_default_BridgeTcpPort = 809;
+        private static readonly int s_default_BridgeWebSocketPort = 8083;
+        private static readonly int s_default_BridgeSecureWebSocketPort = 8084;
+        private static readonly TimeSpan s_default_BridgeMaxIdleTimeSpan = TimeSpan.FromHours(24);
 
         // These property names must match the names used in TestProperties because
         // that is the set of name/value pairs from which this type is created.
@@ -51,14 +53,14 @@ namespace WcfTestBridgeCommon
 
         public BridgeConfiguration()
         {
-            BridgeHost = Default_BridgeHost;
-            BridgePort = Default_BridgePort;
-            BridgeHttpPort = Default_BridgeHttpPort;
-            BridgeHttpsPort = Default_BridgeHttpsPort;
-            BridgeTcpPort = Default_BridgeTcpPort;
-            BridgeWebSocketPort = Default_BridgeWebSocketPort;
-            BridgeSecureWebSocketPort = Default_BridgeSecureWebSocketPort;
-            BridgeMaxIdleTimeSpan = Default_BridgeMaxIdleTimeSpan;
+            BridgeHost = s_default_BridgeHost;
+            BridgePort = s_default_BridgePort;
+            BridgeHttpPort = s_default_BridgeHttpPort;
+            BridgeHttpsPort = s_default_BridgeHttpsPort;
+            BridgeTcpPort = s_default_BridgeTcpPort;
+            BridgeWebSocketPort = s_default_BridgeWebSocketPort;
+            BridgeSecureWebSocketPort = s_default_BridgeSecureWebSocketPort;
+            BridgeMaxIdleTimeSpan = s_default_BridgeMaxIdleTimeSpan;
         }
 
         public BridgeConfiguration(Dictionary<string, string> properties) : this(new BridgeConfiguration(), properties)

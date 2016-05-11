@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,7 @@ namespace Infrastructure.Common
     {
         // Lazily create the dictionary, and initialize it via a
         // partial method in generated code.
-        private static Lazy<Dictionary<String, String>> _properties = new Lazy<Dictionary<String, String>>(() =>
+        private static Lazy<Dictionary<String, String>> s_properties = new Lazy<Dictionary<String, String>>(() =>
         {
             Dictionary<String, String> properties = new Dictionary<String, String>(StringComparer.OrdinalIgnoreCase);
             Initialize(properties);
@@ -22,7 +24,7 @@ namespace Infrastructure.Common
         });
 
         // This partial method will be implemented by code generated at build time.
-        static partial void Initialize(Dictionary<string,string> properties);
+        static partial void Initialize(Dictionary<string, string> properties);
 
         /// <summary>
         /// Gets the list of available property names.
@@ -31,7 +33,7 @@ namespace Infrastructure.Common
         {
             get
             {
-                return _properties.Value.Keys;
+                return s_properties.Value.Keys;
             }
         }
 
@@ -50,13 +52,13 @@ namespace Infrastructure.Common
             // Environment variables take precedence, but limit access
             // to only the environment variables corresponding to known
             // property names.
-            string result = _properties.Value.ContainsKey(propertyName)
+            string result = s_properties.Value.ContainsKey(propertyName)
                                 ? Environment.GetEnvironmentVariable(propertyName)
                                 : null;
             if (String.IsNullOrEmpty(result))
             {
                 // Throw KeyNotFoundException if caller asks for nonexistent property.
-                result = _properties.Value[propertyName];
+                result = s_properties.Value[propertyName];
             }
 
             return result;

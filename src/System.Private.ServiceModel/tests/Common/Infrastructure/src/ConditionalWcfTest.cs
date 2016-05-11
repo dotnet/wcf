@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,8 @@ namespace Infrastructure.Common
     // refer to members within their test class or its base classes.
     public class ConditionalWcfTest
     {
-        private static Dictionary<string, bool> _evaluatedConditions = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
-        private static object _evaluationLock = new object();
+        private static Dictionary<string, bool> s_evaluatedConditions = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        private static object s_evaluationLock = new object();
 
         // Returns 'true' or 'false' for the given condition name.
         // There are several levels of precedence to evaluate the condition.
@@ -27,10 +29,10 @@ namespace Infrastructure.Common
         private static bool GetConditionValue(string conditionName, Func<bool> detectFunc = null)
         {
             // Lock to evaluate once only
-            lock (_evaluationLock)
+            lock (s_evaluationLock)
             {
                 bool result = false;
-                if (_evaluatedConditions.TryGetValue(conditionName, out result))
+                if (s_evaluatedConditions.TryGetValue(conditionName, out result))
                 {
                     return result;
                 }
@@ -70,7 +72,7 @@ namespace Infrastructure.Common
                     result = false;
                 }
 
-                _evaluatedConditions[conditionName] = result;
+                s_evaluatedConditions[conditionName] = result;
                 return result;
             }
         }
@@ -80,7 +82,7 @@ namespace Infrastructure.Common
             return GetConditionValue(nameof(Server_Is_LocalHost),
                                      ConditionalTestDetectors.IsServerLocalHost);
         }
-        
+
         private static bool Is_Windows()
         {
             return GetConditionValue(nameof(Is_Windows),
@@ -90,7 +92,7 @@ namespace Infrastructure.Common
         public static bool Domain_Joined()
         {
             return GetConditionValue(nameof(Domain_Joined),
-                                     () => ConditionalTestDetectors.IsClientDomainJoined() && 
+                                     () => ConditionalTestDetectors.IsClientDomainJoined() &&
                                            ConditionalTestDetectors.IsServerDomainJoined());
         }
 

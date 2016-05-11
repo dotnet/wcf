@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections;
@@ -46,11 +48,11 @@ namespace WcfTestBridgeCommon
         private const string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
         private const int _keyLengthInBits = 2048;
 
-        private static readonly X509V3CertificateGenerator _certGenerator = new X509V3CertificateGenerator();
-        private static readonly X509V2CrlGenerator _crlGenerator = new X509V2CrlGenerator();
+        private static readonly X509V3CertificateGenerator s_certGenerator = new X509V3CertificateGenerator();
+        private static readonly X509V2CrlGenerator s_crlGenerator = new X509V2CrlGenerator();
 
         // key: serial number, value: revocation time
-        private static Dictionary<string, DateTime> _revokedCertificates = new Dictionary<string, DateTime>();
+        private static Dictionary<string, DateTime> s_revokedCertificates = new Dictionary<string, DateTime>();
 
         private RsaKeyPairGenerator _keyPairGenerator;
         private SecureRandom _random;
@@ -104,14 +106,14 @@ namespace WcfTestBridgeCommon
                 Trace.WriteLine(string.Format("    {0} = {1}", "ValidityPeriod", _validityPeriod));
                 Trace.WriteLine(string.Format("    {0} = {1}", "Valid to", _defaultValidityNotAfter));
 
-                 _authorityCertificate = CreateCertificate(isAuthority: true, isMachineCert: false, signingCertificate: null, certificateCreationSettings: null);
+                _authorityCertificate = CreateCertificate(isAuthority: true, isMachineCert: false, signingCertificate: null, certificateCreationSettings: null);
             }
         }
 
         public void Reset()
         {
-            _certGenerator.Reset();
-            _crlGenerator.Reset();
+            s_certGenerator.Reset();
+            s_crlGenerator.Reset();
             _authorityCertificate = null;
             _isInitialized = false;
         }
@@ -148,8 +150,8 @@ namespace WcfTestBridgeCommon
         {
             get
             {
-                EnsureInitialized(); 
-                return CreateX509Name(_authorityCanonicalName).ToString(); 
+                EnsureInitialized();
+                return CreateX509Name(_authorityCanonicalName).ToString();
             }
         }
 
@@ -159,7 +161,7 @@ namespace WcfTestBridgeCommon
             set
             {
                 EnsureNotInitialized("CertificatePassword");
-                _password = value; 
+                _password = value;
             }
         }
 
@@ -167,7 +169,7 @@ namespace WcfTestBridgeCommon
         {
             get
             {
-                EnsureInitialized(); 
+                EnsureInitialized();
                 return _crlUri;
             }
         }
@@ -176,12 +178,12 @@ namespace WcfTestBridgeCommon
         {
             get
             {
-                return _crlUriBridgeHost; 
+                return _crlUriBridgeHost;
             }
             set
             {
                 EnsureNotInitialized("CrlUriBridgeHost");
-                _crlUriBridgeHost = value; 
+                _crlUriBridgeHost = value;
             }
         }
 
@@ -202,8 +204,8 @@ namespace WcfTestBridgeCommon
         {
             get
             {
-                List<string> retVal = new List<string>(_revokedCertificates.Keys);
-                return retVal; 
+                List<string> retVal = new List<string>(s_revokedCertificates.Keys);
+                return retVal;
             }
         }
 
@@ -213,14 +215,14 @@ namespace WcfTestBridgeCommon
             set
             {
                 EnsureNotInitialized("ValidityPeriod");
-                _validityPeriod = value; 
+                _validityPeriod = value;
             }
         }
 
         public X509CertificateContainer CreateMachineCertificate(CertificateCreationSettings creationSettings)
         {
             EnsureInitialized();
-            return CreateCertificate(false, true, _authorityCertificate.InternalCertificate , creationSettings);
+            return CreateCertificate(false, true, _authorityCertificate.InternalCertificate, creationSettings);
         }
 
         public X509CertificateContainer CreateUserCertificate(CertificateCreationSettings creationSettings)
@@ -229,7 +231,7 @@ namespace WcfTestBridgeCommon
             return CreateCertificate(false, false, _authorityCertificate.InternalCertificate, creationSettings);
         }
 
-     
+
 
         // Only the ctor should be calling with isAuthority = true
         // if isAuthority, value for isMachineCert doesn't matter
@@ -280,8 +282,8 @@ namespace WcfTestBridgeCommon
 
             EnsureInitialized();
 
-            _certGenerator.Reset();
-            _certGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
+            s_certGenerator.Reset();
+            s_certGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
             X509Name authorityX509Name = CreateX509Name(_authorityCanonicalName);
             var serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
@@ -289,45 +291,43 @@ namespace WcfTestBridgeCommon
             var keyPair = isAuthority ? _authorityKeyPair : _keyPairGenerator.GenerateKeyPair();
             if (isAuthority)
             {
-                _certGenerator.SetIssuerDN(authorityX509Name);
-                _certGenerator.SetSubjectDN(authorityX509Name);
+                s_certGenerator.SetIssuerDN(authorityX509Name);
+                s_certGenerator.SetSubjectDN(authorityX509Name);
 
                 var authorityKeyIdentifier = new AuthorityKeyIdentifier(
                     SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(_authorityKeyPair.Public),
                     new GeneralNames(new GeneralName(authorityX509Name)),
                     serialNum);
 
-                _certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, authorityKeyIdentifier);
-                _certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyCertSign | X509KeyUsage.KeyEncipherment | X509KeyUsage.CrlSign));
-
+                s_certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, authorityKeyIdentifier);
+                s_certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyCertSign | X509KeyUsage.KeyEncipherment | X509KeyUsage.CrlSign));
             }
             else
             {
                 X509Name subjectName = CreateX509Name(subject);
-                _certGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
-                _certGenerator.SetSubjectDN(subjectName);
+                s_certGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+                s_certGenerator.SetSubjectDN(subjectName);
 
-                _certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
-                _certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyEncipherment));
-
+                s_certGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(_authorityKeyPair.Public));
+                s_certGenerator.AddExtension(X509Extensions.KeyUsage, false, new KeyUsage(X509KeyUsage.DigitalSignature | X509KeyUsage.KeyAgreement | X509KeyUsage.KeyEncipherment));
             }
 
-            _certGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
+            s_certGenerator.AddExtension(X509Extensions.SubjectKeyIdentifier, false, new SubjectKeyIdentifierStructure(keyPair.Public));
 
-            _certGenerator.SetSerialNumber(serialNum);
-            _certGenerator.SetNotBefore(certificateCreationSettings.ValidityNotBefore);
-            _certGenerator.SetNotAfter(certificateCreationSettings.ValidityNotAfter);
-            _certGenerator.SetPublicKey(keyPair.Public);
+            s_certGenerator.SetSerialNumber(serialNum);
+            s_certGenerator.SetNotBefore(certificateCreationSettings.ValidityNotBefore);
+            s_certGenerator.SetNotAfter(certificateCreationSettings.ValidityNotAfter);
+            s_certGenerator.SetPublicKey(keyPair.Public);
 
-            _certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
-            _certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
+            s_certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
+            s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
 
             if (!isAuthority)
             {
                 if (isMachineCert)
                 {
-                    List<Asn1Encodable> subjectAlternativeNamesAsAsn1EncodableList = new List<Asn1Encodable>(); 
-                    
+                    List<Asn1Encodable> subjectAlternativeNamesAsAsn1EncodableList = new List<Asn1Encodable>();
+
                     // All endpoints should also be in the Subject Alt Names 
                     for (int i = 0; i < subjectAlternativeNames.Length; i++)
                     {
@@ -338,14 +338,14 @@ namespace WcfTestBridgeCommon
                         }
                     }
 
-                    _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList.ToArray()));
+                    s_certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList.ToArray()));
                 }
                 else
                 {
                     if (subjectAlternativeNames.Length > 1)
                     {
                         var subjectAlternativeNamesAsAsn1EncodableList = new Asn1EncodableVector();
-                    
+
                         // Only add a SAN for the user if there are any
                         for (int i = 1; i < subjectAlternativeNames.Length; i++)
                         {
@@ -360,7 +360,7 @@ namespace WcfTestBridgeCommon
                                 subjectAlternativeNamesAsAsn1EncodableList.Add(genName);
                             }
                         }
-                        _certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList));
+                        s_certGenerator.AddExtension(X509Extensions.SubjectAlternativeName, true, new DerSequence(subjectAlternativeNamesAsAsn1EncodableList));
                     }
                 }
             }
@@ -375,22 +375,22 @@ namespace WcfTestBridgeCommon
                         null),
                     new DistributionPoint(new DistributionPointName(
                         new GeneralNames(new GeneralName(
-                        GeneralName.UniformResourceIdentifier, string.Format("{0}?serialNum={1}", _crlUri, serialNum.ToString(radix: 16))))), 
-                        null, 
+                        GeneralName.UniformResourceIdentifier, string.Format("{0}?serialNum={1}", _crlUri, serialNum.ToString(radix: 16))))),
+                        null,
                         new GeneralNames(new GeneralName(authorityX509Name)))
                 };
             var revocationListExtension = new CrlDistPoint(crlDistributionPoints);
-            _certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
+            s_certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
 
-            X509Certificate cert = _certGenerator.Generate(_authorityKeyPair.Private, _random);
+            X509Certificate cert = s_certGenerator.Generate(_authorityKeyPair.Private, _random);
 
-            switch(certificateCreationSettings.ValidityType)
+            switch (certificateCreationSettings.ValidityType)
             {
                 case CertificateValidityType.Revoked:
                     RevokeCertificateBySerialNumber(serialNum.ToString(radix: 16));
                     break;
                 case CertificateValidityType.Expired:
-                    break; 
+                    break;
                 default:
                     EnsureCertificateIsValid(cert);
                     break;
@@ -399,21 +399,21 @@ namespace WcfTestBridgeCommon
             // For now, given that we don't know what format to return it in, preserve the formats so we have 
             // the flexibility to do what we need to
 
-            X509CertificateContainer container = new X509CertificateContainer(); 
+            X509CertificateContainer container = new X509CertificateContainer();
 
             X509CertificateEntry[] chain = new X509CertificateEntry[1];
             chain[0] = new X509CertificateEntry(cert);
 
             Pkcs12Store store = new Pkcs12StoreBuilder().Build();
             store.SetKeyEntry(
-                certificateCreationSettings.FriendlyName != null ? certificateCreationSettings.FriendlyName : string.Empty, 
-                new AsymmetricKeyEntry(keyPair.Private), 
+                certificateCreationSettings.FriendlyName != null ? certificateCreationSettings.FriendlyName : string.Empty,
+                new AsymmetricKeyEntry(keyPair.Private),
                 chain);
 
             using (MemoryStream stream = new MemoryStream())
             {
                 store.Save(stream, _password.ToCharArray(), _random);
-                container.Pfx = stream.ToArray(); 
+                container.Pfx = stream.ToArray();
             }
 
             X509Certificate2 outputCert;
@@ -454,8 +454,8 @@ namespace WcfTestBridgeCommon
         private X509Crl CreateCrl(X509Certificate signingCertificate)
         {
             EnsureInitialized();
-            
-            _crlGenerator.Reset();
+
+            s_crlGenerator.Reset();
 
             DateTime now = DateTime.UtcNow;
 
@@ -466,23 +466,23 @@ namespace WcfTestBridgeCommon
                 updateTime = _defaultValidityNotBefore;
             }
 
-            _crlGenerator.SetThisUpdate(updateTime);
+            s_crlGenerator.SetThisUpdate(updateTime);
             //There is no need to update CRL.
-            _crlGenerator.SetNextUpdate(now.Add(ValidityPeriod));
-            _crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
-            _crlGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
+            s_crlGenerator.SetNextUpdate(now.Add(ValidityPeriod));
+            s_crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
+            s_crlGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
-            _crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
+            s_crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
 
             BigInteger crlNumber = new BigInteger(64 /*bits for the number*/, _random).Abs();
-            _crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(crlNumber));
+            s_crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(crlNumber));
 
-            foreach (var kvp in _revokedCertificates)
+            foreach (var kvp in s_revokedCertificates)
             {
-                _crlGenerator.AddCrlEntry(new BigInteger(kvp.Key, 16), kvp.Value, CrlReason.CessationOfOperation); 
+                s_crlGenerator.AddCrlEntry(new BigInteger(kvp.Key, 16), kvp.Value, CrlReason.CessationOfOperation);
             }
 
-            X509Crl crl = _crlGenerator.Generate(_authorityKeyPair.Private, _random);
+            X509Crl crl = s_crlGenerator.Generate(_authorityKeyPair.Private, _random);
             crl.Verify(_authorityKeyPair.Public);
 
             Trace.WriteLine(string.Format("[CertificateGenerator] has created a Certificate Revocation List :"));
@@ -544,15 +544,15 @@ namespace WcfTestBridgeCommon
                 serialNumBigInt = new BigInteger(str: serialNum, radix: 16);
                 success = true;
             }
-            catch(FormatException)
+            catch (FormatException)
             {
                 Trace.WriteLine("[CertificateGenerator] RevokeCertificateBySerialNumber:");
                 Trace.WriteLine(string.Format("    Invalid serial number specified: '{0}'", serialNum));
             }
 
-            if (success && !_revokedCertificates.ContainsKey(serialNum))
+            if (success && !s_revokedCertificates.ContainsKey(serialNum))
             {
-                _revokedCertificates.Add(serialNum, DateTime.UtcNow);
+                s_revokedCertificates.Add(serialNum, DateTime.UtcNow);
             }
 
             // Note that we don't actually check against the thumbprints here, we just go ahead and stick the serial 
@@ -560,7 +560,6 @@ namespace WcfTestBridgeCommon
             Trace.WriteLine(string.Format("[CertificateGenerator] Revoke certificate with serial number {0}: ", success ? "succeeded" : "FAILED"));
             return success;
         }
-
     }
 
     public class X509CertificateContainer

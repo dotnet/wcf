@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Diagnostics.Contracts;
@@ -16,14 +18,14 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    class ClientWebSocketTransportDuplexSessionChannel : WebSocketTransportDuplexSessionChannel
+    internal class ClientWebSocketTransportDuplexSessionChannel : WebSocketTransportDuplexSessionChannel
     {
-        readonly ClientWebSocketFactory _connectionFactory;
-        HttpChannelFactory<IDuplexSessionChannel> _channelFactory;
-        SecurityTokenProviderContainer _webRequestTokenProvider;
-        SecurityTokenProviderContainer _webRequestProxyTokenProvider;
-        volatile bool _cleanupStarted;
-        volatile bool _cleanupIdentity;
+        private readonly ClientWebSocketFactory _connectionFactory;
+        private HttpChannelFactory<IDuplexSessionChannel> _channelFactory;
+        private SecurityTokenProviderContainer _webRequestTokenProvider;
+        private SecurityTokenProviderContainer _webRequestProxyTokenProvider;
+        private volatile bool _cleanupStarted;
+        private volatile bool _cleanupIdentity;
 
         public ClientWebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, ClientWebSocketFactory connectionFactory, EndpointAddress remoteAddresss, Uri via)
             : base(channelFactory, remoteAddresss, via)
@@ -145,7 +147,7 @@ namespace System.ServiceModel.Channels
             base.OnCleanup();
         }
 
-        static void TryConvertAndThrow(WebSocketException ex)
+        private static void TryConvertAndThrow(WebSocketException ex)
         {
             switch (ex.WebSocketErrorCode)
             {
@@ -166,12 +168,12 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        void CleanupOnError()
+        private void CleanupOnError()
         {
             Cleanup();
         }
 
-        void CleanupTokenProviders()
+        private void CleanupTokenProviders()
         {
             if (_webRequestTokenProvider != null)
             {

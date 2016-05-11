@@ -1,5 +1,7 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.IO;
 using System.Runtime;
@@ -307,7 +309,7 @@ namespace System.ServiceModel.Dispatcher
                         // Calculate number of UTF8 bytes needed to represent the requested bytes in base64.
                         // The +3 is to adjust for integer division truncating instead of rounding and the final
                         // == padding that can occur at the end of a base64 encoded string.
-                        int base64EncodedBytes = (int) ((8L*count)/6L) + 3;
+                        int base64EncodedBytes = (int)((8L * count) / 6L) + 3;
                         await _readAheadStream.EnsureBufferedAsync(base64EncodedBytes, cancellationToken);
                     }
                     int bytesRead = _reader.ReadContentAsBase64(buffer, offset, count);
@@ -324,7 +326,6 @@ namespace System.ServiceModel.Dispatcher
                         throw;
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new IOException(SR.Format(SR.SFxStreamIOException), ex));
                 }
-
             }
 
             public override int Read(byte[] buffer, int offset, int count)

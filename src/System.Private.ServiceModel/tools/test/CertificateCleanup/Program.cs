@@ -1,5 +1,7 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Text;
 
 namespace System.Private.ServiceModel.Tests.Tools
 {
-    class Program
+    internal class Program
     {
         private const string ClientCertificateSubject = "WCF Client Certificate";
         private const string CertificateIssuer = "DO_NOT_TRUST_WcfBridgeRootCA";
@@ -27,7 +29,7 @@ namespace System.Private.ServiceModel.Tests.Tools
             if (commandLineArgs.Help)
             {
                 Console.WriteLine(commandLineArgs.HelpText);
-                return; 
+                return;
             }
 
             if (commandLineArgs.Preview)
@@ -104,7 +106,7 @@ namespace System.Private.ServiceModel.Tests.Tools
                         {
                             store.Remove(cert);
                             Console.Write(" ... removed");
-                            removedCerts++; 
+                            removedCerts++;
                         }
                         catch (Exception ex)
                         {
@@ -112,7 +114,7 @@ namespace System.Private.ServiceModel.Tests.Tools
                             Console.WriteLine(GetExceptionString(commandLineArgs, ex));
                         }
                     }
-                    Console.WriteLine(); 
+                    Console.WriteLine();
                 }
 
                 if (!commandLineArgs.Preview)
@@ -120,12 +122,12 @@ namespace System.Private.ServiceModel.Tests.Tools
                     Console.WriteLine("  {0} certificates removed", removedCerts);
                 }
             }
-            Console.WriteLine(); 
+            Console.WriteLine();
         }
 
         private static string GetExceptionString(CommandLineArgs commandLineArgs, Exception exception)
         {
-            StringBuilder exceptionString = new StringBuilder(); 
+            StringBuilder exceptionString = new StringBuilder();
 
             if (commandLineArgs.Verbose)
             {
@@ -136,7 +138,7 @@ namespace System.Private.ServiceModel.Tests.Tools
                 exceptionString.AppendFormat("{0}    Exception was: {1}", Environment.NewLine, exception.Message);
             }
 
-            return exceptionString.ToString(); 
+            return exceptionString.ToString();
         }
     }
 }
