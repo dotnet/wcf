@@ -11,6 +11,9 @@ using Infrastructure.Common;
 
 public static class ServiceUtilHelper
 {
+    private const string ClientCertificateSubject = "WCF Client Certificate";  
+    private const string CertificateIssuer = "DO_NOT_TRUST_WcfBridgeRootCA";  
+
     private static object s_certLock = new object();
     private static string s_serviceHostName = string.Empty;
     private static bool s_rootCertAvailabilityChecked = false;
@@ -100,7 +103,6 @@ public static class ServiceUtilHelper
     // certificate in the store and available via 'ClientCertificate'.
     public static bool TryEnsureLocalClientCertificateInstalled()
     {
-        EnsureRootCertificateInstalled();
         lock (s_certLock)
         {
             if (!s_clientCertAvailabilityChecked)
