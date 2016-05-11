@@ -14,30 +14,24 @@ namespace Infrastructure.Common
     // tests.  They are called at most once, and the return value cached.
     internal static class ConditionalTestDetectors
     {
+        // Detector used by [ConditionalFact(nameof(Root_Certificate_Installed)].
+        // It will attempt to install the root certificate in the root store if
+        // is not already present, and then it will check whether the install
+        // succeeded.  A 'true' return is a guarantee a root certificate is
+        // installed in the root store.
         public static bool IsRootCertificateInstalled()
         {
-            try
-            {
-                ServiceUtilHelper.EnsureRootCertificateInstalled();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return ServiceUtilHelper.TryEnsureRootCertificateInstalled();
         }
 
+        // Detector used by [ConditionalFact(nameof(Client_Certificate_Installed)].
+        // It will attempt to install the client certificate in the certificate store if
+        // is not already present, and then it will check whether the install
+        // succeeded.  A 'true' return is a guarantee a client certificate is
+        // installed in the certificate store.
         public static bool IsClientCertificateInstalled()
         {
-            try
-            {
-                ServiceUtilHelper.EnsureLocalClientCertificateInstalled();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return ServiceUtilHelper.TryEnsureLocalClientCertificateInstalled();
         }
 
         public static bool IsClientDomainJoined()

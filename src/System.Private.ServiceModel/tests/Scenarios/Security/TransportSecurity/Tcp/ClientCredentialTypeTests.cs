@@ -186,7 +186,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_Address),
                 new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
-            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
@@ -233,7 +233,7 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_CustomValidation_Address),
                 new DnsEndpointIdentity(Endpoints.Tcp_VerifyDNS_HostName));
-            clientCertThumb = ServiceUtilHelper.LocalCertThumbprint;
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
