@@ -17,8 +17,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
     static Https_ClientCredentialTypeTests()
     {
-        s_username = TestProperties.GetProperty(TestProperties.TestUserName_PropertyName);
-        s_password = TestProperties.GetProperty(TestProperties.TestPassword_PropertyName);
+        s_username = TestProperties.GetProperty(TestProperties.ExplicitUserName_PropertyName);
+        s_password = TestProperties.GetProperty(TestProperties.ExplicitPassword_PropertyName);
     }
 
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Basic_Authentication_Available))]
@@ -113,8 +113,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
     [ConditionalFact(nameof(Domain_Joined),
                      nameof(Root_Certificate_Installed),
-                     nameof(Digest_Authentication_Available),
-                     nameof(UserName_And_Password_Available))]
+                     nameof(Digest_Authentication_Available), 
+                     nameof(Explicit_Credentials_Available))]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()
     {

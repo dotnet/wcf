@@ -232,7 +232,7 @@ public static class ServiceUtilHelper
         }
     }
 
-    private static bool IISHosted
+    public static bool IISHosted
     {
         get
         {
