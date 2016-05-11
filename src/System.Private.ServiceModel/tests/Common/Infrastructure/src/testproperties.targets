@@ -39,18 +39,20 @@ namespace Infrastructure.Common
         public static readonly string NegotiateTestSpn_PropertyName = "NegotiateTestSpn"%3B
         public static readonly string NegotiateTestUpn_PropertyName = "NegotiateTestUpn"%3B
         public static readonly string Domain_Joined_PropertyName = "Domain_Joined"%3B
+        public static readonly string Server_Domain_Joined_PropertyName = "Server_Domain_Joined"%3B
         public static readonly string Root_Certificate_Installed_PropertyName = "Root_Certificate_Installed"%3B
         public static readonly string Client_Certificate_Installed_PropertyName = "Client_Certificate_Installed"%3B
         public static readonly string SPN_Available_PropertyName = "SPN_Available"%3B
-        public static readonly string Kerberos_Available_PropertyName = "Kerberos_Available"%3B
         public static readonly string Server_Accepts_Certificates_PropertyName = "Server_Accepts_Certificates"%3B
+        public static readonly string Ambient_Credentials_Available_PropertyName = "Ambient_Credentials_Available"%3B
+        public static readonly string Explicit_Credentials_Available_PropertyName = "Explicit_Credentials_Available"%3B
         public static readonly string Basic_Authentication_Available_PropertyName = "Basic_Authentication_Available"%3B
         public static readonly string Digest_Authentication_Available_PropertyName = "Digest_Authentication_Available"%3B
         public static readonly string Windows_Authentication_Available_PropertyName = "Windows_Authentication_Available"%3B
         public static readonly string NTLM_Available_PropertyName = "NTLM_Available"%3B
         public static readonly string ServiceUri_PropertyName = "ServiceUri"%3B
-        public static readonly string TestUserName_PropertyName = "TestUserName"%3B
-        public static readonly string TestPassword_PropertyName = "TestPassword"%3B
+        public static readonly string ExplicitUserName_PropertyName = "ExplicitUserName"%3B
+        public static readonly string ExplicitPassword_PropertyName = "ExplicitPassword"%3B
                 
         static partial void Initialize(Dictionary<string, string> properties)
         {
@@ -75,18 +77,20 @@ namespace Infrastructure.Common
             properties["NegotiateTestSpn"] = "$(NegotiateTestSpn)"%3B
             properties["NegotiateTestUpn"] = "$(NegotiateTestUpn)"%3B
             properties["Domain_Joined"] = "$(Domain_Joined)"%3B
+            properties["Server_Domain_Joined"] = "$(Server_Domain_Joined)"%3B
             properties["Root_Certificate_Installed"] = "$(Root_Certificate_Installed)"%3B
             properties["Client_Certificate_Installed"] = "$(Client_Certificate_Installed)"%3B
             properties["SPN_Available"] = "$(SPN_Available)"%3B
-            properties["Kerberos_Available"] = "$(Kerberos_Available)"%3B
             properties["Server_Accepts_Certificates"] = "$(Server_Accepts_Certificates)"%3B
+            properties["Ambient_Credentials_Available"] = "$(Ambient_Credentials_Available)"%3B
+            properties["Explicit_Credentials_Available"] = "$(Explicit_Credentials_Available)"%3B
             properties["Basic_Authentication_Available"] = "$(Basic_Authentication_Available)"%3B
             properties["Digest_Authentication_Available"] = "$(Digest_Authentication_Available)"%3B
             properties["Windows_Authentication_Available"] = "$(Windows_Authentication_Available)"%3B
             properties["NTLM_Available"] = "$(NTLM_Available)"%3B
             properties["ServiceUri"] = "$(ServiceUri)"%3B
-            properties["TestUserName"] = "$(TestUserName)"%3B
-            properties["TestPassword"] = "$(TestPassword)"%3B
+            properties["ExplicitUserName"] = "$(ExplicitUserName)"%3B
+            properties["ExplicitPassword"] = "$(ExplicitPassword)"%3B
         }
     }
 }

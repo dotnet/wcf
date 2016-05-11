@@ -113,8 +113,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
     [ConditionalFact(nameof(Domain_Joined),
                      nameof(Root_Certificate_Installed),
-                     nameof(Digest_Authentication_Available),
-                     nameof(UserName_And_Password_Available))]
+                     nameof(Digest_Authentication_Available), 
+                     nameof(Explicit_Credentials_Available))]
     [OuterLoop]
     public static void DigestAuthentication_RoundTrips_Echo()
     {

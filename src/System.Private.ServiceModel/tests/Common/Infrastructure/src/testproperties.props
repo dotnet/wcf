@@ -94,6 +94,10 @@
     <PropertyGroup Condition="'$(Domain_Joined)' == ''">
       <Domain_Joined></Domain_Joined>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Server_Domain_Joined)' == ''">
+      <Server_Domain_Joined></Server_Domain_Joined>
+    </PropertyGroup>
   
     <PropertyGroup Condition="'$(Root_Certificate_Installed)' == ''">
       <Root_Certificate_Installed></Root_Certificate_Installed>
@@ -106,15 +110,19 @@
     <PropertyGroup Condition="'$(SPN_Available)' == ''">
       <SPN_Available></SPN_Available>
     </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Kerberos_Available)' == ''">
-      <Kerberos_Available></Kerberos_Available>
-    </PropertyGroup>
     
      <PropertyGroup Condition="'$(NTLM_Available)' == ''">
       <NTLM_Available></NTLM_Available>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Ambient_Credentials_Available)' == ''">
+      <Ambient_Credentials_Available></Ambient_Credentials_Available>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Explicit_Credentials_Available)' == ''">
+      <Explicit_Credentials_Available></Explicit_Credentials_Available>
+    </PropertyGroup>
+  
     <PropertyGroup Condition="'$(Server_Accepts_Certificates)' == ''">
       <Server_Accepts_Certificates></Server_Accepts_Certificates>
     </PropertyGroup>
@@ -135,13 +143,13 @@
       <ServiceUri >localhost</ServiceUri >
     </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TestUserName)' == ''">
-    <TestUserName ></TestUserName >
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(ExplicitUserName)' == ''">
+      <ExplicitUserName ></ExplicitUserName >
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TestPassword)' == ''">
-    <TestPassword ></TestPassword >
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(ExplicitPassword)' == ''">
+      <ExplicitPassword ></ExplicitPassword >
+    </PropertyGroup>
   
   <!--
      GeneratedTestPropertiesFileName:
