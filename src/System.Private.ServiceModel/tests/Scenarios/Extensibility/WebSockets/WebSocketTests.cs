@@ -8,8 +8,9 @@ using System.ServiceModel.Channels;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Infrastructure.Common;
 
-public static class WebSocketTests
+public class WebSocketTests : ConditionalWcfTest
 {
     [Fact]
     [OuterLoop]
@@ -169,7 +170,7 @@ public static class WebSocketTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(420, PlatformID.AnyUnix)]
@@ -653,7 +654,7 @@ public static class WebSocketTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
@@ -704,7 +705,7 @@ public static class WebSocketTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
@@ -757,7 +758,7 @@ public static class WebSocketTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_Duplex_BinaryBuffered()
@@ -824,7 +825,7 @@ public static class WebSocketTests
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [ActiveIssue(625, PlatformID.AnyUnix)]
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
