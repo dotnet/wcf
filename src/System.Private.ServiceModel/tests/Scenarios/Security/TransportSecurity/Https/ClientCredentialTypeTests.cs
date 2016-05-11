@@ -17,8 +17,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
     static Https_ClientCredentialTypeTests()
     {
-        s_username = TestProperties.GetProperty(TestProperties.TestUserName_PropertyName);
-        s_password = TestProperties.GetProperty(TestProperties.TestPassword_PropertyName);
+        s_username = TestProperties.GetProperty(TestProperties.ExplicitUserName_PropertyName);
+        s_password = TestProperties.GetProperty(TestProperties.ExplicitPassword_PropertyName);
     }
 
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Basic_Authentication_Available))]
