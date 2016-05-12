@@ -6,9 +6,6 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using Infrastructure.Common;
 using Xunit;
@@ -19,12 +16,10 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     //       returns a concrete type determined by the channel shape requested and other binding related settings.
     // The tests in this file use the IDuplexChannel shape.
 
-    private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
-    private const string clientMessage = "[client] This is my request.";
-
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    public static void IDuplexSessionChannel_Tcp_NetTcpBinding()
+    [ActiveIssue(1157)]
+    public static void IDuplexSessionChannel_Https_NetHttpsBinding()
     {
         IChannelFactory<IDuplexSessionChannel> factory = null;
         IDuplexSessionChannel channel = null;
@@ -33,14 +28,14 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         try
         {
             // *** SETUP *** \\
-            NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
+            NetHttpsBinding binding = new NetHttpsBinding(BasicHttpsSecurityMode.Transport);
 
             // Create the channel factory
             factory = binding.BuildChannelFactory<IDuplexSessionChannel>(new BindingParameterCollection());
             factory.Open();
 
             // Create the channel.
-            channel = factory.CreateChannel(new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps));
             channel.Open();
 
             // Create the Message object to send to the service.
@@ -57,7 +52,9 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
             // *** VALIDATE *** \\
             // If the incoming Message did not contain the same UniqueId used for the MessageId of the outgoing Message we would have received a Fault from the Service
-            Assert.Equal(requestMessage.Headers.MessageId.ToString(), replyMessage.Headers.RelatesTo.ToString());
+            string expectedMessageID = requestMessage.Headers.MessageId.ToString();
+            string actualMessageID = replyMessage.Headers.RelatesTo.ToString();
+            Assert.True(String.Equals(expectedMessageID, actualMessageID), String.Format("Expected Message ID was {0}. Actual was {1}", expectedMessageID, actualMessageID));
 
             // Validate the Response
             var replyReader = replyMessage.GetReaderAtBodyContents();
@@ -77,9 +74,10 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    public static void IDuplexSessionChannel_Async_Tcp_NetTcpBinding()
+    [ActiveIssue(1157)]
+    public static void IDuplexSessionChannel_Http_BasicHttpBinding()
     {
         IChannelFactory<IDuplexSessionChannel> factory = null;
         IDuplexSessionChannel channel = null;
@@ -88,67 +86,10 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         try
         {
             // *** SETUP *** \\
-            NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
+            BasicHttpBinding binding = new BasicHttpBinding();
 
             // Create the channel factory
             factory = binding.BuildChannelFactory<IDuplexSessionChannel>(new BindingParameterCollection());
-            Task.Factory.FromAsync(factory.BeginOpen, factory.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult(); 
-
-            // Create the channel.
-            channel = factory.CreateChannel(new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
-            Task.Factory.FromAsync(channel.BeginOpen, channel.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult(); 
-
-            // Create the Message object to send to the service.
-            Message requestMessage = Message.CreateMessage(
-                binding.MessageVersion,
-                action,
-                new CustomBodyWriter(clientMessage));
-            requestMessage.Headers.MessageId = new UniqueId(Guid.NewGuid());
-
-            // *** EXECUTE *** \\
-            // Send the Message and receive the Response.
-            Task.Factory.FromAsync((asyncCallback, o) => channel.BeginSend(requestMessage, asyncCallback, o), 
-                channel.EndSend, 
-                TaskCreationOptions.None).GetAwaiter().GetResult();
-            replyMessage = Task.Factory.FromAsync(channel.BeginReceive, channel.EndReceive, TaskCreationOptions.None).GetAwaiter().GetResult();
-
-            // *** VALIDATE *** \\
-            // If the incoming Message did not contain the same UniqueId used for the MessageId of the outgoing Message we would have received a Fault from the Service
-            Assert.Equal(requestMessage.Headers.MessageId.ToString(), replyMessage.Headers.RelatesTo.ToString());
-
-            // Validate the Response
-            var replyReader = replyMessage.GetReaderAtBodyContents();
-            string actualResponse = replyReader.ReadElementContentAsString();
-            string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            Assert.Equal(expectedResponse, actualResponse);
-
-            // *** CLEANUP *** \\
-            replyMessage.Close();
-            Task.Factory.FromAsync(channel.BeginClose, channel.EndClose, TaskCreationOptions.None).GetAwaiter().GetResult();
-            Task.Factory.FromAsync(factory.BeginClose, factory.EndClose, TaskCreationOptions.None).GetAwaiter().GetResult();
-        }
-        finally
-        {
-            // *** ENSURE CLEANUP *** \\
-            ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
-        }
-    }
-
-    [Fact]
-    [OuterLoop]
-    public static void IRequestChannel_Https_NetHttpsBinding()
-    {
-        IChannelFactory<IRequestChannel> factory = null;
-        IRequestChannel channel = null;
-        Message replyMessage = null;
-
-        try
-        {
-            // *** SETUP *** \\
-            NetHttpsBinding binding = new NetHttpsBinding(BasicHttpsSecurityMode.Transport);
-
-            // Create the channel factory
-            factory = binding.BuildChannelFactory<IRequestChannel>(new BindingParameterCollection());
             factory.Open();
 
             // Create the channel.
@@ -160,12 +101,18 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
                 binding.MessageVersion,
                 action,
                 new CustomBodyWriter(clientMessage));
+            requestMessage.Headers.MessageId = new UniqueId(Guid.NewGuid());
 
             // *** EXECUTE *** \\
             // Send the Message and receive the Response.
-            replyMessage = channel.Request(requestMessage);
+            channel.Send(requestMessage);
+            replyMessage = channel.Receive(TimeSpan.FromSeconds(5));
 
             // *** VALIDATE *** \\
+            // If the incoming Message did not contain the same UniqueId used for the MessageId of the outgoing Message we would have received a Fault from the Service
+            Assert.Equal(requestMessage.Headers.MessageId.ToString(), replyMessage.Headers.RelatesTo.ToString());
+
+            // Validate the Response
             var replyReader = replyMessage.GetReaderAtBodyContents();
             string actualResponse = replyReader.ReadElementContentAsString();
             string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
