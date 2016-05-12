@@ -17,6 +17,13 @@ public static class ClientBaseTests
 {
     [Fact]
     [OuterLoop]
+    public static void Hello_World()
+    {
+        Assert.True(true, "Hello world!");     
+    }
+
+    [Fact]
+    [OuterLoop]
     public static void MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify()
     {
         MyClientBase<IWcfService> client = null;
