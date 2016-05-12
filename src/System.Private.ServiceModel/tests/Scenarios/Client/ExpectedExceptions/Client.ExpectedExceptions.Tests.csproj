@@ -17,7 +17,7 @@
     <ProjectGuid>{C9DBD082-1903-4367-894F-DDF3CEC28A64}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ExpectedExceptionTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
