@@ -85,17 +85,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TransportSecurity", "Transp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.TransportSecurity.Tests", "tests\Scenarios\Security\TransportSecurity\Security.TransportSecurity.Tests.csproj", "{452BA2A7-81AD-4146-AD02-35EC242FF0EB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Https", "Https", "{019ED105-2547-4B36-A8C9-F9BC326123BE}"
-	ProjectSection(SolutionItems) = preProject
-		tests\Scenarios\Security\TransportSecurity\Https\ClientCredentialTypeTests.cs = tests\Scenarios\Security\TransportSecurity\Https\ClientCredentialTypeTests.cs
-		tests\Scenarios\Security\TransportSecurity\Https\HttpsTests.cs = tests\Scenarios\Security\TransportSecurity\Https\HttpsTests.cs
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tcp", "Tcp", "{41BFB825-D34B-496B-8213-C88FF162B2E0}"
-	ProjectSection(SolutionItems) = preProject
-		tests\Scenarios\Security\TransportSecurity\Tcp\ClientCredentialTypeTests.cs = tests\Scenarios\Security\TransportSecurity\Tcp\ClientCredentialTypeTests.cs
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{74E570EC-C5E9-4E43-802D-96F5FDD54E18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{D68F5311-C25D-4E7E-A498-6FCC74F56584}"
@@ -620,8 +609,6 @@ Global
 		{604EBABB-0160-48EF-AE10-FEAE8DE39F19} = {8A3F22C7-8CD3-43AE-A47B-BF7E45FB9FBC}
 		{86D8195D-407E-46CE-97F9-C36504586AF7} = {21BE71A6-42C6-4C2F-88A7-C3798748BB05}
 		{452BA2A7-81AD-4146-AD02-35EC242FF0EB} = {86D8195D-407E-46CE-97F9-C36504586AF7}
-		{019ED105-2547-4B36-A8C9-F9BC326123BE} = {86D8195D-407E-46CE-97F9-C36504586AF7}
-		{41BFB825-D34B-496B-8213-C88FF162B2E0} = {86D8195D-407E-46CE-97F9-C36504586AF7}
 		{74E570EC-C5E9-4E43-802D-96F5FDD54E18} = {405DBC85-4CF8-4763-803E-5C68FBEA5C38}
 		{D68F5311-C25D-4E7E-A498-6FCC74F56584} = {405DBC85-4CF8-4763-803E-5C68FBEA5C38}
 		{059AF90C-4111-4DFE-915D-050B19D6CC74} = {74E570EC-C5E9-4E43-802D-96F5FDD54E18}
