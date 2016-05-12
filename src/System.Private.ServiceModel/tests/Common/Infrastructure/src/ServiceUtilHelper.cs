@@ -45,22 +45,28 @@ public static class ServiceUtilHelper
                 }
                 catch (Exception ex)
                 {
-                    // Failure currently only shows as a diagnostic and does not propagate the exception
-                    System.Diagnostics.Debug.WriteLine(String.Format("Attempt to install root certificate failed: {0}", ex.ToString()));
+                    System.Console.WriteLine(String.Format("Attempt to install root certificate failed:{0}{1}", 
+                                                            Environment.NewLine, ex.ToString()));
                 }
 
                 // If we had a certificate from the service endpoint, verify it was installed
                 // by retrieving it from the store by thumbprint.
                 if (rootCertificate != null)
                 {
-                    rootCertificate = CertificateManager.RootCertificateFromThumprint(rootCertificate.Thumbprint);
+                    string thumbprint = rootCertificate.Thumbprint;
+                    rootCertificate = CertificateManager.RootCertificateFromThumprint(thumbprint);
+                    System.Console.WriteLine(String.Format("Using root cert in store by thumbprint '{0}' = '{1}'", 
+                                                           thumbprint, rootCertificate));
                 }
 
-                // If we failed to obtain a certificate from the service endpoint, we'll accept a match
+                // If we failed to obtain a certificate from the service endpoint, or failed to find one
+                // matching the thumbprint we got from the server, we'll accept a match
                 // based on issuer and subject name
-                else
+                if (rootCertificate == null)
                 {
                     rootCertificate = CertificateManager.RootCertificateFromName(CertificateIssuer, CertificateIssuer);
+                    System.Console.WriteLine(String.Format("Using root cert in store by name '{0}' = '{1}'",
+                                                          CertificateIssuer, rootCertificate));
                 }
 
                 RootCertificate = rootCertificate;
@@ -125,14 +131,18 @@ public static class ServiceUtilHelper
                 catch (Exception ex)
                 {
                     // Failure currently only shows as a diagnostic and does not propagate the exception
-                    System.Diagnostics.Debug.WriteLine(String.Format("Attempt to install client certificate failed: {0}", ex.ToString()));
+                    System.Console.WriteLine(String.Format("Attempt to install client certificate failed:{0}{1}", 
+                                             Environment.NewLine, ex.ToString()));
                 }
 
                 // If we had a certificate from the service endpoint, verify it was installed
                 // by retrieving it from the store by thumbprint.
                 if (clientCertificate != null)
                 {
-                    clientCertificate = CertificateManager.ClientCertificateFromThumprint(clientCertificate.Thumbprint);
+                    string thumbprint = clientCertificate.Thumbprint;
+                    clientCertificate = CertificateManager.ClientCertificateFromThumprint(thumbprint);
+                    System.Console.WriteLine(String.Format("Using client cert in store by thumbprint '{0}' = '{1}'",
+                                       thumbprint, clientCertificate));
                 }
 
                 // If we failed to obtain a certificate from the service endpoint or failed to find
@@ -140,6 +150,8 @@ public static class ServiceUtilHelper
                 if (clientCertificate == null)
                 {
                     clientCertificate = CertificateManager.ClientCertificateFromName(CertificateIssuer, ClientCertificateSubject);
+                    System.Console.WriteLine(String.Format("Using client cert in store by name '{0}' = '{1}'",
+                                      ClientCertificateSubject, clientCertificate));
                 }
 
                 ClientCertificate = clientCertificate;
