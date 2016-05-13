@@ -298,6 +298,11 @@ namespace System.ServiceModel.Channels
 
                     httpClient = new HttpClient(clientHandler);
 
+                    // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1 
+                    // prevents a call to CancellationToken.CancelAfter that HttpClient does internally which
+                    // causes TimerQueue contention at high load.
+                    httpClient.Timeout = Timeout.InfiniteTimeSpan;
+
                     _httpClientCache.Add(connectionGroupName, httpClient);
                 }
             }
@@ -937,13 +942,14 @@ namespace System.ServiceModel.Channels
                         catch { /* ignored */ }
 
                         bool success = false;
-                        var cancelTokenTask = _timeoutHelper.GetCancellationTokenAsync();
+                        var timeoutToken = await _timeoutHelper.GetCancellationTokenAsync();
 
                         try
                         {
-                            var timeoutToken = await cancelTokenTask;
-                            timeoutToken.Register(s_cancelCts, _httpSendCts);
-                            _httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
+                            using (timeoutToken.Register(s_cancelCts, _httpSendCts))
+                            { 
+                                _httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
+                            }
 
                             // As we have the response message and no exceptions have been thrown, the request message has completed it's job.
                             // Calling Dispose() on the request message to free up resources in HttpContent, but keeping the object around
@@ -958,14 +964,14 @@ namespace System.ServiceModel.Channels
                         }
                         catch (OperationCanceledException)
                         {
-                            if (cancelTokenTask.Result.IsCancellationRequested)
+                            if (timeoutToken.IsCancellationRequested)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(
                                     SR.HttpRequestTimedOut, httpRequestMessage.RequestUri, _timeoutHelper.OriginalTimeout)));
                             }
                             else
                             {
-                                // Cancellation came from somewhere other than timeoutCts and needs to be handled differently.
+                                // Cancellation came from somewhere other than timeoutToken and needs to be handled differently.
                                 throw;
                             }
                         }
