@@ -497,7 +497,6 @@ namespace System.ServiceModel.Channels
             if (_sendTimer != null)
             {
                 _sendTimer.Dispose();
-                _sendTimer = null;
             }
         }
 
@@ -768,7 +767,6 @@ namespace System.ServiceModel.Channels
             if (_receiveTimer != null)
             {
                 _receiveTimer.Dispose();
-                _receiveTimer = null;
             }
         }
 
