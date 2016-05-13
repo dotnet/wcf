@@ -402,6 +402,25 @@ public class FaultDetail
     }
 }
 
+
+[DataContract(Name = "FaultDetail2", Namespace = "http://www.contoso.com/wcfnamespace")]
+public class FaultDetail2
+{
+    private string _report;
+
+    public FaultDetail2(string message)
+    {
+        _report = message;
+    }
+
+    [DataMember]
+    public string Message
+    {
+        get { return _report; }
+        set { _report = value; }
+    }
+}
+
 [DataContract(Namespace = "http://www.contoso.com/wcfnamespace")]
 public class ComplexCompositeType : IEquatable<ComplexCompositeType>
 {
@@ -1316,5 +1335,27 @@ public partial class XmlMessageContractTestResponse
         {
             _message = value;
         }
+    }
+}
+
+[DataContract(Name = "KnownTypeA", Namespace = "http://www.contoso.com/wcfnamespace")]
+public class KnownTypeA
+{
+    private string _content;
+
+    public KnownTypeA()
+    {
+    }
+
+    public KnownTypeA(string content)
+    {
+        _content = content;
+    }
+
+    [DataMember]
+    public string Content
+    {
+        get { return _content; }
+        set { _content = value; }
     }
 }

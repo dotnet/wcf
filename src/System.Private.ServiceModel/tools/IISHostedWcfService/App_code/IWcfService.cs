@@ -35,6 +35,17 @@ namespace WcfService
         void TestFaultInt(int faultCode);
 
         [OperationContract]
+        [FaultContract(typeof(FaultDetail), Action = "http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name = "FaultDetail", Namespace = "http://www.contoso.com/wcfnamespace")]
+        [FaultContract(typeof(FaultDetail2), Action = "http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name = "FaultDetail2", Namespace = "http://www.contoso.com/wcfnamespace")]
+        void TestFaults(string faultMsg, bool throwFaultDetail);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultDetail), Action = "http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name = "FaultDetail", Namespace = "http://www.contoso.com/wcfnamespace")]
+        [ServiceKnownType(typeof(KnownTypeA))]
+        [ServiceKnownType(typeof(FaultDetail))]
+        object[] TestFaultWithKnownType(string faultMsg, object[] objects);
+
+        [OperationContract]
         void ThrowInvalidOperationException(string message);
 
         [OperationContract(Action = "http://tempuri.org/IWcfService/GetDataUsingDataContract")]
