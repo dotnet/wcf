@@ -180,9 +180,25 @@ namespace System.Runtime
         }
 
         // Task.GetAwaiter().GetResult() calls an internal variant of Wait() which doesn't wrap exceptions in
-        // an AggregateException.
+        // an AggregateException. It does spinwait so if it's expected that the Task isn't about to complete,
+        // then use the NoSpin variant.
         public static void WaitForCompletion(this Task task)
         {
+            task.GetAwaiter().GetResult();
+        }
+
+        // If the task is about to complete, this method will be more expensive than the regular method as it
+        // always causes a WaitHandle to be allocated. If it is expected that the task will take longer than
+        // the time of a spin wait, then a WaitHandle will be allocated anyway and this method avoids the CPU
+        // cost of the spin wait.
+        public static void WaitForCompletionNoSpin(this Task task)
+        {
+            if (!task.IsCompleted)
+            {
+                ((IAsyncResult) task).AsyncWaitHandle.WaitOne();
+            }
+
+            // Call GetResult() to get any exceptions that were thrown
             task.GetAwaiter().GetResult();
         }
 
@@ -191,15 +207,37 @@ namespace System.Runtime
             return task.GetAwaiter().GetResult();
         }
 
-        public static bool WaitWithTimeSpan(this Task task, TimeSpan timeout)
+        public static TResult WaitForCompletionNoSpin<TResult>(this Task<TResult> task)
+        {
+            if (!task.IsCompleted)
+            {
+                ((IAsyncResult)task).AsyncWaitHandle.WaitOne();
+            }
+
+            return task.GetAwaiter().GetResult();
+        }
+
+        public static bool WaitForCompletionNoSpin(this Task task, TimeSpan timeout)
         {
             if (timeout >= TimeoutHelper.MaxWait)
             {
-                task.Wait();
+                task.WaitForCompletionNoSpin();
                 return true;
             }
 
-            return task.Wait(timeout);
+            bool completed = true;
+            if (!task.IsCompleted)
+            {
+                completed = ((IAsyncResult)task).AsyncWaitHandle.WaitOne(timeout);
+            }
+
+            if (completed)
+            {
+                // Throw any exceptions if there are any
+                task.GetAwaiter().GetResult();
+            }
+            
+            return completed;
         }
 
         // Used by WebSocketTransportDuplexSessionChannel on the sync code path.
@@ -210,14 +248,7 @@ namespace System.Runtime
 
             try
             {
-                if (timeout > TimeoutHelper.MaxWait)
-                {
-                    task.Wait();
-                }
-                else
-                {
-                    timedOut = !task.Wait(timeout);
-                }
+                timedOut = !task.WaitForCompletionNoSpin(timeout);
             }
             catch (Exception ex)
             {

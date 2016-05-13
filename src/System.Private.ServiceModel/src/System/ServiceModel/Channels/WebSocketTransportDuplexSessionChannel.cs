@@ -536,27 +536,9 @@ namespace System.ServiceModel.Channels
                 return message;
             }
 
-            // TODO: As we're waiting blocking on a task anyway, should just call ReceiveAsync and block on that task.
             public Message Receive(TimeSpan timeout)
             {
-                bool waitingResult = _receiveTask.Task.WaitWithTimeSpan(timeout);
-                ThrowOnPendingException(ref _pendingException);
-
-                if (!waitingResult)
-                {
-                    throw FxTrace.Exception.AsError(new TimeoutException(
-                               SR.Format(SR.WaitForMessageTimedOut, timeout),
-                               TimeoutHelper.CreateEnterTimedOutException(timeout)));
-                }
-
-                Message message = GetPendingMessage();
-
-                if (message != null)
-                {
-                    StartNextReceiveAsync();
-                }
-
-                return message;
+                return ReceiveAsync(timeout).WaitForCompletionNoSpin();
             }
 
             private async Task ReadBufferedMessageAsync()
