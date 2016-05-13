@@ -28,7 +28,7 @@ public static class TextTests
         try
         {
             // *** SETUP *** \\
-            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement("ISO-8859-1"),
+            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement(Encoding.UTF8.WebName),
                 new HttpTransportBindingElement
                 {
                     MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
@@ -71,7 +71,7 @@ public static class TextTests
         try
         {
             // *** SETUP *** \\
-            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement("ISO-8859-1"),
+            CustomBinding binding = new CustomBinding(new CustomTextMessageBindingElement(Encoding.UTF8.WebName),
                 new HttpTransportBindingElement
                 {
                     MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
