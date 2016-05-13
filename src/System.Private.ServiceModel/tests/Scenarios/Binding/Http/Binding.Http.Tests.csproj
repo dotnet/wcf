@@ -17,8 +17,7 @@
     <ProjectGuid>{15636BB6-CD0B-4EC7-B7A8-9AB59A17B625}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BasicHttpBindingTests.cs" />
-    <Compile Include="NetHttpBindingTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

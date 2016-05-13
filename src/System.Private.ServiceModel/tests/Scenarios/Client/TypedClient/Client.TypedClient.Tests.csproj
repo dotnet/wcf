@@ -17,8 +17,7 @@
     <ProjectGuid>{09EB5A34-9F50-4349-B8D9-D8E82A3FAE8E}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="TypedProxyDuplexTests.cs" />
-    <Compile Include="TypedProxyTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

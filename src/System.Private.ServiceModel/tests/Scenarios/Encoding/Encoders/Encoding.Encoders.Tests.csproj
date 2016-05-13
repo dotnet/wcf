@@ -17,8 +17,7 @@
     <ProjectGuid>{F7193054-CE9B-4BC7-8CA9-4FA722CF8CEF}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BinaryEncodingTests.cs" />
-    <Compile Include="TextEncodingTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

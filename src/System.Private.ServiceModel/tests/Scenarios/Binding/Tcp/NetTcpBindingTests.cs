@@ -6,7 +6,7 @@ using Infrastructure.Common;
 using System.ServiceModel;
 using Xunit;
 
-public class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
+public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
 {
     // Simple echo of a string using NetTcpBinding on both client and server with all default settings.
     // Default settings are:
@@ -30,39 +30,6 @@ public class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
             // *** SETUP *** \\
             NetTcpBinding binding = new NetTcpBinding();
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_DefaultBinding_Address));
-            serviceProxy = factory.CreateChannel();
-
-            // *** EXECUTE *** \\
-            string result = serviceProxy.Echo(testString);
-
-            // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
-
-            // *** CLEANUP *** \\
-            ((ICommunicationObject)serviceProxy).Close();
-            factory.Close();
-        }
-        finally
-        {
-            // *** ENSURE CLEANUP *** \\
-            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-        }
-    }
-
-    // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=None
-    [Fact]
-    [OuterLoop]
-    public static void SecurityModeNone_Echo_RoundTrips_String()
-    {
-        string testString = "Hello";
-        ChannelFactory<IWcfService> factory = null;
-        IWcfService serviceProxy = null;
-
-        try
-        {
-            // *** SETUP *** \\
-            NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

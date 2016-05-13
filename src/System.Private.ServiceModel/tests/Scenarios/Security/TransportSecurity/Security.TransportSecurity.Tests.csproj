@@ -17,16 +17,7 @@
     <ProjectGuid>{452BA2A7-81AD-4146-AD02-35EC242FF0EB}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Https\ClientCredentialTypeTests.cs" />
-    <Compile Include="Https\HttpsTests.cs" />
-    <Compile Include="Http\ClientCredentialTypeTests.cs" />
-    <Compile Include="Negotiate\NegotiateStreamTestConfiguration.cs" />
-    <Compile Include="Negotiate\NegotiateStream_Tcp_Tests.cs" />
-    <Compile Include="Negotiate\NegotiateStream_Http_Tests.cs" />
-    <Compile Include="Tcp\ClientCredentialTypeTests.cs" />
-    <Compile Include="Tcp\ClientCredentialTypeCertificateCanonicalNameTests.cs" />
-    <Compile Include="Tcp\IdentityTests.cs" />
-    <Compile Include="Tcp\StreamingTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

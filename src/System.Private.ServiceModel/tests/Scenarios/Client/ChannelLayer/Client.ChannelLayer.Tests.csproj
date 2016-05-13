@@ -17,8 +17,7 @@
     <ProjectGuid>{1DFF7AF1-5873-4984-B871-73F2F9A84239}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DuplexChannelShapeTests.cs" />
-    <Compile Include="RequestReplyChannelShapeTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

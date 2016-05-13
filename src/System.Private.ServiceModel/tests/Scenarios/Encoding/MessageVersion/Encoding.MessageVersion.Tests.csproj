@@ -17,7 +17,7 @@
     <ProjectGuid>{604EBABB-0160-48EF-AE10-FEAE8DE39F19}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MessageVersionTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />

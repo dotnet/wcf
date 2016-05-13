@@ -2,22 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using Infrastructure.Common;
-using System;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
 using Xunit;
 
-public partial class CustomBindingTests : ConditionalWcfTest
+public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
 {
-    // Tcp: Client and Server bindings setup exactly the same using default settings.
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
-#if FEATURE_NETNATIVE
-    [ActiveIssue(833)] // Not supported in NET Native
-#endif
+    // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=None
+    [Fact]
     [OuterLoop]
-    public static void DefaultSettings_Tcp_Binary_Echo_RoundTrips_String()
+    public static void SecurityModeNone_Echo_RoundTrips_String()
     {
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
@@ -26,13 +20,8 @@ public partial class CustomBindingTests : ConditionalWcfTest
         try
         {
             // *** SETUP *** \\
-            CustomBinding binding = new CustomBinding(
-                new SslStreamSecurityBindingElement(),
-                new BinaryMessageEncodingBindingElement(),
-                new TcpTransportBindingElement());
-
-            var endpointIdentity = new DnsEndpointIdentity(Endpoints.Tcp_CustomBinding_SslStreamSecurity_HostName);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(new Uri(Endpoints.Tcp_CustomBinding_SslStreamSecurity_Address), endpointIdentity));
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

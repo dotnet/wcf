@@ -39,8 +39,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientBaseTests.cs" />
-    <Compile Include="DuplexClientBaseTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
