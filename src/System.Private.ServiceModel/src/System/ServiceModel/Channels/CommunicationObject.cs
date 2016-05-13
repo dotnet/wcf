@@ -141,7 +141,7 @@ namespace System.ServiceModel.Channels
 
         public void Close(TimeSpan timeout)
         {
-            CloseAsyncInternal(timeout).WaitForCompletion();
+            TaskHelpers.RunSyncWithParams(CloseAsyncInternal, timeout);
         }
 
         private async Task CloseAsyncInternal(TimeSpan timeout)
@@ -316,7 +316,7 @@ namespace System.ServiceModel.Channels
 
         public void Open(TimeSpan timeout)
         {
-            OpenAsyncInternal(timeout).WaitForCompletion();
+            TaskHelpers.RunSyncWithParams(OpenAsyncInternal, timeout);
         }
 
         private async Task OpenAsyncInternal(TimeSpan timeout)
@@ -803,7 +803,7 @@ namespace System.ServiceModel.Channels
 
         public static void OnClose(CommunicationObject communicationObject, TimeSpan timeout)
         {
-            OnCloseAsyncInternal(communicationObject, timeout).WaitForCompletion();
+            TaskHelpers.RunSyncWithParams(OnCloseAsyncInternal, communicationObject, timeout);
         }
 
         public static IAsyncResult OnBeginClose(CommunicationObject communicationObject, TimeSpan timeout, AsyncCallback callback, object state)
@@ -818,7 +818,7 @@ namespace System.ServiceModel.Channels
 
         public static void OnOpen(CommunicationObject communicationObject, TimeSpan timeout)
         {
-            OnOpenAsyncInternal(communicationObject, timeout).WaitForCompletion();
+            TaskHelpers.RunSyncWithParams(OnOpenAsyncInternal, communicationObject, timeout);
         }
 
         public static IAsyncResult OnBeginOpen(CommunicationObject communicationObject, TimeSpan timeout, AsyncCallback callback, object state)

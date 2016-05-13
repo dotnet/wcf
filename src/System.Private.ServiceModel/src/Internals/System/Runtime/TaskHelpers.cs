@@ -179,16 +179,121 @@ namespace System.Runtime
             }
         }
 
-        // Task.GetAwaiter().GetResult() calls an internal variant of Wait() which doesn't wrap exceptions in
-        // an AggregateException.
-        public static void WaitForCompletion(this Task task)
+        public static void RunSyncWithParams<T1>(this Func<T1, Task> function, T1 param1)
         {
-            task.GetAwaiter().GetResult();
+            var state = Tuple.Create(function, param1);
+            var syncTask = new Task<Task>(obj => {
+                var tuple = obj as Tuple<Func<T1, Task>, T1>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                return func(p1);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
         }
 
-        public static TResult WaitForCompletion<TResult>(this Task<TResult> task)
+        public static void RunSyncWithParams<T1, T2>(this Func<T1, T2, Task> function, T1 param1, T2 param2)
         {
-            return task.GetAwaiter().GetResult();
+            var state = Tuple.Create(function, param1, param2);
+            var syncTask = new Task<Task>(obj => {
+                var tuple = obj as Tuple<Func<T1, T2, Task>, T1, T2>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                var p2 = tuple.Item3;
+                return func(p1, p2);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
+        }
+
+        public static void RunSyncWithParams<T1, T2, T3>(this Func<T1, T2, T3, Task> function, T1 param1, T2 param2, T3 param3)
+        {
+            var state = Tuple.Create(function, param1, param2, param3);
+            var syncTask = new Task<Task>(obj => {
+                var tuple = obj as Tuple<Func<T1, T2, T3, Task>, T1, T2, T3>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                var p2 = tuple.Item3;
+                var p3 = tuple.Item4;
+                return func(p1, p2, p3);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
+        }
+
+        public static void RunSyncWithParams<T1, T2, T3, T4>(this Func<T1, T2, T3, T4, Task> function, T1 param1, T2 param2, T3 param3, T4 param4)
+        {
+            var state = Tuple.Create(function, param1, param2, param3, param4);
+            var syncTask = new Task<Task>(obj => {
+                var tuple = obj as Tuple<Func<T1, T2, T3, T4, Task>, T1, T2, T3, T4>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                var p2 = tuple.Item3;
+                var p3 = tuple.Item4;
+                var p4 = tuple.Item5;
+                return func(p1, p2, p3, p4);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
+        }
+
+        public static TResult RunSyncWithParams<T1, TResult>(this Func<T1, Task<TResult>> function, T1 param1)
+        {
+            var state = Tuple.Create(function, param1);
+            var syncTask = new Task<Task<TResult>>(obj =>
+            {
+                var tuple = obj as Tuple<Func<T1, Task<TResult>>, T1>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                return func(p1);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            return syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
+        }
+
+        public static TResult RunSyncWithParams<T1, T2, TResult>(this Func<T1, T2, Task<TResult>> function, T1 param1, T2 param2)
+        {
+            var state = Tuple.Create(function, param1, param2);
+            var syncTask = new Task<Task<TResult>>(obj => {
+                var tuple = obj as Tuple<Func<T1, T2, Task<TResult>>, T1, T2>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                var p2 = tuple.Item3;
+                return func(p1, p2);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            return syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
+        }
+
+        public static TResult RunSyncWithParams<T1, T2, T3, TResult>(this Func<T1, T2, T3, Task<TResult>> function, T1 param1, T2 param2, T3 param3)
+        {
+            var state = Tuple.Create(function, param1, param2, param3);
+            var syncTask = new Task<Task<TResult>>(obj => {
+                var tuple = obj as Tuple<Func<T1, T2, T3, Task<TResult>>, T1, T2, T3>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                var p2 = tuple.Item3;
+                var p3 = tuple.Item4;
+                return func(p1, p2, p3);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            return syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
+        }
+
+        public static TResult RunSyncWithParams<T1, T2, T3, T4, TResult>(this Func<T1, T2, T3, T4, Task<TResult>> function, T1 param1, T2 param2, T3 param3, T4 param4)
+        {
+            var state = Tuple.Create(function, param1, param2, param3, param4);
+            var syncTask = new Task<Task<TResult>>(obj => {
+                var tuple = obj as Tuple<Func<T1, T2, T3, T4, Task<TResult>>, T1, T2, T3, T4>;
+                var func = tuple.Item1;
+                var p1 = tuple.Item2;
+                var p2 = tuple.Item3;
+                var p3 = tuple.Item4;
+                var p4 = tuple.Item5;
+                return func(p1, p2, p3, p4);
+            }, state, CancellationToken.None);
+            syncTask.RunSynchronously(TaskScheduler.Default);
+            return syncTask.GetAwaiter().GetResult().GetAwaiter().GetResult();
         }
 
         public static bool WaitWithTimeSpan(this Task task, TimeSpan timeout)

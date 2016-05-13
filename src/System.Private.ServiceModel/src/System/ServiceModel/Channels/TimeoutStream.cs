@@ -33,7 +33,7 @@ namespace System.ServiceModel.Channels
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return ReadAsyncInternal(buffer, offset, count, CancellationToken.None).WaitForCompletion();
+            return TaskHelpers.RunSyncWithParams(ReadAsyncInternal, buffer, offset, count, CancellationToken.None);
         }
 
         public override int ReadByte()
@@ -62,7 +62,7 @@ namespace System.ServiceModel.Channels
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            WriteAsyncInternal(buffer, offset, count, CancellationToken.None).WaitForCompletion();
+            TaskHelpers.RunSyncWithParams(WriteAsyncInternal, buffer, offset, count, CancellationToken.None);
         }
 
         public override void WriteByte(byte value)
