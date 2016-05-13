@@ -65,9 +65,5 @@
         "Microsoft.TargetingPack.Private.WinRT": "1.0.1"
       }
     }
-  },
-  "runtimes": {
-    "win8-x86": {},
-    "win8-x64": {}
   }
 }
