@@ -7,6 +7,7 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
+using System.Text;
 
 namespace WcfService
 {
@@ -25,7 +26,7 @@ namespace WcfService
 
         protected override Binding GetBinding()
         {
-            return new CustomBinding(new CustomTextMessageBindingElement("ISO-8859-1"), new HttpTransportBindingElement
+            return new CustomBinding(new CustomTextMessageBindingElement(Encoding.UTF8.WebName), new HttpTransportBindingElement
             {
                 MaxReceivedMessageSize = SixtyFourMB,
                 MaxBufferSize = SixtyFourMB
