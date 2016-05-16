@@ -8,7 +8,14 @@
 
 ## Version History
 
+### 4.1.0-rc2-24027
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/4.1.0-rc2-24027)
+* [Release tag](https://github.com/dotnet/wcf/tree/v1.0.0-rc2)
+* [Supported features](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v1.0.0-rc2.md)
+
 ### 4.1.0-beta-23516
 
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/4.1.0-beta-23516)
 * [Release tag](https://github.com/dotnet/wcf/tree/v1.0.0-rc1)
 * [Supported features](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v1.0.0-rc1.md)
