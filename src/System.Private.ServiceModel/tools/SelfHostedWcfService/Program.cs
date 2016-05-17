@@ -134,6 +134,10 @@ namespace SelfHostedWCFService
             NetHttpTestServiceHost netHttpTestServiceHostServiceHost = new NetHttpTestServiceHost(typeof(WcfService.WcfService), netHttpTestServiceHostbaseAddress);
             netHttpTestServiceHostServiceHost.Open();
 
+            Uri[] netHttpsTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/NetHttps.svc", httpsBaseAddress)) };
+            NetHttpsTestServiceHost netHttpsTestServiceHostServiceHost = new NetHttpsTestServiceHost(typeof(WcfService.WcfService), netHttpsTestServiceHostbaseAddress);
+            netHttpsTestServiceHostServiceHost.Open();
+
             Uri[] serviceContractAsyncIntOutTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/ServiceContractAsyncIntOut.svc", httpBaseAddress)) };
             ServiceContractAsyncIntOutTestServiceHost serviceContractAsyncIntOutTestServiceHostServiceHost = new ServiceContractAsyncIntOutTestServiceHost(typeof(WcfService.ServiceContractIntOutService), serviceContractAsyncIntOutTestServiceHostbaseAddress);
             serviceContractAsyncIntOutTestServiceHostServiceHost.Open();

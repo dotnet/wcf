@@ -234,6 +234,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string HttpBaseAddress_NetHttps
+    {
+        get
+        {
+            return GetEndpointAddress("NetHttps.svc//NetHttps", protocol: "https");
+        }
+    }
+
     #region Secure WebSocket Addresses
     public static string WebSocketHttpsDuplexBinaryStreamed_Address
     {
