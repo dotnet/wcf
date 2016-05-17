@@ -53,6 +53,11 @@ public static partial class Endpoints
         get { return Endpoints.DefaultCustomHttp_Address + "/UnknownProtocolUrl.htm"; }
     }
 
+    public static string HttpBaseAddress_ChannelExtensibility
+    {
+        get { return GetEndpointAddress("ChannelExtensibility.svc//ChannelExtensibility"); }
+    }
+
     #region WebSocket Addresses
     public static string NetHttpWebSocketTransport_Address
     {
