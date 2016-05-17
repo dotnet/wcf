@@ -1,5 +1,7 @@
 WCF Features in RC2
 ===========================
+*This is part of [WCF release notes](https://github.com/dotnet/wcf/releases/tag/v1.0.0-rc2) for .NET Core 1.0 RC2. Please check out release notes for what's new since RC1 release.*
+
 Table of Contents
 ------------
 [Supported Features](#supported-features)  
@@ -59,10 +61,10 @@ Platforms
 #### UWP
 For more details about what UWP is please see this [dotnet Glossary doc](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/glossary.md).
 
-:bangbang: UWP is broken in the RC2 release with a package related problem. :bangbang:  
+:bangbang: *.NET Core 1.0 RC2 does not work in UWP projects.*  
 
 #### All Other Platforms
-For supported versions of each platform and other details please see the [RC2 Release Notes](https://github.com/leecow/core/blob/2c2cbf31604fe9c01fa83dae989f554b9b2f3d75/release-notes/Release-Notes-RC2.md)  
+For supported versions of each platform and other details please see the [.NET Core 1.0 RC2 Release Notes](https://github.com/dotnet/core/blob/master/release-notes/1.0/Release-Notes-RC2.md)  
 
 Partially Working Features
 ------------
@@ -99,7 +101,7 @@ Not Supported Features
 ------------
 
 #### Security_Message  
-&ensp;&ensp; Support for Message Security in WCF on CoreFx has not yet been added.  
+&ensp;&ensp; Message Security is not supported in WCF on .NET Core.  
 
 #### NTLM Authentication  
 &ensp;&ensp; Support is built into CentOS, RedHat and Mac OS X but it hasn't been tested yet.  
@@ -114,7 +116,7 @@ Not Supported Features
 
 #### NetTcp  
 &ensp;&ensp; SetLingerOption isn't working correctly on OS X. This is only used on the Close(timeout) code path so the test itself is likely passing. This api required special handling on linux as this is a windows socket concept.  
-&ensp;&ensp;&ensp;&ensp; Active Issue: [Issue #7403](https://github.com/dotnet/corefx/issues/7403)  
+&ensp;&ensp;&ensp;&ensp; For more details see: [Issue #7403](https://github.com/dotnet/corefx/issues/7403)  
 
 #### ETW Tracing
 &ensp;&ensp; ETW Tracing has been enabled for Windows in this release, support on other platforms will be available in future releases.
