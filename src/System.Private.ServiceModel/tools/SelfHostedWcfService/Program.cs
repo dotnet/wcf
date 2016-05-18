@@ -298,6 +298,10 @@ namespace SelfHostedWCFService
             ChannelExtensibilityServiceHost channelExtensiblityTestServiceHostServiceHost = new ChannelExtensibilityServiceHost(typeof(WcfService.WcfChannelExtensiblityService), channelExtensibilityTestServiceHostbaseAddress);
             channelExtensiblityTestServiceHostServiceHost.Open();
 
+            Uri[] webSocketHttpVerifyWebSocketsUsedTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/WebSocketHttpVerifyWebSocketsUsed.svc", websocketBaseAddress)) };
+            WebSocketHttpVerifyWebSocketsUsedTestServiceHost webSocketHttpVerifyWebSocketsUsedTestServiceHostServiceHost = new WebSocketHttpVerifyWebSocketsUsedTestServiceHost(typeof(WcfService.VerifyWebSockets), webSocketHttpVerifyWebSocketsUsedTestServiceHostbaseAddress);
+            webSocketHttpVerifyWebSocketsUsedTestServiceHostServiceHost.Open();
+
             //Start the crlUrl service last as the client use it to ensure all services have been started
             Uri crlUrl = new Uri(string.Format("http://localhost/CrlService.svc", s_httpPort));
             WebServiceHost host = new WebServiceHost(typeof(CrlService), crlUrl);

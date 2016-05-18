@@ -1115,4 +1115,43 @@ public class WebSocketTests : ConditionalWcfTest
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
         }
     }
+
+    // WCF detects when a callback is used in the channel construction process and switches to use WebSockets.
+    // When not using a callback you can still force WCF to use WebSockets.
+    // This test verifies that it actually uses WebSockets when not using a callback.
+    [Fact]
+    [OuterLoop]
+    [ActiveIssue(625, PlatformID.AnyUnix)]
+    public static void WebSocket_Http_VerifyWebSocketsUsed()
+    {
+        NetHttpBinding binding = null;
+        ChannelFactory<IVerifyWebSockets> channelFactory = null;
+        IVerifyWebSockets client = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding();
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+
+            channelFactory = new ChannelFactory<IVerifyWebSockets>(binding, new EndpointAddress(Endpoints.WebSocketHttpVerifyWebSocketsUsed_Address));
+            client = channelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            ((ICommunicationObject)client).Open();
+
+            // *** VALIDATE *** \\
+            bool responseFromService = client.ValidateWebSocketsUsed();
+            Assert.True(responseFromService, String.Format("Response from the service was not expected. Expected: 'True' but got {0}", responseFromService));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+        }
+    }
 }

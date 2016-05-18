@@ -528,3 +528,10 @@ public interface IWcfChannelExtensibilityContract
     [OperationContract(IsOneWay = true)]
     void ReportWindSpeed(int speed);
 }
+
+[ServiceContract]
+public interface IVerifyWebSockets
+{
+    [OperationContract()]
+    bool ValidateWebSocketsUsed();
+}
