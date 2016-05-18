@@ -35,6 +35,7 @@ public static class ServiceUtilHelper
             if (!s_rootCertAvailabilityChecked)
             {
                 X509Certificate2 rootCertificate = null;
+                string thumbprint = null;
 
                 try
                 {
@@ -53,20 +54,19 @@ public static class ServiceUtilHelper
                 // by retrieving it from the store by thumbprint.
                 if (rootCertificate != null)
                 {
-                    string thumbprint = rootCertificate.Thumbprint;
+                    thumbprint = rootCertificate.Thumbprint;
                     rootCertificate = CertificateManager.RootCertificateFromThumprint(thumbprint);
-                    System.Console.WriteLine(String.Format("Using root cert in store by thumbprint '{0}' = '{1}'", 
-                                                           thumbprint, rootCertificate));
                 }
 
-                // If we failed to obtain a certificate from the service endpoint, or failed to find one
-                // matching the thumbprint we got from the server, we'll accept a match
-                // based on issuer and subject name
-                if (rootCertificate == null)
+                if (rootCertificate != null)
                 {
-                    rootCertificate = CertificateManager.RootCertificateFromName(CertificateIssuer, CertificateIssuer);
-                    System.Console.WriteLine(String.Format("Using root cert in store by name '{0}' = '{1}'",
-                                                          CertificateIssuer, rootCertificate));
+                    System.Console.WriteLine(String.Format("Using root certificate:{0}{1}",
+                                            Environment.NewLine, rootCertificate));
+                }
+                else
+                {
+                    System.Console.WriteLine(
+                        String.Format("Failed to find a root certificate matching thumbprint '{0}'", thumbprint));
                 }
 
                 RootCertificate = rootCertificate;
@@ -114,6 +114,7 @@ public static class ServiceUtilHelper
             if (!s_clientCertAvailabilityChecked)
             {
                 X509Certificate2 clientCertificate = null;
+                string thumbprint = null;
 
                 // To be valid, the client certificate also requires the root certificate
                 // to be installed.  But even if the root certificate installation fails,
@@ -139,19 +140,19 @@ public static class ServiceUtilHelper
                 // by retrieving it from the store by thumbprint.
                 if (clientCertificate != null)
                 {
-                    string thumbprint = clientCertificate.Thumbprint;
+                    thumbprint = clientCertificate.Thumbprint;
                     clientCertificate = CertificateManager.ClientCertificateFromThumprint(thumbprint);
-                    System.Console.WriteLine(String.Format("Using client cert in store by thumbprint '{0}' = '{1}'",
-                                       thumbprint, clientCertificate));
                 }
 
-                // If we failed to obtain a certificate from the service endpoint or failed to find
-                // it in the store by thumbprint, we'll accept a match based on issuer and subject name
-                if (clientCertificate == null)
+                if (clientCertificate != null)
                 {
-                    clientCertificate = CertificateManager.ClientCertificateFromName(CertificateIssuer, ClientCertificateSubject);
-                    System.Console.WriteLine(String.Format("Using client cert in store by name '{0}' = '{1}'",
-                                      ClientCertificateSubject, clientCertificate));
+                    System.Console.WriteLine(String.Format("Using client certificate:{0}{1}",
+                                            Environment.NewLine, clientCertificate));
+                }
+                else
+                {
+                    System.Console.WriteLine(
+                        String.Format("Failed to find a client certificate matching thumbprint '{0}'", thumbprint));
                 }
 
                 ClientCertificate = clientCertificate;
