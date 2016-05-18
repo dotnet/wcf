@@ -464,12 +464,12 @@ namespace System.ServiceModel.Channels
 
             public override ArraySegment<byte> WriteMessage(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)
             {
-                return WriteMessageAsync(message, maxMessageSize, bufferManager, messageOffset).WaitForCompletion();
+                return WriteMessageAsync(message, maxMessageSize, bufferManager, messageOffset).WaitForCompletionNoSpin();
             }
 
             public override void WriteMessage(Message message, Stream stream)
             {
-                WriteMessageAsyncInternal(message, stream).WaitForCompletion();
+                WriteMessageAsyncInternal(message, stream).WaitForCompletionNoSpin();
             }
 
             public override Task<ArraySegment<byte>> WriteMessageAsync(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)

@@ -246,7 +246,7 @@ namespace System.ServiceModel.Channels
 
         public Message Request(Message message, TimeSpan timeout)
         {
-            return RequestAsyncInternal(message, timeout).WaitForCompletion();
+            return RequestAsyncInternal(message, timeout).WaitForCompletionNoSpin();
         }
 
         public Task<Message> RequestAsync(Message message)
