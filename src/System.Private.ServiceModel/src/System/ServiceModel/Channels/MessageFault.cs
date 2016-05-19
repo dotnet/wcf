@@ -396,7 +396,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    internal class XmlObjectSerializerFault : MessageFault
+    public class XmlObjectSerializerFault : MessageFault
     {
         private FaultCode _code;
         private FaultReason _reason;
