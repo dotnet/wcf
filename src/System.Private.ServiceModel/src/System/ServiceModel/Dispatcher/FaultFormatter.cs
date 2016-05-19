@@ -11,7 +11,7 @@ using System.Runtime;
 
 namespace System.ServiceModel.Dispatcher
 {
-    internal class FaultFormatter : IClientFaultFormatter, IDispatchFaultFormatter
+    public class FaultFormatter : IClientFaultFormatter, IDispatchFaultFormatter
     {
         private FaultContractInfo[] _faultContractInfos;
 
@@ -193,7 +193,7 @@ namespace System.ServiceModel.Dispatcher
             return (MessageFault)Activator.CreateInstance(operationFaultType, serializer, faultException);
         }
 
-        internal class OperationFault<T> : XmlObjectSerializerFault
+        public class OperationFault<T> : XmlObjectSerializerFault
         {
             public OperationFault(XmlObjectSerializer serializer, FaultException<T> faultException) :
                 base(faultException.Code, faultException.Reason,

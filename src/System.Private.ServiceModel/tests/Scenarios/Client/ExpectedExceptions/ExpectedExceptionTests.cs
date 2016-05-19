@@ -188,9 +188,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [Fact]
-#if FEATURE_NETNATIVE
-    [ActiveIssue(769)] // Blocked from working in NET Native due to a toolchain issue.
-#endif
     [OuterLoop]
     public static void DuplexCallback_Throws_FaultException_DirectThrow()
     {
@@ -236,9 +233,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [Fact]
-#if FEATURE_NETNATIVE
-    [ActiveIssue(769)] // Blocked from working in NET Native due to a toolchain issue.
-#endif
     [OuterLoop]
     public static void DuplexCallback_Throws_FaultException_ReturnsFaultedTask()
     {
