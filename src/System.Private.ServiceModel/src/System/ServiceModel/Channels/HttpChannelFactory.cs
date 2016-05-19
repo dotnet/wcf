@@ -520,8 +520,7 @@ namespace System.ServiceModel.Channels
 
         protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            OnClose(timeout);
-            return TaskHelpers.CompletedTask();
+            return base.OnCloseAsync(timeout);
         }
 
         protected override void OnClosed()

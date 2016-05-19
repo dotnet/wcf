@@ -175,6 +175,11 @@ namespace System.ServiceModel.Channels
             _channels.Close(timeoutHelper.RemainingTime());
         }
 
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return OnCloseAsyncInternal(timeout);
+        }
+
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
             return new ChainedCloseAsyncResult(timeout, callback, state,
@@ -185,6 +190,26 @@ namespace System.ServiceModel.Channels
         protected override void OnEndClose(IAsyncResult result)
         {
             ChainedCloseAsyncResult.End(result);
+        }
+
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            IChannel[] currentChannels = _channels.ToArray();
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            foreach (IChannel channel in currentChannels)
+            {
+                IAsyncCommunicationObject iAsyncChannel = channel as IAsyncCommunicationObject;
+                if (iAsyncChannel != null)
+                {
+                    await iAsyncChannel.CloseAsync(timeoutHelper.RemainingTime());
+                }
+                else
+                {
+                    channel.Close(timeoutHelper.RemainingTime());
+                }
+            }
+
+            await Task.Factory.FromAsync(_channels.BeginClose, _channels.EndClose, timeout, TaskCreationOptions.None);
         }
     }
 }

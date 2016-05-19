@@ -4,6 +4,7 @@
 
 
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -142,6 +143,12 @@ namespace System.ServiceModel.Channels
         {
             OnCloseOrAbort();
             base.OnClose(timeout);
+        }
+
+        internal protected override Task OnCloseAsync(TimeSpan timeout)
+        {
+            OnCloseOrAbort();
+            return base.OnCloseAsync(timeout);
         }
 
         private void OnCloseOrAbort()
