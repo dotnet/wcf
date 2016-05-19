@@ -461,6 +461,14 @@ public static partial class Endpoints
             return GetEndpointAddress("TcpTransportSecurityStreamed.svc//tcp-transport-security-streamed", protocol: "net.tcp");
         }
     }
+
+    public static string NetTcp_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_Address
+    {
+        get
+        {
+            return GetEndpointAddress("NetTcpCertValModePeerTrust.svc//nettcp-server-cert-valmode-peertrust", protocol: "net.tcp");
+        }
+    }
     #endregion net.tcp Addresses
 }
 
