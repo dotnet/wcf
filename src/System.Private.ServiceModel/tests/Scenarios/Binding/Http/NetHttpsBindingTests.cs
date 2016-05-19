@@ -15,6 +15,7 @@ public static class Binding_Http_NetHttpsBindingTests
 {
     [Fact]
     [OuterLoop]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void DefaultCtor_NetHttps_Echo_RoundTrips_String()
     {
         string testString = "Hello";
@@ -78,6 +79,7 @@ public static class Binding_Http_NetHttpsBindingTests
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void NonDefaultCtor_NetHttps_Echo_RoundTrips_String()
     {
         string testString = "Hello";

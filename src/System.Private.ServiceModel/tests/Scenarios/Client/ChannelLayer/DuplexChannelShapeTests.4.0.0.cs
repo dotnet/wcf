@@ -136,6 +136,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
     [Fact]
     [OuterLoop]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void IRequestChannel_Https_NetHttpsBinding()
     {
         IChannelFactory<IRequestChannel> factory = null;
