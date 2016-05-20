@@ -23,7 +23,7 @@ Please read [Contributing](https://github.com/dotnet/wcf/blob/master/Documentati
 Building the repository
 =======================
 
-The WCF repository can be built from a regular, non-admin command prompt using build.cmd on Windows or build.sh on *nix.
+The WCF repository can be built from a regular, non-admin command prompt using build.cmd on Windows or build.sh on other platforms.
 This build produces assets including a single System.Private.ServiceModel assembly that implements the individual client libraries.
 
 Microsoft uses this repository to create and publish separate NuGet packages for each library. 
@@ -46,7 +46,7 @@ or this command on Linux or OS X:
 Running scenario tests
 ==========================
 Scenario tests are those tests that involve network activity between the client tests and WCF test services.
-By default, they are not run with the normal build.cmd or build.sh.
+By default, they are not run with normal build.cmd or build.sh.
 
 To run the scenario tests on Windows, execute this CMD from the root of the repository. It will automatically start a
 self-hosted WCF test service on the same Windows machine and shut it down at the end of execution of all tests.
@@ -56,7 +56,7 @@ self-hosted WCF test service on the same Windows machine and shut it down at the
 ```
 To run scenario tests against an already running WCF test service, you will need to specify the base address 
 of the WCF test service by using the `/p:ServiceUri` parameter. This is also necessary when running
-scenrio tests on Linux or OS X as the WCF service can only run on Windows.
+scenario tests on Linux or OS X as the WCF service can only run on Windows.
 
 From the root of the repository, run this command to run scenario tests on Windows:
 ```
@@ -73,11 +73,14 @@ You will need to replace `[WCFTestServiceBaseAddress]` in above commands with an
 See [Scenario test guide](https://github.com/dotnet/wcf/blob/master/Documentation/scenario-test-guide.md)
 for further details including how to start a WCF test service.
 
+Note: in case you need to run scenario tests against a different `ServiceUri`, you can either use environment variable to override the old value or clean up `bin`
+
 Obtaining code coverage
 =======================
 You can also obtain detailed code coverage information by including an additional property
-when you run the build script.  For example, this CMD runs the scenario tests and collects
+when you run the build script. For example, this CMD runs the scenario tests and collects
 code coverage numbers on Windows:
 ```
     build.cmd /p:WithCategories=OuterLoop /p:Coverage=true
 ```
+Once it is done, the result can be found at `bin\tests\coverage\index.html`.
