@@ -207,7 +207,9 @@ namespace System.ServiceModel.Channels
 
             private static Task CreateTask(ServiceChannel channel, ProxyOperationRuntime operation, object[] inputParameters)
             {
-                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+                // The Task we create from this must not permit child Tasks to attach to it
+                // because OperationContext is carried in Thread local storage.
+                TaskCompletionSource<object> tcs = new TaskCompletionSource<object>(TaskCreationOptions.DenyChildAttach);
                 bool completedCallback = false;
 
                 Action<IAsyncResult> endCallDelegate = (asyncResult) =>
