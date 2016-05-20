@@ -286,6 +286,10 @@ namespace SelfHostedWCFService
             WebSocketHttpsDuplexTextBufferedTestServiceHost webSocketHttpsDuplexTextBufferedTestServiceHostServiceHost = new WebSocketHttpsDuplexTextBufferedTestServiceHost(typeof(WcfService.WSDuplexService), webSocketHttpsDuplexTextBufferedTestServiceHostbaseAddress);
             webSocketHttpsDuplexTextBufferedTestServiceHostServiceHost.Open();
 
+            Uri[] channelExtensibilityTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/ChannelExtensibility.svc", httpBaseAddress)) };
+            ChannelExtensibilityServiceHost channelExtensiblityTestServiceHostServiceHost = new ChannelExtensibilityServiceHost(typeof(WcfService.WcfChannelExtensiblityService), channelExtensibilityTestServiceHostbaseAddress);
+            channelExtensiblityTestServiceHostServiceHost.Open();
+
             //Start the crlUrl service last as the client use it to ensure all services have been started
             Uri crlUrl = new Uri(string.Format("http://localhost/CrlService.svc", s_httpPort));
             WebServiceHost host = new WebServiceHost(typeof(CrlService), crlUrl);

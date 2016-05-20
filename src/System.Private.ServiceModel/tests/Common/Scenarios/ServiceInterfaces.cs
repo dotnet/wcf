@@ -521,3 +521,10 @@ public interface IWcfServiceXml_OperationContext
     [OperationContract(Action = "http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction = "*")]
     string GetIncomingMessageHeadersMessage(string customHeaderName, string customHeaderNS);
 }
+
+[ServiceContract]
+public interface IWcfChannelExtensibilityContract
+{
+    [OperationContract(IsOneWay = true)]
+    void ReportWindSpeed(int speed);
+}
