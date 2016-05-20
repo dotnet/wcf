@@ -1046,6 +1046,7 @@ public class FlowControlledStream : Stream
 public class ClientReceiver : IPushCallback, IDisposable
 {
     private bool _disposed = false;
+    private EventHandler _operationCompletedActionRegistered = null;
 
     public ManualResetEvent LogReceived { get; set; }
     public ManualResetEvent ReceiveDataInvoked { get; set; }
@@ -1053,6 +1054,8 @@ public class ClientReceiver : IPushCallback, IDisposable
     public ManualResetEvent ReceiveStreamInvoked { get; set; }
     public ManualResetEvent ReceiveStreamCompleted { get; set; }
     public string Name { get; set; }
+
+    public EventHandler OperationCompletedAction { get; set; }
 
     public List<string> ServerLog { get; set; }
 
@@ -1064,6 +1067,24 @@ public class ClientReceiver : IPushCallback, IDisposable
         ReceiveStreamInvoked = new ManualResetEvent(false);
         ReceiveStreamCompleted = new ManualResetEvent(false);
         Name = "ClientReceiver_" + DateTime.Now;
+    }
+
+    public Stream EchoStream(Stream stream)
+    {
+        // Allow the test using this to register an EventHandler to fire on OperationCompleted.
+        // If we register it and are called back in response to it firing, unregister it.
+        if (OperationCompletedAction != null && OperationCompletedAction != _operationCompletedActionRegistered)
+        {
+            _operationCompletedActionRegistered = OperationCompletedAction;
+            OperationContext.Current.OperationCompleted += OperationCompletedAction;
+        }
+        else if (_operationCompletedActionRegistered != null)
+        {
+            _operationCompletedActionRegistered = null;
+            OperationContext.Current.OperationCompleted -= _operationCompletedActionRegistered;
+        }
+
+        return stream;
     }
 
     public void ReceiveData(string data)
