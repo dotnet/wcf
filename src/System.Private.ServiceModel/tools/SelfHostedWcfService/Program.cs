@@ -138,6 +138,10 @@ namespace SelfHostedWCFService
             NetHttpsTestServiceHost netHttpsTestServiceHostServiceHost = new NetHttpsTestServiceHost(typeof(WcfService.WcfService), netHttpsTestServiceHostbaseAddress);
             netHttpsTestServiceHostServiceHost.Open();
 
+            Uri[] httpsCertificateValidationPeerTrustTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsCertValModePeerTrust.svc", httpsBaseAddress)) };
+            HttpsCertificateValidationPeerTrustTestServiceHost httpsCertificateValidationPeerTrustTestServiceHost = new HttpsCertificateValidationPeerTrustTestServiceHost(typeof(WcfService.WcfService), httpsCertificateValidationPeerTrustTestServiceHostbaseAddress);
+            httpsCertificateValidationPeerTrustTestServiceHost.Open();
+
             Uri[] serviceContractAsyncIntOutTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/ServiceContractAsyncIntOut.svc", httpBaseAddress)) };
             ServiceContractAsyncIntOutTestServiceHost serviceContractAsyncIntOutTestServiceHostServiceHost = new ServiceContractAsyncIntOutTestServiceHost(typeof(WcfService.ServiceContractIntOutService), serviceContractAsyncIntOutTestServiceHostbaseAddress);
             serviceContractAsyncIntOutTestServiceHostServiceHost.Open();
@@ -221,6 +225,10 @@ namespace SelfHostedWCFService
             Uri[] tcpVerifyDNSTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/TcpVerifyDNS.svc", tcpBaseAddress)) };
             TcpVerifyDNSTestServiceHost tcpVerifyDNSTestServiceHostServiceHost = new TcpVerifyDNSTestServiceHost(typeof(WcfService.WcfService), tcpVerifyDNSTestServiceHostbaseAddress);
             tcpVerifyDNSTestServiceHostServiceHost.Open();
+
+            Uri[] tcpCertificateValidationPeerTrustTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/NetTcpCertValModePeerTrust.svc", tcpBaseAddress)) };
+            TcpCertificateValidationPeerTrustTestServiceHost tcpCertificateValidationPeerTrustTestServiceHost = new TcpCertificateValidationPeerTrustTestServiceHost(typeof(WcfService.WcfService), tcpCertificateValidationPeerTrustTestServiceHostbaseAddress);
+            tcpCertificateValidationPeerTrustTestServiceHost.Open();
 
             Uri[] duplexWebSocketTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/DuplexWebSocket.svc", websocketBaseAddress)) };
             DuplexWebSocketTestServiceHost duplexWebSocketTestServiceHostServiceHost = new DuplexWebSocketTestServiceHost(typeof(WcfService.WcfWebSocketService), duplexWebSocketTestServiceHostbaseAddress);
