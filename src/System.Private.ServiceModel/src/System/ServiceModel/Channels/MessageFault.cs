@@ -396,6 +396,9 @@ namespace System.ServiceModel.Channels
         }
     }
 
+    /*
+    This class is not exposed on the contract as we only need it public for reflection purpose on .Net Native.
+    */
     public class XmlObjectSerializerFault : MessageFault
     {
         private FaultCode _code;

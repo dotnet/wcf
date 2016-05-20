@@ -11,6 +11,9 @@ using System.Runtime;
 
 namespace System.ServiceModel.Dispatcher
 {
+     /*
+      This class is not exposed on the contract as we only need it public for reflection purpose on .Net Native.
+      */
     public class FaultFormatter : IClientFaultFormatter, IDispatchFaultFormatter
     {
         private FaultContractInfo[] _faultContractInfos;
@@ -193,6 +196,9 @@ namespace System.ServiceModel.Dispatcher
             return (MessageFault)Activator.CreateInstance(operationFaultType, serializer, faultException);
         }
 
+        /*
+        This class is not exposed on the contract as we only need it public for reflection purpose on .Net Native.
+        */
         public class OperationFault<T> : XmlObjectSerializerFault
         {
             public OperationFault(XmlObjectSerializer serializer, FaultException<T> faultException) :
