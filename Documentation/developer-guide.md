@@ -73,7 +73,7 @@ You will need to replace `[WCFTestServiceBaseAddress]` in above commands with an
 See [Scenario test guide](https://github.com/dotnet/wcf/blob/master/Documentation/scenario-test-guide.md)
 for further details including how to start a WCF test service.
 
-Note: in case you need to run scenario tests against a different `ServiceUri`, you can either use environment variable to override the old value or clean up `bin`
+Note: in case you need to run scenario tests against a different WCF service, you can either use environment variable `ServiceUri` to override the old value passed by `/p:ServiceUri` or clean up `Infrastructure.Common` directory of your current build under `bin` before calling above commands again.
 
 Obtaining code coverage
 =======================
