@@ -8,7 +8,7 @@ using System.ServiceModel;
 
 namespace WcfService
 {
-    [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+    [MessageContract(IsWrapped = true, WrapperName = "RequestBankingDataWrapper", WrapperNamespace = "http://www.contoso.com")]
     public class RequestBankingData
     {
 #pragma warning disable 0649	// fields not assigned to statically

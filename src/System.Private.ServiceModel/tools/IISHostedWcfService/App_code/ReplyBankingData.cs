@@ -8,7 +8,7 @@ using System.ServiceModel;
 
 namespace WcfService
 {
-    [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+    [MessageContract(IsWrapped = true, WrapperName = "ReplyBankingDataWrapper", WrapperNamespace = "http://www.contoso.com")]
     public class ReplyBankingData
     {
         [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
