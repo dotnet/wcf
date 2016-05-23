@@ -489,4 +489,32 @@ namespace WcfService
         {
         }
     }
+
+    public class WebSocketHttpVerifyWebSocketsUsedTestServiceHostFactory : ServiceHostFactory
+    {
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            WebSocketHttpVerifyWebSocketsUsedTestServiceHost serviceHost = new WebSocketHttpVerifyWebSocketsUsedTestServiceHost(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+
+    public class WebSocketHttpVerifyWebSocketsUsedTestServiceHost : TestServiceHostBase<IVerifyWebSockets>
+    {
+        protected override string Address { get { return "WebSocketHttpVerifyWebSocketsUsed"; } }
+
+        protected override Binding GetBinding()
+        {
+            NetHttpBinding binding = new NetHttpBinding();
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            // This setting lights up the code path that calls the operation attributed with ConnectionOpenedAction
+            binding.WebSocketSettings.CreateNotificationOnConnection = true;
+            return binding;
+        }
+
+        public WebSocketHttpVerifyWebSocketsUsedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+        }
+    }
 }

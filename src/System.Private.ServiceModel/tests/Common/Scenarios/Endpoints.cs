@@ -108,6 +108,11 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("WebSocketHttpDuplexBinaryBuffered.svc//WebSocketHttpDuplexBinaryBufferedResource", protocol: "ws"); }
     }
+
+    public static string WebSocketHttpVerifyWebSocketsUsed_Address
+    {
+        get { return GetEndpointAddress("WebSocketHttpVerifyWebSocketsUsed.svc//WebSocketHttpVerifyWebSocketsUsed", protocol: "ws"); }
+    }
     #endregion WebSocket Addresses
 
     #region Service Contract Addresses
