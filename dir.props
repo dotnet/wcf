@@ -25,7 +25,7 @@
   <PropertyGroup>
     <IsDotNetFrameworkProductAssembly>true</IsDotNetFrameworkProductAssembly>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <BuildToolsTargets45 Condition="'$(OsEnvironment)'=='Windows_NT'">true</BuildToolsTargets45>
   </PropertyGroup>
@@ -33,7 +33,7 @@
   <!-- Common repo directories -->
   <PropertyGroup>
     <ProjectDir>$(MSBuildThisFileDirectory)</ProjectDir>
-    <SourceDir>$(ProjectDir)src/</SourceDir>
+    <SourceDir>$(ProjectDir)src\</SourceDir>
 
     <!-- Output directories -->
     <BinDir Condition="'$(BinDir)'==''">$(ProjectDir)bin/</BinDir>
@@ -54,9 +54,9 @@
   </PropertyGroup>
 
   <Import Project="$(ToolRuntimePath)BuildVersion.targets" Condition="Exists('$(ToolRuntimePath)BuildVersion.targets')" />
-  
+
   <PropertyGroup>
-    <!-- temporarily increase assembly version of corefx impl of desktop inbox contracts to allow folks 
+    <!-- temporarily increase assembly version of corefx impl of desktop inbox contracts to allow folks
          to move to the latest packages.  Remove once the full stack is on the latest packages
          https://github.com/dotnet/corefx/issues/7114 -->
     <AssemblyVersionTransition>true</AssemblyVersionTransition>
@@ -488,8 +488,8 @@
 
   <!-- Set up some common paths -->
   <PropertyGroup>
-    <CommonPath>$(SourceDir)Common/src</CommonPath>
-    <CommonTestPath>$(SourceDir)Common/tests</CommonTestPath>
+    <CommonPath>$(SourceDir)Common\src</CommonPath>
+    <CommonTestPath>$(SourceDir)Common\tests</CommonTestPath>
   </PropertyGroup>
 
   <!-- Set up the default output and intermediate paths -->
