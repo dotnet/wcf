@@ -6,7 +6,9 @@
     "System.IO.FileSystem": "4.0.0",
     "System.IO": "4.0.10",
     "System.Net.Http": "4.1.0-rc3-24117-00",
-    "System.Net.Primitives": "4.0.10"
+    "System.Net.Primitives": "4.0.10",
+    "System.ServiceModel.Http": "4.1.0-rc3-24117-00",
+    "System.ServiceModel.Primitives": "4.1.0-rc3-24117-00"
   },
   "frameworks": {
     "dnxcore50": {

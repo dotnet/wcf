@@ -3,13 +3,13 @@
 show_banner()
 {
     echo ""
-    echo "WCF Core Bridge CA Certificate Installer"
+    echo "WCF Core CA Certificate Installer"
 }
 
 show_usage() 
 {
-    echo "    Usage: $0 --bridge-host [bridge-host] --cert-file [certificate-file]"
-    echo "    bridge-host - hostname where Bridge is running" 
+    echo "    Usage: $0 --service-host [service-host] --cert-file [certificate-file]"
+    echo "    service-host - hostname where service is running" 
     echo "    certificate-file - Full file path where the retrieved certificate should be saved"
     echo ""
 }
@@ -20,12 +20,12 @@ run_installer()
 
     echo "Using certificate installer at '$__installer_path'" 
     
-    echo "Running installer and making a call to '$BridgeHost'"
+    echo "Running installer and making a call to '$ServiceUri'"
     # echo $__corerun_exe $__installer_path $__cafile
    
     # Need to make a call as the original user as we need to write to the cert store for the current 
     # user, not as root
-    echo "Making a call to the Bridge as user '$SUDO_USER'"
+    echo "Making a call to the service as user '$SUDO_USER'"
     sudo -E -u $SUDO_USER $__corerun_exe $__installer_path $__cafile
     
     return $?
@@ -45,6 +45,13 @@ install_root_cert()
     echo "Updating root certificates with cert from '$__cafile'"
     $__update_ca_certificates_exec
 
+    if [ $? -ne 0 ]; then
+        return $?
+    fi
+
+    echo "Recalculating certificate hashes using c_rehash"
+    $__c_rehash_exec
+
     return $?
 }
 
@@ -58,8 +65,8 @@ do
         -h|--help)
         show_usage
         ;;
-        --bridge-host)
-        __bridge_host=$2
+        --service-host)
+        __service_host=$2
         ;;
         --cert-file)
         __cafile=$2
@@ -86,6 +93,12 @@ fi
 __update_ca_certificates_exec=`which update-ca-certificates`
 if [ $? -ne 0 -o ! -f "$__update_ca_certificates_exec" ]; then 
     echo "ERROR: Could not find 'update-ca-certificates', which is needed to update certificates" 
+    exit 1
+fi
+
+__c_rehash_exec=`which c_rehash`
+if [ $? -ne 0 -o ! -f "$__c_rehash_exec" ]; then 
+    echo "ERROR: Could not find 'c_rehash', which is needed to update certificates" 
     exit 1
 fi
 
@@ -122,26 +135,26 @@ else
     echo "Certificate Authority will be written to '$__cafile'"
 fi 
 
-if [ -n "$__bridge_host" ]; then 
-    echo "Certificate will be obtained from BridgeHost '$__bridge_host'"
-    if [ -n "$BridgeHost" ]; then 
-        echo "WARNING: This will replace the BridgeHost specified in the environment, '$BridgeHost', for the duration of this script"
+if [ -n "$__service_host" ]; then 
+    echo "Certificate will be obtained from ServiceHost '$__service_host'"
+    if [ -n "$ServiceUri" ]; then 
+        echo "WARNING: This will replace the ServiceUri specified in the environment, '$ServiceUri', for the duration of this script"
     fi 
     
-    # set BridgeHost as an external env var so that this can be picked up by the Bridge
+    # set ServiceUri as an external env var so that this can be picked up by the certificate installer
     # this is effectively local to this run as scripts usually run inside a new shell
-    export BridgeHost=$__bridge_host
+    export ServiceUri=$__service_host
 fi 
 
-if [ -z "$BridgeHost" ]; then
-    echo "WARNING: \$BridgeHost environment variable was not specified in the environment"
+if [ -z "$ServiceUri" ]; then
+    echo "WARNING: \$ServiceUri environment variable was not specified in the environment"
     echo "         This may be caused by running under sudo; run 'sudo -E' if you want to keep the user environment"
     echo ""
-    echo "         Either set the BridgeHost environment variable, or run '$0' with a --bridge-host parameter"
+    echo "         Either set the ServiceUri environment variable, or run '$0' with a --service-host parameter"
     echo ""
-    echo "         The default BridgeHost is 'localhost'."
-    echo "         If the Bridge is running on a port other than the default, also set the 'BridgePort' variable"
-    echo "         so that the installer can make the call to the Bridge correctly"
+    echo "         The default ServiceUri is 'localhost'."
+    echo "         If the test service is running on a port other than the default, also set the 'BridgePort' variable"
+    echo "         so that the installer can make the call to the service correctly"
 fi
 
 # Run certificate installer 
