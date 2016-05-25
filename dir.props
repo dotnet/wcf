@@ -197,6 +197,7 @@
     <!-- By default make all libraries to be AnyCPU but individual projects can override it if they need to -->
     <Platform>AnyCPU</Platform>
     <OutputType>Library</OutputType>
+    <RunApiCompat>true</RunApiCompat>
   </PropertyGroup>
 
   <!--
@@ -438,6 +439,13 @@
         <PackageTargetFramework>net46</PackageTargetFramework>
         <TargetingPackNugetPackageId>Microsoft.TargetingPack.NETFramework.v4.6</TargetingPackNugetPackageId>
         <NuGetTargetMoniker>.NETFramework,Version=v4.6</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
+    <When Condition="'$(TargetGroup)'=='net451'">
+      <PropertyGroup>
+        <PackageTargetFramework>net451</PackageTargetFramework>
+        <TargetingPackNugetPackageId>Microsoft.TargetingPack.NETFramework.v4.5.1</TargetingPackNugetPackageId>
+        <NuGetTargetMoniker>.NETFramework,Version=v4.5.1</NuGetTargetMoniker>
       </PropertyGroup>
     </When>
     <When Condition="'$(TargetGroup)'=='net45'">
