@@ -6,6 +6,8 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using Infrastructure.Common;
 
@@ -64,58 +66,56 @@ public static class BridgeCertificateInstaller
 
     public static bool GetCertificate(out byte[] certificateBytes)
     {
-        string endpoint = Endpoints.Https_DefaultBinding_Address;
-        string bridgePort = TestProperties.GetProperty(TestProperties.BridgePort_PropertyName);
-
         certificateBytes = default(byte[]);
-
-        Uri uri;
+        string address = ServiceUtilHelper.ServiceUtil_Address;
+        Console.WriteLine("  Retrieving certificate from:" + address);
+        ChannelFactory<IUtil> factory = null;
+        IUtil serviceProxy = null;
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
         try
         {
-            if (Uri.TryCreate(endpoint, UriKind.RelativeOrAbsolute, out uri))
-            {
-                string certAsPemUri = string.Format(
-                    "http://{0}:{1}/resource/WcfService.CertificateResources.CertificateAuthorityResource?exportAsPem=true", uri.Host, bridgePort);
-
-                Console.WriteLine("  Bridge hostname is: '{0}'", uri.Host);
-                Console.WriteLine("  Retrieving certificate from:");
-
-                Console.WriteLine(certAsPemUri);
-                Console.WriteLine();
-
-                HttpClient client = new HttpClient();
-                var response = client.GetAsync(certAsPemUri).GetAwaiter().GetResult();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    certificateBytes = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
-                    Console.WriteLine("    ... read {0} bytes from Bridge", certificateBytes.Length);
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("  Received an unexpected response from Bridge:{0}  HTTP Status code {1}: '{2}'",
-                        Environment.NewLine,
-                        response.StatusCode,
-                        response.ReasonPhrase);
-                    return false;
-                }
-            }
-            else
-            {
-                Console.WriteLine("  The Bridge uri specified: '{0}' is an invalid uri", endpoint);
-                certificateBytes = null;
-                return false;
-            }
+            factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(address));
+            serviceProxy = factory.CreateChannel();
+            certificateBytes = serviceProxy.GetRootCert(true);
+            Console.WriteLine("    ... read {0} bytes from Bridge", certificateBytes.Length);
+            return true;
         }
-        catch (Exception ex)
+        finally
         {
-            Console.WriteLine("  There was an exception thrown while accessing the Bridge at '{0}'", endpoint);
-            Console.WriteLine();
-            Console.WriteLine(ex);
+            CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
+    }
 
-        return false;
+    private static void CloseCommunicationObjects(params ICommunicationObject[] objects)
+    {
+        foreach (ICommunicationObject comObj in objects)
+        {
+            try
+            {
+                if (comObj == null)
+                {
+                    continue;
+                }
+                // Only want to call Close if it is in the Opened state
+                if (comObj.State == CommunicationState.Opened)
+                {
+                    comObj.Close();
+                }
+                // Anything not closed by this point should be aborted
+                if (comObj.State != CommunicationState.Closed)
+                {
+                    comObj.Abort();
+                }
+            }
+            catch (TimeoutException)
+            {
+                comObj.Abort();
+            }
+            catch (CommunicationException)
+            {
+                comObj.Abort();
+            }
+        }
     }
 
     public static void DisplayBanner()
@@ -123,7 +123,7 @@ public static class BridgeCertificateInstaller
         Console.WriteLine("  WCF for .NET Core - Linux test certificate installer tool");
         Console.WriteLine("  https://github.com/dotnet/wcf");
         Console.WriteLine();
-        Console.WriteLine("  Makes a call to the Bridge to bootstrap the bridge and allow the certificate ");
+        Console.WriteLine("  Makes a call to the service to bootstrap the service and allow the root certificate ");
         Console.WriteLine("  authority certificate to be acquired.");
         Console.WriteLine();
     }
