@@ -1,13 +1,15 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-24109-00",
-    "System.Console": "4.0.0-rc3-24109-00",
+    "Microsoft.NETCore.Platforms": "1.0.1-rc3-24117-00",
+    "System.Console": "4.0.0-rc3-24117-00",
     "System.Runtime.Extensions": "4.0.10",
-    "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-24109-00"
+    "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-24117-00"
   },
   "frameworks": {
     "dnxcore50": {
-      "imports": [ "netstandard1.6" ]
+      "imports": [
+        "netstandard1.6"
+      ]
     }
   }
 }
