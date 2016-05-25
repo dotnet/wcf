@@ -252,6 +252,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_Address
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsCertValModePeerTrust.svc//https-server-cert-valmode-peertrust", protocol: "https");
+        }
+    }
+
     #region Secure WebSocket Addresses
     public static string WebSocketHttpsDuplexBinaryStreamed_Address
     {

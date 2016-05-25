@@ -259,4 +259,85 @@ public class HttpsTests : ConditionalWcfTest
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [OuterLoop]
+    [ActiveIssue(1183)]
+    public static void Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_EchoString()
+    {
+        EndpointAddress endpointAddress = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            BasicHttpsBinding binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_Address));
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CertificateValidationMode = X509CertificateValidationMode.PeerTrust;
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    // This test is expected to validate the service certificate using PeerTrust with X509CertificateValidationMode set to PeerOrChainTrust.
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [OuterLoop]
+    [ActiveIssue(1183)]
+    public static void Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_EchoString()
+    {
+        EndpointAddress endpointAddress = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            BasicHttpsBinding binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_Address));
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
+            factory.Credentials.ServiceCertificate.SslCertificateAuthentication.CertificateValidationMode = X509CertificateValidationMode.PeerOrChainTrust;
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }
