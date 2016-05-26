@@ -168,7 +168,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("BasicAuth.svc//https-basic", protocol: "https");
+            return GetEndpointAddress("BasicAuthentication/BasicAuth.svc/https-basic", protocol: "https");
         }
     }
 
@@ -176,7 +176,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsDigest.svc//https-digest", protocol: "https");
+            return GetEndpointAddress("DigestAuthentication/HttpsDigest.svc/https-digest", protocol: "https");
         }
     }
 
@@ -192,7 +192,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsNtlm.svc//https-ntlm", protocol: "https");
+            return GetEndpointAddress("WindowAuthenticationNtlm/HttpsNtlm.svc//https-ntlm", protocol: "https");
         }
     }
 
@@ -200,7 +200,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsWindows.svc//https-windows", protocol: "https");
+            return GetEndpointAddress("WindowAuthenticationNegotiate/HttpsWindows.svc/https-windows", protocol: "https");
         }
     }
 
@@ -208,7 +208,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpsClientCertificate.svc//https-client-certificate", protocol: "https");
+            return GetEndpointAddress("ClientCertificateAccepted/HttpsClientCertificate.svc/https-client-certificate", protocol: "https");
         }
     }
 
@@ -216,7 +216,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpWindows.svc//http-windows");
+            return GetEndpointAddress("WindowAuthenticationNegotiate/HttpWindows.svc/http-windows");
         }
     }
 
@@ -476,7 +476,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("TcpTransportSecurityStreamed.svc//tcp-transport-security-streamed", protocol: "net.tcp");
+            return GetEndpointAddress("WindowAuthenticationNegotiate/TcpTransportSecurityStreamed.svc/tcp-transport-security-streamed", protocol: "net.tcp");
         }
     }
 

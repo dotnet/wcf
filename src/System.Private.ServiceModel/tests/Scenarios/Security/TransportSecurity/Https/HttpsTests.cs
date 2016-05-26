@@ -56,7 +56,8 @@ public class HttpsTests : ConditionalWcfTest
     }
 
     // Client and Server bindings setup exactly the same using default settings.
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ActiveIssue(1123, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {

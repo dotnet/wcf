@@ -12,7 +12,7 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     // Default settings are:
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Windows_Authentication_Available))]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(945, PlatformID.AnyUnix)] // NegotiateStream works on Windows and Linux, but we have not yet automated ambient credential configuration in Linux
 #else
@@ -52,7 +52,7 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
     // SecurityMode is Transport by default with NetTcpBinding, this test explicitly sets it.
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Windows_Authentication_Available))]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(945, PlatformID.AnyUnix)] // NegotiateStream works on Windows and Linux, but we have not yet automated ambient credential configuration in Linux
 #else

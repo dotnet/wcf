@@ -14,7 +14,7 @@ namespace WcfService
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            TcpTransportSecuritySslCustomCertValidationTestServiceHost serviceHost = new TcpTransportSecuritySslCustomCertValidationTestServiceHost(serviceType, baseAddresses);
+            TcpTransportSecurityStreamedTestServiceHost serviceHost = new TcpTransportSecurityStreamedTestServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }

@@ -11,7 +11,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using Xunit;
 
-public static class NegotiateStream_Tcp_Tests
+public class NegotiateStream_Tcp_Tests: ConditionalWcfTest
 {
     // The tests are as follows:
     //
@@ -56,8 +56,7 @@ public static class NegotiateStream_Tcp_Tests
 
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
-    [Fact]
-    [ActiveIssue(1046)]
+    [ConditionalFact(nameof(Windows_Authentication_Available))]
     [ActiveIssue(851, PlatformID.AnyUnix)]
     [OuterLoop]
     public static void NegotiateStream_Tcp_AmbientCredentials()

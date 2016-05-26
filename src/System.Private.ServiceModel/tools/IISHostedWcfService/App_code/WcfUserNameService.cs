@@ -20,7 +20,7 @@ namespace WcfService
                 throw new ArgumentNullException();
             }
 
-            if (!(userName == "test1" && password == "test1pwd") && !(userName == "test2" && password == "test2pwd"))
+            if (!(userName == "test1" && password == "Mytestpwd1") && !(userName == "test2" && password == "test2pwd"))
             {
                 throw new SecurityTokenException("Unknown Username or Incorrect Password");
             }
