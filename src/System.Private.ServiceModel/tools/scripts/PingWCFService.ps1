@@ -3,7 +3,7 @@
     [string] $Url
 )
 $request = New-Object System.Net.WebClient
-For ($i=0; $i -le 10; $i++)
+For ($i=0; $i -le 60; $i++)
 {
     try
     {
