@@ -16,7 +16,7 @@
     "System.IO.Compression": "4.1.0-rc3-24109-00",
     "System.Linq": "4.0.0",
     "System.Linq.Queryable": "4.0.0",
-    "System.Net.Http": "4.0.0",
+    "System.Net.Http": "4.1-rc3-24109-00",
     "System.Net.Primitives": "4.0.10",
     "System.Net.WebHeaderCollection": "4.0.0",
     "System.Net.WebSockets": "4.0.0-rc3-24109-00",
@@ -50,7 +50,6 @@
         "dotnet5.4"
       ],
       "dependencies": {
-        "System.Net.Http.WinHttpHandler": "4.0.0-rc3-24109-00",
         "System.Net.NameResolution": "4.0.0-rc3-24109-00",
         "System.Net.Security": "4.0.0-rc3-24109-00",
         "System.Net.Sockets": "4.1.0-rc3-24109-00",
