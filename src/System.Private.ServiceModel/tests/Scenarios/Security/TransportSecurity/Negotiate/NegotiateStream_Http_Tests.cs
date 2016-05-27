@@ -69,6 +69,8 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
+
             factory = new ChannelFactory<IWcfService>(
                 binding,
                 new EndpointAddress(Endpoints.Https_WindowsAuth_Address));
@@ -104,6 +106,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
             factory = new ChannelFactory<IWcfService>(
                 binding,
                 new EndpointAddress(Endpoints.Https_WindowsAuth_Address));
@@ -144,6 +147,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
             factory = new ChannelFactory<IWcfService>(
                 binding,
                 new EndpointAddress(
@@ -183,6 +187,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
             factory = new ChannelFactory<IWcfService>(
                 binding,
                 new EndpointAddress(
@@ -222,6 +227,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
             factory = new ChannelFactory<IWcfService>(
                 binding,
                 new EndpointAddress(
@@ -265,6 +271,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
             factory = new ChannelFactory<IWcfService>(
                 binding,
                 new EndpointAddress(

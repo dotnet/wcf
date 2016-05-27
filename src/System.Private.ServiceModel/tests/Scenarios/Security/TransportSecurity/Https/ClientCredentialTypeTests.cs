@@ -34,7 +34,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
             ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
             factory.Credentials.UserName.UserName = "test1";
-            factory.Credentials.UserName.Password = "test1pwd";
+            factory.Credentials.UserName.Password = "Mytestpwd1";
 
             IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
 
@@ -124,6 +124,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         {
             BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Digest;
+
             Action<ChannelFactory> credentials = (factory) =>
             {
                 factory.Credentials.HttpDigest.ClientCredential.UserName = s_username;

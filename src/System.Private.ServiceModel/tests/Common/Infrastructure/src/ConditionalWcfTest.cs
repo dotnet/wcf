@@ -153,10 +153,8 @@ namespace Infrastructure.Common
         // Returns 'true' if the server is configured to accept client certificates.
         public static bool Server_Accepts_Certificates()
         {
-            // Temporarily use the simple heuristic that if we are running the services locally, it does.
-            // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
-            return GetConditionValue(nameof(Server_Accepts_Certificates),
-                                     Server_Is_LocalHost);
+            //Both IIS hosted and self hosted servers accept server certificate now
+            return true;
         }
 
         // Returns 'true' if the server is configured to allow Basic Authentication.

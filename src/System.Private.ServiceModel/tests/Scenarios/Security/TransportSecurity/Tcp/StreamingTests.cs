@@ -17,7 +17,7 @@ using Xunit;
 
 public class StreamingTests : ConditionalWcfTest
 {
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -58,7 +58,7 @@ public class StreamingTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -98,7 +98,7 @@ public class StreamingTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -140,7 +140,7 @@ public class StreamingTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -198,7 +198,7 @@ public class StreamingTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -241,7 +241,7 @@ public class StreamingTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -284,7 +284,7 @@ public class StreamingTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -327,7 +327,7 @@ public class StreamingTests : ConditionalWcfTest
         }
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.
@@ -346,7 +346,7 @@ public class StreamingTests : ConditionalWcfTest
         Assert.True(success, "Test Scenario: NetTcp_TransportSecurity_String_Streamed_RoundTrips_WithSingleThreadedSyncContext timed-out.");
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Windows_Authentication_Available))]
     [OuterLoop]
 #if !FEATURE_NETNATIVE
     [ActiveIssue(851, PlatformID.AnyUnix)] // NegotiateStream works on Windows but limitations related to credentials means automated tests can't work on Unix at this point.

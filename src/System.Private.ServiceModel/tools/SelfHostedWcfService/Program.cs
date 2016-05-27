@@ -42,7 +42,7 @@ namespace SelfHostedWCFService
             UtilTestServiceHost utilTestServiceHostServiceHost = new UtilTestServiceHost(typeof(WcfService.Util), utilTestServiceHostbaseAddress);
             utilTestServiceHostServiceHost.Open();
 
-            Uri[] basicAuthTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/BasicAuth.svc", httpsBaseAddress)) };
+            Uri[] basicAuthTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/BasicAuthentication/BasicAuth.svc", httpsBaseAddress)) };
             BasicAuthTestServiceHost basicAuthTestServiceHostServiceHost = new BasicAuthTestServiceHost(typeof(WcfService.WcfUserNameService), basicAuthTestServiceHostbaseAddress);
             basicAuthTestServiceHostServiceHost.Open();
 
@@ -94,15 +94,15 @@ namespace SelfHostedWCFService
             HttpDigestNoDomainTestServiceHost httpDigestNoDomainTestServiceHostServiceHost = new HttpDigestNoDomainTestServiceHost(typeof(WcfService.WcfService), httpDigestNoDomainTestServiceHostbaseAddress);
             httpDigestNoDomainTestServiceHostServiceHost.Open();
 
-            Uri[] httpsClientCertificateTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsClientCertificate.svc", httpsBaseAddress)) };
+            Uri[] httpsClientCertificateTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/ClientCertificateAccepted/HttpsClientCertificate.svc", httpsBaseAddress)) };
             HttpsClientCertificateTestServiceHost httpsClientCertificateTestServiceHostServiceHost = new HttpsClientCertificateTestServiceHost(typeof(WcfService.WcfService), httpsClientCertificateTestServiceHostbaseAddress);
             httpsClientCertificateTestServiceHostServiceHost.Open();
 
-            Uri[] httpsDigestTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsDigest.svc", httpsBaseAddress)) };
+            Uri[] httpsDigestTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/DigestAuthentication/HttpsDigest.svc", httpsBaseAddress)) };
             HttpsDigestTestServiceHost httpsDigestTestServiceHostServiceHost = new HttpsDigestTestServiceHost(typeof(WcfService.WcfService), httpsDigestTestServiceHostbaseAddress);
             httpsDigestTestServiceHostServiceHost.Open();
 
-            Uri[] httpsNtlmTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsNtlm.svc", httpsBaseAddress)) };
+            Uri[] httpsNtlmTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/WindowAuthenticationNtlm/HttpsNtlm.svc", httpsBaseAddress)) };
             HttpsNtlmTestServiceHost httpsNtlmTestServiceHostServiceHost = new HttpsNtlmTestServiceHost(typeof(WcfService.WcfService), httpsNtlmTestServiceHostbaseAddress);
             httpsNtlmTestServiceHostServiceHost.Open();
 
@@ -122,11 +122,11 @@ namespace SelfHostedWCFService
             HttpSoap12TestServiceHost httpSoap12TestServiceHostServiceHost = new HttpSoap12TestServiceHost(typeof(WcfService.WcfService), httpSoap12TestServiceHostbaseAddress);
             httpSoap12TestServiceHostServiceHost.Open();
 
-            Uri[] httpsWindowsTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsWindows.svc", httpsBaseAddress)) };
+            Uri[] httpsWindowsTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/WindowAuthenticationNegotiate/HttpsWindows.svc", httpsBaseAddress)) };
             HttpsWindowsTestServiceHost httpsWindowsTestServiceHostServiceHost = new HttpsWindowsTestServiceHost(typeof(WcfService.WcfService), httpsWindowsTestServiceHostbaseAddress);
             httpsWindowsTestServiceHostServiceHost.Open();
 
-            Uri[] httpWindowsTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpWindows.svc", httpBaseAddress)) };
+            Uri[] httpWindowsTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/WindowAuthenticationNegotiate/HttpWindows.svc", httpBaseAddress)) };
             HttpWindowsTestServiceHost httpWindowsTestServiceHostServiceHost = new HttpWindowsTestServiceHost(typeof(WcfService.WcfService), httpWindowsTestServiceHostbaseAddress);
             httpWindowsTestServiceHostServiceHost.Open();
 
@@ -210,7 +210,7 @@ namespace SelfHostedWCFService
             TcpTransportSecuritySslCustomCertValidationTestServiceHost tcpTransportSecuritySslCustomCertValidationTestServiceHostServiceHost = new TcpTransportSecuritySslCustomCertValidationTestServiceHost(typeof(WcfService.WcfService), tcpTransportSecuritySslCustomCertValidationTestServiceHostbaseAddress);
             tcpTransportSecuritySslCustomCertValidationTestServiceHostServiceHost.Open();
 
-            Uri[] tcpTransportSecurityStreamedTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/TcpTransportSecurityStreamed.svc", tcpBaseAddress)) };
+            Uri[] tcpTransportSecurityStreamedTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/WindowAuthenticationNegotiate/TcpTransportSecurityStreamed.svc", tcpBaseAddress)) };
             TcpTransportSecurityStreamedTestServiceHost tcpTransportSecurityStreamedTestServiceHostServiceHost = new TcpTransportSecurityStreamedTestServiceHost(typeof(WcfService.WcfService), tcpTransportSecurityStreamedTestServiceHostbaseAddress);
             tcpTransportSecurityStreamedTestServiceHostServiceHost.Open();
 
