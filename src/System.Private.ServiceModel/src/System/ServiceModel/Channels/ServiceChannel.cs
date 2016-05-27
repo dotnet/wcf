@@ -556,8 +556,7 @@ namespace System.ServiceModel.Channels
                 {
                     if ((context != null) && (!context.IsUserContext) && (context.InternalServiceChannel == this))
                     {
-                        throw ExceptionHelper.PlatformNotSupported();
-                        //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxCallbackRequestReplyInOrder1, typeof(CallbackBehaviorAttribute).Name)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxCallbackRequestReplyInOrder1, typeof(CallbackBehaviorAttribute).Name)));
                     }
                 }
             }

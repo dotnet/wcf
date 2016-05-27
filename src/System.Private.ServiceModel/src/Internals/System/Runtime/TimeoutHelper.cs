@@ -300,7 +300,7 @@ namespace System.Runtime
 
             if (!s_tokenCache.TryGetValue(targetTime, out tokenTask))
             {
-                var tcs = new TaskCompletionSource<CancellationToken>();
+                var tcs = new TaskCompletionSource<CancellationToken>(TaskCreationOptions.RunContinuationsAsynchronously);
 
                 // only a single thread may succeed adding its task into the cache
                 if (s_tokenCache.TryAdd(targetTime, tcs.Task))
