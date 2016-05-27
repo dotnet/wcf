@@ -177,15 +177,13 @@ namespace System.ServiceModel.Channels
                     try
                     {
                         object result = channel.EndCall(operation.Action, Array.Empty<object>(), asyncResult);
+                        OperationContext.Current = originalOperationContext;
                         tcsp.TrySetResult(result);
                     }
                     catch (Exception e)
                     {
-                        tcsp.TrySetException(e);
-                    }
-                    finally
-                    {
                         OperationContext.Current = originalOperationContext;
+                        tcsp.TrySetException(e);
                     }
                 };
 
@@ -219,15 +217,13 @@ namespace System.ServiceModel.Channels
                     try
                     {
                         channel.EndCall(operation.Action, Array.Empty<object>(), asyncResult);
+                        OperationContext.Current = originalOperationContext;
                         tcs.TrySetResult(null);
                     }
                     catch (Exception e)
                     {
-                        tcs.TrySetException(e);
-                    }
-                    finally
-                    {
                         OperationContext.Current = originalOperationContext;
+                        tcs.TrySetException(e);
                     }
                 };
 
