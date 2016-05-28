@@ -10,10 +10,10 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace System.ServiceModel.Channels
 {
-#if FEATURE_CORECLR && !TARGETS_WINDOWS
+#if FEATURE_CORECLR
     public partial class ServiceModelHttpMessageHandler
     {
-        private HttpClientHandler _innerHandler;
+        private readonly HttpClientHandler _innerHandler;
 
         public ServiceModelHttpMessageHandler()
         {
@@ -51,16 +51,16 @@ namespace System.ServiceModel.Channels
             set { throw ExceptionHelper.PlatformNotSupported("CheckCertificateRevocationList not yet support"); }
         }
 
-        public X509Certificate2Collection ClientCertificates
+        public X509CertificateCollection ClientCertificates
         {
-            get { return null; }
+            get { return _innerHandler.ClientCertificates; }
         }
 
         public Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool>
             ServerCertificateValidationCallback
         {
-            get { return null; }
-            set { throw ExceptionHelper.PlatformNotSupported("Certificate validation not supported yet"); }
+            get { return _innerHandler.ServerCertificateCustomValidationCallback; }
+            set { _innerHandler.ServerCertificateCustomValidationCallback = value; }
         }
 
         public bool SupportsProxy
@@ -70,12 +70,12 @@ namespace System.ServiceModel.Channels
 
         public bool SupportsClientCertificates
         {
-            get { return false; } 
+            get { return true; } 
         }
 
         public bool SupportsCertificateValidationCallback
         {
-            get { return false; }
+            get { return true; }
         }
     }
 #endif
