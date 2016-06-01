@@ -14,10 +14,10 @@ namespace System.Runtime
 
         public bool BufferPoolAllocationIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.BufferPoolAllocation, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.BufferPoolingAllocate, Task = Tasks.BufferPooling,
+        [Event(EventIds.BufferPoolAllocation, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = Opcodes.BufferPoolingAllocate, Task = Tasks.BufferPooling,
             Keywords = Keywords.Infrastructure,
             Message = "Pool allocating {0} Bytes.")]
         public void BufferPoolAllocation(int Size, string AppDomain)
@@ -33,10 +33,10 @@ namespace System.Runtime
 
         public bool BufferPoolChangeQuotaIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.BufferPoolChangeQuota, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.BufferPoolingTune, Task = Tasks.BufferPooling,
+        [Event(EventIds.BufferPoolChangeQuota, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = Opcodes.BufferPoolingTune, Task = Tasks.BufferPooling,
             Keywords = Keywords.Infrastructure,
             Message = "BufferPool of size {0}, changing quota by {1}.")]
         public void BufferPoolChangeQuota(int PoolSize, int Delta, string AppDomain)
@@ -52,10 +52,10 @@ namespace System.Runtime
 
         public bool ActionItemScheduledIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Threading, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Threading, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ActionItemScheduled, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ThreadScheduling,
+        [Event(EventIds.ActionItemScheduled, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.ThreadScheduling,
             Keywords = Keywords.Threading, ActivityOptions = EventActivityOptions.Disable,
             Message = "IO Thread scheduler callback invoked.")]
         public void ActionItemScheduled(string AppDomain)
@@ -71,10 +71,10 @@ namespace System.Runtime
 
         public bool ActionItemCallbackInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Threading, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Threading, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ActionItemCallbackInvoked, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ThreadScheduling,
+        [Event(EventIds.ActionItemCallbackInvoked, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.ThreadScheduling,
             Keywords = Keywords.Threading, ActivityOptions = EventActivityOptions.Disable,
             Message = "IO Thread scheduler callback invoked.")]
         public void ActionItemCallbackInvoked(string AppDomain)
@@ -90,10 +90,10 @@ namespace System.Runtime
 
         public bool ClientMessageInspectorAfterReceiveInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ClientMessageInspectorAfterReceiveInvoked, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ClientRuntimeClientMessageInspectorAfterReceiveInvoked, Task = Tasks.ClientRuntime,
+        [Event(EventIds.ClientMessageInspectorAfterReceiveInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = Opcodes.ClientRuntimeClientMessageInspectorAfterReceiveInvoked, Task = Tasks.ClientRuntime,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked 'AfterReceiveReply' on a ClientMessageInspector of type '{0}'.")]
         public void ClientMessageInspectorAfterReceiveInvoked(string TypeName, string HostReference, string AppDomain)
@@ -110,10 +110,10 @@ namespace System.Runtime
 
         public bool ClientMessageInspectorBeforeSendInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ClientMessageInspectorBeforeSendInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientMessageInspectorBeforeSendInvoked, Task = Tasks.ClientRuntime,
+        [Event(EventIds.ClientMessageInspectorBeforeSendInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.ClientRuntimeClientMessageInspectorBeforeSendInvoked, Task = Tasks.ClientRuntime,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked 'BeforeSendRequest' on a ClientMessageInspector of type  '{0}'.")]
         public void ClientMessageInspectorBeforeSendInvoked(string TypeName, string HostReference, string AppDomain)
@@ -130,10 +130,10 @@ namespace System.Runtime
 
         public bool ClientParameterInspectorAfterCallInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ClientParameterInspectorAfterCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientParameterInspectorStop, Task = Tasks.ClientRuntime,
+        [Event(EventIds.ClientParameterInspectorAfterCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.ClientRuntimeClientParameterInspectorStop, Task = Tasks.ClientRuntime,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked 'AfterCall' on a ClientParameterInspector of type '{0}'.")]
         public void ClientParameterInspectorAfterCallInvoked(string TypeName, string HostReference, string AppDomain)
@@ -150,10 +150,10 @@ namespace System.Runtime
 
         public bool ClientParameterInspectorBeforeCallInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ClientParameterInspectorBeforeCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientParameterInspectorStart, Task = Tasks.ClientRuntime,
+        [Event(EventIds.ClientParameterInspectorBeforeCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.ClientRuntimeClientParameterInspectorStart, Task = Tasks.ClientRuntime,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked 'BeforeCall' on a ClientParameterInspector of type '{0}'.")]
         public void ClientParameterInspectorBeforeCallInvoked(string TypeName, string HostReference, string AppDomain)
@@ -170,10 +170,10 @@ namespace System.Runtime
 
         public bool OperationInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.OperationInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageOperationInvokerStart, Task = Tasks.DispatchMessage,
+        [Event(EventIds.OperationInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.DispatchMessageOperationInvokerStart, Task = Tasks.DispatchMessage,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "An OperationInvoker invoked the '{0}' method. Caller information: '{1}'.")]
         public void OperationInvoked(string MethodName, string CallerInfo, string HostReference, string AppDomain)
@@ -190,10 +190,10 @@ namespace System.Runtime
 
         public bool ErrorHandlerInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ErrorHandlerInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ErrorHandlerInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked an ErrorHandler of type  '{0}' with an exception of type '{2}'.  ErrorHandled == '{1}'.")]
         public void ErrorHandlerInvoked(string TypeName, bool Handled, string ExceptionTypeName, string HostReference, string AppDomain)
@@ -209,10 +209,10 @@ namespace System.Runtime
 
         public bool FaultProviderInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.FaultProviderInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.FaultProviderInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked a FaultProvider of type '{0}' with an exception of type '{1}'.")]
         public void FaultProviderInvoked(string TypeName, string ExceptionTypeName, string HostReference, string AppDomain)
@@ -228,10 +228,10 @@ namespace System.Runtime
 
         public bool ParameterInspectorAfterCallInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ParameterInspectorAfterCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageParameterInspectorStop, Task = Tasks.DispatchMessage,
+        [Event(EventIds.ParameterInspectorAfterCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.DispatchMessageParameterInspectorStop, Task = Tasks.DispatchMessage,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked 'AfterCall' on a ParameterInspector of type '{0}'.")]
         public void ParameterInspectorAfterCallInvoked(string TypeName, string HostReference, string AppDomain)
@@ -248,10 +248,10 @@ namespace System.Runtime
 
         public bool ParameterInspectorBeforeCallInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ParameterInspectorBeforeCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageParameterInspectorStart, Task = Tasks.DispatchMessage,
+        [Event(EventIds.ParameterInspectorBeforeCallInvoked, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.DispatchMessageParameterInspectorStart, Task = Tasks.DispatchMessage,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Dispatcher invoked 'BeforeCall' on a ParameterInspector of type '{0}'.")]
         public void ParameterInspectorBeforeCallInvoked(string TypeName, string HostReference, string AppDomain)
@@ -268,10 +268,10 @@ namespace System.Runtime
 
         public bool OperationCompletedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.HealthMonitoring | Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.HealthMonitoring | Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.OperationCompleted, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageOperationInvokerStop, Task = Tasks.DispatchMessage,
+        [Event(EventIds.OperationCompleted, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.DispatchMessageOperationInvokerStop, Task = Tasks.DispatchMessage,
             Keywords = Keywords.HealthMonitoring | Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "An OperationInvoker completed the call to the '{0}' method.  The method call duration was '{1}' ms.")]
         public void OperationCompleted(string MethodName, long Duration, string HostReference, string AppDomain)
@@ -288,10 +288,10 @@ namespace System.Runtime
 
         public bool MessageReceivedByTransportIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.MessageReceivedByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+        [Event(EventIds.MessageReceivedByTransport, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
             Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral, ActivityOptions = EventActivityOptions.Disable,
             Message = "The transport received a message from '{0}'.")]
         public void MessageReceivedByTransport(string ListenAddress, string HostReference, string AppDomain)
@@ -308,10 +308,10 @@ namespace System.Runtime
 
         public bool MessageSentByTransportIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.MessageSentByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
+        [Event(EventIds.MessageSentByTransport, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
             Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral, ActivityOptions = EventActivityOptions.Disable,
             Message = "The transport sent a message to '{0}'.")]
         public void MessageSentByTransport(string DestinationAddress, string HostReference, string AppDomain)
@@ -328,10 +328,10 @@ namespace System.Runtime
 
         public bool ClientOperationPreparedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ClientOperationPrepared, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ClientRuntimeOperationPrepared, Task = Tasks.ClientRuntime,
+        [Event(EventIds.ClientOperationPrepared, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = Opcodes.ClientRuntimeOperationPrepared, Task = Tasks.ClientRuntime,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
             Message = "The Client is executing Action '{0}' associated with the '{1}' contract. The message will be sent to '{2}'.")]
         public void ClientOperationPrepared(string Action, string ContractName, string Destination, string HostReference, string AppDomain)
@@ -348,10 +348,10 @@ namespace System.Runtime
 
         public bool ServiceChannelCallStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ServiceChannelCallStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelCall,
+        [Event(EventIds.ServiceChannelCallStop, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelCall,
             Keywords = Keywords.Troubleshooting | Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "The Client completed executing Action '{0}' associated with the '{1}' contract. The message was sent to '{2}'.")]
         public void ServiceChannelCallStop(string Action, string ContractName, string Destination, string HostReference, string AppDomain)
@@ -368,10 +368,10 @@ namespace System.Runtime
 
         public bool ServiceExceptionIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ServiceException, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
+        [Event(EventIds.ServiceException, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
             Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel,
             Message = "There was an unhandled exception of type '{1}' during message processing.  Full Exception Details: {0}.")]
         public void ServiceException(string ExceptionToString, string ExceptionTypeName, string HostReference, string AppDomain)
@@ -387,10 +387,10 @@ namespace System.Runtime
 
         public bool MessageSentToTransportIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.MessageSentToTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.MessageSentToTransport, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral,
             Message = "The Dispatcher sent a message to the transport. Correlation ID == '{0}'.")]
         public void MessageSentToTransport(Guid CorrelationId, string HostReference, string AppDomain)
@@ -407,10 +407,10 @@ namespace System.Runtime
 
         public bool MessageReceivedFromTransportIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.MessageReceivedFromTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.MessageReceivedFromTransport, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.TransportGeneral,
             Message = "The Dispatcher received a message from the transport. Correlation ID == '{0}'.")]
         public void MessageReceivedFromTransport(Guid CorrelationId, string HostReference, string AppDomain)
@@ -427,10 +427,10 @@ namespace System.Runtime
 
         public bool OperationFailedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Warning, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Warning, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.OperationFailed, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
+        [Event(EventIds.OperationFailed, Level = EventLevel.Warning, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
             Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel,
             Message = "The '{0}' method threw an unhandled exception when invoked by the OperationInvoker. The method call duration was '{1}' ms.")]
         public void OperationFailed(string MethodName, long Duration, string HostReference, string AppDomain)
@@ -447,10 +447,10 @@ namespace System.Runtime
 
         public bool OperationFaultedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Warning, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Warning, Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.OperationFaulted, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
+        [Event(EventIds.OperationFaulted, Level = EventLevel.Warning, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.DispatchMessage,
             Keywords = Keywords.EndToEndMonitoring | Keywords.Troubleshooting | Keywords.HealthMonitoring | Keywords.ServiceModel,
             Message = "The '{0}' method threw a FaultException when invoked by the OperationInvoker. The method call duration was '{1}' ms.")]
         public void OperationFaulted(string MethodName, long Duration, string HostReference, string AppDomain)
@@ -467,10 +467,10 @@ namespace System.Runtime
 
         public bool ServiceChannelOpenStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ServiceChannelOpenStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelOpen,
+        [Event(EventIds.ServiceChannelOpenStart, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelOpen,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannelOpen started.")]
         public void ServiceChannelOpenStart(string AppDomain)
@@ -487,10 +487,10 @@ namespace System.Runtime
 
         public bool ServiceChannelOpenStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ServiceChannelOpenStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelOpen,
+        [Event(EventIds.ServiceChannelOpenStop, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Stop, Task = Tasks.ServiceChannelOpen,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannelOpen completed.")]
         public void ServiceChannelOpenStop(string AppDomain)
@@ -507,10 +507,10 @@ namespace System.Runtime
 
         public bool ServiceChannelCallStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ServiceChannelCallStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
+        [Event(EventIds.ServiceChannelCallStart, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannelCall started.")]
         public void ServiceChannelCallStart(string AppDomain)
@@ -525,7 +525,7 @@ namespace System.Runtime
             ServiceChannelCallStart("");
         }
 
-        [Event(EventIds.ServiceChannelBeginCallStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
+        [Event(EventIds.ServiceChannelBeginCallStart, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Start, Task = Tasks.ServiceChannelCall,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ServiceChannel asynchronous calls started.")]
         public void ServiceChannelBeginCallStart(string AppDomain)
@@ -542,10 +542,10 @@ namespace System.Runtime
 
         public bool DispatchMessageStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.DispatchMessageStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageDispatchStart, Task = Tasks.DispatchMessage,
+        [Event(EventIds.DispatchMessageStart, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.DispatchMessageDispatchStart, Task = Tasks.DispatchMessage,
             Keywords = Keywords.ServiceModel,
             Message = "Message dispatching started.")]
         public void DispatchMessageStart(string HostReference, string AppDomain)
@@ -562,10 +562,10 @@ namespace System.Runtime
 
         public bool DispatchMessageStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.DispatchMessageStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageDispatchStop, Task = Tasks.DispatchMessage,
+        [Event(EventIds.DispatchMessageStop, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.DispatchMessageDispatchStop, Task = Tasks.DispatchMessage,
             Keywords = Keywords.ServiceModel,
             Message = "Message dispatching completed")]
         public void DispatchMessageStop(string AppDomain)
@@ -582,10 +582,10 @@ namespace System.Runtime
 
         public bool ClientChannelOpenStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ClientChannelOpenStart, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientChannelOpenStart, Task = Tasks.ClientRuntime,
+        [Event(EventIds.ClientChannelOpenStart, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.ClientRuntimeClientChannelOpenStart, Task = Tasks.ClientRuntime,
             Keywords = Keywords.ServiceModel,
             Message = "ServiceChannel Open Start.")]
         public void ClientChannelOpenStart(string AppDomain)
@@ -602,10 +602,10 @@ namespace System.Runtime
 
         public bool ClientChannelOpenStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ClientChannelOpenStop, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientChannelOpenStop, Task = Tasks.ClientRuntime,
+        [Event(EventIds.ClientChannelOpenStop, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.ClientRuntimeClientChannelOpenStop, Task = Tasks.ClientRuntime,
             Keywords = Keywords.ServiceModel,
             Message = "ServiceChannel Open Stop.")]
         public void ClientChannelOpenStop(string AppDomain)
@@ -620,7 +620,7 @@ namespace System.Runtime
             ClientChannelOpenStop("");
         }
 
-        [Event(EventIds.ScheduleRuntimeWorkItem, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.ScheduleWorkItemScheduleRuntime, Task = Tasks.ScheduleWorkItem,
+        [Event(EventIds.ScheduleRuntimeWorkItem, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = Opcodes.ScheduleWorkItemScheduleRuntime, Task = Tasks.ScheduleWorkItem,
             Keywords = Keywords.WFRuntime,
             Message = "A runtime work item has been scheduled for Activity '{0}', DisplayName: '{1}', InstanceId: '{2}'.")]
         public void ScheduleRuntimeWorkItem(string data1, string data2, string data3, string AppDomain)
@@ -630,10 +630,10 @@ namespace System.Runtime
 
         public bool CloseTimeoutIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.CloseTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+        [Event(EventIds.CloseTimeout, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
             Keywords = Keywords.ServiceModel,
             Message = "{0}")]
         public void CloseTimeout(string data1, string AppDomain)
@@ -649,10 +649,10 @@ namespace System.Runtime
 
         public bool IdleTimeoutIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.IdleTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+        [Event(EventIds.IdleTimeout, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
             Keywords = Keywords.ServiceModel,
             Message = "{0} Connection pool key: {1}")]
         public void IdleTimeout(string msg, string key, string AppDomain)
@@ -668,10 +668,10 @@ namespace System.Runtime
 
         public bool LeaseTimeoutIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.LeaseTimeout, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+        [Event(EventIds.LeaseTimeout, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
             Keywords = Keywords.ServiceModel,
             Message = "{0} Connection pool key: {1}")]
         public void LeaseTimeout(string msg, string key, string AppDomain)
@@ -687,10 +687,10 @@ namespace System.Runtime
 
         public bool ReceiveTimeoutIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ReceiveTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
+        [Event(EventIds.ReceiveTimeout, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException,
             Keywords = Keywords.ServiceModel,
             Message = "{0}")]
         public void ReceiveTimeout(string data1, string AppDomain)
@@ -706,10 +706,10 @@ namespace System.Runtime
 
         public bool MaxReceivedMessageSizeExceededIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.MaxReceivedMessageSizeExceeded, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+        [Event(EventIds.MaxReceivedMessageSizeExceeded, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
             Keywords = Keywords.Quota,
             Message = "{0}")]
         public void MaxReceivedMessageSizeExceeded(string data1, string AppDomain)
@@ -725,10 +725,10 @@ namespace System.Runtime
 
         public bool MaxSentMessageSizeExceededIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.MaxSentMessageSizeExceeded, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+        [Event(EventIds.MaxSentMessageSizeExceeded, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
             Keywords = Keywords.Quota,
             Message = "{0}")]
         public void MaxSentMessageSizeExceeded(string data1, string AppDomain)
@@ -744,10 +744,10 @@ namespace System.Runtime
 
         public bool MaxOutboundConnectionsPerEndpointExceededIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Quota, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Quota, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.MaxOutboundConnectionsPerEndpointExceeded, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+        [Event(EventIds.MaxOutboundConnectionsPerEndpointExceeded, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
             Keywords = Keywords.Quota,
             Message = "{0}")]
         public void MaxOutboundConnectionsPerEndpointExceeded(string data1, string AppDomain)
@@ -763,10 +763,10 @@ namespace System.Runtime
 
         public bool OutboundConnectionsPerEndpointRatioIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.OutboundConnectionsPerEndpointRatio, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+        [Event(EventIds.OutboundConnectionsPerEndpointRatio, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
             Keywords = Keywords.Quota,
             Message = "Outbound connections per endpoint ratio: {0}/{1}")]
         public void OutboundConnectionsPerEndpointRatio(int cur, int max, string AppDomain)
@@ -782,10 +782,10 @@ namespace System.Runtime
 
         public bool MaxSessionSizeReachedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Warning, Keywords.Quota, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Warning, Keywords.Quota, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.MaxSessionSizeReached, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+        [Event(EventIds.MaxSessionSizeReached, Level = EventLevel.Warning, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
             Keywords = Keywords.Quota,
             Message = "{0}")]
         public void MaxSessionSizeReached(string data1, string AppDomain)
@@ -801,10 +801,10 @@ namespace System.Runtime
 
         public bool ReadPoolMissIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ReadPoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+        [Event(EventIds.ReadPoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
             Keywords = Keywords.Quota,
             Message = "Created new '{0}'")]
         public void ReadPoolMiss(string itemTypeName, string AppDomain)
@@ -820,10 +820,10 @@ namespace System.Runtime
 
         public bool WritePoolMissIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Quota, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.WritePoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
+        [Event(EventIds.WritePoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Quotas,
             Keywords = Keywords.Quota,
             Message = "Created new '{0}'")]
         public void WritePoolMiss(string itemTypeName, string AppDomain)
@@ -839,10 +839,10 @@ namespace System.Runtime
 
         public bool MessageReadByEncoderIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.MessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
+        [Event(EventIds.MessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A message with size '{0}' bytes was read by the encoder.")]
         public void MessageReadByEncoder(int Size, string EventSource, string AppDomain)
@@ -860,10 +860,10 @@ namespace System.Runtime
 
         public bool MessageWrittenByEncoderIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.MessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
+        [Event(EventIds.MessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A message with size '{0}' bytes was written by the encoder.")]
         public void MessageWrittenByEncoder(int Size, string EventSource, string AppDomain)
@@ -881,10 +881,10 @@ namespace System.Runtime
 
         public bool SessionIdleTimeoutIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.ServiceModel, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.SessionIdleTimeout, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Timeout,
+        [Event(EventIds.SessionIdleTimeout, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Timeout,
             Keywords = Keywords.ServiceModel,
             Message = "Session aborting for idle channel to uri:'{0}'.")]
         public void SessionIdleTimeout(string RemoteAddress, string AppDomain)
@@ -900,10 +900,10 @@ namespace System.Runtime
 
         public bool ConnectionPoolMissIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ConnectionPoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ConnectionPooling,
+        [Event(EventIds.ConnectionPoolMiss, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.ConnectionPooling,
             Keywords = Keywords.Channel,
             Message = "Pool for {0} has no available connection and {1} busy connections.")]
         public void ConnectionPoolMiss(string PoolKey, int busy, string AppDomain)
@@ -919,10 +919,10 @@ namespace System.Runtime
 
         public bool DispatchFormatterDeserializeRequestStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.DispatchFormatterDeserializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeRequest,
+        [Event(EventIds.DispatchFormatterDeserializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeRequest,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher started deserialization the request message.")]
         public void DispatchFormatterDeserializeRequestStart(string AppDomain)
@@ -939,10 +939,10 @@ namespace System.Runtime
 
         public bool DispatchFormatterDeserializeRequestStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.DispatchFormatterDeserializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeRequest,
+        [Event(EventIds.DispatchFormatterDeserializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeRequest,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher completed deserialization the request message.")]
         public void DispatchFormatterDeserializeRequestStop(string AppDomain)
@@ -959,10 +959,10 @@ namespace System.Runtime
 
         public bool DispatchFormatterSerializeReplyStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.DispatchFormatterSerializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeReply,
+        [Event(EventIds.DispatchFormatterSerializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeReply,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher started serialization of the reply message.")]
         public void DispatchFormatterSerializeReplyStart(string AppDomain)
@@ -979,10 +979,10 @@ namespace System.Runtime
 
         public bool DispatchFormatterSerializeReplyStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.DispatchFormatterSerializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeReply,
+        [Event(EventIds.DispatchFormatterSerializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeReply,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Dispatcher completed serialization of the reply message.")]
         public void DispatchFormatterSerializeReplyStop(string AppDomain)
@@ -999,10 +999,10 @@ namespace System.Runtime
 
         public bool ClientFormatterSerializeRequestStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ClientFormatterSerializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeRequest,
+        [Event(EventIds.ClientFormatterSerializeRequestStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.FormatterSerializeRequest,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client request serialization started.")]
         public void ClientFormatterSerializeRequestStart(string AppDomain)
@@ -1019,10 +1019,10 @@ namespace System.Runtime
 
         public bool ClientFormatterSerializeRequestStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ClientFormatterSerializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeRequest,
+        [Event(EventIds.ClientFormatterSerializeRequestStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.FormatterSerializeRequest,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client completed serialization of the request message.")]
         public void ClientFormatterSerializeRequestStop(string AppDomain)
@@ -1039,10 +1039,10 @@ namespace System.Runtime
 
         public bool ClientFormatterDeserializeReplyStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ClientFormatterDeserializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeReply,
+        [Event(EventIds.ClientFormatterDeserializeReplyStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.FormatterDeserializeReply,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client started deserializing the reply message.")]
         public void ClientFormatterDeserializeReplyStart(string AppDomain)
@@ -1059,10 +1059,10 @@ namespace System.Runtime
 
         public bool ClientFormatterDeserializeReplyStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ClientFormatterDeserializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeReply,
+        [Event(EventIds.ClientFormatterDeserializeReplyStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.FormatterDeserializeReply,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Client completed deserializing the reply message.")]
         public void ClientFormatterDeserializeReplyStop(string AppDomain)
@@ -1079,10 +1079,10 @@ namespace System.Runtime
 
         public bool GetServiceInstanceStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.GetServiceInstanceStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ServiceInstance,
+        [Event(EventIds.GetServiceInstanceStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.ServiceInstance,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Service instance retrieval started.")]
         public void GetServiceInstanceStart(string AppDomain)
@@ -1099,10 +1099,10 @@ namespace System.Runtime
 
         public bool GetServiceInstanceStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.GetServiceInstanceStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ServiceInstance,
+        [Event(EventIds.GetServiceInstanceStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.ServiceInstance,
             Keywords = Keywords.ServiceModel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Service instance retrieved.")]
         public void GetServiceInstanceStop(string AppDomain)
@@ -1119,10 +1119,10 @@ namespace System.Runtime
 
         public bool ChannelReceiveStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ChannelReceiveStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ChannelReceive,
+        [Event(EventIds.ChannelReceiveStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.ChannelReceive,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ChannelHandlerId:{0} - Message receive loop started.")]
         public void ChannelReceiveStart(int ChannelId, string AppDomain)
@@ -1139,10 +1139,10 @@ namespace System.Runtime
 
         public bool ChannelReceiveStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ChannelReceiveStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ChannelReceive,
+        [Event(EventIds.ChannelReceiveStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.ChannelReceive,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "ChannelHandlerId:{0} - Message receive loop stopped.")]
         public void ChannelReceiveStop(int ChannelId, string AppDomain)
@@ -1159,10 +1159,10 @@ namespace System.Runtime
 
         public bool ChannelFactoryCreatedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.ServiceModel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ChannelFactoryCreated, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ChannelFactoryCreate,
+        [Event(EventIds.ChannelFactoryCreated, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.ChannelFactoryCreate,
             Keywords = Keywords.ServiceModel,
             Message = "ChannelFactory created .")]
         public void ChannelFactoryCreated(string EventSource, string AppDomain)
@@ -1179,10 +1179,10 @@ namespace System.Runtime
 
         public bool ListenerOpenStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ListenerOpenStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.ListenerOpen,
+        [Event(EventIds.ListenerOpenStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.ListenerOpen,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Listener opening for '{0}'.")]
         public void ListenerOpenStart(string Uri, string AppDomain)
@@ -1199,10 +1199,10 @@ namespace System.Runtime
 
         public bool ListenerOpenStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.ListenerOpenStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.ListenerOpen,
+        [Event(EventIds.ListenerOpenStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.ListenerOpen,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "Listener open completed.")]
         public void ListenerOpenStop(string AppDomain)
@@ -1219,10 +1219,10 @@ namespace System.Runtime
 
         public bool SecurityIdentityVerificationFailureIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.Security, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.Security, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.SecurityIdentityVerificationFailure, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.SecurityVerification,
+        [Event(EventIds.SecurityIdentityVerificationFailure, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.SecurityVerification,
             Keywords = Keywords.Security,
             Message = "Security verification failed.")]
         public void SecurityIdentityVerificationFailure(string AppDomain)
@@ -1239,10 +1239,10 @@ namespace System.Runtime
 
         public bool SslOnInitiateUpgradeIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.SslOnInitiateUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeInitiate, Task = Tasks.SessionUpgrade,
+        [Event(EventIds.SslOnInitiateUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.SessionUpgradeInitiate, Task = Tasks.SessionUpgrade,
             Keywords = Keywords.Security,
             Message = "SslOnAcceptUpgradeStart")]
         public void SslOnInitiateUpgrade(string AppDomain)
@@ -1258,10 +1258,10 @@ namespace System.Runtime
 
         public bool SslOnAcceptUpgradeIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.SslOnAcceptUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeAccept, Task = Tasks.SessionUpgrade,
+        [Event(EventIds.SslOnAcceptUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.SessionUpgradeAccept, Task = Tasks.SessionUpgrade,
             Keywords = Keywords.Security,
             Message = "SslOnAcceptUpgradeStop")]
         public void SslOnAcceptUpgrade(string AppDomain)
@@ -1278,10 +1278,10 @@ namespace System.Runtime
 
         public bool BinaryMessageEncodingStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.BinaryMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
+        [Event(EventIds.BinaryMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "BinaryMessageEncoder started encoding the message.")]
         public void BinaryMessageEncodingStart(string AppDomain)
@@ -1298,10 +1298,10 @@ namespace System.Runtime
 
         public bool TextMessageEncodingStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TextMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
+        [Event(EventIds.TextMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "TextMessageEncoder started encoding the message.")]
         public void TextMessageEncodingStart(string AppDomain)
@@ -1318,10 +1318,10 @@ namespace System.Runtime
 
         public bool BinaryMessageDecodingStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.BinaryMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
+        [Event(EventIds.BinaryMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "BinaryMessageEncoder started decoding the message.")]
         public void BinaryMessageDecodingStart(string AppDomain)
@@ -1337,10 +1337,10 @@ namespace System.Runtime
 
         public bool TextMessageDecodingStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TextMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
+        [Event(EventIds.TextMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "TextMessageEncoder started decoding the message.")]
         public void TextMessageDecodingStart(string AppDomain)
@@ -1356,10 +1356,10 @@ namespace System.Runtime
 
         public bool SocketReadStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.SocketReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+        [Event(EventIds.SocketReadStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
             Keywords = Keywords.TCP, ActivityOptions = EventActivityOptions.Disable,
             Message = "SocketId:{0} read '{1}' bytes read from '{2}'.")]
         public void SocketReadStop(int SocketId, int Size, string Endpoint, string AppDomain)
@@ -1375,10 +1375,10 @@ namespace System.Runtime
 
         public bool SocketAsyncReadStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.SocketAsyncReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+        [Event(EventIds.SocketAsyncReadStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
             Keywords = Keywords.TCP,
             Message = "SocketId:{0} read '{1}' bytes read from '{2}'.")]
         public void SocketAsyncReadStop(int SocketId, int Size, string Endpoint, string AppDomain)
@@ -1394,10 +1394,10 @@ namespace System.Runtime
 
         public bool SocketWriteStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.SocketWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
+        [Event(EventIds.SocketWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
             Keywords = Keywords.TCP,
             Message = "SocketId:{0} writing '{1}' bytes to '{2}'.")]
         public void SocketWriteStart(int SocketId, int Size, string Endpoint, string AppDomain)
@@ -1413,10 +1413,10 @@ namespace System.Runtime
 
         public bool SocketAsyncWriteStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.TCP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.SocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
+        [Event(EventIds.SocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
             Keywords = Keywords.TCP, ActivityOptions = EventActivityOptions.Disable,
             Message = "SocketId:{0} writing '{1}' bytes to '{2}'.")]
         public void SocketAsyncWriteStart(int SocketId, int Size, string Endpoint, string AppDomain)
@@ -1432,10 +1432,10 @@ namespace System.Runtime
 
         public bool WindowsStreamSecurityOnInitiateUpgradeIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.WindowsStreamSecurityOnInitiateUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeInitiate, Task = Tasks.SessionUpgrade,
+        [Event(EventIds.WindowsStreamSecurityOnInitiateUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.SessionUpgradeInitiate, Task = Tasks.SessionUpgrade,
             Keywords = Keywords.Security,
             Message = "WindowsStreamSecurity initiating security upgrade.")]
         public void WindowsStreamSecurityOnInitiateUpgrade(string AppDomain)
@@ -1451,10 +1451,10 @@ namespace System.Runtime
 
         public bool WindowsStreamSecurityOnAcceptUpgradeIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.WindowsStreamSecurityOnAcceptUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = Opcodes.SessionUpgradeAccept, Task = Tasks.SessionUpgrade,
+        [Event(EventIds.WindowsStreamSecurityOnAcceptUpgrade, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = Opcodes.SessionUpgradeAccept, Task = Tasks.SessionUpgrade,
             Keywords = Keywords.Security,
             Message = "Windows streaming security on accepting upgrade.")]
         public void WindowsStreamSecurityOnAcceptUpgrade(string AppDomain)
@@ -1471,10 +1471,10 @@ namespace System.Runtime
 
         public bool StreamedMessageReadByEncoderIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.StreamedMessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
+        [Event(EventIds.StreamedMessageReadByEncoder, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.MessageDecoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A streamed message was read by the encoder.")]
         public void StreamedMessageReadByEncoder(string AppDomain)
@@ -1491,10 +1491,10 @@ namespace System.Runtime
 
         public bool StreamedMessageWrittenByEncoderIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.StreamedMessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
+        [Event(EventIds.StreamedMessageWrittenByEncoder, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.MessageEncoding,
             Keywords = Keywords.Channel, ActivityOptions = EventActivityOptions.Disable,
             Message = "A streamed message was written by the encoder.")]
         public void StreamedMessageWrittenByEncoder(string AppDomain)
@@ -1511,10 +1511,10 @@ namespace System.Runtime
 
         public bool WebSocketConnectionRequestSendStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketConnectionRequestSendStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketConnectionRequestSendStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.Connect,
             Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocket connection request to '{0}' send start.")]
         public void WebSocketConnectionRequestSendStart(string remoteAddress, string AppDomain)
@@ -1531,10 +1531,10 @@ namespace System.Runtime
 
         public bool WebSocketConnectionRequestSendStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketConnectionRequestSendStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketConnectionRequestSendStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.Connect,
             Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} connection request sent.")]
         public void WebSocketConnectionRequestSendStop(int websocketId, string AppDomain)
@@ -1551,10 +1551,10 @@ namespace System.Runtime
 
         public bool WebSocketConnectionFailedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.HTTP, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.HTTP, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.WebSocketConnectionFailed, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketConnectionFailed, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Connect,
             Keywords = Keywords.HTTP,
             Message = "WebSocket connection request failed: '{0}'")]
         public void WebSocketConnectionFailed(string errorMessage, string AppDomain)
@@ -1571,10 +1571,10 @@ namespace System.Runtime
 
         public bool WebSocketConnectionAbortedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.HTTP, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.HTTP, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.WebSocketConnectionAborted, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketConnectionAborted, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info, Task = Tasks.Connect,
             Keywords = Keywords.HTTP,
             Message = "WebSocketId:{0} connection is aborted.")]
         public void WebSocketConnectionAborted(int websocketId, string AppDomain)
@@ -1591,10 +1591,10 @@ namespace System.Runtime
 
         public bool WebSocketAsyncWriteStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
+        [Event(EventIds.WebSocketAsyncWriteStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.TransportSend,
             Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} writing '{1}' bytes to '{2}'.")]
         public void WebSocketAsyncWriteStart(int websocketId, int byteCount, string remoteAddress, string AppDomain)
@@ -1610,10 +1610,10 @@ namespace System.Runtime
 
         public bool WebSocketAsyncWriteStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketAsyncWriteStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
+        [Event(EventIds.WebSocketAsyncWriteStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.TransportSend,
             Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} asynchronous write stop.")]
         public void WebSocketAsyncWriteStop(int websocketId, string AppDomain)
@@ -1629,10 +1629,10 @@ namespace System.Runtime
 
         public bool WebSocketAsyncReadStartIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketAsyncReadStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.TransportReceive,
+        [Event(EventIds.WebSocketAsyncReadStart, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Start, Task = Tasks.TransportReceive,
             Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} read start.")]
         public void WebSocketAsyncReadStart(int websocketId, string AppDomain)
@@ -1648,10 +1648,10 @@ namespace System.Runtime
 
         public bool WebSocketAsyncReadStopIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketAsyncReadStop, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
+        [Event(EventIds.WebSocketAsyncReadStop, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive,
             Keywords = Keywords.HTTP, ActivityOptions = EventActivityOptions.Disable,
             Message = "WebSocketId:{0} read '{1}' bytes from '{2}'.")]
         public void WebSocketAsyncReadStop(int websocketId, int byteCount, string remoteAddress, string AppDomain)
@@ -1667,10 +1667,10 @@ namespace System.Runtime
 
         public bool WebSocketCloseSentIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketCloseSent, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketCloseSent, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.Connect,
             Keywords = Keywords.HTTP,
             Message = "WebSocketId:{0} sending close message to '{1}' with close status '{2}'.")]
         public void WebSocketCloseSent(int websocketId, string remoteAddress, string closeStatus, string AppDomain)
@@ -1686,10 +1686,10 @@ namespace System.Runtime
 
         public bool WebSocketCloseOutputSentIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketCloseOutputSent, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketCloseOutputSent, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.Connect,
             Keywords = Keywords.HTTP,
             Message = "WebSocketId:{0} sending close output message to '{1}' with close status '{2}'.")]
         public void WebSocketCloseOutputSent(int websocketId, string remoteAddress, string closeStatus, string AppDomain)
@@ -1705,10 +1705,10 @@ namespace System.Runtime
 
         public bool WebSocketConnectionClosedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketConnectionClosed, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketConnectionClosed, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.Connect,
             Keywords = Keywords.HTTP,
             Message = "WebSocketId:{0} connection closed.")]
         public void WebSocketConnectionClosed(int websocketId, string AppDomain)
@@ -1724,10 +1724,10 @@ namespace System.Runtime
 
         public bool WebSocketCloseStatusReceivedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketCloseStatusReceived, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketCloseStatusReceived, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.Connect,
             Keywords = Keywords.HTTP,
             Message = "WebSocketId:{0} connection close message received with status '{1}'.")]
         public void WebSocketCloseStatusReceived(int websocketId, string closeStatus, string AppDomain)
@@ -1743,10 +1743,10 @@ namespace System.Runtime
 
         public bool WebSocketCreateClientWebSocketWithFactoryIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.HTTP, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.WebSocketCreateClientWebSocketWithFactory, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.Connect,
+        [Event(EventIds.WebSocketCreateClientWebSocketWithFactory, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.Connect,
             Keywords = Keywords.HTTP,
             Message = "Creating the client WebSocket with a factory of type '{0}'.")]
         public void WebSocketCreateClientWebSocketWithFactory(string clientWebSocketFactoryType, string AppDomain)
@@ -1763,10 +1763,10 @@ namespace System.Runtime
 
         public bool TokenValidationStartedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TokenValidationStarted, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
+        [Event(EventIds.TokenValidationStarted, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
             Keywords = Keywords.Security,
             Message = "SecurityToken (type '{0}' and id '{1}') validation started.")]
         public void TokenValidationStarted(string tokenType, string tokenID, string HostReference, string AppDomain)
@@ -1783,10 +1783,10 @@ namespace System.Runtime
 
         public bool TokenValidationSuccessIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TokenValidationSuccess, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
+        [Event(EventIds.TokenValidationSuccess, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
             Keywords = Keywords.Security,
             Message = "SecurityToken (type '{0}' and id '{1}') validation succeeded.")]
         public void TokenValidationSuccess(string tokenType, string tokenID, string HostReference, string AppDomain)
@@ -1803,10 +1803,10 @@ namespace System.Runtime
 
         public bool TokenValidationFailureIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.Security, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Error, Keywords.Security, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TokenValidationFailure, Level = EventLevel.Error, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
+        [Event(EventIds.TokenValidationFailure, Level = EventLevel.Error, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info, Task = Tasks.TokenValidation,
             Keywords = Keywords.Security,
             Message = "SecurityToken (type '{0}' and id '{1}') validation failed. {2}")]
         public void TokenValidationFailure(string tokenType, string tokenID, string errorMessage, string HostReference, string AppDomain)
@@ -1823,10 +1823,10 @@ namespace System.Runtime
 
         public bool HandledExceptionIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.HandledException, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledException, Level = EventLevel.Informational, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception.  Exception details: {0}")]
         public void HandledException(string data1, string SerializedException, string AppDomain)
@@ -1842,10 +1842,10 @@ namespace System.Runtime
 
         public bool ShipAssertExceptionMessageIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ShipAssertExceptionMessage, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ShipAssertExceptionMessage, Level = EventLevel.Error, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "An unexpected failure occurred. Applications should not attempt to handle this error. For diagnostic purposes, this English message is associated with the failure: {0}.")]
         public void ShipAssertExceptionMessage(string data1, string AppDomain)
@@ -1861,10 +1861,10 @@ namespace System.Runtime
 
         public bool ThrowingExceptionIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ThrowingException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingException, Level = EventLevel.Warning, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingException(string data1, string data2, string SerializedException, string AppDomain)
@@ -1880,10 +1880,10 @@ namespace System.Runtime
 
         public bool UnhandledExceptionIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
+            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.None /*Operational*/);
         }
 
-        [Event(EventIds.UnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
+        [Event(EventIds.UnhandledException, Level = EventLevel.Critical, Channel = EventChannel.None /*Operational*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Unhandled exception.  Exception details: {0}")]
         public void UnhandledException(string data1, string SerializedException, string AppDomain)
@@ -1899,10 +1899,10 @@ namespace System.Runtime
 
         public bool TraceCodeEventLogCriticalIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TraceCodeEventLogCritical, Level = EventLevel.Critical, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogCritical, Level = EventLevel.Critical, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogCritical(string ExtendedData, string AppDomain)
@@ -1918,10 +1918,10 @@ namespace System.Runtime
 
         public bool TraceCodeEventLogErrorIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TraceCodeEventLogError, Level = EventLevel.Error, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogError, Level = EventLevel.Error, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogError(string ExtendedData, string AppDomain)
@@ -1937,10 +1937,10 @@ namespace System.Runtime
 
         public bool TraceCodeEventLogInfoIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Informational, Keywords.Infrastructure, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TraceCodeEventLogInfo, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogInfo, Level = EventLevel.Informational, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogInfo(string ExtendedData, string AppDomain)
@@ -1956,10 +1956,10 @@ namespace System.Runtime
 
         public bool TraceCodeEventLogVerboseIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TraceCodeEventLogVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogVerbose, Level = EventLevel.Verbose, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogVerbose(string ExtendedData, string AppDomain)
@@ -1975,10 +1975,10 @@ namespace System.Runtime
 
         public bool TraceCodeEventLogWarningIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Debug);
+            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.None /*Debug*/);
         }
 
-        [Event(EventIds.TraceCodeEventLogWarning, Level = EventLevel.Warning, Channel = EventChannel.Debug, Opcode = EventOpcode.Info,
+        [Event(EventIds.TraceCodeEventLogWarning, Level = EventLevel.Warning, Channel = EventChannel.None /*Debug*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Wrote to the EventLog.")]
         public void TraceCodeEventLogWarning(string ExtendedData, string AppDomain)
@@ -1994,10 +1994,10 @@ namespace System.Runtime
 
         public bool HandledExceptionWarningIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.HandledExceptionWarning, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledExceptionWarning, Level = EventLevel.Warning, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception. Exception details: {0}")]
         public void HandledExceptionWarning(string data1, string SerializedException, string AppDomain)
@@ -2013,10 +2013,10 @@ namespace System.Runtime
 
         public bool HandledExceptionErrorIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.Operational);
+            return base.IsEnabled(EventLevel.Error, Keywords.Infrastructure, EventChannel.None /*Operational*/);
         }
 
-        [Event(EventIds.HandledExceptionError, Level = EventLevel.Error, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledExceptionError, Level = EventLevel.Error, Channel = EventChannel.None /*Operational*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception. Exception details: {0}")]
         public void HandledExceptionError(string data1, string SerializedException, string AppDomain)
@@ -2032,10 +2032,10 @@ namespace System.Runtime
 
         public bool HandledExceptionVerboseIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.HandledExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.HandledExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Handling an exception  Exception details: {0}")]
         public void HandledExceptionVerbose(string data1, string SerializedException, string AppDomain)
@@ -2051,10 +2051,10 @@ namespace System.Runtime
 
         public bool ThrowingExceptionVerboseIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ThrowingExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingExceptionVerbose(string data1, string data2, string SerializedException, string AppDomain)
@@ -2070,10 +2070,10 @@ namespace System.Runtime
 
         public bool EtwUnhandledExceptionIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
+            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.None /*Operational*/);
         }
 
-        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info,
+        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.None /*Operational*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Unhandled exception. Exception details: {0}")]
         public void EtwUnhandledException(string data1, string SerializedException, string AppDomain)
@@ -2089,10 +2089,10 @@ namespace System.Runtime
 
         public bool ThrowingEtwExceptionVerboseIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException, string AppDomain)
@@ -2108,10 +2108,10 @@ namespace System.Runtime
 
         public bool ThrowingEtwExceptionIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
+            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.None /*Analytic*/);
         }
 
-        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info,
+        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.None /*Analytic*/, Opcode = EventOpcode.Info,
             Keywords = Keywords.Infrastructure,
             Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
         public void ThrowingEtwException(string data1, string data2, string SerializedException, string AppDomain)
@@ -2629,6 +2629,10 @@ namespace System.Runtime
             public const int ThrowingEtwExceptionVerbose = 57409;
             public const int ThrowingEtwException = 57410;
             public const int HttpHandlerPickedForUrl = 62326;
+            public const int DummyAdminEventId = 65530;
+            public const int DummyOperationalEventId = 65531;
+            public const int DummyAnalyticEventId = 65532;
+            public const int DummyDebugEventId = 65533;
         }
 
         public class Tasks
