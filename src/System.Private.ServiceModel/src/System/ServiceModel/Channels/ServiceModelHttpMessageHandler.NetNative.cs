@@ -79,11 +79,6 @@ namespace System.ServiceModel.Channels
         {
             get { return false; }
         }
-
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            return base.SendAsync(request, cancellationToken);
-        }
     }
 #endif
 }
