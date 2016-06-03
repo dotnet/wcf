@@ -10,5 +10,5 @@
   </PropertyGroup>
 
   <!-- bring in common baseline -->
-  <Import Condition="Exists('$(CoreFxBaseLinePackageProps)')" Project="$(CoreFxBaseLinePackageProps)" />
+  <Import Condition="'$(MSBuildProjectExtension)' == '.pkgproj'" Project="$(CoreFxBaseLinePackageProps)" />
 </Project>
