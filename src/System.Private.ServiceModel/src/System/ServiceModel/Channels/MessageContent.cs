@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Threading;
 
 namespace System.ServiceModel.Channels
 {
@@ -21,23 +22,21 @@ namespace System.ServiceModel.Channels
         protected MessageEncoder _messageEncoder;
         protected Stream _stream = null;
         private bool _disposed;
+        protected TaskCompletionSource<bool> _writeCompletedTcs;
 
         public MessageContent(Message message, MessageEncoder messageEncoder)
         {
             _message = message;
             _messageEncoder = messageEncoder;
+            _writeCompletedTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             SetContentType(_messageEncoder.ContentType);
             PrepareContentHeaders();
         }
 
-        public Message Message
-        {
-            get
-            {
-                return _message;
-            }
-        }
+        public Message Message { get { return _message; } }
+
+        internal  Task WriteCompletionTask { get { return _writeCompletedTcs.Task; } }
 
         private void PrepareContentHeaders()
         {
@@ -180,15 +179,34 @@ namespace System.ServiceModel.Channels
             // WriteMessageAsync might run synchronously and try to write to the stream. ProducerConsumerStream
             // will block on the write until the stream is being read from. The WriteMessageAsync method needs
             // to run on a different thread to prevent a deadlock.
-            _stream = new ProducerConsumerStream();
-            var bufferedStream = new BufferedWriteStream(_stream, WriteBufferSize);
-            Task.Run(() => _messageEncoder.WriteMessageAsync(_message, bufferedStream));
-            return Task.FromResult(_stream);
+            var resultStream = new ProducerConsumerStream();
+            _stream = new BufferedWriteStream(resultStream, WriteBufferSize);
+            Task.Factory.StartNew(async (content) =>
+            {
+                var thisPtr = content as StreamedMessageContent;
+                try
+                {
+                    await _messageEncoder.WriteMessageAsync(thisPtr._message, thisPtr._stream);
+                }
+                finally
+                {
+                    thisPtr._writeCompletedTcs.TrySetResult(true);
+                }
+            }, this, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+
+            return Task.FromResult<Stream>(resultStream);
         }
 
-        protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
+        protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            return _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, WriteBufferSize));
+            try
+            {
+                await _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, WriteBufferSize));
+            }
+            finally
+            {
+                _writeCompletedTcs.TrySetResult(true);
+            }
         }
 
         protected override bool TryComputeLength(out long length)
@@ -217,6 +235,7 @@ namespace System.ServiceModel.Channels
         {
             EnsureMessageEncoded();
             _stream = new MemoryStream(_buffer.Array, _buffer.Offset, _buffer.Count, false, true);
+            _writeCompletedTcs.TrySetResult(true);
             return Task.FromResult(_stream);
         }
 
@@ -232,8 +251,15 @@ namespace System.ServiceModel.Channels
 
         protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            EnsureMessageEncoded();
-            await stream.WriteAsync(_buffer.Array, _buffer.Offset, _buffer.Count);
+            try
+            {
+                EnsureMessageEncoded();
+                await stream.WriteAsync(_buffer.Array, _buffer.Offset, _buffer.Count);
+            }
+            finally
+            {
+                _writeCompletedTcs.TrySetResult(true);
+            }
         }
 
         protected override bool TryComputeLength(out long length)
