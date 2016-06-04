@@ -10,5 +10,10 @@
   </PropertyGroup>
 
   <!-- bring in common baseline -->
-  <Import Condition="'$(MSBuildProjectExtension)' == '.pkgproj'" Project="$(CoreFxBaseLinePackageProps)" />
+  <Import Condition="Exists('$(CoreFxBaseLinePackageProps)')" Project="$(CoreFxBaseLinePackageProps)" />
+  
+  <Target Name="EnsureCoreFxBaseLine" Condition="'$(MSBuildProjectExtension)' == '.pkgproj'" BeforeTargets="Build">
+    <Error Condition="!Exists('$(CoreFxBaseLinePackageProps)')" 
+           Text="Error '$(CoreFxBaseLinePackageProps)' does not exist, ensure you have restored packages before building this project" />
+  </Target>
 </Project>
