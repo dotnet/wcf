@@ -1,7 +1,10 @@
 @if "%_echo%" neq "on" echo off
 setlocal
 
-REM This script should always be called from StartWCFSelfHostedSvc.cmd
+REM This script should always be called from StartWCFSelfHostedSvc.cmd.
+REM If PSEXEC_PATH is set to the full path of the folder containing psexec.exe,
+REM it will be used to start the WCF self-hosted service as the Local System account.
+REM If PSEXEC_PATH is not set, it will start the service under the current user.
 
 set _setuplog=%~dp0..\..\..\..\SelfHostedWcfServiceSetup.log
 set _setupSemaphoreFile=%~dp0..\..\..\..\SelfHostedWcfServiceSemaphore.log
@@ -54,9 +57,25 @@ echo Started Self host WCF service >>%_setupSemaphoreFile%
 
 REM
 REM Start the self hosted WCF Test Service
-echo Starting the WCF Self hosted service...
-call %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe
-set __EXITCODE=%ERRORLEVEL%
+if [%PSEXEC_PATH%]==[] (
+  echo Starting the WCF Self hosted service under the local user account. >>%_setuplog%
+  REM This next call blocks until the service is terminated
+  call %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe
+  set __EXITCODE=%ERRORLEVEL%
+  goto Cleanup
+)
+
+if exist %PSEXEC_PATH%\psexec.exe (
+  echo Starting the WCF Self hosted service under the Local System account using: >>%_setuplog%
+  echo call %PSEXEC_PATH%\psexec.exe -s -h %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe >>%_setuplog%
+  REM This next call blocks until the service is terminated
+  call %PSEXEC_PATH%\psexec.exe -s -h %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe
+  set __EXITCODE=%ERRORLEVEL%
+  goto Cleanup
+)
+
+echo %PSEXEC_PATH% is not a valid path to psexec.exe
+set __EXITCODE=1
 
 :Cleanup
 echo Cleaning up after the Self hosted service has completed
