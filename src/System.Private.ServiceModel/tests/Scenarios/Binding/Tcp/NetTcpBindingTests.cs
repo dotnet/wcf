@@ -12,15 +12,25 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     // Default settings are:
     //                         - SecurityMode = Transport
     //                         - ClientCredentialType = Windows
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Windows_Authentication_Available))]
-#if !FEATURE_NETNATIVE
-    [ActiveIssue(945, PlatformID.AnyUnix)] // NegotiateStream works on Windows and Linux, but we have not yet automated ambient credential configuration in Linux
-#else
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#else
+    [ConditionalFact(nameof(Windows_Authentication_Available))]
 #endif
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        if (!windows_Authentication_Available)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -52,15 +62,25 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=Transport
     // By default ClientCredentialType will be 'Windows'
     // SecurityMode is Transport by default with NetTcpBinding, this test explicitly sets it.
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Windows_Authentication_Available))]
-#if !FEATURE_NETNATIVE
-    [ActiveIssue(945, PlatformID.AnyUnix)] // NegotiateStream works on Windows and Linux, but we have not yet automated ambient credential configuration in Linux
-#else
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#else
+    [ConditionalFact(nameof(Windows_Authentication_Available))]
 #endif
     [OuterLoop]
     public static void SecurityModeTransport_Echo_RoundTrips_String()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        if (!windows_Authentication_Available)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;

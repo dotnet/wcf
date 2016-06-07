@@ -19,11 +19,25 @@ public class HttpsTests : ConditionalWcfTest
 {
     // Client: CustomBinding set MessageVersion to Soap11
     // Server: BasicHttpsBinding default value is Soap11
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [OuterLoop]
     [ActiveIssue(1123, PlatformID.AnyUnix)]
+#endif
+    [OuterLoop]
     public static void CrossBinding_Soap11_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string variationDetails = "Client:: CustomBinding/MessageVersion=Soap11\nServer:: BasicHttpsBinding/DefaultValues";
         string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
@@ -56,11 +70,25 @@ public class HttpsTests : ConditionalWcfTest
     }
 
     // Client and Server bindings setup exactly the same using default settings.
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
     [ActiveIssue(1123, PlatformID.AnyUnix)]
+#endif
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string variationDetails = "Client:: CustomBinding/DefaultValues\nServer:: CustomBinding/DefaultValues";
         string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
@@ -93,11 +121,25 @@ public class HttpsTests : ConditionalWcfTest
     }
 
     // Client and Server bindings setup exactly the same using Soap11
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [OuterLoop]
     [ActiveIssue(1123, PlatformID.AnyUnix)]
+#endif
+    [OuterLoop]
     public static void SameBinding_Soap11_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string variationDetails = "Client:: CustomBinding/MessageVersion=Soap11\nServer:: CustomBinding/MessageVersion=Soap11";
         string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
@@ -130,11 +172,25 @@ public class HttpsTests : ConditionalWcfTest
     }
 
     // Client and Server bindings setup exactly the same using Soap12
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [OuterLoop]
     [ActiveIssue(1123, PlatformID.AnyUnix)]
+#endif
+    [OuterLoop]
     public static void SameBinding_Soap12_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string variationDetails = "Client:: CustomBinding/MessageVersion=Soap12\nServer:: CustomBinding/MessageVersion=Soap12";
         string testString = "Hello";
         StringBuilder errorBuilder = new StringBuilder();
@@ -166,15 +222,28 @@ public class HttpsTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
-#if FEATURE_NETNATIVE
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
 #else
-    [ActiveIssue(959, PlatformID.AnyUnix)] // Server certificate validation not supported on Linux and OS X
+    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [ActiveIssue(1295, PlatformID.AnyUnix)]
 #endif
     [OuterLoop]
     public static void ServerCertificateValidation_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         string clientCertThumb = null;
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
@@ -215,11 +284,31 @@ public class HttpsTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+    [ActiveIssue(1248)]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed), nameof(Server_Accepts_Certificates))]
-    [ActiveIssue(960, PlatformID.AnyUnix)]
+    [ActiveIssue(1295, PlatformID.AnyUnix)]
+    [ActiveIssue(1297, PlatformID.AnyUnix)]
+#endif
     [OuterLoop]
     public static void ClientCertificate_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        bool server_Accepts_Certificates = Server_Accepts_Certificates();
+        if (!root_Certificate_Installed || !client_Certificate_Installed || server_Accepts_Certificates)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            Console.WriteLine("Server_Accepts_Certificates evaluated as {0}", server_Accepts_Certificates);
+            return;
+        }
+#endif
         string clientCertThumb = null;
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
@@ -261,11 +350,27 @@ public class HttpsTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+#endif
     [OuterLoop]
     [ActiveIssue(1183)]
     public static void Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
@@ -302,11 +407,27 @@ public class HttpsTests : ConditionalWcfTest
     }
 
     // This test is expected to validate the service certificate using PeerTrust with X509CertificateValidationMode set to PeerOrChainTrust.
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+#endif
     [OuterLoop]
     [ActiveIssue(1183)]
     public static void Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;

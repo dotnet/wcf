@@ -11,10 +11,24 @@ using Infrastructure.Common;
 
 public class DuplexClientBaseTests : ConditionalWcfTest
 {
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
+#endif
     [OuterLoop]
     public static void DuplexClientBaseOfT_OverHttp_Call_Throws_InvalidOperation()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         DuplexClientBase<IWcfDuplexService> duplexService = null;
         IWcfDuplexService proxy = null;
 

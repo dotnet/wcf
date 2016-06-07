@@ -56,11 +56,26 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
-    [ActiveIssue(851, PlatformID.AnyUnix)]
+#endif
     [OuterLoop]
     public static void NegotiateStream_Http_AmbientCredentials()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!windows_Authentication_Available || !root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -93,11 +108,34 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
-    [ActiveIssue(851)]
+#endif
     [OuterLoop]
+    [ActiveIssue(1265)]
+    // Test Requirements \\
+    // The following environment variables must be set...
+    //          "NegotiateTestRealm"
+    //          "NegotiateTestDomain"
+    //          "NegotiateTestUserName"
+    //          "NegotiateTestPassword"
+    //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!windows_Authentication_Available || !root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -134,11 +172,35 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
-    [ActiveIssue(851)]
+#endif
     [OuterLoop]
+    [ActiveIssue(1265)]
+    // Test Requirements \\
+    // The following environment variables must be set...
+    //          "NegotiateTestRealm"
+    //          "NegotiateTestDomain"
+    //          "NegotiateTestUserName"
+    //          "NegotiateTestPassword"
+    //          "NegotiateTestSpn" (host/<servername>)
+    //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Http_With_ExplicitSpn()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!windows_Authentication_Available || !root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -174,11 +236,27 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+    [ActiveIssue(10)]
+#else
     [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
-    [ActiveIssue(851)]
+#endif
     [OuterLoop]
     public static void NegotiateStream_Http_With_Upn()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!windows_Authentication_Available || !root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -214,11 +292,35 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
-    [ActiveIssue(851)]
+#endif
     [OuterLoop]
+    [ActiveIssue(1265)]
+    // Test Requirements \\
+    // The following environment variables must be set...
+    //          "NegotiateTestRealm"
+    //          "NegotiateTestDomain"
+    //          "NegotiateTestUserName"
+    //          "NegotiateTestPassword"
+    //          "NegotiateTestSpn" (host/<servername>)
+    //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword_With_Spn()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!windows_Authentication_Available || !root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -258,11 +360,27 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+    [ActiveIssue(10)]
+#else
     [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
-    [ActiveIssue(851)]
+#endif
     [OuterLoop]
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword_With_Upn()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!windows_Authentication_Available || !root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
