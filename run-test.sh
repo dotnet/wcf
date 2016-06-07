@@ -221,7 +221,7 @@ run_test()
     exit 0
   fi
 
-  dirName="$1/dnxcore50"
+  dirName="$1/netcoreapp1.0"
 
   copy_test_overlay $dirName
 
@@ -483,11 +483,11 @@ fi
 # *** start WCF Content ***
 # Cleanup any certificates installed by OuterLoop tests
 # We need to make corerun executable to invoke
-echo "chmod a+x $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun"
-chmod a+x $WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun
+echo "chmod a+x $WcfTests/Infrastructure.Common.Tests/netcoreapp1.0/corerun"
+chmod a+x $WcfTests/Infrastructure.Common.Tests/netcoreapp1.0/corerun
 
-echo "$WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe"
-$WcfTests/Infrastructure.Common.Tests/dnxcore50/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe
+echo "$WcfTests/Infrastructure.Common.Tests/netcoreapp1.0/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe"
+$WcfTests/Infrastructure.Common.Tests/netcoreapp1.0/corerun $WcfBins/CertificateCleanup/CertificateCleanup.exe
 # *** end WCF Content ***
 
 if [ "$TestsFailed" -gt 0 ]
