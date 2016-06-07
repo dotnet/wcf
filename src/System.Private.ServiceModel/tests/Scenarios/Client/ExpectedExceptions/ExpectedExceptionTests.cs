@@ -363,8 +363,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     [Fact]
 #if FEATURE_NETNATIVE
     [ActiveIssue(833)] // Not supported in NET Native
-#else
-    [ActiveIssue(578)]
 #endif
     [OuterLoop]
     // Verify product throws MessageSecurityException when the service cert is revoked
