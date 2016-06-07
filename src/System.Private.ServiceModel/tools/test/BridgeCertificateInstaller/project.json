@@ -11,9 +11,9 @@
     "System.ServiceModel.Primitives": "4.1.0-rc3-24117-00"
   },
   "frameworks": {
-    "dnxcore50": {
+    "netcoreapp1.0": {
       "imports": [
-        "netstandard1.6"
+        "dnxcore50"
       ]
     }
   }
