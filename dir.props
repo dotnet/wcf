@@ -85,7 +85,9 @@
     <CoreFxExpectedPrerelease>rc3-24206-00</CoreFxExpectedPrerelease>
     <CoreClrExpectedPrerelease>rc3-24206-00</CoreClrExpectedPrerelease>
     <ExternalExpectedPrerelease>rc3-24206-00</ExternalExpectedPrerelease>
+    <WCFExpectedPrerelease>rc3-24206-00</WCFExpectedPrerelease>
     <CoreFxVersionsIdentityRegex>^(?i)((System\..*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
+    <WCFVersionsIdentityRegex>^(?i)((System\.ServiceModel.*)|(System\.Private\.ServiceModel))(?&lt;!TestData)$</WCFVersionsIdentityRegex>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props" Condition="Exists('$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props')" />
@@ -94,6 +96,10 @@
     <ValidationPattern Include="CoreFxVersions">
       <IdentityRegex>$(CoreFxVersionsIdentityRegex)</IdentityRegex>
       <ExpectedPrerelease>$(CoreFxExpectedPrerelease)</ExpectedPrerelease>
+    </ValidationPattern>
+    <ValidationPattern Include="WCFVersions">
+      <IdentityRegex>$(WCFVersionsIdentityRegex)</IdentityRegex>
+      <ExpectedPrerelease>$(WCFExpectedPrerelease)</ExpectedPrerelease>
     </ValidationPattern>
     <ValidationPattern Include="CoreClrVersions">
       <IdentityRegex>^(?i)(Microsoft\.NETCore\.Runtime.*)|(Microsoft\.TargetingPack\.Private\.CoreCLR)$</IdentityRegex>
@@ -132,7 +138,7 @@
   <!-- This is the directory where we dynamically generate project.json's for our test build package dependencies -->
   <PropertyGroup Condition="'$(BuildTestsAgainstPackages)' == 'true'">
     <GeneratedProjectJsonDir>$(ObjDir)generated</GeneratedProjectJsonDir>
-    <BuildTestsAgainstPackagesIdentityRegex>$(CoreFxVersionsIdentityRegex)</BuildTestsAgainstPackagesIdentityRegex>
+    <BuildTestsAgainstPackagesIdentityRegex>$(WCFVersionsIdentityRegex)</BuildTestsAgainstPackagesIdentityRegex>
   </PropertyGroup>
 
   <!-- list of directories to perform batch restore -->
