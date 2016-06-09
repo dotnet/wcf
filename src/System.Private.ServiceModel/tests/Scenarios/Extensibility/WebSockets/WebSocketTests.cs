@@ -16,6 +16,250 @@ public class WebSocketTests : ConditionalWcfTest
 {
     [Fact]
     [OuterLoop]
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(420, PlatformID.AnyUnix)]
+#else
+    [ActiveIssue(526)]
+#endif
+    public static void WebSocket_Http_Duplex_Echo_BinaryStreamed()
+    {
+        NetHttpBinding binding = null;
+        ClientReceiver clientReceiver = null;
+        InstanceContext context = null;
+        DuplexChannelFactory<IWSDuplexService> channelFactory = null;
+        IWSDuplexService client = null;
+        Stream sentStream = null;
+        Stream receivedStream = null;
+        string sentString = "test data";
+        int timeoutMs = 5000;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = TransferMode.Streamed;
+            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            binding.SendTimeout = TimeSpan.FromMilliseconds(timeoutMs);
+
+            clientReceiver = new ClientReceiver();
+            context = new InstanceContext(clientReceiver);
+
+            channelFactory = new DuplexChannelFactory<IWSDuplexService>(context, binding, Endpoints.WebSocketHttpDuplexBinaryStreamed_Address);
+            client = channelFactory.CreateChannel();
+
+            sentStream = ScenarioTestHelpers.StringToStream(sentString);
+
+            // *** EXECUTE *** \\
+            receivedStream = client.EchoStream(sentStream);
+
+            // *** VALIDATE *** \\ 
+            Assert.True(receivedStream != null, "Expected non-null stream returned.");
+            string receivedString = ScenarioTestHelpers.StreamToString(receivedStream);
+            Assert.True(String.Equals(sentString, receivedString),
+                        String.Format("Expected returned stream with '{0}' but actual was '{1}'", sentString, receivedString));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+            clientReceiver.Dispose();
+            if (sentStream != null)
+            {
+                sentStream.Dispose();
+            }
+            if (receivedStream != null)
+            {
+                receivedStream.Dispose();
+            }
+        }
+    }
+
+
+    [Fact]
+    [OuterLoop]
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(420, PlatformID.AnyUnix)]
+#else
+    [ActiveIssue(526)]
+#endif
+    public static void WebSocket_Http_Duplex_Echo_Async_BinaryStreamed()
+    {
+        NetHttpBinding binding = null;
+        ClientReceiver clientReceiver = null;
+        InstanceContext context = null;
+        DuplexChannelFactory<IWSDuplexService> channelFactory = null;
+        IWSDuplexService client = null;
+        Stream sentStream = null;
+        Stream receivedStream = null;
+        string sentString = "test data";
+        int timeoutMs = 5000;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = TransferMode.Streamed;
+            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            binding.SendTimeout = TimeSpan.FromMilliseconds(timeoutMs);
+
+            clientReceiver = new ClientReceiver();
+            context = new InstanceContext(clientReceiver);
+
+            channelFactory = new DuplexChannelFactory<IWSDuplexService>(context, binding, Endpoints.WebSocketHttpDuplexBinaryStreamed_Address);
+            client = channelFactory.CreateChannel();
+
+            sentStream = ScenarioTestHelpers.StringToStream(sentString);
+
+            // *** EXECUTE *** \\
+            //using (OperationContextScope scope = new OperationContextScope((IContextChannel)client))
+            {
+                Task<Stream> echoTask = client.EchoStreamAsync(sentStream);
+                receivedStream = echoTask.GetAwaiter().GetResult();
+            }
+
+            // *** VALIDATE *** \\ 
+            Assert.True(receivedStream != null, "Expected non-null stream returned.");
+            string receivedString = ScenarioTestHelpers.StreamToString(receivedStream);
+            Assert.True(String.Equals(sentString, receivedString),
+                        String.Format("Expected returned stream with '{0}' but actual was '{1}'", sentString, receivedString));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+            clientReceiver.Dispose();
+            if (sentStream != null)
+            {
+                sentStream.Dispose();
+            }
+            if (receivedStream != null)
+            {
+                receivedStream.Dispose();
+            }
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
+#if !FEATURE_NETNATIVE
+    [ActiveIssue(420, PlatformID.AnyUnix)]
+#else
+    [ActiveIssue(526)]
+#endif
+    public static void WebSocket_Http_Duplex_Echo_Async_Recursive_BinaryStreamed()
+    {
+        // This test is like the other async test above but deliberately exploits
+        // the duplex callback's OperationContext to trigger a 2nd async operation
+        // on the Thread using ServiceModel's own OperationContext.  This forces
+        // ServiceChannel.PrepareCall to detect it is in a potential deadlock state
+        // and throw an exception.
+        NetHttpBinding binding = null;
+        ClientReceiver clientReceiver = null;
+        InstanceContext context = null;
+        DuplexChannelFactory<IWSDuplexService> channelFactory = null;
+        IWSDuplexService client = null;
+        Stream sentStream = null;
+        Stream receivedStream = null;
+        string sentString = "test data";
+        int timeoutMs = 5000;
+        InvalidOperationException callbackException = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding()
+            {
+                MaxReceivedMessageSize = ScenarioTestHelpers.SixtyFourMB,
+                MaxBufferSize = ScenarioTestHelpers.SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = TransferMode.Streamed;
+            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            binding.SendTimeout = TimeSpan.FromMilliseconds(timeoutMs);
+
+            clientReceiver = new ClientReceiver();
+            context = new InstanceContext(clientReceiver);
+
+            channelFactory = new DuplexChannelFactory<IWSDuplexService>(context, binding, Endpoints.WebSocketHttpDuplexBinaryStreamed_Address);
+            client = channelFactory.CreateChannel();
+
+            sentStream = ScenarioTestHelpers.StringToStream(sentString);
+
+            // Arrange for a 2nd call to echo the stream when the duplex callback
+            // is invoked.  The callback happens on the Thread used by ServiceModel
+            // containing the OperationContext it uses internally.  This 2nd call
+            // will trigger ServiceChannel.PrepareCall to detect a deadlock situation
+            // and throw 
+            EventHandler callbackAction = (sender, args) =>
+            {
+                try
+                {
+                    clientReceiver.OperationCompletedAction = null;
+                    Task<Stream> echoTask = client.EchoStreamAsync(sentStream);
+                    echoTask.GetAwaiter().GetResult();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    callbackException = ex;
+                }
+            };
+
+            clientReceiver.OperationCompletedAction = callbackAction;
+
+            // *** EXECUTE *** \\
+            //using (OperationContextScope scope = new OperationContextScope((IContextChannel)client))
+            {
+                Task<Stream> echoTask = client.EchoStreamAsync(sentStream);
+                receivedStream = echoTask.GetAwaiter().GetResult();
+            }
+
+            // *** VALIDATE *** \\ 
+            Assert.True(callbackException != null, "Expected exception from recursive EchoStream.");
+            Assert.True(receivedStream != null, "Expected non-null stream returned.");
+            string receivedString = ScenarioTestHelpers.StreamToString(receivedStream);
+            Assert.True(String.Equals(sentString, receivedString),
+                        String.Format("Expected returned stream with '{0}' but actual was '{1}'", sentString, receivedString));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            channelFactory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, channelFactory);
+            clientReceiver.Dispose();
+            if (sentStream != null)
+            {
+                sentStream.Dispose();
+            }
+            if (receivedStream != null)
+            {
+                receivedStream.Dispose();
+            }
+        }
+    }
+
+    [Fact]
+    [OuterLoop]
     [ActiveIssue(420, PlatformID.AnyUnix)]
     public static void WebSocket_Http_RequestReply_BinaryStreamed()
     {

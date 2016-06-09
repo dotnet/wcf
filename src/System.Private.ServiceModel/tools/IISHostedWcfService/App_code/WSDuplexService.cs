@@ -29,6 +29,12 @@ namespace WcfService
 
         private static FlowControlledStream s_localStream;
 
+        public Stream EchoStream(Stream stream)
+        {
+            IPushCallback pushCallbackChannel = OperationContext.Current.GetCallbackChannel<IPushCallback>();
+            return pushCallbackChannel.EchoStream(stream);
+        }
+
         public void UploadData(string data)
         {
             if (data.Contains(s_contentToReplace) || data.Contains(s_replacedContent) || data.Contains(s_responseReplaceThisContent))

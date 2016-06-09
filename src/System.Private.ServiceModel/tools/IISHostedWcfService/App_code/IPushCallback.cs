@@ -6,11 +6,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace WcfService
 {
     public interface IPushCallback
     {
+        [OperationContract]
+        Stream EchoStream(Stream stream);
+
         [OperationContract(IsOneWay = true)]
         void ReceiveData(string data);
 

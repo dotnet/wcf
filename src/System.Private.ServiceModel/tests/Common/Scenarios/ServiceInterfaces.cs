@@ -382,6 +382,12 @@ public interface IWSDuplexService
     [OperationContract]
     string GetExceptionString();
 
+    [OperationContractAttribute(Action = "http://tempuri.org/IWSDuplexService/EchoStream", ReplyAction = "http://tempuri.org/IWSDuplexService/EchoStreamResponse")]
+    Stream EchoStream(Stream stream);
+
+    [OperationContractAttribute(Action = "http://tempuri.org/IWSDuplexService/EchoStream", ReplyAction = "http://tempuri.org/IWSDuplexService/EchoStreamResponse")]
+    Task<Stream> EchoStreamAsync(Stream stream);
+
     [OperationContract]
     void UploadData(string data);
 
@@ -417,6 +423,9 @@ public interface IWSDuplexService
 
 public interface IPushCallback
 {
+    [OperationContract]
+    Stream EchoStream(Stream stream);
+
     [OperationContract(IsOneWay = true)]
     void ReceiveData(string data);
 

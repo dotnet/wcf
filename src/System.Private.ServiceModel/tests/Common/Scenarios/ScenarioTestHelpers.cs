@@ -9,6 +9,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 
 using Infrastructure.Common;
+using System.IO;
 
 public static class ScenarioTestHelpers
 {
@@ -242,6 +243,22 @@ public static class ScenarioTestHelpers
         }
 
         return new string(chars, 0, chars.Length);
+    }
+
+    public static string StreamToString(Stream stream)
+    {
+        var reader = new StreamReader(stream, Encoding.UTF8);
+        return reader.ReadToEnd();
+    }
+
+    public static Stream StringToStream(string str)
+    {
+        var ms = new MemoryStream();
+        var sw = new StreamWriter(ms, Encoding.UTF8);
+        sw.Write(str);
+        sw.Flush();
+        ms.Position = 0;
+        return ms;
     }
 }
 

@@ -16,6 +16,9 @@ namespace WcfService
         string GetExceptionString();
 
         [OperationContract]
+        Stream EchoStream(Stream stream);
+
+        [OperationContract]
         void UploadData(string data);
 
         [OperationContract]
