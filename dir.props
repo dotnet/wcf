@@ -40,6 +40,7 @@
     <ObjDir Condition="'$(ObjDir)'==''">$(BinDir)obj/</ObjDir>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'==''">$(ObjDir)</BaseIntermediateOutputPath>
     <TestWorkingDir Condition="'$(TestWorkingDir)'==''">$(BinDir)tests/</TestWorkingDir>
+    <PackageOutputRoot Condition="'$(PackageOutputRoot)'=='' and '$(NonShippingPackage)' == 'true'">$(BinDir)packages_noship/</PackageOutputRoot>
     <PackageOutputRoot Condition="'$(PackageOutputRoot)'==''">$(BinDir)packages/</PackageOutputRoot>
 
     <!-- Input Directories -->
@@ -82,17 +83,25 @@
     <ValidatePackageVersions>true</ValidatePackageVersions>
     <ProhibitFloatingDependencies>true</ProhibitFloatingDependencies>
     <CoreFxExpectedPrerelease>rc3-24206-00</CoreFxExpectedPrerelease>
-    <CoreFxVersionsIdentityRegex>^(?i)((System\..*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.Private\.PackageBaseline)|(Microsoft\.NETCore.*)|(Microsoft\.TargetingPack\.Private\.(CoreCLR|NETNative))|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)(?&lt;!System\.Data\.SqlClient)(?&lt;!System\.IO\.Compression)$</CoreFxVersionsIdentityRegex>
+    <CoreClrExpectedPrerelease>rc3-24206-00</CoreClrExpectedPrerelease>
+    <ExternalExpectedPrerelease>rc3-24206-00</ExternalExpectedPrerelease>
+    <CoreFxVersionsIdentityRegex>^(?i)((System\..*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
   </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props" Condition="Exists('$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props')" />
 
   <ItemGroup>
     <ValidationPattern Include="CoreFxVersions">
       <IdentityRegex>$(CoreFxVersionsIdentityRegex)</IdentityRegex>
       <ExpectedPrerelease>$(CoreFxExpectedPrerelease)</ExpectedPrerelease>
     </ValidationPattern>
-    <ValidationPattern Include="ExternalVersions">
-      <IdentityRegex>^(?i)((System\.Data\.SqlClient)|(System\.IO\.Compression))$</IdentityRegex>
-      <ExpectedPrerelease>$(CoreFxExpectedPrerelease)</ExpectedPrerelease>
+    <ValidationPattern Include="CoreClrVersions">
+      <IdentityRegex>^(?i)(Microsoft\.NETCore\.Runtime.*)|(Microsoft\.TargetingPack\.Private\.CoreCLR)$</IdentityRegex>
+      <ExpectedPrerelease>$(CoreClrExpectedPrerelease)</ExpectedPrerelease>
+    </ValidationPattern>
+    <ValidationPattern Include="CoreLibTargetingPackVersions">
+      <IdentityRegex>^(?i)Microsoft\.TargetingPack\.Private\.NETNative$</IdentityRegex>
+      <ExpectedPrerelease>$(ExternalExpectedPrerelease)</ExpectedPrerelease>
     </ValidationPattern>
     <ValidationPattern Include="TargetingPackVersions">
       <IdentityRegex>^(?i)Microsoft\.TargetingPack\.(NetFramework.*|Private\.WinRT)$</IdentityRegex>
@@ -128,8 +137,8 @@
 
   <!-- list of directories to perform batch restore -->
   <ItemGroup>
-    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)/src" />
-    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)/pkg" />
+    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)src" />
+    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)pkg" />
     <DnuRestoreDir Condition="'$(BuildTestsAgainstPackages)' == 'true'" Include="$(GeneratedProjectJsonDir)" />
   </ItemGroup>
 
@@ -154,7 +163,7 @@
   <!-- Create a collection of all project.json files for dependency updates. -->
   <ItemGroup>
     <ProjectJsonFiles Include="$(SourceDir)**/project.json" />
-    <ProjectJsonFiles Include="$(MSBuildThisFileDirectory)/pkg/**/project.json" />
+    <ProjectJsonFiles Include="$(MSBuildThisFileDirectory)pkg/**/project.json" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(BuildAllProjects)'=='true'">
@@ -197,7 +206,8 @@
     <!-- By default make all libraries to be AnyCPU but individual projects can override it if they need to -->
     <Platform>AnyCPU</Platform>
     <OutputType>Library</OutputType>
-    <RunApiCompat>true</RunApiCompat>
+    <!-- dotnet/corefx#8899 tracks fixing this -->
+    <RunApiCompat Condition="'$(OSEnvironment)' == 'Windows_NT'">true</RunApiCompat>
   </PropertyGroup>
 
   <!--
@@ -243,12 +253,14 @@
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('netstandard13aot'))">netstandard13aot</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('netstandard15aot'))">netstandard15aot</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('netcore50'))">netcore50</TargetGroup>
+    <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('netcoreapp1.0'))">netcoreapp1.0</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('dnxcore50'))">dnxcore50</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('net463'))">net463</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('net462'))">net462</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('net461'))">net461</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('net46'))">net46</TargetGroup>
     <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('net45'))">net45</TargetGroup>
+    <TargetGroup Condition="'$(TargetGroup)'=='' and $(Configuration.Contains('net451'))">net451</TargetGroup>
   </PropertyGroup>
 
   <!-- Set up Default symbol and optimization for Configuration -->
@@ -408,6 +420,12 @@
         <NuGetTargetMoniker>.NETStandard,Version=v1.5</NuGetTargetMoniker>
       </PropertyGroup>
     </When>
+    <When Condition="'$(TargetGroup)'=='netcoreapp1.0'">
+      <PropertyGroup>
+        <PackageTargetFramework>netcoreapp1.0</PackageTargetFramework>
+        <NuGetTargetMoniker>.NETCoreApp,Version=v1.0</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
     <When Condition="'$(TargetGroup)'=='dnxcore50'">
       <PropertyGroup>
         <ConfigurationErrorMsg>$(ConfigurationErrorMsg);DNXCore50 has been deprecated.  Please use NETStandard1.X or NETCoreApp1.0 instead.</ConfigurationErrorMsg>
@@ -515,6 +533,7 @@
 
     <PackagesBasePath Condition="'$(PackagesBasePath)'==''">$(BinDir)$(OSPlatformConfig)</PackagesBasePath>
     <PackageOutputPath Condition="'$(PackageOutputPath)'==''">$(PackageOutputRoot)$(ConfigurationGroup)/</PackageOutputPath>
+    <SymbolPackageOutputPath Condition="'$(SymbolPackageOutputPath)'==''">$(PackageOutputPath)symbols/</SymbolPackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
