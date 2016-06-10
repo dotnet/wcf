@@ -153,6 +153,11 @@ echo Grant app pool %_wcfServiceName% "Read" access to %_wcfTestDir% and its sub
 call :Run icacls %_wcfTestDir% /grant:r "IIS APPPOOL\%_wcfServiceName%":(OI)(CI)R /Q
 if ERRORLEVEL 1 goto :Failure
 
+:: Unlock the configuration of sslFlags
+echo Unlock the IIS config section to allow sslFlags to be overriden
+call :Run %_appcmd% unlock config /section:"system.webServer/security/access"
+if ERRORLEVEL 1 goto :Failure
+
 :: Clean up log file if everything worked perfectly
 if EXIST %_logFile% del %_logFile% /f /q
 
