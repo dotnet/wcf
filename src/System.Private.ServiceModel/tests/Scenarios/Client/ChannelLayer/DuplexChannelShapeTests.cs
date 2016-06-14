@@ -15,12 +15,25 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     // Creating a ChannelFactory using a binding's 'BuildChannelFactory' method and providing a channel shape...
     //       returns a concrete type determined by the channel shape requested and other binding related settings.
     // The tests in this file use the IDuplexChannel shape.
-
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
+#endif
     [OuterLoop]
     [ActiveIssue(1157)]
     public static void IDuplexSessionChannel_Https_NetHttpsBinding()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         IChannelFactory<IDuplexSessionChannel> factory = null;
         IDuplexSessionChannel channel = null;
         Message replyMessage = null;
@@ -74,11 +87,25 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
+#endif
     [OuterLoop]
     [ActiveIssue(1157)]
     public static void IDuplexSessionChannel_Http_BasicHttpBinding()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
         IChannelFactory<IDuplexSessionChannel> factory = null;
         IDuplexSessionChannel channel = null;
         Message replyMessage = null;

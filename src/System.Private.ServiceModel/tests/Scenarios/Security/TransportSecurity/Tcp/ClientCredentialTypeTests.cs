@@ -12,10 +12,26 @@ using Xunit;
 
 public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 {
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+#endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         string clientCertThumb = null;
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
@@ -59,10 +75,26 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+#endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_CustomValidator_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         string clientCertThumb = null;
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
@@ -110,10 +142,26 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+#endif
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_With_ServerAltName_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
@@ -149,11 +197,27 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+#endif
     [OuterLoop]
     [ActiveIssue(1183)]
     public static void NetTcp_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
@@ -190,11 +254,27 @@ public class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     // This test is expected to validate the service certificate using PeerTrust with X509CertificateValidationMode set to PeerOrChainTrust.
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+#endif
     [OuterLoop]
     [ActiveIssue(1183)]
     public static void NetTcp_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_EchoString()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
