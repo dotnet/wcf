@@ -21,7 +21,19 @@ namespace Infrastructure.Common
         // installed in the root store.
         public static bool IsRootCertificateInstalled()
         {
-            return ServiceUtilHelper.TryEnsureRootCertificateInstalled();
+            try
+            {
+                ServiceUtilHelper.EnsureRootCertificateInstalled();
+                return true;
+            }
+            catch
+            {
+                // Errors installing the certificate are captured and will be
+                // reported when an attempt is made to use it.  But for the
+                // purposes of this detector, a failure only propagates as
+                // a 'false' return.
+                return false;
+            }
         }
 
         // Detector used by [ConditionalFact(nameof(Client_Certificate_Installed)].
@@ -31,7 +43,18 @@ namespace Infrastructure.Common
         // installed in the certificate store.
         public static bool IsClientCertificateInstalled()
         {
-            return ServiceUtilHelper.TryEnsureLocalClientCertificateInstalled();
+            try { 
+                ServiceUtilHelper.EnsureClientCertificateInstalled();
+                return true;
+            }
+            catch
+            {
+                // Errors installing the certificate are captured and will be
+                // reported when an attempt is made to use it.  But for the
+                // purposes of this detector, a failure only propagates as
+                // a 'false' return.
+                return false;
+            }
         }
 
         // Returns 'true' if the server is running IIS-hosted
