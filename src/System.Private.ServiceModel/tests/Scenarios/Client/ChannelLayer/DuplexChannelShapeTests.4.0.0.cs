@@ -134,7 +134,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         }
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void IRequestChannel_Https_NetHttpsBinding()
