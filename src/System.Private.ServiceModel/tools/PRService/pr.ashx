@@ -109,7 +109,7 @@ public class PullRequestHandler : IHttpHandler
 
         if (!success)
         {
-            // CleanupMergedBranches failed, this is a server issue
+            // CleanupBranches failed, this is a server issue
             context.Response.StatusCode = 500;
             context.Response.Write(HttpUtility.HtmlEncode(result.ToString()));
             return;
@@ -207,12 +207,8 @@ public class PullRequestHandler : IHttpHandler
     {
         string[] gitCommands = new string[]
         {
-            "clean -fdx",
-            "checkout master",
-            "fetch --all --prune",
-            "merge --ff-only origin/master",
             string.Format("fetch origin pull/{0}/head:pr/{0}", pr),
-            string.Format("checkout pr/{0}", pr)
+            string.Format("checkout -f pr/{0}", pr)
         };
 
         return RunGitCommands(gitCommands, gitRepoPath, executionResult);
@@ -222,11 +218,7 @@ public class PullRequestHandler : IHttpHandler
     {
         string[] gitCommands = new string[]
         {
-            "clean -fdx",
-            "checkout master",
-            "fetch --all --prune",
-            "merge --ff-only origin/master",
-            string.Format("checkout {0}", branch)
+            string.Format("checkout -f {0}", branch)
         };
 
         return RunGitCommands(gitCommands, gitRepoPath, executionResult);
@@ -267,8 +259,16 @@ public class PullRequestHandler : IHttpHandler
     private bool CleanupBranches(string gitRepoPath, StringBuilder executionResult)
     {
         bool success = false;
+    
+        string[] gitCommands = new string[] 
+        {
+            "checkout -f master",
+            "clean -fdx",
+            "fetch --all --prune",
+            "merge --ff-only origin/master"
+        };
 
-        success = RunGitCommands(new string[] { "checkout master" }, gitRepoPath, executionResult);
+        success = RunGitCommands(gitCommands, gitRepoPath, executionResult);
 
         string[] branchesList = null;
         if (success)
