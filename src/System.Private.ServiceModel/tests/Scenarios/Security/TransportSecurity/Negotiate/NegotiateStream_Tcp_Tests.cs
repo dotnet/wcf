@@ -24,14 +24,14 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     //              prior Kerberos tickets
     // 
     // NegotiateStream_*_With_ExplicitUserNameAndPassword
-    //     Windows: Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
-    //       Linux: Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
+    //     Windows: Set the ExplicitUserName, ExplicitPassword, and NegotiateTestDomain TestProperties to a user valid on your Kerberos realm
+    //       Linux: Set the ExplicitUserName, ExplicitPassword, and NegotiateTestDomain TestProperties to a user valid on your Kerberos realm
     //              If previous tests were run, it may be necessary to run 'kdestroy -A' to remove all
     //              prior Kerberos tickets
     // 
     // NegotiateStream_*_With_ExplicitSpn
-    //     Windows: Edit the s_Spn variable to match a valid SPN for the server 
-    //       Linux: Edit the s_Spn variable to match a valid SPN for the server 
+    //     Windows: Set the NegotiateTestSPN TestProperties to match a valid SPN for the server 
+    //       Linux: Set the NegotiateTestSPN TestProperties to match a valid SPN for the server 
     //   
     //     By default, the SPN is the same as the host's fully qualified domain name, for example, 
     //     'host.domain.com'
@@ -39,19 +39,19 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     //     by using a tool like psexec and running 'psexec -s -h <WcfBridge.exe>' 
     // 
     // NegotiateStream_*_With_Upn
-    //     Windows: Edit the s_Upn field to match a valid UPN for the server in the form of 
+    //     Windows: Set the NegotiateTestUPN TestProperties to match a valid UPN for the server in the form of 
     //              'user@DOMAIN.COM'
     //       Linux: This scenario is not yet supported - dotnet/corefx#6606
     //
     // NegotiateStream_*_With_ExplicitUserNameAndPassword_With_Spn
-    //     Windows: Edit the s_Spn variable to match a valid SPN for the server
-    //              Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
-    //       Linux: Edit the s_Spn variable to match a valid SPN for the server
-    //              Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
+    //     Windows: Set the NegotiateTestUPN TestProperties to match a valid UPN for the server
+    //              Set the ExplicitUserName, ExplicitPassword, and NegotiateTestDomain TestProperties to a user valid on your Kerberos realm
+    //       Linux: Set the NegotiateTestUPN TestProperties to match a valid UPN for the server
+    //              Set the ExplicitUserName, ExplicitPassword, and NegotiateTestDomain TestProperties to a user valid on your Kerberos realm
     // 
     // NegotiateStream_*_With_ExplicitUserNameAndPassword_With_Upn
-    //     Windows: Edit the s_Upn variable to match a valid UPN for the server
-    //              Edit the s_UserName and s_Password variables to a user valid on your Kerberos realm
+    //     Windows: Set the NegotiateTestUPN TestProperties to match a valid UPN for the server
+    //              Set the ExplicitUserName, ExplicitPassword, and NegotiateTestDomain TestProperties to a user valid on your Kerberos realm
     //       Linux: This scenario is not yet supported - dotnet/corefx#6606
 
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
@@ -60,18 +60,23 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Fact]
     [ActiveIssue(1235)]
 #else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
+    [ConditionalFact(nameof(Windows_Authentication_Available),
+                     nameof(Ambient_Credentials_Available))]
 #endif
     [OuterLoop]
     public static void NegotiateStream_Tcp_AmbientCredentials()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool windows_Authentication_Available = Windows_Authentication_Available();
-        if (!windows_Authentication_Available)
+        bool ambient_Credentials_Available = Ambient_Credentials_Available();
+
+        if (!windows_Authentication_Available || 
+            !ambient_Credentials_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            Console.WriteLine("Ambient_Credentials_Available evaluated as {0}", ambient_Credentials_Available);
             return;
         }
 #endif
@@ -107,26 +112,34 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Fact]
     [ActiveIssue(1235)]
 #else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
-    [ActiveIssue(1265)]
+    [ConditionalFact(nameof(Windows_Authentication_Available),
+                     nameof(Explicit_Credentials_Available),
+                     nameof(Domain_Available))]
 #endif
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
     //          "NegotiateTestRealm"
     //          "NegotiateTestDomain"
-    //          "NegotiateTestUserName"
-    //          "NegotiateTestPassword"
+    //          "ExplicitUserName"
+    //          "ExplicitPassword"
     //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool windows_Authentication_Available = Windows_Authentication_Available();
-        if (!windows_Authentication_Available)
+        bool explicit_Credentials_Available = Explicit_Credentials_Available();
+        bool domain_Available = Domain_Available();
+
+        if (!windows_Authentication_Available ||
+            !explicit_Credentials_Available ||
+            !domain_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            Console.WriteLine("Explicit_Credentials_Available evaluated as {0}", explicit_Credentials_Available);
+            Console.WriteLine("Domain_Available evaluated as {0}", domain_Available);
             return;
         }
 #endif
@@ -141,9 +154,9 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
             factory = new ChannelFactory<IWcfService>(binding,
                 new EndpointAddress(Endpoints.Tcp_DefaultBinding_Address));
 
-            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.Instance.NegotiateTestDomain;
-            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.Instance.NegotiateTestUserName;
-            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.Instance.NegotiateTestPassword;
+            factory.Credentials.Windows.ClientCredential.Domain = GetDomain();
+            factory.Credentials.Windows.ClientCredential.UserName = GetExplicitUserName();
+            factory.Credentials.Windows.ClientCredential.Password = GetExplicitPassword();
 
             serviceProxy = factory.CreateChannel();
 
@@ -168,27 +181,28 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Fact]
     [ActiveIssue(1235)]
 #else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
-    [ActiveIssue(1265)]
+    [ConditionalFact(nameof(Windows_Authentication_Available),
+                     nameof(SPN_Available))]
 #endif
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
     //          "NegotiateTestRealm"
-    //          "NegotiateTestDomain"
-    //          "NegotiateTestUserName"
-    //          "NegotiateTestPassword"
     //          "NegotiateTestSpn" (host/<servername>)
     //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Tcp_With_ExplicitSpn()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool windows_Authentication_Available = Windows_Authentication_Available();
-        if (!windows_Authentication_Available)
+        bool spn_Available = SPN_Available();
+
+        if (!windows_Authentication_Available ||
+            !spn_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            Console.WriteLine("SPN_Available evaluated as {0}", spn_Available);    
             return;
         }
 #endif
@@ -203,7 +217,7 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
             factory = new ChannelFactory<IWcfService>(binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.Instance.NegotiateTestSpn)
+                    new SpnEndpointIdentity(GetSPN())
             ));
 
             serviceProxy = factory.CreateChannel();
@@ -229,18 +243,23 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Fact]
     [ActiveIssue(1235)]
 #else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
+    [ConditionalFact(nameof(Windows_Authentication_Available),
+                     nameof(SPN_Available))]
 #endif
     [OuterLoop]
-    public static void NegotiateStream_Tcp_With_Upn()
+    public static void NegotiateStream_Tcp_With_SPN()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool windows_Authentication_Available = Windows_Authentication_Available();
-        if (!windows_Authentication_Available)
+        bool spn_Available = SPN_Available();
+
+        if (!windows_Authentication_Available ||
+            !spn_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            Console.WriteLine("SPN_Available evaluated as {0}", spn_Available);    
             return;
         }
 #endif
@@ -256,7 +275,7 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.Instance.NegotiateTestSpn)
+                    new SpnEndpointIdentity(GetSPN())
             ));
 
             serviceProxy = factory.CreateChannel();
@@ -282,27 +301,39 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Fact]
     [ActiveIssue(1235)]
 #else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
-    [ActiveIssue(1265)]
+    [ConditionalFact(nameof(Windows_Authentication_Available),
+                     nameof(Explicit_Credentials_Available),
+                     nameof(Domain_Available),
+                     nameof(SPN_Available))]
 #endif
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
     //          "NegotiateTestRealm"
     //          "NegotiateTestDomain"
-    //          "NegotiateTestUserName"
-    //          "NegotiateTestPassword"
+    //          "ExplicitUserName"
+    //          "ExplicitPassword"
     //          "NegotiateTestSpn" (host/<servername>)
     //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword_With_Spn()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool windows_Authentication_Available = Windows_Authentication_Available();
-        if (!windows_Authentication_Available)
+        bool explicit_Credentials_Available = Explicit_Credentials_Available();
+        bool domain_Available = Domain_Available();
+        bool spn_Available = SPN_Available();
+
+        if (!windows_Authentication_Available ||
+            !explicit_Credentials_Available ||
+            !domain_Available ||
+            !spn_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            Console.WriteLine("Explicit_Credentials_Available evaluated as {0}", explicit_Credentials_Available);
+            Console.WriteLine("Domain_Available evaluated as {0}", domain_Available);
+            Console.WriteLine("SPN_Available evaluated as {0}", spn_Available);
             return;
         }
 #endif
@@ -318,12 +349,12 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new SpnEndpointIdentity(NegotiateStreamTestConfiguration.Instance.NegotiateTestSpn)
+                    new SpnEndpointIdentity(GetSPN())
             ));
 
-            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.Instance.NegotiateTestDomain;
-            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.Instance.NegotiateTestUserName;
-            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.Instance.NegotiateTestPassword;
+            factory.Credentials.Windows.ClientCredential.Domain = GetDomain();
+            factory.Credentials.Windows.ClientCredential.UserName = GetExplicitUserName();
+            factory.Credentials.Windows.ClientCredential.Password = GetExplicitPassword();
 
             serviceProxy = factory.CreateChannel();
 
@@ -348,7 +379,10 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Fact]
     [ActiveIssue(1235)]
 #else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
+    [ConditionalFact(nameof(Windows_Authentication_Available),
+                     nameof(Explicit_Credentials_Available),
+                     nameof(Domain_Available),
+                     nameof(UPN_Available))]
     [ActiveIssue(1271)]
 #endif
     [OuterLoop]
@@ -356,11 +390,21 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool windows_Authentication_Available = Windows_Authentication_Available();
-        if (!windows_Authentication_Available)
+        bool explicit_Credentials_Available = Explicit_Credentials_Available();
+        bool domain_Available = Domain_Available();
+        bool upn_Available = UPN_Available();
+
+        if (!windows_Authentication_Available ||
+            !explicit_Credentials_Available ||
+            !domain_Available ||
+            !upn_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            Console.WriteLine("Explicit_Credentials_Available evaluated as {0}", explicit_Credentials_Available);
+            Console.WriteLine("Domain_Available evaluated as {0}", domain_Available);
+            Console.WriteLine("UPN_Available evaluated as {0}", upn_Available);
             return;
         }
 #endif
@@ -376,12 +420,12 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                 binding,
                 new EndpointAddress(
                     new Uri(Endpoints.Tcp_DefaultBinding_Address),
-                    new UpnEndpointIdentity(NegotiateStreamTestConfiguration.Instance.NegotiateTestUpn)
+                    new UpnEndpointIdentity(GetUPN())
             ));
 
-            factory.Credentials.Windows.ClientCredential.Domain = NegotiateStreamTestConfiguration.Instance.NegotiateTestDomain;
-            factory.Credentials.Windows.ClientCredential.UserName = NegotiateStreamTestConfiguration.Instance.NegotiateTestUserName;
-            factory.Credentials.Windows.ClientCredential.Password = NegotiateStreamTestConfiguration.Instance.NegotiateTestPassword;
+            factory.Credentials.Windows.ClientCredential.Domain = GetDomain();
+            factory.Credentials.Windows.ClientCredential.UserName = GetExplicitUserName();
+            factory.Credentials.Windows.ClientCredential.Password = GetExplicitPassword();
 
             serviceProxy = factory.CreateChannel();
 

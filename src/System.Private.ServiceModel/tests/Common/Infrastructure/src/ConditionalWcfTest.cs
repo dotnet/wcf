@@ -143,11 +143,25 @@ namespace Infrastructure.Common
                                      ConditionalTestDetectors.AreExplicitCredentialsAvailable);
         }
 
+        // Returns 'true' if the domain is available to use.
+        public static bool Domain_Available()
+        {
+            return GetConditionValue(nameof(Domain_Available),
+                                     ConditionalTestDetectors.IsDomainAvailable);
+        }
+
         // Returns 'true' if SPN is available
         public static bool SPN_Available()
         {
             return GetConditionValue(nameof(SPN_Available),
                                      ConditionalTestDetectors.IsSPNAvailable);
+        }
+
+        // Returns 'true' if UPN is available
+        public static bool UPN_Available()
+        {
+            return GetConditionValue(nameof(UPN_Available),
+                                     ConditionalTestDetectors.IsUPNAvailable);
         }
 
         // Returns 'true' if the server is configured to accept client certificates.
@@ -191,6 +205,38 @@ namespace Infrastructure.Common
             // Refactor this after integration to address https://github.com/dotnet/wcf/issues/1024 
             return GetConditionValue(nameof(NTLM_Available),
                                      Server_Is_LocalHost);
+        }
+
+        // Returns the Domain if available.
+        // TestProperties takes precedence, but if it has not been specified
+        // and this is a Windows client, we infer it.
+        public static string GetDomain()
+        {
+            return ConditionalTestDetectors.GetDomain();
+        }
+
+        // Returns the explicit user name if available
+        public static string GetExplicitUserName()
+        {
+            return ConditionalTestDetectors.GetExplicitUserName();
+        }
+
+        // Returns the explicit password if available
+        public static string GetExplicitPassword()
+        {
+            return ConditionalTestDetectors.GetExplicitPassword();
+        }
+
+        // Gets the UPN if available
+        public static string GetUPN()
+        {
+            return ConditionalTestDetectors.GetUPN();
+        }
+
+        // Gets the UPN if available
+        public static string GetSPN()
+        {
+            return ConditionalTestDetectors.GetSPN();
         }
     }
 }
