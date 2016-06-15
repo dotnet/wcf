@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-public static class RequestReplyChannelShapeTests
+public partial class RequestReplyChannelShapeTests
 {
     // Creating a ChannelFactory using a binding's 'BuildChannelFactory' method and providing a channel shape...
     //       returns a concrete type determined by the channel shape requested and other binding related settings.
