@@ -106,16 +106,73 @@ namespace Infrastructure.Common
         // and ExplicitPassword are non-blank.
         public static bool AreExplicitCredentialsAvailable()
         {
-            return !String.IsNullOrWhiteSpace(TestProperties.GetProperty(TestProperties.ExplicitUserName_PropertyName)) &&
-                   !String.IsNullOrWhiteSpace(TestProperties.GetProperty(TestProperties.ExplicitPassword_PropertyName));
+            return !String.IsNullOrWhiteSpace(GetExplicitUserName()) &&
+                   !String.IsNullOrWhiteSpace(GetExplicitPassword());
+        }
+
+        // Returns 'true' if a domain is available.  TestProperties for
+        // NegotiateTestDomain takes precedence, but for Windows it can
+        // infer the value.
+        public static bool IsDomainAvailable()
+        {
+            return !String.IsNullOrWhiteSpace(GetDomain());
         }
 
         // Returns 'true if SPN is available
         public static bool IsSPNAvailable()
         {
-            // Requires solution to https://github.com/dotnet/wcf/issues/1095
-            // Till then, heuristic is that running IIS-hosted on Windows means SPN is available
-            return IsIISHosted() && IsWindows();
+            // SPN is available only if NegotiateTestSpn has been explicitly set.
+            // When https://github.com/dotnet/wcf/issues/1283 is fixed, this should be updated to
+            // handle the self-hosted as Local System scenario as well.
+            return !String.IsNullOrWhiteSpace(GetSPN());
         }
+
+        // Returns 'true if UPN is available
+        public static bool IsUPNAvailable()
+        {
+            // UPN is available only if NegotiateTestSpn has been explicitly set.
+            // When https://github.com/dotnet/wcf/issues/1283 is fixed, this should be updated to
+            // handle the self-hosted as Local System scenario as well.
+            return !String.IsNullOrWhiteSpace(GetUPN());
+        }
+
+        // Returns the explicit user name if available
+        internal static string GetExplicitUserName()
+        {
+            return TestProperties.GetProperty(TestProperties.ExplicitUserName_PropertyName);
+        }
+
+        // Returns the explicit password if available
+        internal static string GetExplicitPassword()
+        {
+            return TestProperties.GetProperty(TestProperties.ExplicitPassword_PropertyName);
+        }
+
+        // Returns the Domain if available.
+        // TestProperties takes precedence, but if it has not been specified
+        // and this is a Windows client, we infer it.
+        public static string GetDomain()
+        {
+            string result = TestProperties.GetProperty(TestProperties.NegotiateTestDomain_PropertyName);
+            if (String.IsNullOrEmpty(result) && IsClientDomainJoined())
+            {
+                result = Environment.GetEnvironmentVariable("USERDOMAIN");
+            }
+
+            return result;
+        }
+
+        // Gets the UPN if available
+        internal static string GetUPN()
+        {
+            return TestProperties.GetProperty(TestProperties.NegotiateTestUpn_PropertyName);
+        }
+
+        // Gets the SPN if available
+        internal static string GetSPN()
+        {
+            return TestProperties.GetProperty(TestProperties.NegotiateTestSpn_PropertyName);
+        }
+
     }
 }
