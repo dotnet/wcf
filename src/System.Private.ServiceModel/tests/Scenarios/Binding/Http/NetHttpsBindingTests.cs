@@ -5,15 +5,13 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+
+using Infrastructure.Common;
 using Xunit;
 
-public static class Binding_Http_NetHttpsBindingTests
+public class Binding_Http_NetHttpsBindingTests: ConditionalWcfTest
 {
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void DefaultCtor_NetHttps_Echo_RoundTrips_String()
@@ -77,7 +75,7 @@ public static class Binding_Http_NetHttpsBindingTests
         });
     }
 
-    [Fact]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     [ActiveIssue(1123, PlatformID.AnyUnix)]
     public static void NonDefaultCtor_NetHttps_Echo_RoundTrips_String()
