@@ -51,6 +51,7 @@ namespace Infrastructure.Common
         public static readonly string ServiceUri_PropertyName = "ServiceUri"%3B
         public static readonly string ExplicitUserName_PropertyName = "ExplicitUserName"%3B
         public static readonly string ExplicitPassword_PropertyName = "ExplicitPassword"%3B
+        public static readonly string SSL_Available_PropertyName = "SSL_Available"%3B
                 
         static partial void Initialize(Dictionary<string, string> properties)
         {
@@ -87,6 +88,7 @@ namespace Infrastructure.Common
             properties["ServiceUri"] = "$(ServiceUri)"%3B
             properties["ExplicitUserName"] = "$(ExplicitUserName)"%3B
             properties["ExplicitPassword"] = "$(ExplicitPassword)"%3B
+            properties["SSL_Available"] = "$(SSL_Available)"%3B
         }
     }
 }
