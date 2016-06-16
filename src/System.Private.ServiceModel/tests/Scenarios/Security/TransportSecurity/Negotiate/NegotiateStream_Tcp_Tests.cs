@@ -115,6 +115,7 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [ConditionalFact(nameof(Windows_Authentication_Available),
                      nameof(Explicit_Credentials_Available),
                      nameof(Domain_Available))]
+    [ActiveIssue(1262)]
 #endif
     [OuterLoop]
     // Test Requirements \\
@@ -305,6 +306,7 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                      nameof(Explicit_Credentials_Available),
                      nameof(Domain_Available),
                      nameof(SPN_Available))]
+    [ActiveIssue(1262)]
 #endif
     [OuterLoop]
     // Test Requirements \\
@@ -383,7 +385,7 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                      nameof(Explicit_Credentials_Available),
                      nameof(Domain_Available),
                      nameof(UPN_Available))]
-    [ActiveIssue(1271)]
+    [ActiveIssue(1262)]
 #endif
     [OuterLoop]
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword_With_Upn()
