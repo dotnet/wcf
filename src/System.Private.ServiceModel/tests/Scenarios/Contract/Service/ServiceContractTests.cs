@@ -54,6 +54,9 @@ public static partial class ServiceContractTests
     }
 
     [Fact]
+#if FULLXUNIT_NOTSUPPORTED
+    [ActiveIssue(1307)]
+#endif 
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_StreamedRequest()
     {
