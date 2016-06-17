@@ -10,12 +10,16 @@
     <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1-rc3-24206-00/runtime.json</RuntimeIdGraphDefinitionFile>
     <!-- *** end WCF Content *** -->
 
+    <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</ReleaseNotes>
+    <ProjectUrl>https://dot.net</ProjectUrl>
+
     <!-- Add a condition for this when we are able to run on .NET Core -->
     <PackagingTaskDir>$(ToolsDir)net45/</PackagingTaskDir>
     <!-- defined in buildtools packaging.targets, but we need this before targets are imported -->
     <PackagePlatform Condition="'$(PackagePlatform)' == ''">$(Platform)</PackagePlatform>
     <PackagePlatform Condition="'$(PackagePlatform)' == 'amd64'">x64</PackagePlatform>
     <NativePackagePath>$(MSBuildThisFileDirectory)src/Native/pkg</NativePackagePath>
+    <XmlDocFileRoot>$(PackagesDir)Microsoft.Private.Intellisense/1.0.0-rc4-24206-00/xmldocs</XmlDocFileRoot>
     <!-- We're currently not building a "live" baseline, instead we're using .NETCore 1.0 RTM stable versions as the baseline -->
     <SkipBaseLineCheck>true</SkipBaseLineCheck>
   </PropertyGroup>
