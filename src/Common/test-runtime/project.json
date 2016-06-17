@@ -1,18 +1,18 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-24206-00",
-    "Microsoft.NETCore.TestHost": "1.0.0-rc3-24206-00",
-    "Microsoft.NETCore.Runtime.CoreCLR": "1.0.2-rc3-24206-00",
-    "NETStandard.Library": "1.6.0-rc3-24206-00",
-    "System.Diagnostics.Contracts": "4.0.1-rc3-24206-00",
+    "Microsoft.NETCore.Platforms": "1.0.1",
+    "Microsoft.NETCore.TestHost": "1.0.0",
+    "Microsoft.NETCore.Runtime.CoreCLR": "1.0.2",
+    "NETStandard.Library": "1.6.0",
+    "System.Diagnostics.Contracts": "4.0.1",
     "coveralls.io": "1.4",
     "OpenCover": "4.6.519",
     "ReportGenerator": "2.4.3",
     "Microsoft.DotNet.xunit.performance.analysis": "1.0.0-alpha-build0025",
     "Microsoft.DotNet.xunit.performance.runner.Windows": "1.0.0-alpha-build0025",
-    "System.Collections.NonGeneric": "4.0.1-rc3-24206-00",
-    "System.Collections.Specialized": "4.0.1-rc3-24206-00",
-    "System.Xml.XmlDocument": "4.0.1-rc3-24206-00",
+    "System.Collections.NonGeneric": "4.0.1",
+    "System.Collections.Specialized": "4.0.1",
+    "System.Xml.XmlDocument": "4.0.1",
     "xunit": "2.1.0",
     "xunit.console.netcore": "1.0.2-prerelease-00120",
     "xunit.runner.utility": "2.1.0"
@@ -24,8 +24,8 @@
         "portable-net45+win8"
       ],
       "dependencies": {
-        "System.Net.Http.WinHttpHandler": "4.0.0-rc3-24206-00",
-        "System.Net.Security": "4.0.0-rc3-24206-00"
+        "System.Net.Http.WinHttpHandler": "4.0.0",
+        "System.Net.Security": "4.0.0"
       }
     }
   },

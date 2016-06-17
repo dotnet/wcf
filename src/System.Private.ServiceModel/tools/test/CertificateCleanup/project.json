@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1-rc3-24206-00",
-    "System.Console": "4.0.0-rc3-24206-00",
+    "Microsoft.NETCore.Platforms": "1.0.1",
+    "System.Console": "4.0.0",
     "System.Runtime.Extensions": "4.0.10",
-    "System.Security.Cryptography.X509Certificates": "4.1.0-rc3-24206-00"
+    "System.Security.Cryptography.X509Certificates": "4.1.0"
   },
   "frameworks": {
     "netcoreapp1.0": {
