@@ -108,25 +108,71 @@ namespace Infrastructure.Common
         }
 
         // Returns 'true' if the root certificate is installed and
-        // can be used.  This test will attempt to install the root certificate
-        // when necessary.  A 'false' from this test usually indicates that
-        // the root certificate could not be installed and was also not found
-        // in the root store.
+        // can be used.  Precedence based on the current value of this
+        // condition is:
+        //  blank:    attempt to install certificate and return the result
+        //  'true':   attempt to install certificate and return true
+        //  'false':  bypass certificate installation and return false
         public static bool Root_Certificate_Installed()
         {
-            return GetConditionValue(nameof(Root_Certificate_Installed),
-                                     ConditionalTestDetectors.IsRootCertificateInstalled);
+            // If the condition is unknown, attempt to install and use the
+            // results of that install attempt as the value to return.
+            bool result = GetConditionValue(nameof(Root_Certificate_Installed),
+                                            ConditionalTestDetectors.IsRootCertificateInstalled);
+
+            // Regardless whether the value was 'true' on entry or was detected
+            // to be true, ensure we have attempted to install and verify the
+            // certificate is installed.  This guarantees installation errors
+            // are captured and reported in both cases.
+            if (result)
+            {
+                try
+                {
+                    ServiceUtilHelper.EnsureRootCertificateInstalled();
+                }
+                catch
+                {
+                    // Errors in certificate installation are caught and reported
+                    // when an attempt is made to access it.  But for the purposes
+                    // of this conditional test, an error does not affect the result.
+                }
+            }
+
+            return result;
         }
 
         // Returns 'true' if the client certificate is installed and
-        // can be used.  This test will attempt to install the client certificate
-        // when necessary.  A 'false' from this test usually indicates that
-        // the client certificate could not be installed and was also not found
-        // in the client store.
+        // can be used.  Precedence based on the current value of this
+        // condition is:
+        //  blank:    attempt to install certificate and return the result
+        //  'true':   attempt to install certificate and return true
+        //  'false':  bypass certificate installation and return false
         public static bool Client_Certificate_Installed()
         {
-            return GetConditionValue(nameof(Client_Certificate_Installed),
-                                     ConditionalTestDetectors.IsClientCertificateInstalled);
+            // If the condition is unknown, attempt to install and use the
+            // results of that install attempt as the value to return.
+            bool result = GetConditionValue(nameof(Client_Certificate_Installed),
+                                            ConditionalTestDetectors.IsClientCertificateInstalled);
+
+            // Regardless whether the value was 'true' on entry or was detected
+            // to be true, ensure we have attempted to install and verify the
+            // certificate is installed.  This guarantees installation errors
+            // are captured and reported in both cases.
+            if (result)
+            {
+                try
+                {
+                    ServiceUtilHelper.EnsureClientCertificateInstalled();
+                }
+                catch
+                {
+                    // Errors in certificate installation are caught and reported
+                    // when an attempt is made to access it.  But for the purposes
+                    // of this conditional test, an error does not affect the result.
+                }
+            }
+
+            return result;
         }
 
         // Returns 'true' if ambient credentials are available to use.
