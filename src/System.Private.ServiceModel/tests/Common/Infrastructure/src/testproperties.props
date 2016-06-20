@@ -142,6 +142,10 @@
     <PropertyGroup Condition="'$(ExplicitPassword)' == ''">
       <ExplicitPassword ></ExplicitPassword >
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(SSL_Available)' == ''">
+      <SSL_Available></SSL_Available>
+    </PropertyGroup>
   
   <!--
      GeneratedTestPropertiesFileName:
