@@ -88,12 +88,13 @@ prepare_native_build()
 
     # Generate version.c if specified, else have an empty one.
     __versionSourceFile=$__scriptpath/bin/obj/version.c
-    if [ -f "${__versionSourceFile}" ]; then __generateversionsource=false; fi
+    if [ ! -e "${__versionSourceFile}" ]; then
         if [ $__generateversionsource == true ]; then
             $__scriptpath/Tools/dotnetcli/dotnet $__scriptpath/Tools/MSBuild.exe "$__scriptpath/build.proj" /t:GenerateVersionSourceFile /p:GenerateVersionSourceFile=true /v:minimal
         else
             __versionSourceLine="static char sccsid[] __attribute__((used)) = \"@(#)No version information produced\";"
             echo $__versionSourceLine > $__versionSourceFile
+        fi
     fi
 }
 
