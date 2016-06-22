@@ -38,6 +38,9 @@ Want to chat with other members of the WCF community?
 
 [![Join the chat at https://gitter.im/dotnet/wcf](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dotnet/wcf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+This project has adopted the code of conduct defined by the [Contributor Covenant](http://contributor-covenant.org/)
+to clarify expected behavior in our community.
+For more information see the [.NET Foundation Code of Conduct](http://www.dotnetfoundation.org/code-of-conduct).
 
 [.NET Foundation forums]: http://forums.dotnetfoundation.org/
 
