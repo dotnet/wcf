@@ -2,11 +2,11 @@
 
 usage()
 {
-    echo "Usage: $0 [managed] [native] [BuildArch] [BuildType] [clean] [verbose] [clangx.y] [platform] [cross] [skiptests] [cmakeargs]"
+    echo "Usage: $0 [managed] [native] [BuildArch] [BuildType] [clean] [verbose] [clangx.y] [platform] [cross] [skiptests] [staticLibLink]  [cmakeargs]"
     echo "managed - optional argument to build the managed code"
     echo "native - optional argument to build the native code"
     echo "The following arguments affect native builds only:"
-    echo "BuildArch can be: x64, x86, arm, arm64"
+    echo "BuildArch can be: x64, x86, arm, arm-softfp, arm64"
     echo "BuildType can be: debug, release"
     echo "clean - optional argument to force a clean build."
     echo "verbose - optional argument to enable verbose build output."
@@ -15,6 +15,7 @@ usage()
     echo "cross - optional argument to signify cross compilation,"
     echo "      - will use ROOTFS_DIR environment variable if set."
     echo "skiptests - skip the tests in the './bin/*/*Tests/' subdirectory."
+    echo "staticLibLink - Optional argument to statically link any native library."
     echo "generateversion - if building native only, pass this in to get a version on the build output."
     echo "cmakeargs - user-settable additional arguments passed to CMake."
     exit 1
@@ -87,12 +88,13 @@ prepare_native_build()
 
     # Generate version.c if specified, else have an empty one.
     __versionSourceFile=$__scriptpath/bin/obj/version.c
-    if [ -f "${__versionSourceFile}" ]; then __generateversionsource=false; fi
+    if [ ! -e "${__versionSourceFile}" ]; then
         if [ $__generateversionsource == true ]; then
             $__scriptpath/Tools/dotnetcli/dotnet $__scriptpath/Tools/MSBuild.exe "$__scriptpath/build.proj" /t:GenerateVersionSourceFile /p:GenerateVersionSourceFile=true /v:minimal
         else
             __versionSourceLine="static char sccsid[] __attribute__((used)) = \"@(#)No version information produced\";"
             echo $__versionSourceLine > $__versionSourceFile
+        fi
     fi
 }
 
@@ -161,10 +163,7 @@ __nativeroot=$__scriptpath/src/Native
 __packageroot=$__scriptpath/packages
 __sourceroot=$__scriptpath/src
 __rootbinpath="$__scriptpath/bin"
-__msbuildpackageid="Microsoft.Build.Mono.Debug"
 __generateversionsource=false
-__msbuildpackageversion="14.1.0.0-prerelease"
-__msbuildpath=$__packageroot/$__msbuildpackageid.$__msbuildpackageversion/lib/MSBuild.exe
 __buildmanaged=false
 __buildnative=false
 __TestNugetRuntimeId=win7-x64
@@ -215,22 +214,12 @@ case $OSName in
 
     Linux)
         __HostOS=Linux
-        source /etc/os-release
-        if [ "$ID" == "centos" ]; then
-            __TestNugetRuntimeId=centos.7-x64
-        elif [ "$ID" == "rhel" ]; then
-            __TestNugetRuntimeId=rhel.7-x64
-        elif [ "$ID" == "ubuntu" ]; then
-            if [ $VERSION_ID == "16.04" ]; then
-                __TestNugetRuntimeId=ubuntu.16.04-x64
-            else
-                __TestNugetRuntimeId=ubuntu.14.04-x64
-            fi
-        elif [ "$ID" == "debian" ]; then
-            __TestNugetRuntimeId=debian.8-x64
-        else
-            echo "Unsupported Linux distribution '$ID' detected. Configuring as if for Ubuntu."
+        if [ ! -e /etc/os-release ]; then
+            echo "Cannot determine Linux distribution, assuming Ubuntu 14.04"
             __TestNugetRuntimeId=ubuntu.14.04-x64
+        else
+            source /etc/os-release
+            __TestNugetRuntimeId=$ID.$VERSION_ID-$__BuildArch
         fi
         ;;
 
@@ -289,6 +278,9 @@ while :; do
         arm)
             __BuildArch=arm
             ;;
+        arm-softfp)
+            __BuildArch=arm-softfp
+            ;;
         arm64)
             __BuildArch=arm64
             ;;
@@ -305,6 +297,9 @@ while :; do
         verbose)
             __VerboseBuild=1
             ;;
+        staticliblink)
+            __CMakeExtraArgs="$__CMakeExtraArgs -DCMAKE_STATIC_LIB_LINK=1"
+            ;;
         generateversion)
             __generateversionsource=true
             ;;
@@ -319,6 +314,10 @@ while :; do
         clang3.7)
             __ClangMajorVersion=3
             __ClangMinorVersion=7
+            ;;
+        clang3.8)
+            __ClangMajorVersion=3
+            __ClangMinorVersion=8
             ;;
         freebsd)
             __BuildOS=FreeBSD
@@ -352,7 +351,7 @@ while :; do
             ;;
         cmakeargs)
             if [ -n "$2" ]; then
-                __CMakeExtraArgs="$2"
+                __CMakeExtraArgs="$__CMakeExtraArgs $2"
                 shift
             else
                 echo "ERROR: 'cmakeargs' requires a non-empty option argument"
