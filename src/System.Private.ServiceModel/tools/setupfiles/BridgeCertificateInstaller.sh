@@ -34,28 +34,64 @@ run_installer()
 install_root_cert()
 {
     __cafile=$1
-
     chmod a+r "$__cafile"
-    cp -f "$__cafile" /usr/local/share/ca-certificates
 
-    if [ $? -ne 0 ]; then 
-        return $? 
-    fi 
-
+    # Find the command for updating the OS certificate bundle
     echo "Updating root certificates with cert from '$__cafile'"
-    $__update_ca_certificates_exec
+
+    case ${__os} in 
+        "darwin")
+            # OS X SecureTransport does a direct install into the cert store without requiring copying into a location
+            $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile} 
+            ;;
+        "centos" | "rhel" | "fedora" | "opensuse")
+            cp -f "${__cafile}" /etc/pki/ca-trust/source/anchors
+
+            if [ $? -ne 0 ]; then
+                return $?
+            fi
+
+            $__update_os_certbundle_exec
+            ;;
+        *)
+            cp -f "${__cafile}" /usr/local/share/ca-certificates
+        
+            if [ $? -ne 0 ]; then 
+                return $? 
+            fi
+
+            $__update_os_certbundle_exec
+            ;;
+    esac 
 
     if [ $? -ne 0 ]; then
         return $?
     fi
 
-    echo "Recalculating certificate hashes using c_rehash"
+    echo "Recalculating OpenSSL certificate hashes using c_rehash"
     $__c_rehash_exec
 
     return $?
 }
 
 # Main execution
+
+# Detect OS
+# This is a pretty coarse detection, and we make the assumption that OSes will behave
+# a certain way across versions. Hence the detection logic and placement of files will
+# be assumed to be for the OS at the time of the writing of this script. We'll solve 
+# the  later if there are additonal issues when we version up
+
+if [[ "$(uname -a)" =~ ^.*(Darwin).*$ ]]; then
+    # OSX
+    __os="darwin"
+elif [ -f /etc/os-release ]; then
+    # ubuntu, debian, centos, rhel, fedora, opensuse (among others) are detected here 
+    __os=`cat /etc/os-release | grep "^ID=" | sed 's/ID=//g' | sed 's/["]//g' | awk '{print $1}'`
+else 
+    echo "WARNING: Could not detect OS, defaulting to 'ubuntu'"
+    __os="ubuntu"
+fi 
 
 # Parse arguments
 while [[ $# > 0 ]]
@@ -78,10 +114,17 @@ do
 done
 
 show_banner
+echo "    Detected OS as: ${__os}"
 
 __scriptpath=$(cd "$(dirname "$0")"; pwd -P)
 __binpath=$__scriptpath/../../../../bin
 __testspath=$__binpath/tests
+
+readonly __scriptpath
+readonly __binpath
+readonly __testspath
+readonly __os
+
 
 # Check prerequisities
 if [ `id -u` -ne 0 ]; then
@@ -90,15 +133,33 @@ if [ `id -u` -ne 0 ]; then
     exit 1
 fi
 
-__update_ca_certificates_exec=`which update-ca-certificates`
-if [ $? -ne 0 -o ! -f "$__update_ca_certificates_exec" ]; then 
-    echo "ERROR: Could not find 'update-ca-certificates', which is needed to update certificates" 
-    exit 1
-fi
+# OpenSSL rehash - applicable on all platforms
 
 __c_rehash_exec=`which c_rehash`
 if [ $? -ne 0 -o ! -f "$__c_rehash_exec" ]; then 
-    echo "ERROR: Could not find 'c_rehash', which is needed to update certificates" 
+    echo "WARNING: Could not find 'c_rehash'. Is OpenSSL installed properly?" 
+fi
+
+# Find the command for updating the OS certificate bundle
+case ${__os} in 
+    "darwin")
+        __update_os_certbundle_cmd="security"
+        ;;
+    "centos" | "rhel" | "fedora" | "opensuse") 
+        __update_os_certbundle_cmd="update-ca-trust"
+        ;;
+    "ubuntu" | "debian")
+        __update_os_certbundle_cmd="update-ca-certificates"
+        ;;
+    *)
+        echo "ERROR: Could not detect OS certificate bundle update tool" 
+        exit 1
+        ;;
+esac 
+
+__update_os_certbundle_exec=`which ${__update_os_certbundle_cmd}`
+if [ $? -ne 0 -o ! -f "$__update_os_certbundle_exec" ]; then 
+    echo "ERROR: Could not find '${__update_os_certbundle_cmd}', which is needed to update certificates on '${__os}'" 
     exit 1
 fi
 
@@ -109,6 +170,7 @@ __corerun_path=$(dirname "$(find $__testspath -iname 'ScenarioTests.Common.dll' 
 
 if [ $? -ne 0 ]; then
     echo "Could not find 'ScenarioTests.Common.dll' under path '$__binpath'"
+    echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
     exit 1
 fi
 
@@ -116,6 +178,7 @@ __corerun_exe="$__corerun_path/corerun"
 
 if [ ! -e "$__corerun_exe" ]; then
     echo "Could not find corerun in path $__corerun_path"
+    echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
     exit 1
 fi
 
@@ -123,6 +186,7 @@ __installer_path=$(find $__binpath -iname 'BridgeCertificateInstaller.exe' | hea
 
 if [ "$__installer_path" == "" ]; then
     echo "Could not find 'BridgeCertificateInstaller.exe' under path '$__binpath'"
+    echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
     exit 1
 fi
 
