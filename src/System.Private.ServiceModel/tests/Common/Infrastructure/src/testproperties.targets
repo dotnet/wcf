@@ -27,8 +27,8 @@ namespace Infrastructure.Common
         public static readonly string BridgeWebSocketPort_PropertyName = "BridgeWebSocketPort"%3B
         public static readonly string BridgeSecureWebSocketPort_PropertyName = "BridgeSecureWebSocketPort"%3B
         public static readonly string BridgeRemoteEnabled_PropertyName = "BridgeRemoteEnabled"%3B
-        public static readonly string BridgeCertificatePassword_PropertyName = "BridgeCertificatePassword"%3B
-        public static readonly string BridgeCertificateValidityPeriod_PropertyName = "BridgeCertificateValidityPeriod"%3B
+        public static readonly string TestRootCertificatePassword_PropertyName = "TestRootCertificatePassword"%3B
+        public static readonly string TestRootCertificateValidityPeriod_PropertyName = "TestRootCertificateValidityPeriod"%3B
         public static readonly string UseFiddlerUrl_PropertyName = "UseFiddlerUrl"%3B
         public static readonly string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan"%3B
         public static readonly string MaxTestTimeSpan_PropertyName = "MaxTestTimeSpan"%3B
@@ -64,8 +64,8 @@ namespace Infrastructure.Common
             properties["BridgeWebSocketPort"] = "$(BridgeWebSocketPort)"%3B
             properties["BridgeSecureWebSocketPort"] = "$(BridgeSecureWebSocketPort)"%3B
             properties["BridgeRemoteEnabled"] = "$(BridgeRemoteEnabled)"%3B
-            properties["BridgeCertificatePassword"] = "$(BridgeCertificatePassword)"%3B
-            properties["BridgeCertificateValidityPeriod"] = "$(BridgeCertificateValidityPeriod)"%3B
+            properties["TestRootCertificatePassword"] = "$(TestRootCertificatePassword)"%3B
+            properties["TestRootCertificateValidityPeriod"] = "$(TestRootCertificateValidityPeriod)"%3B
             properties["UseFiddlerUrl"] = "$(UseFiddlerUrl)"%3B
             properties["BridgeMaxIdleTimeSpan"] = "$(BridgeMaxIdleTimeSpan)"%3B
             properties["MaxTestTimeSpan"] = "$(MaxTestTimeSpan)"%3B

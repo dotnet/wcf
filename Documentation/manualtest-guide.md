@@ -30,7 +30,7 @@ Steps:
    If running Bridge on a machine not on the same subnet as the test client machine: `startBridge.cmd -allowRemote -remoteAddresses:*` 
 2. On Linux, go to ${GitWcfRoot} and run `./build.sh` 
 3. On Linux, `pushd ${GitWcfRoot}/src/System.Private.ServiceModel/tools/setupfiles`
-4. Install the certificate file `sudo ./BridgeCertificateInstaller.sh --bridge-host ${BridgeHost} --cert-file ~/tmp/wcfca.crt`. Note that the --cert-file should be a file in the the user tmp directory and the filename must have a .crt extension
+4. Install the certificate file `sudo ./TestRootCertificateInstaller.sh --service-host ${ServiceHost} --cert-file ~/tmp/wcfca.crt`. Note that the --cert-file should be a file in the the user tmp directory and the filename must have a .crt extension
 5. Specify the Bridge host location `export BridgeHost=${BridgeHost}`
 6. Run tests as needed, such as with `${GitWcfRoot}/build.sh /p:WithCategories=OuterLoop`
 
@@ -122,8 +122,8 @@ Steps:
 1. Ensure the Bridge is running on a Windows machine and as LOCAL SYSTEM with `psexec -s -h ${GitWcfRoot}\startBridge.cmd -allowRemote -remoteAddresses:*`
 2. On Linux, go to ${GitWcfRoot} and run `./build.sh` 
 3. On Linux, `pushd $(GitWcfRoot)/src/System.Private.ServiceModel/tools/setupfiles`
-4. Install the certificate file `sudo ./BridgeCertificateInstaller.sh --bridge-host ${BridgeHost} --cert-file ~/tmp/wcfca.crt`. Note that the --cert-file should be a file in the the user tmp directory and the filename must have a .crt extension
-5. Specify the Bridge host location `export BridgeHost=${BridgeHost}`. <br/> 
+4. Install the certificate file `sudo ./TestRootCertificateInstaller.sh --service-host ${ServiceHost} --cert-file ~/tmp/wcfca.crt`. Note that the --cert-file should be a file in the the user tmp directory and the filename must have a .crt extension
+5. Specify the test service host location `export ServiceHost=${ServiceHost}`. <br/> 
    _Note: this step is not needed if running tests using 'build.sh'_
 6. Initialize Kerberos by running `kinit ${NegotiateTestUserName}@${NegotiateTestRealm}`; enter the password for the user, ${NegotiateTestPassword}
 7. Run `klist` to see that the Kerberos ticket has been acquired 

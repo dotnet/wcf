@@ -19,8 +19,8 @@ Parameters are passed to/from the endpoints as JSON key-value pairs.
 
 ## Settings on Bridge initialization
 
-* `BridgeCertificatePassword` - string - password for certificates generated/exported. Default is "test"
-* `BridgeCertificateValidityPeriod` - TimeSpan - valid timespan for certificates generated. Default is 24 hours
+* `TestRootCertificatePassword` - string - password for certificates generated/exported. Default is "test"
+* `TestRootCertificateValidityPeriod` - TimeSpan - valid timespan for certificates generated. Default is 24 hours
 
 
 ## Resources exposed

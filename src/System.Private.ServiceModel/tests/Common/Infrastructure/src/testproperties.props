@@ -42,12 +42,12 @@
       <BridgeRemoteEnabled>false</BridgeRemoteEnabled>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgeCertificatePassword)' == ''">
-      <BridgeCertificatePassword>test</BridgeCertificatePassword>
+    <PropertyGroup Condition="'$(TestRootCertificatePassword)' == ''">
+      <TestRootCertificatePassword>test</TestRootCertificatePassword>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgeCertificateValidityPeriod)' == ''">
-      <BridgeCertificateValidityPeriod>7.00:00:00</BridgeCertificateValidityPeriod>
+    <PropertyGroup Condition="'$(TestRootCertificateValidityPeriod)' == ''">
+      <TestRootCertificateValidityPeriod>7.00:00:00</TestRootCertificateValidityPeriod>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(UseFiddlerUrl)' == ''">
