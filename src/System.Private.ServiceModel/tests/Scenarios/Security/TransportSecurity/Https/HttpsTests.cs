@@ -308,7 +308,6 @@ public class HttpsTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [ActiveIssue(1248)]
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed), 
                      nameof(Client_Certificate_Installed), 
