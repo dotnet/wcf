@@ -83,11 +83,11 @@
   <PropertyGroup>
     <ValidatePackageVersions>true</ValidatePackageVersions>
     <ProhibitFloatingDependencies>true</ProhibitFloatingDependencies>
-    <CoreFxExpectedPrerelease>rc3-24206-00</CoreFxExpectedPrerelease>
-    <CoreClrExpectedPrerelease>rc3-24206-00</CoreClrExpectedPrerelease>
-    <ExternalExpectedPrerelease>rc3-24206-00</ExternalExpectedPrerelease>
+    <CoreFxExpectedPrerelease>beta-24223-03</CoreFxExpectedPrerelease>
+    <CoreClrExpectedPrerelease>beta-24223-02</CoreClrExpectedPrerelease>
+    <ExternalExpectedPrerelease>beta-24223-00</ExternalExpectedPrerelease>
     <WCFExpectedPrerelease>rc3-24206-00</WCFExpectedPrerelease>
-    <CoreFxVersionsIdentityRegex>^(?i)((System\..*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
+    <CoreFxVersionsIdentityRegex>^(?i)((System\.(?!ServiceModel|Private\.ServiceModel).*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic)|(Microsoft\.Private\.PackageBaseline))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
     <WCFVersionsIdentityRegex>^(?i)((System\.ServiceModel.*)|(System\.Private\.ServiceModel))(?&lt;!TestData)$</WCFVersionsIdentityRegex>
   </PropertyGroup>
 

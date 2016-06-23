@@ -1,12 +1,6 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.1",
-    "System.Collections.Concurrent": "4.0.10",
-    "System.Console": "4.0.0",
-    "System.IO.FileSystem": "4.0.0",
-    "System.IO": "4.0.10",
-    "System.Net.Http": "4.1.0",
-    "System.Net.Primitives": "4.0.10",
+    "NETStandard.Library": "1.6.1-beta-24223-03",
     "System.ServiceModel.Http": "4.1.0",
     "System.ServiceModel.Primitives": "4.1.0"
   },
