@@ -758,14 +758,22 @@ namespace System.ServiceModel.Channels
 
         internal protected virtual Task OnCloseAsync(TimeSpan timeout)
         {
-            Contract.Requires(false, "OnCloseAsync needs to be implemented on derived classes");
-            return TaskHelpers.CompletedTask();
+            // Derived types aware of IAsyncCommunicationObject should override OnCloseAsync.
+            // However, because IAsyncCommunicationObject is internal, external implementations
+            // such as custom channels and factories cannot override it, yet still expect their OnClose
+            // logic to be called.  Moreover, we cannot know BeginClose is implemented, so run the
+            // synchronous Close asynchronously.
+            return Task.Run(() => OnClose(timeout));
         }
 
         internal protected virtual Task OnOpenAsync(TimeSpan timeout)
         {
-            Contract.Requires(false, "OnOpenAsync needs to be implemented on derived classes");
-            return TaskHelpers.CompletedTask();
+            // Derived types aware of IAsyncCommunicationObject should override OnOpenAsync.
+            // However, because IAsyncCommunicationObject is internal, external implementations
+            // such as custom channels and factories cannot override it, yet still expect their OnOpen
+            // logic to be called.  Moreover, we cannot know BeginOpen is implemented, so run the
+            // synchronous Open asynchronously.
+            return Task.Run(() => OnOpen(timeout));
         }
     }
 
