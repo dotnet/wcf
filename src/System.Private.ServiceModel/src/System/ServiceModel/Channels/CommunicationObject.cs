@@ -5,6 +5,7 @@
 
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.ServiceModel.Diagnostics;
@@ -26,6 +27,8 @@ namespace System.ServiceModel.Channels
         private bool _traceOpenAndClose;
         private object _eventSender;
         private CommunicationState _state;
+        private bool _onOpenAsyncCalled;
+        private bool _onCloseAsyncCalled;
 
         protected CommunicationObject()
             : this(new object())
@@ -758,22 +761,46 @@ namespace System.ServiceModel.Channels
 
         internal protected virtual Task OnCloseAsync(TimeSpan timeout)
         {
-            // Derived types aware of IAsyncCommunicationObject should override OnCloseAsync.
-            // However, because IAsyncCommunicationObject is internal, external implementations
-            // such as custom channels and factories cannot override it, yet still expect their OnClose
-            // logic to be called.  Moreover, we cannot know BeginClose is implemented, so run the
-            // synchronous Close asynchronously.
-            return Task.Run(() => OnClose(timeout));
+#if !FEATURE_NETNATIVE  // Avoid Reflection in NET Native and rely on CoreCLR to catch this problem.
+            // All product types are required to override this method
+            Contract.Assert(String.IsNullOrEmpty(GetType().Namespace) || 
+                            !GetType().Namespace.StartsWith("System.ServiceModel"),
+                            String.Format("Type '{0}' is required to override OnCloseAsync", GetType()));
+#endif
+
+            // If we have already executed this code path, just return a completed Task.
+            // It means this type did not override OnCloseAsync or OnBeginClose.
+            if (_onCloseAsyncCalled)
+            {
+                return TaskHelpers.CompletedTask();
+            }
+
+            // External types cannot override this method because it is not public.
+            // Redirect this call to the APM path.
+            _onCloseAsyncCalled = true;
+            return Task.Factory.FromAsync(OnBeginClose, OnEndClose, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
         }
 
         internal protected virtual Task OnOpenAsync(TimeSpan timeout)
         {
-            // Derived types aware of IAsyncCommunicationObject should override OnOpenAsync.
-            // However, because IAsyncCommunicationObject is internal, external implementations
-            // such as custom channels and factories cannot override it, yet still expect their OnOpen
-            // logic to be called.  Moreover, we cannot know BeginOpen is implemented, so run the
-            // synchronous Open asynchronously.
-            return Task.Run(() => OnOpen(timeout));
+#if !FEATURE_NETNATIVE  // Avoid Reflection in NET Native and rely on CoreCLR to catch this problem.
+            // All product types are required to override this method
+            Contract.Assert(String.IsNullOrEmpty(GetType().Namespace) || 
+                            !GetType().Namespace.StartsWith("System.ServiceModel"),
+                            String.Format("Type '{0}' is required to override OnOpenAsync", GetType()));
+#endif
+
+            // If we have already executed this code path, just return a completed Task.
+            // It means this type did not override OnOpenAsync or OnBeginOpen.
+            if (_onOpenAsyncCalled)
+            {
+                return TaskHelpers.CompletedTask();
+            }
+
+            // External types cannot override this method because it is not public.
+            // Redirect this call to the APM path.
+            _onOpenAsyncCalled = true;
+            return Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
         }
     }
 

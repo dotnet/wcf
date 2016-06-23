@@ -128,14 +128,19 @@ namespace System.ServiceModel.Channels
         {
         }
 
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return TaskHelpers.CompletedTask();
+        }
+
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new CompletedAsyncResult(callback, state);
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            CompletedAsyncResult.End(result);
+            result.ToApmEnd();
         }
 
         protected override void OnOpen(TimeSpan timeout)
@@ -149,15 +154,20 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
             OnOpen(timeout);
-            return new CompletedAsyncResult(callback, state);
+            return TaskHelpers.CompletedTask();
+        }
+
+        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return OnOpenAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            CompletedAsyncResult.End(result);
+            result.ToApmEnd();
         }
 
         protected override void OnOpened()

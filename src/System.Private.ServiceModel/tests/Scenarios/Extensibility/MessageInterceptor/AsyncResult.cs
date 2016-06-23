@@ -159,7 +159,7 @@ abstract class AsyncResult : IAsyncResult
 
         if (asyncResult.manualResetEvent != null)
         {
-            //asyncResult.manualResetEvent.Close();
+            asyncResult.manualResetEvent.Dispose();
         }
 
         if (asyncResult.exception != null)

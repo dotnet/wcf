@@ -24,7 +24,6 @@ class InterceptingChannelFactory<TChannel>
         {
             throw new InvalidOperationException("InterceptingChannelFactory requires an inner IChannelFactory.");
         }
-        this.innerChannelFactory.Open();
     }
 
     public ChannelMessageInterceptor Interceptor
