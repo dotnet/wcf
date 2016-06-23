@@ -10,7 +10,7 @@
   <!-- Additional WCF tool projects -->
   <ItemGroup>
     <Project Include="$(MSBuildProjectDirectory)\System.Private.ServiceModel\tools\test\CertificateCleanup\CertificateCleanup.csproj" />
-    <Project Include="$(MSBuildProjectDirectory)\System.Private.ServiceModel\tools\test\TestRootCertificateInstaller\TestRootCertificateInstaller.csproj" />
+    <Project Include="$(MSBuildProjectDirectory)\System.Private.ServiceModel\tools\TestRootCertificateInstaller\TestRootCertificateInstaller.csproj" />
   </ItemGroup>
   <!-- *** end WCF Content *** -->
 
