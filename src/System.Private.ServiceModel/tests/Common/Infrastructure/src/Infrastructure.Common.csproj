@@ -24,17 +24,21 @@
     <None Include="testproperties.props" />
     <None Include="testproperties.targets" />
   </ItemGroup>
-  <ItemGroup>
-    <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
-    <ProjectReference Include="$(WcfSourceProj)">
-      <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
-      <Name>System.Private.ServiceModel</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <OutputItemType>Content</OutputItemType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
-    </ProjectReference>
-  </ItemGroup>
+  <Choose>
+    <When Condition="'$(HELIXBRANCH)' == ''" >
+      <ItemGroup>
+        <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
+        <ProjectReference Include="$(WcfSourceProj)">
+          <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
+          <Name>System.Private.ServiceModel</Name>
+          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+          <OutputItemType>Content</OutputItemType>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
+        </ProjectReference>
+      </ItemGroup>
+    </When>
+  </Choose>
   <Import Project="testproperties.props" />
   <Import Project="testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
