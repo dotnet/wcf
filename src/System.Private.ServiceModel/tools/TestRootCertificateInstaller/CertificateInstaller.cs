@@ -11,7 +11,7 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using Infrastructure.Common;
 
-public static class BridgeCertificateInstaller
+public static class TestRootCertificateInstaller
 {
     public static int Main(string[] args)
     {
@@ -131,7 +131,7 @@ public static class BridgeCertificateInstaller
     public static void DisplayUsage()
     {
         Console.WriteLine("  Required parameter missing.");
-        Console.WriteLine("  BridgeCertificateInstaller [outputfile]");
+        Console.WriteLine("  TestRootCertificateInstaller [outputfile]");
         Console.WriteLine("  outputfile should be the desired output file for the root CA cert, e.g., ~/tmp/wcf-ca.crt");
     }
 }

@@ -37,10 +37,10 @@ namespace WcfService.CertificateResources
                     {
                         s_certificateGenerator = new CertificateGenerator()
                         {
-                            CertificatePassword = config.BridgeCertificatePassword,
+                            CertificatePassword = config.TestRootCertificatePassword,
                             CrlUriBridgeHost = string.Format("http://{0}:{1}", config.BridgeHost, config.BridgePort),
                             CrlUriRelativePath = s_crlUriRelativePath,
-                            ValidityPeriod = config.BridgeCertificateValidityPeriod
+                            ValidityPeriod = config.TestRootCertificateValidityPeriod
                         };
 
                         // Upon creation, we want to immediately get the authority certificate and install it 
@@ -65,10 +65,10 @@ namespace WcfService.CertificateResources
                     {
                         s_certificateGenerator = new CertificateGenerator()
                         {
-                            CertificatePassword = config.BridgeCertificatePassword,
+                            CertificatePassword = config.TestRootCertificatePassword,
                             CrlUriBridgeHost = string.Format("http://{0}:{1}", config.BridgeHost, config.BridgePort),
                             CrlUriRelativePath = s_crlUriRelativePath,
-                            ValidityPeriod = config.BridgeCertificateValidityPeriod
+                            ValidityPeriod = config.TestRootCertificateValidityPeriod
                         };
 
                         // Upon creation, we want to immediately get the authority certificate and install it 

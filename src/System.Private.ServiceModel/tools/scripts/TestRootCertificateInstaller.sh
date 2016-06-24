@@ -117,14 +117,13 @@ show_banner
 echo "    Detected OS as: ${__os}"
 
 __scriptpath=$(cd "$(dirname "$0")"; pwd -P)
-__binpath=$__scriptpath/../../../../bin
-__testspath=$__binpath/tests
+__repopath=$__scriptpath/../../../..
+__binpath=$__repopath/bin
 
 readonly __scriptpath
+readonly __repopath
 readonly __binpath
-readonly __testspath
 readonly __os
-
 
 # Check prerequisities
 if [ `id -u` -ne 0 ]; then
@@ -163,13 +162,13 @@ if [ $? -ne 0 -o ! -f "$__update_os_certbundle_exec" ]; then
     exit 1
 fi
 
-# Locate any CoreRun.exe to be able to execute BridgeCertificateInstaller.exe
-# Because BridgeCertificateInstaller itself is a test project, we are guaranteed
+# Locate any CoreRun.exe to be able to execute TestRootCertificateInstaller.exe
+# Because TestRootCertificateInstaller itself is a test project, we are guaranteed
 # it will contain CoreRun.exe even if no other tests have been built.
-__corerun_path=$(dirname "$(find $__testspath -iname 'ScenarioTests.Common.dll' | head -1)")
+__corerun_path=$(dirname "$(find $__repopath -iname 'corerun' | head -1)")
 
 if [ $? -ne 0 ]; then
-    echo "Could not find 'ScenarioTests.Common.dll' under path '$__binpath'"
+    echo "Could not find 'corerun' under path '$__repopath'"
     echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
     exit 1
 fi
@@ -182,10 +181,10 @@ if [ ! -e "$__corerun_exe" ]; then
     exit 1
 fi
 
-__installer_path=$(find $__binpath -iname 'BridgeCertificateInstaller.exe' | head -1)
+__installer_path=$(find $__binpath -iname 'TestRootCertificateInstaller.exe' | head -1)
 
 if [ "$__installer_path" == "" ]; then
-    echo "Could not find 'BridgeCertificateInstaller.exe' under path '$__binpath'"
+    echo "Could not find 'TestRootCertificateInstaller.exe' under path '$__binpath'"
     echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
     exit 1
 fi

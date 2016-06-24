@@ -13,8 +13,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BridgeCertificateInstaller</RootNamespace>
-    <AssemblyName>BridgeCertificateInstaller</AssemblyName>
+    <RootNamespace>TestRootCertificateInstaller</RootNamespace>
+    <AssemblyName>TestRootCertificateInstaller</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{5AC60BBF-8007-46D8-9BDC-CD137409E45B}</ProjectGuid>
