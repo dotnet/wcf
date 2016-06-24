@@ -184,7 +184,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("HttpDigestNoDomain.svc//");
+            return GetEndpointAddress("HttpDigestNoDomain.svc/http-digest-nodomain");
         }
     }
 

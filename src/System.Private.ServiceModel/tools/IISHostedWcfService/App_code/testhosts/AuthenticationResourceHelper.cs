@@ -6,56 +6,55 @@
 using System;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 namespace WcfService
 {
     public static class AuthenticationResourceHelper
     {
-        private static string s_username;
-        private static string s_password;
-        private static string s_digestrealm;
-        public const string usernameKeyName = "authUsername";
-        public const string passwordKeyName = "authPassword";
-        public const string digestRealmKeyName = "authDigestRealm";
-
-        static AuthenticationResourceHelper()
-        {
-            s_username = RandomString(10);
-            s_password = RandomString(20);
-            s_digestrealm = RandomString(5);
-        }
-
-        public static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        public static string Username { get { return s_username; } }
-        public static string Password { get { return s_password; } }
-        public static string DigestRealm { get { return s_digestrealm; } }
-
         public static void ConfigureServiceHostUseDigestAuth(ServiceHost serviceHost)
         {
-            var authManager = new ResourceDigestServiceAuthorizationManager(s_digestrealm);
+            var authManager = new ResourceDigestServiceAuthorizationManager();
             serviceHost.Description.Behaviors.Add(authManager);
         }
 
         private class ResourceDigestServiceAuthorizationManager : DigestServiceAuthorizationManager
         {
-            public ResourceDigestServiceAuthorizationManager(string realm) : base(realm) { }
-            public override bool GetPassword(string username, out string password)
+            private const string DigestUsernameHeaderName = "DigestUsername";
+            private const string DigestPasswordHeaderName = "DigestPassword";
+            private const string DigestRealmHeaderName = "DigestRealm";
+
+            public ResourceDigestServiceAuthorizationManager() : base(string.Empty) { }
+
+            public override bool GetPassword(ref Message message, string username, out string password)
             {
-                if (username.Equals(s_username))
+                if (!message.Properties.ContainsKey(HttpRequestMessageProperty.Name))
                 {
-                    password = s_password;
+                    password = null;
+                    return false;
+                }
+
+                var requestProperty = (HttpRequestMessageProperty) message.Properties[HttpRequestMessageProperty.Name];
+                string sentUsername = requestProperty.Headers.Get(DigestUsernameHeaderName);
+                if (username.Equals(sentUsername))
+                {
+                    password = requestProperty.Headers.Get(DigestPasswordHeaderName);
                     return true;
                 }
 
                 password = null;
                 return false;
+            }
+
+            public override string GetRealm(ref Message message)
+            {
+                if (!message.Properties.ContainsKey(HttpRequestMessageProperty.Name))
+                {
+                    return base.GetRealm(ref message);
+                }
+
+                var requestProperty = (HttpRequestMessageProperty)message.Properties[HttpRequestMessageProperty.Name];
+                return requestProperty.Headers.Get(DigestRealmHeaderName);
             }
         }
     }

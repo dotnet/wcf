@@ -24,9 +24,9 @@ namespace WcfService
 
         public DigestServiceAuthorizationManager(string realm)
         {
-            if (string.IsNullOrEmpty(realm))
+            if (realm == null)
             {
-                throw new ArgumentNullException("realm");
+                realm = string.Empty;
             }
 
             _realm = realm;
@@ -50,14 +50,14 @@ namespace WcfService
 
         public override bool CheckAccess(OperationContext operationContext, ref Message message)
         {
-            var digestState = new DigestAuthenticationState(operationContext, _realm);
+            var digestState = new DigestAuthenticationState(operationContext, GetRealm(ref message));
             if (!digestState.IsRequestDigestAuth)
             {
                 return UnauthorizedResponse(digestState);
             }
 
             string password;
-            if (!GetPassword(digestState.Username, out password))
+            if (!GetPassword(ref message, digestState.Username, out password))
             {
                 return UnauthorizedResponse(digestState);
             }
@@ -76,7 +76,12 @@ namespace WcfService
             return DateTime.Now + _nonceValidityTime;
         }
 
-        public abstract bool GetPassword(string username, out string password);
+        public virtual string GetRealm(ref Message message)
+        {
+            return _realm;
+        }
+
+        public abstract bool GetPassword(ref Message message, string username, out string password);
 
         private bool UnauthorizedResponse(DigestAuthenticationState digestState)
         {
