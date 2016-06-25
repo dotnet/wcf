@@ -1,41 +1,58 @@
 // Import the utility functionality.
 
 import jobs.generation.Utilities;
+import jobs.generation.JobReport;
 
+// The input project name (e.g. dotnet/corefx)
 def project = GithubProject
+// The input branch name (e.g. master)
+// We don't use this variable in this repo yet - we use branchName and loop across that
+def branch = GithubBranchName
+
+def projectFolderName = Utilities.getFolderName(project)
+
+// MetaGenerator.groovy currently just calls us using GithubProject = wcf, GithubBranchName = master
 
 // Globals
 
 // Map of os -> osGroup.
 def osGroupMap = ['Ubuntu':'Linux',
                   'Ubuntu14.04':'Linux',
-                  'Ubuntu15.10':'Linux',
-                  'Debian8.2':'Linux',
+                  'Ubuntu16.04':'Linux',
+                  'Debian8.4':'Linux',
                   'OSX':'OSX',
                   'Windows_NT':'Windows_NT',
                   'CentOS7.1': 'Linux',
                   'OpenSUSE13.2': 'Linux',
                   'RHEL7.2': 'Linux']
+
 // Map of os -> nuget runtime
 def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
                              'Ubuntu' : 'ubuntu.14.04-x64',
-                             'Ubuntu15.10' : 'ubuntu.14.04-x64',
-                             'Debian8.2' : 'ubuntu.14.04-x64',
+                             'Ubuntu14.04' : 'ubuntu.14.04-x64',
+                             'Ubuntu16.04' : 'ubuntu.16.04-x64',
+                             'Fedora23' : 'fedora.23-x64',
+                             'Debian8.4' : 'debian.8-x64',
                              'CentOS7.1' : 'centos.7-x64',
-                             'OpenSUSE13.2' : 'ubuntu.14.04-x64',
+                             'OpenSUSE13.2' : 'opensuse.13.2-x64',
                              'RHEL7.2': 'rhel.7-x64']
+
 def branchList = ['master', 'pr', 'rc2', 'rtm']
+
 def osShortName = ['Windows 10': 'win10',
                    'Windows 7' : 'win7',
                    'Windows_NT' : 'windows_nt',
                    'Ubuntu14.04' : 'ubuntu14.04',
                    'OSX' : 'osx',
-                   'Windows Nano' : 'winnano',
-                   'Ubuntu15.10' : 'ubuntu15.10',
+                   'Windows Nano 2016' : 'winnano16',
+                   'Ubuntu16.04' : 'ubuntu16.04',
                    'CentOS7.1' : 'centos7.1',
+                   'Debian8.4' : 'debian8.4',
                    'OpenSUSE13.2' : 'opensuse13.2',
-                   'RHEL7.2' : 'rhel7.2']                  
+                   'Fedora23' : 'fedora23',
+                   'RHEL7.2' : 'rhel7.2']
 
+// This can go away once we branchify properly and depend on repolist.txt
 def static getFullBranchName(def branch) {
     def branchMap = ['master':'*/master',
         'rc2':'*/release/1.0.0-rc2',
@@ -46,17 +63,16 @@ def static getFullBranchName(def branch) {
     return branchMap[branch]
 }
 
-def static getJobName(def name, def branchName) {
-    def baseName = name
-    if (branchName == 'rc2' || branchName == 'rtm') {
-        baseName += "_" + branchName
-    }
-    return baseName
-}
-
+ 
+ def static getJobName(def name, def branchName) {
+     def baseName = name
+     if (branchName == 'rc2' || branchName == 'rtm') {
+         baseName += "_" + branchName
+     }
+     return baseName
+ }
+ 
 def configurationGroupList = ['Debug', 'Release']
-
-def branch = GithubBranchName
 
 // **************************
 // Utilities shared for WCF Core builds
@@ -180,7 +196,7 @@ branchList.each { branchName ->
         // Set up appropriate triggers. PR on demand, otherwise daily
         if (isPR) {
             // Set PR trigger.
-            Utilities.addGithubPRTrigger(newJob, "OuterLoop Selfhost ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+selfhost\\W+${os}).*")
+            Utilities.addGithubPRTrigger(newJob, "OuterLoop Selfhost ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+selfhost\\W+${os}).*", false /*triggerOnPhraseOnly*/)
         } 
         else {
             // Set a periodic trigger
@@ -251,7 +267,7 @@ branchList.each { branchName ->
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*")
+                Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
             } 
             else {
                 // Set a periodic trigger
@@ -272,7 +288,7 @@ branchList.each { branchName ->
             def isPR = (branchName == 'pr')
             def newJobName = "${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             
-            def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName)) 
+            def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
             
             if (osGroupMap[os] == 'Windows_NT')
             {
