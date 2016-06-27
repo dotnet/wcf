@@ -6,12 +6,7 @@ import jobs.generation.JobReport;
 // The input project name (e.g. dotnet/corefx)
 def project = GithubProject
 // The input branch name (e.g. master)
-// We don't use this variable in this repo yet - we use branchName and loop across that
 def branch = GithubBranchName
-
-def projectFolderName = Utilities.getFolderName(project)
-
-// MetaGenerator.groovy currently just calls us using GithubProject = wcf, GithubBranchName = master
 
 // Globals
 
@@ -52,26 +47,6 @@ def osShortName = ['Windows 10': 'win10',
                    'Fedora23' : 'fedora23',
                    'RHEL7.2' : 'rhel7.2']
 
-// This can go away once we branchify properly and depend on repolist.txt
-def static getFullBranchName(def branch) {
-    def branchMap = ['master':'*/master',
-        'rc2':'*/release/1.0.0-rc2',
-        'rtm':'*/release/1.0.0',
-        'pr':'*/master']
-    def fullBranchName = branchMap.get(branch, null)
-    assert fullBranchName != null : "Could not find a full branch name for ${branch}"
-    return branchMap[branch]
-}
-
- 
- def static getJobName(def name, def branchName) {
-     def baseName = name
-     if (branchName == 'rc2' || branchName == 'rtm') {
-         baseName += "_" + branchName
-     }
-     return baseName
- }
- 
 def configurationGroupList = ['Debug', 'Release']
 
 // **************************
@@ -131,7 +106,7 @@ branchList.each { branchName ->
     def newJobName = "code_coverage_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
     
     // Create the new rolling job
-    def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
+    def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
     
     wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branchName, isPR)
     
@@ -144,7 +119,7 @@ branchList.each { branchName ->
     // Set affinity for elevated machines
     Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
     // Set up standard options.
-    Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+    Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
     // Add code coverage report
     Utilities.addHtmlPublisher(newJob, 'bin/tests/coverage', 'Code Coverage Report', 'index.htm')
     // Archive results
@@ -177,7 +152,7 @@ branchList.each { branchName ->
         def os = 'Windows_NT'
         def isPR = (branchName == 'pr')
         def newJobName = "outerloop_selfhost_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
-        def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
+        def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
         
         newJob.with {
             steps {
@@ -189,7 +164,7 @@ branchList.each { branchName ->
         Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
 
         // Set up standard options.
-        Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+        Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         // Add the unit test results
         Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
         
@@ -215,7 +190,7 @@ branchList.each { branchName ->
         supportedFullCycleOuterloopPlatforms.each { os ->
             def isPR = (branchName == 'pr')
             def newJobName = "outerloop_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
-            def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
+            def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
             
             wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branchName, isPR)
             
@@ -247,7 +222,7 @@ branchList.each { branchName ->
             }
 
             // Set up standard options.
-            Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+            Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
             Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
             
@@ -288,7 +263,7 @@ branchList.each { branchName ->
             def isPR = (branchName == 'pr')
             def newJobName = "${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             
-            def newJob = job(getJobName(Utilities.getFullJobName(project, newJobName, isPR), branchName))
+            def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
             
             if (osGroupMap[os] == 'Windows_NT')
             {
@@ -310,7 +285,7 @@ branchList.each { branchName ->
             // Set the affinity.  All of these run on Windows currently.
             Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             // Set up standard options.
-            Utilities.standardJobSetup(newJob, project, isPR, getFullBranchName(branchName))
+            Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
             Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
             // Add archival for the built data
@@ -333,3 +308,5 @@ branchList.each { branchName ->
         }
     }
 }
+
+JobReport.Report.generateJobReport(out)
