@@ -14,7 +14,6 @@ public class IdentityTests : ConditionalWcfTest
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [ActiveIssue(833)] // Not supported in NET Native
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #endif
@@ -59,7 +58,7 @@ public class IdentityTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [ActiveIssue(833)] // Not supported in NET Native
+    [ActiveIssue(1320)]
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #endif

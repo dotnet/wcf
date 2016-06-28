@@ -279,7 +279,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
     [Fact]
 #if FULLXUNIT_NOTSUPPORTED
-    [ActiveIssue(833)] // Not supported in NET Native
 #endif
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
@@ -307,8 +306,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             {
                 Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
             }
-            string exceptionMessage = exception.Message;
-            Assert.True(exceptionMessage.Contains(Endpoints.Tcp_ExpiredServerCertResource_HostName), string.Format("Expected message contains {0}, actual message: {1}", Endpoints.Tcp_ExpiredServerCertResource_HostName, exceptionMessage));
         }
         finally
         {
@@ -379,7 +376,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [ActiveIssue(833)] // Not supported in NET Native
 #endif
     [OuterLoop]
     // Verify product throws MessageSecurityException when the service cert is revoked
