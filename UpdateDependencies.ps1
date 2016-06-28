@@ -9,22 +9,15 @@ param(
     [Parameter(Mandatory=$true)][string]$NewVersion
     )
 
-# Updates the dir.props and Packages.props files with the new build number
+# Updates the dir.props file with the new build number
 function UpdateValidDependencyVersionsFile
 {
     $DirPropsPath = "$PSScriptRoot\dir.props"
     
     $DirPropsContent = Get-Content $DirPropsPath | % { 
-        $_ -replace "<CoreFxExpectedPrerelease>.*</CoreFxExpectedPrerelease>","<CoreFxExpectedPrerelease>$NewVersion</CoreFxExpectedPrerelease>"
+        $_ -replace "<WCFExpectedPrerelease>.*</WCFExpectedPrerelease>","<WCFExpectedPrerelease>$NewVersion</WCFExpectedPrerelease>"
     }
     Set-Content $DirPropsPath $DirPropsContent
-
-	$PackagingPropsPath = "$PSScriptRoot\Packaging.props"
-
-	$PackagingPropsContent = Get-Content $PackagingPropsPath | % { 
-        $_ -replace "/1.0.1-.*/runtime.json","/1.0.1-$NewVersion/runtime.json"
-    }
-    Set-Content $PackagingPropsPath $PackagingPropsContent
 
     return $true
 }

@@ -2,11 +2,11 @@
   "dependencies": {
     "Microsoft.NETCore.Platforms": "1.0.2-beta-24223-03",
     "System.Linq.Expressions": "4.1.1-beta-24223-03",
-    "System.ServiceModel.Duplex": "4.0.1-rc3-24206-00",
-    "System.ServiceModel.Http": "4.1.0-rc3-24206-00",
-    "System.ServiceModel.NetTcp": "4.1.0-rc3-24206-00",
-    "System.ServiceModel.Primitives": "4.1.0-rc3-24206-00",
-    "System.ServiceModel.Security": "4.0.1-rc3-24206-00",
+    "System.ServiceModel.Duplex": "4.0.2-beta-24228-04",
+    "System.ServiceModel.Http": "4.1.1-beta-24228-04",
+    "System.ServiceModel.NetTcp": "4.1.1-beta-24228-04",
+    "System.ServiceModel.Primitives": "4.1.1-beta-24228-04",
+    "System.ServiceModel.Security": "4.0.2-beta-24228-04",
     "xunit": "2.1.0",
     "xunit.netcore.extensions": "1.0.0-prerelease-00312-04",
     "test-runtime": {
