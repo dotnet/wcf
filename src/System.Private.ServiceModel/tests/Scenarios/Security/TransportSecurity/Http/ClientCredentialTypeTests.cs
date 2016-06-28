@@ -17,6 +17,7 @@ public static class Http_ClientCredentialTypeTests
     [Fact]
     [OuterLoop]
     [ActiveIssue(1332, PlatformID.AnyUnix)]
+    [ActiveIssue(1336)]
     public static void DigestAuthentication_Echo_RoundTrips_String_No_Domain()
     {
         ChannelFactory<IWcfService> factory = null;
