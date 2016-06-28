@@ -76,16 +76,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected IAsyncResult BeginWaitForPendingRequests(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return WaitForPendingRequestsAsync(timeout).ToApm(callback, state);
-        }
-
-        protected void EndWaitForPendingRequests(IAsyncResult result)
-        {
-            result.ToApmEnd();
-        }
-
         private void FinishClose()
         {
             lock (_outstandingRequests)

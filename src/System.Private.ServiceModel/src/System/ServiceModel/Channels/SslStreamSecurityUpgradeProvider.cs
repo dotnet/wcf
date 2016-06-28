@@ -226,14 +226,20 @@ namespace System.ServiceModel.Channels
             CleanupServerCertificate();
         }
 
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            OnClose(timeout);
+            return TaskHelpers.CompletedTask();
+        }
+
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeProvider async path");
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeProvider async path");
+            result.ToApmEnd();
         }
 
         private void SetupServerCertificate(SecurityToken token)
@@ -275,14 +281,20 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
+        {
+            OnOpen(timeout);
+            return TaskHelpers.CompletedTask();
+        }
+
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeProvider async path");
+            return OnOpenAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeProvider async path");
+            result.ToApmEnd();
         }
     }
 

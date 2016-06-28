@@ -5,6 +5,7 @@
 
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.ServiceModel.Diagnostics;
@@ -26,6 +27,8 @@ namespace System.ServiceModel.Channels
         private bool _traceOpenAndClose;
         private object _eventSender;
         private CommunicationState _state;
+        private bool _onOpenAsyncCalled;
+        private bool _onCloseAsyncCalled;
 
         protected CommunicationObject()
             : this(new object())
@@ -758,14 +761,46 @@ namespace System.ServiceModel.Channels
 
         internal protected virtual Task OnCloseAsync(TimeSpan timeout)
         {
-            Contract.Requires(false, "OnCloseAsync needs to be implemented on derived classes");
-            return TaskHelpers.CompletedTask();
+#if !FEATURE_NETNATIVE  // Avoid Reflection in NET Native and rely on CoreCLR to catch this problem.
+            // All product types are required to override this method
+            Contract.Assert(String.IsNullOrEmpty(GetType().Namespace) || 
+                            !GetType().Namespace.StartsWith("System.ServiceModel"),
+                            String.Format("Type '{0}' is required to override OnCloseAsync", GetType()));
+#endif
+
+            // If we have already executed this code path, just return a completed Task.
+            // It means this type did not override OnCloseAsync or OnBeginClose.
+            if (_onCloseAsyncCalled)
+            {
+                return TaskHelpers.CompletedTask();
+            }
+
+            // External types cannot override this method because it is not public.
+            // Redirect this call to the APM path.
+            _onCloseAsyncCalled = true;
+            return Task.Factory.FromAsync(OnBeginClose, OnEndClose, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
         }
 
         internal protected virtual Task OnOpenAsync(TimeSpan timeout)
         {
-            Contract.Requires(false, "OnOpenAsync needs to be implemented on derived classes");
-            return TaskHelpers.CompletedTask();
+#if !FEATURE_NETNATIVE  // Avoid Reflection in NET Native and rely on CoreCLR to catch this problem.
+            // All product types are required to override this method
+            Contract.Assert(String.IsNullOrEmpty(GetType().Namespace) || 
+                            !GetType().Namespace.StartsWith("System.ServiceModel"),
+                            String.Format("Type '{0}' is required to override OnOpenAsync", GetType()));
+#endif
+
+            // If we have already executed this code path, just return a completed Task.
+            // It means this type did not override OnOpenAsync or OnBeginOpen.
+            if (_onOpenAsyncCalled)
+            {
+                return TaskHelpers.CompletedTask();
+            }
+
+            // External types cannot override this method because it is not public.
+            // Redirect this call to the APM path.
+            _onOpenAsyncCalled = true;
+            return Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
         }
     }
 

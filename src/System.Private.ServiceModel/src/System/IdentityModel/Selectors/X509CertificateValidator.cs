@@ -67,8 +67,6 @@ namespace System.IdentityModel.Selectors
 
             public ChainTrustValidator(bool useMachineContext, X509ChainPolicy chainPolicy, uint chainPolicyOID)
             {
-                Contract.Assert(useMachineContext == false, "CoreCLR does not have ctor allowing useMachineContext = true");
-
                 _useMachineContext = useMachineContext;
                 _chainPolicy = chainPolicy;
                 _chainPolicyOID = chainPolicyOID;

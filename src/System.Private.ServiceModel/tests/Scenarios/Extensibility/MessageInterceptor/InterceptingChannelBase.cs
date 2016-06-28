@@ -26,7 +26,6 @@ class InterceptingChannelBase<TChannel> : ChannelBase
 
         this.interceptor = interceptor;
         this.innerChannel = innerChannel;
-        innerChannel.Open();
     }
 
     protected TChannel InnerChannel

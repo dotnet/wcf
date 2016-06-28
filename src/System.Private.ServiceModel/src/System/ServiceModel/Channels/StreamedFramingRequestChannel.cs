@@ -39,14 +39,19 @@ namespace System.ServiceModel.Channels
             get { return _startBytes; }
         }
 
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
+        {
+            return TaskHelpers.CompletedTask();
+        }
+
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new CompletedAsyncResult(callback, state);
+            return OnOpenAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            CompletedAsyncResult.End(result);
+            result.ToApmEnd();
         }
 
         protected override void OnOpen(TimeSpan timeout)
@@ -175,14 +180,19 @@ namespace System.ServiceModel.Channels
             ChannelBindingUtility.Dispose(ref _channelBindingToken);
         }
 
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return base.WaitForPendingRequestsAsync(timeout);
+        }
+
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return base.BeginWaitForPendingRequests(timeout, callback, state);
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            base.EndWaitForPendingRequests(result);
+            result.ToApmEnd();
         }
 
         internal class StreamedConnectionPoolHelper : ConnectionPoolHelper
