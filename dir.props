@@ -86,7 +86,7 @@
     <CoreFxExpectedPrerelease>beta-24223-03</CoreFxExpectedPrerelease>
     <CoreClrExpectedPrerelease>beta-24223-02</CoreClrExpectedPrerelease>
     <ExternalExpectedPrerelease>beta-24223-00</ExternalExpectedPrerelease>
-    <WCFExpectedPrerelease>beta-24228-04</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>beta-24229-01</WCFExpectedPrerelease>
     <CoreFxVersionsIdentityRegex>^(?i)((System\.(?!ServiceModel|Private\.ServiceModel).*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic)|(Microsoft\.Private\.PackageBaseline))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
     <WCFVersionsIdentityRegex>^(?i)((System\.ServiceModel.*)|(System\.Private\.ServiceModel))(?&lt;!TestData)$</WCFVersionsIdentityRegex>
   </PropertyGroup>
