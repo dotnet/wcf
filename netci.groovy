@@ -32,8 +32,6 @@ def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
                              'OpenSUSE13.2' : 'opensuse.13.2-x64',
                              'RHEL7.2': 'rhel.7-x64']
 
-def branchList = ['master', 'pr', 'rc2', 'rtm']
-
 def osShortName = ['Windows 10': 'win10',
                    'Windows 7' : 'win7',
                    'Windows_NT' : 'windows_nt',
@@ -57,7 +55,7 @@ class WcfUtilities
     def wcfPRServiceCount = 0 
     
     // Outerloop jobs for WCF Core require an external server reference
-    // This should be run 
+    // Jenkins provides the correct parameters to the scripts to get the correct PR ID or branch
     def addWcfOuterloopTestServiceSync(def job, String os, String branch, boolean isPR) { 
 
         // Exclude rc2 branch, since that branch will not have the sync scripts in
@@ -99,8 +97,7 @@ wcfUtilities = new WcfUtilities()
 // Define the code coverage jobs
 // **************************
 
-branchList.each { branchName -> 
-    def isPR = (branchName == 'pr')
+[true, false].each { isPR -> 
     def os = "Windows_NT"
     def configurationGroup = "Debug"
     def newJobName = "code_coverage_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
@@ -108,7 +105,7 @@ branchList.each { branchName ->
     // Create the new rolling job
     def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
     
-    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branchName, isPR)
+    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, "*/${branch}", isPR)
     
     newJob.with {
         steps {
@@ -135,7 +132,7 @@ branchList.each { branchName ->
     // Set triggers
     if (isPR)
     {
-        Utilities.addGithubPRTrigger(newJob, "Code Coverage Windows_NT ${configurationGroup}", '(?i).*test\\W+code\\W*coverage.*')
+        Utilities.addGithubPRTriggerForBranch(newJob, branch, "Code Coverage Windows_NT ${configurationGroup}", '(?i).*test\\W+code\\W*coverage.*')
     } 
     else {
         Utilities.addPeriodicTrigger(newJob, '@daily')
@@ -147,10 +144,9 @@ branchList.each { branchName ->
 // Note: This outerloop run can run concurrently unlike other ones due to the run being entirely self-contained 
 // **************************
 
-['master', 'pr'].each { branchName ->   // only master and pr for now for branches to test 
+[true, false].each { isPR -> 
     configurationGroupList.each { configurationGroup ->
         def os = 'Windows_NT'
-        def isPR = (branchName == 'pr')
         def newJobName = "outerloop_selfhost_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
         def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
         
@@ -171,7 +167,7 @@ branchList.each { branchName ->
         // Set up appropriate triggers. PR on demand, otherwise daily
         if (isPR) {
             // Set PR trigger.
-            Utilities.addGithubPRTrigger(newJob, "OuterLoop Selfhost ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+selfhost\\W+${os}).*", false /*triggerOnPhraseOnly*/)
+            Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop Selfhost ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+selfhost\\W+${os}).*", false /*triggerOnPhraseOnly*/)
         } 
         else {
             // Set a periodic trigger
@@ -185,14 +181,13 @@ branchList.each { branchName ->
 // **************************
 
 def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
-branchList.each { branchName ->
+[true, false].each { isPR ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleOuterloopPlatforms.each { os ->
-            def isPR = (branchName == 'pr')
             def newJobName = "outerloop_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
             
-            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branchName, isPR)
+            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, "*/${branch}", isPR)
             
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
@@ -233,16 +228,10 @@ branchList.each { branchName ->
             // Due to this design limitation, we have to disable concurrent builds for outerloops 
             newJob.concurrentBuild(false)
 
-            // Skip outerloop testing on rc2 branch on non-WinNT platforms
-            // we are incapable of running outerloops in CI due to the dependency on the Bridge
-            if (branchName == 'rc2' && os != 'Windows_NT') {
-                newJob.disabled(true)
-            }
-
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTrigger(newJob, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
+                Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
             } 
             else {
                 // Set a periodic trigger
@@ -257,10 +246,9 @@ branchList.each { branchName ->
 // **************************
 
 def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
-branchList.each { branchName ->
+[true, false].each { isPR ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleInnerloopPlatforms.each { os -> 
-            def isPR = (branchName == 'pr')
             def newJobName = "${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             
             def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
@@ -299,7 +287,7 @@ branchList.each { branchName ->
             // Set up triggers
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTrigger(newJob, "Innerloop ${os} ${configurationGroup}")
+                Utilities.addGithubPRTriggerForBranch(newJob, branch, "Innerloop ${os} ${configurationGroup}")
             } 
             else {
                 // Set a push trigger
