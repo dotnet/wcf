@@ -58,20 +58,20 @@ class WcfUtilities
     // Jenkins provides the correct parameters to the scripts to get the correct PR ID or branch
     def addWcfOuterloopTestServiceSync(def job, String os, String branch, boolean isPR) { 
 
-        // Exclude rc2 branch, since that branch will not have the sync scripts in
-        if (branch.toLowerCase().contains("rc2")) {
-            return 
-        }
-
-        wcfPRServiceCount++
-
         def operation = isPR ? "pr" : "branch"
+        def currentWcfPRService = wcfPRServiceCount++ 
+
+        // workaround after branchifying - each branch independently runs this file hence our serial
+        // numbers will overlap on different branches
+        if (branch.toLowerCase() == "release/1.0.0") {
+            currentWcfPRService = wcfPRServiceCount + 100
+        }
 
         job.with { 
             parameters {
-                stringParam('WcfServiceUri', "wcfcoresrv2.cloudapp.net/WcfService${wcfPRServiceCount}", 'Wcf OuterLoop Test Service Uri')
+                stringParam('WcfServiceUri', "wcfcoresrv2.cloudapp.net/WcfService${currentWcfPRService}", 'Wcf OuterLoop Test Service Uri')
                 stringParam('WcfPRServiceUri', "http://wcfcoresrv2.cloudapp.net/PRServiceMaster/pr.ashx", 'Wcf OuterLoop Test PR Service Uri')
-                stringParam('WcfPRServiceId', "${wcfPRServiceCount}", 'Wcf OuterLoop Test PR Service Id')
+                stringParam('WcfPRServiceId', "${currentWcfPRService}", 'Wcf OuterLoop Test PR Service Id')
             }
         }
         if (os.toLowerCase().contains("windows")) {
