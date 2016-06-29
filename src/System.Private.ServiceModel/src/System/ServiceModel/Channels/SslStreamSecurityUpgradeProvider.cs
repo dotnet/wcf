@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.IdentityModel.Policy;
@@ -624,6 +624,18 @@ namespace System.ServiceModel.Channels
             }
             catch (Exception exception)
             {
+                // In NET Native the WinRT API's can throw the base Exception
+                // class with an HRESULT indicating the issue.  However, custom
+                // validation code can also throw Exception, and to be compatible
+                // with the CoreCLR version, we must allow those exceptions to
+                // propagate without wrapping them.  We use the simple heuristic
+                // that if an HRESULT has been set to other than the default,
+                // the exception should be wrapped in SecurityNegotiationException.
+                if (exception.HResult == __HResults.COR_E_EXCEPTION)
+                {
+                    throw;
+                }
+                
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(
                     exception.Message, exception));
             }
