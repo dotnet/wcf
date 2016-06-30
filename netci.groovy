@@ -59,7 +59,7 @@ class WcfUtilities
     def addWcfOuterloopTestServiceSync(def job, String os, String branch, boolean isPR) { 
 
         def operation = isPR ? "pr" : "branch"
-        def currentWcfPRService = wcfPRServiceCount++ 
+        def currentWcfPRService = ++wcfPRServiceCount 
 
         // workaround after branchifying - each branch independently runs this file hence our serial
         // numbers will overlap on different branches
