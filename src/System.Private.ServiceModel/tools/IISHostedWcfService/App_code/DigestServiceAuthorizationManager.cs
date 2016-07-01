@@ -222,7 +222,27 @@ namespace WcfService
 
             public string Uri { get { return Parameters[UriAuthenticationParameter]; } }
 
-            public string Username { get { return Parameters[UsernameAuthenticationParameter]; } }
+            public string Username
+            {
+                get
+                {
+                    // On some platforms, the username is sent as realm\\username or realm\username. This should only happen when
+                    // the user account is in a different realm/domain than the server but some implementations of HttpClient
+                    // always send the username prefixed with the realm.
+
+                    var username = Parameters[UsernameAuthenticationParameter];
+                    username = username.Replace(@"\\", @"\");
+                    var realmPrefix = _realm + @"\";
+                    if (username.StartsWith(realmPrefix))
+                    {
+                        username = username.Substring(realmPrefix.Length);
+                    }
+
+                    return username;
+                }
+            }
+
+            private string RawUsername { get { return Parameters[UsernameAuthenticationParameter]; } }
 
             private string CalculateHash(string plaintext)
             {
@@ -267,12 +287,15 @@ namespace WcfService
                     return;
                 }
 
-                if (_realm == null || Username == null || _password == null || _method == null)
+                if (_realm == null || RawUsername == null || _password == null || _method == null)
                 {
                     throw new InvalidOperationException("Insufficient information to determine authorization");
                 }
 
-                string SA1 = string.Concat(Username, ":", _realm, ":", _password);
+                // If username is realm\\username, convert the double slash to a single slash
+                var username = RawUsername.Replace(@"\\", @"\");
+
+                string SA1 = string.Concat(username, ":", _realm, ":", _password);
                 string HA1 = CalculateHash(SA1);
                 string SA2 = string.Concat(_method, ":", Uri);
                 string HA2 = CalculateHash(SA2);
