@@ -178,7 +178,10 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         bool digest_Authentication_Available = Digest_Authentication_Available();
         bool explicit_Credentials_Available = Explicit_Credentials_Available();
 
-        if (!server_Domain_Joined)
+        if (!server_Domain_Joined ||
+            !root_Certificate_Installed ||
+            !digest_Authentication_Available ||
+            !explicit_Credentials_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
