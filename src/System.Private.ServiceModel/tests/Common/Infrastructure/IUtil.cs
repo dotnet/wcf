@@ -15,5 +15,8 @@ public interface IUtil
     byte[] GetRootCert(bool exportAsPem);
 
     [OperationContract]
+    byte[] GetPeerCert(bool exportAsPem);
+
+    [OperationContract]
     string GetFQDN();
 }

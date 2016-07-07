@@ -112,7 +112,7 @@ namespace System.ServiceModel.Security
             }
             else if (_certificateValidationMode == X509CertificateValidationMode.PeerTrust)
             {
-                throw ExceptionHelper.PlatformNotSupported("X509CertificateValidationMode.PeerTrust is not supported");
+                validator = X509CertificateValidator.PeerTrust;
             }
             else if (_certificateValidationMode == X509CertificateValidationMode.Custom)
             {
@@ -129,7 +129,7 @@ namespace System.ServiceModel.Security
                 }
                 else
                 {
-                    throw ExceptionHelper.PlatformNotSupported("X509CertificateValidationMode.PeerTrust is not supported");
+                    validator = X509CertificateValidator.CreatePeerOrChainTrustValidator(useMachineContext, chainPolicy);
                 }
             }
             return (validator != null);

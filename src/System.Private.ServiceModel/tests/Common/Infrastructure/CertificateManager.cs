@@ -34,7 +34,7 @@ namespace Infrastructure.Common
         // 
         // In other words, on Windows, we can bypass the modal dialog box, but only if we install to StoreName.Root : StoreLocation.LocalMachine
         // To do this though means that we must run certificate-based tests elevated
-        private static StoreLocation PlatformSpecificRootStoreLocation
+        internal static StoreLocation PlatformSpecificRootStoreLocation
         {
             get
             {
@@ -73,7 +73,7 @@ namespace Infrastructure.Common
                 using (X509Store store = new X509Store(storeName, storeLocation))
                 {
                     store.Open(OpenFlags.ReadOnly);
-                    resultCert = CertificateFromThumbprint(store, certificate.Thumbprint);
+                    resultCert = CertificateFromThumbprint(store, certificate.Thumbprint, validOnly: false);
                 }
 
                 // Not already in store.  We need to add it.
@@ -106,81 +106,44 @@ namespace Infrastructure.Common
 
         // Returns the certificate matching the given thumbprint from the given store.
         // Returns null if not found.
-        private static X509Certificate2 CertificateFromThumbprint(X509Store store, string thumbprint)
+        private static X509Certificate2 CertificateFromThumbprint(X509Store store, string thumbprint, bool validOnly)
         {
-            X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, validOnly: true);
+            X509Certificate2Collection foundCertificates = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, validOnly);
             return foundCertificates.Count == 0 ? null : foundCertificates[0];
         }
 
         private static X509Certificate2 CertificateFromThumbprint(StoreName storeName,
                                                                   StoreLocation storeLocation,
-                                                                  string thumbprint)
+                                                                  string thumbprint,
+                                                                  bool validOnly)
         {
             X509Certificate2 resultCert = null;
             using (X509Store store = new X509Store(storeName, storeLocation))
             {
                 store.Open(OpenFlags.ReadOnly);
-                resultCert = CertificateFromThumbprint(store, thumbprint);
+                resultCert = CertificateFromThumbprint(store, thumbprint, validOnly);
             }
 
             return resultCert;
         }
 
         // Retrieves a root certificate matching the given thumbprint from the root store
-        public static X509Certificate2 RootCertificateFromThumprint(string thumbprint)
+        public static X509Certificate2 RootCertificateFromThumprint(string thumbprint, bool validOnly)
         {
-            return CertificateFromThumbprint(StoreName.Root, PlatformSpecificRootStoreLocation, thumbprint);
-        }
-
-        // Retrieves a root certificate matching the given issuer name and subject name from the root store
-        public static X509Certificate2 RootCertificateFromName(string issuerName, string subjectName)
-        {
-            return CertificateFromName(StoreName.Root, PlatformSpecificRootStoreLocation, issuerName, subjectName);
+            return CertificateFromThumbprint(StoreName.Root, PlatformSpecificRootStoreLocation, thumbprint, validOnly);
         }
 
         // Retrieves a client certificate matching the given thumbprint from the certificate store
-        public static X509Certificate2 ClientCertificateFromThumprint(string thumbprint)
+        public static X509Certificate2 ClientCertificateFromThumprint(string thumbprint, bool validOnly)
         {
-            return CertificateFromThumbprint(StoreName.My, StoreLocation.CurrentUser, thumbprint);
+            return CertificateFromThumbprint(StoreName.My, StoreLocation.CurrentUser, thumbprint, validOnly);
         }
 
-        // Retrieves a client certificate matching the given issuer name and subject name from the certificate store
-        public static X509Certificate2 ClientCertificateFromName(string issuerName, string subjectName)
+        // Retrieves a server certificate matching the given thumbprint from the certificate store
+        public static X509Certificate2 PeerCertificateFromThumprint(string thumbprint, bool validOnly)
         {
-            return CertificateFromName(StoreName.My, StoreLocation.CurrentUser, issuerName, subjectName);
+            return CertificateFromThumbprint(StoreName.TrustedPeople, StoreLocation.CurrentUser, thumbprint, validOnly);
         }
-
-        private static X509Certificate2 CertificateFromName(StoreName storeName,
-                                                            StoreLocation storeLocation,
-                                                            string issuerName,
-                                                            string subjectName = null)
-        {
-            using (X509Store store = new X509Store(storeName, storeLocation))
-            {
-                try
-                {
-                    store.Open(OpenFlags.ReadOnly);
-                    X509Certificate2Collection certificates =
-                        store.Certificates.Find(X509FindType.FindByIssuerName, issuerName, validOnly: true);
-                    if (certificates.Count == 0)
-                    {
-                        return null;
-                    }
-
-                    if (subjectName != null)
-                    {
-                        certificates = certificates.Find(X509FindType.FindBySubjectName, subjectName, validOnly: true);
-                    }
-
-                    return certificates.Count == 0 ? null : certificates[0];
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-
 
         // Install the certificate into the Root store and returns its thumbprint.
         // It will not install the certificate if it is already present in the store.
@@ -201,6 +164,19 @@ namespace Infrastructure.Common
             // StoreLocation.CurrentUser is supported on both Linux and Windows 
             // Furthermore, installing this cert to this location does not require sudo or admin elevation
             certificate = AddToStoreIfNeeded(StoreName.My, StoreLocation.CurrentUser, certificate);
+
+            return certificate;
+        }
+
+        // Install the certificate into the TrustedPeople store.
+        // It will not install the certificate if it is already present in the store.
+        // It returns the thumbprint of the certificate, regardless whether it was added or found.
+        public static X509Certificate2 InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate)
+        {
+            // Always install certs to CurrentUser
+            // StoreLocation.CurrentUser is supported on both Linux and Windows 
+            // Furthermore, installing this cert to this location does not require sudo or admin elevation
+            certificate = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.CurrentUser, certificate);
 
             return certificate;
         }

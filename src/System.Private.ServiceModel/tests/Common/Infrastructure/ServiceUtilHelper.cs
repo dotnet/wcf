@@ -18,10 +18,13 @@ public static class ServiceUtilHelper
     private static string s_serviceHostName = string.Empty;
     private static bool s_rootCertAvailabilityChecked = false;
     private static bool s_clientCertAvailabilityChecked = false;
+    private static bool s_peerCertAvailabilityChecked = false;
     private static X509Certificate2 s_rootCertificate = null;
     private static X509Certificate2 s_clientCertificate = null;
+    private static X509Certificate2 s_peerCertificate = null;
     private static string s_rootCertInstallErrorMessage = null;
     private static string s_clientCertInstallErrorMessage = null;
+    private static string s_peerCertInstallErrorMessage = null;
 
     public static X509Certificate2 RootCertificate
     {
@@ -39,6 +42,20 @@ public static class ServiceUtilHelper
             ThrowIfClientCertificateInstallationError();
             return s_clientCertificate;
         }
+    }
+
+    public static X509Certificate2 PeerCertificate
+    {
+        get
+        {
+            ThrowIfPeerCertificateInstallationError();
+            return s_peerCertificate;
+        }
+    }
+
+    public static StoreLocation PlatformSpecificRootStoreLocation
+    {
+        get { return CertificateManager.PlatformSpecificRootStoreLocation; }
     }
 
     // Tries to ensure that the root certificate is installed into
@@ -71,7 +88,7 @@ public static class ServiceUtilHelper
                         if (rootCertificate != null)
                         {
                             thumbprint = rootCertificate.Thumbprint;
-                            rootCertificate = CertificateManager.RootCertificateFromThumprint(thumbprint);
+                            rootCertificate = CertificateManager.RootCertificateFromThumprint(thumbprint, validOnly: false);
                             if (rootCertificate != null)
                             {
                                 System.Console.WriteLine(String.Format("Using root certificate:{0}{1}",
@@ -170,7 +187,7 @@ public static class ServiceUtilHelper
                         if (clientCertificate != null)
                         {
                             thumbprint = clientCertificate.Thumbprint;
-                            clientCertificate = CertificateManager.ClientCertificateFromThumprint(thumbprint);
+                            clientCertificate = CertificateManager.ClientCertificateFromThumprint(thumbprint, validOnly: false);
                             if (clientCertificate != null)
                             {
                                 System.Console.WriteLine(String.Format("Using client certificate:{0}{1}",
@@ -199,6 +216,65 @@ public static class ServiceUtilHelper
         ThrowIfClientCertificateInstallationError();
     }
 
+    // Tries to ensure that the peer trust certificate is installed into
+    // the TrustedPeople store.  It obtains the certificate from the service
+    // utility endpoint and either installs it or verifies that a matching
+    // one is already installed.  InvalidOperationException will be thrown
+    // if an error occurred attempting to install the certificate.  This
+    // method may be called multiple times but will attempt the installation
+    // once only.
+    public static void EnsurePeerCertificateInstalled()
+    {
+        if (!s_peerCertAvailabilityChecked)
+        {
+            lock (s_certLock)
+            {
+                if (!s_peerCertAvailabilityChecked)
+                {
+                    X509Certificate2 peerCertificate = null;
+                    string thumbprint = null;
+
+                    try
+                    {
+                        // Once only, we interrogate the service utility endpoint
+                        // for the server certificate and install it locally if it
+                        // is not already in the store.
+                        peerCertificate = InstallPeerCertificateFromServer();
+
+                        // If we had a certificate from the service endpoint, verify it was installed
+                        // by retrieving it from the store by thumbprint.
+                        if (peerCertificate != null)
+                        {
+                            thumbprint = peerCertificate.Thumbprint;
+                            peerCertificate = CertificateManager.PeerCertificateFromThumprint(thumbprint, validOnly: false);
+                            if (peerCertificate != null)
+                            {
+                                System.Console.WriteLine(String.Format("Using peer trust certificate:{0}{1}",
+                                                        Environment.NewLine, peerCertificate));
+                            }
+                            else
+                            {
+                                s_clientCertInstallErrorMessage =
+                                    String.Format("Failed to find a server certificate matching thumbprint '{0}'", thumbprint);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        s_peerCertInstallErrorMessage = ex.ToString();
+                    }
+
+                    s_peerCertificate = peerCertificate;
+                    s_peerCertAvailabilityChecked = true;
+                }
+            }
+        }
+
+        // If the installation failed, throw an exception everytime
+        // this method is called.
+        ThrowIfPeerCertificateInstallationError();
+    }
+
     // Acquires a client certificate from the service utility endpoint and
     // attempts to install it into the store.  All failures are
     // propagated back to the caller.
@@ -224,6 +300,31 @@ public static class ServiceUtilHelper
         return clientCertificate;
     }
 
+    // Acquires the peer trust certificate from the service utility endpoint and
+    // attempts to install it into the TrustedPeople store.  All failures are
+    // propagated back to the caller.
+    private static X509Certificate2 InstallPeerCertificateFromServer()
+    {
+        X509Certificate2 peerCertificate = null;
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
+        ChannelFactory<IUtil> factory = null;
+        IUtil serviceProxy = null;
+        try
+        {
+            factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
+            serviceProxy = factory.CreateChannel();
+            byte[] certdata = serviceProxy.GetPeerCert(false);
+            peerCertificate = new X509Certificate2(certdata, "test", X509KeyStorageFlags.PersistKeySet);
+            peerCertificate = CertificateManager.InstallCertificateToTrustedPeopleStore(peerCertificate);
+        }
+        finally
+        {
+            CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+
+        return peerCertificate;
+    }
+
     private static void ThrowIfRootCertificateInstallationError()
     {
         if (s_rootCertInstallErrorMessage != null)
@@ -239,6 +340,15 @@ public static class ServiceUtilHelper
         {
             throw new InvalidOperationException(
                 String.Format("The client certificate could not be installed: {0}", s_clientCertInstallErrorMessage));
+        }
+    }
+
+    private static void ThrowIfPeerCertificateInstallationError()
+    {
+        if (s_peerCertInstallErrorMessage != null)
+        {
+            throw new InvalidOperationException(
+                String.Format("The peer certificate could not be installed: {0}", s_peerCertInstallErrorMessage));
         }
     }
 
