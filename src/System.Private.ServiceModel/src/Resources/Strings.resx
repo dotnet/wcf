@@ -6756,8 +6756,16 @@
   <data name="SSLProtocolNegotiationFailed" xml:space="preserve">
     <value>SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</value>
   </data>
-  <!-- Copied from System.Net.Primitives net_ssl_io_cert_validation as we're doing the Ssl certificate validation ourselves for UWP apps-->
   <data name="ssl_io_cert_validation" xml:space="preserve">
-    <value>The remote certificate is invalid according to the validation procedure.</value> 
+    <value>The remote certificate is invalid according to the validation procedure.</value>
+  </data>
+  <data name="X509InvalidUsageTime" xml:space="preserve">
+    <value>The X.509 certificate ({0}) usage time is invalid.  The usage time '{1}' does not fall between NotBefore time '{2}' and NotAfter time '{3}'.</value>
+  </data>
+  <data name="X509IsInUntrustedStore" xml:space="preserve">
+    <value>The {0} X.509 certificate is in an untrusted certificate store.</value>
+  </data>
+  <data name="X509IsNotInTrustedStore" xml:space="preserve">
+    <value>The X.509 certificate {0} is not in the trusted people store.</value>
   </data>
 </root>

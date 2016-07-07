@@ -5,21 +5,38 @@
 
 using Infrastructure.Common;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using Xunit;
 
 public class SetupValidationTests : ConditionalWcfTest
 {
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
+    [ActiveIssue(1347, PlatformID.AnyUnix)]
+#endif
     [OuterLoop]
     public static void Root_Certificate_Correctly_Installed()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        if (!root_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            return;
+        }
+#endif
+
         // *** SETUP *** \\
         InvalidOperationException exception = null;
 
         // *** EXECUTE *** \\
         try
         {
-            ServiceUtilHelper.EnsureRootCertificateInstalled();
+            ValidateCertificate(ServiceUtilHelper.RootCertificate, StoreName.Root, ServiceUtilHelper.PlatformSpecificRootStoreLocation);
         }
         catch (InvalidOperationException e)
         {
@@ -32,17 +49,31 @@ public class SetupValidationTests : ConditionalWcfTest
         Assert.True(exception == null, exception == null ? String.Empty : exception.ToString());
     }
 
-    [OuterLoop]
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
     [ConditionalFact(nameof(Client_Certificate_Installed))]
+#endif
+    [OuterLoop]
     public static void Client_Certificate_Correctly_Installed()
     {
+#if FULLXUNIT_NOTSUPPORTED
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        if (!client_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            return;
+        }
+#endif
         // *** SETUP *** \\
         InvalidOperationException exception = null;
 
         // *** EXECUTE *** \\
         try
         {
-            ServiceUtilHelper.EnsureClientCertificateInstalled();
+            ValidateCertificate(ServiceUtilHelper.ClientCertificate, StoreName.My, StoreLocation.CurrentUser);
         }
         catch (InvalidOperationException e)
         {
@@ -53,5 +84,76 @@ public class SetupValidationTests : ConditionalWcfTest
         // Validate rather than allowing an exception to propagate
         // to be clear the exception was anticipated. 
         Assert.True(exception == null, exception == null ? String.Empty : exception.ToString());
+    }
+
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#else
+    [ConditionalFact(nameof(Peer_Certificate_Installed))]
+#endif
+    [OuterLoop]
+    public static void Peer_Certificate_Correctly_Installed()
+    {
+#if FULLXUNIT_NOTSUPPORTED
+        bool peer_Certificate_Installed = Peer_Certificate_Installed();
+        if (!peer_Certificate_Installed)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Peer_Certificate_Installed evaluated as {0}", peer_Certificate_Installed);
+            return;
+        }
+#endif
+        // *** SETUP *** \\
+        InvalidOperationException exception = null;
+
+        // *** EXECUTE *** \\
+        try
+        {
+            ValidateCertificate(ServiceUtilHelper.PeerCertificate, StoreName.TrustedPeople, StoreLocation.CurrentUser);
+        }
+        catch (InvalidOperationException e)
+        {
+            exception = e;
+        }
+
+        // *** VALIDATE *** \\
+        // Validate rather than allowing an exception to propagate
+        // to be clear the exception was anticipated. 
+        Assert.True(exception == null, exception == null ? String.Empty : exception.ToString());
+    }
+
+    private static void ValidateCertificate(X509Certificate2 certificate, StoreName storeName, StoreLocation storeLocation)
+    {
+        Assert.True(certificate != null, "Certificate is null");
+
+        DateTime now = DateTime.Now;
+        Assert.True(now > certificate.NotBefore,
+                   String.Format("The current date {{0}} is earlier than NotBefore ({1})",
+                                 now,
+                                 certificate.NotBefore));
+
+        Assert.True(now < certificate.NotAfter,
+           String.Format("The current date {{0}} is later than NotAfter ({1})",
+                         now,
+                         certificate.NotAfter));
+
+        using (X509Store store = new X509Store(storeName, storeLocation))
+        {
+            store.Open(OpenFlags.ReadOnly);
+            X509Certificate2Collection certificates = store.Certificates.Find(X509FindType.FindByThumbprint, certificate.Thumbprint, validOnly: true);
+            Assert.True(certificates.Count == 1,
+                        String.Format("Did not find valid certificate with thumbprint {0} in StoreName '{1}', StoreLocation '{2}'",
+                                      certificate.Thumbprint,
+                                      storeName,
+                                      storeLocation));
+        }
+
+        using (X509Store store = new X509Store(StoreName.Disallowed, storeLocation))
+        {
+            store.Open(OpenFlags.ReadOnly);
+            X509Certificate2Collection certificates = store.Certificates.Find(X509FindType.FindByThumbprint, certificate.Thumbprint, validOnly: false);
+            Assert.True(certificates.Count == 0, "Certificate was found in Disallowed store.");
+        }
     }
 }

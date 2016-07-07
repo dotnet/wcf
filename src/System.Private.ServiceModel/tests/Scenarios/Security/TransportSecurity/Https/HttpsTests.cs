@@ -380,22 +380,33 @@ public class HttpsTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
+    [ActiveIssue(959)] // Server certificate validation not supported in NET Native
 #else
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), 
+                     nameof(Client_Certificate_Installed),
+                     nameof(Peer_Certificate_Installed),
+                     nameof(SSL_Available))]
 #endif
     [OuterLoop]
-    [ActiveIssue(1183)]
     public static void Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerTrust_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool root_Certificate_Installed = Root_Certificate_Installed();
         bool client_Certificate_Installed = Client_Certificate_Installed();
-        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        bool peer_Certificate_Installed = Peer_Certificate_Installed();
+        bool ssl_Available = SSL_Available();
+
+        if (!root_Certificate_Installed || 
+            !client_Certificate_Installed ||
+            !peer_Certificate_Installed ||
+            !ssl_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
             Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
             Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            Console.WriteLine("Peer_Certificate_Installed evaluated as {0}", peer_Certificate_Installed);
+            Console.WriteLine("SSL_Available evaluated as {0}", ssl_Available);
             return;
         }
 #endif
@@ -437,22 +448,29 @@ public class HttpsTests : ConditionalWcfTest
     // This test is expected to validate the service certificate using PeerTrust with X509CertificateValidationMode set to PeerOrChainTrust.
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
+    [ActiveIssue(959)] // Server certificate validation not supported in NET Native
 #else
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [ConditionalFact(nameof(Root_Certificate_Installed), 
+                     nameof(Client_Certificate_Installed),
+                     nameof(SSL_Available))]
 #endif
     [OuterLoop]
-    [ActiveIssue(1183)]
     public static void Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool root_Certificate_Installed = Root_Certificate_Installed();
         bool client_Certificate_Installed = Client_Certificate_Installed();
-        if (!root_Certificate_Installed || !client_Certificate_Installed)
+        bool ssl_Available = SSL_Available();
+
+        if (!root_Certificate_Installed || 
+            !client_Certificate_Installed ||
+            !ssl_Available)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
             Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
             Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            Console.WriteLine("SSL_Available evaluated as {0}", ssl_Available);
             return;
         }
 #endif

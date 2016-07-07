@@ -36,7 +36,7 @@ namespace WcfService
         {
             base.ApplyConfiguration();
 
-            string thumbprint = Util.CertificateFromFridendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpRevokedServerCertResource").Thumbprint;
+            string thumbprint = Util.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpRevokedServerCertResource").Thumbprint;
 
             this.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine,
                                                         StoreName.My,

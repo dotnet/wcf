@@ -175,15 +175,3 @@ public interface IWcfDuplexTaskReturnCallback
     Task<Guid> ServicePingFaultCallback(Guid guid);
 }
 
-[ServiceContract]
-public interface IUtil
-{
-    [OperationContract]
-    byte[] GetClientCert(bool exportAsPem);
-
-    [OperationContract]
-    byte[] GetRootCert(bool exportAsPem);
-
-    [OperationContract]
-    string GetFQDN();
-}

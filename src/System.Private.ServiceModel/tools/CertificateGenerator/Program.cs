@@ -56,6 +56,7 @@ namespace CertUtil
             RemoveCertificatesFromStore(StoreName.Root, StoreLocation.CurrentUser);
 
             RemoveCertificatesFromStore(StoreName.TrustedPeople, StoreLocation.LocalMachine);
+            RemoveCertificatesFromStore(StoreName.TrustedPeople, StoreLocation.CurrentUser);
         }
 
         private static void Usage()

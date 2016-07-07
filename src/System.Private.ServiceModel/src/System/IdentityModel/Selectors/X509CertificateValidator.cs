@@ -13,7 +13,9 @@ namespace System.IdentityModel.Selectors
 {
     public abstract class X509CertificateValidator
     {
+        private static X509CertificateValidator s_peerTrust;
         private static X509CertificateValidator s_chainTrust;
+        private static X509CertificateValidator s_peerOrChainTrust;
         private static X509CertificateValidator s_none;
 
         public static X509CertificateValidator None
@@ -23,6 +25,16 @@ namespace System.IdentityModel.Selectors
                 if (s_none == null)
                     s_none = new NoneX509CertificateValidator();
                 return s_none;
+            }
+        }
+
+        public static X509CertificateValidator PeerTrust
+        {
+            get
+            {
+                if (s_peerTrust == null)
+                    s_peerTrust = new PeerTrustValidator();
+                return s_peerTrust;
             }
         }
 
@@ -36,11 +48,28 @@ namespace System.IdentityModel.Selectors
             }
         }
 
+        public static X509CertificateValidator PeerOrChainTrust
+        {
+            get
+            {
+                if (s_peerOrChainTrust == null)
+                    s_peerOrChainTrust = new PeerOrChainTrustValidator();
+                return s_peerOrChainTrust;
+            }
+        }
+
         public static X509CertificateValidator CreateChainTrustValidator(bool useMachineContext, X509ChainPolicy chainPolicy)
         {
             if (chainPolicy == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("chainPolicy");
             return new ChainTrustValidator(useMachineContext, chainPolicy, X509CertificateChain.DefaultChainPolicyOID);
+        }
+
+        public static X509CertificateValidator CreatePeerOrChainTrustValidator(bool useMachineContext, X509ChainPolicy chainPolicy)
+        {
+            if (chainPolicy == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("chainPolicy");
+            return new PeerOrChainTrustValidator(useMachineContext, chainPolicy);
         }
 
         public abstract void Validate(X509Certificate2 certificate);
@@ -51,6 +80,77 @@ namespace System.IdentityModel.Selectors
             {
                 if (certificate == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+            }
+        }
+
+        class PeerTrustValidator : X509CertificateValidator
+        {
+            public override void Validate(X509Certificate2 certificate)
+            {
+                if (certificate == null)
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+
+                Exception exception;
+                if (!TryValidate(certificate, out exception))
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
+            }
+
+            static bool StoreContainsCertificate(StoreName storeName, X509Certificate2 certificate)
+            {
+                X509Store store = new X509Store(storeName, StoreLocation.CurrentUser);
+                X509Certificate2Collection certificates = null;
+                try
+                {
+                    store.Open(OpenFlags.ReadOnly);
+                    certificates = store.Certificates.Find(X509FindType.FindByThumbprint, certificate.Thumbprint, false);
+                    return certificates.Count > 0;
+                }
+                finally
+                {
+                    SecurityUtils.ResetAllCertificates(certificates);
+                    store.Dispose();
+                }
+            }
+
+            internal bool TryValidate(X509Certificate2 certificate, out Exception exception)
+            {
+                // Checklist
+                // 1) time validity of cert
+                // 2) in trusted people store
+                // 3) not in disallowed store
+
+                // The following code could be written as:
+                // DateTime now = DateTime.UtcNow;
+                // if (now > certificate.NotAfter.ToUniversalTime() || now < certificate.NotBefore.ToUniversalTime())
+                //
+                // this is because X509Certificate2.xxx doesn't return UT.  However this would be a SMALL perf hit.
+                // I put an Assert so that this will ensure that the we are compatible with the CLR we shipped with
+
+                DateTime now = DateTime.Now;
+                Contract.Assert(now.Kind == certificate.NotAfter.Kind && now.Kind == certificate.NotBefore.Kind, "");
+
+                if (now > certificate.NotAfter || now < certificate.NotBefore)
+                {
+                    exception = new SecurityTokenValidationException(SR.Format(SR.X509InvalidUsageTime,
+                        SecurityUtils.GetCertificateId(certificate), now, certificate.NotBefore, certificate.NotAfter));
+                    return false;
+                }
+
+                if (!StoreContainsCertificate(StoreName.TrustedPeople, certificate))
+                {
+                    exception = new SecurityTokenValidationException(SR.Format(SR.X509IsNotInTrustedStore,
+                        SecurityUtils.GetCertificateId(certificate)));
+                    return false;
+                }
+
+                if (StoreContainsCertificate(StoreName.Disallowed, certificate))
+                {
+                    exception = new SecurityTokenValidationException(SR.Format(SR.X509IsInUntrustedStore,
+                        SecurityUtils.GetCertificateId(certificate)));
+                    return false;
+                }
+                exception = null;
+                return true;
             }
         }
 
@@ -108,6 +208,43 @@ namespace System.IdentityModel.Selectors
                 return String.Empty;
             }
         }
+
+
+        class PeerOrChainTrustValidator : X509CertificateValidator
+        {
+            X509CertificateValidator _chain;
+            PeerTrustValidator _peer;
+
+            public PeerOrChainTrustValidator()
+            {
+                _chain = X509CertificateValidator.ChainTrust;
+                _peer = (PeerTrustValidator)X509CertificateValidator.PeerTrust;
+            }
+
+            public PeerOrChainTrustValidator(bool useMachineContext, X509ChainPolicy chainPolicy)
+            {
+                _chain = X509CertificateValidator.CreateChainTrustValidator(useMachineContext, chainPolicy);
+                _peer = (PeerTrustValidator)X509CertificateValidator.PeerTrust;
+            }
+
+            public override void Validate(X509Certificate2 certificate)
+            {
+                if (certificate == null)
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+
+                Exception exception;
+                if (_peer.TryValidate(certificate, out exception))
+                    return;
+
+                try
+                {
+                    _chain.Validate(certificate);
+                }
+                catch (SecurityTokenValidationException ex)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenValidationException(exception.Message + " " + ex.Message));
+                }
+            }
+        }
     }
 }
-
