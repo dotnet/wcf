@@ -19,19 +19,22 @@
     "System.Threading": "4.0.12-beta-24223-03",
     "System.Threading.Tasks": "4.0.12-beta-24223-03",
     "System.Xml.XmlSerializer": "4.0.12-beta-24223-03",
-    "xunit": "2.1.0",
-    "xunit.netcore.extensions": "1.0.0-prerelease-00312-04",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"
-    }
+    },
+    "Microsoft.xunit.netcore.extensions": "1.0.0-prerelease-00520-02",
+    "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00520-02"
   },
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [
-        "dnxcore50",
-        "portable-net45+win8"
-      ]
-    }
+    "netstandard1.3": { }
+  },
+  "supports": {
+    "coreFx.Test.netcore50": { },
+    "coreFx.Test.netcoreapp1.0": { },
+    "coreFx.Test.net46": { },
+    "coreFx.Test.net461": { },
+    "coreFx.Test.net462": { },
+    "coreFx.Test.net463": { }
   }
 }

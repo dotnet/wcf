@@ -22,22 +22,22 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(HELIXBRANCH)' == ''" >
-      <ItemGroup>
-        <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
-        <ProjectReference Include="$(WcfSourceProj)">
-          <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
-          <Name>System.Private.ServiceModel</Name>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <OutputItemType>Content</OutputItemType>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-          <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
-        </ProjectReference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <ItemGroup>
+    <ProjectReference Include="$(WcfSourcePkgProj)">
+      <Name>System.Private.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include='$(WcfDuplexPkgProj)'>
+      <Name>System.ServiceModel.Duplex</Name>
+    </ProjectReference>
+    <ProjectReference Include='$(WcfNetTcpPkgProj)'>
+      <Name>System.ServiceModel.NetTcp</Name>
+    </ProjectReference>
+    <ProjectReference Include='$(WcfPrimitivesPkgProj)'>
+      <Name>System.ServiceModel.Primitives</Name>
+    </ProjectReference>
+    <ProjectReference Include='$(WcfSecurityPkgProj)'>
+      <Name>System.ServiceModel.Security</Name>
+    </ProjectReference>
     <ProjectReference Include='$(WcfUnitTestCommonProj)'>
       <Project>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</Project>
       <Name>UnitTests.Common</Name>
