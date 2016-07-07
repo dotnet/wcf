@@ -98,7 +98,7 @@ namespace CertUtil
             {
                 certificateGenerate.CrlUriRelativePath += "/" + s_testserverbase;
             }
-            certificateGenerate.CrlUriRelativePath += "/CrlService.svc/GetCrl";
+            certificateGenerate.CrlUriRelativePath += "/Util.svc/GetCrl";
 
             //Create and install root and server cert
             CertificateManager.CreateAndInstallLocalMachineCertificates(certificateGenerate);

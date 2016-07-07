@@ -26,7 +26,7 @@ start /D %~dp0 RunElevated.vbs StartWCFSelfHostedSvcDoWork.cmd
 :PingService
 REM the serial number is not used in the service side. Thus it can be any number
 echo Waiting for Self hosted WCF service to respond to ping... >>%_setuplog%
-call powershell -NoProfile -ExecutionPolicy unrestricted %~dp0pingWcfService.ps1 "http://localhost/CrlService.svc/GetCrl?serialNum=b52"
+call powershell -NoProfile -ExecutionPolicy unrestricted %~dp0pingWcfService.ps1 "http://localhost/Util.svc/Ping"
 SET _ERRORLEVEL=%ERRORLEVEL%
 if [%_ERRORLEVEL%] NEQ [0] (
 	set __EXITCODE=%_ERRORLEVEL%

@@ -37,11 +37,6 @@ namespace SelfHostedWCFService
             string websocketBaseAddress = string.Format(@"http://localhost:{0}", s_websocketPort);
             string websocketsBaseAddress = string.Format(@"https://localhost:{0}", s_websocketsPort);
 
-            //Do not need to catch exceptions and dispose service hosts as the process will terminate
-            Uri[] utilTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/Util.svc", httpBaseAddress)) };
-            UtilTestServiceHost utilTestServiceHostServiceHost = new UtilTestServiceHost(typeof(WcfService.Util), utilTestServiceHostbaseAddress);
-            utilTestServiceHostServiceHost.Open();
-
             Uri[] basicAuthTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/BasicAuthentication/BasicAuth.svc", httpsBaseAddress)) };
             BasicAuthTestServiceHost basicAuthTestServiceHostServiceHost = new BasicAuthTestServiceHost(typeof(WcfService.WcfUserNameService), basicAuthTestServiceHostbaseAddress);
             basicAuthTestServiceHostServiceHost.Open();
@@ -303,10 +298,10 @@ namespace SelfHostedWCFService
             webSocketHttpVerifyWebSocketsUsedTestServiceHostServiceHost.Open();
 
             //Start the crlUrl service last as the client use it to ensure all services have been started
-            Uri crlUrl = new Uri(string.Format("http://localhost/CrlService.svc", s_httpPort));
-            WebServiceHost host = new WebServiceHost(typeof(CrlService), crlUrl);
+            Uri utilUrl = new Uri(string.Format("http://localhost/Util.svc", s_httpPort));
+            WebServiceHost host = new WebServiceHost(typeof(UtilService), utilUrl);
             WebHttpBinding binding = new WebHttpBinding();
-            host.AddServiceEndpoint(typeof(ICrlService), binding, "");
+            host.AddServiceEndpoint(typeof(IUtil), binding, "");
             ServiceDebugBehavior serviceDebugBehavior = host.Description.Behaviors.Find<ServiceDebugBehavior>();
             serviceDebugBehavior.HttpHelpPageEnabled = false;
             host.Open();
