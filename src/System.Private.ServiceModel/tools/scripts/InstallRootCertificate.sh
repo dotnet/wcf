@@ -22,8 +22,8 @@ acquire_certificate()
    
     # Need to make a call as the original user as we need to write to the cert store for the current 
     # user, not as root
-    echo "Making a call to the service as user '$SUDO_USER'"
-    sudo -E -u $SUDO_USER $__curl_exe -o $__cafile "${__service_host}/Util.svc/GetRootCertificate" > /dev/null 2> /dev/null
+    echo "Making a call to '${__service_host}/TestHost.svc/GetRootCertificate' as user '$SUDO_USER'"
+    sudo -E -u $SUDO_USER $__curl_exe -o $__cafile "http://${__service_host}/TestHost.svc/GetRootCert?exportAsPem=true" > /dev/null 2> /dev/null
     
     return $?
 }

@@ -16,7 +16,7 @@ using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certi
 namespace WcfService
 {
     [ServiceContract]
-    public interface IUtil
+    public interface ITestHost
     {
         [OperationContract]
         [WebGet(UriTemplate = "GetClientCert?exportAsPem={exportAsPem}", BodyStyle = WebMessageBodyStyle.Bare)]
@@ -42,7 +42,7 @@ namespace WcfService
         Stream Ping();
     }
 
-    public class Util : IUtil
+    public class TestHost : ITestHost
     {
         public Stream GetClientCert(bool exportAsPem)
         {

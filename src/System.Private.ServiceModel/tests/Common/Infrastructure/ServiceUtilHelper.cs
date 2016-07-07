@@ -459,6 +459,7 @@ public static class ServiceUtilHelper
 
         return builder.Uri;
     }
+
     public static string GetEndpointAddress(string endpoint, string protocol = "http")
     {
         return string.Format(@"{0}/{1}", BuildBaseUri(protocol), endpoint);
@@ -466,6 +467,6 @@ public static class ServiceUtilHelper
 
     public static string ServiceUtil_Address
     {
-        get { return GetEndpointAddress("Util.svc//Util"); }
+        get { return GetEndpointAddress("TestInfrastructure.svc//Util"); }
     }
 }

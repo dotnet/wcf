@@ -24,7 +24,7 @@ namespace WcfService
             : base(serviceType, baseAddresses)
         {
             var binding = new WebHttpBinding();
-            this.AddServiceEndpoint(typeof(IUtil), binding, "");
+            this.AddServiceEndpoint(typeof(ITestHost), binding, "");
         }
     }
 }

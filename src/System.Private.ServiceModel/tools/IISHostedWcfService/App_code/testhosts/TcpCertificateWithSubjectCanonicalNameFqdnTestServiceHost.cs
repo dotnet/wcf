@@ -38,7 +38,7 @@ namespace WcfService
             base.ApplyConfiguration();
 
             {
-                string certThumprint = Util.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource").Thumbprint;
+                string certThumprint = TestHost.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource").Thumbprint;
 
                 this.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine,
                                                         StoreName.My,
