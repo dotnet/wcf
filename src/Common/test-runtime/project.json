@@ -1,8 +1,19 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.TestHost": "1.0.0",
+    "Microsoft.NETCore.Platforms": "1.0.2-beta-24223-03",
+    "Microsoft.NETCore.Targets": "1.0.2-beta-24223-03",
+    "Microsoft.NETCore.TestHost": "1.0.0-rc4-24131-00",
     "Microsoft.NETCore.Runtime.CoreCLR": "1.0.3-beta-24223-02",
     "System.Diagnostics.Contracts": "4.0.2-beta-24223-03",
+    "System.IO.Compression": "4.1.1-beta-24223-03",
+    "System.Runtime.InteropServices.RuntimeInformation": "4.0.1-beta-24223-03",
+    "System.Linq.Parallel": "4.0.2-beta-24223-03",
+
+    // Required by WCF scenario tests using shared infrastructure projects    
+    "System.Net.Primitives": "4.0.12-beta-24223-03",
+    "System.Net.Http": "4.1.1-beta-24223-03",
+    "System.Security.Cryptography.X509Certificates": "4.1.1-beta-24223-03",
+     
     "coveralls.io": "1.4",
     "OpenCover": "4.6.519",
     "ReportGenerator": "2.4.3",
