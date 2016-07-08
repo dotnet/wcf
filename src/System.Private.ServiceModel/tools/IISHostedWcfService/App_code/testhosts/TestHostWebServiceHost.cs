@@ -6,29 +6,25 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Web;
 
 namespace WcfService
 {
-    public class UtilTestServiceHostFactory : ServiceHostFactory
+    public class TestHostWebServiceHostFactory : WebServiceHostFactory
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            UtilTestServiceHost serviceHost = new UtilTestServiceHost(serviceType, baseAddresses);
+            TestHostWebServiceHost serviceHost = new TestHostWebServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
-    public class UtilTestServiceHost : TestServiceHostBase<IUtil>
+    public class TestHostWebServiceHost : WebServiceHost
     {
-        protected override string Address { get { return "Util"; } }
-
-        protected override Binding GetBinding()
-        {
-            return new BasicHttpBinding();
-        }
-
-        public UtilTestServiceHost(Type serviceType, params Uri[] baseAddresses)
+        public TestHostWebServiceHost(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
+            var binding = new WebHttpBinding();
+            this.AddServiceEndpoint(typeof(ITestHost), binding, "");
         }
     }
 }

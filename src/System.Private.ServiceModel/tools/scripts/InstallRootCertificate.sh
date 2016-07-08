@@ -14,19 +14,16 @@ show_usage()
     echo ""
 }
 
-run_installer() 
+acquire_certificate() 
 {
     __cafile=$1
-
-    echo "Using certificate installer at '$__installer_path'" 
     
-    echo "Running installer and making a call to '$ServiceUri'"
-    # echo $__corerun_exe $__installer_path $__cafile
+    echo "Obtaining certificate from '$ServiceUri'"
    
     # Need to make a call as the original user as we need to write to the cert store for the current 
     # user, not as root
-    echo "Making a call to the service as user '$SUDO_USER'"
-    sudo -E -u $SUDO_USER $__corerun_exe $__installer_path $__cafile
+    echo "Making a call to '${__service_host}/TestHost.svc/GetRootCertificate' as user '$SUDO_USER'"
+    sudo -E -u $SUDO_USER $__curl_exe -o $__cafile "http://${__service_host}/TestHost.svc/GetRootCert?asPem=true" > /dev/null 2> /dev/null
     
     return $?
 }
@@ -162,30 +159,11 @@ if [ $? -ne 0 -o ! -f "$__update_os_certbundle_exec" ]; then
     exit 1
 fi
 
-# Locate any CoreRun.exe to be able to execute TestRootCertificateInstaller.exe
-# Because TestRootCertificateInstaller itself is a test project, we are guaranteed
-# it will contain CoreRun.exe even if no other tests have been built.
-__corerun_path=$(dirname "$(find $__repopath -iname 'corerun' | head -1)")
+__curl_exe=`which curl`
 
-if [ $? -ne 0 ]; then
-    echo "Could not find 'corerun' under path '$__repopath'"
-    echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
-    exit 1
-fi
-
-__corerun_exe="$__corerun_path/corerun"
-
-if [ ! -e "$__corerun_exe" ]; then
-    echo "Could not find corerun in path $__corerun_path"
-    echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
-    exit 1
-fi
-
-__installer_path=$(find $__binpath -iname 'TestRootCertificateInstaller.exe' | head -1)
-
-if [ "$__installer_path" == "" ]; then
-    echo "Could not find 'TestRootCertificateInstaller.exe' under path '$__binpath'"
-    echo "Try building all outerloop tests using 'build.sh -p:WithCategories=OuterLoop' from the repo root"
+if [ ! -e "$__curl_exe" ]; then
+    echo "Could not find cURL"
+    echo "cURL is required to fetch the root certificates from the service"
     exit 1
 fi
 
@@ -220,15 +198,15 @@ if [ -z "$ServiceUri" ]; then
     echo "         so that the installer can make the call to the service correctly"
 fi
 
-# Run certificate installer 
-run_installer $__cafile
+acquire_certificate $__cafile
 
 # Install certificate
 if [ $? -eq 0 ]; then 
     if [ -e "$__cafile" ]; then 
         install_root_cert "$__cafile"
     else 
-        echo "ERROR: Certificate authority file not written to '$__cafile' as expected"
+        echo "ERROR: cURL returned an error - certificate authority file not written to '$__cafile' as expected"
+        exit 1
     fi  
 fi 
 
