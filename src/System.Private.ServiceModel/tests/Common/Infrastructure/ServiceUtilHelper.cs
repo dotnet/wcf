@@ -14,7 +14,7 @@ public static class ServiceUtilHelper
     private const string ClientCertificateSubject = "WCF Client Certificate";
     private const string CertificateIssuer = "DO_NOT_TRUST_WcfBridgeRootCA";
 
-    private const string TestHostUtilitiesService = "TestInfrastructure.svc";
+    private const string TestHostUtilitiesService = "TestHost.svc";
     private const string ClientCertificateResource = "ClientCert";
     private const string CrlResource = "Crl";
     private const string PeerCertificateResource = "PeerCert";
@@ -410,9 +410,15 @@ public static class ServiceUtilHelper
         return builder.Uri;
     }
 
+    public static string GetEndpointAddress(string endpoint, string protocol = "http")
+    {
+        return string.Format(@"{0}/{1}", BuildBaseUri(protocol), endpoint);
+    }
+
     private static string GetResourceAddress(string resource, string protocol = "http")
     {
-        return string.Format(@"{0}/{1}/{2}", BuildBaseUri(protocol), TestHostUtilitiesService, resource);
+        string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+        return string.Format(@"{0}://{1}/{2}/{3}", protocol, host, TestHostUtilitiesService, resource);
     }
 
     public static string GetResourceFromServiceAsString(string resource)

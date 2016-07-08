@@ -38,11 +38,11 @@ namespace WcfService
         [WebGet(UriTemplate = "Fqdn", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream Fqdn();
 
-        [WebGet]
+        [OperationContract]
         [WebGet(UriTemplate = "Ping", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream Ping();
 
-        [WebGet]
+        [OperationContract]
         [WebGet(UriTemplate = "State", BodyStyle = WebMessageBodyStyle.Bare)]
         Stream State();
     }

@@ -10,17 +10,17 @@ using System.ServiceModel.Web;
 
 namespace WcfService
 {
-    public class UtilTestWebServiceHostFactory : WebServiceHostFactory
+    public class TestHostWebServiceHostFactory : WebServiceHostFactory
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            UtilTestWebServiceHost serviceHost = new UtilTestWebServiceHost(serviceType, baseAddresses);
+            TestHostWebServiceHost serviceHost = new TestHostWebServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
-    public class UtilTestWebServiceHost : WebServiceHost
+    public class TestHostWebServiceHost : WebServiceHost
     {
-        public UtilTestWebServiceHost(Type serviceType, params Uri[] baseAddresses)
+        public TestHostWebServiceHost(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
             var binding = new WebHttpBinding();
