@@ -6,13 +6,22 @@
 using System;
 using System.ServiceModel;
 using System.Security.Cryptography.X509Certificates;
-
 using Infrastructure.Common;
+using System.Net.Http;
 
 public static class ServiceUtilHelper
 {
     private const string ClientCertificateSubject = "WCF Client Certificate";
     private const string CertificateIssuer = "DO_NOT_TRUST_WcfBridgeRootCA";
+
+    private const string TestHostUtilitiesService = "TestInfrastructure.svc";
+    private const string ClientCertificateResource = "ClientCert";
+    private const string CrlResource = "Crl";
+    private const string PeerCertificateResource = "PeerCert";
+    private const string RootCertificateResource = "RootCert";
+    private const string FqdnResource = "Fqdn";
+    private const string PingResource = "Ping";
+    private const string StateResource = "State";
 
     private static object s_certLock = new object();
     private static string s_serviceHostName = string.Empty;
@@ -123,23 +132,8 @@ public static class ServiceUtilHelper
     // installed.  Exceptions are propagated to the caller.
     private static X509Certificate2 InstallRootCertificateFromServer()
     {
-        X509Certificate2 rootCertificate = null;
-        BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-        ChannelFactory<IUtil> factory = null;
-        IUtil serviceProxy = null;
-        try
-        {
-            factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
-            serviceProxy = factory.CreateChannel();
-            rootCertificate = new X509Certificate2(serviceProxy.GetRootCert(false));
-            rootCertificate = CertificateManager.InstallCertificateToRootStore(rootCertificate);
-        }
-        finally
-        {
-            CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-        }
-
-        return rootCertificate;
+        X509Certificate2 rootCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(RootCertificateResource));
+        return CertificateManager.InstallCertificateToRootStore(rootCertificate);
     }
 
     // Tries to ensure that the client certificate is installed into
@@ -280,24 +274,8 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallClientCertificateFromServer()
     {
-        X509Certificate2 clientCertificate = null;
-        BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-        ChannelFactory<IUtil> factory = null;
-        IUtil serviceProxy = null;
-        try
-        {
-            factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
-            serviceProxy = factory.CreateChannel();
-            byte[] certdata = serviceProxy.GetClientCert(false);
-            clientCertificate = new X509Certificate2(certdata, "test", X509KeyStorageFlags.PersistKeySet);
-            clientCertificate = CertificateManager.InstallCertificateToMyStore(clientCertificate);
-        }
-        finally
-        {
-            CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-        }
-
-        return clientCertificate;
+        X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(ClientCertificateResource), "test", X509KeyStorageFlags.PersistKeySet);
+        return CertificateManager.InstallCertificateToMyStore(clientCertificate);
     }
 
     // Acquires the peer trust certificate from the service utility endpoint and
@@ -305,24 +283,8 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallPeerCertificateFromServer()
     {
-        X509Certificate2 peerCertificate = null;
-        BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-        ChannelFactory<IUtil> factory = null;
-        IUtil serviceProxy = null;
-        try
-        {
-            factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
-            serviceProxy = factory.CreateChannel();
-            byte[] certdata = serviceProxy.GetPeerCert(false);
-            peerCertificate = new X509Certificate2(certdata, "test", X509KeyStorageFlags.PersistKeySet);
-            peerCertificate = CertificateManager.InstallCertificateToTrustedPeopleStore(peerCertificate);
-        }
-        finally
-        {
-            CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-        }
-
-        return peerCertificate;
+        X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.PersistKeySet);
+        return CertificateManager.InstallCertificateToTrustedPeopleStore(peerCertificate);
     }
 
     private static void ThrowIfRootCertificateInstallationError()
@@ -391,19 +353,7 @@ public static class ServiceUtilHelper
             //Get the host name from server
             if (string.IsNullOrEmpty(s_serviceHostName))
             {
-                BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-                ChannelFactory<IUtil> factory = null;
-                IUtil serviceProxy = null;
-                try
-                {
-                    factory = new ChannelFactory<IUtil>(basicHttpBinding, new EndpointAddress(ServiceUtil_Address));
-                    serviceProxy = factory.CreateChannel();
-                    s_serviceHostName = serviceProxy.GetFQDN();
-                }
-                finally
-                {
-                    CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-                }
+                s_serviceHostName = GetResourceFromServiceAsString(FqdnResource);
             }
 
             return s_serviceHostName;
@@ -460,13 +410,26 @@ public static class ServiceUtilHelper
         return builder.Uri;
     }
 
-    public static string GetEndpointAddress(string endpoint, string protocol = "http")
+    private static string GetResourceAddress(string resource, string protocol = "http")
     {
-        return string.Format(@"{0}/{1}", BuildBaseUri(protocol), endpoint);
+        return string.Format(@"{0}/{1}/{2}", BuildBaseUri(protocol), TestHostUtilitiesService, resource);
     }
 
-    public static string ServiceUtil_Address
+    public static string GetResourceFromServiceAsString(string resource)
     {
-        get { return GetEndpointAddress("TestInfrastructure.svc//Util"); }
+        using (HttpClient httpClient = new HttpClient())
+        {
+            HttpResponseMessage response = httpClient.GetAsync(GetResourceAddress(resource)).GetAwaiter().GetResult();
+            return response.Content.ReadAsStringAsync().GetAwaiter().GetResult(); 
+        }
+    }
+
+    public static byte[] GetResourceFromServiceAsByteArray(string resource)
+    {
+        using (HttpClient httpClient = new HttpClient())
+        {
+            HttpResponseMessage response = httpClient.GetAsync(GetResourceAddress(resource)).GetAwaiter().GetResult();
+            return response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+        }
     }
 }
