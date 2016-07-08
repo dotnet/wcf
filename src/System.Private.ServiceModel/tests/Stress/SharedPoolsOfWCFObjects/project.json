@@ -9,12 +9,12 @@
     "System.Linq": "4.1.1-beta-24223-03",
     "System.Net.Http": "4.1.1-beta-24223-03",
     "System.Net.Sockets": "4.1.1-beta-24223-03",
-    "System.Private.ServiceModel": "4.1.1-beta-24229-01",
-    "System.ServiceModel.Duplex": "4.0.2-beta-24229-01",
-    "System.ServiceModel.Http": "4.1.1-beta-24229-01",
-    "System.ServiceModel.NetTcp": "4.1.1-beta-24229-01",
-    "System.ServiceModel.Primitives": "4.1.1-beta-24229-01",
-    "System.ServiceModel.Security": "4.0.2-beta-24229-01",
+    "System.Private.ServiceModel": "4.1.1-beta-24308-02",
+    "System.ServiceModel.Duplex": "4.0.2-beta-24308-02",
+    "System.ServiceModel.Http": "4.1.1-beta-24308-02",
+    "System.ServiceModel.NetTcp": "4.1.1-beta-24308-02",
+    "System.ServiceModel.Primitives": "4.1.1-beta-24308-02",
+    "System.ServiceModel.Security": "4.0.2-beta-24308-02",
     "System.Threading": "4.0.12-beta-24223-03",
     "test-runtime": {
       "target": "project",
@@ -25,14 +25,14 @@
     "SharedPoolsOfWCFObjects": "SharedPoolsOfWCFObjects"
   },
   "frameworks": {
-    "netstandard1.3": { }
+    "netstandard1.3": {}
   },
   "supports": {
-    "coreFx.Test.netcore50": { },
-    "coreFx.Test.netcoreapp1.0": { },
-    "coreFx.Test.net46": { },
-    "coreFx.Test.net461": { },
-    "coreFx.Test.net462": { },
-    "coreFx.Test.net463": { }
+    "coreFx.Test.netcore50": {},
+    "coreFx.Test.netcoreapp1.0": {},
+    "coreFx.Test.net46": {},
+    "coreFx.Test.net461": {},
+    "coreFx.Test.net462": {},
+    "coreFx.Test.net463": {}
   }
 }
