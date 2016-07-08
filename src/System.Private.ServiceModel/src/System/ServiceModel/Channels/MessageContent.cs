@@ -190,6 +190,7 @@ namespace System.ServiceModel.Channels
                 }
                 finally
                 {
+                    thisPtr._stream.Dispose();
                     thisPtr._writeCompletedTcs.TrySetResult(true);
                 }
             }, this, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
