@@ -7,7 +7,7 @@ For ($i=0; $i -le 60; $i++)
 {
     try
     {
-        $request.DownloadFile($Url, "temp.crl")
+        $request.DownloadString($Url)
     }
     catch
     {

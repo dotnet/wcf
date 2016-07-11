@@ -423,18 +423,24 @@ public static class ServiceUtilHelper
 
     public static string GetResourceFromServiceAsString(string resource)
     {
+        string requestUri = GetResourceAddress(resource);
+        Console.WriteLine(String.Format("Invoking {0} ...", requestUri));
+
         using (HttpClient httpClient = new HttpClient())
         {
-            HttpResponseMessage response = httpClient.GetAsync(GetResourceAddress(resource)).GetAwaiter().GetResult();
+            HttpResponseMessage response = httpClient.GetAsync(requestUri).GetAwaiter().GetResult();
             return response.Content.ReadAsStringAsync().GetAwaiter().GetResult(); 
         }
     }
 
     public static byte[] GetResourceFromServiceAsByteArray(string resource)
     {
+        string requestUri = GetResourceAddress(resource);
+        Console.WriteLine(String.Format("Invoking {0} ...", requestUri));
+
         using (HttpClient httpClient = new HttpClient())
         {
-            HttpResponseMessage response = httpClient.GetAsync(GetResourceAddress(resource)).GetAwaiter().GetResult();
+            HttpResponseMessage response = httpClient.GetAsync(requestUri).GetAwaiter().GetResult();
             return response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
         }
     }
