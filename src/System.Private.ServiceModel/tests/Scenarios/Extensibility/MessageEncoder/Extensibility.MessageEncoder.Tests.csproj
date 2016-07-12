@@ -17,10 +17,7 @@
     <ProjectGuid>{79551997-6C99-446E-B4BF-6F3659FA6B64}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CustomTextMessageBindingElement.cs" />
-    <Compile Include="CustomTextMessageEncoderFactory.cs" />
-    <Compile Include="CustomTextMessageEncoder.cs" />
-    <Compile Include="TextTests.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
