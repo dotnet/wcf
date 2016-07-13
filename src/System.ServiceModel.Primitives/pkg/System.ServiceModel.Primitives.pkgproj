@@ -9,7 +9,7 @@
       <SupportedFramework>net45;win8</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\ref\System.ServiceModel.Primitives.csproj">
-      <SupportedFramework>net46;netcore50;netcoreapp1.0</SupportedFramework>
+      <SupportedFramework>net46;netcore50;netcoreapp1.0;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.Primitives.builds" />
     <!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->

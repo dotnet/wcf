@@ -6,16 +6,22 @@
       <SupportedFramework>wp8</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\ref\System.ServiceModel.Security.csproj">
-      <SupportedFramework>net45;netcore45;netcoreapp1.0</SupportedFramework>
+      <SupportedFramework>net45;netcore45;netcoreapp1.0;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.Security.builds" />
     <!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
     <InboxOnTargetFramework Include="net45">
       <FrameworkReference>System.ServiceModel</FrameworkReference>
     </InboxOnTargetFramework>
+    <InboxOnTargetFramework Include="MonoAndroid10" />
+    <InboxOnTargetFramework Include="MonoTouch10" />
     <InboxOnTargetFramework Include="win8" />
     <InboxOnTargetFramework Include="wp8" />
     <InboxOnTargetFramework Include="portable-net45+win8+wp8" />
+    <InboxOnTargetFramework Include="xamarinios10" />
+    <InboxOnTargetFramework Include="xamarinmac20" />
+    <InboxOnTargetFramework Include="xamarintvos10" />
+    <InboxOnTargetFramework Include="xamarinwatchos10" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
