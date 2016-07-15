@@ -116,12 +116,7 @@
   <!-- FilterProjectsToTest will filter the project list according to the FilterToTestTFM value -->
   <Target Name="FilterProjectsToTest"
           BeforeTargets="TestAllProjects" 
-          Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
-
-    <PropertyGroup>
-      <!-- we default FilterToTestTFM to netcoreapp1.0 if it is not explicity defined -->
-      <FilterToTestTFM Condition="'$(FilterToTestTFM)'==''">netcoreapp1.0</FilterToTestTFM>
-    </PropertyGroup>          
+          Condition="$(MSBuildProjectName.EndsWith('.Tests'))">     
 
     <ItemGroup>
       <Project>
