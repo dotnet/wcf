@@ -22,21 +22,6 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(HELIXBRANCH)' == ''" >
-      <ItemGroup>
-        <!-- Compile tests against the contract, but copy our local-built implementation for testing -->
-        <ProjectReference Include="$(WcfSourceProj)">
-          <Project>{9e50e7bf-cd6e-4269-a6dd-59fd0bd6c0fd}</Project>
-          <Name>System.Private.ServiceModel</Name>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <OutputItemType>Content</OutputItemType>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-          <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
-        </ProjectReference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <ItemGroup>
     <ProjectReference Include="$(WcfInfrastructureCommonProj)">
       <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
