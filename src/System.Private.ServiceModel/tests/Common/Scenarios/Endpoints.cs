@@ -168,7 +168,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("BasicAuthentication/BasicAuth.svc/https-basic", protocol: "https");
+            return GetEndpointAddress("BasicAuth.svc/https-basic", protocol: "https");
         }
     }
 

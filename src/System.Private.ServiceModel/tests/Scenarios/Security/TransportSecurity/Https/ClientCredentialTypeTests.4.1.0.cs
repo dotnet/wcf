@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.Text;
 using Xunit;
@@ -14,6 +14,8 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 {
     private static string s_username;
     private static string s_password;
+    private const string BasicUsernameHeaderName = "BasicUsername";
+    private const string BasicPasswordHeaderName = "BasicPassword";
 
     static Https_ClientCredentialTypeTests()
     {
@@ -24,20 +26,18 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
 #else
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Basic_Authentication_Available))]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool root_Certificate_Installed = Root_Certificate_Installed();
-        bool basic_Authentication_Available = Basic_Authentication_Available();
-        if (!root_Certificate_Installed || !basic_Authentication_Available)
+        if (!root_Certificate_Installed)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
             Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            Console.WriteLine("Basic_Authentication_Available evaluated as {0}", basic_Authentication_Available);
             return;
         }
 #endif
@@ -49,13 +49,34 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
 
             ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
-            factory.Credentials.UserName.UserName = "test1";
-            factory.Credentials.UserName.Password = "Mytestpwd1";
+            string username = Guid.NewGuid().ToString("n").Substring(0, 8);
+            string password = Guid.NewGuid().ToString("n").Substring(0, 16);
+            factory.Credentials.UserName.UserName = username;
+            factory.Credentials.UserName.Password = password;
 
             IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
 
             string testString = "I am a test";
-            string result = serviceProxy.Echo(testString);
+            string result;
+            using (var scope = new OperationContextScope((IContextChannel)serviceProxy))
+            {
+                HttpRequestMessageProperty requestMessageProperty;
+                if (!OperationContext.Current.OutgoingMessageProperties.ContainsKey(HttpRequestMessageProperty.Name))
+                {
+                    requestMessageProperty = new HttpRequestMessageProperty();
+                    OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = requestMessageProperty;
+                }
+                else
+                {
+                    requestMessageProperty = (HttpRequestMessageProperty)OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name];
+                }
+
+                requestMessageProperty.Headers[BasicUsernameHeaderName] = username;
+                requestMessageProperty.Headers[BasicPasswordHeaderName] = password;
+
+                result = serviceProxy.Echo(testString);
+            }
+
             bool success = string.Equals(result, testString);
 
             if (!success)
@@ -76,20 +97,18 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
 #else
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Basic_Authentication_Available))]
+    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
     [OuterLoop]
     public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()
     {
 #if FULLXUNIT_NOTSUPPORTED
         bool root_Certificate_Installed = Root_Certificate_Installed();
-        bool basic_Authentication_Available = Basic_Authentication_Available();
-        if (!root_Certificate_Installed || !basic_Authentication_Available)
+        if (!root_Certificate_Installed)
         {
             Console.WriteLine("---- Test SKIPPED --------------");
             Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
             Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            Console.WriteLine("Basic_Authentication_Available evaluated as {0}", basic_Authentication_Available);
             return;
         }
 #endif
@@ -106,13 +125,31 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
 
             ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
-            factory.Credentials.UserName.UserName = "test1";
-            factory.Credentials.UserName.Password = "test1";
+            string username = Guid.NewGuid().ToString("n").Substring(0, 8);
+            string password = Guid.NewGuid().ToString("n").Substring(0, 16);
+            factory.Credentials.UserName.UserName = username;
+            factory.Credentials.UserName.Password = password + "Invalid";
 
             IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
 
             string testString = "I am a test";
-            string result = serviceProxy.Echo(testString);
+            using (var scope = new OperationContextScope((IContextChannel)serviceProxy))
+            {
+                HttpRequestMessageProperty requestMessageProperty;
+                if (!OperationContext.Current.OutgoingMessageProperties.ContainsKey(HttpRequestMessageProperty.Name))
+                {
+                    requestMessageProperty = new HttpRequestMessageProperty();
+                    OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = requestMessageProperty;
+                }
+                else
+                {
+                    requestMessageProperty = (HttpRequestMessageProperty)OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name];
+                }
+
+                requestMessageProperty.Headers[BasicUsernameHeaderName] = username;
+                requestMessageProperty.Headers[BasicPasswordHeaderName] = password;
+                string result = serviceProxy.Echo(testString);
+            }
         });
 
         Assert.True(exception.Message.ToLower().Contains(message), string.Format("Expected exception message to contain: '{0}', actual message is: '{1}'", message, exception.Message));
