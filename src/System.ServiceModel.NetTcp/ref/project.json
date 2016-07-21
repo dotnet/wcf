@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "System.ObjectModel": "4.0.0",
-    "System.Runtime": "4.0.0",
+    "System.Runtime": "4.0.20",
     "System.Net.Primitives": "4.0.10",
     "System.Security.Cryptography.X509Certificates": "4.1.0",
     "System.ServiceModel.Primitives": "4.1.0",
