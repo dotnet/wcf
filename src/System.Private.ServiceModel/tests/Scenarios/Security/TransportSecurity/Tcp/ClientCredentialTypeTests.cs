@@ -175,6 +175,8 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [OuterLoop]
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
+    // So we ask for a known chain-trusted certificate that we also know
+    // it not in TrustedPeople.
     public static void NetTcp_SecModeTrans_CertValMode_PeerOrChainTrust_Succeeds_ChainTrusted()
     {
 #if FULLXUNIT_NOTSUPPORTED

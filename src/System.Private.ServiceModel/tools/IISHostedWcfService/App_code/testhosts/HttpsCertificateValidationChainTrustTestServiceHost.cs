@@ -12,17 +12,17 @@ using System.ServiceModel.Security;
 
 namespace WcfService
 {
-    public class HttpsCertificateValidationPeerOrChainTrustTestServiceHostFactory : ServiceHostFactory
+    public class HttpsCertificateValidationChainTrustTestServiceHostFactory : ServiceHostFactory
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            HttpsCertificateValidationPeerOrChainTrustTestServiceHost serviceHost = new HttpsCertificateValidationPeerOrChainTrustTestServiceHost(serviceType, baseAddresses);
+            HttpsCertificateValidationChainTrustTestServiceHost serviceHost = new HttpsCertificateValidationChainTrustTestServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
-    public class HttpsCertificateValidationPeerOrChainTrustTestServiceHost : TestServiceHostBase<IWcfService>
+    public class HttpsCertificateValidationChainTrustTestServiceHost : TestServiceHostBase<IWcfService>
     {
-        protected override string Address { get { return "https-server-cert-valmode-peerorchaintrust"; } }
+        protected override string Address { get { return "https-server-cert-valmode-chaintrust"; } }
 
         protected override Binding GetBinding()
         {
@@ -44,7 +44,7 @@ namespace WcfService
                                                                 certThumprint);
         }
 
-        public HttpsCertificateValidationPeerOrChainTrustTestServiceHost(Type serviceType, params Uri[] baseAddresses)
+        public HttpsCertificateValidationChainTrustTestServiceHost(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
         }

@@ -260,11 +260,11 @@ public static partial class Endpoints
         }
     }
 
-    public static string Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_Address
+    public static string Https_SecModeTrans_ClientCredTypeNone_ServerCertValModeChainTrust_Address
     {
         get
         {
-            return GetEndpointAddress("HttpsCertValModePeerOrChainTrust.svc//https-server-cert-valmode-peerorchaintrust", protocol: "https");
+            return GetEndpointAddress("HttpsCertValModeChainTrust.svc//https-server-cert-valmode-chaintrust", protocol: "https");
         }
     }
 

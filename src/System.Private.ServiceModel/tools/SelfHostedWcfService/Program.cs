@@ -137,9 +137,9 @@ namespace SelfHostedWCFService
             HttpsCertificateValidationPeerTrustTestServiceHost httpsCertificateValidationPeerTrustTestServiceHost = new HttpsCertificateValidationPeerTrustTestServiceHost(typeof(WcfService.WcfService), httpsCertificateValidationPeerTrustTestServiceHostbaseAddress);
             httpsCertificateValidationPeerTrustTestServiceHost.Open();
 
-            Uri[] httpsCertificateValidationPeerOrChainTrustTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsCertValModePeerOrChainTrust.svc", httpsBaseAddress)) };
-            HttpsCertificateValidationPeerOrChainTrustTestServiceHost httpsCertificateValidationPeerOrChainTrustTestServiceHost = new HttpsCertificateValidationPeerOrChainTrustTestServiceHost(typeof(WcfService.WcfService), httpsCertificateValidationPeerOrChainTrustTestServiceHostbaseAddress);
-            httpsCertificateValidationPeerOrChainTrustTestServiceHost.Open();
+            Uri[] httpsCertificateValidationChainTrustTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsCertValModeChainTrust.svc", httpsBaseAddress)) };
+            HttpsCertificateValidationChainTrustTestServiceHost httpsCertificateValidationChainTrustTestServiceHost = new HttpsCertificateValidationChainTrustTestServiceHost(typeof(WcfService.WcfService), httpsCertificateValidationChainTrustTestServiceHostbaseAddress);
+            httpsCertificateValidationChainTrustTestServiceHost.Open();
 
             Uri[] serviceContractAsyncIntOutTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/ServiceContractAsyncIntOut.svc", httpBaseAddress)) };
             ServiceContractAsyncIntOutTestServiceHost serviceContractAsyncIntOutTestServiceHostServiceHost = new ServiceContractAsyncIntOutTestServiceHost(typeof(WcfService.ServiceContractIntOutService), serviceContractAsyncIntOutTestServiceHostbaseAddress);

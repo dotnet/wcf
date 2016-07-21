@@ -132,7 +132,7 @@ public partial class HttpsTests : ConditionalWcfTest
             BasicHttpsBinding binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
             endpointAddress = new EndpointAddress(new Uri(
-                                Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_Address));
+                                Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModeChainTrust_Address));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
@@ -178,6 +178,8 @@ public partial class HttpsTests : ConditionalWcfTest
     [OuterLoop]
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
+    // So we ask for a known chain-trusted certificate that we also know
+    // it not in TrustedPeople.
     public static void Https_SecModeTrans_CertValMode_PeerOrChainTrust_Succeeds_ChainTrusted()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -208,7 +210,7 @@ public partial class HttpsTests : ConditionalWcfTest
             BasicHttpsBinding binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
             endpointAddress = new EndpointAddress(
-                                new Uri(Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_Address));
+                                new Uri(Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModeChainTrust_Address));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
@@ -273,7 +275,7 @@ public partial class HttpsTests : ConditionalWcfTest
             // *** SETUP *** \\
             BasicHttpsBinding binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
-            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModePeerOrChainTrust_Address));
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_SecModeTrans_ClientCredTypeNone_ServerCertValModeChainTrust_Address));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication();
