@@ -137,6 +137,10 @@ namespace SelfHostedWCFService
             HttpsCertificateValidationPeerTrustTestServiceHost httpsCertificateValidationPeerTrustTestServiceHost = new HttpsCertificateValidationPeerTrustTestServiceHost(typeof(WcfService.WcfService), httpsCertificateValidationPeerTrustTestServiceHostbaseAddress);
             httpsCertificateValidationPeerTrustTestServiceHost.Open();
 
+            Uri[] httpsCertificateValidationChainTrustTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpsCertValModeChainTrust.svc", httpsBaseAddress)) };
+            HttpsCertificateValidationChainTrustTestServiceHost httpsCertificateValidationChainTrustTestServiceHost = new HttpsCertificateValidationChainTrustTestServiceHost(typeof(WcfService.WcfService), httpsCertificateValidationChainTrustTestServiceHostbaseAddress);
+            httpsCertificateValidationChainTrustTestServiceHost.Open();
+
             Uri[] serviceContractAsyncIntOutTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/ServiceContractAsyncIntOut.svc", httpBaseAddress)) };
             ServiceContractAsyncIntOutTestServiceHost serviceContractAsyncIntOutTestServiceHostServiceHost = new ServiceContractAsyncIntOutTestServiceHost(typeof(WcfService.ServiceContractIntOutService), serviceContractAsyncIntOutTestServiceHostbaseAddress);
             serviceContractAsyncIntOutTestServiceHostServiceHost.Open();

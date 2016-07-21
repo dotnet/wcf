@@ -145,6 +145,19 @@ namespace WcfTestBridgeCommon
             }
         }
 
+        // Install the certificate into the TrustedPeople store.
+        // It will not install the certificate if it is already present in the store.
+        // It returns the thumbprint of the certificate, regardless whether it was added or found.
+        public static string InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate, bool isValidCert = true)
+        {
+            lock (s_certificateLock)
+            {
+                bool added = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate);
+
+                return certificate.Thumbprint;
+            }
+        }
+
         // When called, generates the a cert for the machine DNS name with SAN localhost, and installs both certs
         // returns thumbprint of the machine certs
         public static X509Certificate2 CreateAndInstallLocalMachineCertificates(CertificateGenerator certificateGenerator)
@@ -186,6 +199,16 @@ namespace WcfTestBridgeCommon
                 InstallCertificateToRootStore(rootCertificate);
                 InstallCertificateToMyStore(hostCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
                 s_localCertificate = hostCert;
+
+                // Create the PeerTrust cert
+                certificateCreationSettings = new CertificateCreationSettings()
+                {
+                    FriendlyName = "WCF Bridge - UserPeerTrustCertificateResource",
+                    Subject = fqdn,
+                    SubjectAlternativeNames = new string[] { fqdn, hostname, "localhost" }
+                };
+                var peerCert = certificateGenerator.CreateMachineCertificate(certificateCreationSettings).Certificate;
+                InstallCertificateToTrustedPeopleStore(peerCert, certificateCreationSettings.ValidityType == CertificateValidityType.Valid);
             }
 
             return s_localCertificate;

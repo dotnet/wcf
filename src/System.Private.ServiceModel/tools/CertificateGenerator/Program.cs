@@ -177,9 +177,7 @@ namespace CertUtil
                 Subject = "WCF Client Certificate",
             };
             X509Certificate2 certificate = certificateGenerate.CreateUserCertificate(certificateCreationSettings).Certificate;
-            CertificateManager.AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.LocalMachine, certificate);
             CertificateManager.AddToStoreIfNeeded(StoreName.My, StoreLocation.LocalMachine, certificate);
-
 
             //Create CRL and save it
             File.WriteAllBytes(s_CrlFileLocation, certificateGenerate.CrlEncoded);
