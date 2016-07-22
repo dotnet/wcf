@@ -4,7 +4,7 @@
 
 
 using System;
-using System.Runtime.InteropServices;
+using Xunit;
 
 namespace Infrastructure.Common
 {
@@ -117,7 +117,7 @@ namespace Infrastructure.Common
         // Returns 'true' if the client is running on a Windows OS
         public static bool IsWindows()
         {
-            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            return OSID.AnyWindows.MatchesCurrent();
         }
 
         // Returns 'true' if the server is running as localhost.
