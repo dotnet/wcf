@@ -87,9 +87,9 @@
   <PropertyGroup>
     <ValidatePackageVersions>true</ValidatePackageVersions>
     <ProhibitFloatingDependencies>true</ProhibitFloatingDependencies>
-    <CoreFxExpectedPrerelease>beta-24223-03</CoreFxExpectedPrerelease>
-    <CoreClrExpectedPrerelease>beta-24223-02</CoreClrExpectedPrerelease>
-    <ExternalExpectedPrerelease>beta-24223-00</ExternalExpectedPrerelease>
+    <CoreFxExpectedPrerelease>beta-24322-03</CoreFxExpectedPrerelease>
+    <CoreClrExpectedPrerelease>beta-24322-03</CoreClrExpectedPrerelease>
+    <ExternalExpectedPrerelease>beta-24322-00</ExternalExpectedPrerelease>
     <WCFExpectedPrerelease>beta-24308-02</WCFExpectedPrerelease>
     <CoreFxVersionsIdentityRegex>^(?i)((System\.(?!ServiceModel|Private\.ServiceModel).*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic)|(Microsoft\.Private\.PackageBaseline))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
     <WCFVersionsIdentityRegex>^(?i)((System\.ServiceModel.*)|(System\.Private\.ServiceModel))(?&lt;!TestData)$</WCFVersionsIdentityRegex>
@@ -130,8 +130,16 @@
       <IdentityRegex>^(?i)Microsoft\.DotNet\.BuildTools\.TestSuite$</IdentityRegex>
       <ExpectedVersion>1.0.0-prerelease-00520-02</ExpectedVersion>
     </ValidationPattern>
+    <ValidationPattern Include="uwpRunnerVersion">
+      <IdentityRegex>^(?i)microsoft\.xunit\.runner\.uwp$</IdentityRegex>
+      <ExpectedVersion>$(AppXRunnerVersion)</ExpectedVersion>
+    </ValidationPattern>
   </ItemGroup>
 
+  <!-- Runner versions -->
+  <PropertyGroup>
+    <AppXRunnerVersion>1.0.3-prerelease-00614-01</AppXRunnerVersion>
+  </PropertyGroup>
   <!-- Import packaging props -->
   <Import Project="$(MSBuildThisFileDirectory)Packaging.props"/>
 
@@ -172,6 +180,7 @@
     <DnuRestoreCommand>"$(DnuToolPath)"</DnuRestoreCommand>
     <DnuRestoreCommand>$(DnuRestoreCommand) restore</DnuRestoreCommand>
     <DnuRestoreCommand Condition="'$(ParallelRestore)'=='true'">$(DnuRestoreCommand) --parallel</DnuRestoreCommand>
+    <DnuRestoreCommand Condition="'$(UseNuGetHttpCache)'!='true'">$(DnuRestoreCommand) --no-cache</DnuRestoreCommand>
     <DnuRestoreCommand>$(DnuRestoreCommand) --packages "$(PackagesDir.TrimEnd('/\'.ToCharArray()))" $(DnuRestoreSource)</DnuRestoreCommand>
     <DnuRestoreCommand Condition="'$(LockDependencies)' == 'true'">$(DnuRestoreCommand) --lock</DnuRestoreCommand>
     <DnuRestoreCommand Condition="'$(NuGetConfigPath)'!=''">$(DnuRestoreCommand) --configfile $(NuGetConfigPath)</DnuRestoreCommand>
