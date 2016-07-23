@@ -244,6 +244,7 @@ public partial class HttpsTests : ConditionalWcfTest
                      nameof(SSL_Available))]
 #endif
     [OuterLoop]
+    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required
     public static void ServerCertificateValidation_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -312,6 +313,7 @@ public partial class HttpsTests : ConditionalWcfTest
                      nameof(SSL_Available))]
 #endif
     [OuterLoop]
+    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required
     public static void ClientCertificate_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED

@@ -176,6 +176,7 @@ public partial class HttpsTests : ConditionalWcfTest
                      nameof(SSL_Available))]
 #endif
     [OuterLoop]
+    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required.
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
     // So we ask for a known chain-trusted certificate that we also know
@@ -244,6 +245,7 @@ public partial class HttpsTests : ConditionalWcfTest
                      nameof(SSL_Available))]
 #endif
     [OuterLoop]
+    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required.
     // Asking for ChainTrust should succeed if the certificate is
     // chain-trusted.
     public static void Https_SecModeTrans_CertValMode_ChainTrust_Succeeds_ChainTrusted()
