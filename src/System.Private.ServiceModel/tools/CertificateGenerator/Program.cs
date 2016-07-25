@@ -121,7 +121,7 @@ namespace CertUtil
             CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
 
-            //Create and Install TcpCertificateWithServerAltNameResource
+            //Create and Install TcpCertificateWithServerAltName
             certificateCreationSettings = new CertificateCreationSettings()
             {
                 FriendlyName = "WCF Bridge - TcpCertificateWithServerAltNameResource",
@@ -130,7 +130,7 @@ namespace CertUtil
             };
             CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
-            //TcpCertificateWithSubjectCanonicalNameDomainNameResource
+            //TcpCertificateWithSubjectCanonicalNameDomainName
             certificateCreationSettings = new CertificateCreationSettings()
             {
                 FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameDomainNameResource",
@@ -140,7 +140,7 @@ namespace CertUtil
             };
             CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
-            //WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource
+            //WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdn
             certificateCreationSettings = new CertificateCreationSettings()
             {
                 FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameFqdnResource",
@@ -150,7 +150,7 @@ namespace CertUtil
             };
             CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
-            //TcpCertificateWithSubjectCanonicalNameLocalhostResource
+            //TcpCertificateWithSubjectCanonicalNameLocalhost
             certificateCreationSettings = new CertificateCreationSettings()
             {
                 FriendlyName = "WCF Bridge - TcpCertificateWithSubjectCanonicalNameLocalhostResource",
@@ -160,7 +160,7 @@ namespace CertUtil
             };
             CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
-            //TcpRevokedServerCertResource
+            //TcpRevokedServerCert
             certificateCreationSettings = new CertificateCreationSettings()
             {
                 FriendlyName = "WCF Bridge - TcpRevokedServerCertResource",

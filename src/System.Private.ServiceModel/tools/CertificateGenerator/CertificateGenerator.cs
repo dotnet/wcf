@@ -231,8 +231,6 @@ namespace WcfTestBridgeCommon
             return CreateCertificate(false, false, _authorityCertificate.InternalCertificate, creationSettings);
         }
 
-
-
         // Only the ctor should be calling with isAuthority = true
         // if isAuthority, value for isMachineCert doesn't matter
         private X509CertificateContainer CreateCertificate(bool isAuthority, bool isMachineCert, X509Certificate signingCertificate, CertificateCreationSettings certificateCreationSettings)
@@ -285,7 +283,8 @@ namespace WcfTestBridgeCommon
             s_certGenerator.Reset();
             s_certGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
-            X509Name authorityX509Name = CreateX509Name(_authorityCanonicalName);
+            // Tag on the generation time to prevent caching of the cert CRL in Linux
+            X509Name authorityX509Name = CreateX509Name(string.Format("{0} {1}", _authorityCanonicalName, DateTime.Now.ToString("s")));
             var serialNum = new BigInteger(64 /*sizeInBits*/, _random).Abs();
 
             var keyPair = isAuthority ? _authorityKeyPair : _keyPairGenerator.GenerateKeyPair();
@@ -365,22 +364,21 @@ namespace WcfTestBridgeCommon
                 }
             }
 
-            // Our CRL Distribution Point has the serial number in the query string to fool Windows into doing a fresh query 
-            // rather than using a cached copy of the CRL in the case where the CRL has been previously accessed before
-            var crlDistributionPoints = new DistributionPoint[2] {
-                new DistributionPoint(new DistributionPointName(
-                    new GeneralNames(new GeneralName(
-                        GeneralName.UniformResourceIdentifier, string.Format("{0}?serialNum={1}", _crlUri, serialNum.ToString(radix: 16))))),
-                        null,
-                        null),
-                    new DistributionPoint(new DistributionPointName(
-                        new GeneralNames(new GeneralName(
-                        GeneralName.UniformResourceIdentifier, string.Format("{0}?serialNum={1}", _crlUri, serialNum.ToString(radix: 16))))),
-                        null,
-                        new GeneralNames(new GeneralName(authorityX509Name)))
+            if (isAuthority || certificateCreationSettings.IncludeCrlDistributionPoint)
+            {
+                var crlDistributionPoints = new DistributionPoint[1] 
+                {
+                    new DistributionPoint(
+                        new DistributionPointName(
+                            new GeneralNames(
+                                new GeneralName(
+                                    GeneralName.UniformResourceIdentifier, string.Format("{0}", _crlUri, serialNum.ToString(radix: 16))))),
+                                    null,
+                                    null)
                 };
-            var revocationListExtension = new CrlDistPoint(crlDistributionPoints);
-            s_certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
+                var revocationListExtension = new CrlDistPoint(crlDistributionPoints);
+                s_certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
+            }
 
             X509Certificate cert = s_certGenerator.Generate(_authorityKeyPair.Private, _random);
 

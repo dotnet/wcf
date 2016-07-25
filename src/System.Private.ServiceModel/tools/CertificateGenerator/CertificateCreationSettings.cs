@@ -24,6 +24,7 @@ namespace WcfTestBridgeCommon
         public DateTime ValidityNotBefore { get; set; }
         public DateTime ValidityNotAfter { get; set; }
         public CertificateValidityType ValidityType { get; set; }
+        public bool IncludeCrlDistributionPoint { get; set; } = true;
     }
 
     [Serializable]
