@@ -18,6 +18,7 @@
     "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00520-02",
     "System.Collections.NonGeneric": "4.0.1",
     "System.Collections.Specialized": "4.0.1",
+    "System.Net.WebSockets.Client": "4.0.1-beta-24322-03",
     "System.Xml.XmlDocument": "4.0.1",
     "xunit.console.netcore": "1.0.3-prerelease-00607-01"
   },

@@ -16,10 +16,6 @@ public class WebSocketTests : ConditionalWcfTest
 {
     [Fact]
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
-#else
-    [ActiveIssue(420, PlatformID.AnyUnix)]
-#endif
     public static void WebSocket_Http_RequestReply_BinaryStreamed()
     {
         NetHttpBinding binding = null;
@@ -83,8 +79,6 @@ public class WebSocketTests : ConditionalWcfTest
     [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
     [ActiveIssue(526)]
-#else
-    [ActiveIssue(420, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Http_Duplex_BinaryStreamed()
     {
@@ -181,7 +175,6 @@ public class WebSocketTests : ConditionalWcfTest
     [ActiveIssue(526)]
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(420, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
@@ -291,7 +284,6 @@ public class WebSocketTests : ConditionalWcfTest
     [ActiveIssue(526)]
 #else
     [ActiveIssue(470)]
-    [ActiveIssue(420, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Https_Duplex_TextStreamed()
     {
@@ -389,8 +381,6 @@ public class WebSocketTests : ConditionalWcfTest
     [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
     [ActiveIssue(526)]
-#else
-    [ActiveIssue(420, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Http_Duplex_TextStreamed()
     {
@@ -483,10 +473,6 @@ public class WebSocketTests : ConditionalWcfTest
 
     [Fact]
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
-#else
-    [ActiveIssue(420, PlatformID.AnyUnix)]
-#endif
     public static void WebSocket_Http_RequestReply_TextStreamed()
     {
         NetHttpBinding binding = null;
@@ -548,10 +534,6 @@ public class WebSocketTests : ConditionalWcfTest
 
     [Fact]
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
-#else
-    [ActiveIssue(420, PlatformID.AnyUnix)]
-#endif
     public static void WebSocket_Http_WSTransportUsageDefault_DuplexCallback_GuidRoundtrip()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;
@@ -591,10 +573,6 @@ public class WebSocketTests : ConditionalWcfTest
 
     [Fact]
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
-#else
-    [ActiveIssue(420, PlatformID.AnyUnix)]
-#endif
     public static void WebSocket_Http_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;
@@ -634,10 +612,6 @@ public class WebSocketTests : ConditionalWcfTest
 
     [Fact]
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
-#else
-    [ActiveIssue(420, PlatformID.AnyUnix)]
-#endif
     public static void WebSocket_WSScheme_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;
@@ -685,7 +659,6 @@ public class WebSocketTests : ConditionalWcfTest
     [ActiveIssue(526)]
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
     {
@@ -751,7 +724,6 @@ public class WebSocketTests : ConditionalWcfTest
     [ActiveIssue(526)]
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
     {
@@ -819,7 +791,6 @@ public class WebSocketTests : ConditionalWcfTest
     [ActiveIssue(526)]
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Https_Duplex_BinaryBuffered()
     {
@@ -900,7 +871,6 @@ public class WebSocketTests : ConditionalWcfTest
     [ActiveIssue(526)]
 #else
     [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
     {
@@ -976,25 +946,12 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#if FULLXUNIT_NOTSUPPORTED
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Http_RequestReply_TextBuffered()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         NetHttpBinding binding = null;
         ChannelFactory<IWSRequestReplyService> channelFactory = null;
         IWSRequestReplyService client = null;
@@ -1040,25 +997,12 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#if FULLXUNIT_NOTSUPPORTED
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Http_RequestReply_BinaryBuffered_KeepAlive()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         NetHttpBinding binding = null;
         ChannelFactory<IWSRequestReplyService> channelFactory = null;
         IWSRequestReplyService client = null;
@@ -1105,25 +1049,12 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#if FULLXUNIT_NOTSUPPORTED
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Http_Duplex_TextBuffered_KeepAlive()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         NetHttpBinding binding = null;
         ClientReceiver clientReceiver = null;
         InstanceContext context = null;
@@ -1183,25 +1114,12 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#if FULLXUNIT_NOTSUPPORTED
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Http_Duplex_BinaryBuffered()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         NetHttpBinding binding = null;
         ClientReceiver clientReceiver = null;
         InstanceContext context = null;
@@ -1263,25 +1181,12 @@ public class WebSocketTests : ConditionalWcfTest
     // When not using a callback you can still force WCF to use WebSockets.
     // This test verifies that it actually uses WebSockets when not using a callback.
     [OuterLoop]
-#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#if FULLXUNIT_NOTSUPPORTED
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(625, PlatformID.AnyUnix)]
 #endif
     public static void WebSocket_Http_VerifyWebSocketsUsed()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         NetHttpBinding binding = null;
         ChannelFactory<IVerifyWebSockets> channelFactory = null;
         IVerifyWebSockets client = null;
