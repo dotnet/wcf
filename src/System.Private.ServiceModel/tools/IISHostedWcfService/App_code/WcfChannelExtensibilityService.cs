@@ -14,10 +14,7 @@ namespace WcfService
     {
         public void ReportWindSpeed(int speed)
         {
-            if (speed >= 64)
-            {
-                Console.WriteLine("Dangerous wind detected! Reported speed (" + speed + ") is greater than 64 kph.");
-            }
+            // All the real work for this test is done in DroppingServerInterceptor.OnReceive
         }
     }
 
@@ -31,19 +28,13 @@ namespace WcfService
 
     public class DroppingServerInterceptor : ChannelMessageInterceptor
     {
-        private int _messagesSinceLastReport = 0;
-        private readonly int _reportPeriod = 5;
-
         public DroppingServerInterceptor() { }
 
         public override void OnReceive(ref Message msg)
         {
+            // Verify the additional Header inserted by the ChannelMessageInterceptor exists
             if (msg.Headers.FindHeader("ByPass", "urn:InterceptorNamespace") > 0)
             {
-                if (++_messagesSinceLastReport == _reportPeriod)
-                {
-                    Console.WriteLine(_reportPeriod + " wind speed reports have been received.");
-                }
                 return;
             }
             // Drop incoming Message if the Message does not have the special header
