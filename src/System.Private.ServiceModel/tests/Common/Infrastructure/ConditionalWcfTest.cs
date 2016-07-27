@@ -290,7 +290,12 @@ namespace Infrastructure.Common
         // Returns 'true' if SSL is available to use.
         public static bool SSL_Available()
         {
-           return true;
+            // The current heuristic is that Windows test clients have been
+            // properly configured, otherwise we don't know.  CI and lab runs
+            // will explicitly set this if they have been able to configure
+            // non-Windows test client machines appropriately.
+            return GetConditionValue(nameof(SSL_Available),
+                                     ConditionalTestDetectors.IsWindows);
         }
 
         // Returns the Domain if available.
