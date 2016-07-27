@@ -37,7 +37,7 @@ namespace SelfHostedWCFService
             string websocketBaseAddress = string.Format(@"http://localhost:{0}", s_websocketPort);
             string websocketsBaseAddress = string.Format(@"https://localhost:{0}", s_websocketsPort);
 
-            Uri[] basicAuthTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/BasicAuthentication/BasicAuth.svc", httpsBaseAddress)) };
+            Uri[] basicAuthTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/BasicAuth.svc", httpsBaseAddress)) };
             BasicAuthTestServiceHost basicAuthTestServiceHostServiceHost = new BasicAuthTestServiceHost(typeof(WcfService.WcfUserNameService), basicAuthTestServiceHostbaseAddress);
             basicAuthTestServiceHostServiceHost.Open();
 
