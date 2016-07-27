@@ -178,9 +178,10 @@ wcfUtilities = new WcfUtilities()
 
 // **************************
 // Define outerloop testing for OSes that can build and run.  Run locally on each machine.
+// Subset runs on every PR, the ones that don't run per PR can be requested via a magic phrase
 // **************************
 
-def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
+def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu16.04', 'Debian8.4', 'CentOS7.1', 'OpenSUSE13.2', 'Fedora23', 'RHEL7.2', 'OSX']
 [true, false].each { isPR ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleOuterloopPlatforms.each { os ->
@@ -205,11 +206,11 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS
             }
 
             // Set the affinity.  OS name matches the machine affinity.
-            if (os == 'Windows_NT') {
+            if (os == 'Windows_NT' || os == 'OSX') {
                 // Set affinity for elevated machines on Windows
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
             } 
-            else if (os == 'Ubuntu14.04' || os == 'CentOS7.1') {
+            else if (osGroupMap[os] == 'Linux') {
                 Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
             } 
             else {
@@ -231,7 +232,12 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
                 // Set PR trigger.
-                Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
+                if ( os == 'Windows_NT' || os == 'Ubuntu14.04' || os == 'CentOS7.1' || os == 'OSX' ) {
+                    Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
+                } 
+                else {                  
+                    Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", true /*triggerOnPhraseOnly*/)
+                } 
             } 
             else {
                 // Set a periodic trigger
@@ -243,9 +249,10 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS
 
 // **************************
 // Define innerloop testing for OSes that can build and run.  Run locally on each machine.
+// Subset runs on every PR, the ones that don't run per PR can be requested via a magic phrase
 // **************************
 
-def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS7.1', 'OSX']
+def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu16.04', 'Debian8.4', 'CentOS7.1', 'OpenSUSE13.2', 'Fedora23', 'RHEL7.2', 'OSX']
 [true, false].each { isPR ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleInnerloopPlatforms.each { os -> 
@@ -270,9 +277,9 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS
                 }
             }
             
-            // Set the affinity.  All of these run on Windows currently.
+            // Set the affinity  
             Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
-            // Set up standard options.
+            // Set up standard options
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
             Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
@@ -286,8 +293,13 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'CentOS
             
             // Set up triggers
             if (isPR) {
-                // Set PR trigger.
-                Utilities.addGithubPRTriggerForBranch(newJob, branch, "Innerloop ${os} ${configurationGroup}")
+                // Set PR trigger
+                if ( os == 'Windows_NT' || os == 'Ubuntu14.04' || os == 'CentOS7.1' || os == 'OSX' ) {
+                    Utilities.addGithubPRTriggerForBranch(newJob, branch, "InnerLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+innerloop|innerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
+                } 
+                else {
+                    Utilities.addGithubPRTriggerForBranch(newJob, branch, "InnerLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+innerloop|innerloop\\W+${os}).*", true /*triggerOnPhraseOnly*/)
+                }
             } 
             else {
                 // Set a push trigger
