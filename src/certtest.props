@@ -1,0 +1,5 @@
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+     <TestCommandLines  Condition="'$(TargetOS)'!='Windows_NT'" Include="sudo -E -n ./InstallRootCertificate.sh --service-host $(ServiceUri) --cert-file /tmp/wcfrootca.crt"/>
+  </ItemGroup>
+</Project>

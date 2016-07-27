@@ -14,9 +14,6 @@
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>
   </PropertyGroup>
-  <ItemGroup>
-      <TestCommandLines  Condition="'$(TargetOS)'!='Windows_NT'" Include="sudo ./InstallRootCertificate.sh --service-host $(ServiceUri) --cert-file /tmp/wcfra.crt"/>
-   </ItemGroup>
   <Target Name="CopyInstallRootCertScript" Condition="$(MSBuildProjectName.EndsWith('.Tests'))" BeforeTargets="Build">
       <Copy SourceFiles="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tools\scripts\InstallRootCertificate.sh'))" DestinationFolder="$(TestPath)$(TestNugetTargetMonikerFolder)" />
   </Target>

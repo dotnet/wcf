@@ -98,6 +98,8 @@ public partial class HttpsTests : ConditionalWcfTest
     // if the certificate is not in the TrustedPeople store.  For this test
     // we use a valid chain-trusted certificate that we know is not in the
     // TrustedPeople store.
+    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
+    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required.
     public static void Https_SecModeTrans_CertValMode_PeerTrust_Fails_Not_In_TrustedPeople()
     {
 #if FULLXUNIT_NOTSUPPORTED
