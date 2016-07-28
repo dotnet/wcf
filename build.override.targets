@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <TraversalBuildDependsOn>
-      WcfCopyProjectJson;
+      <!-- WcfCopyProjectJson; -->
       WcfSetup;
       $(TraversalBuildDependsOn);
       WcfCleanup;
