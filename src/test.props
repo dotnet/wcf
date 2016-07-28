@@ -14,4 +14,7 @@
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>
   </PropertyGroup>
+  <Target Name="CopyInstallRootCertScript" Condition="$(MSBuildProjectName.EndsWith('.Tests'))" BeforeTargets="Build">
+      <Copy SourceFiles="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tools\scripts\InstallRootCertificate.sh'))" DestinationFolder="$(TestPath)$(TestNugetTargetMonikerFolder)" />
+  </Target>
 </Project>

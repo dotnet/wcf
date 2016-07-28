@@ -24,6 +24,7 @@ public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
                      nameof(SSL_Available))]
 #endif
     [OuterLoop]
+    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
     public static void IRequestChannel_Https_NetHttpsBinding()
     {
 #if FULLXUNIT_NOTSUPPORTED
