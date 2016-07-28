@@ -269,4 +269,4 @@ config.ps1
 **/IISApplications
 
 # WCF copied test project.json files
-src/System.Private.ServiceModel/tests/Scenarios/**/project.json
+# src/System.Private.ServiceModel/tests/Scenarios/**/project.json
