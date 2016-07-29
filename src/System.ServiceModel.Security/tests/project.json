@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "System.ServiceModel.Security": "4.0.2-beta-24308-02",
+    "System.ServiceModel.Security": "4.0.2-beta-24329-01",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"
@@ -9,13 +9,13 @@
     "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00520-02"
   },
   "frameworks": {
-    "netstandard1.3": { }
+    "netstandard1.3": {}
   },
   "supports": {
-    "coreFx.Test.netcoreapp1.0": { },
-    "coreFx.Test.net46": { },
-    "coreFx.Test.net461": { },
-    "coreFx.Test.net462": { },
-    "coreFx.Test.net463": { }
+    "coreFx.Test.netcoreapp1.0": {},
+    "coreFx.Test.net46": {},
+    "coreFx.Test.net461": {},
+    "coreFx.Test.net462": {},
+    "coreFx.Test.net463": {}
   }
 }
