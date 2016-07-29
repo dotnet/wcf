@@ -16,6 +16,9 @@
 //         fetch = +refs/pull/*/head:refs/remotes/origin/pr/*      <-- allows us to run git checkout pr/{id} 
 //
 // We also support checking out branches, but we limit the the branches we can check out
+// NOTE: Not locking here, we assume we only have one request hitting each id= at the same time. We could introduce some
+//       kind of locking here across the whole request, but decided not to as this isn't a heavily hit service. If we find 
+//       that there's a need, then we will revisit 
 
 using System;
 using System.Collections.Generic;
@@ -68,6 +71,7 @@ public class PullRequestHandler : IHttpHandler
         string prString = context.Request.QueryString["pr"];
 
         uint repoId;
+
         if (string.IsNullOrWhiteSpace(repoIdString) || !uint.TryParse(repoIdString, out repoId))
         {
             context.Response.StatusCode = 400;
@@ -230,7 +234,8 @@ public class PullRequestHandler : IHttpHandler
     private bool GetBranches(string gitRepoPath, bool remoteBranches, out string[] branches, StringBuilder executionResult)
     {
         bool success = false;
-        branches = null;
+        string[] tempBranches;
+        branches = new string[0];
 
         StringBuilder branchesString = new StringBuilder();
 
@@ -243,11 +248,25 @@ public class PullRequestHandler : IHttpHandler
             success = RunGitCommands(new string[] { "branch --list" }, gitRepoPath, branchesString);
         }
 
-        executionResult.Append(branchesString);
+        executionResult.Append(branchesString.ToString());
 
         if (success)
         {
-            branches = branchesString.ToString().Split(new char[] { '\n', '\r', ' ', '*' }, StringSplitOptions.RemoveEmptyEntries);
+            tempBranches = branchesString.ToString().Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> branchesList = new List<string>();
+
+            // Parse for anything that implies a detached HEAD - those are not branches to clean up
+            for (int i = 0; i < tempBranches.Length; i++)
+            {
+                if (tempBranches[i].Contains("HEAD detached"))
+                {
+                    continue;
+                }
+
+                branchesList.Add(tempBranches[i].Trim('*', ' '));
+            }
+
+            branches = branchesList.ToArray();
         }
 
         return success;
@@ -259,8 +278,8 @@ public class PullRequestHandler : IHttpHandler
     private bool CleanupBranches(string gitRepoPath, StringBuilder executionResult)
     {
         bool success = false;
-    
-        string[] gitCommands = new string[] 
+
+        string[] gitCommands = new string[]
         {
             "checkout -f master",
             "clean -fdx",
@@ -283,8 +302,12 @@ public class PullRequestHandler : IHttpHandler
             // we won't get branchesList == null because of the success check
             for (int i = 0; i < branchesList.Length; i++)
             {
-                // Don't try to delete "master" branch, since we're checked out to it
-                if (!branchesList[i].EndsWith("master"))
+                // Don't try to delete "master" branch or detached since we're checked out to it
+                if (branchesList[i].Equals("master"))
+                {
+                    continue;
+                }
+                else
                 {
                     commands.Add(string.Format("branch -D {0}", branchesList[i]));
                 }
@@ -314,11 +337,12 @@ public class PullRequestHandler : IHttpHandler
         };
 
         bool success = true;
-
+        
         foreach (string gitCommand in gitCommands)
         {
             success = false;
             psi.Arguments = gitCommand;
+
 
             Process p = Process.Start(psi);
             if (!p.WaitForExit((int)_gitExecutionTimeout.TotalMilliseconds))
@@ -331,14 +355,13 @@ public class PullRequestHandler : IHttpHandler
             }
 
             success = p.ExitCode == 0;
-
             executionResult.Append(p.StandardOutput.ReadToEnd());
             executionResult.Append(p.StandardError.ReadToEnd());
 
             if (!success)
             {
+                executionResult.Append(string.Format("{0}Command: '{1}' ", Environment.NewLine, gitCommand));
                 executionResult.Append(string.Format("Git executable '{0}' exited with code '{1}', expected '{2}' <br/>", _gitExecutablePath, p.ExitCode, "0"));
-                executionResult.Append(string.Format("Git command was: '{0}' ", gitCommand));
 
                 return success;
             }
