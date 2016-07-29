@@ -1,5 +1,10 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Content Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tools\scripts\InstallRootCertificate.sh'))">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
      <TestCommandLines  Condition="'$(TargetOS)'!='Windows_NT'" Include="sudo -E -n ./InstallRootCertificate.sh --service-host $(ServiceUri) --cert-file /tmp/wcfrootca.crt"/>
   </ItemGroup>
 </Project>
