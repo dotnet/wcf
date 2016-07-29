@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +12,7 @@ using System.Threading;
 
 namespace WcfService
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class WSRequestReplyService : IWSRequestReplyService
     {
         private static string s_contentToReplace = "ContentToReplace";
@@ -21,20 +20,19 @@ namespace WcfService
         private static string s_replacedContent = "ReplacedContent";
         private static string s_remoteEndpointMessagePropertyFailure = "RemoteEndpointMessageProperty did not contain the address of this machine.";
 
-        private static List<string> s_log = new List<string>();
-        private static int s_seed = DateTime.Now.Millisecond;
-        private static Random s_rand = new Random(s_seed);
+        private List<string> _log = new List<string>();
+        private Random _rand = new Random(DateTime.Now.Millisecond);
         private FlowControlledStream _localStream;
 
         public void UploadData(string data)
         {
             if (data.Contains(s_contentToReplace) || data.Contains(s_replacedContent) || data.Contains(s_responseReplaceThisContent))
             {
-                s_log.Add(string.Format("UploadData received {0}", data));
+                _log.Add(string.Format("UploadData received {0}", data));
             }
             else
             {
-                s_log.Add(string.Format("UploadData received {0} length string.", data.Length));
+                _log.Add(string.Format("UploadData received {0} length string.", data.Length));
             }
 
             // Access the RemoteEndpointMessageProperty
@@ -61,14 +59,14 @@ namespace WcfService
 
             if (!success)
             {
-                s_log.Add(String.Format(s_remoteEndpointMessagePropertyFailure + " Expected to find: {0}", remp.Address));
+                _log.Add(String.Format(s_remoteEndpointMessagePropertyFailure + " Expected to find: {0}", remp.Address));
             }
         }
 
         public string DownloadData()
         {
-            string data = CreateInterestingString(s_rand.Next(512, 4096));
-            s_log.Add(string.Format("DownloadData returning {0} length string.", data.Length));
+            string data = CreateInterestingString(_rand.Next(512, 4096));
+            _log.Add(string.Format("DownloadData returning {0} length string.", data.Length));
             return data;
         }
 
@@ -86,12 +84,12 @@ namespace WcfService
 
             stream.Close();
 
-            s_log.Add(string.Format("UploadStream read {0} bytes from the client's stream.", bytesRead));
+            _log.Add(string.Format("UploadStream read {0} bytes from the client's stream.", bytesRead));
         }
 
         public Stream DownloadStream()
         {
-            s_log.Add("DownloadStream");
+            _log.Add("DownloadStream");
             _localStream = new FlowControlledStream();
             _localStream.ReadThrottle = TimeSpan.FromMilliseconds(500);
             _localStream.StreamDuration = TimeSpan.FromSeconds(1);
@@ -101,7 +99,7 @@ namespace WcfService
 
         public Stream DownloadCustomizedStream(TimeSpan readThrottle, TimeSpan streamDuration)
         {
-            s_log.Add("DownloadStream");
+            _log.Add("DownloadStream");
             _localStream = new FlowControlledStream();
             _localStream.ReadThrottle = readThrottle;
             _localStream.StreamDuration = streamDuration;
@@ -111,23 +109,23 @@ namespace WcfService
 
         public void ThrowingOperation(Exception exceptionToThrow)
         {
-            s_log.Add("ThrowingOperation");
+            _log.Add("ThrowingOperation");
             throw exceptionToThrow;
         }
 
         public string DelayOperation(TimeSpan delay)
         {
-            s_log.Add("DelayOperation");
+            _log.Add("DelayOperation");
             Thread.CurrentThread.Join(delay);
             return "Done with delay.";
         }
 
         public List<string> GetLog()
         {
-            return s_log;
+            return _log;
         }
 
-        public static string CreateInterestingString(int length)
+        public string CreateInterestingString(int length)
         {
             char[] chars = new char[length];
             int index = 0;
@@ -141,21 +139,17 @@ namespace WcfService
             }
 
             // Fill remaining entries with surrogate pairs
-            int seed = DateTime.Now.Millisecond;
-            // Log.Info("Seed for CreateInterestingCharArray = {0}", seed);
-            Random rand = new Random(seed);
             char highSurrogate;
             char lowSurrogate;
 
             while (index < length)
             {
-                highSurrogate = Convert.ToChar(rand.Next(0xD800, 0xDC00));
-                lowSurrogate = Convert.ToChar(rand.Next(0xDC00, 0xE000));
+                highSurrogate = Convert.ToChar(_rand.Next(0xD800, 0xDC00));
+                lowSurrogate = Convert.ToChar(_rand.Next(0xDC00, 0xE000));
 
                 chars[index] = highSurrogate;
-                ++index;
-                chars[index] = lowSurrogate;
-                ++index;
+                chars[index + 1] = lowSurrogate;
+                index += 2;
             }
 
             return new string(chars, 0, chars.Length);
