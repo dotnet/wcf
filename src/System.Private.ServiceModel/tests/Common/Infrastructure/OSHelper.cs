@@ -12,10 +12,6 @@ namespace Infrastructure.Common
     // RuntimeInformation.OSDescription
     public static class OSHelper
     {
-        // These literals must match those returned from RuntimeInformation.OSDescription.
-        private static string WindowsOsName = "Microsoft Windows"; // netcore50 || win8
-        private static string WindowsPhoneOsName = "Microsoft Windows Phone";    // wpa81
-
         private static bool _detectedOSID = false;
         private static OSID _currentOSID = 0;
         private static string _currentOSDescription;
@@ -55,6 +51,18 @@ namespace Infrastructure.Common
             // Currently, win7 is used for the windows runtime, regardless
             // which version of Windows is actually used to run the test.
             // So we can't determine the OS from the runtime in this list.
+        };
+
+        // All Windows version currently use the runtime "win7" so cannot be distinguished by that.
+        // However the windows major and minor versions are known and can be used.
+        private static List<Tuple<string, OSID>> _descriptionToOSID = new List<Tuple<string, OSID>>
+        {
+            new Tuple<string, OSID>("Microsoft Windows 6.1.", OSID.Windows_7),
+            new Tuple<string, OSID>("Microsoft Windows 6.2.", OSID.Windows_8 | OSID.Windows_2008_R2),
+            new Tuple<string, OSID>("Microsoft Windows 6.3.", OSID.Windows_8_1),
+            new Tuple<string, OSID>("Microsoft Windows 10.", OSID.Windows_10),
+            new Tuple<string, OSID>("Microsoft Windows Phone", OSID.AnyWindows),
+            new Tuple<string, OSID>("Microsoft Windows", OSID.AnyWindows),
         };
 
         private static string CurrentOSDescription
@@ -106,28 +114,17 @@ namespace Infrastructure.Common
 
         private static OSID DetectCurrentOS()
         {
-            // Attempt to map from the test runtime
+            // First attempt to map from the test runtime.
+            // All the non-Windows OSes are mapped this way.
             OSID osid = OSIDfromTestRuntime();
-            if (osid != OSID.None)
+            if (osid == OSID.None)
             {
-                return osid;
+                // The Windows OSes are mapped based on description
+                // because they all share the same runtime
+                osid = OSIDfromOSDescription();
             }
 
-            string osName = CurrentOSDescription;
-            if (osName.IndexOf(WindowsOsName, StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                // We cannot distinguish further from RuntimeInformation.OSDescription alone
-                return OSID.AnyWindows;
-            }
-
-            if (osName.IndexOf(WindowsPhoneOsName, StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                return OSID.WindowsPhone;
-            }
-
-            // We use "None" when we cannot determine the OSID and rely on
-            // tests to verify detection succeeded.
-            return OSID.None;
+            return osid;
         }
 
         // Maps from the $(TestNugetRuntimeId) property to corresponding OSID.
@@ -148,6 +145,29 @@ namespace Infrastructure.Common
                     return pair.Item2;
                 }
             }
+            return OSID.None;
+        }
+
+        // Detects the OSID based on the current OS description.
+        // Currently this is used only for Windows because the non-Windows
+        // descriptions vary widely in format.
+        private static OSID OSIDfromOSDescription()
+        {
+            string osDescription = CurrentOSDescription;
+            if (string.IsNullOrEmpty(osDescription))
+            {
+                return OSID.None;
+            }
+
+            foreach (var pair in _descriptionToOSID)
+            {
+                string description = pair.Item1;
+                if (osDescription.IndexOf(description, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return pair.Item2;
+                }
+            }
+
             return OSID.None;
         }
     }
