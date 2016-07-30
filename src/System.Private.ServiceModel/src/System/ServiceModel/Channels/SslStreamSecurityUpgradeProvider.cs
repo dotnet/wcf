@@ -486,6 +486,8 @@ namespace System.ServiceModel.Channels
                 // happen after the connection has successfully negotiated. Some certificate errors need to be set to be ignored
                 // to allow the connection to be established so we can retrieve the server certificate and choose whether to
                 // accept the server certificate or not.
+                rtStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
+                rtStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.Expired);
                 rtStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
                 rtStreamSocket.Control.IgnorableServerCertificateErrors.Add(ChainValidationResult.IncompleteChain);
                 rtStreamSocket.Control.IgnorableServerCertificateErrors.Add(
