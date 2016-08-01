@@ -258,12 +258,10 @@ public class PullRequestHandler : IHttpHandler
             // Parse for anything that implies a detached HEAD - those are not branches to clean up
             for (int i = 0; i < tempBranches.Length; i++)
             {
-                if (tempBranches[i].Contains("HEAD detached"))
+                if (!tempBranches[i].Contains("HEAD detached"))
                 {
-                    continue;
+                    branchesList.Add(tempBranches[i].Trim('*', ' '));
                 }
-
-                branchesList.Add(tempBranches[i].Trim('*', ' '));
             }
 
             branches = branchesList.ToArray();
@@ -303,11 +301,7 @@ public class PullRequestHandler : IHttpHandler
             for (int i = 0; i < branchesList.Length; i++)
             {
                 // Don't try to delete "master" branch or detached since we're checked out to it
-                if (branchesList[i].Equals("master"))
-                {
-                    continue;
-                }
-                else
+                if (!branchesList[i].Equals("master"))
                 {
                     commands.Add(string.Format("branch -D {0}", branchesList[i]));
                 }
