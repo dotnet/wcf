@@ -5,6 +5,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+     <TestCommandLines  Condition="'$(TargetOS)'!='Windows_NT'" Include="sudo chmod a+x InstallRootCertificate.sh"/>
      <TestCommandLines  Condition="'$(TargetOS)'!='Windows_NT'" Include="sudo -E -n ./InstallRootCertificate.sh --service-host $(ServiceUri) --cert-file /tmp/wcfrootca.crt"/>
   </ItemGroup>
 </Project>
