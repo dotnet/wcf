@@ -9,11 +9,15 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.Common;
 using Xunit;
 
 public class ChannelFactoryTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Of_IRequestChannel_Using_CustomBinding()
     {
         ChannelFactory<IRequestChannel> factory = null;
@@ -72,7 +76,10 @@ public class ChannelFactoryTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Of_IRequestChannel_Using_BasicHttpBinding_Creates_Unique_Instances()
     {
         ChannelFactory<IRequestChannel> factory = null;
@@ -129,7 +136,10 @@ public class ChannelFactoryTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void ChannelFactory_Verify_CommunicationStates()
     {
         ChannelFactory<IRequestChannel> factory = null;
@@ -175,7 +185,10 @@ public class ChannelFactoryTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     // Create the channel factory using BasicHttpBinding and open the channel using a user generated interface
     public static void CreateChannel_Of_Typed_Proxy_Using_BasicHttpBinding()
     {
@@ -204,7 +217,10 @@ public class ChannelFactoryTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void ChannelFactory_Async_Open_Close()
     {
         ChannelFactory<IRequestChannel> factory = null;
@@ -234,7 +250,10 @@ public class ChannelFactoryTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData(true)]
     [InlineData(false)]
     public static void ChannelFactory_AllowCookies(bool allowCookies)

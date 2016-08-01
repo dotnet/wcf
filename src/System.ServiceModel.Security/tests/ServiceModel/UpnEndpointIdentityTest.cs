@@ -5,11 +5,15 @@
 
 using System;
 using System.ServiceModel;
+using Infrastructure.Common;
 using Xunit;
 
 public static class UpnEndpointIdentityTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData("")]
     [InlineData("test@wcf.example.com")]
     [ActiveIssue(1454)]
@@ -18,7 +22,10 @@ public static class UpnEndpointIdentityTest
         UpnEndpointIdentity upnEndpointEntity = new UpnEndpointIdentity(upn);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void Ctor_NullUpn()
     {
         string upnName = null;

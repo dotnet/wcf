@@ -7,11 +7,15 @@ using System;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public class DuplexChannelFactoryTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_EndpointAddress_Null_Throws()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -35,7 +39,10 @@ public class DuplexChannelFactoryTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_InvalidEndpointAddress_AsString_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -47,7 +54,10 @@ public class DuplexChannelFactoryTest
         });
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_EmptyEndpointAddress_AsString_ThrowsUriFormat()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -59,7 +69,10 @@ public class DuplexChannelFactoryTest
         });
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     // valid address, but the scheme is incorrect
     public static void CreateChannel_ExpectedNetTcpScheme_HttpScheme_ThrowsUriFormat()
     {
@@ -74,7 +87,10 @@ public class DuplexChannelFactoryTest
         });
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     // valid address, but the scheme is incorrect
     public static void CreateChannel_ExpectedNetTcpScheme_InvalidScheme_ThrowsUriFormat()
     {
@@ -89,7 +105,10 @@ public class DuplexChannelFactoryTest
         });
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     // valid address, but the scheme is incorrect
     public static void CreateChannel_BasicHttpBinding_Throws_InvalidOperation()
     {
@@ -108,7 +127,10 @@ public class DuplexChannelFactoryTest
             string.Format("InvalidOperationException exception string should contain 'BasicHttpBinding'. Actual message:\r\n" + exception.ToString()));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Address_NullString_ThrowsArgumentNull()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -120,7 +142,10 @@ public class DuplexChannelFactoryTest
         });
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Address_NullEndpointAddress_ThrowsArgumentNull()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -134,7 +159,10 @@ public class DuplexChannelFactoryTest
         });
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Using_NetTcpBinding_Defaults()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -147,7 +175,10 @@ public class DuplexChannelFactoryTest
         Assert.NotNull(proxy);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Using_NetTcp_NoSecurity()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -158,7 +189,10 @@ public class DuplexChannelFactoryTest
         factory.CreateChannel();
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Using_Http_NoSecurity()
     {
         WcfDuplexServiceCallback callback = new WcfDuplexServiceCallback();
@@ -169,7 +203,10 @@ public class DuplexChannelFactoryTest
         factory.CreateChannel();
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void CreateChannel_Of_IDuplexChannel_Using_NetTcpBinding_Creates_Unique_Instances()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;

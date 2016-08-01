@@ -5,18 +5,25 @@
 
 using System;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public static class WebSocketTransportSettingsTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void DisablePayloadMasking_Property_Set_PNSE_Throws()
     {
         var setting = new WebSocketTransportSettings();
         Assert.Throws<PlatformNotSupportedException>(() => setting.DisablePayloadMasking = true);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void DisablePayloadMasking_Property_Get_PNSE_Throws()
     {
         var setting = new WebSocketTransportSettings();

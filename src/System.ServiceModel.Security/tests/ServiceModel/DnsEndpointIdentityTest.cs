@@ -5,11 +5,15 @@
 
 using System;
 using System.ServiceModel;
+using Infrastructure.Common;
 using Xunit;
 
 public static class DnsEndpointIdentityTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData("")]
     [InlineData("wcf")]
     [InlineData("wcf.example.com")]
@@ -18,7 +22,10 @@ public static class DnsEndpointIdentityTest
         DnsEndpointIdentity dnsEndpointEntity = new DnsEndpointIdentity(dnsName);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void Ctor_NullDnsName()
     {
         string dnsName = null;
