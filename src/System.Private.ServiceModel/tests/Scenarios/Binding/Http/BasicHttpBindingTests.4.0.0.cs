@@ -2,15 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public static class Binding_Http_BasicHttpBindingTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()
     {

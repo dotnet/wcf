@@ -6,11 +6,15 @@
 using System;
 using System.ServiceModel;
 using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static class FaultExceptionTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FaultException_Throws_WithFaultDetail()
     {
@@ -53,7 +57,10 @@ public static class FaultExceptionTests
         Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void UnexpectedException_Throws_FaultException()
     {
@@ -92,7 +99,10 @@ public static class FaultExceptionTests
         Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FaultException_Throws_With_Int()
     {
@@ -130,7 +140,10 @@ public static class FaultExceptionTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FaultException_MultipleFaultContracts_Throws_WithFaultDetail()
     {
@@ -167,7 +180,10 @@ public static class FaultExceptionTests
         Assert.Equal(faultMsg, exception.Detail.Message);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FaultException_MultipleFaultContracts_Throws_WithFaultDetail2()
     {
@@ -204,7 +220,10 @@ public static class FaultExceptionTests
         Assert.Equal(faultMsg, exception.Detail.Message);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FaultException_FaultContractAndKnownType_Throws_WithFaultDetail()
     {
@@ -241,7 +260,10 @@ public static class FaultExceptionTests
         Assert.Equal(faultMsg, exception.Detail.Message);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FaultException_FaultContractAndKnownType_Echo()
     {

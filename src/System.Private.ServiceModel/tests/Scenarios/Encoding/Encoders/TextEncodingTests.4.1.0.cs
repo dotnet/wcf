@@ -6,12 +6,15 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class TextEncodingTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void TextMessageEncoder_WrongContentTypeResponse_Throws_ProtocolException()
     {

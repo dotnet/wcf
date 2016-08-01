@@ -7,12 +7,16 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static class MessageVersionTests
 {
     // Client and Server bindings setup exactly the same using Soap12WSA10
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void SameBinding_Soap12WSA10_EchoString()
     {
@@ -48,7 +52,10 @@ public static class MessageVersionTests
         Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void SameBinding_Soap11_EchoString()
     {

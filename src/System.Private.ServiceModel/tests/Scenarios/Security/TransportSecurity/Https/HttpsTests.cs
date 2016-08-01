@@ -14,14 +14,16 @@ public partial class HttpsTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Peer_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Peer_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(1381)] // requires additional SSL configuration of new port to work
+    [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
     [OuterLoop]
-    [ActiveIssue(1381)] // requires additional SSL configuration of new port to work
+
     // Asking for PeerTrust alone should succeed
     // if the certificate is in the TrustedPeople store.  For this test
     // we use a certificate we know is in the TrustedPeople store.
@@ -87,19 +89,20 @@ public partial class HttpsTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Peer_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Peer_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
+    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required.
     [OuterLoop]
     // Asking for PeerTrust alone should throw SecurityNegotiationException
     // if the certificate is not in the TrustedPeople store.  For this test
     // we use a valid chain-trusted certificate that we know is not in the
     // TrustedPeople store.
-    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
-    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required.
+
     public static void Https_SecModeTrans_CertValMode_PeerTrust_Fails_Not_In_TrustedPeople()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -172,13 +175,14 @@ public partial class HttpsTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed), 
-                     nameof(Client_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
+    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required.
     [OuterLoop]
-    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required.
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
     // So we ask for a known chain-trusted certificate that we also know
@@ -241,13 +245,14 @@ public partial class HttpsTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
+    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required.
     [OuterLoop]
-    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required.
     // Asking for ChainTrust should succeed if the certificate is
     // chain-trusted.
     public static void Https_SecModeTrans_CertValMode_ChainTrust_Succeeds_ChainTrusted()

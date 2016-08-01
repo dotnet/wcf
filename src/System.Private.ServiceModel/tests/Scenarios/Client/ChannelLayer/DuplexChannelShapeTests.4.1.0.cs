@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -17,11 +16,11 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     // The tests in this file use the IDuplexChannel shape.
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    [ActiveIssue(1157)]
+    [Issue(1157)]
     public static void IDuplexSessionChannel_Https_NetHttpsBinding()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -89,11 +88,11 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    [ActiveIssue(1157)]
+    [Issue(1157)]
     public static void IDuplexSessionChannel_Http_BasicHttpBinding()
     {
 #if FULLXUNIT_NOTSUPPORTED

@@ -6,13 +6,17 @@
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class XmlSerializerFormatTests
 {
     private static readonly string s_basicEndpointAddress = Endpoints.HttpBaseAddress_Basic;
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_RoundTrips_String()
     {
@@ -25,7 +29,10 @@ public static partial class XmlSerializerFormatTests
         Assert.Equal("message", response);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_Using_SupportsFault_RoundTrips_String()
     {
@@ -38,7 +45,10 @@ public static partial class XmlSerializerFormatTests
         Assert.Equal("message", response);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_Using_SupportsFault_Throws_FaultException()
     {
@@ -63,7 +73,10 @@ public static partial class XmlSerializerFormatTests
         Assert.True(false);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_RoundTrips_Using_Rpc()
     {
@@ -76,7 +89,10 @@ public static partial class XmlSerializerFormatTests
         Assert.Equal("message", response);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_RoundTrips_String_AsyncTask()
     {
@@ -92,7 +108,10 @@ public static partial class XmlSerializerFormatTests
         Assert.Equal("message", response.Result);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_RoundTrips_CompositeType()
     {
@@ -111,7 +130,10 @@ public static partial class XmlSerializerFormatTests
         Assert.True(!input.BoolValue);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_MessageContract_LoginService()
     {
@@ -146,7 +168,10 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     // The test is for the case where a paramerter type contains a field 
     // never used.The test is to make sure the reflection info of the type 
@@ -183,7 +208,10 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormat_SameNamespace_SameOperation()
     {

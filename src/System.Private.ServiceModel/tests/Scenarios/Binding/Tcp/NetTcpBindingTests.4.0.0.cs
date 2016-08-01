@@ -2,14 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Infrastructure.Common;
 using System.ServiceModel;
+using Infrastructure.Common;
 using Xunit;
 
 public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
 {
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=None
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void SecurityModeNone_Echo_RoundTrips_String()
     {

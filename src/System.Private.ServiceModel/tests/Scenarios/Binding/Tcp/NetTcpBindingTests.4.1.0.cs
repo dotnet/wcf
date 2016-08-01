@@ -16,9 +16,10 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()
     {
@@ -66,9 +67,10 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available))]
 #endif
+    [WcfFact]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
+    [Condition(nameof(Windows_Authentication_Available))]
     [OuterLoop]
     public static void SecurityModeTransport_Echo_RoundTrips_String()
     {

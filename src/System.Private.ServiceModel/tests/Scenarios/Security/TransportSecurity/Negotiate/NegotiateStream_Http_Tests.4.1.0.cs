@@ -58,11 +58,11 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available),
-                     nameof(Root_Certificate_Installed),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(Ambient_Credentials_Available))]
     [OuterLoop]
     public static void NegotiateStream_Http_AmbientCredentials()
     {
@@ -114,12 +114,12 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available), 
-                     nameof(Root_Certificate_Installed), 
-                     nameof(Explicit_Credentials_Available),
-                     nameof(Domain_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(Explicit_Credentials_Available),
+               nameof(Domain_Available))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -188,11 +188,11 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available), 
-                     nameof(Root_Certificate_Installed),
-                     nameof(SPN_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(SPN_Available))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -255,12 +255,12 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [ActiveIssue(10)]
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available), 
-                     nameof(Root_Certificate_Installed),
-                     nameof(UPN_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(UPN_Available))]
+    [Issue(10)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_Upn()
     {
@@ -317,13 +317,13 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available), 
-                     nameof(Root_Certificate_Installed),
-                     nameof(Explicit_Credentials_Available),
-                     nameof(Domain_Available),
-                     nameof(SPN_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(Explicit_Credentials_Available),
+               nameof(Domain_Available),
+               nameof(SPN_Available))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -399,14 +399,14 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [ActiveIssue(10)]
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available), 
-                     nameof(Root_Certificate_Installed),
-                     nameof(Explicit_Credentials_Available),
-                     nameof(Domain_Available),
-                     nameof(UPN_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available),
+               nameof(Root_Certificate_Installed),
+               nameof(Explicit_Credentials_Available),
+               nameof(Domain_Available),
+               nameof(UPN_Available))]
+    [Issue(10)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword_With_Upn()
     {

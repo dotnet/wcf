@@ -5,12 +5,15 @@
 
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Threading.Tasks;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class XmlSerializerFormatTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageHeader_ResponseTypeWithUsesMessageHeaderAttribute()
     {
@@ -37,9 +40,13 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [OuterLoop]
     [ActiveIssue(702)]
+#endif
+    [WcfFact]
+    [OuterLoop]
+    [Issue(702, Framework = FrameworkID.NetCore | FrameworkID.NetNative)]
     public static void MessageHeader_RequestTypeWithUsesMessageHeaderAttribute()
     {
         // *** SETUP *** \\
@@ -65,7 +72,10 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify()
     {

@@ -43,9 +43,12 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         Assert.True(exception.Message.Contains(nonExistentHost), string.Format("Expected exception message to contain: '{0}'", nonExistentHost));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
-    [ActiveIssue(398)]
+    [Issue(398)]
     public static void ServiceRestart_Throws_CommunicationException()
     {
         StringBuilder errorBuilder = new StringBuilder();

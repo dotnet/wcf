@@ -5,7 +5,6 @@
 
 using System;
 using System.ServiceModel;
-
 using Infrastructure.Common;
 using Xunit;
 
@@ -13,10 +12,10 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void DefaultCtor_NetHttps_Echo_RoundTrips_String()
     {
@@ -62,7 +61,10 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void TransportWithMessageCredential_NotSupported_NetHttps()
     {
@@ -95,10 +97,10 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void NonDefaultCtor_NetHttps_Echo_RoundTrips_String()
     {

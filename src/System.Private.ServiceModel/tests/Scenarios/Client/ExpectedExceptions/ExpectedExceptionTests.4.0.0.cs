@@ -52,10 +52,12 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
     // SendTimeout is set to 5 seconds, the service waits 10 seconds to respond.
     // The client should throw a TimeoutException
-    [Fact]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(1250)]
 #endif
+    [WcfFact]
+    [Issue(1250, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
     {

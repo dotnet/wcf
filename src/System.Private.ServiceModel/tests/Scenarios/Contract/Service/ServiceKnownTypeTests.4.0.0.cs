@@ -5,13 +5,17 @@
 
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using Infrastructure.Common;
 using Xunit;
 
 public static class ServiceKnownTypeTests
 {
     public delegate object[] EchoItemsMethod(object[] items);
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceKnownType_DataContract_AttrOnMethod_Test()
     {
@@ -25,7 +29,10 @@ public static class ServiceKnownTypeTests
         RunTestMethodAndCleanup(factory, serviceProxy, serviceProxy.EchoItems, new Widget0());
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceKnownType_DataContract_AttrOnType_Test()
     {
@@ -39,7 +46,10 @@ public static class ServiceKnownTypeTests
         RunTestMethodAndCleanup(factory, serviceProxy, serviceProxy.EchoItems, new Widget1());
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceKnownType_XmlSerializerFormat_AttrOnMethod_Test()
     {
@@ -53,7 +63,10 @@ public static class ServiceKnownTypeTests
         RunTestMethodAndCleanup(factory, serviceProxy, serviceProxy.EchoItems_Xml, new Widget2());
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceKnownType_XmlSerializerFormat_AttrOnType_Test()
     {
@@ -67,7 +80,10 @@ public static class ServiceKnownTypeTests
         RunTestMethodAndCleanup(factory, serviceProxy, serviceProxy.EchoItems_Xml, new Widget3());
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceKnownType_XmlSerializerFormat_TwoOperationsShareKnownTypes_Test()
     {

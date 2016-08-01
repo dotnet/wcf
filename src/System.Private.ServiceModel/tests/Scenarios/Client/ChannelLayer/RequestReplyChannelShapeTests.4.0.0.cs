@@ -6,8 +6,8 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.Common;
 using Xunit;
 
 public partial class RequestReplyChannelShapeTests
@@ -19,7 +19,10 @@ public partial class RequestReplyChannelShapeTests
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void IRequestChannel_Http_BasicHttpBinding()
     {
@@ -70,7 +73,10 @@ public partial class RequestReplyChannelShapeTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void IRequestChannel_Http_CustomBinding()
     {
@@ -125,7 +131,10 @@ public partial class RequestReplyChannelShapeTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void IRequestChannel_Async_Http_BasicHttpBinding()
     {
@@ -178,7 +187,10 @@ public partial class RequestReplyChannelShapeTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void IRequestChannel_Async_Http_CustomBinding()
     {

@@ -7,16 +7,19 @@ using System;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class ServiceContractTests
 {
     // End operation includes keyword "out" on an Int as an arg.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncEndOperation_IntOutArg()
     {
@@ -63,7 +66,10 @@ public static partial class ServiceContractTests
     // End operation includes keyword "out" on a unique type as an arg.
     // The unique type used must not appear anywhere else in any contracts in order
     // test the static analysis logic of the Net Native toolchain.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncEndOperation_UniqueTypeOutArg()
     {
@@ -109,7 +115,10 @@ public static partial class ServiceContractTests
     }
 
     // End & Begin operations include keyword "ref" on an Int as an arg.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncEndOperation_IntRefArg()
     {
@@ -157,7 +166,10 @@ public static partial class ServiceContractTests
     // End & Begin operations include keyword "ref" on a unique type as an arg.
     // The unique type used must not appear anywhere else in any contracts in order
     // test the static analysis logic of the Net Native toolchain.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncEndOperation_UniqueTypeRefArg()
     {
@@ -205,7 +217,10 @@ public static partial class ServiceContractTests
     // Synchronous operation using the keyword "out" on a unique type as an arg.
     // The unique type used must not appear anywhere else in any contracts in order
     // test the static analysis logic of the Net Native toolchain.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_SyncOperation_UniqueTypeOutArg()
     {
@@ -243,7 +258,10 @@ public static partial class ServiceContractTests
     // Synchronous operation using the keyword "ref" on a unique type as an arg.
     // The unique type used must not appear anywhere else in any contracts in order
     // test the static analysis logic of the Net Native toolchain.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_SyncOperation_UniqueTypeRefArg()
     {
@@ -278,7 +296,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Open_ChannelFactory()
     {
@@ -317,7 +338,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Open_ChannelFactory_WithSingleThreadedSyncContext()
     {
@@ -331,7 +355,10 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: BasicHttp_Async_Open_ChannelFactory_WithSingleThreadedSyncContext timed-out.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Open_Proxy()
     {
@@ -370,7 +397,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Open_Proxy_WithSingleThreadedSyncContext()
     {
@@ -384,7 +414,10 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: BasicHttp_Async_Open_Proxy_WithSingleThreadedSyncContext timed-out.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Close_ChannelFactory()
     {
@@ -421,7 +454,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Close_ChannelFactory_WithSingleThreadedSyncContext()
     {
@@ -435,7 +471,10 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: BasicHttp_Async_Close_ChannelFactory_WithSingleThreadedSyncContext timed-out.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Close_Proxy()
     {
@@ -471,7 +510,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Close_Proxy_WithSingleThreadedSyncContext()
     {

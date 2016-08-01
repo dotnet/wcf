@@ -5,15 +5,16 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using TestTypes;
-using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class DataContractTests
 {
     // Verify that a callback contract correctly returns a complex type when this type is not part of the contract with the ServiceContract attribute.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcpBinding_DuplexCallback_ReturnsDataContractComplexType()
     {
@@ -51,7 +52,10 @@ public static partial class DataContractTests
     }
 
     // Verify that a callback contract correctly returns a complex type using Xml instead of DataContract when this type is not part of the contract with the ServiceContract attribute.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcpBinding_DuplexCallback_ReturnsXmlComplexType()
     {

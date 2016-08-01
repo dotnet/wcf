@@ -3,17 +3,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class ClientBaseTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageProperty_HttpRequestMessageProperty_RoundTrip_Verify()
     {
@@ -52,8 +54,11 @@ public static partial class ClientBaseTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
         }
     }
-    
+
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ClientMessageInspector_Verify_Invoke()
     {
@@ -101,7 +106,10 @@ public static partial class ClientBaseTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ClientBaseOfT_Sync_RoundTrip_Check_CommunicationState()
     {
@@ -149,7 +157,10 @@ public static partial class ClientBaseTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ClientBaseOfT_Sync_RoundTrip_Call_Using_HttpTransport()
     {
@@ -185,7 +196,10 @@ public static partial class ClientBaseTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ClientBaseOfT_Sync_RoundTrip_Call_Using_NetTcpTransport()
     {
@@ -220,7 +234,10 @@ public static partial class ClientBaseTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify()
     {

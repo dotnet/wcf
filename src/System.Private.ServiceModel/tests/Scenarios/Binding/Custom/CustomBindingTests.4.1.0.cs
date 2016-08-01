@@ -14,9 +14,9 @@ public partial class CustomBindingTests : ConditionalWcfTest
     // Tcp: Client and Server bindings setup exactly the same using default settings.
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     public static void DefaultSettings_Tcp_Binary_Echo_RoundTrips_String()
     {
@@ -64,17 +64,16 @@ public partial class CustomBindingTests : ConditionalWcfTest
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
-    
 
     // Https: Client and Server bindings setup exactly the same using default settings.
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
-    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
+    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
     public static void DefaultSettings_Https_Text_Echo_RoundTrips_String()
     {
 #if FULLXUNIT_NOTSUPPORTED
