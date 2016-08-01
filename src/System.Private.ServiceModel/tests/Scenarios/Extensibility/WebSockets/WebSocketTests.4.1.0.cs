@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Infrastructure.Common;
@@ -177,11 +176,10 @@ public class WebSocketTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(526)]
-#else
+#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
-#endif
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {

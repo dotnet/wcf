@@ -16,6 +16,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     // The tests in this file use the IDuplexChannel shape.
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
+    [ActiveIssue(1157)]    
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
@@ -88,6 +89,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
+    [ActiveIssue(1157)]
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]

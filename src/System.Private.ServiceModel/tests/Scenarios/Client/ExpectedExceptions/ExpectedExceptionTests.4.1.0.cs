@@ -45,6 +45,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
+    [ActiveIssue(398)]
 #endif
     [WcfFact]
     [OuterLoop]
