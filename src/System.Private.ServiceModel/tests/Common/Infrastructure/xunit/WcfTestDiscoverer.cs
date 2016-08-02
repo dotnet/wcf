@@ -20,7 +20,8 @@ namespace Infrastructure.Common
                                                         ITestFrameworkDiscoveryOptions discoveryOptions,
                                                         IMessageSink diagnosticMessageSink,
                                                         ITestMethod testMethod,
-                                                        IEnumerable<IXunitTestCase> testCases)
+                                                        IEnumerable<IXunitTestCase> testCases,
+                                                        bool isTheory = false)
         {
             MethodInfo testMethodInfo = testMethod.Method.ToRuntimeMethod();
  
@@ -75,7 +76,10 @@ namespace Infrastructure.Common
             // If we get this far, we have decided to run the test.
             // Still wrap it in a WcfTestCase with a null skip message
             // so that other WcfTestCase customizations are used.
-            return testCases.Select(tc => new WcfTestCase(tc, null));
+            return testCases.Select(tc => new WcfTestCase(tc,
+                                                          skippedReason: null,
+                                                          isTheory: isTheory,
+                                                          diagnosticMessageSink: diagnosticMessageSink));
         }
     }
 }

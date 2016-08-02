@@ -15,11 +15,15 @@ namespace Infrastructure.Common
     {
         private readonly IXunitTestCase _testCase;
         private readonly string _skippedReason;
+        private readonly bool _isTheory;
+        private readonly IMessageSink _diagnosticMessageSink;
 
-        internal WcfTestCase(IXunitTestCase testCase, string skippedReason)
+        internal WcfTestCase(IXunitTestCase testCase, string skippedReason = null, bool isTheory = false, IMessageSink diagnosticMessageSink = null)
         {
             _testCase = testCase;
             _skippedReason = skippedReason;
+            _isTheory = isTheory;
+            _diagnosticMessageSink = diagnosticMessageSink;
         }
 
         public string DisplayName { get { return _testCase.DisplayName; } }
@@ -44,7 +48,9 @@ namespace Infrastructure.Common
             IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments,
             ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
-            return new XunitTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource).RunAsync();
+            return _isTheory
+                ? new XunitTheoryTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, _diagnosticMessageSink, messageBus, aggregator, cancellationTokenSource).RunAsync()
+                : new XunitTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource).RunAsync();
         }
 
         public void Serialize(IXunitSerializationInfo info) { _testCase.Serialize(info); }
