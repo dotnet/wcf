@@ -3,10 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 
-using Infrastructure.Common;
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public partial class MessageInterceptorTests : ConditionalWcfTest
@@ -31,7 +31,10 @@ public partial class MessageInterceptorTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void CustomBinding_Message_Interceptor()
     {

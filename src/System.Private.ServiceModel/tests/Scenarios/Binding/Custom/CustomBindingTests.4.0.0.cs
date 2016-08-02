@@ -2,17 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using Infrastructure.Common;
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public partial class CustomBindingTests : ConditionalWcfTest
 {
     // Http: Client and Server bindings setup exactly the same using default settings.
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+
+    [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_Http_Text_Echo_RoundTrips_String()
     {

@@ -14,9 +14,9 @@ public partial class IdentityTests : ConditionalWcfTest
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     // The product code will check the Dns identity from the server and throw if it does not match what is specified in DnsEndpointIdentity
     public static void VerifyServiceIdentityMatchDnsEndpointIdentity()

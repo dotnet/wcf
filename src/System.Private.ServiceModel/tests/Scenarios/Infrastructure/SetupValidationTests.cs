@@ -3,19 +3,19 @@
 // See the LICENSE file in the project root for more information.
 
 
-using Infrastructure.Common;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using Infrastructure.Common;
 using Xunit;
 
 public class SetupValidationTests : ConditionalWcfTest
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
-    [ActiveIssue(1347, PlatformID.AnyUnix)]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(1347, OS = OSID.AnyUnix)]
     [OuterLoop]
     public static void Root_Certificate_Correctly_Installed()
     {
@@ -51,9 +51,9 @@ public class SetupValidationTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Client_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Client_Certificate_Installed))]
     [OuterLoop]
     public static void Client_Certificate_Correctly_Installed()
     {
@@ -88,9 +88,9 @@ public class SetupValidationTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Peer_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Peer_Certificate_Installed))]
     [OuterLoop]
     public static void Peer_Certificate_Correctly_Installed()
     {

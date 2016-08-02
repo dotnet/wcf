@@ -7,13 +7,17 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static class BinaryEncodingTests
 {
     // Client and Server bindings setup exactly the same using Binary Message encoder
     // and exchanging a basic message
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void SameBinding_Binary_EchoBasicString()
     {
@@ -50,7 +54,10 @@ public static class BinaryEncodingTests
 
     // Client and Server bindings setup exactly the same using Binary Message encoder
     // and exchanging a complicated message
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void SameBinding_Binary_EchoComplexString()
     {

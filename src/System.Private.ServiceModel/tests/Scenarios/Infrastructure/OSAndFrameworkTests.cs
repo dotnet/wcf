@@ -9,7 +9,10 @@ using Xunit;
 
 public class OSAndFrameworkTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FrameworkID_Was_Detected()
     {
@@ -18,7 +21,10 @@ public class OSAndFrameworkTests
                                    RuntimeInformation.FrameworkDescription));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void OSID_Was_Detected()
     {
@@ -29,7 +35,10 @@ public class OSAndFrameworkTests
                                    RuntimeInformation.OSDescription));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void FrameworkID_Name_Formats_Correctly()
     {
@@ -40,7 +49,10 @@ public class OSAndFrameworkTests
                     String.Format("FrameworkID.Name should have contained NetCore and NetNative, but actual was \"{0}\"", formatted));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void OSID_Name_Formats_Correctly()
     {

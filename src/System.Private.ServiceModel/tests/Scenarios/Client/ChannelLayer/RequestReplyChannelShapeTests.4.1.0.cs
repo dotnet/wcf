@@ -6,8 +6,6 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
@@ -19,12 +17,12 @@ public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
-    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
+    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
     public static void IRequestChannel_Https_NetHttpsBinding()
     {
 #if FULLXUNIT_NOTSUPPORTED

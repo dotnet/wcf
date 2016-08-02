@@ -20,12 +20,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedRequest_RoundTrips_String()
     {
@@ -84,12 +85,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedResponse_RoundTrips_String()
     {
@@ -147,12 +149,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_RoundTrips_String()
     {
@@ -212,12 +215,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_TimeOut_Long_Running_Operation()
     {
@@ -293,12 +297,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String()
     {
@@ -359,12 +364,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedRequest_Async_RoundTrips_String()
     {
@@ -425,12 +431,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedResponse_Async_RoundTrips_String()
     {
@@ -491,12 +498,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_RoundTrips_String_WithSingleThreadedSyncContext()
     {
@@ -533,12 +541,13 @@ public class StreamingTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Windows_Authentication_Available),
-                     nameof(Ambient_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String_WithSingleThreadedSyncContext()
     {

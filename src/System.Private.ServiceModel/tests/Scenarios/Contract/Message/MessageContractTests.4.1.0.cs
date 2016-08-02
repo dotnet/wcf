@@ -2,17 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using MessageContractCommon;
 using System;
 using System.ServiceModel.Channels;
-using System.Text;
 using System.Xml;
+using Infrastructure.Common;
+using MessageContractCommon;
 using Xunit;
 
 public static class MessageContractTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageContract_IsWrapped_True()
     {
@@ -29,7 +31,10 @@ public static class MessageContractTests
             string.Format("reader.NamespaceURI - Expected: {0}, Actual: {1}", MessageContractConstants.wrapperNamespace, reader.NamespaceURI));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageContract_IsWrapped_False()
     {
@@ -43,7 +48,10 @@ public static class MessageContractTests
             "When IsWrapped set to false, the message body should not be wrapped with an extra element.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageBody_Elements_Ordered()
     {
@@ -84,7 +92,10 @@ public static class MessageContractTests
             string.Format("Unexpected element order (5/5). Expected: {0}, Actual: {1}", MessageContractConstants.wrapperName, reader.LocalName));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageBody_Elements_CustomerElement_Value_Matches()
     {
@@ -114,7 +125,10 @@ public static class MessageContractTests
             string.Format("Expected element not found. Looking For: {0} && {1}", MessageContractConstants.customerElementName, MessageContractConstants.customerElementNamespace));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageHeader_MustUnderstand_True()
     {
@@ -131,7 +145,10 @@ public static class MessageContractTests
         Assert.True(header.MustUnderstand, "Expected MustUnderstand to be true, but it was false.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void MessageHeader_MustUnderstand_False()
     {

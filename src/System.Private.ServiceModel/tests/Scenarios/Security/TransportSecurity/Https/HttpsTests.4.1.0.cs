@@ -18,12 +18,12 @@ public partial class HttpsTests : ConditionalWcfTest
     // Server: BasicHttpsBinding default value is Soap11
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
     [OuterLoop]
-    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
+    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
     public static void CrossBinding_Soap11_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -74,12 +74,12 @@ public partial class HttpsTests : ConditionalWcfTest
     // Client and Server bindings setup exactly the same using default settings.
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
     [OuterLoop]
-    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
     public static void SameBinding_DefaultSettings_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -130,12 +130,12 @@ public partial class HttpsTests : ConditionalWcfTest
     // Client and Server bindings setup exactly the same using Soap11
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
     [OuterLoop]
-    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
     public static void SameBinding_Soap11_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -186,12 +186,12 @@ public partial class HttpsTests : ConditionalWcfTest
     // Client and Server bindings setup exactly the same using Soap12
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
     [OuterLoop]
-    [ActiveIssue(1398, PlatformID.OSX)] // Cert installation on OSX does not work yet
     public static void SameBinding_Soap12_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -242,13 +242,14 @@ public partial class HttpsTests : ConditionalWcfTest
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(959)] // Server certificate validation not supported in NET Native
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
+    [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
+    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required
     [OuterLoop]
-    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required
     public static void ServerCertificateValidation_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -310,14 +311,14 @@ public partial class HttpsTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed),
-                     nameof(Client_Certificate_Installed),
-                     nameof(Server_Accepts_Certificates),
-                     nameof(SSL_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Server_Accepts_Certificates),
+               nameof(SSL_Available))]
+    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required
     [OuterLoop]
-    [ActiveIssue(1295, PlatformID.AnyUnix)] // A libcurl built with OpenSSL is required
     public static void ClientCertificate_EchoString()
     {
 #if FULLXUNIT_NOTSUPPORTED

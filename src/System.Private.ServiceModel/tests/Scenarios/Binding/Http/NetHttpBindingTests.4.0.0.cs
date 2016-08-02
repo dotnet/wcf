@@ -5,15 +5,15 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Infrastructure.Common;
 using Xunit;
 
 public static class Binding_Http_NetHttpBindingTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()
     {

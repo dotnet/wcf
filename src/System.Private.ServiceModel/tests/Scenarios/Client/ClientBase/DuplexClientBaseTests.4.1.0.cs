@@ -6,16 +6,16 @@
 using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using Xunit;
 using Infrastructure.Common;
+using Xunit;
 
 public class DuplexClientBaseTests : ConditionalWcfTest
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void DuplexClientBaseOfT_OverHttp_Call_Throws_InvalidOperation()
     {
@@ -70,7 +70,10 @@ public class DuplexClientBaseTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void DuplexClientBaseOfT_OverNetTcp_Synchronous_Call()
     {

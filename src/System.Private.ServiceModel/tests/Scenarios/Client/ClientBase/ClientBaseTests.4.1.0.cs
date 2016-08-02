@@ -4,18 +4,18 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
-using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class ClientBaseTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_Echo_Cookie()
     {
@@ -57,7 +57,10 @@ public static partial class ClientBaseTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_SetCookieOnServerSide()
     {

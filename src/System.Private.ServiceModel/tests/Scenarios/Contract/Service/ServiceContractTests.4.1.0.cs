@@ -11,12 +11,16 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Infrastructure.Common;
 using ScenarioTests.Common;
 using Xunit;
 
 public static partial class ServiceContractTests
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Buffered()
     {
@@ -53,7 +57,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_StreamedRequest()
     {
@@ -89,7 +96,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_StreamedResponse()
     {
@@ -124,7 +134,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed()
     {
@@ -161,7 +174,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async()
     {
@@ -199,7 +215,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext()
     {
@@ -213,7 +232,10 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_WithSingleThreadedSyncContext timed-out.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext()
     {
@@ -227,8 +249,10 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async_WithSingleThreadedSyncContext timed-out.");
     }
 
-
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Streamed_Async_Delayed_And_Aborted_Request_Throws_TimeoutException()
     {
@@ -292,7 +316,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Streamed_Async_Delayed_Request_Throws_TimeoutException()
     {
@@ -348,7 +375,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_Buffered_RoundTrips_String()
     {
@@ -385,7 +415,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_StreamedRequest_RoundTrips_String()
     {
@@ -421,7 +454,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_StreamedResponse_RoundTrips_String()
     {
@@ -456,7 +492,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_Streamed_RoundTrips_String()
     {
@@ -493,7 +532,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_Streamed_Async_RoundTrips_String()
     {
@@ -531,7 +573,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_StreamedRequest_Async_RoundTrips_String()
     {
@@ -569,7 +614,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_StreamedResponse_Async_RoundTrips_String()
     {
@@ -607,7 +655,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_Streamed_RoundTrips_String_WithSingleThreadedSyncContext()
     {
@@ -621,7 +672,10 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: NetTcp_NoSecurity_String_Streamed_RoundTrips_WithSingleThreadedSyncContext timed-out.");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NetTcp_NoSecurity_Streamed_Async_RoundTrips_String_WithSingleThreadedSyncContext()
     {
@@ -635,8 +689,10 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: NetTcp_NoSecurity_Streamed_Async_RoundTrips_String_WithSingleThreadedSyncContext timed-out.");
     }
 
-
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void ServiceContract_Call_Operation_With_MessageParameterAttribute()
     {
@@ -672,8 +728,11 @@ public static partial class ServiceContractTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
-    
+
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Abort_ChannelFactory_Operations_Active()
     {
@@ -763,7 +822,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Close_ChannelFactory_Operations_Active()
     {
@@ -853,7 +915,10 @@ public static partial class ServiceContractTests
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void BasicHttp_Async_Close_ChannelFactory_Operations_Active()
     {
@@ -943,5 +1008,4 @@ public static partial class ServiceContractTests
                                                           factory);
         }
     }
-
 }

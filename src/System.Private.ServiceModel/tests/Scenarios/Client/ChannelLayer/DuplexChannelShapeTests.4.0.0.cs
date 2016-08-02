@@ -2,12 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Infrastructure.Common;
@@ -22,7 +19,10 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void IDuplexSessionChannel_Tcp_NetTcpBinding()
     {
@@ -77,7 +77,10 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void IDuplexSessionChannel_Async_Tcp_NetTcpBinding()
     {

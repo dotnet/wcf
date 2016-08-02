@@ -7,14 +7,16 @@ using System;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Infrastructure.Common;
 
 public class WebSocketTests : ConditionalWcfTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_BinaryStreamed()
     {
@@ -75,11 +77,13 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [Fact]
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
 #endif
+    [WcfFact]
+    [OuterLoop]
+    [Issue(526, Framework = FrameworkID.NetNative)]
     public static void WebSocket_Http_Duplex_BinaryStreamed()
     {
         NetHttpBinding binding = null;
@@ -169,13 +173,14 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -278,13 +283,15 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [Fact]
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
-#else
     [ActiveIssue(470)]
 #endif
+    [WcfFact]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(470)]
+    [OuterLoop]
     public static void WebSocket_Https_Duplex_TextStreamed()
     {
         TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
@@ -377,11 +384,13 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [Fact]
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
 #endif
+    [WcfFact]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Http_Duplex_TextStreamed()
     {
         NetHttpBinding binding = null;
@@ -471,7 +480,10 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_TextStreamed()
     {
@@ -532,7 +544,10 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void WebSocket_Http_WSTransportUsageDefault_DuplexCallback_GuidRoundtrip()
     {
@@ -571,8 +586,10 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
-    [OuterLoop]
+#endif
+    [WcfFact]
     public static void WebSocket_Http_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;
@@ -610,7 +627,10 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void WebSocket_WSScheme_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
     {
@@ -653,13 +673,14 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -718,13 +739,14 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -785,13 +807,14 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryBuffered()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -865,13 +888,14 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
     [ActiveIssue(526)]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
     {
 #if FULLXUNIT_NOTSUPPORTED
@@ -945,11 +969,13 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
-    [Fact]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
 #endif
+    [WcfFact]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Http_RequestReply_TextBuffered()
     {
         NetHttpBinding binding = null;
@@ -996,11 +1022,13 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
-    [Fact]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
 #endif
+    [WcfFact]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Http_RequestReply_BinaryBuffered_KeepAlive()
     {
         NetHttpBinding binding = null;
@@ -1048,11 +1076,13 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
-    [Fact]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
 #endif
+    [WcfFact]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Http_Duplex_TextBuffered_KeepAlive()
     {
         NetHttpBinding binding = null;
@@ -1113,11 +1143,13 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-    [OuterLoop]
-    [Fact]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
 #endif
+    [WcfFact]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Http_Duplex_BinaryBuffered()
     {
         NetHttpBinding binding = null;
@@ -1180,11 +1212,13 @@ public class WebSocketTests : ConditionalWcfTest
     // WCF detects when a callback is used in the channel construction process and switches to use WebSockets.
     // When not using a callback you can still force WCF to use WebSockets.
     // This test verifies that it actually uses WebSockets when not using a callback.
-    [OuterLoop]
-    [Fact]
 #if FULLXUNIT_NOTSUPPORTED
+    [Fact]
     [ActiveIssue(526)]
 #endif
+    [WcfFact]
+    [Issue(526, Framework = FrameworkID.NetNative)]
+    [OuterLoop]
     public static void WebSocket_Http_VerifyWebSocketsUsed()
     {
         NetHttpBinding binding = null;

@@ -5,12 +5,16 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
+using Infrastructure.Common;
 using Xunit;
 
 public static partial class TextEncodingTests
 {
     // Simple echo of a string. Same binding on both client and server. CustomBinding with TextMessageEncoding and no WindowsStreamSecurityBindingElement
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void SameBinding_SecurityModeNone_Text_EchoString_Roundtrip()
     {

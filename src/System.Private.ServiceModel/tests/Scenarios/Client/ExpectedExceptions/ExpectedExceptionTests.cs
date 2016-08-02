@@ -4,28 +4,18 @@
 
 
 using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.IdentityModel.Selectors;
 using System.ServiceModel.Security;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using System.Threading;
-using System.IO;
-
 using Infrastructure.Common;
-
+using Xunit;
 
 public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     // Confirm that the Validate method of the custom X509CertificateValidator is called and that an exception thrown there is handled correctly.
     public static void TCP_ServiceCertFailedCustomValidate_Throw_Exception()

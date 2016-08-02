@@ -25,9 +25,9 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
@@ -96,9 +96,9 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()
     {
@@ -157,9 +157,9 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthenticationEmptyUser_throw_ArgumentException()
     {
@@ -196,12 +196,12 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Server_Domain_Joined),
-                     nameof(Root_Certificate_Installed),
-                     nameof(Digest_Authentication_Available),
-                     nameof(Explicit_Credentials_Available))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Server_Domain_Joined),
+               nameof(Root_Certificate_Installed),
+               nameof(Digest_Authentication_Available),
+               nameof(Explicit_Credentials_Available))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -254,9 +254,9 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(NTLM_Available), nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(NTLM_Available), nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void NtlmAuthentication_RoundTrips_Echo()
     {
@@ -292,9 +292,9 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
-#else
-    [ConditionalFact(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
 #endif
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {
