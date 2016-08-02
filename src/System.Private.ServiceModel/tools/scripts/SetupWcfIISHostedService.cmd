@@ -16,12 +16,37 @@ set _certExpirationInDays=99
 set _githubWcfRepoUrl=https://github.com/dotnet/wcf
 set _exitCode=0
 set _cmd=
+set _cleanup=
+set _useExistingRepo=
 
 if '%1'=='' goto :Usage
 if '%1'=='/?' goto :Usage
 if '%1'=='-?' goto :Usage
 if '%1'=='/help' goto :Usage
 if '%1'=='-help' goto :Usage
+
+echo.
+echo %date% %time%
+echo ==============================
+
+:: Parse command line arguments
+:NextArg
+shift
+set arg=%1
+
+if '%arg%'=='' goto :NoMoreArg
+
+if /I '%arg%'=='/c' (
+    set _cleanup=true
+    goto :NextArg
+)
+
+if /I '%arg:~0,2%'=='/p' (
+    set _useExistingRepo=true
+    set _currentRepo=%arg:~3%
+    goto :NextArg
+)
+:NoMoreArg
 
 :: Make sure this script is running in elevated
 if EXIST %_logFile% del %_logFile% /f /q
@@ -45,10 +70,17 @@ echo Deleting WCF repo at %_currentRepo% if exists and associated application po
 %_appcmd% delete apppool %_prServiceName% >nul
 %_appcmd% delete app "Default Web Site/%_wcfServiceName%" >nul
 %_appcmd% delete apppool %_wcfServiceName% >nul
-if EXIST %_currentRepo% rmdir /s /q %_currentRepo%
+if EXIST %_currentRepo% if DEFINED _useExistingRepo (echo User provided repo is not deleted: %_currentRepo%) else (rmdir /s /q %_currentRepo%)
 if EXIST %_wcfTestDir% if /I '%_masterRepo%'=='%_currentRepo%' rmdir /s /q %_wcfTestDir%
 echo Clean up done.
-if /I '%2'=='/c' goto :Done
+if DEFINED _cleanup goto :Done
+
+:: Determine if we need to clone a new WCF repo
+if DEFINED _useExistingRepo (
+    if NOT EXIST %_currentRepo% echo ERROR: The provided WCF repo was not found: %_currentRepo% & goto :Failure
+    echo Use provided WCF repo: %_currentRepo%
+    goto :SkipCloneRepo
+)
 
 :: Make sure git.exe is available
 where git.exe /Q
@@ -66,6 +98,8 @@ pushd %_currentRepo%
 call :Run git config --add origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
 if ERRORLEVEL 1 goto :Failure
 popd
+
+:SkipCloneRepo
 
 :: Create a new application pool and an application for the WCF test service
 echo Create IIS application pool: %_wcfServiceName%
@@ -146,12 +180,12 @@ if ERRORLEVEL 1 goto :Failure
 
 :: TODO: Grant all existing app pools named WCFService# 'Read' access to %_wcfTestDir%. This is not needed for now
 
-:SkipCertInstall
-
-:: Grant app pool %_wcfServiceName% "Read" access to %_wcfTestDir% and its subdirectories
-echo Grant app pool %_wcfServiceName% "Read" access to %_wcfTestDir% and its subdirectories
-call :Run icacls %_wcfTestDir% /grant:r "IIS APPPOOL\%_wcfServiceName%":(OI)(CI)R /Q
+:: Grant app pool %_certService% "Read" access to %_wcfTestDir% and its subdirectories
+echo Grant app pool %_certService% "Read" access to %_wcfTestDir% and its subdirectories
+call :Run icacls %_wcfTestDir% /grant:r "IIS APPPOOL\%_certService%":(OI)(CI)R /Q
 if ERRORLEVEL 1 goto :Failure
+
+:SkipCertInstall
 
 :: Unlock the configuration of sslFlags
 echo Unlock the IIS config section to allow sslFlags to be overriden
@@ -169,18 +203,23 @@ goto :Done
 echo.
 echo Setup WCF test services hosted on IIS for the testing of WCF on .NET Core
 echo.
-echo Usage: %~n0 Id [/c]
+echo Usage: %~n0 Id [/c] [/p:{PathToWcfRepo}]
 echo    Id: The Id of a WCF repo and its associated IIS hosted services to be created.
 echo        The Id will be appended to the name of all assets to be created.
 echo        %_idMaster%: if Id is '%_idMaster%', additional IIS hosted services such as PRService
 echo        will be created to serve as central services for other WCF repos. 
 echo    /c: If specified, this will clean up any existing setup of Id instead of creating new.
+echo    /p: If an existing WCF repo is preferred to be used, use this parameter to provide the
+echo        path to a WCF repo. Otherwise, the script will clone a new WCF repo at %_repoHome%
+echo        to use as the source of WCF test service.
 echo.
 echo Examples:
 echo    %~n0 42
 echo    :Create a WCF repo named 'wcf42' and IIS hosted services such as 'WcfService42'
 echo    %~n0 42 /c
 echo    :Clean up WCF repo 'wcf42' and all associated IIS hosted services such as 'WcfService42'
+echo    %~n0 42 /p:"c:\my\existing\wcf\repo"
+echo    :Create an IIS hosted service named 'wcfService42' by using existing WCF repo located at "c:\my\existing\wcf\repo".
 goto :Done
 
 :Run
