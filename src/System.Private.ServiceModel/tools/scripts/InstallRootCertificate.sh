@@ -41,8 +41,17 @@ install_root_cert()
             # OS X SecureTransport does a direct install into the cert store without requiring copying into a location
             $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile} 
             ;;
-        "centos" | "rhel" | "fedora" | "opensuse")
+        "centos" | "rhel" | "fedora")
             cp -f "${__cafile}" /etc/pki/ca-trust/source/anchors
+
+            if [ $? -ne 0 ]; then
+                return $?
+            fi
+
+            $__update_os_certbundle_exec
+            ;;
+        "opensuse")
+            cp -f "${__cafile}" /etc/pki/trust/anchors
 
             if [ $? -ne 0 ]; then
                 return $?
@@ -141,10 +150,10 @@ case ${__os} in
     "darwin")
         __update_os_certbundle_cmd="security"
         ;;
-    "centos" | "rhel" | "fedora" | "opensuse") 
+    "centos" | "rhel" | "fedora") 
         __update_os_certbundle_cmd="update-ca-trust"
         ;;
-    "ubuntu" | "debian")
+    "ubuntu" | "debian" | "opensuse")
         __update_os_certbundle_cmd="update-ca-certificates"
         ;;
     *)
