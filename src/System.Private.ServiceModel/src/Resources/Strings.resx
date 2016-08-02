@@ -6768,4 +6768,7 @@
   <data name="X509IsNotInTrustedStore" xml:space="preserve">
     <value>The X.509 certificate {0} is not in the trusted people store.</value>
   </data>
+  <data name="Xml_InvalidNodeType" xml:space="preserve">
+    <value>'{0}' is an invalid XmlNodeType.</value>
+  </data>
 </root>

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.IdentityModel.Claims;
 using System.Xml;
@@ -115,6 +114,8 @@ namespace System.ServiceModel
             if (reader == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
 
+            EndpointIdentity readIdentity = null;
+
             reader.MoveToContent();
             if (reader.IsEmptyElement)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.Identity.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
@@ -123,22 +124,22 @@ namespace System.ServiceModel
 
             if (reader.IsStartElement(XD.AddressingDictionary.Spn, XD.AddressingDictionary.IdentityExtensionNamespace))
             {
-                throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.ReadIdentity SpnEndpointIdentity is not supported.");
+                readIdentity = new SpnEndpointIdentity(reader.ReadElementString());
             }
             else if (reader.IsStartElement(XD.AddressingDictionary.Upn, XD.AddressingDictionary.IdentityExtensionNamespace))
             {
-                throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.ReadIdentity UpnEndpointIdentity is not supported.");
+                readIdentity = new UpnEndpointIdentity(reader.ReadElementString());
             }
             else if (reader.IsStartElement(XD.AddressingDictionary.Dns, XD.AddressingDictionary.IdentityExtensionNamespace))
             {
-                throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.ReadIdentity DnsEndpointIdentity is not supported.");
+                readIdentity = new DnsEndpointIdentity(reader.ReadElementString());
             }
             else if (reader.IsStartElement(XD.XmlSignatureDictionary.KeyInfo, XD.XmlSignatureDictionary.Namespace))
             {
                 reader.ReadStartElement();
                 if (reader.IsStartElement(XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace))
                 {
-                    throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.ReadIdentity X509CertificateEndpointIdentity is not supported.");
+                    readIdentity = new X509CertificateEndpointIdentity(reader);
                 }
                 else if (reader.IsStartElement(XD.XmlSignatureDictionary.RsaKeyValue, XD.XmlSignatureDictionary.Namespace))
                 {
@@ -148,7 +149,7 @@ namespace System.ServiceModel
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.UnrecognizedIdentityType, reader.Name, reader.NamespaceURI)));
                 }
-                throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.ReadIdentity RsaEndpointIdentity is not supported.");
+                reader.ReadEndElement();
             }
             else if (reader.NodeType == XmlNodeType.Element)
             {
@@ -165,7 +166,9 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.InvalidIdentityElement));
             }
 
-            throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.ReadIdentity RsaEndpointIdentity is not supported.");
+            reader.ReadEndElement();
+
+            return readIdentity;
         }
 
         internal void WriteTo(XmlDictionaryWriter writer)
