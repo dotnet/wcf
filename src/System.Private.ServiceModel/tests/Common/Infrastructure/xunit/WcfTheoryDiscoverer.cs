@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -22,7 +23,7 @@ namespace Infrastructure.Common
             ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo theoryAttribute)
         {
             IEnumerable<IXunitTestCase> testCases = base.Discover(discoveryOptions, testMethod, theoryAttribute);
-            return WcfTestDiscoverer.Discover(discoveryOptions, _diagnosticMessageSink, testMethod, testCases);
+            return WcfTestDiscoverer.Discover(discoveryOptions, _diagnosticMessageSink, testMethod, testCases, isTheory: true);
         }
     }
 }
