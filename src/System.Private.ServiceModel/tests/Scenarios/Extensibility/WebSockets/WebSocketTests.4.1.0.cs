@@ -17,6 +17,7 @@ public class WebSocketTests : ConditionalWcfTest
     [Fact]
 #endif
     [WcfFact]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_BinaryStreamed()
     {
@@ -84,6 +85,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [OuterLoop]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     public static void WebSocket_Http_Duplex_BinaryStreamed()
     {
         NetHttpBinding binding = null;
@@ -180,6 +182,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
@@ -291,6 +294,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(470)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextStreamed()
     {
@@ -390,6 +394,7 @@ public class WebSocketTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_Duplex_TextStreamed()
     {
@@ -484,6 +489,7 @@ public class WebSocketTests : ConditionalWcfTest
     [Fact]
 #endif
     [WcfFact]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_TextStreamed()
     {
@@ -548,6 +554,7 @@ public class WebSocketTests : ConditionalWcfTest
     [Fact]
 #endif
     [WcfFact]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_WSTransportUsageDefault_DuplexCallback_GuidRoundtrip()
     {
@@ -590,6 +597,8 @@ public class WebSocketTests : ConditionalWcfTest
     [Fact]
 #endif
     [WcfFact]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
+    [OuterLoop]
     public static void WebSocket_Http_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
     {
         DuplexChannelFactory<IWcfDuplexService> factory = null;
@@ -631,6 +640,7 @@ public class WebSocketTests : ConditionalWcfTest
     [Fact]
 #endif
     [WcfFact]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_WSScheme_WSTransportUsageAlways_DuplexCallback_GuidRoundtrip()
     {
@@ -680,6 +690,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
     {
@@ -746,6 +757,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
     {
@@ -814,6 +826,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryBuffered()
     {
@@ -895,6 +908,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
     {
@@ -975,6 +989,7 @@ public class WebSocketTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_TextBuffered()
     {
@@ -1028,6 +1043,7 @@ public class WebSocketTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_BinaryBuffered_KeepAlive()
     {
@@ -1082,6 +1098,7 @@ public class WebSocketTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_Duplex_TextBuffered_KeepAlive()
     {
@@ -1149,6 +1166,7 @@ public class WebSocketTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_Duplex_BinaryBuffered()
     {
@@ -1218,6 +1236,7 @@ public class WebSocketTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
+    [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_VerifyWebSocketsUsed()
     {
