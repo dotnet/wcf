@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
+using Infrastructure.Common;
 using System.ServiceModel;
 using Xunit;
 
 public static class CallbackBehaviorAttributeTest
 {
-    [Fact]
+    [ConditionalFact]
     public static void Default_Ctor_Initializes_Correctly()
     {
         CallbackBehaviorAttribute cba = new CallbackBehaviorAttribute();
@@ -17,7 +17,7 @@ public static class CallbackBehaviorAttributeTest
         Assert.True(cba.UseSynchronizationContext, "UseSynchronizationContext should have been true");
     }
 
-    [Theory]
+    [WcfTheory]
     [InlineData(false)]
     [InlineData(true)]
     public static void AutomaticSessionShutdown_Property_Is_Settable(bool value)
