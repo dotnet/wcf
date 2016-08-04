@@ -5,12 +5,11 @@
     "System.ServiceModel.NetTcp": "4.1.1-beta-24329-01",
     "System.ServiceModel.Primitives": "4.1.1-beta-24329-01",
     "System.ServiceModel.Security": "4.0.2-beta-24329-01",
+    "xunit": "2.2.0-beta2-build3300",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"
-    },
-    "Microsoft.xunit.netcore.extensions": "1.0.0-prerelease-00520-02",
-    "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00520-02"
+    }
   },
   "frameworks": {
     "netstandard1.3": { }
