@@ -150,6 +150,16 @@
     <PropertyGroup Condition="'$(SSL_Available)' == ''">
       <SSL_Available></SSL_Available>
     </PropertyGroup>
+
+    <!-- The default value of $(IncludeTestsWithIssues) is blank, which is equivalent fo 'false'.
+         The check of $(WithCategories) preserves the convention used by other repo's where the
+         keyword 'failing' inside $(WithCategories) asks that tests with [ActiveIssue] be run.
+         Optionally, $(IncludeTestsWithIssues) can be a semicolon-separated list of issue numbers.
+         Tests marked with an [Issue] whose issue number is in this list will be run rather than skipped.
+    -->
+    <PropertyGroup Condition="'$(IncludeTestsWithIssues)' == '' and $(WithCategories.ToLower().Contains('failing'))">
+      <IncludeTestsWithIssues>true</IncludeTestsWithIssues>
+    </PropertyGroup>
   
   <!--
      GeneratedTestPropertiesFileName:
