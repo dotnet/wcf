@@ -95,7 +95,6 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Peer_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
     [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required.
     [OuterLoop]
     // Asking for PeerTrust alone should throw SecurityNegotiationException

@@ -73,7 +73,6 @@ public partial class CustomBindingTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
-    [Issue(1398, OS = OSID.AnyOSX)] // Cert installation on OSX does not work yet
     public static void DefaultSettings_Https_Text_Echo_RoundTrips_String()
     {
 #if FULLXUNIT_NOTSUPPORTED
