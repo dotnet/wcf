@@ -169,6 +169,7 @@ public static class BasicHttpBindingTest
     [Theory]
     [InlineData(null)]
     [InlineData("")]
+    [ActiveIssue(1449)]
     public static void Name_Property_Set_Invalid_Value_Throws(string value)
     {
         var binding = new BasicHttpBinding();
@@ -188,11 +189,13 @@ public static class BasicHttpBindingTest
 
     [Theory]
     [InlineData(null)]
+    [ActiveIssue(1449)]
     public static void Namespace_Property_Set_Invalid_Value_Throws(string value)
     {
         var binding = new BasicHttpBinding();
         Assert.Throws<ArgumentNullException>(() => binding.Namespace = value);
     }
+
     public static MemberDataSet<Encoding> ValidEncodings
     {
         get
@@ -318,6 +321,7 @@ public static class BasicHttpBindingTest
 
     [Theory]
     [MemberData("ValidEncodings", MemberType = typeof(TestData))]
+    [ActiveIssue(1450)]
     public static void TextEncoding_Property_Sets(Encoding encoding)
     {
         var binding = new BasicHttpBinding();
@@ -327,6 +331,7 @@ public static class BasicHttpBindingTest
 
     [Theory]
     [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
+    [ActiveIssue(1450)]
     public static void TextEncoding_Property_Set_Invalid_Value_Throws(Encoding encoding)
     {
         var binding = new BasicHttpBinding();

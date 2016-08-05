@@ -53,6 +53,7 @@ public static class MessageContractTest
 
     [Theory]
     [InlineData(null)]
+    [ActiveIssue(1449)]
     public static void WrapperName_Property_Sets_Throws_ArgumentNull(string wrapperName)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();
@@ -64,6 +65,7 @@ public static class MessageContractTest
     [InlineData("testNamespace")]
     [InlineData("")]
     [InlineData(null)]
+    [ActiveIssue(1449)]
     public static void WrapperNamespace_Property_Sets(string wrapperNamespace)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();

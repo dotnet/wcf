@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.2-beta-24322-03",
     "System.ServiceModel.Duplex": "4.0.2-beta-24329-01",
     "test-runtime": {
       "target": "project",

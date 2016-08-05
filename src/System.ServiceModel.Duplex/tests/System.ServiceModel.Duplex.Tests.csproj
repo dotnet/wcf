@@ -29,10 +29,6 @@
     <ProjectReference Include="$(WcfDuplexPkgProj)">
       <Name>System.ServiceModel.Duplex</Name>
     </ProjectReference>
-    <ProjectReference Include="$(WcfInfrastructureCommonProj)">
-      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
-      <Name>Infrastructure.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

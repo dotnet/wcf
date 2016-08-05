@@ -49,6 +49,7 @@ public static class CustomBindingTest
     [Theory]
     [InlineData("")]
     [InlineData(null)]
+    [ActiveIssue(1449)]
     public static void CustomBinding_Name_Property_Set_Throws(string bindingName)
     {
         CustomBinding customBinding = new CustomBinding();
