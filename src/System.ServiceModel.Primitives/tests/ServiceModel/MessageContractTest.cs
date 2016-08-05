@@ -69,7 +69,7 @@ public static class MessageContractTest
 #endif
     [WcfTheory]
     [InlineData(null)]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void WrapperName_Property_Sets_Throws_ArgumentNull(string wrapperName)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();
@@ -84,7 +84,7 @@ public static class MessageContractTest
     [InlineData("testNamespace")]
     [InlineData("")]
     [InlineData(null)]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void WrapperNamespace_Property_Sets(string wrapperNamespace)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();

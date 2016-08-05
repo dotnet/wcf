@@ -206,7 +206,7 @@ public static class BasicHttpBindingTest
     [WcfTheory]
     [InlineData(null)]
     [InlineData("")]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void Name_Property_Set_Invalid_Value_Throws(string value)
     {
         var binding = new BasicHttpBinding();
@@ -232,7 +232,7 @@ public static class BasicHttpBindingTest
 #endif
     [WcfTheory]
     [InlineData(null)]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void Namespace_Property_Set_Invalid_Value_Throws(string value)
     {
         var binding = new BasicHttpBinding();
@@ -397,7 +397,7 @@ public static class BasicHttpBindingTest
 #endif
     [WcfTheory]
     [MemberData("ValidEncodings", MemberType = typeof(TestData))]
-    [ActiveIssue(1450)]
+    [Issue(1450, Framework = FrameworkID.NetNative)]
     public static void TextEncoding_Property_Sets(Encoding encoding)
     {
         var binding = new BasicHttpBinding();
@@ -410,7 +410,7 @@ public static class BasicHttpBindingTest
 #endif
     [WcfTheory]
     [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
-    [ActiveIssue(1450)]
+    [Issue(1450, Framework = FrameworkID.NetNative)]
     public static void TextEncoding_Property_Set_Invalid_Value_Throws(Encoding encoding)
     {
         var binding = new BasicHttpBinding();

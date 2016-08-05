@@ -59,7 +59,7 @@ public static class CustomBindingTest
     [WcfTheory]
     [InlineData("")]
     [InlineData(null)]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void CustomBinding_Name_Property_Set_Throws(string bindingName)
     {
         CustomBinding customBinding = new CustomBinding();
