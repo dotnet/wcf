@@ -24,6 +24,11 @@
     <None Include="testproperties.props" />
     <None Include="testproperties.targets" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Infrastructure.Common.rd.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="testproperties.props" />
   <Import Project="testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />

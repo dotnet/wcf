@@ -120,15 +120,15 @@
     </ValidationPattern>
     <ValidationPattern Include="xUnitStableVersions">
       <IdentityRegex>^(?i)xunit$</IdentityRegex>
-      <ExpectedVersion>2.1.0</ExpectedVersion>
+      <ExpectedVersion>2.2.0-beta2-build3300</ExpectedVersion>
     </ValidationPattern>
     <ValidationPattern Include="xUnitExtensionsVersions">
       <IdentityRegex>^(?i)Microsoft\.xunit\.netcore\.extensions$</IdentityRegex>
-      <ExpectedVersion>1.0.0-prerelease-00520-02</ExpectedVersion>
+      <ExpectedVersion>1.0.0-prerelease-00704-04</ExpectedVersion>
     </ValidationPattern>
     <ValidationPattern Include="buildToolsTestSuiteVersions">
       <IdentityRegex>^(?i)Microsoft\.DotNet\.BuildTools\.TestSuite$</IdentityRegex>
-      <ExpectedVersion>1.0.0-prerelease-00520-02</ExpectedVersion>
+      <ExpectedVersion>1.0.0-prerelease-00704-04</ExpectedVersion>
     </ValidationPattern>
     <ValidationPattern Include="uwpRunnerVersion">
       <IdentityRegex>^(?i)microsoft\.xunit\.runner\.uwp$</IdentityRegex>

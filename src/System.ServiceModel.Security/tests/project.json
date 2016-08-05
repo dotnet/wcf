@@ -5,8 +5,8 @@
       "target": "project",
       "exclude": "compile"
     },
-    "Microsoft.xunit.netcore.extensions": "1.0.0-prerelease-00520-02",
-    "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00520-02"
+    "Microsoft.xunit.netcore.extensions": "1.0.0-prerelease-00704-04",
+    "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00704-04"
   },
   "frameworks": {
     "netstandard1.3": {}
