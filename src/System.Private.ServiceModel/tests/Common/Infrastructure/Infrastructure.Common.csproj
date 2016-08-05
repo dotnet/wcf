@@ -15,6 +15,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</ProjectGuid>
     <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
@@ -23,11 +24,6 @@
     <None Include="project.json" />
     <None Include="testproperties.props" />
     <None Include="testproperties.targets" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Infrastructure.Common.rd.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="testproperties.props" />
   <Import Project="testproperties.targets" />
