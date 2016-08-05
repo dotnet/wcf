@@ -5,11 +5,15 @@
 
 using System;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public static class TcpTransportBindingElementTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void Ctor_Default_Properties()
     {
         // Validates new TcpTransportBindingElement() initializes correct default property values

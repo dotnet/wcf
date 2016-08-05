@@ -5,11 +5,15 @@
 
 using System;
 using System.ServiceModel;
+using Infrastructure.Common;
 using Xunit;
 
 public static class TcpTransportSecurityTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void Ctor_Default_Properties()
     {
         // new TcpTransportSecurity() initializes correct defaults
@@ -19,7 +23,10 @@ public static class TcpTransportSecurityTest
                     String.Format("ClientCredentialType should have been '{0}' but was '{1}'", TcpClientCredentialType.Windows, transport.ClientCredentialType));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData(TcpClientCredentialType.None)]
     [InlineData(TcpClientCredentialType.Windows)]
     [InlineData(TcpClientCredentialType.Certificate)]
@@ -30,7 +37,10 @@ public static class TcpTransportSecurityTest
         Assert.Equal<TcpClientCredentialType>(credentialType, transport.ClientCredentialType);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void ClientCredentialType_Property_Set_Invalid_Value_Throws()
     {
         TcpTransportSecurity transport = new TcpTransportSecurity();

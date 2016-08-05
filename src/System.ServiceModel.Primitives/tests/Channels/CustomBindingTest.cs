@@ -6,11 +6,15 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public static class CustomBindingTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     // Create the channel factory and open the channel for the request-reply message exchange pattern.
     public static void RequestReplyChannelFactory_Open()
     {
@@ -35,7 +39,10 @@ public static class CustomBindingTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData("MyCustomBinding")]
     // Create a CustomBinding and set/get its name to validate it was created and usable.
     public static void CustomBinding_Name_Property(string bindingName)
@@ -46,10 +53,13 @@ public static class CustomBindingTest
         Assert.Equal<string>(bindingName, actualBindingName);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData("")]
     [InlineData(null)]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void CustomBinding_Name_Property_Set_Throws(string bindingName)
     {
         CustomBinding customBinding = new CustomBinding();

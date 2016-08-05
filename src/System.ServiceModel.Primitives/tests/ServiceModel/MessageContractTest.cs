@@ -5,11 +5,15 @@
 
 using System;
 using System.ServiceModel;
+using Infrastructure.Common;
 using Xunit;
 
 public static class MessageContractTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void Default_Ctor_Initializes_Properties()
     {
         // Verify new MessageContractAttribute() initializes correct defaults.
@@ -22,7 +26,10 @@ public static class MessageContractTest
         Assert.True(messageCA.WrapperNamespace == null, "WrapperNamespace should be null");
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData(true)]
     [InlineData(false)]
     public static void IsWrapped_Property_Sets(bool isWrapped)
@@ -33,7 +40,10 @@ public static class MessageContractTest
         Assert.Equal(isWrapped, messageCA.IsWrapped);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData("testWrapperName")]
     public static void WrapperName_Property_Sets(string wrapperName)
     {
@@ -43,7 +53,10 @@ public static class MessageContractTest
         Assert.Equal(wrapperName, messageCA.WrapperName);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData("")]
     public static void WrapperName_Property_Sets_Throws_Argument(string wrapperName)
     {
@@ -51,21 +64,27 @@ public static class MessageContractTest
         Assert.Throws<ArgumentOutOfRangeException>(() => messageCA.WrapperName = wrapperName);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData(null)]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void WrapperName_Property_Sets_Throws_ArgumentNull(string wrapperName)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();
         Assert.Throws<ArgumentNullException>(() => messageCA.WrapperName = wrapperName);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData("http://www.contoso.com")]
     [InlineData("testNamespace")]
     [InlineData("")]
     [InlineData(null)]
-    [ActiveIssue(1449)]
+    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void WrapperNamespace_Property_Sets(string wrapperNamespace)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();
@@ -74,7 +93,10 @@ public static class MessageContractTest
         Assert.Equal(wrapperNamespace, messageCA.WrapperNamespace);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData(true)]
     [InlineData(false)]
     public static void MessageHeader_MustUnderStand_Sets(bool mustUnderstand)

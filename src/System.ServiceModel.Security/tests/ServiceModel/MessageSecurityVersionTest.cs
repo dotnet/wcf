@@ -4,11 +4,15 @@
 
 
 using System.ServiceModel;
+using Infrastructure.Common;
 using Xunit;
 
 public static class MessageSecurityVersionTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10_Property()
     {
         MessageSecurityVersion securityVersion = MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;

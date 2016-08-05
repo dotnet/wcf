@@ -7,12 +7,16 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using Infrastructure.Common;
 using TestTypes;
 using Xunit;
 
 public static class ContractDescriptionTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void Manually_Generated_Service_Type()
     {
         // -----------------------------------------------------------------------------------------------
@@ -69,7 +73,10 @@ public static class ContractDescriptionTest
     }
 
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void SvcUtil_Generated_Service_Type()
     {
         // -----------------------------------------------------------------------------------------------
@@ -125,7 +132,10 @@ public static class ContractDescriptionTest
         Assert.True(results == null, results);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void MessageContract_Service_Type()
     {
         // -----------------------------------------------------------------------------------------------
@@ -165,7 +175,10 @@ public static class ContractDescriptionTest
         Assert.True(results == null, results);
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     public static void Duplex_ContractDescription_Builds_From_ServiceContract()
     {
         // Arrange

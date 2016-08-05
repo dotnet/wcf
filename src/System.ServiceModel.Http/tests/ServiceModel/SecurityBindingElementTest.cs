@@ -7,11 +7,15 @@ using System;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Infrastructure.Common;
 using Xunit;
 
 public static class SecurityBindingElementTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData(BasicHttpSecurityMode.TransportCredentialOnly)]
     [InlineData(BasicHttpSecurityMode.Transport)]
     [InlineData(BasicHttpSecurityMode.None)]
@@ -27,7 +31,10 @@ public static class SecurityBindingElementTest
         binding.BuildChannelFactory<IRequestChannel>();
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Theory]
+#endif
+    [WcfTheory]
     [InlineData(BasicHttpSecurityMode.Message)]
     [InlineData(BasicHttpSecurityMode.TransportWithMessageCredential)]
     // BasicHttpSecurityMode.Message is not supported
