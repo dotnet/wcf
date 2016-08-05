@@ -181,7 +181,7 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
     [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
-    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required.
+    [Issue(1295, OS = OSID.AnyCentOS | OSID.AnyFedora | OSID.AnyOpenSUSE | OSID.AnyOSX | OSID.AnyRHEL)] // A libcurl built with OpenSSL is required.
     [OuterLoop]
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
@@ -251,7 +251,7 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
     [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
-    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required.
+    [Issue(1295, OS = OSID.AnyCentOS | OSID.AnyFedora | OSID.AnyOpenSUSE | OSID.AnyOSX | OSID.AnyRHEL)] // A libcurl built with OpenSSL is required.
     [OuterLoop]
     // Asking for ChainTrust should succeed if the certificate is
     // chain-trusted.
