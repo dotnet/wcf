@@ -12,6 +12,7 @@ public static class UpnEndpointIdentityTest
     [Theory]
     [InlineData("")]
     [InlineData("test@wcf.example.com")]
+    [ActiveIssue(1454)]
     public static void Ctor_UpnName(string upn)
     {
         UpnEndpointIdentity upnEndpointEntity = new UpnEndpointIdentity(upn);

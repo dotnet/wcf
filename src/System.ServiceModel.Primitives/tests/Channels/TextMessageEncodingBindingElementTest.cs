@@ -21,6 +21,7 @@ public static class TextMessageEncodingBindingElementTest
 
     [Theory]
     [MemberData("ValidEncodings", MemberType = typeof(TestData))]
+    [ActiveIssue(1450)]
     public static void WriteEncoding_Property_Sets(Encoding encoding)
     {
         TextMessageEncodingBindingElement element = new TextMessageEncodingBindingElement();
@@ -30,6 +31,7 @@ public static class TextMessageEncodingBindingElementTest
 
     [Theory]
     [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
+    [ActiveIssue(1450)]
     public static void WriteEncoding_Property_Set_Throws_For_Invalid_Encodings(Encoding encoding)
     {
         TextMessageEncodingBindingElement element = new TextMessageEncodingBindingElement();
