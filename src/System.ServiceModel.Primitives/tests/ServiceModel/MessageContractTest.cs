@@ -68,8 +68,7 @@ public static class MessageContractTest
     [Theory]
 #endif
     [WcfTheory]
-    [InlineData(null)]
-    [Issue(1449, Framework = FrameworkID.NetNative)]
+    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     public static void WrapperName_Property_Sets_Throws_ArgumentNull(string wrapperName)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();
@@ -83,8 +82,7 @@ public static class MessageContractTest
     [InlineData("http://www.contoso.com")]
     [InlineData("testNamespace")]
     [InlineData("")]
-    [InlineData(null)]
-    [Issue(1449, Framework = FrameworkID.NetNative)]
+    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     public static void WrapperNamespace_Property_Sets(string wrapperNamespace)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();

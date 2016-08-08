@@ -204,9 +204,8 @@ public static class BasicHttpBindingTest
     [Theory]
 #endif
     [WcfTheory]
-    [InlineData(null)]
+    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     [InlineData("")]
-    [Issue(1449, Framework = FrameworkID.NetNative)]
     public static void Name_Property_Set_Invalid_Value_Throws(string value)
     {
         var binding = new BasicHttpBinding();
@@ -231,8 +230,7 @@ public static class BasicHttpBindingTest
     [Theory]
 #endif
     [WcfTheory]
-    [InlineData(null)]
-    [Issue(1449, Framework = FrameworkID.NetNative)]
+    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     public static void Namespace_Property_Set_Invalid_Value_Throws(string value)
     {
         var binding = new BasicHttpBinding();
