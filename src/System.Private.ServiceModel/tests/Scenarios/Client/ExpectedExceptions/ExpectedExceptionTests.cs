@@ -16,6 +16,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     // Confirm that the Validate method of the custom X509CertificateValidator is called and that an exception thrown there is handled correctly.
     public static void TCP_ServiceCertFailedCustomValidate_Throw_Exception()

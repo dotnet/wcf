@@ -17,6 +17,7 @@ public partial class CustomBindingTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void DefaultSettings_Tcp_Binary_Echo_RoundTrips_String()
     {

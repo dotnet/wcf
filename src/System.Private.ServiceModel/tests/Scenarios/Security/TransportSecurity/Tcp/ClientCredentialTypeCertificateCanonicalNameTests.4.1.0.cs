@@ -29,6 +29,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Localhost_Address_EchoString()
     {
@@ -113,6 +114,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_DomainName_Address_EchoString()
     {
@@ -202,6 +204,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Fqdn_Address_EchoString()
     {

@@ -147,6 +147,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_With_ServerAltName_EchoString()
     {
