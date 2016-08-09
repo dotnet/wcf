@@ -1,0 +1,16 @@
+ <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">  
+ 
+   <!-- 
+        Types used in the TestData class via MemberData sometimes
+        require an explicit permission to do Reflection, or xunit
+        may encounter MissingMetadataException enumerating the
+        MemberData values.
+   -->
+
+   <Library Name = "System.Text.Encoding" >  
+     <Type Name="System.Text.Encoding" >
+        <Subtypes Dynamic = "Required All" />
+     </Type>
+   </Library> 
+ </Directives> 
+ 
