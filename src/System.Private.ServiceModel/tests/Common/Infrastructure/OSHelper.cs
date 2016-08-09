@@ -12,6 +12,12 @@ namespace Infrastructure.Common
     // RuntimeInformation.OSDescription
     public static class OSHelper
     {
+        // Hard-coded string literals used by RuntimeInformation.OSDescription
+        // for conditionally compiled code for specific OS versions.  Other
+        // versions of Windows obtain their description at runtime.
+        private const string MicrosoftWindowsName = "Microsoft Windows";
+        private const string MicrosoftWindowsPhoneName = "Microsoft Windows Phone";
+
         private static bool _detectedOSID = false;
         private static OSID _currentOSID = 0;
         private static string _currentOSDescription;
@@ -66,8 +72,8 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("Microsoft Windows 6.2.", OSID.Windows_8 | OSID.Windows_Server_2012),
             new Tuple<string, OSID>("Microsoft Windows 6.3.", OSID.Windows_8_1 | OSID.Windows_Server_2012_R2),
             new Tuple<string, OSID>("Microsoft Windows 10.", OSID.Windows_10 | OSID.Windows_Server_2016),
-            new Tuple<string, OSID>("Microsoft Windows Phone", OSID.WindowsPhone),
-            new Tuple<string, OSID>("Microsoft Windows", OSID.AnyWindows),
+            new Tuple<string, OSID>(MicrosoftWindowsPhoneName, OSID.WindowsPhone),
+            new Tuple<string, OSID>(MicrosoftWindowsName, OSID.AnyWindows),  // reserved for "Don't know which version"
         };
 
         private static string CurrentOSDescription
@@ -169,7 +175,43 @@ namespace Infrastructure.Common
                 string description = pair.Item1;
                 if (osDescription.IndexOf(description, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    return pair.Item2;
+                    OSID detectedID =  pair.Item2;
+
+                    // A match of "AnyWindows" means we know it was Windows but don't know which version.
+                    if (detectedID == OSID.AnyWindows)
+                    {
+                        // "Microsoft Windows" is hard-coded at compilation time by RuntimeInformation.OSDescription
+                        // for win8 and netcore50 builds.  See if we had an exact match (not just prefix-match).
+                        if (string.Equals(MicrosoftWindowsName, CurrentOSDescription, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Complete match means it is compile-time hard coded for NET Native or Win8.
+                            // If this is NET Native, mask out any OSID's where we know UWP cannot execute.
+                            // What remains is a bit mask indicating which Windows version it could be.
+                            if (FrameworkID.NetNative.MatchesCurrent())
+                            {
+                                detectedID &= ~(OSID.Windows_Server_2008 |
+                                                OSID.Windows_7 | OSID.Windows_Server_2008_R2 |
+                                                OSID.Windows_8 | OSID.Windows_Server_2008 | OSID.Windows_Server_2012 |
+                                                OSID.WindowsPhone);
+                            }
+                            else
+                            {
+                                // If this is not NET Native, Win8 is the only other OS for which
+                                // this hard-coded literal is used.
+                                detectedID = OSID.Windows_8;
+                            }    
+                        }
+                        else
+                        {
+                            // If the OSDescription is more than the hard-coded literal but we did not
+                            // match the version that followed it, it means we have a version of Windows
+                            // that did not exist at the time this code was written.  Flag the result as
+                            // OSID.None to force infrastructure functional tests to fail for investigation.
+                            detectedID = OSID.None;
+                        }
+                    }
+
+                    return detectedID;
                 }
             }
 
