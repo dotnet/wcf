@@ -21,7 +21,10 @@ using Infrastructure.Common;
 
 public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void NotExistentHost_Throws_EndpointNotFoundException()
     {
@@ -119,7 +122,10 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceRestart_Throws_CommunicationException FAILED with the following errors: {0}", errorBuilder));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void UnknownUrl_Throws_EndpointNotFoundException()
     {
@@ -169,7 +175,10 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         Assert.True(exception.Message.Contains(notFoundUrl), string.Format("Expected exception message to contain: '{0}'", notFoundUrl));
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void UnknownUrl_Throws_ProtocolException()
     {
@@ -191,7 +200,10 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void DuplexCallback_Throws_FaultException_DirectThrow()
     {
@@ -236,7 +248,10 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void DuplexCallback_Throws_FaultException_ReturnsFaultedTask()
     {
@@ -281,7 +296,11 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
     public static void TCP_ServiceCertExpired_Throw_MessageSecurityException()
@@ -315,7 +334,11 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     // Verify product throws SecurityNegotiationException when the service cert is revoked
     public static void TCP_ServiceCertRevoked_Throw_SecurityNegotiationException()
@@ -351,7 +374,10 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
     }
 
+#if FULLXUNIT_NOTSUPPORTED
     [Fact]
+#endif
+    [WcfFact]
     [OuterLoop]
     public static void Abort_During_Implicit_Open_Closes_Sync_Waiters()
     {

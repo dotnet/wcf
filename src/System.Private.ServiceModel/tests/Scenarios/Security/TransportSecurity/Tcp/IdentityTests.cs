@@ -17,6 +17,7 @@ public partial class IdentityTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [Issue(1467, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
     public static void ServiceIdentityNotMatch_Throw_MessageSecurityException()
