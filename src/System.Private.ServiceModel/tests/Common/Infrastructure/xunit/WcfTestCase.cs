@@ -61,7 +61,7 @@ namespace Infrastructure.Common
                                                      : new XunitTestCaseRunner(this, DisplayName, _skippedReason, constructorArguments, TestMethodArguments, messageBus, aggregator, cancellationTokenSource).RunAsync());
 
             s_testListener.EventWritten = null;
-            if (runsummary.Failed > 0)
+            if (runsummary.Failed > 0 && events.Count > 0)
             {
                 StringBuilder etwOutput = new StringBuilder();
                 etwOutput.AppendLine(string.Format("---ETW Trace for Test {0} Begins---", DisplayName));
