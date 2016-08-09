@@ -23,5 +23,10 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup>  
+    <None Include="UnitTests.Common.rd.xml">  
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>  
+    </None>  
+  </ItemGroup>  
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

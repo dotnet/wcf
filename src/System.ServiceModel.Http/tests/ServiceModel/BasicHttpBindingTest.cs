@@ -239,40 +239,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentNullException>(() => binding.Namespace = value);
     }
 
-    public static MemberDataSet<Encoding> ValidEncodings
-    {
-        get
-        {
-            return new MemberDataSet<Encoding>
-                {
-                    { Encoding.BigEndianUnicode },
-                    { Encoding.Unicode },
-                    { Encoding.UTF8 },
-                };
-        }
-    }
-
-    public static MemberDataSet<Encoding> InvalidEncodings
-    {
-        get
-        {
-            MemberDataSet<Encoding> data = new MemberDataSet<Encoding>();
-            foreach (string encodingName in new string[] { "utf-7", "Windows-1252", "us-ascii", "iso-8859-1", "x-Chinese-CNS", "IBM273" })
-            {
-                try
-                {
-                    Encoding encoding = Encoding.GetEncoding(encodingName);
-                    data.Add(encoding);
-                }
-                catch
-                {
-                    // not all encodings are supported on all frameworks
-                }
-            }
-            return data;
-        }
-    }
-
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
 #endif
@@ -397,7 +363,6 @@ public static class BasicHttpBindingTest
 #endif
     [WcfTheory]
     [MemberData("ValidEncodings", MemberType = typeof(TestData))]
-    [Issue(1450, Framework = FrameworkID.NetNative)]
     public static void TextEncoding_Property_Sets(Encoding encoding)
     {
         var binding = new BasicHttpBinding();
@@ -410,7 +375,6 @@ public static class BasicHttpBindingTest
 #endif
     [WcfTheory]
     [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
-    [Issue(1450, Framework = FrameworkID.NetNative)]
     public static void TextEncoding_Property_Set_Invalid_Value_Throws(Encoding encoding)
     {
         var binding = new BasicHttpBinding();
