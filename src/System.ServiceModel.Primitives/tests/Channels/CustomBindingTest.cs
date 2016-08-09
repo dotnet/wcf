@@ -58,8 +58,7 @@ public static class CustomBindingTest
 #endif
     [WcfTheory]
     [InlineData("")]
-    [InlineData(null)]
-    [Issue(1449, Framework = FrameworkID.NetNative)]
+    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     public static void CustomBinding_Name_Property_Set_Throws(string bindingName)
     {
         CustomBinding customBinding = new CustomBinding();
