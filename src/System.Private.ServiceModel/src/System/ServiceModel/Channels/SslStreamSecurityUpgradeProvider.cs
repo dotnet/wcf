@@ -469,9 +469,10 @@ namespace System.ServiceModel.Channels
                         break;
                     }
                 }
+
+                Contract.Assert(clientCertificate != null, "Missing UWP Certificate as an attachment to X509Certificate2");
             }
 
-            Contract.Assert(clientCertificate != null, "Missing UWP Certificate as an attachment to X509Certificate2");
             try
             {
                 // Fetch the underlying raw transport object. For UWP, this will be a StreamSocket
