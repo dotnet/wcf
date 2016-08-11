@@ -95,7 +95,7 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Peer_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(1295, OS = OSID.AnyUnix)] // A libcurl built with OpenSSL is required.
+    [Issue(1295, OS = OSID.AnyCentOS | OSID.AnyFedora | OSID.AnyOpenSUSE | OSID.AnyOSX | OSID.AnyRHEL)] // A libcurl built with OpenSSL is required.
     [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
     [OuterLoop]
     // Asking for PeerTrust alone should throw SecurityNegotiationException
