@@ -74,8 +74,9 @@ install_root_cert()
         return $?
     fi
 
+    # Recalculate OpenSSL hashes; redirect stdout to /dev/null but allow stderr to show on console
     echo "Recalculating OpenSSL certificate hashes using c_rehash"
-    $__c_rehash_exec
+    $__c_rehash_exec > /dev/null 
 
     return $?
 }
