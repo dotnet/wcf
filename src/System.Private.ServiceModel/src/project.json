@@ -55,7 +55,7 @@
       ],
       "dependencies": {
         "System.Net.NameResolution": "4.0.0",
-        "System.Net.Security": "4.0.0",
+        "System.Net.Security": "4.0.1-beta-24322-03",
         "System.Net.Sockets": "4.1.0",
         "System.Security.Principal.Windows": "4.0.0"
       }

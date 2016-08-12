@@ -115,7 +115,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available))]
     [Issue(1235, Framework = FrameworkID.NetNative)]
-    [Issue(1262)]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
