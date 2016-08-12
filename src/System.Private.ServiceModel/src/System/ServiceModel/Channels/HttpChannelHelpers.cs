@@ -44,6 +44,9 @@ namespace System.ServiceModel.Channels
         internal const string MIMEVersionHeader = "MIME-Version";
         internal const string ContentEncodingHeader = "Content-Encoding";
 
+        internal const uint CURLE_SSL_CERTPROBLEM = 58;
+        internal const uint CURLE_SSL_CACERT = 60;
+
         internal const uint WININET_E_NAME_NOT_RESOLVED = 0x80072EE7;
         internal const uint WININET_E_CONNECTION_RESET = 0x80072EFF;
         internal const uint WININET_E_INCORRECT_HANDLE_STATE = 0x80072EF3;
@@ -140,6 +143,8 @@ namespace System.ServiceModel.Channels
                 case UnsafeNativeMethods.ERROR_INVALID_HANDLE:
                 case WININET_E_NAME_NOT_RESOLVED:
                     return new EndpointNotFoundException(SR.Format(SR.EndpointNotFound, request.RequestUri.AbsoluteUri), exception);
+                case CURLE_SSL_CACERT:
+                case CURLE_SSL_CERTPROBLEM:
                 case ERROR_WINHTTP_SECURE_FAILURE:
                     return new SecurityNegotiationException(SR.Format(SR.TrustFailure, request.RequestUri.Authority), exception);
                 default:
