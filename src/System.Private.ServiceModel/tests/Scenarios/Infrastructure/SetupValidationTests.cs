@@ -15,7 +15,6 @@ public class SetupValidationTests : ConditionalWcfTest
 #endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(1347, OS = OSID.AnyUnix)]
     [OuterLoop]
     public static void Root_Certificate_Correctly_Installed()
     {
