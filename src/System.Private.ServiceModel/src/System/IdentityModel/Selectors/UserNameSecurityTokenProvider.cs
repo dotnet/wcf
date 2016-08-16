@@ -28,5 +28,10 @@ namespace System.IdentityModel.Selectors
         {
             return Task.FromResult((SecurityToken)_userNameToken);
         }
+
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            return _userNameToken;
+        }
     }
 }

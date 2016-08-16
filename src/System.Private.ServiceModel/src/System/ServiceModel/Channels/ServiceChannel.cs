@@ -1289,7 +1289,7 @@ namespace System.ServiceModel.Channels
 
             if (_closeBinder)
             {
-                var asyncInnerChannel = InnerChannel as IAsyncCommunicationObject;
+                var asyncInnerChannel = InnerChannel as IAsyncOpenClose;
                 if (asyncInnerChannel != null)
                 {
                     await asyncInnerChannel.CloseAsync(timeoutHelper.RemainingTime());
@@ -1302,7 +1302,7 @@ namespace System.ServiceModel.Channels
 
             if (_closeFactory)
             {
-                var asyncFactory = _factory as IAsyncCommunicationObject;
+                var asyncFactory = _factory as IAsyncOpenClose;
                 if (asyncFactory != null)
                 {
                     await asyncFactory.CloseAsync(timeoutHelper.RemainingTime());
@@ -1345,7 +1345,7 @@ namespace System.ServiceModel.Channels
 
             if (_openBinder)
             {
-                var asyncInnerChannel = InnerChannel as IAsyncCommunicationObject;
+                var asyncInnerChannel = InnerChannel as IAsyncOpenClose;
                 if (asyncInnerChannel != null)
                 {
                     await asyncInnerChannel.OpenAsync(timeout);

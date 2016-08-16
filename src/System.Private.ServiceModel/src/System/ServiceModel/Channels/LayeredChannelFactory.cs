@@ -4,6 +4,7 @@
 
 
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -40,22 +41,26 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerChannelFactory.BeginOpen(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //return _innerChannelFactory.BeginOpen(timeout, callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            _innerChannelFactory.EndOpen(result);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //_innerChannelFactory.EndOpen(result);
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerChannelFactory);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerChannelFactory);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            ChainedCloseAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //ChainedCloseAsyncResult.End(result);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -65,9 +70,26 @@ namespace System.ServiceModel.Channels
             _innerChannelFactory.Close(timeoutHelper.RemainingTime());
         }
 
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return OnCloseAsyncInternal(timeout);
+        }
+
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await ((IAsyncOpenClose)_innerChannelFactory).CloseAsync(timeout);
+        }
+
         protected override void OnOpen(TimeSpan timeout)
         {
             _innerChannelFactory.Open(timeout);
+        }
+
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
+        {
+            return ((IAsyncOpenClose)_innerChannelFactory).OpenAsync(timeout);
         }
 
         protected override void OnAbort()
@@ -211,12 +233,14 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerOutputChannel);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerOutputChannel);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            ChainedCloseAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //ChainedCloseAsyncResult.End(result);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -226,14 +250,28 @@ namespace System.ServiceModel.Channels
             base.OnClose(timeoutHelper.RemainingTime());
         }
 
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return OnCloseAsyncInternal(timeout);
+        }
+
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await ((IAsyncOpenClose)_innerOutputChannel).CloseAsync(timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+        }
+
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedOpenAsyncResult(timeout, callback, state, base.OnBeginOpen, base.OnEndOpen, _innerOutputChannel);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //return new ChainedOpenAsyncResult(timeout, callback, state, base.OnBeginOpen, base.OnEndOpen, _innerOutputChannel);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            ChainedOpenAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            //ChainedOpenAsyncResult.End(result);
         }
 
         protected override void OnOpen(TimeSpan timeout)
@@ -241,6 +279,18 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             base.OnOpen(timeoutHelper.RemainingTime());
             _innerOutputChannel.Open(timeoutHelper.RemainingTime());
+        }
+
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
+        {
+            return OnOpenAsyncInternal(timeout);
+        }
+
+        private async Task OnOpenAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await base.OnOpenAsync(timeoutHelper.RemainingTime());
+            await ((IAsyncOpenClose)_innerOutputChannel).OpenAsync(timeoutHelper.RemainingTime());
         }
 
         public void Send(Message message)

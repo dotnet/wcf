@@ -198,7 +198,7 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             foreach (IChannel channel in currentChannels)
             {
-                IAsyncCommunicationObject iAsyncChannel = channel as IAsyncCommunicationObject;
+                IAsyncOpenClose iAsyncChannel = channel as IAsyncOpenClose;
                 if (iAsyncChannel != null)
                 {
                     await iAsyncChannel.CloseAsync(timeoutHelper.RemainingTime());

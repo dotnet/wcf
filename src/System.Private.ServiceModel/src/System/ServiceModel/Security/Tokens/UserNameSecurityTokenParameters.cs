@@ -3,6 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+
 namespace System.ServiceModel.Security.Tokens
 {
     public class UserNameSecurityTokenParameters : SecurityTokenParameters
@@ -27,6 +30,12 @@ namespace System.ServiceModel.Security.Tokens
         protected override SecurityTokenParameters CloneCore()
         {
             return new UserNameSecurityTokenParameters(this);
+        }
+
+        protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
+        {
+            requirement.TokenType = SecurityTokenTypes.UserName;
+            requirement.RequireCryptographicToken = false;
         }
     }
 }

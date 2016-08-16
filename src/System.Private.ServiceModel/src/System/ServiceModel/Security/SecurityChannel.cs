@@ -5,6 +5,7 @@
 
 using System.Runtime;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
 {
@@ -90,6 +91,23 @@ namespace System.ServiceModel.Security
                 _securityProtocol.Close(false, timeoutHelper.RemainingTime());
             }
             base.OnClose(timeoutHelper.RemainingTime());
+        }
+
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return OnCloseAsyncInternal(timeout);
+        }
+
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            if (_securityProtocol != null)
+            {
+                await _securityProtocol.CloseAsync(false, timeoutHelper.RemainingTime());
+            }
+
+            // $$$ experiementall skip
+            //await base.OnCloseAsync(timeoutHelper.RemainingTime());
         }
 
         protected void ThrowIfDisposedOrNotOpen(Message message)

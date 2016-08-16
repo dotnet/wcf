@@ -11,6 +11,10 @@ namespace System.ServiceModel.Security
 {
     internal abstract class ReceiveSecurityHeader : SecurityHeader
     {
+        bool _expectBasicTokens;
+        bool _expectSignedTokens;
+        bool _expectEndorsingTokens;
+
         protected ReceiveSecurityHeader(Message message, string actor, bool mustUnderstand, bool relay,
             SecurityStandardsManager standardsManager,
             SecurityAlgorithmSuite algorithmSuite,
@@ -34,6 +38,36 @@ namespace System.ServiceModel.Security
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             throw ExceptionHelper.PlatformNotSupported();
+        }
+
+        public bool ExpectBasicTokens
+        {
+            get { return _expectBasicTokens; }
+            set
+            {
+                ThrowIfProcessingStarted();
+                _expectBasicTokens = value;
+            }
+        }
+
+        public bool ExpectSignedTokens
+        {
+            get { return _expectSignedTokens; }
+            set
+            {
+                ThrowIfProcessingStarted();
+                _expectSignedTokens = value;
+            }
+        }
+
+        public bool ExpectEndorsingTokens
+        {
+            get { return _expectEndorsingTokens; }
+            set
+            {
+                ThrowIfProcessingStarted();
+                _expectEndorsingTokens = value;
+            }
         }
     }
 }

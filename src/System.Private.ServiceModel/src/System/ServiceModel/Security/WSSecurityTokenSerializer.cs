@@ -22,7 +22,16 @@ namespace System.ServiceModel.Security
         private const int DefaultMaximumKeyDerivationNonceLength = 128; // bytes
 
         private static WSSecurityTokenSerializer s_instance;
+        private readonly bool _emitBspRequiredAttributes;
+        private readonly SecurityVersion _securityVersion;
+        private readonly List<SerializerEntries> _serializerEntries;
+        private WSSecureConversation _secureConversation;
         private readonly List<TokenEntry> _tokenEntries = new List<TokenEntry>();
+        private int _maximumKeyDerivationOffset;
+        private int _maximumKeyDerivationLabelLength;
+        private int _maximumKeyDerivationNonceLength;
+
+        private KeyInfoSerializer _keyInfoSerializer;
 
         public WSSecurityTokenSerializer()
             : this(SecurityVersion.WSSecurity11)
@@ -68,7 +77,89 @@ namespace System.ServiceModel.Security
         public WSSecurityTokenSerializer(SecurityVersion securityVersion, TrustVersion trustVersion, SecureConversationVersion secureConversationVersion, bool emitBspRequiredAttributes, SamlSerializer samlSerializer, SecurityStateEncoder securityStateEncoder, IEnumerable<Type> knownTypes,
             int maximumKeyDerivationOffset, int maximumKeyDerivationLabelLength, int maximumKeyDerivationNonceLength)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            if (securityVersion == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("securityVersion"));
+
+            if (maximumKeyDerivationOffset < 0)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maximumKeyDerivationOffset", SR.Format(SR.ValueMustBeNonNegative)));
+            }
+            if (maximumKeyDerivationLabelLength < 0)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maximumKeyDerivationLabelLength", SR.Format(SR.ValueMustBeNonNegative)));
+            }
+            if (maximumKeyDerivationNonceLength <= 0)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maximumKeyDerivationNonceLength", SR.Format(SR.ValueMustBeGreaterThanZero)));
+            }
+
+            this._securityVersion = securityVersion;
+            this._emitBspRequiredAttributes = emitBspRequiredAttributes;
+            this._maximumKeyDerivationOffset = maximumKeyDerivationOffset;
+            this._maximumKeyDerivationNonceLength = maximumKeyDerivationNonceLength;
+            this._maximumKeyDerivationLabelLength = maximumKeyDerivationLabelLength;
+
+            this._serializerEntries = new List<SerializerEntries>();
+
+            if (secureConversationVersion == SecureConversationVersion.WSSecureConversationFeb2005)
+            {
+                this._secureConversation = new WSSecureConversationFeb2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
+            }
+            else if (secureConversationVersion == SecureConversationVersion.WSSecureConversation13)
+            {
+                this._secureConversation = new WSSecureConversationDec2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
+            }
+            else
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+            }
+
+            if (securityVersion == SecurityVersion.WSSecurity10)
+            {
+                _serializerEntries.Add(new WSSecurityJan2004(this, samlSerializer));
+            }
+            else if (securityVersion == SecurityVersion.WSSecurity11)
+            {
+                _serializerEntries.Add(new WSSecurityXXX2005(this, samlSerializer));
+            }
+            else
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("securityVersion", SR.Format(SR.MessageSecurityVersionOutOfRange)));
+            }
+            _serializerEntries.Add(_secureConversation);
+
+            IdentityModel.TrustDictionary trustDictionary = null;
+            if (trustVersion == TrustVersion.WSTrustFeb2005)
+            {
+                _serializerEntries.Add(new WSTrustFeb2005(this));
+                trustDictionary = new IdentityModel.TrustFeb2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Feb2005DictionaryStrings));
+            }
+            else if (trustVersion == TrustVersion.WSTrust13)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                //this.serializerEntries.Add(new WSTrustDec2005(this));
+                //trustDictionary = new IdentityModel.TrustDec2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Dec2005DictionaryString));
+            }
+            else
+            {
+                // $$$
+                //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+            }
+
+            _tokenEntries = new List<TokenEntry>();
+
+            for (int i = 0; i < this._serializerEntries.Count; ++i)
+            {
+                SerializerEntries serializerEntry = this._serializerEntries[i];
+                serializerEntry.PopulateTokenEntries(_tokenEntries);
+            }
+
+            IdentityModel.DictionaryManager dictionaryManager = new IdentityModel.DictionaryManager(ServiceModelDictionary.CurrentVersion);
+            dictionaryManager.SecureConversationDec2005Dictionary = new IdentityModel.SecureConversationDec2005Dictionary(new CollectionDictionary(DXD.SecureConversationDec2005Dictionary.SecureConversationDictionaryStrings));
+            dictionaryManager.SecurityAlgorithmDec2005Dictionary = new IdentityModel.SecurityAlgorithmDec2005Dictionary(new CollectionDictionary(DXD.SecurityAlgorithmDec2005Dictionary.SecurityAlgorithmDictionaryStrings));
+
+            _keyInfoSerializer = new WSKeyInfoSerializer(this._emitBspRequiredAttributes, dictionaryManager, trustDictionary, this, securityVersion, secureConversationVersion);
+
         }
 
         public static WSSecurityTokenSerializer DefaultInstance
@@ -81,29 +172,38 @@ namespace System.ServiceModel.Security
             }
         }
 
+        // $$$ added to use in WSKeyInfoSerializer
+        internal KeyInfoSerializer KeyInfoSerializer
+        {
+            get
+            {
+                return _keyInfoSerializer;
+            }
+        }
+
         public bool EmitBspRequiredAttributes
         {
-            get { return false; }
+            get { return _emitBspRequiredAttributes; }
         }
 
         public SecurityVersion SecurityVersion
         {
-            get { return null; }
+            get { return _securityVersion; }
         }
 
         public int MaximumKeyDerivationOffset
         {
-            get { return 0; }
+            get { return _maximumKeyDerivationOffset; }
         }
 
         public int MaximumKeyDerivationLabelLength
         {
-            get { return 0; }
+            get { return _maximumKeyDerivationLabelLength; }
         }
 
         public int MaximumKeyDerivationNonceLength
         {
-            get { return 0; }
+            get { return _maximumKeyDerivationNonceLength; }
         }
 
 
@@ -292,7 +392,7 @@ namespace System.ServiceModel.Security
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CannotReadToken, element.LocalName, element.NamespaceURI, element.GetAttribute(SecurityJan2004Strings.ValueType, null))));
         }
 
-        internal abstract new class TokenEntry
+        internal abstract class TokenEntry
         {
             private Type[] _tokenTypes = null;
             public virtual IAsyncResult BeginReadTokenCore(XmlDictionaryReader reader,
@@ -373,10 +473,11 @@ namespace System.ServiceModel.Security
             public abstract void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token);
         }
 
-        internal abstract new class SerializerEntries
-        {
-            public virtual void PopulateTokenEntries(IList<TokenEntry> tokenEntries) { }
-        }
+        // $$$ removed because can use SecurityTokenSerializer.SerializerEntries directly
+        //internal abstract new class SerializerEntries
+        //{
+        //    public virtual void PopulateTokenEntries(IList<TokenEntry> tokenEntries) { }
+        //}
 
         internal class CollectionDictionary : IXmlDictionary
         {

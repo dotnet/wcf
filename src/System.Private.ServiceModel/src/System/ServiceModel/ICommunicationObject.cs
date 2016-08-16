@@ -32,9 +32,13 @@ namespace System.ServiceModel
         void EndOpen(IAsyncResult result);
     }
 
-    public interface IAsyncCommunicationObject : ICommunicationObject
+    public interface IAsyncOpenClose
     {
         Task CloseAsync(TimeSpan timeout);
         Task OpenAsync(TimeSpan timeout);
+    }
+
+    public interface IAsyncCommunicationObject : ICommunicationObject, IAsyncOpenClose
+    {
     }
 }

@@ -4,6 +4,8 @@
 
 
 using System.Globalization;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.Text;
 
 namespace System.ServiceModel.Security.Tokens
@@ -57,6 +59,32 @@ namespace System.ServiceModel.Security.Tokens
 
         protected abstract SecurityTokenParameters CloneCore();
 
+        internal protected abstract void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement);
+
+        internal SecurityKeyIdentifierClause CreateKeyIdentifierClause<TExternalClause, TInternalClause>(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+    where TExternalClause : SecurityKeyIdentifierClause
+    where TInternalClause : SecurityKeyIdentifierClause
+        {
+            if (token == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+
+            SecurityKeyIdentifierClause result;
+
+            switch (referenceStyle)
+            {
+                default:
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(
+                        SR.Format(SR.TokenDoesNotSupportKeyIdentifierClauseCreation, token.GetType().Name, referenceStyle)));
+                case SecurityTokenReferenceStyle.External:
+                    result = token.CreateKeyIdentifierClause<TExternalClause>();
+                    break;
+                case SecurityTokenReferenceStyle.Internal:
+                    result = token.CreateKeyIdentifierClause<TInternalClause>();
+                    break;
+            }
+
+            return result;
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

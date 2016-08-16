@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.ServiceModel.Channels;
+
 namespace System.ServiceModel.Security
 {
     internal static class SecurityAuditHelper
@@ -13,6 +15,16 @@ namespace System.ServiceModel.Security
             {
                 return false;
             }
+        }
+
+        public static void WriteMessageAuthenticationSuccessEvent(AuditLogLocation auditLogLocation, bool suppressAuditFailure, Message message,
+    Uri serviceUri, string action, string clientIdentity)
+        {
+        }
+
+        public static void WriteMessageAuthenticationFailureEvent(AuditLogLocation auditLogLocation, bool suppressAuditFailure, Message message,
+     Uri serviceUri, string action, string clientIdentity, Exception exception)
+        {
         }
     }
 }

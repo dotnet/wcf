@@ -4,6 +4,8 @@
 
 
 using System.Globalization;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
 using System.Text;
 
@@ -52,6 +54,18 @@ namespace System.ServiceModel.Security.Tokens
             set
             {
                 _bootstrapSecurityBindingElement = value;
+            }
+        }
+
+        public bool RequireCancellation
+        {
+            get
+            {
+                return _requireCancellation;
+            }
+            set
+            {
+                _requireCancellation = value;
             }
         }
 
@@ -106,6 +120,17 @@ namespace System.ServiceModel.Security.Tokens
         protected override SecurityTokenParameters CloneCore()
         {
             return new SecureConversationSecurityTokenParameters(this);
+        }
+
+        protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
+        {
+            requirement.TokenType = ServiceModelSecurityTokenTypes.SecureConversation;
+            requirement.KeyType = SecurityKeyType.SymmetricKey;
+            requirement.RequireCryptographicToken = true;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.SupportSecurityContextCancellationProperty] = this.RequireCancellation;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.SecureConversationSecurityBindingElementProperty] = this.BootstrapSecurityBindingElement;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuerBindingContextProperty] = this.IssuerBindingContext.Clone();
+            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty] = this.Clone();
         }
 
         public override string ToString()

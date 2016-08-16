@@ -5,6 +5,7 @@
 
 using System.IdentityModel.Tokens;
 using System.Runtime;
+using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +23,16 @@ namespace System.IdentityModel.Selectors
         public virtual bool SupportsTokenCancellation
         {
             get { return false; }
+        }
+
+        public SecurityToken GetToken(TimeSpan timeout)
+        {
+            SecurityToken token = this.GetTokenCore(timeout);
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
+            }
+            return token;
         }
 
         public async Task<SecurityToken> GetTokenAsync(CancellationToken cancellationToken)
@@ -57,7 +68,31 @@ namespace System.IdentityModel.Selectors
             await this.CancelTokenCoreAsync(cancellationToken, securityToken);
         }
 
+        public IAsyncResult BeginGetToken(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            throw ExceptionHelper.PlatformNotSupported();
+            // $$$ return this.BeginGetTokenCore(timeout, callback, state);
+        }
+
+        public SecurityToken EndGetToken(IAsyncResult result)
+        {
+            throw ExceptionHelper.PlatformNotSupported();
+            // $$$
+            //if (result == null)
+            //{
+            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("result");
+            //}
+            //SecurityToken token = this.EndGetTokenCore(result);
+            //if (token == null)
+            //{
+            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
+            //}
+            //return token;
+        }
+
         // protected methods
+        protected abstract SecurityToken GetTokenCore(TimeSpan timeout);
+
         protected abstract Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken);
 
         protected virtual Task<SecurityToken> RenewTokenCoreAsync(CancellationToken cancellationToken, SecurityToken tokenToBeRenewed)
@@ -68,6 +103,93 @@ namespace System.IdentityModel.Selectors
         protected virtual Task CancelTokenCoreAsync(CancellationToken cancellationToken, SecurityToken token)
         {
             throw Fx.Exception.AsError(new NotSupportedException(SR.Format(SR.TokenCancellationNotSupported, this)));
+        }
+
+        internal protected class SecurityTokenAsyncResult : IAsyncResult
+        {
+            // $$$ private SecurityToken _token;
+            private object _state;
+            private ManualResetEvent _manualResetEvent;
+            private object _thisLock = new object();
+
+            public SecurityTokenAsyncResult(SecurityToken token, AsyncCallback callback, object state)
+            {
+                throw ExceptionHelper.PlatformNotSupported();
+
+                // $$$
+//                this.token = token;
+//                this.state = state;
+
+//                if (callback != null)
+//                {
+//                    try
+//                    {
+//                        callback(this);
+//                    }
+//#pragma warning suppress 56500
+//                    catch (Exception e)
+//                    {
+//                        if (Fx.IsFatal(e))
+//                            throw;
+
+//                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(SR.Format(SR.AsyncCallbackException), e);
+//                    }
+//                }
+            }
+
+            public object AsyncState
+            {
+                get { return _state; }
+            }
+
+            public WaitHandle AsyncWaitHandle
+            {
+                get
+                {
+                    if (_manualResetEvent != null)
+                    {
+                        return _manualResetEvent;
+                    }
+
+                    lock (_thisLock)
+                    {
+                        if (_manualResetEvent == null)
+                        {
+                            _manualResetEvent = new ManualResetEvent(true);
+                        }
+                    }
+                    return _manualResetEvent;
+                }
+            }
+
+            public bool CompletedSynchronously
+            {
+                get { return true; }
+            }
+
+            public bool IsCompleted
+            {
+                get { return true; }
+            }
+
+            public static SecurityToken End(IAsyncResult result)
+            {
+                throw ExceptionHelper.PlatformNotSupported();
+
+                // $$$
+                //if (result == null)
+                //{
+                //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("result");
+                //}
+
+                //SecurityTokenAsyncResult completedResult = result as SecurityTokenAsyncResult;
+                //if (completedResult == null)
+                //{
+                //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.InvalidAsyncResult), "result"));
+                //}
+
+                //return completedResult.token;
+            }
         }
     }
 }

@@ -176,8 +176,26 @@ namespace System.ServiceModel
 
         public override SecurityTokenSerializer CreateSecurityTokenSerializer(SecurityTokenVersion version)
         {
-            // not referenced anywhere in current code, but must implement abstract. 
-            throw ExceptionHelper.PlatformNotSupported("CreateSecurityTokenSerializer(SecurityTokenVersion version) not supported");
+            if (version == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("version");
+            }
+
+            if (_parent != null && _parent.UseIdentityConfiguration)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                // this.WrapTokenHandlersAsSecurityTokenSerializer(version);
+            }
+
+            MessageSecurityTokenVersion wsVersion = version as MessageSecurityTokenVersion;
+            if (wsVersion != null)
+            {
+                return new WSSecurityTokenSerializer(wsVersion.SecurityVersion, wsVersion.TrustVersion, wsVersion.SecureConversationVersion, wsVersion.EmitBspRequiredAttributes, null, null, null);
+            }
+            else
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.SecurityTokenManagerCannotCreateSerializerForVersion, version)));
+            }
         }
 
         private X509SecurityTokenAuthenticator CreateServerX509TokenAuthenticator()
@@ -259,26 +277,33 @@ namespace System.ServiceModel
 
             return result;
         }
-    }
 
-    internal class KerberosSecurityTokenProviderWrapper : CommunicationObjectSecurityTokenProvider
-    {
-        private KerberosSecurityTokenProvider _innerProvider;
+        internal class KerberosSecurityTokenProviderWrapper : CommunicationObjectSecurityTokenProvider
+        {
+            private KerberosSecurityTokenProvider _innerProvider;
 
-        public KerberosSecurityTokenProviderWrapper(KerberosSecurityTokenProvider innerProvider)
-        {
-            _innerProvider = innerProvider;
-        }
+            public KerberosSecurityTokenProviderWrapper(KerberosSecurityTokenProvider innerProvider)
+            {
+                _innerProvider = innerProvider;
+            }
 
-        internal Task<SecurityToken> GetTokenAsync(CancellationToken cancellationToken, ChannelBinding channelbinding)
-        {
-            return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
-                _innerProvider.TokenImpersonationLevel, _innerProvider.NetworkCredential,
-                SecurityUniqueId.Create().Value));
-        }
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
-        {
-            return GetTokenAsync(cancellationToken, null);
+            internal Task<SecurityToken> GetTokenAsync(CancellationToken cancellationToken, ChannelBinding channelbinding)
+            {
+                return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
+                    _innerProvider.TokenImpersonationLevel, _innerProvider.NetworkCredential,
+                    SecurityUniqueId.Create().Value));
+            }
+            protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+            {
+                return GetTokenAsync(cancellationToken, null);
+            }
+
+            protected override SecurityToken GetTokenCore(TimeSpan timeout)
+            {
+                return new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
+                    _innerProvider.TokenImpersonationLevel, _innerProvider.NetworkCredential,
+                    SecurityUniqueId.Create().Value);
+            }
         }
     }
 }

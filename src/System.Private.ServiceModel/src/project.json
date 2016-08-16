@@ -37,6 +37,7 @@
     "System.Runtime.Serialization.Xml": "4.1.0",
     "System.Security.Claims": "4.0.0",
     "System.Security.Cryptography.X509Certificates": "4.1.1-beta-24322-03",
+    "System.Security.Cryptography.ProtectedData": "4.0.1-beta-24322-03",
     "System.Security.Principal": "4.0.0",
     "System.Text.Encoding": "4.0.10",
     "System.Text.Encoding.Extensions": "4.0.10",
@@ -57,6 +58,7 @@
         "System.Net.NameResolution": "4.0.0",
         "System.Net.Security": "4.0.1-beta-24322-03",
         "System.Net.Sockets": "4.1.0",
+        "System.Security.Cryptography.ProtectedData": "4.0.1-beta-24322-03",
         "System.Security.Principal.Windows": "4.0.0"
       }
     }
