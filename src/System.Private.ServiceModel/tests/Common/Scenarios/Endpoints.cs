@@ -496,6 +496,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string Tcp_Certificate_Duplex_Address
+    {
+        get
+        {
+            return GetEndpointAddress("DuplexCallbackTcpCertificateCredential.svc/tcp-certificate-callback", protocol: "net.tcp");
+        }
+    }
+
     #endregion net.tcp Addresses
 }
 

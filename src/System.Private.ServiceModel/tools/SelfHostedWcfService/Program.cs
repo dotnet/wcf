@@ -81,6 +81,10 @@ namespace SelfHostedWCFService
             DuplexCallbackXmlComplexTypeTestServiceHost duplexCallbackXmlComplexTypeTestServiceHostServiceHost = new DuplexCallbackXmlComplexTypeTestServiceHost(typeof(WcfService.WcfDuplexService), duplexCallbackXmlComplexTypeTestServiceHostbaseAddress);
             duplexCallbackXmlComplexTypeTestServiceHostServiceHost.Open();
 
+            Uri[] duplexCallbackTcpCertificateCredentialTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/DuplexCallbackTcpCertificateCredential.svc", tcpBaseAddress)) };
+            DuplexCallbackTcpCertificateCredentialTestServiceHost duplexCallbackTcpCertificateCredentialTestServiceHost = new DuplexCallbackTcpCertificateCredentialTestServiceHost(typeof(WcfService.WcfDuplexService), duplexCallbackTcpCertificateCredentialTestServiceHostbaseAddress);
+            duplexCallbackTcpCertificateCredentialTestServiceHost.Open();
+
             Uri[] httpBinaryTestServiceHostbaseAddress = new Uri[] { new Uri(string.Format("{0}/HttpBinary.svc", httpBaseAddress)) };
             HttpBinaryTestServiceHost httpBinaryTestServiceHostServiceHost = new HttpBinaryTestServiceHost(typeof(WcfService.WcfService), httpBinaryTestServiceHostbaseAddress);
             httpBinaryTestServiceHostServiceHost.Open();

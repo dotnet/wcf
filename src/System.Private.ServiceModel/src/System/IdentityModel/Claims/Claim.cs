@@ -130,7 +130,6 @@ namespace System.IdentityModel.Claims
             return new Claim(ClaimTypes.Name, name, Rights.PossessProperty);
         }
 
-
         public static Claim CreateSpnClaim(string spn)
         {
             if (spn == null)

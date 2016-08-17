@@ -48,7 +48,7 @@
     </Compile>
     <Compile Include="$(CommonPath)\System\__HResults.cs">
       <Link>Common\System\__HResults.cs</Link>
-    </Compile>    
+    </Compile>
     <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Security;
+using System.Threading.Tasks;
 using Xunit;
 
 public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
@@ -289,6 +290,84 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
+    [OuterLoop]
+    // Asking for ChainTrust only should succeed if the certificate is
+    // chain-trusted.
+    public static void NetTcp_SecModeTrans_Duplex_Callback_Succeeds()
+    {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        bool ssl_Available = SSL_Available();
+
+        if (!root_Certificate_Installed || 
+            !client_Certificate_Installed ||
+            !ssl_Available)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            Console.WriteLine("SSL_Available evaluated as {0}", ssl_Available);
+            return;
+        }
+#endif
+        string clientCertThumb = null;
+        EndpointAddress endpointAddress = null;
+        DuplexChannelFactory<IWcfDuplexService> factory = null;
+        IWcfDuplexService serviceProxy = null;
+        Guid guid = Guid.NewGuid();
+
+        try
+        {
+            // *** SETUP *** \\
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+
+            endpointAddress = new EndpointAddress(new Uri(
+                Endpoints.Tcp_Certificate_Duplex_Address));
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
+
+            WcfDuplexServiceCallback callbackService = new WcfDuplexServiceCallback();
+            InstanceContext context = new InstanceContext(callbackService);
+
+            factory = new DuplexChannelFactory<IWcfDuplexService>(context, binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
+            factory.Credentials.ClientCertificate.SetCertificate(
+                StoreLocation.CurrentUser,
+                StoreName.My,
+                X509FindType.FindByThumbprint,
+                clientCertThumb);
+                
+            serviceProxy = factory.CreateChannel();
+            
+            // *** EXECUTE *** \\
+            // Ping on another thread.
+            Task.Run(() => serviceProxy.Ping(guid));
+            Guid returnedGuid = callbackService.CallbackGuid;
+
+            // *** VALIDATE *** \\
+            Assert.True(guid == returnedGuid,
+                string.Format("The sent GUID does not match the returned GUID. Sent '{0}', Received: '{1}'", guid, returnedGuid));
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            ((ICommunicationObject)factory).Close();
         }
         finally
         {
