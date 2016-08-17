@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,14 +70,14 @@ namespace Infrastructure.Common
                 {
                     try
                     {
-                        etwOutput.AppendLine(string.Format(DisplayName + ":" + item.Message, item.Payload));
+                        etwOutput.AppendLine(string.Format(DisplayName + ": " + item.Message, item.Payload.ToArray()));
                     }
                     //The mumber of parameters in Payload does not match the number of arguments in the item.Message and thus cause a
                     // FormatException occationally, In this case, we catch and output all items in the payload and the Message without formatting the message.
                     // https://github.com/dotnet/wcf/issues/1440 is opened to investigate the root cause of the mismatch exception.
-                    catch (Exception e)
+                    catch (FormatException e)
                     {
-                        etwOutput.AppendLine(String.Format("ETW message encountered exception '{0}' using DisplayName '{1}', format '{2}' and {3} payload items",
+                        etwOutput.AppendLine(String.Format("ETW message encountered FormatException '{0}' using DisplayName '{1}', format '{2}', and '{3}' payload items",
                                              e.Message, DisplayName, item.Message, item.Payload.Count));
 
                         etwOutput.AppendLine(string.Format("ETW message: {0}, payload below was received", item.Message));
