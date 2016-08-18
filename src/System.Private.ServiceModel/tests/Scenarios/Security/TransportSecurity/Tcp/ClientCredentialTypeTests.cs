@@ -305,6 +305,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
+    [Issue(1482)]
     [OuterLoop]
     // Asking for ChainTrust only should succeed if the certificate is
     // chain-trusted.
