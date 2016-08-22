@@ -2629,6 +2629,10 @@ namespace System.Runtime
             public const int ThrowingEtwExceptionVerbose = 57409;
             public const int ThrowingEtwException = 57410;
             public const int HttpHandlerPickedForUrl = 62326;
+            public const int DummyAdminEventId = 65530;
+            public const int DummyOperationalEventId = 65531;
+            public const int DummyAnalyticEventId = 65532;
+            public const int DummyDebugEventId = 65533;
         }
 
         public class Tasks
