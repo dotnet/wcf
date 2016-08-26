@@ -217,7 +217,7 @@ namespace System.ServiceModel.Security
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)this.communicationObject).CloseAsync(timeout);
+            return ((IAsyncCommunicationObject)this.communicationObject).CloseAsync(timeout);
         }
 
         // $$$
@@ -407,7 +407,7 @@ namespace System.ServiceModel.Security
             this.securityChannelFactory = securityChannelFactory;
             this.innerChannelFactory = innerChannelFactory;
             this.channelBuilder = channelBuilder;
-            return ((IAsyncOpenClose)this.communicationObject).OpenAsync(timeout);
+            return ((IAsyncCommunicationObject)this.communicationObject).OpenAsync(timeout);
         }
 
         internal TChannel OnCreateChannel(EndpointAddress remoteAddress, Uri via)

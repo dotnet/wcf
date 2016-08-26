@@ -733,7 +733,7 @@ namespace System.ServiceModel.Security
         {
             if (obj != null)
             {
-                var asyncCo = obj as IAsyncOpenClose;
+                var asyncCo = obj as IAsyncCommunicationObject;
                 if (asyncCo != null)
                 {
                     await asyncCo.OpenAsync(timeout);
@@ -779,7 +779,7 @@ namespace System.ServiceModel.Security
             if (obj != null)
             {
                 ICommunicationObject co = obj as ICommunicationObject;
-                var asyncCo = obj as IAsyncOpenClose;
+                var asyncCo = obj as IAsyncCommunicationObject;
                 if (co != null)
                 {
                     if (aborted)

@@ -212,7 +212,7 @@ namespace System.ServiceModel.Security
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)_communicationObject).CloseAsync(timeout);
+            return ((IAsyncCommunicationObject)_communicationObject).CloseAsync(timeout);
         }
 
         public void Close(TimeSpan timeout)
@@ -250,7 +250,7 @@ namespace System.ServiceModel.Security
 
         public Task OpenAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)_communicationObject).OpenAsync(timeout);
+            return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
         }
 
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
@@ -422,7 +422,7 @@ namespace System.ServiceModel.Security
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)_communicationObject).CloseAsync(timeout);
+            return ((IAsyncCommunicationObject)_communicationObject).CloseAsync(timeout);
         }
 
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
@@ -455,7 +455,7 @@ namespace System.ServiceModel.Security
 
         public Task OpenAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)_communicationObject).OpenAsync(timeout);
+            return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
         }
 
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)

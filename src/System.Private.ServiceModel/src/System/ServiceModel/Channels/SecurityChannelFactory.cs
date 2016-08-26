@@ -463,8 +463,7 @@ namespace System.ServiceModel.Channels
                     timeoutHelper.RemainingTime());
                 OnProtocolCreationComplete(securityProtocol);
                 await this.SecurityProtocol.OpenAsync(timeoutHelper.RemainingTime());
-                // $$$ experimentally not calling base
-                //await base.OnOpenAsync(timeoutHelper.RemainingTime());
+                await base.OnOpenAsync(timeoutHelper.RemainingTime());
             }
 
             void EnableChannelBindingSupport()

@@ -150,10 +150,10 @@ namespace System.ServiceModel.Channels
         private async Task CloseAsyncInternal(TimeSpan timeout)
         {
             await TaskHelpers.EnsureDefaultTaskScheduler();
-            await ((IAsyncOpenClose)this).CloseAsync(timeout);
+            await ((IAsyncCommunicationObject)this).CloseAsync(timeout);
         }
 
-        async Task IAsyncOpenClose.CloseAsync(TimeSpan timeout)
+        async Task IAsyncCommunicationObject.CloseAsync(TimeSpan timeout)
         {
             if (timeout < TimeSpan.Zero)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
@@ -325,10 +325,10 @@ namespace System.ServiceModel.Channels
         private async Task OpenAsyncInternal(TimeSpan timeout)
         {
             await TaskHelpers.EnsureDefaultTaskScheduler();
-            await ((IAsyncOpenClose)this).OpenAsync(timeout);
+            await ((IAsyncCommunicationObject)this).OpenAsync(timeout);
         }
 
-        async Task IAsyncOpenClose.OpenAsync(TimeSpan timeout)
+        async Task IAsyncCommunicationObject.OpenAsync(TimeSpan timeout)
         {
             if (timeout < TimeSpan.Zero)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(

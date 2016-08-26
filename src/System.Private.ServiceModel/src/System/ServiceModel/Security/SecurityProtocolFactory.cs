@@ -1225,7 +1225,7 @@ namespace System.ServiceModel.Security
 
         public Task OpenAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)_communicationObject).OpenAsync(timeout);
+            return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
         }
 
         public Task OpenAsync(bool actAsInitiator, TimeSpan timeout)
@@ -1260,7 +1260,7 @@ namespace System.ServiceModel.Security
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)this._communicationObject).CloseAsync(timeout);
+            return ((IAsyncCommunicationObject)this._communicationObject).CloseAsync(timeout);
         }
 
         // $$$

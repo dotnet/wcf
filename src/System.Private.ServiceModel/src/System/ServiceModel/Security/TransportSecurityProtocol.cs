@@ -69,11 +69,9 @@ namespace System.ServiceModel.Security
         internal void SetUpDelayedSecurityExecution(ref Message message, string actor,
             IList<SupportingTokenSpecification> supportingTokens)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-
-            //SendSecurityHeader securityHeader = CreateSendSecurityHeaderForTransportProtocol(message, actor, this.SecurityProtocolFactory);
-            //AddSupportingTokens(securityHeader, supportingTokens);
-            //message = securityHeader.SetupExecution();
+            SendSecurityHeader securityHeader = CreateSendSecurityHeaderForTransportProtocol(message, actor, this.SecurityProtocolFactory);
+            AddSupportingTokens(securityHeader, supportingTokens);
+            message = securityHeader.SetupExecution();
         }
 
         public override IAsyncResult BeginSecureOutgoingMessage(Message message, TimeSpan timeout, SecurityProtocolCorrelationState correlationState, AsyncCallback callback, object state)

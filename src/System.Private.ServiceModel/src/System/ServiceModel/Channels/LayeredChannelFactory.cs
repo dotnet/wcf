@@ -79,7 +79,7 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             await base.OnCloseAsync(timeoutHelper.RemainingTime());
-            await ((IAsyncOpenClose)_innerChannelFactory).CloseAsync(timeout);
+            await ((IAsyncCommunicationObject)_innerChannelFactory).CloseAsync(timeout);
         }
 
         protected override void OnOpen(TimeSpan timeout)
@@ -89,7 +89,7 @@ namespace System.ServiceModel.Channels
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)_innerChannelFactory).OpenAsync(timeout);
+            return ((IAsyncCommunicationObject)_innerChannelFactory).OpenAsync(timeout);
         }
 
         protected override void OnAbort()
@@ -258,7 +258,7 @@ namespace System.ServiceModel.Channels
         private async Task OnCloseAsyncInternal(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await ((IAsyncOpenClose)_innerOutputChannel).CloseAsync(timeoutHelper.RemainingTime());
+            await ((IAsyncCommunicationObject)_innerOutputChannel).CloseAsync(timeoutHelper.RemainingTime());
             await base.OnCloseAsync(timeoutHelper.RemainingTime());
         }
 
@@ -290,7 +290,7 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             await base.OnOpenAsync(timeoutHelper.RemainingTime());
-            await ((IAsyncOpenClose)_innerOutputChannel).OpenAsync(timeoutHelper.RemainingTime());
+            await ((IAsyncCommunicationObject)_innerOutputChannel).OpenAsync(timeoutHelper.RemainingTime());
         }
 
         public void Send(Message message)

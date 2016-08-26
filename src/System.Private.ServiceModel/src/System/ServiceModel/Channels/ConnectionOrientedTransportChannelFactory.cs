@@ -306,7 +306,7 @@ namespace System.ServiceModel.Channels
             StreamUpgradeProvider localUpgrade = this.Upgrade;
             if (localUpgrade != null)
             {
-                await ((IAsyncOpenClose)localUpgrade).OpenAsync(timeout);
+                await ((IAsyncCommunicationObject)localUpgrade).OpenAsync(timeout);
             }
         }
 
@@ -326,7 +326,7 @@ namespace System.ServiceModel.Channels
 
                 if (localUpgrade != null)
                 {
-                    await ((IAsyncOpenClose)localUpgrade).CloseAsync(timeoutHelper.RemainingTime());
+                    await ((IAsyncCommunicationObject)localUpgrade).CloseAsync(timeoutHelper.RemainingTime());
                 }
             }
         }

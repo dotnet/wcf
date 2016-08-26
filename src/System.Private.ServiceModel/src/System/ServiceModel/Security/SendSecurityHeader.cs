@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.Collections.Generic;
+using System.IdentityModel;
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -14,15 +16,33 @@ namespace System.ServiceModel.Security
 {
     internal abstract class SendSecurityHeader : SecurityHeader, IMessageHeaderWithSharedNamespace
     {
-        private string _idPrefix;
-        private int idCounter;
+        private bool _basicTokenEncrypted;
         private SendSecurityHeaderElementContainer _elementContainer;
         private bool _primarySignatureDone;
-        private byte[] _primarySignatureValue = null;
+        bool _encryptSignature;
+        private SignatureConfirmations _signatureValuesGenerated;
+        private SignatureConfirmations _signatureConfirmationsToSend;
+        private int _idCounter;
+        private string _idPrefix;
+        private bool _hasSignedTokens;
+        private bool _hasEncryptedTokens;
         private MessagePartSpecification _signatureParts;
         private MessagePartSpecification _encryptionParts;
+        private SecurityTokenParameters _signingTokenParameters;
+        private SecurityTokenParameters _encryptingTokenParameters;
+        private List<SecurityToken> _basicTokens = null;
+        private List<SecurityTokenParameters> _basicSupportingTokenParameters = null;
+        private List<SecurityTokenParameters> _endorsingTokenParameters = null;
+        private List<SecurityTokenParameters> _signedEndorsingTokenParameters = null;
+        private List<SecurityTokenParameters> _signedTokenParameters = null;
+        private SecurityToken _encryptingToken;
+        private bool _skipKeyInfoForEncryption;
+        private byte[] _primarySignatureValue = null;
+        private bool _shouldProtectTokens;
+        private BufferManager _bufferManager;
+        private bool _shouldSignToHeader = false;
+        private SecurityProtocolCorrelationState _correlationState;
         private bool _signThenEncrypt = true;
-
         private static readonly string[] s_ids = new string[] { "_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8", "_9" };
 
         protected SendSecurityHeader(Message message, string actor, bool mustUnderstand, bool relay,
@@ -37,6 +57,23 @@ namespace System.ServiceModel.Security
         public SendSecurityHeaderElementContainer ElementContainer
         {
             get { return _elementContainer; }
+        }
+
+        public BufferManager StreamBufferManager
+        {
+            get
+            {
+                if (_bufferManager == null)
+                {
+                    _bufferManager = BufferManager.CreateBufferManager(0, int.MaxValue);
+                }
+
+                return _bufferManager;
+            }
+            set
+            {
+                _bufferManager = value;
+            }
         }
 
         public MessagePartSpecification EncryptionParts
@@ -112,6 +149,30 @@ namespace System.ServiceModel.Security
             }
         }
 
+        public bool HasSignedTokens
+        {
+            get
+            {
+                return this._hasSignedTokens;
+            }
+        }
+
+        public bool HasEncryptedTokens
+        {
+            get
+            {
+                return this._hasEncryptedTokens;
+            }
+        }
+
+        void AddParameters(ref List<SecurityTokenParameters> list, SecurityTokenParameters item)
+        {
+            if (list == null)
+            {
+                list = new List<SecurityTokenParameters>();
+            }
+            list.Add(item);
+        }
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
@@ -139,46 +200,40 @@ namespace System.ServiceModel.Security
 
         public void AddTimestamp(SecurityTimestamp timestamp)
         {
-            throw ExceptionHelper.PlatformNotSupported(); // $$$
+            ThrowIfProcessingStarted();
+            if (_elementContainer.Timestamp != null)
+            {
+                throw TraceUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.TimestampAlreadySetForSecurityHeader)), this.Message);
+            }
+            if (timestamp == null)
+            {
+                throw TraceUtility.ThrowHelperArgumentNull("timestamp", this.Message);
+            }
 
-            //ThrowIfProcessingStarted();
-            //if (this.elementContainer.Timestamp != null)
-            //{
-            //    throw TraceUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.TimestampAlreadySetForSecurityHeader)), this.Message);
-            //}
-            //if (timestamp == null)
-            //{
-            //    throw TraceUtility.ThrowHelperArgumentNull("timestamp", this.Message);
-            //}
-
-            //this.elementContainer.Timestamp = timestamp;
+            _elementContainer.Timestamp = timestamp;
         }
 
         public void AddBasicSupportingToken(SecurityToken token, SecurityTokenParameters parameters)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            if (token == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+            if (parameters == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parameters");
+            ThrowIfProcessingStarted();
+            SendSecurityHeaderElement tokenElement = new SendSecurityHeaderElement(token.Id, new TokenElement(token, this.StandardsManager));
+            tokenElement.MarkedForEncryption = true;
+            _elementContainer.AddBasicSupportingToken(tokenElement);
+            _hasEncryptedTokens = true;
+            _hasSignedTokens = true;
+            AddParameters(ref _basicSupportingTokenParameters, parameters);
+            if (_basicTokens == null)
+            {
+                _basicTokens = new List<SecurityToken>();
+            }
 
-            // $$$
-
-            //if (token == null)
-            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
-            //if (parameters == null)
-            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parameters");
-            //ThrowIfProcessingStarted();
-            //SendSecurityHeaderElement tokenElement = new SendSecurityHeaderElement(token.Id, new TokenElement(token, this.StandardsManager));
-            //tokenElement.MarkedForEncryption = true;
-            //this.elementContainer.AddBasicSupportingToken(tokenElement);
-            //hasEncryptedTokens = true;
-            //hasSignedTokens = true;
-            //this.AddParameters(ref this.basicSupportingTokenParameters, parameters);
-            //if (this.basicTokens == null)
-            //{
-            //    this.basicTokens = new List<SecurityToken>();
-            //}
-
-            ////  We maintain a list of the basic tokens for the SignThenEncrypt case as we will 
-            ////  need this token to write STR entry on OnWriteHeaderContents. 
-            //this.basicTokens.Add(token);
+            //  We maintain a list of the basic tokens for the SignThenEncrypt case as we will 
+            //  need this token to write STR entry on OnWriteHeaderContents. 
+            _basicTokens.Add(token);
 
         }
 
@@ -242,7 +297,7 @@ namespace System.ServiceModel.Security
 
         public string GenerateId()
         {
-            int id = this.idCounter++;
+            int id = _idCounter++;
 
             if (_idPrefix != null)
             {
@@ -305,6 +360,49 @@ namespace System.ServiceModel.Security
             //AddGeneratedSignatureValue(signedXml.GetSignatureValue(), this.EncryptPrimarySignature);
             //this.primarySignatureDone = true;
             //this.primarySignatureValue = signedXml.GetSignatureValue();
+        }
+    }
+
+    class TokenElement : ISecurityElement
+    {
+        SecurityStandardsManager standardsManager;
+        SecurityToken token;
+
+        public TokenElement(SecurityToken token, SecurityStandardsManager standardsManager)
+        {
+            this.token = token;
+            this.standardsManager = standardsManager;
+        }
+
+        public override bool Equals(object item)
+        {
+            TokenElement element = item as TokenElement;
+            return (element != null && this.token == element.token && this.standardsManager == element.standardsManager);
+        }
+
+        public override int GetHashCode()
+        {
+            return token.GetHashCode() ^ standardsManager.GetHashCode();
+        }
+
+        public bool HasId
+        {
+            get { return true; }
+        }
+
+        public string Id
+        {
+            get { return token.Id; }
+        }
+
+        public SecurityToken Token
+        {
+            get { return token; }
+        }
+
+        public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
+        {
+            standardsManager.SecurityTokenSerializer.WriteToken(writer, token);
         }
     }
 }

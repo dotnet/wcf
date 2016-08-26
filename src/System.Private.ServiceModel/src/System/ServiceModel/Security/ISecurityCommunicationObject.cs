@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
 {
-    internal interface ISecurityCommunicationObject : IAsyncOpenClose
+    internal interface ISecurityCommunicationObject
     {
         TimeSpan DefaultOpenTimeout { get; }
         TimeSpan DefaultCloseTimeout { get; }
         void OnAbort();
+
+        Task CloseAsync(TimeSpan timeout);
+        Task OpenAsync(TimeSpan timeout);
 
         // $$$
         //IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state);

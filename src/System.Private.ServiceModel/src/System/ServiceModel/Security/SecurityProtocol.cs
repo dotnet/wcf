@@ -125,12 +125,12 @@ namespace System.ServiceModel.Security
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)this.communicationObject).CloseAsync(timeout);
+            return ((IAsyncCommunicationObject)this.communicationObject).CloseAsync(timeout);
         }
 
         public Task OpenAsync(TimeSpan timeout)
         {
-            return ((IAsyncOpenClose)this.communicationObject).OpenAsync(timeout);
+            return ((IAsyncCommunicationObject)this.communicationObject).OpenAsync(timeout);
         }
 
         //$$$
@@ -577,7 +577,7 @@ namespace System.ServiceModel.Security
             }
             else
             {
-                return ((IAsyncOpenClose)this.communicationObject).CloseAsync(timeout);
+                return ((IAsyncCommunicationObject)this.communicationObject).CloseAsync(timeout);
             }
         }
 
@@ -705,23 +705,23 @@ namespace System.ServiceModel.Security
 
         SendSecurityHeader CreateSendSecurityHeader(Message message, string actor, SecurityProtocolFactory factory, bool requireMessageProtection)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            // throw ExceptionHelper.PlatformNotSupported();   // $$$
 
-            //MessageDirection transferDirection = factory.ActAsInitiator ? MessageDirection.Input : MessageDirection.Output;
-            //SendSecurityHeader sendSecurityHeader = factory.StandardsManager.CreateSendSecurityHeader(
-            //    message,
-            //    actor, true, false,
-            //    factory.OutgoingAlgorithmSuite, transferDirection);
-            //sendSecurityHeader.Layout = factory.SecurityHeaderLayout;
-            //sendSecurityHeader.RequireMessageProtection = requireMessageProtection;
-            //SetSecurityHeaderId(sendSecurityHeader, message);
-            //if (factory.AddTimestamp)
-            //{
-            //    sendSecurityHeader.AddTimestamp(factory.TimestampValidityDuration);
-            //}
+            MessageDirection transferDirection = factory.ActAsInitiator ? MessageDirection.Input : MessageDirection.Output;
+            SendSecurityHeader sendSecurityHeader = factory.StandardsManager.CreateSendSecurityHeader(
+                message,
+                actor, true, false,
+                factory.OutgoingAlgorithmSuite, transferDirection);
+            sendSecurityHeader.Layout = factory.SecurityHeaderLayout;
+            sendSecurityHeader.RequireMessageProtection = requireMessageProtection;
+            SetSecurityHeaderId(sendSecurityHeader, message);
+            if (factory.AddTimestamp)
+            {
+                sendSecurityHeader.AddTimestamp(factory.TimestampValidityDuration);
+            }
 
-            //sendSecurityHeader.StreamBufferManager = factory.StreamBufferManager;
-            //return sendSecurityHeader;
+            sendSecurityHeader.StreamBufferManager = factory.StreamBufferManager;
+            return sendSecurityHeader;
         }
 
         internal void AddMessageSupportingTokens(Message message, ref IList<SupportingTokenSpecification> supportingTokens)

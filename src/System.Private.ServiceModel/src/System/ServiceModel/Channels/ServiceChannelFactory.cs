@@ -412,7 +412,7 @@ namespace System.ServiceModel.Channels
                     channel = _channelsList[0];
                 }
 
-                var asyncChannel = channel as IAsyncOpenClose;
+                var asyncChannel = channel as IAsyncCommunicationObject;
                 if (asyncChannel != null)
                 {
                     await asyncChannel.CloseAsync(timeoutHelper.RemainingTime());
@@ -456,7 +456,7 @@ namespace System.ServiceModel.Channels
 
             protected internal override Task OnOpenAsync(TimeSpan timeout)
             {
-                return ((IAsyncOpenClose)_innerChannelFactory).OpenAsync(timeout);
+                return ((IAsyncCommunicationObject)_innerChannelFactory).OpenAsync(timeout);
             }
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
