@@ -16,12 +16,6 @@ namespace System.ServiceModel.Security
         Task CloseAsync(TimeSpan timeout);
         Task OpenAsync(TimeSpan timeout);
 
-        // $$$
-        //IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state);
-        //IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state);
-        //void OnEndClose(IAsyncResult result);
-        //void OnEndOpen(IAsyncResult result);
-
         void OnClose(TimeSpan timeout);
         void OnClosed();
         void OnClosing();

@@ -133,19 +133,6 @@ namespace System.ServiceModel.Security
             return ((IAsyncCommunicationObject)this.communicationObject).OpenAsync(timeout);
         }
 
-        //$$$
-        //public IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-        //{
-        //    throw ExceptionHelper.PlatformNotSupported("SecurityProtocol.OnBeginClose not supported.");
-        //    //$$$ return new OperationWithTimeoutAsyncResult(new OperationWithTimeoutCallback(this.OnClose), timeout, callback, state);
-        //}
-
-        //public IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        //{
-        //    throw ExceptionHelper.PlatformNotSupported("SecurityProtocol.OnBeginClose not supported.");
-        //    // $$$ return new OperationWithTimeoutAsyncResult(new OperationWithTimeoutCallback(this.OnOpen), timeout, callback, state);
-        //}
-
         public void OnClosed()
         {
         }
@@ -413,18 +400,6 @@ namespace System.ServiceModel.Security
         public void Open(TimeSpan timeout)
         {
             this.communicationObject.Open(timeout);
-        }
-
-        public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //return this.communicationObject.BeginOpen(timeout, callback, state);
-        }
-
-        public void EndOpen(IAsyncResult result)
-        {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //this.communicationObject.EndOpen(result);
         }
 
         public virtual void OnOpen(TimeSpan timeout)

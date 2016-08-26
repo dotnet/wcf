@@ -106,8 +106,7 @@ namespace System.ServiceModel.Security
                 await _securityProtocol.CloseAsync(false, timeoutHelper.RemainingTime());
             }
 
-            // $$$ experiementall skip
-            //await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
         }
 
         protected void ThrowIfDisposedOrNotOpen(Message message)

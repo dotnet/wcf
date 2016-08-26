@@ -71,23 +71,11 @@ namespace System.IdentityModel.Selectors
         public IAsyncResult BeginGetToken(TimeSpan timeout, AsyncCallback callback, object state)
         {
             throw ExceptionHelper.PlatformNotSupported();
-            // $$$ return this.BeginGetTokenCore(timeout, callback, state);
         }
 
         public SecurityToken EndGetToken(IAsyncResult result)
         {
             throw ExceptionHelper.PlatformNotSupported();
-            // $$$
-            //if (result == null)
-            //{
-            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("result");
-            //}
-            //SecurityToken token = this.EndGetTokenCore(result);
-            //if (token == null)
-            //{
-            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
-            //}
-            //return token;
         }
 
         // protected methods

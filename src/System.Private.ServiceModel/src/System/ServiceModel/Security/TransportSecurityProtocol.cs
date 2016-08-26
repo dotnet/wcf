@@ -1,19 +1,19 @@
-//----------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+using System.Runtime;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Security
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Selectors;
-    using System.IdentityModel.Tokens;
-    using System.Runtime;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-
     class TransportSecurityProtocol : SecurityProtocol
     {
         public TransportSecurityProtocol(TransportSecurityProtocolFactory factory, EndpointAddress target, Uri via)
@@ -57,8 +57,6 @@ namespace System.ServiceModel.Security
 
         protected void SecureOutgoingMessageAtResponder(ref Message message, string actor)
         {
-            // $$$throw ExceptionHelper.PlatformNotSupported();   // $$$
-
             if (this.SecurityProtocolFactory.AddTimestamp && !this.SecurityProtocolFactory.SecurityBindingElement.EnableUnsecuredResponse)
             {
                 SendSecurityHeader securityHeader = CreateSendSecurityHeaderForTransportProtocol(message, actor, this.SecurityProtocolFactory);
@@ -207,7 +205,7 @@ namespace System.ServiceModel.Security
 
         protected virtual void VerifyIncomingMessageCore(ref Message message, TimeSpan timeout)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
             //TransportSecurityProtocolFactory factory = (TransportSecurityProtocolFactory)this.SecurityProtocolFactory;
             //string actor = string.Empty; // message.Version.Envelope.UltimateDestinationActor;

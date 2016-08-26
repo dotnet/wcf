@@ -1,6 +1,6 @@
-//----------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,40 +29,40 @@ namespace System.ServiceModel.Security
         internal const string defaultKeyRenewalIntervalString = "10:00:00";
         internal const string defaultKeyRolloverIntervalString = "00:05:00";
 
-        internal static readonly TimeSpan defaultKeyRenewalInterval = TimeSpan.Parse(defaultKeyRenewalIntervalString, CultureInfo.InvariantCulture);
-        internal static readonly TimeSpan defaultKeyRolloverInterval = TimeSpan.Parse(defaultKeyRolloverIntervalString, CultureInfo.InvariantCulture);
+        internal static readonly TimeSpan s_defaultKeyRenewalInterval = TimeSpan.Parse(defaultKeyRenewalIntervalString, CultureInfo.InvariantCulture);
+        internal static readonly TimeSpan s_defaultKeyRolloverInterval = TimeSpan.Parse(defaultKeyRolloverIntervalString, CultureInfo.InvariantCulture);
         internal const bool defaultTolerateTransportFailures = true;
     }
 
     sealed class SecuritySessionClientSettings<TChannel> : IChannelSecureConversationSessionSettings, ISecurityCommunicationObject
     {
-        SecurityProtocolFactory sessionProtocolFactory;
-        TimeSpan keyRenewalInterval;
-        TimeSpan keyRolloverInterval;
-        bool tolerateTransportFailures;
-        SecurityChannelFactory<TChannel> securityChannelFactory;
-        IChannelFactory innerChannelFactory;
-        ChannelBuilder channelBuilder;
-        WrapperSecurityCommunicationObject communicationObject;
-        SecurityStandardsManager standardsManager;
-        SecurityTokenParameters issuedTokenParameters;
-        int issuedTokenRenewalThreshold;
-        bool canRenewSession = true;
-        object thisLock = new object();
+        private SecurityProtocolFactory _sessionProtocolFactory;
+        private TimeSpan _keyRenewalInterval;
+        private TimeSpan _keyRolloverInterval;
+        private bool _tolerateTransportFailures;
+        private SecurityChannelFactory<TChannel> _securityChannelFactory;
+        private IChannelFactory _innerChannelFactory;
+        private ChannelBuilder _channelBuilder;
+        private WrapperSecurityCommunicationObject _communicationObject;
+        private SecurityStandardsManager _standardsManager;
+        private SecurityTokenParameters _issuedTokenParameters;
+        private int _issuedTokenRenewalThreshold;
+        private bool _canRenewSession = true;
+        private object _thisLock = new object();
 
         public SecuritySessionClientSettings()
         {
-            this.keyRenewalInterval = SecuritySessionClientSettings.defaultKeyRenewalInterval;
-            this.keyRolloverInterval = SecuritySessionClientSettings.defaultKeyRolloverInterval;
-            this.tolerateTransportFailures = SecuritySessionClientSettings.defaultTolerateTransportFailures;
-            this.communicationObject = new WrapperSecurityCommunicationObject(this);
+            _keyRenewalInterval = SecuritySessionClientSettings.s_defaultKeyRenewalInterval;
+            _keyRolloverInterval = SecuritySessionClientSettings.s_defaultKeyRolloverInterval;
+            _tolerateTransportFailures = SecuritySessionClientSettings.defaultTolerateTransportFailures;
+            _communicationObject = new WrapperSecurityCommunicationObject(this);
         }
 
         IChannelFactory InnerChannelFactory
         {
             get
             {
-                return this.innerChannelFactory;
+                return _innerChannelFactory;
             }
         }
 
@@ -70,11 +70,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.channelBuilder;
+                return _channelBuilder;
             }
             set
             {
-                this.channelBuilder = value;
+                _channelBuilder = value;
             }
         }
 
@@ -82,7 +82,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.securityChannelFactory;
+                return _securityChannelFactory;
             }
         }
 
@@ -90,12 +90,12 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.sessionProtocolFactory;
+                return _sessionProtocolFactory;
             }
             set
             {
-                this.communicationObject.ThrowIfDisposedOrImmutable();
-                this.sessionProtocolFactory = value;
+                _communicationObject.ThrowIfDisposedOrImmutable();
+                _sessionProtocolFactory = value;
             }
         }
 
@@ -103,7 +103,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.keyRenewalInterval;
+                return _keyRenewalInterval;
             }
             set
             {
@@ -111,8 +111,8 @@ namespace System.ServiceModel.Security
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", SR.Format(SR.TimeSpanMustbeGreaterThanTimeSpanZero)));
                 }
-                this.communicationObject.ThrowIfDisposedOrImmutable();
-                this.keyRenewalInterval = value;
+                _communicationObject.ThrowIfDisposedOrImmutable();
+                _keyRenewalInterval = value;
             }
         }
 
@@ -120,7 +120,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.keyRolloverInterval;
+                return _keyRolloverInterval;
             }
             set
             {
@@ -128,8 +128,8 @@ namespace System.ServiceModel.Security
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", SR.Format(SR.TimeSpanMustbeGreaterThanTimeSpanZero)));
                 }
-                this.communicationObject.ThrowIfDisposedOrImmutable();
-                this.keyRolloverInterval = value;
+                _communicationObject.ThrowIfDisposedOrImmutable();
+                _keyRolloverInterval = value;
             }
         }
 
@@ -137,12 +137,12 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.tolerateTransportFailures;
+                return _tolerateTransportFailures;
             }
             set
             {
-                this.communicationObject.ThrowIfDisposedOrImmutable();
-                this.tolerateTransportFailures = value;
+                _communicationObject.ThrowIfDisposedOrImmutable();
+                _tolerateTransportFailures = value;
             }
         }
 
@@ -150,11 +150,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.canRenewSession;
+                return _canRenewSession;
             }
             set
             {
-                this.canRenewSession = value;
+                _canRenewSession = value;
             }
         }
 
@@ -162,12 +162,12 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.issuedTokenParameters;
+                return _issuedTokenParameters;
             }
             set
             {
-                this.communicationObject.ThrowIfDisposedOrImmutable();
-                this.issuedTokenParameters = value;
+                _communicationObject.ThrowIfDisposedOrImmutable();
+                _issuedTokenParameters = value;
             }
         }
 
@@ -175,12 +175,12 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.standardsManager;
+                return _standardsManager;
             }
             set
             {
-                this.communicationObject.ThrowIfDisposedOrImmutable();
-                this.standardsManager = value;
+                _communicationObject.ThrowIfDisposedOrImmutable();
+                _standardsManager = value;
             }
         }
 
@@ -217,56 +217,32 @@ namespace System.ServiceModel.Security
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return ((IAsyncCommunicationObject)this.communicationObject).CloseAsync(timeout);
+            return ((IAsyncCommunicationObject)_communicationObject).CloseAsync(timeout);
         }
-
-        // $$$
-        //public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-        //{
-        //    return this.communicationObject.BeginClose(timeout, callback, state);
-        //}
-
-        //public void EndClose(IAsyncResult result)
-        //{
-        //    this.communicationObject.EndClose(result);
-        //}
 
         public Task OpenAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            if (this.sessionProtocolFactory == null)
+            if (_sessionProtocolFactory == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecuritySessionProtocolFactoryShouldBeSetBeforeThisOperation)));
             }
-            if (this.standardsManager == null)
+            if (_standardsManager == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecurityStandardsManagerNotSet, this.GetType().ToString())));
             }
-            if (this.issuedTokenParameters == null)
+            if (_issuedTokenParameters == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuedSecurityTokenParametersNotSet, this.GetType())));
             }
-            if (this.keyRenewalInterval < this.keyRolloverInterval)
+            if (_keyRenewalInterval < _keyRolloverInterval)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.KeyRolloverGreaterThanKeyRenewal)));
             }
-            this.issuedTokenRenewalThreshold = this.sessionProtocolFactory.SecurityBindingElement.LocalClientSettings.CookieRenewalThresholdPercentage;
+            _issuedTokenRenewalThreshold = _sessionProtocolFactory.SecurityBindingElement.LocalClientSettings.CookieRenewalThresholdPercentage;
             this.ConfigureSessionProtocolFactory();
-            return this.sessionProtocolFactory.OpenAsync(true, timeoutHelper.RemainingTime());
+            return _sessionProtocolFactory.OpenAsync(true, timeoutHelper.RemainingTime());
         }
-
-        //$$$
-        //IAsyncResult ISecurityCommunicationObject.OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-        //{
-        //    throw ExceptionHelper.PlatformNotSupported();
-        //    // $$$return new OperationWithTimeoutAsyncResult(new OperationWithTimeoutCallback(this.OnClose), timeout, callback, state);
-        //}
-
-        //IAsyncResult ISecurityCommunicationObject.OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        //{
-        //    throw ExceptionHelper.PlatformNotSupported();
-        //    // $$$ return new OperationWithTimeoutAsyncResult(new OperationWithTimeoutCallback(this.OnOpen), timeout, callback, state);
-        //}
 
         public void OnClosed()
         {
@@ -275,17 +251,6 @@ namespace System.ServiceModel.Security
         public void OnClosing()
         {
         }
-
-        // $$$
-        //void ISecurityCommunicationObject.OnEndClose(IAsyncResult result)
-        //{
-        //    OperationWithTimeoutAsyncResult.End(result);
-        //}
-
-        //void ISecurityCommunicationObject.OnEndOpen(IAsyncResult result)
-        //{
-        //    OperationWithTimeoutAsyncResult.End(result);
-        //}
 
         public void OnFaulted()
         {
@@ -301,9 +266,9 @@ namespace System.ServiceModel.Security
 
         public void OnClose(TimeSpan timeout)
         {
-            if (this.sessionProtocolFactory != null)
+            if (_sessionProtocolFactory != null)
             {
-                this.sessionProtocolFactory.Close(false, timeout);
+                _sessionProtocolFactory.Close(false, timeout);
             }
         }
 
@@ -314,42 +279,42 @@ namespace System.ServiceModel.Security
 
         private async Task OnCloseAsyncInternal(TimeSpan timeout)
         {
-            if (this.sessionProtocolFactory != null)
+            if (_sessionProtocolFactory != null)
             {
-                await this.sessionProtocolFactory.CloseAsync(timeout);
+                await _sessionProtocolFactory.CloseAsync(timeout);
             }
         }
 
         public void OnAbort()
         {
-            if (this.sessionProtocolFactory != null)
+            if (_sessionProtocolFactory != null)
             {
-                this.sessionProtocolFactory.Close(true, TimeSpan.Zero);
+                _sessionProtocolFactory.Close(true, TimeSpan.Zero);
             }
         }
 
         public void OnOpen(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            if (this.sessionProtocolFactory == null)
+            if (_sessionProtocolFactory == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecuritySessionProtocolFactoryShouldBeSetBeforeThisOperation)));
             }
-            if (this.standardsManager == null)
+            if (_standardsManager == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecurityStandardsManagerNotSet, this.GetType().ToString())));
             }
-            if (this.issuedTokenParameters == null)
+            if (_issuedTokenParameters == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuedSecurityTokenParametersNotSet, this.GetType())));
             }
-            if (this.keyRenewalInterval < this.keyRolloverInterval)
+            if (_keyRenewalInterval < _keyRolloverInterval)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.KeyRolloverGreaterThanKeyRenewal)));
             }
-            this.issuedTokenRenewalThreshold = this.sessionProtocolFactory.SecurityBindingElement.LocalClientSettings.CookieRenewalThresholdPercentage;
+            _issuedTokenRenewalThreshold = _sessionProtocolFactory.SecurityBindingElement.LocalClientSettings.CookieRenewalThresholdPercentage;
             this.ConfigureSessionProtocolFactory();
-            this.sessionProtocolFactory.Open(true, timeoutHelper.RemainingTime());
+            _sessionProtocolFactory.Open(true, timeoutHelper.RemainingTime());
         }
 
 
@@ -361,58 +326,58 @@ namespace System.ServiceModel.Security
         private async Task OnOpenAsyncInternal(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            if (this.sessionProtocolFactory == null)
+            if (_sessionProtocolFactory == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecuritySessionProtocolFactoryShouldBeSetBeforeThisOperation)));
             }
-            if (this.standardsManager == null)
+            if (_standardsManager == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecurityStandardsManagerNotSet, this.GetType().ToString())));
             }
-            if (this.issuedTokenParameters == null)
+            if (_issuedTokenParameters == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuedSecurityTokenParametersNotSet, this.GetType())));
             }
-            if (this.keyRenewalInterval < this.keyRolloverInterval)
+            if (_keyRenewalInterval < _keyRolloverInterval)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.KeyRolloverGreaterThanKeyRenewal)));
             }
-            this.issuedTokenRenewalThreshold = this.sessionProtocolFactory.SecurityBindingElement.LocalClientSettings.CookieRenewalThresholdPercentage;
+            _issuedTokenRenewalThreshold = _sessionProtocolFactory.SecurityBindingElement.LocalClientSettings.CookieRenewalThresholdPercentage;
             this.ConfigureSessionProtocolFactory();
-            await this.sessionProtocolFactory.OpenAsync(true, timeoutHelper.RemainingTime());
+            await _sessionProtocolFactory.OpenAsync(true, timeoutHelper.RemainingTime());
         }
 
         internal void Close(TimeSpan timeout)
         {
-            this.communicationObject.Close(timeout);
+            _communicationObject.Close(timeout);
         }
 
         internal void Abort()
         {
-            this.communicationObject.Abort();
+            _communicationObject.Abort();
         }
 
         internal void Open(SecurityChannelFactory<TChannel> securityChannelFactory,
             IChannelFactory innerChannelFactory, ChannelBuilder channelBuilder, TimeSpan timeout)
         {
-            this.securityChannelFactory = securityChannelFactory;
-            this.innerChannelFactory = innerChannelFactory;
-            this.channelBuilder = channelBuilder;
-            this.communicationObject.Open(timeout);
+            _securityChannelFactory = securityChannelFactory;
+            _innerChannelFactory = innerChannelFactory;
+            _channelBuilder = channelBuilder;
+            _communicationObject.Open(timeout);
         }
 
         internal Task OpenAsync(SecurityChannelFactory<TChannel> securityChannelFactory,
                                 IChannelFactory innerChannelFactory, ChannelBuilder channelBuilder, TimeSpan timeout)
         {
-            this.securityChannelFactory = securityChannelFactory;
-            this.innerChannelFactory = innerChannelFactory;
-            this.channelBuilder = channelBuilder;
-            return ((IAsyncCommunicationObject)this.communicationObject).OpenAsync(timeout);
+            _securityChannelFactory = securityChannelFactory;
+            _innerChannelFactory = innerChannelFactory;
+            _channelBuilder = channelBuilder;
+            return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
         }
 
         internal TChannel OnCreateChannel(EndpointAddress remoteAddress, Uri via)
         {
-            this.communicationObject.ThrowIfClosed();
+            _communicationObject.ThrowIfClosed();
 
             if (typeof(TChannel) == typeof(IRequestSessionChannel))
             {
@@ -431,9 +396,8 @@ namespace System.ServiceModel.Security
 
         void ConfigureSessionProtocolFactory()
         {
-            throw ExceptionHelper.PlatformNotSupported("ConfigureSessionProtocolFactory not supported.");
+            throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
-            // $$$
             //if (this.sessionProtocolFactory is SessionSymmetricMessageSecurityProtocolFactory)
             //{
             //    AddressingVersion addressing = MessageVersion.Default.Addressing;
@@ -503,17 +467,19 @@ namespace System.ServiceModel.Security
             SecuritySessionClientSettings<TChannel> settings;
             SecurityTokenProvider sessionTokenProvider;
             bool isKeyRenewalOngoing = false;
-            // $$$ InterruptibleWaitObject keyRenewalCompletedEvent;
+            // InterruptibleWaitObject keyRenewalCompletedEvent;    // #1257 in progress
+            // InterruptibleWaitObject outputSessionCloseHandle = new InterruptibleWaitObject(true);
+            // InterruptibleWaitObject inputSessionClosedHandle = new InterruptibleWaitObject(false);
             bool sentClose;
             bool receivedClose;
             volatile bool isOutputClosed;
             volatile bool isInputClosed;
-            // $$$ InterruptibleWaitObject inputSessionClosedHandle = new InterruptibleWaitObject(false);
+
             bool sendCloseHandshake = false;
             MessageVersion messageVersion;
             bool isCompositeDuplexConnection;
             Message closeResponse;
-            // $$$ InterruptibleWaitObject outputSessionCloseHandle = new InterruptibleWaitObject(true);
+
             WebHeaderCollection webHeaderCollection;
 
             protected ClientSecuritySessionChannel(SecuritySessionClientSettings<TChannel> settings, EndpointAddress to, Uri via)
@@ -522,7 +488,7 @@ namespace System.ServiceModel.Security
                 this.settings = settings;
                 this.to = to;
                 this.via = via;
-                //$$$ this.keyRenewalCompletedEvent = new InterruptibleWaitObject(false);
+                // this.keyRenewalCompletedEvent = new InterruptibleWaitObject(false);
                 this.messageVersion = settings.SecurityChannelFactory.MessageVersion;
                 this.channelParameters = new ChannelParameterCollection(this);
                 this.InitializeChannelBinder();
@@ -642,7 +608,7 @@ namespace System.ServiceModel.Security
 
             void InitializeSecurityState(SecurityToken sessionToken)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //InitializeSession(sessionToken);
                 //this.currentSessionToken = sessionToken;
@@ -661,7 +627,7 @@ namespace System.ServiceModel.Security
 
             void SetupSessionTokenProvider()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //InitiatorServiceModelSecurityTokenRequirement requirement = new InitiatorServiceModelSecurityTokenRequirement();
                 //this.Settings.IssuedSecurityTokenParameters.InitializeSecurityTokenRequirement(requirement);
@@ -689,7 +655,7 @@ namespace System.ServiceModel.Security
 
             void OpenCore(SecurityToken sessionToken, TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 //this.securityProtocol = this.Settings.SessionProtocolFactory.CreateSecurityProtocol(this.to, this.Via, null, true, timeoutHelper.RemainingTime());
@@ -705,12 +671,12 @@ namespace System.ServiceModel.Security
 
             protected override void OnFaulted()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //this.AbortCore();
-                //this.inputSessionClosedHandle.Fault(this);
-                //this.keyRenewalCompletedEvent.Fault(this);
-                //this.outputSessionCloseHandle.Fault(this);
+                //_inputSessionClosedHandle.Fault(this);
+                //_keyRenewalCompletedEvent.Fault(this);
+                //_outputSessionCloseHandle.Fault(this);
                 //base.OnFaulted();
             }
 
@@ -754,7 +720,7 @@ namespace System.ServiceModel.Security
 
             void InitializeChannelBinder()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //ChannelBuilder channelBuilder = this.Settings.ChannelBuilder;
                 //TolerateFaultsMode faultMode = this.Settings.TolerateTransportFailures ? TolerateFaultsMode.Always : TolerateFaultsMode.Never;
@@ -784,13 +750,13 @@ namespace System.ServiceModel.Security
 
             void OnInnerFaulted(IReliableChannelBinder sender, Exception exception)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
                 //this.Fault(exception);
             }
 
             protected virtual bool OnCloseResponseReceived()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //bool setInputSessionClosedHandle = false;
                 //bool isCloseResponseExpected = false;
@@ -817,7 +783,7 @@ namespace System.ServiceModel.Security
 
             protected virtual bool OnCloseReceived()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //if (!ExpectClose)
                 //{
@@ -843,7 +809,7 @@ namespace System.ServiceModel.Security
 
             Message PrepareCloseMessage()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //SecurityToken tokenToClose;
                 //lock (ThisLock)
@@ -976,7 +942,7 @@ namespace System.ServiceModel.Security
 
             MessageFault GetProtocolFault(ref Message message, out bool isKeyRenewalFault, out bool isSessionAbortedFault)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
                 //isKeyRenewalFault = false;
                 //isSessionAbortedFault = false;
                 //MessageFault result = null;
@@ -1011,7 +977,7 @@ namespace System.ServiceModel.Security
 
             void ProcessKeyRenewalFault()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //SecurityTraceRecordHelper.TraceSessionKeyRenewalFault(this.currentSessionToken, this.RemoteAddress);
                 //lock (ThisLock)
@@ -1022,7 +988,7 @@ namespace System.ServiceModel.Security
 
             void ProcessSessionAbortedFault(MessageFault sessionAbortedFault)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //SecurityTraceRecordHelper.TraceRemoteSessionAbortedFault(this.currentSessionToken, this.RemoteAddress);
                 //this.Fault(new FaultException(sessionAbortedFault));
@@ -1030,7 +996,7 @@ namespace System.ServiceModel.Security
 
             void ProcessCloseResponse(Message response)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //// the close message may have been received by the channel after the channel factory has been closed
                 //if (response.Headers.Action != this.Settings.SecurityStandardsManager.SecureConversationDriver.CloseResponseAction.Value)
@@ -1126,28 +1092,25 @@ namespace System.ServiceModel.Security
                 rstr.Context = rst.Context;
                 rstr.IsRequestedTokenClosed = true;
                 rstr.MakeReadOnly();
-                // $$$ Message response = null;
+                Message response = null;
                 if (this.Settings.SecurityStandardsManager.MessageSecurityVersion.TrustVersion == TrustVersion.WSTrustFeb2005)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("WSTrustFeb2005");   // $$$
-                    //response = Message.CreateMessage(message.Version, ActionHeader.Create(this.Settings.SecurityStandardsManager.SecureConversationDriver.CloseResponseAction, message.Version.Addressing), rstr);
+                    response = Message.CreateMessage(message.Version, ActionHeader.Create(this.Settings.SecurityStandardsManager.SecureConversationDriver.CloseResponseAction, message.Version.Addressing), rstr);
                 }
                 else if (this.Settings.SecurityStandardsManager.MessageSecurityVersion.TrustVersion == TrustVersion.WSTrust13)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("WSTrust13");   // $$$
-                    //List<RequestSecurityTokenResponse> rstrList = new List<RequestSecurityTokenResponse>();
-                    //rstrList.Add(rstr);
-                    //RequestSecurityTokenResponseCollection rstrCollection = new RequestSecurityTokenResponseCollection(rstrList, this.Settings.SecurityStandardsManager);
-                    //response = Message.CreateMessage(message.Version, ActionHeader.Create(this.Settings.SecurityStandardsManager.SecureConversationDriver.CloseResponseAction, message.Version.Addressing), rstrCollection);
+                    List<RequestSecurityTokenResponse> rstrList = new List<RequestSecurityTokenResponse>();
+                    rstrList.Add(rstr);
+                    RequestSecurityTokenResponseCollection rstrCollection = new RequestSecurityTokenResponseCollection(rstrList, this.Settings.SecurityStandardsManager);
+                    response = Message.CreateMessage(message.Version, ActionHeader.Create(this.Settings.SecurityStandardsManager.SecureConversationDriver.CloseResponseAction, message.Version.Addressing), rstrCollection);
                 }
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
                 }
 
-                // $$$ Unreachable
-                //PrepareReply(message, response);
-                //this.closeResponse = response;
+                PrepareReply(message, response);
+                this.closeResponse = response;
             }
 
             bool ShouldWrapException(Exception e)
@@ -1157,7 +1120,7 @@ namespace System.ServiceModel.Security
 
             protected Message ProcessIncomingMessage(Message message, TimeSpan timeout, SecurityProtocolCorrelationState correlationState, out MessageFault protocolFault)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                protocolFault = null;
 //                lock (ThisLock)
@@ -1222,7 +1185,7 @@ namespace System.ServiceModel.Security
 
             protected Message ProcessRequestContext(RequestContext requestContext, TimeSpan timeout, SecurityProtocolCorrelationState correlationState)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
 
                 //if (requestContext == null)
                 //{
@@ -1277,7 +1240,7 @@ namespace System.ServiceModel.Security
             /// </summary>
             void DoKeyRolloverIfNeeded()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
 
                 //if (DateTime.UtcNow >= this.keyRolloverTime && this.previousSessionToken != null)
                 //{
@@ -1292,9 +1255,9 @@ namespace System.ServiceModel.Security
 
             DateTime GetKeyRenewalTime(SecurityToken token)
             {
-                TimeSpan tokenValidityInterval = TimeSpan.FromTicks((long)(((token.ValidTo.Ticks - token.ValidFrom.Ticks) * this.settings.issuedTokenRenewalThreshold) / 100));
+                TimeSpan tokenValidityInterval = TimeSpan.FromTicks((long)(((token.ValidTo.Ticks - token.ValidFrom.Ticks) * this.settings._issuedTokenRenewalThreshold) / 100));
                 DateTime keyRenewalTime1 = TimeoutHelper.Add(token.ValidFrom, tokenValidityInterval);
-                DateTime keyRenewalTime2 = TimeoutHelper.Add(token.ValidFrom, this.settings.keyRenewalInterval);
+                DateTime keyRenewalTime2 = TimeoutHelper.Add(token.ValidFrom, this.settings._keyRenewalInterval);
                 if (keyRenewalTime1 < keyRenewalTime2)
                 {
                     return keyRenewalTime1;
@@ -1320,7 +1283,7 @@ namespace System.ServiceModel.Security
             /// </summary>
             void UpdateSessionTokens(SecurityToken newToken)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
 
                 //lock (ThisLock)
                 //{
@@ -1339,7 +1302,7 @@ namespace System.ServiceModel.Security
 
             void RenewKey(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
 
                 //if (!this.settings.CanRenewSession)
                 //{
@@ -1468,7 +1431,7 @@ namespace System.ServiceModel.Security
 
             protected virtual void CloseCore(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
 
                 //TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
@@ -1548,7 +1511,7 @@ namespace System.ServiceModel.Security
 
             protected bool CloseSession(TimeSpan timeout, out bool wasAborted)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ?
                 //    ServiceModelActivity.CreateBoundedActivity() : null)
@@ -1597,7 +1560,7 @@ namespace System.ServiceModel.Security
 
             void DetermineCloseMessageToSend(out bool sendClose, out bool sendCloseResponse)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //sendClose = false;
                 //sendCloseResponse = false;
@@ -1622,7 +1585,7 @@ namespace System.ServiceModel.Security
 
             protected virtual SecurityProtocolCorrelationState CloseOutputSession(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //ThrowIfFaulted();
                 //if (!this.SendCloseHandshake)
@@ -1659,7 +1622,7 @@ namespace System.ServiceModel.Security
 
             protected virtual IAsyncResult BeginCloseOutputSession(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //ThrowIfFaulted();
                 //if (!this.SendCloseHandshake)
@@ -1702,7 +1665,7 @@ namespace System.ServiceModel.Security
 
             protected virtual SecurityProtocolCorrelationState EndCloseOutputSession(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //if (result is CompletedAsyncResult)
                 //{
@@ -1746,7 +1709,7 @@ namespace System.ServiceModel.Security
 
             protected override void OnAbort()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //this.AbortCore();
                 //this.inputSessionClosedHandle.Abort(this);
@@ -1756,7 +1719,7 @@ namespace System.ServiceModel.Security
 
             protected override void OnClose(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 //if (this.SendCloseHandshake)
@@ -1895,7 +1858,7 @@ namespace System.ServiceModel.Security
 
                 bool OnChannelBinderClosed()
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //if (channel.sessionTokenProvider != null)
                     //{
@@ -1922,7 +1885,7 @@ namespace System.ServiceModel.Security
 
                 static void CloseTokenProviderCallback(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                    if (result.CompletedSynchronously)
 //                    {
@@ -1968,7 +1931,7 @@ namespace System.ServiceModel.Security
 
                 bool OnTokenProviderClosed()
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //this.channel.keyRenewalCompletedEvent.Abort(this.channel);
                     //this.channel.inputSessionClosedHandle.Abort(this.channel);
@@ -2085,7 +2048,7 @@ namespace System.ServiceModel.Security
                 public OpenAsyncResult(ClientSecuritySessionChannel sessionChannel, TimeSpan timeout, AsyncCallback callback, object state)
                     : base(callback, state)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //this.timeoutHelper = new TimeoutHelper(timeout);
                     //this.sessionChannel = sessionChannel;
@@ -2105,7 +2068,7 @@ namespace System.ServiceModel.Security
 
                 static void OpenTokenProviderCallback(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                    if (result.CompletedSynchronously)
 //                    {
@@ -2300,7 +2263,7 @@ namespace System.ServiceModel.Security
 
                 bool OnOutputSessionClosed()
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //try
                     //{
@@ -2331,7 +2294,7 @@ namespace System.ServiceModel.Security
 
                 static void ShutdownWaitCallback(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                    if (result.CompletedSynchronously)
 //                    {
@@ -2475,7 +2438,7 @@ namespace System.ServiceModel.Security
 
                 bool OnWaitForOutputSessionClose(out bool wasAborted)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //wasAborted = false;
                     //bool wasOutputSessionClosed = false;
@@ -2521,7 +2484,7 @@ namespace System.ServiceModel.Security
 
                 static void OutputSessionClosedCallback(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                    if (result.CompletedSynchronously)
 //                    {
@@ -2865,17 +2828,18 @@ namespace System.ServiceModel.Security
                 private ClientSecuritySessionChannel _channel;
                 private EndpointIdentity _remoteIdentity;
                 private UniqueId _sessionId;
-                // $$$ private SecurityKeyIdentifierClause _sessionTokenIdentifier;
-                // $$$ private SecurityStandardsManager _standardsManager;
+                // #1257 in progress
+                // private SecurityKeyIdentifierClause _sessionTokenIdentifier;
+                // private SecurityStandardsManager _standardsManager;
 
                 public SoapSecurityOutputSession(ClientSecuritySessionChannel channel)
                 {
-                    this._channel = channel;
+                    _channel = channel;
                 }
 
                 internal void Initialize(SecurityToken sessionToken, SecuritySessionClientSettings<TChannel> settings)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //if (sessionToken == null)
                     //{
@@ -2898,7 +2862,7 @@ namespace System.ServiceModel.Security
 
                 UniqueId GetSessionId(SecurityToken sessionToken, SecurityStandardsManager standardsManager)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //GenericXmlSecurityToken gxt = sessionToken as GenericXmlSecurityToken;
                     //if (gxt == null)
@@ -2912,13 +2876,13 @@ namespace System.ServiceModel.Security
                 {
                     get
                     {
-                        if (this._sessionId == null)
+                        if (_sessionId == null)
                         {
                             // PreSharp Bug: Property get methods should not throw exceptions.
 #pragma warning suppress 56503
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ChannelMustBeOpenedToGetSessionId)));
                         }
-                        return this._sessionId.ToString();
+                        return _sessionId.ToString();
                     }
                 }
 
@@ -2926,13 +2890,13 @@ namespace System.ServiceModel.Security
                 {
                     get
                     {
-                        return this._remoteIdentity;
+                        return _remoteIdentity;
                     }
                 }
 
                 public void WriteSessionTokenIdentifier(XmlDictionaryWriter writer)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //this.channel.ThrowIfDisposedOrNotOpen();
                     //this.standardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, this.sessionTokenIdentifier);
@@ -2940,7 +2904,7 @@ namespace System.ServiceModel.Security
 
                 public bool TryReadSessionTokenIdentifier(XmlReader reader)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                     //this.channel.ThrowIfDisposedOrNotOpen();
                     //if (!this.standardsManager.SecurityTokenSerializer.CanReadKeyIdentifierClause(reader))
@@ -3051,7 +3015,7 @@ namespace System.ServiceModel.Security
 
             Message ProcessReply(Message reply, TimeSpan timeout, SecurityProtocolCorrelationState correlationState)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //if (reply == null)
                 //{
@@ -3311,13 +3275,14 @@ namespace System.ServiceModel.Security
             private static AsyncCallback s_onReceive = Fx.ThunkCallback(new AsyncCallback(OnReceive));
             private SoapSecurityClientDuplexSession _session;
             private InputQueue<Message> _queue;
-            // $$$ private Action _startReceiving;
+            // #1257 in progress
+            //private Action _startReceiving;
             private Action<object> _completeLater;
 
             public ClientSecurityDuplexSessionChannel(SecuritySessionClientSettings<TChannel> settings, EndpointAddress to, Uri via)
                 : base(settings, to, via)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
                 //this.session = new SoapSecurityClientDuplexSession(this);
                 //this.queue = TraceUtility.CreateInputQueue<Message>();
@@ -3337,7 +3302,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this._session;
+                    return _session;
                 }
             }
 
@@ -3348,7 +3313,7 @@ namespace System.ServiceModel.Security
 
             protected override string SessionId
             {
-                get { return this._session.Id; }
+                get { return _session.Id; }
             }
 
             public Message Receive()
@@ -3358,7 +3323,7 @@ namespace System.ServiceModel.Security
 
             public Message Receive(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
                 //return InputChannel.HelpReceive(this, timeout);
             }
 
@@ -3369,13 +3334,13 @@ namespace System.ServiceModel.Security
 
             public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
                 //return InputChannel.HelpBeginReceive(this, timeout, callback, state);
             }
 
             public Message EndReceive(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
                 //return InputChannel.HelpEndReceive(result);
             }
 
@@ -3447,7 +3412,7 @@ namespace System.ServiceModel.Security
 
             protected override void InitializeSession(SecurityToken sessionToken)
             {
-                this._session.Initialize(sessionToken, this.Settings);
+                _session.Initialize(sessionToken, this.Settings);
             }
 
             void StartReceiving()
@@ -3473,15 +3438,14 @@ namespace System.ServiceModel.Security
                         return this.BeginReceiveInternal(TimeSpan.MaxValue, null, s_onReceive, this);
 
                     }
-                    catch (CommunicationException /* $$$ e */)
+                    catch (CommunicationException /* #1257 in progress e */)
                     {
                         // BeginReceive failed. ignore the exception and start another receive
-                        // $$$ DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
+                        // DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
                     }
-                    catch (TimeoutException /* $$$ e */)
+                    catch (TimeoutException /* #1257 in progress e */)
                     {
                         // BeginReceive failed. ignore the exception and start another receive
-                        // $$$
                         //if (TD.ReceiveTimeoutIsEnabled())
                         //{
                         //    TD.ReceiveTimeout(e.Message);
@@ -3506,7 +3470,7 @@ namespace System.ServiceModel.Security
 
             void CompleteReceive(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 //                Message message = null;
 //                bool issueAnotherReceive = false;
 //                try
@@ -3563,7 +3527,7 @@ namespace System.ServiceModel.Security
 
             protected override void AbortCore()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
                 //try
                 //{
                 //    this.queue.Dispose();
@@ -3585,23 +3549,23 @@ namespace System.ServiceModel.Security
 
             public bool WaitForMessage(TimeSpan timeout)
             {
-                return this._queue.WaitForItem(timeout);
+                return _queue.WaitForItem(timeout);
             }
 
             public IAsyncResult BeginWaitForMessage(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return this._queue.BeginWaitForItem(timeout, callback, state);
+                return _queue.BeginWaitForItem(timeout, callback, state);
             }
 
             public bool EndWaitForMessage(IAsyncResult result)
             {
-                return this._queue.EndWaitForItem(result);
+                return _queue.EndWaitForItem(result);
             }
 
             protected override void OnFaulted()
             {
-                //throw ExceptionHelper.PlatformNotSupported();   // $$$
-                //queue.Shutdown(() => this.GetPendingException());
+                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                //_queue.Shutdown(() => this.GetPendingException());
                 //base.OnFaulted();
             }
 
@@ -3609,7 +3573,7 @@ namespace System.ServiceModel.Security
             {
                 if (base.OnCloseResponseReceived())
                 {
-                    this._queue.Shutdown();
+                    _queue.Shutdown();
                     return true;
                 }
                 else
@@ -3622,7 +3586,7 @@ namespace System.ServiceModel.Security
             {
                 if (base.OnCloseReceived())
                 {
-                    this._queue.Shutdown();
+                    _queue.Shutdown();
                     return true;
                 }
                 else
@@ -3663,7 +3627,7 @@ namespace System.ServiceModel.Security
 
                 public void CloseOutputSession(TimeSpan timeout)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                    CheckInitialized();
 //                    this.channel.ThrowIfFaulted();
@@ -3700,7 +3664,7 @@ namespace System.ServiceModel.Security
 
                 public IAsyncResult BeginCloseOutputSession(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                    CheckInitialized();
 //                    this.channel.ThrowIfFaulted();
@@ -3745,7 +3709,7 @@ namespace System.ServiceModel.Security
 
                 public void EndCloseOutputSession(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
 
 //                    if (result is CompletedAsyncResult)
 //                    {
