@@ -197,6 +197,12 @@ namespace System.ServiceModel.Security
             }
         }
 
+        public ExtendedProtectionPolicy ExtendedProtectionPolicy
+        {
+            get { return _extendedProtectionPolicy; }
+            set { _extendedProtectionPolicy = value; }
+        }
+
         internal bool IsDuplexReply
         {
             get
@@ -1234,18 +1240,6 @@ namespace System.ServiceModel.Security
             return OpenAsync(timeout);
         }
 
-        // $$$
-        //public IAsyncResult BeginOpen(bool actAsInitiator, TimeSpan timeout, AsyncCallback callback, object state)
-        //{
-        //    _actAsInitiator = actAsInitiator;
-        //    return this.CommunicationObject.BeginOpen(timeout, callback, state);
-        //}
-
-        //public void EndOpen(IAsyncResult result)
-        //{
-        //    this.CommunicationObject.EndOpen(result);
-        //}
-
         public void Close(bool aborted, TimeSpan timeout)
         {
             if (aborted)
@@ -1262,17 +1256,6 @@ namespace System.ServiceModel.Security
         {
             return ((IAsyncCommunicationObject)this._communicationObject).CloseAsync(timeout);
         }
-
-        // $$$
-        //public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-        //{
-        //    return this.CommunicationObject.BeginClose(timeout, callback, state);
-        //}
-
-        //public void EndClose(IAsyncResult result)
-        //{
-        //    this.CommunicationObject.EndClose(result);
-        //}
 
         internal void Open(string propertyName, bool requiredForForwardDirection, SecurityTokenAuthenticator authenticator, TimeSpan timeout)
         {

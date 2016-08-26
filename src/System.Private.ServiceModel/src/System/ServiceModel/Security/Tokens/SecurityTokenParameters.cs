@@ -12,8 +12,10 @@ namespace System.ServiceModel.Security.Tokens
 {
     public abstract class SecurityTokenParameters
     {
+        internal const SecurityTokenInclusionMode defaultInclusionMode = SecurityTokenInclusionMode.AlwaysToRecipient;
         internal const bool defaultRequireDerivedKeys = true;
 
+        private SecurityTokenInclusionMode _inclusionMode = defaultInclusionMode;
         private bool _requireDerivedKeys = defaultRequireDerivedKeys;
 
         protected SecurityTokenParameters(SecurityTokenParameters other)
@@ -21,6 +23,7 @@ namespace System.ServiceModel.Security.Tokens
             if (other == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("other");
 
+            _inclusionMode = other._inclusionMode;
             _requireDerivedKeys = other._requireDerivedKeys;
         }
 
@@ -30,6 +33,19 @@ namespace System.ServiceModel.Security.Tokens
         }
 
         internal protected abstract bool HasAsymmetricKey { get; }
+
+        public SecurityTokenInclusionMode InclusionMode
+        {
+            get
+            {
+                return _inclusionMode;
+            }
+            set
+            {
+                SecurityTokenInclusionModeHelper.Validate(value);
+                _inclusionMode = value;
+            }
+        }
 
         public bool RequireDerivedKeys
         {
@@ -90,6 +106,7 @@ namespace System.ServiceModel.Security.Tokens
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "{0}:", this.GetType().ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "InclusionMode: {0}", _inclusionMode.ToString()));
             sb.Append(String.Format(CultureInfo.InvariantCulture, "RequireDerivedKeys: {0}", _requireDerivedKeys.ToString()));
 
             return sb.ToString();

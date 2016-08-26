@@ -452,8 +452,7 @@ namespace System.ServiceModel.Channels
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
-                //$$$ Not supported
-                //EnableChannelBindingSupport();
+                EnableChannelBindingSupport();
 
                 SecurityProtocol securityProtocol = this.SecurityProtocolFactory.CreateSecurityProtocol(
                     this.to,
@@ -468,25 +467,25 @@ namespace System.ServiceModel.Channels
 
             void EnableChannelBindingSupport()
             {
-                throw ExceptionHelper.PlatformNotSupported("EnableChannelBinding not supported");   // $$$
+                //throw ExceptionHelper.PlatformNotSupported("EnableChannelBinding not supported");   // $$$
 
-                //if (this.securityProtocolFactory != null && this.securityProtocolFactory.ExtendedProtectionPolicy != null && this.securityProtocolFactory.ExtendedProtectionPolicy.CustomChannelBinding != null)
-                //{
-                //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.ExtendedProtectionPolicyCustomChannelBindingNotSupported)));
-                //}
+                if (this.securityProtocolFactory != null && this.securityProtocolFactory.ExtendedProtectionPolicy != null && this.securityProtocolFactory.ExtendedProtectionPolicy.CustomChannelBinding != null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.ExtendedProtectionPolicyCustomChannelBindingNotSupported)));
+                }
 
-                //// Do not enable channel binding if there is no reason as it sets up chunking mode.
-                //if ((SecurityUtils.IsChannelBindingDisabled) || (!SecurityUtils.IsSecurityBindingSuitableForChannelBinding(this.SecurityProtocolFactory.SecurityBindingElement as TransportSecurityBindingElement)))
-                //    return;
+                // Do not enable channel binding if there is no reason as it sets up chunking mode.
+                if (!SecurityUtils.IsSecurityBindingSuitableForChannelBinding(this.SecurityProtocolFactory.SecurityBindingElement as TransportSecurityBindingElement))
+                    return;
 
-                //if (InnerChannel != null)
-                //{
-                //    IChannelBindingProvider cbp = InnerChannel.GetProperty<IChannelBindingProvider>();
-                //    if (cbp != null)
-                //    {
-                //        cbp.EnableChannelBindingSupport();
-                //    }
-                //}
+                if (InnerChannel != null)
+                {
+                    IChannelBindingProvider cbp = InnerChannel.GetProperty<IChannelBindingProvider>();
+                    if (cbp != null)
+                    {
+                        cbp.EnableChannelBindingSupport();
+                    }
+                }
             }
 
             void OnProtocolCreationComplete(SecurityProtocol securityProtocol)

@@ -418,6 +418,35 @@ namespace System.ServiceModel.Security
             return string.Format(CultureInfo.InvariantCulture, "host/{0}", target.Uri.DnsSafeHost);
         }
 
+        internal static T GetSecurityKey<T>(SecurityToken token) where T : SecurityKey
+        {
+            T result = null;
+            if (token.SecurityKeys != null)
+            {
+                for (int i = 0; i < token.SecurityKeys.Count; ++i)
+                {
+                    T temp = (token.SecurityKeys[i] as T);
+                    if (temp != null)
+                    {
+                        if (result != null)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.Format(SR.MultipleMatchingCryptosFound, typeof(T).ToString())));
+                        }
+                        else
+                        {
+                            result = temp;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        internal static bool HasSymmetricSecurityKey(SecurityToken token)
+        {
+            return GetSecurityKey<SymmetricSecurityKey>(token) != null;
+        }
+
         internal static bool IsSupportedAlgorithm(string algorithm, SecurityToken token)
         {
             if (token.SecurityKeys == null)
@@ -1092,6 +1121,63 @@ namespace System.ServiceModel.Security
             // Check that Dispose() and Reset() do the same thing
             certificate.Dispose();
         }
+
+        internal static bool IsSecurityBindingSuitableForChannelBinding(TransportSecurityBindingElement securityBindingElement)
+        {
+            if (securityBindingElement == null)
+            {
+                return false;
+            }
+
+            // channel binding of OperationSupportingTokenParameters, OptionalEndpointSupportingTokenParameters, or OptionalOperationSupportingTokenParameters
+            // is not supported in Win7
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.Endorsing))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.Signed))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.SignedEndorsing))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool AreSecurityTokenParametersSuitableForChannelBinding(Collection<SecurityTokenParameters> tokenParameters)
+        {
+            if (tokenParameters == null)
+            {
+                return false;
+            }
+
+            foreach (SecurityTokenParameters stp in tokenParameters)
+            {
+                if (stp is SspiSecurityTokenParameters || stp is KerberosSecurityTokenParameters)
+                {
+                    return true;
+                }
+
+                SecureConversationSecurityTokenParameters scstp = stp as SecureConversationSecurityTokenParameters;
+                if (scstp != null)
+                {
+                    return IsSecurityBindingSuitableForChannelBinding(scstp.BootstrapSecurityBindingElement as TransportSecurityBindingElement);
+                }
+            }
+
+            return false;
+        }
+
     }
 
     internal struct SecurityUniqueId

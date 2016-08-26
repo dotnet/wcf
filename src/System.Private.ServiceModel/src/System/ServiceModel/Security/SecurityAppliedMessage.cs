@@ -191,13 +191,13 @@ namespace System.ServiceModel.Security
 
             //if (this.fullBodyFragment != null)
             //{
-            //    ((IFragmentCapableXmlDictionaryWriter) writer).WriteFragment(this.fullBodyFragment, 0, this.fullBodyFragmentLength);
+            //    ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.fullBodyFragment, 0, this.fullBodyFragmentLength);
             //}
             //else
             //{
             //    if (this.startBodyFragment != null)
             //    {
-            //        ((IFragmentCapableXmlDictionaryWriter) writer).WriteFragment(this.startBodyFragment.GetBuffer(), 0, (int) this.startBodyFragment.Length);
+            //        ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.startBodyFragment.GetBuffer(), 0, (int)this.startBodyFragment.Length);
             //    }
             //    else
             //    {
@@ -208,7 +208,7 @@ namespace System.ServiceModel.Security
 
             //    if (this.endBodyFragment != null)
             //    {
-            //        ((IFragmentCapableXmlDictionaryWriter) writer).WriteFragment(this.endBodyFragment.GetBuffer(), 0, (int) this.endBodyFragment.Length);
+            //        ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.endBodyFragment.GetBuffer(), 0, (int)this.endBodyFragment.Length);
             //    }
             //    else
             //    {
