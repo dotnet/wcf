@@ -362,7 +362,7 @@ namespace System.ServiceModel.Security
 
         static bool CanCanonicalizeAndFragment(XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // #1257: Required API: IFragmentCapableXmlDictionaryWriter 
 
             //if (!writer.CanCanonicalize)
             //{
@@ -374,7 +374,7 @@ namespace System.ServiceModel.Security
 
         public override void ApplyBodySecurity(XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // #1257: Required API: SignedInfo 
 
             //SecurityAppliedMessage message = this.SecurityAppliedMessage;
             //EncryptedData encryptedData;
@@ -393,7 +393,7 @@ namespace System.ServiceModel.Security
             //        {
             //            message.WriteBodyToSign(hashStream);
             //        }
-            //        this.signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
+            //        _signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
             //        return;
             //    case MessagePartProtectionMode.SignThenEncrypt:
             //        hashStream = TakeHashStream();
@@ -404,23 +404,23 @@ namespace System.ServiceModel.Security
             //        }
             //        else
             //        {
-            //            message.WriteBodyToSignThenEncrypt(hashStream, encryptedData, this.encryptingSymmetricAlgorithm);
+            //            message.WriteBodyToSignThenEncrypt(hashStream, encryptedData, _encryptingSymmetricAlgorithm);
             //        }
-            //        this.signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
-            //        this.referenceList.AddReferredId(encryptedData.Id);
-            //        this.hasSignedEncryptedMessagePart = true;
+            //        _signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
+            //        _referenceList.AddReferredId(encryptedData.Id);
+            //        _hasSignedEncryptedMessagePart = true;
             //        return;
             //    case MessagePartProtectionMode.Encrypt:
             //        encryptedData = CreateEncryptedDataForBody();
-            //        message.WriteBodyToEncrypt(encryptedData, this.encryptingSymmetricAlgorithm);
-            //        this.referenceList.AddReferredId(encryptedData.Id);
+            //        message.WriteBodyToEncrypt(encryptedData, _encryptingSymmetricAlgorithm);
+            //        _referenceList.AddReferredId(encryptedData.Id);
             //        return;
             //    case MessagePartProtectionMode.EncryptThenSign:
             //        hashStream = TakeHashStream();
             //        encryptedData = CreateEncryptedDataForBody();
-            //        message.WriteBodyToEncryptThenSign(hashStream, encryptedData, this.encryptingSymmetricAlgorithm);
-            //        this.signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
-            //        this.referenceList.AddReferredId(encryptedData.Id);
+            //        message.WriteBodyToEncryptThenSign(hashStream, encryptedData, _encryptingSymmetricAlgorithm);
+            //        _signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
+            //        _referenceList.AddReferredId(encryptedData.Id);
             //        return;
             //    default:
             //        Fx.Assert("Invalid MessagePartProtectionMode");

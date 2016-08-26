@@ -14,7 +14,7 @@ using Infrastructure.Common;
 
 using Xunit;
 
-public static partial class Http_ClientCredentialTypeTests
+public static partial class WsHttpsTests
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
@@ -32,8 +32,8 @@ public static partial class Http_ClientCredentialTypeTests
         {
             // *** SETUP *** \\
             var securityBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
-            // $$$ securityBindingElement.IncludeTimestamp = false;
-            // $$$ securityBindingElement.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
+            securityBindingElement.IncludeTimestamp = false;
+            securityBindingElement.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
 
             binding = new CustomBinding(
                             new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), 

@@ -21,7 +21,7 @@ namespace System.ServiceModel.Security.Tokens
         public KerberosSecurityTokenParameters()
             : base()
         {
-            // $$$ this.InclusionMode = SecurityTokenInclusionMode.Once;
+            this.InclusionMode = SecurityTokenInclusionMode.Once;
         }
 
         internal protected override bool HasAsymmetricKey { get { return false; } }
@@ -34,11 +34,10 @@ namespace System.ServiceModel.Security.Tokens
             return new KerberosSecurityTokenParameters(this);
         }
 
-        // $$$
-        //internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-        //{
-        //    return base.CreateKeyIdentifierClause<KerberosTicketHashKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-        //}
+        internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+        {
+            return base.CreateKeyIdentifierClause<KerberosTicketHashKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+        }
 
         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
         {

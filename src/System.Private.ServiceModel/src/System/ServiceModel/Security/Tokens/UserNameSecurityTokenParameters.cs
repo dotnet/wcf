@@ -32,6 +32,11 @@ namespace System.ServiceModel.Security.Tokens
             return new UserNameSecurityTokenParameters(this);
         }
 
+        internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+        {
+            return this.CreateKeyIdentifierClause<SecurityKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+        }
+
         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
         {
             requirement.TokenType = SecurityTokenTypes.UserName;

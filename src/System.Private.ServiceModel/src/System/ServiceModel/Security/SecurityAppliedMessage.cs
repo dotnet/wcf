@@ -1,79 +1,79 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.IO;
+using System.Runtime;
+using System.Security.Cryptography;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security.Tokens;
+using System.Xml;
+using System.IdentityModel.Tokens;
+using System.Collections.Generic;
+using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
+using ISecurityElement = System.IdentityModel.ISecurityElement;
+// using XmlAttributeHolder = System.IdentityModel.XmlAttributeHolder;
 
 namespace System.ServiceModel.Security
 {
-    using System.IO;
-    using System.Runtime;
-    using System.Security.Cryptography;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security.Tokens;
-    using System.Xml;
-    using System.IdentityModel.Tokens;
-    using System.Collections.Generic;
-    using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
-    using ISecurityElement = System.IdentityModel.ISecurityElement;
-    //$$$ using XmlAttributeHolder = System.IdentityModel.XmlAttributeHolder;
-
     sealed class SecurityAppliedMessage : DelegatingMessage
     {
-        string bodyId;
-        bool bodyIdInserted;
-        string bodyPrefix = MessageStrings.Prefix;
-        XmlBuffer fullBodyBuffer;
-        ISecurityElement encryptedBodyContent;
-        XmlAttributeHolder[] bodyAttributes;
-        bool delayedApplicationHandled;
-        readonly MessagePartProtectionMode bodyProtectionMode;
-        BodyState state = BodyState.Created;
-        readonly SendSecurityHeader securityHeader;
-        MemoryStream startBodyFragment;
-        // $$$ MemoryStream endBodyFragment;
-        byte[] fullBodyFragment;
-       // $$$  int fullBodyFragmentLength;
+        private string _bodyId;
+        private bool _bodyIdInserted;
+        private string _bodyPrefix = MessageStrings.Prefix;
+        private XmlBuffer _fullBodyBuffer;
+        private ISecurityElement _encryptedBodyContent;
+        private XmlAttributeHolder[] _bodyAttributes;
+        private bool _delayedApplicationHandled;
+        private readonly MessagePartProtectionMode _bodyProtectionMode;
+        private BodyState _state = BodyState.Created;
+        private readonly SendSecurityHeader _securityHeader;
+        private MemoryStream _startBodyFragment;
+        private MemoryStream _endBodyFragment;
+        private byte[] _fullBodyFragment;
+       // private int _fullBodyFragmentLength;
 
         public SecurityAppliedMessage(Message messageToProcess, SendSecurityHeader securityHeader, bool signBody, bool encryptBody)
             : base(messageToProcess)
         {
             Fx.Assert(!(messageToProcess is SecurityAppliedMessage), "SecurityAppliedMessage should not be wrapped");
-            this.securityHeader = securityHeader;
-            this.bodyProtectionMode = MessagePartProtectionModeHelper.GetProtectionMode(signBody, encryptBody, securityHeader.SignThenEncrypt);
+            this._securityHeader = securityHeader;
+            this._bodyProtectionMode = MessagePartProtectionModeHelper.GetProtectionMode(signBody, encryptBody, securityHeader.SignThenEncrypt);
         }
 
         public string BodyId
         {
-            get { return this.bodyId; }
+            get { return this._bodyId; }
         }
 
         public MessagePartProtectionMode BodyProtectionMode
         {
-            get { return this.bodyProtectionMode; }
+            get { return this._bodyProtectionMode; }
         }
 
         internal byte[] PrimarySignatureValue
         {
-            get { return this.securityHeader.PrimarySignatureValue; }
+            get { return this._securityHeader.PrimarySignatureValue; }
         }
 
         Exception CreateBadStateException(string operation)
         {
             return new InvalidOperationException(SR.Format(SR.MessageBodyOperationNotValidInBodyState,
-                operation, this.state));
+                operation, this._state));
         }
 
         void EnsureUniqueSecurityApplication()
         {
-            if (this.delayedApplicationHandled)
+            if (this._delayedApplicationHandled)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.DelayedSecurityApplicationAlreadyCompleted)));
             }
-            this.delayedApplicationHandled = true;
+            this._delayedApplicationHandled = true;
         }
 
         protected override void OnBodyToString(XmlDictionaryWriter writer)
         {
-            if (this.state == BodyState.Created || this.fullBodyFragment != null)
+            if (this._state == BodyState.Created || this._fullBodyFragment != null)
             {
                 base.OnBodyToString(writer);
             }
@@ -91,22 +91,22 @@ namespace System.ServiceModel.Security
             }
             finally
             {
-                this.fullBodyBuffer = null;
-                this.bodyAttributes = null;
-                this.encryptedBodyContent = null;
-                this.state = BodyState.Disposed;
+                this._fullBodyBuffer = null;
+                this._bodyAttributes = null;
+                this._encryptedBodyContent = null;
+                this._state = BodyState.Disposed;
             }
         }
 
         protected override void OnWriteStartBody(XmlDictionaryWriter writer)
         {
-            if (this.startBodyFragment != null || this.fullBodyFragment != null)
+            if (this._startBodyFragment != null || this._fullBodyFragment != null)
             {
                 WriteStartInnerMessageWithId(writer);
                 return;
             }
 
-            switch (this.state)
+            switch (this._state)
             {
                 case BodyState.Created:
                 case BodyState.Encrypted:
@@ -114,16 +114,16 @@ namespace System.ServiceModel.Security
                     return;
                 case BodyState.Signed:
                 case BodyState.EncryptedThenSigned:
-                    XmlDictionaryReader reader = fullBodyBuffer.GetReader(0);
+                    XmlDictionaryReader reader = _fullBodyBuffer.GetReader(0);
                     writer.WriteStartElement(reader.Prefix, reader.LocalName, reader.NamespaceURI);
                     writer.WriteAttributes(reader, false);
                     reader.Dispose();
                     return;
                 case BodyState.SignedThenEncrypted:
-                    writer.WriteStartElement(this.bodyPrefix, XD.MessageDictionary.Body, this.Version.Envelope.DictionaryNamespace);
-                    if (this.bodyAttributes != null)
+                    writer.WriteStartElement(this._bodyPrefix, XD.MessageDictionary.Body, this.Version.Envelope.DictionaryNamespace);
+                    if (this._bodyAttributes != null)
                     {
-                        XmlAttributeHolder.WriteAttributes(this.bodyAttributes, writer);
+                        XmlAttributeHolder.WriteAttributes(this._bodyAttributes, writer);
                     }
                     return;
                 default:
@@ -160,63 +160,64 @@ namespace System.ServiceModel.Security
 
         protected override void OnWriteMessage(XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-
             // For Kerb one shot, the channel binding will be need to be fished out of the message, cached and added to the
             // token before calling ISC.
 
-            //AttachChannelBindingTokenIfFound();
+            AttachChannelBindingTokenIfFound();
 
-            //EnsureUniqueSecurityApplication();
+            EnsureUniqueSecurityApplication();
 
-            //MessagePrefixGenerator prefixGenerator = new MessagePrefixGenerator(writer);
-            //this.securityHeader.StartSecurityApplication();
+            MessagePrefixGenerator prefixGenerator = new MessagePrefixGenerator(writer);
+            this._securityHeader.StartSecurityApplication();
 
-            //this.Headers.Add(this.securityHeader);
+            this.Headers.Add(this._securityHeader);
 
-            //this.InnerMessage.WriteStartEnvelope(writer);
+            this.InnerMessage.WriteStartEnvelope(writer);
 
-            //this.Headers.RemoveAt(this.Headers.Count - 1);
+            this.Headers.RemoveAt(this.Headers.Count - 1);
 
-            //this.securityHeader.ApplyBodySecurity(writer, prefixGenerator);
+            this._securityHeader.ApplyBodySecurity(writer, prefixGenerator);
 
-            //this.InnerMessage.WriteStartHeaders(writer);
-            //this.securityHeader.ApplySecurityAndWriteHeaders(this.Headers, writer, prefixGenerator);
+            this.InnerMessage.WriteStartHeaders(writer);
+            this._securityHeader.ApplySecurityAndWriteHeaders(this.Headers, writer, prefixGenerator);
 
-            //this.securityHeader.RemoveSignatureEncryptionIfAppropriate();
+            this._securityHeader.RemoveSignatureEncryptionIfAppropriate();
 
-            //this.securityHeader.CompleteSecurityApplication();
-            //this.securityHeader.WriteHeader(writer, this.Version);
-            //writer.WriteEndElement();
+            this._securityHeader.CompleteSecurityApplication();
+            this._securityHeader.WriteHeader(writer, this.Version);
+            writer.WriteEndElement();
 
-            //if (this.fullBodyFragment != null)
-            //{
-            //    ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.fullBodyFragment, 0, this.fullBodyFragmentLength);
-            //}
-            //else
-            //{
-            //    if (this.startBodyFragment != null)
-            //    {
-            //        ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.startBodyFragment.GetBuffer(), 0, (int)this.startBodyFragment.Length);
-            //    }
-            //    else
-            //    {
-            //        OnWriteStartBody(writer);
-            //    }
+            if (this._fullBodyFragment != null)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.fullBodyFragment, 0, _fullBodyFragmentLength);
+            }
+            else
+            {
+                if (this._startBodyFragment != null)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.startBodyFragment.GetBuffer(), 0, (int)this.startBodyFragment.Length);
+                }
+                else
+                {
+                    OnWriteStartBody(writer);
+                }
 
-            //    OnWriteBodyContents(writer);
+                OnWriteBodyContents(writer);
 
-            //    if (this.endBodyFragment != null)
-            //    {
-            //        ((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.endBodyFragment.GetBuffer(), 0, (int)this.endBodyFragment.Length);
-            //    }
-            //    else
-            //    {
-            //        writer.WriteEndElement();
-            //    }
-            //}
+                if (_endBodyFragment != null)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(_endBodyFragment.GetBuffer(), 0, (int)this.endBodyFragment.Length);
+                }
+                else
+                {
+                    writer.WriteEndElement();
+                }
+            }
 
-            //writer.WriteEndElement();
+            writer.WriteEndElement();
         }
 
         void AttachChannelBindingTokenIfFound()
@@ -226,9 +227,9 @@ namespace System.ServiceModel.Security
 
             if (cbmp != null)
             {
-                if (this.securityHeader.ElementContainer != null && this.securityHeader.ElementContainer.EndorsingSupportingTokens != null)
+                if (this._securityHeader.ElementContainer != null && this._securityHeader.ElementContainer.EndorsingSupportingTokens != null)
                 {
-                    foreach (SecurityToken token in this.securityHeader.ElementContainer.EndorsingSupportingTokens)
+                    foreach (SecurityToken token in this._securityHeader.ElementContainer.EndorsingSupportingTokens)
                     {
                         ProviderBackedSecurityToken pbst = token as ProviderBackedSecurityToken;
                         if (pbst != null)
@@ -242,27 +243,27 @@ namespace System.ServiceModel.Security
 
         void SetBodyId()
         {
-            this.bodyId = this.InnerMessage.GetBodyAttribute(
+            this._bodyId = this.InnerMessage.GetBodyAttribute(
                 UtilityStrings.IdAttribute,
-                this.securityHeader.StandardsManager.IdManager.DefaultIdNamespaceUri);
-            if (this.bodyId == null)
+                this._securityHeader.StandardsManager.IdManager.DefaultIdNamespaceUri);
+            if (this._bodyId == null)
             {
-                this.bodyId = this.securityHeader.GenerateId();
-                this.bodyIdInserted = true;
+                this._bodyId = this._securityHeader.GenerateId();
+                this._bodyIdInserted = true;
             }
         }
 
         public void WriteBodyToEncrypt(EncryptedData encryptedData, SymmetricAlgorithm algorithm)
         {
-            encryptedData.Id = this.securityHeader.GenerateId();
+            encryptedData.Id = this._securityHeader.GenerateId();
 
             BodyContentHelper helper = new BodyContentHelper();
             XmlDictionaryWriter encryptingWriter = helper.CreateWriter();
             this.InnerMessage.WriteBodyContents(encryptingWriter);
             encryptedData.SetUpEncryption(algorithm, helper.ExtractResult());
-            this.encryptedBodyContent = encryptedData;
+            this._encryptedBodyContent = encryptedData;
 
-            this.state = BodyState.Encrypted;
+            this._state = BodyState.Encrypted;
         }
 
         public void WriteBodyToEncryptThenSign(Stream canonicalStream, EncryptedData encryptedData, SymmetricAlgorithm algorithm)
@@ -307,16 +308,16 @@ namespace System.ServiceModel.Security
         {
             SetBodyId();
 
-            this.fullBodyBuffer = new XmlBuffer(int.MaxValue);
-            XmlDictionaryWriter canonicalWriter = this.fullBodyBuffer.OpenSection(XmlDictionaryReaderQuotas.Max);
+            this._fullBodyBuffer = new XmlBuffer(int.MaxValue);
+            XmlDictionaryWriter canonicalWriter = this._fullBodyBuffer.OpenSection(XmlDictionaryReaderQuotas.Max);
             canonicalWriter.StartCanonicalization(canonicalStream, false, null);
             WriteInnerMessageWithId(canonicalWriter);
             canonicalWriter.EndCanonicalization();
             canonicalWriter.Flush();
-            this.fullBodyBuffer.CloseSection();
-            this.fullBodyBuffer.Close();
+            this._fullBodyBuffer.CloseSection();
+            this._fullBodyBuffer.Close();
 
-            this.state = BodyState.Signed;
+            this._state = BodyState.Signed;
         }
 
         public void WriteBodyToSignThenEncrypt(Stream canonicalStream, EncryptedData encryptedData, SymmetricAlgorithm algorithm)
@@ -415,9 +416,9 @@ namespace System.ServiceModel.Security
         void WriteStartInnerMessageWithId(XmlDictionaryWriter writer)
         {
             this.InnerMessage.WriteStartBody(writer);
-            if (this.bodyIdInserted)
+            if (this._bodyIdInserted)
             {
-                this.securityHeader.StandardsManager.IdManager.WriteIdAttribute(writer, this.bodyId);
+                this._securityHeader.StandardsManager.IdManager.WriteIdAttribute(writer, this._bodyId);
             }
         }
 

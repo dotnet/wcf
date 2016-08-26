@@ -95,6 +95,16 @@ namespace System.ServiceModel.Security
             }
         }
 
+        public bool EncryptPrimarySignature
+        {
+            get { return _encryptSignature; }
+            set
+            {
+                ThrowIfProcessingStarted();
+                _encryptSignature = value;
+            }
+        }
+
         internal byte[] PrimarySignatureValue
         {
             get { return _primarySignatureValue; }
@@ -118,6 +128,11 @@ namespace System.ServiceModel.Security
         public override string Namespace
         {
             get { return this.StandardsManager.SecurityVersion.HeaderNamespace.Value; }
+        }
+
+        protected SecurityAppliedMessage SecurityAppliedMessage
+        {
+            get { return (SecurityAppliedMessage)this.Message; }
         }
 
         public bool SignThenEncrypt
@@ -309,6 +324,19 @@ namespace System.ServiceModel.Security
             //this.AddParameters(ref this.signedTokenParameters, parameters);
         }
 
+        public void RemoveSignatureEncryptionIfAppropriate()
+        {
+            if (this.SignThenEncrypt &&
+                this.EncryptPrimarySignature &&
+                (this.SecurityAppliedMessage.BodyProtectionMode != MessagePartProtectionMode.SignThenEncrypt) &&
+                (_basicSupportingTokenParameters == null || _basicSupportingTokenParameters.Count == 0) &&
+                (_signatureConfirmationsToSend == null || _signatureConfirmationsToSend.Count == 0 || !_signatureConfirmationsToSend.IsMarkedForEncryption) &&
+                !this.HasSignedEncryptedMessagePart)
+            {
+                _encryptSignature = false;
+            }
+        }
+
         public string GenerateId()
         {
             int id = _idCounter++;
@@ -388,63 +416,61 @@ namespace System.ServiceModel.Security
 
         void StartSignature()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            if (_elementContainer.SourceSigningToken == null)
+            {
+                return;
+            }
 
-            //if (_elementContainer.SourceSigningToken == null)
-            //{
-            //    return;
-            //}
+            // determine the key identifier clause to use for the source
+            SecurityTokenReferenceStyle sourceSigningKeyReferenceStyle = GetTokenReferenceStyle(_signingTokenParameters);
+            SecurityKeyIdentifierClause sourceSigningKeyIdentifierClause = _signingTokenParameters.CreateKeyIdentifierClause(_elementContainer.SourceSigningToken, sourceSigningKeyReferenceStyle);
+            if (sourceSigningKeyIdentifierClause == null)
+            {
+                throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
+            }
 
-            //// determine the key identifier clause to use for the source
-            //SecurityTokenReferenceStyle sourceSigningKeyReferenceStyle = GetTokenReferenceStyle(_signingTokenParameters);
-            //SecurityKeyIdentifierClause sourceSigningKeyIdentifierClause = _signingTokenParameters.CreateKeyIdentifierClause(_elementContainer.SourceSigningToken, sourceSigningKeyReferenceStyle);
-            //if (sourceSigningKeyIdentifierClause == null)
-            //{
-            //    throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
-            //}
+            SecurityToken signingToken;
+            SecurityKeyIdentifierClause signingKeyIdentifierClause;
 
-            //SecurityToken signingToken;
-            //SecurityKeyIdentifierClause signingKeyIdentifierClause;
+            // determine if a token needs to be derived
+            if (_signingTokenParameters.RequireDerivedKeys && !_signingTokenParameters.HasAsymmetricKey)
+            {
+                string derivationAlgorithm = this.AlgorithmSuite.GetSignatureKeyDerivationAlgorithm(_elementContainer.SourceSigningToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
+                string expectedDerivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
+                if (derivationAlgorithm == expectedDerivationAlgorithm)
+                {
+                    DerivedKeySecurityToken derivedSigningToken = new DerivedKeySecurityToken(-1, 0, this.AlgorithmSuite.GetSignatureKeyDerivationLength(_elementContainer.SourceSigningToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null, DerivedKeySecurityToken.DefaultNonceLength, _elementContainer.SourceSigningToken,
+                        sourceSigningKeyIdentifierClause, derivationAlgorithm, GenerateId());
+                    signingToken = _elementContainer.DerivedSigningToken = derivedSigningToken;
+                    signingKeyIdentifierClause = new LocalIdKeyIdentifierClause(signingToken.Id, signingToken.GetType());
+                }
+                else
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedCryptoAlgorithm, derivationAlgorithm)));
+                }
+            }
+            else
+            {
+                signingToken = _elementContainer.SourceSigningToken;
+                signingKeyIdentifierClause = sourceSigningKeyIdentifierClause;
+            }
 
-            //// determine if a token needs to be derived
-            //if (_signingTokenParameters.RequireDerivedKeys && !_signingTokenParameters.HasAsymmetricKey)
-            //{
-            //    string derivationAlgorithm = this.AlgorithmSuite.GetSignatureKeyDerivationAlgorithm(_elementContainer.SourceSigningToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
-            //    string expectedDerivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
-            //    if (derivationAlgorithm == expectedDerivationAlgorithm)
-            //    {
-            //        DerivedKeySecurityToken derivedSigningToken = new DerivedKeySecurityToken(-1, 0, this.AlgorithmSuite.GetSignatureKeyDerivationLength(this.elementContainer.SourceSigningToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null, DerivedKeySecurityToken.DefaultNonceLength, this.elementContainer.SourceSigningToken,
-            //            sourceSigningKeyIdentifierClause, derivationAlgorithm, GenerateId());
-            //        signingToken = _elementContainer.DerivedSigningToken = derivedSigningToken;
-            //        signingKeyIdentifierClause = new LocalIdKeyIdentifierClause(signingToken.Id, signingToken.GetType());
-            //    }
-            //    else
-            //    {
-            //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedCryptoAlgorithm, derivationAlgorithm)));
-            //    }
-            //}
-            //else
-            //{
-            //    signingToken = _elementContainer.SourceSigningToken;
-            //    signingKeyIdentifierClause = sourceSigningKeyIdentifierClause;
-            //}
+            SecurityKeyIdentifier signingKeyIdentifier = new SecurityKeyIdentifier(signingKeyIdentifierClause);
 
-            //SecurityKeyIdentifier signingKeyIdentifier = new SecurityKeyIdentifier(signingKeyIdentifierClause);
+            if (_signatureConfirmationsToSend != null && _signatureConfirmationsToSend.Count > 0)
+            {
+                ISecurityElement[] signatureConfirmationElements;
+                signatureConfirmationElements = CreateSignatureConfirmationElements(_signatureConfirmationsToSend);
+                for (int i = 0; i < signatureConfirmationElements.Length; ++i)
+                {
+                    SendSecurityHeaderElement sigConfElement = new SendSecurityHeaderElement(signatureConfirmationElements[i].Id, signatureConfirmationElements[i]);
+                    sigConfElement.MarkedForEncryption = _signatureConfirmationsToSend.IsMarkedForEncryption;
+                    _elementContainer.AddSignatureConfirmation(sigConfElement);
+                }
+            }
 
-            //if (_signatureConfirmationsToSend != null && _signatureConfirmationsToSend.Count > 0)
-            //{
-            //    ISecurityElement[] signatureConfirmationElements;
-            //    signatureConfirmationElements = CreateSignatureConfirmationElements(_signatureConfirmationsToSend);
-            //    for (int i = 0; i < signatureConfirmationElements.Length; ++i)
-            //    {
-            //        SendSecurityHeaderElement sigConfElement = new SendSecurityHeaderElement(signatureConfirmationElements[i].Id, signatureConfirmationElements[i]);
-            //        sigConfElement.MarkedForEncryption = _signatureConfirmationsToSend.IsMarkedForEncryption;
-            //        _elementContainer.AddSignatureConfirmation(sigConfElement);
-            //    }
-            //}
-
-            //bool generateTargettablePrimarySignature = ((_endorsingTokenParameters != null) || (_signedEndorsingTokenParameters != null));
-            //this.StartPrimarySignatureCore(signingToken, signingKeyIdentifier, _signatureParts, generateTargettablePrimarySignature);
+            bool generateTargettablePrimarySignature = ((_endorsingTokenParameters != null) || (_signedEndorsingTokenParameters != null));
+            this.StartPrimarySignatureCore(signingToken, signingKeyIdentifier, _signatureParts, generateTargettablePrimarySignature);
         }
 
         void CompleteSignature()
@@ -604,83 +630,81 @@ namespace System.ServiceModel.Security
 
         void StartEncryption()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            if (_elementContainer.SourceEncryptionToken == null)
+            {
+                return;
+            }
+            // determine the key identifier clause to use for the source
+            SecurityTokenReferenceStyle sourceEncryptingKeyReferenceStyle = GetTokenReferenceStyle(_encryptingTokenParameters);
+            bool encryptionTokenSerialized = sourceEncryptingKeyReferenceStyle == SecurityTokenReferenceStyle.Internal;
+            SecurityKeyIdentifierClause sourceEncryptingKeyIdentifierClause = _encryptingTokenParameters.CreateKeyIdentifierClause(_elementContainer.SourceEncryptionToken, sourceEncryptingKeyReferenceStyle);
+            if (sourceEncryptingKeyIdentifierClause == null)
+            {
+                throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
+            }
+            SecurityToken sourceToken;
+            SecurityKeyIdentifierClause sourceTokenIdentifierClause;
 
-            //if (_elementContainer.SourceEncryptionToken == null)
-            //{
-            //    return;
-            //}
-            //// determine the key identifier clause to use for the source
-            //SecurityTokenReferenceStyle sourceEncryptingKeyReferenceStyle = GetTokenReferenceStyle(_encryptingTokenParameters);
-            //bool encryptionTokenSerialized = sourceEncryptingKeyReferenceStyle == SecurityTokenReferenceStyle.Internal;
-            //SecurityKeyIdentifierClause sourceEncryptingKeyIdentifierClause = _encryptingTokenParameters.CreateKeyIdentifierClause(_elementContainer.SourceEncryptionToken, sourceEncryptingKeyReferenceStyle);
-            //if (sourceEncryptingKeyIdentifierClause == null)
-            //{
-            //    throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
-            //}
-            //SecurityToken sourceToken;
-            //SecurityKeyIdentifierClause sourceTokenIdentifierClause;
+            // if the source token cannot do symmetric crypto, create a wrapped key
+            if (!SecurityUtils.HasSymmetricSecurityKey(_elementContainer.SourceEncryptionToken))
+            {
+                int keyLength = Math.Max(128, this.AlgorithmSuite.DefaultSymmetricKeyLength);
+                CryptoHelper.ValidateSymmetricKeyLength(keyLength, this.AlgorithmSuite);
+                byte[] key = new byte[keyLength / 8];
+                CryptoHelper.FillRandomBytes(key);
+                string keyWrapAlgorithm;
+                XmlDictionaryString keyWrapAlgorithmDictionaryString;
+                this.AlgorithmSuite.GetKeyWrapAlgorithm(_elementContainer.SourceEncryptionToken, out keyWrapAlgorithm, out keyWrapAlgorithmDictionaryString);
+                WrappedKeySecurityToken wrappedKey = new WrappedKeySecurityToken(GenerateId(), key, keyWrapAlgorithm, keyWrapAlgorithmDictionaryString,
+                    _elementContainer.SourceEncryptionToken, new SecurityKeyIdentifier(sourceEncryptingKeyIdentifierClause));
+                _elementContainer.WrappedEncryptionToken = wrappedKey;
+                sourceToken = wrappedKey;
+                sourceTokenIdentifierClause = new LocalIdKeyIdentifierClause(wrappedKey.Id, wrappedKey.GetType());
+                encryptionTokenSerialized = true;
+            }
+            else
+            {
+                sourceToken = _elementContainer.SourceEncryptionToken;
+                sourceTokenIdentifierClause = sourceEncryptingKeyIdentifierClause;
+            }
 
-            //// if the source token cannot do symmetric crypto, create a wrapped key
-            //if (!SecurityUtils.HasSymmetricSecurityKey(_elementContainer.SourceEncryptionToken))
-            //{
-            //    int keyLength = Math.Max(128, this.AlgorithmSuite.DefaultSymmetricKeyLength);
-            //    CryptoHelper.ValidateSymmetricKeyLength(keyLength, this.AlgorithmSuite);
-            //    byte[] key = new byte[keyLength / 8];
-            //    CryptoHelper.FillRandomBytes(key);
-            //    string keyWrapAlgorithm;
-            //    XmlDictionaryString keyWrapAlgorithmDictionaryString;
-            //    this.AlgorithmSuite.GetKeyWrapAlgorithm(_elementContainer.SourceEncryptionToken, out keyWrapAlgorithm, out keyWrapAlgorithmDictionaryString);
-            //    WrappedKeySecurityToken wrappedKey = new WrappedKeySecurityToken(GenerateId(), key, keyWrapAlgorithm, keyWrapAlgorithmDictionaryString,
-            //        _elementContainer.SourceEncryptionToken, new SecurityKeyIdentifier(sourceEncryptingKeyIdentifierClause));
-            //    _elementContainer.WrappedEncryptionToken = wrappedKey;
-            //    sourceToken = wrappedKey;
-            //    sourceTokenIdentifierClause = new LocalIdKeyIdentifierClause(wrappedKey.Id, wrappedKey.GetType());
-            //    encryptionTokenSerialized = true;
-            //}
-            //else
-            //{
-            //    sourceToken = _elementContainer.SourceEncryptionToken;
-            //    sourceTokenIdentifierClause = sourceEncryptingKeyIdentifierClause;
-            //}
+            // determine if a key needs to be derived
+            SecurityKeyIdentifierClause encryptingKeyIdentifierClause;
+            // determine if a token needs to be derived
+            if (_encryptingTokenParameters.RequireDerivedKeys)
+            {
+                string derivationAlgorithm = this.AlgorithmSuite.GetEncryptionKeyDerivationAlgorithm(sourceToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
+                string expectedDerivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
+                if (derivationAlgorithm == expectedDerivationAlgorithm)
+                {
+                    DerivedKeySecurityToken derivedEncryptingToken = new DerivedKeySecurityToken(-1, 0,
+                        this.AlgorithmSuite.GetEncryptionKeyDerivationLength(sourceToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null, DerivedKeySecurityToken.DefaultNonceLength, sourceToken, sourceTokenIdentifierClause, derivationAlgorithm, GenerateId());
+                    _encryptingToken = _elementContainer.DerivedEncryptionToken = derivedEncryptingToken;
+                    encryptingKeyIdentifierClause = new LocalIdKeyIdentifierClause(derivedEncryptingToken.Id, derivedEncryptingToken.GetType());
+                }
+                else
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedCryptoAlgorithm, derivationAlgorithm)));
+                }
+            }
+            else
+            {
+                _encryptingToken = sourceToken;
+                encryptingKeyIdentifierClause = sourceTokenIdentifierClause;
+            }
 
-            //// determine if a key needs to be derived
-            //SecurityKeyIdentifierClause encryptingKeyIdentifierClause;
-            //// determine if a token needs to be derived
-            //if (_encryptingTokenParameters.RequireDerivedKeys)
-            //{
-            //    string derivationAlgorithm = this.AlgorithmSuite.GetEncryptionKeyDerivationAlgorithm(sourceToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
-            //    string expectedDerivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
-            //    if (derivationAlgorithm == expectedDerivationAlgorithm)
-            //    {
-            //        DerivedKeySecurityToken derivedEncryptingToken = new DerivedKeySecurityToken(-1, 0,
-            //            this.AlgorithmSuite.GetEncryptionKeyDerivationLength(sourceToken, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null, DerivedKeySecurityToken.DefaultNonceLength, sourceToken, sourceTokenIdentifierClause, derivationAlgorithm, GenerateId());
-            //        _encryptingToken = _elementContainer.DerivedEncryptionToken = derivedEncryptingToken;
-            //        encryptingKeyIdentifierClause = new LocalIdKeyIdentifierClause(derivedEncryptingToken.Id, derivedEncryptingToken.GetType());
-            //    }
-            //    else
-            //    {
-            //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedCryptoAlgorithm, derivationAlgorithm)));
-            //    }
-            //}
-            //else
-            //{
-            //    _encryptingToken = sourceToken;
-            //    encryptingKeyIdentifierClause = sourceTokenIdentifierClause;
-            //}
+            _skipKeyInfoForEncryption = encryptionTokenSerialized && this.EncryptedKeyContainsReferenceList && (_encryptingToken is WrappedKeySecurityToken) && this._signThenEncrypt;
+            SecurityKeyIdentifier identifier;
+            if (_skipKeyInfoForEncryption)
+            {
+                identifier = null;
+            }
+            else
+            {
+                identifier = new SecurityKeyIdentifier(encryptingKeyIdentifierClause);
+            }
 
-            //_skipKeyInfoForEncryption = encryptionTokenSerialized && this.EncryptedKeyContainsReferenceList && (_encryptingToken is WrappedKeySecurityToken) && this.signThenEncrypt;
-            //SecurityKeyIdentifier identifier;
-            //if (_skipKeyInfoForEncryption)
-            //{
-            //    identifier = null;
-            //}
-            //else
-            //{
-            //    identifier = new SecurityKeyIdentifier(encryptingKeyIdentifierClause);
-            //}
-
-            //StartEncryptionCore(_encryptingToken, identifier);
+            StartEncryptionCore(_encryptingToken, identifier);
         }
 
         void CompleteEncryption()

@@ -75,6 +75,8 @@ namespace System.ServiceModel.Security.Tokens
 
         protected abstract SecurityTokenParameters CloneCore();
 
+        internal protected abstract SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle);
+
         internal protected abstract void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement);
 
         internal SecurityKeyIdentifierClause CreateKeyIdentifierClause<TExternalClause, TInternalClause>(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
@@ -101,6 +103,22 @@ namespace System.ServiceModel.Security.Tokens
 
             return result;
         }
+
+        internal SecurityKeyIdentifierClause CreateGenericXmlTokenKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+        {
+            GenericXmlSecurityToken xmlToken = token as GenericXmlSecurityToken;
+            if (xmlToken != null)
+            {
+                if (referenceStyle == SecurityTokenReferenceStyle.Internal && xmlToken.InternalTokenReference != null)
+                    return xmlToken.InternalTokenReference;
+
+                if (referenceStyle == SecurityTokenReferenceStyle.External && xmlToken.ExternalTokenReference != null)
+                    return xmlToken.ExternalTokenReference;
+            }
+
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.UnableToCreateTokenReference)));
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

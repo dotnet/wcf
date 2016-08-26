@@ -103,14 +103,13 @@ namespace System.ServiceModel.Security.Tokens
             return new SslSecurityTokenParameters(this);
         }
 
-        // $$$
-        //internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-        //{
-        //    if (token is GenericXmlSecurityToken)
-        //        return base.CreateGenericXmlTokenKeyIdentifierClause(token, referenceStyle);
-        //    else
-        //        return this.CreateKeyIdentifierClause<SecurityContextKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-        //}
+        internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+        {
+            if (token is GenericXmlSecurityToken)
+                return base.CreateGenericXmlTokenKeyIdentifierClause(token, referenceStyle);
+            else
+                return this.CreateKeyIdentifierClause<SecurityContextKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+        }
 
         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
         {
