@@ -840,43 +840,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        // $$$ experimental
-        //sealed class RequestChannelSendAsyncResult : ApplySecurityAndSendAsyncResult<IRequestChannel>
-        //{
-        //    Message reply;
-        //    SecurityRequestChannel securityChannel;
-
-        //    public RequestChannelSendAsyncResult(Message message, SecurityProtocol protocol, IRequestChannel channel, SecurityRequestChannel securityChannel, TimeSpan timeout,
-        //        AsyncCallback callback, object state)
-        //        : base(protocol, channel, timeout, callback, state)
-        //    {
-        //        this.securityChannel = securityChannel;
-        //        this.Begin(message, null);
-        //    }
-
-        //    protected override IAsyncResult BeginSendCore(IRequestChannel channel, Message message, TimeSpan timeout, AsyncCallback callback, object state)
-        //    {
-        //        return channel.BeginRequest(message, timeout, callback, state);
-        //    }
-
-        //    internal static Message End(IAsyncResult result)
-        //    {
-        //        RequestChannelSendAsyncResult self = result as RequestChannelSendAsyncResult;
-        //        OnEnd(self);
-        //        return self.reply;
-        //    }
-
-        //    protected override void EndSendCore(IRequestChannel channel, IAsyncResult result)
-        //    {
-        //        this.reply = channel.EndRequest(result);
-        //    }
-
-        //    protected override void OnSendCompleteCore(TimeSpan timeout)
-        //    {
-        //        this.reply = securityChannel.ProcessReply(reply, this.CorrelationState, timeout);
-        //    }
-        //}
-
         class ClientDuplexReceiveMessageAndVerifySecurityAsyncResult : ReceiveMessageAndVerifySecurityAsyncResultBase
         {
             SecurityDuplexChannel channel;

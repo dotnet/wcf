@@ -68,7 +68,7 @@ namespace System.ServiceModel.Security
 
         public void ReadFrom(XmlDictionaryReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //reader.ReadStartElement(ElementName, NamespaceUri);
             //while (reader.IsStartElement())
@@ -99,7 +99,7 @@ namespace System.ServiceModel.Security
 
         public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (this.DataReferenceCount == 0)
             //{
@@ -120,7 +120,7 @@ namespace System.ServiceModel.Security
 
             public static string ReadFrom(XmlDictionaryReader reader)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //string prefix;
                 //string uri = XmlHelper.ReadEmptyElementAndRequiredAttribute(reader, ElementName, NamespaceUri, ReferenceList.UriAttribute, out prefix);

@@ -39,7 +39,7 @@ namespace System.ServiceModel.Security
 
         protected override void ForceEncryption()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //CryptoHelper.GenerateIVAndEncrypt(this.algorithm, this.buffer, out this.iv, out this.cipherText);
             //this.State = EncryptionState.Encrypted;
             //this.buffer = new ArraySegment<byte>(CryptoHelper.EmptyBuffer);
@@ -63,7 +63,7 @@ namespace System.ServiceModel.Security
 
         void SetPlainText()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //this.decryptedBuffer = CryptoHelper.ExtractIVAndDecrypt(this.algorithm, this.cipherText, 0, this.cipherText.Length);
             //this.State = EncryptionState.Decrypted;
         }

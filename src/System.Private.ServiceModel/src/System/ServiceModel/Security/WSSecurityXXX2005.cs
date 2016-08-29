@@ -19,7 +19,8 @@ namespace System.ServiceModel.Security
     using System.IdentityModel.Tokens;
     using System.Security.Cryptography.X509Certificates;
     using System.ServiceModel.Security.Tokens;
-    //$$$using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+    //Issue #31 in progress
+    //using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
     using System.Runtime.Serialization;
@@ -31,7 +32,6 @@ namespace System.ServiceModel.Security
 
     class WSSecurityXXX2005 : WSSecurityJan2004
     {
-        // $$$ added
         public WSSecurityXXX2005(WSSecurityTokenSerializer tokenSerializer)
             : this(tokenSerializer, new SamlSerializer())
         {

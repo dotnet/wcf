@@ -220,8 +220,6 @@ namespace System.ServiceModel.Security
 
         public void AddTimestamp(TimeSpan timestampValidityDuration)
         {
-            // $$$ throw ExceptionHelper.PlatformNotSupported(); // $$$
-
             DateTime now = DateTime.UtcNow;
             string id = this.RequireMessageProtection ? SecurityUtils.GenerateId() : GenerateId();
             AddTimestamp(new SecurityTimestamp(now, now + timestampValidityDuration, id));
@@ -270,7 +268,7 @@ namespace System.ServiceModel.Security
         {
             throw ExceptionHelper.PlatformNotSupported();
 
-            // $$$
+            // Issue #31 in progress
 
             //if (token == null)
             //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
@@ -297,7 +295,7 @@ namespace System.ServiceModel.Security
         {
             throw ExceptionHelper.PlatformNotSupported();
 
-            // $$$
+            // Issue #31 in progress
             //if (token == null)
             //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
             //if (parameters == null)
@@ -313,7 +311,7 @@ namespace System.ServiceModel.Security
         {
             throw ExceptionHelper.PlatformNotSupported();
 
-            // $$$
+            // Issue #31 in progress
             //if (token == null)
             //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
             //if (parameters == null)
@@ -475,7 +473,7 @@ namespace System.ServiceModel.Security
 
         void CompleteSignature()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //ISignatureValueSecurityElement signedXml = this.CompletePrimarySignatureCore(
             //    _elementContainer.GetSignatureConfirmations(), _elementContainer.GetSignedEndorsingSupportingTokens(),
@@ -556,7 +554,7 @@ namespace System.ServiceModel.Security
 
         void SignWithSupportingTokens()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //SecurityToken[] endorsingTokens = _elementContainer.GetEndorsingSupportingTokens();
             //if (endorsingTokens != null)

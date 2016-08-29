@@ -16,7 +16,8 @@ using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenE
 
 namespace System.ServiceModel.Security
 {
-    // $$$ was -- abstract class WSSecureConversation : WSSecurityTokenSerializer.SerializerEntries
+    // Issue #31 in progress 
+    // was -- abstract class WSSecureConversation : WSSecurityTokenSerializer.SerializerEntries
     abstract class WSSecureConversation : SecurityTokenSerializer.SerializerEntries
     {
         WSSecurityTokenSerializer tokenSerializer;
@@ -132,7 +133,7 @@ namespace System.ServiceModel.Security
             //</DerivedKeyToken>
             public virtual void ReadDerivedKeyTokenParameters(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver, out string id, out string derivationAlgorithm, out string label, out int length, out byte[] nonce, out int offset, out int generation, out SecurityKeyIdentifierClause tokenToDeriveIdentifier, out SecurityToken tokenToDerive)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (tokenResolver == null)
                 //{
@@ -225,7 +226,7 @@ namespace System.ServiceModel.Security
 
             public virtual SecurityToken CreateDerivedKeyToken(string id, string derivationAlgorithm, string label, int length, byte[] nonce, int offset, int generation, SecurityKeyIdentifierClause tokenToDeriveIdentifier, SecurityToken tokenToDerive)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (tokenToDerive == null)
                 //{
@@ -359,7 +360,7 @@ namespace System.ServiceModel.Security
                             {
                                 if (element.LocalName == parent.SerializerDictionary.Identifier.Value && element.NamespaceURI == parent.SerializerDictionary.Namespace.Value)
                                 {
-                                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                                     //contextId = XmlHelper.ReadTextElementAsUniqueId(element);
                                 }
                                 else if (CanReadGeneration(element))
@@ -381,7 +382,7 @@ namespace System.ServiceModel.Security
 
             SecurityContextSecurityToken TryResolveSecurityContextToken(UniqueId contextId, UniqueId generation, string id, SecurityTokenResolver tokenResolver, out ISecurityContextSecurityTokenCache sctCache)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //SecurityContextSecurityToken cachedSct = null;
                 //sctCache = null;
@@ -430,7 +431,7 @@ namespace System.ServiceModel.Security
 
             public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //UniqueId contextId = null;
                 //byte[] encodedCookie = null;
@@ -499,7 +500,7 @@ namespace System.ServiceModel.Security
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //SecurityContextSecurityToken sct = (token as SecurityContextSecurityToken);
 

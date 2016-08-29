@@ -25,7 +25,8 @@ namespace System.ServiceModel.Security
     using System.IdentityModel.Tokens;
     using System.Security.Cryptography.X509Certificates;
     using System.ServiceModel.Security.Tokens;
-    // $$$ using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+    // Issue #31 in progress
+    //using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
     using System.Runtime.Serialization;
@@ -51,7 +52,6 @@ namespace System.ServiceModel.Security
             get { return this.tokenSerializer; }
         }
 
-        // $$$ was abstract, but needed to instantiate
         public abstract TrustDictionary SerializerDictionary
         {
             get; 
@@ -91,7 +91,7 @@ namespace System.ServiceModel.Security
             protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return new Type[] { typeof(BinarySecretSecurityToken) };
             }
             public override string TokenTypeUri { get { return null; } }
@@ -135,7 +135,7 @@ namespace System.ServiceModel.Security
 
             public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //string secretType = reader.GetAttribute(XD.SecurityJan2004Dictionary.TypeAttribute, null);
                 //string id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
@@ -166,7 +166,7 @@ namespace System.ServiceModel.Security
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //BinarySecretSecurityToken simpleToken = token as BinarySecretSecurityToken;
                 //byte[] secret = simpleToken.GetKeyBytes();
@@ -249,7 +249,7 @@ namespace System.ServiceModel.Security
 
             public override RequestSecurityToken CreateRequestSecurityToken(XmlReader xmlReader)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
                 //reader.MoveToStartElement(DriverDictionary.RequestSecurityToken, DriverDictionary.Namespace);
@@ -291,7 +291,7 @@ namespace System.ServiceModel.Security
 
             System.IdentityModel.XmlBuffer GetIssuedTokenBuffer(System.IdentityModel.XmlBuffer rstrBuffer)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //System.IdentityModel.XmlBuffer issuedTokenBuffer = null;
                 //using (XmlDictionaryReader reader = rstrBuffer.GetReader(0))
@@ -324,7 +324,7 @@ namespace System.ServiceModel.Security
 
             public override RequestSecurityTokenResponse CreateRequestSecurityTokenResponse(XmlReader xmlReader)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (xmlReader == null)
                 //{
@@ -444,7 +444,7 @@ namespace System.ServiceModel.Security
                     XmlElement elem = (rootElement.ChildNodes[i] as XmlElement);
                     if (elem != null)
                     {
-                        throw ExceptionHelper.PlatformNotSupported();   // $$$
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                         //if (elem.LocalName == DriverDictionary.AppliesTo.Value && elem.NamespaceURI == Namespaces.WSPolicy)
                         //{
                         //    return elem;
@@ -459,7 +459,7 @@ namespace System.ServiceModel.Security
                 XmlElement appliesToElement = GetAppliesToElement(rootXml);
                 if (appliesToElement != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //using (XmlReader reader = new XmlNodeReader(appliesToElement))
                     //{
                     //    reader.ReadStartElement();
@@ -493,7 +493,7 @@ namespace System.ServiceModel.Security
 
             public override bool IsAppliesTo(string localName, string namespaceUri)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return (localName == DriverDictionary.AppliesTo.Value && namespaceUri == Namespaces.WSPolicy);
             }
 
@@ -503,7 +503,7 @@ namespace System.ServiceModel.Security
                 XmlElement appliesToElement = GetAppliesToElement(rootElement);
                 if (appliesToElement != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //using (XmlReader reader = new XmlNodeReader(appliesToElement))
                     //{
                     //    reader.ReadStartElement();
@@ -544,7 +544,7 @@ namespace System.ServiceModel.Security
                                 XmlElement combinedHashElement = XmlHelper.GetChildElement(element);
                                 if (combinedHashElement.LocalName == DriverDictionary.CombinedHash.Value && combinedHashElement.NamespaceURI == DriverDictionary.Namespace.Value)
                                 {
-                                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                                     //string authenticatorString = XmlHelper.ReadTextElementAsTrimmedString(combinedHashElement);
                                     //return Convert.FromBase64String(authenticatorString);
                                 }
@@ -618,7 +618,7 @@ namespace System.ServiceModel.Security
                     XmlElement element = rootElement.ChildNodes[i] as XmlElement;
                     if (element != null)
                     {
-                        throw ExceptionHelper.PlatformNotSupported();   // $$$
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                         //if (element.LocalName == DriverDictionary.Entropy.Value && element.NamespaceURI == DriverDictionary.Namespace.Value)
                         //{
@@ -676,7 +676,7 @@ namespace System.ServiceModel.Security
             /// </summary>
             /// 
 
-            ////// $$$
+            ////// Issue #31 in progress
             ////public override GenericXmlSecurityToken GetIssuedToken(RequestSecurityTokenResponse rstr, SecurityTokenResolver resolver, IList<SecurityTokenAuthenticator> allowedAuthenticators, SecurityKeyEntropyMode keyEntropyMode, byte[] requestorEntropy, string expectedTokenType,
             ////    ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, int defaultKeySize, bool isBearerKeyType)
             ////{
@@ -864,7 +864,7 @@ namespace System.ServiceModel.Security
 
             public static BinaryNegotiation ReadBinaryNegotiation(XmlElement elem)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (elem == null)
                 //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("elem");
@@ -939,7 +939,7 @@ namespace System.ServiceModel.Security
 
                 if (issuedTokenXml != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                     //requestedAttachedReference = standardsManager.CreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal);
                     //if (requestedUnattachedReference == null)
@@ -956,7 +956,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            // $$$
+            // Issue #31 in progress
             //internal bool TryReadKeyIdentifierClause(XmlNodeReader reader, out SecurityKeyIdentifierClause keyIdentifierClause)
             //{
             //    keyIdentifierClause = null;
@@ -1004,7 +1004,7 @@ namespace System.ServiceModel.Security
 
             internal SecurityKeyIdentifierClause GetKeyIdentifierXmlReferenceClause(XmlElement keyIdentifierReferenceXmlElement)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //SecurityKeyIdentifierClause keyIdentifierClause = null;
                 //XmlNodeReader reader = new XmlNodeReader(keyIdentifierReferenceXmlElement);
@@ -1036,7 +1036,7 @@ namespace System.ServiceModel.Security
 
             void WriteAppliesTo(object appliesTo, Type appliesToType, XmlObjectSerializer serializer, XmlWriter xmlWriter)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
                 //writer.WriteStartElement(Namespaces.WSPolicyPrefix, DriverDictionary.AppliesTo.Value, Namespaces.WSPolicy);
@@ -1101,7 +1101,7 @@ namespace System.ServiceModel.Security
                 SecurityToken entropyToken = rst.GetRequestorEntropy();
                 if (entropyToken != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Entropy, DriverDictionary.Namespace);
                     //standardsManager.SecurityTokenSerializer.WriteToken(writer, entropyToken);
                     //writer.WriteEndElement();
@@ -1141,7 +1141,7 @@ namespace System.ServiceModel.Security
             {
                 if (rstr.RequestedUnattachedReference != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                     //writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedTokenReference, DriverDictionary.Namespace);
                     //standardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedUnattachedReference);
@@ -1155,7 +1155,7 @@ namespace System.ServiceModel.Security
 
             public override void WriteRequestSecurityTokenResponse(RequestSecurityTokenResponse rstr, XmlWriter xmlWriter)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (rstr == null)
                 //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rstr");
@@ -1310,7 +1310,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            // $$$
+            // Issue #31 in progress
             //public override bool TryParseKeySizeElement(XmlElement element, out int keySize)
             //{
             //    if (element == null)
@@ -1409,7 +1409,7 @@ namespace System.ServiceModel.Security
                 return result;
             }
 
-            // $$$
+            // Issue #31 in progress
             //public override bool TryParseTokenTypeElement(XmlElement element, out string tokenType)
             //{
             //    if (element == null)
@@ -1622,7 +1622,7 @@ namespace System.ServiceModel.Security
             internal static void ProcessRstAndIssueKey(RequestSecurityToken requestSecurityToken, SecurityTokenResolver resolver, SecurityKeyEntropyMode keyEntropyMode, SecurityAlgorithmSuite algorithmSuite, out int issuedKeySize, out byte[] issuerEntropy, out byte[] proofKey,
                 out SecurityToken proofToken)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //SecurityToken requestorEntropyToken = requestSecurityToken.GetRequestorEntropy(resolver);
                 //ValidateRequestorEntropy(requestorEntropyToken, keyEntropyMode);

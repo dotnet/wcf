@@ -17,18 +17,19 @@ namespace System.ServiceModel.Security
     using System.ServiceModel.Security.Tokens;
     using System.Text;
     using System.Xml;
-    // $$$using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+    // Issue #31 in progress
+    // using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
     using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
 
-    // $$$ was -- class WSSecurityJan2004 : WSSecurityTokenSerializer.SerializerEntries
+    // Issue #31 in progress
+    // was -- class WSSecurityJan2004 : WSSecurityTokenSerializer.SerializerEntries
     class WSSecurityJan2004 : SecurityTokenSerializer.SerializerEntries
     {
         WSSecurityTokenSerializer tokenSerializer;
         SamlSerializer samlSerializer;
 
-        // $$$ invented this ctor to work with WSKeyInfoSerializer
         public WSSecurityJan2004(WSSecurityTokenSerializer tokenSerializer) : this(tokenSerializer, new SamlSerializer())
         {
         }
@@ -131,7 +132,7 @@ namespace System.ServiceModel.Security
                         }
                         else if (encoding == EncodingTypeValueHexBinary)
                         {
-                            throw ExceptionHelper.PlatformNotSupported();   // $$$
+                            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                             ///binaryData = HexBinary.Parse(encodedData).Value;
                         }
                         else
@@ -160,7 +161,7 @@ namespace System.ServiceModel.Security
                 }
                 else if (encoding == EncodingTypeValueHexBinary)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //binaryData = HexBinary.Parse(reader.ReadElementContentAsString()).Value;
                 }
                 else
@@ -239,7 +240,7 @@ namespace System.ServiceModel.Security
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //BufferedGenericXmlSecurityToken bufferedXmlToken = token as BufferedGenericXmlSecurityToken;
                 //if (bufferedXmlToken != null && bufferedXmlToken.TokenXmlBuffer != null)
                 //{
@@ -265,13 +266,13 @@ namespace System.ServiceModel.Security
 
             protected override Type[] GetTokenTypesCore()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return new Type[] { typeof(KerberosReceiverSecurityToken), typeof(KerberosRequestorSecurityToken) };
             }
 
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromBinaryCore(byte[] rawData)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //byte[] tokenHash;
                 //using (HashAlgorithm hasher = CryptoHelper.NewSha1HashAlgorithm())
                 //{
@@ -282,13 +283,13 @@ namespace System.ServiceModel.Security
 
             public override SecurityToken ReadBinaryCore(string id, string valueTypeUri, byte[] rawData)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return new KerberosReceiverSecurityToken(rawData, id, false, valueTypeUri);
             }
 
             public override void WriteBinaryCore(SecurityToken token, out string id, out byte[] rawData)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //KerberosRequestorSecurityToken kerbToken = (KerberosRequestorSecurityToken)token;
                 //id = token.Id;
                 //rawData = kerbToken.GetRequest();
@@ -331,7 +332,7 @@ namespace System.ServiceModel.Security
                     // SAML uses same reference for internal and external
                     case SecurityTokenReferenceStyle.Internal:
                     case SecurityTokenReferenceStyle.External:
-                        throw ExceptionHelper.PlatformNotSupported();   // $$$
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                         //string assertionId = issuedTokenXml.GetAttribute(samlAssertionId);
                         //return new SamlAssertionKeyIdentifierClause(assertionId);
                     default:
@@ -341,14 +342,14 @@ namespace System.ServiceModel.Security
 
             public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //SamlSecurityToken samlToken = this.samlSerializer.ReadToken(reader, this.tokenSerializer, tokenResolver);
                 //return samlToken;
             }
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //SamlSecurityToken samlToken = token as SamlSecurityToken;
                 //this.samlSerializer.WriteToken(samlToken, writer, this.tokenSerializer);
             }
@@ -510,7 +511,7 @@ namespace System.ServiceModel.Security
             protected override XmlDictionaryString LocalName {
                 get
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     // return EncryptedKey.ElementName; 
                 }
             }
@@ -518,13 +519,13 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //return XD.XmlEncryptionDictionary.Namespace;
                 }
             }
             protected override Type[] GetTokenTypesCore()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return new Type[] { typeof(WrappedKeySecurityToken) };
             }
             public override string TokenTypeUri { get { return null; } }
@@ -541,7 +542,7 @@ namespace System.ServiceModel.Security
                     case SecurityTokenReferenceStyle.Internal:
                         return CreateDirectReference(issuedTokenXml, XmlEncryptionStrings.Id, null, null);
                     case SecurityTokenReferenceStyle.External:
-                        throw ExceptionHelper.PlatformNotSupported();   // $$$
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                         //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CantInferReferenceForToken, EncryptedKey.ElementName.Value)));
                     default:
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenReferenceStyle"));
@@ -550,7 +551,7 @@ namespace System.ServiceModel.Security
 
             public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //EncryptedKey encryptedKey = new EncryptedKey();
                 //encryptedKey.SecurityTokenSerializer = this.tokenSerializer;
@@ -564,7 +565,7 @@ namespace System.ServiceModel.Security
                 //return wrappedKeyToken;
             }
 
-            // $$$
+            // Issue #31 in progress
             //WrappedKeySecurityToken CreateWrappedKeyToken(string id, string encryptionMethod, string carriedKeyName,
             //    SecurityKeyIdentifier unwrappingTokenIdentifier, byte[] wrappedKey, SecurityTokenResolver tokenResolver)
             //{
@@ -633,7 +634,7 @@ namespace System.ServiceModel.Security
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //WrappedKeySecurityToken wrappedKeyToken = token as WrappedKeySecurityToken;
                 //wrappedKeyToken.EnsureEncryptedKeySetUp();
                 //wrappedKeyToken.EncryptedKey.SecurityTokenSerializer = this.tokenSerializer;
@@ -652,7 +653,7 @@ namespace System.ServiceModel.Security
 
             protected override Type[] GetTokenTypesCore()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return new Type[] { typeof(X509SecurityToken), typeof(X509WindowsSecurityToken)};
             }
 
@@ -663,7 +664,7 @@ namespace System.ServiceModel.Security
 
             public override SecurityToken ReadBinaryCore(string id, string valueTypeUri, byte[] rawData)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //X509Certificate2 certificate;
                 //if (!SecurityUtils.TryCreateX509CertificateFromRawData(rawData, out certificate))
                 //{
@@ -674,7 +675,7 @@ namespace System.ServiceModel.Security
 
             public override void WriteBinaryCore(SecurityToken token, out string id, out byte[] rawData)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //id = token.Id;
                 //X509SecurityToken x509Token = token as X509SecurityToken;
                 //if (x509Token != null)
@@ -713,7 +714,7 @@ namespace System.ServiceModel.Security
 
             public override string ExtractId(XmlDictionaryReader reader)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //if (reader == null)
                 //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
 

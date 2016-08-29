@@ -629,13 +629,13 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return this.communicationObject.BeginClose(timeout, callback, state);
         }
 
         public void EndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //this.communicationObject.EndClose(result);
         }
 
@@ -680,7 +680,7 @@ namespace System.ServiceModel.Security
 
         SendSecurityHeader CreateSendSecurityHeader(Message message, string actor, SecurityProtocolFactory factory, bool requireMessageProtection)
         {
-            // throw ExceptionHelper.PlatformNotSupported();   // $$$
+            // throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             MessageDirection transferDirection = factory.ActAsInitiator ? MessageDirection.Input : MessageDirection.Output;
             SendSecurityHeader sendSecurityHeader = factory.StandardsManager.CreateSendSecurityHeader(
@@ -988,7 +988,7 @@ namespace System.ServiceModel.Security
                     if (Fx.IsFatal(auditException))
                         throw;
 
-                    // $$$
+                    // Issue #31 in progress
                     //DiagnosticUtility.TraceHandledException(auditException, TraceEventType.Error);
                 }
             }

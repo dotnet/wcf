@@ -461,13 +461,13 @@ namespace System.ServiceModel.Channels
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return _innerChannelFactory.BeginOpen(timeout, callback, state);
             }
 
             protected override void OnEndOpen(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //_innerChannelFactory.EndOpen(result);
             }
 
@@ -481,14 +481,14 @@ namespace System.ServiceModel.Channels
 
             protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return new ChainedAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose,
                 //    _innerChannelFactory.BeginClose, _innerChannelFactory.EndClose);
             }
 
             protected override void OnEndClose(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //ChainedAsyncResult.End(result);
             }
 

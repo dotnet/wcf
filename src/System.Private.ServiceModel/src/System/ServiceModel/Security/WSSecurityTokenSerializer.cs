@@ -136,13 +136,13 @@ namespace System.ServiceModel.Security
             }
             else if (trustVersion == TrustVersion.WSTrust13)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //this.serializerEntries.Add(new WSTrustDec2005(this));
                 //trustDictionary = new IdentityModel.TrustDec2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Dec2005DictionaryString));
             }
             else
             {
-                // $$$
+                // Issue #31 in progress
                 //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
             }
 
@@ -172,7 +172,6 @@ namespace System.ServiceModel.Security
             }
         }
 
-        // $$$ added to use in WSKeyInfoSerializer
         internal KeyInfoSerializer KeyInfoSerializer
         {
             get
@@ -472,12 +471,6 @@ namespace System.ServiceModel.Security
 
             public abstract void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token);
         }
-
-        // $$$ removed because can use SecurityTokenSerializer.SerializerEntries directly
-        //internal abstract new class SerializerEntries
-        //{
-        //    public virtual void PopulateTokenEntries(IList<TokenEntry> tokenEntries) { }
-        //}
 
         internal class CollectionDictionary : IXmlDictionary
         {

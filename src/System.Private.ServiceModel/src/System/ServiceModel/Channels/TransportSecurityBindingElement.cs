@@ -89,7 +89,7 @@ namespace System.ServiceModel.Channels
 
             if (requireDemuxer)
             {
-                throw ExceptionHelper.PlatformNotSupported("TransportSecurityBindingElement demuxing is not supported"); // $$$
+                throw ExceptionHelper.PlatformNotSupported("TransportSecurityBindingElement demuxing is not supported"); // Issue #31 in progress
                 // ApplyPropertiesOnDemuxer(channelBuilder, context);
             }
             BindingContext issuerBindingContext = context.Clone();
@@ -103,7 +103,7 @@ namespace System.ServiceModel.Channels
                 scParameters.IssuerBindingContext = issuerBindingContext;
                 if (scParameters.RequireCancellation)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("TransportSecurityBindingElement RequireCancellation is not supported"); // $$$
+                    throw ExceptionHelper.PlatformNotSupported("TransportSecurityBindingElement RequireCancellation is not supported"); // Issue #31 in progress
 
                     //SessionSymmetricTransportSecurityProtocolFactory sessionFactory = new SessionSymmetricTransportSecurityProtocolFactory();
                     //sessionFactory.SecurityTokenParameters = scParameters.Clone();

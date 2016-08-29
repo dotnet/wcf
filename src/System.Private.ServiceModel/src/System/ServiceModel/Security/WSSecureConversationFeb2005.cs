@@ -18,7 +18,8 @@ namespace System.ServiceModel.Security
     using System.IdentityModel.Policy;
     using System.IdentityModel.Tokens;
     using System.Security.Cryptography.X509Certificates;
-    // $$$ using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+    // Issue #31 in progress
+    // using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
     using System.ServiceModel.Channels;
     using System.ServiceModel.Security;
     using System.ServiceModel.Security.Tokens;
@@ -93,7 +94,7 @@ namespace System.ServiceModel.Security
 
             protected override UniqueId ReadGeneration(XmlElement element)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return XmlHelper.ReadTextElementAsUniqueId(element);
             }
             

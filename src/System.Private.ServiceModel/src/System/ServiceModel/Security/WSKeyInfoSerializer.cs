@@ -16,7 +16,6 @@ namespace System.ServiceModel.Security
 
     class WSKeyInfoSerializer : KeyInfoSerializer
     {
-        // $$$ Added tokenSerializer param
         static Func<KeyInfoSerializer, IEnumerable<SecurityTokenSerializer.SerializerEntries>> CreateAdditionalEntries(SecurityTokenSerializer tokenSerializer, SecurityVersion securityVersion, SecureConversationVersion secureConversationVersion)
         {
             return (KeyInfoSerializer keyInfoSerializer) =>
@@ -29,7 +28,6 @@ namespace System.ServiceModel.Security
                     }
                     else if (securityVersion == SecurityVersion.WSSecurity11)
                     {
-                        // $$$ throw ExceptionHelper.PlatformNotSupported();   // $$$
                         serializerEntries.Add(new WSSecurityXXX2005((WSSecurityTokenSerializer)tokenSerializer));
                     }
                     else
@@ -216,17 +214,17 @@ namespace System.ServiceModel.Security
 
                 public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml, SecurityTokenReferenceStyle tokenReferenceStyle)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$ added this method
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 }
 
                 public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$ added this method
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 }
 
                 public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$ added this method
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 }
 
                 public override string TokenTypeUri { get { return parent.SerializerDictionary.SecurityContextTokenType.Value; } }
@@ -262,17 +260,17 @@ namespace System.ServiceModel.Security
 
                 public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml, SecurityTokenReferenceStyle tokenReferenceStyle)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$ added this method
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 }
 
                 public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$ added this method
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 }
 
                 public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$ added this method
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 }
 
                 public override string TokenTypeUri { get { return parent.SerializerDictionary.DerivedKeyTokenType.Value; } }

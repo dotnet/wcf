@@ -86,53 +86,53 @@ namespace System.ServiceModel.Security
 
         static void SharedCallback(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 and #1494 in progress
 
-//            if (result == null)
-//            {
-//                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("result"));
-//            }
-//            if (result.CompletedSynchronously)
-//            {
-//                return;
-//            }
-//            ApplySecurityAndSendAsyncResult<MessageSenderType> self = result.AsyncState as ApplySecurityAndSendAsyncResult<MessageSenderType>;
-//            if (self == null)
-//            {
-//                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.InvalidAsyncResult), "result"));
-//            }
+            //            if (result == null)
+            //            {
+            //                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("result"));
+            //            }
+            //            if (result.CompletedSynchronously)
+            //            {
+            //                return;
+            //            }
+            //            ApplySecurityAndSendAsyncResult<MessageSenderType> self = result.AsyncState as ApplySecurityAndSendAsyncResult<MessageSenderType>;
+            //            if (self == null)
+            //            {
+            //                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.InvalidAsyncResult), "result"));
+            //            }
 
-//            bool completeSelf = false;
-//            Exception completionException = null;
-//            try
-//            {
-//                if (!self._secureOutgoingMessageDone)
-//                {
-//                    Message message;
-//                    self._binding.EndSecureOutgoingMessage(result, out message, out self._newCorrelationState);
-//                    completeSelf = self.OnSecureOutgoingMessageComplete(message);
-//                }
-//                else
-//                {
-//                    self.EndSendCore(self._channel, result);
-//                    completeSelf = self.OnSendComplete();
-//                }
-//            }
-//#pragma warning suppress 56500 // covered by FxCOP
-//            catch (Exception e)
-//            {
-//                if (Fx.IsFatal(e))
-//                {
-//                    throw;
-//                }
+            //            bool completeSelf = false;
+            //            Exception completionException = null;
+            //            try
+            //            {
+            //                if (!self._secureOutgoingMessageDone)
+            //                {
+            //                    Message message;
+            //                    self._binding.EndSecureOutgoingMessage(result, out message, out self._newCorrelationState);
+            //                    completeSelf = self.OnSecureOutgoingMessageComplete(message);
+            //                }
+            //                else
+            //                {
+            //                    self.EndSendCore(self._channel, result);
+            //                    completeSelf = self.OnSendComplete();
+            //                }
+            //            }
+            //#pragma warning suppress 56500 // covered by FxCOP
+            //            catch (Exception e)
+            //            {
+            //                if (Fx.IsFatal(e))
+            //                {
+            //                    throw;
+            //                }
 
-//                completeSelf = true;
-//                completionException = e;
-//            }
-//            if (completeSelf)
-//            {
-//                self.Complete(false, completionException);
-//            }
+            //                completeSelf = true;
+            //                completionException = e;
+            //            }
+            //            if (completeSelf)
+            //            {
+            //                self.Complete(false, completionException);
+            //            }
         }
     }
 }

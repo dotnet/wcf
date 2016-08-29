@@ -183,7 +183,7 @@ namespace System.ServiceModel
 
             if (_parent != null && _parent.UseIdentityConfiguration)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 // this.WrapTokenHandlersAsSecurityTokenSerializer(version);
             }
 

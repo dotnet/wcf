@@ -1450,13 +1450,14 @@ namespace System.ServiceModel.Security
 
             protected virtual IAsyncResult BeginCloseCore(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported(); // $$$ experimental
+                throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
                 //return new CloseCoreAsyncResult(this, timeout, callback, state);
             }
 
             protected virtual void EndCloseCore(IAsyncResult result)
             {
-                CloseCoreAsyncResult.End(result);
+                throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
+                //CloseCoreAsyncResult.End(result);
             }
 
             protected IAsyncResult BeginReceiveInternal(TimeSpan timeout, SecurityProtocolCorrelationState correlationState, AsyncCallback callback, object state)

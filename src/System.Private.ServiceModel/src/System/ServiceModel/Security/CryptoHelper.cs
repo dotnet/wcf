@@ -1,33 +1,36 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections;
+using System.Collections.Generic;
+using System.ServiceModel.Channels;
+using System.ServiceModel;
+using System.Reflection;
+using System.Threading;
+using System.IO;
+
+using System.Runtime.InteropServices;
+using System.IdentityModel.Tokens;
+using System.Text;
+using System.Xml;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
+
+// Issue #31 in progress
+// using Psha1DerivedKeyGenerator = System.IdentityModel.Psha1DerivedKeyGenerator;
+using CryptoAlgorithms = System.IdentityModel.CryptoHelper;
+using System.Runtime;
 
 namespace System.ServiceModel.Security
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel;
-    using System.Reflection;
-    using System.Threading;
-    using System.IO;
-
-    using System.Runtime.InteropServices;
-    using System.IdentityModel.Tokens;
-    using System.Text;
-    using System.Xml;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Security.Cryptography;
-
-    // $$$using Psha1DerivedKeyGenerator = System.IdentityModel.Psha1DerivedKeyGenerator;
-    using CryptoAlgorithms = System.IdentityModel.CryptoHelper;
-    using Runtime;
-
     static class CryptoHelper
     {
-        static byte[] emptyBuffer;
-        // $$$static readonly RandomNumberGenerator random = new RNGCryptoServiceProvider();
+        private static byte[] s_emptyBuffer;
+
+        // Issue #31 in progress
+        // static readonly RandomNumberGenerator random = new RNGCryptoServiceProvider();
 
         enum CryptoAlgorithmType
         {
@@ -40,12 +43,12 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                if (emptyBuffer == null)
+                if (s_emptyBuffer == null)
                 {
                     byte[] tmp = new byte[0];
-                    emptyBuffer = tmp;
+                    s_emptyBuffer = tmp;
                 }
-                return emptyBuffer;
+                return s_emptyBuffer;
             }
         }
 
@@ -62,7 +65,7 @@ namespace System.ServiceModel.Security
         [SuppressMessage("Microsoft.Security.Cryptography", "CA5354:DoNotUseSHA1", Justification = "Cannot change. Required as SOAP spec requires supporting SHA1.")]
         internal static HashAlgorithm CreateHashAlgorithm(string digestMethod)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //object algorithmObject = CryptoAlgorithms.GetAlgorithmFromConfig(digestMethod);
             //if (algorithmObject != null)
@@ -94,7 +97,7 @@ namespace System.ServiceModel.Security
         [SuppressMessage("Microsoft.Security.Cryptography", "CA5354:DoNotUseSHA1", Justification = "Cannot change. Required as SOAP spec requires supporting SHA1.")]
         internal static HashAlgorithm CreateHashForAsymmetricSignature(string signatureMethod)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //object algorithmObject = CryptoAlgorithms.GetAlgorithmFromConfig(signatureMethod);
             //if (algorithmObject != null)
@@ -138,7 +141,7 @@ namespace System.ServiceModel.Security
 
         internal static byte[] ExtractIVAndDecrypt(SymmetricAlgorithm algorithm, byte[] cipherText, int offset, int count)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (cipherText == null)
             //{
@@ -174,13 +177,13 @@ namespace System.ServiceModel.Security
 
         internal static void FillRandomBytes(byte[] buffer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //random.GetBytes(buffer);
         }
 
         static CryptoAlgorithmType GetAlgorithmType(string algorithm)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //object algorithmObject = null;
 
@@ -284,7 +287,7 @@ namespace System.ServiceModel.Security
 
         internal static bool IsSymmetricSupportedAlgorithm(string algorithm, int keySize)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //bool found = false;
             //object algorithmObject = null;

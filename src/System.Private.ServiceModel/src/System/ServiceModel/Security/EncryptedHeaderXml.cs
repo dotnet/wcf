@@ -165,7 +165,7 @@ namespace System.ServiceModel.Security
 
         public void SetUpEncryption(SymmetricAlgorithm algorithm, MemoryStream source)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //encryptedData.SetUpEncryption(algorithm, new ArraySegment<byte>(source.GetBuffer(), 0, (int) source.Length));
         }
 
@@ -181,7 +181,7 @@ namespace System.ServiceModel.Security
 
         public void WriteHeaderContents(XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //this.encryptedData.WriteTo(writer, ServiceModelDictionaryManager.Instance);
         }
     }

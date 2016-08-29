@@ -133,7 +133,7 @@ namespace System.ServiceModel.Security
 
         protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //switch (this.state)
             //{
@@ -189,14 +189,14 @@ namespace System.ServiceModel.Security
 
             if (this._fullBodyFragment != null)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.fullBodyFragment, 0, _fullBodyFragmentLength);
             }
             else
             {
                 if (this._startBodyFragment != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.startBodyFragment.GetBuffer(), 0, (int)this.startBodyFragment.Length);
                 }
                 else
@@ -208,7 +208,7 @@ namespace System.ServiceModel.Security
 
                 if (_endBodyFragment != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(_endBodyFragment.GetBuffer(), 0, (int)this.endBodyFragment.Length);
                 }
                 else
@@ -268,7 +268,7 @@ namespace System.ServiceModel.Security
 
         public void WriteBodyToEncryptThenSign(Stream canonicalStream, EncryptedData encryptedData, SymmetricAlgorithm algorithm)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //encryptedData.Id = this.securityHeader.GenerateId();
             //SetBodyId();
@@ -322,7 +322,7 @@ namespace System.ServiceModel.Security
 
         public void WriteBodyToSignThenEncrypt(Stream canonicalStream, EncryptedData encryptedData, SymmetricAlgorithm algorithm)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //XmlBuffer buffer = new XmlBuffer(int.MaxValue);
             //XmlDictionaryWriter fragmentingWriter = buffer.OpenSection(XmlDictionaryReaderQuotas.Max);
@@ -349,7 +349,7 @@ namespace System.ServiceModel.Security
             Stream stream, bool includeComments, string[] inclusivePrefixes,
             EncryptedData encryptedData, SymmetricAlgorithm algorithm, XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //IFragmentCapableXmlDictionaryWriter fragmentingWriter = (IFragmentCapableXmlDictionaryWriter) writer;
 
@@ -387,7 +387,7 @@ namespace System.ServiceModel.Security
 
         public void WriteBodyToSignWithFragments(Stream stream, bool includeComments, string[] inclusivePrefixes, XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //IFragmentCapableXmlDictionaryWriter fragmentingWriter = (IFragmentCapableXmlDictionaryWriter) writer;
 
@@ -446,7 +446,7 @@ namespace System.ServiceModel.Security
 
             public ArraySegment<byte> ExtractResult()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //this.writer.Flush();
                 //return new ArraySegment<byte>(this.stream.GetBuffer(), 0, (int) this.stream.Length);

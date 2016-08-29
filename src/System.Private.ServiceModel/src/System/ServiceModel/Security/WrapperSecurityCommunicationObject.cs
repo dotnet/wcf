@@ -49,13 +49,13 @@ namespace System.ServiceModel.Security
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _innerCommunicationObject.OnBeginClose(timeout, callback, state);
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _innerCommunicationObject.OnBeginOpen(timeout, callback, state);
         }
 
@@ -78,13 +78,13 @@ namespace System.ServiceModel.Security
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //_innerCommunicationObject.OnEndClose(result);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //_innerCommunicationObject.OnEndOpen(result);
         }
 
@@ -222,19 +222,19 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _communicationObject.BeginClose(callback, state);
         }
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _communicationObject.BeginClose(timeout, callback, state);
         }
 
         public void EndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
            // _communicationObject.EndClose(result);
         }
 
@@ -255,19 +255,19 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _communicationObject.BeginOpen(callback, state);
         }
 
         public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _communicationObject.BeginOpen(timeout, callback, state);
         }
 
         public void EndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //_communicationObject.EndOpen(result);
         }
 
@@ -283,13 +283,13 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return new OperationWithTimeoutAsyncResult(this.OnClose, timeout, callback, state);
         }
 
         public IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return new OperationWithTimeoutAsyncResult(this.OnOpen, timeout, callback, state);
         }
 
@@ -312,13 +312,13 @@ namespace System.ServiceModel.Security
 
         public void OnEndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //OperationWithTimeoutAsyncResult.End(result);
         }
 
         public void OnEndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //OperationWithTimeoutAsyncResult.End(result);
         }
 
@@ -427,19 +427,19 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
            // return _communicationObject.BeginClose(callback, state);
         }
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _communicationObject.BeginClose(timeout, callback, state);
         }
 
         public void EndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //_communicationObject.EndClose(result);
         }
 
@@ -460,19 +460,19 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _communicationObject.BeginOpen(callback, state);
         }
 
         public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return _communicationObject.BeginOpen(timeout, callback, state);
         }
 
         public void EndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //_communicationObject.EndOpen(result);
         }
 

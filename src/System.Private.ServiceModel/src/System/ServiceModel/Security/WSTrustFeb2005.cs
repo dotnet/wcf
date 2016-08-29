@@ -1,37 +1,38 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.IdentityModel.Claims;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel.Security.Tokens;
+//using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using System.Runtime.Serialization;
+using System.ServiceModel.Dispatcher;
+
+using KeyIdentifierEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierEntry;
+using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
+using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
+
 
 namespace System.ServiceModel.Security
 {
-    using System;
-    using System.ServiceModel;
-    using System.ServiceModel.Description;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Tokens;
-    using System.Security.Cryptography.X509Certificates;
-    using System.ServiceModel.Security.Tokens;
-    //using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.Runtime.Serialization;
-    using System.ServiceModel.Dispatcher;
-
-    using KeyIdentifierEntry = WSSecurityTokenSerializer.KeyIdentifierEntry;
-    using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-    using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
-    using StrEntry = WSSecurityTokenSerializer.StrEntry;
-
     class WSTrustFeb2005 : WSTrust
     {
         public WSTrustFeb2005(WSSecurityTokenSerializer tokenSerializer)
@@ -115,7 +116,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            //// $$$
+            //// Issue #31 in progress
             //public override Collection<XmlElement> ProcessUnknownRequestParameters(Collection<XmlElement> unknownRequestParameters, Collection<XmlElement> originalRequestParameters)
             //{
             //    return unknownRequestParameters;
@@ -151,7 +152,7 @@ namespace System.ServiceModel.Security
                 {
                     if (issuedTokenXml != null)
                     {
-                        throw ExceptionHelper.PlatformNotSupported();   // $$$
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                         //if (requestedAttachedReference == null)
                         //{
                         //    this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal, out requestedAttachedReference);
@@ -195,7 +196,7 @@ namespace System.ServiceModel.Security
                     XmlElement child = (rstXml.ChildNodes[i] as XmlElement);
                     if (child != null)
                     {
-                        throw ExceptionHelper.PlatformNotSupported();   // $$$
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                         //if (child.LocalName == this.DriverDictionary.RenewTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
                         //    renewTarget = this.StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
                         //else if (child.LocalName == this.DriverDictionary.CloseTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
@@ -206,7 +207,7 @@ namespace System.ServiceModel.Security
 
             protected override void WriteReferences(RequestSecurityTokenResponse rstr, XmlDictionaryWriter writer)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (rstr.RequestedAttachedReference != null)
                 //{
@@ -233,7 +234,7 @@ namespace System.ServiceModel.Security
 
             protected override void WriteTargets(RequestSecurityToken rst, XmlDictionaryWriter writer)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (rst.RenewTarget != null)
                 //{
@@ -309,13 +310,13 @@ namespace System.ServiceModel.Security
 
                 public IRequestChannel CreateChannel(EndpointAddress address)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //return this.innerChannelFactory.CreateChannel<IRequestChannel>(address);
                 }
 
                 public IRequestChannel CreateChannel(EndpointAddress address, Uri via)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //return this.innerChannelFactory.CreateChannel<IRequestChannel>(address, via);
                 }
 

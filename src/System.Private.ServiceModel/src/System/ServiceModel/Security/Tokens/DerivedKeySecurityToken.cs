@@ -61,7 +61,7 @@ namespace System.ServiceModel.Security.Tokens
             if (length != 16 && length != 24 && length != 32)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.Psha1KeyLengthInvalid, length * 8)));
 
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //byte[] nonce = new byte[DefaultNonceLength];
             //RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
@@ -75,7 +75,7 @@ namespace System.ServiceModel.Security.Tokens
             SecurityKeyIdentifierClause tokenToDeriveIdentifier,
             string derivationAlgorithm, string id)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //byte[] nonce = new byte[minNonceLength];
             //RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
@@ -236,7 +236,7 @@ namespace System.ServiceModel.Security.Tokens
 
         internal void InitializeDerivedKey(int maxKeyLength)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (_key != null)
             //{

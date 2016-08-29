@@ -26,7 +26,7 @@ namespace System.ServiceModel.Security.Tokens
         SecurityKey wrappingSecurityKey;
         SecurityKeyIdentifier wrappingTokenReference;
         bool serializeCarriedKeyName;
-        // $$$byte[] wrappedKeyHash;
+        // byte[] wrappedKeyHash;
         XmlDictionaryString wrappingAlgorithmDictionaryString;
 
         // sender use
@@ -75,7 +75,7 @@ namespace System.ServiceModel.Security.Tokens
         WrappedKeySecurityToken(string id, byte[] keyToWrap, string wrappingAlgorithm, XmlDictionaryString wrappingAlgorithmDictionaryString, SecurityToken wrappingToken, SecurityKeyIdentifier wrappingTokenReference, byte[] wrappedKey, SecurityKey wrappingSecurityKey)
             : this(id, keyToWrap, wrappingAlgorithm, wrappingAlgorithmDictionaryString)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (wrappingToken == null)
             //{
@@ -97,7 +97,7 @@ namespace System.ServiceModel.Security.Tokens
 
         WrappedKeySecurityToken(string id, byte[] keyToWrap, string wrappingAlgorithm, XmlDictionaryString wrappingAlgorithmDictionaryString)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (id == null)
             //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("id");
@@ -175,7 +175,7 @@ namespace System.ServiceModel.Security.Tokens
 
         internal byte[] GetHash()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //if (this.wrappedKeyHash == null)
             //{
             //    EnsureEncryptedKeySetUp();
@@ -189,7 +189,7 @@ namespace System.ServiceModel.Security.Tokens
 
         public byte[] GetWrappedKey()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return SecurityUtils.CloneBuffer(this.wrappedKey);
         }
 
@@ -220,7 +220,7 @@ namespace System.ServiceModel.Security.Tokens
 
         public override bool CanCreateKeyIdentifierClause<T>()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (typeof(T) == typeof(EncryptedKeyHashIdentifierClause))
             //    return true;
@@ -230,7 +230,7 @@ namespace System.ServiceModel.Security.Tokens
 
         public override T CreateKeyIdentifierClause<T>()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (typeof(T) == typeof(EncryptedKeyHashIdentifierClause))
             //    return new EncryptedKeyHashIdentifierClause(GetHash()) as T;
@@ -240,7 +240,7 @@ namespace System.ServiceModel.Security.Tokens
 
         public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //EncryptedKeyHashIdentifierClause encKeyIdentifierClause = keyIdentifierClause as EncryptedKeyHashIdentifierClause;
             //if (encKeyIdentifierClause != null)

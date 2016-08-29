@@ -236,13 +236,13 @@ namespace System.ServiceModel.Security
 
             if (this.tokenSerializer.CanReadKeyIdentifier(reader))
             {
-                //$$$ XmlElement xml = null;
+                // XmlElement xml = null;
                 XmlDictionaryReader localReader;
 
                 if (this.ShouldReadXmlReferenceKeyInfoClause)
                 {
                     // We create the dom only when needed to not affect perf.
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //XmlDocument doc = new XmlDocument();
                     //xml = (doc.ReadNode(reader) as XmlElement);
                     //localReader = XmlDictionaryReader.CreateDictionaryReader(new XmlNodeReader(xml));
@@ -267,7 +267,7 @@ namespace System.ServiceModel.Security
                         throw;
                     }
 
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //this.keyIdentifier = ReadGenericXmlSecurityKeyIdentifier( XmlDictionaryReader.CreateDictionaryReader( new XmlNodeReader(xml)), e);
                 }
             }

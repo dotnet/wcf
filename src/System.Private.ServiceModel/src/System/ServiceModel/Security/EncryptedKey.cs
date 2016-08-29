@@ -77,7 +77,7 @@ namespace System.ServiceModel.Security
 
         protected override void ReadAdditionalElements(XmlDictionaryReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (reader.IsStartElement(ReferenceList.ElementName, EncryptedType.NamespaceUri))
             //{

@@ -67,7 +67,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            // $$$
+            // Issue #31 in progress
             //public override XmlElement CreateKeyTypeElement(SecurityKeyType keyType)
             //{
             //    if (keyType == SecurityKeyType.BearerKey)
@@ -128,7 +128,7 @@ namespace System.ServiceModel.Security
                 return new WSTrustFeb2005.DriverFeb2005.RequestChannelFactory<IWsTrustDec2005SecurityTokenService>(result);
             }
 
-            // $$$
+            // Issue #31 in progress
             //public override Collection<XmlElement> ProcessUnknownRequestParameters(Collection<XmlElement> unknownRequestParameters, Collection<XmlElement> originalRequestParameters)
             //{
             //    // For WS-Trust 1.3 we want everything in the requestSecurityTokenTemplate parameters to endup as Addtional parameters.
@@ -171,7 +171,7 @@ namespace System.ServiceModel.Security
                 return result;
             }
 
-            // $$$
+            // Issue #31 in progress
             //internal override bool IsKeyWrapAlgorithmElement(XmlElement element, out string keyWrapAlgorithm)
             //{
             //    return CheckElement(element, DXD.TrustDec2005Dictionary.KeyWrapAlgorithm.Value, DXD.TrustDec2005Dictionary.Namespace.Value, out keyWrapAlgorithm);

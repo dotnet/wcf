@@ -29,7 +29,7 @@ namespace System.ServiceModel.Security
     {
         private HashStream _hashStream;
 
-        // $$$
+        // Issue #31 in progress
         //PreDigestedSignedInfo _signedInfo;
         //private SignedXml _signedXml;
         //private SecurityKey _signatureKey;
@@ -43,7 +43,7 @@ namespace System.ServiceModel.Security
 
         // For Transport Secrity we have to sign the 'To' header with the 
         // supporting tokens.
-        //$$$
+        //Issue #31 in progress
         //private byte[] _toHeaderHash = null;
         //private string _toHeaderId = null;
 
@@ -76,7 +76,7 @@ namespace System.ServiceModel.Security
         void AddEncryptionReference(MessageHeader header, string headerId, IPrefixGenerator prefixGenerator, bool sign,
             out MemoryStream plainTextStream, out string encryptedDataId)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //plainTextStream = new MemoryStream();
             //XmlDictionaryWriter encryptingWriter = XmlDictionaryWriter.CreateTextWriter(plainTextStream);
@@ -95,7 +95,7 @@ namespace System.ServiceModel.Security
 
         void AddSignatureReference(SecurityToken token, int position, SecurityTokenAttachmentMode mode)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //SecurityKeyIdentifierClause keyIdentifierClause = null;
             //bool strTransformEnabled = this.ShouldUseStrTransformForToken(token, position, mode, out keyIdentifierClause);
             //AddTokenSignatureReference(token, keyIdentifierClause, strTransformEnabled);
@@ -103,7 +103,7 @@ namespace System.ServiceModel.Security
 
         void AddPrimaryTokenSignatureReference(SecurityToken token, SecurityTokenParameters securityTokenParameters)
         {
-            //throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //// Currently we only support signing the primary token if the primary token is an issued token and protectTokens knob is set to true.
             //// We will get rid of the below check when we support all token types.
             //IssuedSecurityTokenParameters istp = securityTokenParameters as IssuedSecurityTokenParameters;
@@ -131,7 +131,7 @@ namespace System.ServiceModel.Security
         // 2. Else if strtransform is enabled it adds a reference the security token's keyIdentifier's id.
         void AddTokenSignatureReference(SecurityToken token, SecurityKeyIdentifierClause keyIdentifierClause, bool strTransformEnabled)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (!strTransformEnabled && token.Id == null)
             //{
@@ -162,7 +162,7 @@ namespace System.ServiceModel.Security
 
         void AddSignatureReference(SendSecurityHeaderElement[] elements)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //if (elements != null)
             //{
             //    for (int i = 0; i < elements.Length; ++i)
@@ -212,7 +212,7 @@ namespace System.ServiceModel.Security
 
         void AddSignatureReference(SecurityToken[] tokens, SecurityTokenAttachmentMode mode)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //if (tokens != null)
             //{
             //    for (int i = 0; i < tokens.Length; ++i)
@@ -224,7 +224,7 @@ namespace System.ServiceModel.Security
 
         string GetSignatureHash(MessageHeader header, string headerId, IPrefixGenerator prefixGenerator, XmlDictionaryWriter writer, out byte[] hash)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //HashStream hashStream = TakeHashStream();
             //XmlDictionaryWriter effectiveWriter;
@@ -270,7 +270,7 @@ namespace System.ServiceModel.Security
 
         void AddSignatureReference(MessageHeader header, string headerId, IPrefixGenerator prefixGenerator, XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //byte[] hashValue;
             //headerId = GetSignatureHash(header, headerId, prefixGenerator, writer, out hashValue);
             //_signedInfo.AddReference(headerId, hashValue);
@@ -278,7 +278,7 @@ namespace System.ServiceModel.Security
 
         void ApplySecurityAndWriteHeader(MessageHeader header, string headerId, XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (!this.RequireMessageProtection && this.ShouldSignToHeader)
             //{
@@ -334,7 +334,7 @@ namespace System.ServiceModel.Security
 
         public override void ApplySecurityAndWriteHeaders(MessageHeaders headers, XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //string[] headerIds;
             //if (this.RequireMessageProtection || this.ShouldSignToHeader)
             //{
@@ -440,7 +440,7 @@ namespace System.ServiceModel.Security
 
         protected static MemoryStream CaptureSecurityElement(ISecurityElement element)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //MemoryStream stream = new MemoryStream();
             //XmlDictionaryWriter writer = XmlDictionaryWriter.CreateTextWriter(stream);
@@ -456,7 +456,7 @@ namespace System.ServiceModel.Security
             SendSecurityHeaderElement[] signatureConfirmations,
             SendSecurityHeaderElement[] endorsingSignatures)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (_referenceList == null)
             //{
@@ -513,7 +513,7 @@ namespace System.ServiceModel.Security
             SecurityToken[] signedTokens,
             SendSecurityHeaderElement[] basicTokens, bool isPrimarySignature)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //if (_signedXml == null)
             //{
             //    return null;
@@ -574,7 +574,7 @@ namespace System.ServiceModel.Security
 
         EncryptedData CreateEncryptedData()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //EncryptedData encryptedData = new EncryptedData();
             //encryptedData.SecurityTokenSerializer = this.StandardsManager.SecurityTokenSerializer;
@@ -586,7 +586,7 @@ namespace System.ServiceModel.Security
 
         EncryptedData CreateEncryptedData(MemoryStream stream, string id, bool typeElement)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //EncryptedData encryptedData = CreateEncryptedData();
             //encryptedData.Id = id;
             //encryptedData.SetUpEncryption(_encryptingSymmetricAlgorithm, new ArraySegment<byte>(stream.GetBuffer(), 0, (int)stream.Length));
@@ -599,7 +599,7 @@ namespace System.ServiceModel.Security
 
         EncryptedData CreateEncryptedDataForBody()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //EncryptedData encryptedData = CreateEncryptedData();
             //encryptedData.Type = EncryptedData.ContentType;
@@ -608,7 +608,7 @@ namespace System.ServiceModel.Security
 
         void EncryptAndWriteHeader(MessageHeader plainTextHeader, string id, MemoryStream stream, XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //EncryptedHeader encryptedHeader = EncryptHeader(
             //    plainTextHeader,
             //    this.encryptingSymmetricAlgorithm, this.encryptionKeyIdentifier, this.Version,
@@ -618,7 +618,7 @@ namespace System.ServiceModel.Security
 
         void EncryptElement(SendSecurityHeaderElement element)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //string id = GenerateId();
             //ISecurityElement encryptedElement = CreateEncryptedData(CaptureSecurityElement(element.Item), id, true);
             //this.referenceList.AddReferredId(id);
@@ -649,13 +649,13 @@ namespace System.ServiceModel.Security
 
         XmlDictionaryWriter TakeUtf8Writer()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //return this.signedInfo.ResourcePool.TakeUtf8Writer();
         }
 
         MessagePartProtectionMode GetProtectionMode(MessageHeader header)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if (!this.RequireMessageProtection)
             //{
@@ -668,7 +668,7 @@ namespace System.ServiceModel.Security
 
         protected override void StartEncryptionCore(SecurityToken token, SecurityKeyIdentifier keyIdentifier)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //this.encryptingSymmetricAlgorithm = SecurityUtils.GetSymmetricAlgorithm(this.EncryptionAlgorithm, token);
             //if (this.encryptingSymmetricAlgorithm == null)
@@ -685,7 +685,7 @@ namespace System.ServiceModel.Security
             MessagePartSpecification signatureParts,
             bool generateTargettableSignature)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //SecurityAlgorithmSuite suite = this.AlgorithmSuite;
             //string canonicalizationAlgorithm = suite.DefaultCanonicalizationAlgorithm;
@@ -716,7 +716,7 @@ namespace System.ServiceModel.Security
 
         protected override ISignatureValueSecurityElement CreateSupportingSignature(SecurityToken token, SecurityKeyIdentifier identifier)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //StartPrimarySignatureCore(token, identifier, MessagePartSpecification.NoParts, false);
             //return CompletePrimarySignatureCore(null, null, null, null, false);
@@ -724,7 +724,7 @@ namespace System.ServiceModel.Security
 
         protected override ISignatureValueSecurityElement CreateSupportingSignature(SecurityToken token, SecurityKeyIdentifier identifier, ISecurityElement elementToSign)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //SecurityAlgorithmSuite algorithmSuite = this.AlgorithmSuite;
             //string signatureAlgorithm;
@@ -758,7 +758,7 @@ namespace System.ServiceModel.Security
 
         protected override void WriteSecurityTokenReferencyEntry(XmlDictionaryWriter writer, SecurityToken securityToken, SecurityTokenParameters securityTokenParameters)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //SecurityKeyIdentifierClause keyIdentifierClause = null;
 
@@ -835,7 +835,8 @@ namespace System.ServiceModel.Security
         }
 
         // Below methods simply call into innerWritter
-        // $$$ Close is not part of API
+        // Issue #31 in progress
+        // Close is not part of API
         public /*override*/ void Close()
         {
             this.innerWriter.Dispose();

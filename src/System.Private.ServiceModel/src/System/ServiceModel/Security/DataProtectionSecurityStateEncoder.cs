@@ -69,7 +69,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return ProtectedData.Unprotect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
             }
             catch (CryptographicException exception)
@@ -83,7 +83,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return ProtectedData.Protect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
             }
             catch (CryptographicException exception)
