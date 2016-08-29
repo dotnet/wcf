@@ -1,27 +1,27 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using System.CodeDom;
+using System.Runtime.Serialization;
+using System.Globalization;
+using System.Threading;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Policy;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace System.IdentityModel.Tokens
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Text;
-    using System.Xml.Serialization;
-    using System.Xml;
-    using System.Xml.Schema;
-    using System.CodeDom;
-    using System.Runtime.Serialization;
-    using System.Globalization;
-    using System.Threading;
-    using System.IdentityModel.Selectors;
-    using System.IdentityModel.Policy;
-    using System.Reflection;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using System.IO;
-
     public class SamlSecurityToken : SecurityToken
     {
         SamlAssertion assertion;
@@ -53,7 +53,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
                 //return this.assertion.SecurityKeys;
             }
         }
@@ -67,7 +67,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
                 //if (this.assertion.Conditions != null)
                 //{
                 //    return this.assertion.Conditions.NotBefore;
@@ -81,7 +81,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
                 //if (this.assertion.Conditions != null)
                 //{
                 //    return this.assertion.Conditions.NotOnOrAfter;
@@ -93,7 +93,7 @@ namespace System.IdentityModel.Tokens
 
         public override bool CanCreateKeyIdentifierClause<T>()
         {
-            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
             //if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
             //    return true;
 
@@ -102,7 +102,7 @@ namespace System.IdentityModel.Tokens
 
         public override T CreateKeyIdentifierClause<T>()
         {
-            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
 
             //if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
             //    return new SamlAssertionKeyIdentifierClause(this.Id) as T;
@@ -112,7 +112,7 @@ namespace System.IdentityModel.Tokens
 
         public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
             //SamlAssertionKeyIdentifierClause samlKeyIdentifierClause = keyIdentifierClause as SamlAssertionKeyIdentifierClause;
             //if (samlKeyIdentifierClause != null)
             //    return samlKeyIdentifierClause.Matches(this.Id);
@@ -120,6 +120,5 @@ namespace System.IdentityModel.Tokens
             //return false;
         }
     }
-
 }
 

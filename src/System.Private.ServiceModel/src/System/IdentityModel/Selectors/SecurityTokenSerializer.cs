@@ -208,42 +208,5 @@ namespace System.IdentityModel.Selectors
 
             public abstract void WriteKeyIdentifierCore(XmlDictionaryWriter writer, SecurityKeyIdentifier keyIdentifier);
         }
-
-        // $$$ Removed due to conflict with WSSecurityTokenSerializer.TokenEntry
-        //internal abstract class TokenEntry
-        //{
-        //    private Type[] _tokenTypes = null;
-
-        //    protected abstract XmlDictionaryString LocalName { get; }
-        //    protected abstract XmlDictionaryString NamespaceUri { get; }
-        //    public Type TokenType { get { return GetTokenTypes()[0]; } }
-        //    public abstract string TokenTypeUri { get; }
-        //    protected abstract string ValueTypeUri { get; }
-
-        //    public bool SupportsCore(Type tokenType)
-        //    {
-        //        Type[] tokenTypes = GetTokenTypes();
-        //        for (int i = 0; i < tokenTypes.Length; ++i)
-        //        {
-        //            if (tokenTypes[i].IsAssignableFrom(tokenType))
-        //                return true;
-        //        }
-        //        return false;
-        //    }
-
-        //    protected abstract Type[] GetTokenTypesCore();
-
-        //    public Type[] GetTokenTypes()
-        //    {
-        //        if (_tokenTypes == null)
-        //            _tokenTypes = GetTokenTypesCore();
-        //        return _tokenTypes;
-        //    }
-
-        //    public virtual bool SupportsTokenTypeUri(string tokenTypeUri)
-        //    {
-        //        return (this.TokenTypeUri == tokenTypeUri);
-        //    }
-        //}
     }
 }

@@ -25,8 +25,6 @@ namespace System.ServiceModel.Security
             this._binding = binding;
             this._channel = channel;
             this._timeoutHelper = new TimeoutHelper(timeout);
-
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
         }
 
         protected SecurityProtocolCorrelationState CorrelationState

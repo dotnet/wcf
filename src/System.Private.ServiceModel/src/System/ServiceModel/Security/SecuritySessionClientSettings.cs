@@ -396,7 +396,7 @@ namespace System.ServiceModel.Security
 
         void ConfigureSessionProtocolFactory()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+            throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
             //if (this.sessionProtocolFactory is SessionSymmetricMessageSecurityProtocolFactory)
             //{
@@ -467,7 +467,7 @@ namespace System.ServiceModel.Security
             SecuritySessionClientSettings<TChannel> settings;
             SecurityTokenProvider sessionTokenProvider;
             bool isKeyRenewalOngoing = false;
-            // InterruptibleWaitObject keyRenewalCompletedEvent;    // #1257 in progress
+            // InterruptibleWaitObject keyRenewalCompletedEvent;    // #31 in progress
             // InterruptibleWaitObject outputSessionCloseHandle = new InterruptibleWaitObject(true);
             // InterruptibleWaitObject inputSessionClosedHandle = new InterruptibleWaitObject(false);
             bool sentClose;
@@ -608,7 +608,7 @@ namespace System.ServiceModel.Security
 
             void InitializeSecurityState(SecurityToken sessionToken)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //InitializeSession(sessionToken);
                 //this.currentSessionToken = sessionToken;
@@ -627,7 +627,7 @@ namespace System.ServiceModel.Security
 
             void SetupSessionTokenProvider()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //InitiatorServiceModelSecurityTokenRequirement requirement = new InitiatorServiceModelSecurityTokenRequirement();
                 //this.Settings.IssuedSecurityTokenParameters.InitializeSecurityTokenRequirement(requirement);
@@ -655,7 +655,7 @@ namespace System.ServiceModel.Security
 
             void OpenCore(SecurityToken sessionToken, TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 //this.securityProtocol = this.Settings.SessionProtocolFactory.CreateSecurityProtocol(this.to, this.Via, null, true, timeoutHelper.RemainingTime());
@@ -671,7 +671,7 @@ namespace System.ServiceModel.Security
 
             protected override void OnFaulted()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //this.AbortCore();
                 //_inputSessionClosedHandle.Fault(this);
@@ -701,26 +701,17 @@ namespace System.ServiceModel.Security
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ?
-                    ServiceModelActivity.CreateAsyncActivity() : null;
-                using (ServiceModelActivity.BoundOperation(activity, true))
-                {
-                    if (DiagnosticUtility.ShouldUseActivity)
-                    {
-                        ServiceModelActivity.Start(activity, SR.Format(SR.ActivitySecuritySetup), ActivityType.SecuritySetup);
-                    }
-                    return new OpenAsyncResult(this, timeout, callback, state);
-                }
+                throw ExceptionHelper.PlatformNotSupported();
             }
 
             protected override void OnEndOpen(IAsyncResult result)
             {
-                OpenAsyncResult.End(result);
+                throw ExceptionHelper.PlatformNotSupported();
             }
 
             void InitializeChannelBinder()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //ChannelBuilder channelBuilder = this.Settings.ChannelBuilder;
                 //TolerateFaultsMode faultMode = this.Settings.TolerateTransportFailures ? TolerateFaultsMode.Always : TolerateFaultsMode.Never;
@@ -748,15 +739,15 @@ namespace System.ServiceModel.Security
                 //this.channelBinder.Faulted += this.OnInnerFaulted;
             }
 
-            void OnInnerFaulted(IReliableChannelBinder sender, Exception exception)
-            {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
-                //this.Fault(exception);
-            }
+            //void OnInnerFaulted(IReliableChannelBinder sender, Exception exception)
+            //{
+            //    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
+            //    //this.Fault(exception);
+            //}
 
             protected virtual bool OnCloseResponseReceived()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //bool setInputSessionClosedHandle = false;
                 //bool isCloseResponseExpected = false;
@@ -783,7 +774,7 @@ namespace System.ServiceModel.Security
 
             protected virtual bool OnCloseReceived()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //if (!ExpectClose)
                 //{
@@ -809,7 +800,7 @@ namespace System.ServiceModel.Security
 
             Message PrepareCloseMessage()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //SecurityToken tokenToClose;
                 //lock (ThisLock)
@@ -942,7 +933,7 @@ namespace System.ServiceModel.Security
 
             MessageFault GetProtocolFault(ref Message message, out bool isKeyRenewalFault, out bool isSessionAbortedFault)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
                 //isKeyRenewalFault = false;
                 //isSessionAbortedFault = false;
                 //MessageFault result = null;
@@ -977,7 +968,7 @@ namespace System.ServiceModel.Security
 
             void ProcessKeyRenewalFault()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //SecurityTraceRecordHelper.TraceSessionKeyRenewalFault(this.currentSessionToken, this.RemoteAddress);
                 //lock (ThisLock)
@@ -988,7 +979,7 @@ namespace System.ServiceModel.Security
 
             void ProcessSessionAbortedFault(MessageFault sessionAbortedFault)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //SecurityTraceRecordHelper.TraceRemoteSessionAbortedFault(this.currentSessionToken, this.RemoteAddress);
                 //this.Fault(new FaultException(sessionAbortedFault));
@@ -996,7 +987,7 @@ namespace System.ServiceModel.Security
 
             void ProcessCloseResponse(Message response)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //// the close message may have been received by the channel after the channel factory has been closed
                 //if (response.Headers.Action != this.Settings.SecurityStandardsManager.SecureConversationDriver.CloseResponseAction.Value)
@@ -1120,7 +1111,7 @@ namespace System.ServiceModel.Security
 
             protected Message ProcessIncomingMessage(Message message, TimeSpan timeout, SecurityProtocolCorrelationState correlationState, out MessageFault protocolFault)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
 //                protocolFault = null;
 //                lock (ThisLock)
@@ -1185,7 +1176,7 @@ namespace System.ServiceModel.Security
 
             protected Message ProcessRequestContext(RequestContext requestContext, TimeSpan timeout, SecurityProtocolCorrelationState correlationState)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progres
 
                 //if (requestContext == null)
                 //{
@@ -1240,7 +1231,7 @@ namespace System.ServiceModel.Security
             /// </summary>
             void DoKeyRolloverIfNeeded()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progres
 
                 //if (DateTime.UtcNow >= this.keyRolloverTime && this.previousSessionToken != null)
                 //{
@@ -1283,7 +1274,7 @@ namespace System.ServiceModel.Security
             /// </summary>
             void UpdateSessionTokens(SecurityToken newToken)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progres
 
                 //lock (ThisLock)
                 //{
@@ -1302,7 +1293,7 @@ namespace System.ServiceModel.Security
 
             void RenewKey(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progres
 
                 //if (!this.settings.CanRenewSession)
                 //{
@@ -1431,7 +1422,7 @@ namespace System.ServiceModel.Security
 
             protected virtual void CloseCore(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progres
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progres
 
                 //TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
@@ -1459,7 +1450,8 @@ namespace System.ServiceModel.Security
 
             protected virtual IAsyncResult BeginCloseCore(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return new CloseCoreAsyncResult(this, timeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported(); // $$$ experimental
+                //return new CloseCoreAsyncResult(this, timeout, callback, state);
             }
 
             protected virtual void EndCloseCore(IAsyncResult result)
@@ -1511,7 +1503,7 @@ namespace System.ServiceModel.Security
 
             protected bool CloseSession(TimeSpan timeout, out bool wasAborted)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ?
                 //    ServiceModelActivity.CreateBoundedActivity() : null)
@@ -1560,7 +1552,7 @@ namespace System.ServiceModel.Security
 
             void DetermineCloseMessageToSend(out bool sendClose, out bool sendCloseResponse)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //sendClose = false;
                 //sendCloseResponse = false;
@@ -1585,7 +1577,7 @@ namespace System.ServiceModel.Security
 
             protected virtual SecurityProtocolCorrelationState CloseOutputSession(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //ThrowIfFaulted();
                 //if (!this.SendCloseHandshake)
@@ -1622,7 +1614,7 @@ namespace System.ServiceModel.Security
 
             protected virtual IAsyncResult BeginCloseOutputSession(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //ThrowIfFaulted();
                 //if (!this.SendCloseHandshake)
@@ -1665,7 +1657,7 @@ namespace System.ServiceModel.Security
 
             protected virtual SecurityProtocolCorrelationState EndCloseOutputSession(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //if (result is CompletedAsyncResult)
                 //{
@@ -1709,7 +1701,7 @@ namespace System.ServiceModel.Security
 
             protected override void OnAbort()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //this.AbortCore();
                 //this.inputSessionClosedHandle.Abort(this);
@@ -1719,7 +1711,7 @@ namespace System.ServiceModel.Security
 
             protected override void OnClose(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 //if (this.SendCloseHandshake)
@@ -1760,12 +1752,12 @@ namespace System.ServiceModel.Security
 
             protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return new CloseAsyncResult(this, timeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported();
             }
 
             protected override void OnEndClose(IAsyncResult result)
             {
-                CloseAsyncResult.End(result);
+                throw ExceptionHelper.PlatformNotSupported();
             }
 
             class CloseCoreAsyncResult : TraceAsyncResult
@@ -1858,7 +1850,7 @@ namespace System.ServiceModel.Security
 
                 bool OnChannelBinderClosed()
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //if (channel.sessionTokenProvider != null)
                     //{
@@ -1885,7 +1877,7 @@ namespace System.ServiceModel.Security
 
                 static void CloseTokenProviderCallback(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
 //                    if (result.CompletedSynchronously)
 //                    {
@@ -1931,7 +1923,7 @@ namespace System.ServiceModel.Security
 
                 bool OnTokenProviderClosed()
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //this.channel.keyRenewalCompletedEvent.Abort(this.channel);
                     //this.channel.inputSessionClosedHandle.Abort(this.channel);
@@ -2038,139 +2030,6 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            class OpenAsyncResult : TraceAsyncResult
-            {
-                static readonly AsyncCallback getTokenCallback = Fx.ThunkCallback(new AsyncCallback(GetTokenCallback));
-                static readonly AsyncCallback openTokenProviderCallback = Fx.ThunkCallback(new AsyncCallback(OpenTokenProviderCallback));
-                ClientSecuritySessionChannel sessionChannel;
-                TimeoutHelper timeoutHelper;
-
-                public OpenAsyncResult(ClientSecuritySessionChannel sessionChannel, TimeSpan timeout, AsyncCallback callback, object state)
-                    : base(callback, state)
-                {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
-
-                    //this.timeoutHelper = new TimeoutHelper(timeout);
-                    //this.sessionChannel = sessionChannel;
-                    //this.sessionChannel.SetupSessionTokenProvider();
-                    //IAsyncResult result = SecurityUtils.BeginOpenTokenProviderIfRequired(this.sessionChannel.sessionTokenProvider, timeoutHelper.RemainingTime(), openTokenProviderCallback, this);
-                    //if (!result.CompletedSynchronously)
-                    //{
-                    //    return;
-                    //}
-                    //SecurityUtils.EndOpenTokenProviderIfRequired(result);
-                    //bool completeSelf = this.OnTokenProviderOpened();
-                    //if (completeSelf)
-                    //{
-                    //    Complete(true);
-                    //}
-                }
-
-                static void OpenTokenProviderCallback(IAsyncResult result)
-                {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
-
-//                    if (result.CompletedSynchronously)
-//                    {
-//                        return;
-//                    }
-//                    OpenAsyncResult thisAsyncResult = (OpenAsyncResult)result.AsyncState;
-//                    bool completeSelf = false;
-//                    Exception completionException = null;
-//                    try
-//                    {
-//                        SecurityUtils.EndOpenTokenProviderIfRequired(result);
-//                        completeSelf = thisAsyncResult.OnTokenProviderOpened();
-//                    }
-//#pragma warning suppress 56500 // covered by FxCOP
-//                    catch (Exception e)
-//                    {
-//                        if (Fx.IsFatal(e))
-//                        {
-//                            throw;
-//                        }
-
-//                        completeSelf = true;
-//                        completionException = e;
-//                    }
-//                    if (completeSelf)
-//                    {
-//                        thisAsyncResult.Complete(false, completionException);
-//                    }
-                }
-
-                bool OnTokenProviderOpened()
-                {
-                    IAsyncResult result = this.sessionChannel.sessionTokenProvider.BeginGetToken(timeoutHelper.RemainingTime(), getTokenCallback, this);
-                    if (!result.CompletedSynchronously)
-                    {
-                        return false;
-                    }
-
-                    SecurityToken sessionToken = this.sessionChannel.sessionTokenProvider.EndGetToken(result);
-                    return this.OnTokenObtained(sessionToken);
-                }
-
-
-                bool OnTokenObtained(SecurityToken sessionToken)
-                {
-                    // Token was issued, do send cancel on close;
-                    this.sessionChannel.sendCloseHandshake = true;
-                    this.sessionChannel.OpenCore(sessionToken, timeoutHelper.RemainingTime());
-                    return true;
-                }
-
-                static void GetTokenCallback(IAsyncResult result)
-                {
-                    if (result.CompletedSynchronously)
-                    {
-                        return;
-                    }
-                    OpenAsyncResult thisAsyncResult = (OpenAsyncResult)result.AsyncState;
-                    try
-                    {
-                        using (ServiceModelActivity.BoundOperation(thisAsyncResult.CallbackActivity))
-                        {
-                            bool completeSelf = false;
-                            Exception completionException = null;
-                            try
-                            {
-                                SecurityToken sessionToken = thisAsyncResult.sessionChannel.sessionTokenProvider.EndGetToken(result);
-                                completeSelf = thisAsyncResult.OnTokenObtained(sessionToken);
-                            }
-#pragma warning suppress 56500 // covered by FxCOP
-                            catch (Exception e)
-                            {
-                                if (Fx.IsFatal(e))
-                                {
-                                    throw;
-                                }
-
-                                completeSelf = true;
-                                completionException = e;
-                            }
-                            if (completeSelf)
-                            {
-                                thisAsyncResult.Complete(false, completionException);
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        if (thisAsyncResult.CallbackActivity != null)
-                        {
-                            thisAsyncResult.CallbackActivity.Dispose();
-                        }
-                    }
-                }
-
-                public static void End(IAsyncResult result)
-                {
-                    AsyncResult.End<OpenAsyncResult>(result);
-                    ServiceModelActivity.Stop(((OpenAsyncResult)result).CallbackActivity);
-                }
-            }
-
             class CloseSessionAsyncResult : TraceAsyncResult
             {
                 static readonly AsyncCallback closeOutputSessionCallback = Fx.ThunkCallback(new AsyncCallback(CloseOutputSessionCallback));
@@ -2263,7 +2122,7 @@ namespace System.ServiceModel.Security
 
                 bool OnOutputSessionClosed()
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //try
                     //{
@@ -2294,7 +2153,7 @@ namespace System.ServiceModel.Security
 
                 static void ShutdownWaitCallback(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
 //                    if (result.CompletedSynchronously)
 //                    {
@@ -2438,7 +2297,7 @@ namespace System.ServiceModel.Security
 
                 bool OnWaitForOutputSessionClose(out bool wasAborted)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //wasAborted = false;
                     //bool wasOutputSessionClosed = false;
@@ -2484,7 +2343,7 @@ namespace System.ServiceModel.Security
 
                 static void OutputSessionClosedCallback(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
 //                    if (result.CompletedSynchronously)
 //                    {
@@ -2828,7 +2687,7 @@ namespace System.ServiceModel.Security
                 private ClientSecuritySessionChannel _channel;
                 private EndpointIdentity _remoteIdentity;
                 private UniqueId _sessionId;
-                // #1257 in progress
+                // #31 in progress
                 // private SecurityKeyIdentifierClause _sessionTokenIdentifier;
                 // private SecurityStandardsManager _standardsManager;
 
@@ -2839,7 +2698,7 @@ namespace System.ServiceModel.Security
 
                 internal void Initialize(SecurityToken sessionToken, SecuritySessionClientSettings<TChannel> settings)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //if (sessionToken == null)
                     //{
@@ -2862,7 +2721,7 @@ namespace System.ServiceModel.Security
 
                 UniqueId GetSessionId(SecurityToken sessionToken, SecurityStandardsManager standardsManager)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //GenericXmlSecurityToken gxt = sessionToken as GenericXmlSecurityToken;
                     //if (gxt == null)
@@ -2896,7 +2755,7 @@ namespace System.ServiceModel.Security
 
                 public void WriteSessionTokenIdentifier(XmlDictionaryWriter writer)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //this.channel.ThrowIfDisposedOrNotOpen();
                     //this.standardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, this.sessionTokenIdentifier);
@@ -2904,7 +2763,7 @@ namespace System.ServiceModel.Security
 
                 public bool TryReadSessionTokenIdentifier(XmlReader reader)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                     //this.channel.ThrowIfDisposedOrNotOpen();
                     //if (!this.standardsManager.SecurityTokenSerializer.CanReadKeyIdentifierClause(reader))
@@ -3015,7 +2874,7 @@ namespace System.ServiceModel.Security
 
             Message ProcessReply(Message reply, TimeSpan timeout, SecurityProtocolCorrelationState correlationState)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //if (reply == null)
                 //{
@@ -3275,14 +3134,14 @@ namespace System.ServiceModel.Security
             private static AsyncCallback s_onReceive = Fx.ThunkCallback(new AsyncCallback(OnReceive));
             private SoapSecurityClientDuplexSession _session;
             private InputQueue<Message> _queue;
-            // #1257 in progress
+            // #31 in progress
             //private Action _startReceiving;
             private Action<object> _completeLater;
 
             public ClientSecurityDuplexSessionChannel(SecuritySessionClientSettings<TChannel> settings, EndpointAddress to, Uri via)
                 : base(settings, to, via)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
                 //this.session = new SoapSecurityClientDuplexSession(this);
                 //this.queue = TraceUtility.CreateInputQueue<Message>();
@@ -3323,7 +3182,7 @@ namespace System.ServiceModel.Security
 
             public Message Receive(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
                 //return InputChannel.HelpReceive(this, timeout);
             }
 
@@ -3334,13 +3193,13 @@ namespace System.ServiceModel.Security
 
             public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
                 //return InputChannel.HelpBeginReceive(this, timeout, callback, state);
             }
 
             public Message EndReceive(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
                 //return InputChannel.HelpEndReceive(result);
             }
 
@@ -3438,12 +3297,12 @@ namespace System.ServiceModel.Security
                         return this.BeginReceiveInternal(TimeSpan.MaxValue, null, s_onReceive, this);
 
                     }
-                    catch (CommunicationException /* #1257 in progress e */)
+                    catch (CommunicationException /* #31 in progress e */)
                     {
                         // BeginReceive failed. ignore the exception and start another receive
                         // DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
                     }
-                    catch (TimeoutException /* #1257 in progress e */)
+                    catch (TimeoutException /* #31 in progress e */)
                     {
                         // BeginReceive failed. ignore the exception and start another receive
                         //if (TD.ReceiveTimeoutIsEnabled())
@@ -3470,7 +3329,7 @@ namespace System.ServiceModel.Security
 
             void CompleteReceive(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 //                Message message = null;
 //                bool issueAnotherReceive = false;
 //                try
@@ -3527,7 +3386,7 @@ namespace System.ServiceModel.Security
 
             protected override void AbortCore()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
                 //try
                 //{
                 //    this.queue.Dispose();
@@ -3564,7 +3423,7 @@ namespace System.ServiceModel.Security
 
             protected override void OnFaulted()
             {
-                throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
                 //_queue.Shutdown(() => this.GetPendingException());
                 //base.OnFaulted();
             }
@@ -3627,7 +3486,7 @@ namespace System.ServiceModel.Security
 
                 public void CloseOutputSession(TimeSpan timeout)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
 //                    CheckInitialized();
 //                    this.channel.ThrowIfFaulted();
@@ -3664,7 +3523,7 @@ namespace System.ServiceModel.Security
 
                 public IAsyncResult BeginCloseOutputSession(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
 //                    CheckInitialized();
 //                    this.channel.ThrowIfFaulted();
@@ -3709,7 +3568,7 @@ namespace System.ServiceModel.Security
 
                 public void EndCloseOutputSession(IAsyncResult result)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // #1257 in progress
+                    throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
 //                    if (result is CompletedAsyncResult)
 //                    {

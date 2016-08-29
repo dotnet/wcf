@@ -1,28 +1,27 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
+using System.IdentityModel;
+using System.IdentityModel.Claims;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Selectors;
+using System.Runtime;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Cryptography;
+using System.Xml;
 
 namespace System.IdentityModel.Tokens
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.IO;
-    using System.IdentityModel;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Selectors;
-    using System.Runtime;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Security.Cryptography;
-    using System.Xml;
-
-    public class SamlAssertion // $$$ : ICanonicalWriterEndRootElementCallback
+    public class SamlAssertion // : ICanonicalWriterEndRootElementCallback  // Issue #31 in progress
     {
        string assertionId = SamlConstants.AssertionIdPrefix + Guid.NewGuid().ToString();
 
-        // $$$
         //string issuer;
         //DateTime issueInstant = DateTime.UtcNow.ToUniversalTime();
         //SamlConditions conditions;
@@ -47,7 +46,6 @@ namespace System.IdentityModel.Tokens
         {
         }
 
-        // $$$
         //        public SamlAssertion(
         //            string assertionId,
         //            string issuer,
@@ -104,7 +102,7 @@ namespace System.IdentityModel.Tokens
             get { return this.assertionId; }
             set
             {
-                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();
                 //if (isReadOnly)
                 //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ObjectIsReadOnly)));
 
@@ -247,7 +245,7 @@ namespace System.IdentityModel.Tokens
 
         public void MakeReadOnly()
         {
-            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // $$$
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();
             //if (!this.isReadOnly)
             //{
             //    if (this.conditions != null)

@@ -253,7 +253,7 @@ namespace System.ServiceModel.Channels
 
         static BindingContext CreateIssuerBindingContextForNegotiation(BindingContext issuerBindingContext)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //TransportBindingElement transport = issuerBindingContext.RemainingBindingElements.Find<TransportBindingElement>();
             //if (transport == null)
             //{
@@ -604,7 +604,7 @@ namespace System.ServiceModel.Channels
 
         void SetPrivacyNoticeUriIfRequired(SecurityProtocolFactory factory, Binding binding)
         {
-            // $$$
+            // Issue #31 in progress (don't throw here to allow further processing)
             //PrivacyNoticeBindingElement privacyElement = binding.CreateBindingElements().Find<PrivacyNoticeBindingElement>();
             //if (privacyElement != null)
             //{
@@ -640,7 +640,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //factory.TimestampValidityDuration = this.LocalServiceSettings.TimestampValidityDuration;
                 //factory.DetectReplays = this.LocalServiceSettings.DetectReplays;
@@ -682,7 +682,7 @@ namespace System.ServiceModel.Channels
 
         internal void ApplyAuditBehaviorSettings(BindingContext context, SecurityProtocolFactory factory)
         {
-            // $$$
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             //ServiceSecurityAuditBehavior auditBehavior = context.BindingParameters.Find<ServiceSecurityAuditBehavior>();
             //if (auditBehavior != null)
             //{

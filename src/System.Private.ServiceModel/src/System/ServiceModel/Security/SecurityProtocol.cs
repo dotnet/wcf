@@ -1052,43 +1052,47 @@ namespace System.ServiceModel.Security
 
             void AddSupportingToken(IAsyncResult result)
             {
-                SupportingTokenProviderSpecification spec = supportingTokenProviders[this.currentTokenProviderIndex];
-                SecurityTokenProvider.SecurityTokenAsyncResult securityTokenAsyncResult = result as SecurityTokenProvider.SecurityTokenAsyncResult;
-                if (securityTokenAsyncResult != null)
-                {
-                    this.supportingTokens.Add(new SupportingTokenSpecification(SecurityTokenProvider.SecurityTokenAsyncResult.End(result), EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance, spec.SecurityTokenAttachmentMode, spec.TokenParameters));
-                }
-                else
-                {
-                    this.supportingTokens.Add(new SupportingTokenSpecification(spec.TokenProvider.EndGetToken(result), EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance, spec.SecurityTokenAttachmentMode, spec.TokenParameters));
-                }
+                throw ExceptionHelper.PlatformNotSupported();   // #31 and #1494 in progress
 
-                ++this.currentTokenProviderIndex;
+                //SupportingTokenProviderSpecification spec = supportingTokenProviders[this.currentTokenProviderIndex];
+                //SecurityTokenProvider.SecurityTokenAsyncResult securityTokenAsyncResult = result as SecurityTokenProvider.SecurityTokenAsyncResult;
+                //if (securityTokenAsyncResult != null)
+                //{
+                //    this.supportingTokens.Add(new SupportingTokenSpecification(SecurityTokenProvider.SecurityTokenAsyncResult.End(result), EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance, spec.SecurityTokenAttachmentMode, spec.TokenParameters));
+                //}
+                //else
+                //{
+                //    this.supportingTokens.Add(new SupportingTokenSpecification(spec.TokenProvider.EndGetToken(result), EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance, spec.SecurityTokenAttachmentMode, spec.TokenParameters));
+                //}
+
+                //++this.currentTokenProviderIndex;
             }
 
             bool AddSupportingTokens()
             {
-                while (this.currentTokenProviderIndex < supportingTokenProviders.Count)
-                {
-                    SupportingTokenProviderSpecification spec = supportingTokenProviders[this.currentTokenProviderIndex];
-                    IAsyncResult result = null;
-                    if ((this.binding is TransportSecurityProtocol) && (spec.TokenParameters is KerberosSecurityTokenParameters))
-                    {
-                        result = new SecurityTokenProvider.SecurityTokenAsyncResult(new ProviderBackedSecurityToken(spec.TokenProvider, timeoutHelper.RemainingTime()), null, this);
-                    }
-                    else
-                    {
-                        result = spec.TokenProvider.BeginGetToken(timeoutHelper.RemainingTime(), getSupportingTokensCallback, this);
-                    }
+                throw ExceptionHelper.PlatformNotSupported();   // #31 and #1494 in progress
 
-                    if (!result.CompletedSynchronously)
-                    {
-                        return false;
-                    }
-                    this.AddSupportingToken(result);
-                }
-                this.binding.AddMessageSupportingTokens(message, ref this.supportingTokens);
-                return this.OnGetSupportingTokensDone(timeoutHelper.RemainingTime());
+                //while (this.currentTokenProviderIndex < supportingTokenProviders.Count)
+                //{
+                //    SupportingTokenProviderSpecification spec = supportingTokenProviders[this.currentTokenProviderIndex];
+                //    IAsyncResult result = null;
+                //    if ((this.binding is TransportSecurityProtocol) && (spec.TokenParameters is KerberosSecurityTokenParameters))
+                //    {
+                //        result = new SecurityTokenProvider.SecurityTokenAsyncResult(new ProviderBackedSecurityToken(spec.TokenProvider, timeoutHelper.RemainingTime()), null, this);
+                //    }
+                //    else
+                //    {
+                //        result = spec.TokenProvider.BeginGetToken(timeoutHelper.RemainingTime(), getSupportingTokensCallback, this);
+                //    }
+
+                //    if (!result.CompletedSynchronously)
+                //    {
+                //        return false;
+                //    }
+                //    this.AddSupportingToken(result);
+                //}
+                //this.binding.AddMessageSupportingTokens(message, ref this.supportingTokens);
+                //return this.OnGetSupportingTokensDone(timeoutHelper.RemainingTime());
             }
 
             protected void Start()

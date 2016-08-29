@@ -59,13 +59,11 @@ namespace System.ServiceModel.Channels
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
             throw ExceptionHelper.PlatformNotSupported();
-            //return _innerChannel.BeginClose(timeout, callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
             throw ExceptionHelper.PlatformNotSupported();
-            //_innerChannel.EndClose(result);
         }
 
         protected override void OnOpen(TimeSpan timeout)
@@ -76,13 +74,11 @@ namespace System.ServiceModel.Channels
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
             throw ExceptionHelper.PlatformNotSupported();
-            //return _innerChannel.BeginOpen(timeout, callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
             throw ExceptionHelper.PlatformNotSupported();
-            //_innerChannel.EndOpen(result);
         }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)

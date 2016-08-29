@@ -362,7 +362,7 @@ namespace System.ServiceModel.Security
 
         static bool CanCanonicalizeAndFragment(XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // #1257: Required API: IFragmentCapableXmlDictionaryWriter 
+            throw ExceptionHelper.PlatformNotSupported();   // #31: Required API: IFragmentCapableXmlDictionaryWriter 
 
             //if (!writer.CanCanonicalize)
             //{
@@ -374,7 +374,7 @@ namespace System.ServiceModel.Security
 
         public override void ApplyBodySecurity(XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // #1257: Required API: SignedInfo 
+            throw ExceptionHelper.PlatformNotSupported();   // #31: Required API: SignedInfo 
 
             //SecurityAppliedMessage message = this.SecurityAppliedMessage;
             //EncryptedData encryptedData;

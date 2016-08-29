@@ -41,26 +41,22 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //return _innerChannelFactory.BeginOpen(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //_innerChannelFactory.EndOpen(result);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerChannelFactory);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //ChainedCloseAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -233,14 +229,12 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerOutputChannel);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //ChainedCloseAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -264,14 +258,12 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //return new ChainedOpenAsyncResult(timeout, callback, state, base.OnBeginOpen, base.OnEndOpen, _innerOutputChannel);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // $$$
-            //ChainedOpenAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnOpen(TimeSpan timeout)

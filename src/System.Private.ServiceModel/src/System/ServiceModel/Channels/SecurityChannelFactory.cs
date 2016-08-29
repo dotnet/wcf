@@ -300,14 +300,13 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            throw ExceptionHelper.PlatformNotSupported(); // $$$
-
+            throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
             //return new OperationWithTimeoutAsyncResult(new OperationWithTimeoutCallback(this.OnOpen), timeout, callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            throw ExceptionHelper.PlatformNotSupported(); // $$$
+            throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
             //OperationWithTimeoutAsyncResult.End(result);
         }
 
@@ -414,7 +413,7 @@ namespace System.ServiceModel.Channels
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported(); // $$$
+                throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
 
                 //EnableChannelBindingSupport();
 
@@ -423,7 +422,7 @@ namespace System.ServiceModel.Channels
 
             protected override void OnEndOpen(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported(); // $$$
+                throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
                 //OpenAsyncResult.End(result);
             }
 
@@ -467,8 +466,6 @@ namespace System.ServiceModel.Channels
 
             void EnableChannelBindingSupport()
             {
-                //throw ExceptionHelper.PlatformNotSupported("EnableChannelBinding not supported");   // $$$
-
                 if (this.securityProtocolFactory != null && this.securityProtocolFactory.ExtendedProtectionPolicy != null && this.securityProtocolFactory.ExtendedProtectionPolicy.CustomChannelBinding != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.ExtendedProtectionPolicyCustomChannelBindingNotSupported)));
@@ -519,8 +516,7 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
-
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //ThrowIfFaulted();
                 //ThrowIfDisposedOrNotOpen(message);
                 //return new OutputChannelSendAsyncResult(message, this.SecurityProtocol, this.InnerChannel, timeout, callback, state);
@@ -528,7 +524,7 @@ namespace System.ServiceModel.Channels
 
             public void EndSend(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 // OutputChannelSendAsyncResult.End(result);
             }
 
@@ -572,19 +568,22 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginRequest(Message message, AsyncCallback callback, object state)
             {
-                return this.BeginRequest(message, this.DefaultSendTimeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported();   // Issues #31 and #1494 in progress
+                //return this.BeginRequest(message, this.DefaultSendTimeout, callback, state);
             }
 
             public IAsyncResult BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state)
             {
-                ThrowIfFaulted();
-                ThrowIfDisposedOrNotOpen(message);
-                return new RequestChannelSendAsyncResult(message, this.SecurityProtocol, this.InnerChannel, this, timeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported();   // Issues #31 and #1494 in progress
+                //ThrowIfFaulted();
+                //ThrowIfDisposedOrNotOpen(message);
+                //return new RequestChannelSendAsyncResult(message, this.SecurityProtocol, this.InnerChannel, this, timeout, callback, state);
             }
 
             public Message EndRequest(IAsyncResult result)
             {
-                return RequestChannelSendAsyncResult.End(result);
+                throw ExceptionHelper.PlatformNotSupported();   // Issues #31 and #1494 in progress
+                //return RequestChannelSendAsyncResult.End(result);
             }
 
             public Message Request(Message message)
@@ -594,7 +593,7 @@ namespace System.ServiceModel.Channels
 
             internal Message ProcessReply(Message reply, SecurityProtocolCorrelationState correlationState, TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (reply != null)
                 //{
@@ -706,7 +705,7 @@ namespace System.ServiceModel.Channels
 
             public Message Receive(TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return InputChannel.HelpReceive(this, timeout);
             }
 
@@ -717,13 +716,13 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return InputChannel.HelpBeginReceive(this, timeout, callback, state);
             }
 
             public Message EndReceive(IAsyncResult result)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //return InputChannel.HelpEndReceive(result);
             }
 
@@ -731,7 +730,7 @@ namespace System.ServiceModel.Channels
             {
                 if (DoneReceivingInCurrentState())
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // $$$
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //return new DoneReceivingAsyncResult(callback, state);
                 }
 
@@ -743,7 +742,7 @@ namespace System.ServiceModel.Channels
 
             public virtual bool EndTryReceive(IAsyncResult result, out Message message)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //DoneReceivingAsyncResult doneRecevingResult = result as DoneReceivingAsyncResult;
                 //if (doneRecevingResult != null)
                 //{
@@ -755,7 +754,7 @@ namespace System.ServiceModel.Channels
 
             internal Message ProcessMessage(Message message, TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // $$$
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
                 //if (message == null)
                 //{
@@ -841,41 +840,42 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        sealed class RequestChannelSendAsyncResult : ApplySecurityAndSendAsyncResult<IRequestChannel>
-        {
-            Message reply;
-            SecurityRequestChannel securityChannel;
+        // $$$ experimental
+        //sealed class RequestChannelSendAsyncResult : ApplySecurityAndSendAsyncResult<IRequestChannel>
+        //{
+        //    Message reply;
+        //    SecurityRequestChannel securityChannel;
 
-            public RequestChannelSendAsyncResult(Message message, SecurityProtocol protocol, IRequestChannel channel, SecurityRequestChannel securityChannel, TimeSpan timeout,
-                AsyncCallback callback, object state)
-                : base(protocol, channel, timeout, callback, state)
-            {
-                this.securityChannel = securityChannel;
-                this.Begin(message, null);
-            }
+        //    public RequestChannelSendAsyncResult(Message message, SecurityProtocol protocol, IRequestChannel channel, SecurityRequestChannel securityChannel, TimeSpan timeout,
+        //        AsyncCallback callback, object state)
+        //        : base(protocol, channel, timeout, callback, state)
+        //    {
+        //        this.securityChannel = securityChannel;
+        //        this.Begin(message, null);
+        //    }
 
-            protected override IAsyncResult BeginSendCore(IRequestChannel channel, Message message, TimeSpan timeout, AsyncCallback callback, object state)
-            {
-                return channel.BeginRequest(message, timeout, callback, state);
-            }
+        //    protected override IAsyncResult BeginSendCore(IRequestChannel channel, Message message, TimeSpan timeout, AsyncCallback callback, object state)
+        //    {
+        //        return channel.BeginRequest(message, timeout, callback, state);
+        //    }
 
-            internal static Message End(IAsyncResult result)
-            {
-                RequestChannelSendAsyncResult self = result as RequestChannelSendAsyncResult;
-                OnEnd(self);
-                return self.reply;
-            }
+        //    internal static Message End(IAsyncResult result)
+        //    {
+        //        RequestChannelSendAsyncResult self = result as RequestChannelSendAsyncResult;
+        //        OnEnd(self);
+        //        return self.reply;
+        //    }
 
-            protected override void EndSendCore(IRequestChannel channel, IAsyncResult result)
-            {
-                this.reply = channel.EndRequest(result);
-            }
+        //    protected override void EndSendCore(IRequestChannel channel, IAsyncResult result)
+        //    {
+        //        this.reply = channel.EndRequest(result);
+        //    }
 
-            protected override void OnSendCompleteCore(TimeSpan timeout)
-            {
-                this.reply = securityChannel.ProcessReply(reply, this.CorrelationState, timeout);
-            }
-        }
+        //    protected override void OnSendCompleteCore(TimeSpan timeout)
+        //    {
+        //        this.reply = securityChannel.ProcessReply(reply, this.CorrelationState, timeout);
+        //    }
+        //}
 
         class ClientDuplexReceiveMessageAndVerifySecurityAsyncResult : ReceiveMessageAndVerifySecurityAsyncResultBase
         {

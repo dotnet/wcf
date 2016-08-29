@@ -68,16 +68,6 @@ namespace System.IdentityModel.Selectors
             await this.CancelTokenCoreAsync(cancellationToken, securityToken);
         }
 
-        public IAsyncResult BeginGetToken(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            throw ExceptionHelper.PlatformNotSupported();
-        }
-
-        public SecurityToken EndGetToken(IAsyncResult result)
-        {
-            throw ExceptionHelper.PlatformNotSupported();
-        }
-
         // protected methods
         protected abstract SecurityToken GetTokenCore(TimeSpan timeout);
 
@@ -91,93 +81,6 @@ namespace System.IdentityModel.Selectors
         protected virtual Task CancelTokenCoreAsync(CancellationToken cancellationToken, SecurityToken token)
         {
             throw Fx.Exception.AsError(new NotSupportedException(SR.Format(SR.TokenCancellationNotSupported, this)));
-        }
-
-        internal protected class SecurityTokenAsyncResult : IAsyncResult
-        {
-            // $$$ private SecurityToken _token;
-            private object _state;
-            private ManualResetEvent _manualResetEvent;
-            private object _thisLock = new object();
-
-            public SecurityTokenAsyncResult(SecurityToken token, AsyncCallback callback, object state)
-            {
-                throw ExceptionHelper.PlatformNotSupported();
-
-                // $$$
-//                this.token = token;
-//                this.state = state;
-
-//                if (callback != null)
-//                {
-//                    try
-//                    {
-//                        callback(this);
-//                    }
-//#pragma warning suppress 56500
-//                    catch (Exception e)
-//                    {
-//                        if (Fx.IsFatal(e))
-//                            throw;
-
-//                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(SR.Format(SR.AsyncCallbackException), e);
-//                    }
-//                }
-            }
-
-            public object AsyncState
-            {
-                get { return _state; }
-            }
-
-            public WaitHandle AsyncWaitHandle
-            {
-                get
-                {
-                    if (_manualResetEvent != null)
-                    {
-                        return _manualResetEvent;
-                    }
-
-                    lock (_thisLock)
-                    {
-                        if (_manualResetEvent == null)
-                        {
-                            _manualResetEvent = new ManualResetEvent(true);
-                        }
-                    }
-                    return _manualResetEvent;
-                }
-            }
-
-            public bool CompletedSynchronously
-            {
-                get { return true; }
-            }
-
-            public bool IsCompleted
-            {
-                get { return true; }
-            }
-
-            public static SecurityToken End(IAsyncResult result)
-            {
-                throw ExceptionHelper.PlatformNotSupported();
-
-                // $$$
-                //if (result == null)
-                //{
-                //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("result");
-                //}
-
-                //SecurityTokenAsyncResult completedResult = result as SecurityTokenAsyncResult;
-                //if (completedResult == null)
-                //{
-                //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.InvalidAsyncResult), "result"));
-                //}
-
-                //return completedResult.token;
-            }
         }
     }
 }
