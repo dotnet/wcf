@@ -1,55 +1,55 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.Runtime;
+using System.Security.Cryptography;
+using System.IdentityModel.Claims;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel.Security.Tokens;
+// Issue #31 in progress
+//using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+//using Psha1DerivedKeyGenerator = System.IdentityModel.Psha1DerivedKeyGenerator;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using System.Runtime.Serialization;
+
+using KeyIdentifierEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierEntry;
+using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
+using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
 
 namespace System.ServiceModel.Security
 {
-    using System;
-    using System.ServiceModel;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Dispatcher;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.Runtime;
-    using System.Security.Cryptography;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Selectors;
-    using System.IdentityModel.Tokens;
-    using System.Security.Cryptography.X509Certificates;
-    using System.ServiceModel.Security.Tokens;
-    // Issue #31 in progress
-    //using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.Runtime.Serialization;
-
-    using KeyIdentifierEntry = WSSecurityTokenSerializer.KeyIdentifierEntry;
-    using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-    using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
-    using StrEntry = WSSecurityTokenSerializer.StrEntry;
-   // using Psha1DerivedKeyGenerator = System.IdentityModel.Psha1DerivedKeyGenerator;
-
     internal abstract class WSTrust : WSSecurityTokenSerializer.SerializerEntries
     {
-        WSSecurityTokenSerializer tokenSerializer;
+        private WSSecurityTokenSerializer _tokenSerializer;
 
         public WSTrust(WSSecurityTokenSerializer tokenSerializer)
         {
-            this.tokenSerializer = tokenSerializer;
+            this._tokenSerializer = tokenSerializer;
         }
 
 
         public WSSecurityTokenSerializer WSSecurityTokenSerializer
         {
-            get { return this.tokenSerializer; }
+            get { return this._tokenSerializer; }
         }
 
         public abstract TrustDictionary SerializerDictionary
@@ -64,31 +64,31 @@ namespace System.ServiceModel.Security
 
         class BinarySecretTokenEntry : TokenEntry
         {
-            WSTrust parent;
-            TrustDictionary otherDictionary;
+            private WSTrust _parent;
+            private TrustDictionary _otherDictionary;
 
             public BinarySecretTokenEntry(WSTrust parent)
             {
-                this.parent = parent;
-                this.otherDictionary = null;
+                this._parent = parent;
+                this._otherDictionary = null;
 
                 if (parent.SerializerDictionary is TrustDec2005Dictionary)
                 {
-                    this.otherDictionary = XD.TrustFeb2005Dictionary;
+                    this._otherDictionary = XD.TrustFeb2005Dictionary;
                 }
 
                 if (parent.SerializerDictionary is TrustFeb2005Dictionary)
                 {
-                    this.otherDictionary = DXD.TrustDec2005Dictionary;
+                    this._otherDictionary = DXD.TrustDec2005Dictionary;
                 }
 
                 // always set it, so we don't have to worry about null
-                if (this.otherDictionary == null)
-                    this.otherDictionary = this.parent.SerializerDictionary;
+                if (this._otherDictionary == null)
+                    this._otherDictionary = this._parent.SerializerDictionary;
             }
 
-            protected override XmlDictionaryString LocalName { get { return parent.SerializerDictionary.BinarySecret; } }
-            protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
+            protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.BinarySecret; } }
+            protected override XmlDictionaryString NamespaceUri { get { return _parent.SerializerDictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore()
             {
                 throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
@@ -106,12 +106,12 @@ namespace System.ServiceModel.Security
                     valueTypeUri = element.GetAttribute(SecurityJan2004Strings.ValueType, null);
                 }
 
-                return element.LocalName == LocalName.Value && (element.NamespaceURI == NamespaceUri.Value || element.NamespaceURI == this.otherDictionary.Namespace.Value) && valueTypeUri == this.ValueTypeUri;
+                return element.LocalName == LocalName.Value && (element.NamespaceURI == NamespaceUri.Value || element.NamespaceURI == this._otherDictionary.Namespace.Value) && valueTypeUri == this.ValueTypeUri;
             }
 
             public override bool CanReadTokenCore(XmlDictionaryReader reader)
             {
-                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, this.otherDictionary.Namespace)) &&
+                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, this._otherDictionary.Namespace)) &&
                        reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null) == this.ValueTypeUri;
             }
 
@@ -187,17 +187,16 @@ namespace System.ServiceModel.Security
 
         public abstract class Driver : TrustDriver
         {
-            static readonly string base64Uri = SecurityJan2004Strings.EncodingTypeValueBase64Binary;
-            static readonly string hexBinaryUri = SecurityJan2004Strings.EncodingTypeValueHexBinary;
+            private static readonly string _base64Uri = SecurityJan2004Strings.EncodingTypeValueBase64Binary;
+            private static readonly string _hexBinaryUri = SecurityJan2004Strings.EncodingTypeValueHexBinary;
 
-
-            SecurityStandardsManager standardsManager;
-            List<SecurityTokenAuthenticator> entropyAuthenticators;
+            private SecurityStandardsManager _standardsManager;
+            private List<SecurityTokenAuthenticator> _entropyAuthenticators;
 
             public Driver(SecurityStandardsManager standardsManager)
             {
-                this.standardsManager = standardsManager;
-                this.entropyAuthenticators = new List<SecurityTokenAuthenticator>(2);
+                this._standardsManager = standardsManager;
+                this._entropyAuthenticators = new List<SecurityTokenAuthenticator>(2);
             }
 
             public abstract TrustDictionary DriverDictionary
@@ -238,7 +237,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this.standardsManager;
+                    return this._standardsManager;
                 }
             }
 

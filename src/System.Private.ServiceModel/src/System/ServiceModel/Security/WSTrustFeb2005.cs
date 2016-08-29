@@ -116,12 +116,6 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            //// Issue #31 in progress
-            //public override Collection<XmlElement> ProcessUnknownRequestParameters(Collection<XmlElement> unknownRequestParameters, Collection<XmlElement> originalRequestParameters)
-            //{
-            //    return unknownRequestParameters;
-            //}
-
             protected override void ReadReferences(XmlElement rstrXml, out SecurityKeyIdentifierClause requestedAttachedReference,
                     out SecurityKeyIdentifierClause requestedUnattachedReference)
             {
@@ -301,11 +295,11 @@ namespace System.ServiceModel.Security
 
             public class RequestChannelFactory<TokenService> : ChannelFactoryBase, IChannelFactory<IRequestChannel>
             {
-                ChannelFactory<TokenService> innerChannelFactory;
+                ChannelFactory<TokenService> _innerChannelFactory;
 
                 public RequestChannelFactory(ChannelFactory<TokenService> innerChannelFactory)
                 {
-                    this.innerChannelFactory = innerChannelFactory;
+                    this._innerChannelFactory = innerChannelFactory;
                 }
 
                 public IRequestChannel CreateChannel(EndpointAddress address)
@@ -322,46 +316,45 @@ namespace System.ServiceModel.Security
 
                 protected override void OnAbort()
                 {
-                    this.innerChannelFactory.Abort();
+                    this._innerChannelFactory.Abort();
                 }
 
                 protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this.innerChannelFactory.BeginOpen(timeout, callback, state);
+                    return this._innerChannelFactory.BeginOpen(timeout, callback, state);
                 }
 
                 protected override void OnEndOpen(IAsyncResult result)
                 {
-                    this.innerChannelFactory.EndOpen(result);
+                    this._innerChannelFactory.EndOpen(result);
                 }
 
                 protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this.innerChannelFactory.BeginClose(timeout, callback, state);
+                    return this._innerChannelFactory.BeginClose(timeout, callback, state);
                 }
 
                 protected override void OnEndClose(IAsyncResult result)
                 {
-                    this.innerChannelFactory.EndClose(result);
+                    this._innerChannelFactory.EndClose(result);
                 }
 
                 protected override void OnClose(TimeSpan timeout)
                 {
-                    this.innerChannelFactory.Close(timeout);
+                    this._innerChannelFactory.Close(timeout);
                 }
 
                 protected override void OnOpen(TimeSpan timeout)
                 {
-                    this.innerChannelFactory.Open(timeout);
+                    this._innerChannelFactory.Open(timeout);
                 }
 
                 public override T GetProperty<T>()
                 {
-                    return this.innerChannelFactory.GetProperty<T>();
+                    return this._innerChannelFactory.GetProperty<T>();
                 }
             }
         }
-
     }
 }
 

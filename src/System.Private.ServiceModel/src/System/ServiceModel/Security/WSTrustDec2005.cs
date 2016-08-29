@@ -1,37 +1,38 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.IdentityModel.Claims;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel.Security.Tokens;
+// Issue #31 in progress
+//using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using System.Runtime.Serialization;
+using System.ServiceModel.Dispatcher;
+
+using KeyIdentifierEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierEntry;
+using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
+using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
 
 namespace System.ServiceModel.Security
 {
-    using System;
-    using System.ServiceModel;
-    using System.ServiceModel.Description;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Tokens;
-    using System.Security.Cryptography.X509Certificates;
-    using System.ServiceModel.Security.Tokens;
-    //using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.Runtime.Serialization;
-    using System.ServiceModel.Dispatcher;
-
-    using KeyIdentifierEntry = WSSecurityTokenSerializer.KeyIdentifierEntry;
-    using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-    using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
-    using StrEntry = WSSecurityTokenSerializer.StrEntry;
-
     class WSTrustDec2005 : WSTrustFeb2005
     {
         public WSTrustDec2005(WSSecurityTokenSerializer tokenSerializer)
@@ -127,30 +128,6 @@ namespace System.ServiceModel.Security
 
                 return new WSTrustFeb2005.DriverFeb2005.RequestChannelFactory<IWsTrustDec2005SecurityTokenService>(result);
             }
-
-            // Issue #31 in progress
-            //public override Collection<XmlElement> ProcessUnknownRequestParameters(Collection<XmlElement> unknownRequestParameters, Collection<XmlElement> originalRequestParameters)
-            //{
-            //    // For WS-Trust 1.3 we want everything in the requestSecurityTokenTemplate parameters to endup as Addtional parameters.
-            //    // The parameters will appear as a child element under a XmlElement named secondaryParameters.
-            //    if (originalRequestParameters == null)
-            //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("originalRequestParameters");
-
-            //    if (originalRequestParameters.Count > 0 && originalRequestParameters[0] != null && originalRequestParameters[0].OwnerDocument != null)
-            //    {
-            //        XmlElement secondaryParamElement = originalRequestParameters[0].OwnerDocument.CreateElement(DXD.TrustDec2005Dictionary.Prefix.Value, DXD.TrustDec2005Dictionary.SecondaryParameters.Value, DXD.TrustDec2005Dictionary.Namespace.Value);
-            //        for (int i = 0; i < originalRequestParameters.Count; ++i)
-            //        {
-            //            secondaryParamElement.AppendChild(originalRequestParameters[i]);
-            //        }
-
-            //        Collection<XmlElement> tempCollection = new Collection<XmlElement>();
-            //        tempCollection.Add(secondaryParamElement);
-            //        return tempCollection;
-            //    }
-
-            //    return originalRequestParameters;
-            //}
 
             internal virtual bool IsSecondaryParametersElement(XmlElement element)
             {
