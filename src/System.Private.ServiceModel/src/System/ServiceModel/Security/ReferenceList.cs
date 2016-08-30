@@ -1,23 +1,23 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
+using System.IdentityModel;
+using System.Runtime.CompilerServices;
+using System.Xml;
+using DictionaryManager = System.IdentityModel.DictionaryManager;
+using ISecurityElement = System.IdentityModel.ISecurityElement;
 
 namespace System.ServiceModel.Security
 {
-    using System.Collections.Generic;
-    using System.IdentityModel;
-    using System.Runtime.CompilerServices;
-    using System.Xml;
-    using DictionaryManager = System.IdentityModel.DictionaryManager;
-    using ISecurityElement = System.IdentityModel.ISecurityElement;
-
     sealed class ReferenceList : ISecurityElement
     {
-        internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.ReferenceList;
+        internal static readonly XmlDictionaryString s_ElementName = System.IdentityModel.XD.XmlEncryptionDictionary.ReferenceList;
         const string NamespacePrefix = XmlEncryptionStrings.Prefix;
-        internal static readonly XmlDictionaryString NamespaceUri = EncryptedType.NamespaceUri;
-        internal static readonly XmlDictionaryString UriAttribute = XD.XmlEncryptionDictionary.URI;
-        List<string> referredIds = new List<string>();
+        internal static readonly XmlDictionaryString s_NamespaceUri = EncryptedType.s_NamespaceUri;
+        internal static readonly XmlDictionaryString s_UriAttribute = System.IdentityModel.XD.XmlEncryptionDictionary.URI;
+        private List<string> _referredIds = new List<string>();
 
         public ReferenceList()
         {
@@ -25,7 +25,7 @@ namespace System.ServiceModel.Security
 
         public int DataReferenceCount
         {
-            get { return this.referredIds.Count; }
+            get { return this._referredIds.Count; }
         }
 
         public bool HasId
@@ -49,7 +49,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            this.referredIds.Add(id);
+            this._referredIds.Add(id);
         }
 
         public bool ContainsReferredId(string id)
@@ -58,12 +58,12 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            return this.referredIds.Contains(id);
+            return this._referredIds.Contains(id);
         }
 
         public string GetReferredId(int index)
         {
-            return this.referredIds[index];
+            return this._referredIds[index];
         }
 
         public void ReadFrom(XmlDictionaryReader reader)
@@ -94,7 +94,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            return this.referredIds.Remove(id);
+            return this._referredIds.Remove(id);
         }
 
         public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
@@ -115,8 +115,8 @@ namespace System.ServiceModel.Security
 
         static class DataReference
         {
-            internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.DataReference;
-            internal static readonly XmlDictionaryString NamespaceUri = EncryptedType.NamespaceUri;
+            internal static readonly XmlDictionaryString s_ElementName = System.IdentityModel.XD.XmlEncryptionDictionary.DataReference;
+            internal static readonly XmlDictionaryString s_NamespaceUri = EncryptedType.s_NamespaceUri;
 
             public static string ReadFrom(XmlDictionaryReader reader)
             {
@@ -134,8 +134,8 @@ namespace System.ServiceModel.Security
 
             public static void WriteTo(XmlDictionaryWriter writer, string referredId)
             {
-                writer.WriteStartElement(XD.XmlEncryptionDictionary.Prefix.Value, ElementName, NamespaceUri);
-                writer.WriteStartAttribute(ReferenceList.UriAttribute, null);
+                writer.WriteStartElement(System.IdentityModel.XD.XmlEncryptionDictionary.Prefix.Value, s_ElementName, s_NamespaceUri);
+                writer.WriteStartAttribute(ReferenceList.s_UriAttribute, null);
                 writer.WriteString("#");
                 writer.WriteString(referredId);
                 writer.WriteEndAttribute();

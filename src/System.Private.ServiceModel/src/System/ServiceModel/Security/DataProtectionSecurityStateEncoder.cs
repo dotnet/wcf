@@ -1,17 +1,17 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Text;
+using System.Security.Cryptography;
+using System.Runtime;
 
 namespace System.ServiceModel.Security
 {
-    using System.Text;
-    using System.Security.Cryptography;
-    using Runtime;
-
     public class DataProtectionSecurityStateEncoder : SecurityStateEncoder
     {
-        byte[] entropy;
-        bool useCurrentUserProtectionScope;
+        private byte[] _entropy;
+        private bool _useCurrentUserProtectionScope;
 
         public DataProtectionSecurityStateEncoder()
             : this(true)
@@ -25,15 +25,15 @@ namespace System.ServiceModel.Security
 
         public DataProtectionSecurityStateEncoder(bool useCurrentUserProtectionScope, byte[] entropy)
         {
-            this.useCurrentUserProtectionScope = useCurrentUserProtectionScope;
+            this._useCurrentUserProtectionScope = useCurrentUserProtectionScope;
             if (entropy == null)
             {
-                this.entropy = null;
+                this._entropy = null;
             }
             else
             {
-                this.entropy = Fx.AllocateByteArray(entropy.Length);
-                Buffer.BlockCopy(entropy, 0, this.entropy, 0, entropy.Length);
+                this._entropy = Fx.AllocateByteArray(entropy.Length);
+                Buffer.BlockCopy(entropy, 0, this._entropy, 0, entropy.Length);
             }
         }
 
@@ -41,17 +41,17 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.useCurrentUserProtectionScope;
+                return this._useCurrentUserProtectionScope;
             }
         }
 
         public byte[] GetEntropy()
         {
             byte[] result = null;
-            if (this.entropy != null)
+            if (this._entropy != null)
             {
-                result = Fx.AllocateByteArray(this.entropy.Length);
-                Buffer.BlockCopy(this.entropy, 0, result, 0, this.entropy.Length);
+                result = Fx.AllocateByteArray(this._entropy.Length);
+                Buffer.BlockCopy(this._entropy, 0, result, 0, this._entropy.Length);
             }
             return result;
         }
@@ -60,8 +60,8 @@ namespace System.ServiceModel.Security
         {
             StringBuilder result = new StringBuilder();
             result.Append(this.GetType().ToString());
-            result.AppendFormat("{0}  UseCurrentUserProtectionScope={1}", Environment.NewLine, this.useCurrentUserProtectionScope);
-            result.AppendFormat("{0}  Entropy Length={1}", Environment.NewLine, (this.entropy == null) ? 0 : this.entropy.Length);
+            result.AppendFormat("{0}  UseCurrentUserProtectionScope={1}", Environment.NewLine, this._useCurrentUserProtectionScope);
+            result.AppendFormat("{0}  Entropy Length={1}", Environment.NewLine, (this._entropy == null) ? 0 : this._entropy.Length);
             return result.ToString();
         }
 

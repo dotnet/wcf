@@ -1,11 +1,11 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 
 namespace System.IdentityModel.Tokens
 {
-    using System;
-
     public static class SamlConstants
     {
         static public int MajorVersionValue { get { return 1; } }
@@ -20,7 +20,7 @@ namespace System.IdentityModel.Tokens
 
         public const string Prefix = "saml";
 
-        internal static string[] AcceptedDateTimeFormats = new string[] {
+        internal static string[] s_AcceptedDateTimeFormats = new string[] {
                 "yyyy-MM-ddTHH:mm:ss.fffffffZ",
                 "yyyy-MM-ddTHH:mm:ss.ffffffZ",
                 "yyyy-MM-ddTHH:mm:ss.fffffZ",

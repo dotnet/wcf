@@ -1,51 +1,51 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.IO;
+using System.ServiceModel.Channels;
+using System.ServiceModel;
+using System.IdentityModel.Tokens;
+using System.IdentityModel.Selectors;
+using System.Security.Cryptography;
+using System.Xml;
+
+using DictionaryManager = System.IdentityModel.DictionaryManager;
+using ISecurityElement = System.IdentityModel.ISecurityElement;
 
 namespace System.ServiceModel.Security
 {
-    using System.IO;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel;
-    using System.IdentityModel.Tokens;
-    using System.IdentityModel.Selectors;
-    using System.Security.Cryptography;
-    using System.Xml;
-
-    using DictionaryManager = System.IdentityModel.DictionaryManager;
-    using ISecurityElement = System.IdentityModel.ISecurityElement;
-
     sealed class EncryptedHeaderXml
     {
-        internal static readonly XmlDictionaryString ElementName = XD.SecurityXXX2005Dictionary.EncryptedHeader;
-        internal static readonly XmlDictionaryString NamespaceUri = XD.SecurityXXX2005Dictionary.Namespace;
+        internal static readonly XmlDictionaryString s_ElementName = XD.SecurityXXX2005Dictionary.EncryptedHeader;
+        internal static readonly XmlDictionaryString s_NamespaceUri = XD.SecurityXXX2005Dictionary.Namespace;
         const string Prefix = SecurityXXX2005Strings.Prefix;
 
-        string id;
-        bool mustUnderstand;
-        bool relay;
-        string actor;
-        MessageVersion version;
-        EncryptedData encryptedData;
+        private string _id;
+        private bool _mustUnderstand;
+        private bool _relay;
+        private string _actor;
+        private MessageVersion _version;
+        private EncryptedData _encryptedData;
 
         public EncryptedHeaderXml(MessageVersion version, bool shouldReadXmlReferenceKeyInfoClause)
         {
-            this.version = version;
-            encryptedData = new EncryptedData();
+            this._version = version;
+            _encryptedData = new EncryptedData();
             
             // This is for the case when the service send an EncryptedHeader to the client where the KeyInfo clause contains referenceXml clause.
-            encryptedData.ShouldReadXmlReferenceKeyInfoClause = shouldReadXmlReferenceKeyInfoClause;
+            _encryptedData.ShouldReadXmlReferenceKeyInfoClause = shouldReadXmlReferenceKeyInfoClause;
         }
 
         public string Actor
         {
             get
             {
-                return this.actor;
+                return this._actor;
             }
             set
             {
-                this.actor = value;
+                this._actor = value;
             }
         }
 
@@ -53,11 +53,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return encryptedData.EncryptionMethod;
+                return _encryptedData.EncryptionMethod;
             }
             set
             {
-                encryptedData.EncryptionMethod = value;
+                _encryptedData.EncryptionMethod = value;
             }
         }
 
@@ -65,11 +65,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return encryptedData.EncryptionMethodDictionaryString;
+                return _encryptedData.EncryptionMethodDictionaryString;
             }
             set
             {
-                encryptedData.EncryptionMethodDictionaryString = value;
+                _encryptedData.EncryptionMethodDictionaryString = value;
             }
         }
 
@@ -85,11 +85,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return id;
+                return _id;
             }
             set
             {
-                id = value;
+                _id = value;
             }
         }
 
@@ -97,11 +97,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return encryptedData.KeyIdentifier;
+                return _encryptedData.KeyIdentifier;
             }
             set
             {
-                encryptedData.KeyIdentifier = value;
+                _encryptedData.KeyIdentifier = value;
             }
         }
 
@@ -109,11 +109,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.mustUnderstand;
+                return this._mustUnderstand;
             }
             set
             {
-                this.mustUnderstand = value;
+                this._mustUnderstand = value;
             }
         }
 
@@ -121,11 +121,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.relay;
+                return this._relay;
             }
             set
             {
-                this.relay = value;
+                this._relay = value;
             }
         }
 
@@ -133,34 +133,34 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return encryptedData.SecurityTokenSerializer;
+                return _encryptedData.SecurityTokenSerializer;
             }
             set
             {
-                encryptedData.SecurityTokenSerializer = value;
+                _encryptedData.SecurityTokenSerializer = value;
             }
         }
 
         public byte[] GetDecryptedBuffer()
         {
-            return encryptedData.GetDecryptedBuffer();
+            return _encryptedData.GetDecryptedBuffer();
         }
 
         public void ReadFrom(XmlDictionaryReader reader, long maxBufferSize)
         {
-            reader.MoveToStartElement(ElementName, NamespaceUri);
+            reader.MoveToStartElement(s_ElementName, s_NamespaceUri);
             bool isReferenceParameter;
-            MessageHeader.GetHeaderAttributes(reader, version, out this.actor, out this.mustUnderstand, out this.relay, out isReferenceParameter);
-            this.id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+            MessageHeader.GetHeaderAttributes(reader, _version, out this._actor, out this._mustUnderstand, out this._relay, out isReferenceParameter);
+            this._id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
 
             reader.ReadStartElement();
-            encryptedData.ReadFrom(reader, maxBufferSize);
+            _encryptedData.ReadFrom(reader, maxBufferSize);
             reader.ReadEndElement();
         }
 
         public void SetUpDecryption(SymmetricAlgorithm algorithm)
         {
-            encryptedData.SetUpDecryption(algorithm);
+            _encryptedData.SetUpDecryption(algorithm);
         }
 
         public void SetUpEncryption(SymmetricAlgorithm algorithm, MemoryStream source)
@@ -171,12 +171,12 @@ namespace System.ServiceModel.Security
 
         public void WriteHeaderElement(XmlDictionaryWriter writer)
         {
-            writer.WriteStartElement(Prefix, ElementName, NamespaceUri);
+            writer.WriteStartElement(Prefix, s_ElementName, s_NamespaceUri);
         }
 
         public void WriteHeaderId(XmlDictionaryWriter writer)
         {
-            writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, id);
+            writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, _id);
         }
 
         public void WriteHeaderContents(XmlDictionaryWriter writer)

@@ -728,16 +728,17 @@ namespace System.ServiceModel.Channels
 
             public virtual IAsyncResult BeginTryReceive(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                if (DoneReceivingInCurrentState())
-                {
-                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-                    //return new DoneReceivingAsyncResult(callback, state);
-                }
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //if (DoneReceivingInCurrentState())
+                //{
+                //    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //    //return new DoneReceivingAsyncResult(callback, state);
+                //}
 
-                ClientDuplexReceiveMessageAndVerifySecurityAsyncResult result =
-                    new ClientDuplexReceiveMessageAndVerifySecurityAsyncResult(this, this.InnerDuplexChannel, timeout, callback, state);
-                result.Start();
-                return result;
+                //ClientDuplexReceiveMessageAndVerifySecurityAsyncResult result =
+                //    new ClientDuplexReceiveMessageAndVerifySecurityAsyncResult(this, this.InnerDuplexChannel, timeout, callback, state);
+                //result.Start();
+                //return result;
             }
 
             public virtual bool EndTryReceive(IAsyncResult result, out Message message)
@@ -837,23 +838,6 @@ namespace System.ServiceModel.Channels
             internal override bool AcceptUnsecuredFaults
             {
                 get { return true; }
-            }
-        }
-
-        class ClientDuplexReceiveMessageAndVerifySecurityAsyncResult : ReceiveMessageAndVerifySecurityAsyncResultBase
-        {
-            SecurityDuplexChannel channel;
-
-            public ClientDuplexReceiveMessageAndVerifySecurityAsyncResult(SecurityDuplexChannel channel, IDuplexChannel innerChannel, TimeSpan timeout, AsyncCallback callback, object state)
-                : base(innerChannel, timeout, callback, state)
-            {
-                this.channel = channel;
-            }
-
-            protected override bool OnInnerReceiveDone(ref Message message, TimeSpan timeout)
-            {
-                message = this.channel.ProcessMessage(message, timeout);
-                return true;
             }
         }
     }

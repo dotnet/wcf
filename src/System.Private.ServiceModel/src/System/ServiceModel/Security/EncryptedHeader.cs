@@ -1,24 +1,24 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Diagnostics;
+using System.ServiceModel.Channels;
+using System.ServiceModel;
+using System.Globalization;
+using System.Xml;
+using System.IO;
+
+using ISecurityElement = System.IdentityModel.ISecurityElement;
 
 namespace System.ServiceModel.Security
 {
-    using System.Diagnostics;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel;
-    using System.Globalization;    
-    using System.Xml;
-    using System.IO;
-
-    using ISecurityElement = System.IdentityModel.ISecurityElement;
-
     sealed class EncryptedHeader : DelegatingHeader
     {
-        EncryptedHeaderXml headerXml;
-        string name;
-        string namespaceUri;
-        MessageVersion version;
+        private EncryptedHeaderXml _headerXml;
+        private string _name;
+        private string _namespaceUri;
+        private MessageVersion _version;
 
         public EncryptedHeader(MessageHeader plainTextHeader, EncryptedHeaderXml headerXml, string name, string namespaceUri, MessageVersion version)
             : base(plainTextHeader)
@@ -27,32 +27,32 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.EncryptedHeaderXmlMustHaveId)));
             }
-            this.headerXml = headerXml;
-            this.name = name;
-            this.namespaceUri = namespaceUri;
-            this.version = version;
+            this._headerXml = headerXml;
+            this._name = name;
+            this._namespaceUri = namespaceUri;
+            this._version = version;
         }
 
         public string Id
         {
-            get { return this.headerXml.Id; }
+            get { return this._headerXml.Id; }
         }
 
         public override string Name
         {
-            get { return this.name; }
+            get { return this._name; }
         }
 
         public override string Namespace
         {
-            get { return this.namespaceUri; }
+            get { return this._namespaceUri; }
         }
 
         public override string Actor
         {
             get
             {
-                return this.headerXml.Actor;
+                return this._headerXml.Actor;
             }
         }
 
@@ -60,7 +60,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.headerXml.MustUnderstand;
+                return this._headerXml.MustUnderstand;
             }
         }
 
@@ -68,7 +68,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.headerXml.Relay;
+                return this._headerXml.Relay;
             }
         }
 
@@ -79,24 +79,24 @@ namespace System.ServiceModel.Security
 
         public override bool IsMessageVersionSupported(MessageVersion messageVersion)
         {
-            return this.version.Equals( messageVersion );
+            return this._version.Equals( messageVersion );
         }
 
         protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             if (!IsMessageVersionSupported(messageVersion))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionNotSupported, String.Format(CultureInfo.InvariantCulture, "{0}:{1}", this.Namespace, this.Name), version.ToString()), "version"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionNotSupported, String.Format(CultureInfo.InvariantCulture, "{0}:{1}", this.Namespace, this.Name), _version.ToString()), "version"));
             }
 
-            this.headerXml.WriteHeaderElement(writer);
+            this._headerXml.WriteHeaderElement(writer);
             WriteHeaderAttributes(writer, messageVersion);
-            this.headerXml.WriteHeaderId(writer);
+            this._headerXml.WriteHeaderId(writer);
         }
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            this.headerXml.WriteHeaderContents(writer);
+            this._headerXml.WriteHeaderContents(writer);
         }
     }
 }
