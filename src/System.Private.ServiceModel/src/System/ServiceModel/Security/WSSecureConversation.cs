@@ -1,6 +1,7 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,10 @@ using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenE
 
 namespace System.ServiceModel.Security
 {
-    // Issue #31 in progress 
-    // was -- abstract class WSSecureConversation : WSSecurityTokenSerializer.SerializerEntries
-    abstract class WSSecureConversation : SecurityTokenSerializer.SerializerEntries
+    abstract class WSSecureConversation : WSSecurityTokenSerializer.SerializerEntries
     {
-        WSSecurityTokenSerializer tokenSerializer;
-        DerivedKeyTokenEntry derivedKeyEntry;
+        private WSSecurityTokenSerializer _tokenSerializer;
+        private DerivedKeyTokenEntry _derivedKeyEntry;
 
         protected WSSecureConversation(WSSecurityTokenSerializer tokenSerializer, int maxKeyDerivationOffset, int maxKeyDerivationLabelLength, int maxKeyDerivationNonceLength)
         {
@@ -29,8 +28,8 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenSerializer");
             }
-            this.tokenSerializer = tokenSerializer;
-            this.derivedKeyEntry = new DerivedKeyTokenEntry(this, maxKeyDerivationOffset, maxKeyDerivationLabelLength, maxKeyDerivationNonceLength);
+            this._tokenSerializer = tokenSerializer;
+            this._derivedKeyEntry = new DerivedKeyTokenEntry(this, maxKeyDerivationOffset, maxKeyDerivationLabelLength, maxKeyDerivationNonceLength);
         }
 
         public abstract SecureConversationDictionary SerializerDictionary
@@ -40,7 +39,7 @@ namespace System.ServiceModel.Security
 
         public WSSecurityTokenSerializer WSSecurityTokenSerializer
         {
-            get { return this.tokenSerializer; }
+            get { return this._tokenSerializer; }
         }
 
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
@@ -49,23 +48,23 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenEntryList");
             }
-            tokenEntryList.Add(this.derivedKeyEntry);
+            tokenEntryList.Add(this._derivedKeyEntry);
         }
 
         public virtual bool IsAtDerivedKeyToken(XmlDictionaryReader reader)
         {
-            return this.derivedKeyEntry.CanReadTokenCore(reader);
+            return this._derivedKeyEntry.CanReadTokenCore(reader);
         }
 
         public virtual void ReadDerivedKeyTokenParameters(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver, out string id, out string derivationAlgorithm, out string label, out int length, out byte[] nonce, out int offset, out int generation, out SecurityKeyIdentifierClause tokenToDeriveIdentifier, out SecurityToken tokenToDerive)
         {
-            this.derivedKeyEntry.ReadDerivedKeyTokenParameters(reader, tokenResolver, out id, out derivationAlgorithm, out label,
+            this._derivedKeyEntry.ReadDerivedKeyTokenParameters(reader, tokenResolver, out id, out derivationAlgorithm, out label,
                 out length, out nonce, out offset, out generation, out tokenToDeriveIdentifier, out tokenToDerive);
         }
 
         public virtual SecurityToken CreateDerivedKeyToken(string id, string derivationAlgorithm, string label, int length, byte[] nonce, int offset, int generation, SecurityKeyIdentifierClause tokenToDeriveIdentifier, SecurityToken tokenToDerive)
         {
-            return this.derivedKeyEntry.CreateDerivedKeyToken(id, derivationAlgorithm, label, length, nonce, offset, generation,
+            return this._derivedKeyEntry.CreateDerivedKeyToken(id, derivationAlgorithm, label, length, nonce, offset, generation,
                 tokenToDeriveIdentifier, tokenToDerive);
         }
 
@@ -78,10 +77,10 @@ namespace System.ServiceModel.Security
         {
             public const string DefaultLabel = "WS-SecureConversation";
 
-            WSSecureConversation parent;
-            int maxKeyDerivationOffset;
-            int maxKeyDerivationLabelLength;
-            int maxKeyDerivationNonceLength;
+            private WSSecureConversation _parent;
+            private int _maxKeyDerivationOffset;
+            private int _maxKeyDerivationLabelLength;
+            private int _maxKeyDerivationNonceLength;
 
             public DerivedKeyTokenEntry(WSSecureConversation parent, int maxKeyDerivationOffset, int maxKeyDerivationLabelLength, int maxKeyDerivationNonceLength)
             {
@@ -89,16 +88,16 @@ namespace System.ServiceModel.Security
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
                 }
-                this.parent = parent;
-                this.maxKeyDerivationOffset = maxKeyDerivationOffset;
-                this.maxKeyDerivationLabelLength = maxKeyDerivationLabelLength;
-                this.maxKeyDerivationNonceLength = maxKeyDerivationNonceLength;
+                this._parent = parent;
+                this._maxKeyDerivationOffset = maxKeyDerivationOffset;
+                this._maxKeyDerivationLabelLength = maxKeyDerivationLabelLength;
+                this._maxKeyDerivationNonceLength = maxKeyDerivationNonceLength;
             }
 
-            protected override XmlDictionaryString LocalName { get { return parent.SerializerDictionary.DerivedKeyToken; } }
-            protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
+            protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.DerivedKeyToken; } }
+            protected override XmlDictionaryString NamespaceUri { get { return _parent.SerializerDictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(DerivedKeySecurityToken) }; }
-            public override string TokenTypeUri { get { return parent.SerializerDictionary.DerivedKeyTokenType.Value; } }
+            public override string TokenTypeUri { get { return _parent.SerializerDictionary.DerivedKeyTokenType.Value; } }
             protected override string ValueTypeUri { get { return null; } }
 
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml,
@@ -261,18 +260,18 @@ namespace System.ServiceModel.Security
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
                 DerivedKeySecurityToken derivedKeyToken = token as DerivedKeySecurityToken;
-                string serializerPrefix = parent.SerializerDictionary.Prefix.Value;
+                string serializerPrefix = _parent.SerializerDictionary.Prefix.Value;
 
-                writer.WriteStartElement(serializerPrefix, parent.SerializerDictionary.DerivedKeyToken, parent.SerializerDictionary.Namespace);
+                writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.DerivedKeyToken, _parent.SerializerDictionary.Namespace);
                 if (derivedKeyToken.Id != null)
                 {
                     writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, derivedKeyToken.Id);
                 }
-                if (derivedKeyToken.KeyDerivationAlgorithm != parent.DerivationAlgorithm)
+                if (derivedKeyToken.KeyDerivationAlgorithm != _parent.DerivationAlgorithm)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.UnsupportedKeyDerivationAlgorithm, derivedKeyToken.KeyDerivationAlgorithm)));
                 }
-                parent.WSSecurityTokenSerializer.WriteKeyIdentifierClause(writer, derivedKeyToken.TokenToDeriveIdentifier);
+                _parent.WSSecurityTokenSerializer.WriteKeyIdentifierClause(writer, derivedKeyToken.TokenToDeriveIdentifier);
 
                 // Don't support Properties element
                 if (derivedKeyToken.Generation > 0 || derivedKeyToken.Offset > 0 || derivedKeyToken.Length != 32)
@@ -280,26 +279,26 @@ namespace System.ServiceModel.Security
                     // this means they're both specified (offset must be gen * length) - we'll write generation
                     if (derivedKeyToken.Generation >= 0 && derivedKeyToken.Offset >= 0)
                     {
-                        writer.WriteStartElement(serializerPrefix, parent.SerializerDictionary.Generation, parent.SerializerDictionary.Namespace);
+                        writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.Generation, _parent.SerializerDictionary.Namespace);
                         writer.WriteValue(derivedKeyToken.Generation);
                         writer.WriteEndElement();
                     }
                     else if (derivedKeyToken.Generation != -1)
                     {
-                        writer.WriteStartElement(serializerPrefix, parent.SerializerDictionary.Generation, parent.SerializerDictionary.Namespace);
+                        writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.Generation, _parent.SerializerDictionary.Namespace);
                         writer.WriteValue(derivedKeyToken.Generation);
                         writer.WriteEndElement();
                     }
                     else if (derivedKeyToken.Offset != -1)
                     {
-                        writer.WriteStartElement(serializerPrefix, parent.SerializerDictionary.Offset, parent.SerializerDictionary.Namespace);
+                        writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.Offset, _parent.SerializerDictionary.Namespace);
                         writer.WriteValue(derivedKeyToken.Offset);
                         writer.WriteEndElement();
                     }
 
                     if (derivedKeyToken.Length != 32)
                     {
-                        writer.WriteStartElement(serializerPrefix, parent.SerializerDictionary.Length, parent.SerializerDictionary.Namespace);
+                        writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.Length, _parent.SerializerDictionary.Namespace);
                         writer.WriteValue(derivedKeyToken.Length);
                         writer.WriteEndElement();
                     }
@@ -307,11 +306,11 @@ namespace System.ServiceModel.Security
 
                 if (derivedKeyToken.Label != null)
                 {
-                    writer.WriteStartElement(serializerPrefix, parent.SerializerDictionary.Generation, parent.SerializerDictionary.Namespace);
+                    writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.Generation, _parent.SerializerDictionary.Namespace);
                     writer.WriteString(derivedKeyToken.Label);
                     writer.WriteEndElement();
                 }
-                writer.WriteStartElement(serializerPrefix, parent.SerializerDictionary.Nonce, parent.SerializerDictionary.Namespace);
+                writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.Nonce, _parent.SerializerDictionary.Namespace);
                 writer.WriteBase64(derivedKeyToken.Nonce, 0, derivedKeyToken.Nonce.Length);
                 writer.WriteEndElement();
                 writer.WriteEndElement();
@@ -320,24 +319,24 @@ namespace System.ServiceModel.Security
 
         protected abstract class SecurityContextTokenEntry : WSSecurityTokenSerializer.TokenEntry
         {
-            WSSecureConversation parent;
-            SecurityContextCookieSerializer cookieSerializer;
+            private WSSecureConversation _parent;
+            private SecurityContextCookieSerializer _cookieSerializer;
 
             public SecurityContextTokenEntry(WSSecureConversation parent, SecurityStateEncoder securityStateEncoder, IList<Type> knownClaimTypes)
             {
-                this.parent = parent;
-                this.cookieSerializer = new SecurityContextCookieSerializer(securityStateEncoder, knownClaimTypes);
+                this._parent = parent;
+                this._cookieSerializer = new SecurityContextCookieSerializer(securityStateEncoder, knownClaimTypes);
             }
 
             protected WSSecureConversation Parent
             {
-                get { return this.parent; }
+                get { return this._parent; }
             }
 
-            protected override XmlDictionaryString LocalName { get { return parent.SerializerDictionary.SecurityContextToken; } }
-            protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
+            protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.SecurityContextToken; } }
+            protected override XmlDictionaryString NamespaceUri { get { return _parent.SerializerDictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(SecurityContextSecurityToken) }; }
-            public override string TokenTypeUri { get { return parent.SerializerDictionary.SecurityContextTokenType.Value; } }
+            public override string TokenTypeUri { get { return _parent.SerializerDictionary.SecurityContextTokenType.Value; } }
             protected override string ValueTypeUri { get { return null; } }
 
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml,
@@ -358,7 +357,7 @@ namespace System.ServiceModel.Security
                             XmlElement element = node as XmlElement;
                             if (element != null)
                             {
-                                if (element.LocalName == parent.SerializerDictionary.Identifier.Value && element.NamespaceURI == parent.SerializerDictionary.Namespace.Value)
+                                if (element.LocalName == _parent.SerializerDictionary.Identifier.Value && element.NamespaceURI == _parent.SerializerDictionary.Namespace.Value)
                                 {
                                     throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                                     //contextId = XmlHelper.ReadTextElementAsUniqueId(element);

@@ -1,33 +1,32 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
+using System.IdentityModel.Selectors;
+using System.ServiceModel.Channels;
+using System.ServiceModel;
+using System.IdentityModel.Tokens;
+using System.ServiceModel.Security;
+using System.Text;
+using System.Globalization;
 
 namespace System.ServiceModel.Security.Tokens
 {
-    using System.IdentityModel.Selectors;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel;
-    using System.IdentityModel.Tokens;
-    using System.ServiceModel.Security;
-    using System.Text;
-    using System.Globalization;
-
     public class SspiSecurityTokenParameters : SecurityTokenParameters
     {
         internal const bool defaultRequireCancellation = false;
 
-        bool requireCancellation = defaultRequireCancellation;
-        BindingContext issuerBindingContext;
+        private bool _requireCancellation = defaultRequireCancellation;
+        private BindingContext _issuerBindingContext;
 
 
         protected SspiSecurityTokenParameters(SspiSecurityTokenParameters other)
             : base(other)
         {
-            this.requireCancellation = other.requireCancellation;
-            if (other.issuerBindingContext != null)
+            this._requireCancellation = other._requireCancellation;
+            if (other._issuerBindingContext != null)
             {
-                this.issuerBindingContext = other.issuerBindingContext.Clone();
+                this._issuerBindingContext = other._issuerBindingContext.Clone();
             }
         }
 
@@ -41,7 +40,7 @@ namespace System.ServiceModel.Security.Tokens
         public SspiSecurityTokenParameters(bool requireCancellation)
             : base()
         {
-            this.requireCancellation = requireCancellation;
+            this._requireCancellation = requireCancellation;
         }
 
         internal protected override bool HasAsymmetricKey { get { return false; } }
@@ -50,11 +49,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.requireCancellation;
+                return this._requireCancellation;
             }
             set
             {
-                this.requireCancellation = value;
+                this._requireCancellation = value;
             }
         }
 
@@ -62,7 +61,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerBindingContext;
+                return this._issuerBindingContext;
             }
             set
             {
@@ -70,7 +69,7 @@ namespace System.ServiceModel.Security.Tokens
                 {
                     value = value.Clone();
                 }
-                this.issuerBindingContext = value;
+                this._issuerBindingContext = value;
             }
         }
 

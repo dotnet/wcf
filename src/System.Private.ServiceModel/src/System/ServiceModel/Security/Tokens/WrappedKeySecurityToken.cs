@@ -1,33 +1,33 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.ObjectModel;
+using System.IdentityModel;
+using System.IdentityModel.Tokens;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+using System.ServiceModel.Security;
+using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
 {
-    using System.Collections.ObjectModel;
-    using System.IdentityModel;
-    using System.IdentityModel.Tokens;
-    using System.Runtime.CompilerServices;
-    using System.Security.Cryptography;
-    using System.ServiceModel.Security;
-    using System.Xml;
-
     public class WrappedKeySecurityToken : SecurityToken
     {
-        string id;
-        DateTime effectiveTime;
+        private string _id;
+        private DateTime _effectiveTime;
 
-        EncryptedKey encryptedKey;
-        ReadOnlyCollection<SecurityKey> securityKey;
-        byte[] wrappedKey;
-        string wrappingAlgorithm;
-        ISspiNegotiation wrappingSspiContext;
-        SecurityToken wrappingToken;
-        SecurityKey wrappingSecurityKey;
-        SecurityKeyIdentifier wrappingTokenReference;
-        bool serializeCarriedKeyName;
+        private EncryptedKey _encryptedKey;
+        private ReadOnlyCollection<SecurityKey> _securityKey;
+        private byte[] _wrappedKey;
+        private string _wrappingAlgorithm;
+        private ISspiNegotiation _wrappingSspiContext;
+        private SecurityToken _wrappingToken;
+        private SecurityKey _wrappingSecurityKey;
+        private SecurityKeyIdentifier _wrappingTokenReference;
+        private bool _serializeCarriedKeyName;
         // byte[] wrappedKeyHash;
-        XmlDictionaryString wrappingAlgorithmDictionaryString;
+        private XmlDictionaryString _wrappingAlgorithmDictionaryString;
 
         // sender use
         internal WrappedKeySecurityToken(string id, byte[] keyToWrap, ISspiNegotiation wrappingSspiContext)
@@ -54,16 +54,16 @@ namespace System.ServiceModel.Security.Tokens
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("wrappingSspiContext");
             }
-            this.wrappingSspiContext = wrappingSspiContext;
+            this._wrappingSspiContext = wrappingSspiContext;
             if (wrappedKey == null)
             {
-                this.wrappedKey = wrappingSspiContext.Encrypt(keyToWrap);
+                this._wrappedKey = wrappingSspiContext.Encrypt(keyToWrap);
             }
             else
             {
-                this.wrappedKey = wrappedKey;
+                this._wrappedKey = wrappedKey;
             }
-            this.serializeCarriedKeyName = false;
+            this._serializeCarriedKeyName = false;
         }
 
         // receiver use
@@ -115,12 +115,12 @@ namespace System.ServiceModel.Security.Tokens
 
         public override string Id
         {
-            get { return this.id; }
+            get { return this._id; }
         }
 
         public override DateTime ValidFrom
         {
-            get { return this.effectiveTime; }
+            get { return this._effectiveTime; }
         }
 
         public override DateTime ValidTo
@@ -131,36 +131,36 @@ namespace System.ServiceModel.Security.Tokens
 
         internal EncryptedKey EncryptedKey
         {
-            get { return this.encryptedKey; }
-            set { this.encryptedKey = value; }
+            get { return this._encryptedKey; }
+            set { this._encryptedKey = value; }
         }
 
         internal ReferenceList ReferenceList
         {
             get
             {
-                return this.encryptedKey == null ? null : this.encryptedKey.ReferenceList;
+                return this._encryptedKey == null ? null : this._encryptedKey.ReferenceList;
             }
         }
 
         public string WrappingAlgorithm
         {
-            get { return this.wrappingAlgorithm; }
+            get { return this._wrappingAlgorithm; }
         }
 
         internal SecurityKey WrappingSecurityKey
         {
-            get { return this.wrappingSecurityKey; }
+            get { return this._wrappingSecurityKey; }
         }
 
         public SecurityToken WrappingToken
         {
-            get { return this.wrappingToken; }
+            get { return this._wrappingToken; }
         }
 
         public SecurityKeyIdentifier WrappingTokenReference
         {
-            get { return this.wrappingTokenReference; }
+            get { return this._wrappingTokenReference; }
         }
 
         internal string CarriedKeyName
@@ -170,7 +170,7 @@ namespace System.ServiceModel.Security.Tokens
 
         public override ReadOnlyCollection<SecurityKey> SecurityKeys
         {
-            get { return this.securityKey; }
+            get { return this._securityKey; }
         }
 
         internal byte[] GetHash()
@@ -195,11 +195,11 @@ namespace System.ServiceModel.Security.Tokens
 
         internal void EnsureEncryptedKeySetUp()
         {
-            if (this.encryptedKey == null)
+            if (this._encryptedKey == null)
             {
                 EncryptedKey ek = new EncryptedKey();
                 ek.Id = this.Id;
-                if (this.serializeCarriedKeyName)
+                if (this._serializeCarriedKeyName)
                 {
                     ek.CarriedKeyName = this.CarriedKeyName;
                 }
@@ -208,13 +208,13 @@ namespace System.ServiceModel.Security.Tokens
                     ek.CarriedKeyName = null;
                 }
                 ek.EncryptionMethod = this.WrappingAlgorithm;
-                ek.EncryptionMethodDictionaryString = this.wrappingAlgorithmDictionaryString;
-                ek.SetUpKeyWrap(this.wrappedKey);
+                ek.EncryptionMethodDictionaryString = this._wrappingAlgorithmDictionaryString;
+                ek.SetUpKeyWrap(this._wrappedKey);
                 if (this.WrappingTokenReference != null)
                 {
                     ek.KeyIdentifier = this.WrappingTokenReference;
                 }
-                this.encryptedKey = ek;
+                this._encryptedKey = ek;
             }
         }
 

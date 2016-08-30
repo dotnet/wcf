@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
@@ -14,8 +13,6 @@ using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
 using System.Xml;
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 namespace System.ServiceModel.Security.Tokens
 {
