@@ -33,17 +33,17 @@ namespace System.IdentityModel.Tokens
             if (dictionary == null)
                 throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("dictionary");
 
-            this._dictionaryManager = new DictionaryManager(dictionary);
+            _dictionaryManager = new DictionaryManager(dictionary);
         }
 
         internal DictionaryManager DictionaryManager
         {
             get
             {
-                if (this._dictionaryManager == null)
-                    this._dictionaryManager = new DictionaryManager();
+                if (_dictionaryManager == null)
+                    _dictionaryManager = new DictionaryManager();
 
-                return this._dictionaryManager;
+                return _dictionaryManager;
             }
         }
 

@@ -25,15 +25,15 @@ namespace System.ServiceModel.Security
 
         public DataProtectionSecurityStateEncoder(bool useCurrentUserProtectionScope, byte[] entropy)
         {
-            this._useCurrentUserProtectionScope = useCurrentUserProtectionScope;
+            _useCurrentUserProtectionScope = useCurrentUserProtectionScope;
             if (entropy == null)
             {
-                this._entropy = null;
+                _entropy = null;
             }
             else
             {
-                this._entropy = Fx.AllocateByteArray(entropy.Length);
-                Buffer.BlockCopy(entropy, 0, this._entropy, 0, entropy.Length);
+                _entropy = Fx.AllocateByteArray(entropy.Length);
+                Buffer.BlockCopy(entropy, 0, _entropy, 0, entropy.Length);
             }
         }
 
@@ -41,17 +41,17 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._useCurrentUserProtectionScope;
+                return _useCurrentUserProtectionScope;
             }
         }
 
         public byte[] GetEntropy()
         {
             byte[] result = null;
-            if (this._entropy != null)
+            if (_entropy != null)
             {
-                result = Fx.AllocateByteArray(this._entropy.Length);
-                Buffer.BlockCopy(this._entropy, 0, result, 0, this._entropy.Length);
+                result = Fx.AllocateByteArray(_entropy.Length);
+                Buffer.BlockCopy(_entropy, 0, result, 0, _entropy.Length);
             }
             return result;
         }
@@ -60,8 +60,8 @@ namespace System.ServiceModel.Security
         {
             StringBuilder result = new StringBuilder();
             result.Append(this.GetType().ToString());
-            result.AppendFormat("{0}  UseCurrentUserProtectionScope={1}", Environment.NewLine, this._useCurrentUserProtectionScope);
-            result.AppendFormat("{0}  Entropy Length={1}", Environment.NewLine, (this._entropy == null) ? 0 : this._entropy.Length);
+            result.AppendFormat("{0}  UseCurrentUserProtectionScope={1}", Environment.NewLine, _useCurrentUserProtectionScope);
+            result.AppendFormat("{0}  Entropy Length={1}", Environment.NewLine, (_entropy == null) ? 0 : _entropy.Length);
             return result.ToString();
         }
 

@@ -23,10 +23,10 @@ namespace System.ServiceModel.Security.Tokens
         protected SspiSecurityTokenParameters(SspiSecurityTokenParameters other)
             : base(other)
         {
-            this._requireCancellation = other._requireCancellation;
+            _requireCancellation = other._requireCancellation;
             if (other._issuerBindingContext != null)
             {
-                this._issuerBindingContext = other._issuerBindingContext.Clone();
+                _issuerBindingContext = other._issuerBindingContext.Clone();
             }
         }
 
@@ -40,7 +40,7 @@ namespace System.ServiceModel.Security.Tokens
         public SspiSecurityTokenParameters(bool requireCancellation)
             : base()
         {
-            this._requireCancellation = requireCancellation;
+            _requireCancellation = requireCancellation;
         }
 
         internal protected override bool HasAsymmetricKey { get { return false; } }
@@ -49,11 +49,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this._requireCancellation;
+                return _requireCancellation;
             }
             set
             {
-                this._requireCancellation = value;
+                _requireCancellation = value;
             }
         }
 
@@ -61,7 +61,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this._issuerBindingContext;
+                return _issuerBindingContext;
             }
             set
             {
@@ -69,7 +69,7 @@ namespace System.ServiceModel.Security.Tokens
                 {
                     value = value.Clone();
                 }
-                this._issuerBindingContext = value;
+                _issuerBindingContext = value;
             }
         }
 

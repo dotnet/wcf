@@ -93,21 +93,21 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maximumKeyDerivationNonceLength", SR.Format(SR.ValueMustBeGreaterThanZero)));
             }
 
-            this._securityVersion = securityVersion;
-            this._emitBspRequiredAttributes = emitBspRequiredAttributes;
-            this._maximumKeyDerivationOffset = maximumKeyDerivationOffset;
-            this._maximumKeyDerivationNonceLength = maximumKeyDerivationNonceLength;
-            this._maximumKeyDerivationLabelLength = maximumKeyDerivationLabelLength;
+            _securityVersion = securityVersion;
+            _emitBspRequiredAttributes = emitBspRequiredAttributes;
+            _maximumKeyDerivationOffset = maximumKeyDerivationOffset;
+            _maximumKeyDerivationNonceLength = maximumKeyDerivationNonceLength;
+            _maximumKeyDerivationLabelLength = maximumKeyDerivationLabelLength;
 
-            this._serializerEntries = new List<SerializerEntries>();
+            _serializerEntries = new List<SerializerEntries>();
 
             if (secureConversationVersion == SecureConversationVersion.WSSecureConversationFeb2005)
             {
-                this._secureConversation = new WSSecureConversationFeb2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
+                _secureConversation = new WSSecureConversationFeb2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
             }
             else if (secureConversationVersion == SecureConversationVersion.WSSecureConversation13)
             {
-                this._secureConversation = new WSSecureConversationDec2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
+                _secureConversation = new WSSecureConversationDec2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
             }
             else
             {
@@ -148,9 +148,9 @@ namespace System.ServiceModel.Security
 
             _tokenEntries = new List<TokenEntry>();
 
-            for (int i = 0; i < this._serializerEntries.Count; ++i)
+            for (int i = 0; i < _serializerEntries.Count; ++i)
             {
-                SerializerEntries serializerEntry = this._serializerEntries[i];
+                SerializerEntries serializerEntry = _serializerEntries[i];
                 serializerEntry.PopulateTokenEntries(_tokenEntries);
             }
 
@@ -158,7 +158,7 @@ namespace System.ServiceModel.Security
             dictionaryManager.SecureConversationDec2005Dictionary = new IdentityModel.SecureConversationDec2005Dictionary(new CollectionDictionary(DXD.SecureConversationDec2005Dictionary.SecureConversationDictionaryStrings));
             dictionaryManager.SecurityAlgorithmDec2005Dictionary = new IdentityModel.SecurityAlgorithmDec2005Dictionary(new CollectionDictionary(DXD.SecurityAlgorithmDec2005Dictionary.SecurityAlgorithmDictionaryStrings));
 
-            _keyInfoSerializer = new WSKeyInfoSerializer(this._emitBspRequiredAttributes, dictionaryManager, trustDictionary, this, securityVersion, secureConversationVersion);
+            _keyInfoSerializer = new WSKeyInfoSerializer(_emitBspRequiredAttributes, dictionaryManager, trustDictionary, this, securityVersion, secureConversationVersion);
 
         }
 

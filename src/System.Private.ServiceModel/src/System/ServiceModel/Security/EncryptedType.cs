@@ -35,20 +35,20 @@ namespace System.ServiceModel.Security
 
         protected EncryptedType()
         {
-            this._encryptionMethod.Init();
-            this._state = EncryptionState.New;
-            this._tokenSerializer = new KeyInfoSerializer(false);
+            _encryptionMethod.Init();
+            _state = EncryptionState.New;
+            _tokenSerializer = new KeyInfoSerializer(false);
         }
 
         public string Encoding
         {
             get
             {
-                return this._encoding;
+                return _encoding;
             }
             set
             {
-                this._encoding = value;
+                _encoding = value;
             }
         }
 
@@ -56,11 +56,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._encryptionMethod.algorithm;
+                return _encryptionMethod.algorithm;
             }
             set
             {
-                this._encryptionMethod.algorithm = value;
+                _encryptionMethod.algorithm = value;
             }
         }
 
@@ -68,11 +68,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._encryptionMethod.algorithmDictionaryString;
+                return _encryptionMethod.algorithmDictionaryString;
             }
             set
             {
-                this._encryptionMethod.algorithmDictionaryString = value;
+                _encryptionMethod.algorithmDictionaryString = value;
             }
         }
 
@@ -88,11 +88,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._id;
+                return _id;
             }
             set
             {
-                this._id = value;
+                _id = value;
             }
         }
 
@@ -103,11 +103,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._shouldReadXmlReferenceKeyInfoClause;
+                return _shouldReadXmlReferenceKeyInfoClause;
             }
             set
             {
-                this._shouldReadXmlReferenceKeyInfoClause = value;
+                _shouldReadXmlReferenceKeyInfoClause = value;
             }
         }
 
@@ -115,11 +115,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._wsuId;
+                return _wsuId;
             }
             set
             {
-                this._wsuId = value;
+                _wsuId = value;
             }
         }
 
@@ -127,11 +127,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._keyIdentifier;
+                return _keyIdentifier;
             }
             set
             {
-                this._keyIdentifier = value;
+                _keyIdentifier = value;
             }
         }
 
@@ -139,11 +139,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._mimeType;
+                return _mimeType;
             }
             set
             {
-                this._mimeType = value;
+                _mimeType = value;
             }
         }
 
@@ -151,11 +151,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._type;
+                return _type;
             }
             set
             {
-                this._type = value;
+                _type = value;
             }
         }
 
@@ -168,11 +168,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._state;
+                return _state;
             }
             set
             {
-                this._state = value;
+                _state = value;
             }
         }
 
@@ -180,11 +180,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._tokenSerializer;
+                return _tokenSerializer;
             }
             set
             {
-                this._tokenSerializer = value ?? new KeyInfoSerializer(false);
+                _tokenSerializer = value ?? new KeyInfoSerializer(false);
             }
         }
 
@@ -220,20 +220,20 @@ namespace System.ServiceModel.Security
         {
             ValidateReadState();
             reader.MoveToStartElement(OpeningElementName, s_NamespaceUri);
-            this._encoding = reader.GetAttribute(s_EncodingAttribute, null);
-            this._id = reader.GetAttribute(System.IdentityModel.XD.XmlEncryptionDictionary.Id, null) ?? SecurityUniqueId.Create().Value;
-            this._wsuId = reader.GetAttribute(System.IdentityModel.XD.XmlEncryptionDictionary.Id, XD.UtilityDictionary.Namespace) ?? SecurityUniqueId.Create().Value;
-            this._mimeType = reader.GetAttribute(s_MimeTypeAttribute, null);
-            this._type = reader.GetAttribute(s_TypeAttribute, null);
+            _encoding = reader.GetAttribute(s_EncodingAttribute, null);
+            _id = reader.GetAttribute(System.IdentityModel.XD.XmlEncryptionDictionary.Id, null) ?? SecurityUniqueId.Create().Value;
+            _wsuId = reader.GetAttribute(System.IdentityModel.XD.XmlEncryptionDictionary.Id, XD.UtilityDictionary.Namespace) ?? SecurityUniqueId.Create().Value;
+            _mimeType = reader.GetAttribute(s_MimeTypeAttribute, null);
+            _type = reader.GetAttribute(s_TypeAttribute, null);
             ReadAdditionalAttributes(reader);
             reader.Read();
 
             if (reader.IsStartElement(EncryptionMethodElement.ElementName, s_NamespaceUri))
             {
-                this._encryptionMethod.ReadFrom(reader);
+                _encryptionMethod.ReadFrom(reader);
             }
 
-            if (this._tokenSerializer.CanReadKeyIdentifier(reader))
+            if (_tokenSerializer.CanReadKeyIdentifier(reader))
             {
                 // XmlElement xml = null;
                 XmlDictionaryReader localReader;
@@ -253,7 +253,7 @@ namespace System.ServiceModel.Security
 
                 try
                 {
-                    this.KeyIdentifier = this._tokenSerializer.ReadKeyIdentifier(localReader);
+                    this.KeyIdentifier = _tokenSerializer.ReadKeyIdentifier(localReader);
                 }
                 catch (Exception e)
                 {
@@ -332,30 +332,30 @@ namespace System.ServiceModel.Security
             }
             ValidateWriteState();
             writer.WriteStartElement(XmlEncryptionStrings.Prefix, this.OpeningElementName, s_NamespaceUri);
-            if (this._id != null && this._id.Length != 0)
+            if (_id != null && _id.Length != 0)
             {
                 writer.WriteAttributeString(System.IdentityModel.XD.XmlEncryptionDictionary.Id, null, this.Id);
             }
-            if (this._type != null)
+            if (_type != null)
             {
                 writer.WriteAttributeString(s_TypeAttribute, null, this.Type);
             }
-            if (this._mimeType != null)
+            if (_mimeType != null)
             {
                 writer.WriteAttributeString(s_MimeTypeAttribute, null, this.MimeType);
             }
-            if (this._encoding != null)
+            if (_encoding != null)
             {
                 writer.WriteAttributeString(s_EncodingAttribute, null, this.Encoding);
             }
             WriteAdditionalAttributes(writer, dictionaryManager);
-            if (this._encryptionMethod.algorithm != null)
+            if (_encryptionMethod.algorithm != null)
             {
-                this._encryptionMethod.WriteTo(writer);
+                _encryptionMethod.WriteTo(writer);
             }
             if (this.KeyIdentifier != null)
             {
-                this._tokenSerializer.WriteKeyIdentifier(writer, this.KeyIdentifier);
+                _tokenSerializer.WriteKeyIdentifier(writer, this.KeyIdentifier);
             }
 
             writer.WriteStartElement(s_CipherDataElementName, s_NamespaceUri);

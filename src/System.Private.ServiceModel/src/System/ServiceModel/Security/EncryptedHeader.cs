@@ -27,32 +27,32 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.EncryptedHeaderXmlMustHaveId)));
             }
-            this._headerXml = headerXml;
-            this._name = name;
-            this._namespaceUri = namespaceUri;
-            this._version = version;
+            _headerXml = headerXml;
+            _name = name;
+            _namespaceUri = namespaceUri;
+            _version = version;
         }
 
         public string Id
         {
-            get { return this._headerXml.Id; }
+            get { return _headerXml.Id; }
         }
 
         public override string Name
         {
-            get { return this._name; }
+            get { return _name; }
         }
 
         public override string Namespace
         {
-            get { return this._namespaceUri; }
+            get { return _namespaceUri; }
         }
 
         public override string Actor
         {
             get
             {
-                return this._headerXml.Actor;
+                return _headerXml.Actor;
             }
         }
 
@@ -60,7 +60,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._headerXml.MustUnderstand;
+                return _headerXml.MustUnderstand;
             }
         }
 
@@ -68,7 +68,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._headerXml.Relay;
+                return _headerXml.Relay;
             }
         }
 
@@ -79,7 +79,7 @@ namespace System.ServiceModel.Security
 
         public override bool IsMessageVersionSupported(MessageVersion messageVersion)
         {
-            return this._version.Equals( messageVersion );
+            return _version.Equals( messageVersion );
         }
 
         protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
@@ -89,14 +89,14 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionNotSupported, String.Format(CultureInfo.InvariantCulture, "{0}:{1}", this.Namespace, this.Name), _version.ToString()), "version"));
             }
 
-            this._headerXml.WriteHeaderElement(writer);
+            _headerXml.WriteHeaderElement(writer);
             WriteHeaderAttributes(writer, messageVersion);
-            this._headerXml.WriteHeaderId(writer);
+            _headerXml.WriteHeaderId(writer);
         }
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            this._headerXml.WriteHeaderContents(writer);
+            _headerXml.WriteHeaderContents(writer);
         }
     }
 }

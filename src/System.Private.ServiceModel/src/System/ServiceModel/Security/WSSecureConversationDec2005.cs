@@ -40,7 +40,7 @@ namespace System.ServiceModel.Security
         {
             if (securityStateEncoder != null)
             {
-                this._securityStateEncoder = securityStateEncoder;
+                _securityStateEncoder = securityStateEncoder;
             }
             else
             {
@@ -48,13 +48,13 @@ namespace System.ServiceModel.Security
                 //this.securityStateEncoder = new DataProtectionSecurityStateEncoder();
             }
 
-            this._knownClaimTypes = new List<Type>();
+            _knownClaimTypes = new List<Type>();
             if (knownTypes != null)
             {
                 // Clone this collection.
                 foreach (Type knownType in knownTypes)
                 {
-                    this._knownClaimTypes.Add(knownType);
+                    _knownClaimTypes.Add(knownType);
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace System.ServiceModel.Security
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
         {
             base.PopulateTokenEntries(tokenEntryList);
-            tokenEntryList.Add(new SecurityContextTokenEntryDec2005(this, this._securityStateEncoder, this._knownClaimTypes));
+            tokenEntryList.Add(new SecurityContextTokenEntryDec2005(this, _securityStateEncoder, _knownClaimTypes));
         }
 
         public override string DerivationAlgorithm

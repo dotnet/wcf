@@ -28,8 +28,8 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenSerializer");
             }
-            this._tokenSerializer = tokenSerializer;
-            this._derivedKeyEntry = new DerivedKeyTokenEntry(this, maxKeyDerivationOffset, maxKeyDerivationLabelLength, maxKeyDerivationNonceLength);
+            _tokenSerializer = tokenSerializer;
+            _derivedKeyEntry = new DerivedKeyTokenEntry(this, maxKeyDerivationOffset, maxKeyDerivationLabelLength, maxKeyDerivationNonceLength);
         }
 
         public abstract SecureConversationDictionary SerializerDictionary
@@ -39,7 +39,7 @@ namespace System.ServiceModel.Security
 
         public WSSecurityTokenSerializer WSSecurityTokenSerializer
         {
-            get { return this._tokenSerializer; }
+            get { return _tokenSerializer; }
         }
 
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
@@ -48,23 +48,23 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenEntryList");
             }
-            tokenEntryList.Add(this._derivedKeyEntry);
+            tokenEntryList.Add(_derivedKeyEntry);
         }
 
         public virtual bool IsAtDerivedKeyToken(XmlDictionaryReader reader)
         {
-            return this._derivedKeyEntry.CanReadTokenCore(reader);
+            return _derivedKeyEntry.CanReadTokenCore(reader);
         }
 
         public virtual void ReadDerivedKeyTokenParameters(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver, out string id, out string derivationAlgorithm, out string label, out int length, out byte[] nonce, out int offset, out int generation, out SecurityKeyIdentifierClause tokenToDeriveIdentifier, out SecurityToken tokenToDerive)
         {
-            this._derivedKeyEntry.ReadDerivedKeyTokenParameters(reader, tokenResolver, out id, out derivationAlgorithm, out label,
+            _derivedKeyEntry.ReadDerivedKeyTokenParameters(reader, tokenResolver, out id, out derivationAlgorithm, out label,
                 out length, out nonce, out offset, out generation, out tokenToDeriveIdentifier, out tokenToDerive);
         }
 
         public virtual SecurityToken CreateDerivedKeyToken(string id, string derivationAlgorithm, string label, int length, byte[] nonce, int offset, int generation, SecurityKeyIdentifierClause tokenToDeriveIdentifier, SecurityToken tokenToDerive)
         {
-            return this._derivedKeyEntry.CreateDerivedKeyToken(id, derivationAlgorithm, label, length, nonce, offset, generation,
+            return _derivedKeyEntry.CreateDerivedKeyToken(id, derivationAlgorithm, label, length, nonce, offset, generation,
                 tokenToDeriveIdentifier, tokenToDerive);
         }
 
@@ -88,10 +88,10 @@ namespace System.ServiceModel.Security
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
                 }
-                this._parent = parent;
-                this._maxKeyDerivationOffset = maxKeyDerivationOffset;
-                this._maxKeyDerivationLabelLength = maxKeyDerivationLabelLength;
-                this._maxKeyDerivationNonceLength = maxKeyDerivationNonceLength;
+                _parent = parent;
+                _maxKeyDerivationOffset = maxKeyDerivationOffset;
+                _maxKeyDerivationLabelLength = maxKeyDerivationLabelLength;
+                _maxKeyDerivationNonceLength = maxKeyDerivationNonceLength;
             }
 
             protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.DerivedKeyToken; } }
@@ -324,13 +324,13 @@ namespace System.ServiceModel.Security
 
             public SecurityContextTokenEntry(WSSecureConversation parent, SecurityStateEncoder securityStateEncoder, IList<Type> knownClaimTypes)
             {
-                this._parent = parent;
-                this._cookieSerializer = new SecurityContextCookieSerializer(securityStateEncoder, knownClaimTypes);
+                _parent = parent;
+                _cookieSerializer = new SecurityContextCookieSerializer(securityStateEncoder, knownClaimTypes);
             }
 
             protected WSSecureConversation Parent
             {
-                get { return this._parent; }
+                get { return _parent; }
             }
 
             protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.SecurityContextToken; } }

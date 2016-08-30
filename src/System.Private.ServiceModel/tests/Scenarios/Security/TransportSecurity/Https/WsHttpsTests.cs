@@ -23,10 +23,11 @@ public static partial class WsHttpsTests
     [OuterLoop]
     public static void CreateUserNameOverTransportBindingElement_Round_Trips()
     {
-        ChannelFactory<IWcfService> factory = null;
-        IWcfService serviceProxy = null;
+        ChannelFactory<IWsTrustService> factory = null;
+        IWsTrustService serviceProxy = null;
         string testString = "Hello";
         CustomBinding binding;
+        EndpointAddress endpointAddress = null;
 
         try
         {
@@ -40,14 +41,16 @@ public static partial class WsHttpsTests
                             securityBindingElement,
                             new HttpsTransportBindingElement());
 
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpsSoap11_Address));
+            endpointAddress = new EndpointAddress(Endpoints.WsHttpTransSec_Address);
+            Console.WriteLine(String.Format("$$$ endpoint is {0}", endpointAddress));
+            factory = new ChannelFactory<IWsTrustService>(binding, endpointAddress);
             factory.Credentials.UserName.UserName = "someUser";
             factory.Credentials.UserName.Password = "somePassword";
 
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
-            string result = serviceProxy.Echo(testString);
+            string result = serviceProxy.EchoWithTimeout(testString, TimeSpan.FromMilliseconds(1));
 
             // *** VALIDATE *** \\
             Assert.True(result == testString, string.Format("Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
@@ -70,10 +73,11 @@ public static partial class WsHttpsTests
     [OuterLoop]
     public static void CreateUserNameOverTransportBindingElement_Round_Trips_Async()
     {
-        ChannelFactory<IWcfService> factory = null;
-        IWcfService serviceProxy = null;
+        ChannelFactory<IWsTrustService> factory = null;
+        IWsTrustService serviceProxy = null;
         string testString = "Hello";
         CustomBinding binding;
+        EndpointAddress endpointAddress = null;
 
         try
         {
@@ -87,7 +91,8 @@ public static partial class WsHttpsTests
                             securityBindingElement,
                             new HttpsTransportBindingElement());
 
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpsSoap11_Address));
+            endpointAddress = new EndpointAddress(Endpoints.WsHttpTransSec_Address);
+            factory = new ChannelFactory<IWsTrustService>(binding, endpointAddress);
             factory.Credentials.UserName.UserName = "someUser";
             factory.Credentials.UserName.Password = "somePassword";
 
@@ -98,7 +103,7 @@ public static partial class WsHttpsTests
 
             serviceProxy = factory.CreateChannel();
 
-            Task<string> echoTask = serviceProxy.EchoWithTimeoutAsync(testString, ScenarioTestHelpers.TestTimeout);
+            Task<string> echoTask = serviceProxy.EchoWithTimeoutAsync(testString, TimeSpan.FromMilliseconds(1));
             string result = echoTask.GetAwaiter().GetResult();
 
             // *** VALIDATE *** \\

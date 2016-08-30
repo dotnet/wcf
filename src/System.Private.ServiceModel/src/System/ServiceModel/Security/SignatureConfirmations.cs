@@ -43,7 +43,7 @@ namespace System.ServiceModel.Security
             }
             _confirmations[_length] = new SignatureConfirmation(value);
             ++_length;
-            this._encrypted |= encrypted;
+            _encrypted |= encrypted;
         }
 
         public void GetConfirmation(int index, out byte[] value, out bool encrypted)
@@ -54,12 +54,12 @@ namespace System.ServiceModel.Security
             }
 
             value = _confirmations[index].value;
-            encrypted = this._encrypted;
+            encrypted = _encrypted;
         }
 
         public bool IsMarkedForEncryption
         {
-            get { return this._encrypted; }
+            get { return _encrypted; }
         }
     }
 }

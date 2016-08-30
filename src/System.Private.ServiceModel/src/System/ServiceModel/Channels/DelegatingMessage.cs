@@ -17,76 +17,76 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("innerMessage");
             }
-            this._innerMessage = innerMessage;
+            _innerMessage = innerMessage;
         }
 
         public override bool IsEmpty
         {
             get
             {
-                return this._innerMessage.IsEmpty;
+                return _innerMessage.IsEmpty;
             }
         }
 
         public override bool IsFault
         {
-            get { return this._innerMessage.IsFault; }
+            get { return _innerMessage.IsFault; }
         }
 
         public override MessageHeaders Headers
         {
-            get { return this._innerMessage.Headers; }
+            get { return _innerMessage.Headers; }
         }
 
         public override MessageProperties Properties
         {
-            get { return this._innerMessage.Properties; }
+            get { return _innerMessage.Properties; }
         }
 
         public override MessageVersion Version
         {
-            get { return this._innerMessage.Version; }
+            get { return _innerMessage.Version; }
         }
 
         protected Message InnerMessage
         {
-            get { return this._innerMessage; }
+            get { return _innerMessage; }
         }
 
         protected override void OnClose()
         {
             base.OnClose();
-            this._innerMessage.Close();
+            _innerMessage.Close();
         }
 
         protected override void OnWriteStartEnvelope(XmlDictionaryWriter writer)
         {
-            this._innerMessage.WriteStartEnvelope(writer);
+            _innerMessage.WriteStartEnvelope(writer);
         }
 
         protected override void OnWriteStartHeaders(XmlDictionaryWriter writer)
         {
-            this._innerMessage.WriteStartHeaders(writer);
+            _innerMessage.WriteStartHeaders(writer);
         }
 
         protected override void OnWriteStartBody(XmlDictionaryWriter writer)
         {
-            this._innerMessage.WriteStartBody(writer);
+            _innerMessage.WriteStartBody(writer);
         }
 
         protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
         {
-            this._innerMessage.WriteBodyContents(writer);
+            _innerMessage.WriteBodyContents(writer);
         }
 
         protected override string OnGetBodyAttribute(string localName, string ns)
         {
-            return this._innerMessage.GetBodyAttribute(localName, ns);
+            return _innerMessage.GetBodyAttribute(localName, ns);
         }
 
         protected override void OnBodyToString(XmlDictionaryWriter writer)
         {
-            this._innerMessage.BodyToString(writer);
+            _innerMessage.BodyToString(writer);
         }
     }
 }

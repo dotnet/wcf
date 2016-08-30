@@ -173,7 +173,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._hasSignedTokens;
+                return _hasSignedTokens;
             }
         }
 
@@ -181,7 +181,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._hasEncryptedTokens;
+                return _hasEncryptedTokens;
             }
         }
 
@@ -691,7 +691,7 @@ namespace System.ServiceModel.Security
                 encryptingKeyIdentifierClause = sourceTokenIdentifierClause;
             }
 
-            _skipKeyInfoForEncryption = encryptionTokenSerialized && this.EncryptedKeyContainsReferenceList && (_encryptingToken is WrappedKeySecurityToken) && this._signThenEncrypt;
+            _skipKeyInfoForEncryption = encryptionTokenSerialized && this.EncryptedKeyContainsReferenceList && (_encryptingToken is WrappedKeySecurityToken) && _signThenEncrypt;
             SecurityKeyIdentifier identifier;
             if (_skipKeyInfoForEncryption)
             {

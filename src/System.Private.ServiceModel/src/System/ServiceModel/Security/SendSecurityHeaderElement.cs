@@ -20,36 +20,36 @@ namespace System.ServiceModel.Security
 
         public SendSecurityHeaderElement(string id, ISecurityElement item)
         {
-            this._id = id;
-            this._item = item;
+            _id = id;
+            _item = item;
             _markedForEncryption = false;
         }
 
         public string Id
         {
-            get { return this._id; }
+            get { return _id; }
         }
 
         public ISecurityElement Item
         {
-            get { return this._item; }
+            get { return _item; }
         }
 
         public bool MarkedForEncryption
         {
-            get { return this._markedForEncryption; }
-            set { this._markedForEncryption = value; }
+            get { return _markedForEncryption; }
+            set { _markedForEncryption = value; }
         }
 
         public bool IsSameItem(ISecurityElement item)
         {
-            return this._item == item || this._item.Equals(item);
+            return _item == item || _item.Equals(item);
         }
 
         public void Replace(string id, ISecurityElement item)
         {
-            this._item = item;
-            this._id = id;
+            _item = item;
+            _id = id;
         }
     }
 }

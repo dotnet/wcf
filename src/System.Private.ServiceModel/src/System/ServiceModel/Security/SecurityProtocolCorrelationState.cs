@@ -19,24 +19,24 @@ namespace System.ServiceModel.Security
 
         public SecurityProtocolCorrelationState(SecurityToken token)
         {
-            this._token = token;
-            this._activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.Current : null;
+            _token = token;
+            _activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.Current : null;
         }
 
         public SecurityToken Token
         {
-            get { return this._token; }
+            get { return _token; }
         }
 
         internal SignatureConfirmations SignatureConfirmations
         {
-            get { return this._signatureConfirmations; }
-            set { this._signatureConfirmations = value; }
+            get { return _signatureConfirmations; }
+            set { _signatureConfirmations = value; }
         }
 
         internal ServiceModelActivity Activity
         {
-            get { return this._activity; }
+            get { return _activity; }
         }
     }
 }

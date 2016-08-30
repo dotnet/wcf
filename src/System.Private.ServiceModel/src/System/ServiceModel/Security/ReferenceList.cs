@@ -25,7 +25,7 @@ namespace System.ServiceModel.Security
 
         public int DataReferenceCount
         {
-            get { return this._referredIds.Count; }
+            get { return _referredIds.Count; }
         }
 
         public bool HasId
@@ -49,7 +49,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            this._referredIds.Add(id);
+            _referredIds.Add(id);
         }
 
         public bool ContainsReferredId(string id)
@@ -58,12 +58,12 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            return this._referredIds.Contains(id);
+            return _referredIds.Contains(id);
         }
 
         public string GetReferredId(int index)
         {
-            return this._referredIds[index];
+            return _referredIds[index];
         }
 
         public void ReadFrom(XmlDictionaryReader reader)
@@ -94,7 +94,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            return this._referredIds.Remove(id);
+            return _referredIds.Remove(id);
         }
 
         public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)

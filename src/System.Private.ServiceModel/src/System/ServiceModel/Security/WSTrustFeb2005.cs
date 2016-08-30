@@ -299,7 +299,7 @@ namespace System.ServiceModel.Security
 
                 public RequestChannelFactory(ChannelFactory<TokenService> innerChannelFactory)
                 {
-                    this._innerChannelFactory = innerChannelFactory;
+                    _innerChannelFactory = innerChannelFactory;
                 }
 
                 public IRequestChannel CreateChannel(EndpointAddress address)
@@ -316,42 +316,42 @@ namespace System.ServiceModel.Security
 
                 protected override void OnAbort()
                 {
-                    this._innerChannelFactory.Abort();
+                    _innerChannelFactory.Abort();
                 }
 
                 protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this._innerChannelFactory.BeginOpen(timeout, callback, state);
+                    return _innerChannelFactory.BeginOpen(timeout, callback, state);
                 }
 
                 protected override void OnEndOpen(IAsyncResult result)
                 {
-                    this._innerChannelFactory.EndOpen(result);
+                    _innerChannelFactory.EndOpen(result);
                 }
 
                 protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this._innerChannelFactory.BeginClose(timeout, callback, state);
+                    return _innerChannelFactory.BeginClose(timeout, callback, state);
                 }
 
                 protected override void OnEndClose(IAsyncResult result)
                 {
-                    this._innerChannelFactory.EndClose(result);
+                    _innerChannelFactory.EndClose(result);
                 }
 
                 protected override void OnClose(TimeSpan timeout)
                 {
-                    this._innerChannelFactory.Close(timeout);
+                    _innerChannelFactory.Close(timeout);
                 }
 
                 protected override void OnOpen(TimeSpan timeout)
                 {
-                    this._innerChannelFactory.Open(timeout);
+                    _innerChannelFactory.Open(timeout);
                 }
 
                 public override T GetProperty<T>()
                 {
-                    return this._innerChannelFactory.GetProperty<T>();
+                    return _innerChannelFactory.GetProperty<T>();
                 }
             }
         }

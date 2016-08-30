@@ -18,14 +18,14 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("innerHeader");
             }
-            this._innerHeader = innerHeader;
+            _innerHeader = innerHeader;
         }
 
         public override bool MustUnderstand
         {
             get
             {
-                return this._innerHeader.MustUnderstand;
+                return _innerHeader.MustUnderstand;
             }
         }
 
@@ -33,7 +33,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._innerHeader.Name;
+                return _innerHeader.Name;
             }
         }
 
@@ -41,7 +41,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._innerHeader.Namespace;
+                return _innerHeader.Namespace;
             }
         }
 
@@ -49,7 +49,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._innerHeader.Relay;
+                return _innerHeader.Relay;
             }
         }
 
@@ -57,7 +57,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._innerHeader.Actor;
+                return _innerHeader.Actor;
             }
         }
 
@@ -65,18 +65,18 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._innerHeader;
+                return _innerHeader;
             }
         }
 
         protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            this._innerHeader.WriteStartHeader(writer, messageVersion);
+            _innerHeader.WriteStartHeader(writer, messageVersion);
         }
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            this._innerHeader.WriteHeaderContents(writer, messageVersion);
+            _innerHeader.WriteHeaderContents(writer, messageVersion);
         }
     }
 }

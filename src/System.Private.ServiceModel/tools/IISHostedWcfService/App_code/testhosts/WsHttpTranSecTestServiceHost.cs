@@ -18,7 +18,7 @@ namespace WcfService
             return serviceHost;
         }
     }
-    public class WsHttpTranSecTestServiceHost : TestServiceHostBase<IWcfService>
+    public class WsHttpTranSecTestServiceHost : TestServiceHostBase<IWsTrustService>
     {
         protected override string Address { get { return "wshttp-transec"; } }
 

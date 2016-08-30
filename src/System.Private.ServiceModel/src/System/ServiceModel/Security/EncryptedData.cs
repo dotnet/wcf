@@ -48,17 +48,17 @@ namespace System.ServiceModel.Security
         public byte[] GetDecryptedBuffer()
         {
             EnsureDecryptionSet();
-            return this._decryptedBuffer;
+            return _decryptedBuffer;
         }
 
         protected override void ReadCipherData(XmlDictionaryReader reader)
         {
-            this._cipherText = reader.ReadContentAsBase64();
+            _cipherText = reader.ReadContentAsBase64();
         }
 
         protected override void ReadCipherData(XmlDictionaryReader reader, long maxBufferSize)
         {
-            this._cipherText = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
+            _cipherText = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
         }
 
         void SetPlainText()
@@ -78,7 +78,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("algorithm");
             }
-            this._algorithm = algorithm;
+            _algorithm = algorithm;
             this.State = EncryptionState.DecryptionSetup;
         }
 
@@ -92,15 +92,15 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("algorithm");
             }
-            this._algorithm = algorithm;
-            this._buffer = buffer;
+            _algorithm = algorithm;
+            _buffer = buffer;
             this.State = EncryptionState.EncryptionSetup;
         }
 
         protected override void WriteCipherData(XmlDictionaryWriter writer)
         {
-            writer.WriteBase64(this._iv, 0, this._iv.Length);
-            writer.WriteBase64(this._cipherText, 0, this._cipherText.Length);
+            writer.WriteBase64(_iv, 0, _iv.Length);
+            writer.WriteBase64(_cipherText, 0, _cipherText.Length);
         }
     }
 }

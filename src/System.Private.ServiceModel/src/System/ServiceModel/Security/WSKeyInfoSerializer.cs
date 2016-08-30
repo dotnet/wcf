@@ -66,12 +66,12 @@ namespace System.ServiceModel.Security
 
             protected WSSecureConversation( KeyInfoSerializer securityTokenSerializer )
             {
-                this._securityTokenSerializer = securityTokenSerializer;
+                _securityTokenSerializer = securityTokenSerializer;
             }
 
             public KeyInfoSerializer SecurityTokenSerializer
             {
-                get { return this._securityTokenSerializer; }
+                get { return _securityTokenSerializer; }
             }
 
             public abstract System.IdentityModel.SecureConversationDictionary SerializerDictionary
@@ -100,12 +100,12 @@ namespace System.ServiceModel.Security
 
                 public SctStrEntry( WSSecureConversation parent )
                 {
-                    this._parent = parent;
+                    _parent = parent;
                 }
 
                 protected WSSecureConversation Parent
                 {
-                    get { return this._parent; }
+                    get { return _parent; }
                 }
 
                 public override Type GetTokenType( SecurityKeyIdentifierClause clause )
@@ -194,12 +194,12 @@ namespace System.ServiceModel.Security
 
                 public SecurityContextTokenEntry( WSSecureConversation parent )
                 {
-                    this._parent = parent;
+                    _parent = parent;
                 }
 
                 protected WSSecureConversation Parent
                 {
-                    get { return this._parent; }
+                    get { return _parent; }
                 }
 
                 protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.SecurityContextToken; } }
@@ -207,9 +207,9 @@ namespace System.ServiceModel.Security
                 protected override Type[] GetTokenTypesCore()
                 {
                     if ( _tokenTypes == null )
-                        this._tokenTypes = new Type[] { typeof( SecurityContextSecurityToken ) };
+                        _tokenTypes = new Type[] { typeof( SecurityContextSecurityToken ) };
 
-                    return this._tokenTypes;
+                    return _tokenTypes;
                 }
 
                 public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml, SecurityTokenReferenceStyle tokenReferenceStyle)
@@ -245,7 +245,7 @@ namespace System.ServiceModel.Security
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull( "parent" );
                     }
-                    this._parent = parent;
+                    _parent = parent;
                 }
 
                 protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.DerivedKeyToken; } }
@@ -253,9 +253,9 @@ namespace System.ServiceModel.Security
                 protected override Type[] GetTokenTypesCore()
                 {
                     if ( _tokenTypes == null )
-                        this._tokenTypes = new Type[] { typeof( DerivedKeySecurityToken ) };
+                        _tokenTypes = new Type[] { typeof( DerivedKeySecurityToken ) };
 
-                    return this._tokenTypes;
+                    return _tokenTypes;
                 }
 
                 public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml, SecurityTokenReferenceStyle tokenReferenceStyle)

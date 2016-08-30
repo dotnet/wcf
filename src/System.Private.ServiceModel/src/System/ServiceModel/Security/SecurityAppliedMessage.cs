@@ -37,43 +37,43 @@ namespace System.ServiceModel.Security
             : base(messageToProcess)
         {
             Fx.Assert(!(messageToProcess is SecurityAppliedMessage), "SecurityAppliedMessage should not be wrapped");
-            this._securityHeader = securityHeader;
-            this._bodyProtectionMode = MessagePartProtectionModeHelper.GetProtectionMode(signBody, encryptBody, securityHeader.SignThenEncrypt);
+            _securityHeader = securityHeader;
+            _bodyProtectionMode = MessagePartProtectionModeHelper.GetProtectionMode(signBody, encryptBody, securityHeader.SignThenEncrypt);
         }
 
         public string BodyId
         {
-            get { return this._bodyId; }
+            get { return _bodyId; }
         }
 
         public MessagePartProtectionMode BodyProtectionMode
         {
-            get { return this._bodyProtectionMode; }
+            get { return _bodyProtectionMode; }
         }
 
         internal byte[] PrimarySignatureValue
         {
-            get { return this._securityHeader.PrimarySignatureValue; }
+            get { return _securityHeader.PrimarySignatureValue; }
         }
 
         Exception CreateBadStateException(string operation)
         {
             return new InvalidOperationException(SR.Format(SR.MessageBodyOperationNotValidInBodyState,
-                operation, this._state));
+                operation, _state));
         }
 
         void EnsureUniqueSecurityApplication()
         {
-            if (this._delayedApplicationHandled)
+            if (_delayedApplicationHandled)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.DelayedSecurityApplicationAlreadyCompleted)));
             }
-            this._delayedApplicationHandled = true;
+            _delayedApplicationHandled = true;
         }
 
         protected override void OnBodyToString(XmlDictionaryWriter writer)
         {
-            if (this._state == BodyState.Created || this._fullBodyFragment != null)
+            if (_state == BodyState.Created || _fullBodyFragment != null)
             {
                 base.OnBodyToString(writer);
             }
@@ -91,22 +91,22 @@ namespace System.ServiceModel.Security
             }
             finally
             {
-                this._fullBodyBuffer = null;
-                this._bodyAttributes = null;
-                this._encryptedBodyContent = null;
-                this._state = BodyState.Disposed;
+                _fullBodyBuffer = null;
+                _bodyAttributes = null;
+                _encryptedBodyContent = null;
+                _state = BodyState.Disposed;
             }
         }
 
         protected override void OnWriteStartBody(XmlDictionaryWriter writer)
         {
-            if (this._startBodyFragment != null || this._fullBodyFragment != null)
+            if (_startBodyFragment != null || _fullBodyFragment != null)
             {
                 WriteStartInnerMessageWithId(writer);
                 return;
             }
 
-            switch (this._state)
+            switch (_state)
             {
                 case BodyState.Created:
                 case BodyState.Encrypted:
@@ -120,10 +120,10 @@ namespace System.ServiceModel.Security
                     reader.Dispose();
                     return;
                 case BodyState.SignedThenEncrypted:
-                    writer.WriteStartElement(this._bodyPrefix, XD.MessageDictionary.Body, this.Version.Envelope.DictionaryNamespace);
-                    if (this._bodyAttributes != null)
+                    writer.WriteStartElement(_bodyPrefix, XD.MessageDictionary.Body, this.Version.Envelope.DictionaryNamespace);
+                    if (_bodyAttributes != null)
                     {
-                        XmlAttributeHolder.WriteAttributes(this._bodyAttributes, writer);
+                        XmlAttributeHolder.WriteAttributes(_bodyAttributes, writer);
                     }
                     return;
                 default:
@@ -168,33 +168,33 @@ namespace System.ServiceModel.Security
             EnsureUniqueSecurityApplication();
 
             MessagePrefixGenerator prefixGenerator = new MessagePrefixGenerator(writer);
-            this._securityHeader.StartSecurityApplication();
+            _securityHeader.StartSecurityApplication();
 
-            this.Headers.Add(this._securityHeader);
+            this.Headers.Add(_securityHeader);
 
             this.InnerMessage.WriteStartEnvelope(writer);
 
             this.Headers.RemoveAt(this.Headers.Count - 1);
 
-            this._securityHeader.ApplyBodySecurity(writer, prefixGenerator);
+            _securityHeader.ApplyBodySecurity(writer, prefixGenerator);
 
             this.InnerMessage.WriteStartHeaders(writer);
-            this._securityHeader.ApplySecurityAndWriteHeaders(this.Headers, writer, prefixGenerator);
+            _securityHeader.ApplySecurityAndWriteHeaders(this.Headers, writer, prefixGenerator);
 
-            this._securityHeader.RemoveSignatureEncryptionIfAppropriate();
+            _securityHeader.RemoveSignatureEncryptionIfAppropriate();
 
-            this._securityHeader.CompleteSecurityApplication();
-            this._securityHeader.WriteHeader(writer, this.Version);
+            _securityHeader.CompleteSecurityApplication();
+            _securityHeader.WriteHeader(writer, this.Version);
             writer.WriteEndElement();
 
-            if (this._fullBodyFragment != null)
+            if (_fullBodyFragment != null)
             {
                 throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                 //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.fullBodyFragment, 0, _fullBodyFragmentLength);
             }
             else
             {
-                if (this._startBodyFragment != null)
+                if (_startBodyFragment != null)
                 {
                     throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
                     //((IFragmentCapableXmlDictionaryWriter)writer).WriteFragment(this.startBodyFragment.GetBuffer(), 0, (int)this.startBodyFragment.Length);
@@ -227,9 +227,9 @@ namespace System.ServiceModel.Security
 
             if (cbmp != null)
             {
-                if (this._securityHeader.ElementContainer != null && this._securityHeader.ElementContainer.EndorsingSupportingTokens != null)
+                if (_securityHeader.ElementContainer != null && _securityHeader.ElementContainer.EndorsingSupportingTokens != null)
                 {
-                    foreach (SecurityToken token in this._securityHeader.ElementContainer.EndorsingSupportingTokens)
+                    foreach (SecurityToken token in _securityHeader.ElementContainer.EndorsingSupportingTokens)
                     {
                         ProviderBackedSecurityToken pbst = token as ProviderBackedSecurityToken;
                         if (pbst != null)
@@ -243,27 +243,27 @@ namespace System.ServiceModel.Security
 
         void SetBodyId()
         {
-            this._bodyId = this.InnerMessage.GetBodyAttribute(
+            _bodyId = this.InnerMessage.GetBodyAttribute(
                 UtilityStrings.IdAttribute,
-                this._securityHeader.StandardsManager.IdManager.DefaultIdNamespaceUri);
-            if (this._bodyId == null)
+                _securityHeader.StandardsManager.IdManager.DefaultIdNamespaceUri);
+            if (_bodyId == null)
             {
-                this._bodyId = this._securityHeader.GenerateId();
-                this._bodyIdInserted = true;
+                _bodyId = _securityHeader.GenerateId();
+                _bodyIdInserted = true;
             }
         }
 
         public void WriteBodyToEncrypt(EncryptedData encryptedData, SymmetricAlgorithm algorithm)
         {
-            encryptedData.Id = this._securityHeader.GenerateId();
+            encryptedData.Id = _securityHeader.GenerateId();
 
             BodyContentHelper helper = new BodyContentHelper();
             XmlDictionaryWriter encryptingWriter = helper.CreateWriter();
             this.InnerMessage.WriteBodyContents(encryptingWriter);
             encryptedData.SetUpEncryption(algorithm, helper.ExtractResult());
-            this._encryptedBodyContent = encryptedData;
+            _encryptedBodyContent = encryptedData;
 
-            this._state = BodyState.Encrypted;
+            _state = BodyState.Encrypted;
         }
 
         public void WriteBodyToEncryptThenSign(Stream canonicalStream, EncryptedData encryptedData, SymmetricAlgorithm algorithm)
@@ -308,16 +308,16 @@ namespace System.ServiceModel.Security
         {
             SetBodyId();
 
-            this._fullBodyBuffer = new XmlBuffer(int.MaxValue);
-            XmlDictionaryWriter canonicalWriter = this._fullBodyBuffer.OpenSection(XmlDictionaryReaderQuotas.Max);
+            _fullBodyBuffer = new XmlBuffer(int.MaxValue);
+            XmlDictionaryWriter canonicalWriter = _fullBodyBuffer.OpenSection(XmlDictionaryReaderQuotas.Max);
             canonicalWriter.StartCanonicalization(canonicalStream, false, null);
             WriteInnerMessageWithId(canonicalWriter);
             canonicalWriter.EndCanonicalization();
             canonicalWriter.Flush();
-            this._fullBodyBuffer.CloseSection();
-            this._fullBodyBuffer.Close();
+            _fullBodyBuffer.CloseSection();
+            _fullBodyBuffer.Close();
 
-            this._state = BodyState.Signed;
+            _state = BodyState.Signed;
         }
 
         public void WriteBodyToSignThenEncrypt(Stream canonicalStream, EncryptedData encryptedData, SymmetricAlgorithm algorithm)
@@ -416,9 +416,9 @@ namespace System.ServiceModel.Security
         void WriteStartInnerMessageWithId(XmlDictionaryWriter writer)
         {
             this.InnerMessage.WriteStartBody(writer);
-            if (this._bodyIdInserted)
+            if (_bodyIdInserted)
             {
-                this._securityHeader.StandardsManager.IdManager.WriteIdAttribute(writer, this._bodyId);
+                _securityHeader.StandardsManager.IdManager.WriteIdAttribute(writer, _bodyId);
             }
         }
 

@@ -1254,7 +1254,7 @@ namespace System.ServiceModel.Security
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return ((IAsyncCommunicationObject)this._communicationObject).CloseAsync(timeout);
+            return ((IAsyncCommunicationObject)_communicationObject).CloseAsync(timeout);
         }
 
         internal void Open(string propertyName, bool requiredForForwardDirection, SecurityTokenAuthenticator authenticator, TimeSpan timeout)

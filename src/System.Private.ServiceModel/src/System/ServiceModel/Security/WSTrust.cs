@@ -43,13 +43,13 @@ namespace System.ServiceModel.Security
 
         public WSTrust(WSSecurityTokenSerializer tokenSerializer)
         {
-            this._tokenSerializer = tokenSerializer;
+            _tokenSerializer = tokenSerializer;
         }
 
 
         public WSSecurityTokenSerializer WSSecurityTokenSerializer
         {
-            get { return this._tokenSerializer; }
+            get { return _tokenSerializer; }
         }
 
         public abstract TrustDictionary SerializerDictionary
@@ -69,22 +69,22 @@ namespace System.ServiceModel.Security
 
             public BinarySecretTokenEntry(WSTrust parent)
             {
-                this._parent = parent;
-                this._otherDictionary = null;
+                _parent = parent;
+                _otherDictionary = null;
 
                 if (parent.SerializerDictionary is TrustDec2005Dictionary)
                 {
-                    this._otherDictionary = XD.TrustFeb2005Dictionary;
+                    _otherDictionary = XD.TrustFeb2005Dictionary;
                 }
 
                 if (parent.SerializerDictionary is TrustFeb2005Dictionary)
                 {
-                    this._otherDictionary = DXD.TrustDec2005Dictionary;
+                    _otherDictionary = DXD.TrustDec2005Dictionary;
                 }
 
                 // always set it, so we don't have to worry about null
-                if (this._otherDictionary == null)
-                    this._otherDictionary = this._parent.SerializerDictionary;
+                if (_otherDictionary == null)
+                    _otherDictionary = _parent.SerializerDictionary;
             }
 
             protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.BinarySecret; } }
@@ -106,12 +106,12 @@ namespace System.ServiceModel.Security
                     valueTypeUri = element.GetAttribute(SecurityJan2004Strings.ValueType, null);
                 }
 
-                return element.LocalName == LocalName.Value && (element.NamespaceURI == NamespaceUri.Value || element.NamespaceURI == this._otherDictionary.Namespace.Value) && valueTypeUri == this.ValueTypeUri;
+                return element.LocalName == LocalName.Value && (element.NamespaceURI == NamespaceUri.Value || element.NamespaceURI == _otherDictionary.Namespace.Value) && valueTypeUri == this.ValueTypeUri;
             }
 
             public override bool CanReadTokenCore(XmlDictionaryReader reader)
             {
-                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, this._otherDictionary.Namespace)) &&
+                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, _otherDictionary.Namespace)) &&
                        reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null) == this.ValueTypeUri;
             }
 
@@ -195,8 +195,8 @@ namespace System.ServiceModel.Security
 
             public Driver(SecurityStandardsManager standardsManager)
             {
-                this._standardsManager = standardsManager;
-                this._entropyAuthenticators = new List<SecurityTokenAuthenticator>(2);
+                _standardsManager = standardsManager;
+                _entropyAuthenticators = new List<SecurityTokenAuthenticator>(2);
             }
 
             public abstract TrustDictionary DriverDictionary
@@ -237,7 +237,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this._standardsManager;
+                    return _standardsManager;
                 }
             }
 

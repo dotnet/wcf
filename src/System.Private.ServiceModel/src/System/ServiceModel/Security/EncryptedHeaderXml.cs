@@ -30,7 +30,7 @@ namespace System.ServiceModel.Security
 
         public EncryptedHeaderXml(MessageVersion version, bool shouldReadXmlReferenceKeyInfoClause)
         {
-            this._version = version;
+            _version = version;
             _encryptedData = new EncryptedData();
             
             // This is for the case when the service send an EncryptedHeader to the client where the KeyInfo clause contains referenceXml clause.
@@ -41,11 +41,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._actor;
+                return _actor;
             }
             set
             {
-                this._actor = value;
+                _actor = value;
             }
         }
 
@@ -109,11 +109,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._mustUnderstand;
+                return _mustUnderstand;
             }
             set
             {
-                this._mustUnderstand = value;
+                _mustUnderstand = value;
             }
         }
 
@@ -121,11 +121,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this._relay;
+                return _relay;
             }
             set
             {
-                this._relay = value;
+                _relay = value;
             }
         }
 
@@ -150,8 +150,8 @@ namespace System.ServiceModel.Security
         {
             reader.MoveToStartElement(s_ElementName, s_NamespaceUri);
             bool isReferenceParameter;
-            MessageHeader.GetHeaderAttributes(reader, _version, out this._actor, out this._mustUnderstand, out this._relay, out isReferenceParameter);
-            this._id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+            MessageHeader.GetHeaderAttributes(reader, _version, out _actor, out _mustUnderstand, out _relay, out isReferenceParameter);
+            _id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
 
             reader.ReadStartElement();
             _encryptedData.ReadFrom(reader, maxBufferSize);

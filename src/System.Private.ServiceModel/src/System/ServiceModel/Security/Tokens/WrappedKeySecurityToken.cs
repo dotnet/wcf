@@ -54,16 +54,16 @@ namespace System.ServiceModel.Security.Tokens
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("wrappingSspiContext");
             }
-            this._wrappingSspiContext = wrappingSspiContext;
+            _wrappingSspiContext = wrappingSspiContext;
             if (wrappedKey == null)
             {
-                this._wrappedKey = wrappingSspiContext.Encrypt(keyToWrap);
+                _wrappedKey = wrappingSspiContext.Encrypt(keyToWrap);
             }
             else
             {
-                this._wrappedKey = wrappedKey;
+                _wrappedKey = wrappedKey;
             }
-            this._serializeCarriedKeyName = false;
+            _serializeCarriedKeyName = false;
         }
 
         // receiver use
@@ -115,12 +115,12 @@ namespace System.ServiceModel.Security.Tokens
 
         public override string Id
         {
-            get { return this._id; }
+            get { return _id; }
         }
 
         public override DateTime ValidFrom
         {
-            get { return this._effectiveTime; }
+            get { return _effectiveTime; }
         }
 
         public override DateTime ValidTo
@@ -131,36 +131,36 @@ namespace System.ServiceModel.Security.Tokens
 
         internal EncryptedKey EncryptedKey
         {
-            get { return this._encryptedKey; }
-            set { this._encryptedKey = value; }
+            get { return _encryptedKey; }
+            set { _encryptedKey = value; }
         }
 
         internal ReferenceList ReferenceList
         {
             get
             {
-                return this._encryptedKey == null ? null : this._encryptedKey.ReferenceList;
+                return _encryptedKey == null ? null : _encryptedKey.ReferenceList;
             }
         }
 
         public string WrappingAlgorithm
         {
-            get { return this._wrappingAlgorithm; }
+            get { return _wrappingAlgorithm; }
         }
 
         internal SecurityKey WrappingSecurityKey
         {
-            get { return this._wrappingSecurityKey; }
+            get { return _wrappingSecurityKey; }
         }
 
         public SecurityToken WrappingToken
         {
-            get { return this._wrappingToken; }
+            get { return _wrappingToken; }
         }
 
         public SecurityKeyIdentifier WrappingTokenReference
         {
-            get { return this._wrappingTokenReference; }
+            get { return _wrappingTokenReference; }
         }
 
         internal string CarriedKeyName
@@ -170,7 +170,7 @@ namespace System.ServiceModel.Security.Tokens
 
         public override ReadOnlyCollection<SecurityKey> SecurityKeys
         {
-            get { return this._securityKey; }
+            get { return _securityKey; }
         }
 
         internal byte[] GetHash()
@@ -195,11 +195,11 @@ namespace System.ServiceModel.Security.Tokens
 
         internal void EnsureEncryptedKeySetUp()
         {
-            if (this._encryptedKey == null)
+            if (_encryptedKey == null)
             {
                 EncryptedKey ek = new EncryptedKey();
                 ek.Id = this.Id;
-                if (this._serializeCarriedKeyName)
+                if (_serializeCarriedKeyName)
                 {
                     ek.CarriedKeyName = this.CarriedKeyName;
                 }
@@ -208,13 +208,13 @@ namespace System.ServiceModel.Security.Tokens
                     ek.CarriedKeyName = null;
                 }
                 ek.EncryptionMethod = this.WrappingAlgorithm;
-                ek.EncryptionMethodDictionaryString = this._wrappingAlgorithmDictionaryString;
-                ek.SetUpKeyWrap(this._wrappedKey);
+                ek.EncryptionMethodDictionaryString = _wrappingAlgorithmDictionaryString;
+                ek.SetUpKeyWrap(_wrappedKey);
                 if (this.WrappingTokenReference != null)
                 {
                     ek.KeyIdentifier = this.WrappingTokenReference;
                 }
-                this._encryptedKey = ek;
+                _encryptedKey = ek;
             }
         }
 

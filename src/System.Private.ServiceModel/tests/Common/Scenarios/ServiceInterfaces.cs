@@ -535,3 +535,13 @@ public interface IVerifyWebSockets
     [OperationContract()]
     bool ValidateWebSocketsUsed();
 }
+
+[ServiceContract]
+public interface IWsTrustService
+{
+    [OperationContract]
+    String EchoWithTimeout(String message, TimeSpan serviceOperationTimeout);
+
+    [OperationContract(Action = "http://tempuri.org/IWsTrustService/EchoWithTimeout")]
+    Task<String> EchoWithTimeoutAsync(String message, TimeSpan serviceOperationTimeout);
+}
