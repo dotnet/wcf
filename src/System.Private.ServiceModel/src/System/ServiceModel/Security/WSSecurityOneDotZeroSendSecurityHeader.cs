@@ -31,13 +31,13 @@ namespace System.ServiceModel.Security
 
         // Issue #31 in progress
         //PreDigestedSignedInfo _signedInfo;
-        //private SignedXml _signedXml;
+        private SignedXml _signedXml;
         //private SecurityKey _signatureKey;
         //private MessagePartSpecification _effectiveSignatureParts;
 
-        //private SymmetricAlgorithm _encryptingSymmetricAlgorithm;
-        //private ReferenceList _referenceList;
-        //private SecurityKeyIdentifier _encryptionKeyIdentifier;
+        private SymmetricAlgorithm _encryptingSymmetricAlgorithm;
+        private ReferenceList _referenceList;
+        private SecurityKeyIdentifier _encryptionKeyIdentifier;
 
         private bool _hasSignedEncryptedMessagePart;
 
@@ -334,30 +334,29 @@ namespace System.ServiceModel.Security
 
         public override void ApplySecurityAndWriteHeaders(MessageHeaders headers, XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-            //string[] headerIds;
-            //if (this.RequireMessageProtection || this.ShouldSignToHeader)
-            //{
-            //    headerIds = headers.GetHeaderAttributes(UtilityStrings.IdAttribute,
-            //        this.StandardsManager.IdManager.DefaultIdNamespaceUri);
-            //}
-            //else
-            //{
-            //    headerIds = null;
-            //}
-            //for (int i = 0; i < headers.Count; i++)
-            //{
-            //    MessageHeader header = headers.GetMessageHeader(i);
-            //    if (this.Version.Addressing == AddressingVersion.None && header.Namespace == AddressingVersion.None.Namespace)
-            //    {
-            //        continue;
-            //    }
+            string[] headerIds;
+            if (this.RequireMessageProtection || this.ShouldSignToHeader)
+            {
+                headerIds = headers.GetHeaderAttributes(UtilityStrings.IdAttribute,
+                    this.StandardsManager.IdManager.DefaultIdNamespaceUri);
+            }
+            else
+            {
+                headerIds = null;
+            }
+            for (int i = 0; i < headers.Count; i++)
+            {
+                MessageHeader header = headers.GetMessageHeader(i);
+                if (this.Version.Addressing == AddressingVersion.None && header.Namespace == AddressingVersion.None.Namespace)
+                {
+                    continue;
+                }
 
-            //    if (header != this)
-            //    {
-            //        ApplySecurityAndWriteHeader(header, headerIds == null ? null : headerIds[i], writer, prefixGenerator);
-            //    }
-            //}
+                if (header != this)
+                {
+                    ApplySecurityAndWriteHeader(header, headerIds == null ? null : headerIds[i], writer, prefixGenerator);
+                }
+            }
         }
 
         static bool CanCanonicalizeAndFragment(XmlDictionaryWriter writer)
@@ -374,58 +373,59 @@ namespace System.ServiceModel.Security
 
         public override void ApplyBodySecurity(XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // #31: Required API: SignedInfo 
-
-            //SecurityAppliedMessage message = this.SecurityAppliedMessage;
-            //EncryptedData encryptedData;
-            //HashStream hashStream;
-            //switch (message.BodyProtectionMode)
-            //{
-            //    case MessagePartProtectionMode.None:
-            //        return;
-            //    case MessagePartProtectionMode.Sign:
-            //        hashStream = TakeHashStream();
-            //        if (CanCanonicalizeAndFragment(writer))
-            //        {
-            //            message.WriteBodyToSignWithFragments(hashStream, false, null, writer);
-            //        }
-            //        else
-            //        {
-            //            message.WriteBodyToSign(hashStream);
-            //        }
-            //        _signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
-            //        return;
-            //    case MessagePartProtectionMode.SignThenEncrypt:
-            //        hashStream = TakeHashStream();
-            //        encryptedData = CreateEncryptedDataForBody();
-            //        if (CanCanonicalizeAndFragment(writer))
-            //        {
-            //            message.WriteBodyToSignThenEncryptWithFragments(hashStream, false, null, encryptedData, this.encryptingSymmetricAlgorithm, writer);
-            //        }
-            //        else
-            //        {
-            //            message.WriteBodyToSignThenEncrypt(hashStream, encryptedData, _encryptingSymmetricAlgorithm);
-            //        }
-            //        _signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
-            //        _referenceList.AddReferredId(encryptedData.Id);
-            //        _hasSignedEncryptedMessagePart = true;
-            //        return;
-            //    case MessagePartProtectionMode.Encrypt:
-            //        encryptedData = CreateEncryptedDataForBody();
-            //        message.WriteBodyToEncrypt(encryptedData, _encryptingSymmetricAlgorithm);
-            //        _referenceList.AddReferredId(encryptedData.Id);
-            //        return;
-            //    case MessagePartProtectionMode.EncryptThenSign:
-            //        hashStream = TakeHashStream();
-            //        encryptedData = CreateEncryptedDataForBody();
-            //        message.WriteBodyToEncryptThenSign(hashStream, encryptedData, _encryptingSymmetricAlgorithm);
-            //        _signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
-            //        _referenceList.AddReferredId(encryptedData.Id);
-            //        return;
-            //    default:
-            //        Fx.Assert("Invalid MessagePartProtectionMode");
-            //        return;
-            //}
+            SecurityAppliedMessage message = this.SecurityAppliedMessage;
+            EncryptedData encryptedData;
+            HashStream hashStream;
+            switch (message.BodyProtectionMode)
+            {
+                case MessagePartProtectionMode.None:
+                    return;
+                case MessagePartProtectionMode.Sign:
+                    hashStream = TakeHashStream();
+                    if (CanCanonicalizeAndFragment(writer))
+                    {
+                        message.WriteBodyToSignWithFragments(hashStream, false, null, writer);
+                    }
+                    else
+                    {
+                        message.WriteBodyToSign(hashStream);
+                    }
+                    throw ExceptionHelper.PlatformNotSupported();   // #31: Required
+                    //_signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
+                    //return;
+                case MessagePartProtectionMode.SignThenEncrypt:
+                    hashStream = TakeHashStream();
+                    encryptedData = CreateEncryptedDataForBody();
+                    if (CanCanonicalizeAndFragment(writer))
+                    {
+                        message.WriteBodyToSignThenEncryptWithFragments(hashStream, false, null, encryptedData, this._encryptingSymmetricAlgorithm, writer);
+                    }
+                    else
+                    {
+                        message.WriteBodyToSignThenEncrypt(hashStream, encryptedData, _encryptingSymmetricAlgorithm);
+                    }
+                    throw ExceptionHelper.PlatformNotSupported();   // #31: Required
+                    //_signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
+                    //_referenceList.AddReferredId(encryptedData.Id);
+                    //_hasSignedEncryptedMessagePart = true;
+                    //return;
+                case MessagePartProtectionMode.Encrypt:
+                    encryptedData = CreateEncryptedDataForBody();
+                    message.WriteBodyToEncrypt(encryptedData, _encryptingSymmetricAlgorithm);
+                    _referenceList.AddReferredId(encryptedData.Id);
+                    return;
+                case MessagePartProtectionMode.EncryptThenSign:
+                    hashStream = TakeHashStream();
+                    encryptedData = CreateEncryptedDataForBody();
+                    message.WriteBodyToEncryptThenSign(hashStream, encryptedData, _encryptingSymmetricAlgorithm);
+                    throw ExceptionHelper.PlatformNotSupported();   // #31: Required
+                    //_signedInfo.AddReference(message.BodyId, hashStream.FlushHashAndGetValue());
+                    //_referenceList.AddReferredId(encryptedData.Id);
+                    //return;
+                default:
+                    Fx.Assert("Invalid MessagePartProtectionMode");
+                    return;
+            }
         }
 
         protected static MemoryStream CaptureToken(SecurityToken token, SecurityStandardsManager serializer)
@@ -456,55 +456,53 @@ namespace System.ServiceModel.Security
             SendSecurityHeaderElement[] signatureConfirmations,
             SendSecurityHeaderElement[] endorsingSignatures)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            if (_referenceList == null)
+            {
+                return null;
+            }
 
-            //if (_referenceList == null)
-            //{
-            //    return null;
-            //}
+            if (primarySignature != null && primarySignature.Item != null && primarySignature.MarkedForEncryption)
+            {
+                EncryptElement(primarySignature);
+            }
 
-            //if (primarySignature != null && primarySignature.Item != null && primarySignature.MarkedForEncryption)
-            //{
-            //    EncryptElement(primarySignature);
-            //}
+            if (basicTokens != null)
+            {
+                for (int i = 0; i < basicTokens.Length; ++i)
+                {
+                    if (basicTokens[i].MarkedForEncryption)
+                        EncryptElement(basicTokens[i]);
+                }
+            }
 
-            //if (basicTokens != null)
-            //{
-            //    for (int i = 0; i < basicTokens.Length; ++i)
-            //    {
-            //        if (basicTokens[i].MarkedForEncryption)
-            //            EncryptElement(basicTokens[i]);
-            //    }
-            //}
+            if (signatureConfirmations != null)
+            {
+                for (int i = 0; i < signatureConfirmations.Length; ++i)
+                {
+                    if (signatureConfirmations[i].MarkedForEncryption)
+                        EncryptElement(signatureConfirmations[i]);
+                }
+            }
 
-            //if (signatureConfirmations != null)
-            //{
-            //    for (int i = 0; i < signatureConfirmations.Length; ++i)
-            //    {
-            //        if (signatureConfirmations[i].MarkedForEncryption)
-            //            EncryptElement(signatureConfirmations[i]);
-            //    }
-            //}
+            if (endorsingSignatures != null)
+            {
+                for (int i = 0; i < endorsingSignatures.Length; ++i)
+                {
+                    if (endorsingSignatures[i].MarkedForEncryption)
+                        EncryptElement(endorsingSignatures[i]);
+                }
+            }
 
-            //if (endorsingSignatures != null)
-            //{
-            //    for (int i = 0; i < endorsingSignatures.Length; ++i)
-            //    {
-            //        if (endorsingSignatures[i].MarkedForEncryption)
-            //            EncryptElement(endorsingSignatures[i]);
-            //    }
-            //}
-
-            //try
-            //{
-            //    return _referenceList.DataReferenceCount > 0 ? this.referenceList : null;
-            //}
-            //finally
-            //{
-            //    _referenceList = null;
-            //    _encryptingSymmetricAlgorithm = null;
-            //    _encryptionKeyIdentifier = null;
-            //}
+            try
+            {
+                return _referenceList.DataReferenceCount > 0 ? _referenceList : null;
+            }
+            finally
+            {
+                _referenceList = null;
+                _encryptingSymmetricAlgorithm = null;
+                _encryptionKeyIdentifier = null;
+            }
         }
 
         protected override ISignatureValueSecurityElement CompletePrimarySignatureCore(
@@ -513,24 +511,26 @@ namespace System.ServiceModel.Security
             SecurityToken[] signedTokens,
             SendSecurityHeaderElement[] basicTokens, bool isPrimarySignature)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-            //if (_signedXml == null)
-            //{
-            //    return null;
-            //}
+            if (_signedXml == null)
+            {
+                return null;
+            }
 
-            //SecurityTimestamp timestamp = this.Timestamp;
-            //if (timestamp != null)
-            //{
-            //    if (timestamp.Id == null)
-            //    {
-            //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.TimestampToSignHasNoId)));
-            //    }
-            //    HashStream hashStream = TakeHashStream();
-            //    this.StandardsManager.WSUtilitySpecificationVersion.WriteTimestampCanonicalForm(
-            //        hashStream, timestamp, _signedInfo.ResourcePool.TakeEncodingBuffer());
-            //    _signedInfo.AddReference(timestamp.Id, hashStream.FlushHashAndGetValue());
-            //}
+            SecurityTimestamp timestamp = this.Timestamp;
+            if (timestamp != null)
+            {
+                if (timestamp.Id == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.TimestampToSignHasNoId)));
+                }
+                HashStream hashStream = TakeHashStream();
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //this.StandardsManager.WSUtilitySpecificationVersion.WriteTimestampCanonicalForm(
+                //    hashStream, timestamp, _signedInfo.ResourcePool.TakeEncodingBuffer());
+                //_signedInfo.AddReference(timestamp.Id, hashStream.FlushHashAndGetValue());
+            }
+
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
             //if ((this.ShouldSignToHeader) && (this.signatureKey is AsymmetricSecurityKey) && (this.Version.Addressing != AddressingVersion.None))
             //{
@@ -574,14 +574,12 @@ namespace System.ServiceModel.Security
 
         EncryptedData CreateEncryptedData()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-
-            //EncryptedData encryptedData = new EncryptedData();
-            //encryptedData.SecurityTokenSerializer = this.StandardsManager.SecurityTokenSerializer;
-            //encryptedData.KeyIdentifier = _encryptionKeyIdentifier;
-            //encryptedData.EncryptionMethod = this.EncryptionAlgorithm;
-            //encryptedData.EncryptionMethodDictionaryString = this.EncryptionAlgorithmDictionaryString;
-            //return encryptedData;
+            EncryptedData encryptedData = new EncryptedData();
+            encryptedData.SecurityTokenSerializer = this.StandardsManager.SecurityTokenSerializer;
+            encryptedData.KeyIdentifier = _encryptionKeyIdentifier;
+            encryptedData.EncryptionMethod = this.EncryptionAlgorithm;
+            encryptedData.EncryptionMethodDictionaryString = EncryptionAlgorithmDictionaryString;
+            return encryptedData;
         }
 
         EncryptedData CreateEncryptedData(MemoryStream stream, string id, bool typeElement)

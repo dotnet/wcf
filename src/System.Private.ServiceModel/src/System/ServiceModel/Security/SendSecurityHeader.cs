@@ -135,6 +135,16 @@ namespace System.ServiceModel.Security
             get { return (SecurityAppliedMessage)this.Message; }
         }
 
+        public bool ShouldProtectTokens
+        {
+            get { return _shouldProtectTokens; }
+            set
+            {
+                ThrowIfProcessingStarted();
+                _shouldProtectTokens = value;
+            }
+        }
+
         public bool SignThenEncrypt
         {
             get { return _signThenEncrypt; }
@@ -205,7 +215,162 @@ namespace System.ServiceModel.Security
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            if (_basicSupportingTokenParameters != null && _basicSupportingTokenParameters.Count > 0
+                && this.RequireMessageProtection && !_basicTokenEncrypted)
+            {
+                throw TraceUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BasicTokenCannotBeWrittenWithoutEncryption)), this.Message);
+            }
+
+            if (_elementContainer.Timestamp != null && this.Layout != SecurityHeaderLayout.LaxTimestampLast)
+            {
+                this.StandardsManager.WSUtilitySpecificationVersion.WriteTimestamp(writer, _elementContainer.Timestamp);
+            }
+            if (_elementContainer.PrerequisiteToken != null)
+            {
+                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, _elementContainer.PrerequisiteToken);
+            }
+            if (_elementContainer.SourceSigningToken != null)
+            {
+                if (ShouldSerializeToken(this._signingTokenParameters, this.MessageDirection))
+                {
+                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, _elementContainer.SourceSigningToken);
+
+                    // Implement Protect token 
+                    // NOTE: The spec says sign the primary token if it is not included in the message. But we currently are not supporting it
+                    // as we do not support STR-Transform for external references. Hence we can not sign the token which is external ie not in the message.
+                    // This only affects the messages from service to client where 
+                    // 1. allowSerializedSigningTokenOnReply is false.
+                    // 2. SymmetricSecurityBindingElement with IssuedTokens binding where the issued token has a symmetric key.
+
+                    if (this.ShouldProtectTokens)
+                    {
+                        this.WriteSecurityTokenReferencyEntry(writer, _elementContainer.SourceSigningToken, _signingTokenParameters);
+                    }
+                }
+            }
+            if (_elementContainer.DerivedSigningToken != null)
+            {
+                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, _elementContainer.DerivedSigningToken);
+            }
+            if (_elementContainer.SourceEncryptionToken != null && _elementContainer.SourceEncryptionToken != _elementContainer.SourceSigningToken && ShouldSerializeToken(_encryptingTokenParameters, this.MessageDirection))
+            {
+                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, _elementContainer.SourceEncryptionToken);
+            }
+            if (_elementContainer.WrappedEncryptionToken != null)
+            {
+                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, _elementContainer.WrappedEncryptionToken);
+            }
+            if (_elementContainer.DerivedEncryptionToken != null)
+            {
+                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, _elementContainer.DerivedEncryptionToken);
+            }
+            if (this.SignThenEncrypt)
+            {
+                if (_elementContainer.ReferenceList != null)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                    //_elementContainer.ReferenceList.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                }
+            }
+
+            SecurityToken[] signedTokens = _elementContainer.GetSignedSupportingTokens();
+            if (signedTokens != null)
+            {
+                for (int i = 0; i < signedTokens.Length; ++i)
+                {
+                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedTokens[i]);
+                    this.WriteSecurityTokenReferencyEntry(writer, signedTokens[i], _signedTokenParameters[i]);
+                }
+            }
+            SendSecurityHeaderElement[] basicTokensXml = _elementContainer.GetBasicSupportingTokens();
+            if (basicTokensXml != null)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress (ServiceModelDictionaryManager)
+                //for (int i = 0; i < basicTokensXml.Length; ++i)
+                //{
+                //    basicTokensXml[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                //    if (this.SignThenEncrypt)
+                //    {
+                //        this.WriteSecurityTokenReferencyEntry(writer, _basicTokens[i], _basicSupportingTokenParameters[i]);
+                //    }
+                //}
+            }
+            SecurityToken[] endorsingTokens = _elementContainer.GetEndorsingSupportingTokens();
+            if (endorsingTokens != null)
+            {
+                for (int i = 0; i < endorsingTokens.Length; ++i)
+                {
+                    if (ShouldSerializeToken(_endorsingTokenParameters[i], this.MessageDirection))
+                    {
+                        this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, endorsingTokens[i]);
+                    }
+                }
+            }
+            SecurityToken[] endorsingDerivedTokens = _elementContainer.GetEndorsingDerivedSupportingTokens();
+            if (endorsingDerivedTokens != null)
+            {
+                for (int i = 0; i < endorsingDerivedTokens.Length; ++i)
+                {
+                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, endorsingDerivedTokens[i]);
+                }
+            }
+            SecurityToken[] signedEndorsingTokens = _elementContainer.GetSignedEndorsingSupportingTokens();
+            if (signedEndorsingTokens != null)
+            {
+                for (int i = 0; i < signedEndorsingTokens.Length; ++i)
+                {
+                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedEndorsingTokens[i]);
+                    this.WriteSecurityTokenReferencyEntry(writer, signedEndorsingTokens[i], _signedEndorsingTokenParameters[i]);
+                }
+            }
+            SecurityToken[] signedEndorsingDerivedTokens = _elementContainer.GetSignedEndorsingDerivedSupportingTokens();
+            if (signedEndorsingDerivedTokens != null)
+            {
+                for (int i = 0; i < signedEndorsingDerivedTokens.Length; ++i)
+                {
+                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedEndorsingDerivedTokens[i]);
+                }
+            }
+            SendSecurityHeaderElement[] signatureConfirmations = _elementContainer.GetSignatureConfirmations();
+            if (signatureConfirmations != null)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //for (int i = 0; i < signatureConfirmations.Length; ++i)
+                //{
+                //    signatureConfirmations[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                //}
+            }
+            if (_elementContainer.PrimarySignature != null && _elementContainer.PrimarySignature.Item != null)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //_elementContainer.PrimarySignature.Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+            }
+            SendSecurityHeaderElement[] endorsingSignatures = _elementContainer.GetEndorsingSignatures();
+            if (endorsingSignatures != null)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //for (int i = 0; i < endorsingSignatures.Length; ++i)
+                //{
+                //    endorsingSignatures[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                //}
+            }
+            if (!this.SignThenEncrypt)
+            {
+                if (_elementContainer.ReferenceList != null)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                    //_elementContainer.ReferenceList.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                }
+            }
+            if (_elementContainer.Timestamp != null && this.Layout == SecurityHeaderLayout.LaxTimestampLast)
+            {
+                this.StandardsManager.WSUtilitySpecificationVersion.WriteTimestamp(writer, _elementContainer.Timestamp);
+            }
+        }
+
+        protected bool ShouldSignToHeader
+        {
+            get { return this._shouldSignToHeader; }
         }
 
         public string IdPrefix
@@ -293,9 +458,7 @@ namespace System.ServiceModel.Security
 
         public void AddSignedEndorsingSupportingToken(SecurityToken token, SecurityTokenParameters parameters)
         {
-            throw ExceptionHelper.PlatformNotSupported();
-
-            // Issue #31 in progress
+            throw ExceptionHelper.PlatformNotSupported();    // Issue #31 in progress
             //if (token == null)
             //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
             //if (parameters == null)
@@ -473,20 +636,18 @@ namespace System.ServiceModel.Security
 
         void CompleteSignature()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-
-            //ISignatureValueSecurityElement signedXml = this.CompletePrimarySignatureCore(
-            //    _elementContainer.GetSignatureConfirmations(), _elementContainer.GetSignedEndorsingSupportingTokens(),
-            //    _elementContainer.GetSignedSupportingTokens(), _elementContainer.GetBasicSupportingTokens(), true);
-            //if (signedXml == null)
-            //{
-            //    return;
-            //}
-            //_elementContainer.PrimarySignature = new SendSecurityHeaderElement(signedXml.Id, signedXml);
-            //_elementContainer.PrimarySignature.MarkedForEncryption = _encryptSignature;
-            //AddGeneratedSignatureValue(signedXml.GetSignatureValue(), this.EncryptPrimarySignature);
-            //this.primarySignatureDone = true;
-            //this.primarySignatureValue = signedXml.GetSignatureValue();
+            ISignatureValueSecurityElement signedXml = CompletePrimarySignatureCore(
+                _elementContainer.GetSignatureConfirmations(), _elementContainer.GetSignedEndorsingSupportingTokens(),
+                _elementContainer.GetSignedSupportingTokens(), _elementContainer.GetBasicSupportingTokens(), true);
+            if (signedXml == null)
+            {
+                return;
+            }
+            _elementContainer.PrimarySignature = new SendSecurityHeaderElement(signedXml.Id, signedXml);
+            _elementContainer.PrimarySignature.MarkedForEncryption = _encryptSignature;
+            AddGeneratedSignatureValue(signedXml.GetSignatureValue(), this.EncryptPrimarySignature);
+            _primarySignatureDone = true;
+            _primarySignatureValue = signedXml.GetSignatureValue();
         }
 
         protected abstract void StartPrimarySignatureCore(SecurityToken token, SecurityKeyIdentifier identifier, MessagePartSpecification signatureParts, bool generateTargettablePrimarySignature);
@@ -554,70 +715,68 @@ namespace System.ServiceModel.Security
 
         void SignWithSupportingTokens()
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-
-            //SecurityToken[] endorsingTokens = _elementContainer.GetEndorsingSupportingTokens();
-            //if (endorsingTokens != null)
-            //{
-            //    for (int i = 0; i < endorsingTokens.Length; ++i)
-            //    {
-            //        SecurityToken source = endorsingTokens[i];
-            //        SecurityKeyIdentifierClause sourceKeyClause = _endorsingTokenParameters[i].CreateKeyIdentifierClause(source, GetTokenReferenceStyle(endorsingTokenParameters[i]));
-            //        if (sourceKeyClause == null)
-            //        {
-            //            throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
-            //        }
-            //        SecurityToken signingToken;
-            //        SecurityKeyIdentifierClause signingKeyClause;
-            //        if (_endorsingTokenParameters[i].RequireDerivedKeys && !_endorsingTokenParameters[i].HasAsymmetricKey)
-            //        {
-            //            string derivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
-            //            DerivedKeySecurityToken dkt = new DerivedKeySecurityToken(-1, 0,
-            //                this.AlgorithmSuite.GetSignatureKeyDerivationLength(source, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null,
-            //                DerivedKeySecurityToken.DefaultNonceLength, source, sourceKeyClause, derivationAlgorithm, GenerateId());
-            //            signingToken = dkt;
-            //            signingKeyClause = new LocalIdKeyIdentifierClause(dkt.Id, dkt.GetType());
-            //            _elementContainer.AddEndorsingDerivedSupportingToken(dkt);
-            //        }
-            //        else
-            //        {
-            //            signingToken = source;
-            //            signingKeyClause = sourceKeyClause;
-            //        }
-            //        SignWithSupportingToken(signingToken, signingKeyClause);
-            //    }
-            //}
-            //SecurityToken[] signedEndorsingSupportingTokens = _elementContainer.GetSignedEndorsingSupportingTokens();
-            //if (signedEndorsingSupportingTokens != null)
-            //{
-            //    for (int i = 0; i < signedEndorsingSupportingTokens.Length; ++i)
-            //    {
-            //        SecurityToken source = signedEndorsingSupportingTokens[i];
-            //        SecurityKeyIdentifierClause sourceKeyClause = _signedEndorsingTokenParameters[i].CreateKeyIdentifierClause(source, GetTokenReferenceStyle(_signedEndorsingTokenParameters[i]));
-            //        if (sourceKeyClause == null)
-            //        {
-            //            throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
-            //        }
-            //        SecurityToken signingToken;
-            //        SecurityKeyIdentifierClause signingKeyClause;
-            //        if (_signedEndorsingTokenParameters[i].RequireDerivedKeys && !_signedEndorsingTokenParameters[i].HasAsymmetricKey)
-            //        {
-            //            string derivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
-            //            DerivedKeySecurityToken dkt = new DerivedKeySecurityToken(-1, 0,
-            //                this.AlgorithmSuite.GetSignatureKeyDerivationLength(source, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null,
-            //                DerivedKeySecurityToken.DefaultNonceLength, source, sourceKeyClause, derivationAlgorithm, GenerateId());
-            //            signingToken = dkt;
-            //            signingKeyClause = new LocalIdKeyIdentifierClause(dkt.Id, dkt.GetType());
-            //            _elementContainer.AddSignedEndorsingDerivedSupportingToken(dkt);
-            //        }
-            //        else
-            //        {
-            //            signingToken = source;
-            //            signingKeyClause = sourceKeyClause;
-            //        }
-            //        SignWithSupportingToken(signingToken, signingKeyClause);
-            //    }
-            //}
+            SecurityToken[] endorsingTokens = _elementContainer.GetEndorsingSupportingTokens();
+            if (endorsingTokens != null)
+            {
+                for (int i = 0; i < endorsingTokens.Length; ++i)
+                {
+                    SecurityToken source = endorsingTokens[i];
+                    SecurityKeyIdentifierClause sourceKeyClause = _endorsingTokenParameters[i].CreateKeyIdentifierClause(source, GetTokenReferenceStyle(_endorsingTokenParameters[i]));
+                    if (sourceKeyClause == null)
+                    {
+                        throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
+                    }
+                    SecurityToken signingToken;
+                    SecurityKeyIdentifierClause signingKeyClause;
+                    if (_endorsingTokenParameters[i].RequireDerivedKeys && !_endorsingTokenParameters[i].HasAsymmetricKey)
+                    {
+                        string derivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
+                        DerivedKeySecurityToken dkt = new DerivedKeySecurityToken(-1, 0,
+                            this.AlgorithmSuite.GetSignatureKeyDerivationLength(source, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null,
+                            DerivedKeySecurityToken.DefaultNonceLength, source, sourceKeyClause, derivationAlgorithm, GenerateId());
+                        signingToken = dkt;
+                        signingKeyClause = new LocalIdKeyIdentifierClause(dkt.Id, dkt.GetType());
+                        _elementContainer.AddEndorsingDerivedSupportingToken(dkt);
+                    }
+                    else
+                    {
+                        signingToken = source;
+                        signingKeyClause = sourceKeyClause;
+                    }
+                    SignWithSupportingToken(signingToken, signingKeyClause);
+                }
+            }
+            SecurityToken[] signedEndorsingSupportingTokens = _elementContainer.GetSignedEndorsingSupportingTokens();
+            if (signedEndorsingSupportingTokens != null)
+            {
+                for (int i = 0; i < signedEndorsingSupportingTokens.Length; ++i)
+                {
+                    SecurityToken source = signedEndorsingSupportingTokens[i];
+                    SecurityKeyIdentifierClause sourceKeyClause = _signedEndorsingTokenParameters[i].CreateKeyIdentifierClause(source, GetTokenReferenceStyle(_signedEndorsingTokenParameters[i]));
+                    if (sourceKeyClause == null)
+                    {
+                        throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
+                    }
+                    SecurityToken signingToken;
+                    SecurityKeyIdentifierClause signingKeyClause;
+                    if (_signedEndorsingTokenParameters[i].RequireDerivedKeys && !_signedEndorsingTokenParameters[i].HasAsymmetricKey)
+                    {
+                        string derivationAlgorithm = SecurityUtils.GetKeyDerivationAlgorithm(this.StandardsManager.MessageSecurityVersion.SecureConversationVersion);
+                        DerivedKeySecurityToken dkt = new DerivedKeySecurityToken(-1, 0,
+                            this.AlgorithmSuite.GetSignatureKeyDerivationLength(source, this.StandardsManager.MessageSecurityVersion.SecureConversationVersion), null,
+                            DerivedKeySecurityToken.DefaultNonceLength, source, sourceKeyClause, derivationAlgorithm, GenerateId());
+                        signingToken = dkt;
+                        signingKeyClause = new LocalIdKeyIdentifierClause(dkt.Id, dkt.GetType());
+                        _elementContainer.AddSignedEndorsingDerivedSupportingToken(dkt);
+                    }
+                    else
+                    {
+                        signingToken = source;
+                        signingKeyClause = sourceKeyClause;
+                    }
+                    SignWithSupportingToken(signingToken, signingKeyClause);
+                }
+            }
         }
 
         protected virtual ISignatureValueSecurityElement[] CreateSignatureConfirmationElements(SignatureConfirmations signatureConfirmations)
