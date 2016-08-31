@@ -268,11 +268,11 @@ public static partial class Endpoints
         }
     }
 
-    public static string WsHttpTransSec_Address
+    public static string WsHttpTransSecUserName_Address
     {
         get
         {
-            return GetEndpointAddress("WsHttpTranSec.svc//wshttp-transec", protocol: "https");
+            return GetEndpointAddress("WsHttpTranSecUserName.svc//wshttp-transec-username", protocol: "https");
         }
     }
 

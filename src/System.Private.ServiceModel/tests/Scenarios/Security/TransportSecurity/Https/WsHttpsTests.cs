@@ -23,8 +23,8 @@ public static partial class WsHttpsTests
     [OuterLoop]
     public static void CreateUserNameOverTransportBindingElement_Round_Trips()
     {
-        ChannelFactory<IWsTrustService> factory = null;
-        IWsTrustService serviceProxy = null;
+        ChannelFactory<IWcfCustomUserNameService> factory = null;
+        IWcfCustomUserNameService serviceProxy = null;
         string testString = "Hello";
         CustomBinding binding;
         EndpointAddress endpointAddress = null;
@@ -41,16 +41,15 @@ public static partial class WsHttpsTests
                             securityBindingElement,
                             new HttpsTransportBindingElement());
 
-            endpointAddress = new EndpointAddress(Endpoints.WsHttpTransSec_Address);
-            Console.WriteLine(String.Format("$$$ endpoint is {0}", endpointAddress));
-            factory = new ChannelFactory<IWsTrustService>(binding, endpointAddress);
-            factory.Credentials.UserName.UserName = "someUser";
-            factory.Credentials.UserName.Password = "somePassword";
+            endpointAddress = new EndpointAddress(Endpoints.WsHttpTransSecUserName_Address);
+            factory = new ChannelFactory<IWcfCustomUserNameService>(binding, endpointAddress);
+            factory.Credentials.UserName.UserName = "test1";
+            factory.Credentials.UserName.Password = "Mytestpwd1";
 
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
-            string result = serviceProxy.EchoWithTimeout(testString, TimeSpan.FromMilliseconds(1));
+            string result = serviceProxy.Echo(testString);
 
             // *** VALIDATE *** \\
             Assert.True(result == testString, string.Format("Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
@@ -71,10 +70,66 @@ public static partial class WsHttpsTests
 #endif
     [WcfFact]
     [OuterLoop]
+    public static void CreateUserNameOverTransportBindingElement_Throws_Wrong_Credentials()
+    {
+        ChannelFactory<IWcfCustomUserNameService> factory = null;
+        IWcfCustomUserNameService serviceProxy = null;
+        string testString = "Hello";
+        CustomBinding binding;
+        EndpointAddress endpointAddress = null;
+        FaultException faultException = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            var securityBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
+            securityBindingElement.IncludeTimestamp = false;
+            securityBindingElement.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
+
+            binding = new CustomBinding(
+                            new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8),
+                            securityBindingElement,
+                            new HttpsTransportBindingElement());
+
+            endpointAddress = new EndpointAddress(Endpoints.WsHttpTransSecUserName_Address);
+            factory = new ChannelFactory<IWcfCustomUserNameService>(binding, endpointAddress);
+            factory.Credentials.UserName.UserName = "nottest1";
+            factory.Credentials.UserName.Password = "notMytestpwd1";
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            faultException = Assert.Throws<FaultException>(() =>
+            {
+                serviceProxy.Echo(testString);
+            });
+
+            // *** VALIDATE *** \\
+            string expectedFaultCode = "InvalidSecurityToken";
+            Assert.True(String.Equals(faultException.Code.Name, expectedFaultCode, StringComparison.OrdinalIgnoreCase),
+                        String.Format("Expected FaultCode '{0}' but actual was '{1}'", expectedFaultCode, faultException.Code.Name));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+#endif
+    [WcfFact]
+    [OuterLoop]
     public static void CreateUserNameOverTransportBindingElement_Round_Trips_Async()
     {
-        ChannelFactory<IWsTrustService> factory = null;
-        IWsTrustService serviceProxy = null;
+        ChannelFactory<IWcfCustomUserNameService> factory = null;
+        IWcfCustomUserNameService serviceProxy = null;
         string testString = "Hello";
         CustomBinding binding;
         EndpointAddress endpointAddress = null;
@@ -91,10 +146,10 @@ public static partial class WsHttpsTests
                             securityBindingElement,
                             new HttpsTransportBindingElement());
 
-            endpointAddress = new EndpointAddress(Endpoints.WsHttpTransSec_Address);
-            factory = new ChannelFactory<IWsTrustService>(binding, endpointAddress);
-            factory.Credentials.UserName.UserName = "someUser";
-            factory.Credentials.UserName.Password = "somePassword";
+            endpointAddress = new EndpointAddress(Endpoints.WsHttpTransSecUserName_Address);
+            factory = new ChannelFactory<IWcfCustomUserNameService>(binding, endpointAddress);
+            factory.Credentials.UserName.UserName = "test1";
+            factory.Credentials.UserName.Password = "Mytestpwd1";
 
             // *** EXECUTE *** \\
             // Async factory open is part of the code under test
@@ -103,7 +158,7 @@ public static partial class WsHttpsTests
 
             serviceProxy = factory.CreateChannel();
 
-            Task<string> echoTask = serviceProxy.EchoWithTimeoutAsync(testString, TimeSpan.FromMilliseconds(1));
+            Task<string> echoTask = serviceProxy.EchoAsync(testString);
             string result = echoTask.GetAwaiter().GetResult();
 
             // *** VALIDATE *** \\

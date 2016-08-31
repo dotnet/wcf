@@ -259,6 +259,9 @@ public interface IWcfCustomUserNameService
 {
     [OperationContract(Action = "http://tempuri.org/IWcfCustomUserNameService/Echo")]
     String Echo(String message);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfCustomUserNameService/Echo")]
+    Task<String> EchoAsync(String message);
 }
 
 [ServiceContract(
