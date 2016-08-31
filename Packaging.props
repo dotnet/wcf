@@ -4,7 +4,7 @@
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)pkg/dotnet_library_license.txt</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)pkg/ThirdPartyNotices.txt</PackageThirdPartyNoticesFile>
-
+    <RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>
     <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</ReleaseNotes>
     <ProjectUrl>https://dot.net</ProjectUrl>
     <!-- Add a condition for this when we are able to run on .NET Core -->
@@ -17,10 +17,13 @@
     <!-- We're currently not building a "live" baseline, instead we're using .NETCore 1.0 RTM stable versions as the baseline -->
     <SkipBaseLineCheck>true</SkipBaseLineCheck>
     <!-- temporary change until buildtools can be updated https://github.com/dotnet/buildtools/issues/831 -->
-    <LineupPackageVersion Condition="'$(LineupPackageVersion)' == ''">1.0.2</LineupPackageVersion>
+    <LineupPackageVersion Condition="'$(LineupPackageVersion)' == ''">1.0.3</LineupPackageVersion>
     <PlatformPackageVersion Condition="'$(PlatformPackageVersion)' == ''">1.0.2</PlatformPackageVersion>
-  </PropertyGroup>
 
+  <!-- by default all packages will use the same version which revs with respect to product version -->
+  <PackageVersion Condition="'$(PackageVersion)' == ''">4.3.0</PackageVersion>
+  </PropertyGroup>
+  
   <Import Condition="Exists('pkg/baseline/baseline.props')" Project="pkg/baseline/baseline.props" />
 
   <PropertyGroup Condition="'$(OsEnvironment)'=='Unix'">
