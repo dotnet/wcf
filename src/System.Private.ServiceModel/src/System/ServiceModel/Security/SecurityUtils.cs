@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IdentityModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
@@ -218,6 +219,22 @@ namespace System.ServiceModel.Security
             }
 
             return result;
+        }
+    }
+
+    internal class ServiceModelDictionaryManager
+    {
+        static DictionaryManager dictionaryManager;
+
+        public static DictionaryManager Instance
+        {
+            get
+            {
+                if (dictionaryManager == null)
+                    dictionaryManager = new DictionaryManager(BinaryMessageEncoderFactory.XmlDictionary);
+
+                return dictionaryManager;
+            }
         }
     }
 

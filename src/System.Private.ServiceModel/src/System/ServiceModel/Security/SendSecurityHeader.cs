@@ -268,8 +268,7 @@ namespace System.ServiceModel.Security
             {
                 if (_elementContainer.ReferenceList != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-                    //_elementContainer.ReferenceList.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                    _elementContainer.ReferenceList.WriteTo(writer, ServiceModelDictionaryManager.Instance);
                 }
             }
 
@@ -285,15 +284,14 @@ namespace System.ServiceModel.Security
             SendSecurityHeaderElement[] basicTokensXml = _elementContainer.GetBasicSupportingTokens();
             if (basicTokensXml != null)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress (ServiceModelDictionaryManager)
-                //for (int i = 0; i < basicTokensXml.Length; ++i)
-                //{
-                //    basicTokensXml[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
-                //    if (this.SignThenEncrypt)
-                //    {
-                //        this.WriteSecurityTokenReferencyEntry(writer, _basicTokens[i], _basicSupportingTokenParameters[i]);
-                //    }
-                //}
+                for (int i = 0; i < basicTokensXml.Length; ++i)
+                {
+                    basicTokensXml[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                    if (this.SignThenEncrypt)
+                    {
+                        this.WriteSecurityTokenReferencyEntry(writer, _basicTokens[i], _basicSupportingTokenParameters[i]);
+                    }
+                }
             }
             SecurityToken[] endorsingTokens = _elementContainer.GetEndorsingSupportingTokens();
             if (endorsingTokens != null)
@@ -334,32 +332,28 @@ namespace System.ServiceModel.Security
             SendSecurityHeaderElement[] signatureConfirmations = _elementContainer.GetSignatureConfirmations();
             if (signatureConfirmations != null)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-                //for (int i = 0; i < signatureConfirmations.Length; ++i)
-                //{
-                //    signatureConfirmations[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
-                //}
+                for (int i = 0; i < signatureConfirmations.Length; ++i)
+                {
+                    signatureConfirmations[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                }
             }
             if (_elementContainer.PrimarySignature != null && _elementContainer.PrimarySignature.Item != null)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-                //_elementContainer.PrimarySignature.Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                _elementContainer.PrimarySignature.Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
             }
             SendSecurityHeaderElement[] endorsingSignatures = _elementContainer.GetEndorsingSignatures();
             if (endorsingSignatures != null)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-                //for (int i = 0; i < endorsingSignatures.Length; ++i)
-                //{
-                //    endorsingSignatures[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
-                //}
+                for (int i = 0; i < endorsingSignatures.Length; ++i)
+                {
+                    endorsingSignatures[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                }
             }
             if (!this.SignThenEncrypt)
             {
                 if (_elementContainer.ReferenceList != null)
                 {
-                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-                    //_elementContainer.ReferenceList.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                    _elementContainer.ReferenceList.WriteTo(writer, ServiceModelDictionaryManager.Instance);
                 }
             }
             if (_elementContainer.Timestamp != null && this.Layout == SecurityHeaderLayout.LaxTimestampLast)
