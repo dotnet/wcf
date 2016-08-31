@@ -4,18 +4,17 @@
     "System.Collections.Concurrent": "4.0.12",
     "System.Diagnostics.Tracing": "4.1.0",
     "System.Net.Http": "4.1.0",
-    "System.ServiceModel.Duplex": "4.0.2-beta-24329-01",
-    "System.ServiceModel.Http": "4.1.1-beta-24329-01",
-    "System.ServiceModel.NetTcp": "4.1.1-beta-24329-01",
-    "System.ServiceModel.Primitives": "4.1.1-beta-24329-01",
-    "System.ServiceModel.Security": "4.0.2-beta-24329-01",
+    "System.ServiceModel.Duplex": "4.0.2-beta-24431-01",
+    "System.ServiceModel.Http": "4.1.1-beta-24431-01",
+    "System.ServiceModel.NetTcp": "4.1.1-beta-24431-01",
+    "System.ServiceModel.Primitives": "4.1.1-beta-24431-01",
+    "System.ServiceModel.Security": "4.0.2-beta-24431-01",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"
     },
-    "xunit": "2.2.0-beta2-build3300",
-    "Microsoft.xunit.netcore.extensions": "1.0.0-prerelease-00704-04",
-    "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00704-04"
+    "Microsoft.xunit.netcore.extensions": "1.0.0-prerelease-00731-01",
+    "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00731-01"
   },
   "frameworks": {
     "netstandard1.3": {}

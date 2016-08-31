@@ -138,12 +138,6 @@
       "values": [],
       "defaultValue": ""
     },
-    "GenerateNativeVersionInfo": {
-      "description": "Enables generation of the native version header.",
-      "valueType": "property",
-      "values": ["True", "False"],
-      "defaultValue": true
-    },
     "MsBuildLogging": {
       "description": "MsBuild logging options.",
       "valueType": "passThrough",
@@ -333,44 +327,6 @@
           "MsBuildWarning":"default",
           "MsBuildError":"default"
         }
-      }
-    },
-    "build-native": {
-      "alias": {
-        "debug": {
-          "description": "Passes Debug to respective build-native script.",
-          "settings": {
-            "CmakeBuildType": "Debug"
-          }
-        },
-        "release": {
-          "description": "Passes Release to respective build-native script.",
-          "settings": {
-            "CmakeBuildType": "Release"
-          }
-        },
-        "buildArch": {
-          "description": "Passes the value of the build architecture to the respective build-native script.",
-          "settings": {
-            "BuildArchitecture": "default"
-          }
-        },
-        "os":{
-          "description": "Passes the value of the OS to the respective build-native script.",
-          "settings": {
-            "HostOs": "default"
-          }
-        }
-      },
-      "defaultValues": {
-        "toolName": "terminal",
-        "Project": "src/Native/build-native",
-        "settings": {
-           "BuildArchitecture": "default", 
-           "CmakeBuildType": "default",           
-           "HostOs": "default",
-           "ProcessorCount": "default"
-         }
       }
     },
     "clean": {

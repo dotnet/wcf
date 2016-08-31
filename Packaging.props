@@ -4,7 +4,7 @@
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)pkg/dotnet_library_license.txt</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)pkg/ThirdPartyNotices.txt</PackageThirdPartyNoticesFile>
-    <RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>
+    <!--<RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>--> <!--Not needed for WCF-->
     <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</ReleaseNotes>
     <ProjectUrl>https://dot.net</ProjectUrl>
     <!-- Add a condition for this when we are able to run on .NET Core -->
