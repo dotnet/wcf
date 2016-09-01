@@ -20,14 +20,16 @@ namespace System.ServiceModel.Channels
     {
         protected Message _message;
         protected MessageEncoder _messageEncoder;
+        protected BufferManager _bufferManager;
         protected Stream _stream = null;
         private bool _disposed;
         protected TaskCompletionSource<bool> _writeCompletedTcs;
 
-        public MessageContent(Message message, MessageEncoder messageEncoder)
+        public MessageContent(Message message, MessageEncoder messageEncoder, BufferManager bufferManager)
         {
             _message = message;
             _messageEncoder = messageEncoder;
+            _bufferManager = bufferManager;
             _writeCompletedTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             SetContentType(_messageEncoder.ContentType);
@@ -155,7 +157,7 @@ namespace System.ServiceModel.Channels
         {
             if (TransferModeHelper.IsRequestStreamed(factory.TransferMode))
             {
-                return new StreamedMessageContent(request, factory.MessageEncoderFactory.Encoder);
+                return new StreamedMessageContent(request, factory.MessageEncoderFactory.Encoder, factory.BufferManager);
             }
             else
             {
@@ -166,11 +168,7 @@ namespace System.ServiceModel.Channels
 
     internal class StreamedMessageContent : MessageContent
     {
-        // Using the BufferedWriteStream default buffer size which is 4K. HttpWebRequest uses a 4K buffer internally,
-        // so using the same size to have the same performance characteristics.
-        private const int WriteBufferSize = BufferedWriteStream.DefaultBufferSize;
-
-        public StreamedMessageContent(Message message, MessageEncoder messageEncoder) : base(message, messageEncoder)
+        public StreamedMessageContent(Message message, MessageEncoder messageEncoder, BufferManager bufferManager) : base(message, messageEncoder, bufferManager)
         {
         }
 
@@ -180,7 +178,7 @@ namespace System.ServiceModel.Channels
             // will block on the write until the stream is being read from. The WriteMessageAsync method needs
             // to run on a different thread to prevent a deadlock.
             var resultStream = new ProducerConsumerStream();
-            _stream = new BufferedWriteStream(resultStream, WriteBufferSize);
+            _stream = new BufferedWriteStream(resultStream, _bufferManager);
             Task.Factory.StartNew(async (content) =>
             {
                 var thisPtr = content as StreamedMessageContent;
@@ -202,7 +200,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                await _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, WriteBufferSize));
+                await _messageEncoder.WriteMessageAsync(_message, new BufferedWriteStream(stream, _bufferManager));
             }
             finally
             {
@@ -221,14 +219,12 @@ namespace System.ServiceModel.Channels
     {
         private bool _disposed;
         private bool _messageEncoded;
-        private readonly BufferManager _bufferManager;
         private ArraySegment<byte> _buffer;
         private long? _contentLength;
 
-        public BufferedMessageContent(Message message, MessageEncoder messageEncoder, BufferManager bufferManager) : base(message, messageEncoder)
+        public BufferedMessageContent(Message message, MessageEncoder messageEncoder, BufferManager bufferManager) : base(message, messageEncoder, bufferManager)
         {
             Contract.Assert(bufferManager != null);
-            _bufferManager = bufferManager;
             _messageEncoded = false;
         }
 

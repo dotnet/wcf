@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime;
 using System.ServiceModel.Security;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -231,11 +232,19 @@ namespace System.ServiceModel.Channels
 
         private async Task<Message> ReadStreamedMessageAsync(Task<Stream> inputStreamTask)
         {
-            MaxMessageSizeStream maxMessageSizeStream = new MaxMessageSizeStream(await inputStreamTask, _factory.MaxReceivedMessageSize);
+            var inputStream = await inputStreamTask;
+            var bufferedInputStream = inputStream as BufferedReadStream;
+            MaxMessageSizeStream maxMessageSizeStream = new MaxMessageSizeStream(inputStream, _factory.MaxReceivedMessageSize);
 
             try
             {
-                return await _encoder.ReadMessageAsync(maxMessageSizeStream, _factory.MaxBufferSize, _contentType);
+                var message = await _encoder.ReadMessageAsync(maxMessageSizeStream, _factory.MaxBufferSize, _contentType);
+                if (bufferedInputStream != null)
+                {
+                    message.Properties[BufferedReadStream.BufferedReadStreamPropertyName] = bufferedInputStream;
+                }
+
+                return message;
             }
             catch (XmlException xmlException)
             {
@@ -307,8 +316,18 @@ namespace System.ServiceModel.Channels
                     }
                     else
                     {
-                        contentStream = new PreReadStream(contentStream, preReadBuffer);
+                        var bufferedStream = new BufferedReadStream(contentStream, _factory.BufferManager);
+                        await bufferedStream.PreReadBufferAsync(preReadBuffer[0], CancellationToken.None);
+                        contentStream = bufferedStream;
                     }
+                }
+                else if(TransferModeHelper.IsResponseStreamed(_factory.TransferMode))
+                {
+                    // If _contentLength > 0, then the message was sent buffered but we might still
+                    // be receiving it streamed. In which case we need a buffered reading stream.
+                    var bufferedStream = new BufferedReadStream(contentStream, _factory.BufferManager);
+                    await bufferedStream.PreReadBufferAsync(CancellationToken.None);
+                    contentStream = bufferedStream;
                 }
             }
 

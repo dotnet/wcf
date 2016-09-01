@@ -34,7 +34,11 @@ namespace System.ServiceModel.Channels
         {
             var content = request.Content as MessageContent;
             var responseMessage = await base.SendAsync(request, cancellationToken);
-            await content.WriteCompletionTask;
+            if (content != null)
+            {
+                await content.WriteCompletionTask;
+            }
+
             return responseMessage;
         }
     }

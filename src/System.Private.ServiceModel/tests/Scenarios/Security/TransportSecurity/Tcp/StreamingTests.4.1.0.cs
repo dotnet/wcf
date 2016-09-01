@@ -223,6 +223,81 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Ambient_Credentials_Available))]
     [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
+    public static void NetTcp_TransportSecurity_Streamed_MultipleReads()
+    {
+#if FULLXUNIT_NOTSUPPORTED
+        bool root_Certificate_Installed = Root_Certificate_Installed();
+        bool client_Certificate_Installed = Client_Certificate_Installed();
+        bool windows_Authentication_Available = Windows_Authentication_Available();
+        bool ambient_Credentials_Available = Ambient_Credentials_Available();
+
+        if (!root_Certificate_Installed ||
+            !client_Certificate_Installed ||
+            !windows_Authentication_Available ||
+            !ambient_Credentials_Available)
+        {
+            Console.WriteLine("---- Test SKIPPED --------------");
+            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
+            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
+            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
+            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
+            Console.WriteLine("Ambient_Credentials_Available evaluated as {0}", ambient_Credentials_Available);
+            return;
+        }
+#endif
+        string testString = ScenarioTestHelpers.CreateInterestingString(20001);
+        NetTcpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stream stream = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetTcpBinding(SecurityMode.Transport);
+            binding.TransferMode = TransferMode.Streamed;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_Transport_Security_Streamed_Address));
+            serviceProxy = factory.CreateChannel();
+            stream = StringToStream(testString);
+
+            // *** EXECUTE *** \\
+            var returnStream = serviceProxy.EchoStream(stream);
+            var ms = new MemoryStream((int)stream.Length);
+            var buffer = new byte[10];
+            int bytesRead = 0;
+            while ((bytesRead = returnStream.ReadAsync(buffer, 0, buffer.Length).Result) != 0)
+            {
+                ms.Write(buffer, 0, bytesRead);
+            }
+
+            ms.Position = 0;
+            var result = StreamToString(ms);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+#if FULLXUNIT_NOTSUPPORTED
+    [Fact]
+    [ActiveIssue(832)] // Windows Stream Security is not supported in NET Native
+#endif
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+               nameof(Client_Certificate_Installed),
+               nameof(Windows_Authentication_Available),
+               nameof(Ambient_Credentials_Available))]
+    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
+    [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_TimeOut_Long_Running_Operation()
     {
 #if FULLXUNIT_NOTSUPPORTED

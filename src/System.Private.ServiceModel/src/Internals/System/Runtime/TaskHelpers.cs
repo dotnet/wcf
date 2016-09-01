@@ -288,6 +288,32 @@ namespace System.Runtime
             Contract.Assert(state != null, "Async state should be of type TaskCompletionSource<bool>");
             tcs.TrySetResult(true);
         }
+
+        public static IDisposable RunTaskContinuationsOnOurThreads()
+        {
+            if (SynchronizationContext.Current == ServiceModelSynchronizationContext.Instance)
+            {
+                return null; // No need to save and restore state as we're already using the correct sync context
+            }
+
+            return new SyncContextScope();
+        }
+
+        private class SyncContextScope : IDisposable
+        {
+            private readonly SynchronizationContext _prevContext;
+
+            public SyncContextScope()
+            {
+                _prevContext = SynchronizationContext.Current;
+                SynchronizationContext.SetSynchronizationContext(ServiceModelSynchronizationContext.Instance);
+            }
+
+            public void Dispose()
+            {
+                SynchronizationContext.SetSynchronizationContext(_prevContext);
+            }
+        }
     }
 
     // This awaiter causes an awaiting async method to continue on the same thread if using the
@@ -311,8 +337,8 @@ namespace System.Runtime
             get
             {
                 return (TaskScheduler.Current == TaskScheduler.Default) &&
-                       (SynchronizationContext.Current == null ||
-                       (SynchronizationContext.Current.GetType() == typeof(SynchronizationContext)));
+                    (SynchronizationContext.Current == null ||
+                    (SynchronizationContext.Current.GetType() == typeof(SynchronizationContext)));
             }
         }
 

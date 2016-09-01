@@ -5,7 +5,6 @@
 
 using System.IO;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
@@ -241,11 +240,12 @@ namespace System.ServiceModel.Dispatcher
         {
             private Message _message;
             private XmlDictionaryReader _reader;
-            private ReadAheadWrappingStream _readAheadStream;
+            private BufferedReadStream _bufferedReadStream;
             private long _position;
             private string _wrapperName, _wrapperNs;
             private string _elementName, _elementNs;
             private bool _isRequest;
+
             internal MessageBodyStream(Message message, string wrapperName, string wrapperNs, string elementName, string elementNs, bool isRequest)
             {
                 _message = message;
@@ -259,72 +259,23 @@ namespace System.ServiceModel.Dispatcher
 
             public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             {
-                EnsureStreamIsOpen();
-                if (buffer == null)
-                    throw TraceUtility.ThrowHelperError(new ArgumentNullException("buffer"), _message);
-                if (offset < 0)
-                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", offset,
-                                                    SR.Format(SR.ValueMustBeNonNegative)), _message);
-                if (count < 0)
-                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", count,
-                                                    SR.Format(SR.ValueMustBeNonNegative)), _message);
-                if (buffer.Length - offset < count)
-                    throw TraceUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.SFxInvalidStreamOffsetLength, offset + count)), _message);
-
-                try
+                if (_reader == null)
                 {
-                    if (_reader == null)
+                    if (_message.Properties.ContainsKey(BufferedReadStream.BufferedReadStreamPropertyName))
                     {
-                        _readAheadStream =
-                            _message.Properties[ReadAheadWrappingStream.ReadAheadWrappingStreamPropertyName] as ReadAheadWrappingStream;
-                        // Fill buffer so reading to the body contents shouldn't cause a read through to transport stream
-                        if (_readAheadStream != null)
-                        {
-                            await _readAheadStream.EnsureBufferedAsync(cancellationToken);
-                        }
-
-                        _reader = _message.GetReaderAtBodyContents();
-                        if (_wrapperName != null)
-                        {
-                            _reader.MoveToContent();
-                            _reader.ReadStartElement(_wrapperName, _wrapperNs);
-                        }
-
-                        _reader.MoveToContent();
-                        if (_reader.NodeType == XmlNodeType.EndElement)
-                        {
-                            return 0;
-                        }
-
-                        _reader.ReadStartElement(_elementName, _elementNs);
+                        _bufferedReadStream =
+                            _message.Properties[BufferedReadStream.BufferedReadStreamPropertyName] as BufferedReadStream;
                     }
-                    if (_reader.MoveToContent() != XmlNodeType.Text)
-                    {
-                        await ExhaustAsync(_reader, _readAheadStream, cancellationToken);
-                        return 0;
-                    }
-
-                    if (_readAheadStream != null)
-                    {
-                        // Calculate number of UTF8 bytes needed to represent the requested bytes in base64.
-                        // The +3 is to adjust for integer division truncating instead of rounding and the final
-                        // == padding that can occur at the end of a base64 encoded string.
-                        int base64EncodedBytes = (int)((8L * count) / 6L) + 3;
-                        await _readAheadStream.EnsureBufferedAsync(base64EncodedBytes, cancellationToken);
-                    }
-                    int bytesRead = _reader.ReadContentAsBase64(buffer, offset, count);
-                    _position += bytesRead;
-                    if (bytesRead == 0)
-                    {
-                        await ExhaustAsync(_reader, _readAheadStream, cancellationToken);
-                    }
-                    return bytesRead;
                 }
-                catch (Exception ex)
+
+                using (TaskHelpers.RunTaskContinuationsOnOurThreads())
                 {
-                    if (Fx.IsFatal(ex))
-                        throw;
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new IOException(SR.Format(SR.SFxStreamIOException), ex));
+                    if (_bufferedReadStream != null)
+                    {
+                        await _bufferedReadStream.PreReadBufferAsync(cancellationToken);
+                    }
+
+                    return Read(buffer, offset, count);
                 }
             }
 
@@ -396,20 +347,6 @@ namespace System.ServiceModel.Dispatcher
                     {
                         // drain
                     }
-                }
-            }
-
-            private static async Task ExhaustAsync(XmlDictionaryReader reader, ReadAheadWrappingStream readAheadStream, CancellationToken cancellationToken)
-            {
-                if (reader != null)
-                {
-                    do
-                    {
-                        if (readAheadStream != null)
-                        {
-                            await readAheadStream.EnsureBufferedAsync(cancellationToken);
-                        }
-                    } while (reader.Read());
                 }
             }
 

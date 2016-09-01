@@ -5,7 +5,6 @@
 
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,21 +33,25 @@ namespace System.ServiceModel.Channels
     /// </summary>
     internal sealed class BufferedWriteStream : Stream
     {
-        public const int DefaultBufferSize = 4096;
+        public const int DefaultBufferSize = 8192;
         private Stream _stream; // Underlying stream.  Close sets _stream to null.
-        private byte[] _buffer; // Wwrite buffer.
+        private BufferManager _bufferManager;
+        private byte[] _buffer; // Write buffer.
         private readonly int _bufferSize; // Length of internal buffer (not counting the shadow buffer).
         private int _writePos; // Write pointer within buffer.
         private readonly SemaphoreSlim _sem = new SemaphoreSlim(1, 1);
 
-        public BufferedWriteStream(Stream stream) : this(stream, DefaultBufferSize) { }
+        public BufferedWriteStream(Stream stream) : this(stream, null, DefaultBufferSize) { }
 
-        public BufferedWriteStream(Stream stream, int bufferSize)
+        public BufferedWriteStream(Stream stream, BufferManager bufferManager) : this(stream, bufferManager, DefaultBufferSize) { }
+        public BufferedWriteStream(Stream stream, BufferManager bufferManager, int bufferSize)
         {
-            Contract.Assert(stream != Null, "stream!=Null");
-            Contract.Assert(bufferSize > 0, "bufferSize>0");
+            Contract.Assert(stream != Null, "stream != Stream.Null");
+            Contract.Assert(stream != null, "stream != null");
+            Contract.Assert(bufferSize > 0, "bufferSize > 0");
             Contract.Assert(stream.CanWrite);
             _stream = stream;
+            _bufferManager = bufferManager;
             _bufferSize = bufferSize;
 
             EnsureBufferAllocated();
@@ -57,14 +60,13 @@ namespace System.ServiceModel.Channels
         private void EnsureNotClosed()
         {
             if (_stream == null)
-                throw new ObjectDisposedException("BufferedWriteStream");
+                throw new ObjectDisposedException(nameof(BufferedWriteStream));
         }
 
         private void EnsureCanWrite()
         {
-            Contract.Requires(_stream != null);
-            if (!_stream.CanWrite)
-                throw new NotSupportedException("write");
+            Contract.Assert(_stream != null);
+            Contract.Assert(_stream.CanWrite);
         }
 
         /// <summary><code>MaxShadowBufferSize</code> is chosen such that shadow buffers are not allocated on the Large Object Heap.
@@ -91,7 +93,16 @@ namespace System.ServiceModel.Channels
         private void EnsureBufferAllocated()
         {
             if (_buffer == null)
-                _buffer = new byte[_bufferSize];
+            {
+                if (_bufferManager != null)
+                {
+                    _buffer = _bufferManager.TakeBuffer(_bufferSize);
+                }
+                else
+                {
+                    _buffer = new byte[_bufferSize];
+                }
+            }
         }
 
         public override bool CanRead
@@ -111,39 +122,35 @@ namespace System.ServiceModel.Channels
 
         public override long Length
         {
-            get { throw new NotSupportedException("Position"); }
+            get { throw new NotSupportedException(nameof(Length)); }
         }
 
         public override long Position
         {
-            get { throw new NotSupportedException("Position"); }
-            set { throw new NotSupportedException("Position"); }
+            get { throw new NotSupportedException(nameof(Position)); }
+            set { throw new NotSupportedException(nameof(Position)); }
         }
 
         protected override void Dispose(bool disposing)
         {
-            try
+            if (disposing)
             {
-                if (disposing && _stream != null)
+                try
                 {
-                    try
-                    {
-                        Flush();
-                    }
-                    finally
-                    {
-                        _stream.Dispose();
-                    }
+                    _stream?.Dispose();
+                }
+                finally
+                {
+                    _stream = null;
+                    var tempBuffer = _buffer;
+                    _buffer = null;
+                    _bufferManager?.ReturnBuffer(tempBuffer);
+                    _bufferManager = null;
                 }
             }
-            finally
-            {
-                _stream = null;
-                _buffer = null;
 
-                // Call base.Dispose(bool) to cleanup async IO resources
-                base.Dispose(disposing);
-            }
+            // Call base.Dispose(bool) to cleanup async IO resources
+            base.Dispose(disposing);
         }
 
         public override void Flush()
@@ -218,19 +225,19 @@ namespace System.ServiceModel.Channels
             await _stream.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public override int Read([In, Out] byte[] array, int offset, int count)
+        public override int Read(byte[] array, int offset, int count)
         {
-            throw new NotSupportedException("Read");
+            throw new NotSupportedException(nameof(Read));
         }
 
         public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
-            throw new NotSupportedException("ReadAsync");
+            throw new NotSupportedException(nameof(ReadAsync));
         }
 
         public override int ReadByte()
         {
-            throw new NotSupportedException("ReadByte");
+            throw new NotSupportedException(nameof(ReadByte));
         }
 
         private void WriteToBuffer(byte[] array, ref int offset, ref int count)
@@ -409,7 +416,7 @@ namespace System.ServiceModel.Channels
             // Try to satisfy the request from the buffer synchronously. But still need a sem-lock in case that another
             // Async IO Task accesses the buffer concurrently. If we fail to acquire the lock without waiting, make this 
             // an Async operation.
-            Task semaphoreLockTask = _sem.WaitAsync();
+            Task semaphoreLockTask = _sem.WaitAsync(cancellationToken);
             if (semaphoreLockTask.Status == TaskStatus.RanToCompletion)
             {
                 bool completeSynchronously = true;
@@ -449,7 +456,6 @@ namespace System.ServiceModel.Channels
                                                         CancellationToken cancellationToken,
                                                         Task semaphoreLockTask)
         {
-            // (These should be Contract.Requires(..) but that method had some issues in async methods; using Assert(..) for now.)
             EnsureNotClosed();
             EnsureCanWrite();
 
@@ -543,13 +549,13 @@ namespace System.ServiceModel.Channels
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new NotSupportedException("seek");
+            throw new NotSupportedException(nameof(Seek));
         }
 
 
         public override void SetLength(long value)
         {
-            throw new NotSupportedException("SetLength");
+            throw new NotSupportedException(nameof(SetLength));
         }
     }
 }
