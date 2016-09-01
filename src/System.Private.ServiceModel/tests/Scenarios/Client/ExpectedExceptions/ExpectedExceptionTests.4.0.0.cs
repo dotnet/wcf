@@ -60,7 +60,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     [ActiveIssue(1250)]
 #endif
     [WcfFact]
-    [Issue(1250, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
     {
