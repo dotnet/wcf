@@ -136,14 +136,12 @@ namespace System.ServiceModel.Security
             }
             else if (trustVersion == TrustVersion.WSTrust13)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-                //this.serializerEntries.Add(new WSTrustDec2005(this));
-                //trustDictionary = new IdentityModel.TrustDec2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Dec2005DictionaryString));
+                _serializerEntries.Add(new WSTrustDec2005(this));
+                trustDictionary = new IdentityModel.TrustDec2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Dec2005DictionaryString));
             }
             else
             {
-                // Issue #31 in progress
-                //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
             }
 
             _tokenEntries = new List<TokenEntry>();
@@ -266,47 +264,135 @@ namespace System.ServiceModel.Security
 
         protected override void WriteTokenCore(XmlWriter writer, SecurityToken token)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            bool wroteToken = false;
+            XmlDictionaryWriter localWriter = XmlDictionaryWriter.CreateDictionaryWriter(writer);
+            if (token.GetType() == typeof(ProviderBackedSecurityToken))
+            {
+                token = (token as ProviderBackedSecurityToken).Token;
+            }
+            for (int i = 0; i < _tokenEntries.Count; i++)
+            {
+                TokenEntry tokenEntry = _tokenEntries[i];
+                if (tokenEntry.SupportsCore(token.GetType()))
+                {
+                    try
+                    {
+                        tokenEntry.WriteTokenCore(localWriter, token);
+                    }
+#pragma warning suppress 56500 // covered by FxCOP
+                    catch (Exception e)
+                    {
+                        if (!ShouldWrapException(e))
+                        {
+                            throw;
+                        }
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorSerializingSecurityToken), e));
+                    }
+                    wroteToken = true;
+                    break;
+                }
+            }
+
+            if (!wroteToken)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
+
+            localWriter.Flush();
         }
 
         protected override bool CanReadKeyIdentifierCore(XmlReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.CanReadKeyIdentifier(reader);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override SecurityKeyIdentifier ReadKeyIdentifierCore(XmlReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.ReadKeyIdentifier(reader);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override bool CanWriteKeyIdentifierCore(SecurityKeyIdentifier keyIdentifier)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.CanWriteKeyIdentifier(keyIdentifier);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override void WriteKeyIdentifierCore(XmlWriter writer, SecurityKeyIdentifier keyIdentifier)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                _keyInfoSerializer.WriteKeyIdentifier(writer, keyIdentifier);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override bool CanReadKeyIdentifierClauseCore(XmlReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.CanReadKeyIdentifierClause(reader);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.ReadKeyIdentifierClause(reader);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override bool CanWriteKeyIdentifierClauseCore(SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                return _keyInfoSerializer.CanWriteKeyIdentifierClause(keyIdentifierClause);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         protected override void WriteKeyIdentifierClauseCore(XmlWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            try
+            {
+                _keyInfoSerializer.WriteKeyIdentifierClause(writer, keyIdentifierClause);
+            }
+            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            {
+                throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
+            }
         }
 
         internal Type[] GetTokenTypes(string tokenTypeUri)

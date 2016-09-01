@@ -593,57 +593,55 @@ namespace System.ServiceModel.Channels
 
             internal Message ProcessReply(Message reply, SecurityProtocolCorrelationState correlationState, TimeSpan timeout)
             {
-                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-
-                //if (reply != null)
-                //{
-                //    if (DiagnosticUtility.ShouldUseActivity)
-                //    {
-                //        ServiceModelActivity replyActivity = TraceUtility.ExtractActivity(reply);
-                //        if (replyActivity != null &&
-                //            correlationState != null &&
-                //            correlationState.Activity != null &&
-                //            replyActivity.Id != correlationState.Activity.Id)
-                //        {
-                //            using (ServiceModelActivity.BoundOperation(replyActivity))
-                //            {
-                //                if (null != FxTrace.Trace)
-                //                {
-                //                    FxTrace.Trace.TraceTransfer(correlationState.Activity.Id);
-                //                }
-                //                replyActivity.Stop();
-                //            }
-                //        }
-                //    }
-                //    ServiceModelActivity activity = correlationState == null ? null : correlationState.Activity;
-                //    using (ServiceModelActivity.BoundOperation(activity))
-                //    {
-                //        if (DiagnosticUtility.ShouldUseActivity)
-                //        {
-                //            TraceUtility.SetActivity(reply, activity);
-                //        }
-                //        Message unverifiedMessage = reply;
-                //        Exception faultException = null;
-                //        try
-                //        {
-                //            this.SecurityProtocol.VerifyIncomingMessage(ref reply, timeout, correlationState);
-                //        }
-                //        catch (MessageSecurityException)
-                //        {
-                //            TryGetSecurityFaultException(unverifiedMessage, out faultException);
-                //            if (faultException == null)
-                //            {
-                //                throw;
-                //            }
-                //        }
-                //        if (faultException != null)
-                //        {
-                //            this.Fault(faultException);
-                //            throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(faultException);
-                //        }
-                //    }
-                //}
-                //return reply;
+                if (reply != null)
+                {
+                    if (DiagnosticUtility.ShouldUseActivity)
+                    {
+                        ServiceModelActivity replyActivity = TraceUtility.ExtractActivity(reply);
+                        if (replyActivity != null &&
+                            correlationState != null &&
+                            correlationState.Activity != null &&
+                            replyActivity.Id != correlationState.Activity.Id)
+                        {
+                            using (ServiceModelActivity.BoundOperation(replyActivity))
+                            {
+                                if (null != FxTrace.Trace)
+                                {
+                                    FxTrace.Trace.TraceTransfer(correlationState.Activity.Id);
+                                }
+                                replyActivity.Stop();
+                            }
+                        }
+                    }
+                    ServiceModelActivity activity = correlationState == null ? null : correlationState.Activity;
+                    using (ServiceModelActivity.BoundOperation(activity))
+                    {
+                        if (DiagnosticUtility.ShouldUseActivity)
+                        {
+                            TraceUtility.SetActivity(reply, activity);
+                        }
+                        Message unverifiedMessage = reply;
+                        Exception faultException = null;
+                        try
+                        {
+                            this.SecurityProtocol.VerifyIncomingMessage(ref reply, timeout, correlationState);
+                        }
+                        catch (MessageSecurityException)
+                        {
+                            TryGetSecurityFaultException(unverifiedMessage, out faultException);
+                            if (faultException == null)
+                            {
+                                throw;
+                            }
+                        }
+                        if (faultException != null)
+                        {
+                            this.Fault(faultException);
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(faultException);
+                        }
+                    }
+                }
+                return reply;
             }
 
             public Message Request(Message message, TimeSpan timeout)

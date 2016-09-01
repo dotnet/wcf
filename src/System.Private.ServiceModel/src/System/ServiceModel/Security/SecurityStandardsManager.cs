@@ -19,7 +19,6 @@ namespace System.ServiceModel.Security
 {
     internal class SecurityStandardsManager
     {
-#pragma warning disable 0649 // Remove this once we do real implementation, this prevents "field is never assigned to" warning
         private static SecurityStandardsManager s_instance;
         private readonly MessageSecurityVersion _messageSecurityVersion;
         private readonly WSUtilitySpecificationVersion _wsUtilitySpecificationVersion;
@@ -28,8 +27,6 @@ namespace System.ServiceModel.Security
         private readonly SignatureTargetIdManager _idManager;
         private readonly SecurityTokenSerializer _tokenSerializer;
         private WSSecurityTokenSerializer _wsSecurityTokenSerializer;
-#pragma warning restore 0649
-
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public SecurityStandardsManager()

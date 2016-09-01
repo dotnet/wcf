@@ -205,71 +205,72 @@ namespace System.ServiceModel.Security
 
         protected virtual void VerifyIncomingMessageCore(ref Message message, TimeSpan timeout)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
+            // $$$ throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
 
-            //TransportSecurityProtocolFactory factory = (TransportSecurityProtocolFactory)this.SecurityProtocolFactory;
-            //string actor = string.Empty; // message.Version.Envelope.UltimateDestinationActor;
+            TransportSecurityProtocolFactory factory = (TransportSecurityProtocolFactory)this.SecurityProtocolFactory;
+            string actor = string.Empty; // message.Version.Envelope.UltimateDestinationActor;
 
-            //ReceiveSecurityHeader securityHeader = factory.StandardsManager.TryCreateReceiveSecurityHeader(message, actor,
-            //    factory.IncomingAlgorithmSuite, (factory.ActAsInitiator) ? MessageDirection.Output : MessageDirection.Input);
-            //bool expectBasicTokens;
-            //bool expectEndorsingTokens;
-            //bool expectSignedTokens;
-            //IList<SupportingTokenAuthenticatorSpecification> supportingAuthenticators = factory.GetSupportingTokenAuthenticators(message.Headers.Action,
-            //    out expectSignedTokens, out expectBasicTokens, out expectEndorsingTokens);
-            //if (securityHeader == null)
-            //{
-            //    bool expectSupportingTokens = expectEndorsingTokens || expectSignedTokens || expectBasicTokens;
-            //    if ((factory.ActAsInitiator && (!factory.AddTimestamp || factory.SecurityBindingElement.EnableUnsecuredResponse))
-            //        || (!factory.ActAsInitiator && !factory.AddTimestamp && !expectSupportingTokens))
-            //    {
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        if (String.IsNullOrEmpty(actor))
-            //            throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
-            //                SR.Format(SR.UnableToFindSecurityHeaderInMessageNoActor)), message);
-            //        else
-            //            throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
-            //                SR.Format(SR.UnableToFindSecurityHeaderInMessage, actor)), message);
-            //    }
-            //}
+            ReceiveSecurityHeader securityHeader = factory.StandardsManager.TryCreateReceiveSecurityHeader(message, actor,
+                factory.IncomingAlgorithmSuite, (factory.ActAsInitiator) ? MessageDirection.Output : MessageDirection.Input);
+            bool expectBasicTokens;
+            bool expectEndorsingTokens;
+            bool expectSignedTokens;
+            IList<SupportingTokenAuthenticatorSpecification> supportingAuthenticators = factory.GetSupportingTokenAuthenticators(message.Headers.Action,
+                out expectSignedTokens, out expectBasicTokens, out expectEndorsingTokens);
+            if (securityHeader == null)
+            {
+                bool expectSupportingTokens = expectEndorsingTokens || expectSignedTokens || expectBasicTokens;
+                if ((factory.ActAsInitiator && (!factory.AddTimestamp || factory.SecurityBindingElement.EnableUnsecuredResponse))
+                    || (!factory.ActAsInitiator && !factory.AddTimestamp && !expectSupportingTokens))
+                {
+                    return;
+                }
+                else
+                {
+                    if (String.IsNullOrEmpty(actor))
+                        throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
+                            SR.Format(SR.UnableToFindSecurityHeaderInMessageNoActor)), message);
+                    else
+                        throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
+                            SR.Format(SR.UnableToFindSecurityHeaderInMessage, actor)), message);
+                }
+            }
 
-            //securityHeader.RequireMessageProtection = false;
-            //securityHeader.ExpectBasicTokens = expectBasicTokens;
-            //securityHeader.ExpectSignedTokens = expectSignedTokens;
-            //securityHeader.ExpectEndorsingTokens = expectEndorsingTokens;
-            //securityHeader.MaxReceivedMessageSize = factory.SecurityBindingElement.MaxReceivedMessageSize;
-            //securityHeader.ReaderQuotas = factory.SecurityBindingElement.ReaderQuotas;
+            securityHeader.RequireMessageProtection = false;
+            securityHeader.ExpectBasicTokens = expectBasicTokens;
+            securityHeader.ExpectSignedTokens = expectSignedTokens;
+            securityHeader.ExpectEndorsingTokens = expectEndorsingTokens;
+            securityHeader.MaxReceivedMessageSize = factory.SecurityBindingElement.MaxReceivedMessageSize;
+            securityHeader.ReaderQuotas = factory.SecurityBindingElement.ReaderQuotas;
 
-            //// Due to compatibility, only honor this setting if this app setting is enabled
+            // Due to compatibility, only honor this setting if this app setting is enabled
+            // Issue #31 in progress
             //if (ServiceModelAppSettings.UseConfiguredTransportSecurityHeaderLayout)
             //{
-            //    securityHeader.Layout = factory.SecurityHeaderLayout;
+                securityHeader.Layout = factory.SecurityHeaderLayout;
             //}
 
-            //TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            //if (!factory.ActAsInitiator)
-            //{
-            //    securityHeader.ConfigureTransportBindingServerReceiveHeader(supportingAuthenticators);
-            //    securityHeader.ConfigureOutOfBandTokenResolver(MergeOutOfBandResolvers(supportingAuthenticators, EmptyReadOnlyCollection<SecurityTokenResolver>.Instance));
-            //    if (factory.ExpectKeyDerivation)
-            //    {
-            //        securityHeader.DerivedTokenAuthenticator = factory.DerivedKeyTokenAuthenticator;
-            //    }
-            //}
-            //securityHeader.ReplayDetectionEnabled = factory.DetectReplays;
-            //securityHeader.SetTimeParameters(factory.NonceCache, factory.ReplayWindow, factory.MaxClockSkew);
-            //securityHeader.Process(timeoutHelper.RemainingTime(), SecurityUtils.GetChannelBindingFromMessage(message), factory.ExtendedProtectionPolicy);
-            //message = securityHeader.ProcessedMessage;
-            //if (!factory.ActAsInitiator)
-            //{
-            //    AttachRecipientSecurityProperty(message, securityHeader.BasicSupportingTokens, securityHeader.EndorsingSupportingTokens, securityHeader.SignedEndorsingSupportingTokens,
-            //        securityHeader.SignedSupportingTokens, securityHeader.SecurityTokenAuthorizationPoliciesMapping);
-            //}
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            if (!factory.ActAsInitiator)
+            {
+                securityHeader.ConfigureTransportBindingServerReceiveHeader(supportingAuthenticators);
+                securityHeader.ConfigureOutOfBandTokenResolver(MergeOutOfBandResolvers(supportingAuthenticators, EmptyReadOnlyCollection<SecurityTokenResolver>.Instance));
+                if (factory.ExpectKeyDerivation)
+                {
+                    securityHeader.DerivedTokenAuthenticator = factory.DerivedKeyTokenAuthenticator;
+                }
+            }
+            securityHeader.ReplayDetectionEnabled = factory.DetectReplays;
+            securityHeader.SetTimeParameters(factory.NonceCache, factory.ReplayWindow, factory.MaxClockSkew);
+            securityHeader.Process(timeoutHelper.RemainingTime(), SecurityUtils.GetChannelBindingFromMessage(message), factory.ExtendedProtectionPolicy);
+            message = securityHeader.ProcessedMessage;
+            if (!factory.ActAsInitiator)
+            {
+                AttachRecipientSecurityProperty(message, securityHeader.BasicSupportingTokens, securityHeader.EndorsingSupportingTokens, securityHeader.SignedEndorsingSupportingTokens,
+                    securityHeader.SignedSupportingTokens, securityHeader.SecurityTokenAuthorizationPoliciesMapping);
+            }
 
-            //base.OnIncomingMessageVerified(message);
+            base.OnIncomingMessageVerified(message);
         }
 
         sealed class SecureOutgoingMessageAsyncResult : GetSupportingTokensAsyncResult

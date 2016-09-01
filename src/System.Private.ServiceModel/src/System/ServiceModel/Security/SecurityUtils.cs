@@ -16,6 +16,7 @@ using System.Net;
 using System.Net.Security;
 using System.Runtime;
 using System.Security.Authentication;
+using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
@@ -244,6 +245,25 @@ namespace System.ServiceModel.Security
         public const string Identities = "Identities";
         private static IIdentity s_anonymousIdentity;
         private static X509SecurityTokenAuthenticator s_nonValidatingX509Authenticator;
+
+        public static ChannelBinding GetChannelBindingFromMessage(Message message)
+        {
+            if (message == null)
+            {
+                return null;
+            }
+
+            ChannelBindingMessageProperty channelBindingMessageProperty = null;
+            ChannelBindingMessageProperty.TryGet(message, out channelBindingMessageProperty);
+            ChannelBinding channelBinding = null;
+
+            if (channelBindingMessageProperty != null)
+            {
+                channelBinding = channelBindingMessageProperty.ChannelBinding;
+            }
+
+            return channelBinding;
+        }
 
         internal static X509SecurityTokenAuthenticator NonValidatingX509Authenticator
         {

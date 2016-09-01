@@ -133,29 +133,28 @@ namespace System.ServiceModel.Security
 
         protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-
-            //switch (this.state)
-            //{
-            //    case BodyState.Created:
-            //        this.InnerMessage.WriteBodyContents(writer);
-            //        return;
-            //    case BodyState.Signed:
-            //    case BodyState.EncryptedThenSigned:
-            //        XmlDictionaryReader reader = fullBodyBuffer.GetReader(0);
-            //        reader.ReadStartElement();
-            //        while (reader.NodeType != XmlNodeType.EndElement)
-            //            writer.WriteNode(reader, false);
-            //        reader.ReadEndElement();
-            //        reader.Close();
-            //        return;
-            //    case BodyState.Encrypted:
-            //    case BodyState.SignedThenEncrypted:
-            //        this.encryptedBodyContent.WriteTo(writer, ServiceModelDictionaryManager.Instance);
-            //        break;
-            //    default:
-            //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBadStateException("OnWriteBodyContents"));
-            //}
+            switch (_state)
+            {
+                case BodyState.Created:
+                    this.InnerMessage.WriteBodyContents(writer);
+                    return;
+                case BodyState.Signed:
+                case BodyState.EncryptedThenSigned:
+                    using (XmlDictionaryReader reader = _fullBodyBuffer.GetReader(0))
+                    {
+                        reader.ReadStartElement();
+                        while (reader.NodeType != XmlNodeType.EndElement)
+                            writer.WriteNode(reader, false);
+                        reader.ReadEndElement();
+                    }
+                    return;
+                case BodyState.Encrypted:
+                case BodyState.SignedThenEncrypted:
+                    _encryptedBodyContent.WriteTo(writer, ServiceModelDictionaryManager.Instance);
+                    break;
+                default:
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBadStateException("OnWriteBodyContents"));
+            }
         }
 
         protected override void OnWriteMessage(XmlDictionaryWriter writer)

@@ -756,28 +756,26 @@ namespace System.ServiceModel.Security
 
         protected override void WriteSecurityTokenReferencyEntry(XmlDictionaryWriter writer, SecurityToken securityToken, SecurityTokenParameters securityTokenParameters)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            SecurityKeyIdentifierClause keyIdentifierClause = null;
 
-            //SecurityKeyIdentifierClause keyIdentifierClause = null;
+            // Given a token this method writes its corresponding security token reference entry in the security header 
+            // 1. If the token parameters is an issuedSecurityTokenParamter 
+            // 2. If UseStrTransform is enabled on it.
 
-            //// Given a token this method writes its corresponding security token reference entry in the security header 
-            //// 1. If the token parameters is an issuedSecurityTokenParamter 
-            //// 2. If UseStrTransform is enabled on it.
+            IssuedSecurityTokenParameters issuedSecurityTokenParameters = securityTokenParameters as IssuedSecurityTokenParameters;
+            if (issuedSecurityTokenParameters == null || !issuedSecurityTokenParameters.UseStrTransform)
+                return;
 
-            //IssuedSecurityTokenParameters issuedSecurityTokenParameters = securityTokenParameters as IssuedSecurityTokenParameters;
-            //if (issuedSecurityTokenParameters == null || !issuedSecurityTokenParameters.UseStrTransform)
-            //    return;
-
-            //if (this.ElementContainer.TryGetIdentifierClauseFromSecurityToken(securityToken, out keyIdentifierClause))
-            //{
-            //    if (keyIdentifierClause != null && !String.IsNullOrEmpty(keyIdentifierClause.Id))
-            //    {
-            //        WrappedXmlDictionaryWriter wrappedLocalWriter = new WrappedXmlDictionaryWriter(writer, keyIdentifierClause.Id);
-            //        this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(wrappedLocalWriter, keyIdentifierClause);
-            //    }
-            //    else
-            //        throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.GetString(SR.TokenManagerCannotCreateTokenReference)), this.Message);
-            //}
+            if (this.ElementContainer.TryGetIdentifierClauseFromSecurityToken(securityToken, out keyIdentifierClause))
+            {
+                if (keyIdentifierClause != null && !String.IsNullOrEmpty(keyIdentifierClause.Id))
+                {
+                    WrappedXmlDictionaryWriter wrappedLocalWriter = new WrappedXmlDictionaryWriter(writer, keyIdentifierClause.Id);
+                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(wrappedLocalWriter, keyIdentifierClause);
+                }
+                else
+                    throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCannotCreateTokenReference)), this.Message);
+            }
         }
     }
 
