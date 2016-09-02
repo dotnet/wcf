@@ -1,13 +1,17 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="stable.packages.props" />
-  <Import Project="baseline.packages.props" />
-
   <PropertyGroup>
     <CoreFxBaseLinePackageName>Microsoft.Private.PackageBaseline</CoreFxBaseLinePackageName>
+    <!-- TODO: Move this back to 1.0.1 once https://github.com/dotnet/corefx/commit/63a868365904c6fbae18a3800c0b908b0f0944af is in -->
     <CoreFxBaseLinePackageVersion>4.3.0-$(CoreFxExpectedPrerelease)</CoreFxBaseLinePackageVersion>
     <!-- NuGet doesn't currently write out the versionless props/targets for this, so manually pull it in from packages folder -->
     <CoreFxBaseLinePackageProps Condition="'$(CoreFxBaseLinePackageProps)' == ''">$(PackagesDir)$(CoreFxBaseLinePackageName)/$(CoreFxBaseLinePackageVersion)/build/$(CoreFxBaseLinePackageName).props</CoreFxBaseLinePackageProps>
+
+    <PackageIndexFile>$(MSBuildThisFileDirectory)\packageIndex.json</PackageIndexFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageIndex Include="$(PackageIndexFile)" />
+  </ItemGroup>
 
   <!-- bring in common baseline -->
   <Import Condition="Exists('$(CoreFxBaseLinePackageProps)')" Project="$(CoreFxBaseLinePackageProps)" />
