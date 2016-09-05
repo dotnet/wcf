@@ -221,7 +221,9 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
             Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
-            
+            // Add archival for the built data.
+            Utilities.addArchival(newJob, "msbuild.log", '', doNotFailIfNothingArchived=true, archiveOnlyIfSuccessful=false)
+
             // Our outerloops rely on us calling WcfPRServiceUri to sync server code, after which the client 
             // will test against WcfServiceUri.
             // The current design limitation means that if we allow concurrent builds, it becomes possible to pave over 
@@ -283,14 +285,19 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
             Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
+
+            def archiveContents = "msbuild.log"
+
             // Add archival for the built data
-            if (osGroupMap[os] == 'Windows_NT') {
-                Utilities.addArchival(newJob, "bin/build.pack,bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**,bin/ref/**,bin/packages/**,msbuild.log")
+            if (os.contains('Windows')) {
+                archiveContents += ",bin/build.pack"
             } 
             else {
-                Utilities.addArchival(newJob, "bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**,bin/ref/**,bin/packages/**,msbuild.log")
+                archiveContents != ",bin/build.tar.gz"
             }
             
+            Utilities.addArchival(newJob, archiveContents, '', doNotFailIfNothingArchived=true, archiveOnlyIfSuccessful=false)
+
             // Set up triggers
             if (isPR) {
                 // Set PR trigger
