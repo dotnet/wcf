@@ -310,3 +310,8 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
 }
 
 JobReport.Report.generateJobReport(out)
+
+Utilities.createHelperJob(this, project, branch,
+    "Welcome to the ${project} repository",  // This is prepended to the help message
+    "Have a nice day!")  // This is appended to the help message.  You might put known issues here.
+
