@@ -2,75 +2,54 @@
 
 ## Background
 
-The Bridge has an endpoint that allows the generation of certificates for test purposes. The Bridge generates the following types of certs on demand: 
+In order to test certificate-based security scenarios, we generate test certificates for: 
 
 * Root Certificate Authority (CA) 
 * Machine certificate
 * Certificate Revocation List (CRL) 
 
-When the bridge is running in single machine mode (i.e., Bridge and tests are running on the same machine), the Bridge is responsbile for installing and removing certificates from the test machine. 
+This happens using the CertificateGenerator tool, located at `src/System.Private.ServiceModel/tools/CertificateGenerator`
 
-When the bridge is running in multi-machine mode (i.e., Bridge is running with `-allowRemote`, and tests are running on another machine), the Bridge will install certificates the CA and machine certificate on the Bridge host machine, and the Bridge client will install and remove the machine certificates on the client side. 
+This tool is automatically called on the following occasions: 
 
-The Bridge implements certificate generation as a series of endpoints modelled as "Resources". A Resource is any type that implementes the IResource interface - for example, each endpoint available to test is modelled as a Resource. 
+* Creating a WCF IIS Hosted Service using `SetupWcfIISHostedService.cmd`
+* Starting a WCF Self Hosted Service using `StartWCFSelfHostedSvc.cmd`
+* Running `RefreshServerCertificates.cmd`
 
-Parameters are passed to/from the endpoints as JSON key-value pairs. 
+Certificate generation happens using the CertificateGenerator tool, Certificate generation happens only on Windows machines
 
+Upon calling, the CertificateGenerator generates the following certificates: 
 
-## Settings on Bridge initialization
+* Root Certificate
+* Client certificate
+* Machine certificates
+  * localhost
+  * machine name 
+  * machine fully qualified domain name
+  * revoked certificate
+  * expired certificate
+  * with server alt names 
 
-* `TestRootCertificatePassword` - string - password for certificates generated/exported. Default is "test"
-* `TestRootCertificateValidityPeriod` - TimeSpan - valid timespan for certificates generated. Default is 24 hours
+The certificate revocation list is published to (by default) C:\wcftest\test.crl, and can be changed via app.config
 
+Certificates expire in 90 days
 
-## Resources exposed
+The CA certificates get installed into the machine trusted certificate store
+Machine certificates get installed into the machine My store 
 
-### Certificate Authority Resource
+## Certificate revocation list
 
-name: `WcfService.CertificateResources.CertificateAuthorityResource`
+A certificate revocation list is generated every time certificates are generated; the CRL is valid for the duration of the CA certificate. 
 
-|HTTP Verb|Action|
-|---------|------|
-|`PUT`| Creates a root CA certificate <br/> Parameters: none <br/> Returns: `thumbprint` - thumbprint of the root CA <br/> *Note: This PUT doesn't need to be issued as this is initialized automatically as part of  any other PUT/GET action on all \*CertificateResources.* <br/> |
-|`GET`| Retrieves the Root CA certificate from the Bridge <br/> Returns: `thumbprint` - thumbprint of the Root CA, `certificate` - Base64 encoded X509 Certificate |
-
-### Machine Certificate Resource
-
-name: `WcfService.CertificateResources.MachineCertificateResource`
-
-|HTTP Verb|Action|
-|---------|------|
-|`PUT`| Creates a machine certificate <br/> Parameters: `subject` - comma-separated list of subject names (the first subject will be the CN of the certificate; all others will be listed as DNS Subject Alternative Names) <br/> Returns: `thumbprint` - thumbprint of the machine certificate; `isLocal` - if the certificate was generated for a machine name local to the Bridge |
-|`GET`| No parameters <br/> Returns: `subjects` - list of certificate subjects; `thumbprints` - corresponding list of certificate thumbprints |
-|`GET`| Retrieves the certificate with a given `subject` or `thumbprint` from the Bridge <br/> Parameters: `thumbprint` - thumbprint of the certificate; OR `subject` - subject name of the cert to retrieve.  If both are specified, `thumbprint` takes precedence <br/> Returns: `thumbprint` - thumbprint of the certificate, `certificate` - Base64 encoded X509 Certificate |
-
-### User Certificate Resource
-
-name: `WcfService.CertificateResources.UserCertificateResource`
-
-|HTTP Verb|Action|
-|---------|------|
-|`PUT`| Creates a user certificate <br/> Parameters: `subject` - comma-separated list of subject names (the first subject will be the CN of the certificate; all others will be listed as Principal Names in the Subject Alternative Name field) <br/> Returns: `thumbprint` - thumbprint of the user certificate  |
-|`GET`| Same as `MachineCertificateResource`. At the moment, the MachineCertificateResource and UserCertificateResource caches are the same, so issuing a GET to either one will retrieve the machine or user cert, agnostic of the cert type. |
-
-### Certificate Revocation List Resource 
-
-name: `WcfService.CertificateResources.CertificateRevocationListResource`
-
-|HTTP Verb|Action|
-|---------|------|
-|`PUT`| No parameters <br/> Creates a Certificate Revocation List <br/> Returns: `revokedCertificates` - comma-separated list of revoked certificate serial numbers |
-|`PUT`| Parameters: `revoke` - serial number of the certificate to revoke <br/> Returns: `revokedCertificates` - comma-separated list of revoked certificate serial numbers|
-|`GET`| Retrieves the CRL from the Bridge as an application/octet-stream <br/> *Not returned as a JSON key-val pair* |
-
-Note that for the certificate revocation list `GET` action, the return value is the raw Certificate Revocation List. All certs created will list */resource/WcfService.CertificateResources.CertificateRevocationListResource* as the CRL distribution point. 
-
-## Usage pattern
-
-The expected usage pattern is to first `PUT` to the requested resource, followed by `GET`ting the resource. Some resources allow the use of `GET` without `PUT`, but it's recommended to follow this practice in case future changes enforce the `PUT`-then-`GET` semantic.
+Each certificate generated has a CRL Distribution Point of _base_address_/Crl - this is automatically set up when run using the scripts above, but if not using the scripts, then the endpoint need to be set up accordingly so that the CRL can be accessed. If this is not set up, certificates may fail to validate due to the CRL being inaccessible 
 
 ## Certificate validity
 
-The default validity period of certificates generated is 24 hours. In order to deal with potential time skew, certificates are valid for one hour *prior* to the generation time of the certificate.
+The default validity period of certificates generated is 90 days. In order to deal with potential time skew, certificates are valid for five minutes *prior* to the generation time of the certificate.
 
-Certificate Revocation Lists have a "Next Update" field of two minutes after the request time. This helps with time skew issues when testing cross machines. This does mean, however, that Windows will not check the CRL again until the "Next Update" time is hit, which may result in oddness when testing CRL revocation. 
+## Certificate refresh
+
+Certificates must be refreshed at the end of the certificate expiry - there is no provision for extension of the certificate validity date. 
+
+`RefreshServerCertificates.cmd` can be set up as a scheduled task to automatically perform these functions
+
