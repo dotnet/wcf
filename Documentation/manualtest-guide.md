@@ -1,3 +1,4 @@
+
 Manual Tests Instruction
 ========================
 
@@ -13,26 +14,18 @@ Tests:
    Https_ClientCredentialTypeTests.BasicAuthentication_RoundTrips_Echo
 ```
 
-The WCF Test Root CA certificate need to be retrieved from the Bridge and installed on the local machine before tests can be run
+The WCF Test Root CA certificate need to be retrieved from the server and installed on the local machine before tests can be run. This is automatically done when running build.sh / build.cmd. 
 
-Requirements: 
-
-* Requires a Windows machine running the Bridge  
-
-Assumes: 
-
-* ${GitWcfRoot} is the root of the WCF Core git repo
-* ${BridgeHost} is the Bridge host machine name  
+When running build.sh on a Linux machine, ensure that the user has permission to run the `InstallRootCertificate.sh` script with sudo (i.e., the user is listed in the sudoers file). For best results, add the following to the sudoers file
+```
+user ALL=(ALL) NOPASSWD:ALL
+```
+see the _visudo_ man page for details on how to do this 
 
 Steps:
 
-1. Ensure the Bridge is running on a Windows machine with remote access allowed: `startBridge.cmd -allowRemote` <br/> 
-   If running Bridge on a machine not on the same subnet as the test client machine: `startBridge.cmd -allowRemote -remoteAddresses:*` 
-2. On Linux, go to ${GitWcfRoot} and run `./build.sh` 
-3. On Linux, `pushd ${GitWcfRoot}/src/System.Private.ServiceModel/tools/setupfiles`
-4. Install the certificate file `sudo ./TestRootCertificateInstaller.sh --service-host ${ServiceHost} --cert-file ~/tmp/wcfca.crt`. Note that the --cert-file should be a file in the the user tmp directory and the filename must have a .crt extension
-5. Specify the Bridge host location `export BridgeHost=${BridgeHost}`
-6. Run tests as needed, such as with `${GitWcfRoot}/build.sh /p:WithCategories=OuterLoop`
+1. Ensure the service is running
+2. On Linux, go to ${GitWcfRoot} and run `./build.sh -p:WithCategories=OuterLoop -p:ServiceUri=your-service-uri -p:` 
 
 **Linux: NegotiateStream tests with ambient credentials** 
 
@@ -52,15 +45,16 @@ Tests:
    NegotiateStream_Http_Tests.NegotiateStream_Http_AmbientCredentials
 
 ```
+The self-hosted WCF Service or IIS Hosted service must be running under a LOCAL SYSTEM context
 
-The WCF Test Root CA certificate need to be retrieved from the Bridge and installed on the local machine before tests can be run.
-In addition, the Bridge must be running under a LOCAL SYSTEM context
+Furthermore, the WCF Test Root CA certificate needs to be retrieved from the service and installed on the local machine before tests can be run - this is automatically done when running tests if the user has the ability to run scripts as a superuser (sudo)
+
 
 Requirements: 
 
-* Requires a Windows machine running the Bridge
-* The Windows machine should be on a Windows domain 
-* A tool such as `psexec` is needed to start the Bridge as LOCAL SYSTEM. <br/> 
+* Requires a Windows machine running the WCF test service 
+* * The Windows machine should be on a Windows domain 
+* If using the self-hosted service (as opposed to the IIS-hosted service), a tool such as `psexec` is needed to start the self-hosted service as LOCAL SYSTEM. 
   Download the tool from https://technet.microsoft.com/en-us/sysinternals/psexec.aspx <br />
   `psexec -s -h <command>` will start a command as an elevated LOCAL SYSTEM user
 
@@ -77,7 +71,7 @@ Assumes:
   _Note: The domain controller FQDN must be in uppercase_
   
 * ${GitWcfRoot} : root of the WCF Core git repo
-* ${BridgeHost} : Bridge host machine name  
+* ${ServiceUri} : WCF Service URI 
 * ${NegotiateTestRealm} :  Kerberos realm on which server is running
 * ${NegotiateTestUserName} : Valid user name on Kerberos realm specified by ${NegotiateTestRealm} 
 * ${NegotiateTestPassword} : User's password on the Kerberos realm
@@ -119,17 +113,27 @@ On RedHat/CentOS: (to be investigated)
 
 Steps:
 
-1. Ensure the Bridge is running on a Windows machine and as LOCAL SYSTEM with `psexec -s -h ${GitWcfRoot}\startBridge.cmd -allowRemote -remoteAddresses:*`
-2. On Linux, go to ${GitWcfRoot} and run `./build.sh` 
-3. On Linux, `pushd $(GitWcfRoot)/src/System.Private.ServiceModel/tools/setupfiles`
-4. Install the certificate file `sudo ./TestRootCertificateInstaller.sh --service-host ${ServiceHost} --cert-file ~/tmp/wcfca.crt`. Note that the --cert-file should be a file in the the user tmp directory and the filename must have a .crt extension
-5. Specify the test service host location `export ServiceHost=${ServiceHost}`. <br/> 
-   _Note: this step is not needed if running tests using 'build.sh'_
-6. Initialize Kerberos by running `kinit ${NegotiateTestUserName}@${NegotiateTestRealm}`; enter the password for the user, ${NegotiateTestPassword}
-7. Run `klist` to see that the Kerberos ticket has been acquired 
-8. Run tests as needed, such as with `${GitWcfRoot}/build.sh /p:WithCategories=OuterLoop /p:BridgeHost=${BridgeHost}`
-9. Once tests are completed, run `kdestroy -A` on your Linux box
-10. Shut down the bridge by running `${GitWcfRoot}\stopBridge.cmd`
+1. Ensure the service is running on a Windows machine - either IIS hosted or self-hosted 
+2. On Linux, go to ${GitWcfRoot} and run `./build.sh /p:WithCategories=OuterLoop` to do a run and install the certificates 
+3. Initialize Kerberos by running `kinit ${NegotiateTestUserName}@${NegotiateTestRealm}`; enter the password for the user, ${NegotiateTestPassword}
+4. Run `klist` to see that the Kerberos ticket has been acquired 
+5. Run tests as needed, such as with `${GitWcfRoot}/build.sh /p:WithCategories=OuterLoop /p:ServiceUri=${ServiceUri} /p:Negotiate_Available=true /p:Kerberos_Available=true`
+See section titled "Test Conditions" to see what conditions are specifiable. 
+6. Once tests are completed, run `kdestroy -A` on your Linux box
 
+## Test conditions 
+Tests that require special conditions to run are Conditioned to prevent running when the conditions are not true - for example, a Kerberos environment may not be available on all machines, so these tests will not run by default. In order to run tests, we must specify each condition we know to be true on the command line - such as 
 
+`build.sh /p:WithCategories=OuterLoop /p:ServiceUri=${ServiceUri} /p:Negotiate_Available=true /p:Kerberos_Available=true`
+
+Available conditions are: 
+
+* SPN_Available
+* Ambient_Credentials_Available
+* Explicit_Credentials_Available
+* Basic_Authentication_Available
+* Digest_Authentication_Available
+* Windows_Authentication_Available
+* NTLM_Available
+* SSL_Available
 
