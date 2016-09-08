@@ -187,9 +187,21 @@ if ERRORLEVEL 1 goto :Failure
 
 :SkipCertInstall
 
-:: Unlock the configuration of sslFlags
-echo Unlock the IIS config section to allow sslFlags to be overriden
+:: Unlock the configuration of sslFlags and Authentication
+echo Unlock the IIS config section to allow sslFlags and Authentication methods to be overriden
 call :Run %_appcmd% unlock config /section:"system.webServer/security/access"
+if ERRORLEVEL 1 goto :Failure
+
+call :Run %_appcmd% unlock config /section:"system.webServer/security/authentication/anonymousAuthentication"
+if ERRORLEVEL 1 goto :Failure
+
+call :Run %_appcmd% unlock config /section:"system.webServer/security/authentication/basicAuthentication"
+if ERRORLEVEL 1 goto :Failure
+
+call :Run %_appcmd% unlock config /section:"system.webServer/security/authentication/digestAuthentication"
+if ERRORLEVEL 1 goto :Failure
+
+call :Run %_appcmd% unlock config /section:"system.webServer/security/authentication/windowsAuthentication"
 if ERRORLEVEL 1 goto :Failure
 
 :: Clean up log file if everything worked perfectly
