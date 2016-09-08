@@ -162,12 +162,6 @@
       "values": ["x86", "arm", "arm-softfp", "x64", "arm64"],
       "defaultValue": "${CPUArch}"
     },
-    "CmakeBuildType": {
-      "description": "Sets the value of the build configuration.",
-      "valueType": "passThrough",
-      "values": [],
-      "defaultValue": "Debug"
-    },
     "HostOs": {
       "description": "OS for result binaries.",
       "valueType": "passThrough",

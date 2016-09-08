@@ -4,6 +4,10 @@ setlocal EnableDelayedExpansion
 echo Stop VBCSCompiler.exe execution.
 for /f "tokens=2 delims=," %%F in ('tasklist /nh /fi "imagename eq VBCSCompiler.exe" /fo csv') do taskkill /f /PID %%~F
 
+echo Cleanup StopWcfSelfHostedSvc.cmd
+call src\System.Private.ServiceModel\tools\scripts\StopWcfSelfHostedSvc.cmd
+type SelfHostedWcfServiceCleanup.log
+
 if [%1] == [-all] (
   echo Cleaning entire working directory ...
   call git clean -xdf

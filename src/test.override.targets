@@ -30,7 +30,7 @@
   <!--if ServiceUri is set, the service has been already started on another machine-->
   <Target Name="WcfSetup" BeforeTargets="BuildAllProjects" Condition="($(WithCategories.Contains('OuterLoop')) or '$(OuterLoop)' == 'true') and ('$(ServiceUri)' == '') and $(FilterToOSGroup) == 'Windows_NT'" >
     <Delete Files="$(WcfSelfHostSetupLog)" Condition="Exists('$(WcfSelfHostSetupLog)')" />
-    <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\StartWCFSelfHostedSvc.cmd" ContinueOnError="true">
+    <Exec Command="$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tools\scripts\StartWCFSelfHostedSvc.cmd" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="WcfSetupErrorCode"/>
     </Exec>
     <Message Text="WcfSetupErrorCode: $(WcfSetupErrorCode)" />
@@ -44,7 +44,7 @@
   <Target Name="WcfCleanUp" Condition="$(WcfSetupErrorCode)!='-1' and $(WcfSetupErrorCode)!=''" >
     <Message Text="-------------- WCF self-host outerloop cleanup start --------------" Importance="High" />
     <Delete Files="$(WcfSelfHostCleanupLog)" Condition="Exists('$(WcfSelfHostCleanupLog)')" />
-    <Exec Command="$(MSBuildThisFileDirectory)\src\System.Private.ServiceModel\tools\scripts\StopWcfSelfHostedSvc.cmd" ContinueOnError="true" />
+    <Exec Command="$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tools\scripts\StopWcfSelfHostedSvc.cmd" ContinueOnError="true" />
     <Message Text="$([System.IO.File]::ReadAllText($(WcfSelfHostCleanupLog)))" Condition="Exists('$(WcfSelfHostCleanupLog)')" Importance="High" />
     <Message Text="-------------- WCF self-host outerloop cleanup end --------------" Importance="High" />
   </Target>
