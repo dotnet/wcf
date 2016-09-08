@@ -1,16 +1,16 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Xml;
+using System.ServiceModel.Channels;
+using System.ServiceModel;
 
 namespace System.ServiceModel.Security
 {
-    using System.Xml;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel;
-
     abstract class DelegatingHeader : MessageHeader
     {
-        MessageHeader innerHeader;
+        MessageHeader _innerHeader;
 
         protected DelegatingHeader(MessageHeader innerHeader)
         {
@@ -18,14 +18,14 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("innerHeader");
             }
-            this.innerHeader = innerHeader;
+            _innerHeader = innerHeader;
         }
 
         public override bool MustUnderstand
         {
             get
             {
-                return this.innerHeader.MustUnderstand;
+                return _innerHeader.MustUnderstand;
             }
         }
 
@@ -33,7 +33,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.innerHeader.Name;
+                return _innerHeader.Name;
             }
         }
 
@@ -41,7 +41,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.innerHeader.Namespace;
+                return _innerHeader.Namespace;
             }
         }
 
@@ -49,7 +49,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.innerHeader.Relay;
+                return _innerHeader.Relay;
             }
         }
 
@@ -57,7 +57,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.innerHeader.Actor;
+                return _innerHeader.Actor;
             }
         }
 
@@ -65,18 +65,18 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.innerHeader;
+                return _innerHeader;
             }
         }
 
         protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            this.innerHeader.WriteStartHeader(writer, messageVersion);
+            _innerHeader.WriteStartHeader(writer, messageVersion);
         }
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            this.innerHeader.WriteHeaderContents(writer, messageVersion);
+            _innerHeader.WriteHeaderContents(writer, messageVersion);
         }
     }
 }

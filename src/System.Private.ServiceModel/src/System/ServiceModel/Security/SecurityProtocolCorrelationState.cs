@@ -1,43 +1,42 @@
-//----------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.IdentityModel.Claims;
+using System.ServiceModel;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
+using System.ServiceModel.Security.Tokens;
+using System.ServiceModel.Diagnostics;
 
 namespace System.ServiceModel.Security
 {
-    using System.IdentityModel.Claims;
-    using System.ServiceModel;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Tokens;
-    using System.ServiceModel.Security.Tokens;
-    using System.ServiceModel.Diagnostics;
-
     class SecurityProtocolCorrelationState
     {
-        SecurityToken token;
-        SignatureConfirmations signatureConfirmations;
-        ServiceModelActivity activity;
+        private SecurityToken _token;
+        private SignatureConfirmations _signatureConfirmations;
+        private ServiceModelActivity _activity;
 
         public SecurityProtocolCorrelationState(SecurityToken token)
         {
-            this.token = token;
-            this.activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.Current : null;
+            _token = token;
+            _activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.Current : null;
         }
 
         public SecurityToken Token
         {
-            get { return this.token; }
+            get { return _token; }
         }
 
         internal SignatureConfirmations SignatureConfirmations
         {
-            get { return this.signatureConfirmations; }
-            set { this.signatureConfirmations = value; }
+            get { return _signatureConfirmations; }
+            set { _signatureConfirmations = value; }
         }
 
         internal ServiceModelActivity Activity
         {
-            get { return this.activity; }
+            get { return _activity; }
         }
     }
 }
-

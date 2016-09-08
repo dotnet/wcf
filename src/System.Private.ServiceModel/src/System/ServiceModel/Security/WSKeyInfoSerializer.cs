@@ -1,20 +1,22 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 
 using System.Collections.Generic;
 using System.IdentityModel;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
 
 namespace System.ServiceModel.Security
 {
-
     class WSKeyInfoSerializer : KeyInfoSerializer
     {
-        static Func<KeyInfoSerializer, IEnumerable<SecurityTokenSerializer.SerializerEntries>> CreateAdditionalEntries(SecurityVersion securityVersion, SecureConversationVersion secureConversationVersion)
+        static Func<KeyInfoSerializer, IEnumerable<SecurityTokenSerializer.SerializerEntries>> CreateAdditionalEntries(SecurityTokenSerializer tokenSerializer, SecurityVersion securityVersion, SecureConversationVersion secureConversationVersion)
         {
             return (KeyInfoSerializer keyInfoSerializer) =>
                 {
@@ -22,16 +24,17 @@ namespace System.ServiceModel.Security
 
                     if (securityVersion == SecurityVersion.WSSecurity10)
                     {
-                        serializerEntries.Add(new System.IdentityModel.Tokens.WSSecurityJan2004(keyInfoSerializer));
+                        serializerEntries.Add(new WSSecurityJan2004((WSSecurityTokenSerializer) tokenSerializer));
                     }
                     else if (securityVersion == SecurityVersion.WSSecurity11)
                     {
-                        serializerEntries.Add(new System.IdentityModel.Tokens.WSSecurityXXX2005(keyInfoSerializer));
+                        serializerEntries.Add(new WSSecurityXXX2005((WSSecurityTokenSerializer)tokenSerializer));
                     }
                     else
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("securityVersion", SR.GetString(SR.MessageSecurityVersionOutOfRange)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("securityVersion", SR.Format(SR.MessageSecurityVersionOutOfRange)));
                     }
+
 
                     if (secureConversationVersion == SecureConversationVersion.WSSecureConversationFeb2005)
                     {
@@ -51,7 +54,7 @@ namespace System.ServiceModel.Security
         }
 
         public WSKeyInfoSerializer(bool emitBspRequiredAttributes, DictionaryManager dictionaryManager, System.IdentityModel.TrustDictionary trustDictionary, SecurityTokenSerializer innerSecurityTokenSerializer, SecurityVersion securityVersion, SecureConversationVersion secureConversationVersion)
-            : base(emitBspRequiredAttributes, dictionaryManager, trustDictionary, innerSecurityTokenSerializer, CreateAdditionalEntries(securityVersion, secureConversationVersion))
+            : base(emitBspRequiredAttributes, dictionaryManager, trustDictionary, innerSecurityTokenSerializer, CreateAdditionalEntries(innerSecurityTokenSerializer, securityVersion, secureConversationVersion))
         {
         }
 
@@ -59,16 +62,16 @@ namespace System.ServiceModel.Security
 
         abstract class WSSecureConversation : SecurityTokenSerializer.SerializerEntries
         {
-            KeyInfoSerializer securityTokenSerializer;
+            private KeyInfoSerializer _securityTokenSerializer;
 
             protected WSSecureConversation( KeyInfoSerializer securityTokenSerializer )
             {
-                this.securityTokenSerializer = securityTokenSerializer;
+                _securityTokenSerializer = securityTokenSerializer;
             }
 
             public KeyInfoSerializer SecurityTokenSerializer
             {
-                get { return this.securityTokenSerializer; }
+                get { return _securityTokenSerializer; }
             }
 
             public abstract System.IdentityModel.SecureConversationDictionary SerializerDictionary
@@ -93,16 +96,16 @@ namespace System.ServiceModel.Security
 
             protected abstract class SctStrEntry : StrEntry
             {
-                WSSecureConversation parent;
+                private WSSecureConversation _parent;
 
                 public SctStrEntry( WSSecureConversation parent )
                 {
-                    this.parent = parent;
+                    _parent = parent;
                 }
 
                 protected WSSecureConversation Parent
                 {
-                    get { return this.parent; }
+                    get { return _parent; }
                 }
 
                 public override Type GetTokenType( SecurityKeyIdentifierClause clause )
@@ -117,20 +120,20 @@ namespace System.ServiceModel.Security
 
                 public override bool CanReadClause( XmlDictionaryReader reader, string tokenType )
                 {
-                    if ( tokenType != null && tokenType != parent.SerializerDictionary.SecurityContextTokenType.Value )
+                    if ( tokenType != null && tokenType != _parent.SerializerDictionary.SecurityContextTokenType.Value )
                     {
                         return false;
                     }
                     if ( reader.IsStartElement(
-                        parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.Reference,
-                        parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.Namespace ) )
+                        _parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.Reference,
+                        _parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.Namespace ) )
                     {
-                        string valueType = reader.GetAttribute( parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.ValueType, null );
-                        if ( valueType != null && valueType != parent.SerializerDictionary.SecurityContextTokenReferenceValueType.Value )
+                        string valueType = reader.GetAttribute( _parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.ValueType, null );
+                        if ( valueType != null && valueType != _parent.SerializerDictionary.SecurityContextTokenReferenceValueType.Value )
                         {
                             return false;
                         }
-                        string uri = reader.GetAttribute( parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.URI, null );
+                        string uri = reader.GetAttribute( _parent.SecurityTokenSerializer.DictionaryManager.SecurityJan2004Dictionary.URI, null );
                         if ( uri != null )
                         {
                             if ( uri.Length > 0 && uri[0] != '#' )
@@ -177,48 +180,64 @@ namespace System.ServiceModel.Security
                     writer.WriteStartElement( XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.Reference, XD.SecurityJan2004Dictionary.Namespace );
                     XmlHelper.WriteAttributeStringAsUniqueId( writer, null, XD.SecurityJan2004Dictionary.URI, null, sctClause.ContextId );
                     WriteGeneration( writer, sctClause );
-                    writer.WriteAttributeString( XD.SecurityJan2004Dictionary.ValueType, null, parent.SerializerDictionary.SecurityContextTokenReferenceValueType.Value );
+                    writer.WriteAttributeString( XD.SecurityJan2004Dictionary.ValueType, null, _parent.SerializerDictionary.SecurityContextTokenReferenceValueType.Value );
                     writer.WriteEndElement();
                 }
 
                 protected abstract void WriteGeneration( XmlDictionaryWriter writer, SecurityContextKeyIdentifierClause clause );
             }
 
-            protected class SecurityContextTokenEntry : SecurityTokenSerializer.TokenEntry
+            protected class SecurityContextTokenEntry : TokenEntry
             {
-                WSSecureConversation parent;
-                Type[] tokenTypes;
+                private WSSecureConversation _parent;
+                private Type[] _tokenTypes;
 
                 public SecurityContextTokenEntry( WSSecureConversation parent )
                 {
-                    this.parent = parent;
+                    _parent = parent;
                 }
 
                 protected WSSecureConversation Parent
                 {
-                    get { return this.parent; }
+                    get { return _parent; }
                 }
 
-                protected override XmlDictionaryString LocalName { get { return parent.SerializerDictionary.SecurityContextToken; } }
-                protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
+                protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.SecurityContextToken; } }
+                protected override XmlDictionaryString NamespaceUri { get { return _parent.SerializerDictionary.Namespace; } }
                 protected override Type[] GetTokenTypesCore()
                 {
-                    if ( tokenTypes == null )
-                        this.tokenTypes = new Type[] { typeof( SecurityContextSecurityToken ) };
+                    if ( _tokenTypes == null )
+                        _tokenTypes = new Type[] { typeof( SecurityContextSecurityToken ) };
 
-                    return this.tokenTypes;
+                    return _tokenTypes;
                 }
-                public override string TokenTypeUri { get { return parent.SerializerDictionary.SecurityContextTokenType.Value; } }
+
+                public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml, SecurityTokenReferenceStyle tokenReferenceStyle)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                }
+
+                public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                }
+
+                public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                }
+
+                public override string TokenTypeUri { get { return _parent.SerializerDictionary.SecurityContextTokenType.Value; } }
                 protected override string ValueTypeUri { get { return null; } }
 
             }
 
-            protected class DerivedKeyTokenEntry : SecurityTokenSerializer.TokenEntry
+            protected class DerivedKeyTokenEntry : TokenEntry
             {
                 public const string DefaultLabel = "WS-SecureConversation";
 
-                WSSecureConversation parent;
-                Type[] tokenTypes;
+                private WSSecureConversation _parent;
+                private Type[] _tokenTypes;
 
                 public DerivedKeyTokenEntry( WSSecureConversation parent )
                 {
@@ -226,21 +245,38 @@ namespace System.ServiceModel.Security
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull( "parent" );
                     }
-                    this.parent = parent;
+                    _parent = parent;
                 }
 
-                protected override XmlDictionaryString LocalName { get { return parent.SerializerDictionary.DerivedKeyToken; } }
-                protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
+                protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.DerivedKeyToken; } }
+                protected override XmlDictionaryString NamespaceUri { get { return _parent.SerializerDictionary.Namespace; } }
                 protected override Type[] GetTokenTypesCore()
                 {
-                    if ( tokenTypes == null )
-                        this.tokenTypes = new Type[] { typeof( DerivedKeySecurityToken ) };
+                    if ( _tokenTypes == null )
+                        _tokenTypes = new Type[] { typeof( DerivedKeySecurityToken ) };
 
-                    return this.tokenTypes;
+                    return _tokenTypes;
                 }
 
-                public override string TokenTypeUri { get { return parent.SerializerDictionary.DerivedKeyTokenType.Value; } }
+                public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml, SecurityTokenReferenceStyle tokenReferenceStyle)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                }
+
+                public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                }
+
+                public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                }
+
+                public override string TokenTypeUri { get { return _parent.SerializerDictionary.DerivedKeyTokenType.Value; } }
                 protected override string ValueTypeUri { get { return null; } }
+
+
             }
         }
 

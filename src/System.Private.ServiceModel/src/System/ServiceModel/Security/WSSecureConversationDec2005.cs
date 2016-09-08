@@ -1,37 +1,38 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.ServiceModel;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.IdentityModel.Claims;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+// Issue #31 in progress
+// using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using System.ServiceModel.Security.Tokens;
+using System.Runtime.Serialization;
+using KeyIdentifierEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierEntry;
+using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
+using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
 
 namespace System.ServiceModel.Security
 {
-    using System;
-    using System.ServiceModel;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Tokens;
-    using System.Security.Cryptography.X509Certificates;
-    using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.ServiceModel.Security.Tokens;
-    using System.Runtime.Serialization;
-    using KeyIdentifierEntry = WSSecurityTokenSerializer.KeyIdentifierEntry;
-    using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-    using StrEntry = WSSecurityTokenSerializer.StrEntry;
-    using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
-
     class WSSecureConversationDec2005 : WSSecureConversation
     {
-        SecurityStateEncoder securityStateEncoder;
-        IList<Type> knownClaimTypes;
+        private SecurityStateEncoder _securityStateEncoder;
+        private IList<Type> _knownClaimTypes;
 
         public WSSecureConversationDec2005(WSSecurityTokenSerializer tokenSerializer, SecurityStateEncoder securityStateEncoder, IEnumerable<Type> knownTypes,
             int maxKeyDerivationOffset, int maxKeyDerivationLabelLength, int maxKeyDerivationNonceLength)
@@ -39,20 +40,21 @@ namespace System.ServiceModel.Security
         {
             if (securityStateEncoder != null)
             {
-                this.securityStateEncoder = securityStateEncoder;
+                _securityStateEncoder = securityStateEncoder;
             }
             else
             {
-                this.securityStateEncoder = new DataProtectionSecurityStateEncoder();
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //this.securityStateEncoder = new DataProtectionSecurityStateEncoder();
             }
 
-            this.knownClaimTypes = new List<Type>();
+            _knownClaimTypes = new List<Type>();
             if (knownTypes != null)
             {
                 // Clone this collection.
                 foreach (Type knownType in knownTypes)
                 {
-                    this.knownClaimTypes.Add(knownType);
+                    _knownClaimTypes.Add(knownType);
                 }
             }
         }
@@ -65,7 +67,7 @@ namespace System.ServiceModel.Security
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
         {
             base.PopulateTokenEntries(tokenEntryList);
-            tokenEntryList.Add(new SecurityContextTokenEntryDec2005(this, this.securityStateEncoder, this.knownClaimTypes));
+            tokenEntryList.Add(new SecurityContextTokenEntryDec2005(this, _securityStateEncoder, _knownClaimTypes));
         }
 
         public override string DerivationAlgorithm
@@ -101,7 +103,8 @@ namespace System.ServiceModel.Security
 
             protected override UniqueId ReadGeneration(XmlElement element)
             {
-                return XmlHelper.ReadTextElementAsUniqueId(element);
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                // return XmlHelper.ReadTextElementAsUniqueId(element);
             }
 
             protected override void WriteGeneration(XmlDictionaryWriter writer, SecurityContextSecurityToken sct)
@@ -166,5 +169,3 @@ namespace System.ServiceModel.Security
         }
     }
 }
-
-

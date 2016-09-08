@@ -1,55 +1,54 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.IdentityModel;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+using System.Runtime;
+using System.Runtime.CompilerServices;
+using System.Xml;
+using DictionaryManager = System.IdentityModel.DictionaryManager;
+using ISecurityElement = System.IdentityModel.ISecurityElement;
 
 namespace System.ServiceModel.Security
 {
-    using System.IdentityModel;
-    using System.IdentityModel.Selectors;
-    using System.IdentityModel.Tokens;
-    using System.Runtime;
-    using System.Runtime.CompilerServices;
-    using System.Xml;
-    using DictionaryManager = System.IdentityModel.DictionaryManager;
-    using ISecurityElement = System.IdentityModel.ISecurityElement;
-
-    [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
     abstract class EncryptedType : ISecurityElement
     {
-        internal static readonly XmlDictionaryString NamespaceUri = XD.XmlEncryptionDictionary.Namespace;
-        internal static readonly XmlDictionaryString EncodingAttribute = XD.XmlEncryptionDictionary.Encoding;
-        internal static readonly XmlDictionaryString MimeTypeAttribute = XD.XmlEncryptionDictionary.MimeType;
-        internal static readonly XmlDictionaryString TypeAttribute = XD.XmlEncryptionDictionary.Type;
-        internal static readonly XmlDictionaryString CipherDataElementName = XD.XmlEncryptionDictionary.CipherData;
-        internal static readonly XmlDictionaryString CipherValueElementName = XD.XmlEncryptionDictionary.CipherValue;
+        internal static readonly XmlDictionaryString s_NamespaceUri = System.IdentityModel.XD.XmlEncryptionDictionary.Namespace;
+        internal static readonly XmlDictionaryString s_EncodingAttribute = System.IdentityModel.XD.XmlEncryptionDictionary.Encoding;
+        internal static readonly XmlDictionaryString s_MimeTypeAttribute = System.IdentityModel.XD.XmlEncryptionDictionary.MimeType;
+        internal static readonly XmlDictionaryString s_TypeAttribute = System.IdentityModel.XD.XmlEncryptionDictionary.Type;
+        internal static readonly XmlDictionaryString s_CipherDataElementName = System.IdentityModel.XD.XmlEncryptionDictionary.CipherData;
+        internal static readonly XmlDictionaryString s_CipherValueElementName = System.IdentityModel.XD.XmlEncryptionDictionary.CipherValue;
 
-        string encoding;
-        EncryptionMethodElement encryptionMethod;
-        string id;
-        string wsuId;
-        SecurityKeyIdentifier keyIdentifier;
-        string mimeType;
-        EncryptionState state;
-        string type;
-        SecurityTokenSerializer tokenSerializer;
-        bool shouldReadXmlReferenceKeyInfoClause;
+        private string _encoding;
+        private EncryptionMethodElement _encryptionMethod;
+        private string _id;
+        private string _wsuId;
+        private SecurityKeyIdentifier _keyIdentifier;
+        private string _mimeType;
+        private EncryptionState _state;
+        private string _type;
+        private SecurityTokenSerializer _tokenSerializer;
+        private bool _shouldReadXmlReferenceKeyInfoClause;
 
         protected EncryptedType()
         {
-            this.encryptionMethod.Init();
-            this.state = EncryptionState.New;
-            this.tokenSerializer = new KeyInfoSerializer(false);
+            _encryptionMethod.Init();
+            _state = EncryptionState.New;
+            _tokenSerializer = new KeyInfoSerializer(false);
         }
 
         public string Encoding
         {
             get
             {
-                return this.encoding;
+                return _encoding;
             }
             set
             {
-                this.encoding = value;
+                _encoding = value;
             }
         }
 
@@ -57,11 +56,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.encryptionMethod.algorithm;
+                return _encryptionMethod.algorithm;
             }
             set
             {
-                this.encryptionMethod.algorithm = value;
+                _encryptionMethod.algorithm = value;
             }
         }
 
@@ -69,11 +68,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.encryptionMethod.algorithmDictionaryString;
+                return _encryptionMethod.algorithmDictionaryString;
             }
             set
             {
-                this.encryptionMethod.algorithmDictionaryString = value;
+                _encryptionMethod.algorithmDictionaryString = value;
             }
         }
 
@@ -89,11 +88,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.id;
+                return _id;
             }
             set
             {
-                this.id = value;
+                _id = value;
             }
         }
 
@@ -104,11 +103,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.shouldReadXmlReferenceKeyInfoClause;
+                return _shouldReadXmlReferenceKeyInfoClause;
             }
             set
             {
-                this.shouldReadXmlReferenceKeyInfoClause = value;
+                _shouldReadXmlReferenceKeyInfoClause = value;
             }
         }
 
@@ -116,11 +115,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.wsuId;
+                return _wsuId;
             }
             set
             {
-                this.wsuId = value;
+                _wsuId = value;
             }
         }
 
@@ -128,11 +127,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.keyIdentifier;
+                return _keyIdentifier;
             }
             set
             {
-                this.keyIdentifier = value;
+                _keyIdentifier = value;
             }
         }
 
@@ -140,11 +139,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.mimeType;
+                return _mimeType;
             }
             set
             {
-                this.mimeType = value;
+                _mimeType = value;
             }
         }
 
@@ -152,11 +151,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.type;
+                return _type;
             }
             set
             {
-                this.type = value;
+                _type = value;
             }
         }
 
@@ -169,11 +168,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.state;
+                return _state;
             }
             set
             {
-                this.state = value;
+                _state = value;
             }
         }
 
@@ -181,11 +180,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.tokenSerializer;
+                return _tokenSerializer;
             }
             set
             {
-                this.tokenSerializer = value ?? new KeyInfoSerializer(false);
+                _tokenSerializer = value ?? new KeyInfoSerializer(false);
             }
         }
 
@@ -220,31 +219,32 @@ namespace System.ServiceModel.Security
         public void ReadFrom(XmlDictionaryReader reader, long maxBufferSize)
         {
             ValidateReadState();
-            reader.MoveToStartElement(OpeningElementName, NamespaceUri);
-            this.encoding = reader.GetAttribute(EncodingAttribute, null);
-            this.id = reader.GetAttribute(XD.XmlEncryptionDictionary.Id, null) ?? SecurityUniqueId.Create().Value;
-            this.wsuId = reader.GetAttribute(XD.XmlEncryptionDictionary.Id, XD.UtilityDictionary.Namespace) ?? SecurityUniqueId.Create().Value;
-            this.mimeType = reader.GetAttribute(MimeTypeAttribute, null);
-            this.type = reader.GetAttribute(TypeAttribute, null);
+            reader.MoveToStartElement(OpeningElementName, s_NamespaceUri);
+            _encoding = reader.GetAttribute(s_EncodingAttribute, null);
+            _id = reader.GetAttribute(System.IdentityModel.XD.XmlEncryptionDictionary.Id, null) ?? SecurityUniqueId.Create().Value;
+            _wsuId = reader.GetAttribute(System.IdentityModel.XD.XmlEncryptionDictionary.Id, XD.UtilityDictionary.Namespace) ?? SecurityUniqueId.Create().Value;
+            _mimeType = reader.GetAttribute(s_MimeTypeAttribute, null);
+            _type = reader.GetAttribute(s_TypeAttribute, null);
             ReadAdditionalAttributes(reader);
             reader.Read();
 
-            if (reader.IsStartElement(EncryptionMethodElement.ElementName, NamespaceUri))
+            if (reader.IsStartElement(EncryptionMethodElement.ElementName, s_NamespaceUri))
             {
-                this.encryptionMethod.ReadFrom(reader);
+                _encryptionMethod.ReadFrom(reader);
             }
 
-            if (this.tokenSerializer.CanReadKeyIdentifier(reader))
+            if (_tokenSerializer.CanReadKeyIdentifier(reader))
             {
-                XmlElement xml = null;
+                // XmlElement xml = null;
                 XmlDictionaryReader localReader;
 
                 if (this.ShouldReadXmlReferenceKeyInfoClause)
                 {
                     // We create the dom only when needed to not affect perf.
-                    XmlDocument doc = new XmlDocument();
-                    xml = (doc.ReadNode(reader) as XmlElement);
-                    localReader = XmlDictionaryReader.CreateDictionaryReader(new XmlNodeReader(xml));
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                    //XmlDocument doc = new XmlDocument();
+                    //xml = (doc.ReadNode(reader) as XmlElement);
+                    //localReader = XmlDictionaryReader.CreateDictionaryReader(new XmlNodeReader(xml));
                 }
                 else
                 {
@@ -253,7 +253,7 @@ namespace System.ServiceModel.Security
 
                 try
                 {
-                    this.KeyIdentifier = this.tokenSerializer.ReadKeyIdentifier(localReader);
+                    this.KeyIdentifier = _tokenSerializer.ReadKeyIdentifier(localReader);
                 }
                 catch (Exception e)
                 {
@@ -266,12 +266,13 @@ namespace System.ServiceModel.Security
                         throw;
                     }
 
-                    this.keyIdentifier = ReadGenericXmlSecurityKeyIdentifier( XmlDictionaryReader.CreateDictionaryReader( new XmlNodeReader(xml)), e);
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                    //this.keyIdentifier = ReadGenericXmlSecurityKeyIdentifier( XmlDictionaryReader.CreateDictionaryReader( new XmlNodeReader(xml)), e);
                 }
             }
 
-            reader.ReadStartElement(CipherDataElementName, EncryptedType.NamespaceUri);
-            reader.ReadStartElement(CipherValueElementName, EncryptedType.NamespaceUri);
+            reader.ReadStartElement(s_CipherDataElementName, EncryptedType.s_NamespaceUri);
+            reader.ReadStartElement(s_CipherValueElementName, EncryptedType.s_NamespaceUri);
             if (maxBufferSize == 0)
                 ReadCipherData(reader);
             else
@@ -330,35 +331,35 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
             }
             ValidateWriteState();
-            writer.WriteStartElement(XmlEncryptionStrings.Prefix, this.OpeningElementName, NamespaceUri);
-            if (this.id != null && this.id.Length != 0)
+            writer.WriteStartElement(XmlEncryptionStrings.Prefix, this.OpeningElementName, s_NamespaceUri);
+            if (_id != null && _id.Length != 0)
             {
-                writer.WriteAttributeString(XD.XmlEncryptionDictionary.Id, null, this.Id);
+                writer.WriteAttributeString(System.IdentityModel.XD.XmlEncryptionDictionary.Id, null, this.Id);
             }
-            if (this.type != null)
+            if (_type != null)
             {
-                writer.WriteAttributeString(TypeAttribute, null, this.Type);
+                writer.WriteAttributeString(s_TypeAttribute, null, this.Type);
             }
-            if (this.mimeType != null)
+            if (_mimeType != null)
             {
-                writer.WriteAttributeString(MimeTypeAttribute, null, this.MimeType);
+                writer.WriteAttributeString(s_MimeTypeAttribute, null, this.MimeType);
             }
-            if (this.encoding != null)
+            if (_encoding != null)
             {
-                writer.WriteAttributeString(EncodingAttribute, null, this.Encoding);
+                writer.WriteAttributeString(s_EncodingAttribute, null, this.Encoding);
             }
             WriteAdditionalAttributes(writer, dictionaryManager);
-            if (this.encryptionMethod.algorithm != null)
+            if (_encryptionMethod.algorithm != null)
             {
-                this.encryptionMethod.WriteTo(writer);
+                _encryptionMethod.WriteTo(writer);
             }
             if (this.KeyIdentifier != null)
             {
-                this.tokenSerializer.WriteKeyIdentifier(writer, this.KeyIdentifier);
+                _tokenSerializer.WriteKeyIdentifier(writer, this.KeyIdentifier);
             }
 
-            writer.WriteStartElement(CipherDataElementName, NamespaceUri);
-            writer.WriteStartElement(CipherValueElementName, NamespaceUri);
+            writer.WriteStartElement(s_CipherDataElementName, s_NamespaceUri);
+            writer.WriteStartElement(s_CipherValueElementName, s_NamespaceUri);
             WriteCipherData(writer);
             writer.WriteEndElement(); // CipherValue
             writer.WriteEndElement(); // CipherData
@@ -371,7 +372,7 @@ namespace System.ServiceModel.Security
         {
             if (this.State != EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.GetString(SR.BadEncryptionState)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.Format(SR.BadEncryptionState)));
             }
         }
 
@@ -383,7 +384,7 @@ namespace System.ServiceModel.Security
             }
             else if (this.State == EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.GetString(SR.BadEncryptionState)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.Format(SR.BadEncryptionState)));
             }
         }
 
@@ -401,7 +402,7 @@ namespace System.ServiceModel.Security
         {
             internal string algorithm;
             internal XmlDictionaryString algorithmDictionaryString;
-            internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.EncryptionMethod;
+            internal static readonly XmlDictionaryString ElementName = System.IdentityModel.XD.XmlEncryptionDictionary.EncryptionMethod;
 
             public void Init()
             {
@@ -410,13 +411,13 @@ namespace System.ServiceModel.Security
 
             public void ReadFrom(XmlDictionaryReader reader)
             {
-                reader.MoveToStartElement(ElementName, XD.XmlEncryptionDictionary.Namespace);
+                reader.MoveToStartElement(ElementName, System.IdentityModel.XD.XmlEncryptionDictionary.Namespace);
                 bool isEmptyElement = reader.IsEmptyElement;
                 this.algorithm = reader.GetAttribute(XD.XmlSignatureDictionary.Algorithm, null);
                 if (this.algorithm == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(
-                        SR.GetString(SR.RequiredAttributeMissing, XD.XmlSignatureDictionary.Algorithm.Value, ElementName.Value)));
+                        SR.Format(SR.RequiredAttributeMissing, XD.XmlSignatureDictionary.Algorithm.Value, ElementName.Value)));
                 }
                 reader.Read();
                 if (!isEmptyElement)
@@ -431,7 +432,7 @@ namespace System.ServiceModel.Security
 
             public void WriteTo(XmlDictionaryWriter writer)
             {
-                writer.WriteStartElement(XmlEncryptionStrings.Prefix, ElementName, XD.XmlEncryptionDictionary.Namespace);
+                writer.WriteStartElement(XmlEncryptionStrings.Prefix, ElementName, System.IdentityModel.XD.XmlEncryptionDictionary.Namespace);
                 if (this.algorithmDictionaryString != null)
                 {
                     writer.WriteStartAttribute(XD.XmlSignatureDictionary.Algorithm, null);

@@ -1,37 +1,38 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.IdentityModel.Claims;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel.Security.Tokens;
+// Issue #31 in progress
+//using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using System.Runtime.Serialization;
+using System.ServiceModel.Dispatcher;
+
+using KeyIdentifierEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierEntry;
+using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
+using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
 
 namespace System.ServiceModel.Security
 {
-    using System;
-    using System.ServiceModel;
-    using System.ServiceModel.Description;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Tokens;
-    using System.Security.Cryptography.X509Certificates;
-    using System.ServiceModel.Security.Tokens;
-    using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.Runtime.Serialization;
-    using System.ServiceModel.Dispatcher;
-
-    using KeyIdentifierEntry = WSSecurityTokenSerializer.KeyIdentifierEntry;
-    using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-    using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
-    using StrEntry = WSSecurityTokenSerializer.StrEntry;
-
     class WSTrustDec2005 : WSTrustFeb2005
     {
         public WSTrustDec2005(WSSecurityTokenSerializer tokenSerializer)
@@ -67,45 +68,46 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            public override XmlElement CreateKeyTypeElement(SecurityKeyType keyType)
-            {
-                if (keyType == SecurityKeyType.BearerKey)
-                {
-                    XmlDocument doc = new XmlDocument();
-                    XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.KeyType.Value,
-                        this.DriverDictionary.Namespace.Value);
-                    result.AppendChild(doc.CreateTextNode(DXD.TrustDec2005Dictionary.BearerKeyType.Value));
-                    return result;
-                }
+            // Issue #31 in progress
+            //public override XmlElement CreateKeyTypeElement(SecurityKeyType keyType)
+            //{
+            //    if (keyType == SecurityKeyType.BearerKey)
+            //    {
+            //        XmlDocument doc = new XmlDocument();
+            //        XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.KeyType.Value,
+            //            this.DriverDictionary.Namespace.Value);
+            //        result.AppendChild(doc.CreateTextNode(DXD.TrustDec2005Dictionary.BearerKeyType.Value));
+            //        return result;
+            //    }
 
-                return base.CreateKeyTypeElement(keyType);
-            }
+            //    return base.CreateKeyTypeElement(keyType);
+            //}
 
-            public override bool TryParseKeyTypeElement(XmlElement element, out SecurityKeyType keyType)
-            {
-                if (element == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("element");
+            //public override bool TryParseKeyTypeElement(XmlElement element, out SecurityKeyType keyType)
+            //{
+            //    if (element == null)
+            //        throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("element");
 
-                if (element.LocalName == this.DriverDictionary.KeyType.Value
-                    && element.NamespaceURI == this.DriverDictionary.Namespace.Value
-                    && element.InnerText == DXD.TrustDec2005Dictionary.BearerKeyType.Value)
-                {
-                    keyType = SecurityKeyType.BearerKey;
-                    return true;
-                }
+            //    if (element.LocalName == this.DriverDictionary.KeyType.Value
+            //        && element.NamespaceURI == this.DriverDictionary.Namespace.Value
+            //        && element.InnerText == DXD.TrustDec2005Dictionary.BearerKeyType.Value)
+            //    {
+            //        keyType = SecurityKeyType.BearerKey;
+            //        return true;
+            //    }
 
-                return base.TryParseKeyTypeElement(element, out keyType);
-            }
+            //    return base.TryParseKeyTypeElement(element, out keyType);
+            //}
 
-            public override XmlElement CreateRequiredClaimsElement(IEnumerable<XmlElement> claimsList)
-            {
-                XmlElement result = base.CreateRequiredClaimsElement(claimsList);
-                XmlAttribute dialectAttribute = result.OwnerDocument.CreateAttribute(DXD.TrustDec2005Dictionary.Dialect.Value);
-                dialectAttribute.Value = DXD.TrustDec2005Dictionary.DialectType.Value;
-                result.Attributes.Append(dialectAttribute);
+            //public override XmlElement CreateRequiredClaimsElement(IEnumerable<XmlElement> claimsList)
+            //{
+            //    XmlElement result = base.CreateRequiredClaimsElement(claimsList);
+            //    XmlAttribute dialectAttribute = result.OwnerDocument.CreateAttribute(DXD.TrustDec2005Dictionary.Dialect.Value);
+            //    dialectAttribute.Value = DXD.TrustDec2005Dictionary.DialectType.Value;
+            //    result.Attributes.Append(dialectAttribute);
 
-                return result;
-            }
+            //    return result;
+            //}
 
             public override IChannelFactory<IRequestChannel> CreateFederationProxy(EndpointAddress address, Binding binding, KeyedByTypeCollection<IEndpointBehavior> channelBehaviors)
             {
@@ -127,29 +129,6 @@ namespace System.ServiceModel.Security
                 return new WSTrustFeb2005.DriverFeb2005.RequestChannelFactory<IWsTrustDec2005SecurityTokenService>(result);
             }
 
-            public override Collection<XmlElement> ProcessUnknownRequestParameters(Collection<XmlElement> unknownRequestParameters, Collection<XmlElement> originalRequestParameters)
-            {
-                // For WS-Trust 1.3 we want everything in the requestSecurityTokenTemplate parameters to endup as Addtional parameters.
-                // The parameters will appear as a child element under a XmlElement named secondaryParameters.
-                if (originalRequestParameters == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("originalRequestParameters");
-
-                if (originalRequestParameters.Count > 0 && originalRequestParameters[0] != null && originalRequestParameters[0].OwnerDocument != null)
-                {
-                    XmlElement secondaryParamElement = originalRequestParameters[0].OwnerDocument.CreateElement(DXD.TrustDec2005Dictionary.Prefix.Value, DXD.TrustDec2005Dictionary.SecondaryParameters.Value, DXD.TrustDec2005Dictionary.Namespace.Value);
-                    for (int i = 0; i < originalRequestParameters.Count; ++i)
-                    {
-                        secondaryParamElement.AppendChild(originalRequestParameters[i]);
-                    }
-
-                    Collection<XmlElement> tempCollection = new Collection<XmlElement>();
-                    tempCollection.Add(secondaryParamElement);
-                    return tempCollection;
-                }
-
-                return originalRequestParameters;
-            }
-
             internal virtual bool IsSecondaryParametersElement(XmlElement element)
             {
                 return ((element.LocalName == DXD.TrustDec2005Dictionary.SecondaryParameters.Value) &&
@@ -169,10 +148,11 @@ namespace System.ServiceModel.Security
                 return result;
             }
 
-            internal override bool IsKeyWrapAlgorithmElement(XmlElement element, out string keyWrapAlgorithm)
-            {
-                return CheckElement(element, DXD.TrustDec2005Dictionary.KeyWrapAlgorithm.Value, DXD.TrustDec2005Dictionary.Namespace.Value, out keyWrapAlgorithm);
-            }
+            // Issue #31 in progress
+            //internal override bool IsKeyWrapAlgorithmElement(XmlElement element, out string keyWrapAlgorithm)
+            //{
+            //    return CheckElement(element, DXD.TrustDec2005Dictionary.KeyWrapAlgorithm.Value, DXD.TrustDec2005Dictionary.Namespace.Value, out keyWrapAlgorithm);
+            //}
 
             [ServiceContract]
             internal interface IWsTrustDec2005SecurityTokenService

@@ -36,5 +36,10 @@ namespace System.ServiceModel.Security
         {
             return Task.FromResult<SecurityToken>(_token);
         }
+
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            return _token;
+        }
     }
 }

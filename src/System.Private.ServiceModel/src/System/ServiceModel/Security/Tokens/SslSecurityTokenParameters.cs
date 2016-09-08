@@ -1,35 +1,34 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
+using System.IdentityModel.Selectors;
+using System.ServiceModel.Channels;
+using System.ServiceModel;
+using System.IdentityModel.Tokens;
+using System.ServiceModel.Security;
+using System.Text;
+using System.Globalization;
 
 namespace System.ServiceModel.Security.Tokens
 {
-    using System.IdentityModel.Selectors;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel;
-    using System.IdentityModel.Tokens;
-    using System.ServiceModel.Security;
-    using System.Text;
-    using System.Globalization;
-
     public class SslSecurityTokenParameters : SecurityTokenParameters
     {
         internal const bool defaultRequireClientCertificate = false;
         internal const bool defaultRequireCancellation = false;
 
-        bool requireCancellation = defaultRequireCancellation;
-        bool requireClientCertificate;
-        BindingContext issuerBindingContext;
+        private bool _requireCancellation = defaultRequireCancellation;
+        private bool _requireClientCertificate;
+        private BindingContext _issuerBindingContext;
 
         protected SslSecurityTokenParameters(SslSecurityTokenParameters other)
             : base(other)
         {
-            this.requireClientCertificate = other.requireClientCertificate;
-            this.requireCancellation = other.requireCancellation;
-            if (other.issuerBindingContext != null)
+            _requireClientCertificate = other._requireClientCertificate;
+            _requireCancellation = other._requireCancellation;
+            if (other._issuerBindingContext != null)
             {
-                this.issuerBindingContext = other.issuerBindingContext.Clone();
+                _issuerBindingContext = other._issuerBindingContext.Clone();
             }
         }
 
@@ -48,8 +47,8 @@ namespace System.ServiceModel.Security.Tokens
         public SslSecurityTokenParameters(bool requireClientCertificate, bool requireCancellation)
             : base()
         {
-            this.requireClientCertificate = requireClientCertificate;
-            this.requireCancellation = requireCancellation;
+            _requireClientCertificate = requireClientCertificate;
+            _requireCancellation = requireCancellation;
         }
 
         internal protected override bool HasAsymmetricKey { get { return false; } }
@@ -58,11 +57,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.requireCancellation;
+                return _requireCancellation;
             }
             set
             {
-                this.requireCancellation = value;
+                _requireCancellation = value;
             }
         }
 
@@ -70,11 +69,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.requireClientCertificate;
+                return _requireClientCertificate;
             }
             set
             {
-                this.requireClientCertificate = value;
+                _requireClientCertificate = value;
             }
         }
 
@@ -82,7 +81,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerBindingContext;
+                return _issuerBindingContext;
             }
             set
             {
@@ -90,13 +89,13 @@ namespace System.ServiceModel.Security.Tokens
                 {
                     value = value.Clone();
                 }
-                this.issuerBindingContext = value;
+                _issuerBindingContext = value;
             }
         }
 
-        internal protected override bool SupportsClientAuthentication { get { return this.requireClientCertificate; } }
+        internal protected override bool SupportsClientAuthentication { get { return _requireClientCertificate; } }
         internal protected override bool SupportsServerAuthentication { get { return true; } }
-        internal protected override bool SupportsClientWindowsIdentity { get { return this.requireClientCertificate; } }
+        internal protected override bool SupportsClientWindowsIdentity { get { return _requireClientCertificate; } }
 
         protected override SecurityTokenParameters CloneCore()
         {

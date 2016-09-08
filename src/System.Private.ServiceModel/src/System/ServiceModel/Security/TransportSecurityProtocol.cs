@@ -1,19 +1,19 @@
-//----------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+using System.Runtime;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Security
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Selectors;
-    using System.IdentityModel.Tokens;
-    using System.Runtime;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-
     class TransportSecurityProtocol : SecurityProtocol
     {
         public TransportSecurityProtocol(TransportSecurityProtocolFactory factory, EndpointAddress target, Uri via)
@@ -191,7 +191,7 @@ namespace System.ServiceModel.Security
                 if (Fx.IsFatal(e)) throw;
 
                 base.OnVerifyIncomingMessageFailure(message, e);
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.GetString(SR.MessageSecurityVerificationFailed), e));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.MessageSecurityVerificationFailed), e));
             }
         }
 
@@ -205,6 +205,8 @@ namespace System.ServiceModel.Security
 
         protected virtual void VerifyIncomingMessageCore(ref Message message, TimeSpan timeout)
         {
+            // $$$ throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
+
             TransportSecurityProtocolFactory factory = (TransportSecurityProtocolFactory)this.SecurityProtocolFactory;
             string actor = string.Empty; // message.Version.Envelope.UltimateDestinationActor;
 
@@ -227,10 +229,10 @@ namespace System.ServiceModel.Security
                 {
                     if (String.IsNullOrEmpty(actor))
                         throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
-                            SR.GetString(SR.UnableToFindSecurityHeaderInMessageNoActor)), message);
+                            SR.Format(SR.UnableToFindSecurityHeaderInMessageNoActor)), message);
                     else
                         throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
-                            SR.GetString(SR.UnableToFindSecurityHeaderInMessage, actor)), message);
+                            SR.Format(SR.UnableToFindSecurityHeaderInMessage, actor)), message);
                 }
             }
 
@@ -242,10 +244,11 @@ namespace System.ServiceModel.Security
             securityHeader.ReaderQuotas = factory.SecurityBindingElement.ReaderQuotas;
 
             // Due to compatibility, only honor this setting if this app setting is enabled
-            if (ServiceModelAppSettings.UseConfiguredTransportSecurityHeaderLayout)
-            {
+            // Issue #31 in progress
+            //if (ServiceModelAppSettings.UseConfiguredTransportSecurityHeaderLayout)
+            //{
                 securityHeader.Layout = factory.SecurityHeaderLayout;
-            }
+            //}
 
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             if (!factory.ActAsInitiator)

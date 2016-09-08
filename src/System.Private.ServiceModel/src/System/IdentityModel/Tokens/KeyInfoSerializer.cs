@@ -1,31 +1,29 @@
-//------------------------------------------------------------------------------
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
+using System.IdentityModel.Selectors;
+using System.Runtime;
+using System.ServiceModel.Security;
+using System.Xml;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
 
 namespace System.IdentityModel.Tokens
 {
-    using System.Collections.Generic;
-    using System.IdentityModel;
-    using System.IdentityModel.Security;
-    using System.IdentityModel.Selectors;
-    using System.Runtime;
-    using System.Xml;
-using System.Collections;
-
     /// <summary>
     /// Abstract class for SecurityKeyIdentifierClause Serializer.
     /// </summary>
     internal class KeyInfoSerializer : SecurityTokenSerializer
     {
-        readonly List<SecurityTokenSerializer.KeyIdentifierEntry> keyIdentifierEntries;
-        readonly List<SecurityTokenSerializer.KeyIdentifierClauseEntry> keyIdentifierClauseEntries;
-        readonly List<SecurityTokenSerializer.SerializerEntries> serializerEntries;
-        readonly List<TokenEntry> tokenEntries;
+        private readonly List<SecurityTokenSerializer.KeyIdentifierEntry> _keyIdentifierEntries;
+        private readonly List<SecurityTokenSerializer.KeyIdentifierClauseEntry> _keyIdentifierClauseEntries;
+        private readonly List<SecurityTokenSerializer.SerializerEntries> _serializerEntries;
+        private readonly List<TokenEntry> _tokenEntries;
 
-
-        DictionaryManager dictionaryManager;
-        bool emitBspRequiredAttributes;
-        SecurityTokenSerializer innerSecurityTokenSerializer;
+        private DictionaryManager _dictionaryManager;
+        private bool _emitBspRequiredAttributes;
+        private SecurityTokenSerializer _innerSecurityTokenSerializer;
 
         /// <summary>
         /// Creates an instance of <see cref="SecurityKeyIdentifierClauseSerializer"/>
@@ -51,54 +49,56 @@ using System.Collections;
             SecurityTokenSerializer innerSecurityTokenSerializer,
             Func<KeyInfoSerializer, IEnumerable<SerializerEntries>> additionalEntries)
         {
-            this.dictionaryManager = dictionaryManager;
-            this.emitBspRequiredAttributes = emitBspRequiredAttributes;
-            this.innerSecurityTokenSerializer = innerSecurityTokenSerializer;
+            _dictionaryManager = dictionaryManager;
+            _emitBspRequiredAttributes = emitBspRequiredAttributes;
+            _innerSecurityTokenSerializer = innerSecurityTokenSerializer;
 
-            this.serializerEntries = new List<SecurityTokenSerializer.SerializerEntries>();
+            _serializerEntries = new List<SecurityTokenSerializer.SerializerEntries>();
 
-            this.serializerEntries.Add(new XmlDsigSep2000(this));
-            this.serializerEntries.Add(new XmlEncApr2001(this));
-            this.serializerEntries.Add(new System.IdentityModel.Security.WSTrust(this, trustDictionary));
-            if ( additionalEntries != null )
+            // Issue #31 in progress
+            //serializerEntries.Add(new XmlDsigSep2000(this));
+            //serializerEntries.Add(new XmlEncApr2001(this));
+            //serializerEntries.Add(new WSTrust(this, trustDictionary));
+
+            if (additionalEntries != null)
             {
-                foreach ( SerializerEntries entries in additionalEntries( this ) )
+                foreach (SerializerEntries entries in additionalEntries(this))
                 {
-                    this.serializerEntries.Add(entries);
+                    _serializerEntries.Add(entries);
                 }
             }
 
             bool wsSecuritySerializerFound = false;
-            foreach ( SerializerEntries entry in this.serializerEntries )
+            foreach (SerializerEntries entry in _serializerEntries)
             {
-                if ( ( entry is WSSecurityXXX2005 ) || ( entry is WSSecurityJan2004 ) )
+                if ((entry is WSSecurityXXX2005) || (entry is WSSecurityJan2004))
                 {
                     wsSecuritySerializerFound = true;
                     break;
                 }
             }
 
-            if ( !wsSecuritySerializerFound )
+            if (!wsSecuritySerializerFound)
             {
-                this.serializerEntries.Add( new WSSecurityXXX2005( this ) );
+                _serializerEntries.Add(new WSSecurityXXX2005((WSSecurityTokenSerializer) innerSecurityTokenSerializer));
             }
 
-            this.tokenEntries = new List<TokenEntry>();
-            this.keyIdentifierEntries = new List<SecurityTokenSerializer.KeyIdentifierEntry>();
-            this.keyIdentifierClauseEntries = new List<SecurityTokenSerializer.KeyIdentifierClauseEntry>();
+            _tokenEntries = new List<TokenEntry>();
+            _keyIdentifierEntries = new List<SecurityTokenSerializer.KeyIdentifierEntry>();
+            _keyIdentifierClauseEntries = new List<SecurityTokenSerializer.KeyIdentifierClauseEntry>();
 
-            for (int i = 0; i < this.serializerEntries.Count; ++i)
+            for (int i = 0; i < _serializerEntries.Count; ++i)
             {
-                SecurityTokenSerializer.SerializerEntries serializerEntry = this.serializerEntries[i];
-                serializerEntry.PopulateTokenEntries(this.tokenEntries);
-                serializerEntry.PopulateKeyIdentifierEntries(this.keyIdentifierEntries);
-                serializerEntry.PopulateKeyIdentifierClauseEntries(this.keyIdentifierClauseEntries);
+                SecurityTokenSerializer.SerializerEntries serializerEntry = _serializerEntries[i];
+                serializerEntry.PopulateTokenEntries(_tokenEntries);
+                serializerEntry.PopulateKeyIdentifierEntries(_keyIdentifierEntries);
+                serializerEntry.PopulateKeyIdentifierClauseEntries(_keyIdentifierClauseEntries);
             }
         }
 
         public DictionaryManager DictionaryManager
         {
-            get { return this.dictionaryManager; }
+            get { return _dictionaryManager; }
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ using System.Collections;
         {
             get
             {
-                return this.emitBspRequiredAttributes;
+                return _emitBspRequiredAttributes;
             }
         }
 
@@ -116,11 +116,11 @@ using System.Collections;
         {
             get
             {
-                return this.innerSecurityTokenSerializer == null ? this : this.innerSecurityTokenSerializer;
+                return _innerSecurityTokenSerializer == null ? this : _innerSecurityTokenSerializer;
             }
            set
             {
-                this.innerSecurityTokenSerializer = value;
+                _innerSecurityTokenSerializer = value;
             }
         }
 
@@ -132,7 +132,7 @@ using System.Collections;
         protected override SecurityToken ReadTokenCore(XmlReader reader, SecurityTokenResolver tokenResolver)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader( reader ); 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError( new XmlException( SR.GetString( SR.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute( XD.SecurityJan2004Dictionary.ValueType, null ) ) ) );
+            throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError( new XmlException( SR.Format( SR.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute( XD.SecurityJan2004Dictionary.ValueType, null ) ) ) );
         }
 
         protected override bool CanWriteTokenCore(SecurityToken token)
@@ -142,15 +142,15 @@ using System.Collections;
 
         protected override void WriteTokenCore(XmlWriter writer, SecurityToken token)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.StandardsManagerCannotWriteObject, token.GetType())));
+            throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
         }
 
         protected override bool CanReadKeyIdentifierCore(XmlReader reader)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-            for (int i = 0; i < this.keyIdentifierEntries.Count; i++)
+            for (int i = 0; i < _keyIdentifierEntries.Count; i++)
             {
-                KeyIdentifierEntry keyIdentifierEntry = this.keyIdentifierEntries[i];
+                KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.CanReadKeyIdentifierCore(localReader))
                     return true;
             }
@@ -164,7 +164,7 @@ using System.Collections;
             SecurityKeyIdentifier keyIdentifier = new SecurityKeyIdentifier();
             while (localReader.IsStartElement())
             {
-                SecurityKeyIdentifierClause clause = this.InnerSecurityTokenSerializer.ReadKeyIdentifierClause(localReader);
+                SecurityKeyIdentifierClause clause = InnerSecurityTokenSerializer.ReadKeyIdentifierClause(localReader);
                 if (clause == null)
                 {
                     localReader.Skip();
@@ -176,7 +176,7 @@ using System.Collections;
             }
             if (keyIdentifier.Count == 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.ErrorDeserializingKeyIdentifierClause)));
+                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorDeserializingKeyIdentifierClause)));
             }
             localReader.ReadEndElement();
 
@@ -185,9 +185,9 @@ using System.Collections;
 
         protected override bool CanWriteKeyIdentifierCore(SecurityKeyIdentifier keyIdentifier)
         {
-            for (int i = 0; i < this.keyIdentifierEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierEntries.Count; ++i)
             {
-                KeyIdentifierEntry keyIdentifierEntry = this.keyIdentifierEntries[i];
+                KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.SupportsCore(keyIdentifier))
                     return true;
             }
@@ -198,9 +198,9 @@ using System.Collections;
         {
             bool wroteKeyIdentifier = false;
             XmlDictionaryWriter localWriter = XmlDictionaryWriter.CreateDictionaryWriter(writer);
-            for (int i = 0; i < this.keyIdentifierEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierEntries.Count; ++i)
             {
-                KeyIdentifierEntry keyIdentifierEntry = this.keyIdentifierEntries[i];
+                KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.SupportsCore(keyIdentifier))
                 {
                     try
@@ -218,7 +218,7 @@ using System.Collections;
                             throw;
                         }
 
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.ErrorSerializingKeyIdentifier), e));
+                        throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorSerializingKeyIdentifier), e));
                     }
                     wroteKeyIdentifier = true;
                     break;
@@ -226,7 +226,7 @@ using System.Collections;
             }
 
             if (!wroteKeyIdentifier)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.StandardsManagerCannotWriteObject, keyIdentifier.GetType())));
+                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifier.GetType())));
 
             localWriter.Flush();
         }
@@ -234,9 +234,9 @@ using System.Collections;
         protected override bool CanReadKeyIdentifierClauseCore(XmlReader reader)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; i++)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; i++)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.CanReadKeyIdentifierClauseCore(localReader))
                     return true;
             }
@@ -246,9 +246,9 @@ using System.Collections;
         protected override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlReader reader)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; i++)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; i++)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.CanReadKeyIdentifierClauseCore(localReader))
                 {
                     try
@@ -265,18 +265,18 @@ using System.Collections;
                         {
                             throw;
                         }
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.ErrorDeserializingKeyIdentifierClause), e));
+                        throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorDeserializingKeyIdentifierClause), e));
                     }
                 }
             }
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
+            throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
         }
 
         protected override bool CanWriteKeyIdentifierClauseCore(SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; ++i)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.SupportsCore(keyIdentifierClause))
                     return true;
             }
@@ -287,9 +287,9 @@ using System.Collections;
         {
             bool wroteKeyIdentifierClause = false;
             XmlDictionaryWriter localWriter = XmlDictionaryWriter.CreateDictionaryWriter(writer);
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; ++i)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.SupportsCore(keyIdentifierClause))
                 {
                     try
@@ -307,7 +307,7 @@ using System.Collections;
                             throw;
                         }
                         
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.ErrorSerializingKeyIdentifierClause), e));
+                        throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorSerializingKeyIdentifierClause), e));
                     }
                     wroteKeyIdentifierClause = true;
                     break;
@@ -315,14 +315,14 @@ using System.Collections;
             }
 
             if (!wroteKeyIdentifierClause)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
+                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
 
             localWriter.Flush();
         }
 
         internal void PopulateStrEntries(IList<StrEntry> strEntries)
         {
-            foreach (SerializerEntries serializerEntry in serializerEntries)
+            foreach (SerializerEntries serializerEntry in _serializerEntries)
             {
                 serializerEntry.PopulateStrEntries(strEntries);
             }
@@ -337,9 +337,9 @@ using System.Collections;
         {
             if (tokenTypeUri != null)
             {
-                for (int i = 0; i < this.tokenEntries.Count; i++)
+                for (int i = 0; i < _tokenEntries.Count; i++)
                 {
-                    TokenEntry tokenEntry = this.tokenEntries[i];
+                    TokenEntry tokenEntry = _tokenEntries[i];
 
                     if (tokenEntry.SupportsTokenTypeUri(tokenTypeUri))
                     {
@@ -354,9 +354,9 @@ using System.Collections;
         {
             if (tokenType != null)
             {
-                for (int i = 0; i < this.tokenEntries.Count; i++)
+                for (int i = 0; i < _tokenEntries.Count; i++)
                 {
-                    TokenEntry tokenEntry = this.tokenEntries[i];
+                    TokenEntry tokenEntry = _tokenEntries[i];
 
                     if (tokenEntry.SupportsCore(tokenType))
                     {
@@ -370,4 +370,3 @@ using System.Collections;
     }
 
 }
-

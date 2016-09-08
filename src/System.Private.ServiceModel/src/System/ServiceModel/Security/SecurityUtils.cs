@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IdentityModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
@@ -15,6 +16,7 @@ using System.Net;
 using System.Net.Security;
 using System.Runtime;
 using System.Security.Authentication;
+using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
@@ -22,6 +24,8 @@ using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {
@@ -219,12 +223,47 @@ namespace System.ServiceModel.Security
         }
     }
 
+    internal class ServiceModelDictionaryManager
+    {
+        static DictionaryManager dictionaryManager;
+
+        public static DictionaryManager Instance
+        {
+            get
+            {
+                if (dictionaryManager == null)
+                    dictionaryManager = new DictionaryManager(BinaryMessageEncoderFactory.XmlDictionary);
+
+                return dictionaryManager;
+            }
+        }
+    }
+
     internal static class SecurityUtils
     {
         public const string Principal = "Principal";
         public const string Identities = "Identities";
         private static IIdentity s_anonymousIdentity;
         private static X509SecurityTokenAuthenticator s_nonValidatingX509Authenticator;
+
+        public static ChannelBinding GetChannelBindingFromMessage(Message message)
+        {
+            if (message == null)
+            {
+                return null;
+            }
+
+            ChannelBindingMessageProperty channelBindingMessageProperty = null;
+            ChannelBindingMessageProperty.TryGet(message, out channelBindingMessageProperty);
+            ChannelBinding channelBinding = null;
+
+            if (channelBindingMessageProperty != null)
+            {
+                channelBinding = channelBindingMessageProperty.ChannelBinding;
+            }
+
+            return channelBinding;
+        }
 
         internal static X509SecurityTokenAuthenticator NonValidatingX509Authenticator
         {
@@ -414,6 +453,35 @@ namespace System.ServiceModel.Security
             }
 
             return string.Format(CultureInfo.InvariantCulture, "host/{0}", target.Uri.DnsSafeHost);
+        }
+
+        internal static T GetSecurityKey<T>(SecurityToken token) where T : SecurityKey
+        {
+            T result = null;
+            if (token.SecurityKeys != null)
+            {
+                for (int i = 0; i < token.SecurityKeys.Count; ++i)
+                {
+                    T temp = (token.SecurityKeys[i] as T);
+                    if (temp != null)
+                    {
+                        if (result != null)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.Format(SR.MultipleMatchingCryptosFound, typeof(T).ToString())));
+                        }
+                        else
+                        {
+                            result = temp;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        internal static bool HasSymmetricSecurityKey(SecurityToken token)
+        {
+            return GetSecurityKey<SymmetricSecurityKey>(token) != null;
         }
 
         internal static bool IsSupportedAlgorithm(string algorithm, SecurityToken token)
@@ -619,15 +687,66 @@ namespace System.ServiceModel.Security
 #endif // SUPPORTS_WINDOWSIDENTITY
         }
 
+        internal static byte[] ReadContentAsBase64(XmlDictionaryReader reader, long maxBufferSize)
+        {
+            if (reader == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+
+            // Code cloned from System.Xml.XmlDictionaryReder.
+            byte[][] buffers = new byte[32][];
+            byte[] buffer;
+            // Its best to read in buffers that are a multiple of 3 so we don't break base64 boundaries when converting text
+            int count = 384;
+            int bufferCount = 0;
+            int totalRead = 0;
+            while (true)
+            {
+                buffer = new byte[count];
+                buffers[bufferCount++] = buffer;
+                int read = 0;
+                while (read < buffer.Length)
+                {
+                    int actual = reader.ReadContentAsBase64(buffer, read, buffer.Length - read);
+                    if (actual == 0)
+                        break;
+                    read += actual;
+                }
+                if (totalRead > maxBufferSize - read)
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new QuotaExceededException(SR.Format(SR.BufferQuotaExceededReadingBase64, maxBufferSize)));
+                totalRead += read;
+                if (read < buffer.Length)
+                    break;
+                count = count * 2;
+            }
+            buffer = new byte[totalRead];
+            int offset = 0;
+            for (int i = 0; i < bufferCount - 1; i++)
+            {
+                Buffer.BlockCopy(buffers[i], 0, buffer, offset, buffers[i].Length);
+                offset += buffers[i].Length;
+            }
+            Buffer.BlockCopy(buffers[bufferCount - 1], 0, buffer, offset, totalRead - offset);
+            return buffer;
+        }
 
         internal static void OpenTokenProviderIfRequired(SecurityTokenProvider tokenProvider, TimeSpan timeout)
         {
             OpenCommunicationObject(tokenProvider as ICommunicationObject, timeout);
         }
 
+        internal static Task OpenTokenProviderIfRequiredAsync(SecurityTokenProvider tokenProvider, TimeSpan timeout)
+        {
+            return OpenCommunicationObjectAsync(tokenProvider as ICommunicationObject, timeout);
+        }
+
         internal static void CloseTokenProviderIfRequired(SecurityTokenProvider tokenProvider, TimeSpan timeout)
         {
             CloseCommunicationObject(tokenProvider, false, timeout);
+        }
+
+        internal static Task CloseTokenProviderIfRequiredAsync(SecurityTokenProvider tokenProvider, TimeSpan timeout)
+        {
+            return CloseCommunicationObjectAsync(tokenProvider, false, timeout);
         }
 
         internal static void AbortTokenProviderIfRequired(SecurityTokenProvider tokenProvider)
@@ -640,14 +759,29 @@ namespace System.ServiceModel.Security
             OpenCommunicationObject(tokenAuthenticator as ICommunicationObject, timeout);
         }
 
+        internal static Task OpenTokenAuthenticatorIfRequiredAsync(SecurityTokenAuthenticator tokenAuthenticator, TimeSpan timeout)
+        {
+            return OpenCommunicationObjectAsync(tokenAuthenticator as ICommunicationObject, timeout);
+        }
+
         internal static void CloseTokenAuthenticatorIfRequired(SecurityTokenAuthenticator tokenAuthenticator, TimeSpan timeout)
         {
             CloseTokenAuthenticatorIfRequired(tokenAuthenticator, false, timeout);
         }
 
+        internal static Task CloseTokenAuthenticatorIfRequiredAsync(SecurityTokenAuthenticator tokenAuthenticator, TimeSpan timeout)
+        {
+            return CloseTokenAuthenticatorIfRequiredAsync(tokenAuthenticator, false, timeout);
+        }
+
         internal static void CloseTokenAuthenticatorIfRequired(SecurityTokenAuthenticator tokenAuthenticator, bool aborted, TimeSpan timeout)
         {
             CloseCommunicationObject(tokenAuthenticator, aborted, timeout);
+        }
+
+        internal static Task CloseTokenAuthenticatorIfRequiredAsync(SecurityTokenAuthenticator tokenAuthenticator, bool aborted, TimeSpan timeout)
+        {
+            return CloseCommunicationObjectAsync(tokenAuthenticator, aborted, timeout);
         }
 
         internal static void AbortTokenAuthenticatorIfRequired(SecurityTokenAuthenticator tokenAuthenticator)
@@ -659,6 +793,22 @@ namespace System.ServiceModel.Security
         {
             if (obj != null)
                 obj.Open(timeout);
+        }
+
+        private static async Task OpenCommunicationObjectAsync(ICommunicationObject obj, TimeSpan timeout)
+        {
+            if (obj != null)
+            {
+                var asyncCo = obj as IAsyncCommunicationObject;
+                if (asyncCo != null)
+                {
+                    await asyncCo.OpenAsync(timeout);
+                }
+                else
+                {
+                    obj.Open(timeout);
+                }
+            }
         }
 
         private static void CloseCommunicationObject(Object obj, bool aborted, TimeSpan timeout)
@@ -688,6 +838,55 @@ namespace System.ServiceModel.Security
                     ((IDisposable)obj).Dispose();
                 }
             }
+        }
+
+        private async static Task CloseCommunicationObjectAsync(Object obj, bool aborted, TimeSpan timeout)
+        {
+            if (obj != null)
+            {
+                ICommunicationObject co = obj as ICommunicationObject;
+                var asyncCo = obj as IAsyncCommunicationObject;
+                if (co != null)
+                {
+                    if (aborted)
+                    {
+                        try
+                        {
+                            co.Abort();
+                        }
+                        catch (CommunicationException)
+                        {
+                        }
+                    }
+                    else
+                    {
+                        if (asyncCo != null)
+                        {
+                            await asyncCo.CloseAsync(timeout);
+                        }
+                        else
+                        {
+                            co.Close(timeout);
+                        }
+                    }
+                }
+                else if (obj is IDisposable)
+                {
+                    ((IDisposable)obj).Dispose();
+                }
+            }
+        }
+
+        internal static Exception CreateSecurityFaultException(Message unverifiedMessage)
+        {
+            MessageFault fault = MessageFault.CreateFault(unverifiedMessage, TransportDefaults.MaxSecurityFaultSize);
+            return CreateSecurityFaultException(fault);
+        }
+
+        internal static Exception CreateSecurityFaultException(MessageFault fault)
+        {
+            FaultException faultException = FaultException.CreateFault(fault, typeof(string), typeof(object));
+            return new MessageSecurityException(SR.Format(SR.UnsecuredMessageFaultReceived), faultException);
         }
 
         internal static SecurityStandardsManager CreateSecurityStandardsManager(MessageSecurityVersion securityVersion, SecurityTokenManager tokenManager)
@@ -959,6 +1158,63 @@ namespace System.ServiceModel.Security
             // Check that Dispose() and Reset() do the same thing
             certificate.Dispose();
         }
+
+        internal static bool IsSecurityBindingSuitableForChannelBinding(TransportSecurityBindingElement securityBindingElement)
+        {
+            if (securityBindingElement == null)
+            {
+                return false;
+            }
+
+            // channel binding of OperationSupportingTokenParameters, OptionalEndpointSupportingTokenParameters, or OptionalOperationSupportingTokenParameters
+            // is not supported in Win7
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.Endorsing))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.Signed))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.SignedEndorsing))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool AreSecurityTokenParametersSuitableForChannelBinding(Collection<SecurityTokenParameters> tokenParameters)
+        {
+            if (tokenParameters == null)
+            {
+                return false;
+            }
+
+            foreach (SecurityTokenParameters stp in tokenParameters)
+            {
+                if (stp is SspiSecurityTokenParameters || stp is KerberosSecurityTokenParameters)
+                {
+                    return true;
+                }
+
+                SecureConversationSecurityTokenParameters scstp = stp as SecureConversationSecurityTokenParameters;
+                if (scstp != null)
+                {
+                    return IsSecurityBindingSuitableForChannelBinding(scstp.BootstrapSecurityBindingElement as TransportSecurityBindingElement);
+                }
+            }
+
+            return false;
+        }
+
     }
 
     internal struct SecurityUniqueId

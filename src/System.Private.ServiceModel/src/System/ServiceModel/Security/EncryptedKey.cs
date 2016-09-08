@@ -1,46 +1,45 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.IdentityModel;
+using System.Runtime.CompilerServices;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {
-    using System.IdentityModel;
-    using System.Runtime.CompilerServices;
-    using System.Xml;
-
-    [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
     sealed class EncryptedKey : EncryptedType
     {
-        internal static readonly XmlDictionaryString CarriedKeyElementName = XD.XmlEncryptionDictionary.CarriedKeyName;
-        internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.EncryptedKey;
-        internal static readonly XmlDictionaryString RecipientAttribute = XD.XmlEncryptionDictionary.Recipient;
+        internal static readonly XmlDictionaryString s_CarriedKeyElementName = System.IdentityModel.XD.XmlEncryptionDictionary.CarriedKeyName;
+        internal static readonly XmlDictionaryString s_ElementName = System.IdentityModel.XD.XmlEncryptionDictionary.EncryptedKey;
+        internal static readonly XmlDictionaryString s_RecipientAttribute = System.IdentityModel.XD.XmlEncryptionDictionary.Recipient;
 
-        string carriedKeyName;
-        string recipient;
-        ReferenceList referenceList;
-        byte[] wrappedKey;
+        private string _carriedKeyName;
+        private string _recipient;
+        private ReferenceList _referenceList;
+        private byte[] _wrappedKey;
 
         public string CarriedKeyName
         {
-            get { return this.carriedKeyName; }
-            set { this.carriedKeyName = value; }
+            get { return _carriedKeyName; }
+            set { _carriedKeyName = value; }
         }
 
         public string Recipient
         {
-            get { return this.recipient; }
-            set { this.recipient = value; }
+            get { return _recipient; }
+            set { _recipient = value; }
         }
 
         public ReferenceList ReferenceList
         {
-            get { return this.referenceList; }
-            set { this.referenceList = value; }
+            get { return _referenceList; }
+            set { _referenceList = value; }
         }
 
         protected override XmlDictionaryString OpeningElementName
         {
-            get { return ElementName; }
+            get { return s_ElementName; }
         }
 
         protected override void ForceEncryption()
@@ -52,81 +51,82 @@ namespace System.ServiceModel.Security
         {
             if (this.State == EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.BadEncryptionState)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BadEncryptionState)));
             }
-            return this.wrappedKey;
+            return _wrappedKey;
         }
 
         public void SetUpKeyWrap(byte[] wrappedKey)
         {
             if (this.State != EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.BadEncryptionState)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BadEncryptionState)));
             }
             if (wrappedKey == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("wrappedKey");
             }
-            this.wrappedKey = wrappedKey;
+            _wrappedKey = wrappedKey;
             this.State = EncryptionState.Encrypted;
         }
 
         protected override void ReadAdditionalAttributes(XmlDictionaryReader reader)
         {
-            this.recipient = reader.GetAttribute(RecipientAttribute, null);
+            _recipient = reader.GetAttribute(s_RecipientAttribute, null);
         }
 
         protected override void ReadAdditionalElements(XmlDictionaryReader reader)
         {
-            if (reader.IsStartElement(ReferenceList.ElementName, EncryptedType.NamespaceUri))
-            {
-                this.referenceList = new ReferenceList();
-                this.referenceList.ReadFrom(reader);
-            }
-            if (reader.IsStartElement(CarriedKeyElementName, EncryptedType.NamespaceUri))
-            {
-                reader.ReadStartElement(CarriedKeyElementName, EncryptedType.NamespaceUri);
-                this.carriedKeyName = reader.ReadString();
-                reader.ReadEndElement();
-            }
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+
+            //if (reader.IsStartElement(ReferenceList.ElementName, EncryptedType.NamespaceUri))
+            //{
+            //    this.referenceList = new ReferenceList();
+            //    this.referenceList.ReadFrom(reader);
+            //}
+            //if (reader.IsStartElement(CarriedKeyElementName, EncryptedType.NamespaceUri))
+            //{
+            //    reader.ReadStartElement(CarriedKeyElementName, EncryptedType.NamespaceUri);
+            //    this.carriedKeyName = reader.ReadString();
+            //    reader.ReadEndElement();
+            //}
         }
 
         protected override void ReadCipherData(XmlDictionaryReader reader)
         {
-            this.wrappedKey = reader.ReadContentAsBase64();
+            _wrappedKey = reader.ReadContentAsBase64();
         }
 
         protected override void ReadCipherData(XmlDictionaryReader reader, long maxBufferSize)
         {
-            this.wrappedKey = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
+            _wrappedKey = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
         }
 
         protected override void WriteAdditionalAttributes(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
         {
-            if (this.recipient != null)
+            if (_recipient != null)
             {
-                writer.WriteAttributeString(RecipientAttribute, null, this.recipient);
+                writer.WriteAttributeString(s_RecipientAttribute, null, _recipient);
             }
         }
 
         protected override void WriteAdditionalElements(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
         {
-            if (this.carriedKeyName != null)
+            if (_carriedKeyName != null)
             {
-                writer.WriteStartElement(CarriedKeyElementName, EncryptedType.NamespaceUri);
-                writer.WriteString(this.carriedKeyName);
+                writer.WriteStartElement(s_CarriedKeyElementName, EncryptedType.s_NamespaceUri);
+                writer.WriteString(_carriedKeyName);
                 writer.WriteEndElement(); // CarriedKeyName
             }
-            if (this.referenceList != null)
+            if (_referenceList != null)
             {
-                this.referenceList.WriteTo(writer, dictionaryManager);
+                _referenceList.WriteTo(writer, dictionaryManager);
             }
         }
 
         protected override void WriteCipherData(XmlDictionaryWriter writer)
         {
-            writer.WriteBase64(this.wrappedKey, 0, this.wrappedKey.Length);
+            writer.WriteBase64(_wrappedKey, 0, _wrappedKey.Length);
         }
     }
 }
-

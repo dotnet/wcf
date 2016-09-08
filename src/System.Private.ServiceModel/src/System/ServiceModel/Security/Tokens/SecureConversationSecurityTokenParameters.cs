@@ -4,6 +4,8 @@
 
 
 using System.Globalization;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
 using System.Text;
 
@@ -52,6 +54,18 @@ namespace System.ServiceModel.Security.Tokens
             set
             {
                 _bootstrapSecurityBindingElement = value;
+            }
+        }
+
+        public bool RequireCancellation
+        {
+            get
+            {
+                return _requireCancellation;
+            }
+            set
+            {
+                _requireCancellation = value;
             }
         }
 
@@ -106,6 +120,25 @@ namespace System.ServiceModel.Security.Tokens
         protected override SecurityTokenParameters CloneCore()
         {
             return new SecureConversationSecurityTokenParameters(this);
+        }
+
+        internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+        {
+            if (token is GenericXmlSecurityToken)
+                return base.CreateGenericXmlTokenKeyIdentifierClause(token, referenceStyle);
+            else
+                return this.CreateKeyIdentifierClause<SecurityContextKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+        }
+
+        protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
+        {
+            requirement.TokenType = ServiceModelSecurityTokenTypes.SecureConversation;
+            requirement.KeyType = SecurityKeyType.SymmetricKey;
+            requirement.RequireCryptographicToken = true;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.SupportSecurityContextCancellationProperty] = this.RequireCancellation;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.SecureConversationSecurityBindingElementProperty] = this.BootstrapSecurityBindingElement;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuerBindingContextProperty] = this.IssuerBindingContext.Clone();
+            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty] = this.Clone();
         }
 
         public override string ToString()

@@ -1,6 +1,6 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 namespace System.ServiceModel.Channels
 {
@@ -65,15 +65,4 @@ namespace System.ServiceModel.Channels
         Message Request(Message message, TimeSpan timeout, MaskingMode maskingMode);
 
     }
-
-    interface IServerReliableChannelBinder : IReliableChannelBinder
-    {
-        bool AddressResponse(Message request, Message response);
-        bool UseNewChannel(IChannel channel);
-
-        IAsyncResult BeginWaitForRequest(TimeSpan timeout, AsyncCallback callback, object state);
-        bool EndWaitForRequest(IAsyncResult result);
-        bool WaitForRequest(TimeSpan timeout);
-    }
 }
-

@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens;
+using System.ServiceModel;
 using System.Xml;
 
 namespace System.IdentityModel.Tokens

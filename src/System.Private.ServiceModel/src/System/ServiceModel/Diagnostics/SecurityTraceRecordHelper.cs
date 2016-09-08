@@ -5,7 +5,10 @@
 
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
 using System.Runtime.Diagnostics;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 
 namespace System.ServiceModel.Diagnostics
 {
@@ -38,6 +41,30 @@ namespace System.ServiceModel.Diagnostics
         }
 
         internal static void TraceIdentityDeterminationFailure(EndpointAddress epr, Type identityVerifier)
+        {
+        }
+
+        internal static void TraceOutgoingMessageSecured(SecurityProtocol binding, Message message)
+        {
+        }
+
+        internal static void TraceVerifyIncomingMessageFailure(SecurityProtocol binding, Message message)
+        {
+        }
+
+        internal static void TraceSecureOutgoingMessageFailure(SecurityProtocol binding, Message message)
+        {
+        }
+
+        internal static void TraceIncomingMessageVerified(SecurityProtocol binding, Message message)
+        {
+        }
+
+        internal static void TraceCloseMessageSent(SecurityToken sessionToken, EndpointAddress remoteTarget)
+        {
+        }
+
+        internal static void TraceCloseResponseMessageSent(SecurityToken sessionToken, EndpointAddress remoteTarget)
         {
         }
     }

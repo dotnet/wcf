@@ -1,37 +1,38 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
+using System.IdentityModel.Claims;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel.Security.Tokens;
+//using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using System.Runtime.Serialization;
+using System.ServiceModel.Dispatcher;
+
+using KeyIdentifierEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierEntry;
+using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
+using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
+using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
+
 
 namespace System.ServiceModel.Security
 {
-    using System;
-    using System.ServiceModel;
-    using System.ServiceModel.Description;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Text;
-    using System.Threading;
-    using System.Xml;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Tokens;
-    using System.Security.Cryptography.X509Certificates;
-    using System.ServiceModel.Security.Tokens;
-    using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.Runtime.Serialization;
-    using System.ServiceModel.Dispatcher;
-
-    using KeyIdentifierEntry = WSSecurityTokenSerializer.KeyIdentifierEntry;
-    using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-    using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
-    using StrEntry = WSSecurityTokenSerializer.StrEntry;
-
     class WSTrustFeb2005 : WSTrust
     {
         public WSTrustFeb2005(WSSecurityTokenSerializer tokenSerializer)
@@ -115,11 +116,6 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            public override Collection<XmlElement> ProcessUnknownRequestParameters(Collection<XmlElement> unknownRequestParameters, Collection<XmlElement> originalRequestParameters)
-            {
-                return unknownRequestParameters;
-            }
-
             protected override void ReadReferences(XmlElement rstrXml, out SecurityKeyIdentifierClause requestedAttachedReference,
                     out SecurityKeyIdentifierClause requestedUnattachedReference)
             {
@@ -150,19 +146,20 @@ namespace System.ServiceModel.Security
                 {
                     if (issuedTokenXml != null)
                     {
-                        if (requestedAttachedReference == null)
-                        {
-                            this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal, out requestedAttachedReference);
-                        }
-                        if (requestedUnattachedReference == null)
-                        {
-                            this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External, out requestedUnattachedReference);
-                        }
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                        //if (requestedAttachedReference == null)
+                        //{
+                        //    this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal, out requestedAttachedReference);
+                        //}
+                        //if (requestedUnattachedReference == null)
+                        //{
+                        //    this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External, out requestedUnattachedReference);
+                        //}
                     }
                 }
                 catch (XmlException)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.TrustDriverIsUnableToCreatedNecessaryAttachedOrUnattachedReferences, issuedTokenXml.ToString())));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.TrustDriverIsUnableToCreatedNecessaryAttachedOrUnattachedReferences, issuedTokenXml.ToString())));
                 }
 
             }
@@ -193,29 +190,32 @@ namespace System.ServiceModel.Security
                     XmlElement child = (rstXml.ChildNodes[i] as XmlElement);
                     if (child != null)
                     {
-                        if (child.LocalName == this.DriverDictionary.RenewTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
-                            renewTarget = this.StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
-                        else if (child.LocalName == this.DriverDictionary.CloseTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
-                            closeTarget = this.StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
+                        throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                        //if (child.LocalName == this.DriverDictionary.RenewTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+                        //    renewTarget = this.StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
+                        //else if (child.LocalName == this.DriverDictionary.CloseTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+                        //    closeTarget = this.StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
                     }
                 }
             }
 
             protected override void WriteReferences(RequestSecurityTokenResponse rstr, XmlDictionaryWriter writer)
             {
-                if (rstr.RequestedAttachedReference != null)
-                {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RequestedAttachedReference, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedAttachedReference);
-                    writer.WriteEndElement();
-                }
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-                if (rstr.RequestedUnattachedReference != null)
-                {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RequestedUnattachedReference, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedUnattachedReference);
-                    writer.WriteEndElement();
-                }
+                //if (rstr.RequestedAttachedReference != null)
+                //{
+                //    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RequestedAttachedReference, this.DriverDictionary.Namespace);
+                //    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedAttachedReference);
+                //    writer.WriteEndElement();
+                //}
+
+                //if (rstr.RequestedUnattachedReference != null)
+                //{
+                //    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RequestedUnattachedReference, this.DriverDictionary.Namespace);
+                //    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedUnattachedReference);
+                //    writer.WriteEndElement();
+                //}
             }
 
             protected override void WriteRequestedTokenClosed(RequestSecurityTokenResponse rstr, XmlDictionaryWriter writer)
@@ -228,19 +228,21 @@ namespace System.ServiceModel.Security
 
             protected override void WriteTargets(RequestSecurityToken rst, XmlDictionaryWriter writer)
             {
-                if (rst.RenewTarget != null)
-                {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RenewTarget, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.RenewTarget);
-                    writer.WriteEndElement();
-                }
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-                if (rst.CloseTarget != null)
-                {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.CloseTarget, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.CloseTarget);
-                    writer.WriteEndElement();
-                }
+                //if (rst.RenewTarget != null)
+                //{
+                //    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RenewTarget, this.DriverDictionary.Namespace);
+                //    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.RenewTarget);
+                //    writer.WriteEndElement();
+                //}
+
+                //if (rst.CloseTarget != null)
+                //{
+                //    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.CloseTarget, this.DriverDictionary.Namespace);
+                //    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.CloseTarget);
+                //    writer.WriteEndElement();
+                //}
             }
 
             // this is now the abstract in WSTrust
@@ -293,65 +295,66 @@ namespace System.ServiceModel.Security
 
             public class RequestChannelFactory<TokenService> : ChannelFactoryBase, IChannelFactory<IRequestChannel>
             {
-                ChannelFactory<TokenService> innerChannelFactory;
+                ChannelFactory<TokenService> _innerChannelFactory;
 
                 public RequestChannelFactory(ChannelFactory<TokenService> innerChannelFactory)
                 {
-                    this.innerChannelFactory = innerChannelFactory;
+                    _innerChannelFactory = innerChannelFactory;
                 }
 
                 public IRequestChannel CreateChannel(EndpointAddress address)
                 {
-                    return this.innerChannelFactory.CreateChannel<IRequestChannel>(address);
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                    //return this.innerChannelFactory.CreateChannel<IRequestChannel>(address);
                 }
 
                 public IRequestChannel CreateChannel(EndpointAddress address, Uri via)
                 {
-                    return this.innerChannelFactory.CreateChannel<IRequestChannel>(address, via);
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                    //return this.innerChannelFactory.CreateChannel<IRequestChannel>(address, via);
                 }
 
                 protected override void OnAbort()
                 {
-                    this.innerChannelFactory.Abort();
+                    _innerChannelFactory.Abort();
                 }
 
                 protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this.innerChannelFactory.BeginOpen(timeout, callback, state);
+                    return _innerChannelFactory.BeginOpen(timeout, callback, state);
                 }
 
                 protected override void OnEndOpen(IAsyncResult result)
                 {
-                    this.innerChannelFactory.EndOpen(result);
+                    _innerChannelFactory.EndOpen(result);
                 }
 
                 protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this.innerChannelFactory.BeginClose(timeout, callback, state);
+                    return _innerChannelFactory.BeginClose(timeout, callback, state);
                 }
 
                 protected override void OnEndClose(IAsyncResult result)
                 {
-                    this.innerChannelFactory.EndClose(result);
+                    _innerChannelFactory.EndClose(result);
                 }
 
                 protected override void OnClose(TimeSpan timeout)
                 {
-                    this.innerChannelFactory.Close(timeout);
+                    _innerChannelFactory.Close(timeout);
                 }
 
                 protected override void OnOpen(TimeSpan timeout)
                 {
-                    this.innerChannelFactory.Open(timeout);
+                    _innerChannelFactory.Open(timeout);
                 }
 
                 public override T GetProperty<T>()
                 {
-                    return this.innerChannelFactory.GetProperty<T>();
+                    return _innerChannelFactory.GetProperty<T>();
                 }
             }
         }
-
     }
 }
 

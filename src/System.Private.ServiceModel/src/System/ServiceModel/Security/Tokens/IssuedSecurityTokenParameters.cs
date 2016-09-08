@@ -1,26 +1,28 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
+
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+using System.Runtime;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
+using System.Text;
+using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
 {
-    using System.Collections.ObjectModel;
-    using System.Globalization;
-    using System.IdentityModel.Selectors;
-    using System.IdentityModel.Tokens;
-    using System.Runtime;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Security;
-    using System.Text;
-    using System.Xml;
+#pragma warning disable CS0219 // Issue #31 in progress -- remove this when fully implemented and all fields used
 
     public class IssuedSecurityTokenParameters : SecurityTokenParameters
     {
         const string wsidPrefix = "wsid";
         const string wsidNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
-        static readonly string wsidPPIClaim = String.Format(CultureInfo.InvariantCulture, "{0}/claims/privatepersonalidentifier", wsidNamespace);
+        static readonly string s_wsidPPIClaim = String.Format(CultureInfo.InvariantCulture, "{0}/claims/privatepersonalidentifier", wsidNamespace);
         internal const SecurityKeyType defaultKeyType = SecurityKeyType.SymmetricKey;
         internal const bool defaultUseStrTransform = false;
 
@@ -31,41 +33,42 @@ namespace System.ServiceModel.Security.Tokens
             public Binding IssuerBinding;
         }
 
-        Collection<XmlElement> additionalRequestParameters = new Collection<XmlElement>();
-        Collection<AlternativeIssuerEndpoint> alternativeIssuerEndpoints = new Collection<AlternativeIssuerEndpoint>();
-        MessageSecurityVersion defaultMessageSecurityVersion;
-        EndpointAddress issuerAddress;
-        EndpointAddress issuerMetadataAddress;
-        Binding issuerBinding;
-        int keySize;
-        SecurityKeyType keyType = defaultKeyType;
-        Collection<ClaimTypeRequirement> claimTypeRequirements = new Collection<ClaimTypeRequirement>();
-        bool useStrTransform = defaultUseStrTransform;
-        string tokenType;
+        private Collection<XmlElement> _additionalRequestParameters = new Collection<XmlElement>();
+        private Collection<AlternativeIssuerEndpoint> _alternativeIssuerEndpoints = new Collection<AlternativeIssuerEndpoint>();
+        private MessageSecurityVersion _defaultMessageSecurityVersion;
+        private EndpointAddress _issuerAddress;
+        private EndpointAddress _issuerMetadataAddress;
+        private Binding _issuerBinding;
+        private int _keySize;
+        private SecurityKeyType _keyType = defaultKeyType;
+        private Collection<ClaimTypeRequirement> _claimTypeRequirements = new Collection<ClaimTypeRequirement>();
+        private bool _useStrTransform = defaultUseStrTransform;
+        private string _tokenType;
 
         protected IssuedSecurityTokenParameters(IssuedSecurityTokenParameters other)
             : base(other)
         {
-            this.defaultMessageSecurityVersion = other.defaultMessageSecurityVersion;
-            this.issuerAddress = other.issuerAddress;
-            this.keyType = other.keyType;
-            this.tokenType = other.tokenType;
-            this.keySize = other.keySize;
-            this.useStrTransform = other.useStrTransform;
+            _defaultMessageSecurityVersion = other._defaultMessageSecurityVersion;
+            _issuerAddress = other._issuerAddress;
+            _keyType = other._keyType;
+            _tokenType = other._tokenType;
+            _keySize = other._keySize;
+            _useStrTransform = other._useStrTransform;
 
-            foreach (XmlElement parameter in other.additionalRequestParameters)
+            foreach (XmlElement parameter in other._additionalRequestParameters)
             {
-                this.additionalRequestParameters.Add((XmlElement)parameter.Clone());
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress (missing XmlElement.Clone)
+                //_additionalRequestParameters.Add((XmlElement)parameter.Clone());
             }
-            foreach (ClaimTypeRequirement c in other.claimTypeRequirements)
+            foreach (ClaimTypeRequirement c in other._claimTypeRequirements)
             {
-                this.claimTypeRequirements.Add(c);
+                _claimTypeRequirements.Add(c);
             }
-            if (other.issuerBinding != null)
+            if (other._issuerBinding != null)
             {
-                this.issuerBinding = new CustomBinding(other.issuerBinding);
+                _issuerBinding = new CustomBinding(other._issuerBinding);
             }
-            this.issuerMetadataAddress = other.issuerMetadataAddress;
+            _issuerMetadataAddress = other._issuerMetadataAddress;
         }
 
         public IssuedSecurityTokenParameters()
@@ -89,9 +92,9 @@ namespace System.ServiceModel.Security.Tokens
         public IssuedSecurityTokenParameters(string tokenType, EndpointAddress issuerAddress, Binding issuerBinding)
             : base()
         {
-            this.tokenType = tokenType;
-            this.issuerAddress = issuerAddress;
-            this.issuerBinding = issuerBinding;
+            _tokenType = tokenType;
+            _issuerAddress = issuerAddress;
+            _issuerBinding = issuerBinding;
         }
 
         internal protected override bool HasAsymmetricKey { get { return this.KeyType == SecurityKeyType.AsymmetricKey; } }
@@ -100,7 +103,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.additionalRequestParameters;
+                return _additionalRequestParameters;
             }
         }
 
@@ -108,12 +111,12 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.defaultMessageSecurityVersion;
+                return _defaultMessageSecurityVersion;
             }
 
             set
             {
-                defaultMessageSecurityVersion = value;
+                _defaultMessageSecurityVersion = value;
             }
         }
 
@@ -121,7 +124,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.alternativeIssuerEndpoints;
+                return _alternativeIssuerEndpoints;
             }
         }
 
@@ -129,11 +132,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerAddress;
+                return _issuerAddress;
             }
             set
             {
-                this.issuerAddress = value;
+                _issuerAddress = value;
             }
         }
 
@@ -141,11 +144,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerMetadataAddress;
+                return _issuerMetadataAddress;
             }
             set
             {
-                this.issuerMetadataAddress = value;
+                _issuerMetadataAddress = value;
             }
         }
 
@@ -153,11 +156,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerBinding;
+                return _issuerBinding;
             }
             set
             {
-                this.issuerBinding = value;
+                _issuerBinding = value;
             }
         }
 
@@ -165,12 +168,12 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.keyType;
+                return _keyType;
             }
             set
             {
                 SecurityKeyTypeHelper.Validate(value);
-                this.keyType = value;
+                _keyType = value;
             }
         }
 
@@ -178,13 +181,13 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.keySize;
+                return _keySize;
             }
             set
             {
                 if (value < 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", SR.GetString(SR.ValueMustBeNonNegative)));
-                this.keySize = value;
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", SR.Format(SR.ValueMustBeNonNegative)));
+                _keySize = value;
             }
         }
 
@@ -192,11 +195,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.useStrTransform;
+                return _useStrTransform;
             }
             set
             {
-                this.useStrTransform = value;
+                _useStrTransform = value;
             }
         }
 
@@ -204,7 +207,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.claimTypeRequirements;
+                return _claimTypeRequirements;
             }
         }
 
@@ -212,11 +215,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.tokenType;
+                return _tokenType;
             }
             set
             {
-                this.tokenType = value;
+                _tokenType = value;
             }
         }
 
@@ -234,79 +237,84 @@ namespace System.ServiceModel.Security.Tokens
             if (token is GenericXmlSecurityToken)
                 return base.CreateGenericXmlTokenKeyIdentifierClause(token, referenceStyle);
             else
-                return this.CreateKeyIdentifierClause<SamlAssertionKeyIdentifierClause, SamlAssertionKeyIdentifierClause>(token, referenceStyle);
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //return this.CreateKeyIdentifierClause<SamlAssertionKeyIdentifierClause, SamlAssertionKeyIdentifierClause>(token, referenceStyle);
+            }
         }
 
         internal void SetRequestParameters(Collection<XmlElement> requestParameters, TrustDriver trustDriver)
         {
-            if (requestParameters == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("requestParameters");
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-            if (trustDriver == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("trustDriver");
+            //if (requestParameters == null)
+            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("requestParameters");
 
-            Collection<XmlElement> unknownRequestParameters = new Collection<XmlElement>();
+            //if (trustDriver == null)
+            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("trustDriver");
 
-            foreach (XmlElement element in requestParameters)
-            {
-                int keySize;
-                string tokenType;
-                SecurityKeyType keyType;
-                Collection<XmlElement> requiredClaims;
-                if (trustDriver.TryParseKeySizeElement(element, out keySize))
-                    this.keySize = keySize;
-                else if (trustDriver.TryParseKeyTypeElement(element, out keyType))
-                    this.KeyType = keyType;
-                else if (trustDriver.TryParseTokenTypeElement(element, out tokenType))
-                    this.TokenType = tokenType;
-                // Only copy RP policy to client policy for TrustFeb2005
-                else if (trustDriver.StandardsManager.TrustVersion == TrustVersion.WSTrustFeb2005)
-                {
-                    if (trustDriver.TryParseRequiredClaimsElement(element, out requiredClaims))
-                    {
-                        Collection<XmlElement> unrecognizedRequiredClaims = new Collection<XmlElement>();
-                        foreach (XmlElement claimRequirement in requiredClaims)
-                        {
-                            if (claimRequirement.LocalName == "ClaimType" && claimRequirement.NamespaceURI == wsidNamespace)
-                            {
-                                string claimValue = claimRequirement.GetAttribute("Uri", string.Empty);
-                                if (!string.IsNullOrEmpty(claimValue))
-                                {
-                                    ClaimTypeRequirement claimTypeRequirement;
-                                    string optional = claimRequirement.GetAttribute("Optional", string.Empty);
-                                    if (String.IsNullOrEmpty(optional))
-                                    {
-                                        claimTypeRequirement = new ClaimTypeRequirement(claimValue);
-                                    }
-                                    else
-                                    {
-                                        claimTypeRequirement = new ClaimTypeRequirement(claimValue, XmlConvert.ToBoolean(optional));
-                                    }
+            //Collection<XmlElement> unknownRequestParameters = new Collection<XmlElement>();
 
-                                    this.claimTypeRequirements.Add(claimTypeRequirement);
-                                }
-                            }
-                            else
-                            {
-                                unrecognizedRequiredClaims.Add(claimRequirement);
-                            }
-                        }
-                        if (unrecognizedRequiredClaims.Count > 0)
-                            unknownRequestParameters.Add(trustDriver.CreateRequiredClaimsElement(unrecognizedRequiredClaims));
-                    }
-                    else
-                    {
-                        unknownRequestParameters.Add(element);
-                    }
-                }
-            }
+            //foreach (XmlElement element in requestParameters)
+            //{
+            //    int keySize;
+            //    string tokenType;
+            //    SecurityKeyType keyType;
+            //    Collection<XmlElement> requiredClaims;
+            //    if (trustDriver.TryParseKeySizeElement(element, out keySize))
+            //        _keySize = keySize;
+            //    else if (trustDriver.TryParseKeyTypeElement(element, out keyType))
+            //        this.KeyType = keyType;
+            //    else if (trustDriver.TryParseTokenTypeElement(element, out tokenType))
+            //        this.TokenType = tokenType;
+            //    // Only copy RP policy to client policy for TrustFeb2005
+            //    else if (trustDriver.StandardsManager.TrustVersion == TrustVersion.WSTrustFeb2005)
+            //    {
+            //        if (trustDriver.TryParseRequiredClaimsElement(element, out requiredClaims))
+            //        {
+            //            Collection<XmlElement> unrecognizedRequiredClaims = new Collection<XmlElement>();
+            //            foreach (XmlElement claimRequirement in requiredClaims)
+            //            {
+            //                if (claimRequirement.LocalName == "ClaimType" && claimRequirement.NamespaceURI == wsidNamespace)
+            //                {
+            //                    string claimValue = claimRequirement.GetAttribute("Uri", string.Empty);
+            //                    if (!string.IsNullOrEmpty(claimValue))
+            //                    {
+            //                        ClaimTypeRequirement claimTypeRequirement;
+            //                        string optional = claimRequirement.GetAttribute("Optional", string.Empty);
+            //                        if (String.IsNullOrEmpty(optional))
+            //                        {
+            //                            claimTypeRequirement = new ClaimTypeRequirement(claimValue);
+            //                        }
+            //                        else
+            //                        {
+            //                            claimTypeRequirement = new ClaimTypeRequirement(claimValue, XmlConvert.ToBoolean(optional));
+            //                        }
 
-            unknownRequestParameters = trustDriver.ProcessUnknownRequestParameters(unknownRequestParameters, requestParameters);
-            if (unknownRequestParameters.Count > 0)
-            {
-                for (int i = 0; i < unknownRequestParameters.Count; ++i)
-                    this.AdditionalRequestParameters.Add(unknownRequestParameters[i]);
-            }
+            //                        _claimTypeRequirements.Add(claimTypeRequirement);
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    unrecognizedRequiredClaims.Add(claimRequirement);
+            //                }
+            //            }
+            //            if (unrecognizedRequiredClaims.Count > 0)
+            //                unknownRequestParameters.Add(trustDriver.CreateRequiredClaimsElement(unrecognizedRequiredClaims));
+            //        }
+            //        else
+            //        {
+            //            unknownRequestParameters.Add(element);
+            //        }
+            //    }
+            //}
+
+            //unknownRequestParameters = trustDriver.ProcessUnknownRequestParameters(unknownRequestParameters, requestParameters);
+            //if (unknownRequestParameters.Count > 0)
+            //{
+            //    for (int i = 0; i < unknownRequestParameters.Count; ++i)
+            //        this.AdditionalRequestParameters.Add(unknownRequestParameters[i]);
+            //}
         }
 
         public Collection<XmlElement> CreateRequestParameters(MessageSecurityVersion messageSecurityVersion, SecurityTokenSerializer securityTokenSerializer)
@@ -316,56 +324,58 @@ namespace System.ServiceModel.Security.Tokens
 
         internal Collection<XmlElement> CreateRequestParameters(TrustDriver driver)
         {
-            if (driver == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("driver");
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-            Collection<XmlElement> result = new Collection<XmlElement>();
+            //if (driver == null)
+            //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("driver");
 
-            if (this.tokenType != null)
-            {
-                result.Add(driver.CreateTokenTypeElement(tokenType));
-            }
+            //Collection<XmlElement> result = new Collection<XmlElement>();
 
-            result.Add(driver.CreateKeyTypeElement(this.keyType));
+            //if (_tokenType != null)
+            //{
+            //    result.Add(driver.CreateTokenTypeElement(_tokenType));
+            //}
 
-            if (this.keySize != 0)
-            {
-                result.Add(driver.CreateKeySizeElement(keySize));
-            }
-            if (this.claimTypeRequirements.Count > 0)
-            {
-                Collection<XmlElement> claimsElements = new Collection<XmlElement>();
-                XmlDocument doc = new XmlDocument();
-                foreach (ClaimTypeRequirement claimType in this.claimTypeRequirements)
-                {
-                    XmlElement element = doc.CreateElement(wsidPrefix, "ClaimType", wsidNamespace);
-                    XmlAttribute attr = doc.CreateAttribute("Uri");
-                    attr.Value = claimType.ClaimType;
-                    element.Attributes.Append(attr);
-                    if (claimType.IsOptional != ClaimTypeRequirement.DefaultIsOptional)
-                    {
-                        attr = doc.CreateAttribute("Optional");
-                        attr.Value = XmlConvert.ToString(claimType.IsOptional);
-                        element.Attributes.Append(attr);
-                    }
-                    claimsElements.Add(element);
-                }
-                result.Add(driver.CreateRequiredClaimsElement(claimsElements));
-            }
+            //result.Add(driver.CreateKeyTypeElement(_keyType));
 
-            if (this.additionalRequestParameters.Count > 0)
-            {
-                Collection<XmlElement> trustNormalizedParameters = NormalizeAdditionalParameters(this.additionalRequestParameters,
-                                                                                                 driver,
-                                                                                                 (this.claimTypeRequirements.Count > 0));
+            //if (_keySize != 0)
+            //{
+            //    result.Add(driver.CreateKeySizeElement(_keySize));
+            //}
+            //if (_claimTypeRequirements.Count > 0)
+            //{
+            //    Collection<XmlElement> claimsElements = new Collection<XmlElement>();
+            //    XmlDocument doc = new XmlDocument();
+            //    foreach (ClaimTypeRequirement claimType in _claimTypeRequirements)
+            //    {
+            //        XmlElement element = doc.CreateElement(wsidPrefix, "ClaimType", wsidNamespace);
+            //        XmlAttribute attr = doc.CreateAttribute("Uri");
+            //        attr.Value = claimType.ClaimType;
+            //        element.Attributes.Append(attr);
+            //        if (claimType.IsOptional != ClaimTypeRequirement.DefaultIsOptional)
+            //        {
+            //            attr = doc.CreateAttribute("Optional");
+            //            attr.Value = XmlConvert.ToString(claimType.IsOptional);
+            //            element.Attributes.Append(attr);
+            //        }
+            //        claimsElements.Add(element);
+            //    }
+            //    result.Add(driver.CreateRequiredClaimsElement(claimsElements));
+            //}
 
-                foreach (XmlElement parameter in trustNormalizedParameters)
-                {
-                    result.Add(parameter);
-                }
-            }
+            //if (_additionalRequestParameters.Count > 0)
+            //{
+            //    Collection<XmlElement> trustNormalizedParameters = NormalizeAdditionalParameters(_additionalRequestParameters,
+            //                                                                                     driver,
+            //                                                                                     (_claimTypeRequirements.Count > 0));
 
-            return result;
+            //    foreach (XmlElement parameter in trustNormalizedParameters)
+            //    {
+            //        result.Add(parameter);
+            //    }
+            //}
+
+            //return result;
         }
 
         private Collection<XmlElement> NormalizeAdditionalParameters(Collection<XmlElement> additionalParameters,
@@ -390,59 +400,61 @@ namespace System.ServiceModel.Security.Tokens
             //    specified as top-level element if "SecondaryParameters" element already specifies this.
             if (driver.StandardsManager.TrustVersion == TrustVersion.WSTrust13)
             {
-                Fx.Assert(driver.GetType() == typeof(WSTrustDec2005.DriverDec2005), "Invalid Trust Driver specified for Trust 1.3.");
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-                XmlElement encryptionAlgorithmElement = null;
-                XmlElement canonicalizationAlgorithmElement = null;
-                XmlElement keyWrapAlgorithmElement = null;
-                XmlElement secondaryParameter = null;
+                //Fx.Assert(driver.GetType() == typeof(WSTrustDec2005.DriverDec2005), "Invalid Trust Driver specified for Trust 1.3.");
 
-                for (int i = 0; i < tmpCollection.Count; ++i)
-                {
-                    string algorithm;
+                //XmlElement encryptionAlgorithmElement = null;
+                //XmlElement canonicalizationAlgorithmElement = null;
+                //XmlElement keyWrapAlgorithmElement = null;
+                //XmlElement secondaryParameter = null;
 
-                    if (driver.IsEncryptionAlgorithmElement(tmpCollection[i], out algorithm))
-                    {
-                        encryptionAlgorithmElement = tmpCollection[i];
-                    }
-                    else if (driver.IsCanonicalizationAlgorithmElement(tmpCollection[i], out algorithm))
-                    {
-                        canonicalizationAlgorithmElement = tmpCollection[i];
-                    }
-                    else if (driver.IsKeyWrapAlgorithmElement(tmpCollection[i], out algorithm))
-                    {
-                        keyWrapAlgorithmElement = tmpCollection[i];
-                    }
-                    else if (((WSTrustDec2005.DriverDec2005)driver).IsSecondaryParametersElement(tmpCollection[i]))
-                    {
-                        secondaryParameter = tmpCollection[i];
-                    }
-                }
+                //for (int i = 0; i < tmpCollection.Count; ++i)
+                //{
+                //    string algorithm;
 
-                if (secondaryParameter != null)
-                {
-                    foreach (XmlNode node in secondaryParameter.ChildNodes)
-                    {
-                        XmlElement child = node as XmlElement;
-                        if (child != null)
-                        {
-                            string algorithm = null;
+                //    if (driver.IsEncryptionAlgorithmElement(tmpCollection[i], out algorithm))
+                //    {
+                //        encryptionAlgorithmElement = tmpCollection[i];
+                //    }
+                //    else if (driver.IsCanonicalizationAlgorithmElement(tmpCollection[i], out algorithm))
+                //    {
+                //        canonicalizationAlgorithmElement = tmpCollection[i];
+                //    }
+                //    else if (driver.IsKeyWrapAlgorithmElement(tmpCollection[i], out algorithm))
+                //    {
+                //        keyWrapAlgorithmElement = tmpCollection[i];
+                //    }
+                //    else if (((WSTrustDec2005.DriverDec2005)driver).IsSecondaryParametersElement(tmpCollection[i]))
+                //    {
+                //        secondaryParameter = tmpCollection[i];
+                //    }
+                //}
 
-                            if (driver.IsEncryptionAlgorithmElement(child, out algorithm) && (encryptionAlgorithmElement != null))
-                            {
-                                tmpCollection.Remove(encryptionAlgorithmElement);
-                            }
-                            else if (driver.IsCanonicalizationAlgorithmElement(child, out algorithm) && (canonicalizationAlgorithmElement != null))
-                            {
-                                tmpCollection.Remove(canonicalizationAlgorithmElement);
-                            }
-                            else if (driver.IsKeyWrapAlgorithmElement(child, out algorithm) && (keyWrapAlgorithmElement != null))
-                            {
-                                tmpCollection.Remove(keyWrapAlgorithmElement);
-                            }
-                        }
-                    }
-                }
+                //if (secondaryParameter != null)
+                //{
+                //    foreach (XmlNode node in secondaryParameter.ChildNodes)
+                //    {
+                //        XmlElement child = node as XmlElement;
+                //        if (child != null)
+                //        {
+                //            string algorithm = null;
+
+                //            if (driver.IsEncryptionAlgorithmElement(child, out algorithm) && (encryptionAlgorithmElement != null))
+                //            {
+                //                tmpCollection.Remove(encryptionAlgorithmElement);
+                //            }
+                //            else if (driver.IsCanonicalizationAlgorithmElement(child, out algorithm) && (canonicalizationAlgorithmElement != null))
+                //            {
+                //                tmpCollection.Remove(canonicalizationAlgorithmElement);
+                //            }
+                //            else if (driver.IsKeyWrapAlgorithmElement(child, out algorithm) && (keyWrapAlgorithmElement != null))
+                //            {
+                //                tmpCollection.Remove(keyWrapAlgorithmElement);
+                //            }
+                //        }
+                //    }
+                //}
             }
 
             // 2. Check for Mismatch.
@@ -472,31 +484,33 @@ namespace System.ServiceModel.Security.Tokens
             // If we are talking to a Trust 1.3 STS, replace any Feb '05 algorithm parameters with their Trust 1.3 counterparts
             if (driver.StandardsManager.TrustVersion == TrustVersion.WSTrust13)
             {
-                SecurityStandardsManager trustFeb2005StandardsManager = SecurityStandardsManager.DefaultInstance;
-                // the following cast is guaranteed to succeed
-                WSTrustFeb2005.DriverFeb2005 trustFeb2005Driver = (WSTrustFeb2005.DriverFeb2005)trustFeb2005StandardsManager.TrustDriver;
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-                for (int i = 0; i < tmpCollection.Count; i++)
-                {
-                    string algorithmParameter = string.Empty;
+                //SecurityStandardsManager trustFeb2005StandardsManager = SecurityStandardsManager.DefaultInstance;
+                //// the following cast is guaranteed to succeed
+                //WSTrustFeb2005.DriverFeb2005 trustFeb2005Driver = (WSTrustFeb2005.DriverFeb2005)trustFeb2005StandardsManager.TrustDriver;
 
-                    if (trustFeb2005Driver.IsSignWithElement(tmpCollection[i], out algorithmParameter))
-                    {
-                        tmpCollection[i] = driver.CreateSignWithElement(algorithmParameter);
-                    }
-                    else if (trustFeb2005Driver.IsEncryptWithElement(tmpCollection[i], out algorithmParameter))
-                    {
-                        tmpCollection[i] = driver.CreateEncryptWithElement(algorithmParameter);
-                    }
-                    else if (trustFeb2005Driver.IsEncryptionAlgorithmElement(tmpCollection[i], out algorithmParameter))
-                    {
-                        tmpCollection[i] = driver.CreateEncryptionAlgorithmElement(algorithmParameter);
-                    }
-                    else if (trustFeb2005Driver.IsCanonicalizationAlgorithmElement(tmpCollection[i], out algorithmParameter))
-                    {
-                        tmpCollection[i] = driver.CreateCanonicalizationAlgorithmElement(algorithmParameter);
-                    }
-                }
+                //for (int i = 0; i < tmpCollection.Count; i++)
+                //{
+                //    string algorithmParameter = string.Empty;
+
+                //    if (trustFeb2005Driver.IsSignWithElement(tmpCollection[i], out algorithmParameter))
+                //    {
+                //        tmpCollection[i] = driver.CreateSignWithElement(algorithmParameter);
+                //    }
+                //    else if (trustFeb2005Driver.IsEncryptWithElement(tmpCollection[i], out algorithmParameter))
+                //    {
+                //        tmpCollection[i] = driver.CreateEncryptWithElement(algorithmParameter);
+                //    }
+                //    else if (trustFeb2005Driver.IsEncryptionAlgorithmElement(tmpCollection[i], out algorithmParameter))
+                //    {
+                //        tmpCollection[i] = driver.CreateEncryptionAlgorithmElement(algorithmParameter);
+                //    }
+                //    else if (trustFeb2005Driver.IsCanonicalizationAlgorithmElement(tmpCollection[i], out algorithmParameter))
+                //    {
+                //        tmpCollection[i] = driver.CreateCanonicalizationAlgorithmElement(algorithmParameter);
+                //    }
+                //}
             }
             else
             {
@@ -538,97 +552,99 @@ namespace System.ServiceModel.Security.Tokens
                 // Probe of standard Trust elements and remember them.
                 if ((childrenToPromote != null) && (childrenToPromote.Count > 0))
                 {
-                    XmlElement encryptionElement = null;
-                    string encryptionAlgorithm = String.Empty;
+                    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-                    XmlElement canonicalizationElement = null;
-                    string canonicalizationAlgoritm = String.Empty;
+                    //XmlElement encryptionElement = null;
+                    //string encryptionAlgorithm = String.Empty;
 
-                    XmlElement requiredClaimsElement = null;
-                    Collection<XmlElement> requiredClaims = null;
+                    //XmlElement canonicalizationElement = null;
+                    //string canonicalizationAlgoritm = String.Empty;
 
-                    Collection<XmlElement> processedElements = new Collection<XmlElement>();
+                    //XmlElement requiredClaimsElement = null;
+                    //Collection<XmlElement> requiredClaims = null;
 
-                    foreach (XmlElement e in childrenToPromote)
-                    {
-                        if ((encryptionElement == null) && trust13Driver.IsEncryptionAlgorithmElement(e, out encryptionAlgorithm))
-                        {
-                            encryptionElement = driver.CreateEncryptionAlgorithmElement(encryptionAlgorithm);
-                            processedElements.Add(e);
-                        }
-                        else if ((canonicalizationElement == null) && trust13Driver.IsCanonicalizationAlgorithmElement(e, out canonicalizationAlgoritm))
-                        {
-                            canonicalizationElement = driver.CreateCanonicalizationAlgorithmElement(canonicalizationAlgoritm);
-                            processedElements.Add(e);
-                        }
-                        else if ((requiredClaimsElement == null) && trust13Driver.TryParseRequiredClaimsElement(e, out requiredClaims))
-                        {
-                            requiredClaimsElement = driver.CreateRequiredClaimsElement(requiredClaims);
-                            processedElements.Add(e);
-                        }
-                    }
+                    //Collection<XmlElement> processedElements = new Collection<XmlElement>();
 
-                    for (int i = 0; i < processedElements.Count; ++i)
-                    {
-                        childrenToPromote.Remove(processedElements[i]);
-                    }
+                    //foreach (XmlElement e in childrenToPromote)
+                    //{
+                    //    if ((encryptionElement == null) && trust13Driver.IsEncryptionAlgorithmElement(e, out encryptionAlgorithm))
+                    //    {
+                    //        encryptionElement = driver.CreateEncryptionAlgorithmElement(encryptionAlgorithm);
+                    //        processedElements.Add(e);
+                    //    }
+                    //    else if ((canonicalizationElement == null) && trust13Driver.IsCanonicalizationAlgorithmElement(e, out canonicalizationAlgoritm))
+                    //    {
+                    //        canonicalizationElement = driver.CreateCanonicalizationAlgorithmElement(canonicalizationAlgoritm);
+                    //        processedElements.Add(e);
+                    //    }
+                    //    else if ((requiredClaimsElement == null) && trust13Driver.TryParseRequiredClaimsElement(e, out requiredClaims))
+                    //    {
+                    //        requiredClaimsElement = driver.CreateRequiredClaimsElement(requiredClaims);
+                    //        processedElements.Add(e);
+                    //    }
+                    //}
 
-                    XmlElement keyWrapAlgorithmElement = null;
+                    //for (int i = 0; i < processedElements.Count; ++i)
+                    //{
+                    //    childrenToPromote.Remove(processedElements[i]);
+                    //}
 
-                    // Replace the appropriate elements.
-                    for (int i = 0; i < tmpCollection.Count; ++i)
-                    {
-                        string algorithmParameter;
-                        Collection<XmlElement> reqClaims;
+                    //XmlElement keyWrapAlgorithmElement = null;
 
-                        if (trust13Driver.IsSignWithElement(tmpCollection[i], out algorithmParameter))
-                        {
-                            tmpCollection[i] = driver.CreateSignWithElement(algorithmParameter);
-                        }
-                        else if (trust13Driver.IsEncryptWithElement(tmpCollection[i], out algorithmParameter))
-                        {
-                            tmpCollection[i] = driver.CreateEncryptWithElement(algorithmParameter);
-                        }
-                        else if (trust13Driver.IsEncryptionAlgorithmElement(tmpCollection[i], out algorithmParameter) && (encryptionElement != null))
-                        {
-                            tmpCollection[i] = encryptionElement;
-                            encryptionElement = null;
-                        }
-                        else if (trust13Driver.IsCanonicalizationAlgorithmElement(tmpCollection[i], out algorithmParameter) && (canonicalizationElement != null))
-                        {
-                            tmpCollection[i] = canonicalizationElement;
-                            canonicalizationElement = null;
-                        }
-                        else if (trust13Driver.IsKeyWrapAlgorithmElement(tmpCollection[i], out algorithmParameter) && (keyWrapAlgorithmElement == null))
-                        {
-                            keyWrapAlgorithmElement = tmpCollection[i];
-                        }
-                        else if (trust13Driver.TryParseRequiredClaimsElement(tmpCollection[i], out reqClaims) && (requiredClaimsElement != null))
-                        {
-                            tmpCollection[i] = requiredClaimsElement;
-                            requiredClaimsElement = null;
-                        }
-                    }
+                    //// Replace the appropriate elements.
+                    //for (int i = 0; i < tmpCollection.Count; ++i)
+                    //{
+                    //    string algorithmParameter;
+                    //    Collection<XmlElement> reqClaims;
 
-                    if (keyWrapAlgorithmElement != null)
-                    {
-                        // Remove KeyWrapAlgorithmElement as this is not define in Trust Feb 2005.
-                        tmpCollection.Remove(keyWrapAlgorithmElement);
-                    }
+                    //    if (trust13Driver.IsSignWithElement(tmpCollection[i], out algorithmParameter))
+                    //    {
+                    //        tmpCollection[i] = driver.CreateSignWithElement(algorithmParameter);
+                    //    }
+                    //    else if (trust13Driver.IsEncryptWithElement(tmpCollection[i], out algorithmParameter))
+                    //    {
+                    //        tmpCollection[i] = driver.CreateEncryptWithElement(algorithmParameter);
+                    //    }
+                    //    else if (trust13Driver.IsEncryptionAlgorithmElement(tmpCollection[i], out algorithmParameter) && (encryptionElement != null))
+                    //    {
+                    //        tmpCollection[i] = encryptionElement;
+                    //        encryptionElement = null;
+                    //    }
+                    //    else if (trust13Driver.IsCanonicalizationAlgorithmElement(tmpCollection[i], out algorithmParameter) && (canonicalizationElement != null))
+                    //    {
+                    //        tmpCollection[i] = canonicalizationElement;
+                    //        canonicalizationElement = null;
+                    //    }
+                    //    else if (trust13Driver.IsKeyWrapAlgorithmElement(tmpCollection[i], out algorithmParameter) && (keyWrapAlgorithmElement == null))
+                    //    {
+                    //        keyWrapAlgorithmElement = tmpCollection[i];
+                    //    }
+                    //    else if (trust13Driver.TryParseRequiredClaimsElement(tmpCollection[i], out reqClaims) && (requiredClaimsElement != null))
+                    //    {
+                    //        tmpCollection[i] = requiredClaimsElement;
+                    //        requiredClaimsElement = null;
+                    //    }
+                    //}
 
-                    // Add the remaining elements to the additionaParameters list to the end.
-                    if (encryptionElement != null) tmpCollection.Add(encryptionElement);
-                    if (canonicalizationElement != null) tmpCollection.Add(canonicalizationElement);
-                    if (requiredClaimsElement != null) tmpCollection.Add(requiredClaimsElement);
+                    //if (keyWrapAlgorithmElement != null)
+                    //{
+                    //    // Remove KeyWrapAlgorithmElement as this is not define in Trust Feb 2005.
+                    //    tmpCollection.Remove(keyWrapAlgorithmElement);
+                    //}
 
-                    if (childrenToPromote.Count > 0)
-                    {
-                        // There are some non-standard elements. Just bump them to the top-level element.
-                        for (int i = 0; i < childrenToPromote.Count; ++i)
-                        {
-                            tmpCollection.Add(childrenToPromote[i]);
-                        }
-                    }
+                    //// Add the remaining elements to the additionaParameters list to the end.
+                    //if (encryptionElement != null) tmpCollection.Add(encryptionElement);
+                    //if (canonicalizationElement != null) tmpCollection.Add(canonicalizationElement);
+                    //if (requiredClaimsElement != null) tmpCollection.Add(requiredClaimsElement);
+
+                    //if (childrenToPromote.Count > 0)
+                    //{
+                    //    // There are some non-standard elements. Just bump them to the top-level element.
+                    //    for (int i = 0; i < childrenToPromote.Count; ++i)
+                    //    {
+                    //        tmpCollection.Add(childrenToPromote[i]);
+                    //    }
+                    //}
                 }
 
             }
@@ -650,73 +666,77 @@ namespace System.ServiceModel.Security.Tokens
 
         private bool CanPromoteToRoot(XmlElement innerElement, WSTrustDec2005.DriverDec2005 trust13Driver, bool clientSideClaimTypeRequirementsSpecified)
         {
-            SecurityKeyType dummyOutParamForKeyType;
-            int dummyOutParamForKeySize;
-            string dummyStringOutParam;
-            Collection<XmlElement> dummyOutParamForRequiredClaims = null;
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-            // check if SecondaryParameters has claim requirements specified
-            if (trust13Driver.TryParseRequiredClaimsElement(innerElement, out dummyOutParamForRequiredClaims))
-            {
-                // if client has not specified any claim requirements, promote claim requirements 
-                // in SecondaryParameters to root level (and subsequently fix up the trust namespace)
-                return !clientSideClaimTypeRequirementsSpecified;
-            }
+            //SecurityKeyType dummyOutParamForKeyType;
+            //int dummyOutParamForKeySize;
+            //string dummyStringOutParam;
+            //Collection<XmlElement> dummyOutParamForRequiredClaims = null;
 
-            // KeySize, KeyType and TokenType were converted to top-level property values when the WSDL was
-            // imported, so drop it here. We check for EncryptWith and SignWith as these are Client specific algorithm values and we
-            // don't have to promote the service specified values. KeyWrapAlgorithm was never sent in the RST
-            // in V1 and hence we are dropping it here as well.
-            return (!trust13Driver.TryParseKeyTypeElement(innerElement, out dummyOutParamForKeyType) &&
-                    !trust13Driver.TryParseKeySizeElement(innerElement, out dummyOutParamForKeySize) &&
-                    !trust13Driver.TryParseTokenTypeElement(innerElement, out dummyStringOutParam) &&
-                    !trust13Driver.IsSignWithElement(innerElement, out dummyStringOutParam) &&
-                    !trust13Driver.IsEncryptWithElement(innerElement, out dummyStringOutParam) &&
-                    !trust13Driver.IsKeyWrapAlgorithmElement(innerElement, out dummyStringOutParam));
+            //// check if SecondaryParameters has claim requirements specified
+            //if (trust13Driver.TryParseRequiredClaimsElement(innerElement, out dummyOutParamForRequiredClaims))
+            //{
+            //    // if client has not specified any claim requirements, promote claim requirements 
+            //    // in SecondaryParameters to root level (and subsequently fix up the trust namespace)
+            //    return !clientSideClaimTypeRequirementsSpecified;
+            //}
+
+            //// KeySize, KeyType and TokenType were converted to top-level property values when the WSDL was
+            //// imported, so drop it here. We check for EncryptWith and SignWith as these are Client specific algorithm values and we
+            //// don't have to promote the service specified values. KeyWrapAlgorithm was never sent in the RST
+            //// in V1 and hence we are dropping it here as well.
+            //return (!trust13Driver.TryParseKeyTypeElement(innerElement, out dummyOutParamForKeyType) &&
+            //        !trust13Driver.TryParseKeySizeElement(innerElement, out dummyOutParamForKeySize) &&
+            //        !trust13Driver.TryParseTokenTypeElement(innerElement, out dummyStringOutParam) &&
+            //        !trust13Driver.IsSignWithElement(innerElement, out dummyStringOutParam) &&
+            //        !trust13Driver.IsEncryptWithElement(innerElement, out dummyStringOutParam) &&
+            //        !trust13Driver.IsKeyWrapAlgorithmElement(innerElement, out dummyStringOutParam));
         }
 
         internal void AddAlgorithmParameters(SecurityAlgorithmSuite algorithmSuite, SecurityStandardsManager standardsManager, SecurityKeyType issuedKeyType)
         {
-            this.additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptionAlgorithmElement(algorithmSuite.DefaultEncryptionAlgorithm));
-            this.additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateCanonicalizationAlgorithmElement(algorithmSuite.DefaultCanonicalizationAlgorithm));
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //_additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptionAlgorithmElement(algorithmSuite.DefaultEncryptionAlgorithm));
+            //_additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateCanonicalizationAlgorithmElement(algorithmSuite.DefaultCanonicalizationAlgorithm));
 
-            if (this.keyType == SecurityKeyType.BearerKey)
-            {
-                // As the client does not have a proof token in the Bearer case
-                // we don't have any specific algorithms to request for.
-                return;
-            }
+            //if (_keyType == SecurityKeyType.BearerKey)
+            //{
+            //    // As the client does not have a proof token in the Bearer case
+            //    // we don't have any specific algorithms to request for.
+            //    return;
+            //}
 
-            string signWithAlgorithm = (this.keyType == SecurityKeyType.SymmetricKey) ? algorithmSuite.DefaultSymmetricSignatureAlgorithm : algorithmSuite.DefaultAsymmetricSignatureAlgorithm;
-            this.additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateSignWithElement(signWithAlgorithm));
-            string encryptWithAlgorithm;
-            if (issuedKeyType == SecurityKeyType.SymmetricKey)
-            {
-                encryptWithAlgorithm = algorithmSuite.DefaultEncryptionAlgorithm;
-            }
-            else
-            {
-                encryptWithAlgorithm = algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm;
-            }
-            this.additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptWithElement(encryptWithAlgorithm));
+            //string signWithAlgorithm = (_keyType == SecurityKeyType.SymmetricKey) ? algorithmSuite.DefaultSymmetricSignatureAlgorithm : algorithmSuite.DefaultAsymmetricSignatureAlgorithm;
+            //_additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateSignWithElement(signWithAlgorithm));
+            //string encryptWithAlgorithm;
+            //if (issuedKeyType == SecurityKeyType.SymmetricKey)
+            //{
+            //    encryptWithAlgorithm = algorithmSuite.DefaultEncryptionAlgorithm;
+            //}
+            //else
+            //{
+            //    encryptWithAlgorithm = algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm;
+            //}
+            //_additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptWithElement(encryptWithAlgorithm));
 
-            if (standardsManager.TrustVersion != TrustVersion.WSTrustFeb2005)
-            {
-                this.additionalRequestParameters.Insert(0, ((WSTrustDec2005.DriverDec2005)standardsManager.TrustDriver).CreateKeyWrapAlgorithmElement(algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm));
-            }
+            //if (standardsManager.TrustVersion != TrustVersion.WSTrustFeb2005)
+            //{
+            //    _additionalRequestParameters.Insert(0, ((WSTrustDec2005.DriverDec2005)standardsManager.TrustDriver).CreateKeyWrapAlgorithmElement(algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm));
+            //}
 
-            return;
+            //return;
         }
 
         internal bool DoAlgorithmsMatch(SecurityAlgorithmSuite algorithmSuite, SecurityStandardsManager standardsManager, out Collection<XmlElement> otherRequestParameters)
         {
+            // Issue #31 in progress
             bool doesSignWithAlgorithmMatch = false;
             bool doesEncryptWithAlgorithmMatch = false;
             bool doesEncryptionAlgorithmMatch = false;
             bool doesCanonicalizationAlgorithmMatch = false;
             bool doesKeyWrapAlgorithmMatch = false;
-            otherRequestParameters = new Collection<XmlElement>();
             bool trustNormalizationPerformed = false;
+            otherRequestParameters = new Collection<XmlElement>();
 
             Collection<XmlElement> trustVersionNormalizedParameterCollection;
 
@@ -739,87 +759,88 @@ namespace System.ServiceModel.Security.Tokens
                 trustVersionNormalizedParameterCollection = this.AdditionalRequestParameters;
             }
 
-            for (int i = 0; i < trustVersionNormalizedParameterCollection.Count; i++)
-            {
-                string algorithm;
-                XmlElement element = trustVersionNormalizedParameterCollection[i];
-                if (standardsManager.TrustDriver.IsCanonicalizationAlgorithmElement(element, out algorithm))
-                {
-                    if (algorithmSuite.DefaultCanonicalizationAlgorithm != algorithm)
-                    {
-                        return false;
-                    }
-                    doesCanonicalizationAlgorithmMatch = true;
-                }
-                else if (standardsManager.TrustDriver.IsSignWithElement(element, out algorithm))
-                {
-                    if ((this.keyType == SecurityKeyType.SymmetricKey && algorithm != algorithmSuite.DefaultSymmetricSignatureAlgorithm)
-                        || (this.keyType == SecurityKeyType.AsymmetricKey && algorithm != algorithmSuite.DefaultAsymmetricSignatureAlgorithm))
-                    {
-                        return false;
-                    }
-                    doesSignWithAlgorithmMatch = true;
-                }
-                else if (standardsManager.TrustDriver.IsEncryptWithElement(element, out algorithm))
-                {
-                    if ((this.keyType == SecurityKeyType.SymmetricKey && algorithm != algorithmSuite.DefaultEncryptionAlgorithm)
-                        || (this.keyType == SecurityKeyType.AsymmetricKey && algorithm != algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm))
-                    {
-                        return false;
-                    }
-                    doesEncryptWithAlgorithmMatch = true;
-                }
-                else if (standardsManager.TrustDriver.IsEncryptionAlgorithmElement(element, out algorithm))
-                {
-                    if (algorithm != algorithmSuite.DefaultEncryptionAlgorithm)
-                    {
-                        return false;
-                    }
-                    doesEncryptionAlgorithmMatch = true;
-                }
-                else if (standardsManager.TrustDriver.IsKeyWrapAlgorithmElement(element, out algorithm))
-                {
-                    if (algorithm != algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm)
-                    {
-                        return false;
-                    }
-                    doesKeyWrapAlgorithmMatch = true;
-                }
-                else
-                {
-                    otherRequestParameters.Add(element);
-                }
-            }
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //for (int i = 0; i < trustVersionNormalizedParameterCollection.Count; i++)
+            //{
+            //    string algorithm;
+            //    XmlElement element = trustVersionNormalizedParameterCollection[i];
+            //    if (standardsManager.TrustDriver.IsCanonicalizationAlgorithmElement(element, out algorithm))
+            //    {
+            //        if (algorithmSuite.DefaultCanonicalizationAlgorithm != algorithm)
+            //        {
+            //            return false;
+            //        }
+            //        doesCanonicalizationAlgorithmMatch = true;
+            //    }
+            //    else if (standardsManager.TrustDriver.IsSignWithElement(element, out algorithm))
+            //    {
+            //        if ((_keyType == SecurityKeyType.SymmetricKey && algorithm != algorithmSuite.DefaultSymmetricSignatureAlgorithm)
+            //            || (_keyType == SecurityKeyType.AsymmetricKey && algorithm != algorithmSuite.DefaultAsymmetricSignatureAlgorithm))
+            //        {
+            //            return false;
+            //        }
+            //        doesSignWithAlgorithmMatch = true;
+            //    }
+            //    else if (standardsManager.TrustDriver.IsEncryptWithElement(element, out algorithm))
+            //    {
+            //        if ((_keyType == SecurityKeyType.SymmetricKey && algorithm != algorithmSuite.DefaultEncryptionAlgorithm)
+            //            || (_keyType == SecurityKeyType.AsymmetricKey && algorithm != algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm))
+            //        {
+            //            return false;
+            //        }
+            //        doesEncryptWithAlgorithmMatch = true;
+            //    }
+            //    else if (standardsManager.TrustDriver.IsEncryptionAlgorithmElement(element, out algorithm))
+            //    {
+            //        if (algorithm != algorithmSuite.DefaultEncryptionAlgorithm)
+            //        {
+            //            return false;
+            //        }
+            //        doesEncryptionAlgorithmMatch = true;
+            //    }
+            //    else if (standardsManager.TrustDriver.IsKeyWrapAlgorithmElement(element, out algorithm))
+            //    {
+            //        if (algorithm != algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm)
+            //        {
+            //            return false;
+            //        }
+            //        doesKeyWrapAlgorithmMatch = true;
+            //    }
+            //    else
+            //    {
+            //        otherRequestParameters.Add(element);
+            //    }
+            //}
 
-            // Undo normalization if performed
-            // move all back into secondaryParameters
-            if (trustNormalizationPerformed)
-            {
-                otherRequestParameters = this.AdditionalRequestParameters;
-            }
+            //// Undo normalization if performed
+            //// move all back into secondaryParameters
+            //if (trustNormalizationPerformed)
+            //{
+            //    otherRequestParameters = this.AdditionalRequestParameters;
+            //}
 
-            if (this.keyType == SecurityKeyType.BearerKey)
-            {
-                // As the client does not have a proof token in the Bearer case
-                // we don't have any specific algorithms to request for.
-                return true;
-            }
-            if (standardsManager.TrustVersion == TrustVersion.WSTrustFeb2005)
-            {
-                // For V1 compatibility check all algorithms
-                return (doesSignWithAlgorithmMatch && doesCanonicalizationAlgorithmMatch && doesEncryptionAlgorithmMatch && doesEncryptWithAlgorithmMatch);
-            }
-            else
-            {
-                return (doesSignWithAlgorithmMatch && doesCanonicalizationAlgorithmMatch && doesEncryptionAlgorithmMatch && doesEncryptWithAlgorithmMatch && doesKeyWrapAlgorithmMatch);
-            }
+            //if (_keyType == SecurityKeyType.BearerKey)
+            //{
+            //    // As the client does not have a proof token in the Bearer case
+            //    // we don't have any specific algorithms to request for.
+            //    return true;
+            //}
+            //if (standardsManager.TrustVersion == TrustVersion.WSTrustFeb2005)
+            //{
+            //    // For V1 compatibility check all algorithms
+            //    return (doesSignWithAlgorithmMatch && doesCanonicalizationAlgorithmMatch && doesEncryptionAlgorithmMatch && doesEncryptWithAlgorithmMatch);
+            //}
+            //else
+            //{
+            //    return (doesSignWithAlgorithmMatch && doesCanonicalizationAlgorithmMatch && doesEncryptionAlgorithmMatch && doesEncryptWithAlgorithmMatch && doesKeyWrapAlgorithmMatch);
+            //}
         }
 
         internal static IssuedSecurityTokenParameters CreateInfoCardParameters(SecurityStandardsManager standardsManager, SecurityAlgorithmSuite algorithm)
         {
             IssuedSecurityTokenParameters result = new IssuedSecurityTokenParameters(SecurityXXX2005Strings.SamlTokenType);
             result.KeyType = SecurityKeyType.AsymmetricKey;
-            result.ClaimTypeRequirements.Add(new ClaimTypeRequirement(wsidPPIClaim));
+            result.ClaimTypeRequirements.Add(new ClaimTypeRequirement(s_wsidPPIClaim));
             result.IssuerAddress = null;
             result.AddAlgorithmParameters(algorithm, standardsManager, result.KeyType);
             return result;
@@ -839,7 +860,7 @@ namespace System.ServiceModel.Security.Tokens
                 ClaimTypeRequirement claimTypeRequirement = parameters.ClaimTypeRequirements[0] as ClaimTypeRequirement;
                 if (claimTypeRequirement == null)
                     return false;
-                if (claimTypeRequirement.ClaimType != wsidPPIClaim)
+                if (claimTypeRequirement.ClaimType != s_wsidPPIClaim)
                     return false;
             }
             else if ((parameters.AdditionalRequestParameters != null) && (parameters.AdditionalRequestParameters.Count > 0))
@@ -853,7 +874,7 @@ namespace System.ServiceModel.Security.Tokens
                     if (claimTypeElement != null)
                     {
                         XmlNode claimType = claimTypeElement.Attributes.GetNamedItem("Uri");
-                        if (claimType != null && claimType.Value == wsidPPIClaim)
+                        if (claimType != null && claimType.Value == s_wsidPPIClaim)
                         {
                             claimTypeRequirementMatched = true;
                         }
@@ -917,22 +938,22 @@ namespace System.ServiceModel.Security.Tokens
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(base.ToString());
 
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "TokenType: {0}", this.tokenType == null ? "null" : this.tokenType));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeyType: {0}", this.keyType.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeySize: {0}", this.keySize.ToString(CultureInfo.InvariantCulture)));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerAddress: {0}", this.issuerAddress == null ? "null" : this.issuerAddress.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerMetadataAddress: {0}", this.issuerMetadataAddress == null ? "null" : this.issuerMetadataAddress.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "DefaultMessgeSecurityVersion: {0}", this.defaultMessageSecurityVersion == null ? "null" : this.defaultMessageSecurityVersion.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "UseStrTransform: {0}", this.useStrTransform.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "TokenType: {0}", _tokenType == null ? "null" : _tokenType));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeyType: {0}", _keyType.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeySize: {0}", _keySize.ToString(CultureInfo.InvariantCulture)));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerAddress: {0}", _issuerAddress == null ? "null" : _issuerAddress.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerMetadataAddress: {0}", _issuerMetadataAddress == null ? "null" : _issuerMetadataAddress.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "DefaultMessgeSecurityVersion: {0}", _defaultMessageSecurityVersion == null ? "null" : _defaultMessageSecurityVersion.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "UseStrTransform: {0}", _useStrTransform.ToString()));
 
-            if (this.issuerBinding == null)
+            if (_issuerBinding == null)
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerBinding: null"));
             }
             else
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerBinding:"));
-                BindingElementCollection bindingElements = this.issuerBinding.CreateBindingElements();
+                BindingElementCollection bindingElements = _issuerBinding.CreateBindingElements();
                 for (int i = 0; i < bindingElements.Count; i++)
                 {
                     sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "  BindingElement[{0}]:", i.ToString(CultureInfo.InvariantCulture)));
@@ -940,16 +961,16 @@ namespace System.ServiceModel.Security.Tokens
                 }
             }
 
-            if (this.claimTypeRequirements.Count == 0)
+            if (_claimTypeRequirements.Count == 0)
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "ClaimTypeRequirements: none"));
             }
             else
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "ClaimTypeRequirements:"));
-                for (int i = 0; i < this.claimTypeRequirements.Count; i++)
+                for (int i = 0; i < _claimTypeRequirements.Count; i++)
                 {
-                    sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "  {0}, optional={1}", this.claimTypeRequirements[i].ClaimType, this.claimTypeRequirements[i].IsOptional));
+                    sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "  {0}, optional={1}", _claimTypeRequirements[i].ClaimType, _claimTypeRequirements[i].IsOptional));
                 }
             }
 

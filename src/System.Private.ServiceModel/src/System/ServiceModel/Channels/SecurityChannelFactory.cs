@@ -1,23 +1,22 @@
-//----------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime;
+using System.Runtime.InteropServices;
+using System.Security.Authentication.ExtendedProtection;
+using System.ServiceModel;
+//using System.ServiceModel.Diagnostics.Application;
+using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Security;
+using System.Threading.Tasks;
+using ServiceModelActivity = System.ServiceModel.Diagnostics.ServiceModelActivity;
+using TraceUtility = System.ServiceModel.Diagnostics.TraceUtility;
 
 namespace System.ServiceModel.Channels
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Runtime;
-    using System.Runtime.InteropServices;
-    //using System.Runtime.Remoting.Messaging;
-    using System.Security.Authentication.ExtendedProtection;
-    using System.ServiceModel;
-    using System.ServiceModel.Diagnostics.Application;
-    using System.ServiceModel.Dispatcher;
-    using System.ServiceModel.Security;
-
-    using ServiceModelActivity = System.ServiceModel.Diagnostics.ServiceModelActivity;
-    using TraceUtility = System.ServiceModel.Diagnostics.TraceUtility;
-
     sealed class SecurityChannelFactory<TChannel>
         : LayeredChannelFactory<TChannel>
     {
@@ -130,6 +129,15 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        async Task CloseProtocolFactoryAsync(TimeSpan timeout)
+        {
+            if (this.securityProtocolFactory != null && !this.SessionMode)
+            {
+                await this.securityProtocolFactory.CloseAsync(timeout);
+                this.securityProtocolFactory = null;
+            }
+        }
+
         public override T GetProperty<T>()
         {
             if (this.SessionMode && (typeof(T) == typeof(IChannelSecureConversationSessionSettings)))
@@ -156,29 +164,33 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            List<OperationWithTimeoutBeginCallback> begins = new List<OperationWithTimeoutBeginCallback>();
-            List<OperationEndCallback> ends = new List<OperationEndCallback>();
-            begins.Add(new OperationWithTimeoutBeginCallback(base.OnBeginClose));
-            ends.Add(new OperationEndCallback(base.OnEndClose));
+            throw ExceptionHelper.PlatformNotSupported("SecurityChannelFactory OnBeginClose not supported.");
 
-            if (this.securityProtocolFactory != null && !this.SessionMode)
-            {
-                begins.Add(new OperationWithTimeoutBeginCallback(this.securityProtocolFactory.BeginClose));
-                ends.Add(new OperationEndCallback(this.securityProtocolFactory.EndClose));
-            }
+            //List<OperationWithTimeoutBeginCallback> begins = new List<OperationWithTimeoutBeginCallback>();
+            //List<OperationEndCallback> ends = new List<OperationEndCallback>();
+            //begins.Add(new OperationWithTimeoutBeginCallback(base.OnBeginClose));
+            //ends.Add(new OperationEndCallback(base.OnEndClose));
 
-            if (this.sessionClientSettings != null)
-            {
-                begins.Add(new OperationWithTimeoutBeginCallback(this.sessionClientSettings.BeginClose));
-                ends.Add(new OperationEndCallback(this.sessionClientSettings.EndClose));
-            }
+            //if (this.securityProtocolFactory != null && !this.SessionMode)
+            //{
+            //    begins.Add(new OperationWithTimeoutBeginCallback(this.securityProtocolFactory.BeginClose));
+            //    ends.Add(new OperationEndCallback(this.securityProtocolFactory.EndClose));
+            //}
 
-            return OperationWithTimeoutComposer.BeginComposeAsyncOperations(timeout, begins.ToArray(), ends.ToArray(), callback, state);
+            //if (this.sessionClientSettings != null)
+            //{
+            //    begins.Add(new OperationWithTimeoutBeginCallback(this.sessionClientSettings.BeginClose));
+            //    ends.Add(new OperationEndCallback(this.sessionClientSettings.EndClose));
+            //}
+
+            //return OperationWithTimeoutComposer.BeginComposeAsyncOperations(timeout, begins.ToArray(), ends.ToArray(), callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            OperationWithTimeoutComposer.EndComposeAsyncOperations(result);
+            throw ExceptionHelper.PlatformNotSupported("SecurityChannelFactory OnEndClose not supported.");
+
+            // OperationWithTimeoutComposer.EndComposeAsyncOperations(result);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -189,6 +201,22 @@ namespace System.ServiceModel.Channels
             if (this.sessionClientSettings != null)
             {
                 this.sessionClientSettings.Close(timeoutHelper.RemainingTime());
+            }
+        }
+
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return OnCloseAsyncInternal(timeout);
+        }
+
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await base.OnCloseAsync(timeout);
+            await CloseProtocolFactoryAsync(timeoutHelper.RemainingTime());
+            if (this.sessionClientSettings != null)
+            {
+                await this.sessionClientSettings.CloseAsync(timeoutHelper.RemainingTime());
             }
         }
 
@@ -233,6 +261,19 @@ namespace System.ServiceModel.Channels
             this.SetBufferManager();
         }
 
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
+        {
+            return OnOpenAsyncInternal(timeout);
+        }
+
+        private async Task OnOpenAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await OnOpenCoreAsync(timeoutHelper.RemainingTime());
+            await base.OnOpenAsync(timeoutHelper.RemainingTime());
+            this.SetBufferManager();
+        }
+
         void SetBufferManager()
         {
             ITransportFactorySettings transportSettings = this.GetProperty<ITransportFactorySettings>();
@@ -256,14 +297,17 @@ namespace System.ServiceModel.Channels
             }
         }
 
+
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new OperationWithTimeoutAsyncResult(new OperationWithTimeoutCallback(this.OnOpen), timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
+            //return new OperationWithTimeoutAsyncResult(new OperationWithTimeoutCallback(this.OnOpen), timeout, callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            OperationWithTimeoutAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
+            //OperationWithTimeoutAsyncResult.End(result);
         }
 
         void OnOpenCore(TimeSpan timeout)
@@ -280,12 +324,26 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private async Task OnOpenCoreAsync(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            if (this.SessionMode)
+            {
+                await this.SessionClientSettings.OpenAsync(this, this.InnerChannelFactory, this.ChannelBuilder, timeoutHelper.RemainingTime());
+            }
+            else
+            {
+                ThrowIfProtocolFactoryNotSet();
+                await this.securityProtocolFactory.OpenAsync(true, timeoutHelper.RemainingTime());
+            }
+        }
+
         void ThrowIfDuplexNotSupported()
         {
             if (!this.SupportsDuplex)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SR.GetString(SR.SecurityProtocolFactoryDoesNotSupportDuplex, this.securityProtocolFactory)));
+                    SR.Format(SR.SecurityProtocolFactoryDoesNotSupportDuplex, this.securityProtocolFactory)));
             }
         }
 
@@ -294,7 +352,7 @@ namespace System.ServiceModel.Channels
             if (this.securityProtocolFactory == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SR.GetString(SR.SecurityProtocolFactoryShouldBeSetBeforeThisOperation)));
+                    SR.Format(SR.SecurityProtocolFactoryShouldBeSetBeforeThisOperation)));
             }
         }
 
@@ -303,7 +361,7 @@ namespace System.ServiceModel.Channels
             if (!this.SupportsRequestReply)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SR.GetString(SR.SecurityProtocolFactoryDoesNotSupportRequestReply, this.securityProtocolFactory)));
+                    SR.Format(SR.SecurityProtocolFactoryDoesNotSupportRequestReply, this.securityProtocolFactory)));
             }
         }
 
@@ -355,14 +413,17 @@ namespace System.ServiceModel.Channels
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                EnableChannelBindingSupport();
+                throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
 
-                return new OpenAsyncResult(this, timeout, callback, state);
+                //EnableChannelBindingSupport();
+
+                //return new OpenAsyncResult(this, timeout, callback, state);
             }
 
             protected override void OnEndOpen(IAsyncResult result)
             {
-                OpenAsyncResult.End(result);
+                throw ExceptionHelper.PlatformNotSupported(); // Issue #31 in progress
+                //OpenAsyncResult.End(result);
             }
 
             protected override void OnOpen(TimeSpan timeout)
@@ -381,15 +442,37 @@ namespace System.ServiceModel.Channels
                 base.OnOpen(timeoutHelper.RemainingTime());
             }
 
+            protected internal override Task OnOpenAsync(TimeSpan timeout)
+            {
+                return OnOpenAsyncInternal(timeout);
+            }
+
+            private async Task OnOpenAsyncInternal(TimeSpan timeout)
+            {
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+
+                EnableChannelBindingSupport();
+
+                SecurityProtocol securityProtocol = this.SecurityProtocolFactory.CreateSecurityProtocol(
+                    this.to,
+                    this.Via,
+                    null,
+                    typeof(TChannel) == typeof(IRequestChannel),
+                    timeoutHelper.RemainingTime());
+                OnProtocolCreationComplete(securityProtocol);
+                await this.SecurityProtocol.OpenAsync(timeoutHelper.RemainingTime());
+                await base.OnOpenAsync(timeoutHelper.RemainingTime());
+            }
+
             void EnableChannelBindingSupport()
             {
                 if (this.securityProtocolFactory != null && this.securityProtocolFactory.ExtendedProtectionPolicy != null && this.securityProtocolFactory.ExtendedProtectionPolicy.CustomChannelBinding != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.GetString(SR.ExtendedProtectionPolicyCustomChannelBindingNotSupported)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.ExtendedProtectionPolicyCustomChannelBindingNotSupported)));
                 }
 
                 // Do not enable channel binding if there is no reason as it sets up chunking mode.
-                if ((SecurityUtils.IsChannelBindingDisabled) || (!SecurityUtils.IsSecurityBindingSuitableForChannelBinding(this.SecurityProtocolFactory.SecurityBindingElement as TransportSecurityBindingElement)))
+                if (!SecurityUtils.IsSecurityBindingSuitableForChannelBinding(this.SecurityProtocolFactory.SecurityBindingElement as TransportSecurityBindingElement))
                     return;
 
                 if (InnerChannel != null)
@@ -417,124 +500,6 @@ namespace System.ServiceModel.Channels
 
                 return base.GetProperty<T>();
             }
-
-            sealed class OpenAsyncResult : AsyncResult
-            {
-                readonly ClientSecurityChannel<UChannel> clientChannel;
-                TimeoutHelper timeoutHelper;
-                static readonly AsyncCallback openInnerChannelCallback = Fx.ThunkCallback(new AsyncCallback(OpenInnerChannelCallback));
-                static readonly AsyncCallback openSecurityProtocolCallback = Fx.ThunkCallback(new AsyncCallback(OpenSecurityProtocolCallback));
-
-                public OpenAsyncResult(ClientSecurityChannel<UChannel> clientChannel, TimeSpan timeout,
-                    AsyncCallback callback, object state)
-                    : base(callback, state)
-                {
-                    this.timeoutHelper = new TimeoutHelper(timeout);
-                    this.clientChannel = clientChannel;
-                    SecurityProtocol securityProtocol = this.clientChannel.SecurityProtocolFactory.CreateSecurityProtocol(this.clientChannel.to,
-                        this.clientChannel.Via,
-                        null, typeof(TChannel) == typeof(IRequestChannel), timeoutHelper.RemainingTime());
-                    bool completeSelf = this.OnCreateSecurityProtocolComplete(securityProtocol);
-                    if (completeSelf)
-                    {
-                        Complete(true);
-                    }
-                }
-
-                internal static void End(IAsyncResult result)
-                {
-                    AsyncResult.End<OpenAsyncResult>(result);
-                }
-
-                bool OnCreateSecurityProtocolComplete(SecurityProtocol securityProtocol)
-                {
-                    this.clientChannel.OnProtocolCreationComplete(securityProtocol);
-                    IAsyncResult result = securityProtocol.BeginOpen(timeoutHelper.RemainingTime(), openSecurityProtocolCallback, this);
-                    if (!result.CompletedSynchronously)
-                    {
-                        return false;
-                    }
-                    securityProtocol.EndOpen(result);
-                    return this.OnSecurityProtocolOpenComplete();
-                }
-
-                static void OpenSecurityProtocolCallback(IAsyncResult result)
-                {
-                    if (result.CompletedSynchronously)
-                    {
-                        return;
-                    }
-                    OpenAsyncResult self = result.AsyncState as OpenAsyncResult;
-                    if (self == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.GetString(SR.InvalidAsyncResult), "result"));
-                    }
-                    Exception completionException = null;
-                    bool completeSelf = false;
-                    try
-                    {
-                        self.clientChannel.SecurityProtocol.EndOpen(result);
-                        completeSelf = self.OnSecurityProtocolOpenComplete();
-                    }
-#pragma warning suppress 56500 // covered by FxCOP
-                    catch (Exception e)
-                    {
-                        if (Fx.IsFatal(e))
-                        {
-                            throw;
-                        }
-                        completionException = e;
-                        completeSelf = true;
-                    }
-                    if (completeSelf)
-                    {
-                        self.Complete(false, completionException);
-                    }
-                }
-
-                bool OnSecurityProtocolOpenComplete()
-                {
-                    IAsyncResult result = this.clientChannel.InnerChannel.BeginOpen(this.timeoutHelper.RemainingTime(), openInnerChannelCallback, this);
-                    if (!result.CompletedSynchronously)
-                    {
-                        return false;
-                    }
-                    this.clientChannel.InnerChannel.EndOpen(result);
-                    return true;
-                }
-
-                static void OpenInnerChannelCallback(IAsyncResult result)
-                {
-                    if (result == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("result"));
-                    }
-                    if (result.CompletedSynchronously)
-                    {
-                        return;
-                    }
-                    OpenAsyncResult self = result.AsyncState as OpenAsyncResult;
-                    if (self == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.GetString(SR.InvalidAsyncResult), "result"));
-                    }
-                    Exception completionException = null;
-                    try
-                    {
-                        self.clientChannel.InnerChannel.EndOpen(result);
-                    }
-#pragma warning suppress 56500 // covered by FxCOP
-                    catch (Exception e)
-                    {
-                        if (Fx.IsFatal(e))
-                        {
-                            throw;
-                        }
-                        completionException = e;
-                    }
-                    self.Complete(false, completionException);
-                }
-            }
         }
 
         class SecurityOutputChannel : ClientSecurityChannel<IOutputChannel>, IOutputChannel
@@ -551,14 +516,16 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
             {
-                ThrowIfFaulted();
-                ThrowIfDisposedOrNotOpen(message);
-                return new OutputChannelSendAsyncResult(message, this.SecurityProtocol, this.InnerChannel, timeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //ThrowIfFaulted();
+                //ThrowIfDisposedOrNotOpen(message);
+                //return new OutputChannelSendAsyncResult(message, this.SecurityProtocol, this.InnerChannel, timeout, callback, state);
             }
 
             public void EndSend(IAsyncResult result)
             {
-                OutputChannelSendAsyncResult.End(result);
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                // OutputChannelSendAsyncResult.End(result);
             }
 
             public void Send(Message message)
@@ -601,19 +568,22 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginRequest(Message message, AsyncCallback callback, object state)
             {
-                return this.BeginRequest(message, this.DefaultSendTimeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported();   // Issues #31 and #1494 in progress
+                //return this.BeginRequest(message, this.DefaultSendTimeout, callback, state);
             }
 
             public IAsyncResult BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state)
             {
-                ThrowIfFaulted();
-                ThrowIfDisposedOrNotOpen(message);
-                return new RequestChannelSendAsyncResult(message, this.SecurityProtocol, this.InnerChannel, this, timeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported();   // Issues #31 and #1494 in progress
+                //ThrowIfFaulted();
+                //ThrowIfDisposedOrNotOpen(message);
+                //return new RequestChannelSendAsyncResult(message, this.SecurityProtocol, this.InnerChannel, this, timeout, callback, state);
             }
 
             public Message EndRequest(IAsyncResult result)
             {
-                return RequestChannelSendAsyncResult.End(result);
+                throw ExceptionHelper.PlatformNotSupported();   // Issues #31 and #1494 in progress
+                //return RequestChannelSendAsyncResult.End(result);
             }
 
             public Message Request(Message message)
@@ -733,7 +703,8 @@ namespace System.ServiceModel.Channels
 
             public Message Receive(TimeSpan timeout)
             {
-                return InputChannel.HelpReceive(this, timeout);
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //return InputChannel.HelpReceive(this, timeout);
             }
 
             public IAsyncResult BeginReceive(AsyncCallback callback, object state)
@@ -743,67 +714,74 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return InputChannel.HelpBeginReceive(this, timeout, callback, state);
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //return InputChannel.HelpBeginReceive(this, timeout, callback, state);
             }
 
             public Message EndReceive(IAsyncResult result)
             {
-                return InputChannel.HelpEndReceive(result);
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //return InputChannel.HelpEndReceive(result);
             }
 
             public virtual IAsyncResult BeginTryReceive(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                if (DoneReceivingInCurrentState())
-                {
-                    return new DoneReceivingAsyncResult(callback, state);
-                }
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //if (DoneReceivingInCurrentState())
+                //{
+                //    throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //    //return new DoneReceivingAsyncResult(callback, state);
+                //}
 
-                ClientDuplexReceiveMessageAndVerifySecurityAsyncResult result =
-                    new ClientDuplexReceiveMessageAndVerifySecurityAsyncResult(this, this.InnerDuplexChannel, timeout, callback, state);
-                result.Start();
-                return result;
+                //ClientDuplexReceiveMessageAndVerifySecurityAsyncResult result =
+                //    new ClientDuplexReceiveMessageAndVerifySecurityAsyncResult(this, this.InnerDuplexChannel, timeout, callback, state);
+                //result.Start();
+                //return result;
             }
 
             public virtual bool EndTryReceive(IAsyncResult result, out Message message)
             {
-                DoneReceivingAsyncResult doneRecevingResult = result as DoneReceivingAsyncResult;
-                if (doneRecevingResult != null)
-                {
-                    return DoneReceivingAsyncResult.End(doneRecevingResult, out message);
-                }
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+                //DoneReceivingAsyncResult doneRecevingResult = result as DoneReceivingAsyncResult;
+                //if (doneRecevingResult != null)
+                //{
+                //    return DoneReceivingAsyncResult.End(doneRecevingResult, out message);
+                //}
 
-                return ClientDuplexReceiveMessageAndVerifySecurityAsyncResult.End(result, out message);
+                //return ClientDuplexReceiveMessageAndVerifySecurityAsyncResult.End(result, out message);
             }
 
             internal Message ProcessMessage(Message message, TimeSpan timeout)
             {
-                if (message == null)
-                {
-                    return null;
-                }
-                Message unverifiedMessage = message;
-                Exception faultException = null;
-                try
-                {
-                    this.SecurityProtocol.VerifyIncomingMessage(ref message, timeout);
-                }
-                catch (MessageSecurityException)
-                {
-                    TryGetSecurityFaultException(unverifiedMessage, out faultException);
-                    if (faultException == null)
-                    {
-                        throw;
-                    }
-                }
-                if (faultException != null)
-                {
-                    if (AcceptUnsecuredFaults)
-                    {
-                        Fault(faultException);
-                    }
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(faultException);
-                }
-                return message;
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+
+                //if (message == null)
+                //{
+                //    return null;
+                //}
+                //Message unverifiedMessage = message;
+                //Exception faultException = null;
+                //try
+                //{
+                //    this.SecurityProtocol.VerifyIncomingMessage(ref message, timeout);
+                //}
+                //catch (MessageSecurityException)
+                //{
+                //    TryGetSecurityFaultException(unverifiedMessage, out faultException);
+                //    if (faultException == null)
+                //    {
+                //        throw;
+                //    }
+                //}
+                //if (faultException != null)
+                //{
+                //    if (AcceptUnsecuredFaults)
+                //    {
+                //        Fault(faultException);
+                //    }
+                //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(faultException);
+                //}
+                //return message;
             }
 
 
@@ -858,59 +836,6 @@ namespace System.ServiceModel.Channels
             internal override bool AcceptUnsecuredFaults
             {
                 get { return true; }
-            }
-        }
-
-        sealed class RequestChannelSendAsyncResult : ApplySecurityAndSendAsyncResult<IRequestChannel>
-        {
-            Message reply;
-            SecurityRequestChannel securityChannel;
-
-            public RequestChannelSendAsyncResult(Message message, SecurityProtocol protocol, IRequestChannel channel, SecurityRequestChannel securityChannel, TimeSpan timeout,
-                AsyncCallback callback, object state)
-                : base(protocol, channel, timeout, callback, state)
-            {
-                this.securityChannel = securityChannel;
-                this.Begin(message, null);
-            }
-
-            protected override IAsyncResult BeginSendCore(IRequestChannel channel, Message message, TimeSpan timeout, AsyncCallback callback, object state)
-            {
-                return channel.BeginRequest(message, timeout, callback, state);
-            }
-
-            internal static Message End(IAsyncResult result)
-            {
-                RequestChannelSendAsyncResult self = result as RequestChannelSendAsyncResult;
-                OnEnd(self);
-                return self.reply;
-            }
-
-            protected override void EndSendCore(IRequestChannel channel, IAsyncResult result)
-            {
-                this.reply = channel.EndRequest(result);
-            }
-
-            protected override void OnSendCompleteCore(TimeSpan timeout)
-            {
-                this.reply = securityChannel.ProcessReply(reply, this.CorrelationState, timeout);
-            }
-        }
-
-        class ClientDuplexReceiveMessageAndVerifySecurityAsyncResult : ReceiveMessageAndVerifySecurityAsyncResultBase
-        {
-            SecurityDuplexChannel channel;
-
-            public ClientDuplexReceiveMessageAndVerifySecurityAsyncResult(SecurityDuplexChannel channel, IDuplexChannel innerChannel, TimeSpan timeout, AsyncCallback callback, object state)
-                : base(innerChannel, timeout, callback, state)
-            {
-                this.channel = channel;
-            }
-
-            protected override bool OnInnerReceiveDone(ref Message message, TimeSpan timeout)
-            {
-                message = this.channel.ProcessMessage(message, timeout);
-                return true;
             }
         }
     }

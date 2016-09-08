@@ -1,27 +1,27 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using System.CodeDom;
+using System.Runtime.Serialization;
+using System.Globalization;
+using System.Threading;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Policy;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
 
 namespace System.IdentityModel.Tokens
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Text;
-    using System.Xml.Serialization;
-    using System.Xml;
-    using System.Xml.Schema;
-    using System.CodeDom;
-    using System.Runtime.Serialization;
-    using System.Globalization;
-    using System.Threading;
-    using System.IdentityModel.Selectors;
-    using System.IdentityModel.Policy;
-    using System.Reflection;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using System.IO;
-
     public class SamlSecurityToken : SecurityToken
     {
         SamlAssertion assertion;
@@ -38,7 +38,7 @@ namespace System.IdentityModel.Tokens
         protected void Initialize(SamlAssertion assertion)
         {
             if (assertion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("assertion");
+                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("assertion");
 
             this.assertion = assertion;
             this.assertion.MakeReadOnly();
@@ -53,7 +53,8 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                return this.assertion.SecurityKeys;
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
+                //return this.assertion.SecurityKeys;
             }
         }
 
@@ -66,12 +67,13 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                if (this.assertion.Conditions != null)
-                {
-                    return this.assertion.Conditions.NotBefore;
-                }
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
+                //if (this.assertion.Conditions != null)
+                //{
+                //    return this.assertion.Conditions.NotBefore;
+                //}
 
-                return SecurityUtils.MinUtcDateTime;
+                //return SecurityUtils.MinUtcDateTime;
             }
         }
 
@@ -79,40 +81,44 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                if (this.assertion.Conditions != null)
-                {
-                    return this.assertion.Conditions.NotOnOrAfter;
-                }
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
+                //if (this.assertion.Conditions != null)
+                //{
+                //    return this.assertion.Conditions.NotOnOrAfter;
+                //}
 
-                return SecurityUtils.MaxUtcDateTime;
+                //return SecurityUtils.MaxUtcDateTime;
             }
         }
 
         public override bool CanCreateKeyIdentifierClause<T>()
         {
-            if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
-                return true;
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
+            //if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
+            //    return true;
 
-            return false;
+            //return false;
         }
 
         public override T CreateKeyIdentifierClause<T>()
         {
-            if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
-                return new SamlAssertionKeyIdentifierClause(this.Id) as T;
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.UnableToCreateTokenReference)));
+            //if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
+            //    return new SamlAssertionKeyIdentifierClause(this.Id) as T;
+
+            //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.UnableToCreateTokenReference)));
         }
 
         public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            SamlAssertionKeyIdentifierClause samlKeyIdentifierClause = keyIdentifierClause as SamlAssertionKeyIdentifierClause;
-            if (samlKeyIdentifierClause != null)
-                return samlKeyIdentifierClause.Matches(this.Id);
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
+            //SamlAssertionKeyIdentifierClause samlKeyIdentifierClause = keyIdentifierClause as SamlAssertionKeyIdentifierClause;
+            //if (samlKeyIdentifierClause != null)
+            //    return samlKeyIdentifierClause.Matches(this.Id);
 
-            return false;
+            //return false;
         }
     }
-
 }
 

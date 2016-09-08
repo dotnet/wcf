@@ -1,6 +1,6 @@
-//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -21,14 +21,14 @@ namespace System.ServiceModel.Security.Tokens
     /// </summary>
     internal class ProviderBackedSecurityToken : SecurityToken
     {
-        SecurityTokenProvider _tokenProvider;
+        private SecurityTokenProvider _tokenProvider;
 
         // Double-checked locking pattern requires volatile for read/write synchronization
-        volatile SecurityToken _securityToken;
-        TimeSpan _timeout;
-        ChannelBinding _channelBinding;
+        private volatile SecurityToken _securityToken;
+        private TimeSpan _timeout;
+        private ChannelBinding _channelBinding;
 
-        object _lock;
+        private object _lock;
 
         /// <summary>
         /// Constructor to create an instance of this class.
@@ -69,7 +69,7 @@ namespace System.ServiceModel.Security.Tokens
                                                         as ClientCredentialsSecurityTokenManager.KerberosSecurityTokenProviderWrapper;
                         if (kerbTokenProvider != null)
                         {
-                            _securityToken = kerbTokenProvider.GetToken((new TimeoutHelper(_timeout)).RemainingTime(), _channelBinding);
+                            _securityToken = kerbTokenProvider.GetToken((new TimeoutHelper(_timeout)).RemainingTime());
                         }
                         else
                         {
@@ -81,7 +81,7 @@ namespace System.ServiceModel.Security.Tokens
 
             if ( _securityToken == null )
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError( new SecurityTokenException( SR.GetString( SR.SecurityTokenNotResolved, _tokenProvider.GetType().ToString() ) ) );
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError( new SecurityTokenException( SR.Format( SR.SecurityTokenNotResolved, _tokenProvider.GetType().ToString() ) ) );
             }
 
             return;
