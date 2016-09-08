@@ -259,6 +259,9 @@ public interface IWcfCustomUserNameService
 {
     [OperationContract(Action = "http://tempuri.org/IWcfCustomUserNameService/Echo")]
     String Echo(String message);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfCustomUserNameService/Echo")]
+    Task<String> EchoAsync(String message);
 }
 
 [ServiceContract(
@@ -534,4 +537,14 @@ public interface IVerifyWebSockets
 {
     [OperationContract()]
     bool ValidateWebSocketsUsed();
+}
+
+[ServiceContract]
+public interface IWsTrustService
+{
+    [OperationContract]
+    String EchoWithTimeout(String message, TimeSpan serviceOperationTimeout);
+
+    [OperationContract(Action = "http://tempuri.org/IWsTrustService/EchoWithTimeout")]
+    Task<String> EchoWithTimeoutAsync(String message, TimeSpan serviceOperationTimeout);
 }
