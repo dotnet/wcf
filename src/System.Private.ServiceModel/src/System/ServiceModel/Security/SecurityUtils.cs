@@ -652,7 +652,6 @@ namespace System.ServiceModel.Security
             {
                 name = identity.Name;
             }
-#pragma warning suppress 56500
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -1285,7 +1284,6 @@ namespace System.ServiceModel.Security
                     thisResult._operationWithTimeout(thisResult._timeoutHelper.RemainingTime());
                 }
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))

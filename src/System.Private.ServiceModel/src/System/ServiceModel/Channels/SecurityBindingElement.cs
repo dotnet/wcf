@@ -233,22 +233,22 @@ namespace System.ServiceModel.Channels
             supportsWindowsIdentity = false;
             bool tmpSupportsClientAuth;
             bool tmpSupportsWindowsIdentity;
-            this.GetSupportingTokensCapabilities(requirements.Endorsing, out tmpSupportsClientAuth, out tmpSupportsWindowsIdentity);
+            GetSupportingTokensCapabilities(requirements.Endorsing, out tmpSupportsClientAuth, out tmpSupportsWindowsIdentity);
             supportsClientAuth = supportsClientAuth || tmpSupportsClientAuth;
             supportsWindowsIdentity = supportsWindowsIdentity || tmpSupportsWindowsIdentity;
 
-            this.GetSupportingTokensCapabilities(requirements.SignedEndorsing, out tmpSupportsClientAuth, out tmpSupportsWindowsIdentity);
+            GetSupportingTokensCapabilities(requirements.SignedEndorsing, out tmpSupportsClientAuth, out tmpSupportsWindowsIdentity);
             supportsClientAuth = supportsClientAuth || tmpSupportsClientAuth;
             supportsWindowsIdentity = supportsWindowsIdentity || tmpSupportsWindowsIdentity;
 
-            this.GetSupportingTokensCapabilities(requirements.SignedEncrypted, out tmpSupportsClientAuth, out tmpSupportsWindowsIdentity);
+            GetSupportingTokensCapabilities(requirements.SignedEncrypted, out tmpSupportsClientAuth, out tmpSupportsWindowsIdentity);
             supportsClientAuth = supportsClientAuth || tmpSupportsClientAuth;
             supportsWindowsIdentity = supportsWindowsIdentity || tmpSupportsWindowsIdentity;
         }
 
         internal void GetSupportingTokensCapabilities(out bool supportsClientAuth, out bool supportsWindowsIdentity)
         {
-            this.GetSupportingTokensCapabilities(this.EndpointSupportingTokenParameters, out supportsClientAuth, out supportsWindowsIdentity);
+            GetSupportingTokensCapabilities(EndpointSupportingTokenParameters, out supportsClientAuth, out supportsWindowsIdentity);
         }
 
         static BindingContext CreateIssuerBindingContextForNegotiation(BindingContext issuerBindingContext)
@@ -325,13 +325,13 @@ namespace System.ServiceModel.Channels
 
         void SetIssuerBindingContextIfRequired(BindingContext issuerBindingContext)
         {
-            SetIssuerBindingContextIfRequired(this.EndpointSupportingTokenParameters, issuerBindingContext);
-            SetIssuerBindingContextIfRequired(this.OptionalEndpointSupportingTokenParameters, issuerBindingContext);
-            foreach (SupportingTokenParameters parameters in this.OperationSupportingTokenParameters.Values)
+            SetIssuerBindingContextIfRequired(EndpointSupportingTokenParameters, issuerBindingContext);
+            SetIssuerBindingContextIfRequired(OptionalEndpointSupportingTokenParameters, issuerBindingContext);
+            foreach (SupportingTokenParameters parameters in OperationSupportingTokenParameters.Values)
             {
                 SetIssuerBindingContextIfRequired(parameters, issuerBindingContext);
             }
-            foreach (SupportingTokenParameters parameters in this.OptionalOperationSupportingTokenParameters.Values)
+            foreach (SupportingTokenParameters parameters in OptionalOperationSupportingTokenParameters.Values)
             {
                 SetIssuerBindingContextIfRequired(parameters, issuerBindingContext);
             }
@@ -370,7 +370,7 @@ namespace System.ServiceModel.Channels
             if (context == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
 
-            if (!this.CanBuildChannelFactory<TChannel>(context))
+            if (!CanBuildChannelFactory<TChannel>(context))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)), "TChannel"));
             }
@@ -389,7 +389,7 @@ namespace System.ServiceModel.Channels
             if (transportBindingElement != null)
                 _maxReceivedMessageSize = transportBindingElement.MaxReceivedMessageSize;
 
-            IChannelFactory<TChannel> result = this.BuildChannelFactoryCore<TChannel>(context);
+            IChannelFactory<TChannel> result = BuildChannelFactoryCore<TChannel>(context);
 
             return result;
         }
@@ -401,9 +401,9 @@ namespace System.ServiceModel.Channels
             if (context == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
 
-            if (this.SessionMode)
+            if (SessionMode)
             {
-                return this.CanBuildSessionChannelFactory<TChannel>(context);
+                return CanBuildSessionChannelFactory<TChannel>(context);
             }
 
             if (!context.CanBuildInnerChannelFactory<TChannel>())
@@ -412,8 +412,8 @@ namespace System.ServiceModel.Channels
             }
 
             return typeof(TChannel) == typeof(IOutputChannel) || typeof(TChannel) == typeof(IOutputSessionChannel) ||
-                (this.SupportsDuplex && (typeof(TChannel) == typeof(IDuplexChannel) || typeof(TChannel) == typeof(IDuplexSessionChannel))) ||
-                (this.SupportsRequestReply && (typeof(TChannel) == typeof(IRequestChannel) || typeof(TChannel) == typeof(IRequestSessionChannel)));
+                (SupportsDuplex && (typeof(TChannel) == typeof(IDuplexChannel) || typeof(TChannel) == typeof(IDuplexSessionChannel))) ||
+                (SupportsRequestReply && (typeof(TChannel) == typeof(IRequestChannel) || typeof(TChannel) == typeof(IRequestSessionChannel)));
         }
 
         private bool CanBuildSessionChannelFactory<TChannel>(BindingContext context)
@@ -477,7 +477,7 @@ namespace System.ServiceModel.Channels
 
         private ISecurityCapabilities GetSecurityCapabilities(BindingContext context)
         {
-            ISecurityCapabilities thisSecurityCapability = this.GetIndividualISecurityCapabilities();
+            ISecurityCapabilities thisSecurityCapability = GetIndividualISecurityCapabilities();
             ISecurityCapabilities lowerSecurityCapability = context.GetInnerProperty<ISecurityCapabilities>();
             if (lowerSecurityCapability == null)
             {
@@ -620,41 +620,41 @@ namespace System.ServiceModel.Channels
             if (credentialsManager == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("credentialsManager"));
 
-            factory.AddTimestamp = this.IncludeTimestamp;
-            factory.IncomingAlgorithmSuite = this.DefaultAlgorithmSuite;
-            factory.OutgoingAlgorithmSuite = this.DefaultAlgorithmSuite;
-            factory.SecurityHeaderLayout = this.SecurityHeaderLayout;
+            factory.AddTimestamp = IncludeTimestamp;
+            factory.IncomingAlgorithmSuite = DefaultAlgorithmSuite;
+            factory.OutgoingAlgorithmSuite = DefaultAlgorithmSuite;
+            factory.SecurityHeaderLayout = SecurityHeaderLayout;
 
             if (!isForService)
             {
-                factory.TimestampValidityDuration = this.LocalClientSettings.TimestampValidityDuration;
-                factory.DetectReplays = this.LocalClientSettings.DetectReplays;
-                factory.MaxCachedNonces = this.LocalClientSettings.ReplayCacheSize;
-                factory.MaxClockSkew = this.LocalClientSettings.MaxClockSkew;
-                factory.ReplayWindow = this.LocalClientSettings.ReplayWindow;
+                factory.TimestampValidityDuration = LocalClientSettings.TimestampValidityDuration;
+                factory.DetectReplays = LocalClientSettings.DetectReplays;
+                factory.MaxCachedNonces = LocalClientSettings.ReplayCacheSize;
+                factory.MaxClockSkew = LocalClientSettings.MaxClockSkew;
+                factory.ReplayWindow = LocalClientSettings.ReplayWindow;
 
-                if (this.LocalClientSettings.DetectReplays)
+                if (LocalClientSettings.DetectReplays)
                 {
-                    factory.NonceCache = this.LocalClientSettings.NonceCache;
+                    factory.NonceCache = LocalClientSettings.NonceCache;
                 }
             }
             else
             {
                 throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
 
-                //factory.TimestampValidityDuration = this.LocalServiceSettings.TimestampValidityDuration;
-                //factory.DetectReplays = this.LocalServiceSettings.DetectReplays;
-                //factory.MaxCachedNonces = this.LocalServiceSettings.ReplayCacheSize;
-                //factory.MaxClockSkew = this.LocalServiceSettings.MaxClockSkew;
-                //factory.ReplayWindow = this.LocalServiceSettings.ReplayWindow;
+                //factory.TimestampValidityDuration = LocalServiceSettings.TimestampValidityDuration;
+                //factory.DetectReplays = LocalServiceSettings.DetectReplays;
+                //factory.MaxCachedNonces = LocalServiceSettings.ReplayCacheSize;
+                //factory.MaxClockSkew = LocalServiceSettings.MaxClockSkew;
+                //factory.ReplayWindow = LocalServiceSettings.ReplayWindow;
 
-                //if (this.LocalServiceSettings.DetectReplays)
+                //if (LocalServiceSettings.DetectReplays)
                 //{
-                //    factory.NonceCache = this.LocalServiceSettings.NonceCache;
+                //    factory.NonceCache = LocalServiceSettings.NonceCache;
                 //}
             }
 
-            factory.SecurityBindingElement = (SecurityBindingElement)this.Clone();
+            factory.SecurityBindingElement = (SecurityBindingElement)Clone();
             factory.SecurityBindingElement.SetIssuerBindingContextIfRequired(issuerBindingContext);
             factory.SecurityTokenManager = credentialsManager.CreateSecurityTokenManager();
             SecurityTokenSerializer tokenSerializer = factory.SecurityTokenManager.CreateSecurityTokenSerializer(_messageSecurityVersion.SecurityTokenVersion);
@@ -669,13 +669,13 @@ namespace System.ServiceModel.Channels
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "{0}:", this.GetType().ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "{0}:", GetType().ToString()));
             sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IncludeTimestamp: {0}", _includeTimestamp.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "MessageSecurityVersion: {0}", this.MessageSecurityVersion.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "MessageSecurityVersion: {0}", MessageSecurityVersion.ToString()));
             sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "SecurityHeaderLayout: {0}", _securityHeaderLayout.ToString()));
             sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "ProtectTokens: {0}", _protectTokens.ToString()));
             sb.AppendLine("EndpointSupportingTokenParameters:");
-            sb.AppendLine("  " + this.EndpointSupportingTokenParameters.ToString().Trim().Replace("\n", "\n  "));
+            sb.AppendLine("  " + EndpointSupportingTokenParameters.ToString().Trim().Replace("\n", "\n  "));
 
             return sb.ToString().Trim();
         }

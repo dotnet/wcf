@@ -1160,7 +1160,6 @@ namespace System.ServiceModel.Security
 //                        return message;
 //                    }
 //                }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                catch (Exception e)
 //                {
 //                    if ((e is CommunicationException) || (e is TimeoutException) || (Fx.IsFatal(e)) || !ShouldWrapException(e))
@@ -1833,7 +1832,6 @@ namespace System.ServiceModel.Security
                             completeSelf = self.OnChannelBinderClosed();
                         }
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -1906,7 +1904,6 @@ namespace System.ServiceModel.Security
 //                            completeSelf = self.OnTokenProviderClosed();
 //                        }
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
@@ -2013,7 +2010,6 @@ namespace System.ServiceModel.Security
                     {
                         completeSelf = self.CompleteReceive(result);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -2104,7 +2100,6 @@ namespace System.ServiceModel.Security
                             completeSelf = thisResult.OnOutputSessionClosed();
                         }
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -2179,7 +2174,6 @@ namespace System.ServiceModel.Security
 //                    {
 //                        thisResult.closeCompleted = false;
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
@@ -2279,7 +2273,6 @@ namespace System.ServiceModel.Security
                             }
                         }
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -2390,7 +2383,6 @@ namespace System.ServiceModel.Security
 //                            completeSelf = true;
 //                        }
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
@@ -2429,7 +2421,6 @@ namespace System.ServiceModel.Security
                     {
                         self.sessionChannel.EndCloseCore(result);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -2475,7 +2466,6 @@ namespace System.ServiceModel.Security
                             thisResult.sessionChannel.RenewKey(thisResult.timeoutHelper.RemainingTime());
                         }
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -2576,7 +2566,6 @@ namespace System.ServiceModel.Security
                         thisResult.message = thisResult.sessionChannel.EndSecureOutgoingMessage(result, out thisResult.correlationState);
                         completeSelf = thisResult.OnMessageSecured();
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -2651,7 +2640,6 @@ namespace System.ServiceModel.Security
                     {
                         thisResult.ChannelBinder.EndSend(result);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -2989,7 +2977,6 @@ namespace System.ServiceModel.Security
                     {
                         thisAsyncResult.reply = thisAsyncResult.ChannelBinder.EndRequest(result);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -3051,7 +3038,6 @@ namespace System.ServiceModel.Security
                         thisAsyncResult.correlationState = thisAsyncResult.requestChannel.EndBaseCloseOutputSession(result);
                         completeSelf = thisAsyncResult.OnBaseOutputSessionClosed();
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -3093,7 +3079,6 @@ namespace System.ServiceModel.Security
                         Message message = thisAsyncResult.requestChannel.EndReceiveInternal(result);
                         completeSelf = thisAsyncResult.OnMessageReceived(message);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -3376,7 +3361,6 @@ namespace System.ServiceModel.Security
 //                    {
 //                        this.queue.EnqueueAndDispatch(message);
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e)) throw;
@@ -3504,7 +3488,6 @@ namespace System.ServiceModel.Security
 //                            throw;
 //                        }
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e)) throw;
@@ -3544,7 +3527,6 @@ namespace System.ServiceModel.Security
 //                        // gracefully
 //                        return new CompletedAsyncResult(callback, state);
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e)) throw;
@@ -3590,7 +3572,6 @@ namespace System.ServiceModel.Security
 //                        // another thread must have aborted the channel. Allow the close to complete
 //                        // gracefully
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e)) throw;

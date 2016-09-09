@@ -17,8 +17,9 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    // This class is sealed because the constructor could call Abort, which is virtual
-    internal /*sealed*/ class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IAsyncRequestChannel, IServiceChannel
+    // This class should be sealed because the constructor could call Abort, which is virtual.
+    // But .NET Core is adding some new virtual methods.
+    internal class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IAsyncRequestChannel, IServiceChannel
     {
         private int _activityCount = 0;
         private bool _allowInitializationUI = true;

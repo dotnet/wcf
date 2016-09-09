@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using DiagnosticUtility = System.ServiceModel.DiagnosticUtility;
 
 namespace System.IdentityModel.Tokens
 {
@@ -38,7 +39,7 @@ namespace System.IdentityModel.Tokens
         protected void Initialize(SamlAssertion assertion)
         {
             if (assertion == null)
-                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("assertion");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("assertion");
 
             this.assertion = assertion;
             this.assertion.MakeReadOnly();

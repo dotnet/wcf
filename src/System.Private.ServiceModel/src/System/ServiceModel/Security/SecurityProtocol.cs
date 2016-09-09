@@ -982,7 +982,6 @@ namespace System.ServiceModel.Security
                     SecurityAuditHelper.WriteMessageAuthenticationFailureEvent(this.factory.AuditLogLocation,
                         this.factory.SuppressAuditFailure, message, message.Headers.To, message.Headers.Action, primaryIdentity, exception);
                 }
-#pragma warning suppress 56500
                 catch (Exception auditException)
                 {
                     if (Fx.IsFatal(auditException))
@@ -1033,7 +1032,6 @@ namespace System.ServiceModel.Security
                     self.AddSupportingToken(result);
                     completeSelf = self.AddSupportingTokens();
                 }
-#pragma warning suppress 56500 // covered by FxCOP
                 catch (Exception e)
                 {
                     if (Fx.IsFatal(e))

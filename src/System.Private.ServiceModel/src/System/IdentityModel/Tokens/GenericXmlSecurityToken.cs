@@ -13,6 +13,7 @@ using System.Security.Principal;
 using System.Xml;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
+using DiagnosticUtility = System.ServiceModel.DiagnosticUtility;
 
 namespace System.IdentityModel.Tokens
 {
@@ -40,7 +41,7 @@ namespace System.IdentityModel.Tokens
         {
             if (tokenXml == null)
             {
-                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenXml");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenXml");
             }
 
             _id = GetId(tokenXml);
@@ -171,7 +172,7 @@ namespace System.IdentityModel.Tokens
             if (_externalTokenReference != null && typeof(T) == _externalTokenReference.GetType())
                 return (T)_externalTokenReference;
 
-            throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.UnableToCreateTokenReference)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.UnableToCreateTokenReference)));
         }
 
         public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)

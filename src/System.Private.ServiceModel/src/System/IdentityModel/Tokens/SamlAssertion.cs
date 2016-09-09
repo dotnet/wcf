@@ -22,6 +22,7 @@ namespace System.IdentityModel.Tokens
     {
        string assertionId = SamlConstants.AssertionIdPrefix + Guid.NewGuid().ToString();
 
+        // Issue #31 in progress
         //string issuer;
         //DateTime issueInstant = DateTime.UtcNow.ToUniversalTime();
         //SamlConditions conditions;
@@ -46,6 +47,7 @@ namespace System.IdentityModel.Tokens
         {
         }
 
+        // Issue #31 in progress
         //        public SamlAssertion(
         //            string assertionId,
         //            string issuer,
@@ -102,7 +104,7 @@ namespace System.IdentityModel.Tokens
             get { return this.assertionId; }
             set
             {
-                throw ServiceModel.ExceptionHelper.PlatformNotSupported();
+                throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
                 //if (isReadOnly)
                 //    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ObjectIsReadOnly)));
 
@@ -113,6 +115,7 @@ namespace System.IdentityModel.Tokens
             }
         }
 
+        // Issue #31 in progress
         //        /// <summary>
         //        /// Indicates whether this assertion was deserialized from XML source
         //        /// and can re-emit the XML data unchanged.
@@ -245,7 +248,7 @@ namespace System.IdentityModel.Tokens
 
         public void MakeReadOnly()
         {
-            throw ServiceModel.ExceptionHelper.PlatformNotSupported();
+            throw ServiceModel.ExceptionHelper.PlatformNotSupported();  // Issue #31 in progress
             //if (!this.isReadOnly)
             //{
             //    if (this.conditions != null)
@@ -270,6 +273,7 @@ namespace System.IdentityModel.Tokens
             //}
         }
 
+        // Issue #31 in progress
         //        /// <summary>
         //        /// Captures the XML source data from an EnvelopedSignatureReader. 
         //        /// </summary>

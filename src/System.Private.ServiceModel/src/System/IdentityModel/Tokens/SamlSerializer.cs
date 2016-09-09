@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IdentityModel;
+using System.IdentityModel.Selectors;
+using System.Runtime.Serialization;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
+using System.Text;
+using System.Xml;
+using DiagnosticUtility = System.ServiceModel.DiagnosticUtility;
+
 namespace System.IdentityModel.Tokens
 {
-    using ServiceModel;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IdentityModel;
-    using System.IdentityModel.Selectors;
-    using System.Runtime.Serialization;
-    using System.Security;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using System.Xml;
-
     public class SamlSerializer
     {
         private DictionaryManager _dictionaryManager;

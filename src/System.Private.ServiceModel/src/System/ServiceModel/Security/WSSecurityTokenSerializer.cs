@@ -237,7 +237,6 @@ namespace System.ServiceModel.Security
                     {
                         return tokenEntry.ReadTokenCore(localReader, tokenResolver);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (!ShouldWrapException(e))
@@ -279,7 +278,6 @@ namespace System.ServiceModel.Security
                     {
                         tokenEntry.WriteTokenCore(localWriter, token);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (!ShouldWrapException(e))
@@ -462,7 +460,6 @@ namespace System.ServiceModel.Security
                     {
                         return tokenEntry.CreateKeyIdentifierClauseFromTokenXmlCore(element, tokenReferenceStyle);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (!ShouldWrapException(e))

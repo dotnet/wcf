@@ -8,6 +8,7 @@ using System.Runtime;
 using System.ServiceModel.Security;
 using System.Xml;
 using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
+using DiagnosticUtility = System.ServiceModel.DiagnosticUtility;
 
 namespace System.IdentityModel.Tokens
 {
@@ -132,7 +133,7 @@ namespace System.IdentityModel.Tokens
         protected override SecurityToken ReadTokenCore(XmlReader reader, SecurityTokenResolver tokenResolver)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader( reader ); 
-            throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError( new XmlException( SR.Format( SR.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute( XD.SecurityJan2004Dictionary.ValueType, null ) ) ) );
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError( new XmlException( SR.Format( SR.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute( XD.SecurityJan2004Dictionary.ValueType, null ) ) ) );
         }
 
         protected override bool CanWriteTokenCore(SecurityToken token)
@@ -142,7 +143,7 @@ namespace System.IdentityModel.Tokens
 
         protected override void WriteTokenCore(XmlWriter writer, SecurityToken token)
         {
-            throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
         }
 
         protected override bool CanReadKeyIdentifierCore(XmlReader reader)
@@ -176,7 +177,7 @@ namespace System.IdentityModel.Tokens
             }
             if (keyIdentifier.Count == 0)
             {
-                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorDeserializingKeyIdentifierClause)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorDeserializingKeyIdentifierClause)));
             }
             localReader.ReadEndElement();
 
@@ -207,7 +208,6 @@ namespace System.IdentityModel.Tokens
                     {
                         keyIdentifierEntry.WriteKeyIdentifierCore(localWriter, keyIdentifier);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -218,7 +218,7 @@ namespace System.IdentityModel.Tokens
                             throw;
                         }
 
-                        throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorSerializingKeyIdentifier), e));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorSerializingKeyIdentifier), e));
                     }
                     wroteKeyIdentifier = true;
                     break;
@@ -226,7 +226,7 @@ namespace System.IdentityModel.Tokens
             }
 
             if (!wroteKeyIdentifier)
-                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifier.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifier.GetType())));
 
             localWriter.Flush();
         }
@@ -255,7 +255,6 @@ namespace System.IdentityModel.Tokens
                     {
                         return keyIdentifierClauseEntry.ReadKeyIdentifierClauseCore(localReader);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -265,11 +264,11 @@ namespace System.IdentityModel.Tokens
                         {
                             throw;
                         }
-                        throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorDeserializingKeyIdentifierClause), e));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorDeserializingKeyIdentifierClause), e));
                     }
                 }
             }
-            throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
         }
 
         protected override bool CanWriteKeyIdentifierClauseCore(SecurityKeyIdentifierClause keyIdentifierClause)
@@ -296,7 +295,6 @@ namespace System.IdentityModel.Tokens
                     {
                         keyIdentifierClauseEntry.WriteKeyIdentifierClauseCore(localWriter, keyIdentifierClause);
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
@@ -307,7 +305,7 @@ namespace System.IdentityModel.Tokens
                             throw;
                         }
                         
-                        throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorSerializingKeyIdentifierClause), e));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.ErrorSerializingKeyIdentifierClause), e));
                     }
                     wroteKeyIdentifierClause = true;
                     break;
@@ -315,7 +313,7 @@ namespace System.IdentityModel.Tokens
             }
 
             if (!wroteKeyIdentifierClause)
-                throw ServiceModel.DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
 
             localWriter.Flush();
         }

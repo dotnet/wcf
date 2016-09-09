@@ -47,11 +47,11 @@ namespace System.ServiceModel.Channels
 //                throw Fx.AssertAndThrow("ReliableChannelBinder was implemented with only 2 default masking modes, None and All.");
 //            }
 
-//            this.defaultMaskingMode = maskingMode;
-//            this.defaultCloseTimeout = defaultCloseTimeout;
-//            this.defaultSendTimeout = defaultSendTimeout;
+//            defaultMaskingMode = maskingMode;
+//            defaultCloseTimeout = defaultCloseTimeout;
+//            defaultSendTimeout = defaultSendTimeout;
 
-//            this.synchronizer = new ChannelSynchronizer(this, channel, faultMode);
+//            synchronizer = new ChannelSynchronizer(this, channel, faultMode);
 //        }
 
 //        protected abstract bool CanGetChannelForReceive
@@ -73,7 +73,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.synchronizer.CurrentChannel;
+//                return synchronizer.CurrentChannel;
 //            }
 //        }
 
@@ -81,7 +81,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.synchronizer.Connected;
+//                return synchronizer.Connected;
 //            }
 //        }
 
@@ -89,7 +89,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.defaultMaskingMode;
+//                return defaultMaskingMode;
 //            }
 //        }
 
@@ -97,7 +97,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.defaultSendTimeout;
+//                return defaultSendTimeout;
 //            }
 //        }
 
@@ -130,7 +130,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.state;
+//                return state;
 //            }
 //        }
 
@@ -138,7 +138,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.synchronizer;
+//                return synchronizer;
 //            }
 //        }
 
@@ -146,7 +146,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.thisLock;
+//                return thisLock;
 //            }
 //        }
 
@@ -154,7 +154,7 @@ namespace System.ServiceModel.Channels
 //        {
 //            get
 //            {
-//                return this.synchronizer.TolerateFaults;
+//                return synchronizer.TolerateFaults;
 //            }
 //        }
 
@@ -166,34 +166,34 @@ namespace System.ServiceModel.Channels
 //        public void Abort()
 //        {
 //            TChannel channel;
-//            lock (this.ThisLock)
+//            lock (ThisLock)
 //            {
-//                this.aborted = true;
+//                aborted = true;
 
-//                if (this.state == CommunicationState.Closed)
+//                if (state == CommunicationState.Closed)
 //                {
 //                    return;
 //                }
 
-//                this.state = CommunicationState.Closing;
-//                channel = this.synchronizer.StopSynchronizing(true);
+//                state = CommunicationState.Closing;
+//                channel = synchronizer.StopSynchronizing(true);
 
-//                if (!this.MustCloseChannel)
+//                if (!MustCloseChannel)
 //                {
 //                    channel = null;
 //                }
 //            }
 
-//            this.synchronizer.UnblockWaiters();
-//            this.OnShutdown();
-//            this.OnAbort();
+//            synchronizer.UnblockWaiters();
+//            OnShutdown();
+//            OnAbort();
 
 //            if (channel != null)
 //            {
 //                channel.Abort();
 //            }
 
-//            this.TransitionToClosed();
+//            TransitionToClosed();
 //        }
 
 //        protected virtual void AddOutputHeaders(Message message)
@@ -203,16 +203,16 @@ namespace System.ServiceModel.Channels
 //        public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback,
 //            object state)
 //        {
-//            return this.BeginClose(timeout, this.defaultMaskingMode, callback, state);
+//            return BeginClose(timeout, defaultMaskingMode, callback, state);
 //        }
 
 //        public IAsyncResult BeginClose(TimeSpan timeout, MaskingMode maskingMode,
 //            AsyncCallback callback, object state)
 //        {
-//            this.ThrowIfTimeoutNegative(timeout);
+//            ThrowIfTimeoutNegative(timeout);
 //            TChannel channel;
 
-//            if (this.CloseCore(out channel))
+//            if (CloseCore(out channel))
 //            {
 //                return new CompletedAsyncResult(callback, state);
 //            }
@@ -230,13 +230,13 @@ namespace System.ServiceModel.Channels
 
 //        public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
 //        {
-//            this.ThrowIfTimeoutNegative(timeout);
+//            ThrowIfTimeoutNegative(timeout);
 
-//            if (this.OnOpening(this.defaultMaskingMode))
+//            if (OnOpening(defaultMaskingMode))
 //            {
 //                try
 //                {
-//                    return this.OnBeginOpen(timeout, callback, state);
+//                    return OnBeginOpen(timeout, callback, state);
 //                }
 //                catch (Exception e)
 //                {
@@ -245,15 +245,15 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    this.Fault(null);
+//                    Fault(null);
 
-//                    if (this.defaultMaskingMode == MaskingMode.None)
+//                    if (defaultMaskingMode == MaskingMode.None)
 //                    {
 //                        throw;
 //                    }
 //                    else
 //                    {
-//                        this.RaiseOnException(e);
+//                        RaiseOnException(e);
 //                    }
 //                }
 //            }
@@ -264,7 +264,7 @@ namespace System.ServiceModel.Channels
 //        public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback,
 //            object state)
 //        {
-//            return this.BeginSend(message, timeout, this.defaultMaskingMode, callback, state);
+//            return BeginSend(message, timeout, defaultMaskingMode, callback, state);
 //        }
 
 //        public IAsyncResult BeginSend(Message message, TimeSpan timeout, MaskingMode maskingMode,
@@ -282,13 +282,13 @@ namespace System.ServiceModel.Channels
 //        public virtual IAsyncResult BeginTryReceive(TimeSpan timeout, AsyncCallback callback,
 //            object state)
 //        {
-//            return this.BeginTryReceive(timeout, this.defaultMaskingMode, callback, state);
+//            return BeginTryReceive(timeout, defaultMaskingMode, callback, state);
 //        }
 
 //        public virtual IAsyncResult BeginTryReceive(TimeSpan timeout, MaskingMode maskingMode,
 //            AsyncCallback callback, object state)
 //        {
-//            if (this.ValidateInputOperation(timeout))
+//            if (ValidateInputOperation(timeout))
 //                return new TryReceiveAsyncResult(this, timeout, maskingMode, callback, state);
 //            else
 //                return new CompletedAsyncResult(callback, state);
@@ -297,7 +297,7 @@ namespace System.ServiceModel.Channels
 //        internal IAsyncResult BeginWaitForPendingOperations(TimeSpan timeout,
 //            AsyncCallback callback, object state)
 //        {
-//            return this.synchronizer.BeginWaitForPendingOperations(timeout, callback, state);
+//            return synchronizer.BeginWaitForPendingOperations(timeout, callback, state);
 //        }
 
 //        bool CloseCore(out TChannel channel)
@@ -306,21 +306,21 @@ namespace System.ServiceModel.Channels
 //            bool abort = true;
 //            bool abortChannel = false;
 
-//            lock (this.ThisLock)
+//            lock (ThisLock)
 //            {
-//                if ((this.state == CommunicationState.Closing)
-//                    || (this.state == CommunicationState.Closed))
+//                if ((state == CommunicationState.Closing)
+//                    || (state == CommunicationState.Closed))
 //                {
 //                    return true;
 //                }
 
-//                if (this.state == CommunicationState.Opened)
+//                if (state == CommunicationState.Opened)
 //                {
-//                    this.state = CommunicationState.Closing;
-//                    channel = this.synchronizer.StopSynchronizing(true);
+//                    state = CommunicationState.Closing;
+//                    channel = synchronizer.StopSynchronizing(true);
 //                    abort = false;
 
-//                    if (!this.MustCloseChannel)
+//                    if (!MustCloseChannel)
 //                    {
 //                        channel = null;
 //                    }
@@ -344,11 +344,11 @@ namespace System.ServiceModel.Channels
 //                }
 //            }
 
-//            this.synchronizer.UnblockWaiters();
+//            synchronizer.UnblockWaiters();
 
 //            if (abort)
 //            {
-//                this.Abort();
+//                Abort();
 //                return true;
 //            }
 //            else
@@ -365,31 +365,31 @@ namespace System.ServiceModel.Channels
 
 //        public void Close(TimeSpan timeout)
 //        {
-//            this.Close(timeout, this.defaultMaskingMode);
+//            Close(timeout, defaultMaskingMode);
 //        }
 
 //        public void Close(TimeSpan timeout, MaskingMode maskingMode)
 //        {
-//            this.ThrowIfTimeoutNegative(timeout);
+//            ThrowIfTimeoutNegative(timeout);
 //            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 //            TChannel channel;
 
-//            if (this.CloseCore(out channel))
+//            if (CloseCore(out channel))
 //            {
 //                return;
 //            }
 
 //            try
 //            {
-//                this.OnShutdown();
-//                this.OnClose(timeoutHelper.RemainingTime());
+//                OnShutdown();
+//                OnClose(timeoutHelper.RemainingTime());
 
 //                if (channel != null)
 //                {
-//                    this.CloseChannel(channel, timeoutHelper.RemainingTime());
+//                    CloseChannel(channel, timeoutHelper.RemainingTime());
 //                }
 
-//                this.TransitionToClosed();
+//                TransitionToClosed();
 //            }
 //            catch (Exception e)
 //            {
@@ -398,9 +398,9 @@ namespace System.ServiceModel.Channels
 //                    throw;
 //                }
 
-//                this.Abort();
+//                Abort();
 
-//                if (!this.HandleException(e, maskingMode))
+//                if (!HandleException(e, maskingMode))
 //                {
 //                    throw;
 //                }
@@ -411,14 +411,14 @@ namespace System.ServiceModel.Channels
 //        // block.
 //        void CloseChannel(TChannel channel)
 //        {
-//            if (!this.MustCloseChannel)
+//            if (!MustCloseChannel)
 //            {
 //                throw Fx.AssertAndThrow("MustCloseChannel is false when there is no receive loop and this method is called when there is a receive loop.");
 //            }
 
-//            if (this.onCloseChannelComplete == null)
+//            if (onCloseChannelComplete == null)
 //            {
-//                this.onCloseChannelComplete = Fx.ThunkCallback(new AsyncCallback(this.OnCloseChannelComplete));
+//                onCloseChannelComplete = Fx.ThunkCallback(new AsyncCallback(OnCloseChannelComplete));
 //            }
 
 //            try
@@ -430,7 +430,6 @@ namespace System.ServiceModel.Channels
 //                    channel.EndClose(result);
 //                }
 //            }
-//#pragma warning suppress 56500 // covered by FxCOP
 //            catch (Exception e)
 //            {
 //                if (Fx.IsFatal(e))
@@ -438,7 +437,7 @@ namespace System.ServiceModel.Channels
 //                    throw;
 //                }
 
-//                this.HandleException(e, MaskingMode.All);
+//                HandleException(e, MaskingMode.All);
 //            }
 //        }
 
@@ -478,7 +477,7 @@ namespace System.ServiceModel.Channels
 //            {
 //                try
 //                {
-//                    this.OnEndOpen(result);
+//                    OnEndOpen(result);
 //                }
 //                catch (Exception e)
 //                {
@@ -487,21 +486,21 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    this.Fault(null);
+//                    Fault(null);
 
-//                    if (this.defaultMaskingMode == MaskingMode.None)
+//                    if (defaultMaskingMode == MaskingMode.None)
 //                    {
 //                        throw;
 //                    }
 //                    else
 //                    {
-//                        this.RaiseOnException(e);
+//                        RaiseOnException(e);
 //                        return;
 //                    }
 //                }
 
-//                this.synchronizer.StartSynchronizing();
-//                this.OnOpened();
+//                synchronizer.StartSynchronizing();
+//                OnOpened();
 //            }
 //        }
 
@@ -531,31 +530,31 @@ namespace System.ServiceModel.Channels
 
 //        public void EndWaitForPendingOperations(IAsyncResult result)
 //        {
-//            this.synchronizer.EndWaitForPendingOperations(result);
+//            synchronizer.EndWaitForPendingOperations(result);
 //        }
 
 //        protected void Fault(Exception e)
 //        {
-//            lock (this.ThisLock)
+//            lock (ThisLock)
 //            {
-//                if (this.state == CommunicationState.Created)
+//                if (state == CommunicationState.Created)
 //                {
 //                    throw Fx.AssertAndThrow("The binder should not detect the inner channel's faults until after the binder is opened.");
 //                }
 
-//                if ((this.state == CommunicationState.Faulted)
-//                    || (this.state == CommunicationState.Closed))
+//                if ((state == CommunicationState.Faulted)
+//                    || (state == CommunicationState.Closed))
 //                {
 //                    return;
 //                }
 
-//                this.state = CommunicationState.Faulted;
-//                this.synchronizer.StopSynchronizing(false);
+//                state = CommunicationState.Faulted;
+//                synchronizer.StopSynchronizing(false);
 //            }
 
-//            this.synchronizer.UnblockWaiters();
+//            synchronizer.UnblockWaiters();
 
-//            BinderExceptionHandler handler = this.Faulted;
+//            BinderExceptionHandler handler = Faulted;
 
 //            if (handler != null)
 //            {
@@ -570,28 +569,28 @@ namespace System.ServiceModel.Channels
 //            {
 //                return null;
 //            }
-//            else if (this.aborted)
+//            else if (aborted)
 //            {
 //                return new CommunicationObjectAbortedException(SR.GetString(
-//                    SR.CommunicationObjectAborted1, this.GetType().ToString()));
+//                    SR.CommunicationObjectAborted1, GetType().ToString()));
 //            }
 //            else
 //            {
-//                return new ObjectDisposedException(this.GetType().ToString());
+//                return new ObjectDisposedException(GetType().ToString());
 //            }
 //        }
 
-//        // Must be called within lock (this.ThisLock)
+//        // Must be called within lock (ThisLock)
 //        Exception GetClosedOrFaultedException(MaskingMode maskingMode)
 //        {
-//            if (this.state == CommunicationState.Faulted)
+//            if (state == CommunicationState.Faulted)
 //            {
-//                return this.GetFaultedException(maskingMode);
+//                return GetFaultedException(maskingMode);
 //            }
-//            else if ((this.state == CommunicationState.Closing)
-//               || (this.state == CommunicationState.Closed))
+//            else if ((state == CommunicationState.Closing)
+//               || (state == CommunicationState.Closed))
 //            {
-//                return this.GetClosedException(maskingMode);
+//                return GetClosedException(maskingMode);
 //            }
 //            else
 //            {
@@ -609,7 +608,7 @@ namespace System.ServiceModel.Channels
 //            else
 //            {
 //                return new CommunicationObjectFaultedException(SR.GetString(
-//                    SR.CommunicationObjectFaulted1, this.GetType().ToString()));
+//                    SR.CommunicationObjectFaulted1, GetType().ToString()));
 //            }
 //        }
 
@@ -617,17 +616,17 @@ namespace System.ServiceModel.Channels
 
 //        public void HandleException(Exception e)
 //        {
-//            this.HandleException(e, MaskingMode.All);
+//            HandleException(e, MaskingMode.All);
 //        }
 
 //        protected bool HandleException(Exception e, MaskingMode maskingMode)
 //        {
-//            if (this.TolerateFaults && (e is CommunicationObjectFaultedException))
+//            if (TolerateFaults && (e is CommunicationObjectFaultedException))
 //            {
 //                return true;
 //            }
 
-//            if (this.IsHandleable(e))
+//            if (IsHandleable(e))
 //            {
 //                return ReliableChannelBinderHelper.MaskHandled(maskingMode);
 //            }
@@ -636,7 +635,7 @@ namespace System.ServiceModel.Channels
 
 //            if (maskUnhandled)
 //            {
-//                this.RaiseOnException(e);
+//                RaiseOnException(e);
 //            }
 
 //            return maskUnhandled;
@@ -644,12 +643,12 @@ namespace System.ServiceModel.Channels
 
 //        protected bool HandleException(Exception e, MaskingMode maskingMode, bool autoAborted)
 //        {
-//            if (this.TolerateFaults && autoAborted && e is CommunicationObjectAbortedException)
+//            if (TolerateFaults && autoAborted && e is CommunicationObjectAbortedException)
 //            {
 //                return true;
 //            }
 
-//            return this.HandleException(e, maskingMode);
+//            return HandleException(e, maskingMode);
 //        }
 
 //        // ChannelSynchronizer helper, cannot take a lock.
@@ -699,7 +698,6 @@ namespace System.ServiceModel.Channels
 //            {
 //                channel.EndClose(result);
 //            }
-//#pragma warning suppress 56500 // covered by FxCOP
 //            catch (Exception e)
 //            {
 //                if (Fx.IsFatal(e))
@@ -707,7 +705,7 @@ namespace System.ServiceModel.Channels
 //                    throw;
 //                }
 
-//                this.HandleException(e, MaskingMode.All);
+//                HandleException(e, MaskingMode.All);
 //            }
 //        }
 
@@ -727,10 +725,10 @@ namespace System.ServiceModel.Channels
 
 //        void OnInnerChannelFaulted()
 //        {
-//            if (!this.TolerateFaults)
+//            if (!TolerateFaults)
 //                return;
 
-//            EventHandler handler = this.ConnectionLost;
+//            EventHandler handler = ConnectionLost;
 
 //            if (handler != null)
 //                handler(this, EventArgs.Empty);
@@ -740,36 +738,36 @@ namespace System.ServiceModel.Channels
 
 //        void OnOpened()
 //        {
-//            lock (this.ThisLock)
+//            lock (ThisLock)
 //            {
-//                if (this.state == CommunicationState.Opening)
+//                if (state == CommunicationState.Opening)
 //                {
-//                    this.state = CommunicationState.Opened;
+//                    state = CommunicationState.Opened;
 //                }
 //            }
 //        }
 
 //        bool OnOpening(MaskingMode maskingMode)
 //        {
-//            lock (this.ThisLock)
+//            lock (ThisLock)
 //            {
-//                if (this.state != CommunicationState.Created)
+//                if (state != CommunicationState.Created)
 //                {
 //                    Exception e = null;
 
-//                    if ((this.state == CommunicationState.Opening)
-//                        || (this.state == CommunicationState.Opened))
+//                    if ((state == CommunicationState.Opening)
+//                        || (state == CommunicationState.Opened))
 //                    {
 //                        if (!ReliableChannelBinderHelper.MaskUnhandled(maskingMode))
 //                        {
 //                            e = new InvalidOperationException(SR.GetString(
 //                                SR.CommunicationObjectCannotBeModifiedInState,
-//                                this.GetType().ToString(), this.state.ToString()));
+//                                GetType().ToString(), state.ToString()));
 //                        }
 //                    }
 //                    else
 //                    {
-//                        e = this.GetClosedOrFaultedException(maskingMode);
+//                        e = GetClosedOrFaultedException(maskingMode);
 //                    }
 
 //                    if (e != null)
@@ -781,7 +779,7 @@ namespace System.ServiceModel.Channels
 //                }
 //                else
 //                {
-//                    this.state = CommunicationState.Opening;
+//                    state = CommunicationState.Opening;
 //                    return true;
 //                }
 //            }
@@ -804,16 +802,16 @@ namespace System.ServiceModel.Channels
 
 //        public void Open(TimeSpan timeout)
 //        {
-//            this.ThrowIfTimeoutNegative(timeout);
+//            ThrowIfTimeoutNegative(timeout);
 
-//            if (!this.OnOpening(this.defaultMaskingMode))
+//            if (!OnOpening(defaultMaskingMode))
 //            {
 //                return;
 //            }
 
 //            try
 //            {
-//                this.OnOpen(timeout);
+//                OnOpen(timeout);
 //            }
 //            catch (Exception e)
 //            {
@@ -822,26 +820,26 @@ namespace System.ServiceModel.Channels
 //                    throw;
 //                }
 
-//                this.Fault(null);
+//                Fault(null);
 
-//                if (this.defaultMaskingMode == MaskingMode.None)
+//                if (defaultMaskingMode == MaskingMode.None)
 //                {
 //                    throw;
 //                }
 //                else
 //                {
-//                    this.RaiseOnException(e);
+//                    RaiseOnException(e);
 //                    return;
 //                }
 //            }
 
-//            this.synchronizer.StartSynchronizing();
-//            this.OnOpened();
+//            synchronizer.StartSynchronizing();
+//            OnOpened();
 //        }
 
 //        void RaiseOnException(Exception e)
 //        {
-//            BinderExceptionHandler handler = this.OnException;
+//            BinderExceptionHandler handler = OnException;
 
 //            if (handler != null)
 //            {
@@ -851,12 +849,12 @@ namespace System.ServiceModel.Channels
 
 //        public void Send(Message message, TimeSpan timeout)
 //        {
-//            this.Send(message, timeout, this.defaultMaskingMode);
+//            Send(message, timeout, defaultMaskingMode);
 //        }
 
 //        public void Send(Message message, TimeSpan timeout, MaskingMode maskingMode)
 //        {
-//            if (!this.ValidateOutputOperation(message, timeout, maskingMode))
+//            if (!ValidateOutputOperation(message, timeout, maskingMode))
 //            {
 //                return;
 //            }
@@ -868,7 +866,7 @@ namespace System.ServiceModel.Channels
 //                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 //                TChannel channel;
 
-//                if (!this.synchronizer.TryGetChannelForOutput(timeoutHelper.RemainingTime(), maskingMode,
+//                if (!synchronizer.TryGetChannelForOutput(timeoutHelper.RemainingTime(), maskingMode,
 //                    out channel))
 //                {
 //                    if (!ReliableChannelBinderHelper.MaskHandled(maskingMode))
@@ -885,16 +883,16 @@ namespace System.ServiceModel.Channels
 //                    return;
 //                }
 
-//                this.AddOutputHeaders(message);
+//                AddOutputHeaders(message);
 
 //                try
 //                {
-//                    this.OnSend(channel, message, timeoutHelper.RemainingTime());
+//                    OnSend(channel, message, timeoutHelper.RemainingTime());
 //                }
 //                finally
 //                {
-//                    autoAborted = this.Synchronizer.Aborting;
-//                    this.synchronizer.ReturnChannel();
+//                    autoAborted = Synchronizer.Aborting;
+//                    synchronizer.ReturnChannel();
 //                }
 //            }
 //            catch (Exception e)
@@ -904,7 +902,7 @@ namespace System.ServiceModel.Channels
 //                    throw;
 //                }
 
-//                if (!this.HandleException(e, maskingMode, autoAborted))
+//                if (!HandleException(e, maskingMode, autoAborted))
 //                {
 //                    throw;
 //                }
@@ -921,19 +919,19 @@ namespace System.ServiceModel.Channels
 //        // returns true if in Opened state
 //        bool ThrowIfNotOpenedAndNotMasking(MaskingMode maskingMode, bool throwDisposed)
 //        {
-//            lock (this.ThisLock)
+//            lock (ThisLock)
 //            {
-//                if (this.State == CommunicationState.Created)
+//                if (State == CommunicationState.Created)
 //                {
 //                    throw Fx.AssertAndThrow("Messaging operations cannot be called when the binder is in the Created state.");
 //                }
 
-//                if (this.State == CommunicationState.Opening)
+//                if (State == CommunicationState.Opening)
 //                {
 //                    throw Fx.AssertAndThrow("Messaging operations cannot be called when the binder is in the Opening state.");
 //                }
 
-//                if (this.State == CommunicationState.Opened)
+//                if (State == CommunicationState.Opened)
 //                {
 //                    return true;
 //                }
@@ -941,7 +939,7 @@ namespace System.ServiceModel.Channels
 //                // state is Faulted, Closing, or Closed
 //                if (throwDisposed)
 //                {
-//                    Exception e = this.GetClosedOrFaultedException(maskingMode);
+//                    Exception e = GetClosedOrFaultedException(maskingMode);
 
 //                    if (e != null)
 //                    {
@@ -964,16 +962,16 @@ namespace System.ServiceModel.Channels
 
 //        void TransitionToClosed()
 //        {
-//            lock (this.ThisLock)
+//            lock (ThisLock)
 //            {
-//                if ((this.state != CommunicationState.Closing)
-//                    && (this.state != CommunicationState.Closed)
-//                    && (this.state != CommunicationState.Faulted))
+//                if ((state != CommunicationState.Closing)
+//                    && (state != CommunicationState.Closed)
+//                    && (state != CommunicationState.Faulted))
 //                {
 //                    throw Fx.AssertAndThrow("Caller cannot transition to the Closed state from a non-terminal state.");
 //                }
 
-//                this.state = CommunicationState.Closed;
+//                state = CommunicationState.Closed;
 //            }
 //        }
 
@@ -982,7 +980,7 @@ namespace System.ServiceModel.Channels
 
 //        public virtual bool TryReceive(TimeSpan timeout, out RequestContext requestContext)
 //        {
-//            return this.TryReceive(timeout, out requestContext, this.defaultMaskingMode);
+//            return TryReceive(timeout, out requestContext, defaultMaskingMode);
 //        }
 
 //        public virtual bool TryReceive(TimeSpan timeout, out RequestContext requestContext, MaskingMode maskingMode)
@@ -992,7 +990,7 @@ namespace System.ServiceModel.Channels
 //                throw Fx.AssertAndThrow("This method was implemented only for the case where we do not mask exceptions.");
 //            }
 
-//            if (!this.ValidateInputOperation(timeout))
+//            if (!ValidateInputOperation(timeout))
 //            {
 //                requestContext = null;
 //                return true;
@@ -1007,8 +1005,8 @@ namespace System.ServiceModel.Channels
 //                try
 //                {
 //                    TChannel channel;
-//                    bool success = !this.synchronizer.TryGetChannelForInput(
-//                        this.CanGetChannelForReceive, timeoutHelper.RemainingTime(), out channel);
+//                    bool success = !synchronizer.TryGetChannelForInput(
+//                        CanGetChannelForReceive, timeoutHelper.RemainingTime(), out channel);
 
 //                    if (channel == null)
 //                    {
@@ -1018,7 +1016,7 @@ namespace System.ServiceModel.Channels
 
 //                    try
 //                    {
-//                        success = this.OnTryReceive(channel, timeoutHelper.RemainingTime(),
+//                        success = OnTryReceive(channel, timeoutHelper.RemainingTime(),
 //                            out requestContext);
 
 //                        // timed out || got message, return immediately
@@ -1028,12 +1026,12 @@ namespace System.ServiceModel.Channels
 //                        }
 
 //                        // the underlying channel closed or faulted, retry
-//                        this.synchronizer.OnReadEof();
+//                        synchronizer.OnReadEof();
 //                    }
 //                    finally
 //                    {
-//                        autoAborted = this.Synchronizer.Aborting;
-//                        this.synchronizer.ReturnChannel();
+//                        autoAborted = Synchronizer.Aborting;
+//                        synchronizer.ReturnChannel();
 //                    }
 //                }
 //                catch (Exception e)
@@ -1043,7 +1041,7 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    if (!this.HandleException(e, maskingMode, autoAborted))
+//                    if (!HandleException(e, maskingMode, autoAborted))
 //                    {
 //                        throw;
 //                    }
@@ -1059,7 +1057,7 @@ namespace System.ServiceModel.Channels
 //                    SR.SFxTimeoutOutOfRange0));
 //            }
 
-//            return this.ThrowIfNotOpenedAndNotMasking(MaskingMode.All, false);
+//            return ThrowIfNotOpenedAndNotMasking(MaskingMode.All, false);
 //        }
 
 //        protected bool ValidateOutputOperation(Message message, TimeSpan timeout, MaskingMode maskingMode)
@@ -1075,12 +1073,12 @@ namespace System.ServiceModel.Channels
 //                    SR.SFxTimeoutOutOfRange0));
 //            }
 
-//            return this.ThrowIfNotOpenedAndNotMasking(maskingMode, true);
+//            return ThrowIfNotOpenedAndNotMasking(maskingMode, true);
 //        }
 
 //        internal void WaitForPendingOperations(TimeSpan timeout)
 //        {
-//            this.synchronizer.WaitForPendingOperations(timeout);
+//            synchronizer.WaitForPendingOperations(timeout);
 //        }
 
 //        protected RequestContext WrapMessage(Message message)
@@ -1100,7 +1098,7 @@ namespace System.ServiceModel.Channels
 //                return null;
 //            }
 
-//            if (!this.TolerateFaults && this.defaultMaskingMode == MaskingMode.None)
+//            if (!TolerateFaults && defaultMaskingMode == MaskingMode.None)
 //            {
 //                return context;
 //            }
@@ -1134,15 +1132,15 @@ namespace System.ServiceModel.Channels
 //                    Fx.Assert("Argument binder cannot be null.");
 //                }
 
-//                this.binder = binder;
-//                this.maskingMode = binder.defaultMaskingMode;
+//                binder = binder;
+//                maskingMode = binder.defaultMaskingMode;
 //            }
 
 //            protected ReliableChannelBinder<TChannel> Binder
 //            {
 //                get
 //                {
-//                    return this.binder;
+//                    return binder;
 //                }
 //            }
 
@@ -1150,18 +1148,18 @@ namespace System.ServiceModel.Channels
 //            {
 //                get
 //                {
-//                    return this.maskingMode;
+//                    return maskingMode;
 //                }
 //            }
 
 //            public void SetMaskingMode(MaskingMode maskingMode)
 //            {
-//                if (this.binder.defaultMaskingMode != MaskingMode.All)
+//                if (binder.defaultMaskingMode != MaskingMode.All)
 //                {
 //                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
 //                }
 
-//                this.maskingMode = maskingMode;
+//                maskingMode = maskingMode;
 //            }
 //        }
 
@@ -1185,16 +1183,16 @@ namespace System.ServiceModel.Channels
 //            public ChannelSynchronizer(ReliableChannelBinder<TChannel> binder, TChannel channel,
 //                TolerateFaultsMode faultMode)
 //            {
-//                this.binder = binder;
-//                this.currentChannel = channel;
-//                this.faultMode = faultMode;
+//                binder = binder;
+//                currentChannel = channel;
+//                faultMode = faultMode;
 //            }
 
 //            public bool Aborting
 //            {
 //                get
 //                {
-//                    return this.aborting;
+//                    return aborting;
 //                }
 //            }
 
@@ -1202,8 +1200,8 @@ namespace System.ServiceModel.Channels
 //            {
 //                get
 //                {
-//                    return (this.state == State.ChannelOpened ||
-//                        this.state == State.ChannelOpening);
+//                    return (state == State.ChannelOpened ||
+//                        state == State.ChannelOpening);
 //                }
 //            }
 
@@ -1211,7 +1209,7 @@ namespace System.ServiceModel.Channels
 //            {
 //                get
 //                {
-//                    return this.currentChannel;
+//                    return currentChannel;
 //                }
 //            }
 
@@ -1219,7 +1217,7 @@ namespace System.ServiceModel.Channels
 //            {
 //                get
 //                {
-//                    return this.thisLock;
+//                    return thisLock;
 //                }
 //            }
 
@@ -1227,34 +1225,34 @@ namespace System.ServiceModel.Channels
 //            {
 //                get
 //                {
-//                    return this.tolerateFaults;
+//                    return tolerateFaults;
 //                }
 //            }
 
 //            // Server only API.
 //            public TChannel AbortCurentChannel()
 //            {
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (!this.tolerateFaults)
+//                    if (!tolerateFaults)
 //                    {
 //                        throw Fx.AssertAndThrow("It is only valid to abort the current channel when masking faults");
 //                    }
 
-//                    if (this.state == State.ChannelOpening)
+//                    if (state == State.ChannelOpening)
 //                    {
-//                        this.aborting = true;
+//                        aborting = true;
 //                    }
-//                    else if (this.state == State.ChannelOpened)
+//                    else if (state == State.ChannelOpened)
 //                    {
-//                        if (this.count == 0)
+//                        if (count == 0)
 //                        {
-//                            this.state = State.NoChannel;
+//                            state = State.NoChannel;
 //                        }
 //                        else
 //                        {
-//                            this.aborting = true;
-//                            this.state = State.ChannelClosing;
+//                            aborting = true;
+//                            state = State.ChannelClosing;
 //                        }
 //                    }
 //                    else
@@ -1262,7 +1260,7 @@ namespace System.ServiceModel.Channels
 //                        return null;
 //                    }
 
-//                    return this.currentChannel;
+//                    return currentChannel;
 //                }
 //            }
 
@@ -1275,14 +1273,14 @@ namespace System.ServiceModel.Channels
 //            public IAsyncResult BeginTryGetChannelForInput(bool canGetChannel, TimeSpan timeout,
 //                AsyncCallback callback, object state)
 //            {
-//                return this.BeginTryGetChannel(canGetChannel, false, timeout, MaskingMode.All,
+//                return BeginTryGetChannel(canGetChannel, false, timeout, MaskingMode.All,
 //                    callback, state);
 //            }
 
 //            public IAsyncResult BeginTryGetChannelForOutput(TimeSpan timeout,
 //                MaskingMode maskingMode, AsyncCallback callback, object state)
 //            {
-//                return this.BeginTryGetChannel(true, true, timeout, maskingMode,
+//                return BeginTryGetChannel(true, true, timeout, maskingMode,
 //                    callback, state);
 //            }
 
@@ -1294,25 +1292,25 @@ namespace System.ServiceModel.Channels
 //                bool getChannel = false;
 //                bool faulted = false;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (!this.ThrowIfNecessary(maskingMode))
+//                    if (!ThrowIfNecessary(maskingMode))
 //                    {
 //                        channel = null;
 //                    }
-//                    else if (this.state == State.ChannelOpened)
+//                    else if (state == State.ChannelOpened)
 //                    {
-//                        if (this.currentChannel == null)
+//                        if (currentChannel == null)
 //                        {
 //                            throw Fx.AssertAndThrow("Field currentChannel cannot be null in the ChannelOpened state.");
 //                        }
 
-//                        this.count++;
-//                        channel = this.currentChannel;
+//                        count++;
+//                        channel = currentChannel;
 //                    }
-//                    else if (!this.tolerateFaults
-//                        && ((this.state == State.NoChannel)
-//                        || (this.state == State.ChannelClosing)))
+//                    else if (!tolerateFaults
+//                        && ((state == State.NoChannel)
+//                        || (state == State.ChannelClosing)))
 //                    {
 //                        if (canCauseFault)
 //                        {
@@ -1322,34 +1320,34 @@ namespace System.ServiceModel.Channels
 //                        channel = null;
 //                    }
 //                    else if (!canGetChannel
-//                        || (this.state == State.ChannelOpening)
-//                        || (this.state == State.ChannelClosing))
+//                        || (state == State.ChannelOpening)
+//                        || (state == State.ChannelClosing))
 //                    {
 //                        waiter = new AsyncWaiter(this, canGetChannel, null, timeout, maskingMode,
-//                            this.binder.ChannelParameters,
+//                            binder.ChannelParameters,
 //                            callback, state);
-//                        this.GetQueue(canGetChannel).Enqueue(waiter);
+//                        GetQueue(canGetChannel).Enqueue(waiter);
 //                    }
 //                    else
 //                    {
-//                        if (this.state != State.NoChannel)
+//                        if (state != State.NoChannel)
 //                        {
 //                            throw Fx.AssertAndThrow("The state must be NoChannel.");
 //                        }
 
 //                        waiter = new AsyncWaiter(this, canGetChannel,
-//                            this.GetCurrentChannelIfCreated(), timeout, maskingMode,
-//                            this.binder.ChannelParameters,
+//                            GetCurrentChannelIfCreated(), timeout, maskingMode,
+//                            binder.ChannelParameters,
 //                            callback, state);
 
-//                        this.state = State.ChannelOpening;
+//                        state = State.ChannelOpening;
 //                        getChannel = true;
 //                    }
 //                }
 
 //                if (faulted)
 //                {
-//                    this.binder.Fault(null);
+//                    binder.Fault(null);
 //                }
 
 //                if (waiter == null)
@@ -1372,22 +1370,22 @@ namespace System.ServiceModel.Channels
 //            public IAsyncResult BeginWaitForPendingOperations(TimeSpan timeout,
 //                AsyncCallback callback, object state)
 //            {
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.drainEvent != null)
+//                    if (drainEvent != null)
 //                    {
 //                        throw Fx.AssertAndThrow("The WaitForPendingOperations operation may only be invoked once.");
 //                    }
 
-//                    if (this.count > 0)
+//                    if (count > 0)
 //                    {
-//                        this.drainEvent = new InterruptibleWaitObject(false, false);
+//                        drainEvent = new InterruptibleWaitObject(false, false);
 //                    }
 //                }
 
-//                if (this.drainEvent != null)
+//                if (drainEvent != null)
 //                {
-//                    return this.drainEvent.BeginWait(timeout, callback, state);
+//                    return drainEvent.BeginWait(timeout, callback, state);
 //                }
 //                else
 //                {
@@ -1404,17 +1402,17 @@ namespace System.ServiceModel.Channels
 
 //                bool close = false;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.ValidateOpened())
+//                    if (ValidateOpened())
 //                    {
-//                        channel = this.currentChannel;
+//                        channel = currentChannel;
 //                        return true;
 //                    }
 //                    else
 //                    {
 //                        channel = null;
-//                        close = this.state == State.Closed;
+//                        close = state == State.Closed;
 //                    }
 //                }
 
@@ -1456,7 +1454,7 @@ namespace System.ServiceModel.Channels
 //                }
 //                else
 //                {
-//                    this.drainEvent.EndWait(result);
+//                    drainEvent.EndWait(result);
 //                }
 //            }
 
@@ -1465,36 +1463,36 @@ namespace System.ServiceModel.Channels
 //            {
 //                bool fault = false;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.ValidateOpened())
+//                    if (ValidateOpened())
 //                    {
 //                        // This is called only during the RM CS phase. In this phase, there are 2
 //                        // valid states between Request calls, ChannelOpened and NoChannel.
-//                        if (this.state == State.ChannelOpened)
+//                        if (state == State.ChannelOpened)
 //                        {
 //                            return true;
 //                        }
 
-//                        if (this.state != State.NoChannel)
+//                        if (state != State.NoChannel)
 //                        {
 //                            throw Fx.AssertAndThrow("The caller may only invoke this EnsureChannel during the CreateSequence negotiation. ChannelOpening and ChannelClosing are invalid states during this phase of the negotiation.");
 //                        }
 
-//                        if (!this.tolerateFaults)
+//                        if (!tolerateFaults)
 //                        {
 //                            fault = true;
 //                        }
 //                        else
 //                        {
-//                            if (this.GetCurrentChannelIfCreated() != null)
+//                            if (GetCurrentChannelIfCreated() != null)
 //                            {
 //                                return true;
 //                            }
 
-//                            if (this.binder.TryGetChannel(TimeSpan.Zero))
+//                            if (binder.TryGetChannel(TimeSpan.Zero))
 //                            {
-//                                if (this.currentChannel == null)
+//                                if (currentChannel == null)
 //                                {
 //                                    return false;
 //                                }
@@ -1507,7 +1505,7 @@ namespace System.ServiceModel.Channels
 
 //                if (fault)
 //                {
-//                    this.binder.Fault(null);
+//                    binder.Fault(null);
 //                }
 
 //                return false;
@@ -1515,26 +1513,26 @@ namespace System.ServiceModel.Channels
 
 //            IWaiter GetChannelWaiter()
 //            {
-//                if ((this.getChannelQueue == null) || (this.getChannelQueue.Count == 0))
+//                if ((getChannelQueue == null) || (getChannelQueue.Count == 0))
 //                {
 //                    return null;
 //                }
 
-//                return this.getChannelQueue.Dequeue();
+//                return getChannelQueue.Dequeue();
 //            }
 
-//            // Must be called within lock (this.ThisLock)
+//            // Must be called within lock (ThisLock)
 //            TChannel GetCurrentChannelIfCreated()
 //            {
-//                if (this.state != State.NoChannel)
+//                if (state != State.NoChannel)
 //                {
 //                    throw Fx.AssertAndThrow("This method may only be called in the NoChannel state.");
 //                }
 
-//                if ((this.currentChannel != null)
-//                    && (this.currentChannel.State == CommunicationState.Created))
+//                if ((currentChannel != null)
+//                    && (currentChannel.State == CommunicationState.Created))
 //                {
-//                    return this.currentChannel;
+//                    return currentChannel;
 //                }
 //                else
 //                {
@@ -1546,21 +1544,21 @@ namespace System.ServiceModel.Channels
 //            {
 //                if (canGetChannel)
 //                {
-//                    if (this.getChannelQueue == null)
+//                    if (getChannelQueue == null)
 //                    {
-//                        this.getChannelQueue = new Queue<IWaiter>();
+//                        getChannelQueue = new Queue<IWaiter>();
 //                    }
 
-//                    return this.getChannelQueue;
+//                    return getChannelQueue;
 //                }
 //                else
 //                {
-//                    if (this.waitQueue == null)
+//                    if (waitQueue == null)
 //                    {
-//                        this.waitQueue = new Queue<IWaiter>();
+//                        waitQueue = new Queue<IWaiter>();
 //                    }
 
-//                    return this.waitQueue;
+//                    return waitQueue;
 //                }
 //            }
 
@@ -1570,50 +1568,50 @@ namespace System.ServiceModel.Channels
 //                bool faultBinder = false;
 //                bool raiseInnerChannelFaulted = false;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.currentChannel != faultedChannel)
+//                    if (currentChannel != faultedChannel)
 //                    {
 //                        return;
 //                    }
 
 //                    // The synchronizer is already closed or aborted.
-//                    if (!this.ValidateOpened())
+//                    if (!ValidateOpened())
 //                    {
 //                        return;
 //                    }
 
-//                    if (this.state == State.ChannelOpened)
+//                    if (state == State.ChannelOpened)
 //                    {
-//                        if (this.count == 0)
+//                        if (count == 0)
 //                        {
-//                            faultedChannel.Faulted -= this.onChannelFaulted;
+//                            faultedChannel.Faulted -= onChannelFaulted;
 //                        }
 
-//                        faultBinder = !this.tolerateFaults;
-//                        this.state = State.ChannelClosing;
-//                        this.innerChannelFaulted = true;
+//                        faultBinder = !tolerateFaults;
+//                        state = State.ChannelClosing;
+//                        innerChannelFaulted = true;
 
-//                        if (!faultBinder && this.count == 0)
+//                        if (!faultBinder && count == 0)
 //                        {
-//                            this.state = State.NoChannel;
-//                            this.aborting = false;
+//                            state = State.NoChannel;
+//                            aborting = false;
 //                            raiseInnerChannelFaulted = true;
-//                            this.innerChannelFaulted = false;
+//                            innerChannelFaulted = false;
 //                        }
 //                    }
 //                }
 
 //                if (faultBinder)
 //                {
-//                    this.binder.Fault(null);
+//                    binder.Fault(null);
 //                }
 
 //                faultedChannel.Abort();
 
 //                if (raiseInnerChannelFaulted)
 //                {
-//                    this.binder.OnInnerChannelFaulted();
+//                    binder.OnInnerChannelFaulted();
 //                }
 //            }
 
@@ -1631,38 +1629,38 @@ namespace System.ServiceModel.Channels
 //                Queue<IWaiter> temp2 = null;
 //                TChannel channel = null;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.currentChannel == null)
+//                    if (currentChannel == null)
 //                    {
 //                        throw Fx.AssertAndThrow("Caller must ensure that field currentChannel is set before opening the channel.");
 //                    }
 
-//                    if (this.ValidateOpened())
+//                    if (ValidateOpened())
 //                    {
-//                        if (this.state != State.ChannelOpening)
+//                        if (state != State.ChannelOpening)
 //                        {
 //                            throw Fx.AssertAndThrow("This method may only be called in the ChannelOpening state.");
 //                        }
 
-//                        this.state = State.ChannelOpened;
-//                        this.SetTolerateFaults();
+//                        state = State.ChannelOpened;
+//                        SetTolerateFaults();
 
-//                        this.count += 1;
-//                        this.count += (this.getChannelQueue == null) ? 0 : this.getChannelQueue.Count;
-//                        this.count += (this.waitQueue == null) ? 0 : this.waitQueue.Count;
+//                        count += 1;
+//                        count += (getChannelQueue == null) ? 0 : getChannelQueue.Count;
+//                        count += (waitQueue == null) ? 0 : waitQueue.Count;
 
-//                        temp1 = this.getChannelQueue;
-//                        temp2 = this.waitQueue;
-//                        channel = this.currentChannel;
+//                        temp1 = getChannelQueue;
+//                        temp2 = waitQueue;
+//                        channel = currentChannel;
 
-//                        this.getChannelQueue = null;
-//                        this.waitQueue = null;
+//                        getChannelQueue = null;
+//                        waitQueue = null;
 //                    }
 //                    else
 //                    {
-//                        close = this.state == State.Closed;
-//                        fault = this.state == State.Faulted;
+//                        close = state == State.Closed;
+//                        fault = state == State.Faulted;
 //                    }
 //                }
 
@@ -1677,8 +1675,8 @@ namespace System.ServiceModel.Channels
 //                    return false;
 //                }
 
-//                this.SetWaiters(temp1, channel);
-//                this.SetWaiters(temp2, channel);
+//                SetWaiters(temp1, channel);
+//                SetWaiters(temp2, channel);
 //                return true;
 //            }
 
@@ -1686,23 +1684,23 @@ namespace System.ServiceModel.Channels
 //            {
 //                IWaiter waiter = null;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (!this.ValidateOpened())
+//                    if (!ValidateOpened())
 //                    {
 //                        return;
 //                    }
 
-//                    if (this.state != State.ChannelOpening)
+//                    if (state != State.ChannelOpening)
 //                    {
 //                        throw Fx.AssertAndThrow("The state must be set to ChannelOpening before the caller attempts to open the channel.");
 //                    }
 
-//                    waiter = this.GetChannelWaiter();
+//                    waiter = GetChannelWaiter();
 
 //                    if (waiter == null)
 //                    {
-//                        this.state = State.NoChannel;
+//                        state = State.NoChannel;
 //                        return;
 //                    }
 //                }
@@ -1719,23 +1717,23 @@ namespace System.ServiceModel.Channels
 
 //            public void OnReadEof()
 //            {
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.count <= 0)
+//                    if (count <= 0)
 //                    {
 //                        throw Fx.AssertAndThrow("Caller must ensure that OnReadEof is called before ReturnChannel.");
 //                    }
 
-//                    if (this.ValidateOpened())
+//                    if (ValidateOpened())
 //                    {
-//                        if ((this.state != State.ChannelOpened) && (this.state != State.ChannelClosing))
+//                        if ((state != State.ChannelOpened) && (state != State.ChannelClosing))
 //                        {
 //                            throw Fx.AssertAndThrow("Since count is positive, the only valid states are ChannelOpened and ChannelClosing.");
 //                        }
 
-//                        if (this.currentChannel.State != CommunicationState.Faulted)
+//                        if (currentChannel.State != CommunicationState.Faulted)
 //                        {
-//                            this.state = State.ChannelClosing;
+//                            state = State.ChannelClosing;
 //                        }
 //                    }
 //                }
@@ -1743,12 +1741,12 @@ namespace System.ServiceModel.Channels
 
 //            bool RemoveWaiter(IWaiter waiter)
 //            {
-//                Queue<IWaiter> waiters = waiter.CanGetChannel ? this.getChannelQueue : this.waitQueue;
+//                Queue<IWaiter> waiters = waiter.CanGetChannel ? getChannelQueue : waitQueue;
 //                bool removed = false;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (!this.ValidateOpened())
+//                    if (!ValidateOpened())
 //                    {
 //                        return false;
 //                    }
@@ -1779,44 +1777,44 @@ namespace System.ServiceModel.Channels
 //                bool drained;
 //                bool raiseInnerChannelFaulted = false;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.count <= 0)
+//                    if (count <= 0)
 //                    {
 //                        throw Fx.AssertAndThrow("Method ReturnChannel() can only be called after TryGetChannel or EndTryGetChannel returns a channel.");
 //                    }
 
-//                    this.count--;
-//                    drained = (this.count == 0) && (this.drainEvent != null);
+//                    count--;
+//                    drained = (count == 0) && (drainEvent != null);
 
-//                    if (this.ValidateOpened())
+//                    if (ValidateOpened())
 //                    {
-//                        if ((this.state != State.ChannelOpened) && (this.state != State.ChannelClosing))
+//                        if ((state != State.ChannelOpened) && (state != State.ChannelClosing))
 //                        {
 //                            throw Fx.AssertAndThrow("ChannelOpened and ChannelClosing are the only 2 valid states when count is positive.");
 //                        }
 
-//                        if (this.currentChannel.State == CommunicationState.Faulted)
+//                        if (currentChannel.State == CommunicationState.Faulted)
 //                        {
-//                            faultBinder = !this.tolerateFaults;
-//                            this.innerChannelFaulted = true;
-//                            this.state = State.ChannelClosing;
+//                            faultBinder = !tolerateFaults;
+//                            innerChannelFaulted = true;
+//                            state = State.ChannelClosing;
 //                        }
 
-//                        if (!faultBinder && (this.state == State.ChannelClosing) && (this.count == 0))
+//                        if (!faultBinder && (state == State.ChannelClosing) && (count == 0))
 //                        {
-//                            channel = this.currentChannel;
-//                            raiseInnerChannelFaulted = this.innerChannelFaulted;
-//                            this.innerChannelFaulted = false;
+//                            channel = currentChannel;
+//                            raiseInnerChannelFaulted = innerChannelFaulted;
+//                            innerChannelFaulted = false;
 
-//                            this.state = State.NoChannel;
-//                            this.aborting = false;
+//                            state = State.NoChannel;
+//                            aborting = false;
 
-//                            waiter = this.GetChannelWaiter();
+//                            waiter = GetChannelWaiter();
 
 //                            if (waiter != null)
 //                            {
-//                                this.state = State.ChannelOpening;
+//                                state = State.ChannelOpening;
 //                            }
 //                        }
 //                    }
@@ -1824,21 +1822,21 @@ namespace System.ServiceModel.Channels
 
 //                if (faultBinder)
 //                {
-//                    this.binder.Fault(null);
+//                    binder.Fault(null);
 //                }
 
 //                if (drained)
 //                {
-//                    this.drainEvent.Set();
+//                    drainEvent.Set();
 //                }
 
 //                if (channel != null)
 //                {
-//                    channel.Faulted -= this.onChannelFaulted;
+//                    channel.Faulted -= onChannelFaulted;
 
 //                    if (channel.State == CommunicationState.Opened)
 //                    {
-//                        this.binder.CloseChannel(channel);
+//                        binder.CloseChannel(channel);
 //                    }
 //                    else
 //                    {
@@ -1853,27 +1851,27 @@ namespace System.ServiceModel.Channels
 
 //                if (raiseInnerChannelFaulted)
 //                {
-//                    this.binder.OnInnerChannelFaulted();
+//                    binder.OnInnerChannelFaulted();
 //                }
 //            }
 
 //            public bool SetChannel(TChannel channel)
 //            {
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.state != State.ChannelOpening && this.state != State.NoChannel)
+//                    if (state != State.ChannelOpening && state != State.NoChannel)
 //                    {
 //                        throw Fx.AssertAndThrow("SetChannel is only valid in the NoChannel and ChannelOpening states");
 //                    }
 
-//                    if (!this.tolerateFaults)
+//                    if (!tolerateFaults)
 //                    {
 //                        throw Fx.AssertAndThrow("SetChannel is only valid when masking faults");
 //                    }
 
-//                    if (this.ValidateOpened())
+//                    if (ValidateOpened())
 //                    {
-//                        this.currentChannel = channel;
+//                        currentChannel = channel;
 //                        return true;
 //                    }
 //                    else
@@ -1885,21 +1883,21 @@ namespace System.ServiceModel.Channels
 
 //            void SetTolerateFaults()
 //            {
-//                if (this.faultMode == TolerateFaultsMode.Never)
+//                if (faultMode == TolerateFaultsMode.Never)
 //                {
-//                    this.tolerateFaults = false;
+//                    tolerateFaults = false;
 //                }
-//                else if (this.faultMode == TolerateFaultsMode.IfNotSecuritySession)
+//                else if (faultMode == TolerateFaultsMode.IfNotSecuritySession)
 //                {
-//                    this.tolerateFaults = !this.binder.HasSecuritySession(this.currentChannel);
-//                }
-
-//                if (this.onChannelFaulted == null)
-//                {
-//                    this.onChannelFaulted = new EventHandler(this.OnChannelFaulted);
+//                    tolerateFaults = !binder.HasSecuritySession(currentChannel);
 //                }
 
-//                this.currentChannel.Faulted += this.onChannelFaulted;
+//                if (onChannelFaulted == null)
+//                {
+//                    onChannelFaulted = new EventHandler(OnChannelFaulted);
+//                }
+
+//                currentChannel.Faulted += onChannelFaulted;
 //            }
 
 //            void SetWaiters(Queue<IWaiter> waiters, TChannel channel)
@@ -1915,15 +1913,15 @@ namespace System.ServiceModel.Channels
 
 //            public void StartSynchronizing()
 //            {
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.state == State.Created)
+//                    if (state == State.Created)
 //                    {
-//                        this.state = State.NoChannel;
+//                        state = State.NoChannel;
 //                    }
 //                    else
 //                    {
-//                        if (this.state != State.Closed)
+//                        if (state != State.Closed)
 //                        {
 //                            throw Fx.AssertAndThrow("Abort is the only operation that can race with Open.");
 //                        }
@@ -1931,50 +1929,50 @@ namespace System.ServiceModel.Channels
 //                        return;
 //                    }
 
-//                    if (this.currentChannel == null)
+//                    if (currentChannel == null)
 //                    {
-//                        if (!this.binder.TryGetChannel(TimeSpan.Zero))
+//                        if (!binder.TryGetChannel(TimeSpan.Zero))
 //                        {
 //                            return;
 //                        }
 //                    }
 
-//                    if (this.currentChannel == null)
+//                    if (currentChannel == null)
 //                    {
 //                        return;
 //                    }
 
-//                    if (!this.binder.MustOpenChannel)
+//                    if (!binder.MustOpenChannel)
 //                    {
 //                        // Channel is already opened.
-//                        this.state = State.ChannelOpened;
-//                        this.SetTolerateFaults();
+//                        state = State.ChannelOpened;
+//                        SetTolerateFaults();
 //                    }
 //                }
 //            }
 
 //            public TChannel StopSynchronizing(bool close)
 //            {
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if ((this.state != State.Faulted) && (this.state != State.Closed))
+//                    if ((state != State.Faulted) && (state != State.Closed))
 //                    {
-//                        this.state = close ? State.Closed : State.Faulted;
+//                        state = close ? State.Closed : State.Faulted;
 
-//                        if ((this.currentChannel != null) && (this.onChannelFaulted != null))
+//                        if ((currentChannel != null) && (onChannelFaulted != null))
 //                        {
-//                            this.currentChannel.Faulted -= this.onChannelFaulted;
+//                            currentChannel.Faulted -= onChannelFaulted;
 //                        }
 //                    }
 
-//                    return this.currentChannel;
+//                    return currentChannel;
 //                }
 //            }
 
 //            // Must be called under a lock.
 //            bool ThrowIfNecessary(MaskingMode maskingMode)
 //            {
-//                if (this.ValidateOpened())
+//                if (ValidateOpened())
 //                {
 //                    return true;
 //                }
@@ -1982,13 +1980,13 @@ namespace System.ServiceModel.Channels
 //                // state is Closed or Faulted.
 //                Exception e;
 
-//                if (this.state == State.Closed)
+//                if (state == State.Closed)
 //                {
-//                    e = this.binder.GetClosedException(maskingMode);
+//                    e = binder.GetClosedException(maskingMode);
 //                }
 //                else
 //                {
-//                    e = this.binder.GetFaultedException(maskingMode);
+//                    e = binder.GetFaultedException(maskingMode);
 //                }
 
 //                if (e != null)
@@ -2002,14 +2000,14 @@ namespace System.ServiceModel.Channels
 //            public bool TryGetChannelForInput(bool canGetChannel, TimeSpan timeout,
 //                out TChannel channel)
 //            {
-//                return this.TryGetChannel(canGetChannel, false, timeout, MaskingMode.All,
+//                return TryGetChannel(canGetChannel, false, timeout, MaskingMode.All,
 //                    out channel);
 //            }
 
 //            public bool TryGetChannelForOutput(TimeSpan timeout, MaskingMode maskingMode,
 //                out TChannel channel)
 //            {
-//                return this.TryGetChannel(true, true, timeout, maskingMode, out channel);
+//                return TryGetChannel(true, true, timeout, maskingMode, out channel);
 //            }
 
 //            bool TryGetChannel(bool canGetChannel, bool canCauseFault, TimeSpan timeout,
@@ -2019,29 +2017,29 @@ namespace System.ServiceModel.Channels
 //                bool faulted = false;
 //                bool getChannel = false;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (!this.ThrowIfNecessary(maskingMode))
+//                    if (!ThrowIfNecessary(maskingMode))
 //                    {
 //                        channel = null;
 //                        return true;
 //                    }
 
-//                    if (this.state == State.ChannelOpened)
+//                    if (state == State.ChannelOpened)
 //                    {
-//                        if (this.currentChannel == null)
+//                        if (currentChannel == null)
 //                        {
 //                            throw Fx.AssertAndThrow("Field currentChannel cannot be null in the ChannelOpened state.");
 //                        }
 
-//                        this.count++;
-//                        channel = this.currentChannel;
+//                        count++;
+//                        channel = currentChannel;
 //                        return true;
 //                    }
 
-//                    if (!this.tolerateFaults
-//                        && ((this.state == State.ChannelClosing)
-//                        || (this.state == State.NoChannel)))
+//                    if (!tolerateFaults
+//                        && ((state == State.ChannelClosing)
+//                        || (state == State.NoChannel)))
 //                    {
 //                        if (!canCauseFault)
 //                        {
@@ -2052,31 +2050,31 @@ namespace System.ServiceModel.Channels
 //                        faulted = true;
 //                    }
 //                    else if (!canGetChannel
-//                        || (this.state == State.ChannelOpening)
-//                        || (this.state == State.ChannelClosing))
+//                        || (state == State.ChannelOpening)
+//                        || (state == State.ChannelClosing))
 //                    {
-//                        waiter = new SyncWaiter(this, canGetChannel, null, timeout, maskingMode, this.binder.ChannelParameters);
-//                        this.GetQueue(canGetChannel).Enqueue(waiter);
+//                        waiter = new SyncWaiter(this, canGetChannel, null, timeout, maskingMode, binder.ChannelParameters);
+//                        GetQueue(canGetChannel).Enqueue(waiter);
 //                    }
 //                    else
 //                    {
-//                        if (this.state != State.NoChannel)
+//                        if (state != State.NoChannel)
 //                        {
 //                            throw Fx.AssertAndThrow("The state must be NoChannel.");
 //                        }
 
 //                        waiter = new SyncWaiter(this, canGetChannel,
-//                            this.GetCurrentChannelIfCreated(), timeout, maskingMode,
-//                            this.binder.ChannelParameters);
+//                            GetCurrentChannelIfCreated(), timeout, maskingMode,
+//                            binder.ChannelParameters);
 
-//                        this.state = State.ChannelOpening;
+//                        state = State.ChannelOpening;
 //                        getChannel = true;
 //                    }
 //                }
 
 //                if (faulted)
 //                {
-//                    this.binder.Fault(null);
+//                    binder.Fault(null);
 //                    channel = null;
 //                    return true;
 //                }
@@ -2094,18 +2092,18 @@ namespace System.ServiceModel.Channels
 //                Queue<IWaiter> temp1;
 //                Queue<IWaiter> temp2;
 
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    temp1 = this.getChannelQueue;
-//                    temp2 = this.waitQueue;
+//                    temp1 = getChannelQueue;
+//                    temp2 = waitQueue;
 
-//                    this.getChannelQueue = null;
-//                    this.waitQueue = null;
+//                    getChannelQueue = null;
+//                    waitQueue = null;
 //                }
 
-//                bool close = this.state == State.Closed;
-//                this.UnblockWaiters(temp1, close);
-//                this.UnblockWaiters(temp2, close);
+//                bool close = state == State.Closed;
+//                UnblockWaiters(temp1, close);
+//                UnblockWaiters(temp2, close);
 //            }
 
 //            void UnblockWaiters(Queue<IWaiter> waiters, bool close)
@@ -2128,32 +2126,32 @@ namespace System.ServiceModel.Channels
 
 //            bool ValidateOpened()
 //            {
-//                if (this.state == State.Created)
+//                if (state == State.Created)
 //                {
 //                    throw Fx.AssertAndThrow("This operation expects that the synchronizer has been opened.");
 //                }
 
-//                return (this.state != State.Closed) && (this.state != State.Faulted);
+//                return (state != State.Closed) && (state != State.Faulted);
 //            }
 
 //            public void WaitForPendingOperations(TimeSpan timeout)
 //            {
-//                lock (this.ThisLock)
+//                lock (ThisLock)
 //                {
-//                    if (this.drainEvent != null)
+//                    if (drainEvent != null)
 //                    {
 //                        throw Fx.AssertAndThrow("The WaitForPendingOperations operation may only be invoked once.");
 //                    }
 
-//                    if (this.count > 0)
+//                    if (count > 0)
 //                    {
-//                        this.drainEvent = new InterruptibleWaitObject(false, false);
+//                        drainEvent = new InterruptibleWaitObject(false, false);
 //                    }
 //                }
 
-//                if (this.drainEvent != null)
+//                if (drainEvent != null)
 //                {
-//                    this.drainEvent.Wait(timeout);
+//                    drainEvent.Wait(timeout);
 //                }
 //            }
 
@@ -2208,19 +2206,19 @@ namespace System.ServiceModel.Channels
 //                        }
 //                    }
 
-//                    this.synchronizer = synchronizer;
-//                    this.canGetChannel = canGetChannel;
-//                    this.channel = channel;
-//                    this.timeoutHelper = new TimeoutHelper(timeout);
-//                    this.maskingMode = maskingMode;
-//                    this.channelParameters = channelParameters;
+//                    synchronizer = synchronizer;
+//                    canGetChannel = canGetChannel;
+//                    channel = channel;
+//                    timeoutHelper = new TimeoutHelper(timeout);
+//                    maskingMode = maskingMode;
+//                    channelParameters = channelParameters;
 //                }
 
 //                public bool CanGetChannel
 //                {
 //                    get
 //                    {
-//                        return this.canGetChannel;
+//                        return canGetChannel;
 //                    }
 //                }
 
@@ -2234,46 +2232,46 @@ namespace System.ServiceModel.Channels
 
 //                void CancelTimer()
 //                {
-//                    lock (this.ThisLock)
+//                    lock (ThisLock)
 //                    {
-//                        if (!this.timerCancelled)
+//                        if (!timerCancelled)
 //                        {
-//                            if (this.timer != null)
+//                            if (timer != null)
 //                            {
-//                                this.timer.Cancel();
+//                                timer.Cancel();
 //                            }
 
-//                            this.timerCancelled = true;
+//                            timerCancelled = true;
 //                        }
 //                    }
 //                }
 
 //                public void Close()
 //                {
-//                    this.CancelTimer();
-//                    this.channel = null;
-//                    this.Complete(false,
-//                        this.synchronizer.binder.GetClosedException(this.maskingMode));
+//                    CancelTimer();
+//                    channel = null;
+//                    Complete(false,
+//                        synchronizer.binder.GetClosedException(maskingMode));
 //                }
 
 //                bool CompleteOpen(IAsyncResult result)
 //                {
-//                    this.channel.EndOpen(result);
-//                    return this.OnChannelOpened();
+//                    channel.EndOpen(result);
+//                    return OnChannelOpened();
 //                }
 
 //                bool CompleteTryGetChannel(IAsyncResult result)
 //                {
-//                    if (!this.synchronizer.binder.EndTryGetChannel(result))
+//                    if (!synchronizer.binder.EndTryGetChannel(result))
 //                    {
-//                        this.timedOut = true;
-//                        this.OnGetChannelFailed();
+//                        timedOut = true;
+//                        OnGetChannelFailed();
 //                        return true;
 //                    }
 
-//                    if (!this.synchronizer.CompleteSetChannel(this, out this.channel))
+//                    if (!synchronizer.CompleteSetChannel(this, out channel))
 //                    {
-//                        if (!this.IsCompleted)
+//                        if (!IsCompleted)
 //                        {
 //                            throw Fx.AssertAndThrow("CompleteSetChannel must complete the IWaiter if it returns false.");
 //                        }
@@ -2281,38 +2279,38 @@ namespace System.ServiceModel.Channels
 //                        return false;
 //                    }
 
-//                    return this.OpenChannel();
+//                    return OpenChannel();
 //                }
 
 //                public bool End(out TChannel channel)
 //                {
 //                    AsyncResult.End<AsyncWaiter>(this);
-//                    channel = this.channel;
-//                    return !this.timedOut;
+//                    channel = channel;
+//                    return !timedOut;
 //                }
 
 //                public void Fault()
 //                {
-//                    this.CancelTimer();
-//                    this.channel = null;
-//                    this.Complete(false,
-//                        this.synchronizer.binder.GetFaultedException(this.maskingMode));
+//                    CancelTimer();
+//                    channel = null;
+//                    Complete(false,
+//                        synchronizer.binder.GetFaultedException(maskingMode));
 //                }
 
 //                bool GetChannel()
 //                {
-//                    if (this.channel != null)
+//                    if (channel != null)
 //                    {
-//                        return this.OpenChannel();
+//                        return OpenChannel();
 //                    }
 //                    else
 //                    {
-//                        IAsyncResult result = this.synchronizer.binder.BeginTryGetChannel(
-//                            this.timeoutHelper.RemainingTime(), onTryGetChannelComplete, this);
+//                        IAsyncResult result = synchronizer.binder.BeginTryGetChannel(
+//                            timeoutHelper.RemainingTime(), onTryGetChannelComplete, this);
 
 //                        if (result.CompletedSynchronously)
 //                        {
-//                            return this.CompleteTryGetChannel(result);
+//                            return CompleteTryGetChannel(result);
 //                        }
 //                    }
 
@@ -2321,12 +2319,12 @@ namespace System.ServiceModel.Channels
 
 //                public void GetChannel(bool onUserThread)
 //                {
-//                    if (!this.CanGetChannel)
+//                    if (!CanGetChannel)
 //                    {
 //                        throw Fx.AssertAndThrow("This waiter must wait for a channel thus the caller cannot attempt to get a channel.");
 //                    }
 
-//                    this.isSynchronous = onUserThread;
+//                    isSynchronous = onUserThread;
 
 //                    if (onUserThread)
 //                    {
@@ -2334,9 +2332,9 @@ namespace System.ServiceModel.Channels
 
 //                        try
 //                        {
-//                            if (this.GetChannel())
+//                            if (GetChannel())
 //                            {
-//                                this.Complete(true);
+//                                Complete(true);
 //                            }
 
 //                            throwing = false;
@@ -2345,7 +2343,7 @@ namespace System.ServiceModel.Channels
 //                        {
 //                            if (throwing)
 //                            {
-//                                this.OnGetChannelFailed();
+//                                OnGetChannelFailed();
 //                            }
 //                        }
 //                    }
@@ -2356,10 +2354,9 @@ namespace System.ServiceModel.Channels
 
 //                        try
 //                        {
-//                            this.CancelTimer();
-//                            complete = this.GetChannel();
+//                            CancelTimer();
+//                            complete = GetChannel();
 //                        }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                        catch (Exception e)
 //                        {
 //                            if (Fx.IsFatal(e))
@@ -2367,26 +2364,26 @@ namespace System.ServiceModel.Channels
 //                                throw;
 //                            }
 
-//                            this.OnGetChannelFailed();
+//                            OnGetChannelFailed();
 //                            completeException = e;
 //                        }
 
 //                        if (complete || completeException != null)
 //                        {
-//                            this.Complete(false, completeException);
+//                            Complete(false, completeException);
 //                        }
 //                    }
 //                }
 
 //                bool OnChannelOpened()
 //                {
-//                    if (this.synchronizer.OnChannelOpened(this))
+//                    if (synchronizer.OnChannelOpened(this))
 //                    {
 //                        return true;
 //                    }
 //                    else
 //                    {
-//                        if (!this.IsCompleted)
+//                        if (!IsCompleted)
 //                        {
 //                            throw Fx.AssertAndThrow("OnChannelOpened must complete the IWaiter if it returns false.");
 //                        }
@@ -2397,12 +2394,12 @@ namespace System.ServiceModel.Channels
 
 //                void OnGetChannelFailed()
 //                {
-//                    if (this.channel != null)
+//                    if (channel != null)
 //                    {
-//                        this.channel.Abort();
+//                        channel.Abort();
 //                    }
 
-//                    this.synchronizer.OnGetChannelFailed();
+//                    synchronizer.OnGetChannelFailed();
 //                }
 
 //                static void OnOpenComplete(IAsyncResult result)
@@ -2419,7 +2416,6 @@ namespace System.ServiceModel.Channels
 //                        {
 //                            complete = waiter.CompleteOpen(result);
 //                        }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                        catch (Exception e)
 //                        {
 //                            if (Fx.IsFatal(e))
@@ -2444,10 +2440,10 @@ namespace System.ServiceModel.Channels
 
 //                void OnTimeoutElapsed()
 //                {
-//                    if (this.synchronizer.RemoveWaiter(this))
+//                    if (synchronizer.RemoveWaiter(this))
 //                    {
-//                        this.timedOut = true;
-//                        this.Complete(this.isSynchronous, null);
+//                        timedOut = true;
+//                        Complete(isSynchronous, null);
 //                    }
 //                }
 
@@ -2471,7 +2467,6 @@ namespace System.ServiceModel.Channels
 //                        {
 //                            complete = waiter.CompleteTryGetChannel(result);
 //                        }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                        catch (Exception e)
 //                        {
 //                            if (Fx.IsFatal(e))
@@ -2493,57 +2488,57 @@ namespace System.ServiceModel.Channels
 
 //                bool OpenChannel()
 //                {
-//                    if (this.synchronizer.binder.MustOpenChannel)
+//                    if (synchronizer.binder.MustOpenChannel)
 //                    {
-//                        if (this.channelParameters != null)
+//                        if (channelParameters != null)
 //                        {
-//                            this.channelParameters.PropagateChannelParameters(this.channel);
+//                            channelParameters.PropagateChannelParameters(channel);
 //                        }
 
-//                        IAsyncResult result = this.channel.BeginOpen(
-//                            this.timeoutHelper.RemainingTime(), onOpenComplete, this);
+//                        IAsyncResult result = channel.BeginOpen(
+//                            timeoutHelper.RemainingTime(), onOpenComplete, this);
 
 //                        if (result.CompletedSynchronously)
 //                        {
-//                            return this.CompleteOpen(result);
+//                            return CompleteOpen(result);
 //                        }
 
 //                        return false;
 //                    }
 //                    else
 //                    {
-//                        return this.OnChannelOpened();
+//                        return OnChannelOpened();
 //                    }
 //                }
 
 //                public void Set(TChannel channel)
 //                {
-//                    this.CancelTimer();
-//                    this.channel = channel;
-//                    this.Complete(false);
+//                    CancelTimer();
+//                    channel = channel;
+//                    Complete(false);
 //                }
 
 //                // Always called from the user's thread.
 //                public void Wait()
 //                {
-//                    lock (this.ThisLock)
+//                    lock (ThisLock)
 //                    {
-//                        if (this.timerCancelled)
+//                        if (timerCancelled)
 //                        {
 //                            return;
 //                        }
 
-//                        TimeSpan timeout = this.timeoutHelper.RemainingTime();
+//                        TimeSpan timeout = timeoutHelper.RemainingTime();
 
 //                        if (timeout > TimeSpan.Zero)
 //                        {
-//                            this.timer = new IOThreadTimer(onTimeoutElapsed, this, true);
-//                            this.timer.Set(this.timeoutHelper.RemainingTime());
+//                            timer = new IOThreadTimer(onTimeoutElapsed, this, true);
+//                            timer.Set(timeoutHelper.RemainingTime());
 //                            return;
 //                        }
 //                    }
 
-//                    this.OnTimeoutElapsed();
+//                    OnTimeoutElapsed();
 //                }
 //            }
 
@@ -2584,43 +2579,43 @@ namespace System.ServiceModel.Channels
 //                        }
 //                    }
 
-//                    this.synchronizer = synchronizer;
-//                    this.canGetChannel = canGetChannel;
-//                    this.channel = channel;
-//                    this.timeoutHelper = new TimeoutHelper(timeout);
-//                    this.maskingMode = maskingMode;
-//                    this.channelParameters = channelParameters;
+//                    synchronizer = synchronizer;
+//                    canGetChannel = canGetChannel;
+//                    channel = channel;
+//                    timeoutHelper = new TimeoutHelper(timeout);
+//                    maskingMode = maskingMode;
+//                    channelParameters = channelParameters;
 //                }
 
 //                public bool CanGetChannel
 //                {
 //                    get
 //                    {
-//                        return this.canGetChannel;
+//                        return canGetChannel;
 //                    }
 //                }
 
 //                public void Close()
 //                {
-//                    this.exception = this.synchronizer.binder.GetClosedException(this.maskingMode);
-//                    this.completeEvent.Set();
+//                    exception = synchronizer.binder.GetClosedException(maskingMode);
+//                    completeEvent.Set();
 //                }
 
 //                public void Fault()
 //                {
-//                    this.exception = this.synchronizer.binder.GetFaultedException(this.maskingMode);
-//                    this.completeEvent.Set();
+//                    exception = synchronizer.binder.GetFaultedException(maskingMode);
+//                    completeEvent.Set();
 //                }
 
 //                public void GetChannel(bool onUserThread)
 //                {
-//                    if (!this.CanGetChannel)
+//                    if (!CanGetChannel)
 //                    {
 //                        throw Fx.AssertAndThrow("This waiter must wait for a channel thus the caller cannot attempt to get a channel.");
 //                    }
 
-//                    this.getChannel = true;
-//                    this.completeEvent.Set();
+//                    getChannel = true;
+//                    completeEvent.Set();
 //                }
 
 //                public void Set(TChannel channel)
@@ -2630,44 +2625,44 @@ namespace System.ServiceModel.Channels
 //                        throw Fx.AssertAndThrow("Argument channel cannot be null. Caller must call Fault or Close instead.");
 //                    }
 
-//                    this.channel = channel;
-//                    this.completeEvent.Set();
+//                    channel = channel;
+//                    completeEvent.Set();
 //                }
 
 //                bool TryGetChannel()
 //                {
 //                    TChannel channel;
 
-//                    if (this.channel != null)
+//                    if (channel != null)
 //                    {
-//                        channel = this.channel;
+//                        channel = channel;
 //                    }
-//                    else if (this.synchronizer.binder.TryGetChannel(
-//                        this.timeoutHelper.RemainingTime()))
+//                    else if (synchronizer.binder.TryGetChannel(
+//                        timeoutHelper.RemainingTime()))
 //                    {
-//                        if (!this.synchronizer.CompleteSetChannel(this, out channel))
+//                        if (!synchronizer.CompleteSetChannel(this, out channel))
 //                        {
 //                            return true;
 //                        }
 //                    }
 //                    else
 //                    {
-//                        this.synchronizer.OnGetChannelFailed();
+//                        synchronizer.OnGetChannelFailed();
 //                        return false;
 //                    }
 
-//                    if (this.synchronizer.binder.MustOpenChannel)
+//                    if (synchronizer.binder.MustOpenChannel)
 //                    {
 //                        bool throwing = true;
 
-//                        if (this.channelParameters != null)
+//                        if (channelParameters != null)
 //                        {
-//                            this.channelParameters.PropagateChannelParameters(channel);
+//                            channelParameters.PropagateChannelParameters(channel);
 //                        }
 
 //                        try
 //                        {
-//                            channel.Open(this.timeoutHelper.RemainingTime());
+//                            channel.Open(timeoutHelper.RemainingTime());
 //                            throwing = false;
 //                        }
 //                        finally
@@ -2675,14 +2670,14 @@ namespace System.ServiceModel.Channels
 //                            if (throwing)
 //                            {
 //                                channel.Abort();
-//                                this.synchronizer.OnGetChannelFailed();
+//                                synchronizer.OnGetChannelFailed();
 //                            }
 //                        }
 //                    }
 
-//                    if (this.synchronizer.OnChannelOpened(this))
+//                    if (synchronizer.OnChannelOpened(this))
 //                    {
-//                        this.Set(channel);
+//                        Set(channel);
 //                    }
 
 //                    return true;
@@ -2690,44 +2685,44 @@ namespace System.ServiceModel.Channels
 
 //                public bool TryWait(out TChannel channel)
 //                {
-//                    if (!this.Wait())
+//                    if (!Wait())
 //                    {
 //                        channel = null;
 //                        return false;
 //                    }
-//                    else if (this.getChannel && !this.TryGetChannel())
+//                    else if (getChannel && !TryGetChannel())
 //                    {
 //                        channel = null;
 //                        return false;
 //                    }
 
-//                    this.completeEvent.Close();
+//                    completeEvent.Close();
 
-//                    if (this.exception != null)
+//                    if (exception != null)
 //                    {
-//                        if (this.channel != null)
+//                        if (channel != null)
 //                        {
 //                            throw Fx.AssertAndThrow("User of IWaiter called both Set and Fault or Close.");
 //                        }
 
-//                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(this.exception);
+//                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
 //                    }
 
-//                    channel = this.channel;
+//                    channel = channel;
 //                    return true;
 //                }
 
 //                bool Wait()
 //                {
-//                    if (!TimeoutHelper.WaitOne(this.completeEvent, this.timeoutHelper.RemainingTime()))
+//                    if (!TimeoutHelper.WaitOne(completeEvent, timeoutHelper.RemainingTime()))
 //                    {
-//                        if (this.synchronizer.RemoveWaiter(this))
+//                        if (synchronizer.RemoveWaiter(this))
 //                        {
 //                            return false;
 //                        }
 //                        else
 //                        {
-//                            TimeoutHelper.WaitOne(this.completeEvent, TimeSpan.MaxValue);
+//                            TimeoutHelper.WaitOne(completeEvent, TimeSpan.MaxValue);
 //                        }
 //                    }
 
@@ -2749,20 +2744,20 @@ namespace System.ServiceModel.Channels
 //                TimeSpan timeout, MaskingMode maskingMode, AsyncCallback callback, object state)
 //                : base(callback, state)
 //            {
-//                this.binder = binder;
-//                this.channel = channel;
-//                this.timeoutHelper = new TimeoutHelper(timeout);
-//                this.maskingMode = maskingMode;
+//                binder = binder;
+//                channel = channel;
+//                timeoutHelper = new TimeoutHelper(timeout);
+//                maskingMode = maskingMode;
 //                bool complete = false;
 
 //                try
 //                {
-//                    this.binder.OnShutdown();
-//                    IAsyncResult result = this.binder.OnBeginClose(timeout, onBinderCloseComplete, this);
+//                    binder.OnShutdown();
+//                    IAsyncResult result = binder.OnBeginClose(timeout, onBinderCloseComplete, this);
 
 //                    if (result.CompletedSynchronously)
 //                    {
-//                        complete = this.CompleteBinderClose(true, result);
+//                        complete = CompleteBinderClose(true, result);
 //                    }
 //                }
 //                catch (Exception e)
@@ -2772,9 +2767,9 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    this.binder.Abort();
+//                    binder.Abort();
 
-//                    if (!this.binder.HandleException(e, this.maskingMode))
+//                    if (!binder.HandleException(e, maskingMode))
 //                    {
 //                        throw;
 //                    }
@@ -2786,22 +2781,22 @@ namespace System.ServiceModel.Channels
 
 //                if (complete)
 //                {
-//                    this.Complete(true);
+//                    Complete(true);
 //                }
 //            }
 
 //            bool CompleteBinderClose(bool synchronous, IAsyncResult result)
 //            {
-//                this.binder.OnEndClose(result);
+//                binder.OnEndClose(result);
 
-//                if (this.channel != null)
+//                if (channel != null)
 //                {
-//                    result = this.binder.BeginCloseChannel(this.channel,
-//                        this.timeoutHelper.RemainingTime(), onChannelCloseComplete, this);
+//                    result = binder.BeginCloseChannel(channel,
+//                        timeoutHelper.RemainingTime(), onChannelCloseComplete, this);
 
 //                    if (result.CompletedSynchronously)
 //                    {
-//                        return this.CompleteChannelClose(synchronous, result);
+//                        return CompleteChannelClose(synchronous, result);
 //                    }
 //                    else
 //                    {
@@ -2810,15 +2805,15 @@ namespace System.ServiceModel.Channels
 //                }
 //                else
 //                {
-//                    this.binder.TransitionToClosed();
+//                    binder.TransitionToClosed();
 //                    return true;
 //                }
 //            }
 
 //            bool CompleteChannelClose(bool synchronous, IAsyncResult result)
 //            {
-//                this.binder.EndCloseChannel(this.channel, result);
-//                this.binder.TransitionToClosed();
+//                binder.EndCloseChannel(channel, result);
+//                binder.TransitionToClosed();
 //                return true;
 //            }
 
@@ -2829,9 +2824,9 @@ namespace System.ServiceModel.Channels
 
 //            Exception HandleAsyncException(Exception e)
 //            {
-//                this.binder.Abort();
+//                binder.Abort();
 
-//                if (this.binder.HandleException(e, this.maskingMode))
+//                if (binder.HandleException(e, maskingMode))
 //                {
 //                    return null;
 //                }
@@ -2854,7 +2849,6 @@ namespace System.ServiceModel.Channels
 //                        complete = closeResult.CompleteBinderClose(false, result);
 //                        completeException = null;
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
@@ -2891,7 +2885,6 @@ namespace System.ServiceModel.Channels
 //                        complete = closeResult.CompleteChannelClose(false, result);
 //                        completeException = null;
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
@@ -2934,10 +2927,10 @@ namespace System.ServiceModel.Channels
 //                MaskingMode maskingMode, AsyncCallback callback, object state)
 //                : base(callback, state)
 //            {
-//                this.binder = binder;
-//                this.canGetChannel = canGetChannel;
-//                this.timeoutHelper = new TimeoutHelper(timeout);
-//                this.maskingMode = maskingMode;
+//                binder = binder;
+//                canGetChannel = canGetChannel;
+//                timeoutHelper = new TimeoutHelper(timeout);
+//                maskingMode = maskingMode;
 //            }
 
 //            protected abstract IAsyncResult BeginInput(TBinder binder, TChannel channel,
@@ -2950,12 +2943,12 @@ namespace System.ServiceModel.Channels
 
 //                try
 //                {
-//                    this.success = this.EndInput(this.binder, this.channel, result, out complete);
+//                    success = EndInput(binder, channel, result, out complete);
 //                }
 //                finally
 //                {
-//                    this.autoAborted = this.binder.Synchronizer.Aborting;
-//                    this.binder.synchronizer.ReturnChannel();
+//                    autoAborted = binder.Synchronizer.Aborting;
+//                    binder.synchronizer.ReturnChannel();
 //                }
 
 //                return !complete;
@@ -2965,11 +2958,11 @@ namespace System.ServiceModel.Channels
 //            bool CompleteTryGetChannel(IAsyncResult result, out bool complete)
 //            {
 //                complete = false;
-//                this.success = this.binder.synchronizer.EndTryGetChannel(result, out this.channel);
+//                success = binder.synchronizer.EndTryGetChannel(result, out channel);
 
 //                // the synchronizer is faulted and not reestablishing or closed, or the call timed
 //                // out, complete and don't retry.
-//                if (this.channel == null)
+//                if (channel == null)
 //                {
 //                    complete = true;
 //                    return false;
@@ -2980,22 +2973,22 @@ namespace System.ServiceModel.Channels
 
 //                try
 //                {
-//                    inputResult = this.BeginInput(this.binder, this.channel,
-//                        this.timeoutHelper.RemainingTime(), onInputComplete, this);
+//                    inputResult = BeginInput(binder, channel,
+//                        timeoutHelper.RemainingTime(), onInputComplete, this);
 //                    throwing = false;
 //                }
 //                finally
 //                {
 //                    if (throwing)
 //                    {
-//                        this.autoAborted = this.binder.Synchronizer.Aborting;
-//                        this.binder.synchronizer.ReturnChannel();
+//                        autoAborted = binder.Synchronizer.Aborting;
+//                        binder.synchronizer.ReturnChannel();
 //                    }
 //                }
 
 //                if (inputResult.CompletedSynchronously)
 //                {
-//                    if (this.CompleteInput(inputResult))
+//                    if (CompleteInput(inputResult))
 //                    {
 //                        complete = false;
 //                        return true;
@@ -3016,7 +3009,7 @@ namespace System.ServiceModel.Channels
 //            public bool End()
 //            {
 //                AsyncResult.End<InputAsyncResult<TBinder>>(this);
-//                return this.success;
+//                return success;
 //            }
 
 //            protected abstract bool EndInput(TBinder binder, TChannel channel,
@@ -3024,15 +3017,14 @@ namespace System.ServiceModel.Channels
 
 //            void OnInputComplete(IAsyncResult result)
 //            {
-//                this.isSynchronous = false;
+//                isSynchronous = false;
 //                bool retry;
 //                Exception completeException = null;
 
 //                try
 //                {
-//                    retry = this.CompleteInput(result);
+//                    retry = CompleteInput(result);
 //                }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                catch (Exception e)
 //                {
 //                    if (Fx.IsFatal(e))
@@ -3040,7 +3032,7 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    if (!this.binder.HandleException(e, this.maskingMode, this.autoAborted))
+//                    if (!binder.HandleException(e, maskingMode, autoAborted))
 //                    {
 //                        completeException = e;
 //                        retry = false;
@@ -3053,11 +3045,11 @@ namespace System.ServiceModel.Channels
 
 //                if (retry)
 //                {
-//                    this.StartOnNonUserThread();
+//                    StartOnNonUserThread();
 //                }
 //                else
 //                {
-//                    this.Complete(this.isSynchronous, completeException);
+//                    Complete(isSynchronous, completeException);
 //                }
 //            }
 
@@ -3073,16 +3065,15 @@ namespace System.ServiceModel.Channels
 
 //            void OnTryGetChannelComplete(IAsyncResult result)
 //            {
-//                this.isSynchronous = false;
+//                isSynchronous = false;
 //                bool retry = false;
 //                bool complete = false;
 //                Exception completeException = null;
 
 //                try
 //                {
-//                    retry = this.CompleteTryGetChannel(result, out complete);
+//                    retry = CompleteTryGetChannel(result, out complete);
 //                }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                catch (Exception e)
 //                {
 //                    if (Fx.IsFatal(e))
@@ -3090,7 +3081,7 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    if (!this.binder.HandleException(e, this.maskingMode, this.autoAborted))
+//                    if (!binder.HandleException(e, maskingMode, autoAborted))
 //                    {
 //                        completeException = e;
 //                        retry = false;
@@ -3109,11 +3100,11 @@ namespace System.ServiceModel.Channels
 
 //                if (retry)
 //                {
-//                    this.StartOnNonUserThread();
+//                    StartOnNonUserThread();
 //                }
 //                else if (complete || completeException != null)
 //                {
-//                    this.Complete(this.isSynchronous, completeException);
+//                    Complete(isSynchronous, completeException);
 //                }
 //            }
 
@@ -3134,17 +3125,17 @@ namespace System.ServiceModel.Channels
 //                    bool retry = false;
 //                    bool complete = false;
 
-//                    this.autoAborted = false;
+//                    autoAborted = false;
 
 //                    try
 //                    {
-//                        IAsyncResult result = this.binder.synchronizer.BeginTryGetChannelForInput(
-//                            canGetChannel, this.timeoutHelper.RemainingTime(),
+//                        IAsyncResult result = binder.synchronizer.BeginTryGetChannelForInput(
+//                            canGetChannel, timeoutHelper.RemainingTime(),
 //                            onTryGetChannelComplete, this);
 
 //                        if (result.CompletedSynchronously)
 //                        {
-//                            retry = this.CompleteTryGetChannel(result, out complete);
+//                            retry = CompleteTryGetChannel(result, out complete);
 //                        }
 //                    }
 //                    catch (Exception e)
@@ -3154,7 +3145,7 @@ namespace System.ServiceModel.Channels
 //                            throw;
 //                        }
 
-//                        if (!this.binder.HandleException(e, this.maskingMode, this.autoAborted))
+//                        if (!binder.HandleException(e, maskingMode, autoAborted))
 //                        {
 //                            throw;
 //                        }
@@ -3184,9 +3175,8 @@ namespace System.ServiceModel.Channels
 
 //                try
 //                {
-//                    complete = this.Start();
+//                    complete = Start();
 //                }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                catch (Exception e)
 //                {
 //                    if (Fx.IsFatal(e))
@@ -3196,7 +3186,7 @@ namespace System.ServiceModel.Channels
 //                }
 
 //                if (complete || completeException != null)
-//                    this.Complete(false, completeException);
+//                    Complete(false, completeException);
 //            }
 //        }
 
@@ -3229,7 +3219,7 @@ namespace System.ServiceModel.Channels
 //            {
 //                if (message != null)
 //                {
-//                    this.Binder.Send(message, timeout, this.MaskingMode);
+//                    Binder.Send(message, timeout, MaskingMode);
 //                }
 //            }
 
@@ -3247,7 +3237,7 @@ namespace System.ServiceModel.Channels
 //                        {
 //                            onSend = Fx.ThunkCallback(new AsyncCallback(OnSend));
 //                        }
-//                        this.context = context;
+//                        context = context;
 //                        IAsyncResult result = context.Binder.BeginSend(message, timeout, context.MaskingMode, onSend, this);
 //                        if (!result.CompletedSynchronously)
 //                        {
@@ -3277,7 +3267,6 @@ namespace System.ServiceModel.Channels
 //                    {
 //                        thisPtr.context.Binder.EndSend(result);
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception exception)
 //                    {
 //                        if (Fx.IsFatal(exception))
@@ -3309,14 +3298,14 @@ namespace System.ServiceModel.Channels
 //            public OutputAsyncResult(TBinder binder, AsyncCallback callback, object state)
 //                : base(callback, state)
 //            {
-//                this.binder = binder;
+//                binder = binder;
 //            }
 
 //            public MaskingMode MaskingMode
 //            {
 //                get
 //                {
-//                    return this.maskingMode;
+//                    return maskingMode;
 //                }
 //            }
 
@@ -3326,46 +3315,46 @@ namespace System.ServiceModel.Channels
 
 //            void Cleanup()
 //            {
-//                if (this.hasChannel)
+//                if (hasChannel)
 //                {
-//                    this.autoAborted = this.binder.Synchronizer.Aborting;
-//                    this.binder.synchronizer.ReturnChannel();
+//                    autoAborted = binder.Synchronizer.Aborting;
+//                    binder.synchronizer.ReturnChannel();
 //                }
 //            }
 
 //            bool CompleteOutput(IAsyncResult result)
 //            {
-//                this.EndOutput(this.binder, this.channel, this.maskingMode, result);
-//                this.Cleanup();
+//                EndOutput(binder, channel, maskingMode, result);
+//                Cleanup();
 //                return true;
 //            }
 
 //            bool CompleteTryGetChannel(IAsyncResult result)
 //            {
-//                bool timedOut = !this.binder.synchronizer.EndTryGetChannel(result,
-//                    out this.channel);
+//                bool timedOut = !binder.synchronizer.EndTryGetChannel(result,
+//                    out channel);
 
-//                if (timedOut || (this.channel == null))
+//                if (timedOut || (channel == null))
 //                {
-//                    this.Cleanup();
+//                    Cleanup();
 
 //                    if (timedOut && !ReliableChannelBinderHelper.MaskHandled(maskingMode))
 //                    {
-//                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(this.GetTimeoutString(this.timeout)));
+//                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(GetTimeoutString(timeout)));
 //                    }
 
 //                    return true;
 //                }
 
-//                this.hasChannel = true;
+//                hasChannel = true;
 
-//                result = this.BeginOutput(this.binder, this.channel, this.message,
-//                    this.timeoutHelper.RemainingTime(), this.maskingMode, onOutputComplete,
+//                result = BeginOutput(binder, channel, message,
+//                    timeoutHelper.RemainingTime(), maskingMode, onOutputComplete,
 //                    this);
 
 //                if (result.CompletedSynchronously)
 //                {
-//                    return this.CompleteOutput(result);
+//                    return CompleteOutput(result);
 //                }
 //                else
 //                {
@@ -3387,9 +3376,8 @@ namespace System.ServiceModel.Channels
 
 //                    try
 //                    {
-//                        complete = this.CompleteOutput(result);
+//                        complete = CompleteOutput(result);
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
@@ -3397,9 +3385,9 @@ namespace System.ServiceModel.Channels
 //                            throw;
 //                        }
 
-//                        this.Cleanup();
+//                        Cleanup();
 //                        complete = true;
-//                        if (!this.binder.HandleException(e, this.maskingMode, this.autoAborted))
+//                        if (!binder.HandleException(e, maskingMode, autoAborted))
 //                        {
 //                            completeException = e;
 //                        }
@@ -3407,7 +3395,7 @@ namespace System.ServiceModel.Channels
 
 //                    if (complete)
 //                    {
-//                        this.Complete(false, completeException);
+//                        Complete(false, completeException);
 //                    }
 //                }
 //            }
@@ -3429,9 +3417,8 @@ namespace System.ServiceModel.Channels
 
 //                    try
 //                    {
-//                        complete = this.CompleteTryGetChannel(result);
+//                        complete = CompleteTryGetChannel(result);
 //                    }
-//#pragma warning suppress 56500 // covered by FxCOP
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
@@ -3439,9 +3426,9 @@ namespace System.ServiceModel.Channels
 //                            throw;
 //                        }
 
-//                        this.Cleanup();
+//                        Cleanup();
 //                        complete = true;
-//                        if (!this.binder.HandleException(e, this.maskingMode, this.autoAborted))
+//                        if (!binder.HandleException(e, maskingMode, autoAborted))
 //                        {
 //                            completeException = e;
 //                        }
@@ -3449,7 +3436,7 @@ namespace System.ServiceModel.Channels
 
 //                    if (complete)
 //                    {
-//                        this.Complete(false, completeException);
+//                        Complete(false, completeException);
 //                    }
 //                }
 //            }
@@ -3464,27 +3451,27 @@ namespace System.ServiceModel.Channels
 
 //            public void Start(Message message, TimeSpan timeout, MaskingMode maskingMode)
 //            {
-//                if (!this.binder.ValidateOutputOperation(message, timeout, maskingMode))
+//                if (!binder.ValidateOutputOperation(message, timeout, maskingMode))
 //                {
-//                    this.Complete(true);
+//                    Complete(true);
 //                    return;
 //                }
 
-//                this.message = message;
-//                this.timeout = timeout;
-//                this.timeoutHelper = new TimeoutHelper(timeout);
-//                this.maskingMode = maskingMode;
+//                message = message;
+//                timeout = timeout;
+//                timeoutHelper = new TimeoutHelper(timeout);
+//                maskingMode = maskingMode;
 
 //                bool complete = false;
 
 //                try
 //                {
-//                    IAsyncResult result = this.binder.synchronizer.BeginTryGetChannelForOutput(
-//                        timeoutHelper.RemainingTime(), this.maskingMode, onTryGetChannelComplete, this);
+//                    IAsyncResult result = binder.synchronizer.BeginTryGetChannelForOutput(
+//                        timeoutHelper.RemainingTime(), maskingMode, onTryGetChannelComplete, this);
 
 //                    if (result.CompletedSynchronously)
 //                    {
-//                        complete = this.CompleteTryGetChannel(result);
+//                        complete = CompleteTryGetChannel(result);
 //                    }
 //                }
 //                catch (Exception e)
@@ -3494,8 +3481,8 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    this.Cleanup();
-//                    if (this.binder.HandleException(e, this.maskingMode, this.autoAborted))
+//                    Cleanup();
+//                    if (binder.HandleException(e, maskingMode, autoAborted))
 //                    {
 //                        complete = true;
 //                    }
@@ -3507,7 +3494,7 @@ namespace System.ServiceModel.Channels
 
 //                if (complete)
 //                {
-//                    this.Complete(true);
+//                    Complete(true);
 //                }
 //            }
 //        }
@@ -3530,12 +3517,12 @@ namespace System.ServiceModel.Channels
 //                    throw Fx.AssertAndThrow("Argument innerContext cannot be null.");
 //                }
 
-//                this.innerContext = innerContext;
+//                innerContext = innerContext;
 //            }
 
 //            protected override void OnAbort()
 //            {
-//                this.innerContext.Abort();
+//                innerContext.Abort();
 //            }
 
 //            protected override IAsyncResult OnBeginReply(Message message, TimeSpan timeout,
@@ -3544,8 +3531,8 @@ namespace System.ServiceModel.Channels
 //                try
 //                {
 //                    if (message != null)
-//                        this.Binder.AddOutputHeaders(message);
-//                    return this.innerContext.BeginReply(message, timeout, callback, state);
+//                        Binder.AddOutputHeaders(message);
+//                    return innerContext.BeginReply(message, timeout, callback, state);
 //                }
 //                catch (ObjectDisposedException) { }
 //                catch (Exception e)
@@ -3555,12 +3542,12 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    if (!this.Binder.HandleException(e, this.MaskingMode))
+//                    if (!Binder.HandleException(e, MaskingMode))
 //                    {
 //                        throw;
 //                    }
 
-//                    this.innerContext.Abort();
+//                    innerContext.Abort();
 //                }
 
 //                return new BinderCompletedAsyncResult(callback, state);
@@ -3570,7 +3557,7 @@ namespace System.ServiceModel.Channels
 //            {
 //                try
 //                {
-//                    this.innerContext.Close(timeout);
+//                    innerContext.Close(timeout);
 //                }
 //                catch (ObjectDisposedException) { }
 //                catch (Exception e)
@@ -3580,12 +3567,12 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    if (!this.Binder.HandleException(e, this.MaskingMode))
+//                    if (!Binder.HandleException(e, MaskingMode))
 //                    {
 //                        throw;
 //                    }
 
-//                    this.innerContext.Abort();
+//                    innerContext.Abort();
 //                }
 //            }
 
@@ -3600,7 +3587,7 @@ namespace System.ServiceModel.Channels
 
 //                try
 //                {
-//                    this.innerContext.EndReply(result);
+//                    innerContext.EndReply(result);
 //                }
 //                catch (ObjectDisposedException) { }
 //                catch (Exception e)
@@ -3610,12 +3597,12 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    if (!this.Binder.HandleException(e, this.MaskingMode))
+//                    if (!Binder.HandleException(e, MaskingMode))
 //                    {
 //                        throw;
 //                    }
 
-//                    this.innerContext.Abort();
+//                    innerContext.Abort();
 //                }
 //            }
 
@@ -3624,8 +3611,8 @@ namespace System.ServiceModel.Channels
 //                try
 //                {
 //                    if (message != null)
-//                        this.Binder.AddOutputHeaders(message);
-//                    this.innerContext.Reply(message, timeout);
+//                        Binder.AddOutputHeaders(message);
+//                    innerContext.Reply(message, timeout);
 //                }
 //                catch (ObjectDisposedException) { }
 //                catch (Exception e)
@@ -3635,12 +3622,12 @@ namespace System.ServiceModel.Channels
 //                        throw;
 //                    }
 
-//                    if (!this.Binder.HandleException(e, this.MaskingMode))
+//                    if (!Binder.HandleException(e, MaskingMode))
 //                    {
 //                        throw;
 //                    }
 
-//                    this.innerContext.Abort();
+//                    innerContext.Abort();
 //                }
 //            }
 //        }
@@ -3686,8 +3673,8 @@ namespace System.ServiceModel.Channels
 //                MaskingMode maskingMode, AsyncCallback callback, object state)
 //                : base(binder, binder.CanGetChannelForReceive, timeout, maskingMode, callback, state)
 //            {
-//                if (this.Start())
-//                    this.Complete(true);
+//                if (Start())
+//                    Complete(true);
 //            }
 
 //            protected override IAsyncResult BeginInput(ReliableChannelBinder<TChannel> binder,
@@ -3698,17 +3685,17 @@ namespace System.ServiceModel.Channels
 
 //            public bool End(out RequestContext requestContext)
 //            {
-//                requestContext = this.requestContext;
-//                return this.End();
+//                requestContext = requestContext;
+//                return End();
 //            }
 
 //            protected override bool EndInput(ReliableChannelBinder<TChannel> binder,
 //                TChannel channel, IAsyncResult result, out bool complete)
 //            {
-//                bool success = binder.OnEndTryReceive(channel, result, out this.requestContext);
+//                bool success = binder.OnEndTryReceive(channel, result, out requestContext);
 
 //                // timed out || got message, complete immediately
-//                complete = !success || (this.requestContext != null);
+//                complete = !success || (requestContext != null);
 
 //                if (!complete)
 //                {
@@ -3913,16 +3900,16 @@ namespace System.ServiceModel.Channels
 //                TimeSpan timeout, AsyncCallback callback, object state)
 //                : base(callback, state)
 //            {
-//                this.binder = binder;
-//                this.channel = channel;
-//                this.timeoutHelper = new TimeoutHelper(timeout);
+//                binder = binder;
+//                channel = channel;
+//                timeoutHelper = new TimeoutHelper(timeout);
 //            }
 
 //            protected TChannel Channel
 //            {
 //                get
 //                {
-//                    return this.channel;
+//                    return channel;
 //                }
 //            }
 
@@ -3930,19 +3917,19 @@ namespace System.ServiceModel.Channels
 //            {
 //                get
 //                {
-//                    return this.timeoutHelper.RemainingTime();
+//                    return timeoutHelper.RemainingTime();
 //                }
 //            }
 
 //            protected bool Begin()
 //            {
 //                bool complete = false;
-//                IAsyncResult result = this.binder.BeginWaitForPendingOperations(
-//                    this.RemainingTime, onWaitForPendingOperationsCompleteStatic,
+//                IAsyncResult result = binder.BeginWaitForPendingOperations(
+//                    RemainingTime, onWaitForPendingOperationsCompleteStatic,
 //                    this);
 
 //                if (result.CompletedSynchronously)
-//                    complete = this.HandleWaitForPendingOperationsComplete(result);
+//                    complete = HandleWaitForPendingOperationsComplete(result);
 
 //                return complete;
 //            }
@@ -3956,7 +3943,7 @@ namespace System.ServiceModel.Channels
 
 //            void HandleChannelCloseComplete(IAsyncResult result)
 //            {
-//                this.channel.EndClose(result);
+//                channel.EndClose(result);
 //            }
 
 //            bool HandleInputComplete(IAsyncResult result, out bool gotEof)
@@ -3970,14 +3957,14 @@ namespace System.ServiceModel.Channels
 //                {
 //                    bool success = false;
 
-//                    success = this.EndTryInput(result, out item);
+//                    success = EndTryInput(result, out item);
 //                    endThrowing = false;
 
 //                    if (!success || item != null)
 //                    {
-//                        if (this.lastReceive || this.channel.State != CommunicationState.Opened)
+//                        if (lastReceive || channel.State != CommunicationState.Opened)
 //                        {
-//                            this.channel.Abort();
+//                            channel.Abort();
 //                            return true;
 //                        }
 //                        else
@@ -3988,11 +3975,11 @@ namespace System.ServiceModel.Channels
 
 //                    gotEof = true;
 
-//                    result = this.channel.BeginClose(this.RemainingTime,
+//                    result = channel.BeginClose(RemainingTime,
 //                        onChannelCloseCompleteStatic, this);
 //                    if (result.CompletedSynchronously)
 //                    {
-//                        this.HandleChannelCloseComplete(result);
+//                        HandleChannelCloseComplete(result);
 //                        return true;
 //                    }
 //                    else
@@ -4010,9 +3997,9 @@ namespace System.ServiceModel.Channels
 //                        if (!MaskHandled(binder.DefaultMaskingMode) || !binder.IsHandleable(e))
 //                            throw;
 
-//                        if (this.lastReceive || this.channel.State != CommunicationState.Opened)
+//                        if (lastReceive || channel.State != CommunicationState.Opened)
 //                        {
-//                            this.channel.Abort();
+//                            channel.Abort();
 //                            return true;
 //                        }
 //                        else
@@ -4026,17 +4013,17 @@ namespace System.ServiceModel.Channels
 //                finally
 //                {
 //                    if (item != null)
-//                        this.DisposeItem(item);
+//                        DisposeItem(item);
 
 //                    if (endThrowing)
-//                        this.channel.Abort();
+//                        channel.Abort();
 //                }
 //            }
 
 //            bool HandleWaitForPendingOperationsComplete(IAsyncResult result)
 //            {
-//                this.binder.EndWaitForPendingOperations(result);
-//                return this.WaitForEof();
+//                binder.EndWaitForPendingOperations(result);
+//                return WaitForEof();
 //            }
 
 //            static void OnChannelCloseCompleteStatic(IAsyncResult result)
@@ -4124,8 +4111,8 @@ namespace System.ServiceModel.Channels
 
 //            bool WaitForEof()
 //            {
-//                TimeSpan iterationTimeout = this.RemainingTime;
-//                this.lastReceive = (iterationTimeout == TimeSpan.Zero);
+//                TimeSpan iterationTimeout = RemainingTime;
+//                lastReceive = (iterationTimeout == TimeSpan.Zero);
 
 //                while (true)
 //                {
@@ -4133,14 +4120,14 @@ namespace System.ServiceModel.Channels
 
 //                    try
 //                    {
-//                        result = this.BeginTryInput(iterationTimeout, onInputCompleteStatic, this);
+//                        result = BeginTryInput(iterationTimeout, onInputCompleteStatic, this);
 //                    }
 //                    catch (Exception e)
 //                    {
 //                        if (Fx.IsFatal(e))
 //                            throw;
 
-//                        if (!MaskHandled(this.binder.DefaultMaskingMode) || !this.binder.IsHandleable(e))
+//                        if (!MaskHandled(binder.DefaultMaskingMode) || !binder.IsHandleable(e))
 //                            throw;
 //                    }
 
@@ -4149,7 +4136,7 @@ namespace System.ServiceModel.Channels
 //                        if (result.CompletedSynchronously)
 //                        {
 //                            bool gotEof;
-//                            bool complete = this.HandleInputComplete(result, out gotEof);
+//                            bool complete = HandleInputComplete(result, out gotEof);
 
 //                            if (complete || gotEof)
 //                                return complete;
@@ -4158,14 +4145,14 @@ namespace System.ServiceModel.Channels
 //                            return false;
 //                    }
 
-//                    if (this.lastReceive || this.channel.State != CommunicationState.Opened)
+//                    if (lastReceive || channel.State != CommunicationState.Opened)
 //                    {
-//                        this.channel.Abort();
+//                        channel.Abort();
 //                        break;
 //                    }
 
-//                    iterationTimeout = this.RemainingTime;
-//                    this.lastReceive = (iterationTimeout == TimeSpan.Zero);
+//                    iterationTimeout = RemainingTime;
+//                    lastReceive = (iterationTimeout == TimeSpan.Zero);
 //                }
 
 //                return true;
@@ -4186,19 +4173,19 @@ namespace System.ServiceModel.Channels
 //            {
 //                bool complete = false;
 
-//                IAsyncResult result = this.Channel.Session.BeginCloseOutputSession(
-//                    this.RemainingTime, onCloseOutputSessionCompleteStatic, this);
+//                IAsyncResult result = Channel.Session.BeginCloseOutputSession(
+//                    RemainingTime, onCloseOutputSessionCompleteStatic, this);
 
 //                if (result.CompletedSynchronously)
-//                    complete = this.HandleCloseOutputSessionComplete(result);
+//                    complete = HandleCloseOutputSessionComplete(result);
 
 //                if (complete)
-//                    this.Complete(true);
+//                    Complete(true);
 //            }
 
 //            protected override IAsyncResult BeginTryInput(TimeSpan timeout, AsyncCallback callback, object state)
 //            {
-//                return this.Channel.BeginTryReceive(timeout, callback, state);
+//                return Channel.BeginTryReceive(timeout, callback, state);
 //            }
 
 //            protected override void DisposeItem(Message item)
@@ -4213,13 +4200,13 @@ namespace System.ServiceModel.Channels
 
 //            protected override bool EndTryInput(IAsyncResult result, out Message item)
 //            {
-//                return this.Channel.EndTryReceive(result, out item);
+//                return Channel.EndTryReceive(result, out item);
 //            }
 
 //            bool HandleCloseOutputSessionComplete(IAsyncResult result)
 //            {
-//                this.Channel.Session.EndCloseOutputSession(result);
-//                return this.Begin();
+//                Channel.Session.EndCloseOutputSession(result);
+//                return Begin();
 //            }
 
 //            static void OnCloseOutputSessionCompleteStatic(IAsyncResult result)
@@ -4258,13 +4245,13 @@ namespace System.ServiceModel.Channels
 //                TimeSpan timeout, AsyncCallback callback, object state)
 //                : base(binder, channel, timeout, callback, state)
 //            {
-//                if (this.Begin())
-//                    this.Complete(true);
+//                if (Begin())
+//                    Complete(true);
 //            }
 
 //            protected override IAsyncResult BeginTryInput(TimeSpan timeout, AsyncCallback callback, object state)
 //            {
-//                return this.Channel.BeginTryReceiveRequest(timeout, callback, state);
+//                return Channel.BeginTryReceiveRequest(timeout, callback, state);
 //            }
 
 //            protected override void DisposeItem(RequestContext item)
@@ -4280,7 +4267,7 @@ namespace System.ServiceModel.Channels
 
 //            protected override bool EndTryInput(IAsyncResult result, out RequestContext item)
 //            {
-//                return this.Channel.EndTryReceiveRequest(result, out item);
+//                return Channel.EndTryReceiveRequest(result, out item);
 //            }
 //        }
 //    }

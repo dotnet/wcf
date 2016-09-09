@@ -22,7 +22,7 @@ namespace System.IdentityModel.Tokens
         public virtual T CreateKeyIdentifierClause<T>() where T : SecurityKeyIdentifierClause
         {
             if ((typeof(T) == typeof(LocalIdKeyIdentifierClause)) && CanCreateLocalKeyIdentifierClause())
-                return new LocalIdKeyIdentifierClause(this.Id, this.GetType()) as T;
+                return new LocalIdKeyIdentifierClause(Id, GetType()) as T;
 
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(
                 SR.Format(SR.TokenDoesNotSupportKeyIdentifierClauseCreation, GetType().Name, typeof(T).Name)));
@@ -32,22 +32,22 @@ namespace System.IdentityModel.Tokens
         {
             LocalIdKeyIdentifierClause localKeyIdentifierClause = keyIdentifierClause as LocalIdKeyIdentifierClause;
             if (localKeyIdentifierClause != null)
-                return localKeyIdentifierClause.Matches(this.Id, this.GetType());
+                return localKeyIdentifierClause.Matches(Id, GetType());
 
             return false;
         }
 
         public virtual SecurityKey ResolveKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            if (this.SecurityKeys.Count != 0 && MatchesKeyIdentifierClause(keyIdentifierClause))
-                return this.SecurityKeys[0];
+            if (SecurityKeys.Count != 0 && MatchesKeyIdentifierClause(keyIdentifierClause))
+                return SecurityKeys[0];
 
             return null;
         }
 
         bool CanCreateLocalKeyIdentifierClause()
         {
-            return (this.Id != null);
+            return (Id != null);
         }
     }
 }
