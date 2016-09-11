@@ -268,6 +268,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string WsHttpTransSecUserName_Address
+    {
+        get
+        {
+            return GetEndpointAddress("WsHttpTranSecUserName.svc//wshttp-transec-username", protocol: "https");
+        }
+    }
+
     #region Secure WebSocket Addresses
     public static string WebSocketHttpsDuplexBinaryStreamed_Address
     {

@@ -354,9 +354,9 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
                 StoreName.My,
                 X509FindType.FindByThumbprint,
                 clientCertThumb);
-                
+
             serviceProxy = factory.CreateChannel();
-            
+
             // *** EXECUTE *** \\
             // Ping on another thread.
             Task.Run(() => serviceProxy.Ping(guid));

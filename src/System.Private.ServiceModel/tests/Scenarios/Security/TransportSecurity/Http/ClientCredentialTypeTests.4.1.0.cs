@@ -12,7 +12,7 @@ using Infrastructure.Common;
 
 using Xunit;
 
-public static class Http_ClientCredentialTypeTests
+public static partial class Http_ClientCredentialTypeTests
 {
 #if FULLXUNIT_NOTSUPPORTED
     [Fact]
@@ -79,3 +79,4 @@ public static class Http_ClientCredentialTypeTests
         }
     }
 }
+

@@ -5,6 +5,7 @@
 
 using System.IdentityModel.Tokens;
 using System.Runtime;
+using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +23,16 @@ namespace System.IdentityModel.Selectors
         public virtual bool SupportsTokenCancellation
         {
             get { return false; }
+        }
+
+        public SecurityToken GetToken(TimeSpan timeout)
+        {
+            SecurityToken token = this.GetTokenCore(timeout);
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
+            }
+            return token;
         }
 
         public async Task<SecurityToken> GetTokenAsync(CancellationToken cancellationToken)
@@ -58,6 +69,8 @@ namespace System.IdentityModel.Selectors
         }
 
         // protected methods
+        protected abstract SecurityToken GetTokenCore(TimeSpan timeout);
+
         protected abstract Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken);
 
         protected virtual Task<SecurityToken> RenewTokenCoreAsync(CancellationToken cancellationToken, SecurityToken tokenToBeRenewed)
