@@ -4,6 +4,7 @@
 
 
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IdentityModel;
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
@@ -939,24 +940,27 @@ namespace System.ServiceModel.Security
 
     class TokenElement : ISecurityElement
     {
-        SecurityStandardsManager standardsManager;
-        SecurityToken token;
+        SecurityStandardsManager _standardsManager;
+        SecurityToken _token;
 
         public TokenElement(SecurityToken token, SecurityStandardsManager standardsManager)
         {
-            this.token = token;
-            this.standardsManager = standardsManager;
+            Contract.Assert(token != null);
+            Contract.Assert(standardsManager != null);
+
+            _token = token;
+            _standardsManager = standardsManager;
         }
 
         public override bool Equals(object item)
         {
             TokenElement element = item as TokenElement;
-            return (element != null && this.token == element.token && this.standardsManager == element.standardsManager);
+            return (element != null && this._token == element._token && this._standardsManager == element._standardsManager);
         }
 
         public override int GetHashCode()
         {
-            return token.GetHashCode() ^ standardsManager.GetHashCode();
+            return _token.GetHashCode() ^ _standardsManager.GetHashCode();
         }
 
         public bool HasId
@@ -966,17 +970,17 @@ namespace System.ServiceModel.Security
 
         public string Id
         {
-            get { return token.Id; }
+            get { return _token.Id; }
         }
 
         public SecurityToken Token
         {
-            get { return token; }
+            get { return _token; }
         }
 
         public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
         {
-            standardsManager.SecurityTokenSerializer.WriteToken(writer, token);
+            _standardsManager.SecurityTokenSerializer.WriteToken(writer, _token);
         }
     }
 }

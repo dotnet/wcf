@@ -11,7 +11,7 @@ using System.Runtime;
 using System.ServiceModel;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
-//using StrEntry = WSSecurityTokenSerializer.StrEntry;
+
 using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
 
 

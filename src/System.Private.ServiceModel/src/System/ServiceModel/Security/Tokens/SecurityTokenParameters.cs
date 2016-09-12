@@ -80,8 +80,8 @@ namespace System.ServiceModel.Security.Tokens
         internal protected abstract void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement);
 
         internal SecurityKeyIdentifierClause CreateKeyIdentifierClause<TExternalClause, TInternalClause>(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-    where TExternalClause : SecurityKeyIdentifierClause
-    where TInternalClause : SecurityKeyIdentifierClause
+                    where TExternalClause : SecurityKeyIdentifierClause
+                    where TInternalClause : SecurityKeyIdentifierClause
         {
             if (token == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
