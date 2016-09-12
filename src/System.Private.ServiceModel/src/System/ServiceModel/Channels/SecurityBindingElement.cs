@@ -26,8 +26,8 @@ namespace System.ServiceModel.Channels
         private SupportingTokenParameters _endpointSupportingTokenParameters;
         private SupportingTokenParameters _optionalEndpointSupportingTokenParameters;
         private bool _includeTimestamp;
-        Dictionary<string, SupportingTokenParameters> _operationSupportingTokenParameters;
-        Dictionary<string, SupportingTokenParameters> _optionalOperationSupportingTokenParameters;
+        private Dictionary<string, SupportingTokenParameters> _operationSupportingTokenParameters;
+        private Dictionary<string, SupportingTokenParameters> _optionalOperationSupportingTokenParameters;
         private LocalClientSecuritySettings _localClientSettings;
 
         private MessageSecurityVersion _messageSecurityVersion;

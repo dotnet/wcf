@@ -132,7 +132,28 @@ namespace System.ServiceModel.Security
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+
+            //XmlDictionaryReader securityHeaderReader = GetReaderAtSecurityHeader();
+            //securityHeaderReader.ReadStartElement();
+            //for (int i = 0; i < this.ElementManager.Count; ++i)
+            //{
+            //    ReceiveSecurityHeaderEntry entry;
+            //    this.ElementManager.GetElementEntry(i, out entry);
+            //    XmlDictionaryReader reader = null;
+            //    if (entry.encrypted)
+            //    {
+            //        reader = this.ElementManager.GetReader(i, false);
+            //        writer.WriteNode(reader, false);
+            //        reader.Close();
+            //        securityHeaderReader.Skip();
+            //    }
+            //    else
+            //    {
+            //        writer.WriteNode(securityHeaderReader, false);
+            //    }
+            //}
+            //securityHeaderReader.Close();
         }
 
         public bool ExpectBasicTokens

@@ -3,12 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Diagnostics;
-using System.ServiceModel.Channels;
-using System.ServiceModel;
 using System.Globalization;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Xml;
-using System.IO;
-
 using ISecurityElement = System.IdentityModel.ISecurityElement;
 
 namespace System.ServiceModel.Security

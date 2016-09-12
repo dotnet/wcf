@@ -122,18 +122,20 @@ namespace System.ServiceModel.Channels
 
         void CloseProtocolFactory(bool aborted, TimeSpan timeout)
         {
-            if (_securityProtocolFactory != null && !SessionMode)
+            SecurityProtocolFactory factory = _securityProtocolFactory;
+            if (factory != null && !SessionMode)
             {
-                _securityProtocolFactory.Close(aborted, timeout);
+                factory.Close(aborted, timeout);
                 _securityProtocolFactory = null;
             }
         }
 
         async Task CloseProtocolFactoryAsync(TimeSpan timeout)
         {
-            if (_securityProtocolFactory != null && !SessionMode)
+            SecurityProtocolFactory factory = _securityProtocolFactory;
+            if (factory != null && !SessionMode)
             {
-                await _securityProtocolFactory.CloseAsync(timeout);
+                await factory.CloseAsync(timeout);
                 _securityProtocolFactory = null;
             }
         }
@@ -212,7 +214,7 @@ namespace System.ServiceModel.Channels
         private async Task OnCloseAsyncInternal(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await base.OnCloseAsync(timeout);
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
             await CloseProtocolFactoryAsync(timeoutHelper.RemainingTime());
             if (_sessionClientSettings != null)
             {

@@ -75,7 +75,7 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             await base.OnCloseAsync(timeoutHelper.RemainingTime());
-            await ((IAsyncCommunicationObject)_innerChannelFactory).CloseAsync(timeout);
+            await ((IAsyncCommunicationObject)_innerChannelFactory).CloseAsync(timeoutHelper.RemainingTime());
         }
 
         protected override void OnOpen(TimeSpan timeout)

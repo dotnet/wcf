@@ -835,12 +835,12 @@ namespace System.ServiceModel.Channels
 
             internal ExceptionQueue(object thisLock)
             {
-                this._thisLock = thisLock;
+                _thisLock = thisLock;
             }
 
             object ThisLock
             {
-                get { return this._thisLock; }
+                get { return _thisLock; }
             }
 
             public void AddException(Exception exception)
@@ -850,19 +850,19 @@ namespace System.ServiceModel.Channels
                     return;
                 }
 
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this._exceptions.Enqueue(exception);
+                    _exceptions.Enqueue(exception);
                 }
             }
 
             public Exception GetException()
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    if (this._exceptions.Count > 0)
+                    if (_exceptions.Count > 0)
                     {
-                        return this._exceptions.Dequeue();
+                        return _exceptions.Dequeue();
                     }
                 }
 

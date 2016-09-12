@@ -18,13 +18,14 @@ namespace System.ServiceModel.Security
         }
 
         public static void WriteMessageAuthenticationSuccessEvent(AuditLogLocation auditLogLocation, bool suppressAuditFailure, Message message,
-    Uri serviceUri, string action, string clientIdentity)
+                                                                  Uri serviceUri, string action, string clientIdentity)
         {
         }
 
         public static void WriteMessageAuthenticationFailureEvent(AuditLogLocation auditLogLocation, bool suppressAuditFailure, Message message,
-     Uri serviceUri, string action, string clientIdentity, Exception exception)
+                                                                  Uri serviceUri, string action, string clientIdentity, Exception exception)
         {
         }
     }
 }
+

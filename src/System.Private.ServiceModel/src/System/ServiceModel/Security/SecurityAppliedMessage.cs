@@ -12,7 +12,6 @@ using System.IdentityModel.Tokens;
 using System.Collections.Generic;
 using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
 using ISecurityElement = System.IdentityModel.ISecurityElement;
-// using XmlAttributeHolder = System.IdentityModel.XmlAttributeHolder;
 
 namespace System.ServiceModel.Security
 {
