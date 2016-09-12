@@ -205,8 +205,6 @@ namespace System.ServiceModel.Security
 
         protected virtual void VerifyIncomingMessageCore(ref Message message, TimeSpan timeout)
         {
-            // $$$ throw ExceptionHelper.PlatformNotSupported();   // #31 in progress
-
             TransportSecurityProtocolFactory factory = (TransportSecurityProtocolFactory)this.SecurityProtocolFactory;
             string actor = string.Empty; // message.Version.Envelope.UltimateDestinationActor;
 
