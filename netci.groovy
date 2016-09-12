@@ -10,7 +10,7 @@ def branch = GithubBranchName
 
 // Globals
 
-// Map of os -> osGroup.
+// Map of osName -> osGroup.
 def osGroupMap = ['Ubuntu':'Linux',
                   'Ubuntu14.04':'Linux',
                   'Ubuntu16.04':'Linux',
@@ -21,7 +21,7 @@ def osGroupMap = ['Ubuntu':'Linux',
                   'OpenSUSE13.2': 'Linux',
                   'RHEL7.2': 'Linux']
 
-// Map of os -> nuget runtime
+// Map of osName -> nuget runtime
 def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
                              'Ubuntu' : 'ubuntu.14.04-x64',
                              'Ubuntu14.04' : 'ubuntu.14.04-x64',
@@ -109,7 +109,7 @@ wcfUtilities = new WcfUtilities()
     
     newJob.with {
         steps {
-            batchFile("build.cmd /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup} /p:Coverage=true /p:WithCategories=\"InnerLoop;OuterLoop\" /p:ServiceUri=%WcfServiceUri%")
+            batchFile("build.cmd -coverage -outerloop -${configurationGroup} -- /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:WithCategories=\"InnerLoop;OuterLoop\" /p:ServiceUri=%WcfServiceUri%")
         }
     }
 
@@ -152,7 +152,7 @@ wcfUtilities = new WcfUtilities()
         
         newJob.with {
             steps {
-                batchFile("build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop")
+                batchFile("build.cmd -${configurationGroup} -outerloop -- /p:OSGroup=${osGroupMap[os]}")
             }
         }
 
@@ -193,14 +193,14 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
                     steps {
-                        batchFile("build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop /p:ServiceUri=%WcfServiceUri% /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
+                        batchFile("build.cmd -${configurationGroup} -outerloop -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=%WcfServiceUri% /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
                     }
                 }
             } 
             else {
                 newJob.with {
                     steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]} /p:WithCategories=OuterLoop /p:TestWithLocalLibraries=true /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
                     }
                 }
             }
@@ -266,7 +266,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             {
                 newJob.with {
                     steps {
-                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd /p:ConfigurationGroup=${configurationGroup} /p:OSGroup=${osGroupMap[os]}")
+                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd -${configurationGroup} -- /p:OSGroup=${osGroupMap[os]}")
                         batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
                     }
                 }
@@ -274,7 +274,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             else {
                 newJob.with {
                     steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh /p:ShouldCreatePackage=false /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ConfigurationGroup=${configurationGroup}")
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -- /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]}")
                     }
                 }
             }

@@ -35,7 +35,7 @@
     "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
     "System.Runtime.Serialization.Xml": "4.1.0",
     "System.Security.Claims": "4.0.0",
-    "System.Security.Cryptography.X509Certificates": "4.1.1-beta-24322-03",
+    "System.Security.Cryptography.X509Certificates": "4.3.0-beta-24431-01",
     "System.Security.Principal": "4.0.0",
     "System.Text.Encoding": "4.0.10",
     "System.Text.Encoding.Extensions": "4.0.10",
@@ -59,7 +59,7 @@
     "netcore50": {
       "dependencies": {
         "System.Runtime.WindowsRuntime": "4.0.10",
-        "Microsoft.TargetingPack.Private.NETNative": "1.0.1-beta-24322-00",
+        "Microsoft.TargetingPack.Private.NETNative": "1.1.0-beta-24431-00",
         "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
         "Microsoft.TargetingPack.Private.WinRT": "1.0.1"
       }

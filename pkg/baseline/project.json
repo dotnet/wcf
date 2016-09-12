@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "Microsoft.Private.PackageBaseline": "1.0.1-beta-24322-03"
+    "Microsoft.Private.PackageBaseline": "4.3.0-beta-24431-01"
   },
   "frameworks": {
     "netstandard1.0": {}
