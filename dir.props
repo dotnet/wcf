@@ -72,9 +72,9 @@
   <PropertyGroup>
     <ValidatePackageVersions>true</ValidatePackageVersions>
     <ProhibitFloatingDependencies>true</ProhibitFloatingDependencies>
-    <CoreFxExpectedPrerelease>beta-24431-01</CoreFxExpectedPrerelease>
-    <CoreClrExpectedPrerelease>beta-24431-02</CoreClrExpectedPrerelease>
-    <ExternalExpectedPrerelease>beta-24431-00</ExternalExpectedPrerelease>
+    <CoreFxExpectedPrerelease>beta-24512-01</CoreFxExpectedPrerelease>
+    <CoreClrExpectedPrerelease>beta-24512-03</CoreClrExpectedPrerelease>
+    <ExternalExpectedPrerelease>beta-24509-00</ExternalExpectedPrerelease>
     <WCFExpectedPrerelease>beta-24431-01</WCFExpectedPrerelease>
     <CoreFxVersionsIdentityRegex>^(?i)((System\.(?!ServiceModel|Private\.ServiceModel).*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic)|(Microsoft\.Private\.PackageBaseline))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
     <WCFVersionsIdentityRegex>^(?i)((System\.ServiceModel.*)|(System\.Private\.ServiceModel))(?&lt;!TestData)$</WCFVersionsIdentityRegex>
@@ -113,7 +113,7 @@
     </ValidationPattern>
     <ValidationPattern Include="buildToolsTestSuiteVersions">
       <IdentityRegex>^(?i)Microsoft\.DotNet\.BuildTools\.TestSuite$</IdentityRegex>
-      <ExpectedVersion>1.0.0-prerelease-00731-01</ExpectedVersion>
+      <ExpectedVersion>1.0.0-prerelease-00807-03</ExpectedVersion>
     </ValidationPattern>
     <ValidationPattern Include="uwpRunnerVersion">
       <IdentityRegex>^(?i)microsoft\.xunit\.runner\.uwp$</IdentityRegex>
