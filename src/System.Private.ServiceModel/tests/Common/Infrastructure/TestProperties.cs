@@ -61,6 +61,11 @@ namespace Infrastructure.Common
                 result = s_properties.Value[propertyName];
             }
 
+            if (result != null)
+            {
+                result = result.Trim();
+            }
+
             return result;
         }
     }
