@@ -1,5 +1,6 @@
- // Copyright (c) Microsoft. All rights reserved.
- // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
  
 <%@ WebHandler Language="C#" Class="PullRequestHandler" %>
 
@@ -279,10 +280,8 @@ public class PullRequestHandler : IHttpHandler
 
         string[] gitCommands = new string[]
         {
-            "checkout -f master",
-            "clean -fdx",
             "fetch --all --prune",
-            "merge --ff-only origin/master"
+            "checkout -f origin/master"
         };
 
         success = RunGitCommands(gitCommands, gitRepoPath, executionResult);
@@ -300,13 +299,14 @@ public class PullRequestHandler : IHttpHandler
             // we won't get branchesList == null because of the success check
             for (int i = 0; i < branchesList.Length; i++)
             {
-                // Don't try to delete "master" branch or detached since we're checked out to it
-                if (!branchesList[i].Equals("master"))
-                {
-                    commands.Add(string.Format("branch -D {0}", branchesList[i]));
-                }
+                // delete all branches - GetBranches will prevent deletion of the detached head at origin/master
+                commands.Add(string.Format("branch -D {0}", branchesList[i]));
             }
 
+            // Execute a checkout to put the branch back to a usable state at the master branch
+            // We do this to prevent successive origin/master checkouts from checking out to the same commit
+
+            commands.Add("checkout -b master --track origin/master");
             success = RunGitCommands(commands.ToArray(), gitRepoPath, executionResult);
         }
 
@@ -331,7 +331,7 @@ public class PullRequestHandler : IHttpHandler
         };
 
         bool success = true;
-        
+
         foreach (string gitCommand in gitCommands)
         {
             success = false;
@@ -430,3 +430,4 @@ public class PullRequestHandler : IHttpHandler
         }
     }
 }
+
