@@ -72,7 +72,6 @@ namespace System.IdentityModel.Tokens
         //            if (token == null)
         //                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
 
-        //#pragma warning suppress 56506 // token.Assertion is never null.
         //            token.Assertion.WriteTo(writer, this, keyInfoSerializer);
         //        }
 

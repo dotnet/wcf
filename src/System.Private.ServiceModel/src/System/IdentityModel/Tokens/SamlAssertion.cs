@@ -453,7 +453,6 @@ namespace System.IdentityModel.Tokens
 
         //            XmlDictionaryReader dictionaryReader = XmlDictionaryReader.CreateDictionaryReader(reader);
         //            WrappedReader wrappedReader = new WrappedReader(dictionaryReader);
-        //#pragma warning suppress 56506 // samlSerializer.DictionaryManager is never null.
         //            SamlDictionary dictionary = samlSerializer.DictionaryManager.SamlDictionary;
 
         //            if (!wrappedReader.IsStartElement(dictionary.Assertion, dictionary.Namespace))
@@ -513,7 +512,6 @@ namespace System.IdentityModel.Tokens
 
         //            while (wrappedReader.IsStartElement())
         //            {
-        //#pragma warning suppress 56506 // samlSerializer.DictionaryManager is never null.
         //                if (wrappedReader.IsStartElement(samlSerializer.DictionaryManager.XmlSignatureDictionary.Signature, samlSerializer.DictionaryManager.XmlSignatureDictionary.Namespace))
         //                {
         //                    break;
@@ -584,7 +582,6 @@ namespace System.IdentityModel.Tokens
         //            if (samlSerializer == null)
         //                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("samlSerializer"));
 
-        //#pragma warning suppress 56506 // samlSerializer.DictionaryManager is never null.
         //            SamlDictionary dictionary = samlSerializer.DictionaryManager.SamlDictionary;
 
         //            try

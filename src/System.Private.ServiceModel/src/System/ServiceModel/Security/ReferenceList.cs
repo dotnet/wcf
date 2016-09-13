@@ -37,8 +37,6 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                // PreSharp Bug: Property get methods should not throw exceptions.
-                #pragma warning suppress 56503
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
             }
         }

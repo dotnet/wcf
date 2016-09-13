@@ -1453,7 +1453,6 @@ namespace System.ServiceModel.Security
 //                MemoryStream stream = new MemoryStream();
 //                using (XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(new XmlTextWriter(stream, Encoding.UTF8)))
 //                {
-//#pragma warning suppress 56506 // standardsManager.SecurityTokenSerializer can never be null.
 //                    standardsManager.SecurityTokenSerializer.WriteKeyIdentifier(writer, keyIdentifier);
 //                    writer.Flush();
 //                    stream.Seek(0, SeekOrigin.Begin);
@@ -1565,8 +1564,6 @@ namespace System.ServiceModel.Security
 //                    foreach (XmlNode node in element.ChildNodes)
 //                        if (node is XmlElement)
 //                        {
-//                            // PreSharp Bug: Parameter 'requiredClaims' to this public method must be validated: A null-dereference can occur here.
-//#pragma warning suppress 56506
 //                            requiredClaims.Add((XmlElement)node);
 //                        }
 //                    return true;
