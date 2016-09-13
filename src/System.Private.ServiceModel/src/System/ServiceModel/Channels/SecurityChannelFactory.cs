@@ -561,7 +561,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        class SecurityRequestChannel : ClientSecurityChannel<IRequestChannel>, IRequestChannel
+        class SecurityRequestChannel : ClientSecurityChannel<IRequestChannel>, IAsyncRequestChannel
         {
             public SecurityRequestChannel(ChannelManagerBase factory, SecurityProtocolFactory securityProtocolFactory, IRequestChannel innerChannel, EndpointAddress to, Uri via)
                 : base(factory, securityProtocolFactory, innerChannel, to, via)
@@ -654,6 +654,16 @@ namespace System.ServiceModel.Channels
                 SecurityProtocolCorrelationState correlationState = SecurityProtocol.SecureOutgoingMessage(ref message, timeoutHelper.RemainingTime(), null);
                 Message reply = InnerChannel.Request(message, timeoutHelper.RemainingTime());
                 return ProcessReply(reply, correlationState, timeoutHelper.RemainingTime());
+            }
+
+            public Task<Message> RequestAsync(Message message)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            }
+
+            public Task<Message> RequestAsync(Message message, TimeSpan timeout)
+            {
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
             }
         }
 

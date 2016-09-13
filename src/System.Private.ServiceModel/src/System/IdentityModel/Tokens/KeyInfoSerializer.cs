@@ -56,10 +56,11 @@ namespace System.IdentityModel.Tokens
 
             _serializerEntries = new List<SecurityTokenSerializer.SerializerEntries>();
 
-            // Issue #31 in progress
-            //serializerEntries.Add(new XmlDsigSep2000(this));
-            //serializerEntries.Add(new XmlEncApr2001(this));
-            //serializerEntries.Add(new WSTrust(this, trustDictionary));
+            _serializerEntries.Add(new XmlDsigSep2000(this));
+            _serializerEntries.Add(new XmlEncApr2001(this));
+
+            // Issue #31 in progress (WSTrust is abstract in ServiceModel)
+            //_serializerEntries.Add(new WSTrust(this, trustDictionary));
 
             if (additionalEntries != null)
             {
