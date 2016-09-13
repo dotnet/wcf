@@ -41,6 +41,11 @@ namespace Infrastructure.Common
 
                 // Highest precedence: environment variable if set and can be parsed
                 string value = Environment.GetEnvironmentVariable(conditionName);
+                if (value != null)
+                {
+                    value = value.Trim();
+                }
+
                 bool parsedValue = false;
                 if (!String.IsNullOrWhiteSpace(value) && bool.TryParse(value, out parsedValue))
                 {
@@ -51,7 +56,9 @@ namespace Infrastructure.Common
                 // Next precedence: TestProperties if present and can be parsed
                 else if (TestProperties.PropertyNames.Contains(conditionName))
                 {
+                    // GetProperty trims the string
                     value = TestProperties.GetProperty(conditionName);
+
                     if (!String.IsNullOrWhiteSpace(value) && bool.TryParse(value, out parsedValue))
                     {
                         result = parsedValue;

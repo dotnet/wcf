@@ -82,6 +82,7 @@ namespace Infrastructure.Common
             properties["Client_Certificate_Installed"] = "$(Client_Certificate_Installed)"%3B
             properties["Peer_Certificate_Installed"] = "$(Peer_Certificate_Installed)"%3B
             properties["SPN_Available"] = "$(SPN_Available)"%3B
+            properties["UPN_Available"] = "$(UPN_Available)"%3B
             properties["Server_Accepts_Certificates"] = "$(Server_Accepts_Certificates)"%3B
             properties["Ambient_Credentials_Available"] = "$(Ambient_Credentials_Available)"%3B
             properties["Explicit_Credentials_Available"] = "$(Explicit_Credentials_Available)"%3B

@@ -111,9 +111,9 @@ namespace Infrastructure.Common
                 return propertyAsBool ? new HashSet<int>() : null;
             }
 
-            // Anything else is interpreted as a semicolon-separate list of
+            // Anything else is interpreted as a semicolon or comma separated list of
             // issue numbers to include (i.e. not skip).
-            string[] issues = includeTestsWithIssues.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] issues = includeTestsWithIssues.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
             HashSet<int> hashSet = new HashSet<int>();
             foreach (string issue in issues)
             {
