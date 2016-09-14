@@ -164,14 +164,14 @@ wcfUtilities = new WcfUtilities()
         // Add the unit test results
         Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
         
-        // Set up appropriate triggers. PR on demand, otherwise daily
+        // Set up appropriate triggers. PR on demand, otherwise on change pushed
         if (isPR) {
             // Set PR trigger.
             Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop Selfhost ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+selfhost\\W+${os}).*", false /*triggerOnPhraseOnly*/)
         } 
         else {
-            // Set a periodic trigger
-            Utilities.addPeriodicTrigger(newJob, '@daily')
+            // Set a push trigger
+            Utilities.addGithubPushTrigger(newJob)
         }
     } 
 } 
@@ -242,8 +242,11 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
                 } 
             } 
             else {
-                // Set a periodic trigger
-                Utilities.addPeriodicTrigger(newJob, '@daily')
+                // Set a periodic trigger, runs daily regardless of whether a change happened
+                Utilities.addPeriodicTrigger(newJob, '@daily', true /*alwaysRuns*/)
+
+                // Set a push trigger
+                Utilities.addGithubPushTrigger(newJob)
             }
         }
     } 
