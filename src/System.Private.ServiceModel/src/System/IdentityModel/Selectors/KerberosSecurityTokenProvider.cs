@@ -70,5 +70,10 @@ namespace System.IdentityModel.Selectors
         {
             return Task.FromResult(GetToken(cancellationToken, null));
         }
+
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            return GetToken(CancellationToken.None, null);
+        }
     }
 }

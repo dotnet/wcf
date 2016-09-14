@@ -2,13 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Reflection;
 using System.Runtime;
-using System.Threading.Tasks;
 using System.ServiceModel.Diagnostics;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -16,6 +14,7 @@ namespace System.ServiceModel.Channels
     {
         private bool _aborted;
         private bool _closeCalled;
+        private ExceptionQueue _exceptionQueue;
         private object _mutex;
         private bool _onClosingCalled;
         private bool _onClosedCalled;
@@ -310,6 +309,18 @@ namespace System.ServiceModel.Channels
             }
 
             OnFaulted();
+        }
+
+        internal void Fault(Exception exception)
+        {
+            lock (this.ThisLock)
+            {
+                if (_exceptionQueue == null)
+                    _exceptionQueue = new ExceptionQueue(this.ThisLock);
+            }
+
+            _exceptionQueue.AddException(exception);
+            this.Fault();
         }
 
         public void Open()
@@ -739,6 +750,17 @@ namespace System.ServiceModel.Channels
 
         internal void ThrowPending()
         {
+            ExceptionQueue queue = _exceptionQueue;
+
+            if (queue != null)
+            {
+                Exception exception = queue.GetException();
+
+                if (exception != null)
+                {
+                    throw TraceUtility.ThrowHelperError(exception, Guid.Empty, this);
+                }
+            }
         }
 
         //
@@ -801,6 +823,48 @@ namespace System.ServiceModel.Channels
             // Redirect this call to the APM path.
             _onOpenAsyncCalled = true;
             return Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
+        }
+
+        class ExceptionQueue
+        {
+            Queue<Exception> _exceptions = new Queue<Exception>();
+            object _thisLock;
+
+            internal ExceptionQueue(object thisLock)
+            {
+                _thisLock = thisLock;
+            }
+
+            object ThisLock
+            {
+                get { return _thisLock; }
+            }
+
+            public void AddException(Exception exception)
+            {
+                if (exception == null)
+                {
+                    return;
+                }
+
+                lock (ThisLock)
+                {
+                    _exceptions.Enqueue(exception);
+                }
+            }
+
+            public Exception GetException()
+            {
+                lock (ThisLock)
+                {
+                    if (_exceptions.Count > 0)
+                    {
+                        return _exceptions.Dequeue();
+                    }
+                }
+
+                return null;
+            }
         }
     }
 

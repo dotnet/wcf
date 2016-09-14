@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
@@ -12,7 +12,7 @@ using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security.Tokens;
-using System.Globalization;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
 {
@@ -194,6 +194,12 @@ namespace System.ServiceModel.Security
             {
                 _streamBufferManager = value;
             }
+        }
+
+        public ExtendedProtectionPolicy ExtendedProtectionPolicy
+        {
+            get { return _extendedProtectionPolicy; }
+            set { _extendedProtectionPolicy = value; }
         }
 
         internal bool IsDuplexReply
@@ -686,6 +692,31 @@ namespace System.ServiceModel.Security
             }
         }
 
+        public virtual Task OnCloseAsync(TimeSpan timeout)
+        {
+            return OnCloseAsyncInternal(timeout);
+        }
+
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            if (!_actAsInitiator)
+            {
+                foreach (SupportingTokenAuthenticatorSpecification spec in _channelSupportingTokenAuthenticatorSpecification)
+                {
+                    await SecurityUtils.CloseTokenAuthenticatorIfRequiredAsync(spec.TokenAuthenticator, timeoutHelper.RemainingTime());
+                }
+                foreach (string action in _scopedSupportingTokenAuthenticatorSpecification.Keys)
+                {
+                    ICollection<SupportingTokenAuthenticatorSpecification> supportingAuthenticators = _scopedSupportingTokenAuthenticatorSpecification[action];
+                    foreach (SupportingTokenAuthenticatorSpecification spec in supportingAuthenticators)
+                    {
+                        await SecurityUtils.CloseTokenAuthenticatorIfRequiredAsync(spec.TokenAuthenticator, timeoutHelper.RemainingTime());
+                    }
+                }
+            }
+        }
+
         public virtual object CreateListenerSecurityState()
         {
             return null;
@@ -817,6 +848,71 @@ namespace System.ServiceModel.Security
                     foreach (SupportingTokenAuthenticatorSpecification spec in scopedAuthenticators)
                     {
                         SecurityUtils.OpenTokenAuthenticatorIfRequired(spec.TokenAuthenticator, timeoutHelper.RemainingTime());
+                        mergedAuthenticators.Add(spec);
+                        if (spec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.Endorsing ||
+                            spec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.SignedEndorsing)
+                        {
+                            if (spec.TokenParameters.RequireDerivedKeys && !spec.TokenParameters.HasAsymmetricKey)
+                            {
+                                _expectKeyDerivation = true;
+                            }
+                        }
+                        SecurityTokenAttachmentMode mode = spec.SecurityTokenAttachmentMode;
+                        if (mode == SecurityTokenAttachmentMode.SignedEncrypted
+                            || mode == SecurityTokenAttachmentMode.Signed
+                            || mode == SecurityTokenAttachmentMode.SignedEndorsing)
+                        {
+                            expectSignedTokens = true;
+                            if (mode == SecurityTokenAttachmentMode.SignedEncrypted)
+                            {
+                                expectBasicTokens = true;
+                            }
+                        }
+                        if (mode == SecurityTokenAttachmentMode.Endorsing || mode == SecurityTokenAttachmentMode.SignedEndorsing)
+                        {
+                            expectEndorsingTokens = true;
+                        }
+                    }
+                    VerifyTypeUniqueness(mergedAuthenticators);
+                    MergedSupportingTokenAuthenticatorSpecification mergedSpec = new MergedSupportingTokenAuthenticatorSpecification();
+                    mergedSpec.SupportingTokenAuthenticators = mergedAuthenticators;
+                    mergedSpec.ExpectBasicTokens = expectBasicTokens;
+                    mergedSpec.ExpectEndorsingTokens = expectEndorsingTokens;
+                    mergedSpec.ExpectSignedTokens = expectSignedTokens;
+                    _mergedSupportingTokenAuthenticatorsMap.Add(action, mergedSpec);
+                }
+            }
+        }
+
+        private async Task MergeSupportingTokenAuthenticatorsAsync(TimeSpan timeout)
+        {
+            if (_scopedSupportingTokenAuthenticatorSpecification.Count == 0)
+            {
+                _mergedSupportingTokenAuthenticatorsMap = null;
+            }
+            else
+            {
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                _expectSupportingTokens = true;
+                _mergedSupportingTokenAuthenticatorsMap = new Dictionary<string, MergedSupportingTokenAuthenticatorSpecification>();
+                foreach (string action in _scopedSupportingTokenAuthenticatorSpecification.Keys)
+                {
+                    ICollection<SupportingTokenAuthenticatorSpecification> scopedAuthenticators = _scopedSupportingTokenAuthenticatorSpecification[action];
+                    if (scopedAuthenticators == null || scopedAuthenticators.Count == 0)
+                    {
+                        continue;
+                    }
+                    Collection<SupportingTokenAuthenticatorSpecification> mergedAuthenticators = new Collection<SupportingTokenAuthenticatorSpecification>();
+                    bool expectSignedTokens = _expectChannelSignedTokens;
+                    bool expectBasicTokens = _expectChannelBasicTokens;
+                    bool expectEndorsingTokens = _expectChannelEndorsingTokens;
+                    foreach (SupportingTokenAuthenticatorSpecification spec in _channelSupportingTokenAuthenticatorSpecification)
+                    {
+                        mergedAuthenticators.Add(spec);
+                    }
+                    foreach (SupportingTokenAuthenticatorSpecification spec in scopedAuthenticators)
+                    {
+                        await SecurityUtils.OpenTokenAuthenticatorIfRequiredAsync(spec.TokenAuthenticator, timeoutHelper.RemainingTime());
                         mergedAuthenticators.Add(spec);
                         if (spec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.Endorsing ||
                             spec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.SignedEndorsing)
@@ -1035,21 +1131,112 @@ namespace System.ServiceModel.Security
             _derivedKeyTokenAuthenticator = new NonValidatingSecurityTokenAuthenticator<DerivedKeySecurityToken>();
         }
 
+        public virtual Task OnOpenAsync(TimeSpan timeout)
+        {
+            return OnOpenAsyncInternal(timeout);
+        }
+
+        private async Task OnOpenAsyncInternal(TimeSpan timeout)
+        { 
+            if (this.SecurityBindingElement == null)
+            {
+                this.OnPropertySettingsError("SecurityBindingElement", true);
+            }
+            if (this.SecurityTokenManager == null)
+            {
+                this.OnPropertySettingsError("SecurityTokenManager", true);
+            }
+            _messageSecurityVersion = _standardsManager.MessageSecurityVersion;
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            _expectOutgoingMessages = this.ActAsInitiator || this.SupportsRequestReply;
+            _expectIncomingMessages = !this.ActAsInitiator || this.SupportsRequestReply;
+            if (!_actAsInitiator)
+            {
+                AddSupportingTokenAuthenticators(_securityBindingElement.EndpointSupportingTokenParameters, false, (IList<SupportingTokenAuthenticatorSpecification>)_channelSupportingTokenAuthenticatorSpecification);
+                // validate the token authenticator types and create a merged map if needed.
+                if (!_channelSupportingTokenAuthenticatorSpecification.IsReadOnly)
+                {
+                    if (_channelSupportingTokenAuthenticatorSpecification.Count == 0)
+                    {
+                        _channelSupportingTokenAuthenticatorSpecification = EmptyTokenAuthenticators;
+                    }
+                    else
+                    {
+                        _expectSupportingTokens = true;
+                        foreach (SupportingTokenAuthenticatorSpecification tokenAuthenticatorSpec in _channelSupportingTokenAuthenticatorSpecification)
+                        {
+                            SecurityUtils.OpenTokenAuthenticatorIfRequired(tokenAuthenticatorSpec.TokenAuthenticator, timeoutHelper.RemainingTime());
+                            if (tokenAuthenticatorSpec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.Endorsing
+                                || tokenAuthenticatorSpec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.SignedEndorsing)
+                            {
+                                if (tokenAuthenticatorSpec.TokenParameters.RequireDerivedKeys && !tokenAuthenticatorSpec.TokenParameters.HasAsymmetricKey)
+                                {
+                                    _expectKeyDerivation = true;
+                                }
+                            }
+                            SecurityTokenAttachmentMode mode = tokenAuthenticatorSpec.SecurityTokenAttachmentMode;
+                            if (mode == SecurityTokenAttachmentMode.SignedEncrypted
+                                || mode == SecurityTokenAttachmentMode.Signed
+                                || mode == SecurityTokenAttachmentMode.SignedEndorsing)
+                            {
+                                _expectChannelSignedTokens = true;
+                                if (mode == SecurityTokenAttachmentMode.SignedEncrypted)
+                                {
+                                    _expectChannelBasicTokens = true;
+                                }
+                            }
+                            if (mode == SecurityTokenAttachmentMode.Endorsing || mode == SecurityTokenAttachmentMode.SignedEndorsing)
+                            {
+                                _expectChannelEndorsingTokens = true;
+                            }
+                        }
+                        _channelSupportingTokenAuthenticatorSpecification =
+                            new ReadOnlyCollection<SupportingTokenAuthenticatorSpecification>((Collection<SupportingTokenAuthenticatorSpecification>)_channelSupportingTokenAuthenticatorSpecification);
+                    }
+                }
+                VerifyTypeUniqueness(_channelSupportingTokenAuthenticatorSpecification);
+
+                await MergeSupportingTokenAuthenticatorsAsync(timeoutHelper.RemainingTime());
+            }
+
+            if (this.DetectReplays)
+            {
+                if (!this.SupportsReplayDetection)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("DetectReplays", SR.Format(SR.SecurityProtocolCannotDoReplayDetection, this));
+                }
+                if (this.MaxClockSkew == TimeSpan.MaxValue || this.ReplayWindow == TimeSpan.MaxValue)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.NoncesCachedInfinitely));
+                }
+
+                // If DetectReplays is true and nonceCache is null then use the default InMemoryNonceCache. 
+                if (_nonceCache == null)
+                {
+                    // The nonce needs to be cached for replayWindow + 2*clockSkew to eliminate replays
+                    _nonceCache = new InMemoryNonceCache(this.ReplayWindow + this.MaxClockSkew + this.MaxClockSkew, this.MaxCachedNonces);
+                }
+            }
+
+            _derivedKeyTokenAuthenticator = new NonValidatingSecurityTokenAuthenticator<DerivedKeySecurityToken>();
+        }
+
+
         public void Open(bool actAsInitiator, TimeSpan timeout)
         {
             _actAsInitiator = actAsInitiator;
             _communicationObject.Open(timeout);
         }
 
-        public IAsyncResult BeginOpen(bool actAsInitiator, TimeSpan timeout, AsyncCallback callback, object state)
+        public Task OpenAsync(TimeSpan timeout)
         {
-            _actAsInitiator = actAsInitiator;
-            return this.CommunicationObject.BeginOpen(timeout, callback, state);
+            return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
         }
 
-        public void EndOpen(IAsyncResult result)
+        public Task OpenAsync(bool actAsInitiator, TimeSpan timeout)
         {
-            this.CommunicationObject.EndOpen(result);
+            _actAsInitiator = actAsInitiator;
+            return OpenAsync(timeout);
         }
 
         public void Close(bool aborted, TimeSpan timeout)
@@ -1064,14 +1251,9 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
+        public Task CloseAsync(TimeSpan timeout)
         {
-            return this.CommunicationObject.BeginClose(timeout, callback, state);
-        }
-
-        public void EndClose(IAsyncResult result)
-        {
-            this.CommunicationObject.EndClose(result);
+            return ((IAsyncCommunicationObject)_communicationObject).CloseAsync(timeout);
         }
 
         internal void Open(string propertyName, bool requiredForForwardDirection, SecurityTokenAuthenticator authenticator, TimeSpan timeout)

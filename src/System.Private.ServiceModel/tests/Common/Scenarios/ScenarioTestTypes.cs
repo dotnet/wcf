@@ -1321,7 +1321,7 @@ public partial class XmlMessageContractTestResponse
 
     public XmlMessageContractTestResponse(string message)
     {
-        this._message = message;
+        _message = message;
     }
 
     [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
