@@ -3,20 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IdentityModel.Claims;
+using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Net;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security.Tokens;
-using System.Net;
-using System.Threading;
-using System.Xml;
-using System.Globalization;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace System.ServiceModel.Security
 {

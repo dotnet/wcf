@@ -8,12 +8,10 @@ using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel;
-//using System.ServiceModel.Diagnostics.Application;
+using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
-using ServiceModelActivity = System.ServiceModel.Diagnostics.ServiceModelActivity;
-using TraceUtility = System.ServiceModel.Diagnostics.TraceUtility;
 
 namespace System.ServiceModel.Channels
 {

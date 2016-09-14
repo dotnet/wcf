@@ -4,21 +4,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
-using System.Text;
 using System.Xml;
 // Issue #31 in progress
 // using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
 using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
 
 namespace System.ServiceModel.Security

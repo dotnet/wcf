@@ -16,7 +16,6 @@ namespace System.ServiceModel.Security.Tokens
     {
         private string _id;
         private DateTime _effectiveTime;
-
         private EncryptedKey _encryptedKey;
         private ReadOnlyCollection<SecurityKey> _securityKey;
         private byte[] _wrappedKey;
@@ -26,7 +25,7 @@ namespace System.ServiceModel.Security.Tokens
         private SecurityKey _wrappingSecurityKey;
         private SecurityKeyIdentifier _wrappingTokenReference;
         private bool _serializeCarriedKeyName;
-        // byte[] wrappedKeyHash;
+        // private byte[] _wrappedKeyHash;
         private XmlDictionaryString _wrappingAlgorithmDictionaryString;
 
         // sender use

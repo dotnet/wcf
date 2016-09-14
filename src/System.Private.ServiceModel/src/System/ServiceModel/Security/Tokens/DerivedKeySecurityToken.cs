@@ -1,21 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
+// See the LICENSE file in the project root for more information
 
-
-using System.Collections;
-using System.ServiceModel;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
-using System.IdentityModel.Selectors;
-using System.Security.Cryptography;
-using System.Text;
-using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
 {
@@ -33,7 +21,7 @@ namespace System.ServiceModel.Security.Tokens
         public const int DefaultNonceLength = 16;
         public const int DefaultDerivedKeyLength = 32;
 
-#pragma warning disable 0649 // Remove this once we do real implementation, this prevents "field is never assigned to" warning. 
+#pragma warning disable 0649 // Issue #31 in progress. Remove this once we do real implementation, this prevents "field is never assigned to" warning. 
         // fields are read from in this class, but lack of implemenation means we never assign them yet. 
         private string _id;
         private byte[] _key;

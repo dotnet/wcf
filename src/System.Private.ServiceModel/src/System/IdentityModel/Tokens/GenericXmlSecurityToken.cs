@@ -5,14 +5,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
-using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
-using System.Security.Cryptography;
-using System.Security.Principal;
+using System.IO;
 using System.Xml;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
 using DiagnosticUtility = System.ServiceModel.DiagnosticUtility;
 
 namespace System.IdentityModel.Tokens

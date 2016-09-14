@@ -3,37 +3,21 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Xml;
-using System.Runtime;
-using System.Security.Cryptography;
-using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.Serialization;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security.Tokens;
+using System.Xml;
+
 // Issue #31 in progress
 //using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
 //using Psha1DerivedKeyGenerator = System.IdentityModel.Psha1DerivedKeyGenerator;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Security;
-using System.Runtime.Serialization;
 
-using KeyIdentifierEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierEntry;
-using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
 using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
-using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
+
 
 namespace System.ServiceModel.Security
 {
@@ -45,7 +29,6 @@ namespace System.ServiceModel.Security
         {
             _tokenSerializer = tokenSerializer;
         }
-
 
         public WSSecurityTokenSerializer WSSecurityTokenSerializer
         {

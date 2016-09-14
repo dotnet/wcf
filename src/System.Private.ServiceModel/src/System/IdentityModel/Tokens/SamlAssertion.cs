@@ -2,20 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.IdentityModel;
-using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
-using System.IdentityModel.Selectors;
-using System.Runtime;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Security.Cryptography;
-using System.Xml;
-
 namespace System.IdentityModel.Tokens
 {
     public class SamlAssertion // : ICanonicalWriterEndRootElementCallback  // Issue #31 in progress

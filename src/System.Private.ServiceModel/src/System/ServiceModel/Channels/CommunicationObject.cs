@@ -2,14 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Reflection;
-using System.Runtime;
-using System.Threading.Tasks;
-using System.ServiceModel.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Runtime;
+using System.ServiceModel.Diagnostics;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {

@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
@@ -12,7 +12,6 @@ using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security.Tokens;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security

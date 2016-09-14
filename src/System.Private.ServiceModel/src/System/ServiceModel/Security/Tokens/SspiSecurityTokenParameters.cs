@@ -3,10 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System.IdentityModel.Selectors;
-using System.ServiceModel.Channels;
-using System.ServiceModel;
 using System.IdentityModel.Tokens;
-using System.ServiceModel.Security;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Globalization;
 
@@ -19,7 +17,6 @@ namespace System.ServiceModel.Security.Tokens
         private bool _requireCancellation = defaultRequireCancellation;
         private BindingContext _issuerBindingContext;
 
-
         protected SspiSecurityTokenParameters(SspiSecurityTokenParameters other)
             : base(other)
         {
@@ -29,7 +26,6 @@ namespace System.ServiceModel.Security.Tokens
                 _issuerBindingContext = other._issuerBindingContext.Clone();
             }
         }
-
 
         public SspiSecurityTokenParameters()
             : this(defaultRequireCancellation)

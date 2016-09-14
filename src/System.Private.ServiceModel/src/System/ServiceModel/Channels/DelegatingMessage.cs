@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Xml;
-using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Channels
 {

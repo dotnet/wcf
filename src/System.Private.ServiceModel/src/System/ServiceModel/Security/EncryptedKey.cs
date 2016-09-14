@@ -77,19 +77,18 @@ namespace System.ServiceModel.Security
 
         protected override void ReadAdditionalElements(XmlDictionaryReader reader)
         {
-            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
-
-            //if (reader.IsStartElement(ReferenceList.ElementName, EncryptedType.NamespaceUri))
-            //{
-            //    this.referenceList = new ReferenceList();
-            //    this.referenceList.ReadFrom(reader);
-            //}
-            //if (reader.IsStartElement(CarriedKeyElementName, EncryptedType.NamespaceUri))
-            //{
-            //    reader.ReadStartElement(CarriedKeyElementName, EncryptedType.NamespaceUri);
-            //    this.carriedKeyName = reader.ReadString();
-            //    reader.ReadEndElement();
-            //}
+            if (reader.IsStartElement(ReferenceList.s_ElementName, EncryptedType.s_NamespaceUri))
+            {
+                _referenceList = new ReferenceList();
+                _referenceList.ReadFrom(reader);
+            }
+            if (reader.IsStartElement(s_CarriedKeyElementName, EncryptedType.s_NamespaceUri))
+            {
+                reader.ReadStartElement(s_CarriedKeyElementName, EncryptedType.s_NamespaceUri);
+                throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress (NET Standard 2.0: needs ReadString() API)
+                //_carriedKeyName = reader.ReadString();
+                //reader.ReadEndElement();
+            }
         }
 
         protected override void ReadCipherData(XmlDictionaryReader reader)

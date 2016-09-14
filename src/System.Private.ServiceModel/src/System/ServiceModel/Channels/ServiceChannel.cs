@@ -1222,12 +1222,12 @@ namespace System.ServiceModel.Channels
             return (Message)Call(message.Headers.Action, false, operation, new object[] { message }, Array.Empty<object>(), timeout);
         }
 
-        public virtual Task<Message> RequestAsync(Message message)
+        public Task<Message> RequestAsync(Message message)
         {
             return RequestAsync(message, OperationTimeout);
         }
 
-        public virtual Task<Message> RequestAsync(Message message, TimeSpan timeout)
+        public Task<Message> RequestAsync(Message message, TimeSpan timeout)
         {
             throw ExceptionHelper.PlatformNotSupported();   // Issue #1494
         }

@@ -2,23 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using System.Xml.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.CodeDom;
-using System.Runtime.Serialization;
-using System.Globalization;
-using System.Threading;
-using System.IdentityModel.Selectors;
-using System.IdentityModel.Policy;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.IO;
 using DiagnosticUtility = System.ServiceModel.DiagnosticUtility;
 
 namespace System.IdentityModel.Tokens

@@ -4,11 +4,6 @@
 
 namespace System.ServiceModel.Channels
 {
-    using System.Collections.Generic;
-    using System.Runtime;
-    using System.ServiceModel;
-    using System.Threading;
-
     enum TolerateFaultsMode
     {
         Never,

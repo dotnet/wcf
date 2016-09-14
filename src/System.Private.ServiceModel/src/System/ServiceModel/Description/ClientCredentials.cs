@@ -18,7 +18,6 @@ namespace System.ServiceModel.Description
         private WindowsClientCredential _windows;
         private HttpDigestClientCredential _httpDigest;
         private bool _isReadOnly;
-        private bool _useIdentityConfiguration = false;
 
         public ClientCredentials()
         {
@@ -38,7 +37,6 @@ namespace System.ServiceModel.Description
                 _windows = new WindowsClientCredential(other._windows);
             if (other._httpDigest != null)
                 _httpDigest = new HttpDigestClientCredential(other._httpDigest);
-            _useIdentityConfiguration = other._useIdentityConfiguration;
             _isReadOnly = other._isReadOnly;
         }
 
@@ -116,7 +114,7 @@ namespace System.ServiceModel.Description
         {
             get
             {
-                return _useIdentityConfiguration;
+                return false;
             }
             set
             {
@@ -124,7 +122,11 @@ namespace System.ServiceModel.Description
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ObjectIsReadOnly)));
                 }
-                _useIdentityConfiguration = value;
+                
+                if (value)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();
+                }
             }
         }
 

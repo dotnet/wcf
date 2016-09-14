@@ -3,13 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
-using System.Security.Cryptography;
 using System.Security.Authentication.ExtendedProtection;
-using System.ServiceModel.Diagnostics;
 
 namespace System.ServiceModel.Security.Tokens
 {

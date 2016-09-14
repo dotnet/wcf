@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Runtime;
 using System.Security.Cryptography;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
-using System.IdentityModel.Tokens;
-using System.Collections.Generic;
 using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
 using ISecurityElement = System.IdentityModel.ISecurityElement;
 

@@ -5,7 +5,6 @@
 using System.Globalization;
 using System.IdentityModel.Tokens;
 using System.Xml;
-using DiagnosticUtility = System.ServiceModel.DiagnosticUtility;
 
 namespace System.ServiceModel.Security
 {

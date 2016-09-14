@@ -8,9 +8,7 @@ using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Security;
 using System.Text;
 using System.Xml;
 
@@ -20,9 +18,9 @@ namespace System.ServiceModel.Security.Tokens
 
     public class IssuedSecurityTokenParameters : SecurityTokenParameters
     {
-        const string wsidPrefix = "wsid";
-        const string wsidNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
-        static readonly string s_wsidPPIClaim = String.Format(CultureInfo.InvariantCulture, "{0}/claims/privatepersonalidentifier", wsidNamespace);
+        private const string wsidPrefix = "wsid";
+        private const string wsidNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
+        private static readonly string s_wsidPPIClaim = String.Format(CultureInfo.InvariantCulture, "{0}/claims/privatepersonalidentifier", wsidNamespace);
         internal const SecurityKeyType defaultKeyType = SecurityKeyType.SymmetricKey;
         internal const bool defaultUseStrTransform = false;
 

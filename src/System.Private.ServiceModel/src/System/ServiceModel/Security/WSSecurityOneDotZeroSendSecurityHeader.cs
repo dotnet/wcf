@@ -2,29 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
+using System.IdentityModel.Tokens;
+using System.IO;
+using System.Runtime;
+using System.Security.Cryptography;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Diagnostics;
+using System.ServiceModel.Security.Tokens;
+using System.Xml;
+// Issue #31 in progress
+//using ExclusiveCanonicalizationTransform = System.IdentityModel.ExclusiveCanonicalizationTransform;
+using HashStream = System.IdentityModel.HashStream;
+using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
+using ISecurityElement = System.IdentityModel.ISecurityElement;
+using ISignatureValueSecurityElement = System.IdentityModel.ISignatureValueSecurityElement;
+//using PreDigestedSignedInfo = System.IdentityModel.PreDigestedSignedInfo;
+//using Reference = System.IdentityModel.Reference;
+//using SignedInfo = System.IdentityModel.SignedInfo;
+using SignedXml = System.IdentityModel.SignedXml;
+//using StandardSignedInfo = System.IdentityModel.StandardSignedInfo;
+
+
 namespace System.ServiceModel.Security
 {
-    using System.IdentityModel.Tokens;
-    using System.IO;
-    using System.Runtime;
-    using System.Security.Cryptography;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Diagnostics;
-    using System.Xml;
-    //using ExclusiveCanonicalizationTransform = System.IdentityModel.ExclusiveCanonicalizationTransform;
-    using HashStream = System.IdentityModel.HashStream;
-    using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
-    using ISecurityElement = System.IdentityModel.ISecurityElement;
-    using ISignatureValueSecurityElement = System.IdentityModel.ISignatureValueSecurityElement;
-    //using PreDigestedSignedInfo = System.IdentityModel.PreDigestedSignedInfo;
-    //using Reference = System.IdentityModel.Reference;
-    //using SignedInfo = System.IdentityModel.SignedInfo;
-    using SignedXml = System.IdentityModel.SignedXml;
-    //using StandardSignedInfo = System.IdentityModel.StandardSignedInfo;
-    using System.ServiceModel.Security.Tokens;
-
     class WSSecurityOneDotZeroSendSecurityHeader : SendSecurityHeader
     {
         private HashStream _hashStream;

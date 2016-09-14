@@ -5,8 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Selectors;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.Xml;

@@ -3,19 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections.Generic;
 using System.ServiceModel.Channels;
-using System.ServiceModel;
 using System.ServiceModel.Description;
-using System.Diagnostics;
-using System.IO;
-using System.IdentityModel.Tokens;
-using System.Security.Cryptography;
-using System.ServiceModel.Security.Tokens;
-using System.Xml;
-using System.ServiceModel.Diagnostics;
-
-using ISignatureValueSecurityElement = System.IdentityModel.ISignatureValueSecurityElement;
 
 namespace System.ServiceModel.Security
 {
