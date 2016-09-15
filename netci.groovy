@@ -109,7 +109,7 @@ wcfUtilities = new WcfUtilities()
     
     newJob.with {
         steps {
-            batchFile("build.cmd -coverage -outerloop -${configurationGroup} -- /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:WithCategories=\"InnerLoop;OuterLoop\" /p:ServiceUri=%WcfServiceUri%")
+            batchFile("build.cmd -coverage -outerloop -${configurationGroup} -- /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=%WcfServiceUri%")
         }
     }
 
