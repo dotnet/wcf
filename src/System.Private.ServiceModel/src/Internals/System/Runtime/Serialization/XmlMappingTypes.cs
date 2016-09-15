@@ -103,7 +103,7 @@ namespace System.Xml.Serialization
 
         public XmlMapping(object thisObject)
         {
-            this._wrapperObject = XmlMappingTypeWrapperFactory.GetWrapper(thisObject);
+            _wrapperObject = XmlMappingTypeWrapperFactory.GetWrapper(thisObject);
         }
 
         public IXmlMappingTypeWrapperObject Object

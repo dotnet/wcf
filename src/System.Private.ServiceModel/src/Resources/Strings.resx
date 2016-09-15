@@ -6771,4 +6771,16 @@
   <data name="Xml_InvalidNodeType" xml:space="preserve">
     <value>'{0}' is an invalid XmlNodeType.</value>
   </data>
+  <data name="ErrorDeserializingKeyIdentifierClause" xml:space="preserve">
+    <value>'There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</value>
+  </data>
+  <data name="ErrorSerializingKeyIdentifier" xml:space="preserve">
+    <value>There was an error serializing the security key identifier. Please see the inner exception for more details.</value>
+  </data>
+  <data name="ErrorSerializingKeyIdentifierClause" xml:space="preserve">
+    <value>There was an error serializing the security key identifier clause. Please see the inner exception for more details.</value>
+  </data>
+  <data name="CannotReadKeyIdentifierClause" xml:space="preserve">
+    <value>Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers.</value>
+  </data>
 </root>

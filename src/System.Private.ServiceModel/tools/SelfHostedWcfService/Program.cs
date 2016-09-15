@@ -106,6 +106,7 @@ namespace SelfHostedWCFService
             CreateHost<WebSocketHttpsDuplexTextBufferedTestServiceHost, WSDuplexService>("WebSocketHttpsDuplexTextBuffered.svc", websocketsBaseAddress);
             CreateHost<ChannelExtensibilityServiceHost, WcfChannelExtensiblityService>("ChannelExtensibility.svc", httpBaseAddress);
             CreateHost<WebSocketHttpVerifyWebSocketsUsedTestServiceHost, VerifyWebSockets>("WebSocketHttpVerifyWebSocketsUsed.svc", websocketBaseAddress);
+            CreateHost<WsHttpTranSecUserNameTestServiceHost, WcfUserNameService>("WsHttpTranSecUserName.svc", httpsBaseAddress);
 
             //Start the crlUrl service last as the client use it to ensure all services have been started
             Uri testHostUrl = new Uri(string.Format("http://localhost/TestHost.svc", s_httpPort));
