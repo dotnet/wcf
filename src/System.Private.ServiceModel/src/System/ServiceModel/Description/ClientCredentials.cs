@@ -37,7 +37,6 @@ namespace System.ServiceModel.Description
                 _windows = new WindowsClientCredential(other._windows);
             if (other._httpDigest != null)
                 _httpDigest = new HttpDigestClientCredential(other._httpDigest);
-
             _isReadOnly = other._isReadOnly;
         }
 
@@ -111,6 +110,25 @@ namespace System.ServiceModel.Description
             }
         }
 
+        public bool UseIdentityConfiguration
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                if (_isReadOnly)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ObjectIsReadOnly)));
+                }
+                
+                if (value)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();
+                }
+            }
+        }
 
         internal static ClientCredentials CreateDefaultCredentials()
         {

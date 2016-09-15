@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.ServiceModel.Channels;
-using System.ServiceModel.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.Runtime.Diagnostics;
 using System.Threading.Tasks;
+using System.Runtime;
 
 namespace System.ServiceModel.Security
 {
@@ -47,12 +46,14 @@ namespace System.ServiceModel.Security
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerCommunicationObject.OnBeginClose(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _innerCommunicationObject.OnBeginClose(timeout, callback, state);
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerCommunicationObject.OnBeginOpen(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _innerCommunicationObject.OnBeginOpen(timeout, callback, state);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -74,12 +75,14 @@ namespace System.ServiceModel.Security
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            _innerCommunicationObject.OnEndClose(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //_innerCommunicationObject.OnEndClose(result);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            _innerCommunicationObject.OnEndOpen(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //_innerCommunicationObject.OnEndOpen(result);
         }
 
         protected override void OnFaulted()
@@ -110,30 +113,14 @@ namespace System.ServiceModel.Security
             base.ThrowIfDisposedOrImmutable();
         }
 
-        protected internal override async Task OnCloseAsync(TimeSpan timeout)
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            var asyncInnerCommunicationObject = _innerCommunicationObject as IAsyncCommunicationObject;
-            if (asyncInnerCommunicationObject != null)
-            {
-                await asyncInnerCommunicationObject.CloseAsync(timeout);
-            }
-            else
-            {
-                this.OnClose(timeout);
-            }
+            return _innerCommunicationObject.OnCloseAsync(timeout);
         }
 
-        protected internal override async Task OnOpenAsync(TimeSpan timeout)
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            var asyncInnerCommunicationObject = _innerCommunicationObject as IAsyncCommunicationObject;
-            if (asyncInnerCommunicationObject != null)
-            {
-                await asyncInnerCommunicationObject.OpenAsync(timeout);
-            }
-            else
-            {
-                this.OnOpen(timeout);
-            }
+            return _innerCommunicationObject.OnOpenAsync(timeout);
         }
     }
 
@@ -220,6 +207,11 @@ namespace System.ServiceModel.Security
             _communicationObject.Close();
         }
 
+        public Task CloseAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)_communicationObject).CloseAsync(timeout);
+        }
+
         public void Close(TimeSpan timeout)
         {
             _communicationObject.Close(timeout);
@@ -227,17 +219,20 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _communicationObject.BeginClose(callback, state);
         }
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _communicationObject.BeginClose(timeout, callback, state);
         }
 
         public void EndClose(IAsyncResult result)
         {
-            _communicationObject.EndClose(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+           // _communicationObject.EndClose(result);
         }
 
         public void Open()
@@ -250,19 +245,27 @@ namespace System.ServiceModel.Security
             _communicationObject.Open(timeout);
         }
 
+        public Task OpenAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
+        }
+
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _communicationObject.BeginOpen(callback, state);
         }
 
         public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _communicationObject.BeginOpen(timeout, callback, state);
         }
 
         public void EndOpen(IAsyncResult result)
         {
-            _communicationObject.EndOpen(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //_communicationObject.EndOpen(result);
         }
 
         public void Dispose()
@@ -277,16 +280,23 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new OperationWithTimeoutAsyncResult(this.OnClose, timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return new OperationWithTimeoutAsyncResult(this.OnClose, timeout, callback, state);
         }
 
         public IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new OperationWithTimeoutAsyncResult(this.OnOpen, timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return new OperationWithTimeoutAsyncResult(this.OnOpen, timeout, callback, state);
         }
 
         public virtual void OnClose(TimeSpan timeout)
         {
+        }
+
+        public virtual Task OnCloseAsync(TimeSpan timeout)
+        {
+            return TaskHelpers.CompletedTask();
         }
 
         public virtual void OnClosed()
@@ -299,12 +309,14 @@ namespace System.ServiceModel.Security
 
         public void OnEndClose(IAsyncResult result)
         {
-            OperationWithTimeoutAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //OperationWithTimeoutAsyncResult.End(result);
         }
 
         public void OnEndOpen(IAsyncResult result)
         {
-            OperationWithTimeoutAsyncResult.End(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //OperationWithTimeoutAsyncResult.End(result);
         }
 
         public virtual void OnFaulted()
@@ -314,6 +326,11 @@ namespace System.ServiceModel.Security
 
         public virtual void OnOpen(TimeSpan timeout)
         {
+        }
+
+        public virtual Task OnOpenAsync(TimeSpan timeout)
+        {
+            return TaskHelpers.CompletedTask();
         }
 
         public virtual void OnOpened()
@@ -400,19 +417,27 @@ namespace System.ServiceModel.Security
             _communicationObject.Close(timeout);
         }
 
+        public Task CloseAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)_communicationObject).CloseAsync(timeout);
+        }
+
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+           // return _communicationObject.BeginClose(callback, state);
         }
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _communicationObject.BeginClose(timeout, callback, state);
         }
 
         public void EndClose(IAsyncResult result)
         {
-            _communicationObject.EndClose(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //_communicationObject.EndClose(result);
         }
 
         public void Open()
@@ -425,19 +450,27 @@ namespace System.ServiceModel.Security
             _communicationObject.Open(timeout);
         }
 
+        public Task OpenAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
+        }
+
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _communicationObject.BeginOpen(callback, state);
         }
 
         public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //return _communicationObject.BeginOpen(timeout, callback, state);
         }
 
         public void EndOpen(IAsyncResult result)
         {
-            _communicationObject.EndOpen(result);
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #31 in progress
+            //_communicationObject.EndOpen(result);
         }
 
         public void Dispose()
@@ -462,6 +495,11 @@ namespace System.ServiceModel.Security
 
         public virtual void OnClose(TimeSpan timeout)
         {
+        }
+
+        public virtual Task OnCloseAsync(TimeSpan timeout)
+        {
+            return TaskHelpers.CompletedTask();
         }
 
         public virtual void OnClosed()
@@ -489,6 +527,11 @@ namespace System.ServiceModel.Security
 
         public virtual void OnOpen(TimeSpan timeout)
         {
+        }
+
+        public virtual Task OnOpenAsync(TimeSpan timeout)
+        {
+            return TaskHelpers.CompletedTask();
         }
 
         public virtual void OnOpened()
