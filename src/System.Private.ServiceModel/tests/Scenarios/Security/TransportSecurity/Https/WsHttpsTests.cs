@@ -125,7 +125,7 @@ public static partial class WsHttpsTests
 #endif
     [WcfFact]
     [OuterLoop]
-    [Issue(1494)]
+    // commented out, anticipating failure in CI [Issue(1494)]
     public static void CreateUserNameOverTransportBindingElement_Round_Trips_Async()
     {
         ChannelFactory<IWcfCustomUserNameService> factory = null;
