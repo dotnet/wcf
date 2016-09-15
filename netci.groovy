@@ -65,6 +65,10 @@ class WcfUtilities
         // numbers will overlap on different branches
         if (branch.toLowerCase() == "release/1.0.0") {
             currentWcfPRService = wcfPRServiceCount + 100
+        } else if (branch.toLowerCase() == "release/1.1.0") {
+            currentWcfPRService = wcfPRServiceCount + 200
+        } else if (branch.toLowerCase() == "ws-trust") {
+            currentWcfPRService = wcfPRServiceCount + 300
         }
 
         job.with { 
