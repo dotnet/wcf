@@ -56,18 +56,26 @@ class WcfUtilities
     
     // Outerloop jobs for WCF Core require an external server reference
     // Jenkins provides the correct parameters to the scripts to get the correct PR ID or branch
-    def addWcfOuterloopTestServiceSync(def job, String os, String branch, boolean isPR) { 
+    def addWcfOuterloopTestServiceSync(def out, def job, String os, String branch, boolean isPR) { 
 
         def operation = isPR ? "pr" : "branch"
         def currentWcfPRService = ++wcfPRServiceCount 
+	def branchName = branch
 
         // workaround after branchifying - each branch independently runs this file hence our serial
         // numbers will overlap on different branches
-        if (branch.toLowerCase() == "release/1.0.0") {
+        int lastSlash = branch.lastIndexOf('/')
+	if (lastSlash != -1)
+	{
+		branchName = branch.substring(lastSlash + 1)
+	}
+	out.println("branchName: ${branchName}")
+        if (branchName.toLowerCase() == '1.0.0') {
             currentWcfPRService = wcfPRServiceCount + 100
-        } else if (branch.toLowerCase() == "release/1.1.0") {
+        } else if (branchName.toLowerCase() == '1.1.0') {
             currentWcfPRService = wcfPRServiceCount + 200
-        } else if (branch.toLowerCase() == "ws-trust") {
+        } else if (branchName.toLowerCase() == 'ws-trust') {
+	out.println("in ws-trust condition")
             currentWcfPRService = wcfPRServiceCount + 300
         }
 
@@ -108,8 +116,8 @@ wcfUtilities = new WcfUtilities()
     
     // Create the new rolling job
     def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
-    
-    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, "*/${branch}", isPR)
+    out.println("branch is:  ${branch}")
+    wcfUtilities.addWcfOuterloopTestServiceSync(out, newJob, os, "${branch}", isPR)
     
     newJob.with {
         steps {
@@ -192,7 +200,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             def newJobName = "outerloop_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
             
-            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, "*/${branch}", isPR)
+            wcfUtilities.addWcfOuterloopTestServiceSync(out, newJob, os, "${branch}", isPR)
             
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
