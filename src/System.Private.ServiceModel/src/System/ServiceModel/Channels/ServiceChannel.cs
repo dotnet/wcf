@@ -17,8 +17,9 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    // This class is sealed because the constructor could call Abort, which is virtual
-    internal sealed class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IRequestChannel, IServiceChannel
+    // This class should be sealed because the constructor could call Abort, which is virtual.
+    // But .NET Core is adding some new virtual methods.
+    internal class ServiceChannel : CommunicationObject, IChannel, IClientChannel, IDuplexContextChannel, IOutputChannel, IAsyncRequestChannel, IServiceChannel
     {
         private int _activityCount = 0;
         private bool _allowInitializationUI = true;
@@ -1219,6 +1220,16 @@ namespace System.ServiceModel.Channels
         {
             ProxyOperationRuntime operation = UnhandledProxyOperation;
             return (Message)Call(message.Headers.Action, false, operation, new object[] { message }, Array.Empty<object>(), timeout);
+        }
+
+        public Task<Message> RequestAsync(Message message)
+        {
+            return RequestAsync(message, OperationTimeout);
+        }
+
+        public Task<Message> RequestAsync(Message message, TimeSpan timeout)
+        {
+            throw ExceptionHelper.PlatformNotSupported();   // Issue #1494
         }
 
         public IAsyncResult BeginRequest(Message message, AsyncCallback callback, object state)

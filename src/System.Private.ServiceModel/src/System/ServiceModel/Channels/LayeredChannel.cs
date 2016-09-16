@@ -4,6 +4,7 @@
 
 
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -57,12 +58,12 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerChannel.BeginClose(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            _innerChannel.EndClose(result);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnOpen(TimeSpan timeout)
@@ -72,12 +73,22 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerChannel.BeginOpen(timeout, callback, state);
+            throw ExceptionHelper.PlatformNotSupported();
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            _innerChannel.EndOpen(result);
+            throw ExceptionHelper.PlatformNotSupported();
+        }
+
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)_innerChannel).OpenAsync(timeout);
+        }
+
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)_innerChannel).CloseAsync(timeout);
         }
 
         private void OnInnerChannelFaulted(object sender, EventArgs e)
