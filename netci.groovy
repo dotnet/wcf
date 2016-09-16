@@ -109,7 +109,7 @@ wcfUtilities = new WcfUtilities()
     // Create the new rolling job
     def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
     
-    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, "*/${branch}", isPR)
+    wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branch, isPR)
     
     newJob.with {
         steps {
@@ -192,7 +192,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             def newJobName = "outerloop_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
             
-            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, "*/${branch}", isPR)
+            wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branch, isPR)
             
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
