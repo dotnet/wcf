@@ -3,7 +3,7 @@
   <PropertyGroup>
     <CoreFxCurrentRef>996189e56e6cc7e6f71a371e18efde7d4f8e104f</CoreFxCurrentRef>
     <CoreClrCurrentRef>5ceb13b6c4b9b6b95c0b77b59c0477475e7bba54</CoreClrCurrentRef>
-    <WcfCurrentRef>8373288e4fc75df9f37e54f8d6bab15d0e07a083</WcfCurrentRef>
+    <WCFCurrentRef>8373288e4fc75df9f37e54f8d6bab15d0e07a083</WCFCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
@@ -21,7 +21,7 @@
   <ItemGroup>
     <RemoteDependencyBuildInfo Include="WCF">
       <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(WcfCurrentRef)</CurrentRef>
+      <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreFx">
       <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(DependencyBranch)</BuildInfoPath>
