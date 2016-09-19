@@ -260,7 +260,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
                nameof(UPN_Available))]
-    [Issue(10)]
+    [Issue(10, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_Upn()
     {
@@ -406,7 +406,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
                nameof(UPN_Available))]
-    [Issue(10)]
+    [Issue(10, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void NegotiateStream_Http_With_ExplicitUserNameAndPassword_With_Upn()
     {
