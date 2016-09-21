@@ -836,11 +836,9 @@ namespace System.Runtime
         [NonEvent]
         public void MessageWrittenByEncoder(EventTraceActivity eventTraceActivity, int Size, object source)
         {
-            //TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
             SetActivityId(eventTraceActivity);
-            MessageWrittenByEncoder(Size, 
-            //payload.EventSource
-            "", "");
+            MessageWrittenByEncoder(Size, payload.EventSource, "");
         }
 
         public bool SessionIdleTimeoutIsEnabled()
@@ -1122,10 +1120,8 @@ namespace System.Runtime
         [NonEvent]
         public void ChannelFactoryCreated(object source)
         {
-            //TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
-            ChannelFactoryCreated(
-                //payload.EventSource
-                "", "");
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            ChannelFactoryCreated(payload.EventSource, "");
         }
 
         public bool ListenerOpenStartIsEnabled()
@@ -2030,20 +2026,20 @@ namespace System.Runtime
         [NonEvent]
         private void SetActivityId(EventTraceActivity eventTraceActivity)
         {
-            // if (eventTraceActivity != null)
-            // {
-            //     SetCurrentThreadActivityId(eventTraceActivity.ActivityId);
-            // }
+            if (eventTraceActivity != null)
+            {
+                SetCurrentThreadActivityId(eventTraceActivity.ActivityId);
+            }
         }
 
         [NonEvent]
         private void TransferActivityId(EventTraceActivity eventTraceActivity)
         {
-            // if (eventTraceActivity != null)
-            // {
-            //     Guid oldGuid;
-            //     SetCurrentThreadActivityId(eventTraceActivity.ActivityId, out oldGuid);
-            // }
+            if (eventTraceActivity != null)
+            {
+                Guid oldGuid;
+                SetCurrentThreadActivityId(eventTraceActivity.ActivityId, out oldGuid);
+            }
         }
 
         #region Keywords / Tasks / Opcodes
