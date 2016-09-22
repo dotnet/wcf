@@ -20,10 +20,11 @@
     <LineupPackageVersion Condition="'$(LineupPackageVersion)' == ''">1.0.3</LineupPackageVersion>
     <PlatformPackageVersion Condition="'$(PlatformPackageVersion)' == ''">1.0.2</PlatformPackageVersion>
 
-  <!-- by default all packages will use the same version which revs with respect to product version -->
-  <PackageVersion Condition="'$(PackageVersion)' == ''">4.3.0</PackageVersion>
+    <!-- by default all packages will use the same version which revs with respect to product version -->
+    <PackageVersion Condition="'$(PackageVersion)' == ''">4.3.0</PackageVersion>
+    <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
   </PropertyGroup>
-  
+
   <Import Condition="Exists('pkg/baseline/baseline.props')" Project="pkg/baseline/baseline.props" />
 
   <PropertyGroup Condition="'$(OsEnvironment)'=='Unix'">
@@ -37,13 +38,13 @@
 
   <!-- Add required legal files to packages -->
   <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
-    <File Condition="Exists('$(PackageLicenseFile)')" 
-	  	    Include="$(PackageLicenseFile)" >
+    <File Condition="Exists('$(PackageLicenseFile)')"
+          Include="$(PackageLicenseFile)" >
         <SkipPackageFileCheck>true</SkipPackageFileCheck>
-    </File>        
+    </File>
     <File Condition="Exists('$(PackageThirdPartyNoticesFile)')"
-	        Include="$(PackageThirdPartyNoticesFile)" >
+          Include="$(PackageThirdPartyNoticesFile)" >
         <SkipPackageFileCheck>true</SkipPackageFileCheck>
-    </File>        
+    </File>
   </ItemGroup>
 </Project>
