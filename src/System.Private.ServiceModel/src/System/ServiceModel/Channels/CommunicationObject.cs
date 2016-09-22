@@ -29,6 +29,8 @@ namespace System.ServiceModel.Channels
         private CommunicationState _state;
         private bool _onOpenAsyncCalled;
         private bool _onCloseAsyncCalled;
+        private bool _isSynchronousOpen;
+        private bool _isSynchronousClose;
 
         protected CommunicationObject()
             : this(new object())
@@ -144,6 +146,7 @@ namespace System.ServiceModel.Channels
 
         public void Close(TimeSpan timeout)
         {
+            _isSynchronousClose = true;
             CloseAsyncInternal(timeout).WaitForCompletion();
         }
 
@@ -319,6 +322,7 @@ namespace System.ServiceModel.Channels
 
         public void Open(TimeSpan timeout)
         {
+            _isSynchronousOpen = true;
             OpenAsyncInternal(timeout).WaitForCompletion();
         }
 
@@ -767,17 +771,28 @@ namespace System.ServiceModel.Channels
                             !GetType().Namespace.StartsWith("System.ServiceModel"),
                             String.Format("Type '{0}' is required to override OnCloseAsync", GetType()));
 #endif
+            // The code below executes only for custom CommunicationObjects because
+            // all WCF product code is required to override OnCloseAsync() and not to call
+            // this base implementation.
 
             // If we have already executed this code path, just return a completed Task.
-            // It means this type did not override OnCloseAsync or OnBeginClose.
+            // This is a safeguard against product code that failed to override OnCloseAsync().
             if (_onCloseAsyncCalled)
             {
                 return TaskHelpers.CompletedTask();
             }
 
-            // External types cannot override this method because it is not public.
-            // Redirect this call to the APM path.
             _onCloseAsyncCalled = true;
+
+            // External types cannot override this method because it is not public.
+            // If the caller started this open synchronously, we must use the synchronous
+            // methods they may have overridden, but we call then asynchronously.
+            if (_isSynchronousClose)
+            {
+                return CallActionAsync<TimeSpan>(OnClose, timeout);
+            }
+
+            // This began as an asynchronous close, so redirect this call to the APM path.
             return Task.Factory.FromAsync(OnBeginClose, OnEndClose, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
         }
 
@@ -789,18 +804,43 @@ namespace System.ServiceModel.Channels
                             !GetType().Namespace.StartsWith("System.ServiceModel"),
                             String.Format("Type '{0}' is required to override OnOpenAsync", GetType()));
 #endif
+            // The code below executes only for custom CommunicationObjects because
+            // all WCF product code is required to override OnOpenAsync() and not to call
+            // this base implementation.
 
             // If we have already executed this code path, just return a completed Task.
-            // It means this type did not override OnOpenAsync or OnBeginOpen.
+            // This is a safeguard against product code that failed to override OnOpenAsync().
             if (_onOpenAsyncCalled)
             {
                 return TaskHelpers.CompletedTask();
             }
 
-            // External types cannot override this method because it is not public.
-            // Redirect this call to the APM path.
             _onOpenAsyncCalled = true;
+
+            // External types cannot override this method because it is not public.
+            // If the caller started this open synchronously, we must use the synchronous
+            // methods they may have overridden, but we call then asynchronously.
+            if (_isSynchronousOpen)
+            {
+                return CallActionAsync<TimeSpan>(OnOpen, timeout);
+            }
+
+            // This began as an asynchronous open, so just redirect this call to the APM path.
             return Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
+        }
+
+        // Calls the given Action asynchronously.
+        private async Task CallActionAsync<TArg>(Action<TArg> action, TArg argument)
+        {
+            using (var scope = TaskHelpers.RunTaskContinuationsOnOurThreads())
+            {
+                if (scope != null)  // No need to change threads if already off of thread pool
+                {
+                    await Task.Yield(); // Move synchronous method off of thread pool
+                }
+
+                action(argument);
+            }
         }
     }
 
