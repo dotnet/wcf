@@ -814,11 +814,9 @@ namespace System.Runtime
         [NonEvent]
         public void MessageReadByEncoder(EventTraceActivity eventTraceActivity, int Size, object source)
         {
-            //TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
             SetActivityId(eventTraceActivity);
-            MessageReadByEncoder(Size, 
-            //payload.EventSource
-            "", "");
+            MessageReadByEncoder(Size, payload.EventSource, "");
         }
 
         public bool MessageWrittenByEncoderIsEnabled()
@@ -1750,7 +1748,7 @@ namespace System.Runtime
         [NonEvent]
         public void HandledException(string data1, string SerializedException)
         {
-            HandledException(data1, SerializedException, "Not A Real Domain");
+            HandledException(data1, SerializedException, "");
         }
 
         public bool ShipAssertExceptionMessageIsEnabled()
@@ -1768,7 +1766,7 @@ namespace System.Runtime
         [NonEvent]
         public void ShipAssertExceptionMessage(string data1)
         {
-            ShipAssertExceptionMessage(data1, "Not A Real Domain");
+            ShipAssertExceptionMessage(data1, "");
         }
 
         public bool ThrowingExceptionIsEnabled()
@@ -1786,7 +1784,7 @@ namespace System.Runtime
         [NonEvent]
         public void ThrowingException(string data1, string data2, string SerializedException)
         {
-            ThrowingException(data1, data2, SerializedException, "Not A Real Domain");
+            ThrowingException(data1, data2, SerializedException, "");
         }
 
         public bool UnhandledExceptionIsEnabled()
@@ -1804,7 +1802,7 @@ namespace System.Runtime
         [NonEvent]
         public void UnhandledException(string data1, string SerializedException)
         {
-            UnhandledException(data1, SerializedException, "Not A Real Domain");
+            UnhandledException(data1, SerializedException, "");
         }
 
         public bool TraceCodeEventLogCriticalIsEnabled()
@@ -1822,7 +1820,7 @@ namespace System.Runtime
         [NonEvent]
         public void TraceCodeEventLogCritical(string ExtendedData)
         {
-            TraceCodeEventLogCritical(ExtendedData, "Not A Real Domain");
+            TraceCodeEventLogCritical(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogErrorIsEnabled()
@@ -1840,7 +1838,7 @@ namespace System.Runtime
         [NonEvent]
         public void TraceCodeEventLogError(string ExtendedData)
         {
-            TraceCodeEventLogError(ExtendedData, "Not A Real Domain");
+            TraceCodeEventLogError(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogInfoIsEnabled()
@@ -1858,7 +1856,7 @@ namespace System.Runtime
         [NonEvent]
         public void TraceCodeEventLogInfo(string ExtendedData)
         {
-            TraceCodeEventLogInfo(ExtendedData, "Not A Real Domain");
+            TraceCodeEventLogInfo(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogVerboseIsEnabled()
@@ -1876,7 +1874,7 @@ namespace System.Runtime
         [NonEvent]
         public void TraceCodeEventLogVerbose(string ExtendedData)
         {
-            TraceCodeEventLogVerbose(ExtendedData, "Not A Real Domain");
+            TraceCodeEventLogVerbose(ExtendedData, "");
         }
 
         public bool TraceCodeEventLogWarningIsEnabled()
@@ -1894,7 +1892,7 @@ namespace System.Runtime
         [NonEvent]
         public void TraceCodeEventLogWarning(string ExtendedData)
         {
-            TraceCodeEventLogWarning(ExtendedData, "Not A Real Domain");
+            TraceCodeEventLogWarning(ExtendedData, "");
         }
 
         public bool HandledExceptionWarningIsEnabled()
@@ -1912,7 +1910,7 @@ namespace System.Runtime
         [NonEvent]
         public void HandledExceptionWarning(string data1, string SerializedException)
         {
-            HandledExceptionWarning(data1, SerializedException, "Not A Real Domain");
+            HandledExceptionWarning(data1, SerializedException, "");
         }
 
         public bool HandledExceptionErrorIsEnabled()
@@ -1930,7 +1928,7 @@ namespace System.Runtime
         [NonEvent]
         public void HandledExceptionError(string data1, string SerializedException)
         {
-            HandledExceptionError(data1, SerializedException, "Not A Real Domain");
+            HandledExceptionError(data1, SerializedException, "");
         }
 
         public bool HandledExceptionVerboseIsEnabled()
@@ -1948,7 +1946,7 @@ namespace System.Runtime
         [NonEvent]
         public void HandledExceptionVerbose(string data1, string SerializedException)
         {
-            HandledExceptionVerbose(data1, SerializedException, "Not A Real Domain");
+            HandledExceptionVerbose(data1, SerializedException, "");
         }
 
         public bool ThrowingExceptionVerboseIsEnabled()
@@ -1966,7 +1964,7 @@ namespace System.Runtime
         [NonEvent]
         public void ThrowingExceptionVerbose(string data1, string data2, string SerializedException)
         {
-            ThrowingExceptionVerbose(data1, data2, SerializedException, "Not A Real Domain");
+            ThrowingExceptionVerbose(data1, data2, SerializedException, "");
         }
 
         public bool EtwUnhandledExceptionIsEnabled()
@@ -1984,7 +1982,7 @@ namespace System.Runtime
         [NonEvent]
         public void EtwUnhandledException(string data1, string SerializedException)
         {
-            EtwUnhandledException(data1, SerializedException, "Not A Real Domain");
+            EtwUnhandledException(data1, SerializedException, "");
         }
 
         public bool ThrowingEtwExceptionVerboseIsEnabled()
@@ -2002,7 +2000,7 @@ namespace System.Runtime
         [NonEvent]
         public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException)
         {
-            ThrowingEtwExceptionVerbose(data1, data2, SerializedException, "Not A Real Domain");
+            ThrowingEtwExceptionVerbose(data1, data2, SerializedException, "");
         }
 
         public bool ThrowingEtwExceptionIsEnabled()
@@ -2020,7 +2018,7 @@ namespace System.Runtime
         [NonEvent]
         public void ThrowingEtwException(string data1, string data2, string SerializedException)
         {
-            ThrowingEtwException(data1, data2, SerializedException, "Not A Real Domain");
+            ThrowingEtwException(data1, data2, SerializedException, "");
         }
 
         [NonEvent]
