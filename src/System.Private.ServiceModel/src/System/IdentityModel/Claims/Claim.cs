@@ -146,7 +146,6 @@ namespace System.IdentityModel.Claims
             return new Claim(ClaimTypes.Thumbprint, SecurityUtils.CloneBuffer(thumbprint), Rights.PossessProperty, ClaimComparer.Thumbprint);
         }
 
-#if SUPPORTS_WINDOWSIDENTITY
         public static Claim CreateUpnClaim(string upn)
         {
             if (upn == null)
@@ -154,7 +153,6 @@ namespace System.IdentityModel.Claims
 
             return new Claim(ClaimTypes.Upn, upn, Rights.PossessProperty, ClaimComparer.Upn);
         }
-#endif // SUPPORTS_WINDOWSIDENTITY
 
         public static Claim CreateUriClaim(Uri uri)
         {

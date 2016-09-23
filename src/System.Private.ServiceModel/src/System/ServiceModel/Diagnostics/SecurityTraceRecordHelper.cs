@@ -40,5 +40,9 @@ namespace System.ServiceModel.Diagnostics
         internal static void TraceIdentityDeterminationFailure(EndpointAddress epr, Type identityVerifier)
         {
         }
+
+        internal static void TraceSpnToSidMappingFailure(string spn, Exception e)
+        {
+        }
     }
 }
