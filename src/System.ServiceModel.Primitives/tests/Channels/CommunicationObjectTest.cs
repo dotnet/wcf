@@ -13,9 +13,6 @@ using Xunit;
 
 public static class CommunicationObjectTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Sync_Open_Close_Methods_Called()
     {
@@ -46,9 +43,6 @@ public static class CommunicationObjectTest
                              expectedCloses, actualCloses));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
 
     public static void CommunicationObject_Async_Open_Close_Methods_Called()
@@ -85,9 +79,6 @@ public static class CommunicationObjectTest
                              expectedCloses, actualCloses));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Abort_Close_Methods_Called()
     {
@@ -114,9 +105,6 @@ public static class CommunicationObjectTest
 
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Sync_Open_Close_Events_Fire()
     {
@@ -147,9 +135,6 @@ public static class CommunicationObjectTest
                              expectedCloses, actualCloses));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Async_Open_Close_Events_Fire()
     {
@@ -185,9 +170,6 @@ public static class CommunicationObjectTest
                              expectedCloses, actualCloses));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Sync_Open_Close_States_Transition()
     {
@@ -250,9 +232,6 @@ public static class CommunicationObjectTest
                         data.StateLeaveOnClosed));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Async_Open_Close_States_Transition()
     {
@@ -320,9 +299,6 @@ public static class CommunicationObjectTest
                         data.StateLeaveOnClosed));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Sync_Open_Propagates_Exception()
     {
@@ -348,9 +324,6 @@ public static class CommunicationObjectTest
                                   exceptionMessage, actualException.Message));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Sync_Close_Propagates_Exception()
     {
@@ -378,9 +351,6 @@ public static class CommunicationObjectTest
                                   exceptionMessage, actualException.Message));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Async_Open_Propagates_Exception()
     {
@@ -408,9 +378,6 @@ public static class CommunicationObjectTest
                                   exceptionMessage, actualException.Message));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CommunicationObject_Async_Close_Propagates_Exception()
     {

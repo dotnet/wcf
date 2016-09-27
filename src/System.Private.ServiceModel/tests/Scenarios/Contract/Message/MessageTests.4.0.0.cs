@@ -15,9 +15,6 @@ public static class MessageTests
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "Test Custom_Message_RoundTrips.";
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void Custom_Message_RoundTrips()
@@ -59,9 +56,6 @@ public static class MessageTests
         factory.Close();
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void Echo_With_CustomClientMessageFormatter_RoundTrips_String()

@@ -18,9 +18,6 @@ using Xunit;
 
 public static class TextTests
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void CustomTextMessageEncoder_Http_RequestReply_Buffered()
@@ -59,9 +56,6 @@ public static class TextTests
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void CustomTextMessageEncoder_Http_RequestReply_Streamed()

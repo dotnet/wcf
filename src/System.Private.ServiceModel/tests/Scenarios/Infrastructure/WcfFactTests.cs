@@ -9,8 +9,6 @@
 
 // #define RUN_WCF_SKIP_TESTS
 
-#if !FULLXUNIT_NOTSUPPORTED // Not available in pseudo-xunit
-
 using System;
 using System.Runtime.InteropServices;
 using Infrastructure.Common;
@@ -118,5 +116,3 @@ public class WcfFactTests
         return true;
     }
 }
-
-#endif // !FULLXUNIT_NOTSUPPORTED

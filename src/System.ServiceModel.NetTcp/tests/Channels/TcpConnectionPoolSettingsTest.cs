@@ -11,9 +11,6 @@ using Xunit;
 
 public static class TcpConnectionPoolSettingsTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("")]
     [InlineData("testValue")]
@@ -26,9 +23,6 @@ public static class TcpConnectionPoolSettingsTest
         Assert.Equal<string>(groupName, settings.GroupName);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void GroupName_Property_Set_Null_Value_Throws()
     {
@@ -38,9 +32,6 @@ public static class TcpConnectionPoolSettingsTest
         Assert.Throws<ArgumentNullException>(() => settings.GroupName = null);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
     public static void IdleTimeout_Property_Sets(TimeSpan timeSpan)
@@ -52,9 +43,6 @@ public static class TcpConnectionPoolSettingsTest
         Assert.Equal<TimeSpan>(timeSpan, settings.IdleTimeout);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
     public static void IdleTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
@@ -65,9 +53,6 @@ public static class TcpConnectionPoolSettingsTest
         Assert.Throws<ArgumentOutOfRangeException>(() => settings.IdleTimeout = timeSpan);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
     public static void LeaseTimeout_Property_Sets(TimeSpan timeSpan)
@@ -79,9 +64,6 @@ public static class TcpConnectionPoolSettingsTest
         Assert.Equal<TimeSpan>(timeSpan, settings.LeaseTimeout);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
     public static void LeaseTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
@@ -92,10 +74,6 @@ public static class TcpConnectionPoolSettingsTest
         Assert.Throws<ArgumentOutOfRangeException>(() => settings.LeaseTimeout = timeSpan);
     }
 
-
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(1)]
@@ -108,9 +86,6 @@ public static class TcpConnectionPoolSettingsTest
         Assert.Equal<int>(value, settings.MaxOutboundConnectionsPerEndpoint);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(-1)]
     public static void MaxOutboundConnectionsPerEndpoint_Property_Set_Invalid_Value_Throws(int value)

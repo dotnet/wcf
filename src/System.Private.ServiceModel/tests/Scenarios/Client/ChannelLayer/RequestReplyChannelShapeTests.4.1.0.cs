@@ -15,29 +15,12 @@ public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
     //       returns a concrete type determined by the channel shape requested and other binding related settings.
     // The tests in this file use the IRequestChannel shape.
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
     public static void IRequestChannel_Https_NetHttpsBinding()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        bool ssl_Available = SSL_Available();
-
-        if (!root_Certificate_Installed ||
-            !ssl_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            Console.WriteLine("SSL_Available evaluated as {0}", ssl_Available);
-            return;
-        }
-#endif
         IChannelFactory<IRequestChannel> factory = null;
         IRequestChannel channel = null;
         Message replyMessage = null;

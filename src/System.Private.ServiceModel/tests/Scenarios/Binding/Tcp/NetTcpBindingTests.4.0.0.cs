@@ -9,9 +9,6 @@ using Xunit;
 public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
 {
     // Simple echo of a string using NetTcpBinding on both client and server with SecurityMode=None
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void SecurityModeNone_Echo_RoundTrips_String()

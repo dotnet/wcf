@@ -14,10 +14,7 @@ using Infrastructure.Common;
 using Xunit;
 
 public static partial class TypedProxyTests
-{    
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
+{
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext()
@@ -32,9 +29,6 @@ public static partial class TypedProxyTests
         Assert.True(success, "Test Scenario: ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext timed out");
     }
     
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext()
@@ -50,9 +44,6 @@ public static partial class TypedProxyTests
         Assert.True(success, "Test Scenario: ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
     }
     
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_DuplexCallback()

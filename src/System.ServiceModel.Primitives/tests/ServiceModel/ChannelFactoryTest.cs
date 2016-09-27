@@ -14,9 +14,6 @@ using Xunit;
 
 public class ChannelFactoryTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateChannel_Of_IRequestChannel_Using_CustomBinding()
     {
@@ -76,9 +73,6 @@ public class ChannelFactoryTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateChannel_Of_IRequestChannel_Using_BasicHttpBinding_Creates_Unique_Instances()
     {
@@ -136,9 +130,6 @@ public class ChannelFactoryTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void ChannelFactory_Verify_CommunicationStates()
     {
@@ -185,9 +176,6 @@ public class ChannelFactoryTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     // Create the channel factory using BasicHttpBinding and open the channel using a user generated interface
     public static void CreateChannel_Of_Typed_Proxy_Using_BasicHttpBinding()
@@ -217,9 +205,6 @@ public class ChannelFactoryTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void ChannelFactory_Async_Open_Close()
     {
@@ -250,9 +235,6 @@ public class ChannelFactoryTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(true)]
     [InlineData(false)]

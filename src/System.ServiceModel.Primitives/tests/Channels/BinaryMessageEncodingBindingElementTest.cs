@@ -12,9 +12,6 @@ using Xunit;
 
 public static class BinaryMessageEncodingBindingElementTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Default_Ctor_Initializes_Properties()
     {
@@ -28,9 +25,6 @@ public static class BinaryMessageEncodingBindingElementTest
             "BinaryEncodingBindingElement_DefaultCtor: Assert property 'XmlDictionaryReaderQuotas' == default value failed.");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(CompressionFormat.Deflate)]
     [InlineData(CompressionFormat.GZip)]
@@ -44,9 +38,6 @@ public static class BinaryMessageEncodingBindingElementTest
         // whether or not the CompressionFormat is valid for it. 
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(1)]
@@ -58,9 +49,6 @@ public static class BinaryMessageEncodingBindingElementTest
         Assert.Equal<int>(value, bindingElement.MaxSessionSize);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(-1)]
     [InlineData(int.MinValue)]
@@ -70,9 +58,6 @@ public static class BinaryMessageEncodingBindingElementTest
         Assert.Throws<ArgumentOutOfRangeException>(() => bindingElement.MaxSessionSize = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidBinaryMessageEncoderMessageVersions", MemberType = typeof(TestData))]
     public static void MessageVersion_Property_Sets(MessageVersion version)
@@ -82,9 +67,6 @@ public static class BinaryMessageEncodingBindingElementTest
         Assert.Equal<MessageVersion>(version, bindingElement.MessageVersion);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidBinaryMessageEncoderMessageVersions", MemberType = typeof(TestData))]
     public static void MessageVersion_Property_Set_Invalid_Value_Throws(MessageVersion version)
@@ -93,9 +75,6 @@ public static class BinaryMessageEncodingBindingElementTest
         Assert.Throws<InvalidOperationException>(() => bindingElement.MessageVersion = version);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void MessageVersion_Property_Set_Null_Value_Throws()
     {

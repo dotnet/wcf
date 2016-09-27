@@ -10,9 +10,6 @@ using Xunit;
 
 public static class OperationBehaviorTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void IOperationBehavior_Methods_AreCalled()
     {

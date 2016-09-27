@@ -31,9 +31,6 @@ public partial class MessageInterceptorTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void CustomBinding_Message_Interceptor()

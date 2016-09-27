@@ -24,9 +24,6 @@ public static partial class TypedProxyTests
     private const string clientMessage = "[client] This is my request.";
     static TimeSpan maxTestWaitTime = TimeSpan.FromSeconds(10);
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncBeginEnd_Call()
@@ -37,9 +34,6 @@ public static partial class TypedProxyTests
         ServiceContract_TypedProxy_AsyncBeginEnd_Call(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call()
@@ -48,9 +42,6 @@ public static partial class TypedProxyTests
         ServiceContract_TypedProxy_AsyncBeginEnd_Call(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback()
@@ -62,9 +53,6 @@ public static partial class TypedProxyTests
         ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback()
@@ -73,9 +61,6 @@ public static partial class TypedProxyTests
         ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithSingleThreadedSyncContext()
@@ -90,9 +75,6 @@ public static partial class TypedProxyTests
         Assert.True(success, "Test Scenario: TypedProxy_AsyncBeginEnd_Call_WithSingleThreadedSyncContext timed out");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncTask_Call()
@@ -104,9 +86,6 @@ public static partial class TypedProxyTests
         ServiceContract_TypedProxy_AsyncTask_Call(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncTask_Call");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call()
@@ -116,9 +95,6 @@ public static partial class TypedProxyTests
         ServiceContract_TypedProxy_AsyncTask_Call(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncTask_Call_WithSingleThreadedSyncContext()
@@ -134,9 +110,6 @@ public static partial class TypedProxyTests
         Assert.True(success, "Test Scenario: TypedProxy_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_Synchronous_Call()
@@ -169,9 +142,6 @@ public static partial class TypedProxyTests
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxySynchronousCall FAILED with the following errors: {0}", errorBuilder));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_Synchronous_Call_WithSingleThreadedSyncContext()
@@ -186,9 +156,6 @@ public static partial class TypedProxyTests
         Assert.True(success, "Test Scenario: TypedProxy_Synchronous_Call_WithSingleThreadedSyncContext timed out");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_Task_Call_WithSyncContext_ContinuesOnSameThread()
@@ -240,9 +207,6 @@ public static partial class TypedProxyTests
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TaskCallWithSynchContextContinuesOnSameThread FAILED with the following errors: {0}", errorBuilder));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannel()
@@ -302,9 +266,6 @@ public static partial class TypedProxyTests
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeRequestChannelViaProxy FAILED with the following errors: {0}", errorBuilder));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannelTimeout()
@@ -364,9 +325,6 @@ public static partial class TypedProxyTests
         Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeIRequestChannelViaProxyTimeout FAILED with the following errors: {0}", errorBuilder));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannelAsync()
