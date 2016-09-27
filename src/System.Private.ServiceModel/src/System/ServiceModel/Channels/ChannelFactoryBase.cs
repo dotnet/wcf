@@ -198,18 +198,19 @@ namespace System.ServiceModel.Channels
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             foreach (IChannel channel in currentChannels)
             {
-                IAsyncCommunicationObject iAsyncChannel = channel as IAsyncCommunicationObject;
-                if (iAsyncChannel != null)
-                {
-                    await iAsyncChannel.CloseAsync(timeoutHelper.RemainingTime());
-                }
-                else
-                {
-                    channel.Close(timeoutHelper.RemainingTime());
-                }
+                await CloseOtherAsync(channel, timeoutHelper.RemainingTime());
             }
 
-            await Task.Factory.FromAsync(_channels.BeginClose, _channels.EndClose, timeout, TaskCreationOptions.None);
+            // CommunicationObjectManager (_channels) is not a CommunicationObject,
+            // so just choose existing synchronous or asynchronous close
+            if (_isSynchronousClose)
+            {
+                await TaskHelpers.CallActionAsync(_channels.Close, timeoutHelper.RemainingTime());
+            }
+            else
+            {
+                await Task.Factory.FromAsync(_channels.BeginClose, _channels.EndClose, timeoutHelper.RemainingTime(), TaskCreationOptions.None);
+            }
         }
     }
 }
