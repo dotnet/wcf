@@ -215,7 +215,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
+    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows))]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {
