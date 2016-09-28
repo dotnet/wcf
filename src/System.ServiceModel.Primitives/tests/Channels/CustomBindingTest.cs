@@ -11,9 +11,6 @@ using Xunit;
 
 public static class CustomBindingTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     // Create the channel factory and open the channel for the request-reply message exchange pattern.
     public static void RequestReplyChannelFactory_Open()
@@ -39,9 +36,6 @@ public static class CustomBindingTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("MyCustomBinding")]
     // Create a CustomBinding and set/get its name to validate it was created and usable.
@@ -53,9 +47,6 @@ public static class CustomBindingTest
         Assert.Equal<string>(bindingName, actualBindingName);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("")]
     [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax

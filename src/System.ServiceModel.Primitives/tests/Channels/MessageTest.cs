@@ -13,9 +13,6 @@ public static class MessageTest
 {
     private const string s_action = "http://tempuri.org/someserviceendpoint";
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("MessageVersionsWithEnvelopeAndAddressingVersions", MemberType = typeof(TestData))]
     public static void MessageVersion_Verify_AddressingVersions_And_EnvelopeVersions(MessageVersion messageVersion, EnvelopeVersion envelopeVersion, AddressingVersion addressingVersion)
@@ -24,9 +21,6 @@ public static class MessageTest
         Assert.Equal<AddressingVersion>(addressingVersion, messageVersion.Addressing);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateMessageWithSoap12WSAddressing10_WithNoBody()
     {
@@ -52,9 +46,6 @@ public static class MessageTest
         Assert.Equal<string>(content, messageBody);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateMessageWithSoap12WSAddressing10_WithCustomBodyWriter()
     {
@@ -70,9 +61,6 @@ public static class MessageTest
         Assert.Equal<string>(string.Empty, messageBody);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     // Get the MessageVersion from a Custom binding
     public static void GetMessageVersion()

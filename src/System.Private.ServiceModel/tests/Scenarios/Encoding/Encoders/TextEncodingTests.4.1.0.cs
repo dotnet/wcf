@@ -11,9 +11,6 @@ using Xunit;
 
 public static partial class TextEncodingTests
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void TextMessageEncoder_WrongContentTypeResponse_Throws_ProtocolException()

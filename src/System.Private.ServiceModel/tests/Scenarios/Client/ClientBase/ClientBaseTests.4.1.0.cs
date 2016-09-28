@@ -12,9 +12,6 @@ using Xunit;
 
 public static partial class ClientBaseTests
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_Echo_Cookie()
@@ -57,9 +54,6 @@ public static partial class ClientBaseTests
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_SetCookieOnServerSide()

@@ -18,9 +18,6 @@ public static class TypedProxyDuplexTests
     //              IRequestChannel (for a request-reply message exchange pattern)
     //              IDuplexChannel (for a two-way duplex message exchange pattern)
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_AsyncTask_CallbackReturn()
