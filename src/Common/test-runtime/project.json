@@ -1,11 +1,9 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.0.2-beta-24529-03",
-    "Microsoft.NETCore.Targets": "1.0.3-beta-24529-03",
+    "NETStandard.Library": "1.6.1-beta-24529-03",
     "Microsoft.NETCore.TestHost": "1.2.0-beta-24529-02",
     "Microsoft.NETCore.Runtime.CoreCLR": "1.2.0-beta-24529-02",
     "System.Diagnostics.Contracts": "4.3.0-beta-24529-03",
-    "System.IO.Compression": "4.3.0-beta-24529-03",
     "System.Runtime.InteropServices.RuntimeInformation": "4.3.0-beta-24529-03",
     "System.Linq.Parallel": "4.3.0-beta-24529-03",
     "System.Security.Cryptography.X509Certificates": "4.3.0-beta-24529-03",
@@ -21,7 +19,7 @@
     "System.Net.Security": "4.3.0-beta-24529-03"
   },
   "frameworks": {
-    "netstandard1.3": {},
+    "netstandard1.3": { },
     "uap10.0": {
       "dependencies": {
         "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.1-beta-000547-00",
