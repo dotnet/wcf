@@ -4,9 +4,7 @@
     "Microsoft.NETCore.TestHost": "1.2.0-beta-24529-02",
     "Microsoft.NETCore.Runtime.CoreCLR": "1.2.0-beta-24529-02",
     "System.Diagnostics.Contracts": "4.3.0-beta-24529-03",
-    "System.Runtime.InteropServices.RuntimeInformation": "4.3.0-beta-24529-03",
     "System.Linq.Parallel": "4.3.0-beta-24529-03",
-    "System.Security.Cryptography.X509Certificates": "4.3.0-beta-24529-03",
     "coveralls.io": "1.4",
     "OpenCover": "4.6.519",
     "ReportGenerator": "2.4.3",
@@ -22,7 +20,7 @@
     "netstandard1.3": { },
     "uap10.0": {
       "dependencies": {
-        "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.1-beta-000547-00",
+        "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
         "System.Console": "4.3.0-beta-24529-03",
         "microsoft.xunit.runner.uwp": "1.0.3-prerelease-00614-01",
         "Microsoft.DotNet.TestILC": {
