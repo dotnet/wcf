@@ -863,7 +863,10 @@ namespace System.ServiceModel.Security
                 certs = store.Certificates.Find(findType, findValue, false);
                 if (certs.Count == 1)
                 {
-                    return new X509Certificate2(certs[0].Handle);
+                    // dotnet/wcf#1574
+                    // ORIGINAL CODE: 
+                    // return new X509Certificate2(certs[0].Handle);
+                    return certs[0].CloneCertificateInternal();
                 }
                 if (throwIfMultipleOrNoMatch)
                 {
