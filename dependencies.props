@@ -1,20 +1,20 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>996189e56e6cc7e6f71a371e18efde7d4f8e104f</CoreFxCurrentRef>
-    <CoreClrCurrentRef>5ceb13b6c4b9b6b95c0b77b59c0477475e7bba54</CoreClrCurrentRef>
-    <WcfCurrentRef>8373288e4fc75df9f37e54f8d6bab15d0e07a083</WcfCurrentRef>
+    <CoreFxCurrentRef>26ddf2989938504c5bcd0d0252e8b4f5f702d827</CoreFxCurrentRef>
+    <CoreClrCurrentRef>26ddf2989938504c5bcd0d0252e8b4f5f702d827</CoreClrCurrentRef>
+    <WcfCurrentRef>26ddf2989938504c5bcd0d0252e8b4f5f702d827</WcfCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <CoreFxExpectedPrerelease>beta-24512-01</CoreFxExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview1-24530-03</CoreFxExpectedPrerelease>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
   <PropertyGroup>
     <BaseDotNetBuildInfo>build-info/dotnet/</BaseDotNetBuildInfo>
-    <DependencyBranch>master</DependencyBranch>
+    <DependencyBranch>release/1.1.0</DependencyBranch>
     <CurrentRefXmlPath>$(MSBuildThisFileFullPath)</CurrentRefXmlPath>
   </PropertyGroup>
 
