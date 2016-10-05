@@ -28,6 +28,8 @@
       <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
       <Name>Infrastructure.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="$(WcfPrimitivesPkgProj)" />
+    <ProjectReference Include="$(WcfDuplexPkgProj)" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

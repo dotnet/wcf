@@ -23,6 +23,11 @@
   <ItemGroup>
     <None Include="project.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(WcfDuplexPkgProj)" />
+    <ProjectReference Include="$(WcfHttpPkgProj)" />
+    <ProjectReference Include="$(WcfPrimitivesPkgProj)" />
+  </ItemGroup>
   <ItemGroup>  
     <None Include="UnitTests.Common.rd.xml">  
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>  

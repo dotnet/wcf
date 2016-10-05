@@ -25,6 +25,9 @@
     <None Include="testproperties.props" />
     <None Include="testproperties.targets" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(WcfPrimitivesPkgProj)" />
+  </ItemGroup>
   <Import Project="testproperties.props" />
   <Import Project="testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />

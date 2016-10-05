@@ -17,8 +17,7 @@
       "BaselineVersion": "4.3.0",
       "AssemblyVersionInPackageVersion": {
         "4.0.0.0": "4.0.0",
-        "4.0.1.0": "4.0.1",
-        "4.0.2.0": "4.3.0"
+        "4.0.1.0": "4.0.1"
       }
     },
     "System.ServiceModel.Http": {
@@ -77,8 +76,7 @@
       "AssemblyVersionInPackageVersion": {
         "3.9.0.0": "3.9.0",
         "4.0.0.0": "4.0.0",
-        "4.0.1.0": "4.0.1",
-        "4.0.2.0": "4.3.0"
+        "4.0.1.0": "4.0.1"
       }
     }
   },
