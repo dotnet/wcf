@@ -9,7 +9,7 @@ using System.Text;
 using Infrastructure.Common;
 using Xunit;
 
-public static class FaultExceptionTests
+public static partial class FaultExceptionTests
 {
     [WcfFact]
     [OuterLoop]

@@ -4,6 +4,45 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
+namespace System.Collections.Generic {
+      public partial class SynchronizedCollection<T> : IList<T>, IList
+      {
+           public SynchronizedCollection() { }
+           public SynchronizedCollection(object syncRoot) { }
+           public SynchronizedCollection(object syncRoot, IEnumerable<T> list) { }
+           public SynchronizedCollection(object syncRoot, params T[] list) { }
+           public int Count { get { return default(int); } }
+           protected List<T> Items { get { return default(List<T>); } }
+           public object SyncRoot { get { return default(object); } }
+           public T this[int index] { get {return default(T); } set { } }
+           public void Add(T item) { }
+           public void Clear() { }
+           public void CopyTo(T[] array, int index) {}
+           public bool Contains(T item) { return default(bool); }
+           public IEnumerator<T> GetEnumerator() { return default(IEnumerator<T>); }
+           public int IndexOf(T item) { return default(int); }
+           public void Insert(int index, T item) { }
+           public bool Remove(T item) { return default(bool); }
+           public void RemoveAt(int index) { }
+           protected virtual void ClearItems() { }
+           protected virtual void InsertItem(int index, T item) { }
+           protected virtual void RemoveItem(int index) { }
+           protected virtual void SetItem(int index, T item) { }
+           bool ICollection<T>.IsReadOnly { get { return default(bool); } }
+           IEnumerator IEnumerable.GetEnumerator() { return default(IEnumerator); }
+           bool ICollection.IsSynchronized { get { return default(bool); } }
+           object ICollection.SyncRoot { get { return default(object); } }
+           void ICollection.CopyTo(Array array, int index) {}
+           object IList.this[int index] { get { return default(object); } set { }}
+           bool IList.IsReadOnly { get { return default(bool); } }
+           bool IList.IsFixedSize { get { return default(bool); } }
+           int IList.Add(object value) { return default(int); }
+           bool IList.Contains(object value) { return default(bool); }
+           int IList.IndexOf(object value) { return default(int); }
+           void IList.Insert(int index, object value) { }
+           void IList.Remove(object value) { }
+      }
+}
 namespace System.IdentityModel.Selectors {
   public abstract partial class X509CertificateValidator {
     protected X509CertificateValidator() { }
@@ -1355,6 +1394,7 @@ namespace System.ServiceModel.Dispatcher
         public ClientOperation(System.ServiceModel.Dispatcher.ClientRuntime parent, string name, string action) { }
         public ClientOperation(System.ServiceModel.Dispatcher.ClientRuntime parent, string name, string action, string replyAction) { }
         public string Action { get { return default(string); } }
+        public System.Collections.Generic.SynchronizedCollection<FaultContractInfo> FaultContractInfos { get { return default(System.Collections.Generic.SynchronizedCollection<FaultContractInfo>); } }
         public System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.IParameterInspector> ClientParameterInspectors { get { return default(System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.IParameterInspector>); } }
         public bool DeserializeReply { get { return default(bool); } set { } }
         public System.ServiceModel.Dispatcher.IClientMessageFormatter Formatter { get { return default(System.ServiceModel.Dispatcher.IClientMessageFormatter); } set { } }
@@ -1398,6 +1438,12 @@ namespace System.ServiceModel.Dispatcher
     public partial class EndpointDispatcher
     {
         internal EndpointDispatcher() { }
+    }
+    public partial class FaultContractInfo
+    {
+         public FaultContractInfo(string action, Type detail) {}
+         public string Action { get { return default(string); } }
+         public Type Detail { get { return default(Type); } }
     }
     public partial interface IClientMessageFormatter
     {
