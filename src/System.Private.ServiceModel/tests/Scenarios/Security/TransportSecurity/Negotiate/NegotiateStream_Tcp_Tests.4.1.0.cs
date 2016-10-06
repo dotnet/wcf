@@ -285,7 +285,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                nameof(Domain_Available),
                nameof(UPN_Available))]
     [Issue(1235, Framework = FrameworkID.NetNative)]
-    [Issue(1262)]
     [OuterLoop]
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword_With_Upn()
     {
