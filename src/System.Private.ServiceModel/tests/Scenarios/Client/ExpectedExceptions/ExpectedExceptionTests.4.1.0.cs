@@ -28,7 +28,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         string nonExistentHost = "http://nonexisthost/WcfService/WindowsCommunicationFoundation";
 
         BasicHttpBinding binding = new BasicHttpBinding();
-        binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
+        binding.SendTimeout = TimeSpan.FromMilliseconds(20000);
 
         EndpointNotFoundException exception = Assert.Throws<EndpointNotFoundException>(() =>
         {
