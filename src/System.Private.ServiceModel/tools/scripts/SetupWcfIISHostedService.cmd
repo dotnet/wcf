@@ -5,6 +5,7 @@ set _id=%1
 set _idMaster=Master
 set _wcfTestDir=c:\WCFTest
 set _repoHome=c:\git
+set _pathIISHostedWcfService=src\System.Private.ServiceModel\tools\IISHostedWcfService
 set _currentRepo=%_repoHome%\wcf%_id%
 set _masterRepo=%_repoHome%\wcf%_idMaster%
 set _prServiceName=PRService%_id%
@@ -46,6 +47,10 @@ if /I '%arg:~0,2%'=='/p' (
     set _currentRepo=%arg:~3%
     goto :NextArg
 )
+
+echo IGNORED unknown argument ^(use /? for help^): %arg%
+goto :NextArg
+
 :NoMoreArg
 
 :: Make sure this script is running in elevated
@@ -71,7 +76,7 @@ echo Deleting WCF repo at %_currentRepo% if exists and associated application po
 %_appcmd% delete app "Default Web Site/%_wcfServiceName%" >nul
 %_appcmd% delete apppool %_wcfServiceName% >nul
 if EXIST %_currentRepo% if DEFINED _useExistingRepo (echo User provided repo is not deleted: %_currentRepo%) else (rmdir /s /q %_currentRepo%)
-if EXIST %_wcfTestDir% if /I '%_masterRepo%'=='%_currentRepo%' rmdir /s /q %_wcfTestDir%
+if EXIST %_wcfTestDir% if /I '%_id%'=='%_idMaster%' rmdir /s /q %_wcfTestDir%
 echo Clean up done.
 if DEFINED _cleanup goto :Done
 
@@ -106,16 +111,19 @@ echo Create IIS application pool: %_wcfServiceName%
 call :Run %_appcmd% add apppool /name:%_wcfServiceName% /processModel.IdentityType:LocalSystem /managedRuntimeVersion:v4.0 /managedPipelineMode:Integrated
 if ERRORLEVEL 1 goto :Failure
 echo Create IIS application: %_wcfServiceName%
-call :Run %_appcmd% add app /site.name:"Default Web Site" /path:/%_wcfServiceName% /physicalPath:%_currentRepo%\src\System.Private.ServiceModel\tools\IISHostedWcfService /applicationPool:%_wcfServiceName% /enabledProtocols:"http,net.tcp"
+call :Run %_appcmd% add app /site.name:"Default Web Site" /path:/%_wcfServiceName% /physicalPath:%_currentRepo%\%_pathIISHostedWcfService% /applicationPool:%_wcfServiceName% /enabledProtocols:"http,net.tcp"
 if ERRORLEVEL 1 goto :Failure
 
 :: Grant app pool %_wcfServiceName% "Read and Execute" access to the IISHostedWcfService and its subdirectories
-echo Grant app pool %_wcfServiceName% "Read and Execute" access to the IISHostedWcfService and its subdirectories
-call :Run icacls %_currentRepo%\src\System.Private.ServiceModel\tools\IISHostedWcfService /grant:r "IIS APPPOOL\%_wcfServiceName%":(OI)(CI)RX /Q
+echo Grant app pool %_wcfServiceName% "Read and Execute" access to %_currentRepo%\%_pathIISHostedWcfService%
+call :Run icacls %_currentRepo%\%_pathIISHostedWcfService% /grant:r "IIS APPPOOL\%_wcfServiceName%":(OI)(CI)RX /Q
 if ERRORLEVEL 1 goto :Failure
 
-:: Setup PR service only if this is a master repo
-if /I NOT '%_masterRepo%'=='%_currentRepo%' goto :SkipPRService
+:: Setup PR service only if this is a master service
+if /I NOT '%_id%'=='%_idMaster%' (
+    echo SKIP creating PRService. PRService will be created when Id=%_idMaster%.
+    goto :SkipPRService
+)
 
 :: Create a new application pool and an application for the PR service
 echo Create IIS application pool: %_prServiceName%
@@ -133,18 +141,17 @@ if ERRORLEVEL 1 goto :Failure
 :SkipPRService
 
 :: Grant master PR service's app pool access to current repo if master PRService exists
-if /I '%_masterRepo%'=='%_currentRepo%' goto :SkipGrantAccess
-if NOT EXIST %_masterRepo% goto :SkipGrantAccess
+if /I '%_id%'=='%_idMaster%' goto :SkipGrantAccess
 %_appcmd% list apppool %_prServiceMaster% >nul
-if ERRORLEVEL 1 goto :SkipGrantAccess
+if ERRORLEVEL 1 (
+    echo SKIP granting PRService M permission to current repo. PRService not found: %_prServiceMaster%.
+    goto :SkipGrantAccess
+)
 echo Grant master PRService app pool: %_prServiceMaster% "Modify" access to %_currentRepo% and its sudirectories
 call :Run icacls %_currentRepo% /grant:r "IIS APPPOOL\%_prServiceMaster%":(OI)(CI)M /Q
 if ERRORLEVEL 1 goto :Failure
 
 :SkipGrantAccess
-
-:: Install certificates if %_wcfTestDir% does not exist; otherwise, assume certs are installed already
-if EXIST %_wcfTestDir% goto :SkipCertInstall
 
 :: Make sure there is an HTTPS binding in IIS site "Default Web Site"
 %_appcmd% list site "Default Web Site" /text:* | findstr /i bindings | findstr /i https >nul
@@ -152,6 +159,16 @@ if ERRORLEVEL 1 (
     echo Add an HTTPS binding to "Default Web Site"
     call :Run %_appcmd% set site "Default Web Site" /+bindings.[protocol='https',bindingInformation='*:443:']
     if ERRORLEVEL 1 goto :Failure
+    :: Delete %_wcfTestDir% to force certificate regeneration later, which will fill in correct cert for https binding
+    if EXIST %_wcfTestDir% rmdir /s /q %_wcfTestDir%
+) else (
+    echo Found and will use existing HTTPS binding in "Default Web Site"
+)
+
+:: Install certificates if %_wcfTestDir% does not exist; otherwise, assume certs are installed already
+if EXIST %_wcfTestDir% (
+    echo SKIP certificate generation. To force certificate generation, delete %_wcfTestDir% before running this script.
+    goto :SkipCertInstall
 )
 
 :: Use master repo for cert generation if master repo exists; otherwise use current repo
@@ -162,6 +179,7 @@ if EXIST %_masterRepo% (
     set _certRepo=%_currentRepo%
     set _certService=%_wcfServiceName%
 )
+echo Use %_certService% for certificate service
 
 echo Build CertificateGenerator tool
 call :Run %_certRepo%\src\System.Private.ServiceModel\tools\scripts\BuildCertUtil.cmd
