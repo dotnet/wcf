@@ -11,9 +11,6 @@ using Xunit;
 
 public static partial class DataContractTests
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void CustomBinding_DefaultSettings_Echo_RoundTrips_DataContract()

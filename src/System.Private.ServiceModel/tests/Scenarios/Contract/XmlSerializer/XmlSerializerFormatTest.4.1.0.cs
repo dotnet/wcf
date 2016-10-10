@@ -10,9 +10,6 @@ using Xunit;
 
 public static partial class XmlSerializerFormatTests
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void MessageHeader_ResponseTypeWithUsesMessageHeaderAttribute()
@@ -40,10 +37,6 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(702)]
-#endif
     [WcfFact]
     [OuterLoop]
     [Issue(702, Framework = FrameworkID.NetCore | FrameworkID.NetNative)]
@@ -72,9 +65,6 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void OperationContextScope_HttpRequestCustomMessageHeader_RoundTrip_Verify()

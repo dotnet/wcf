@@ -12,6 +12,10 @@
     
     <Assembly Name="System.Private.ServiceModel">
       <Namespace Name="System.ServiceModel">
+        <!-- All ICommunicationObject implementations require reflection -->
+        <Type Name="ICommunicationObject" Dynamic="Required All" >
+           <Subtypes Browse="All" />
+        </Type>
         <Type Name="BasicHttpBinding" Dynamic="Required All" />
         <!-- WCF attributes must be reflectable to instantiate Attribute from CustomAttributeData -->
         <Type Name="FaultContractAttribute" Dynamic="Required All" >

@@ -92,7 +92,7 @@ namespace Infrastructure.Common
         }
         
         // Returns 'true' if the client code is executing on a Windows OS
-        private static bool Is_Windows()
+        public static bool Is_Windows()
         {
             return GetConditionValue(nameof(Is_Windows),
                                      ConditionalTestDetectors.IsWindows);

@@ -67,5 +67,9 @@ namespace System.ServiceModel.Diagnostics
         internal static void TraceCloseResponseMessageSent(SecurityToken sessionToken, EndpointAddress remoteTarget)
         {
         }
+        
+        internal static void TraceSpnToSidMappingFailure(string spn, Exception e)
+        {
+        }
     }
 }

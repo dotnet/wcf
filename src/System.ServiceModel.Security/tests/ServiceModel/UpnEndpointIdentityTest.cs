@@ -10,21 +10,14 @@ using Xunit;
 
 public static class UpnEndpointIdentityTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("")]
     [InlineData("test@wcf.example.com")]
-    [Issue(1454, Framework = FrameworkID.NetNative)]
     public static void Ctor_UpnName(string upn)
     {
         UpnEndpointIdentity upnEndpointEntity = new UpnEndpointIdentity(upn);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_NullUpn()
     {

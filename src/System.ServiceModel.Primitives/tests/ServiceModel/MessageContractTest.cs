@@ -10,9 +10,6 @@ using Xunit;
 
 public static class MessageContractTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Default_Ctor_Initializes_Properties()
     {
@@ -26,9 +23,6 @@ public static class MessageContractTest
         Assert.True(messageCA.WrapperNamespace == null, "WrapperNamespace should be null");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(true)]
     [InlineData(false)]
@@ -40,9 +34,6 @@ public static class MessageContractTest
         Assert.Equal(isWrapped, messageCA.IsWrapped);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("testWrapperName")]
     public static void WrapperName_Property_Sets(string wrapperName)
@@ -53,9 +44,6 @@ public static class MessageContractTest
         Assert.Equal(wrapperName, messageCA.WrapperName);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("")]
     public static void WrapperName_Property_Sets_Throws_Argument(string wrapperName)
@@ -64,9 +52,6 @@ public static class MessageContractTest
         Assert.Throws<ArgumentOutOfRangeException>(() => messageCA.WrapperName = wrapperName);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     public static void WrapperName_Property_Sets_Throws_ArgumentNull(string wrapperName)
@@ -75,9 +60,6 @@ public static class MessageContractTest
         Assert.Throws<ArgumentNullException>(() => messageCA.WrapperName = wrapperName);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("http://www.contoso.com")]
     [InlineData("testNamespace")]
@@ -91,9 +73,6 @@ public static class MessageContractTest
         Assert.Equal(wrapperNamespace, messageCA.WrapperNamespace);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(true)]
     [InlineData(false)]

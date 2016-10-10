@@ -8,9 +8,6 @@ using Xunit;
 
 public static class CallbackBehaviorAttributeTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Default_Ctor_Initializes_Correctly()
     {
@@ -20,9 +17,6 @@ public static class CallbackBehaviorAttributeTest
         Assert.True(cba.UseSynchronizationContext, "UseSynchronizationContext should have been true");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(false)]
     [InlineData(true)]
@@ -33,9 +27,6 @@ public static class CallbackBehaviorAttributeTest
         Assert.Equal(value, cba.AutomaticSessionShutdown);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(false)]
     [InlineData(true)]

@@ -19,9 +19,6 @@ using Infrastructure.Common;
 
 public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void NonExistentAction_Throws_ActionNotSupportedException()
@@ -55,10 +52,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
     // SendTimeout is set to 5 seconds, the service waits 10 seconds to respond.
     // The client should throw a TimeoutException
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(1250)]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
@@ -89,9 +82,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
     
     // SendTimeout is set to 0, this should trigger a TimeoutException before even attempting to call the service.
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void SendTimeout_Zero_Throws_TimeoutException_Immediately()
@@ -121,9 +111,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         Assert.InRange<long>(watch.ElapsedMilliseconds, 0, 2000);
     }
     
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void FaultException_Throws_WithFaultDetail()
@@ -167,9 +154,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
     }
     
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void UnexpectedException_Throws_FaultException()
@@ -209,9 +193,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
     }
     
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void Abort_During_Implicit_Open_Closes_Async_Waiters()

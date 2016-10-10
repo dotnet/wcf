@@ -12,9 +12,6 @@ using Xunit;
 
 public class DuplexClientBaseTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void DuplexClientBase_Ctor_Initializes_State()
     {
@@ -29,9 +26,6 @@ public class DuplexClientBaseTest
         duplexClientBase.Abort();
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void DuplexClientBase_Aborts_Changes_CommunicationState()
     {
@@ -45,9 +39,6 @@ public class DuplexClientBaseTest
         Assert.Equal<CommunicationState>(CommunicationState.Closed, duplexClientBase.State);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateDuplexClientBase_NullContext_Throws()
     {
@@ -56,9 +47,6 @@ public class DuplexClientBaseTest
         Assert.Throws<ArgumentNullException>("callbackInstance", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(null, binding, endpoint); });
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateDuplexClientBase_NullBinding_Throws()
     {
@@ -67,9 +55,6 @@ public class DuplexClientBaseTest
         Assert.Throws<ArgumentNullException>("binding", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, null, endpoint); });
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateDuplexClientBase_NullEndpoint_Throws()
     {
@@ -78,9 +63,6 @@ public class DuplexClientBaseTest
         Assert.Throws<ArgumentNullException>("remoteAddress", () => { MyDuplexClientBase<IWcfDuplexService> duplexClientBase = new MyDuplexClientBase<IWcfDuplexService>(context, binding, null); });
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void CreateDuplexClientBase_Binding_Url_Mismatch_Throws()
     {

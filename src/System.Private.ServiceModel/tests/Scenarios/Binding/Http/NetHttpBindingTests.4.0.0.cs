@@ -10,9 +10,6 @@ using Xunit;
 
 public static class Binding_Http_NetHttpBindingTests
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()

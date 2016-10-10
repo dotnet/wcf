@@ -13,9 +13,6 @@ using Infrastructure.Common;
 
 public class WebSocketTests : ConditionalWcfTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -78,10 +75,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [OuterLoop]
     [Issue(526, Framework = FrameworkID.NetNative)]
@@ -175,10 +168,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
@@ -186,16 +175,6 @@ public class WebSocketTests : ConditionalWcfTest
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
         HttpsTransportBindingElement httpsTransportBindingElement = null;
         CustomBinding binding = null;
@@ -286,11 +265,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-    [ActiveIssue(470)]
-#endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(470)]
@@ -388,10 +362,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
@@ -485,9 +455,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -550,9 +517,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -593,9 +557,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -636,9 +597,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
@@ -683,10 +641,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
@@ -694,16 +648,6 @@ public class WebSocketTests : ConditionalWcfTest
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
         HttpsTransportBindingElement httpsTransportBindingElement = null;
         CustomBinding binding = null;
@@ -750,10 +694,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
@@ -761,16 +701,6 @@ public class WebSocketTests : ConditionalWcfTest
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
         HttpsTransportBindingElement httpsTransportBindingElement = null;
         CustomBinding binding = null;
@@ -819,10 +749,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
@@ -830,16 +756,6 @@ public class WebSocketTests : ConditionalWcfTest
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryBuffered()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = null;
         HttpsTransportBindingElement httpsTransportBindingElement = null;
         CustomBinding binding = null;
@@ -901,10 +817,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
@@ -912,16 +824,6 @@ public class WebSocketTests : ConditionalWcfTest
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         TextMessageEncodingBindingElement textMessageEncodingBindingElement = null;
         HttpsTransportBindingElement httpsTransportBindingElement = null;
         CustomBinding binding = null;
@@ -983,10 +885,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
@@ -1037,10 +935,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
@@ -1092,10 +986,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
@@ -1160,10 +1050,6 @@ public class WebSocketTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
@@ -1230,10 +1116,6 @@ public class WebSocketTests : ConditionalWcfTest
     // WCF detects when a callback is used in the channel construction process and switches to use WebSockets.
     // When not using a callback you can still force WCF to use WebSockets.
     // This test verifies that it actually uses WebSockets when not using a callback.
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(526)]
-#endif
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7

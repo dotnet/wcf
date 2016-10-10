@@ -10,9 +10,6 @@ using Xunit;
 
 public static class WebSocketTransportSettingsTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void DisablePayloadMasking_Property_Set_PNSE_Throws()
     {
@@ -20,9 +17,6 @@ public static class WebSocketTransportSettingsTest
         Assert.Throws<PlatformNotSupportedException>(() => setting.DisablePayloadMasking = true);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void DisablePayloadMasking_Property_Get_PNSE_Throws()
     {

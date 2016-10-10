@@ -10,9 +10,6 @@ using Xunit;
 
 public static class TcpTransportBindingElementTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_Default_Properties()
     {

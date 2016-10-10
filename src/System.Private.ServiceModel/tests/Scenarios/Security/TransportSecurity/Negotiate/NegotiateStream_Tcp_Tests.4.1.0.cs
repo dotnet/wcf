@@ -53,10 +53,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
 
     // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(1235)]
-#endif
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available))]
@@ -64,20 +60,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [OuterLoop]
     public static void NegotiateStream_Tcp_AmbientCredentials()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool windows_Authentication_Available = Windows_Authentication_Available();
-        bool ambient_Credentials_Available = Ambient_Credentials_Available();
-
-        if (!windows_Authentication_Available || 
-            !ambient_Credentials_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
-            Console.WriteLine("Ambient_Credentials_Available evaluated as {0}", ambient_Credentials_Available);
-            return;
-        }
-#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -106,10 +88,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(1235)]
-#endif
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
@@ -125,23 +103,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool windows_Authentication_Available = Windows_Authentication_Available();
-        bool explicit_Credentials_Available = Explicit_Credentials_Available();
-        bool domain_Available = Domain_Available();
-
-        if (!windows_Authentication_Available ||
-            !explicit_Credentials_Available ||
-            !domain_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
-            Console.WriteLine("Explicit_Credentials_Available evaluated as {0}", explicit_Credentials_Available);
-            Console.WriteLine("Domain_Available evaluated as {0}", domain_Available);
-            return;
-        }
-#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -176,10 +137,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(1235)]
-#endif
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(SPN_Available))]
@@ -192,20 +149,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Tcp_With_ExplicitSpn()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool windows_Authentication_Available = Windows_Authentication_Available();
-        bool spn_Available = SPN_Available();
-
-        if (!windows_Authentication_Available ||
-            !spn_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
-            Console.WriteLine("SPN_Available evaluated as {0}", spn_Available);    
-            return;
-        }
-#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -239,10 +182,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(1235)]
-#endif
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(SPN_Available))]
@@ -250,20 +189,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [OuterLoop]
     public static void NegotiateStream_Tcp_With_SPN()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool windows_Authentication_Available = Windows_Authentication_Available();
-        bool spn_Available = SPN_Available();
-
-        if (!windows_Authentication_Available ||
-            !spn_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
-            Console.WriteLine("SPN_Available evaluated as {0}", spn_Available);    
-            return;
-        }
-#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -298,10 +223,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(1235)]
-#endif
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
@@ -320,26 +241,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     //          "ServiceUri" (server running as machine context)
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword_With_Spn()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool windows_Authentication_Available = Windows_Authentication_Available();
-        bool explicit_Credentials_Available = Explicit_Credentials_Available();
-        bool domain_Available = Domain_Available();
-        bool spn_Available = SPN_Available();
-
-        if (!windows_Authentication_Available ||
-            !explicit_Credentials_Available ||
-            !domain_Available ||
-            !spn_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
-            Console.WriteLine("Explicit_Credentials_Available evaluated as {0}", explicit_Credentials_Available);
-            Console.WriteLine("Domain_Available evaluated as {0}", domain_Available);
-            Console.WriteLine("SPN_Available evaluated as {0}", spn_Available);
-            return;
-        }
-#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -378,40 +279,15 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-    [ActiveIssue(1235)]
-#endif
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
                nameof(UPN_Available))]
     [Issue(1235, Framework = FrameworkID.NetNative)]
-    [Issue(1262)]
     [OuterLoop]
     public static void NegotiateStream_Tcp_With_ExplicitUserNameAndPassword_With_Upn()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool windows_Authentication_Available = Windows_Authentication_Available();
-        bool explicit_Credentials_Available = Explicit_Credentials_Available();
-        bool domain_Available = Domain_Available();
-        bool upn_Available = UPN_Available();
-
-        if (!windows_Authentication_Available ||
-            !explicit_Credentials_Available ||
-            !domain_Available ||
-            !upn_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);
-            Console.WriteLine("Explicit_Credentials_Available evaluated as {0}", explicit_Credentials_Available);
-            Console.WriteLine("Domain_Available evaluated as {0}", domain_Available);
-            Console.WriteLine("UPN_Available evaluated as {0}", upn_Available);
-            return;
-        }
-#endif
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
