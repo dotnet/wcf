@@ -319,15 +319,7 @@ namespace System.ServiceModel
         {
             if (_innerFactory != null)
             {
-                IAsyncChannelFactory asyncFactory = _innerFactory as IAsyncChannelFactory;
-                if (asyncFactory != null)
-                {
-                    await asyncFactory.CloseAsync(timeout);
-                }
-                else
-                {
-                    _innerFactory.Close(timeout);
-                }
+                await CloseOtherAsync(_innerFactory, timeout);
             }
         }
 
@@ -345,15 +337,7 @@ namespace System.ServiceModel
         {
             if (_innerFactory != null)
             {
-                IAsyncChannelFactory asyncFactory = _innerFactory as IAsyncChannelFactory;
-                if (asyncFactory != null)
-                {
-                    await asyncFactory.OpenAsync(timeout);
-                }
-                else
-                {
-                    _innerFactory.Open(timeout);
-                }
+                await OpenOtherAsync(_innerFactory, timeout);
             }
         }
 

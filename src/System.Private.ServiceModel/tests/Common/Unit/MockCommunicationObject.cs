@@ -3,18 +3,20 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 
 // Mock CommunicationObject allows caller to provide delegate to intercept
 // every abstract and virtual method.  Each has a corresponding Defaultxxx()
 // method that does what the default Communication object would do, allowing
 // the caller to do processing before and after the default behavior.
-public class MockCommunicationObject : CommunicationObject
+public class MockCommunicationObject : CommunicationObject, IMockCommunicationObject
 {
     public MockCommunicationObject()
     {
-        OpenAsyncResult = new MockAsyncResult(TimeSpan.FromSeconds(30), callback: null, state: null);
-        CloseAsyncResult = new MockAsyncResult(TimeSpan.FromSeconds(30), callback: null, state: null);
+        OpenAsyncResult = new MockAsyncResult();
+        CloseAsyncResult = new MockAsyncResult();
 
         // Each overrideable method has a delegate property that
         // can be set to override it, please a default handler.
@@ -231,4 +233,175 @@ public class MockCommunicationObject : CommunicationObject
     {
         base.OnFaulted();
     }
+
+    #region helpers
+
+    public static void InterceptAllOpenMethods(IMockCommunicationObject mco, List<string> methodsCalled)
+    {
+        mco.OnOpeningOverride = () =>
+        {
+            methodsCalled.Add("OnOpening");
+            mco.DefaultOnOpening();
+        };
+
+        mco.OnOpenOverride = (TimeSpan t) =>
+        {
+            methodsCalled.Add("OnOpen");
+            mco.DefaultOnOpen(t);
+        };
+
+        mco.OnBeginOpenOverride = (TimeSpan t, AsyncCallback c, object s) =>
+        {
+            methodsCalled.Add("OnBeginOpen");
+            return mco.DefaultOnBeginOpen(t, c, s);
+        };
+
+        mco.OnOpenedOverride = () =>
+        {
+            methodsCalled.Add("OnOpened");
+            mco.DefaultOnOpened();
+        };
+    }
+
+    // This helper will override all the open methods of the MockCommunicationObject
+    // and record their names into the provided list in the order they are called.
+    public static void InterceptAllCloseMethods(IMockCommunicationObject mco, List<string> methodsCalled)
+    {
+        mco.OnClosingOverride = () =>
+        {
+            methodsCalled.Add("OnClosing");
+            mco.DefaultOnClosing();
+        };
+
+        mco.OnCloseOverride = (TimeSpan t) =>
+        {
+            methodsCalled.Add("OnClose");
+            mco.DefaultOnClose(t);
+        };
+
+        mco.OnBeginCloseOverride = (TimeSpan t, AsyncCallback c, object s) =>
+        {
+            methodsCalled.Add("OnBeginClose");
+            return mco.DefaultOnBeginClose(t, c, s);
+        };
+
+        mco.OnClosedOverride = () =>
+        {
+            methodsCalled.Add("OnClosed");
+            mco.DefaultOnClosed();
+        };
+
+        // The OnAbort is considered one of the methods associated with close.
+        mco.OnAbortOverride = () =>
+        {
+            methodsCalled.Add("OnAbort");
+            mco.DefaultOnAbort();
+        };
+    }
+
+    // Intercepts all the events expected to fire during an open
+    public static void InterceptAllOpenEvents(IMockCommunicationObject mco, List<string> eventsFired)
+    {
+        mco.Opening += (s, ea) => eventsFired.Add("Opening");
+        mco.Opened += (s, ea) => eventsFired.Add("Opened");
+    }
+
+    // Intercepts all the events expected to fire during a close
+    public static void InterceptAllCloseEvents(IMockCommunicationObject mco, List<string> eventsFired)
+    {
+        mco.Closing += (s, ea) => eventsFired.Add("Closing");
+        mco.Closed += (s, ea) => eventsFired.Add("Closed");
+    }
+
+    // Intercepts all the open and close methods in MockCommunicationObject
+    // and records the CommunicationState before and after the default code executes,
+    public static void InterceptAllStateChanges(IMockCommunicationObject mco, CommunicationStateData data)
+    {
+        // Immediately capture the current state after initial creation
+        data.StateAfterCreate = mco.State;
+
+        mco.OnOpeningOverride = () =>
+        {
+            data.StateEnterOnOpening = mco.State;
+            mco.DefaultOnOpening();
+            data.StateLeaveOnOpening = mco.State;
+        };
+
+        mco.OnOpenOverride = (TimeSpan t) =>
+        {
+            data.StateEnterOnOpen = mco.State;
+            mco.DefaultOnOpen(t);
+            data.StateLeaveOnOpen = mco.State;
+        };
+
+        mco.OnBeginOpenOverride = (TimeSpan t, AsyncCallback c, object s) =>
+        {
+            data.StateEnterOnBeginOpen = mco.State;
+            IAsyncResult result = mco.DefaultOnBeginOpen(t, c, s);
+            data.StateLeaveOnBeginOpen = mco.State;
+            return result;
+        };
+
+        mco.OnOpenedOverride = () =>
+        {
+            data.StateEnterOnOpened = mco.State;
+            mco.DefaultOnOpened();
+            data.StateLeaveOnOpened = mco.State;
+        };
+
+        mco.OnClosingOverride = () =>
+        {
+            data.StateEnterOnClosing = mco.State;
+            mco.DefaultOnClosing();
+            data.StateLeaveOnClosing = mco.State;
+        };
+
+        mco.OnCloseOverride = (TimeSpan t) =>
+        {
+            data.StateEnterOnClose = mco.State;
+            mco.DefaultOnClose(t);
+            data.StateLeaveOnClose = mco.State;
+        };
+
+        mco.OnBeginCloseOverride = (TimeSpan t, AsyncCallback c, object s) =>
+        {
+            data.StateEnterOnBeginClose = mco.State;
+            IAsyncResult result = mco.DefaultOnBeginClose(t, c, s);
+            data.StateLeaveOnBeginClose = mco.State;
+            return result;
+        };
+
+        mco.OnClosedOverride = () =>
+        {
+            data.StateEnterOnClosed = mco.State;
+            mco.DefaultOnClosed();
+            data.StateLeaveOnClosed = mco.State;
+        };
+
+        #endregion helpers
+    }
 }
+
+public class CommunicationStateData
+{
+    public CommunicationState StateAfterCreate { get; set; }
+    public CommunicationState StateEnterOnOpening { get; set; }
+    public CommunicationState StateLeaveOnOpening { get; set; }
+    public CommunicationState StateEnterOnOpen { get; set; }
+    public CommunicationState StateLeaveOnOpen { get; set; }
+    public CommunicationState StateEnterOnBeginOpen { get; set; }
+    public CommunicationState StateLeaveOnBeginOpen { get; set; }
+    public CommunicationState StateEnterOnOpened { get; set; }
+    public CommunicationState StateLeaveOnOpened { get; set; }
+
+    public CommunicationState StateEnterOnClosing { get; set; }
+    public CommunicationState StateLeaveOnClosing { get; set; }
+    public CommunicationState StateEnterOnClose { get; set; }
+    public CommunicationState StateLeaveOnClose { get; set; }
+    public CommunicationState StateEnterOnBeginClose { get; set; }
+    public CommunicationState StateLeaveOnBeginClose { get; set; }
+    public CommunicationState StateEnterOnClosed { get; set; }
+    public CommunicationState StateLeaveOnClosed { get; set; }
+}
+
+
