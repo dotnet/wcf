@@ -61,7 +61,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
                nameof(Root_Certificate_Installed),
                nameof(Ambient_Credentials_Available))]
     [OuterLoop]
-    [Issue(1569, OS = OSID.AnyUnix)]
+    [Issue(1589, OS = OSID.AnyUnix)]
     public static void NegotiateStream_Http_AmbientCredentials()
     {
         string testString = "Hello";
@@ -158,7 +158,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     //          "NegotiateTestDomain"
     //          "NegotiateTestSpn" (host/<servername>)
     //          "ServiceUri" (server running as machine context)
-    [Issue(1569, OS = OSID.AnyUnix)]
+    [Issue(1589, OS = OSID.AnyUnix)]
     public static void NegotiateStream_Http_With_ExplicitSpn()
     {
         string testString = "Hello";
