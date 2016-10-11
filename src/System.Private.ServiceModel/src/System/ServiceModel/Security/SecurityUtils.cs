@@ -776,6 +776,8 @@ namespace System.ServiceModel.Security
 
         internal static class NetworkCredentialHelper
         {
+            static string s_currentUser = string.Empty;
+            const string DefaultCurrentUser = "____CURRENTUSER_NOT_AVAILABLE____";
             static internal bool IsNullOrEmpty(NetworkCredential credential)
             {
                 return credential == null ||
@@ -793,16 +795,33 @@ namespace System.ServiceModel.Security
 
             internal static string GetCurrentUserIdAsString(NetworkCredential credential)
             {
-#if SUPPORTS_WINDOWSIDENTITY
-                using (WindowsIdentity self = WindowsIdentity.GetCurrent())
+                if (!string.IsNullOrEmpty(s_currentUser))
                 {
-                    return self.User.Value;
+                    return s_currentUser;
+                }
+
+                // CurrentUser could be set muliple times
+                // This is fine because it does not affect the value returned.
+#if SUPPORTS_WINDOWSIDENTITY
+                try
+                {
+                    using (WindowsIdentity self = WindowsIdentity.GetCurrent())
+                    {
+                        s_currentUser = self.User.Value;
+                    }
+                }
+                catch (PlatformNotSupportedException)
+                {
+                    //WindowsIdentity is not supported on *NIX
+                    //so returning a username which is very unlikely to be a real username;
+                    s_currentUser = DefaultCurrentUser;
                 }
 #else
-                // There's no way to retrieve the current logged in user Id in UWP apps or in
-                // *NIX so returning a username which is very unlikely to be a real username;
-                return "____CURRENTUSER_NOT_AVAILABLE____";
-#endif
+                // There's no way to retrieve the current logged in user Id in UWP apps
+                s_currentUser = DefaultCurrentUser;
+#endif // SUPPORTS_WINDOWSIDENTITY
+
+                return s_currentUser;
             }
         }
         internal static byte[] CloneBuffer(byte[] buffer)
