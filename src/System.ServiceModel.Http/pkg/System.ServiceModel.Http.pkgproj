@@ -2,12 +2,6 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
-    <ProjectReference Include="..\ref\3.9.0\System.ServiceModel.Http.depproj">
-      <SupportedFramework>wp8</SupportedFramework>
-    </ProjectReference>
-    <ProjectReference Include="..\ref\4.0.0\System.ServiceModel.Http.depproj">
-      <SupportedFramework>net45;win8</SupportedFramework>
-    </ProjectReference>
     <ProjectReference Include="..\ref\System.ServiceModel.Http.csproj">
       <SupportedFramework>net46;netcore50;netcoreapp1.0;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
