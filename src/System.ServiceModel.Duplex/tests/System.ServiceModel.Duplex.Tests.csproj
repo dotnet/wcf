@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">$(OS)_Debug</Configuration>
   </PropertyGroup>
@@ -29,6 +29,7 @@
     <ProjectReference Include="$(WcfDuplexPkgProj)">
       <Name>System.ServiceModel.Duplex</Name>
     </ProjectReference>
+    <ProjectReference Include="$(WcfPrimitivesPkgProj)" />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)">
       <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
       <Name>Infrastructure.Common</Name>

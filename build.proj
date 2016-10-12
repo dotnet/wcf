@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- Capture OSGroup passed to command line for setting default FilterToOSGroup value below -->
     <_OriginalOSGroup>$(OSGroup)</_OriginalOSGroup>
@@ -75,6 +75,13 @@
 
   <UsingTask TaskName="GatherDirectoriesToRestore" AssemblyFile="$(BuildToolsTaskDir)Microsoft.DotNet.Build.Tasks.dll" />
 
+  <!-- Create a collection of all project.json files for dependency updates. -->
+  <ItemGroup>
+    <ProjectJsonFiles Include="$(SourceDir)**/project.json" />
+    <ProjectJsonFiles Include="$(MSBuildThisFileDirectory)pkg/**/project.json" />
+    <ProjectJsonFiles Condition="'$(BuildTestsAgainstPackages)' == 'true'" Include="$(GeneratedProjectJsonDir)/**/project.json" />
+  </ItemGroup>
+  
   <Target Name="BatchRestorePackages" DependsOnTargets="VerifyDependencies">
     <MakeDir Directories="$(PackagesDir)" Condition="!Exists('$(PackagesDir)')" /> 
 

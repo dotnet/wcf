@@ -1,13 +1,20 @@
-<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <CoreFxBaseLinePackageName>Microsoft.Private.PackageBaseline</CoreFxBaseLinePackageName>
-    <!-- TODO: Move this back to 1.0.1 once https://github.com/dotnet/corefx/commit/63a868365904c6fbae18a3800c0b908b0f0944af is in -->
     <CoreFxBaseLinePackageVersion>1.0.1-$(CoreFxExpectedPrerelease)</CoreFxBaseLinePackageVersion>
     <!-- NuGet doesn't currently write out the versionless props/targets for this, so manually pull it in from packages folder -->
     <CoreFxBaseLinePackageProps Condition="'$(CoreFxBaseLinePackageProps)' == ''">$(PackagesDir)$(CoreFxBaseLinePackageName)/$(CoreFxBaseLinePackageVersion)/build/$(CoreFxBaseLinePackageName).props</CoreFxBaseLinePackageProps>
 
     <PackageIndexFile>$(MSBuildThisFileDirectory)\packageIndex.json</PackageIndexFile>
+
+    <!-- set the project.json file for pkgproj's to point to the project.json in this directory
+         to ensure that PKGProjs will restore harvested packages. -->
+    <ProjectJson>$(MSBuildThisFileDirectory)\project.json</ProjectJson>
+    <ProjectLockJson>$(MSBuildThisFileDirectory)\project.lock.json</ProjectLockJson>
   </PropertyGroup>
+
+  <!-- make RestorePackages run before HarvestStablePackage to ensure we'll restore the baseline before harvesting  -->
+  <Target Name="EnsureRestore" BeforeTargets="HarvestStablePackage" DependsOnTargets="RestorePackages" />
 
   <ItemGroup>
     <PackageIndex Include="$(PackageIndexFile)" />

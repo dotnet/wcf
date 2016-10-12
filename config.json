@@ -142,7 +142,7 @@
       "description": "MsBuild logging options.",
       "valueType": "passThrough",
       "values": [],
-      "defaultValue": "/flp:v=normal"
+      "defaultValue": "/flp:v=diag"
     },
     "MsBuildWarning": {
       "description": "MsBuild warning logging.",
@@ -176,12 +176,6 @@
     },
     "Project": {
       "description": "Project where the commands are going to be applied.",
-      "valueType": "passThrough",
-      "values": [],
-      "defaultValue": ""
-    },
-    "ExtraParameters": {
-      "description": "Extra parameters will be passed to the selected command.",
       "valueType": "passThrough",
       "values": [],
       "defaultValue": ""
@@ -249,8 +243,9 @@
           }
         },
         "tests": {
-          "description": "Builds the tests that are in the repository.",
+          "description": "Builds the tests that are in the repository, doesn't restore packages.",
           "settings": {
+            "RestoreDuringBuild": "false",
             "Project": "src/tests.builds",
             "MsBuildLogging":"/flp:v=normal;LogFile=build-tests.log"
           }
@@ -458,6 +453,7 @@
         }
       },
       "defaultValues": {
+	  	"defaultAlias": "p",
         "toolName": "msbuild",
         "settings": {
           "MsBuildLogging":"/flp:v=normal;LogFile=sync.log"

@@ -1,4 +1,4 @@
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PreReleaseLabel>beta</PreReleaseLabel>
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
@@ -25,7 +25,7 @@
     <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
   </PropertyGroup>
 
-  <Import Condition="Exists('pkg/baseline/baseline.props')" Project="pkg/baseline/baseline.props" />
+  <Import Condition="Exists('pkg/baseline/baseline.props') AND '$(MSBuildProjectExtension)' == '.pkgproj'" Project="pkg/baseline/baseline.props" />
 
   <PropertyGroup Condition="'$(OsEnvironment)'=='Unix'">
     <!--
@@ -36,14 +36,20 @@
     <SkipBuildPackages>true</SkipBuildPackages>
   </PropertyGroup>
 
-  <!-- Add required legal files to packages -->
   <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
+    <!-- Add required legal files to packages -->
     <File Condition="Exists('$(PackageLicenseFile)')"
           Include="$(PackageLicenseFile)" >
         <SkipPackageFileCheck>true</SkipPackageFileCheck>
     </File>
     <File Condition="Exists('$(PackageThirdPartyNoticesFile)')"
           Include="$(PackageThirdPartyNoticesFile)" >
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
+
+    <!-- Add version file to packages -->
+    <File Condition="Exists('$(SyncInfoFile)')"
+          Include="$(SyncInfoFile)" >
         <SkipPackageFileCheck>true</SkipPackageFileCheck>
     </File>
   </ItemGroup>

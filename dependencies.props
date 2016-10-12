@@ -1,4 +1,4 @@
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
     <CoreFxCurrentRef>0e5b63ea85c76e944b925a6d3802c84d7e46a9df</CoreFxCurrentRef>
@@ -52,11 +52,11 @@
     </StaticDependency>
 
     <StaticDependency Include="Microsoft.xunit.netcore.extensions;Microsoft.DotNet.BuildTools.TestSuite">
-      <Version>1.0.0-prerelease-00807-03</Version>
+      <Version>1.0.0-prerelease-00830-02</Version>
     </StaticDependency>
 
     <StaticDependency Include="Microsoft.TargetingPack.Private.NETNative">
-      <Version>1.1.0-beta-24509-00</Version>
+      <Version>1.1.0-beta-24607-01</Version>
     </StaticDependency>
 
     <DependencyBuildInfo Include="@(StaticDependency)">
