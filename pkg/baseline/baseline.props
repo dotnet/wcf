@@ -1,7 +1,7 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <CoreFxBaseLinePackageName>Microsoft.Private.PackageBaseline</CoreFxBaseLinePackageName>
-    <CoreFxBaseLinePackageVersion>1.0.1-$(CoreFxExpectedPrerelease)</CoreFxBaseLinePackageVersion>
+    <CoreFxBaseLinePackageVersion>1.2.0-$(CoreFxExpectedPrerelease)</CoreFxBaseLinePackageVersion>
     <!-- NuGet doesn't currently write out the versionless props/targets for this, so manually pull it in from packages folder -->
     <CoreFxBaseLinePackageProps Condition="'$(CoreFxBaseLinePackageProps)' == ''">$(PackagesDir)$(CoreFxBaseLinePackageName)/$(CoreFxBaseLinePackageVersion)/build/$(CoreFxBaseLinePackageName).props</CoreFxBaseLinePackageProps>
 

@@ -16,6 +16,7 @@
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{BAF18A70-9EDA-46E9-80A1-7B5F62215C02}</ProjectGuid>
+    <NugetTargetMoniker>.NETStandard,Version=v1.3</NugetTargetMoniker>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />

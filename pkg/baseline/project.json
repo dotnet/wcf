@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "Microsoft.Private.PackageBaseline": "1.0.1-beta-24601-02",
+    "Microsoft.Private.PackageBaseline": "1.2.0-beta-24605-03",
     "System.ServiceModel.Duplex": "4.0.1",
     "System.ServiceModel.Http": "4.1.0",
     "System.ServiceModel.NetTcp": "4.1.0",
     "System.ServiceModel.Primitives": "4.1.0",
-    "System.ServiceModel.Security": "4.0.1"    
+    "System.ServiceModel.Security": "4.0.1"
   },
   "frameworks": {
     "netstandard1.6": {}

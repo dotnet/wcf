@@ -142,7 +142,7 @@
       "description": "MsBuild logging options.",
       "valueType": "passThrough",
       "values": [],
-      "defaultValue": "/flp:v=diag"
+      "defaultValue": "/flp:v=normal"
     },
     "MsBuildWarning": {
       "description": "MsBuild warning logging.",
@@ -340,6 +340,7 @@
         }
       },
       "defaultValues": {
+	    "defaultAlias": "b",
         "toolName": "msbuild",
         "settings": {
           "MsBuildLogging":"/flp:v=normal;LogFile=clean.log"

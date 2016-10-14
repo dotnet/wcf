@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "System.Net.Http": "4.3.0-beta-24601-02",
+    "System.Net.Http": "4.4.0-beta-24605-03",
     "System.ServiceModel.Duplex": "4.3.0-beta-24607-01",
     "System.ServiceModel.Http": "4.3.0-beta-24607-01",
     "System.ServiceModel.NetTcp": "4.3.0-beta-24607-01",
     "System.ServiceModel.Primitives": "4.3.0-beta-24607-01",
     "System.ServiceModel.Security": "4.3.0-beta-24607-01",
-    "System.Threading.Timer": "4.3.0-beta-24601-02",
+    "System.Threading.Timer": "4.4.0-beta-24605-03",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"

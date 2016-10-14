@@ -6,7 +6,6 @@
   </PropertyGroup>
   
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
-  
   <ItemGroup>
     <!-- *** start WCF Content *** -->
     <ExcludeProjects Include="System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\WcfService.csproj" />

@@ -6,7 +6,6 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <AssemblyName>System.Private.ServiceModel</AssemblyName>
-    <AssemblyVersion>4.1.1.0</AssemblyVersion>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <OutputType>Library</OutputType>
     <NoWarn>$(NoWarn);1634;1691;649</NoWarn>
