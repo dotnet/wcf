@@ -14,9 +14,6 @@ using Xunit;
 
 public static class Http_ClientCredentialTypeTests
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void DigestAuthentication_Echo_RoundTrips_String_No_Domain()

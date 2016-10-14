@@ -26,8 +26,10 @@ namespace System.ServiceModel.Channels
         private bool _traceOpenAndClose;
         private object _eventSender;
         private CommunicationState _state;
-        private bool _onOpenAsyncCalled;
-        private bool _onCloseAsyncCalled;
+        internal bool _isSynchronousOpen;
+        internal bool _isSynchronousClose;
+        private bool _supportsAsyncOpenClose;
+        private bool _supportsAsyncOpenCloseSet;
 
         protected CommunicationObject()
             : this(new object())
@@ -39,6 +41,55 @@ namespace System.ServiceModel.Channels
             _mutex = mutex;
             _eventSender = this;
             _state = CommunicationState.Created;
+        }
+
+        // External CommunicationObjects cannot support IAsyncCommunicationObject,
+        // but can appear to because they may derive from WCF types that do.
+        // Attempting to call any IAsyncCommunicationObject method on those types
+        // will go directly to the WCF base type and bypass the external type's
+        // synchronous or asynchronous code paths.  We cannot distinguish between
+        // this and a product CommunicationObject handling it and calling base.
+        // This property detects if the current type is safe to use for
+        // IAsyncCommunicationObject method calls.
+        internal bool SupportsAsyncOpenClose
+        {
+            get
+            {
+                if (!_supportsAsyncOpenCloseSet)
+                {
+                    // We'll use the simple heuristic that namespace System.ServiceModel
+                    // indicates a product type that is required to support async open/close.
+                    // We don't expect exceptions here in NET Native because the product rd.xml
+                    // grants the Reflection degree to all subtypes of ICommunicationObject.
+                    // However, in the interests of being safe, catch that exception if it happens.
+                    try
+                    {
+                        string ns = this.GetType().Namespace;
+                        _supportsAsyncOpenClose = ns != null && ns.StartsWith("System.ServiceModel");
+                    }
+                    catch
+                    {
+                        // The most likely situation for this exception is the NET Native
+                        // toolchain not recognizing this type is ICommunicationObject.
+                        // But in that case, the best assumption is that this is a WCF
+                        // product type, and therefore it supports async open/close.
+                        _supportsAsyncOpenClose = true;
+                    }
+
+                    _supportsAsyncOpenCloseSet = true;
+                }
+
+                return _supportsAsyncOpenClose;
+            }
+            set
+            {
+                // It is permissible for types to set this value if they know
+                // they can or cannot support async open/close.  Unsealed public
+                // types must *not* set this to true because they cannot know if
+                // an external derived type does support it.
+                _supportsAsyncOpenClose = value;
+                _supportsAsyncOpenCloseSet = true;
+            }
         }
 
         internal bool Aborted
@@ -143,6 +194,7 @@ namespace System.ServiceModel.Channels
 
         public void Close(TimeSpan timeout)
         {
+            _isSynchronousClose = true;
             CloseAsyncInternal(timeout).WaitForCompletion();
         }
 
@@ -192,7 +244,7 @@ namespace System.ServiceModel.Channels
                             if (!_onClosingCalled)
                                 throw TraceUtility.ThrowHelperError(this.CreateBaseClassMethodNotCalledException("OnClosing"), Guid.Empty, this);
 
-                            await OnCloseAsync(actualTimeout.RemainingTime());
+                            await OnCloseAsyncInternal(actualTimeout.RemainingTime());
 
                             OnClosed();
                             if (!_onClosedCalled)
@@ -216,6 +268,35 @@ namespace System.ServiceModel.Channels
 
                 default:
                     throw Fx.AssertAndThrow("CommunicationObject.BeginClose: Unknown CommunicationState");
+            }
+        }
+
+        // Internal helper to call the right form of the OnClose() method
+        // asynchronously.  It depends on whether the type can support the
+        // async API's and how the current Communication object is being closed.
+        private async Task OnCloseAsyncInternal(TimeSpan timeout)
+        {
+            // If this type is capable of overriding OnCloseAsync,
+            // then use it for both async and sync closes
+            if (SupportsAsyncOpenClose)
+            {
+                // The class supports OnCloseAsync(), so use it
+                await OnCloseAsync(timeout);
+            }
+            else
+            {
+                // This type is an external type that cannot override OnCloseAsync.
+                // If this is a synchronous close, invoke the synchronous OnClose)
+                if (_isSynchronousClose)
+                {
+                    await TaskHelpers.CallActionAsync<TimeSpan>(OnClose, timeout);
+                }
+                else
+                {
+                    // The class does not support OnCloseAsync, and this is an asynchronous
+                    // close, so use the Begin/End pattern
+                    await Task.Factory.FromAsync(OnBeginClose, OnEndClose, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
+                }
             }
         }
 
@@ -330,6 +411,7 @@ namespace System.ServiceModel.Channels
 
         public void Open(TimeSpan timeout)
         {
+            _isSynchronousOpen = true;
             OpenAsyncInternal(timeout).WaitForCompletion();
         }
 
@@ -360,8 +442,7 @@ namespace System.ServiceModel.Channels
                 if (!_onOpeningCalled)
                     throw TraceUtility.ThrowHelperError(this.CreateBaseClassMethodNotCalledException("OnOpening"), Guid.Empty, this);
 
-                TimeSpan remainingTime = actualTimeout.RemainingTime();
-                await OnOpenAsync(remainingTime);
+                await OnOpenAsyncInternal(actualTimeout.RemainingTime());
 
                 OnOpened();
                 if (!_onOpenedCalled)
@@ -374,6 +455,34 @@ namespace System.ServiceModel.Channels
                 if (throwing)
                 {
                     Fault();
+                }
+            }
+        }
+
+        // Internal helper to call the right form of the OnOpen() method
+        // asynchronously.  It depends on whether the type can support the
+        // async API's and how the current Communication object is being opened.
+        private async Task OnOpenAsyncInternal(TimeSpan timeout)
+        {
+            // If this type is capable of overriding OnOpenAsync,
+            // then use it for both async and sync opens
+            if (SupportsAsyncOpenClose)
+            {
+                // The class supports OnOpenAsync(), so use it
+                await OnOpenAsync(timeout);
+            }
+            else
+            {
+                // This type is an external type that cannot override OnOpenAsync.
+                // If this is a synchronous open, invoke the synchronous OnOpen)
+                if (_isSynchronousOpen)
+                {
+                    await TaskHelpers.CallActionAsync<TimeSpan>(OnOpen, timeout);
+                }
+                else
+                {
+                    // The class does not support OnOpenAsync, so use the Begin/End pattern
+                    await Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
                 }
             }
         }
@@ -783,46 +892,52 @@ namespace System.ServiceModel.Channels
 
         internal protected virtual Task OnCloseAsync(TimeSpan timeout)
         {
-#if !FEATURE_NETNATIVE  // Avoid Reflection in NET Native and rely on CoreCLR to catch this problem.
-            // All product types are required to override this method
-            Contract.Assert(String.IsNullOrEmpty(GetType().Namespace) || 
-                            !GetType().Namespace.StartsWith("System.ServiceModel"),
-                            String.Format("Type '{0}' is required to override OnCloseAsync", GetType()));
-#endif
+            // All WCF product types are required to override this method and not call base.
+            // No external types will be able to reach here because it is not public.
+            Contract.Assert(false, String.Format("Type '{0}' is required to override OnCloseAsync", GetType()));
 
-            // If we have already executed this code path, just return a completed Task.
-            // It means this type did not override OnCloseAsync or OnBeginClose.
-            if (_onCloseAsyncCalled)
-            {
-                return TaskHelpers.CompletedTask();
-            }
-
-            // External types cannot override this method because it is not public.
-            // Redirect this call to the APM path.
-            _onCloseAsyncCalled = true;
-            return Task.Factory.FromAsync(OnBeginClose, OnEndClose, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
+            return TaskHelpers.CompletedTask();
         }
 
         internal protected virtual Task OnOpenAsync(TimeSpan timeout)
         {
-#if !FEATURE_NETNATIVE  // Avoid Reflection in NET Native and rely on CoreCLR to catch this problem.
-            // All product types are required to override this method
-            Contract.Assert(String.IsNullOrEmpty(GetType().Namespace) || 
-                            !GetType().Namespace.StartsWith("System.ServiceModel"),
-                            String.Format("Type '{0}' is required to override OnOpenAsync", GetType()));
-#endif
+            // All WCF product types are required to override this method and not call base.
+            // No external types will be able to reach here because it is not public.
+            Contract.Assert(false, String.Format("Type '{0}' is required to override OnOpenAsync", GetType()));
 
-            // If we have already executed this code path, just return a completed Task.
-            // It means this type did not override OnOpenAsync or OnBeginOpen.
-            if (_onOpenAsyncCalled)
+            return TaskHelpers.CompletedTask();
+        }
+
+        // Helper used to open another CommunicationObject "owned" by the current one.
+        // It is used to propagate the use of either the synchronous or asynchronous methods
+        internal async Task OpenOtherAsync(ICommunicationObject other, TimeSpan timeout)
+        {
+            // If the current object is being opened synchronously, use the synchronous
+            // open path for the other object.
+            if (_isSynchronousOpen)
             {
-                return TaskHelpers.CompletedTask();
+                await TaskHelpers.CallActionAsync<TimeSpan>(other.Open, timeout);
             }
+            else
+            {
+                await Task.Factory.FromAsync(other.BeginOpen(timeout, callback: null, state: null), other.EndOpen);
+            }
+        }
 
-            // External types cannot override this method because it is not public.
-            // Redirect this call to the APM path.
-            _onOpenAsyncCalled = true;
-            return Task.Factory.FromAsync(OnBeginOpen, OnEndOpen, timeout, TaskCreationOptions.RunContinuationsAsynchronously);
+        // Helper used to close another CommunicationObject "owned" by the current one.
+        // It is used to propagate the use of either the synchronous or asynchronous methods
+        internal async Task CloseOtherAsync(ICommunicationObject other, TimeSpan timeout)
+        {
+            // If the current object is being closed synchronously, use the synchronous
+            // close path for the other object.
+            if (_isSynchronousClose)
+            {
+                await TaskHelpers.CallActionAsync<TimeSpan>(other.Close, timeout);
+            }
+            else
+            {
+                await Task.Factory.FromAsync(other.BeginClose(timeout, callback: null, state: null), other.EndClose);
+            }
         }
 
         class ExceptionQueue

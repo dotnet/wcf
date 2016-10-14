@@ -11,9 +11,6 @@ using Xunit;
 
 public static class SpnEndpointIdentityTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("")]
     [InlineData("host/wcf")]
@@ -23,9 +20,6 @@ public static class SpnEndpointIdentityTest
         SpnEndpointIdentity spnEndpointEntity = new SpnEndpointIdentity(spn);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_NullSpn()
     {
@@ -37,9 +31,6 @@ public static class SpnEndpointIdentityTest
         });
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidTimeSpans", MemberType = typeof(TestData))]
     public static void Set_SpnLookupTime_ValidTimes(TimeSpan timeSpan)
@@ -47,9 +38,6 @@ public static class SpnEndpointIdentityTest
         SpnEndpointIdentity.SpnLookupTime = timeSpan;
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidTimeSpans", MemberType = typeof(TestData))]
     public static void Set_SpnLookupTime_InvalidTimes_Throws(TimeSpan timeSpan)

@@ -23,24 +23,12 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         s_password = TestProperties.GetProperty(TestProperties.ExplicitPassword_PropertyName);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
+
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         StringBuilder errorBuilder = new StringBuilder();
 
         try
@@ -94,24 +82,12 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: BasicAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
+
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         StringBuilder errorBuilder = new StringBuilder();
         // Will need to use localized string once it is available
         // On Native retail, the message is stripped to 'HttpAuthorizationForbidden, Basic'
@@ -155,24 +131,11 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(exception.Message.ToLower().Contains(message), string.Format("Expected exception message to contain: '{0}', actual message is: '{1}'", message, exception.Message));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void BasicAuthenticationEmptyUser_throw_ArgumentException()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
         StringBuilder errorBuilder = new StringBuilder();
         string paraMessage = "username";
 
@@ -194,9 +157,6 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(exception.Message.ToLower().Contains(paraMessage), string.Format("Expected exception message to contain: '{0}', actual: '{1}'", paraMessage, exception.Message));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Condition(nameof(Server_Domain_Joined),
                nameof(Root_Certificate_Installed),
@@ -209,26 +169,6 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     //          "ExplicitPassword"
     public static void DigestAuthentication_RoundTrips_Echo()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool server_Domain_Joined = Server_Domain_Joined();
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        bool digest_Authentication_Available = Digest_Authentication_Available();
-        bool explicit_Credentials_Available = Explicit_Credentials_Available();
-
-        if (!server_Domain_Joined ||
-            !root_Certificate_Installed ||
-            !digest_Authentication_Available ||
-            !explicit_Credentials_Available)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Server_Domain_Joined evaluated as {0}", server_Domain_Joined);
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            Console.WriteLine("Digest_Authentication_Available evaluated as {0}", digest_Authentication_Available);
-            Console.WriteLine("Explicit_Credentials_Available evaluated as {0}", explicit_Credentials_Available);
-            return;
-        }
-#endif
         StringBuilder errorBuilder = new StringBuilder();
 
         try
@@ -252,27 +192,11 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: DigestAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Condition(nameof(NTLM_Available), nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void NtlmAuthentication_RoundTrips_Echo()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool nTLM_Available = NTLM_Available();
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!nTLM_Available || !root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("NTLM_Available evaluated as {0}", nTLM_Available);    
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            
-            return;
-        }
-#endif
         StringBuilder errorBuilder = new StringBuilder();
 
         try
@@ -290,27 +214,11 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
         Assert.True(errorBuilder.Length == 0, String.Format("Test Case: NtlmAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available), nameof(Root_Certificate_Installed))]
+    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows))]
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool windows_Authentication_Available = Windows_Authentication_Available();
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!windows_Authentication_Available || !root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Windows_Authentication_Available evaluated as {0}", windows_Authentication_Available);    
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            
-            return;
-        }
-#endif
         StringBuilder errorBuilder = new StringBuilder();
 
         try

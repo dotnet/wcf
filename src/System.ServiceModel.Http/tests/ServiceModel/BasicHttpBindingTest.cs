@@ -14,9 +14,6 @@ using Xunit;
 
 public static class BasicHttpBindingTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Default_Ctor_Initializes_Properties()
     {
@@ -41,9 +38,6 @@ public static class BasicHttpBindingTest
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, new XmlDictionaryReaderQuotas()), "XmlDictionaryReaderQuotas");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_With_BasicHttpSecurityMode_Transport_Initializes_Properties()
     {
@@ -69,9 +63,6 @@ public static class BasicHttpBindingTest
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, new XmlDictionaryReaderQuotas()), "XmlDictionaryReaderQuotas");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_With_BasicHttpSecurityMode_TransportCredentialOnly_Initializes_Properties()
     {
@@ -96,9 +87,6 @@ public static class BasicHttpBindingTest
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, new XmlDictionaryReaderQuotas()), "XmlDictionaryReaderQuotas");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(true)]
     [InlineData(false)]
@@ -109,9 +97,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<bool>(value, binding.AllowCookies);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(1)]
@@ -123,10 +108,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<long>(value, binding.MaxBufferPoolSize);
     }
 
-
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(-1)]
     [InlineData(int.MinValue)]
@@ -136,9 +117,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.MaxBufferPoolSize = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(1)]
     [InlineData(int.MaxValue)]
@@ -149,9 +127,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<long>(value, binding.MaxBufferSize);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -162,9 +137,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.MaxBufferSize = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(1)]
     [InlineData(int.MaxValue)]
@@ -175,9 +147,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<long>(value, binding.MaxReceivedMessageSize);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -188,9 +157,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.MaxReceivedMessageSize = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("testName")]
     public static void Name_Property_Sets(string value)
@@ -200,9 +166,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<string>(value, binding.Name);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     [InlineData("")]
@@ -212,9 +175,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentException>(() => binding.Name = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData("")]
     [InlineData("http://hello")]
@@ -226,9 +186,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<string>(value, binding.Namespace);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
     public static void Namespace_Property_Set_Invalid_Value_Throws(string value)
@@ -237,9 +194,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentNullException>(() => binding.Namespace = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void ReaderQuotas_Property_Sets()
     {
@@ -254,9 +208,6 @@ public static class BasicHttpBindingTest
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, maxQuota), "Setting Max ReaderQuota failed");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void ReaderQuotas_Property_Set_Null_Throws()
     {
@@ -264,9 +215,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentNullException>(() => binding.ReaderQuotas = null);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
     public static void CloseTimeout_Property_Sets(TimeSpan timeSpan)
@@ -276,9 +224,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<TimeSpan>(timeSpan, binding.CloseTimeout);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
     public static void CloseTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
@@ -287,9 +232,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.CloseTimeout = timeSpan);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
     public static void OpenTimeout_Property_Sets(TimeSpan timeSpan)
@@ -299,9 +241,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<TimeSpan>(timeSpan, binding.OpenTimeout);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
     public static void OpenTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
@@ -310,9 +249,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.OpenTimeout = timeSpan);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
     public static void SendTimeout_Property_Sets(TimeSpan timeSpan)
@@ -322,9 +258,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<TimeSpan>(timeSpan, binding.SendTimeout);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
     public static void SendTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
@@ -333,9 +266,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.SendTimeout = timeSpan);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
     public static void ReceiveTimeout_Property_Sets(TimeSpan timeSpan)
@@ -345,9 +275,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<TimeSpan>(timeSpan, binding.ReceiveTimeout);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
     public static void ReceiveTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
@@ -356,9 +283,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.SendTimeout = timeSpan);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("ValidEncodings", MemberType = typeof(TestData))]
     public static void TextEncoding_Property_Sets(Encoding encoding)
@@ -368,9 +292,6 @@ public static class BasicHttpBindingTest
         Assert.Equal<Encoding>(encoding, binding.TextEncoding);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
     public static void TextEncoding_Property_Set_Invalid_Value_Throws(Encoding encoding)
@@ -379,9 +300,6 @@ public static class BasicHttpBindingTest
         Assert.Throws<ArgumentException>(() => binding.TextEncoding = encoding);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(TransferMode.Buffered)]
     [InlineData(TransferMode.Streamed)]

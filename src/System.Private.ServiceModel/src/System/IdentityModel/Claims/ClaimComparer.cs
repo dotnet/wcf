@@ -21,9 +21,7 @@ namespace System.IdentityModel.Claims
         private static IEqualityComparer<Claim> s_dnsComparer;
         private static IEqualityComparer<Claim> s_rsaComparer;
         private static IEqualityComparer<Claim> s_thumbprintComparer;
-#if SUPPORTS_WINDOWSIDENTITY
         private static IEqualityComparer<Claim> s_upnComparer;
-#endif // SUPPORTS_WINDOWSIDENTITY
         private static IEqualityComparer<Claim> s_x500DistinguishedNameComparer;
         private IEqualityComparer _resourceComparer;
 
@@ -113,7 +111,6 @@ namespace System.IdentityModel.Claims
             }
         }
 
-#if SUPPORTS_WINDOWSIDENTITY
         public static IEqualityComparer<Claim> Upn
         {
             get
@@ -125,7 +122,6 @@ namespace System.IdentityModel.Claims
                 return s_upnComparer;
             }
         }
-#endif // SUPPORTS_WINDOWSIDENTITY
 
         public static IEqualityComparer<Claim> X500DistinguishedName
         {
@@ -160,7 +156,7 @@ namespace System.IdentityModel.Claims
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claim");
 
             return claim.ClaimType.GetHashCode() ^ claim.Right.GetHashCode()
-                ^ ((claim.Resource == null) ? 0 : _resourceComparer.GetHashCode(claim.Resource));
+                   ^ ((claim.Resource == null) ? 0 : _resourceComparer.GetHashCode(claim.Resource));
         }
 
         private class ObjectComparer : IEqualityComparer
@@ -240,6 +236,7 @@ namespace System.IdentityModel.Claims
         private class X500DistinguishedNameObjectComparer : IEqualityComparer
         {
             private IEqualityComparer _binaryComparer;
+
             public X500DistinguishedNameObjectComparer()
             {
                 _binaryComparer = new BinaryObjectComparer();
@@ -258,12 +255,35 @@ namespace System.IdentityModel.Claims
             }
         }
 
-#if SUPPORTS_WINDOWSIDENTITY
         private class UpnObjectComparer : IEqualityComparer
         {
             bool IEqualityComparer.Equals(object obj1, object obj2)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                if (StringComparer.OrdinalIgnoreCase.Equals(obj1 as string, obj2 as string))
+                    return true;
+
+                string upn1 = obj1 as string;
+                string upn2 = obj2 as string;
+                if (upn1 == null || upn2 == null)
+                    return false;
+
+#if SUPPORTS_WINDOWSIDENTITY
+                SecurityIdentifier sid1;
+                if (!TryLookupSidFromName(upn1, out sid1))
+                    return false;
+
+                // Normalize to sid
+                SecurityIdentifier sid2;
+                if (!TryLookupSidFromName(upn2, out sid2))
+                    return false;
+
+                return sid1 == sid2;
+#else
+                // If WindowsIdentity isn't supported, then we can't
+                // retrieve the SecurityIdentifier's to compare so
+                // must return false
+                return false;
+#endif // SUPPORTS_WINDOWSIDENTITY
             }
 
             int IEqualityComparer.GetHashCode(object obj)
@@ -272,14 +292,17 @@ namespace System.IdentityModel.Claims
                 if (upn == null)
                     return 0;
 
+#if SUPPORTS_WINDOWSIDENTITY
                 // Normalize to sid
                 SecurityIdentifier sid;
                 if (TryLookupSidFromName(upn, out sid))
                     return sid.GetHashCode();
+#endif // SUPPORTS_WINDOWSIDENTITY
 
                 return StringComparer.OrdinalIgnoreCase.GetHashCode(upn);
             }
 
+#if SUPPORTS_WINDOWSIDENTITY
             private bool TryLookupSidFromName(string upn, out SecurityIdentifier sid)
             {
                 sid = null;
@@ -293,7 +316,7 @@ namespace System.IdentityModel.Claims
                 }
                 return sid != null;
             }
+#endif // SUPPORTS_WINDOWSIDENTITY        
         }
-#endif // SUPPORTS_WINDOWSIDENTITY
     }
 }

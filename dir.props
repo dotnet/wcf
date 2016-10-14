@@ -68,63 +68,11 @@
     <EnableDotnetAnalyzers Condition="'$(EnableDotnetAnalyzers)'==''">true</EnableDotnetAnalyzers>
   </PropertyGroup>
 
-  <!-- Package dependency validation -->
-  <PropertyGroup>
-    <ValidatePackageVersions>true</ValidatePackageVersions>
-    <ProhibitFloatingDependencies>true</ProhibitFloatingDependencies>
-    <CoreFxExpectedPrerelease>beta-24512-01</CoreFxExpectedPrerelease>
-    <CoreClrExpectedPrerelease>beta-24512-03</CoreClrExpectedPrerelease>
-    <ExternalExpectedPrerelease>beta-24509-00</ExternalExpectedPrerelease>
-    <WCFExpectedPrerelease>beta-24431-01</WCFExpectedPrerelease>
-    <CoreFxVersionsIdentityRegex>^(?i)((System\.(?!ServiceModel|Private\.ServiceModel).*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.NETCore\.Targets)|(Microsoft\.NETCore\.Platforms)|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic)|(Microsoft\.Private\.PackageBaseline))(?&lt;!TestData)$</CoreFxVersionsIdentityRegex>
-    <WCFVersionsIdentityRegex>^(?i)((System\.ServiceModel.*)|(System\.Private\.ServiceModel))(?&lt;!TestData)$</WCFVersionsIdentityRegex>
-  </PropertyGroup>
-
+  <!-- Provides package dependency version properties and verification/auto-upgrade configuration -->
+  <Import Project="$(MSBuildThisFileDirectory)dependencies.props" />
+  
   <Import Project="$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props" Condition="Exists('$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props')" />
-
-  <ItemGroup>
-    <ValidationPattern Include="CoreFxVersions">
-      <IdentityRegex>$(CoreFxVersionsIdentityRegex)</IdentityRegex>
-      <ExpectedPrerelease>$(CoreFxExpectedPrerelease)</ExpectedPrerelease>
-    </ValidationPattern>
-    <ValidationPattern Include="WCFVersions">
-      <IdentityRegex>$(WCFVersionsIdentityRegex)</IdentityRegex>
-      <ExpectedPrerelease>$(WCFExpectedPrerelease)</ExpectedPrerelease>
-    </ValidationPattern>
-    <ValidationPattern Include="CoreClrVersions">
-      <IdentityRegex>^(?i)(Microsoft\.NETCore\.Runtime.*)|(Microsoft\.TargetingPack\.Private\.CoreCLR)$</IdentityRegex>
-      <ExpectedPrerelease>$(CoreClrExpectedPrerelease)</ExpectedPrerelease>
-    </ValidationPattern>
-    <ValidationPattern Include="CoreLibTargetingPackVersions">
-      <IdentityRegex>^(?i)Microsoft\.TargetingPack\.Private\.NETNative$</IdentityRegex>
-      <ExpectedPrerelease>$(ExternalExpectedPrerelease)</ExpectedPrerelease>
-    </ValidationPattern>
-    <ValidationPattern Include="TargetingPackVersions">
-      <IdentityRegex>^(?i)Microsoft\.TargetingPack\.(NetFramework.*|Private\.WinRT)$</IdentityRegex>
-      <ExpectedVersion>1.0.1</ExpectedVersion>
-    </ValidationPattern>
-    <ValidationPattern Include="xUnitStableVersions">
-      <IdentityRegex>^(?i)xunit$</IdentityRegex>
-      <ExpectedVersion>2.2.0-beta2-build3300</ExpectedVersion>
-    </ValidationPattern>
-    <ValidationPattern Include="xUnitExtensionsVersions">
-      <IdentityRegex>^(?i)Microsoft\.xunit\.netcore\.extensions$</IdentityRegex>
-      <ExpectedVersion>1.0.0-prerelease-00731-01</ExpectedVersion>
-    </ValidationPattern>
-    <ValidationPattern Include="buildToolsTestSuiteVersions">
-      <IdentityRegex>^(?i)Microsoft\.DotNet\.BuildTools\.TestSuite$</IdentityRegex>
-      <ExpectedVersion>1.0.0-prerelease-00807-03</ExpectedVersion>
-    </ValidationPattern>
-    <ValidationPattern Include="uwpRunnerVersion">
-      <IdentityRegex>^(?i)microsoft\.xunit\.runner\.uwp$</IdentityRegex>
-      <ExpectedVersion>$(AppXRunnerVersion)</ExpectedVersion>
-    </ValidationPattern>
-  </ItemGroup>
-
-  <!-- Runner versions -->
-  <PropertyGroup>
-    <AppXRunnerVersion>1.0.3-prerelease-00614-01</AppXRunnerVersion>
-  </PropertyGroup>
+  
   <!-- Import packaging props -->
   <Import Project="$(MSBuildThisFileDirectory)Packaging.props"/>
 
@@ -483,11 +431,17 @@
 
   <!-- Default Test platform to deploy the netstandard compiled tests to -->
   <PropertyGroup>
-    <!-- we default TestTFM and FilterToTestTFM to netcoreapp1.0 if they are not explicity defined -->
-    <DefaultTestTFM Condition="'$(DefaultTestTFM)'==''">netcoreapp1.0</DefaultTestTFM>
-    <TestTFM Condition="'$(TestTFM)'==''">$(DefaultTestTFM)</TestTFM>
-    <FilterToTestTFM Condition="'$(FilterToTestTFM)'==''">$(DefaultTestTFM)</FilterToTestTFM>
+    <TestTFM Condition="'$(TestTFM)'=='' and ('$(TargetGroup)'=='netstandard1.7' or '$(TargetGroup)'=='netcoreapp1.1')">netcoreapp1.1</TestTFM>
+    <TestTFM Condition="'$(TestTFM)'==''">netcoreapp1.0</TestTFM>
+    <!-- we default FilterToTestTFM to netcoreapp1.1 if it is not explicity defined -->
+    <FilterToTestTFM Condition="'$(FilterToTestTFM)'==''">netcoreapp1.1</FilterToTestTFM>
   </PropertyGroup>
+
+  <ItemGroup>
+    <TestNugetTargetMoniker Include=".NETCoreApp,Version=v1.1" Condition="'$(TestTFM)' == 'netcoreapp1.1'">
+      <Folder>netcoreapp1.1</Folder>
+    </TestNugetTargetMoniker>
+  </ItemGroup>
 
   <PropertyGroup>
     <IsRedistAssembly Condition="'$(IsRedistAssembly)'=='' AND ($(MSBuildProjectFullPath.Contains('\redist\')) OR $(MSBuildProjectFullPath.Contains('/redist/')))">true</IsRedistAssembly>

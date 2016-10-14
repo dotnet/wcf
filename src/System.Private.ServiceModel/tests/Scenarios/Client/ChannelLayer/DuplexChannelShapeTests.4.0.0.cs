@@ -19,9 +19,6 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     private const string action = "http://tempuri.org/IWcfService/MessageRequestReply";
     private const string clientMessage = "[client] This is my request.";
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void IDuplexSessionChannel_Tcp_NetTcpBinding()
@@ -77,9 +74,6 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         }
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [OuterLoop]
     public static void IDuplexSessionChannel_Async_Tcp_NetTcpBinding()

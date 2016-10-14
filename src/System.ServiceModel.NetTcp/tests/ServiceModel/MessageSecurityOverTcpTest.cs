@@ -9,9 +9,6 @@ using Infrastructure.Common;
 
 public static class MessageSecurityOverTcpTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_Default_Properties()
     {
@@ -19,9 +16,6 @@ public static class MessageSecurityOverTcpTest
         Assert.True(msot != null, "MessageSecurityOverTcp default ctor failed");
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_Default_Properties_Not_Supported()
     {
@@ -32,9 +26,6 @@ public static class MessageSecurityOverTcpTest
         });
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(MessageCredentialType.Certificate)]
     [InlineData(MessageCredentialType.IssuedToken)]
@@ -49,9 +40,6 @@ public static class MessageSecurityOverTcpTest
         });
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(MessageCredentialType.None)]
     public static void ClientCredentialType_Property_Values_Supported(MessageCredentialType credentialType)

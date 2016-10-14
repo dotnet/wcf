@@ -10,25 +10,11 @@ using Xunit;
 
 public class SetupValidationTests : ConditionalWcfTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void Root_Certificate_Correctly_Installed()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool root_Certificate_Installed = Root_Certificate_Installed();
-        if (!root_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Root_Certificate_Installed evaluated as {0}", root_Certificate_Installed);
-            return;
-        }
-#endif
-
         // *** SETUP *** \\
         InvalidOperationException exception = null;
 
@@ -48,24 +34,11 @@ public class SetupValidationTests : ConditionalWcfTest
         Assert.True(exception == null, exception == null ? String.Empty : exception.ToString());
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Condition(nameof(Client_Certificate_Installed))]
     [OuterLoop]
     public static void Client_Certificate_Correctly_Installed()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool client_Certificate_Installed = Client_Certificate_Installed();
-        if (!client_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Client_Certificate_Installed evaluated as {0}", client_Certificate_Installed);
-            return;
-        }
-#endif
         // *** SETUP *** \\
         InvalidOperationException exception = null;
 
@@ -85,24 +58,11 @@ public class SetupValidationTests : ConditionalWcfTest
         Assert.True(exception == null, exception == null ? String.Empty : exception.ToString());
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     [Condition(nameof(Peer_Certificate_Installed))]
     [OuterLoop]
     public static void Peer_Certificate_Correctly_Installed()
     {
-#if FULLXUNIT_NOTSUPPORTED
-        bool peer_Certificate_Installed = Peer_Certificate_Installed();
-        if (!peer_Certificate_Installed)
-        {
-            Console.WriteLine("---- Test SKIPPED --------------");
-            Console.WriteLine("Attempting to run the test in ToF, a ConditionalFact evaluated as FALSE.");
-            Console.WriteLine("Peer_Certificate_Installed evaluated as {0}", peer_Certificate_Installed);
-            return;
-        }
-#endif
         // *** SETUP *** \\
         InvalidOperationException exception = null;
 

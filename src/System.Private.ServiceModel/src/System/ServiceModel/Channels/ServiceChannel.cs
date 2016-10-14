@@ -1300,28 +1300,12 @@ namespace System.ServiceModel.Channels
 
             if (_closeBinder)
             {
-                var asyncInnerChannel = InnerChannel as IAsyncCommunicationObject;
-                if (asyncInnerChannel != null)
-                {
-                    await asyncInnerChannel.CloseAsync(timeoutHelper.RemainingTime());
-                }
-                else
-                {
-                    InnerChannel.Close(timeoutHelper.RemainingTime());
-                }
+                await CloseOtherAsync(InnerChannel, timeoutHelper.RemainingTime());
             }
 
             if (_closeFactory)
             {
-                var asyncFactory = _factory as IAsyncCommunicationObject;
-                if (asyncFactory != null)
-                {
-                    await asyncFactory.CloseAsync(timeoutHelper.RemainingTime());
-                }
-                else
-                {
-                    _factory.Close(timeoutHelper.RemainingTime());
-                }
+                await CloseOtherAsync(_factory, timeoutHelper.RemainingTime());
             }
 
             CleanupChannelCollections();
@@ -1356,15 +1340,7 @@ namespace System.ServiceModel.Channels
 
             if (_openBinder)
             {
-                var asyncInnerChannel = InnerChannel as IAsyncCommunicationObject;
-                if (asyncInnerChannel != null)
-                {
-                    await asyncInnerChannel.OpenAsync(timeout);
-                }
-                else
-                {
-                    InnerChannel.Open(timeout);
-                }
+                await OpenOtherAsync(InnerChannel, timeout);
             }
 
             BindDuplexCallbacks();

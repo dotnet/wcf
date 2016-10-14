@@ -12,9 +12,6 @@ using Xunit;
 
 public static class SecurityBindingElementTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(BasicHttpSecurityMode.TransportCredentialOnly)]
     [InlineData(BasicHttpSecurityMode.Transport)]
@@ -31,9 +28,6 @@ public static class SecurityBindingElementTest
         binding.BuildChannelFactory<IRequestChannel>();
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(BasicHttpSecurityMode.Message)]
     [InlineData(BasicHttpSecurityMode.TransportWithMessageCredential)]

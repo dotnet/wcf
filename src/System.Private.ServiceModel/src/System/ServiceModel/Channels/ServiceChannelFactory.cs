@@ -412,15 +412,7 @@ namespace System.ServiceModel.Channels
                     channel = _channelsList[0];
                 }
 
-                var asyncChannel = channel as IAsyncCommunicationObject;
-                if (asyncChannel != null)
-                {
-                    await asyncChannel.CloseAsync(timeoutHelper.RemainingTime());
-                }
-                else
-                {
-                    await Task.Factory.FromAsync(channel.BeginClose, channel.EndClose, TaskCreationOptions.None);
-                }
+                await CloseOtherAsync(channel, timeoutHelper.RemainingTime());
             }
         }
 
@@ -456,7 +448,7 @@ namespace System.ServiceModel.Channels
 
             protected internal override Task OnOpenAsync(TimeSpan timeout)
             {
-                return ((IAsyncCommunicationObject)_innerChannelFactory).OpenAsync(timeout);
+                return OpenOtherAsync(_innerChannelFactory, timeout);
             }
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -515,17 +507,17 @@ namespace System.ServiceModel.Channels
 
             private new async Task OnCloseAsyncInternal(TimeSpan timeout)
             {
-                await base.OnCloseAsync(timeout);
-
-                IAsyncChannelFactory asyncChannelFactory = _innerChannelFactory as IAsyncChannelFactory;
-                if (asyncChannelFactory != null)
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                if (_isSynchronousClose)
                 {
-                    await asyncChannelFactory.CloseAsync(timeout);
+                    await TaskHelpers.CallActionAsync(base.OnClose, timeoutHelper.RemainingTime());
                 }
                 else
                 {
-                    await Task.Factory.FromAsync(_innerChannelFactory.BeginClose, _innerChannelFactory.EndClose, TaskCreationOptions.None);
+                    await Task.Factory.FromAsync(base.OnBeginClose, base.OnEndClose, timeoutHelper.RemainingTime(), TaskCreationOptions.None);
                 }
+
+                await CloseOtherAsync(_innerChannelFactory, timeoutHelper.RemainingTime());
             }
         }
 

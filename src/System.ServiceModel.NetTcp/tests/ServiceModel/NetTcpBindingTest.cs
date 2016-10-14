@@ -11,9 +11,6 @@ using Xunit;
 
 public static class NetTcpBindingTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(SecurityMode.None)]
     [InlineData(SecurityMode.Transport)]
@@ -30,9 +27,6 @@ public static class NetTcpBindingTest
         Assert.Equal<SecurityMode>(securityMode, binding.Security.Mode);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(TransferMode.Buffered)]
     [InlineData(TransferMode.Streamed)]
@@ -45,9 +39,6 @@ public static class NetTcpBindingTest
         Assert.Equal<TransferMode>(mode, binding.TransferMode);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(Int64.MaxValue)]
@@ -58,9 +49,6 @@ public static class NetTcpBindingTest
         Assert.Equal<long>(value, binding.MaxBufferPoolSize);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(1)]
     [InlineData(int.MaxValue)]
@@ -71,9 +59,6 @@ public static class NetTcpBindingTest
         Assert.Equal<int>(value, binding.MaxBufferSize);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -83,9 +68,6 @@ public static class NetTcpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.MaxBufferSize = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(1)]
     [InlineData(Int64.MaxValue)]
@@ -96,9 +78,6 @@ public static class NetTcpBindingTest
         Assert.Equal<long>(value, binding.MaxReceivedMessageSize);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(0)]
     [InlineData(-1)]
@@ -108,9 +87,6 @@ public static class NetTcpBindingTest
         Assert.Throws<ArgumentOutOfRangeException>(() => binding.MaxReceivedMessageSize = value);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Security_Property_Sets()
     {
@@ -120,9 +96,6 @@ public static class NetTcpBindingTest
         Assert.Equal<NetTcpSecurity>(security, binding.Security);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Security_Property_Set_Null_Throws()
     {

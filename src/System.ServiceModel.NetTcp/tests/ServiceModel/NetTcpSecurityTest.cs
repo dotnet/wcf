@@ -10,9 +10,6 @@ using Xunit;
 
 public static class NetTcpSecurityTest
 {
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Ctor_Default_Initializes_Properties()
     {
@@ -21,9 +18,6 @@ public static class NetTcpSecurityTest
         Assert.Equal<SecurityMode>(SecurityMode.Transport, security.Mode);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Theory]
-#endif
     [WcfTheory]
     [InlineData(SecurityMode.Message)]
     [InlineData(SecurityMode.None)]
@@ -36,9 +30,6 @@ public static class NetTcpSecurityTest
         Assert.Equal<SecurityMode>(mode, security.Mode);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Mode_Property_Set_Invalid_Value_Throws()
     {
@@ -46,9 +37,6 @@ public static class NetTcpSecurityTest
         Assert.Throws<ArgumentOutOfRangeException>(() => security.Mode = (SecurityMode)999);
     }
 
-#if FULLXUNIT_NOTSUPPORTED
-    [Fact]
-#endif
     [WcfFact]
     public static void Transport_Property_Sets()
     {
