@@ -30,7 +30,7 @@ This WCF repository uses those same Developer Workflow scripts. WCF also uses a 
 Building the WCF packages
 =============
 
-All WCF packages can be built from a regular, non-admin command prompt using this command in Windows, run from the root of the repository:
+All WCF packages can be built from a regular, non-admin command prompt using this command in Windows, run from the [root](https://github.com/dotnet/wcf) of the repository:
 ```
 build.cmd -- /p:SkipTests=true
 ```
@@ -55,7 +55,7 @@ or this command on a non-windows OS:
 ./build.sh
 ```
 Each separate WCF package has its own unique set of unit tests, and they live in a folder called `src\{WCF-package}\tests`.  For example, the folder:
-`src\System.ServiceModel.Primitives\tests`
+[src\System.ServiceModel.Primitives\tests](https://github.com/dotnet/wcf/tree/master/src/System.ServiceModel.Primitives/tests)
 contains the unit tests for the System.ServiceModel.Primitives NuGet package.
 
 To run the unit tests for only a single test project, 'cd' to the folder containing the test project and use msbuild to run the 'BuildAndTest' target for the .csproj found there, like this:

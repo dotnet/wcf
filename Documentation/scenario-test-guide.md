@@ -11,7 +11,7 @@ WCF Test services can be hosted in two ways like WCF users would usually do, i.e
 
 Self-Hosted WCF Test Service
 ----------------------------
-To start a self-hosted WCF test service on a Windows machine, execute this script that is located at directory `src\System.Private.ServiceModel\tools\scripts`.
+To start a self-hosted WCF test service on a Windows machine, execute this script that is located at directory [src\System.Private.ServiceModel\tools\scripts](https://github.com/dotnet/wcf/tree/master/src/System.Private.ServiceModel/tools/scripts).
 ```
 StartWCFSelfHostedSvc.cmd
 ```
@@ -21,7 +21,7 @@ This script requires elevated privileges. If it is run from a non-elevated windo
 
 **Note:** this is exactly the same script used by the simple auto-starting scenario tests.  The only difference is that now we are running that script on a different machine than the tests.
 
-The source code for this self-hosted test program can be found in the project at `src\System.Private.ServiceModel\tools\SelfHostedWcfService`.   The source code for the WCF services themselves is shared with the IIS-hosted test service found at `src\System.Private.ServiceModel\tools\IISHostedWcfService`.   
+The source code for this self-hosted test program can be found in the project at [src\System.Private.ServiceModel\tools\SelfHostedWcfService](https://github.com/dotnet/wcf/tree/master/src/System.Private.ServiceModel/tools/SelfHostedWcfService).   The source code for the WCF services themselves is shared with the IIS-hosted test service found at [src\System.Private.ServiceModel\tools\IISHostedWcfService](https://github.com/dotnet/wcf/tree/master/src/System.Private.ServiceModel/tools/IISHostedWcfService).   
 
 IIS-Hosted WCF Test Service
 ---------------------------
@@ -31,12 +31,12 @@ To host WCF services on IIS, the Windows machine has these prerequisites
 2. .NET Framework 4.x features including WCF service and activation features are enabled.
 3. Ports 80 (HTTP), 443 (HTTPS) and 808 (TCP) are opened.
 
-Copy the script `src\System.Private.ServiceModel\tools\scripts\SetupWcfIISHostedService.cmd` to the Windows machine with IIS and run it in an elevated command window.
+Copy the script [src\System.Private.ServiceModel\tools\scripts\SetupWcfIISHostedService.cmd](https://github.com/dotnet/wcf/blob/master/src/System.Private.ServiceModel/tools/scripts/SetupWcfIISHostedService.cmd) to the Windows machine with IIS and run it in an elevated command window.
 ```
 SetupWcfIISHostedService.cmd {id}
 ```
 
-where `id` is an identifier that will be appended to the name of the IIS application to be created.  For example, command `SetupWcfIISHostedService.cmd Test` will create an IIS application named "WCFService*Test*". By default, this script will create a clone of WCF GitHub repository, an IIS application pool and an IIS application from `src\System.Private.ServiceModel\tools\IISHostedWcfService`. The script will also install necessary test certificates and add IIS HTTPS binding for testing.
+where `id` is an identifier that will be appended to the name of the IIS application to be created.  For example, command `SetupWcfIISHostedService.cmd Test` will create an IIS application named "WCFService*Test*". By default, this script will create a clone of WCF GitHub repository, an IIS application pool and an IIS application from [src\System.Private.ServiceModel\tools\IISHostedWcfService](https://github.com/dotnet/wcf/tree/master/src/System.Private.ServiceModel/tools/IISHostedWcfService). The script will also install necessary test certificates and add IIS HTTPS binding for testing.
 
 If you wish to use an existing WCF repository on the IIS machine instead of cloning a new copy, run the script like this:
 ```
