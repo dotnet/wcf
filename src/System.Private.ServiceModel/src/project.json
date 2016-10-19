@@ -21,7 +21,7 @@
     "System.Net.Primitives": "4.0.10",
     "System.Net.WebHeaderCollection": "4.0.0",
     "System.Net.WebSockets": "4.0.0",
-    "System.Net.WebSockets.Client": "4.3.0-beta-24601-02",
+    "System.Net.WebSockets.Client": "4.4.0-beta-24605-03",
     "System.ObjectModel": "4.0.0",
     "System.Reflection": "4.0.10",
     "System.Reflection.DispatchProxy": "4.0.0",
@@ -36,7 +36,7 @@
     "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
     "System.Runtime.Serialization.Xml": "4.1.0",
     "System.Security.Claims": "4.0.0",
-    "System.Security.Cryptography.X509Certificates": "4.3.0-beta-24601-02",
+    "System.Security.Cryptography.X509Certificates": "4.4.0-beta-24605-03",
     "System.Security.Principal": "4.0.0",
     "System.Text.Encoding": "4.0.10",
     "System.Text.Encoding.Extensions": "4.0.10",
@@ -55,7 +55,7 @@
       ],
       "dependencies": {
         "System.Net.NameResolution": "4.0.0",
-        "System.Net.Security": "4.3.0-beta-24601-02",
+        "System.Net.Security": "4.4.0-beta-24605-03",
         "System.Net.Sockets": "4.1.0",
         "System.Security.Principal.Windows": "4.0.0"
       }
