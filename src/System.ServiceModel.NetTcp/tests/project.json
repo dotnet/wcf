@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "System.ServiceModel.Duplex": "4.3.0-beta-24607-01",
-    "System.ServiceModel.NetTcp": "4.3.0-beta-24607-01",
-    "System.ServiceModel.Primitives": "4.3.0-beta-24607-01",
-    "System.ServiceModel.Security": "4.3.0-beta-24607-01",
+    "System.ServiceModel.Duplex": "4.3.0-beta-24618-01",
+    "System.ServiceModel.NetTcp": "4.3.0-beta-24618-01",
+    "System.ServiceModel.Primitives": "4.3.0-beta-24618-01",
+    "System.ServiceModel.Security": "4.3.0-beta-24618-01",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"
