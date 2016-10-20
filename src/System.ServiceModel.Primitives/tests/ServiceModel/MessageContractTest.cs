@@ -53,7 +53,7 @@ public static class MessageContractTest
     }
 
     [WcfTheory]
-    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
+    [InlineData(new object[] { null } )]
     public static void WrapperName_Property_Sets_Throws_ArgumentNull(string wrapperName)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();
@@ -64,7 +64,7 @@ public static class MessageContractTest
     [InlineData("http://www.contoso.com")]
     [InlineData("testNamespace")]
     [InlineData("")]
-    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
+    [InlineData(new object[] { null } )]
     public static void WrapperNamespace_Property_Sets(string wrapperNamespace)
     {
         MessageContractAttribute messageCA = new MessageContractAttribute();

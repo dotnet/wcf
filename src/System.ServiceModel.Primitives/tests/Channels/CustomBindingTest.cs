@@ -49,7 +49,7 @@ public static class CustomBindingTest
 
     [WcfTheory]
     [InlineData("")]
-    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
+    [InlineData(new object[] { null } )]
     public static void CustomBinding_Name_Property_Set_Throws(string bindingName)
     {
         CustomBinding customBinding = new CustomBinding();
