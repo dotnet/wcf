@@ -167,7 +167,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
+    [InlineData(new object[] { null } )]
     [InlineData("")]
     public static void Name_Property_Set_Invalid_Value_Throws(string value)
     {
@@ -187,7 +187,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [InlineData(new object[] { null } )]  // Work-around issue #1449 with this syntax
+    [InlineData(new object[] { null } )]
     public static void Namespace_Property_Set_Invalid_Value_Throws(string value)
     {
         var binding = new BasicHttpBinding();
