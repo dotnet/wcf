@@ -1409,6 +1409,7 @@ namespace System.ServiceModel.Dispatcher
     public sealed partial class ClientRuntime
     {
         internal ClientRuntime() { }
+        public System.Collections.Generic.SynchronizedCollection<IChannelInitializer> ChannelInitializers { get { return default(System.Collections.Generic.SynchronizedCollection<IChannelInitializer>); } }
         public System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.IClientMessageInspector> ClientMessageInspectors { get { return default(System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.IClientMessageInspector>); } }
         public System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.ClientOperation> ClientOperations { get { return default(System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.ClientOperation>); } }
         public System.Type ContractClientType { get { return default(System.Type); } set { } }
@@ -1444,6 +1445,10 @@ namespace System.ServiceModel.Dispatcher
          public FaultContractInfo(string action, Type detail) {}
          public string Action { get { return default(string); } }
          public Type Detail { get { return default(Type); } }
+    }
+    public partial interface IChannelInitializer
+    {
+        void Initialize(IClientChannel channel);
     }
     public partial interface IClientMessageFormatter
     {
