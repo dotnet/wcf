@@ -68,6 +68,14 @@ namespace WcfService
                                             MetadataExchangeBindings.CreateMexHttpBinding(),
                                             "mex");
                 }
+
+                if (baseAddress.Scheme == Uri.UriSchemeNetTcp)
+                {
+                    mexBehavior.HttpGetEnabled = false;
+                    this.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                                            MetadataExchangeBindings.CreateMexTcpBinding(),
+                                            "mex");
+                }
             }
         }
     }

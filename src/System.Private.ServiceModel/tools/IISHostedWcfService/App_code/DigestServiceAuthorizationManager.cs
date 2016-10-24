@@ -50,6 +50,13 @@ namespace WcfService
 
         public override bool CheckAccess(OperationContext operationContext, ref Message message)
         {
+           var contractName = operationContext.EndpointDispatcher.ContractName; 
+           if (contractName == "IMetadataExchange" || contractName == "IHttpGetHelpPageAndMetadataContract") 
+           { 
+               // support for MEX 
+               return true; 
+            }
+             
             var digestState = new DigestAuthenticationState(operationContext, GetRealm(ref message));
             if (!digestState.IsRequestDigestAuth)
             {

@@ -8,7 +8,7 @@ using System.ServiceModel;
 
 namespace WcfService
 {
-    [MessageContract(IsWrapped = false, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+    [MessageContract(IsWrapped = false)]
     public class ReplyBankingDataNotWrapped
     {
         [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -19,7 +19,7 @@ namespace WcfService
         public int amount;
     }
 
-    [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+    [MessageContract(IsWrapped = true, WrapperName = "ReplyBankingDataWithMessageHeaderWrapper", WrapperNamespace = "http://www.contoso.com")]
     public class ReplyBankingDataWithMessageHeader
     {
         [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -28,11 +28,11 @@ namespace WcfService
         public string accountName;
         [MessageBodyMember(Order = 2, Name = "Transaction_Amount")]
         public int amount;
-        [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = true)]
+        [MessageHeader(Name = "ReplyBankingDataWithMessageHeaderExtraValues", Namespace = "http://www.contoso.com", MustUnderstand = true)]
         public string extraValues;
     }
 
-    [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+    [MessageContract(IsWrapped = true, WrapperName = "ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodWrapper", WrapperNamespace = "http://www.contoso.com")]
     public class ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood
     {
         [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -41,7 +41,7 @@ namespace WcfService
         public string accountName;
         [MessageBodyMember(Order = 2, Name = "Transaction_Amount")]
         public int amount;
-        [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
+        [MessageHeader(Name = "ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue", Namespace = "http://www.contoso.com", MustUnderstand = false)]
         public string extraValues;
     }
 }
