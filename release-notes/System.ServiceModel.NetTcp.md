@@ -8,6 +8,12 @@
 
 ## Version History
 
+### 4.3.0-preview1-24610-02
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/4.3.0-preview1-24610-02)
+* [Release tag](https://github.com/dotnet/wcf/tree/v1.1.0-preview1)
+* [Supported features](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v1.0.0.md)
+
 ### 4.1.0
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/4.1.0)
