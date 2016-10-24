@@ -23,6 +23,7 @@ namespace System.ServiceModel.Description
         private static Type[] s_messageContractMemberAttributes = {
             typeof(MessageHeaderAttribute),
             typeof(MessageBodyMemberAttribute),
+            typeof(MessagePropertyAttribute)
         };
 
         private static Type[] s_formatterAttributes = {
@@ -1331,9 +1332,10 @@ namespace System.ServiceModel.Description
                         }
                     }
 
-
                     if (memberInfo.IsDefined(typeof(MessageBodyMemberAttribute), false) ||
-                        memberInfo.IsDefined(typeof(MessageHeaderAttribute), false)
+                        memberInfo.IsDefined(typeof(MessageHeaderAttribute), false) ||
+                        memberInfo.IsDefined(typeof(MessageHeaderArrayAttribute), false) ||
+                        memberInfo.IsDefined(typeof(MessagePropertyAttribute), false)
                         )
                     {
                         contractMembers.Add(memberInfo);
@@ -1360,7 +1362,8 @@ namespace System.ServiceModel.Description
                     memberType = ((FieldInfo)memberInfo).FieldType;
                 }
 
-                if (memberInfo.IsDefined(typeof(MessageHeaderAttribute), false))
+                if (memberInfo.IsDefined(typeof(MessageHeaderArrayAttribute), false) ||
+                    memberInfo.IsDefined(typeof(MessageHeaderAttribute), false))
                 {
                     headerPartDescriptionList.Add(CreateMessageHeaderDescription(memberType,
                                                                               memberInfo,
@@ -1368,6 +1371,12 @@ namespace System.ServiceModel.Description
                                                                               defaultNS,
                                                                               i,
                                                                               -1));
+                }
+                else if (memberInfo.IsDefined(typeof(MessagePropertyAttribute), false))
+                {
+                    messageDescription.Properties.Add(CreateMessagePropertyDescription(memberInfo,
+                                                                                        new XmlName(memberInfo.Name),
+                                                                                        i));
                 }
                 else
                 {
@@ -1455,7 +1464,15 @@ namespace System.ServiceModel.Description
             headerDescription = new MessageHeaderDescription(headerName.EncodedName, headerNs);
             headerDescription.UniquePartName = defaultName.EncodedName;
 
-            // check on MessageHeaderArrayAttribute is omitted.
+            if (headerAttr is MessageHeaderArrayAttribute)
+            {
+                if (!headerParameterType.IsArray || headerParameterType.GetArrayRank() != 1)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidMessageHeaderArrayType, defaultName)));
+                }
+                headerDescription.Multiple = true;
+                headerParameterType = headerParameterType.GetElementType();
+            }
 
             headerDescription.Type = TypedHeaderManager.GetHeaderType(headerParameterType);
             headerDescription.TypedHeader = (headerParameterType != headerDescription.Type);
@@ -1490,7 +1507,8 @@ namespace System.ServiceModel.Description
                                                             XmlName defaultName,
                                                             int parameterIndex)
         {
-            XmlName propertyName = defaultName;
+            MessagePropertyAttribute attr = ServiceReflector.GetSingleAttribute<MessagePropertyAttribute>(attrProvider);
+            XmlName propertyName = attr.IsNameSetExplicit ? new XmlName(attr.Name) : defaultName;
             MessagePropertyDescription propertyDescription = new MessagePropertyDescription(propertyName.EncodedName);
             propertyDescription.Index = parameterIndex;
 
