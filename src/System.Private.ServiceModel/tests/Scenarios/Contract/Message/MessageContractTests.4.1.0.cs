@@ -21,8 +21,9 @@ public static class MessageContractTests
         clientProxy.MessageContractRequestReply(requestData);
         XmlDictionaryReader reader = MessageContractHelpers.GetResponseBodyReader(inspector);
 
-        Assert.True(reader.LocalName.Equals(MessageContractConstants.wrapperName),
-            string.Format("reader.LocalName - Expected: {0}, Actual: {1}", MessageContractConstants.wrapperName, reader.LocalName));
+        string wrapperName = "ReplyBankingDataWrapper";
+        Assert.True(reader.LocalName.Equals(wrapperName),
+            string.Format("reader.LocalName - Expected: {0}, Actual: {1}", wrapperName, reader.LocalName));
 
         Assert.True(reader.NamespaceURI.Equals(MessageContractConstants.wrapperNamespace),
             string.Format("reader.NamespaceURI - Expected: {0}, Actual: {1}", MessageContractConstants.wrapperNamespace, reader.NamespaceURI));
@@ -38,7 +39,8 @@ public static class MessageContractTests
         clientProxy.MessageContractRequestReplyNotWrapped(requestData);
         XmlDictionaryReader reader = MessageContractHelpers.GetResponseBodyReader(inspector);
 
-        Assert.False(reader.LocalName.Equals(MessageContractConstants.wrapperName),
+        string wrapperName = "ReplyBankingDataWrapper";
+        Assert.False(reader.LocalName.Equals(wrapperName),
             "When IsWrapped set to false, the message body should not be wrapped with an extra element.");
     }
 
@@ -52,8 +54,9 @@ public static class MessageContractTests
         clientProxy.MessageContractRequestReply(requestData);
         XmlDictionaryReader reader = MessageContractHelpers.GetResponseBodyReader(inspector);
 
-        Assert.True(reader.LocalName.Equals(MessageContractConstants.wrapperName),
-            string.Format("Unexpected element order (1/5). Expected {0}, Actual: {1}", MessageContractConstants.wrapperName, reader.LocalName));
+        string wrapperName = "ReplyBankingDataWrapper";
+        Assert.True(reader.LocalName.Equals(wrapperName),
+            string.Format("Unexpected element order (1/5). Expected {0}, Actual: {1}", wrapperName, reader.LocalName));
 
         reader.Read();
 
@@ -79,8 +82,8 @@ public static class MessageContractTests
         reader.Read(); // Move to the end tag
         reader.ReadEndElement(); // Checks that the current content node is an end tag and advances the reader to the next node.
 
-        Assert.True(reader.IsStartElement() == false && reader.LocalName.Equals(MessageContractConstants.wrapperName),
-            string.Format("Unexpected element order (5/5). Expected: {0}, Actual: {1}", MessageContractConstants.wrapperName, reader.LocalName));
+        Assert.True(reader.IsStartElement() == false && reader.LocalName.Equals(wrapperName),
+            string.Format("Unexpected element order (5/5). Expected: {0}, Actual: {1}", wrapperName, reader.LocalName));
     }
 
     [WcfFact]
@@ -123,7 +126,8 @@ public static class MessageContractTests
         clientProxy.MessageContractRequestReplyWithMessageHeader(requestData);
         MessageHeaders headers = MessageContractHelpers.GetHeaders(inspector);
 
-        int index = headers.FindHeader(MessageContractConstants.extraValuesName, MessageContractConstants.extraValuesNamespace);
+        string extraValue = "ReplyBankingDataWithMessageHeaderExtraValues";
+        int index = headers.FindHeader(extraValue, MessageContractConstants.extraValuesNamespace);
         var header = headers[index];
 
         Assert.True(header != null, "There's no header in the message.");
@@ -140,7 +144,8 @@ public static class MessageContractTests
         clientProxy.MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstood(requestData);
         MessageHeaders headers = MessageContractHelpers.GetHeaders(inspector);
 
-        int index = headers.FindHeader(MessageContractConstants.extraValuesName, MessageContractConstants.extraValuesNamespace);
+        string extraValue = "ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue";
+        int index = headers.FindHeader(extraValue, MessageContractConstants.extraValuesNamespace);
         var header = headers[index];
 
         Assert.True(header != null, "There's no header in the message.");

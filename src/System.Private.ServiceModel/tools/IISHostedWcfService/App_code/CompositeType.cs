@@ -217,7 +217,7 @@ public partial class XmlMessageContractTestRequest
 [MessageContract(WrapperName = "XmlMessageContractTestRequestWithMessageHeader", WrapperNamespace = "http://www.contoso.com/XmlMessageContarctTestMessages", IsWrapped = true)]
 public partial class XmlMessageContractTestRequestWithMessageHeader
 {
-    [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
+    [MessageHeader(Name = "XmlMessageContractTestRequestWithMessageHeaderMessage", Namespace = "http://www.contoso.com", MustUnderstand = false)]
     public string Message;
 
     public XmlMessageContractTestRequestWithMessageHeader()

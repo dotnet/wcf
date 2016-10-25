@@ -15,7 +15,6 @@ namespace MessageContractCommon
     public class MessageContractConstants
     {
         // CONSTANTS
-        public const string wrapperName = "CustomWrapperName";
         public const string wrapperNamespace = "http://www.contoso.com";
         public const string dateElementName = "Date_of_Request";
         public static string dateElementValue = "";
@@ -24,7 +23,6 @@ namespace MessageContractCommon
         public const string customerElementName = "Customer_Name";
         public const string customerElementNamespace = "http://www.contoso.com";
         public const string customerElementValue = "Michael Jordan";
-        public const string extraValuesName = "OutOfBandData";
         public const string extraValuesNamespace = "http://www.contoso.com";
     }
 
@@ -78,7 +76,7 @@ namespace MessageContractCommon
 
     public class MessageContractTypes
     {
-        [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+        [MessageContract(IsWrapped = true, WrapperName = "RequestBankingDataWrapper", WrapperNamespace = "http://www.contoso.com")]
         public class RequestBankingData
         {
             [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -89,7 +87,7 @@ namespace MessageContractCommon
             public int amount;
         }
 
-        [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+        [MessageContract(IsWrapped = true, WrapperName = "ReplyBankingDataWrapper", WrapperNamespace = "http://www.contoso.com")]
         public class ReplyBankingData
         {
             [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -100,7 +98,7 @@ namespace MessageContractCommon
             public int amount;
         }
 
-        [MessageContract(IsWrapped = false, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+        [MessageContract(IsWrapped = false)]
         public class ReplyBankingDataNotWrapped
         {
             [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -111,7 +109,7 @@ namespace MessageContractCommon
             public int amount;
         }
 
-        [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+        [MessageContract(IsWrapped = true, WrapperName = "ReplyBankingDataWithMessageHeaderWrapper", WrapperNamespace = "http://www.contoso.com")]
         public class ReplyBankingDataWithMessageHeader
         {
             [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -120,11 +118,11 @@ namespace MessageContractCommon
             public string accountName;
             [MessageBodyMember(Order = 2, Name = "Transaction_Amount")]
             public int amount;
-            [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = true)]
+            [MessageHeader(Name = "ReplyBankingDataWithMessageHeaderExtraValues", Namespace = "http://www.contoso.com", MustUnderstand = true)]
             public string extraValues;
         }
 
-        [MessageContract(IsWrapped = true, WrapperName = "CustomWrapperName", WrapperNamespace = "http://www.contoso.com")]
+        [MessageContract(IsWrapped = true, WrapperName = "ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodWrapper", WrapperNamespace = "http://www.contoso.com")]
         public class ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood
         {
             [MessageBodyMember(Order = 1, Name = "Date_of_Request")]
@@ -133,7 +131,7 @@ namespace MessageContractCommon
             public string accountName;
             [MessageBodyMember(Order = 2, Name = "Transaction_Amount")]
             public int amount;
-            [MessageHeader(Name = "OutOfBandData", Namespace = "http://www.contoso.com", MustUnderstand = false)]
+            [MessageHeader(Name = "ReplyBankingDataWithMessageHeaderNotNecessaryUnderstoodExtraValue", Namespace = "http://www.contoso.com", MustUnderstand = false)]
             public string extraValues;
         }
     }
