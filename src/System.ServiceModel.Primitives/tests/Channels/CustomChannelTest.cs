@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using System.Threading;
 using Infrastructure.Common;
 using Xunit;
@@ -391,6 +393,84 @@ public static class CustomChannelTest
 
         Assert.True(((ICommunicationObject)channel).State == CommunicationState.Closed,
             String.Format("Expected channel's final state to be Closed but was '{0}'", ((ICommunicationObject)channel).State));
+    }
+
+    [WcfFact]
+    public static void CustomChannel_ChannelInitializer_CreateChannel_Calls_Initialize()
+    {
+        string testMessageBody = "CustomChannelTest_Sync";
+        Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
+
+        // *** SETUP *** \\
+        MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
+        CustomBinding binding = new CustomBinding(mockBindingElement);
+        EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
+        var factory = new ChannelFactory<ICustomChannelServiceInterface>(binding, address);
+
+        // Create a mock channel initializer to observe whether
+        // its method is invoked.
+        bool initializeCalled = false;
+        MockChannelInitializer mockInitializer = new MockChannelInitializer();
+        mockInitializer.InitializeOverride = (chnl) =>
+        {
+            initializeCalled = true;
+            mockInitializer.DefaultInitialize(chnl);
+        };
+
+        // Add an endpoint behavior that registers the mock initializer
+        MockEndpointBehavior mockEndpointBehavior = new MockEndpointBehavior();
+        mockEndpointBehavior.ApplyClientBehaviorOverride = (ServiceEndpoint serviceEndpoint, ClientRuntime clientRuntime) =>
+        {
+            clientRuntime.ChannelInitializers.Add(mockInitializer);
+        };
+
+        factory.Endpoint.EndpointBehaviors.Add(mockEndpointBehavior);
+
+        // *** EXECUTE *** \\
+        factory.CreateChannel();
+
+        // *** VALIDATE *** \\
+        Assert.True(initializeCalled, "Initialize was not called.");
+    }
+
+    [WcfFact]
+    public static void CustomChannel_ChannelInitializer_Failed_Initialize_Throws()
+    {
+        string testMessageBody = "CustomChannelTest_Sync";
+        Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
+
+        // *** SETUP *** \\
+        MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
+        CustomBinding binding = new CustomBinding(mockBindingElement);
+        EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
+        var factory = new ChannelFactory<ICustomChannelServiceInterface>(binding, address);
+
+        // Create a mock channel initializer to fault inject an exception
+        InvalidOperationException thrownException = new InvalidOperationException("test threw this");
+        MockChannelInitializer mockInitializer = new MockChannelInitializer();
+        mockInitializer.InitializeOverride = (chnl) =>
+        {
+            mockInitializer.DefaultInitialize(chnl);
+            throw thrownException;
+        };
+
+        // Add an endpoint behavior that registers the mock initializer
+        MockEndpointBehavior mockEndpointBehavior = new MockEndpointBehavior();
+        mockEndpointBehavior.ApplyClientBehaviorOverride = (ServiceEndpoint serviceEndpoint, ClientRuntime clientRuntime) =>
+        {
+            clientRuntime.ChannelInitializers.Add(mockInitializer);
+        };
+
+        factory.Endpoint.EndpointBehaviors.Add(mockEndpointBehavior);
+
+        // *** EXECUTE *** \\
+        InvalidOperationException caughtException =
+            Assert.Throws<InvalidOperationException>(() => factory.CreateChannel());
+
+        // *** VALIDATE *** \\
+        Assert.True(String.Equals(caughtException.Message, thrownException.Message), 
+                    String.Format("Expected exception message '{0}' but actual was '{1}'",
+                                    thrownException.Message, caughtException.Message));
     }
 
     #region Helpers
