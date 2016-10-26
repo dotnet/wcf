@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "System.ServiceModel.Duplex": "4.3.0-beta-24607-01",
+    "System.ServiceModel.Duplex": "4.4.0-beta-24626-02",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"
