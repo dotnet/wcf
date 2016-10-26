@@ -299,6 +299,20 @@ namespace System.Runtime
             return new SyncContextScope();
         }
 
+        // Calls the given Action asynchronously.
+        public static async Task CallActionAsync<TArg>(Action<TArg> action, TArg argument)
+        {
+            using (var scope = TaskHelpers.RunTaskContinuationsOnOurThreads())
+            {
+                if (scope != null)  // No need to change threads if already off of thread pool
+                {
+                    await Task.Yield(); // Move synchronous method off of thread pool
+                }
+
+                action(argument);
+            }
+        }
+
         private class SyncContextScope : IDisposable
         {
             private readonly SynchronizationContext _prevContext;

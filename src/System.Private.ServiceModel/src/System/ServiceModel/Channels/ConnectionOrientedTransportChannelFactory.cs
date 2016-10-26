@@ -68,6 +68,13 @@ namespace System.ServiceModel.Channels
                 // there is the binding is configured with security
                 _flowIdentity = supportsImpersonationDuringAsyncOpen;
             }
+
+            // We explicitly declare this type and all derived types support
+            // async open/close.  We currently must do this because the NET Native
+            // toolchain does not recognize this type was granted Reflection degree.
+            // Is it safe to do this only because this is an internal type and no
+            // derived type is public or exposed in contract.
+            SupportsAsyncOpenClose = true;
         }
 
         public int ConnectionBufferSize
