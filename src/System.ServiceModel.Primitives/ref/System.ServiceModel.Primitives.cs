@@ -1415,6 +1415,7 @@ namespace System.ServiceModel.Dispatcher
         public System.Type ContractClientType { get { return default(System.Type); } set { } }
         public string ContractName { get { return default(string); } }
         public string ContractNamespace { get { return default(string); } }
+        public System.Collections.Generic.SynchronizedCollection<IInteractiveChannelInitializer> InteractiveChannelInitializers { get { return default(System.Collections.Generic.SynchronizedCollection<IInteractiveChannelInitializer>); } }
         public bool ManualAddressing { get { return default(bool); } set { } }
         public int MaxFaultSize { get { return default(int); } set { } }
         public System.ServiceModel.Dispatcher.IClientOperationSelector OperationSelector { get { return default(System.ServiceModel.Dispatcher.IClientOperationSelector); } set { } }
@@ -1464,6 +1465,11 @@ namespace System.ServiceModel.Dispatcher
     {
         bool AreParametersRequiredForSelection { get; }
         string SelectOperation(System.Reflection.MethodBase method, object[] parameters);
+    }
+    public partial interface IInteractiveChannelInitializer
+    {
+        IAsyncResult BeginDisplayInitializationUI(IClientChannel channel, AsyncCallback callback, object state);
+        void EndDisplayInitializationUI(IAsyncResult result);
     }
     public partial interface IParameterInspector
     {

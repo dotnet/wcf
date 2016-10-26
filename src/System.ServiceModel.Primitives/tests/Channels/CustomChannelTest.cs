@@ -472,6 +472,260 @@ public static class CustomChannelTest
                     String.Format("Expected exception message '{0}' but actual was '{1}'",
                                     thrownException.Message, caughtException.Message));
     }
+    
+        [WcfFact]
+    public static void CustomChannel_InteractiveInitializer_Called_Implicit_Open()
+    {
+        string testMessageBody = "CustomChannelTest_Sync";
+        Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
+
+        // *** SETUP *** \\
+        MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
+        CustomBinding binding = new CustomBinding(mockBindingElement);
+        EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
+        var factory = new ChannelFactory<ICustomChannelServiceInterface>(binding, address);
+
+        // Create a mock interactive channel initializer to observe whether
+        // its methods are invoked.
+        bool beginInitializeCalled = false;
+        bool endInitializeCalled = false;
+        MockInteractiveChannelInitializer mockInitializer = new MockInteractiveChannelInitializer();
+        mockInitializer.BeginDisplayInitializationUIOverride = (chnl, callback, state) =>
+        {
+            beginInitializeCalled = true;
+            return mockInitializer.DefaultBeginDisplayInitializationUI(chnl, callback, state);
+        };
+
+        mockInitializer.EndDisplayInitializationUIOverride = (ar) =>
+        {
+            endInitializeCalled = true;
+            mockInitializer.DefaultEndDisplayInitializationUI(ar);
+        };
+
+        // Create a mock endpoint behavior that adds the mock interactive initializer
+        MockEndpointBehavior mockEndpointBehavior = new MockEndpointBehavior();
+        mockEndpointBehavior.ApplyClientBehaviorOverride = (ServiceEndpoint serviceEndpoint, ClientRuntime clientRuntime) =>
+        {
+            clientRuntime.InteractiveChannelInitializers.Add(mockInitializer);
+        };
+
+        // Attach our mock endpoint behavior to the ServiceEndpoint
+        // so that our mock channel initializer is registered.
+        factory.Endpoint.EndpointBehaviors.Add(mockEndpointBehavior);
+
+        ICustomChannelServiceInterface channel = factory.CreateChannel();
+
+        // *** EXECUTE *** \\
+        // The implicit open does the call to display interactive UI.
+        channel.Process(inputMessage);
+
+        // *** VALIDATE *** \\
+        Assert.True(beginInitializeCalled, "BeginDisplayInitializationUI was not called.");
+        Assert.True(endInitializeCalled, "EndDisplayInitializationUI was not called.");
+    }
+
+    [WcfFact]
+    public static void CustomChannel_InteractiveInitializer_Called_Explicitly()
+    {
+        string testMessageBody = "CustomChannelTest_Sync";
+        Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
+
+        // *** SETUP *** \\
+        MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
+        CustomBinding binding = new CustomBinding(mockBindingElement);
+        EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
+        var factory = new ChannelFactory<ICustomChannelServiceInterface>(binding, address);
+
+        // Create a mock interactive channel initializer to observe whether
+        // its methods are invoked.
+        bool beginInitializeCalled = false;
+        bool endInitializeCalled = false;
+        MockInteractiveChannelInitializer mockInitializer = new MockInteractiveChannelInitializer();
+        mockInitializer.BeginDisplayInitializationUIOverride = (chnl, callback, state) =>
+        {
+            beginInitializeCalled = true;
+            return mockInitializer.DefaultBeginDisplayInitializationUI(chnl, callback, state);
+        };
+
+        mockInitializer.EndDisplayInitializationUIOverride = (ar) =>
+        {
+            endInitializeCalled = true;
+            mockInitializer.DefaultEndDisplayInitializationUI(ar);
+        };
+
+        // Create a mock endpoint behavior that adds the mock interactive initializer
+        MockEndpointBehavior mockEndpointBehavior = new MockEndpointBehavior();
+        mockEndpointBehavior.ApplyClientBehaviorOverride = (ServiceEndpoint serviceEndpoint, ClientRuntime clientRuntime) =>
+        {
+            clientRuntime.InteractiveChannelInitializers.Add(mockInitializer);
+        };
+
+        // Attach our mock endpoint behavior to the ServiceEndpoint
+        // so that our mock channel initializer is registered.
+        factory.Endpoint.EndpointBehaviors.Add(mockEndpointBehavior);
+
+        ICustomChannelServiceInterface channel = factory.CreateChannel();
+
+        // *** EXECUTE *** \\
+        // Invoke the interative UI explicitly
+        ((IClientChannel)channel).DisplayInitializationUI();
+
+        // *** VALIDATE *** \\
+        Assert.True(beginInitializeCalled, "BeginDisplayInitializationUI was not called.");
+        Assert.True(endInitializeCalled, "EndDisplayInitializationUI was not called.");
+    }
+
+    [WcfFact]
+    public static void CustomChannel_InteractiveInitializer_Direct_Open_To_Bypass_UI_Throws()
+    {
+        string testMessageBody = "CustomChannelTest_Sync";
+        Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
+
+        // *** SETUP *** \\
+        MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
+        CustomBinding binding = new CustomBinding(mockBindingElement);
+        EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
+        var factory = new ChannelFactory<ICustomChannelServiceInterface>(binding, address);
+
+        // Create a mock interactive channel initializer to observe whether
+        // its methods are invoked.
+        bool beginInitializeCalled = false;
+        bool endInitializeCalled = false;
+        MockInteractiveChannelInitializer mockInitializer = new MockInteractiveChannelInitializer();
+        mockInitializer.BeginDisplayInitializationUIOverride = (chnl, callback, state) =>
+        {
+            beginInitializeCalled = true;
+            return mockInitializer.DefaultBeginDisplayInitializationUI(chnl, callback, state);
+        };
+
+        mockInitializer.EndDisplayInitializationUIOverride = (ar) =>
+        {
+            endInitializeCalled = true;
+            mockInitializer.DefaultEndDisplayInitializationUI(ar);
+        };
+
+        // Create a mock endpoint behavior that adds the mock interactive initializer
+        MockEndpointBehavior mockEndpointBehavior = new MockEndpointBehavior();
+        mockEndpointBehavior.ApplyClientBehaviorOverride = (ServiceEndpoint serviceEndpoint, ClientRuntime clientRuntime) =>
+        {
+            clientRuntime.InteractiveChannelInitializers.Add(mockInitializer);
+        };
+
+        // Attach our mock endpoint behavior to the ServiceEndpoint
+        // so that our mock channel initializer is registered.
+        factory.Endpoint.EndpointBehaviors.Add(mockEndpointBehavior);
+
+        ICustomChannelServiceInterface channel = factory.CreateChannel();
+
+        // *** EXECUTE *** \\
+        // Attempting to open a channel explicitly without first calling DisplayInteractiveUI
+        // throws an exception.
+        Assert.Throws<InvalidOperationException>(() => ((IClientChannel)channel).Open());
+
+        // *** VALIDATE *** \\
+        Assert.False(beginInitializeCalled, "BeginDisplayInitializationUI should not have been called.");
+        Assert.False(endInitializeCalled, "EndDisplayInitializationUI should not have been  called.");
+    }
+
+    [WcfFact]
+    public static void CustomChannel_InteractiveInitializer_Can_Be_Blocked()
+    {
+        string testMessageBody = "CustomChannelTest_Sync";
+        Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
+
+        // *** SETUP *** \\
+        MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
+        CustomBinding binding = new CustomBinding(mockBindingElement);
+        EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
+        var factory = new ChannelFactory<ICustomChannelServiceInterface>(binding, address);
+
+        // Create a mock interactive channel initializer to observe whether
+        // its methods are invoked.
+        bool beginInitializeCalled = false;
+        bool endInitializeCalled = false;
+        MockInteractiveChannelInitializer mockInitializer = new MockInteractiveChannelInitializer();
+        mockInitializer.BeginDisplayInitializationUIOverride = (chnl, callback, state) =>
+        {
+            beginInitializeCalled = true;
+            return mockInitializer.DefaultBeginDisplayInitializationUI(chnl, callback, state);
+        };
+
+        mockInitializer.EndDisplayInitializationUIOverride = (ar) =>
+        {
+            endInitializeCalled = true;
+            mockInitializer.DefaultEndDisplayInitializationUI(ar);
+        };
+
+        // Create a mock endpoint behavior that adds the mock interactive initializer
+        MockEndpointBehavior mockEndpointBehavior = new MockEndpointBehavior();
+        mockEndpointBehavior.ApplyClientBehaviorOverride = (ServiceEndpoint serviceEndpoint, ClientRuntime clientRuntime) =>
+        {
+            clientRuntime.InteractiveChannelInitializers.Add(mockInitializer);
+        };
+
+        // Attach our mock endpoint behavior to the ServiceEndpoint
+        // so that our mock channel initializer is registered.
+        factory.Endpoint.EndpointBehaviors.Add(mockEndpointBehavior);
+
+        ICustomChannelServiceInterface channel = factory.CreateChannel();
+
+        // block attempts to use interactive UI
+        ((IClientChannel)channel).AllowInitializationUI = false;
+
+        // *** EXECUTE *** \\
+        Assert.Throws<InvalidOperationException>(() => ((IClientChannel)channel).DisplayInitializationUI());
+
+        // *** VALIDATE *** \\
+        Assert.False(beginInitializeCalled, "BeginDisplayInitializationUI should not have been called.");
+        Assert.False(endInitializeCalled, "EndDisplayInitializationUI should not have been called.");
+    }
+
+    [WcfFact]
+    public static void CustomChannel_InteractiveInitializer_Error_Blocks_Open()
+    {
+        string testMessageBody = "CustomChannelTest_Sync";
+        Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
+
+        // *** SETUP *** \\
+        MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
+        CustomBinding binding = new CustomBinding(mockBindingElement);
+        EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
+        var factory = new ChannelFactory<ICustomChannelServiceInterface>(binding, address);
+
+        // Create a mock interactive channel initializer to throw during initialization
+        InvalidOperationException thrownException = new InvalidOperationException("ui initialization failed");
+        MockInteractiveChannelInitializer mockInitializer = new MockInteractiveChannelInitializer();
+        mockInitializer.EndDisplayInitializationUIOverride = (ar) =>
+        {
+            // Throw from the EndDisplayInitializationUI call to simulate a UI
+            // action that throws an error to prevent the open.
+            mockInitializer.DefaultEndDisplayInitializationUI(ar);
+            throw thrownException;
+        };
+
+        // Create a mock endpoint behavior that adds the mock interactive initializer
+        MockEndpointBehavior mockEndpointBehavior = new MockEndpointBehavior();
+        mockEndpointBehavior.ApplyClientBehaviorOverride = (ServiceEndpoint serviceEndpoint, ClientRuntime clientRuntime) =>
+        {
+            clientRuntime.InteractiveChannelInitializers.Add(mockInitializer);
+        };
+
+        // Attach our mock endpoint behavior to the ServiceEndpoint
+        // so that our mock channel initializer is registered.
+        factory.Endpoint.EndpointBehaviors.Add(mockEndpointBehavior);
+
+        ICustomChannelServiceInterface channel = factory.CreateChannel();
+
+        // *** EXECUTE *** \\
+        // The implicit open does the call to display interactive UI.
+        InvalidOperationException caughtException = 
+            Assert.Throws<InvalidOperationException>(() => channel.Process(inputMessage));
+
+        // *** VALIDATE *** \\
+        Assert.True(string.Equals(thrownException.Message, caughtException.Message),
+                    String.Format("Expected exception message to be '{0}' but actual was '{1}'",
+                                  thrownException.Message, caughtException.Message));
+    }
 
     #region Helpers
 
