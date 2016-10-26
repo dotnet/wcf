@@ -52,7 +52,7 @@
     </StaticDependency>
 
     <StaticDependency Include="Microsoft.xunit.netcore.extensions;Microsoft.DotNet.BuildTools.TestSuite">
-      <Version>1.0.0-prerelease-00830-02</Version>
+      <Version>1.0.0-prerelease-00925-01</Version>
     </StaticDependency>
 
     <StaticDependency Include="Microsoft.TargetingPack.Private.NETNative">
