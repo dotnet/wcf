@@ -492,7 +492,7 @@
 
   <!-- Default Test platform to deploy the netstandard compiled tests to -->
   <PropertyGroup>
-    <DefaultTestTFM>netcoreapp1.0</DefaultTestTFM> <!-- netcoreapp1.0 is correct as long as WCF packages build as netstandard1.6 or lower, when they move to 1.7 then update this to netcoreapp1.1 -->
+    <DefaultTestTFM>netcoreapp1.1</DefaultTestTFM>
     <TestTFM Condition="'$(TestTFM)'==''">$(DefaultTestTFM)</TestTFM>
     <!-- we default FilterToTestTFM to DefaultTestTFM if it is not explicity defined -->
     <FilterToTestTFM Condition="'$(FilterToTestTFM)'==''">$(DefaultTestTFM)</FilterToTestTFM>
