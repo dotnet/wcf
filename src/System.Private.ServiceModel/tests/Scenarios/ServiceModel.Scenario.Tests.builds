@@ -4,6 +4,7 @@
   <ItemGroup Condition="($(WithCategories.Contains('OuterLoop'))) or ('$(OuterLoop)' == 'true')">
     <Project Include="**\*.csproj" >
       <TargetGroup>netstandard1.3</TargetGroup>
+      <TestTFMs>netcore50;netcoreapp1.1</TestTFMs>
     </Project>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.traversal.targets))\dir.traversal.targets" />
