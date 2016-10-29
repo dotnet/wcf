@@ -1,14 +1,21 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.Platforms": "1.1.0-preview1-24530-04",
-    "Microsoft.NETCore.Targets": "1.1.0-preview1-24530-04",
-    "Microsoft.NETCore.TestHost": "1.1.0-preview1-24608-01",
-    "Microsoft.NETCore.Runtime.CoreCLR": "1.1.0-preview1-24608-01",
-    "System.Diagnostics.Contracts": "4.3.0-preview1-24530-04",
-    "System.IO.Compression": "4.3.0-preview1-24530-04",
-    "System.Runtime.InteropServices.RuntimeInformation": "4.3.0-preview1-24530-04",
-    "System.Linq.Parallel": "4.3.0-preview1-24530-04",
-    "System.Security.Cryptography.X509Certificates": "4.3.0-preview1-24530-04",
+    "Microsoft.NETCore.Platforms": "1.1.0",
+    "Microsoft.NETCore.Targets": "1.1.0",
+    "Microsoft.NETCore.TestHost": "1.1.0",
+    "Microsoft.NETCore.Runtime.CoreCLR": "1.1.0",
+    "System.Console": "4.3.0",
+    "System.Collections.Concurrent": "4.3.0",
+    "System.Diagnostics.Contracts": "4.3.0",
+    "System.Diagnostics.Tracing": "4.3.0",
+    "System.IO.Compression": "4.3.0",
+    "System.Runtime.InteropServices.RuntimeInformation": "4.3.0",
+    "System.Linq": "4.3.0",
+    "System.Linq.Parallel": "4.3.0",
+    "System.Net.Http": "4.3.0",
+    "System.Net.Security": "4.3.0",
+    "System.Security.Cryptography.X509Certificates": "4.3.0",
+    "System.Xml.XmlSerializer": "4.3.0",
     "coveralls.io": "1.4",
     "OpenCover": "4.6.519",
     "ReportGenerator": "2.4.3",
@@ -17,15 +24,14 @@
     "Microsoft.DotNet.xunit.performance.runner.cli": "1.0.0-alpha-build0040",
     "Microsoft.DotNet.xunit.performance.runner.Windows": "1.0.0-alpha-build0040",
     "Microsoft.DotNet.BuildTools.TestSuite": "1.0.0-prerelease-00807-03",
-    "xunit.console.netcore": "1.0.3-prerelease-00704-04",
-    "System.Net.Security": "4.3.0-preview1-24530-04"
+    "xunit.console.netcore": "1.0.3-prerelease-00704-04"
   },
   "frameworks": {
     "netstandard1.3": {},
     "uap10.0": {
       "dependencies": {
         "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.1-beta-000547-00",
-        "System.Console": "4.3.0-preview1-24530-04",
+        "System.Console": "4.3.0",
         "microsoft.xunit.runner.uwp": "1.0.3-prerelease-00614-01",
         "Microsoft.DotNet.TestILC": {
           "version": "1.4.24208-prerelease",

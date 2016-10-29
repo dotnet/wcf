@@ -3,14 +3,16 @@
     "System.Private.ServiceModel": {
       "StableVersions": [
         "4.0.0",
-        "4.1.0"
+        "4.1.0",
+        "4.3.0"
       ],
       "BaselineVersion": "4.3.0"
     },
     "System.ServiceModel.Duplex": {
       "StableVersions": [
         "4.0.0",
-        "4.0.1"
+        "4.0.1",
+        "4.3.0"
       ],
       "BaselineVersion": "4.3.0",
       "AssemblyVersionInPackageVersion": {
@@ -24,7 +26,8 @@
         "3.9.0",
         "4.0.0",
         "4.0.10",
-        "4.1.0"
+        "4.1.0",
+        "4.3.0"
       ],
       "BaselineVersion": "4.3.0",
       "AssemblyVersionInPackageVersion": {
@@ -38,7 +41,8 @@
     "System.ServiceModel.NetTcp": {
       "StableVersions": [
         "4.0.0",
-        "4.1.0"
+        "4.1.0",
+        "4.3.0"
       ],
       "BaselineVersion": "4.3.0",
       "AssemblyVersionInPackageVersion": {
@@ -51,7 +55,8 @@
       "StableVersions": [
         "3.9.0",
         "4.0.0",
-        "4.1.0"
+        "4.1.0",
+        "4.3.0"
       ],
       "BaselineVersion": "4.3.0",
       "AssemblyVersionInPackageVersion": {
@@ -65,7 +70,8 @@
       "StableVersions": [
         "3.9.0",
         "4.0.0",
-        "4.0.1"
+        "4.0.1",
+        "4.3.0"
       ],
       "BaselineVersion": "4.3.0",
       "AssemblyVersionInPackageVersion": {

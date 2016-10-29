@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "System.Console": "4.0.0",
-    "System.Collections.Concurrent": "4.0.12",
-    "System.Diagnostics.Tracing": "4.1.0",
-    "System.Net.Http": "4.1.0",
+    "System.Console": "4.3.0",
+    "System.Collections.Concurrent": "4.3.0",
+    "System.Diagnostics.Tracing": "4.3.0",
+    "System.Net.Http": "4.3.0",
     "System.ServiceModel.Duplex": "4.3.0-preview1-24530-01",
     "System.ServiceModel.Http": "4.3.0-preview1-24530-01",
     "System.ServiceModel.NetTcp": "4.3.0-preview1-24530-01",
