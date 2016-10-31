@@ -395,20 +395,6 @@ namespace System.ServiceModel
             _channelType = channelType;
         }
 
-        // TChannel provides ContractDescription
-        public ChannelFactory()
-            : this(typeof(TChannel))
-        {
-            using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.CreateBoundedActivity() : null)
-            {
-                if (DiagnosticUtility.ShouldUseActivity)
-                {
-                    ServiceModelActivity.Start(activity, SR.Format(SR.ActivityConstructChannelFactory, typeof(TChannel).FullName), ActivityType.Construct);
-                }
-                this.InitializeEndpoint((string)null, null);
-            }
-        }
-
         // TChannel provides ContractDescription, attr/config [TChannel,name] provides Address,Binding
         public ChannelFactory(string endpointConfigurationName)
             : this(endpointConfigurationName, null)
@@ -434,17 +420,6 @@ namespace System.ServiceModel
             }
         }
 
-        // TChannel provides ContractDescription, attr/config [TChannel,name] provides Address,Binding
-        public ChannelFactory(Binding binding)
-            : this(binding, (EndpointAddress)null)
-        {
-        }
-
-        public ChannelFactory(Binding binding, String remoteAddress)
-            : this(binding, new EndpointAddress(remoteAddress))
-        {
-        }
-
         // TChannel provides ContractDescription, provide Address,Binding explicitly
         public ChannelFactory(Binding binding, EndpointAddress remoteAddress)
             : this(typeof(TChannel))
@@ -461,25 +436,6 @@ namespace System.ServiceModel
                 }
 
                 this.InitializeEndpoint(binding, remoteAddress);
-            }
-        }
-
-        // provide ContractDescription,Address,Binding explicitly
-        public ChannelFactory(ServiceEndpoint endpoint)
-            : this(typeof(TChannel))
-        {
-            using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ? ServiceModelActivity.CreateBoundedActivity() : null)
-            {
-                if (DiagnosticUtility.ShouldUseActivity)
-                {
-                    ServiceModelActivity.Start(activity, SR.Format(SR.ActivityConstructChannelFactory, typeof(TChannel).FullName), ActivityType.Construct);
-                }
-                if (endpoint == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("endpoint");
-                }
-
-                this.InitializeEndpoint(endpoint);
             }
         }
 
@@ -598,56 +554,6 @@ namespace System.ServiceModel
                     endpoint.Contract.Behaviors.Add(contractBehavior);
                 }
             }
-        }
-
-        //Static funtions to create channels
-        protected static TChannel CreateChannel(String endpointConfigurationName)
-        {
-            ChannelFactory<TChannel> channelFactory = new ChannelFactory<TChannel>(endpointConfigurationName);
-
-            if (channelFactory.HasDuplexOperations())
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidStaticOverloadCalledForDuplexChannelFactory1, channelFactory._channelType.Name)));
-            }
-
-            TChannel channel = channelFactory.CreateChannel();
-            SetFactoryToAutoClose(channel);
-            return channel;
-        }
-
-        public static TChannel CreateChannel(Binding binding, EndpointAddress endpointAddress)
-        {
-            ChannelFactory<TChannel> channelFactory = new ChannelFactory<TChannel>(binding, endpointAddress);
-
-            if (channelFactory.HasDuplexOperations())
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidStaticOverloadCalledForDuplexChannelFactory1, channelFactory._channelType.Name)));
-            }
-
-            TChannel channel = channelFactory.CreateChannel();
-            SetFactoryToAutoClose(channel);
-            return channel;
-        }
-
-        public static TChannel CreateChannel(Binding binding, EndpointAddress endpointAddress, Uri via)
-        {
-            ChannelFactory<TChannel> channelFactory = new ChannelFactory<TChannel>(binding);
-
-            if (channelFactory.HasDuplexOperations())
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidStaticOverloadCalledForDuplexChannelFactory1, channelFactory._channelType.Name)));
-            }
-
-            TChannel channel = channelFactory.CreateChannel(endpointAddress, via);
-            SetFactoryToAutoClose(channel);
-            return channel;
-        }
-
-        internal static void SetFactoryToAutoClose(TChannel channel)
-        {
-            //Set the Channel to auto close its ChannelFactory.
-            ServiceChannel serviceChannel = ServiceChannelFactory.GetServiceChannel(channel);
-            serviceChannel.CloseFactory = true;
         }
     }
 }

@@ -31,19 +31,6 @@ namespace System.ServiceModel.Channels
         public abstract string Name { get; }
         public abstract string Namespace { get; }
 
-        public static AddressHeader CreateAddressHeader(object value)
-        {
-            Type type = GetObjectType(value);
-            return CreateAddressHeader(value, DataContractSerializerDefaults.CreateSerializer(type, int.MaxValue/*maxItems*/));
-        }
-
-        public static AddressHeader CreateAddressHeader(object value, XmlObjectSerializer serializer)
-        {
-            if (serializer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("serializer"));
-            return new XmlObjectSerializerAddressHeader(value, serializer);
-        }
-
         public static AddressHeader CreateAddressHeader(string name, string ns, object value)
         {
             return CreateAddressHeader(name, ns, value, DataContractSerializerDefaults.CreateSerializer(GetObjectType(value), name, ns, int.MaxValue/*maxItems*/));

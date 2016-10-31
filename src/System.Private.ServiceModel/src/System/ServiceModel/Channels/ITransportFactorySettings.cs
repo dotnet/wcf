@@ -54,9 +54,4 @@ namespace System.ServiceModel.Channels
         int MaxBufferSize { get; }
         TransferMode TransferMode { get; }
     }
-
-    internal interface IPipeTransportFactorySettings : IConnectionOrientedTransportChannelFactorySettings
-    {
-        NamedPipeSettings PipeSettings { get; }
-    }
 }

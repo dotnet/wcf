@@ -233,19 +233,6 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    // used by ServerDuplexEncoder/ServerSimplexEncoder
-    internal abstract class ServerSessionEncoder : SessionEncoder
-    {
-        protected ServerSessionEncoder() { }
-
-        public static byte[] AckResponseBytes = new byte[] {
-            (byte)FramingRecordType.PreambleAck
-        };
-        public static byte[] UpgradeResponseBytes = new byte[] {
-            (byte)FramingRecordType.UpgradeResponse
-        };
-    }
-
     // Pattern: 
     //   ModeBytes, 
     //   EncodeStart, 
@@ -349,20 +336,5 @@ namespace System.ServiceModel.Channels
             Buffer.BlockCopy(via.EncodedBytes, 0, buffer, offset, via.EncodedBytes.Length);
             Buffer.BlockCopy(contentType.EncodedBytes, 0, buffer, offset + via.EncodedBytes.Length, contentType.EncodedBytes.Length);
         }
-    }
-
-    // Pattern:
-    //   (UpgradeResponseBytes, upgrade-bytes)?, 
-    internal class ServerSingletonEncoder : SingletonEncoder
-    {
-        private ServerSingletonEncoder() { }
-
-        public static byte[] AckResponseBytes = new byte[] {
-            (byte)FramingRecordType.PreambleAck
-        };
-
-        public static byte[] UpgradeResponseBytes = new byte[] {
-            (byte)FramingRecordType.UpgradeResponse
-        };
     }
 }
