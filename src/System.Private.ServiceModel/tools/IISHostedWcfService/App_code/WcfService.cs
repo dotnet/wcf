@@ -58,11 +58,47 @@ namespace WcfService
             return composite;
         }
 
-        public MahojongTypes.ResultObject<string> UserGetAuthToken(string liveId)
+        public MessageInspector_CustomHeaderAuthentication.ResultObject<string> UserGetAuthToken()
         {
-            MahojongTypes.ResultObject<string> result = new MahojongTypes.ResultObject<string>();
-            result.Result = "Received request from the client.";
-            return result;
+            MessageInspector_CustomHeaderAuthentication.ResultObject<string> resultObject = null;
+
+            try
+            {
+                HttpRequestMessageProperty property;
+                object obj;
+                MessageProperties properties = new MessageProperties(OperationContext.Current.IncomingMessageProperties);
+                if (properties.TryGetValue(HttpRequestMessageProperty.Name, out obj))
+                {
+                    property = obj as HttpRequestMessageProperty;
+                    WebHeaderCollection collection = property.Headers;
+                    string authValue = collection.Get(Enum.GetName(typeof(HttpRequestHeader), HttpRequestHeader.Authorization));
+
+                    if (authValue == "Not Allowed")
+                    {
+                        resultObject = MessageInspector_CustomHeaderAuthentication.ResultObject<string>.CreateFailureObject<string>();
+                        resultObject.Result = resultObject.ResultMessage;
+                    }
+                    else if (authValue == "Allow")
+                    {
+                        resultObject = MessageInspector_CustomHeaderAuthentication.ResultObject<string>.CreateSuccessObject<string>();
+                        resultObject.Result = resultObject.ResultMessage;
+                    }
+                }
+                else
+                {
+                    resultObject = MessageInspector_CustomHeaderAuthentication.ResultObject<string>.CreateFailureObject<string>();
+                    resultObject.Result = "ERROR";
+                    resultObject.ResultMessage = "No HttpRequestMessageProperty was found on the incoming Message.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultObject = MessageInspector_CustomHeaderAuthentication.ResultObject<string>.CreateFailureObject<string>();
+                resultObject.Result = ex.ToString();
+                resultObject.ResultMessage = ex.Message;
+            }
+
+            return resultObject;
         }
 
         public Dictionary<string, string> ValidateMessagePropertyHeaders()
@@ -96,25 +132,6 @@ namespace WcfService
             }
 
             return headerCollection;
-        }
-
-        // This operation is called by the Mahjong async scenario
-        public MahojongTypes.ResultObject<IEnumerable<MahojongTypes.UserGamePlay>> UserGamePlayGetList(string gameKey, string keys)
-        {
-            MahojongTypes.ResultObject<IEnumerable<MahojongTypes.UserGamePlay>> result = new MahojongTypes.ResultObject<IEnumerable<MahojongTypes.UserGamePlay>>();
-            result.ErrorCode = (int)MahojongTypes.ErrorCode.Ok;
-            result.ErrorMessage = MahojongTypes.ErrorMessage.GetErrorDescription((MahojongTypes.ErrorCode)result.ErrorCode);
-            result.HttpStatusCode = HttpStatusCode.OK;
-
-            MahojongTypes.UserGamePlay gameData = new MahojongTypes.UserGamePlay();
-            gameData.GameKey = "This is the GameKey property.";
-            gameData.Key = "This is the Key property.";
-            gameData.TimeStamp = "This is the TimeStamp property.";
-            gameData.UserId = "This is the UserId property.";
-            gameData.Value = "This is the Value property.";
-
-            result.Result = new List<MahojongTypes.UserGamePlay>() { gameData };
-            return result;
         }
 
         public void TestFault(string faultMsg)

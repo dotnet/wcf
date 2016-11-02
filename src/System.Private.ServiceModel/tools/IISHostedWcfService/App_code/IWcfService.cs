@@ -55,7 +55,7 @@ namespace WcfService
         Dictionary<string, string> ValidateMessagePropertyHeaders();
 
         [OperationContract(Action = "http://tempuri.org/IWcfService/UserGetAuthToken")]
-        MahojongTypes.ResultObject<string> UserGetAuthToken(string liveId);
+        MessageInspector_CustomHeaderAuthentication.ResultObject<string> UserGetAuthToken();
 
         [OperationContract(Action = "http://tempuri.org/IWcfService/MessageContractRequestReply")]
         ReplyBankingData MessageContractRequestReply(RequestBankingData bt);

@@ -234,14 +234,8 @@ public interface IFeedbackService
 [ServiceContract]
 public interface IUser
 {
-    [OperationContract]
-    string GetData(int value);
-
     [OperationContract(Action = "http://tempuri.org/IWcfService/UserGetAuthToken")]
-    ResultObject<string> UserGetAuthToken(string liveId);
-
-    [OperationContract]
-    ResultObject<string> UserGetId();
+    ResultObject<string> UserGetAuthToken();
 
     [OperationContract(Action = "http://tempuri.org/IWcfService/ValidateMessagePropertyHeaders")]
     Dictionary<string, string> ValidateMessagePropertyHeaders();
