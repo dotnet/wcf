@@ -18,7 +18,6 @@ namespace Infrastructure.Common
 {
     public static partial class TestProperties
     {
-        public static readonly string BridgeResourceFolder_PropertyName = "BridgeResourceFolder"%3B
         public static readonly string BridgeHost_PropertyName = "BridgeHost"%3B
         public static readonly string BridgePort_PropertyName = "BridgePort"%3B
         public static readonly string BridgeHttpPort_PropertyName = "BridgeHttpPort"%3B
@@ -26,11 +25,8 @@ namespace Infrastructure.Common
         public static readonly string BridgeTcpPort_PropertyName = "BridgeTcpPort"%3B
         public static readonly string BridgeWebSocketPort_PropertyName = "BridgeWebSocketPort"%3B
         public static readonly string BridgeSecureWebSocketPort_PropertyName = "BridgeSecureWebSocketPort"%3B
-        public static readonly string BridgeRemoteEnabled_PropertyName = "BridgeRemoteEnabled"%3B
         public static readonly string TestRootCertificatePassword_PropertyName = "TestRootCertificatePassword"%3B
         public static readonly string TestRootCertificateValidityPeriod_PropertyName = "TestRootCertificateValidityPeriod"%3B
-        public static readonly string UseFiddlerUrl_PropertyName = "UseFiddlerUrl"%3B
-        public static readonly string BridgeMaxIdleTimeSpan_PropertyName = "BridgeMaxIdleTimeSpan"%3B
         public static readonly string MaxTestTimeSpan_PropertyName = "MaxTestTimeSpan"%3B
         public static readonly string NegotiateTestRealm_PropertyName = "NegotiateTestRealm"%3B
         public static readonly string NegotiateTestDomain_PropertyName = "NegotiateTestDomain"%3B
@@ -58,7 +54,6 @@ namespace Infrastructure.Common
                 
         static partial void Initialize(Dictionary<string, string> properties)
         {
-            properties["BridgeResourceFolder"] = @"$(BridgeResourceFolder)"%3B
             properties["BridgeHost"] = "$(BridgeHost)"%3B
             properties["BridgePort"] = "$(BridgePort)"%3B
             properties["BridgeHttpPort"] = "$(BridgeHttpPort)"%3B
@@ -66,11 +61,8 @@ namespace Infrastructure.Common
             properties["BridgeTcpPort"] = "$(BridgeTcpPort)"%3B
             properties["BridgeWebSocketPort"] = "$(BridgeWebSocketPort)"%3B
             properties["BridgeSecureWebSocketPort"] = "$(BridgeSecureWebSocketPort)"%3B
-            properties["BridgeRemoteEnabled"] = "$(BridgeRemoteEnabled)"%3B
             properties["TestRootCertificatePassword"] = "$(TestRootCertificatePassword)"%3B
             properties["TestRootCertificateValidityPeriod"] = "$(TestRootCertificateValidityPeriod)"%3B
-            properties["UseFiddlerUrl"] = "$(UseFiddlerUrl)"%3B
-            properties["BridgeMaxIdleTimeSpan"] = "$(BridgeMaxIdleTimeSpan)"%3B
             properties["MaxTestTimeSpan"] = "$(MaxTestTimeSpan)"%3B
             properties["NegotiateTestRealm"] = "$(NegotiateTestRealm)"%3B
             properties["NegotiateTestDomain"] = "$(NegotiateTestDomain)"%3B
@@ -102,20 +94,6 @@ namespace Infrastructure.Common
                 ]]>
     </_TestPropertyCode>
   </PropertyGroup>
-
-  <!-- 
-    SanitizeTestProperties:
-      This target ensures the test property values are sanitized for proper
-      evaluation at runtime.
-  -->
-  <Target Name="SanitizeTestProperties">
-    <!-- BridgeResourceFolder needs to convert forward slashes to backward
-         slashes to be usable on Windows, where the Bridge runs.
-    -->
-    <PropertyGroup Condition="$(BridgeResourceFolder.Contains('/'))">
-      <BridgeResourceFolder>$(BridgeResourceFolder.Replace('/', '\'))</BridgeResourceFolder>
-    </PropertyGroup>
-  </Target>
   
   <!-- 
     CreateTestPropertiesFile:
@@ -137,7 +115,7 @@ namespace Infrastructure.Common
       properties in TestProperties.Properties should use these generated
       names rather than separate string literals.
   -->
-  <Target Name="CreateTestProperties" DependsOnTargets="SanitizeTestProperties;CreateTestPropertiesFile">
+  <Target Name="CreateTestProperties" DependsOnTargets="CreateTestPropertiesFile">
     
     <Message Text="CreateTestProperties is using the generated test property file at $(GeneratedTestPropertiesFileName)" />
     
