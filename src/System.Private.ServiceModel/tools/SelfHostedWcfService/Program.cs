@@ -42,6 +42,7 @@ namespace SelfHostedWCFService
             CreateHost<BasicAuthTestServiceHost, WcfUserNameService>("BasicAuth.svc", httpsBaseAddress);
             CreateHost<BasicHttpsTestServiceHost, WcfService.WcfService>("BasicHttps.svc", httpsBaseAddress);
             CreateHost<BasicHttpTestServiceHost, WcfService.WcfService>("BasicHttp.svc", httpBaseAddress);
+            CreateHost<BasicHttpTestServiceHost_4_4_0, WcfService_4_4_0>("BasicHttp_4_4_0.svc", httpBaseAddress);
             CreateHost<CustomTextEncoderBufferedTestServiceHost,WcfService.WcfService>("CustomTextEncoderBuffered.svc", httpBaseAddress);
             CreateHost<CustomTextEncoderStreamedTestServiceHost, WcfService.WcfService>("CustomTextEncoderStreamed.svc", httpBaseAddress);
             CreateHost<DefaultCustomHttpTestServiceHost, WcfService.WcfService>("DefaultCustomHttp.svc", httpBaseAddress);

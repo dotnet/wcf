@@ -195,6 +195,15 @@ public class ContractDescriptionTestHelper
                                                                       prefix, messageData.Action, messageData.MessageType, messageDesc.MessageType));
                             }
                         }
+
+                        // Validate the Body parts of the MessageDescription
+                        ValidatePartDescriptionCollection(messageData.Action, "Body", errorBuilder, messageDesc.Body.Parts.ToArray(), messageData.Body);
+
+                        // Validate the Header parts of the MessageDescription
+                        ValidatePartDescriptionCollection(messageData.Action, "Header", errorBuilder, messageDesc.Headers.ToArray(), messageData.Headers);
+
+                        // Validate the Property parts of the MessageDescription
+                        ValidatePartDescriptionCollection(messageData.Action, "Properties", errorBuilder, messageDesc.Properties.ToArray(), messageData.Properties);
                     }
                 }
             }
@@ -206,6 +215,53 @@ public class ContractDescriptionTestHelper
         }
 
         return errorBuilder.Length == 0 ? null : errorBuilder.ToString();
+    }
+
+    private static void ValidatePartDescriptionCollection(string action, string section, StringBuilder errorBuilder, MessagePartDescription[] desc, PartDescriptionData[] data)
+    {
+        if (data != null)
+        {
+            if (desc.Length != data.Length)
+            {
+                errorBuilder.AppendLine(String.Format("action {0}, section {1}, expected part count = {2}, actual = {3}",
+                                        action, section, data.Length, desc.Length));
+            }
+
+            // MessagePartDescriptions are keyed collections, so their order is unpredictable
+            foreach (PartDescriptionData dataPart in data)
+            {
+                MessagePartDescription descPart = desc.SingleOrDefault((d) => String.Equals(dataPart.Name, d.Name));
+                ValidatePartDescription(action, section, errorBuilder, descPart, dataPart);
+            }
+        }
+    }
+
+    private static void ValidatePartDescription(string action, string section, StringBuilder errorBuilder, MessagePartDescription desc, PartDescriptionData data)
+    {
+        if (desc == null)
+        {
+            errorBuilder.AppendLine(String.Format("action {0}, section {1}, expected part Name = {2} but did not find it.",
+                                                  action, section, data.Name));
+            return;
+        }
+
+        if (!String.Equals(desc.Name, data.Name))
+        {
+            errorBuilder.AppendLine(String.Format("action {0}, section {1}, expected part Name = {2}, actual = {3}",
+                                                    action, section, data.Name, desc.Name));
+        }
+
+        if (desc.Type != data.Type)
+        {
+            errorBuilder.AppendLine(String.Format("action {0}, section {1}, name {2}, expected Type = {3}, actual = {4}",
+                                                  action, section, desc.Name, data.Type, desc.Type));
+        }
+
+        if (desc.Multiple != data.Multiple)
+        {
+            errorBuilder.AppendLine(String.Format("action {0}, section {1}, name {2}, expected Multiple = {3}, actual = {4}",
+                                                  action, section, desc.Name, data.Multiple, desc.Multiple));
+        }
     }
 
 #if DEBUGGING
@@ -259,7 +315,21 @@ public class MessageDescriptionData
 
     // If using MessageContract, the type of the "typed message"
     public Type MessageType { get; set; }
+
+    public PartDescriptionData[] Body { get; set; }
+
+    public PartDescriptionData[] Headers { get; set; }
+
+    public PartDescriptionData[] Properties { get; set; }
 }
+
+public class PartDescriptionData
+{
+    public string Name { get; set; }
+    public Type Type { get; set; }
+    public bool Multiple { get; set; }
+}
+
 
 public class CustomBodyWriter : BodyWriter
 {

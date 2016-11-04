@@ -419,9 +419,14 @@ namespace System.ServiceModel
         public InvalidMessageContractException(string message, System.Exception innerException) { }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(384), AllowMultiple = false, Inherited = false)]
-    public class MessageHeaderAttribute : MessageContractMemberAttribute
+    public partial class MessageHeaderAttribute : MessageContractMemberAttribute
     {
         public bool MustUnderstand { get { return default(bool); } set { } } 
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(384), AllowMultiple = false, Inherited = false)]
+    public sealed partial class MessageHeaderArrayAttribute : MessageHeaderAttribute
+    {
+        public MessageHeaderArrayAttribute() { }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(384), Inherited = false)]
     public partial class MessageBodyMemberAttribute : System.ServiceModel.MessageContractMemberAttribute
@@ -442,6 +447,12 @@ namespace System.ServiceModel
         protected MessageContractMemberAttribute() { }
         public string Name { get { return default(string); } set { } }
         public string Namespace { get { return default(string); } set { } }
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(384), AllowMultiple = false)]
+    public sealed partial class MessagePropertyAttribute : System.Attribute
+    {
+        public MessagePropertyAttribute() { }
+        public string Name { get { return default(string); } set { } }
     }
     public enum MessageCredentialType
     {
