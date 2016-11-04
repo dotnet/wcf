@@ -21,7 +21,7 @@ using Org.BouncyCastle.X509.Extension;
 using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
 using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509KeyStorageFlags;
 
-namespace WcfTestBridgeCommon
+namespace WcfTestCommon
 {
     // NOT THREADSAFE. Callers should lock before doing work with this class if multithreaded operation is expected
     public class CertificateGenerator
@@ -30,7 +30,7 @@ namespace WcfTestBridgeCommon
 
         // Settable properties prior to initialization
         private string _crlUri;
-        private string _crlUriBridgeHost;
+        private string _crlServiceUri;
         private string _crlUriRelativePath;
         private string _password;
         private TimeSpan _validityPeriod = TimeSpan.FromDays(1);
@@ -86,7 +86,7 @@ namespace WcfTestBridgeCommon
                     throw new ArgumentException("CrlUri must be a valid relative URI", "CrlUriRelativePath");
                 }
 
-                _crlUri = string.Format("http://{0}{1}", _crlUriBridgeHost, _crlUriRelativePath);
+                _crlUri = string.Format("http://{0}{1}", _crlServiceUri, _crlUriRelativePath);
 
                 _initializationDateTime = DateTime.UtcNow;
                 _defaultValidityNotBefore = _initializationDateTime.Subtract(_gracePeriod);
@@ -174,16 +174,16 @@ namespace WcfTestBridgeCommon
             }
         }
 
-        public string CrlUriBridgeHost
+        public string CrlServiceUri
         {
             get
             {
-                return _crlUriBridgeHost;
+                return _crlServiceUri;
             }
             set
             {
-                EnsureNotInitialized("CrlUriBridgeHost");
-                _crlUriBridgeHost = value;
+                EnsureNotInitialized("CrlServiceUri");
+                _crlServiceUri = value;
             }
         }
 

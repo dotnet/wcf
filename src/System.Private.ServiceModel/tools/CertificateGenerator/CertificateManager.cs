@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
-namespace WcfTestBridgeCommon
+namespace WcfTestCommon
 {
     // This class manages the adding and removal of certificates.
     // It also handles informing http.sys of which certificate to associate with SSL ports.

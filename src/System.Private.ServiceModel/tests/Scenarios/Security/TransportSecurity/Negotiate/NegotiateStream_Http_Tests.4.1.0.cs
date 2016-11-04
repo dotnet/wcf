@@ -35,8 +35,9 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     //   
     //     By default, the SPN is the same as the host's fully qualified domain name, for example, 
     //     'host.domain.com'
-    //     On a Windows host, one has to register the SPN using 'setspn', or run the process as LOCAL SYSTEM
-    //     by using a tool like psexec and running 'psexec -s -h <WcfBridge.exe>' 
+    //     On a Windows host, one has to register the SPN using 'setspn', or run the process as LOCAL SYSTEM.
+    //     This can be done by setting the PSEXEC_PATH environment variable to point to the folder containing
+    //     psexec.exe prior to starting the WCF self-host service. 
     // 
     // NegotiateStream_*_With_Upn
     //     Windows: Set the NegotiateTestUPN TestProperties to match a valid UPN for the server in the form of 

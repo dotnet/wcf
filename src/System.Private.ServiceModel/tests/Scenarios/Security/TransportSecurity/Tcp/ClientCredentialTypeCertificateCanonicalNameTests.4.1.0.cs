@@ -15,13 +15,13 @@ using System.Text;
 
 public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : ConditionalWcfTest
 {
-    // We set up three endpoints on the Bridge (server) side, each with a different certificate: 
+    // We set up three endpoints on the WCF service (server) side, each with a different certificate: 
     // Tcp_ClientCredentialType_Certificate_With_CanonicalName_Localhost_Address - is bound to a cert where CN=localhost
     // Tcp_ClientCredentialType_Certificate_With_CanonicalName_DomainName_Address - is bound to a cert where CN=domainname
     // Tcp_ClientCredentialType_Certificate_With_CanonicalName_Fqdn_Address - is bound to a cert with a fqdn, e.g., CN=domainname.example.com
     //
-    // When tests are run, a /p:BridgeHost=<name> is specified; if none is specified, then "localhost" is used
-    // Hence, we are only able to determine at runtime whether a particular endpoint presented by the Bridge is going 
+    // When tests are run, a /p:ServiceHost=<name> is specified; if none is specified, then "localhost" is used
+    // Hence, we are only able to determine at runtime whether a particular endpoint presented by the WCF Service is going 
     // to pass a variation or fail a variation. 
 
     [WcfFact]
@@ -104,8 +104,8 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
         var endpointAddress = new EndpointAddress(domainNameEndpointUri);
 
         // We check that: 
-        // 1. The Bridge's reported hostname does not contain a '.' (which means we're hitting the FQDN)
-        // 2. The Bridge's reported hostname is not "localhost" (which means we're hitting localhost)
+        // 1. The WCF service's reported hostname does not contain a '.' (which means we're hitting the FQDN)
+        // 2. The WCF service's reported hostname is not "localhost" (which means we're hitting localhost)
         // If both these conditions are true, expect the test to pass. Otherwise, it should fail
         bool shouldCallSucceed = domainNameEndpointUri.Host.IndexOf('.') == -1 && string.Compare(domainNameEndpointUri.Host, "localhost", StringComparison.OrdinalIgnoreCase) != 0;
 
@@ -184,8 +184,8 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
         var fqdnEndpointUri = new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_With_CanonicalName_Fqdn_Address);
         var endpointAddress = new EndpointAddress(fqdnEndpointUri);
 
-        // If the Bridge's reported FQDN is the same as the Bridge's reported hostname, 
-        // it means that there the bridge is set up on a network where FQDNs aren't used, only hostnames.
+        // If the WCF service's reported FQDN is the same as the services's reported hostname, 
+        // it means that there the WCF service is set up on a network where FQDNs aren't used, only hostnames.
         // Since our pass/fail detection logic on whether or not this is an FQDN depends on whether the host name has a '.', we don't test this case
         if (string.Compare(domainNameHost, fqdnEndpointUri.Host, StringComparison.OrdinalIgnoreCase) != 0)
         {

@@ -386,21 +386,21 @@ public static class ServiceUtilHelper
             switch (protocol)
             {
                 case "http":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeHttpPort_PropertyName));
+                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceHttpPort_PropertyName));
                     break;
                 case "ws":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeWebSocketPort_PropertyName));
+                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceWebSocketPort_PropertyName));
                     builder.Scheme = "http";
                     break;
                 case "https":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeHttpsPort_PropertyName));
+                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceHttpsPort_PropertyName));
                     break;
                 case "wss":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeSecureWebSocketPort_PropertyName));
+                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceSecureWebSocketPort_PropertyName));
                     builder.Scheme = "https";
                     break;
                 case "net.tcp":
-                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.BridgeTcpPort_PropertyName));
+                    builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceTcpPort_PropertyName));
                     break;
                 default:
                     break;
