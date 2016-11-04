@@ -3,7 +3,7 @@
   <PropertyGroup>
     <CoreFxCurrentRef>49e8dc1a8334fec420c118fa90947442a23871c0</CoreFxCurrentRef>
     <CoreClrCurrentRef>0e5b63ea85c76e944b925a6d3802c84d7e46a9df</CoreClrCurrentRef>
-    <WCFCurrentRef>f97abd9351200075d65312adb85ffe4253924bc0</WCFCurrentRef>
+    <WCFCurrentRef>a2c7f63e955cd2f5b6275ab3b049595d8f21894c</WCFCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
