@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WcfTestBridgeCommon
+namespace WcfTestCommon
 {
     [Serializable]
     public class CertificateCreationSettings

@@ -6,32 +6,28 @@
            When adding or removing TestProperties, update testproperties.targets
            to generate code at build time.
     -->
-    <PropertyGroup Condition="'$(BridgeHost)' == ''">
-      <BridgeHost>localhost</BridgeHost>
+    <PropertyGroup Condition="'$(ServicePort)' == ''">
+      <ServicePort>44283</ServicePort>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgePort)' == ''">
-      <BridgePort>44283</BridgePort>
+    <PropertyGroup Condition="'$(ServiceHttpPort)' == ''">
+      <ServiceHttpPort>8081</ServiceHttpPort>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgeHttpPort)' == ''">
-      <BridgeHttpPort>8081</BridgeHttpPort>
+    <PropertyGroup Condition="'$(ServiceHttpsPort)' == ''">
+      <ServiceHttpsPort>44285</ServiceHttpsPort>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgeHttpsPort)' == ''">
-      <BridgeHttpsPort>44285</BridgeHttpsPort>
+    <PropertyGroup Condition="'$(ServiceTcpPort)' == ''">
+      <ServiceTcpPort>809</ServiceTcpPort>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgeTcpPort)' == ''">
-      <BridgeTcpPort>809</BridgeTcpPort>
+    <PropertyGroup Condition="'$(ServiceWebSocketPort)' == ''">
+      <ServiceWebSocketPort>8083</ServiceWebSocketPort>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgeWebSocketPort)' == ''">
-      <BridgeWebSocketPort>8083</BridgeWebSocketPort>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(BridgeSecureWebSocketPort)' == ''">
-      <BridgeSecureWebSocketPort>8084</BridgeSecureWebSocketPort>
+    <PropertyGroup Condition="'$(ServiceSecureWebSocketPort)' == ''">
+      <ServiceSecureWebSocketPort>8084</ServiceSecureWebSocketPort>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TestRootCertificatePassword)' == ''">

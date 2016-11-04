@@ -15,34 +15,6 @@
      <WcfRootFolder>$(MSBuildThisFileDirectory)</WcfRootFolder>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(BridgeResourceFolder)' == ''">
-     <BridgeResourceFolder>$(WcfRootFolder)bin\Wcf\Bridge\Resources\</BridgeResourceFolder>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(BridgeHost)' == ''">
-     <BridgeHost>localhost</BridgeHost>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(BridgePort)' == ''">
-     <BridgePort>44283</BridgePort>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(BridgeHttpPort)' == ''">
-     <BridgeHttpPort>8081</BridgeHttpPort>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(BridgeHttpsPort)' == ''">
-     <BridgeHttpsPort>44285</BridgeHttpsPort>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(BridgeTcpPort)' == ''">
-     <BridgeTcpPort>809</BridgeTcpPort>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(BridgeWebSocketPort)' == ''">
-     <BridgeWebSocketPort>8083</BridgeWebSocketPort>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(WcfToolsOutputPath)' == ''">
      <WcfToolsOutputPath>$(WcfRootFolder)bin\Wcf\tools\</WcfToolsOutputPath>
   </PropertyGroup>

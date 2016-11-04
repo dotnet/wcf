@@ -9,7 +9,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using WcfTestBridgeCommon;
+using WcfTestCommon;
 using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
 using X509KeyStorageFlags = System.Security.Cryptography.X509Certificates.X509KeyStorageFlags;
 using System.IO;
@@ -91,7 +91,7 @@ namespace CertUtil
 
             CertificateGenerator certificateGenerate = new CertificateGenerator();
             certificateGenerate.CertificatePassword = "test";
-            certificateGenerate.CrlUriBridgeHost = s_fqdn;
+            certificateGenerate.CrlServiceUri = s_fqdn;
             certificateGenerate.ValidityPeriod = s_ValidatePeriod;
 
             if (!string.IsNullOrEmpty(s_testserverbase))
@@ -112,9 +112,7 @@ namespace CertUtil
                 ValidityNotAfter = DateTime.UtcNow - TimeSpan.FromDays(2),
                 //If you specify multiple subjects, the first one becomes the subject, and all of them become Subject Alt Names.
                 //In this case, the certificate subject is  CN=fqdn, OU=..., O=... , and SANs will be  fqdn, hostname, localhost
-                //We do this so that a single bridge setup can deal with all the possible addresses that a client might use.
-                //If we don't put "localhost' here, a long-running bridge will not be able to receive requests from both fqdn  and  localhost
-                //because the certs won't match.
+                //We do this so that a single WCF service setup can deal with all the possible addresses that a client might use.
                 Subject = s_fqdn,
                 SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" }
             };

@@ -18,13 +18,12 @@ namespace Infrastructure.Common
 {
     public static partial class TestProperties
     {
-        public static readonly string BridgeHost_PropertyName = "BridgeHost"%3B
-        public static readonly string BridgePort_PropertyName = "BridgePort"%3B
-        public static readonly string BridgeHttpPort_PropertyName = "BridgeHttpPort"%3B
-        public static readonly string BridgeHttpsPort_PropertyName = "BridgeHttpsPort"%3B
-        public static readonly string BridgeTcpPort_PropertyName = "BridgeTcpPort"%3B
-        public static readonly string BridgeWebSocketPort_PropertyName = "BridgeWebSocketPort"%3B
-        public static readonly string BridgeSecureWebSocketPort_PropertyName = "BridgeSecureWebSocketPort"%3B
+        public static readonly string ServicePort_PropertyName = "ServicePort"%3B
+        public static readonly string ServiceHttpPort_PropertyName = "ServiceHttpPort"%3B
+        public static readonly string ServiceHttpsPort_PropertyName = "ServiceHttpsPort"%3B
+        public static readonly string ServiceTcpPort_PropertyName = "ServiceTcpPort"%3B
+        public static readonly string ServiceWebSocketPort_PropertyName = "ServiceWebSocketPort"%3B
+        public static readonly string ServiceSecureWebSocketPort_PropertyName = "ServiceSecureWebSocketPort"%3B
         public static readonly string TestRootCertificatePassword_PropertyName = "TestRootCertificatePassword"%3B
         public static readonly string TestRootCertificateValidityPeriod_PropertyName = "TestRootCertificateValidityPeriod"%3B
         public static readonly string MaxTestTimeSpan_PropertyName = "MaxTestTimeSpan"%3B
@@ -54,13 +53,12 @@ namespace Infrastructure.Common
                 
         static partial void Initialize(Dictionary<string, string> properties)
         {
-            properties["BridgeHost"] = "$(BridgeHost)"%3B
-            properties["BridgePort"] = "$(BridgePort)"%3B
-            properties["BridgeHttpPort"] = "$(BridgeHttpPort)"%3B
-            properties["BridgeHttpsPort"] = "$(BridgeHttpsPort)"%3B
-            properties["BridgeTcpPort"] = "$(BridgeTcpPort)"%3B
-            properties["BridgeWebSocketPort"] = "$(BridgeWebSocketPort)"%3B
-            properties["BridgeSecureWebSocketPort"] = "$(BridgeSecureWebSocketPort)"%3B
+            properties["ServicePort"] = "$(ServicePort)"%3B
+            properties["ServiceHttpPort"] = "$(ServiceHttpPort)"%3B
+            properties["ServiceHttpsPort"] = "$(ServiceHttpsPort)"%3B
+            properties["ServiceTcpPort"] = "$(ServiceTcpPort)"%3B
+            properties["ServiceWebSocketPort"] = "$(ServiceWebSocketPort)"%3B
+            properties["ServiceSecureWebSocketPort"] = "$(ServiceSecureWebSocketPort)"%3B
             properties["TestRootCertificatePassword"] = "$(TestRootCertificatePassword)"%3B
             properties["TestRootCertificateValidityPeriod"] = "$(TestRootCertificateValidityPeriod)"%3B
             properties["MaxTestTimeSpan"] = "$(MaxTestTimeSpan)"%3B
