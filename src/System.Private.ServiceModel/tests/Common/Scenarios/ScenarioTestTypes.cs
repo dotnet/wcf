@@ -97,48 +97,46 @@ namespace TestTypes
         }
     }
 
-    //// Needed by the MahjongApp Scenario tests
     [DataContract(Name = "ResultOf{0}", Namespace = "http://www.contoso.com/wcfnamespace")]
     public class ResultObject<TEntity>
     {
-        private string _errorMessage;
+        private string _resultMessage;
 
-        public ResultObject()
+        public static ResultObject<T> CreateSuccessObject<T>()
         {
-            _errorMessage = "OK";
-            this.HttpStatusCode = System.Net.HttpStatusCode.OK;
-            this.ErrorCode = 0;
+            return new ResultObject<T>
+            {
+                Result = default(T),
+                ErrorCode = (int)TestTypes.ErrorCode.Ok,
+                HttpStatusCode = System.Net.HttpStatusCode.OK,
+                ResultMessage = TestTypes.ResultMessage.GetErrorDescription(TestTypes.ErrorCode.Ok)
+            };
         }
 
-        public static ResultObject<T> CopyResultErrorsStatus<T, D>(ResultObject<D> anotherResult)
+        public static ResultObject<T> CreateFailureObject<T>()
         {
-            return new ResultObject<T> { ErrorCode = anotherResult.ErrorCode, ErrorMessage = anotherResult.ErrorMessage, HttpStatusCode = anotherResult.HttpStatusCode };
-        }
-
-        public static ResultObject<T> CreateDefault<T>()
-        {
-            return new ResultObject<T> { Result = default(T), ErrorCode = 0, ErrorMessage = TestTypes.ErrorMessage.Get(TestTypes.ErrorCode.Ok) };
-        }
-
-        public void Exception(System.Exception ex)
-        {
-            this.ErrorCode = -1;
-            this.ErrorMessage = (ex == null) ? "unexpected" : ex.Message;
+            return new ResultObject<T>
+            {
+                Result = default(T),
+                ErrorCode = (int)TestTypes.ErrorCode.UserNotAuthenticated,
+                HttpStatusCode = System.Net.HttpStatusCode.Unauthorized,
+                ResultMessage = TestTypes.ResultMessage.GetErrorDescription(TestTypes.ErrorCode.UserNotAuthenticated)
+            };
         }
 
         [DataMember]
         public int ErrorCode { get; set; }
 
         [DataMember]
-        public string ErrorMessage
+        public string ResultMessage
         {
             get
             {
-                return _errorMessage;
+                return _resultMessage;
             }
             set
             {
-                _errorMessage = value;
+                _resultMessage = value;
             }
         }
 
@@ -149,118 +147,25 @@ namespace TestTypes
         public TEntity Result { get; set; }
     }
 
-    public static class ErrorMessage
+    public static class ResultMessage
     {
-        private static Dictionary<ErrorCode, string> s_localizedErrorCodes;
-
-        public static string Get(ErrorCode errorCode)
-        {
-            if (s_localizedErrorCodes != null)
-            {
-                return (s_localizedErrorCodes.ContainsKey(errorCode) ? s_localizedErrorCodes[errorCode] : s_localizedErrorCodes[ErrorCode.UnknownException]);
-            }
-            return "Unexpected exception";
-        }
-
         public static string GetErrorDescription(ErrorCode errorCode)
         {
             switch (errorCode)
             {
                 case ErrorCode.Ok:
-                    return "Success";
-
-                case ErrorCode.DcXboxTokeNull:
-                case ErrorCode.DcDailyFileNotAvailable:
-                case ErrorCode.DcDailyFileBroken:
-                    return "XboxErrorText";
-
-                case ErrorCode.DcMonthlyFileNotAvailable:
-                case ErrorCode.DcMonthlyFileBroken:
-                    return "DCDownloadingDataErrorText";
-
-                case ErrorCode.DcCanNotWriteMonthlyUserProgress:
-                case ErrorCode.DcCanNotWriteDailyUserProgress:
-                    return "XboxErrorSavingText";
-
-                case ErrorCode.NotOwner:
-                    return "Current user is not owner of theme and can't change it";
-
-                case ErrorCode.ThemeNotFound:
-                    return "Theme not found and can't be updated";
-
-                case ErrorCode.AsyncOperationFault:
-                    return "AsyncOperationFault";
-
-                case ErrorCode.DataNotFound:
-                    return "Data not found";
-
-                case ErrorCode.CantShare:
-                    return "Theme can't be shared due to internal error";
-
-                case ErrorCode.GamePlayIsNotValid:
-                    return "Game play is not valid";
+                    return "Authentication Succeeded";
 
                 case ErrorCode.UserNotAuthenticated:
-                    return "User not authenticated";
-
-                case ErrorCode.UnknownException:
-                    return "Exception cant be handled correctly";
-
-                case ErrorCode.NullData:
-                    return "Null Data was passed to the service";
-
-                case ErrorCode.SameData:
-                    return "Same data was requested";
-
-                case ErrorCode.OnlineDataReceived:
-                    return "Online Data received successfully";
-
-                case ErrorCode.OfflineDataReceived:
-                    return "Offline Data received successfully";
-
-                case ErrorCode.OfflineOnlineDataReceived:
-                    return "Online and Offline Data received successfully";
-
-                case ErrorCode.LatencyOverhead:
-                    return "Request latency overhead";
+                    return "Authentication Failed";
             }
             return "Unexpected exception";
-        }
-
-        public static void Init(Dictionary<ErrorCode, string> localizedErrorCodes)
-        {
-            ErrorMessage.s_localizedErrorCodes = localizedErrorCodes;
         }
     }
 
     public enum ErrorCode
     {
-        AsyncOperationFault = 0x67,
-        CantShare = 0x69,
-        DataNotFound = 0x68,
-        DcCanNotWriteDailyUserProgress = 7,
-        DcCanNotWriteMonthlyUserProgress = 6,
-        DcDailyFileBroken = 5,
-        DcDailyFileNotAvailable = 4,
-        DcFileBroken = 8,
-        DcMonthlyFileBroken = 3,
-        DcMonthlyFileNotAvailable = 2,
-        DcUserMonthlyFileIsNotAvaliable = 9,
-        DcXboxTokeNull = 1,
-        DeserializeError = 12,
-        GamePlayIsNotValid = 0xc9,
-        LatencyOverhead = 0x198,
-        NotOwner = 0x65,
-        NullData = 0x195,
-        OfflineDataReceived = 0x321,
-        OfflineOnlineDataReceived = 0x322,
         Ok = 0,
-        OnlineDataReceived = 800,
-        PremiumErrorNoInternetConnection = 0x1f7,
-        SameData = 0x130,
-        SponsorThemeIncorrectFormat = 15,
-        ThemeNotFound = 0x66,
-        UnknownException = 0x194,
         UserNotAuthenticated = 0x191
     }
 
