@@ -6,10 +6,6 @@
            When adding or removing TestProperties, update testproperties.targets
            to generate code at build time.
     -->
-    <PropertyGroup Condition="'$(BridgeResourceFolder)' == ''">
-      <BridgeResourceFolder>$(OutputPath)</BridgeResourceFolder>
-    </PropertyGroup>
-
     <PropertyGroup Condition="'$(BridgeHost)' == ''">
       <BridgeHost>localhost</BridgeHost>
     </PropertyGroup>
@@ -38,24 +34,12 @@
       <BridgeSecureWebSocketPort>8084</BridgeSecureWebSocketPort>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BridgeRemoteEnabled)' == ''">
-      <BridgeRemoteEnabled>false</BridgeRemoteEnabled>
-    </PropertyGroup>
-
     <PropertyGroup Condition="'$(TestRootCertificatePassword)' == ''">
       <TestRootCertificatePassword>test</TestRootCertificatePassword>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(TestRootCertificateValidityPeriod)' == ''">
       <TestRootCertificateValidityPeriod>7.00:00:00</TestRootCertificateValidityPeriod>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(UseFiddlerUrl)' == ''">
-      <UseFiddlerUrl>false</UseFiddlerUrl>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(BridgeMaxIdleTimeSpan)' == ''">
-      <BridgeMaxIdleTimeSpan>24:00:00</BridgeMaxIdleTimeSpan>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(MaxTestTimeSpan)' == ''">

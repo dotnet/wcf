@@ -6,13 +6,6 @@
     <Project Include="src.builds" />
   </ItemGroup>
 
-  <!-- *** start WCF Content *** -->
-  <!-- Additional WCF tool projects -->
-  <ItemGroup>
-    <Project Include="$(MSBuildProjectDirectory)\System.Private.ServiceModel\tools\test\CertificateCleanup\CertificateCleanup.csproj" />
-  </ItemGroup>
-  <!-- *** end WCF Content *** -->
-
   <Import Project="..\dir.targets" />
   <Import Project="..\dir.traversal.targets" />
 
