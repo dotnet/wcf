@@ -2,11 +2,11 @@
   "dependencies": {
     "System.Collections.Concurrent": "4.0.12",
     "System.Runtime.Extensions": "4.1.0",
-    "System.ServiceModel.Duplex": "4.4.0-beta-24626-02",
-    "System.ServiceModel.Http": "4.4.0-beta-24626-02",
-    "System.ServiceModel.NetTcp": "4.4.0-beta-24626-02",
-    "System.ServiceModel.Primitives": "4.4.0-beta-24626-02",
-    "System.ServiceModel.Security": "4.4.0-beta-24626-02",
+    "System.ServiceModel.Duplex": "4.4.0-beta-24704-02",
+    "System.ServiceModel.Http": "4.4.0-beta-24704-02",
+    "System.ServiceModel.NetTcp": "4.4.0-beta-24704-02",
+    "System.ServiceModel.Primitives": "4.4.0-beta-24704-02",
+    "System.ServiceModel.Security": "4.4.0-beta-24704-02",
     "System.Xml.XmlSerializer": "4.0.11",
     "test-runtime": {
       "target": "project",
