@@ -21,9 +21,6 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="$(WcfSourcePkgProj)">
       <Name>System.Private.ServiceModel</Name>
     </ProjectReference>

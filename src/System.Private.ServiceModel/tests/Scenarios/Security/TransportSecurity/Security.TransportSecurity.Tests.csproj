@@ -22,11 +22,11 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="$(WcfSourcePkgProj)">
       <Name>System.Private.ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include='$(WcfDuplexPkgProj)'>
+      <Name>System.ServiceModel.Duplex</Name>
     </ProjectReference>
     <ProjectReference Include='$(WcfHttpPkgProj)'>
       <Name>System.ServiceModel.Http</Name>

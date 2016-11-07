@@ -21,9 +21,6 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="$(WcfInfrastructureCommonProj)">
       <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
       <Name>Infrastructure.Common</Name>

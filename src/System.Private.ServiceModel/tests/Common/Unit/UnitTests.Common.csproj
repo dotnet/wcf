@@ -21,9 +21,6 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="$(WcfDuplexPkgProj)" />
     <ProjectReference Include="$(WcfHttpPkgProj)" />
     <ProjectReference Include="$(WcfPrimitivesPkgProj)" />

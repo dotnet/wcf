@@ -24,7 +24,6 @@
     <ProjectReference Include="$(WcfPrimitivesPkgProj)" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
     <None Include="testproperties.props" />
     <None Include="testproperties.targets" />
   </ItemGroup>
