@@ -32,4 +32,30 @@ namespace WcfService
         {
         }
     }
+
+    public class NetHttpTestServiceHostUsingWebSocketsFactory : ServiceHostFactory
+    {
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            NetHttpTestServiceHostUsingWebSockets serviceHost = new NetHttpTestServiceHostUsingWebSockets(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+
+    public class NetHttpTestServiceHostUsingWebSockets : TestServiceHostBase<IWcfService>
+    {
+        protected override string Address { get { return "NetHttpWebSockets"; } }
+
+        protected override Binding GetBinding()
+        {
+            var binding = new NetHttpBinding();
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            return binding;
+        }
+
+        public NetHttpTestServiceHostUsingWebSockets(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+        }
+    }
 }

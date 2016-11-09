@@ -64,7 +64,9 @@ namespace SelfHostedWCFService
             CreateHost<HttpsWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpsWindows.svc", httpsBaseAddress);
             CreateHost<HttpWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpWindows.svc", httpBaseAddress);
             CreateHost<NetHttpTestServiceHost, WcfService.WcfService>("NetHttp.svc", httpBaseAddress);
+            CreateHost<NetHttpTestServiceHostUsingWebSockets, WcfService.WcfService>("NetHttpWebSockets.svc", httpBaseAddress);
             CreateHost<NetHttpsTestServiceHost, WcfService.WcfService>("NetHttps.svc", httpsBaseAddress);
+            CreateHost<NetHttpsTestServiceHostUsingWebSockets, WcfService.WcfService>("NetHttpsWebSockets.svc", httpsBaseAddress);
             CreateHost<HttpsCertificateValidationPeerTrustTestServiceHost, WcfService.WcfService>("HttpsCertValModePeerTrust.svc", httpsBaseAddress);
             CreateHost<HttpsCertificateValidationChainTrustTestServiceHost, WcfService.WcfService>("HttpsCertValModeChainTrust.svc", httpsBaseAddress);
             CreateHost<ServiceContractAsyncIntOutTestServiceHost, ServiceContractIntOutService>("ServiceContractAsyncIntOut.svc", httpBaseAddress);

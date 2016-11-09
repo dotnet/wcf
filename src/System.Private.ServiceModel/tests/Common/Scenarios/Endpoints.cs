@@ -39,6 +39,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("NetHttp.svc//NetHttp"); }
     }
 
+    public static string HttpBaseAddress_NetHttpWebSockets
+    {
+        get { return GetEndpointAddress("NetHttpWebSockets.svc//NetHttpWebSockets"); }
+    }
+
     public static string HttpSoap11_Address
     {
         get { return GetEndpointAddress("HttpSoap11.svc//http-soap11"); }
@@ -255,6 +260,14 @@ public static partial class Endpoints
         get
         {
             return GetEndpointAddress("NetHttps.svc//NetHttps", protocol: "https");
+        }
+    }
+
+    public static string HttpBaseAddress_NetHttpsWebSockets
+    {
+        get
+        {
+            return GetEndpointAddress("NetHttpsWebSockets.svc//NetHttpsWebSockets", protocol: "https");
         }
     }
 
