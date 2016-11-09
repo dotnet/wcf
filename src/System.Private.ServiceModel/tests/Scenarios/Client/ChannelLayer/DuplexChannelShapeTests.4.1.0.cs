@@ -17,7 +17,6 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    [Issue(1157)]
     public static void IDuplexSessionChannel_Https_NetHttpsBinding()
     {
         IChannelFactory<IDuplexSessionChannel> factory = null;
@@ -34,7 +33,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
             factory.Open();
 
             // Create the channel.
-            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_NetHttpsWebSockets));
             channel.Open();
 
             // Create the Message object to send to the service.
@@ -76,8 +75,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    [Issue(1157)]
-    public static void IDuplexSessionChannel_Http_BasicHttpBinding()
+    public static void IDuplexSessionChannel_Http_NetHttpBinding()
     {
         IChannelFactory<IDuplexSessionChannel> factory = null;
         IDuplexSessionChannel channel = null;
@@ -86,14 +84,14 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         try
         {
             // *** SETUP *** \\
-            BasicHttpBinding binding = new BasicHttpBinding();
+            NetHttpBinding binding = new NetHttpBinding();
 
             // Create the channel factory
             factory = binding.BuildChannelFactory<IDuplexSessionChannel>(new BindingParameterCollection());
             factory.Open();
 
             // Create the channel.
-            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_NetHttpWebSockets));
             channel.Open();
 
             // Create the Message object to send to the service.
