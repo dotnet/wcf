@@ -214,6 +214,7 @@ public class StreamingTests : ConditionalWcfTest
             binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_Transport_Security_Streamed_Address));
             serviceProxy = factory.CreateChannel();
+            ((ICommunicationObject)serviceProxy).Open();
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
