@@ -16,6 +16,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     // The tests in this file use the IDuplexChannel shape.
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(1438, OS = OSID.Windows_7)]
     [OuterLoop]
     public static void IDuplexSessionChannel_Https_NetHttpsBinding()
     {
@@ -75,6 +76,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
+    [Issue(1438, OS = OSID.Windows_7)]
     public static void IDuplexSessionChannel_Http_NetHttpBinding()
     {
         IChannelFactory<IDuplexSessionChannel> factory = null;
