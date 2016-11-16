@@ -8,6 +8,12 @@
 
 ## Version History
 
+### 4.3.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Security/4.3.0)
+* [Release tag](https://github.com/dotnet/wcf/tree/v1.1.0)
+* [Supported features](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v1.1.0.md)
+
 ### 4.3.0-preview1-24610-02
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Security/4.3.0-preview1-24610-02)
