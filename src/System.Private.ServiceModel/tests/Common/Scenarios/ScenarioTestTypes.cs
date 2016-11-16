@@ -746,6 +746,11 @@ public class MyClientBase : ClientBase<IWcfServiceGenerated>
         : base(binding, endpointAddress)
     {
     }
+
+    public IWcfServiceGenerated Proxy
+    {
+        get { return base.Channel; }
+    }
 }
 
 // This helper class is used for DuplexClientBase<T> tests
