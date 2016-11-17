@@ -18,10 +18,14 @@ namespace SharedPoolsOfWCFObjects
         void CloseFactory(ChannelFactory<ChannelType> factory);
         Task CloseFactoryAsync(ChannelFactory<ChannelType> factory);
         ChannelType CreateChannel(ChannelFactory<ChannelType> factory);
+        void OpenChannel(ChannelType channel);
+        Task OpenChannelAsync(ChannelType channel);
         void CloseChannel(ChannelType channel);
         Task CloseChannelAsync(ChannelType channel);
-        Action<ChannelType> UseChannel();
-        Func<ChannelType, Task> UseAsyncChannel();
+        bool ValidateChannel(ChannelType channel);
+        bool ValidateFactory(ChannelFactory<ChannelType> factory);
+        Func<ChannelType, int> UseChannel();
+        Func<ChannelType, Task<int>> UseAsyncChannel();
 
         Params TestParameters { get; }
     }
@@ -33,13 +37,19 @@ namespace SharedPoolsOfWCFObjects
         bool RelaxedExceptionPolicy { get; set; }
     }
 
-    // Need interfaces to control:
-    // - bindings
-    
+    public interface IExceptionHandlingPolicyParameter
+    {
+        Func<Exception, bool> ExceptionHandler { get; }
+        bool ReplaceInvalidPooledFactories { get; }
+        bool ReplaceInvalidPooledChannels { get; }
+    }
+
     public interface IPoolTestParameter
     {
         int MaxPooledFactories { get; }
         int MaxPooledChannels { get; }
+        int PreemptiveCloseChannelTimeout { get; }
+        int PreemptiveCloseFactoryTimeout { get; }
     }
 
 

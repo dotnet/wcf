@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.ServiceModel;
 using System.Runtime.Serialization;
+using System;
 
 namespace WcfService1
 {
@@ -17,6 +18,10 @@ namespace WcfService1
 
         [OperationContract(Name = "GetData")]
         Task<string> GetDataAsync(int value);
+
+        [OperationContract(Name = "GetData", AsyncPattern = true)]
+        IAsyncResult BeginGetData(int value, AsyncCallback callback, object state);
+        string EndGetData(IAsyncResult iar);
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);

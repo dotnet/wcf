@@ -30,13 +30,6 @@ namespace WcfService1
         public Stream GetStreamFromInt(int bytesToStream)
         {
             return OperationContext.Current.GetCallbackChannel<IDuplexStreamingCallback>().GetStreamFromInt(bytesToStream);
-            //var stream = new VerifiableStream(bytesToStream);
-            //OperationContext clientContext = OperationContext.Current;
-            //clientContext.OperationCompleted += new EventHandler(delegate (object sender, EventArgs args)
-            //{
-            //    stream.Dispose();
-            //});
-            //return stream;
         }
     }
 }

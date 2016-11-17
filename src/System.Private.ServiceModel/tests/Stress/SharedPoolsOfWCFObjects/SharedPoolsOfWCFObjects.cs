@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Collections.Concurrent;
 using WcfService1;
+using System.Linq;
 
 namespace SharedPoolsOfWCFObjects
 {
@@ -31,7 +32,7 @@ namespace SharedPoolsOfWCFObjects
 
         // A full cycle of creating a pool of channel factories, using each factory to create
         // a pool of channels, using all channels once and then closing all of them
-        public static void CreateFactoriesAndChannelsUseAllOnceCloseAll()
+        public static int CreateFactoriesAndChannelsUseAllOnceCloseAll()
         {
             using (var theOneTimeThing = new PoolOfThings<FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories, // # of pooled FactoryAndPoolOfItsObjects
@@ -44,16 +45,20 @@ namespace SharedPoolsOfWCFObjects
                         createObject: (chf) =>
                             s_test.CreateChannel(chf),
                         destroyObject: (ch) =>
-                            s_test.CloseChannel(ch)),
-                    destroyInstance: (_fapoio) => _fapoio.Destroy()))
+                            s_test.CloseChannel(ch),
+                        validateObjectInstance: s_test.ValidateChannel),
+                    destroyInstance: (fapoio) => fapoio.Destroy(),
+                    instanceValidator: (fapoio) => s_test.ValidateFactory(fapoio.Factory)))
             {
+                int requestsMade = 0;
                 foreach (var factoryAndPoolOfItsChannels in theOneTimeThing.GetAllPooledInstances())
                 {
                     foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                     {
-                        s_test.UseChannel()(channel);
+                        requestsMade += s_test.UseChannel()(channel);
                     }
                 }
+                return requestsMade;
             }
         }
     }
@@ -68,10 +73,10 @@ namespace SharedPoolsOfWCFObjects
         {
             s_test = new TestTemplate();
         }
-        public static async Task CreateFactoriesAndChannelsUseAllOnceCloseAllAsync()
+        public static async Task<int> CreateFactoriesAndChannelsUseAllOnceCloseAllAsync()
         {
             PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>> oneTimeAsyncThing = null;
-            var allTasksFromOneTimeAsyncThing = new List<Task>();
+            var allTasksFromOneTimeAsyncThing = new List<Task<int>>();
             try
             {
                 oneTimeAsyncThing = new PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>>(
@@ -85,9 +90,10 @@ namespace SharedPoolsOfWCFObjects
                         createObject: (chf) =>
                             s_test.CreateChannel(chf),
                         destroyObjectAsync: async (ch) =>
-                            await s_test.CloseChannelAsync(ch)
-                        ),
-                    destroyInstanceAsync: (_fapoiao) => _fapoiao.DestroyAsync());
+                            await s_test.CloseChannelAsync(ch),
+                        validateObjectInstance: s_test.ValidateChannel),
+                    destroyInstanceAsync: (fapoiao) => fapoiao.DestroyAsync(),
+                    instanceValidator: (fapoiao) => s_test.ValidateFactory(fapoiao.Factory));
 
                 foreach (var factoryAndPoolOfItsChannels in oneTimeAsyncThing.GetAllPooledInstances())
                 {
@@ -105,6 +111,7 @@ namespace SharedPoolsOfWCFObjects
                     await oneTimeAsyncThing.DestoryAllPooledInstancesAsync();
                 }
             }
+            return allTasksFromOneTimeAsyncThing.Sum(t => t.Result);
         }
     }
 
@@ -123,19 +130,22 @@ namespace SharedPoolsOfWCFObjects
                 new PoolOfThings<ChannelFactory<ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories,
                     createInstance: () => s_test.CreateChannelFactory(),
-                    destroyInstance: (chf) => s_test.CloseFactory(chf)));
+                    destroyInstance: (chf) => s_test.CloseFactory(chf),
+                    instanceValidator: s_test.ValidateFactory));
         }
-        public static void CreateUseAndCloseChannels()
+        public static int CreateUseAndCloseChannels()
         {
+            int requestsMade = 0;
             foreach (var factory in s_pooledChannelFactories.GetAllPooledInstances())
             {
                 ChannelType channel = s_test.CreateChannel(factory);
                 if (channel != null)
                 {
-                    s_test.UseChannel()(channel);
+                    requestsMade += s_test.UseChannel()(channel);
                     s_test.CloseChannel(channel);
                 }
             }
+            return requestsMade;
         }
     }
 
@@ -154,11 +164,12 @@ namespace SharedPoolsOfWCFObjects
                 new PoolOfAsyncThings<ChannelFactory<ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories,
                     createInstance: () => s_test.CreateChannelFactory(),
-                    destroyInstanceAsync: async (chf) => await s_test.CloseFactoryAsync(chf)));
+                    destroyInstanceAsync: async (chf) => await s_test.CloseFactoryAsync(chf),
+                    instanceValidator: s_test.ValidateFactory));
         }
-        public static async Task CreateUseAndCloseChannelsAsync()
+        public static async Task<int> CreateUseAndCloseChannelsAsync()
         {
-            var allTasks = new List<Task>();
+            var allTasks = new List<Task<int>>(32);
             foreach (var factory in s_pooledChannelFactories.GetAllPooledInstances())
             {
                 ChannelType channel = s_test.CreateChannel(factory);
@@ -168,12 +179,14 @@ namespace SharedPoolsOfWCFObjects
                 }
             }
             await Task.WhenAll(allTasks);
+            return allTasks.Sum(t => t.Result);
         }
 
-        private static async Task UseAndCloseChannelAsync(ChannelType channel)
+        private static async Task<int> UseAndCloseChannelAsync(ChannelType channel)
         {
-            await s_test.UseAsyncChannel()(channel);
+            var requestsMade = await s_test.UseAsyncChannel()(channel);
             await s_test.CloseChannelAsync(channel);
+            return requestsMade;
         }
     }
 
@@ -205,20 +218,37 @@ namespace SharedPoolsOfWCFObjects
                         createObject: (chf) =>
                             s_test.CreateChannel(chf),
                         destroyObject: (ch) =>
-                            s_test.CloseChannel(ch)
-                        ),
-                    destroyInstance: (_fapoio) => _fapoio.Destroy()));
+                            s_test.CloseChannel(ch),
+                        validateObjectInstance: s_test.ValidateChannel),
+                    destroyInstance: (fapoio) => fapoio.Destroy(),
+                    instanceValidator: (fapoiao) => s_test.ValidateFactory(fapoiao.Factory)));
         }
 
-        public static void UseChannelsInPooledFactoriesAndChannels()
+        public static int UseAllChannelsInPooledFactoriesAndChannels()
         {
+            int requestsMade = 0;
             foreach (var factoryAndPoolOfItsChannels in s_pooledFactoriesAndChannels.GetAllPooledInstances())
             {
                 foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    s_test.UseChannel()(channel);
+                    requestsMade += s_test.UseChannel()(channel);
                 }
             }
+            return requestsMade;
+        }
+        public static int UseOneChannelInPooledFactoriesAndChannels(int n)
+        {
+            if (n > s_test.TestParameters.MaxPooledChannels * s_test.TestParameters.MaxPooledFactories)
+            {
+                TestUtils.ReportFailure("Not enough channels...", debugBreak: true);
+                throw new Exception(
+                    String.Format("Can not use {0}th channel from the pool that only has {1} channels",
+                        n, s_test.TestParameters.MaxPooledChannels * s_test.TestParameters.MaxPooledFactories));
+            }
+            var factoryAndChannels = s_pooledFactoriesAndChannels[n / s_test.TestParameters.MaxPooledChannels];
+            var channel = factoryAndChannels.ObjectsPool[n % s_test.TestParameters.MaxPooledChannels];
+
+            return s_test.UseChannel()(channel);
         }
     }
 
@@ -250,14 +280,16 @@ namespace SharedPoolsOfWCFObjects
                         createObject: (chf) =>
                             s_test.CreateChannel(chf),
                         destroyObjectAsync: async (ch) =>
-                            await s_test.CloseChannelAsync(ch)
+                            await s_test.CloseChannelAsync(ch),
+                        validateObjectInstance: s_test.ValidateChannel
                         ),
-                    destroyInstanceAsync: async (_fapoiao) => await _fapoiao.DestroyAsync()));
+                    destroyInstanceAsync: async (fapoiao) => await fapoiao.DestroyAsync(),
+                    instanceValidator: (fapoiao) => s_test.ValidateFactory(fapoiao.Factory)));
         }
 
-        public static async Task UseChannelsInPooledFactoriesAndChannelsAsync()
+        public static async Task<int> UseAllChannelsInPooledFactoriesAndChannelsAsync()
         {
-            var allTasks = new List<Task>();
+            var allTasks = new List<Task<int>>(32);
             foreach (var factoryAndPoolOfItsChannels in s_pooledFactoriesAndChannels.GetAllPooledInstances())
             {
                 foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
@@ -266,6 +298,38 @@ namespace SharedPoolsOfWCFObjects
                 }
             }
             await Task.WhenAll(allTasks);
+            return allTasks.Sum(t => t.Result);
+        }
+
+        // For a direct performance comparison between sync and async throughput we use all channels serially
+        public static async Task<int> UseAllChannelsInPooledFactoriesAndChannelsSerialAsync()
+        {
+            int requestsMade = 0;
+            foreach (var factoryAndPoolOfItsChannels in s_pooledFactoriesAndChannels.GetAllPooledInstances())
+            {
+                foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
+                {
+                    requestsMade += await s_test.UseAsyncChannel()(channel);
+                }
+            }
+            return requestsMade;
+        }
+
+        // Some bindings would perform poorly when multiple threads try to use the same channel
+        // This method will only use n'th pooled channel in order to obtain maximum possible throughput
+        public static async Task<int> UseOneChannelInPooledFactoriesAndChannelsSerialAsync(int n)
+        {
+            if (n > s_test.TestParameters.MaxPooledChannels * s_test.TestParameters.MaxPooledFactories)
+            {
+                TestUtils.ReportFailure("Not enough channels...", debugBreak: true);
+                throw new Exception(
+                    String.Format("Can not use {0}th channel from the pool that only has {1} channels",
+                        n, s_test.TestParameters.MaxPooledChannels * s_test.TestParameters.MaxPooledFactories));
+            }
+
+            var factoryAndChannels = s_pooledFactoriesAndChannels[n / s_test.TestParameters.MaxPooledChannels];
+            var channel = factoryAndChannels.ObjectsPool[n % s_test.TestParameters.MaxPooledChannels];
+            return await s_test.UseAsyncChannel()(channel);
         }
     }
 
@@ -287,23 +351,24 @@ namespace SharedPoolsOfWCFObjects
             s_recyclablePooledChannelFactories = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<ChannelFactory<ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories,
-                    createInstance:
-                        s_test.CreateChannelFactory,
-                    destroyInstance: (chf) =>
-                         s_test.CloseFactory(chf)));
+                    createInstance: s_test.CreateChannelFactory,
+                    destroyInstance: (chf) => s_test.CloseFactory(chf),
+                    instanceValidator: s_test.ValidateFactory));
         }
-        public static void CreateUseAndCloseChannels()
+        public static int CreateUseAndCloseChannels()
         {
+            int requestsMade = 0;
             foreach (var factory in s_recyclablePooledChannelFactories.GetAllPooledInstances())
             {
                 ChannelType channel = s_test.CreateChannel(factory);
 
                 if (channel != null)
                 {
-                    s_test.UseChannel()(channel);
+                    requestsMade += s_test.UseChannel()(channel);
                     s_test.CloseChannel(channel);
                 }
             }
+            return requestsMade;
         }
 
         public static void RecycleFactories()
@@ -343,11 +408,12 @@ namespace SharedPoolsOfWCFObjects
                 new PoolOfAsyncThings<ChannelFactory<ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories,
                     createInstance: s_test.CreateChannelFactory,
-                    destroyInstanceAsync: async (chf) => await s_test.CloseFactoryAsync(chf)));
+                    destroyInstanceAsync: async (chf) => await s_test.CloseFactoryAsync(chf),
+                    instanceValidator: s_test.ValidateFactory));
         }
-        public static async Task CreateUseAndCloseChannelsAsync()
+        public static async Task<int> CreateUseAndCloseChannelsAsync()
         {
-            var allTasks = new List<Task>();
+            var allTasks = new List<Task<int>>(32);
             foreach (var factory in s_recyclablePooledChannelFactories.GetAllPooledInstances())
             {
                 ChannelType channel = s_test.CreateChannel(factory);
@@ -358,12 +424,14 @@ namespace SharedPoolsOfWCFObjects
                 }
             }
             await Task.WhenAll(allTasks);
+            return allTasks.Sum(t => t.Result);
         }
 
-        private static async Task UseAndCloseChannelAsync(ChannelType channel)
+        private static async Task<int> UseAndCloseChannelAsync(ChannelType channel)
         {
-            await s_test.UseAsyncChannel()(channel);
+            var requestsMade = await s_test.UseAsyncChannel()(channel);
             await s_test.CloseChannelAsync(channel);
+            return requestsMade;
         }
 
         public static async Task RecycleFactoriesAsync()
@@ -387,8 +455,8 @@ namespace SharedPoolsOfWCFObjects
     // not used - *_OpenOnce is used instead as a workaround for #108
     public static class RecyclablePooledFactoriesAndChannels<ChannelType, TestTemplate, TestParams>
         where ChannelType : class
-        where TestTemplate : ITestTemplate<ChannelType, TestParams>, new()
-        where TestParams : IPoolTestParameter, IExceptionPolicy
+        where TestTemplate : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy, new()
+        where TestParams : IPoolTestParameter
     {
         private static int s_iteration = 0;
         private static ITestTemplate<ChannelType, TestParams> s_test;
@@ -402,7 +470,7 @@ namespace SharedPoolsOfWCFObjects
         {
             s_test = new TestTemplate();
             // It is expected to see various exceptions when we use factories while recycling them
-            s_test.TestParameters.RelaxedExceptionPolicy = true;
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = true;
 
             s_recyclablePooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>>(
@@ -413,8 +481,10 @@ namespace SharedPoolsOfWCFObjects
                         destroyFactoryInstance: (chf) => s_test.CloseFactory(chf),
                         maxPooledObjects: s_test.TestParameters.MaxPooledChannels,
                         createObject: (chf) => s_test.CreateChannel(chf),
-                        destroyObject: (ch) => s_test.CloseChannel(ch)),
-                    destroyInstance: (_fapoic) => _fapoic.Destroy()));
+                        destroyObject: (ch) => s_test.CloseChannel(ch),
+                        validateObjectInstance: s_test.ValidateChannel),
+                    destroyInstance: (fapoio) => fapoio.Destroy(),
+                    instanceValidator: (fapoio) => s_test.ValidateFactory(fapoio.Factory)));
         }
 
         public static void RunAllScenariosWithWeights(int useWeight, int recycleChannelsWeight, int recycleFactoriesWeight)
@@ -434,15 +504,17 @@ namespace SharedPoolsOfWCFObjects
             }
         }
 
-        public static void UsePooledChannels()
+        public static int UsePooledChannels()
         {
+            int requestsMade = 0;
             foreach (var factoryAndPoolOfItsChannels in s_recyclablePooledFactoriesAndChannels.GetAllPooledInstances())
             {
                 foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    s_test.UseChannel()(channel);
+                    requestsMade += s_test.UseChannel()(channel);
                 }
             }
+            return requestsMade;
         }
 
         public static void RecyclePooledChannels()
@@ -468,6 +540,91 @@ namespace SharedPoolsOfWCFObjects
             }
         }
     }
+
+    public static class RecyclablePooledFactoriesAndChannelsAsync<ChannelType, TestTemplate, TestParams>
+      where ChannelType : class
+      where TestTemplate : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy, new()
+      where TestParams : IPoolTestParameter
+    {
+        private static int s_iteration = 0;
+        private static ITestTemplate<ChannelType, TestParams> s_test;
+
+        private static PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<
+                ChannelFactory<ChannelType>,
+                ChannelType>
+            > s_recyclablePooledFactoriesAndChannels;
+
+        static RecyclablePooledFactoriesAndChannelsAsync()
+        {
+            s_test = new TestTemplate();
+            // It is expected to see various exceptions when we use factories while recycling them
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = true;
+
+            s_recyclablePooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
+                new PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>>(
+                    maxSize: s_test.TestParameters.MaxPooledFactories,
+                    createInstance: () => new FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>(
+                        createFactoryInstance: () =>
+                            s_test.CreateChannelFactory(),
+                        destroyFactoryInstanceAsync: async (chf) => await s_test.CloseFactoryAsync(chf),
+                        maxPooledObjects: s_test.TestParameters.MaxPooledChannels,
+                        createObject: (chf) => s_test.CreateChannel(chf),
+                        destroyObjectAsync: (ch) => s_test.CloseChannelAsync(ch),
+                        validateObjectInstance: s_test.ValidateChannel),
+                    destroyInstanceAsync: (fapoio) => fapoio.DestroyAsync(),
+                    instanceValidator: (fapoio) => s_test.ValidateFactory(fapoio.Factory)));
+        }
+
+        public static async Task RunAllScenariosWithWeightsAsync(int useWeight, int recycleChannelsWeight, int recycleFactoriesWeight)
+        {
+            int requestsMade = 0;
+            int seed = Interlocked.Increment(ref s_iteration) % (useWeight + recycleChannelsWeight + recycleFactoriesWeight);
+            if (seed < useWeight)
+            {
+                requestsMade = await UsePooledChannelsAsync();
+            }
+            else if (seed < useWeight + recycleChannelsWeight)
+            {
+                await RecyclePooledChannelsAsync();
+            }
+            else if (seed < useWeight + recycleChannelsWeight + recycleFactoriesWeight)
+            {
+                await RecyclePooledFactoriesAsync();
+            }
+        }
+
+        public static async Task<int> UsePooledChannelsAsync()
+        {
+            var allTasks = new List<Task<int>>(32);
+            foreach (var factoryAndPoolOfItsChannels in s_recyclablePooledFactoriesAndChannels.GetAllPooledInstances())
+            {
+                foreach (var channel in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
+                {
+                    allTasks.Add(s_test.UseAsyncChannel()(channel));
+                }
+            }
+            await Task.WhenAll(allTasks);
+            return allTasks.Sum(t => t.Result);
+        }
+
+        public static async Task RecyclePooledChannelsAsync()
+        {
+            Console.WriteLine("RecyclePooledChannelsAsync");
+            var allTasks = new List<Task>(32);
+            foreach (var factoryAndPoolOfItsChannels in s_recyclablePooledFactoriesAndChannels.GetAllPooledInstances())
+            {
+                allTasks.Add(factoryAndPoolOfItsChannels.ObjectsPool.DestoryAllPooledInstancesAsync());
+            }
+            await Task.WhenAll(allTasks);
+        }
+
+        public static async Task RecyclePooledFactoriesAsync()
+        {
+            Console.WriteLine("RecyclePooledFactoriesAsync");
+            await s_recyclablePooledFactoriesAndChannels.DestoryAllPooledInstancesAsync();
+        }
+    }
+
 
     public static class RecyclablePooledFactoriesAndChannels_OpenOnce<ChannelType, TestTemplate, TestParams>
         where ChannelType : class
@@ -495,9 +652,18 @@ namespace SharedPoolsOfWCFObjects
                         createFactoryInstance: () => s_test.CreateChannelFactory(),
                         destroyFactoryInstance: (chf) => s_test.CloseFactory(chf),
                         maxPooledObjects: s_test.TestParameters.MaxPooledChannels,
-                        createObject: (chf) => new OpenOnceChannelWrapper<ChannelType>(s_test.CreateChannel(chf)),
-                        destroyObject: (chWr) => s_test.CloseChannel(chWr.Channel)),
-                    destroyInstance: (_fapoio) => _fapoio.Destroy()));
+                        createObject: (chf) =>
+                        {
+                            var channel = s_test.CreateChannel(chf);
+                            // If channel creation failed and is unexpected then we'd already catch it inside s_test.CreateChannel.
+                            // If the failure is expected then we will get null back.
+                            // In this case we simply return null instead of wrapping it and let the pool handle it.
+                            return channel != null ? new OpenOnceChannelWrapper<ChannelType>(channel) : null;
+                        },
+                        destroyObject: (chWr) => s_test.CloseChannel(chWr.Channel),
+                        validateObjectInstance: (chWr) => s_test.ValidateChannel(chWr.Channel)),
+                    destroyInstance: (fapoio) => fapoio.Destroy(),
+                    instanceValidator: (fapoio) => s_test.ValidateFactory(fapoio.Factory)));
         }
 
         public static void RunAllScenariosWithWeights(int useWeight, int recycleChannelsWeight, int recycleFactoriesWeight)
@@ -517,16 +683,18 @@ namespace SharedPoolsOfWCFObjects
             }
         }
 
-        public static void UsePooledChannels()
+        public static int UsePooledChannels()
         {
+            int requestsMade = 0;
             foreach (var factoryAndPoolOfItsChannels in s_recyclablePooledFactoriesAndChannels.GetAllPooledInstances())
             {
                 foreach (var channelWrapper in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
                 {
-                    channelWrapper.OpenChannelOnce();
-                    s_test.UseChannel()(channelWrapper.Channel);
+                    channelWrapper.OpenChannelOnce(s_test.OpenChannel);
+                    requestsMade += s_test.UseChannel()(channelWrapper.Channel);
                 }
             }
+            return requestsMade;
         }
 
         public static void AbortPooledChannels()
@@ -593,18 +761,28 @@ namespace SharedPoolsOfWCFObjects
                             destroyFactoryInstanceAsync: async (chf) =>
                                 await s_test.CloseFactoryAsync(chf),
                             maxPooledObjects: s_test.TestParameters.MaxPooledChannels,
-                            createObject: (chf) => new OpenAsyncOnceChannelWrapper<ChannelType>(s_test.CreateChannel(chf)),
-                            destroyObjectAsync: async (chWr) => await s_test.CloseChannelAsync(chWr.Channel)),
-                    destroyInstanceAsync: async (_fapoio) => await _fapoio.DestroyAsync()));
+                            createObject: (chf) =>
+                            {
+                                var channel = s_test.CreateChannel(chf);
+                                // If channel creation failed and is unexpected we'd already catch it inside s_test.CreateChannel.
+                                // If the failure is expected then we will get null back.
+                                // In this case we simply return null instead of wrapping it and let the pool handle it
+                                return channel != null ? new OpenAsyncOnceChannelWrapper<ChannelType>(channel) : null;
+                            },
+                            destroyObjectAsync: async (chWr) => await s_test.CloseChannelAsync(chWr.Channel),
+                            validateObjectInstance: (oaocw) => s_test.ValidateChannel(oaocw.Channel)),
+                    destroyInstanceAsync: async (fapoio) => await fapoio.DestroyAsync(),
+                    instanceValidator: (fapoio) => s_test.ValidateFactory(fapoio.Factory)));
         }
 
-        public static async Task RunAllScenariosWithWeightsAsync(int useWeight, int recycleChannelsWeight, int recycleFactoriesWeight)
+        public static async Task<int> RunAllScenariosWithWeightsAsync(int useWeight, int recycleChannelsWeight, int recycleFactoriesWeight)
         {
+            int requestsMade = 0;
             int seed = new Random(Interlocked.Increment(ref s_iteration)).Next(useWeight + recycleChannelsWeight + recycleFactoriesWeight);
             //int seed = Interlocked.Increment(ref s_iteration) % (useWeight + recycleChannelsWeight + recycleFactoriesWeight);
             if (seed < useWeight)
             {
-                await UsePooledChannelsAsync();
+                requestsMade = await UsePooledChannelsAsync();
             }
             else if (seed < useWeight + recycleChannelsWeight)
             {
@@ -614,11 +792,12 @@ namespace SharedPoolsOfWCFObjects
             {
                 await RecyclePooledFactoriesAsync();
             }
+            return requestsMade;
         }
 
-        public static async Task UsePooledChannelsAsync()
+        public static async Task<int> UsePooledChannelsAsync()
         {
-            var allTasks = new List<Task>();
+            var allTasks = new List<Task<int>>(32);
             foreach (var factoryAndPoolOfItsChannels in s_recyclablePooledFactoriesAndChannels.GetAllPooledInstances())
             {
                 foreach (var channelWrapper in factoryAndPoolOfItsChannels.ObjectsPool.GetAllPooledInstances())
@@ -627,21 +806,24 @@ namespace SharedPoolsOfWCFObjects
                 }
             }
             await Task.WhenAll(allTasks);
+            return allTasks.Sum(t => t.Result);
         }
 
-        private static async Task UseChannelWrapperAsync(OpenAsyncOnceChannelWrapper<ChannelType> channelWrapper)
+        private static async Task<int> UseChannelWrapperAsync(OpenAsyncOnceChannelWrapper<ChannelType> channelWrapper)
         {
+            int requestsMade = 0;
             if (channelWrapper.Channel != null)
             {
-                await channelWrapper.OpenChannelOnceAsync();
-                await s_test.UseAsyncChannel()(channelWrapper.Channel);
+                await channelWrapper.OpenChannelOnceAsync(s_test.OpenChannelAsync);
+                requestsMade = await s_test.UseAsyncChannel()(channelWrapper.Channel);
             }
+            return requestsMade;
         }
 
         public static async Task RecyclePooledChannelsAsync()
         {
             Console.WriteLine("RecyclePooledChannelsAsync");
-            var allTasks = new List<Task>();
+            var allTasks = new List<Task>(32);
             foreach (var factoryAndPoolOfItsChannels in s_recyclablePooledFactoriesAndChannels.GetAllPooledInstances())
             {
                 allTasks.Add(factoryAndPoolOfItsChannels.ObjectsPool.DestoryAllPooledInstancesAsync());
@@ -659,48 +841,48 @@ namespace SharedPoolsOfWCFObjects
 
 
     // Helpers
-    public class OpenOnceChannelWrapper<C>
+    public class OpenOnceChannelWrapper<ChannelType>
     {
         private bool _openCalled = false;
         private Object _lock = new Object();
 
-        public C Channel { get; set; }
+        public ChannelType Channel { get; set; }
 
-        public OpenOnceChannelWrapper(C c)
+        public OpenOnceChannelWrapper(ChannelType c)
         {
             Channel = c;
         }
-        public void OpenChannelOnce()
+        public void OpenChannelOnce(Action<ChannelType> openChannel)
         {
             lock (_lock)
             {
                 if (!_openCalled)
                 {
-                    (Channel as ICommunicationObject).Open();
+                    openChannel(Channel);
                     _openCalled = true;
                 }
             }
         }
     }
 
-    public class OpenAsyncOnceChannelWrapper<C>
+    public class OpenAsyncOnceChannelWrapper<ChannelType>
     {
         private Task<Task> _openTask = null;
 
-        public C Channel { get; set; }
+        public ChannelType Channel { get; set; }
 
-        public OpenAsyncOnceChannelWrapper(C c)
+        public OpenAsyncOnceChannelWrapper(ChannelType c)
         {
             Channel = c;
         }
-        public async Task OpenChannelOnceAsync()
+        public async Task OpenChannelOnceAsync(Func<ChannelType, Task> openChannelAsync)
         {
             // Channel can be null if the factory is in faulted/closed state
             if (Channel != null)
             {
                 var co = Channel as ICommunicationObject;
                 // create a cold task
-                var t = new Task<Task>(async () => await Task.Factory.FromAsync(co.BeginOpen, co.EndOpen, TaskCreationOptions.None));
+                var t = new Task<Task>(async () => await openChannelAsync(Channel));
                 // see if we can save it to _openTask
                 if (Interlocked.CompareExchange(ref _openTask, t, null) == null)
                 {
@@ -728,14 +910,10 @@ namespace SharedPoolsOfWCFObjects
 
         public static void DisposeAll()
         {
-            if (s_disposables != null)
+            IDisposable d = null;
+            while (s_disposables.TryDequeue(out d))
             {
-                IDisposable d = null;
-                while (s_disposables.TryDequeue(out d))
-                {
-                    d.Dispose();
-                }
-                s_disposables = null;
+                d.Dispose();
             }
         }
     }
