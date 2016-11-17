@@ -17,13 +17,21 @@ namespace SharedPoolsOfWCFObjects
         int CurrentStreamSize { get; }
         int MaxBufferSize { get; }
         int CurrentBufferSize { get; }
+        bool VerifyStreamContent { get; }
     }
+    public enum StreamingScenarios
+    {
+        StreamNone = 0,
+        StreamOut = 1,
+        StreamIn = 2,
+        StreamEcho = 4,
+        StreamAll = StreamOut | StreamIn | StreamEcho
+    };
 
     public class StreamingStressTestParams : CommonStressTestParams, IStreamingTestParams
     {
-        public int MaxStreamSize { get { return 80000; } }
-        public int MaxBufferSize { get { return 8 * 1024; } }
-
+        public int MaxStreamSize { get { return 800000; } }
+        public int MaxBufferSize { get { return 80 * 1024; } }
         private int _curStreamSize = 1;
         public int CurrentStreamSize
         {
@@ -33,7 +41,6 @@ namespace SharedPoolsOfWCFObjects
                 return (Interlocked.Increment(ref _curStreamSize) * 3 + 1) % MaxStreamSize;
             }
         }
-
         private int _curBufferSize = 1;
         public int CurrentBufferSize
         {
@@ -43,59 +50,66 @@ namespace SharedPoolsOfWCFObjects
                 return Interlocked.Increment(ref _curBufferSize) % MaxBufferSize + 2;
             }
         }
+        public bool VerifyStreamContent { get { return true; } }
     }
 
-    public class StreamingPerfStartupTestParams : CommonPerfStartupTestParams, IStreamingTestParams
+    // For perf we want to be more specific about what streaming scenario we use
+    // so we have a few different parameters to select as a generic parameter to the test
+    public abstract class StreamingPerfTestParamsBase : CommonPerfStartupTestParams, IStreamingTestParams
     {
-        public int MaxStreamSize { get { return 80000; } }
-        public int MaxBufferSize { get { return 8 * 1024; } }
+        protected const int TheMaxStreamSize = 80000;
+        protected const int TheMaxBufferSize = 8 * 1024;
+        public int MaxStreamSize { get { return TheMaxStreamSize; } }
+        public int MaxBufferSize { get { return TheMaxBufferSize; } }
+        public bool VerifyStreamContent { get { return false; } }
+        public abstract int CurrentStreamSize { get; }
+        public abstract int CurrentBufferSize { get; }
+        public static StreamingScenarios StreamingScenario { get; set; }
+    }
 
-        public int CurrentStreamSize
+
+    public class StreamingPerfStartupTestParams : StreamingPerfTestParamsBase
+    {
+        public override int CurrentStreamSize
         {
             get
             {
-                // In the startup perf scenario we're affected by many factors other than the throughput 
-                // so we use an arbitrary small number for stream size
+                // we use an arbitrary small number for stream size for the startup perf scenario
                 return 512;
             }
         }
-
-        public int CurrentBufferSize
+        public override int CurrentBufferSize
         {
             get
             {
-                // In the startup perf scenario we're affected by many factors other than the maximum throughput 
-                // so we just use a fixed size buffer
+                // we just use a fixed size buffer for the startup perf scenario
                 return CurrentStreamSize / 2;
             }
         }
     }
 
-    public class StreamingPerfThroughputTestParams : CommonPerfThroughputTestParams, IStreamingTestParams
+    public class StreamingPerfThroughputTestParams : StreamingPerfTestParamsBase
     {
-        private const int TheMaxStreamSize = 80000;
-        private const int TheMaxBufferSize = 8 * 1024;
-        public int MaxStreamSize { get { return TheMaxStreamSize; } }
-        public int MaxBufferSize { get { return TheMaxBufferSize; } }
-
         // Throughput perf tests are likely to run into different kind of bottlenecks than startup perf tests
         // Therefore we loop through a predefined small set of stream sizes
         private int[] _streamSizes = { 10, TheMaxStreamSize / 10, TheMaxStreamSize };
         private int _curStreamSizeIndex = 0;
-        public int CurrentStreamSize
+        public override int CurrentStreamSize
         {
             get
             {
                 return _streamSizes[Interlocked.Increment(ref _curStreamSizeIndex) % _streamSizes.Length];
             }
         }
+        public override int CurrentBufferSize { get { return MaxBufferSize; } }
 
-        public int CurrentBufferSize { get { return MaxBufferSize; } }
+        override public int MaxPooledChannels { get { return 8; } }
+        override public int MaxPooledFactories { get { return 12; } }
     }
 
 
     public class StreamingTest<StreamingService, TestParams> : CommonTest<StreamingService, TestParams>
-        where TestParams : IPoolTestParameter, IStatsCollectingTestParameter, IStreamingTestParams, new()
+        where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, IStreamingTestParams, new()
         where StreamingService : IStreamingService
     {
         public override Binding CreateBinding()
@@ -108,25 +122,39 @@ namespace SharedPoolsOfWCFObjects
             return TestHelpers.CreateEndPointStreamingAddress();
         }
 
-
-        public override Func<StreamingService, Task> UseAsyncChannel()
+        public override Func<StreamingService, Task<int>> UseAsyncChannel()
         {
-            return async (channel) => { await RunAllScenariosAsync(channel); };
+            return async (channel) =>
+                await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(() => RunAllScenariosAsync(channel), RelaxedExceptionPolicy);
         }
-        public async Task RunAllScenariosAsync(StreamingService channel)
+        public async Task<int> RunAllScenariosAsync(StreamingService channel)
         {
             var requestedStreamSize = _params.CurrentStreamSize;
             var bufSize = _params.CurrentBufferSize;
-            // Just run all 3 streaming scenarios here
-            await TestGetStreamFromIntAsync(channel, requestedStreamSize, bufSize);
-            await TestGetIntFromStreamAsync(channel, requestedStreamSize, bufSize);
-            await TestEchoStreamAsync(channel, requestedStreamSize, bufSize);
+            int requestsMade = 0;
+            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamIn) != 0)
+            {
+                await TestGetStreamFromIntAsync(channel, requestedStreamSize, bufSize);
+                requestsMade++;
+            }
+            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamOut) != 0)
+            {
+                await TestGetIntFromStreamAsync(channel, requestedStreamSize, bufSize);
+                requestsMade++;
+            }
+            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamEcho) != 0)
+            {
+                await TestEchoStreamAsync(channel, requestedStreamSize, bufSize);
+                requestsMade++;
+            }
+
+            return requestsMade;
         }
         private async Task TestGetStreamFromIntAsync(StreamingService channel, int requestedStreamSize, int bufSize)
         {
             using (var stream = await channel.GetStreamFromIntAsync(requestedStreamSize))
             {
-                var receivedStreamSize = VerifiableStream.VerifyStream(stream, requestedStreamSize, bufSize);
+                var receivedStreamSize = await VerifiableStream.VerifyStreamAsync(stream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
                 if (receivedStreamSize != requestedStreamSize)
                 {
                     VerifiableStream.ReportIncorrectStreamSize(receivedStreamSize, requestedStreamSize);
@@ -150,7 +178,7 @@ namespace SharedPoolsOfWCFObjects
             {
                 using (var receivedStream = await channel.EchoStreamAsync(stream))
                 {
-                    var receivedSize = VerifiableStream.VerifyStream(receivedStream, requestedStreamSize, bufSize);
+                    var receivedSize = await VerifiableStream.VerifyStreamAsync(receivedStream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
                     if (receivedSize != requestedStreamSize)
                     {
                         VerifiableStream.ReportIncorrectStreamSize(receivedSize, requestedStreamSize);
@@ -159,30 +187,43 @@ namespace SharedPoolsOfWCFObjects
             }
         }
 
-
-        public override Action<StreamingService> UseChannel()
+        public override Func<StreamingService, int> UseChannel()
         {
             return (channel) =>
             {
-                RunAllScenarios(channel);
+                return _useChannelStats.CallFuncAndRecordStats(() => RunAllScenarios(channel), RelaxedExceptionPolicy);
             };
         }
-        public void RunAllScenarios(StreamingService channel)
+        public int RunAllScenarios(StreamingService channel)
         {
             var requestedStreamSize = _params.CurrentStreamSize;
             // Are variations of the buffer size important? 
             // Maybe, since just like the stream size they contribute to timing variations...
             var bufSize = _params.CurrentBufferSize;
-            // Just run all 3 streaming scenarios here
-            TestGetStreamFromInt(channel, requestedStreamSize, bufSize);
-            TestGetIntFromStream(channel, requestedStreamSize, bufSize);
-            TestEchoStream(channel, requestedStreamSize, bufSize);
+            int requestsMade = 0;
+
+            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamIn) != 0)
+            {
+                TestGetStreamFromInt(channel, requestedStreamSize, bufSize);
+                requestsMade++;
+            }
+            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamOut) != 0)
+            {
+                TestGetIntFromStream(channel, requestedStreamSize, bufSize);
+                requestsMade++;
+            }
+            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamEcho) != 0)
+            {
+                TestEchoStream(channel, requestedStreamSize, bufSize);
+                requestsMade++;
+            }
+            return requestsMade;
         }
         private void TestGetStreamFromInt(StreamingService channel, int requestedStreamSize, int bufSize)
         {
             using (var stream = channel.GetStreamFromInt(requestedStreamSize))
             {
-                var receivedStreamSize = VerifiableStream.VerifyStream(stream, requestedStreamSize, bufSize);
+                var receivedStreamSize = VerifiableStream.VerifyStream(stream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
                 if (receivedStreamSize != requestedStreamSize)
                 {
                     VerifiableStream.ReportIncorrectStreamSize(receivedStreamSize, requestedStreamSize);
@@ -207,7 +248,7 @@ namespace SharedPoolsOfWCFObjects
             {
                 using (var receivedStream = channel.EchoStream(stream))
                 {
-                    var receivedSize = VerifiableStream.VerifyStream(receivedStream, requestedStreamSize, bufSize);
+                    var receivedSize = VerifiableStream.VerifyStream(receivedStream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
 
                     if (receivedSize != requestedStreamSize)
                     {
@@ -311,7 +352,7 @@ namespace SharedPoolsOfWCFObjects
         }
 
         private const int Padding = 16;
-        public static int VerifyStream(Stream stream, int expectedStreamSize, int bufSize)
+        public static int VerifyStream(Stream stream, int expectedStreamSize, int bufSize, bool verifyContent)
         {
             int bytesRead = 0;
             int totalBytesRead = 0;
@@ -330,35 +371,109 @@ namespace SharedPoolsOfWCFObjects
 
                 bytesRead = stream.Read(buffer: buff, offset: 0, count: bufSize);
 
-                // negative expectedStreamSize means we don't know the expected size
-                if (expectedStreamSize >= 0 && bytesRead == 0)
+                if (bytesRead == 0)
                 {
                     break;
                 }
 
-                for (int i = 0; i < bytesRead; i++)
+                if (!verifyContent)
                 {
-#if DEBUG
-                    Console.Write(new string((char)buff[i], 1));
+                    totalBytesRead += bytesRead;
+                }
+                else
+                {
+                    for (int i = 0; i < bytesRead; i++)
+                    {
+#if DIAG_TRACE
+                        Console.Write((char)buff[i]);
 #endif
-                    byte shouldRead = (byte)(65 + (totalBytesRead++ % 26));
-                    if (shouldRead != buff[i])
-                    {
-                        TestUtils.ReportFailure("pos: " + totalBytesRead + " should read: " + new string((char)shouldRead, 1) + "actual read: " + new string((char)buff[i], 1));
+                        byte shouldRead = (byte)(65 + (totalBytesRead++ % 26));
+                        if (shouldRead != buff[i])
+                        {
+                            TestUtils.ReportFailure("pos: " + totalBytesRead + " should read: " + new string((char)shouldRead, 1) + "actual read: " + new string((char)buff[i], 1));
+                        }
+                        // Catch extra data in stream early (if we know its expected size)
+                        if (expectedStreamSize >= 0 && totalBytesRead > expectedStreamSize)
+                        {
+                            ReportIncorrectStreamSize(totalBytesRead, expectedStreamSize);
+                        }
                     }
-                    // Catch extra data in stream early (if we know its expected size)
-                    if (expectedStreamSize >= 0 && totalBytesRead > expectedStreamSize)
+
+                    // Now, verify our padding
+                    for (int i = bytesRead; i < buff.Length; i++)
                     {
-                        ReportIncorrectStreamSize(totalBytesRead, expectedStreamSize);
+                        if (buff[i] != 48)
+                        {
+                            TestUtils.ReportFailure("The stream.Read corrupted padding around the buffer!");
+                        }
                     }
                 }
+            }
+            return (int)totalBytesRead;
+        }
 
-                // Now, verify our padding
-                for (int i = bytesRead; i < buff.Length; i++)
+        public static async Task<int> VerifyStreamAsync(Stream stream, int expectedStreamSize, int bufSize, bool verifyContent)
+        {
+#if DIAG_TRACE
+Console.WriteLine("bufSize "+bufSize);
+#endif
+
+            int bytesRead = 0;
+            int totalBytesRead = 0;
+
+            while (true)
+            {
+                // At this point we really want to make sure the stream implementation is correct
+                // So we create a new buffer every time and have padding in it to catch buffer overruns
+                // This might be an overkill for perf - consider controlling it with StreamingTestParams
+                // Depending on the size of the buffer we might also periodically skip it in stress
+                var buff = new byte[bufSize + Padding];
+                for (int i = 0; i < buff.Length; i++)
                 {
-                    if (buff[i] != 48)
+                    buff[i] = 48; // '0'
+                }
+
+                bytesRead = await stream.ReadAsync(buffer: buff, offset: 0, count: bufSize);
+
+                if (bytesRead == 0)
+                {
+                    break;
+                }
+                if (!verifyContent)
+                {
+                    totalBytesRead += bytesRead;
+                }
+                else
+                {
+#if DIAG_TRACE
+                    var buf = System.Text.Encoding.UTF8.GetString(buff).Substring(0, bytesRead);
+                    Console.WriteLine(buf);
+                    Console.WriteLine(expectedStreamSize + " " + totalBytesRead+ " " + bytesRead);
+#endif
+                    for (int i = 0; i < bytesRead; i++)
                     {
-                        TestUtils.ReportFailure("The stream.Read corrupted padding around the buffer!");
+#if DIAG_TRACE
+                        Console.Write((char)buff[i]);
+#endif
+                        byte shouldRead = (byte)(65 + (totalBytesRead++ % 26));
+                        if (shouldRead != buff[i])
+                        {
+                            TestUtils.ReportFailure("pos: " + totalBytesRead + " should read: " + new string((char)shouldRead, 1) + "actual read: " + new string((char)buff[i], 1));
+                        }
+                        // Catch extra data in stream early (if we know its expected size)
+                        if (expectedStreamSize >= 0 && totalBytesRead > expectedStreamSize)
+                        {
+                            ReportIncorrectStreamSize(totalBytesRead, expectedStreamSize);
+                        }
+                    }
+
+                    // Now, verify our padding
+                    for (int i = bytesRead; i < buff.Length; i++)
+                    {
+                        if (buff[i] != 48)
+                        {
+                            TestUtils.ReportFailure("The stream.Read corrupted padding around the buffer!");
+                        }
                     }
                 }
             }

@@ -10,40 +10,44 @@ using WcfService1;
 
 namespace SharedPoolsOfWCFObjects
 {
-    // This is essentially a StreamingTest + DuplexTest - each streaming call is mirrored by a callback from the server
-    public interface IDuplexStreamingTestParams : IStreamingTestParams, IDuplexParams
+    // This is essentially a StreamingTest where each streaming call is mirrored by exactly one duplex callback from the server
+    // Currently we don't have any additional test parameters for the duplex part, but we keep this interface for future flexibility
+    public interface IDuplexStreamingTestParams
     {
     }
 
     public class DuplexStreamingStressTestParams : StreamingStressTestParams, IDuplexStreamingTestParams
     {
-        private int _callbacksToExpect = 0;
-
-        // For stress we want to iterate through a wide variety of number of callbacks to exercise all possible timings
-        public int CallbacksToExpect
-        {
-            get
-            {
-                return Interlocked.Increment(ref _callbacksToExpect) % DuplexStressTestParams.MaxCallbacksToExpect;
-            }
-        }
     }
     public class DuplexStreamingPerfStartupTestParams : StreamingPerfStartupTestParams, IDuplexStreamingTestParams
     {
-        public int CallbacksToExpect { get { return DuplexPerfStartupTestParams.NumberOfDuplexCallbacks; } }
     }
+
     public class DuplexStreamingPerfThroughputTestParams : StreamingPerfThroughputTestParams, IDuplexStreamingTestParams
     {
-        public int CallbacksToExpect { get { return DuplexPerfThroughputTestParams.NumberOfDuplexCallbacks; } }
+        public override int MaxPooledChannels
+        {
+            get
+            {
+                return 8;
+            }
+        }
+        public override int MaxPooledFactories
+        {
+            get
+            {
+                return 12;
+            }
+        }
     }
 
     internal class DuplexStreamingTest<StreamingService, TestParams> : StreamingTest<StreamingService, TestParams>
-        where TestParams : IPoolTestParameter, IStatsCollectingTestParameter, IDuplexStreamingTestParams, new()
+        where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, IDuplexStreamingTestParams, IStreamingTestParams, new()
         where StreamingService : IDuplexStreamingService
     {
         public override EndpointAddress CreateEndPointAddress()
         {
-            return TestHelpers.CreateEndPointStreamingAddress();
+            return TestHelpers.CreateEndPointDuplexStreamingAddress();
         }
         public override Binding CreateBinding()
         {
@@ -51,27 +55,37 @@ namespace SharedPoolsOfWCFObjects
         }
         public override ChannelFactory<StreamingService> CreateChannelFactory()
         {
-            var duplexCallback = new DuplexStreamingCallback();
+            var duplexCallback = new DuplexStreamingCallback(_params.VerifyStreamContent);
             return TestHelpers.CreateDuplexChannelFactory<StreamingService>(CreateEndPointAddress(), CreateBinding(), duplexCallback);
         }
     }
 
     public class DuplexStreamingCallback : IDuplexStreamingCallback
     {
+        private static long s_echoStreamCallbacks = 0;
+        private static long s_getIntFromStreamCallbacks = 0;
+        private static long s_getStreamFromIntCallbacks = 0;
+        private bool _verifyContent;
+
+        public DuplexStreamingCallback(bool verifyStreamContent)
+        {
+            _verifyContent = verifyStreamContent;
+        }
         public Stream EchoStream(Stream stream)
         {
+            Interlocked.Increment(ref s_echoStreamCallbacks);
             return stream;
         }
-
         public int GetIntFromStream(Stream stream)
         {
+            Interlocked.Increment(ref s_getIntFromStreamCallbacks);
             // we don't know the stream size 
             // If we care much about the buffer size it should go to IDuplexStreamingTestParams
-            return VerifiableStream.VerifyStream(stream, -1, 4096);
+            return VerifiableStream.VerifyStream(stream, -1, 4096, _verifyContent);
         }
-
         public Stream GetStreamFromInt(int bytesToStream)
         {
+            Interlocked.Increment(ref s_getStreamFromIntCallbacks);
             var stream = new VerifiableStream(bytesToStream);
             OperationContext clientContext = OperationContext.Current;
             clientContext.OperationCompleted += new EventHandler(delegate (object sender, EventArgs args)
