@@ -11,6 +11,10 @@
     <CoreFxExpectedPrerelease>beta-24605-03</CoreFxExpectedPrerelease>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AppXRunnerVersion>1.0.3-prerelease-00925-01</AppXRunnerVersion>
+  </PropertyGroup>
+
   <!-- Package dependency verification/auto-upgrade configuration. -->
   <PropertyGroup>
     <BaseDotNetBuildInfo>build-info/dotnet/</BaseDotNetBuildInfo>
