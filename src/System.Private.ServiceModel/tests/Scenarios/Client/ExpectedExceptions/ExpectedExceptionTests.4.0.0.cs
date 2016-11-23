@@ -1,21 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Infrastructure.Common;
 using System;
 using System.Diagnostics;
-using System.Net.Http;
+using System.IdentityModel.Selectors;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.IdentityModel.Selectors;
-using System.ServiceModel.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using System.Threading;
-using System.IO;
-
-using Infrastructure.Common;
-
 
 public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
@@ -24,30 +19,34 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void NonExistentAction_Throws_ActionNotSupportedException()
     {
         string exceptionMsg = "The message with Action 'http://tempuri.org/IWcfService/NotExistOnServer' cannot be processed at the receiver, due to a ContractFilter mismatch at the EndpointDispatcher. This may be because of either a contract mismatch (mismatched Actions between sender and receiver) or a binding/security mismatch between the sender and the receiver.  Check that sender and receiver have the same contract and the same binding (including security requirements, e.g. Message, Transport, None).";
-        try
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        // *** VALIDATE *** \\
+        ActionNotSupportedException exception = Assert.Throws<ActionNotSupportedException>(() =>
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic)))
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService serviceProxy = factory.CreateChannel();
                 serviceProxy.NotExistOnServer();
             }
-        }
-        catch (Exception e)
-        {
-            if (e.GetType() != typeof(System.ServiceModel.ActionNotSupportedException))
+            finally
             {
-                Assert.True(false, string.Format("Expected exception: {0}, actual: {1}", "ActionNotSupportedException", e.GetType()));
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
+        });
 
-            if (e.Message != exceptionMsg)
-            {
-                Assert.True(false, string.Format("Expected Fault Message: {0}, actual: {1}", exceptionMsg, e.Message));
-            }
-            return;
-        }
-
-        Assert.True(false, "Expected ActionNotSupportedException exception, but no exception thrown.");
+        // *** ADDITIONAL VALIDATION *** \\
+        Assert.True(String.Equals(exception.Message, exceptionMsg), String.Format("Expected exception message: {0}\nActual exception message: {1}", exceptionMsg, exception.Message));
     }
 
     // SendTimeout is set to 5 seconds, the service waits 10 seconds to respond.
@@ -57,142 +56,164 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void SendTimeout_For_Long_Running_Operation_Throws_TimeoutException()
     {
         TimeSpan serviceOperationTimeout = TimeSpan.FromMilliseconds(10000);
-        BasicHttpBinding binding = new BasicHttpBinding();
-        binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stopwatch watch = null;
+        int lowRange = 4985;
+        int highRange = 6000;
 
-        Stopwatch watch = new Stopwatch();
-        try
+        // *** VALIDATE *** \\
+        TimeoutException exception = Assert.Throws<TimeoutException>(() =>
         {
-            var exception = Assert.Throws<TimeoutException>(() =>
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+            watch = new Stopwatch();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService proxy = factory.CreateChannel();
+                watch = new Stopwatch();
                 watch.Start();
-                proxy.EchoWithTimeout("Hello", serviceOperationTimeout);
-            });
-        }
-        finally
-        {
-            watch.Stop();
-        }
+                serviceProxy.EchoWithTimeout("Hello", serviceOperationTimeout);
+            }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                watch.Stop();
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            }
+        });
 
+        // *** ADDITIONAL VALIDATION *** \\
         // want to assert that this completed in > 5 s as an upper bound since the SendTimeout is 5 sec
         // (usual case is around 5001-5005 ms) 
-        Assert.InRange<long>(watch.ElapsedMilliseconds, 4985, 6000);
+        Assert.True((watch.ElapsedMilliseconds >= lowRange && watch.ElapsedMilliseconds <= highRange),
+            String.Format("Expected elapsed time to be >= to {0} and <= to {1}\nActual elapsed time was: {2}", lowRange, highRange, watch.ElapsedMilliseconds));
     }
-    
+
     // SendTimeout is set to 0, this should trigger a TimeoutException before even attempting to call the service.
     [WcfFact]
     [OuterLoop]
     public static void SendTimeout_Zero_Throws_TimeoutException_Immediately()
     {
         TimeSpan serviceOperationTimeout = TimeSpan.FromMilliseconds(5000);
-        BasicHttpBinding binding = new BasicHttpBinding();
-        binding.SendTimeout = TimeSpan.FromMilliseconds(0);
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Stopwatch watch = null;
+        int lowRange = 0;
+        int highRange = 2000;
 
-        Stopwatch watch = new Stopwatch();
-        try
+        // *** VALIDATE *** \\
+        TimeoutException exception = Assert.Throws<TimeoutException>(() =>
         {
-            var exception = Assert.Throws<TimeoutException>(() =>
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            binding.SendTimeout = TimeSpan.FromMilliseconds(0);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+            watch = new Stopwatch();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService proxy = factory.CreateChannel();
                 watch.Start();
-                proxy.EchoWithTimeout("Hello", serviceOperationTimeout);
-            });
-        }
-        finally
-        {
-            watch.Stop();
-        }
+                serviceProxy.EchoWithTimeout("Hello", serviceOperationTimeout);
+            }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                watch.Stop();
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            }
 
+        });
+
+        // *** ADDITIONAL VALIDATION *** \\
         // want to assert that this completed in < 2 s as an upper bound since the SendTimeout is 0 sec
         // (usual case is around 1 - 3 ms) 
-        Assert.InRange<long>(watch.ElapsedMilliseconds, 0, 2000);
+        Assert.True((watch.ElapsedMilliseconds >= lowRange && watch.ElapsedMilliseconds <= highRange),
+            String.Format("Expected elapsed time to be >= to {0} and <= to {1}\nActual elapsed time was: {2}", lowRange, highRange, watch.ElapsedMilliseconds));
     }
-    
+
     [WcfFact]
     [OuterLoop]
     public static void FaultException_Throws_WithFaultDetail()
     {
         string faultMsg = "Test Fault Exception";
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
-        try
+        // *** VALIDATE *** \\
+        FaultException<FaultDetail> exception = Assert.Throws<FaultException<FaultDetail>>(() =>
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic)))
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService serviceProxy = factory.CreateChannel();
                 serviceProxy.TestFault(faultMsg);
             }
-        }
-        catch (Exception e)
-        {
-            if (e.GetType() != typeof(FaultException<FaultDetail>))
+            finally
             {
-                string error = string.Format("Expected exception: {0}, actual: {1}\r\n{2}",
-                                             "FaultException<FaultDetail>", e.GetType(), e.ToString());
-                if (e.InnerException != null)
-                    error += String.Format("\r\nInnerException:\r\n{0}", e.InnerException.ToString());
-                errorBuilder.AppendLine(error);
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
-            else
-            {
-                FaultException<FaultDetail> faultException = (FaultException<FaultDetail>)(e);
-                string actualFaultMsg = ((FaultDetail)(faultException.Detail)).Message;
-                if (actualFaultMsg != faultMsg)
-                {
-                    errorBuilder.AppendLine(string.Format("Expected Fault Message: {0}, actual: {1}", faultMsg, actualFaultMsg));
-                }
-            }
+        });
 
-            Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: FaultException_Throws_WithFaultDetail FAILED with the following errors: {0}", errorBuilder));
-            return;
-        }
-
-        Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
+        // *** ADDITIONAL VALIDATION *** \\
+        Assert.True(String.Equals(exception.Detail.Message, faultMsg), String.Format("Expected fault message: {0}\nActual fault message: {1}", faultMsg, exception.Detail.Message));
     }
-    
+
     [WcfFact]
     [OuterLoop]
     public static void UnexpectedException_Throws_FaultException()
     {
         string faultMsg = "This is a test fault msg";
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
-        try
+        // *** VALIDATE *** \\
+        FaultException<ExceptionDetail> exception = Assert.Throws<FaultException<ExceptionDetail>>(() =>
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic)))
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService serviceProxy = factory.CreateChannel();
                 serviceProxy.ThrowInvalidOperationException(faultMsg);
             }
-        }
-        catch (Exception e)
-        {
-            if (e.GetType() != typeof(FaultException<ExceptionDetail>))
+            finally
             {
-                errorBuilder.AppendLine(string.Format("Expected exception: {0}, actual: {1}", "FaultException<ExceptionDetail>", e.GetType()));
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
-            else
-            {
-                FaultException<ExceptionDetail> faultException = (FaultException<ExceptionDetail>)(e);
-                string actualFaultMsg = ((ExceptionDetail)(faultException.Detail)).Message;
-                if (actualFaultMsg != faultMsg)
-                {
-                    errorBuilder.AppendLine(string.Format("Expected Fault Message: {0}, actual: {1}", faultMsg, actualFaultMsg));
-                }
-            }
+        });
 
-            Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: UnexpectedException_Throws_FaultException FAILED with the following errors: {0}", errorBuilder));
-            return;
-        }
-
-        Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
+        // *** ADDITIONAL VALIDATION *** \\
+        Assert.True(String.Equals(exception.Detail.Message, faultMsg), String.Format("Expected fault message: {0}\nActual fault message: {1}", faultMsg, exception.Detail.Message));
     }
-    
+
     [WcfFact]
     [OuterLoop]
     public static void Abort_During_Implicit_Open_Closes_Async_Waiters()

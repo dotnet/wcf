@@ -3,21 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 
+using Infrastructure.Common;
 using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.IdentityModel.Selectors;
-using System.ServiceModel.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using System.Threading;
-using System.IO;
-
-using Infrastructure.Common;
-
 
 public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
@@ -26,21 +18,37 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void NotExistentHost_Throws_EndpointNotFoundException()
     {
         string nonExistentHost = "http://nonexisthost/WcfService/WindowsCommunicationFoundation";
+        ChannelFactory<IWcfService> factory = null;
+        EndpointAddress endpointAddress = null;
+        BasicHttpBinding binding = null;
+        IWcfService serviceProxy = null;
 
-        BasicHttpBinding binding = new BasicHttpBinding();
-        binding.SendTimeout = TimeSpan.FromMilliseconds(20000);
 
+        // *** VALIDATE *** \\
         EndpointNotFoundException exception = Assert.Throws<EndpointNotFoundException>(() =>
         {
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(nonExistentHost)))
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            binding.SendTimeout = TimeSpan.FromMilliseconds(20000);
+            endpointAddress = new EndpointAddress(nonExistentHost);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService serviceProxy = factory.CreateChannel();
-                string response = serviceProxy.Echo("Hello");
+                serviceProxy.Echo("Hello");
+            }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
         });
 
+        // *** ADDITIONAL VALIDATION FOR NET NATIVE *** \\
         // On .Net Native retail, exception message is stripped to include only parameter
-        Assert.True(exception.Message.Contains(nonExistentHost), string.Format("Expected exception message to contain: '{0}'", nonExistentHost));
+        Assert.True(exception.Message.Contains(nonExistentHost), string.Format("Expected exception message to contain: '{0}'\nThe exception message was: {1}", nonExistentHost, exception.Message));
     }
 
     [WcfFact]
@@ -121,48 +129,37 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     {
         // We need a running service host at the other end but mangle the endpoint suffix
         string notFoundUrl = Endpoints.HttpBaseAddress_Basic + "not-an-endpoint";
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfService serviceProxy = null;
 
-        BasicHttpBinding binding = new BasicHttpBinding();
-        binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
-
+        // *** VALIDATE *** \\
         EndpointNotFoundException exception = Assert.Throws<EndpointNotFoundException>(() =>
         {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
+            endpointAddress = new EndpointAddress(notFoundUrl);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
             try
             {
-                using (
-                    ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding,
-                        new EndpointAddress(notFoundUrl)))
-                {
-                    IWcfService serviceProxy = factory.CreateChannel();
-                    string response = serviceProxy.Echo("Hello");
-                }
+                serviceProxy.Echo("Hello");
             }
-            catch (EndpointNotFoundException)
+            finally
             {
-                throw;
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
-            catch (CommunicationException ce)
-            {
-                if (ce.InnerException == null)
-                    throw;
 
-                if (ce.InnerException.GetType() == typeof(HttpRequestException))
-                {
-                    var httpReqExcep = ce.InnerException as HttpRequestException;
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("Received HttpRequestException with unknown error code ")
-                        .AppendLine(ce.InnerException.HResult.ToString())
-                        .AppendLine("Full details for HttpRequestException:")
-                        .AppendLine(httpReqExcep.ToString());
-                    throw new CommunicationException(sb.ToString());
-                }
-
-                throw;
-            }
         });
 
+        // *** ADDITIONAL VALIDATION FOR NET NATIVE *** \\
         // On .Net Native retail, exception message is stripped to include only parameter
-        Assert.True(exception.Message.Contains(notFoundUrl), string.Format("Expected exception message to contain: '{0}'", notFoundUrl));
+        Assert.True(exception.Message.Contains(notFoundUrl), string.Format("Expected exception message to contain: '{0}'\nThe exception message was:{1}", notFoundUrl, exception.Message));
     }
 
     [WcfFact]
@@ -170,21 +167,37 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void UnknownUrl_Throws_ProtocolException()
     {
         string protocolExceptionUri = Endpoints.HttpProtocolError_Address;
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
-        BasicHttpBinding binding = new BasicHttpBinding();
-        binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
-
-        using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(protocolExceptionUri)))
+        // *** VALIDATE *** \\
+        ProtocolException exception = Assert.Throws<ProtocolException>(() =>
         {
-            IWcfService serviceProxy = factory.CreateChannel();
-            ProtocolException exception = Assert.Throws<ProtocolException>(() =>
-            {
-                string response = serviceProxy.Echo("Hello");
-            });
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            binding.SendTimeout = TimeSpan.FromMilliseconds(10000);
+            endpointAddress = new EndpointAddress(protocolExceptionUri);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            // On .Net Native retail, exception message is stripped to include only parameter
-            Assert.True(exception.Message.Contains(protocolExceptionUri), string.Format("Expected exception message to contain '{0}'", protocolExceptionUri));
-        }
+            // *** EXECUTE *** \\
+            try
+            {
+                serviceProxy.Echo("Hello");
+            }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            }
+
+        });
+
+        // *** ADDITIONAL VALIDATION FOR NET NATIVE *** \\
+        // On .Net Native retail, exception message is stripped to include only parameter
+        Assert.True(exception.Message.Contains(protocolExceptionUri), string.Format("Expected exception message to contain: '{0}'\nThe exception was: '{1}'", protocolExceptionUri, exception.Message));
     }
 
     [WcfFact]
@@ -193,20 +206,27 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     {
         DuplexChannelFactory<IWcfDuplexTaskReturnService> factory = null;
         Guid guid = Guid.NewGuid();
+        EndpointAddress endpointAddress = null;
+        NetTcpBinding binding = null;
+        DuplexTaskReturnServiceCallback callbackService = null;
+        InstanceContext context = null;
+        IWcfDuplexTaskReturnService serviceProxy = null;
 
-        NetTcpBinding binding = new NetTcpBinding();
-        binding.Security.Mode = SecurityMode.None;
-
-        DuplexTaskReturnServiceCallback callbackService = new DuplexTaskReturnServiceCallback(true);
-        InstanceContext context = new InstanceContext(callbackService);
-
-        try
+        // *** VALIDATE *** \\
+        FaultException<FaultDetail> exception = Assert.Throws<FaultException<FaultDetail>>(() =>
         {
-            var exception = Assert.Throws<FaultException<FaultDetail>>(() =>
-            {
-                factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address));
-                IWcfDuplexTaskReturnService serviceProxy = factory.CreateChannel();
+            // *** SETUP *** \\
+            binding = new NetTcpBinding();
+            binding.Security.Mode = SecurityMode.None;
+            callbackService = new DuplexTaskReturnServiceCallback(true);
+            context = new InstanceContext(callbackService);
+            endpointAddress = new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address);
+            factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
+            try
+            {
                 Task<Guid> task = serviceProxy.FaultPing(guid);
                 if ((task as IAsyncResult).AsyncWaitHandle.WaitOne(ScenarioTestHelpers.TestTimeout))
                 {
@@ -216,20 +236,20 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
                 {
                     throw new TimeoutException(String.Format("The call to the Service did not complete within the alloted time of: {0}", ScenarioTestHelpers.TestTimeout));
                 }
-
-                // Not closing the factory as an exception will always be thrown prior to this point.
-            });
-
-            Assert.Equal("ServicePingFaultCallback", exception.Code.Name);
-            Assert.Equal("Reason: Testing FaultException returned from Duplex Callback", exception.Reason.GetMatchingTranslation().Text);
-        }
-        finally
-        {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
             }
-        }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            }
+        });
+
+        // *** ADDITIONAL VALIDATION *** \\
+        string exceptionCodeName = "ServicePingFaultCallback";
+        string exceptionReason = "Reason: Testing FaultException returned from Duplex Callback";
+
+        Assert.True(String.Equals(exceptionCodeName, exception.Code.Name), String.Format("Expected exception code name: {0}\nActual exception code name: {1}", exceptionCodeName, exception.Code.Name));
+        Assert.True(String.Equals(exceptionReason, exception.Reason.GetMatchingTranslation().Text), String.Format("Expected exception reason: {0}\nActual exception reason: {1}", exceptionReason, exception.Reason.GetMatchingTranslation().Text));
     }
 
     [WcfFact]
@@ -238,20 +258,27 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     {
         DuplexChannelFactory<IWcfDuplexTaskReturnService> factory = null;
         Guid guid = Guid.NewGuid();
+        NetTcpBinding binding = null;
+        DuplexTaskReturnServiceCallback callbackService = null;
+        InstanceContext context = null;
+        EndpointAddress endpointAddress = null;
+        IWcfDuplexTaskReturnService serviceProxy = null;
 
-        NetTcpBinding binding = new NetTcpBinding();
-        binding.Security.Mode = SecurityMode.None;
-
-        DuplexTaskReturnServiceCallback callbackService = new DuplexTaskReturnServiceCallback();
-        InstanceContext context = new InstanceContext(callbackService);
-
-        try
+        // *** VALIDATE *** \\
+        FaultException<FaultDetail> exception = Assert.Throws<FaultException<FaultDetail>>(() =>
         {
-            var exception = Assert.Throws<FaultException<FaultDetail>>(() =>
-            {
-                factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address));
-                IWcfDuplexTaskReturnService serviceProxy = factory.CreateChannel();
+            // *** SETUP *** \\
+            binding = new NetTcpBinding();
+            binding.Security.Mode = SecurityMode.None;
+            endpointAddress = new EndpointAddress(Endpoints.Tcp_NoSecurity_TaskReturn_Address);
+            callbackService = new DuplexTaskReturnServiceCallback();
+            context = new InstanceContext(callbackService);
+            factory = new DuplexChannelFactory<IWcfDuplexTaskReturnService>(context, binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
+            try
+            {
                 Task<Guid> task = serviceProxy.FaultPing(guid);
                 if ((task as IAsyncResult).AsyncWaitHandle.WaitOne(ScenarioTestHelpers.TestTimeout))
                 {
@@ -261,20 +288,21 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
                 {
                     throw new TimeoutException(String.Format("The call to the Service did not complete within the alloted time of: {0}", ScenarioTestHelpers.TestTimeout));
                 }
-
-                // Not closing the factory as an exception will always be thrown prior to this point.
-            });
-
-            Assert.Equal("ServicePingFaultCallback", exception.Code.Name);
-            Assert.Equal("Reason: Testing FaultException returned from Duplex Callback", exception.Reason.GetMatchingTranslation().Text);
-        }
-        finally
-        {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
             }
-        }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            }
+
+        });
+
+        // *** ADDITIONAL VALIDATION *** \\
+        string exceptionCodeName = "ServicePingFaultCallback";
+        string exceptionReason = "Reason: Testing FaultException returned from Duplex Callback";
+
+        Assert.True(String.Equals(exceptionCodeName, exception.Code.Name), String.Format("Expected exception code name: {0}\nActual exception code name: {1}", exceptionCodeName, exception.Code.Name));
+        Assert.True(String.Equals(exceptionReason, exception.Reason.GetMatchingTranslation().Text), String.Format("Expected exception reason: {0}\nActual exception reason: {1}", exceptionReason, exception.Reason.GetMatchingTranslation().Text));
     }
 
     [WcfFact]
@@ -283,22 +311,30 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void TCP_ServiceCertExpired_Throw_MessageSecurityException()
     {
         string testString = "Hello";
+        NetTcpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
-        NetTcpBinding binding = new NetTcpBinding();
+        
+        // *** SETUP *** \\
+        binding = new NetTcpBinding();
         binding.Security.Mode = SecurityMode.Transport;
         binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+        endpointAddress = new EndpointAddress(Endpoints.Tcp_ExpiredServerCertResource_Address);
+        factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        serviceProxy = factory.CreateChannel();
 
-        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ExpiredServerCertResource_Address));
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
-        IWcfService serviceProxy = factory.CreateChannel();
-
+        // *** EXECUTE *** \\
         try
         {
-            var result = serviceProxy.Echo(testString);
+            serviceProxy.Echo(testString);
             Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
         }
         catch (CommunicationException exception)
         {
+            // *** VALIDATE *** \\
+            // Cannot explicitly catch a SecurityNegotiationException as it is not in the public contract.
             string exceptionType = exception.GetType().Name;
             if (exceptionType != "SecurityNegotiationException")
             {
@@ -307,7 +343,8 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
         finally
         {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
@@ -317,33 +354,44 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void TCP_ServiceCertRevoked_Throw_SecurityNegotiationException()
     {
         string testString = "Hello";
+        NetTcpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
 
-        NetTcpBinding binding = new NetTcpBinding();
+        // *** SETUP *** \\
+        binding = new NetTcpBinding();
         binding.Security.Mode = SecurityMode.Transport;
         binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+        endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_RevokedServerCertResource_Address), new DnsEndpointIdentity(Endpoints.Tcp_RevokedServerCertResource_HostName));
+        factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        serviceProxy = factory.CreateChannel();
 
-        EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_RevokedServerCertResource_Address), new DnsEndpointIdentity(Endpoints.Tcp_RevokedServerCertResource_HostName));
-        ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
-        IWcfService serviceProxy = factory.CreateChannel();
-
+        // *** EXECUTE *** \\
         try
         {
-            var result = serviceProxy.Echo(testString);
+            serviceProxy.Echo(testString);
             Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
         }
         catch (CommunicationException exception)
         {
+            // *** VALIDATION *** \\
+            // Cannot explicitly catch a SecurityNegotiationException as it is not in the public contract.
             string exceptionType = exception.GetType().Name;
             if (exceptionType != "SecurityNegotiationException")
             {
                 Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
             }
-            string exceptionMessage = exception.Message;
-            Assert.True(exceptionMessage.Contains(Endpoints.Tcp_RevokedServerCertResource_HostName), string.Format("Expected message contains {0}, actual message: {1}", Endpoints.Tcp_RevokedServerCertResource_HostName, exception.ToString()));
+
+            Assert.True(exception.Message.Contains(Endpoints.Tcp_RevokedServerCertResource_HostName),
+                                                    string.Format("Expected message contains {0}, actual message: {1}",
+                                                    Endpoints.Tcp_RevokedServerCertResource_HostName,
+                                                    exception.ToString()));
         }
         finally
         {
-            ScenarioTestHelpers.CloseCommunicationObjects(factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 
