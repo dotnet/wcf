@@ -115,31 +115,38 @@ public static partial class TypedProxyTests
     public static void ServiceContract_TypedProxy_Synchronous_Call()
     {
         // This test verifies a typed proxy can call a service operation synchronously
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = null;
+        ChannelFactory<IWcfServiceGenerated> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfServiceGenerated serviceProxy = null;
+        string result = null;
+
         try
         {
-            CustomBinding customBinding = new CustomBinding();
+            // *** SETUP *** \\
+            customBinding = new CustomBinding();
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
-
+            endpointAddress = new EndpointAddress(Endpoints.DefaultCustomHttp_Address);
             // Note the service interface used.  It was manually generated with svcutil.
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
-            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
+            factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            string result = serviceProxy.Echo("Hello");
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo("Hello");
 
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, "Hello"), String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+
+            // *** CLEANUP *** \\
             factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxySynchronousCall FAILED with the following errors: {0}", errorBuilder));
     }
 
     [WcfFact]
@@ -161,227 +168,240 @@ public static partial class TypedProxyTests
     public static void ServiceContract_TypedProxy_Task_Call_WithSyncContext_ContinuesOnSameThread()
     {
         // This test verifies a task based call to a service operation continues on the same thread
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = null;
+        ChannelFactory<IWcfServiceGenerated> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfServiceGenerated serviceProxy = null;
+        string result = null;
 
         try
         {
-            CustomBinding customBinding = new CustomBinding();
+            // *** SETUP *** \\
+            customBinding = new CustomBinding();
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.DefaultCustomHttp_Address);
+            factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
-            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
-            string result = String.Empty;
-
+            // *** EXECUTE *** \\
             bool success = Task.Run(() =>
             {
                 SingleThreadSynchronizationContext.Run(async delegate
                 {
                     int startThread = Environment.CurrentManagedThreadId;
                     result = await serviceProxy.EchoAsync("Hello");
-                    if (startThread != Environment.CurrentManagedThreadId)
-                    {
-                        errorBuilder.AppendLine(String.Format("Expected continuation to happen on thread {0} but actually continued on thread {1}",
-                            startThread, Environment.CurrentManagedThreadId));
-                    }
+
+                    Assert.True(startThread == Environment.CurrentManagedThreadId, String.Format("Expected continuation to happen on thread {0} but actually continued on thread {1}",
+                                                                                                    startThread, Environment.CurrentManagedThreadId));
                 });
             }).Wait(ScenarioTestHelpers.TestTimeout);
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("Test didn't complete within the expected time"));
-            }
+            // *** VALIDATE *** \\
+            Assert.True(success, String.Format("Test didn't complete within the expected time"));
+            Assert.True(String.Equals(result, "Hello"), String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
 
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
-
+            // *** CLEANUP *** \\
             factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TaskCallWithSynchContextContinuesOnSameThread FAILED with the following errors: {0}", errorBuilder));
     }
 
     [WcfFact]
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannel()
     {
-        string address = Endpoints.DefaultCustomHttp_Address;
-
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = null;
+        ChannelFactory<IRequestChannel> factory = null;
+        EndpointAddress endpointAddress = null;
+        IRequestChannel channel = null;
+        Message replyMessage = null;
+        string replyMessageAction = null;
+        string actualResponse = null;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new BindingElement[] {
-                new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
-                new HttpTransportBindingElement() });
-
-            EndpointAddress endpointAddress = new EndpointAddress(address);
-
+            // *** SETUP *** \\
+            customBinding = new CustomBinding(new BindingElement[] {
+                  new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
+                  new HttpTransportBindingElement() });
+            endpointAddress = new EndpointAddress(Endpoints.DefaultCustomHttp_Address);
             // Create the channel factory for the request-reply message exchange pattern.
-            var factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
-
+            factory = new ChannelFactory<IRequestChannel>(customBinding, endpointAddress);
             // Create the channel.
-            IRequestChannel channel = factory.CreateChannel();
+            channel = factory.CreateChannel();
             channel.Open();
-
             // Create the Message object to send to the service.
             Message requestMessage = Message.CreateMessage(
-                binding.MessageVersion,
+                customBinding.MessageVersion,
                 action,
                 new CustomBodyWriter(clientMessage));
-
-            // Send the Message and receive the Response.
-            Message replyMessage = channel.Request(requestMessage);
-
-            string replyMessageAction = replyMessage.Headers.Action;
-
-            if (!string.Equals(replyMessageAction, action + "Response"))
-            {
-                errorBuilder.AppendLine(String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}", action + "Response", replyMessageAction));
-            }
-
-            var replyReader = replyMessage.GetReaderAtBodyContents();
-            string actualResponse = replyReader.ReadElementContentAsString();
             string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                errorBuilder.AppendLine(String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
 
+            // *** EXECUTE *** \\
+            // Send the Message and receive the Response.
+            replyMessage = channel.Request(requestMessage);
+            replyMessageAction = replyMessage.Headers.Action;
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(replyMessageAction, action + "Response"),
+                String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}",
+                action + "Response", replyMessageAction));
+
+            // *** EXECUTE *** \\
+            var replyReader = replyMessage.GetReaderAtBodyContents();
+            actualResponse = replyReader.ReadElementContentAsString();
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(actualResponse, expectedResponse),
+                String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}",
+                expectedResponse, actualResponse));
+
+            // *** CLEANUP *** \\
             replyMessage.Close();
             channel.Close();
             factory.Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            replyMessage.Close();
+            ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeRequestChannelViaProxy FAILED with the following errors: {0}", errorBuilder));
     }
 
     [WcfFact]
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannelTimeout()
     {
-        string address = Endpoints.DefaultCustomHttp_Address;
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = null;
+        ChannelFactory<IRequestChannel> factory = null;
+        EndpointAddress endpointAddress = null;
+        IRequestChannel channel = null;
+        Message requestMessage = null;
+        Message replyMessage = null;
+        string replyMessageAction = null;
+        string actualResponse = null;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new BindingElement[] {
-                new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
-                new HttpTransportBindingElement() });
-
-            EndpointAddress endpointAddress = new EndpointAddress(address);
-
+            // *** SETUP *** \\
+            customBinding = new CustomBinding(new BindingElement[] {
+                  new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
+                  new HttpTransportBindingElement() });
+            endpointAddress = new EndpointAddress(Endpoints.DefaultCustomHttp_Address);
             // Create the channel factory for the request-reply message exchange pattern.
-            var factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
-
+            factory = new ChannelFactory<IRequestChannel>(customBinding, endpointAddress);
             // Create the channel.
-            IRequestChannel channel = factory.CreateChannel();
+            channel = factory.CreateChannel();
             channel.Open();
-
             // Create the Message object to send to the service.
-            Message requestMessage = Message.CreateMessage(
-                binding.MessageVersion,
+            requestMessage = Message.CreateMessage(
+                customBinding.MessageVersion,
                 action,
                 new CustomBodyWriter(clientMessage));
-
-            // Send the Message and receive the Response.
-            Message replyMessage = channel.Request(requestMessage, TimeSpan.FromSeconds(60));
-
-            string replyMessageAction = replyMessage.Headers.Action;
-
-            if (!string.Equals(replyMessageAction, action + "Response"))
-            {
-                errorBuilder.AppendLine(String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}", action + "Response", replyMessageAction));
-            }
-
-
-            var replyReader = replyMessage.GetReaderAtBodyContents();
-            string actualResponse = replyReader.ReadElementContentAsString();
             string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                errorBuilder.AppendLine(String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
 
+            // *** EXECUTE *** \\
+            // Send the Message and receive the Response.
+            replyMessage = channel.Request(requestMessage, TimeSpan.FromSeconds(60));
+            replyMessageAction = replyMessage.Headers.Action;
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(replyMessageAction, action + "Response"),
+                String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}",
+                action + "Response", replyMessageAction));
+
+            // *** EXECUTE *** \\
+            var replyReader = replyMessage.GetReaderAtBodyContents();
+            actualResponse = replyReader.ReadElementContentAsString();
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(actualResponse, expectedResponse),
+                String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}",
+                expectedResponse, actualResponse));
+
+            // *** CLEANUP *** \\
             replyMessage.Close();
             channel.Close();
             factory.Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            replyMessage.Close();
+            ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeIRequestChannelViaProxyTimeout FAILED with the following errors: {0}", errorBuilder));
     }
 
     [WcfFact]
     [OuterLoop]
     public static void ChannelShape_TypedProxy_InvokeIRequestChannelAsync()
     {
-        string address = Endpoints.DefaultCustomHttp_Address;
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = null;
+        ChannelFactory<IRequestChannel> factory = null;
+        EndpointAddress endpointAddress = null;
+        IRequestChannel channel = null;
+        Message requestMessage = null;
+        Message replyMessage = null;
+        string replyMessageAction = null;
+        string actualResponse = null;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new BindingElement[] {
-                new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
-                new HttpTransportBindingElement() });
-
-            EndpointAddress endpointAddress = new EndpointAddress(address);
-
+            // *** SETUP *** \\
+            customBinding = new CustomBinding(new BindingElement[] {
+                  new TextMessageEncodingBindingElement(MessageVersion.Default, Encoding.UTF8),
+                  new HttpTransportBindingElement() });
+            endpointAddress = new EndpointAddress(Endpoints.DefaultCustomHttp_Address);
             // Create the channel factory for the request-reply message exchange pattern.
-            var factory = new ChannelFactory<IRequestChannel>(binding, endpointAddress);
-
+            factory = new ChannelFactory<IRequestChannel>(customBinding, endpointAddress);
             // Create the channel.
-            IRequestChannel channel = factory.CreateChannel();
+            channel = factory.CreateChannel();
             channel.Open();
-
             // Create the Message object to send to the service.
-            Message requestMessage = Message.CreateMessage(
-                binding.MessageVersion,
+            requestMessage = Message.CreateMessage(
+                customBinding.MessageVersion,
                 action,
                 new CustomBodyWriter(clientMessage));
+            string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
 
+            // *** EXECUTE *** \\
             // Send the Message and receive the Response.
             IAsyncResult ar = channel.BeginRequest(requestMessage, null, null);
-            Message replyMessage = channel.EndRequest(ar);
+            replyMessage = channel.EndRequest(ar);
+            replyMessageAction = replyMessage.Headers.Action;
 
-            string replyMessageAction = replyMessage.Headers.Action;
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(replyMessageAction, action + "Response"),
+                String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}",
+                action + "Response", replyMessageAction));
 
-            if (!string.Equals(replyMessageAction, action + "Response"))
-            {
-                errorBuilder.AppendLine(String.Format("A response was received from the Service but it was not the expected Action, expected: {0} actual: {1}", action + "Response", replyMessageAction));
-            }
-
+            // *** EXECUTE *** \\
             var replyReader = replyMessage.GetReaderAtBodyContents();
-            string actualResponse = replyReader.ReadElementContentAsString();
-            string expectedResponse = "[client] This is my request.[service] Request received, this is my Reply.";
-            if (!string.Equals(actualResponse, expectedResponse))
-            {
-                errorBuilder.AppendLine(String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}", expectedResponse, actualResponse));
-            }
+            actualResponse = replyReader.ReadElementContentAsString();
 
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(actualResponse, expectedResponse),
+                String.Format("Actual MessageBodyContent from service did not match the expected MessageBodyContent, expected: {0} actual: {1}",
+                expectedResponse, actualResponse));
+
+            // *** CLEANUP *** \\
             replyMessage.Close();
             channel.Close();
             factory.Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            replyMessage.Close();
+            ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: InvokeIRequestChannelViaProxyAsync FAILED with the following errors: {0}", errorBuilder));
     }
 
     public class DuplexChannelServiceCallback : IDuplexChannelCallback
@@ -427,14 +447,21 @@ public static partial class TypedProxyTests
     private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call(Binding binding, string endpoint, string testName)
     {
         // Verifies a typed proxy can call a service operation asynchronously using Begin/End
-        StringBuilder errorBuilder = new StringBuilder();
+        ChannelFactory<IWcfServiceBeginEndGenerated> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfServiceBeginEndGenerated serviceProxy = null;
+        ManualResetEvent waitEvent = null;
+        string result = null;
+
         try
         {
-            ChannelFactory<IWcfServiceBeginEndGenerated> factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(binding, new EndpointAddress(endpoint));
-            IWcfServiceBeginEndGenerated serviceProxy = factory.CreateChannel();
-            string result = null;
-            ManualResetEvent waitEvent = new ManualResetEvent(false);
+            // *** SETUP *** \\
+            endpointAddress = new EndpointAddress(endpoint);
+            factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+            waitEvent = new ManualResetEvent(false);
 
+            // *** EXECUTE *** \\
             // The callback is optional with this Begin call, but we want to test that it works.
             // This delegate should execute when the call has completed, and that is how it gets the result of the call.
             AsyncCallback callback = (iar) =>
@@ -445,93 +472,96 @@ public static partial class TypedProxyTests
 
             IAsyncResult ar = serviceProxy.BeginEcho("Hello", callback, null);
 
+            // *** VALIDATE *** \\
             // This test requires the callback to be called.
             // An actual timeout should call the callback, but we still set
             // a maximum wait time in case that does not happen.
             bool success = waitEvent.WaitOne(ScenarioTestHelpers.TestTimeout);
-            if (!success)
-            {
-                errorBuilder.AppendLine("AsyncCallback was not called.");
-            }
+            Assert.True(success, String.Format("The AsyncCallback was not called. If the AsyncCallback had been called the waitEvent would have been set to 'True', but the value of waitEvent was: {0}", success));
+            Assert.True(String.Equals(result, "Hello"), String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
 
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
-
+            // *** CLEANUP *** \\
             factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: {0} FAILED with the following errors: {1}", testName, errorBuilder));
     }
 
     private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(Binding binding, string endpoint, string testName)
     {
         // This test verifies a typed proxy can call a service operation asynchronously using Begin/End
-        StringBuilder errorBuilder = new StringBuilder();
+        ChannelFactory<IWcfServiceBeginEndGenerated> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfServiceBeginEndGenerated serviceProxy = null;
+        string result = null;
 
         try
         {
-            ChannelFactory<IWcfServiceBeginEndGenerated> factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(binding, new EndpointAddress(endpoint));
-            IWcfServiceBeginEndGenerated serviceProxy = factory.CreateChannel();
-            string result = null;
+            // *** SETUP *** \\
+            endpointAddress = new EndpointAddress(endpoint);
+            factory = new ChannelFactory<IWcfServiceBeginEndGenerated>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
             IAsyncResult ar = serviceProxy.BeginEcho("Hello", null, null);
             // An actual timeout should complete the ar, but we still set
             // a maximum wait time in case that does not happen.
             bool success = ar.AsyncWaitHandle.WaitOne(ScenarioTestHelpers.TestTimeout);
-            if (success)
-            {
-                result = serviceProxy.EndEcho(ar);
-            }
-            else
-            {
-                errorBuilder.AppendLine("AsyncCallback was not called.");
-            }
 
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
+            // *** VALIDATE *** \\
+            Assert.True(success, String.Format("The IAsyncResult was not called. If the IAsyncResult had been called the AsyncWaitHandle would have been set to 'True', but the value of AsyncWaitHandle was: {0}", success));
 
+            // *** EXECUTE *** \\
+            result = serviceProxy.EndEcho(ar);
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, "Hello"), String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+
+            // *** CLEANUP *** \\
             factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: {0} FAILED with the following errors: {1}", testName, errorBuilder));
     }
 
     private static void ServiceContract_TypedProxy_AsyncTask_Call(Binding binding, string endpoint, string testName)
     {
         // This test verifies a typed proxy can call a service operation asynchronously using Task<string>
-        StringBuilder errorBuilder = new StringBuilder();
+        ChannelFactory<IWcfServiceGenerated> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfServiceGenerated serviceProxy = null;
+        string result = null;
 
         try
         {
-            ChannelFactory<IWcfServiceGenerated> factory = new ChannelFactory<IWcfServiceGenerated>(binding, new EndpointAddress(endpoint));
-            IWcfServiceGenerated serviceProxy = factory.CreateChannel();
+            // *** SETUP *** \\
+            endpointAddress = new EndpointAddress(endpoint);
+            factory = new ChannelFactory<IWcfServiceGenerated>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
+            // *** EXECUTE *** \\
             Task<string> task = serviceProxy.EchoAsync("Hello");
-            string result = task.Result;
-            if (!string.Equals(result, "Hello"))
-            {
-                errorBuilder.AppendLine(String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
-            }
+            result = task.Result;
 
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, "Hello"), String.Format("Expected response from Service: {0} Actual was: {1}", "Hello", result));
+
+            // *** CLEANUP *** \\
             factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: TypedProxyAsyncTaskCall FAILED with the following errors: {0}", errorBuilder));
     }
 }

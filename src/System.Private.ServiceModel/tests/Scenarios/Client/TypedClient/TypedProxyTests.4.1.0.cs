@@ -28,7 +28,7 @@ public static partial class TypedProxyTests
         }).Wait(ScenarioTestHelpers.TestTimeout);
         Assert.True(success, "Test Scenario: ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithSingleThreadedSyncContext timed out");
     }
-    
+
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext()
@@ -43,55 +43,45 @@ public static partial class TypedProxyTests
 
         Assert.True(success, "Test Scenario: ServiceContract_TypedProxy__NetTcpBinding_AsyncTask_Call_WithSingleThreadedSyncContext timed out");
     }
-    
+
     [WcfFact]
     [OuterLoop]
     public static void ServiceContract_TypedProxy_DuplexCallback()
     {
+        NetTcpBinding binding = null;
         DuplexChannelFactory<IDuplexChannelService> factory = null;
-        StringBuilder errorBuilder = new StringBuilder();
         Guid guid = Guid.NewGuid();
+        DuplexChannelServiceCallback callbackService = null;
+        InstanceContext context = null;
+        EndpointAddress endpointAddress = null;
+        IDuplexChannelService serviceProxy = null;
 
         try
         {
-            NetTcpBinding binding = new NetTcpBinding();
+            // *** SETUP *** \\
+            binding = new NetTcpBinding();
             binding.Security.Mode = SecurityMode.None;
+            callbackService = new DuplexChannelServiceCallback();
+            context = new InstanceContext(callbackService);
+            endpointAddress = new EndpointAddress(Endpoints.Tcp_NoSecurity_DuplexCallback_Address);
+            factory = new DuplexChannelFactory<IDuplexChannelService>(context, binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            DuplexChannelServiceCallback callbackService = new DuplexChannelServiceCallback();
-            InstanceContext context = new InstanceContext(callbackService);
-
-            factory = new DuplexChannelFactory<IDuplexChannelService>(context, binding, new EndpointAddress(Endpoints.Tcp_NoSecurity_DuplexCallback_Address));
-            IDuplexChannelService serviceProxy = factory.CreateChannel();
-
+            // *** EXECUTE *** \\
             serviceProxy.Ping(guid);
             Guid returnedGuid = callbackService.CallbackGuid;
 
-            if (guid != returnedGuid)
-            {
-                errorBuilder.AppendLine(String.Format("The sent GUID does not match the returned GUID. Sent: {0} Received: {1}", guid, returnedGuid));
-            }
+            // *** VALIDATE *** \\
+            Assert.True(guid == returnedGuid, String.Format("The sent GUID does not match the returned GUID. Sent: {0} Received: {1}", guid, returnedGuid));
 
+            // *** CLEANUP *** \\
             factory.Close();
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            ((ICommunicationObject)serviceProxy).Close();
         }
         finally
         {
-            if (factory != null && factory.State != CommunicationState.Closed)
-            {
-                factory.Abort();
-            }
-        }
-
-        if (errorBuilder.Length != 0)
-        {
-            Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceContract_TypedProxy_DuplexCallback FAILED with the following errors: {0}", errorBuilder));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
 }
