@@ -114,7 +114,7 @@ To run a unit test as UWP, you need to 'cd' to the folder containing the test pr
 ```
 cd src\System.ServiceModel.Primitives\tests
 
-msbuild  /p:TestTFM=netcore50 /p:TestNugetRuntimeId=win10-x64-aot /t:RebuildAndTest /p:UseDotNetNativeToolchain=true /p:TestWithCore=true
+msbuild /t:BuildAndTest /p:TargetGroup=netstandard1.3 /p:TestTFM=netcore50aot /p:TestNugetRuntimeId=win10-x64-aot /p:UseDotNetNativeToolchain=true
 ```
 
 This will build the tests under UWP and include a special version of xunit that itself runs in NET Core. This way of running the tests takes slightly longer because it entails analyzing all test and product code to construct a single minimal sized executable.
@@ -129,7 +129,7 @@ src\System.Private.ServiceModel\tools\scripts\StartWCFSelfHostedSvc.cmd
 
 pushd src\System.Private.ServiceModel\tests\Scenarios\Security\TransportSecurity
 
-msbuild /p:WithCategories=OuterLoop /p:TestTFM=netcore50 /p:TestNugetRuntimeId=win10-x64-aot /t:RebuildAndTest /p:UseDotNetNativeToolchain=true /p:TestWithCore=true Security.TransportSecurity.Tests.csproj
+msbuild /t:BuildAndTest /p:TargetGroup=netstandard1.3 /p:TestTFM=netcore50aot /p:OuterLoop=true /p:TestNugetRuntimeId=win10-x64-aot /p:UseDotNetNativeToolchain=true Security.TransportSecurity.Tests.csproj
 
 popd
 
