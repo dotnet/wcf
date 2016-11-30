@@ -93,6 +93,7 @@ public static partial class ChannelBaseTests_4_0_0
                         String.Format("Expected proxy to receive events '{0}' but actual was '{1}'", expected, actual));
 
             // *** CLEANUP *** \\
+            // No further cleanup is needed because the EXECUTE portion accomplished that.
         }
         finally
         {
@@ -146,6 +147,7 @@ public static partial class ChannelBaseTests_4_0_0
                         String.Format("Expected proxy to receive events '{0}' but actual was '{1}'", expected, actual));
 
             // *** CLEANUP *** \\
+            // No further cleanup is needed because the EXECUTE portion accomplished that.
         }
         finally
         {
@@ -196,6 +198,7 @@ public static partial class ChannelBaseTests_4_0_0
                         String.Format("Expected proxy NOT to receive events but actual was '{0}'", actual));
 
             // *** CLEANUP *** \\
+            // No further cleanup is needed because the EXECUTE portion accomplished that.
         }
         finally
         {
@@ -247,6 +250,9 @@ public static partial class ChannelBaseTests_4_0_0
             // Closing the ClientBase also closes the channel factory
             Assert.True(CommunicationState.Closed == factory.State,
                         String.Format("Expected channel factory state to be Closed but actual was '{0}'", factory.State));
+
+            // *** CLEANUP *** \\
+            // No further cleanup is needed because the EXECUTE portion accomplished that.
         }
         finally
         {
