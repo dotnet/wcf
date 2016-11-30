@@ -500,10 +500,10 @@ public static partial class ClientBaseTests
             client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
 
             // Listen to all events on the ClientBase and on the generated proxy
-            RegisterForEvents(client, eventsCalled);
+            ClientBaseTestHelpers.RegisterForEvents(client, eventsCalled);
 
             proxy = client.Proxy;
-            RegisterForEvents((ICommunicationObject)proxy, proxyEventsCalled);
+            ClientBaseTestHelpers.RegisterForEvents((ICommunicationObject)proxy, proxyEventsCalled);
 
             // *** EXECUTE *** \\
             proxy.Echo("Hello");
@@ -551,10 +551,10 @@ public static partial class ClientBaseTests
             client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
 
             // Listen to all events on the ClientBase and on the generated proxy
-            RegisterForEvents(client, eventsCalled);
+            ClientBaseTestHelpers.RegisterForEvents(client, eventsCalled);
 
             proxy = client.Proxy;
-            RegisterForEvents((ICommunicationObject)proxy, proxyEventsCalled);
+            ClientBaseTestHelpers.RegisterForEvents((ICommunicationObject)proxy, proxyEventsCalled);
 
             // *** EXECUTE *** \\
             Task<string> task = proxy.EchoAsync("Hello");
@@ -604,10 +604,10 @@ public static partial class ClientBaseTests
             client = new MyClientBase(customBinding, new EndpointAddress(Endpoints.HttpSoap12_Address));
 
             // Both Add and Remove event handlers
-            RegisterForEvents(client, eventsCalled, deregister:true);
+            ClientBaseTestHelpers.RegisterForEvents(client, eventsCalled, deregister:true);
 
             proxy = client.Proxy;
-            RegisterForEvents((ICommunicationObject)proxy, proxyEventsCalled, deregister:true);
+            ClientBaseTestHelpers.RegisterForEvents((ICommunicationObject)proxy, proxyEventsCalled, deregister:true);
 
             // *** EXECUTE *** \\
             proxy.Echo("Hello");
@@ -737,7 +737,7 @@ public static partial class ClientBaseTests
 
                 // *** EXECUTE *** \\
                 Dictionary<string, string> incomingMessageHeaders = serviceProxy.GetIncomingMessageHeaders();
-                string result = GetHeader(customHeaderName, customHeaderNS, incomingMessageHeaders);
+                string result = ClientBaseTestHelpers.GetHeader(customHeaderName, customHeaderNS, incomingMessageHeaders);
 
                 // *** VALIDATE *** \\
                 Assert.Equal(customHeaderValue, result);
@@ -746,7 +746,7 @@ public static partial class ClientBaseTests
             // *** EXECUTE *** \\
             //Call outside of scope should not have the custom header
             Dictionary<string, string> outofScopeIncomingMessageHeaders = serviceProxy.GetIncomingMessageHeaders();
-            string outofScopeResult = GetHeader(customHeaderName, customHeaderNS, outofScopeIncomingMessageHeaders);
+            string outofScopeResult = ClientBaseTestHelpers.GetHeader(customHeaderName, customHeaderNS, outofScopeIncomingMessageHeaders);
 
             // *** VALIDATE *** \\
             Assert.True(string.Empty == outofScopeResult, string.Format("Expect call out of the OperationContextScope does not have the custom header {0}", customHeaderName));
@@ -760,164 +760,6 @@ public static partial class ClientBaseTests
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
         }
-    }
-
-    private static string GetHeader(string customHeaderName, string customHeaderNamespace, Dictionary<string, string> messageHeaders)
-    {
-        // look at headers on incoming message
-        foreach (KeyValuePair<string, string> keyValue in messageHeaders)
-        {
-            string headerFullName = keyValue.Key;
-            if (headerFullName == string.Format("{0}//{1}", customHeaderNamespace, customHeaderName))
-            {
-                return keyValue.Value;
-            }
-        }
-
-        return string.Empty;
-    }
-
-    private static void RegisterForEvents(ICommunicationObject co, List<string> eventsCalled, bool deregister = false)
-    {
-        EventHandler opening = (s, e) =>
-        {
-            eventsCalled.Add("Opening");
-        };
-
-        EventHandler opened = (s, e) =>
-        {
-            eventsCalled.Add("Opened");
-        };
-
-        EventHandler closing = (s, e) =>
-        {
-            eventsCalled.Add("Closing");
-        };
-
-        EventHandler closed = (s, e) =>
-        {
-            eventsCalled.Add("Closed");
-        };
-
-        co.Opening += opening;
-        co.Opened += opened;
-        co.Closing += closing;
-        co.Closed += closed;
-
-        // One test pivot involves ensuring we can both Add and Remove event handlers
-        if (deregister)
-        {
-            co.Opening -= opening;
-            co.Opened -= opened;
-            co.Closing -= closing;
-            co.Closed -= closed;
-        }
-    }
-
-    private class ClientMessagePropertyBehavior : IEndpointBehavior
-    {
-        private ClientMessagePropertyInspector _inspector;
-
-        public ClientMessagePropertyBehavior()
-        {
-            _inspector = new ClientMessagePropertyInspector();
-        }
-
-        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
-        {
-        }
-
-        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
-        {
-            clientRuntime.ClientMessageInspectors.Add(_inspector);
-        }
-
-        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
-        {
-        }
-
-        public void Validate(ServiceEndpoint endpoint)
-        {
-        }
-    }
-
-    private class ClientMessagePropertyInspector : IClientMessageInspector
-    {
-        public void AfterReceiveReply(ref Message reply, object correlationState)
-        {
-        }
-
-        public object BeforeSendRequest(ref Message request, IClientChannel channel)
-        {
-            HttpRequestMessageProperty httpRequestMessage = new HttpRequestMessageProperty();
-            httpRequestMessage.Headers["customer"] = "my value";
-            httpRequestMessage.SuppressEntityBody = false;
-            httpRequestMessage.Method = "POST";
-            httpRequestMessage.QueryString = "My address";
-
-            request.Properties.Add(HttpRequestMessageProperty.Name, httpRequestMessage);
-
-            return null;
-        }
-    }
-
-    public class ClientMessageInspectorBehavior : IEndpointBehavior
-    {
-        private ClientMessageInspector _inspector;
-
-        public ClientMessageInspectorBehavior(ClientMessageInspectorData data)
-        {
-            _inspector = new ClientMessageInspector(data);
-        }
-
-        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
-        {
-        }
-
-        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
-        {
-            clientRuntime.ClientMessageInspectors.Add(_inspector);
-        }
-
-        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
-        {
-        }
-
-        public void Validate(ServiceEndpoint endpoint)
-        {
-        }
-    }
-
-    public class ClientMessageInspector : IClientMessageInspector
-    {
-        private ClientMessageInspectorData _data;
-        public ClientMessageInspector(ClientMessageInspectorData data)
-        {
-            _data = data;
-        }
-
-        public void AfterReceiveReply(ref Message reply, object correlationState)
-        {
-            _data.AfterReceiveReplyCalled = true;
-            _data.Reply = reply;
-        }
-
-        public object BeforeSendRequest(ref Message request, IClientChannel channel)
-        {
-            _data.BeforeSendRequestCalled = true;
-            _data.Request = request;
-            _data.Channel = channel;
-            return null;
-        }
-    }
-
-    public class ClientMessageInspectorData
-    {
-        public bool BeforeSendRequestCalled { get; set; }
-        public bool AfterReceiveReplyCalled { get; set; }
-        public Message Request { get; set; }
-        public Message Reply { get; set; }
-        public IClientChannel Channel { get; set; }
     }
 }
 

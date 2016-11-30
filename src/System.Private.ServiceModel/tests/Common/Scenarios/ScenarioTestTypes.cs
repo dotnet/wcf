@@ -753,6 +753,70 @@ public class MyClientBase : ClientBase<IWcfServiceGenerated>
     }
 }
 
+// This helper class is used for ClientBase<T> tests
+public class MyClientBaseWithChannelBase : ClientBase<IWcfServiceBeginEndGenerated>
+{
+    public MyClientBaseWithChannelBase(Binding binding, EndpointAddress endpointAddress)
+        : base(binding, endpointAddress)
+    {
+    }
+
+    public IWcfServiceBeginEndGenerated Proxy
+    {
+        get { return base.Channel; }
+    }
+
+    protected override IWcfServiceBeginEndGenerated CreateChannel()
+    {
+        return new MyChannelBase(this);
+    }
+
+    private class MyChannelBase : ChannelBase<IWcfServiceBeginEndGenerated>, IWcfServiceBeginEndGenerated
+    {
+        public MyChannelBase(ClientBase<IWcfServiceBeginEndGenerated> client) :
+            base(client)
+        {
+        }
+
+        public IAsyncResult BeginEcho(string message, AsyncCallback callback, object asyncState)
+        {
+            object[] _args = new object[1];
+            _args[0] = message;
+            return (IAsyncResult)base.BeginInvoke("Echo", _args, callback, asyncState);
+        }
+
+        public string EndEcho(IAsyncResult result)
+        {
+            object[] _args = new object[0];
+            return (String)base.EndInvoke("Echo", _args, result);
+        }
+
+        public IAsyncResult BeginMessageRequestReply(Message request, AsyncCallback callback, object asyncState)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Echo(string message)
+        {
+            // Note: the public contract does not include base.Invoke(), so we are required
+            // to use the Begin/End pattern over a sync method when using ChannelBase<T>
+            object[] args = new object[] { message };
+            IAsyncResult ar =  base.BeginInvoke(nameof(Echo), args, callback: null, state: null);
+            return (String)base.EndInvoke(nameof(Echo), new object[1], ar);
+        }
+
+        public Message EndMessageRequestReply(IAsyncResult result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Message MessageRequestReply(Message request)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
 // This helper class is used for DuplexClientBase<T> tests
 public class MyDuplexClientBase<T> : DuplexClientBase<T> where T : class
 {
