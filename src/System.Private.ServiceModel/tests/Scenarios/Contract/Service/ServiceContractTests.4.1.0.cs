@@ -167,7 +167,6 @@ public static partial class ServiceContractTests
     public static void BasicHttp_DefaultSettings_Echo_RoundTrips_String_Streamed_Async()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
         BasicHttpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -498,7 +497,6 @@ public static partial class ServiceContractTests
     public static void NetTcp_NoSecurity_Streamed_Async_RoundTrips_String()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
         NetTcpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -536,7 +534,6 @@ public static partial class ServiceContractTests
     public static void NetTcp_NoSecurity_StreamedRequest_Async_RoundTrips_String()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
         NetTcpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -574,7 +571,6 @@ public static partial class ServiceContractTests
     public static void NetTcp_NoSecurity_StreamedResponse_Async_RoundTrips_String()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
         NetTcpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -640,7 +636,6 @@ public static partial class ServiceContractTests
     public static void ServiceContract_Call_Operation_With_MessageParameterAttribute()
     {
         // This test verifies the scenario where MessageParameter attribute is used in the contract
-        StringBuilder errorBuilder = new StringBuilder();
         ChannelFactory<IWcfServiceGenerated> factory = null;
         IWcfServiceGenerated serviceProxy = null;
         try
