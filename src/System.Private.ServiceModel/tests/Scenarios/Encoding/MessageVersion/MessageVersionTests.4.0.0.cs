@@ -17,71 +17,71 @@ public static class MessageVersionTests
     [OuterLoop]
     public static void SameBinding_Soap12WSA10_EchoString()
     {
-        string variationDetails = "Client:: CustomBinding/HttpTransport/TextEncoding/Soap12WSAddressing10 = None\nServer:: CustomBinding/HttpTransport/TextEncoding/Soap12WSAddressing10";
+        CustomBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap12WSAddressing10, Encoding.UTF8), new HttpTransportBindingElement());
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap12WSAddressing10, Encoding.UTF8), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpSoap12_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpSoap12_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
 
-            string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 
     [WcfFact]
     [OuterLoop]
     public static void SameBinding_Soap11_EchoString()
     {
-        string variationDetails = "Client:: CustomBinding/HttpTransport/TextEncoding/Soap11 = None\nServer:: CustomBinding/HttpTransport/TextEncoding/Soap11";
+        CustomBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
+        string result = null;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpTransportBindingElement());
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpSoap11_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpSoap11_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
 
-            string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 }

@@ -18,35 +18,36 @@ public static class BinaryEncodingTests
     [OuterLoop]
     public static void SameBinding_Binary_EchoBasicString()
     {
-        string variationDetails = "Client:: CustomBinding/BinaryEncoder/Http\nServer:: CustomBinding/BinaryEncoder/Http";
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
+        CustomBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfService serviceProxy = null;
+        string result = null;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new BinaryMessageEncodingBindingElement(), new HttpTransportBindingElement());
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBinary_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            // *** SETUP *** \\
+            binding = new CustomBinding(new BinaryMessageEncodingBindingElement(), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpBinary_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, errorBuilder.ToString());
     }
 
     // Client and Server bindings setup exactly the same using Binary Message encoder
@@ -55,35 +56,36 @@ public static class BinaryEncodingTests
     [OuterLoop]
     public static void SameBinding_Binary_EchoComplexString()
     {
-        string variationDetails = "Client:: CustomBinding/BinaryEncoder/Http\nServer:: CustomBinding/BinaryEncoder/Http";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
+        CustomBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        EndpointAddress endpointAddress = null;
+        IWcfService serviceProxy = null;
+        ComplexCompositeType compositeObject = null;
+        ComplexCompositeType result = null;
 
         try
         {
-            CustomBinding binding = new CustomBinding(new BinaryMessageEncodingBindingElement(), new HttpTransportBindingElement());
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBinary_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            // *** SETUP *** \\
+            binding = new CustomBinding(new BinaryMessageEncodingBindingElement(), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpBinary_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+            compositeObject = ScenarioTestHelpers.GetInitializedComplexCompositeType();
 
-            ComplexCompositeType compositeObject = ScenarioTestHelpers.GetInitializedComplexCompositeType();
+            // *** EXECUTE *** \\
+            result = serviceProxy.EchoComplex(compositeObject);
 
-            ComplexCompositeType result = serviceProxy.EchoComplex(compositeObject);
-            success = compositeObject.Equals(result);
+            // *** VALIDATE *** \\
+            Assert.True(compositeObject.Equals(result), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", compositeObject, result));
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", compositeObject, result));
-            }
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, errorBuilder.ToString());
     }
 }
