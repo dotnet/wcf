@@ -7,7 +7,7 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
-
+using Xunit;
 using Infrastructure.Common;
 
 public static class ScenarioTestHelpers
@@ -56,38 +56,40 @@ public static class ScenarioTestHelpers
         return builder.ToString();
     }
 
-    public static bool RunBasicEchoTest(Binding binding, string address, string variation, StringBuilder errorBuilder, Action<ChannelFactory> factorySettings = null)
+    public static bool RunBasicEchoTest(Binding binding, string address, string variation, Action<ChannelFactory> factorySettings = null)
     {
         Logger.LogInformation("Starting basic echo test.\nTest variation:...\n{0}\nUsing address: '{1}'", variation, address);
-
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
         bool success = false;
+
         try
         {
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(address));
-
+            // *** SETUP *** \\
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(address));
             if (factorySettings != null)
             {
                 factorySettings(factory);
             }
+            serviceProxy = factory.CreateChannel();
 
-            IWcfService serviceProxy = factory.CreateChannel();
-
+            // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            Logger.LogInformation("    {0}", ex.Message);
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variation, ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
 
         Logger.LogInformation("  Result: {0} ", success ? "PASS" : "FAIL");
-
         return success;
     }
 
