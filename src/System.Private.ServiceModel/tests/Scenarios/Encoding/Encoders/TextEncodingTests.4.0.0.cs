@@ -4,7 +4,6 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
 using Infrastructure.Common;
 using Xunit;
 
@@ -15,38 +14,39 @@ public static partial class TextEncodingTests
     [OuterLoop]
     public static void SameBinding_SecurityModeNone_Text_EchoString_Roundtrip()
     {
-        string variationDetails = "Client:: CustomBinding/TcpTransport/NoWindowsStreamSecurity/TextMessageEncoding = None\nServer:: CustomBinding/TcpTransport/NoWindowsStreamSecurity/TextMessageEncoding = None";
+        BindingElement[] bindingElements = null;
+        CustomBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        EndpointAddress endpointAddress = null;
+        string result = null;
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
-        bool success = false;
 
         try
         {
-            BindingElement[] bindingElements = new BindingElement[2];
+            // *** SETUP *** \\
+            bindingElements = new BindingElement[2];
             bindingElements[0] = new TextMessageEncodingBindingElement();
             bindingElements[1] = new TcpTransportBindingElement();
-            CustomBinding binding = new CustomBinding(bindingElements);
+            binding = new CustomBinding(bindingElements);
+            endpointAddress = new EndpointAddress(Endpoints.Tcp_CustomBinding_NoSecurity_Text_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Tcp_CustomBinding_NoSecurity_Text_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
 
-            string result = serviceProxy.Echo(testString);
-            success = string.Equals(result, testString);
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("    Error: Unexpected exception was caught while doing the basic echo test for variation...\n'{0}'\nException: {1}", variationDetails, ex.ToString()));
-            for (Exception innerException = ex.InnerException; innerException != null; innerException = innerException.InnerException)
-            {
-                errorBuilder.AppendLine(String.Format("Inner exception: {0}", innerException.ToString()));
-            }
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, "Test case FAILED with errors: " + errorBuilder.ToString());
     }
 }
