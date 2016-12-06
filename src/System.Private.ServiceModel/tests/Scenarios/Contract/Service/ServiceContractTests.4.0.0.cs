@@ -485,15 +485,6 @@ public static partial class ServiceContractTests
         Assert.True(success, "Test Scenario: BasicHttp_Async_Close_Proxy_WithSingleThreadedSyncContext timed-out.");
     }
 
-    private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
-    {
-        if (e.InnerException != null)
-        {
-            errorBuilder.AppendLine(string.Format("\r\n InnerException type: '{0}', Hresult:'{1}'", e.InnerException, e.InnerException.HResult));
-            PrintInnerExceptionsHresult(e.InnerException, errorBuilder);
-        }
-    }
-
     private static string StreamToString(Stream stream)
     {
         var reader = new StreamReader(stream, Encoding.UTF8);

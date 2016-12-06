@@ -16,42 +16,33 @@ public static partial class FaultExceptionTests
     public static void FaultException_Throws_WithFaultDetail()
     {
         string faultMsg = "Test Fault Exception";
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        EndpointAddress endpointAddress = null;
 
-        try
+        FaultException<FaultDetail> exception = Assert.Throws<FaultException<FaultDetail>>(() =>
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic)))
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService serviceProxy = factory.CreateChannel();
                 serviceProxy.TestFault(faultMsg);
             }
-        }
-        catch (Exception e)
-        {
-            if (e.GetType() != typeof(FaultException<FaultDetail>))
+            finally
             {
-                string error = string.Format("Expected exception: {0}, actual: {1}\r\n{2}",
-                                             "FaultException<FaultDetail>", e.GetType(), e.ToString());
-                if (e.InnerException != null)
-                    error += String.Format("\r\nInnerException:\r\n{0}", e.InnerException.ToString());
-                errorBuilder.AppendLine(error);
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
-            else
-            {
-                FaultException<FaultDetail> faultException = (FaultException<FaultDetail>)(e);
-                string actualFaultMsg = ((FaultDetail)(faultException.Detail)).Message;
-                if (actualFaultMsg != faultMsg)
-                {
-                    errorBuilder.AppendLine(string.Format("Expected Fault Message: {0}, actual: {1}", faultMsg, actualFaultMsg));
-                }
-            }
+        });
 
-            Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: FaultException_Throws_WithFaultDetail FAILED with the following errors: {0}", errorBuilder));
-            return;
-        }
-
-        Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
+        // *** ADDITIONAL VALIDATION *** \\
+        Assert.True(String.Equals(exception.Detail.Message, faultMsg), String.Format("Expected Fault Message: {0}, actual: {1}", faultMsg, exception.Detail.Message));
     }
 
     [WcfFact]
@@ -59,38 +50,33 @@ public static partial class FaultExceptionTests
     public static void UnexpectedException_Throws_FaultException()
     {
         string faultMsg = "This is a test fault msg";
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding binding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        EndpointAddress endpointAddress = null;
 
-        try
+        FaultException<ExceptionDetail> exception = Assert.Throws<FaultException<ExceptionDetail>>(() =>
         {
-            BasicHttpBinding binding = new BasicHttpBinding();
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic)))
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding();
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            try
             {
-                IWcfService serviceProxy = factory.CreateChannel();
                 serviceProxy.ThrowInvalidOperationException(faultMsg);
             }
-        }
-        catch (Exception e)
-        {
-            if (e.GetType() != typeof(FaultException<ExceptionDetail>))
+            finally
             {
-                errorBuilder.AppendLine(string.Format("Expected exception: {0}, actual: {1}", "FaultException<ExceptionDetail>", e.GetType()));
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
-            else
-            {
-                FaultException<ExceptionDetail> faultException = (FaultException<ExceptionDetail>)(e);
-                string actualFaultMsg = ((ExceptionDetail)(faultException.Detail)).Message;
-                if (actualFaultMsg != faultMsg)
-                {
-                    errorBuilder.AppendLine(string.Format("Expected Fault Message: {0}, actual: {1}", faultMsg, actualFaultMsg));
-                }
-            }
+        });
 
-            Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: UnexpectedException_Throws_FaultException FAILED with the following errors: {0}", errorBuilder));
-            return;
-        }
-
-        Assert.True(false, "Expected FaultException<FaultDetail> exception, but no exception thrown.");
+        // *** ADDITIONAL VALIDATION *** \\
+        Assert.True(String.Equals(exception.Detail.Message, faultMsg), String.Format("Expected Fault Message: {0}, actual: {1}", faultMsg, exception.Detail.Message));
     }
 
     [WcfFact]
@@ -143,24 +129,24 @@ public static partial class FaultExceptionTests
         // *** VALIDATE *** \\
         var exception = Assert.Throws<FaultException<FaultDetail>>(() =>
         {
-            // *** SETUP *** \\
-            binding = new BasicHttpBinding();
+        // *** SETUP *** \\
+        binding = new BasicHttpBinding();
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             serviceProxy = factory.CreateChannel();
 
-            // *** EXECUTE *** \\
-            try
+        // *** EXECUTE *** \\
+        try
             {
                 serviceProxy.TestFaults(faultMsg, true);
 
-                // *** CLEANUP *** \\
-                ((ICommunicationObject)serviceProxy).Close();
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
                 factory.Close();
             }
             finally
             {
-                // *** ENSURE CLEANUP *** \\
-                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
         });
 
@@ -180,24 +166,24 @@ public static partial class FaultExceptionTests
         // *** VALIDATE *** \\
         var exception = Assert.Throws<FaultException<FaultDetail2>>(() =>
         {
-            // *** SETUP *** \\
-            binding = new BasicHttpBinding();
+        // *** SETUP *** \\
+        binding = new BasicHttpBinding();
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             serviceProxy = factory.CreateChannel();
 
-            // *** EXECUTE *** \\
-            try
+        // *** EXECUTE *** \\
+        try
             {
                 serviceProxy.TestFaults(faultMsg, false);
 
-                // *** CLEANUP *** \\
-                ((ICommunicationObject)serviceProxy).Close();
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
                 factory.Close();
             }
             finally
             {
-                // *** ENSURE CLEANUP *** \\
-                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
         });
 
@@ -217,24 +203,24 @@ public static partial class FaultExceptionTests
         // *** VALIDATE *** \\
         var exception = Assert.Throws<FaultException<FaultDetail>>(() =>
         {
-            // *** SETUP *** \\
-            binding = new BasicHttpBinding();
+        // *** SETUP *** \\
+        binding = new BasicHttpBinding();
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             serviceProxy = factory.CreateChannel();
 
-            // *** EXECUTE *** \\
-            try
+        // *** EXECUTE *** \\
+        try
             {
                 serviceProxy.TestFaultWithKnownType(faultMsg, null);
 
-                // *** CLEANUP *** \\
-                ((ICommunicationObject)serviceProxy).Close();
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
                 factory.Close();
             }
             finally
             {
-                // *** ENSURE CLEANUP *** \\
-                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
         });
 

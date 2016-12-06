@@ -16,41 +16,44 @@ public static partial class DataContractTests
     public static void CustomBinding_DefaultSettings_Echo_RoundTrips_DataContract()
     {
         // Verifies a typed proxy can call a service operation echoing a DataContract object synchronously
-        StringBuilder errorBuilder = new StringBuilder();
+        CustomBinding customBinding = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        EndpointAddress endpointAddress = null;
+        CompositeType request = null;
+        CompositeType response = null;
+
         try
         {
-            CustomBinding customBinding = new CustomBinding();
+            // *** SETUP *** \\
+            customBinding = new CustomBinding();
             customBinding.Elements.Add(new TextMessageEncodingBindingElement());
             customBinding.Elements.Add(new HttpTransportBindingElement());
 
             // Note the service interface used.  It was manually generated with svcutil.
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(customBinding, new EndpointAddress(Endpoints.DefaultCustomHttp_Address));
-            IWcfService serviceProxy = factory.CreateChannel();
+            endpointAddress = new EndpointAddress(Endpoints.DefaultCustomHttp_Address);
+            factory = new ChannelFactory<IWcfService>(customBinding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
 
-            CompositeType request = new CompositeType() { StringValue = "myString", BoolValue = true };
-            CompositeType response = serviceProxy.GetDataUsingDataContract(request);
+            // *** EXECUTE *** \\
+            request = new CompositeType() { StringValue = "myString", BoolValue = true };
+            response = serviceProxy.GetDataUsingDataContract(request);
 
+            // *** VALIDATE *** \\
             Assert.True(response != null, "GetDataUsingDataContract(request) returned null");
-
             string expectedStringValue = request.StringValue + "Suffix";
-            if (!string.Equals(response.StringValue, expectedStringValue))
-            {
-                errorBuilder.AppendLine(string.Format("Expected CompositeType.StringValue \"{0}\", actual was \"{1}\"",
+            Assert.True(String.Equals(response.StringValue, expectedStringValue), String.Format("Expected CompositeType.StringValue \"{0}\", actual was \"{1}\"",
                                                         expectedStringValue, response.StringValue));
-            }
-            if (response.BoolValue != request.BoolValue)
-            {
-                errorBuilder.AppendLine(string.Format("Expected CompositeType.BoolValue \"{0}\", actual was \"{1}\"",
+            Assert.True(response.BoolValue == request.BoolValue, String.Format("Expected CompositeType.BoolValue \"{0}\", actual was \"{1}\"",
                                                         request.BoolValue, response.BoolValue));
-            }
-
+            // *** CLEANUP *** \\
             factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, errorBuilder.ToString());
     }
 }
