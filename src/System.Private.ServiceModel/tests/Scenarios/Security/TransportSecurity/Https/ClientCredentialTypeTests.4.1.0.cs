@@ -29,23 +29,30 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding basicHttpBinding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfCustomUserNameService> factory = null;
+        string username = null;
+        string password = null;
+        IWcfCustomUserNameService serviceProxy = null;
+        string testString = null;
+        string result = null;
 
         try
         {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            // *** SETUP *** \\
+            basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
-
-            ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
-            string username = Guid.NewGuid().ToString("n").Substring(0, 8);
-            string password = Guid.NewGuid().ToString("n").Substring(0, 16);
+            endpointAddress = new EndpointAddress(Endpoints.Https_BasicAuth_Address);
+            factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, endpointAddress);
+            username = Guid.NewGuid().ToString("n").Substring(0, 8);
+            password = Guid.NewGuid().ToString("n").Substring(0, 16);
             factory.Credentials.UserName.UserName = username;
             factory.Credentials.UserName.Password = password;
+            serviceProxy = factory.CreateChannel();
+            testString = "I am a test";
 
-            IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
-
-            string testString = "I am a test";
-            string result;
+            // *** EXECUTE *** \\
             using (var scope = new OperationContextScope((IContextChannel)serviceProxy))
             {
                 HttpRequestMessageProperty requestMessageProperty;
@@ -65,21 +72,23 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
                 result = serviceProxy.Echo(testString);
             }
 
-            bool success = string.Equals(result, testString);
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString),
+                        String.Format("Basic echo test.\nTest variation:...\n{0}\nUsing address: '{1}'\nError: expected response from service: '{2}' Actual was: '{3}'",
+                        "BasicAuthentication_RoundTrips_Echo",
+                        Endpoints.Https_BasicAuth_Address,
+                        testString,
+                        result));
 
-            if (!success)
-            {
-                errorBuilder.AppendLine(string.Format("Basic echo test.\nTest variation:...\n{0}\nUsing address: '{1}'", "BasicAuthentication_RoundTrips_Echo", Endpoints.Https_BasicAuth_Address));
-                errorBuilder.AppendLine(String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
-            }
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
         }
-        catch (Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(string.Format("Basic echo test.\nTest variation:...\n{0}\nUsing address: '{1}'", "BasicAuthentication_RoundTrips_Echo", Endpoints.Https_BasicAuth_Address));
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: BasicAuthentication FAILED with the following errors: {0}", errorBuilder));
     }
 
 
@@ -88,27 +97,35 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     [OuterLoop]
     public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding basicHttpBinding = null;
+        ChannelFactory<IWcfCustomUserNameService> factory = null;
+        EndpointAddress endpointAddress = null;
+        string username = null;
+        string password = null;
+        IWcfCustomUserNameService serviceProxy = null;
+        string testString = null;
         // Will need to use localized string once it is available
         // On Native retail, the message is stripped to 'HttpAuthorizationForbidden, Basic'
         // On Debug or .Net Core, the entire message is "The HTTP request was forbidden with client authentication scheme 'Basic'."
         // Thus we will only check message contains "forbidden"
         string message = "forbidden";
 
+        // *** VALIDATE *** \\
         MessageSecurityException exception = Assert.Throws<MessageSecurityException>(() =>
         {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            // *** SETUP *** \\
+            basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
-
-            ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
-            string username = Guid.NewGuid().ToString("n").Substring(0, 8);
-            string password = Guid.NewGuid().ToString("n").Substring(0, 16);
+            endpointAddress = new EndpointAddress(Endpoints.Https_BasicAuth_Address);
+            factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, endpointAddress);
+            username = Guid.NewGuid().ToString("n").Substring(0, 8);
+            password = Guid.NewGuid().ToString("n").Substring(0, 16);
             factory.Credentials.UserName.UserName = username;
             factory.Credentials.UserName.Password = password + "Invalid";
+            serviceProxy = factory.CreateChannel();
+            testString = "I am a test";
 
-            IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
-
-            string testString = "I am a test";
+            // *** EXECUTE *** \\
             using (var scope = new OperationContextScope((IContextChannel)serviceProxy))
             {
                 HttpRequestMessageProperty requestMessageProperty;
@@ -124,10 +141,21 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
                 requestMessageProperty.Headers[BasicUsernameHeaderName] = username;
                 requestMessageProperty.Headers[BasicPasswordHeaderName] = password;
-                string result = serviceProxy.Echo(testString);
+
+                try
+                {
+                    string result = serviceProxy.Echo(testString);
+                }
+                finally
+                {
+                    // *** ENSURE CLEANUP *** \\
+                    ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+                }
+
             }
         });
 
+        // *** ADDITIONAL VALIDATION *** \\
         Assert.True(exception.Message.ToLower().Contains(message), string.Format("Expected exception message to contain: '{0}', actual message is: '{1}'", message, exception.Message));
     }
 
@@ -136,22 +164,35 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     [OuterLoop]
     public static void BasicAuthenticationEmptyUser_throw_ArgumentException()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding basicHttpBinding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfCustomUserNameService> factory = null;
+        IWcfCustomUserNameService serviceProxy = null;
+        string testString = null;
         string paraMessage = "username";
 
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
         {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+            // *** SETUP *** \\
+            basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
-
-            ChannelFactory<IWcfCustomUserNameService> factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, new EndpointAddress(Endpoints.Https_BasicAuth_Address));
+            endpointAddress = new EndpointAddress(Endpoints.Https_BasicAuth_Address);
+            factory = new ChannelFactory<IWcfCustomUserNameService>(basicHttpBinding, endpointAddress);
             factory.Credentials.UserName.UserName = "";
             factory.Credentials.UserName.Password = "NoUserName";
+            serviceProxy = factory.CreateChannel();
+            testString = "I am a test";
 
-            IWcfCustomUserNameService serviceProxy = factory.CreateChannel();
-
-            string testString = "I am a test";
-            string result = serviceProxy.Echo(testString);
+            // *** EXECUTE *** \\
+            try
+            {
+                string result = serviceProxy.Echo(testString);
+            }
+            finally
+            {
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            }
         });
 
         Assert.True(exception.Message.ToLower().Contains(paraMessage), string.Format("Expected exception message to contain: '{0}', actual: '{1}'", paraMessage, exception.Message));
@@ -169,27 +210,16 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     //          "ExplicitPassword"
     public static void DigestAuthentication_RoundTrips_Echo()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+        basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Digest;
 
-        try
+        Action<ChannelFactory> credentials = (factory) =>
         {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-            basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Digest;
+            factory.Credentials.HttpDigest.ClientCredential.UserName = s_username;
+            factory.Credentials.HttpDigest.ClientCredential.Password = s_password;
+        };
 
-            Action<ChannelFactory> credentials = (factory) =>
-            {
-                factory.Credentials.HttpDigest.ClientCredential.UserName = s_username;
-                factory.Credentials.HttpDigest.ClientCredential.Password = s_password;
-            };
-
-            ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Https_DigestAuth_Address, "BasicHttpBinding - Digest auth ", errorBuilder, credentials);
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: DigestAuthentication FAILED with the following errors: {0}", errorBuilder));
+        ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Https_DigestAuth_Address, "BasicHttpBinding - Digest auth ", credentials);
     }
 
     [WcfFact]
@@ -197,21 +227,10 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     [OuterLoop]
     public static void NtlmAuthentication_RoundTrips_Echo()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+        basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Ntlm;
 
-        try
-        {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-            basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Ntlm;
-
-            ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Https_NtlmAuth_Address, "BasicHttpBinding with NTLM authentication", errorBuilder, null);
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: NtlmAuthentication FAILED with the following errors: {0}", errorBuilder));
+        ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Https_NtlmAuth_Address, "BasicHttpBinding with NTLM authentication", null);
     }
 
     [WcfFact]
@@ -219,20 +238,9 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     [OuterLoop]
     public static void WindowsAuthentication_RoundTrips_Echo()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+        basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
 
-        try
-        {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-            basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-
-            ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Http_WindowsAuth_Address, "BasicHttpBinding with Windows authentication", errorBuilder, null);
-        }
-        catch (Exception ex)
-        {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
-        }
-
-        Assert.True(errorBuilder.Length == 0, String.Format("Test Case: WindowsAuthentication FAILED with the following errors: {0}", errorBuilder));
+        ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Http_WindowsAuth_Address, "BasicHttpBinding with Windows authentication", null);
     }
 }

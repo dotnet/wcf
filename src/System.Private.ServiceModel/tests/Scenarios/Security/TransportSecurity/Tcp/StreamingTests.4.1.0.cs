@@ -260,7 +260,6 @@ public class StreamingTests : ConditionalWcfTest
     public static void NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
         NetTcpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -280,7 +279,7 @@ public class StreamingTests : ConditionalWcfTest
             var result = StreamToString(returnStream);
 
             // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
+            Assert.True(String.Equals(testString, result), String.Format("Error: Expected test string: '{0}' but got '{1}'", testString, result));
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
@@ -303,7 +302,6 @@ public class StreamingTests : ConditionalWcfTest
     public static void NetTcp_TransportSecurity_StreamedRequest_Async_RoundTrips_String()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
         NetTcpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -323,7 +321,7 @@ public class StreamingTests : ConditionalWcfTest
             var result = StreamToString(returnStream);
 
             // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
+            Assert.True(String.Equals(testString, result), String.Format("Error: Expected test string: '{0}' but got '{1}'", testString, result));
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
@@ -346,7 +344,6 @@ public class StreamingTests : ConditionalWcfTest
     public static void NetTcp_TransportSecurity_StreamedResponse_Async_RoundTrips_String()
     {
         string testString = "Hello";
-        StringBuilder errorBuilder = new StringBuilder();
         NetTcpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -366,7 +363,7 @@ public class StreamingTests : ConditionalWcfTest
             var result = StreamToString(returnStream);
 
             // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
+            Assert.True(String.Equals(testString, result), String.Format("Error: Expected test string: '{0}' but got '{1}'", testString, result));
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
@@ -417,14 +414,14 @@ public class StreamingTests : ConditionalWcfTest
         Assert.True(success, "Test Scenario: NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String_WithSingleThreadedSyncContext timed-out.");
     }
 
-    private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
-    {
-        if (e.InnerException != null)
-        {
-            errorBuilder.AppendLine(string.Format("\r\n InnerException type: '{0}', Hresult:'{1}'", e.InnerException, e.InnerException.HResult));
-            PrintInnerExceptionsHresult(e.InnerException, errorBuilder);
-        }
-    }
+    //private static void PrintInnerExceptionsHresult(Exception e, StringBuilder errorBuilder)
+    //{
+    //    if (e.InnerException != null)
+    //    {
+    //        errorBuilder.AppendLine(string.Format("\r\n InnerException type: '{0}', Hresult:'{1}'", e.InnerException, e.InnerException.HResult));
+    //        PrintInnerExceptionsHresult(e.InnerException, errorBuilder);
+    //    }
+    //}
 
     private static string StreamToString(Stream stream)
     {
