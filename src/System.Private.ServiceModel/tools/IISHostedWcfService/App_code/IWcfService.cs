@@ -155,5 +155,11 @@ namespace WcfService
             ReplyAction = "http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMessageHeaderResponse")]
         [XmlSerializerFormat(SupportFaults = true)]
         XmlMessageContractTestResponse EchoMessageResquestWithMessageHeader(XmlMessageContractTestRequestWithMessageHeader request);
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/GetAllEmployees")]
+        List<Employee> GetAllEmployees();
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/AddEmployee")]
+        void AddEmployee(Employee employee);
     }
 }

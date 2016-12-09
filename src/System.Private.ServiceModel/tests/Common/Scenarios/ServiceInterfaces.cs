@@ -83,6 +83,12 @@ public interface IWcfService
 
     [OperationContract]
     void ReturnContentType(string contentType);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/GetAllEmployees")]
+    List<Employee> GetAllEmployees();
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/AddEmployee")]
+    void AddEmployee(Employee employee);
 }
 
 [ServiceContract]

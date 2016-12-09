@@ -258,3 +258,19 @@ public partial class XmlMessageContractTestResponse
         }
     }
 }
+
+[DataContract]
+public class Employee
+{
+    [DataMember]
+    public string Name { get; set; }
+    [DataMember]
+    public string Age { get; set; }
+}
+
+[DataContract]
+public class Manager : Employee
+{
+    [DataMember]
+    public int OfficeId { get; set; }
+}

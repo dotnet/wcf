@@ -157,6 +157,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("ServiceContractSyncUniqueTypeRef.svc//ServiceContractUniqueTypeRefSync"); }
     }
 
+    public static string DataContractResolver_Address
+    {
+        get { return GetEndpointAddress("DataContractResolver.svc//DataContractResolver"); }
+    }
+
     #endregion Service Contract Addresses
 
     #region Custom Message Encoder Addresses
