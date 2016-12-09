@@ -440,18 +440,5 @@ namespace WcfService
 
             return ms;
         }
-
-        public static Employee ee;
-        public List<Employee> GetAllEmployees()
-        {
-            List<Employee> list = new List<Employee>();
-            list.Add(ee);
-            return list;
-        }
-
-        public void AddEmployee(Employee employee)
-        {
-            ee = employee;
-        }
     }
 }

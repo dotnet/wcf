@@ -22,7 +22,7 @@ public static partial class DataContractTests
         StringBuilder errorBuilder = new StringBuilder();
         try
         {
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(new BasicHttpBinding(), new EndpointAddress(Endpoints.DataContractResolver_Address));
+            ChannelFactory<IDataContractResolverService> factory = new ChannelFactory<IDataContractResolverService>(new BasicHttpBinding(), new EndpointAddress(Endpoints.DataContractResolver_Address));
             ContractDescription cd = factory.Endpoint.Contract;
 
             foreach (var operation in factory.Endpoint.Contract.Operations)
@@ -33,15 +33,15 @@ public static partial class DataContractTests
                 behavior.DataContractResolver = new ManagerDataContractResolver();
             }
 
-            IWcfService client = factory.CreateChannel();
+            IDataContractResolverService client = factory.CreateChannel();
             client.AddEmployee(new Manager() { Age = "10", Name = "jone", OfficeId = 1 });
             var results = client.GetAllEmployees();
             Assert.Equal(1, results.Count());
             var manager = results.First();
-            Assert.Equal(typeof(Manager), manager.GetType());
-            Assert.Equal("jone", ((Manager)manager).Name);
-            Assert.Equal("10", ((Manager)manager).Age);
-            Assert.Equal(1, ((Manager)manager).OfficeId);
+            Assert.True(manager.GetType() == (typeof(Manager)), string.Format("Expected type: {0}, Actual type: {1}", typeof(Manager), manager.GetType()));
+            Assert.True(((Manager)manager).Name == "jone", string.Format("Expected Name: {0}, Actual Name: {1}", "jone", ((Manager)manager).Name));
+            Assert.True(((Manager)manager).Age == "10", string.Format("Expected Age: {0}, Actual Age: {1}", "10", ((Manager)manager).Age));
+            Assert.True(((Manager)manager).OfficeId == 1, string.Format("Expected Id: {0}, Actual Id: {1}", 1, ((Manager)manager).OfficeId));
             factory.Close();
         }
         catch(Exception ex)
