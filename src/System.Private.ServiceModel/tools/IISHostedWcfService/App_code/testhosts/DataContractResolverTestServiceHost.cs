@@ -35,13 +35,10 @@ namespace WcfService
             {
                 foreach (OperationDescription operation in endpoint.Contract.Operations)
                 {
-                    if (operation.Name == "GetAllEmployees" || operation.Name == "AddEmployee")
-                    {
-                        DataContractSerializerOperationBehavior behavior =
-                            operation.OperationBehaviors.FirstOrDefault(
-                                x => x.GetType() == typeof(DataContractSerializerOperationBehavior)) as DataContractSerializerOperationBehavior;
-                        behavior.DataContractResolver = new ManagerDataContractResolver();
-                    }
+                    DataContractSerializerOperationBehavior behavior =
+                        operation.OperationBehaviors.FirstOrDefault(
+                            x => x.GetType() == typeof(DataContractSerializerOperationBehavior)) as DataContractSerializerOperationBehavior;
+                    behavior.DataContractResolver = new ManagerDataContractResolver();
                 }
             }
         }
