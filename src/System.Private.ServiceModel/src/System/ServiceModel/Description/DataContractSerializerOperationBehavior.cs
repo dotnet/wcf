@@ -92,12 +92,25 @@ namespace System.ServiceModel.Description
 
         public virtual XmlObjectSerializer CreateSerializer(Type type, string name, string ns, IList<Type> knownTypes)
         {
-            return new DataContractSerializer(type, name, ns, knownTypes);
+            XmlDictionary dictionary = new XmlDictionary(2);
+            DataContractSerializerSettings settings = new DataContractSerializerSettings();
+            settings.RootName = dictionary.Add(name);
+            settings.RootNamespace = dictionary.Add(ns);
+            settings.KnownTypes = knownTypes;
+            settings.MaxItemsInObjectGraph = MaxItemsInObjectGraph;
+            settings.DataContractResolver = DataContractResolver;
+            return new DataContractSerializer(type, settings);
         }
 
         public virtual XmlObjectSerializer CreateSerializer(Type type, XmlDictionaryString name, XmlDictionaryString ns, IList<Type> knownTypes)
         {
-            return new DataContractSerializer(type, name, ns, knownTypes);
+            DataContractSerializerSettings settings = new DataContractSerializerSettings();
+            settings.RootName = name;
+            settings.RootNamespace = ns;
+            settings.KnownTypes = knownTypes;
+            settings.MaxItemsInObjectGraph = MaxItemsInObjectGraph;
+            settings.DataContractResolver = DataContractResolver;
+            return new DataContractSerializer(type, settings);
         }
 
         internal object GetFormatter(OperationDescription operation, out bool formatRequest, out bool formatReply, bool isProxy)

@@ -529,3 +529,13 @@ public interface IVerifyWebSockets
     [OperationContract()]
     bool ValidateWebSocketsUsed();
 }
+
+[ServiceContract]
+public interface IDataContractResolverService
+{
+    [OperationContract(Action = "http://tempuri.org/IDataContractResolverService/GetAllEmployees")]
+    List<Employee> GetAllEmployees();
+
+    [OperationContract(Action = "http://tempuri.org/IDataContractResolverService/AddEmployee")]
+    void AddEmployee(Employee employee);
+}

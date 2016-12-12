@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace WcfService
@@ -255,6 +257,62 @@ public partial class XmlMessageContractTestResponse
         set
         {
             _message = value;
+        }
+    }
+}
+
+[DataContract]
+public class Employee
+{
+    [DataMember]
+    public string Name { get; set; }
+    [DataMember]
+    public string Age { get; set; }
+}
+
+[DataContract]
+public class Manager : Employee
+{
+    [DataMember]
+    public int OfficeId { get; set; }
+}
+public class ManagerDataContractResolver : DataContractResolver
+{
+    private string Namespace
+    {
+        get { return typeof(Manager).Namespace ?? "global"; }
+    }
+
+    private string Name
+    {
+        get { return typeof(Manager).Name; }
+    }
+
+
+    public override Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)
+    {
+        if (typeName == this.Name && typeNamespace == this.Namespace)
+        {
+            return typeof(Manager);
+        }
+        else
+        {
+            return knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
+        }
+    }
+
+    public override bool TryResolveType(Type type, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)
+    {
+        if (type == typeof(Manager))
+        {
+            XmlDictionary dic = new XmlDictionary();
+            typeName = dic.Add(this.Name);
+            typeNamespace = dic.Add(this.Namespace);
+            return true;
+        }
+        else
+        {
+            return knownTypeResolver.TryResolveType(type, declaredType, null, out typeName, out typeNamespace);
         }
     }
 }
