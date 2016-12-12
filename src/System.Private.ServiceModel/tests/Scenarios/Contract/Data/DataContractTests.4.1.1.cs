@@ -19,10 +19,11 @@ public static partial class DataContractTests
     [OuterLoop]
     public static void DataContractResolverTest()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        IDataContractResolverService client = null;
+        ChannelFactory<IDataContractResolverService> factory = null;
         try
         {
-            ChannelFactory<IDataContractResolverService> factory = new ChannelFactory<IDataContractResolverService>(new BasicHttpBinding(), new EndpointAddress(Endpoints.DataContractResolver_Address));
+            factory = new ChannelFactory<IDataContractResolverService>(new BasicHttpBinding(), new EndpointAddress(Endpoints.DataContractResolver_Address));
             ContractDescription cd = factory.Endpoint.Contract;
 
             foreach (var operation in factory.Endpoint.Contract.Operations)
@@ -33,7 +34,7 @@ public static partial class DataContractTests
                 behavior.DataContractResolver = new ManagerDataContractResolver();
             }
 
-            IDataContractResolverService client = factory.CreateChannel();
+            client = factory.CreateChannel();
             client.AddEmployee(new Manager() { Age = "10", Name = "jone", OfficeId = 1 });
             var results = client.GetAllEmployees();
             Assert.Equal(1, results.Count());
@@ -43,13 +44,13 @@ public static partial class DataContractTests
             Assert.True(((Manager)manager).Age == "10", string.Format("Expected Age: {0}, Actual Age: {1}", "10", ((Manager)manager).Age));
             Assert.True(((Manager)manager).OfficeId == 1, string.Format("Expected Id: {0}, Actual Id: {1}", 1, ((Manager)manager).OfficeId));
             factory.Close();
+            ((ICommunicationObject)client).Close();
         }
-        catch(Exception ex)
+        finally
         {
-            errorBuilder.AppendLine(String.Format("Unexpected exception was caught: {0}", ex.ToString()));
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)client, factory);
         }
-
-        Assert.True(errorBuilder.Length == 0, errorBuilder.ToString());
     }
 }
 
