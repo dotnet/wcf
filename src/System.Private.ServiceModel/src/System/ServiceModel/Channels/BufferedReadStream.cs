@@ -141,12 +141,21 @@ namespace System.ServiceModel.Channels
 
         public override void Flush()
         {
-            throw new NotSupportedException(nameof(Flush));
+            // There is never a need to Flush a reading stream however;
+            // System.Xml.EncodingStreamWrapper incorrectly calls Flush on a reading only stream.
+            // Which then triggers this method.
+            // This can be reverted when dotnet/corefx issue #14454 is fixed.
+            // throw new NotSupportedException(nameof(Flush));
         }
 
         public override Task FlushAsync(CancellationToken cancellationToken)
         {
-            throw new NotSupportedException(nameof(FlushAsync));
+            // There is never a need to Flush a reading stream however;
+            // System.Xml.EncodingStreamWrapper incorrectly calls Flush on a reading only stream.
+            // Which then triggers this method.
+            // This can be reverted when dotnet/corefx issue #14454 is fixed.
+            // throw new NotSupportedException(nameof(FlushAsync));
+            return Task.CompletedTask;
         }
 
 
