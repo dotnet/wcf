@@ -53,74 +53,68 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
-    [Issue(398)]
     public static void ServiceRestart_Throws_CommunicationException()
     {
-        StringBuilder errorBuilder = new StringBuilder();
+        // This test validates that if the Service were to shut-down, re-start or otherwise die in the
+        // middle of an operation the client will not just hang. It should instead receive a CommunicationException.
         string restartServiceAddress = "";
-
+        ChannelFactory<IWcfService> setupHostFactory = null;
+        IWcfService setupHostServiceProxy = null;
+        ChannelFactory<IWcfRestartService> factory = null;
+        IWcfRestartService serviceProxy = null;
         BasicHttpBinding binding = new BasicHttpBinding();
 
+        // *** First Part *** \\
+        // We need the Service to create and open a ServiceHost and then give us the endpoint address for it.
         try
         {
-            using (ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic)))
-            {
-                IWcfService serviceProxy = factory.CreateChannel();
-                restartServiceAddress = serviceProxy.GetRestartServiceEndpoint();
-            }
+            setupHostFactory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            setupHostServiceProxy = setupHostFactory.CreateChannel();
+            restartServiceAddress = setupHostServiceProxy.GetRestartServiceEndpoint();
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)setupHostServiceProxy).Close();
+            setupHostFactory.Close();
         }
-        catch (Exception e)
+        finally
         {
-            string error = String.Format("Unexpected exception thrown while calling the 'GetRestartServiceEndpoint' operation. {0}", e.ToString());
-            if (e.InnerException != null)
-                error += String.Format("\r\nInnerException:\r\n{0}", e.InnerException.ToString());
-            errorBuilder.AppendLine(error);
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)setupHostServiceProxy, setupHostFactory);
         }
 
-        if (errorBuilder.Length == 0)
+        // *** Second Part *** \\
+        CommunicationException exception = Assert.Throws<CommunicationException>(() =>
         {
-            // Get the Service host name and replace localhost with it
+            // The restartServiceAddress we got from the Service used localhost as the host name.
+            // We need the actual host name for the client call to work.
+            // To make it easier to parse, localhost was replaced with '[HOST]'.
+
+            // Use Endpoints.HttpBaseAddress_Basic only for the purpose of extracting the Service host name.
+            // Then update 'restartServiceAddress' with it.
             UriBuilder builder = new UriBuilder(Endpoints.HttpBaseAddress_Basic);
             string hostName = builder.Uri.Host;
             restartServiceAddress = restartServiceAddress.Replace("[HOST]", hostName);
-            //On .NET Native retail, exception message is stripped to include only parameter
-            string expectExceptionMsg = restartServiceAddress;
+
+            // *** SETUP *** \\
+            // Get the last portion of the restart service url which is a Guid and convert it back to a Guid
+            // This is needed by the RestartService operation as a Dictionary key to get the ServiceHost
+            string uniqueIdentifier = restartServiceAddress.Substring(restartServiceAddress.LastIndexOf("/") + 1);
+            Guid guid = new Guid(uniqueIdentifier);
+
+            factory = new ChannelFactory<IWcfRestartService>(binding, new EndpointAddress(restartServiceAddress));
+            serviceProxy = factory.CreateChannel();
 
             try
             {
-                using (ChannelFactory<IWcfRestartService> factory = new ChannelFactory<IWcfRestartService>(binding, new EndpointAddress(restartServiceAddress)))
-                {
-                    // Get the last portion of the restart service url which is a Guid and convert it back to a Guid
-                    // This is needed by the RestartService operation as a Dictionary key to get the ServiceHost
-                    string uniqueIdentifier = restartServiceAddress.Substring(restartServiceAddress.LastIndexOf("/") + 1);
-                    Guid guid = new Guid(uniqueIdentifier);
-
-                    IWcfRestartService serviceProxy = factory.CreateChannel();
-                    serviceProxy.RestartService(guid);
-                }
-
-                errorBuilder.AppendLine("Expected CommunicationException exception, but no exception thrown.");
+                // *** EXECUTE *** \\
+                serviceProxy.RestartService(guid);
             }
-            catch (Exception e)
+            finally
             {
-                if (e.GetType() == typeof(CommunicationException))
-                {
-                    if (e.Message.Contains(expectExceptionMsg))
-                    {
-                    }
-                    else
-                    {
-                        errorBuilder.AppendLine(string.Format("Expected exception message contains: {0}, actual: {1}", expectExceptionMsg, e.Message));
-                    }
-                }
-                else
-                {
-                    errorBuilder.AppendLine(string.Format("Expected exception: {0}, actual: {1}/n Exception was: {2}", "CommunicationException", e.GetType(), e.ToString()));
-                }
+                // *** ENSURE CLEANUP *** \\
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
             }
-        }
-
-        Assert.True(errorBuilder.Length == 0, string.Format("Test Scenario: ServiceRestart_Throws_CommunicationException FAILED with the following errors: {0}", errorBuilder));
+        });
     }
 
     [WcfFact]
@@ -316,7 +310,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
 
-        
+
         // *** SETUP *** \\
         binding = new NetTcpBinding();
         binding.Security.Mode = SecurityMode.Transport;
