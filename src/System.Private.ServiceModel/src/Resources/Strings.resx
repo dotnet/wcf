@@ -2604,6 +2604,9 @@
   <data name="TimeSpanCannotBeLessThanTimeSpanZero" xml:space="preserve">
     <value>TimeSpan cannot be less than TimeSpan.Zero.</value>
   </data>
+  <data name="AsyncResultCompletedTwice" xml:space="preserve">
+    <value>AsyncResult completed twice.</value>
+  </data>
   <data name="ValueMustBeNonNegative" xml:space="preserve">
     <value>The value of this argument must be non-negative.</value>
   </data>

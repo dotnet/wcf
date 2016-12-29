@@ -114,7 +114,7 @@ namespace System.Runtime
         {
             if (_isCompleted)
             {
-                throw Fx.Exception.AsError(new InvalidOperationException(InternalSR.AsyncResultCompletedTwice(GetType())));
+                throw Fx.Exception.AsError(new InvalidOperationException(InternalSR.AsyncResultCompletedTwice));
             }
 
 
