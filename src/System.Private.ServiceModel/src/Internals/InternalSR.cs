@@ -29,11 +29,11 @@ namespace System.Runtime
         internal static string ThreadNeutralSemaphoreAborted = "ThreadNeutralSemaphoreAborted";
         internal static string ValueCollectionUpdatesNotAllowed = "ValueCollectionUpdatesNotAllowed";
         internal static string ValueMustBeNonNegative = "ValueMustBeNonNegative";
+        internal static string AsyncResultCompletedTwice = "AsyncResultCompletedTwice";
 
         internal static string ArgumentNullOrEmpty(object param0) { throw ExceptionHelper.PlatformNotSupported(); }
         internal static string AsyncEventArgsCompletedTwice(object param0) { throw ExceptionHelper.PlatformNotSupported(); }
         internal static string AsyncEventArgsCompletionPending(object param0) { throw ExceptionHelper.PlatformNotSupported(); }
-        internal static string AsyncResultCompletedTwice(object param0) { throw ExceptionHelper.PlatformNotSupported(); }
         internal static string BufferAllocationFailed(object param0) { throw ExceptionHelper.PlatformNotSupported(); }
         internal static string BufferedOutputStreamQuotaExceeded(object param0) { throw ExceptionHelper.PlatformNotSupported(); }
         internal static string CannotConvertObject(object param0, object param1) { throw ExceptionHelper.PlatformNotSupported(); }
