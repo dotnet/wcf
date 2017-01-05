@@ -17,6 +17,7 @@ public static partial class DataContractTests
 {
     [WcfFact]
     [OuterLoop]
+    [Issue(1708, Framework = FrameworkID.NetNative)]
     public static void DataContractResolverTest()
     {
         IDataContractResolverService client = null;
