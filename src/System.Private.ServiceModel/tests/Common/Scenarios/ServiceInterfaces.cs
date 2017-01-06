@@ -246,6 +246,9 @@ public interface IWcfRestartService
 {
     [OperationContract]
     String RestartService(Guid uniqueIdentifier);
+
+    [OperationContract]
+    String NonRestartService(Guid uniqueIdentifier);
 }
 
 [ServiceContract]
