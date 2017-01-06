@@ -92,7 +92,6 @@ namespace System.ServiceModel.Description
                     customAttributes = this.ParameterInfo.GetCustomAttributes(attributeType, inherit);
                     return customAttributes == null ? null : customAttributes.ToArray();
 #else
-
                     object[] customAttributes = this.ParameterInfo.GetCustomAttributes(attributeType, inherit);
                     return customAttributes;
 #endif
