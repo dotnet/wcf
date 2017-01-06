@@ -87,9 +87,15 @@ namespace System.ServiceModel.Description
                     return this.MemberInfo.GetCustomAttributes(attributeType, inherit).ToArray();
                 case AttributeProviderType.ParameterInfo:
                     //GetCustomAttributes could return null instead of empty collection for a known System.Relection issue, workaround the issue by explicitly checking the null
+#if PreNETStandard17
                     IEnumerable<Attribute> customAttributes = null;
                     customAttributes = this.ParameterInfo.GetCustomAttributes(attributeType, inherit);
                     return customAttributes == null ? null : customAttributes.ToArray();
+#else
+
+                    object[] customAttributes = this.ParameterInfo.GetCustomAttributes(attributeType, inherit);
+                    return customAttributes;
+#endif
             }
             Contract.Assert(false, "This should never execute.");
             throw ExceptionHelper.PlatformNotSupported();

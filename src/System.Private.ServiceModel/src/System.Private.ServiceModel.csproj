@@ -14,11 +14,11 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
-    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard1.3</PackageTargetFramework>
+    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard1.7</PackageTargetFramework>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
     <PackageTargetRuntime Condition="'$(OSGroup)' == 'Unix'">unix</PackageTargetRuntime>
     <PackageTargetRuntime Condition="'$(OSGroup)' == 'Windows_NT'">win7</PackageTargetRuntime>
-    <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v1.3</NuGetTargetMoniker>
+    <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v1.7</NuGetTargetMoniker>
   </PropertyGroup>
   <!-- Default configurations to help VS understand the options -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unix_Debug|AnyCPU'" />
@@ -27,6 +27,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_Release|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(TargetGroup)' == 'netcore50'">
+    <DefineConstants>$(DefineConstants);PreNETStandard17</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(TargetGroup)' == 'netcore50'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
