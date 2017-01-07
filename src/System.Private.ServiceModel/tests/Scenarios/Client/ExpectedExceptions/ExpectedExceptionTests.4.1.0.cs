@@ -64,7 +64,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         IWcfRestartService serviceProxy = null;
         BasicHttpBinding binding = new BasicHttpBinding();
 
-        // *** First Part *** \\
+        // *** Step 1 *** \\
         // We need the Service to create and open a ServiceHost and then give us the endpoint address for it.
         try
         {
@@ -82,25 +82,53 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)setupHostServiceProxy, setupHostFactory);
         }
 
-        // *** Second Part *** \\
+        // *** Additional Setup *** \\
+        // The restartServiceAddress we got from the Service used localhost as the host name.
+        // We need the actual host name for the client call to work.
+        // To make it easier to parse, localhost was replaced with '[HOST]'.
+
+        // Use Endpoints.HttpBaseAddress_Basic only for the purpose of extracting the Service host name.
+        // Then update 'restartServiceAddress' with it.
+        string hostName = new Uri(Endpoints.HttpBaseAddress_Basic).Host;
+        restartServiceAddress = restartServiceAddress.Replace("[HOST]", hostName);
+
+        // Get the last portion of the restart service url which is a Guid and convert it back to a Guid
+        // This is needed by the RestartService operation as a Dictionary key to get the ServiceHost
+        string uniqueIdentifier = restartServiceAddress.Substring(restartServiceAddress.LastIndexOf("/") + 1);
+        Guid guid = new Guid(uniqueIdentifier);
+
+        // *** Step 2 *** \\
+        // Simple echo call to make sure the newly created endpoint is working.
+        try
+        {
+            factory = new ChannelFactory<IWcfRestartService>(binding, new EndpointAddress(restartServiceAddress));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.NonRestartService(guid);
+
+            Assert.True(result == "Success!", string.Format("Test Case failed, expected the returned string to be: {0}, instead it was: {1}", "Success!", result));
+        }
+        catch (Exception ex)
+        {
+            string exceptionMessage = ex.Message;
+            string innerExceptionMessage = ex.InnerException?.Message;
+            string testExceptionMessage = $"The ping to validate the newly created endpoint failed.\nThe endpoint pinged was: {restartServiceAddress}\nThe GUID used to extract the ServiceHost from the server side dictionary was: {guid}";
+            string fullExceptionMessage = $"testExceptionMessage: {testExceptionMessage}\nexceptionMessage: {exceptionMessage}\ninnerExceptionMessage: {innerExceptionMessage}";
+            
+            Assert.True(false, fullExceptionMessage);
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+
+        // *** Step 3 *** \\
+        // The actual part of the test where the host is killed in the middle of the operation.
+        // We expect the test should not hang and should receive a CommunicationException.
         CommunicationException exception = Assert.Throws<CommunicationException>(() =>
         {
-            // The restartServiceAddress we got from the Service used localhost as the host name.
-            // We need the actual host name for the client call to work.
-            // To make it easier to parse, localhost was replaced with '[HOST]'.
-
-            // Use Endpoints.HttpBaseAddress_Basic only for the purpose of extracting the Service host name.
-            // Then update 'restartServiceAddress' with it.
-            UriBuilder builder = new UriBuilder(Endpoints.HttpBaseAddress_Basic);
-            string hostName = builder.Uri.Host;
-            restartServiceAddress = restartServiceAddress.Replace("[HOST]", hostName);
-
-            // *** SETUP *** \\
-            // Get the last portion of the restart service url which is a Guid and convert it back to a Guid
-            // This is needed by the RestartService operation as a Dictionary key to get the ServiceHost
-            string uniqueIdentifier = restartServiceAddress.Substring(restartServiceAddress.LastIndexOf("/") + 1);
-            Guid guid = new Guid(uniqueIdentifier);
-
             factory = new ChannelFactory<IWcfRestartService>(binding, new EndpointAddress(restartServiceAddress));
             serviceProxy = factory.CreateChannel();
 

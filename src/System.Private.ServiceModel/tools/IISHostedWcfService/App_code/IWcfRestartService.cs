@@ -13,5 +13,8 @@ namespace WcfService
     {
         [OperationContract]
         String RestartService(Guid uniqueIdentifier);
+
+        [OperationContract]
+        String NonRestartService(Guid uniqueIdentifier);
     }
 }

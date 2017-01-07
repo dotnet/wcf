@@ -19,12 +19,23 @@ namespace WcfService
 
             if (!serviceHostDictionary.TryGetValue(uniqueIdentifier, out host))
             {
-                throw new FaultException(String.Format("Failed to get the ServiceHost from the Dictionary./nThe provided Guid did not match any key in the Dictionary./nThe provided Guid was: {0}", uniqueIdentifier.ToString()));
+                throw new FaultException(String.Format("Failed to get the ServiceHost from the Dictionary.\nThe provided Guid did not match any key in the Dictionary.\nThe provided Guid was: {0}", uniqueIdentifier.ToString()));
             }
             host.Close();
             // cleanup dictionary
             serviceHostDictionary.Remove(uniqueIdentifier);
             return "This should never get back to the client.";
+        }
+
+        public string NonRestartService(Guid uniqueIdentifier)
+        {
+            ServiceHost host;
+
+            if (!serviceHostDictionary.TryGetValue(uniqueIdentifier, out host))
+            {
+                throw new FaultException(String.Format("Failed to get the ServiceHost from the Dictionary.\nThe provided Guid did not match any key in the Dictionary.\nThe provided Guid was: {0}", uniqueIdentifier.ToString()));
+            }
+            return "Success!";
         }
     }
 }
