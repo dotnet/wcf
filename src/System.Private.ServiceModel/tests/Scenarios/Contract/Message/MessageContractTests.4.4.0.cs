@@ -82,4 +82,45 @@ public static class MessageContractTests_4_4_0
                                         i, elementName, array1[i], array2[i]));
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    [Issue(1730, Framework = FrameworkID.NetNative)]
+    public static void Message_With_XmlElementMessageHeader_RoundTrip()
+    {
+        BasicHttpBinding binding = null;
+        IWcfService_4_4_0 clientProxy = null;
+        ChannelFactory<IWcfService_4_4_0> factory = null;
+
+        // *** SETUP *** \\
+        try
+        {
+            binding = new BasicHttpBinding();
+            factory = new ChannelFactory<IWcfService_4_4_0>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_4_4_0_Basic));
+            clientProxy = factory.CreateChannel();
+
+            string testString = "test string";
+            var header = new XmlElementMessageHeader() { HeaderValue = testString };
+            var request = new XmlElementMessageHeaderRequest(header);
+
+            // *** EXECUTE *** \\
+            XmlElementMessageHeaderResponse response = clientProxy.SendRequestWithXmlElementMessageHeader(request);
+
+            // *** VALIDATE *** \\
+            Assert.True(response != null,
+                        $"Expected {nameof(response)} not to be null , but it was null");
+
+            Assert.True(String.Equals(testString, response.TestResult),
+                        $"Expected {nameof(response.TestResult)} = {testString}, actual was {response.TestResult}");
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)clientProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)clientProxy, factory);
+        }
+    }
 }
