@@ -876,7 +876,7 @@ namespace System.ServiceModel.Description
                 member.MemberType = member.MemberType.MakeArrayType();
             if (additionalAttributesProvider != null)
             {
-#if PreNETStandard17
+#if NETStandard13
                 member.XmlAttributes = XmlAttributesHelper.CreateXmlAttributes(additionalAttributesProvider);
 #else
                 member.XmlAttributes = new XmlAttributes(additionalAttributesProvider);
@@ -986,7 +986,7 @@ namespace System.ServiceModel.Description
                 return new XmlSerializer[0];
             }
 
-#if PreNETStandard17
+#if NETStandard13
             Array mappingArray = XmlMappingTypesHelper.InitializeArray(XmlMappingTypesHelper.XmlMappingType, mappings);
             MethodInfo method = typeof(XmlSerializer).GetMethod("FromMappings", new Type[] { XmlMappingTypesHelper.XmlMappingType.MakeArrayType(), typeof(Type) });
             object result = method.Invoke(null, new object[] { mappingArray, type });

@@ -134,7 +134,7 @@ namespace System.Runtime
             _currentChunkSize = 0;
         }
 
-#if PreNETStandard17
+#if NETStandard13
         public virtual IAsyncResult BeginRead(byte[] buffer, int offset, int size, AsyncCallback callback, object state)
 #else
         public override IAsyncResult BeginRead(byte[] buffer, int offset, int size, AsyncCallback callback, object state)
@@ -143,7 +143,7 @@ namespace System.Runtime
             throw Fx.Exception.AsError(new NotSupportedException(InternalSR.ReadNotSupported));
         }
 
-#if PreNETStandard17
+#if NETStandard13
         public virtual int EndRead(IAsyncResult result)
 #else
         public override int EndRead(IAsyncResult result)
@@ -152,7 +152,7 @@ namespace System.Runtime
             throw Fx.Exception.AsError(new NotSupportedException(InternalSR.ReadNotSupported));
         }
 
-#if PreNETStandard17
+#if NETStandard13
         public virtual IAsyncResult BeginWrite(byte[] buffer, int offset, int size, AsyncCallback callback, object state)
 #else
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int size, AsyncCallback callback, object state)
@@ -162,7 +162,7 @@ namespace System.Runtime
             return new CompletedAsyncResult(callback, state);
         }
 
-#if PreNETStandard17
+#if NETStandard13
         public virtual void EndWrite(IAsyncResult result)
 #else
         public override void EndWrite(IAsyncResult result)
@@ -189,7 +189,7 @@ namespace System.Runtime
             _currentChunk = null;
         }
 
-#if PreNETStandard17
+#if NETStandard13
         public virtual void Close()
 #else
         public override void Close()

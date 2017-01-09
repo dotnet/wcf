@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Windows_netcore50_Release|AnyCPU'" />
   <PropertyGroup Condition="'$(TargetGroup)' == 'netcore50'">
-    <DefineConstants>$(DefineConstants);PreNETStandard17</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETStandard13</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetGroup)' == 'netcore50'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>

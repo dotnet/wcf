@@ -16,7 +16,7 @@ using System.Xml.Serialization;
 
 namespace System.Xml.Serialization
 {
-#if PreNETStandard17
+#if NETStandard13
     // The classes in this file are used for invoking APIs that exist in System.Xml.XmlSerializer  
     // via reflection. Those APIs are not supposed to be used by application developers, thus we 
     // cannot add them into public contract.
