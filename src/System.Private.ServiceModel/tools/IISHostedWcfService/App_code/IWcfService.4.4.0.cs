@@ -17,5 +17,9 @@ namespace WcfService
     {
         [OperationContract(Action = "http://tempuri.org/IWcfService_4_4_0/MessageContractRequestReply")]
         ReplyBankingData_4_4_0 MessageContractRequestReply(RequestBankingData_4_4_0 bt);
+        
+        [OperationContract(Action = "http://tempuri.org/IWcfService_4_4_0/SendRequestWithXmlElementMessageHeader")]
+        [XmlSerializerFormat(SupportFaults = true)]
+        XmlElementMessageHeaderResponse SendRequestWithXmlElementMessageHeader(XmlElementMessageHeaderRequest request);
     }
 }

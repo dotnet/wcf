@@ -877,7 +877,14 @@ namespace System.ServiceModel.Dispatcher
 
             protected override void OnWriteHeaderAttributes(XmlDictionaryWriter writer, MessageVersion messageVersion)
             {
+#if NETStandard13
                 throw ExceptionHelper.PlatformNotSupported();
+#else
+                base.WriteHeaderAttributes(writer, messageVersion);
+                XmlDictionaryReader nodeReader = XmlDictionaryReader.CreateDictionaryReader(new XmlNodeReader(headerValue));
+                nodeReader.MoveToContent();
+                writer.WriteAttributes(nodeReader, false);
+#endif
             }
 
             protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)

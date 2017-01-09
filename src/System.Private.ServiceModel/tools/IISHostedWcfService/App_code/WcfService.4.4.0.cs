@@ -35,5 +35,10 @@ namespace WcfService
 
             return bankingData;
         }
+        
+        public XmlElementMessageHeaderResponse SendRequestWithXmlElementMessageHeader(XmlElementMessageHeaderRequest request)
+        {
+            return new XmlElementMessageHeaderResponse(request.TestHeader.HeaderValue);
+        }
     }
 }
