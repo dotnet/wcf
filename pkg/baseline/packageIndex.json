@@ -7,7 +7,8 @@
       ],
       "BaselineVersion": "4.4.0",
       "AssemblyVersionInPackageVersion": {
-        "4.1.1.0": "4.4.0"
+        "4.1.1.0": "4.4.0",
+        "4.1.0.0": "4.4.0"
       }
     },
     "System.ServiceModel.Duplex": {

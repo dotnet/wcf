@@ -876,7 +876,11 @@ namespace System.ServiceModel.Description
                 member.MemberType = member.MemberType.MakeArrayType();
             if (additionalAttributesProvider != null)
             {
+#if NETStandard13
                 member.XmlAttributes = XmlAttributesHelper.CreateXmlAttributes(additionalAttributesProvider);
+#else
+                member.XmlAttributes = new XmlAttributes(additionalAttributesProvider);
+#endif
             }
 
             if (member.XmlAttributes == null)
@@ -982,11 +986,15 @@ namespace System.ServiceModel.Description
                 return new XmlSerializer[0];
             }
 
+#if NETStandard13
             Array mappingArray = XmlMappingTypesHelper.InitializeArray(XmlMappingTypesHelper.XmlMappingType, mappings);
             MethodInfo method = typeof(XmlSerializer).GetMethod("FromMappings", new Type[] { XmlMappingTypesHelper.XmlMappingType.MakeArrayType(), typeof(Type) });
             object result = method.Invoke(null, new object[] { mappingArray, type });
 
             return (XmlSerializer[])result;
+#else
+            return XmlSerializer.FromMappings(mappings, type);
+#endif
         }
 #if FEATURE_NETNATIVE
 

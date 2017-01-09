@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -17,6 +16,7 @@ using System.Xml.Serialization;
 
 namespace System.Xml.Serialization
 {
+#if NETStandard13
     // The classes in this file are used for invoking APIs that exist in System.Xml.XmlSerializer  
     // via reflection. Those APIs are not supposed to be used by application developers, thus we 
     // cannot add them into public contract.
@@ -593,4 +593,5 @@ namespace System.Xml.Serialization
             return typeName + ", " + XmlSerializerAssemblyName;
         }
     }
+#endif
 }
