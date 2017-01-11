@@ -11,8 +11,9 @@
     <CoreFxExpectedPrerelease>beta-24910-02</CoreFxExpectedPrerelease>
   </PropertyGroup>
 
+  <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
-    <AppXRunnerVersion>1.0.3-prerelease-00925-01</AppXRunnerVersion>
+    <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
@@ -49,14 +50,22 @@
 
   <!-- Set up dependencies on packages that aren't found in a BuildInfo. -->
   <ItemGroup>
+    <TargetingPackDependency Include="Microsoft.TargetingPack.NETFramework.v4.5" />
+    <TargetingPackDependency Include="Microsoft.TargetingPack.NETFramework.v4.5.1" />
+    <TargetingPackDependency Include="Microsoft.TargetingPack.NETFramework.v4.5.2" />
     <TargetingPackDependency Include="Microsoft.TargetingPack.NETFramework.v4.6" />
-    <TargetingPackDependency Include="Microsoft.TargetingPack.Private.WinRT" />
+    <TargetingPackDependency Include="Microsoft.TargetingPack.NETFramework.v4.6.1" />
+    <TargetingPackDependency Include="Microsoft.TargetingPack.NETFramework.v4.6.2" />
     <StaticDependency Include="@(TargetingPackDependency)">
       <Version>1.0.1</Version>
     </StaticDependency>
 
+    <StaticDependency Include="Microsoft.TargetingPack.Private.WinRT">
+      <Version>1.0.3</Version>
+    </StaticDependency>
+
     <StaticDependency Include="Microsoft.xunit.netcore.extensions;Microsoft.DotNet.BuildTools.TestSuite">
-      <Version>1.0.0-prerelease-00925-01</Version>
+      <Version>1.0.1-prerelease-01001-04</Version>
     </StaticDependency>
 
     <StaticDependency Include="Microsoft.TargetingPack.Private.NETNative">
@@ -67,5 +76,11 @@
       <PackageId>%(Identity)</PackageId>
       <UpdateStableVersions>true</UpdateStableVersions>
     </DependencyBuildInfo>
+
+    <DependencyBuildInfo Include="uwpRunnerVersion">
+      <PackageId>microsoft.xunit.runner.uwp</PackageId>
+      <Version>$(AppXRunnerVersion)</Version>
+    </DependencyBuildInfo>
+    
   </ItemGroup>
 </Project>
