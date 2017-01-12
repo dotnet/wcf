@@ -11,6 +11,7 @@ using Xunit;
 public static class MessageContractTests_4_4_0
 {
     [WcfFact]
+    [Issue(1745, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void Message_With_MessageHeaders_RoundTrips()
     {

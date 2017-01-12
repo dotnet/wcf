@@ -52,6 +52,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(1717, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     public static void ServiceRestart_Throws_CommunicationException()
     {
