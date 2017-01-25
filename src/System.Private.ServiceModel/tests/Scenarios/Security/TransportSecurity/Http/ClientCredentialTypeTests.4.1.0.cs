@@ -19,7 +19,7 @@ public static class Http_ClientCredentialTypeTests
 #endif
     [WcfFact]
     [OuterLoop]
-    public static void DigestAuthentication_Echo_RoundTrips_String_No_Domain()
+    public static void DigestAuthentication_Echo_RoundTrips_String_No_Domain_Test()
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
