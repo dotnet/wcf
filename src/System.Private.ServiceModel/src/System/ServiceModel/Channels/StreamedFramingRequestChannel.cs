@@ -352,12 +352,13 @@ namespace System.ServiceModel.Channels
                 {
                 }
 
-                public Task<Message> ReceiveReplyAsync(TimeoutHelper timeoutHelper)
+                public async Task<Message> ReceiveReplyAsync(TimeoutHelper timeoutHelper)
                 {
                     try
                     {
                         _connectionReader = new ClientSingletonConnectionReader(_connection, _connectionPoolHelper, _channel._settings);
-                        return _connectionReader.ReceiveAsync(timeoutHelper);
+                        _connectionReader.DoneSending(TimeSpan.Zero);
+                        return await _connectionReader.ReceiveAsync(timeoutHelper);
                     }
                     catch (OperationCanceledException)
                     {
