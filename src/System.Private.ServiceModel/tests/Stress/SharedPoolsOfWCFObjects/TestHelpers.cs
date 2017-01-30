@@ -28,6 +28,15 @@ namespace SharedPoolsOfWCFObjects
         private static StoreName s_clientCertStoreName;
         private static StoreLocation s_clientCertStoreLocation;
 
+        // a negative value signifies "do not use custom connection pool size"
+        private static int s_customConnectionPoolSize;
+
+        // 0 signifies "do not change the default timeout"
+        private static int s_openTimeoutMSeconds;
+        private static int s_closeTimeoutMSeconds;
+        private static int s_receiveTimeoutMSeconds;
+        private static int s_sendTimeoutMSeconds;
+
         private static string s_httpHelloUrl;
         private static string[] s_sh_httpHelloUrls;
         private static string s_httpsHelloUrl;
@@ -75,6 +84,8 @@ namespace SharedPoolsOfWCFObjects
             string clientCertThumbprint,
             StoreName clientCertStoreName,
             StoreLocation clientCertStoreLocation,
+            int openTimeoutMSecs, int closeTimeoutMSecs, int receiveTimeoutMSecs, int sendTimeoutMSecs,
+            int customConnectionPoolSize,
             bool debugMode
             )
         {
@@ -90,6 +101,13 @@ namespace SharedPoolsOfWCFObjects
             s_clientCertThumbprint = clientCertThumbprint;
             s_clientCertStoreLocation = clientCertStoreLocation;
             s_clientCertStoreName = clientCertStoreName;
+
+            s_openTimeoutMSeconds = openTimeoutMSecs;
+            s_closeTimeoutMSeconds = closeTimeoutMSecs;
+            s_receiveTimeoutMSeconds = receiveTimeoutMSecs;
+            s_sendTimeoutMSeconds = sendTimeoutMSecs;
+
+            s_customConnectionPoolSize = customConnectionPoolSize;
 
             //
             // validate security parameters to make it easier to identify incorrect ones
@@ -469,13 +487,13 @@ namespace SharedPoolsOfWCFObjects
         }
         public static Binding CreateHttpBinding()
         {
-            return new BasicHttpBinding();
+            return SetupBindingTimeouts(new BasicHttpBinding());
         }
         public static Binding CreateHttpsBinding()
         {
             var b = new BasicHttpsBinding();
             SetupHttpsBindingSecurity(b);
-            return b;
+            return SetupBindingTimeouts(b);
         }
 
         private static void SetupHttpsBindingSecurity(BasicHttpsBinding binding)
@@ -495,12 +513,25 @@ namespace SharedPoolsOfWCFObjects
         {
             NetHttpBinding netHttp = new NetHttpBinding();
             netHttp.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            return netHttp;
+            return SetupBindingTimeouts(netHttp);
         }
-        public static NetTcpBinding CreateNetTcpBinding()
+
+        public static Binding CreateNetTcpBinding()
+        {
+            return (s_customConnectionPoolSize >= 0)
+                ? CreateCustomNetTcpBinding()
+                : CreateNetTcpBindingImpl();
+        }
+        public static Binding CreateNetTcpBindingImpl()
         {
             var binding = new NetTcpBinding();
             SetupNetTcpBindingSecurity(binding);
+            return SetupBindingTimeouts(binding);
+        }
+        public static Binding CreateCustomNetTcpBinding()
+        {
+            CustomBinding binding = new CustomBinding(CreateNetTcpBindingImpl());
+            binding.Elements.Find<TcpTransportBindingElement>().ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint = s_customConnectionPoolSize;
             return binding;
         }
 
@@ -525,7 +556,7 @@ namespace SharedPoolsOfWCFObjects
             var binding = new BasicHttpBinding();
             binding.MaxReceivedMessageSize = maxStreamSize * 2;
             binding.TransferMode = TransferMode.Streamed;
-            return binding;
+            return SetupBindingTimeouts(binding);
         }
         public static Binding CreateHttpsStreamingBinding(int maxStreamSize)
         {
@@ -533,27 +564,29 @@ namespace SharedPoolsOfWCFObjects
             binding.MaxReceivedMessageSize = maxStreamSize * 2;
             binding.TransferMode = TransferMode.Streamed;
             SetupHttpsBindingSecurity(binding);
-            return binding;
+            return SetupBindingTimeouts(binding);
         }
-        public static CustomBinding CreateCustomNetTcpStreamingBinding(int maxStreamSize)
+
+        public static Binding CreateNetTcpStreamingBinding(int maxStreamSize)
         {
-            NetTcpBinding netTcpBinding = new NetTcpBinding();
-            SetupNetTcpBindingSecurity(netTcpBinding);
-            netTcpBinding.MaxReceivedMessageSize = maxStreamSize * 2;
-            netTcpBinding.TransferMode = TransferMode.Streamed;
+            return (s_customConnectionPoolSize >= 0)
+                ? CreateCustomNetTcpStreamingBinding(maxStreamSize)
+                : CreateNetTcpStreamingBindingImpl(maxStreamSize);
+        }
 
-            CustomBinding binding = new CustomBinding(netTcpBinding);
-            binding.Elements.Find<TcpTransportBindingElement>().ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint = 1000;
-
+        public static Binding CreateCustomNetTcpStreamingBinding(int maxStreamSize)
+        {
+            CustomBinding binding = new CustomBinding(CreateNetTcpStreamingBindingImpl(maxStreamSize));
+            binding.Elements.Find<TcpTransportBindingElement>().ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint = s_customConnectionPoolSize;
             return binding;
         }
-        public static NetTcpBinding CreateNetTcpStreamingBinding(int maxStreamSize)
+        public static Binding CreateNetTcpStreamingBindingImpl(int maxStreamSize)
         {
             NetTcpBinding binding = new NetTcpBinding();
             SetupNetTcpBindingSecurity(binding);
             binding.MaxReceivedMessageSize = maxStreamSize * 2;
             binding.TransferMode = TransferMode.Streamed;
-            return binding;
+            return SetupBindingTimeouts(binding);
         }
         public static Binding CreateNetHttpStreamingBinding(int maxStreamSize)
         {
@@ -562,6 +595,15 @@ namespace SharedPoolsOfWCFObjects
             binding.MaxReceivedMessageSize = maxStreamSize * 2;
             binding.TransferMode = TransferMode.Streamed;
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            return SetupBindingTimeouts(binding);
+        }
+
+        private static T SetupBindingTimeouts<T>(T binding) where T : Binding
+        {
+            if (s_receiveTimeoutMSeconds > 0) binding.ReceiveTimeout = TimeSpan.FromMilliseconds(s_receiveTimeoutMSeconds);
+            if (s_sendTimeoutMSeconds > 0) binding.SendTimeout = TimeSpan.FromMilliseconds(s_sendTimeoutMSeconds);
+            if (s_openTimeoutMSeconds > 0) binding.OpenTimeout = TimeSpan.FromMilliseconds(s_openTimeoutMSeconds);
+            if (s_closeTimeoutMSeconds > 0) binding.CloseTimeout = TimeSpan.FromMilliseconds(s_closeTimeoutMSeconds);
             return binding;
         }
         private static void SetupNetTcpBindingSecurity(NetTcpBinding binding)

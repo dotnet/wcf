@@ -179,6 +179,10 @@ namespace SharedPoolsOfWCFObjects
                     Console.WriteLine("Reporting unavailable. Error: " + e.ToString());
                     return null;
                 }
+                finally
+                {
+                    Console.WriteLine("done");
+                }
             }
         }
     }

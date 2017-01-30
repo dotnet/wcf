@@ -14,8 +14,9 @@ The only purpose of SharedPoolsOfWCFObjectsServer is to provide the correspondin
 1.	Follow links on https://www.microsoft.com/net/download/core#/current to install the latest released .NET Core SDK.
 2.	Make a local clone of WCF repo
 3.	Go to src\System.Private.ServiceModel\tests\Stress\SharedPoolsOfWCFObjects
-4.	Run “dotnet build”
-5.	You may want to run “dotnet publish” to be able to run this app on other machines without installing the core framework. Follow the “dotnet help publish” guidelines to target the desired options. Typically I’d run something like 
+4.	Run “dotnet restore” (before running this you may want to edit the project file to target a different version)
+5.	Run “dotnet build”
+6.	You may want to run “dotnet publish” to be able to run this app on other machines without installing the core framework. Follow the “dotnet help publish” guidelines to target the desired options. Typically I’d run something like 
 ~~~
 dotnet publish -o MyPublishedAppFolder -r win7-x64
 ~~~

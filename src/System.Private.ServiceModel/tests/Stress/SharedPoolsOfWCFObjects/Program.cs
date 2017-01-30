@@ -47,6 +47,11 @@ namespace SharedPoolsOfWCFObjects
         public const string StressRunName = "stressrunname";
         public const string RecycleFrequencyThrottle = "recyclefrequencythrottle";
         public const string StressIterations = "stressiterations";
+        public const string OpenTimeoutMSecs = "opentimeoutmsecs";
+        public const string CloseTimeoutMSecs = "closetimeoutmsecs";
+        public const string ReceiveTimeoutMSecs = "receivetimeoutmsecs";
+        public const string SendTimeoutMSecs = "sendtimeoutmsecs";
+        public const string CustomConnectionPoolSize = "customconnectionpoolsize";
 
         public const string BindingSecurityMode = "bindingsecuritymode";
         public const string HttpClientCredentialType = "httpclientcredentialtype";
@@ -85,6 +90,11 @@ namespace SharedPoolsOfWCFObjects
         private int _paramRecycleFrequencyThrottle = 5000;
         private long _recycleThrottle = 0;
         private long _paramStressIterations = DefaultStressIterations;
+        private int _paramOpenTimeoutMSecs = 0;
+        private int _paramCloseTimeoutMSecs = 0;
+        private int _paramReceiveTimeoutMSecs = 0;
+        private int _paramSendTimeoutMSecs = 0;
+        private int _customConnectionPoolSize = -1;
 
         // Right now this is just a boolean switch to allow more tracing
         private bool _paramDebugMode = false;
@@ -175,8 +185,9 @@ namespace SharedPoolsOfWCFObjects
                 "[HostName:servername] [AppName:serverappname] [Program2Run:Stress|Perf] [Async:true|false] \r\n" +
                 "[Binding:Http|Https|NetTcp|NetHttpBinding] [Test:HelloWorld|Streaming|Duplex|DuplexStreaming] \r\n" +
                 "[SelfHostedPortStartNumber:port#] [SelfHostedPorts:#ports] [DebugMode:false|true] [ReportingUrl:reportingUrl]\r\n" +
+                "[(Open/Close/Receive/Send)TimeoutMSecs:milliseconds] [CustomConnectionPoolSize:size] \r\n" +
                 "    Stress parameters:\r\n" +
-                "[StressRunDuration:minutes] [StressLevel:#threads] \r\n" +
+                "[StressRunDuration:minutes] [StressLevel:#threads] [RecycleFrequencyThrottle:#requests]\r\n" +
                 "    Perf parameters: \r\n" +
                 "[PoolFactoriesForPerfStartup:false|true] [PerfMaxStartupTasks:#tasks] [PerfStartupIterations:#iterations] \r\n" +
                 "[PerfMaxThroughputTasks:#tasks] [PerfThroughputTaskStep:#tasks] [UseSeparateTaskForEachChannel:false|true] \r\n" +
@@ -376,6 +387,36 @@ namespace SharedPoolsOfWCFObjects
                             return ReportWrongArgument(s);
                         }
                         break;
+                    case Parameters.OpenTimeoutMSecs:
+                        if (!Int32.TryParse(p[1], out _paramOpenTimeoutMSecs))
+                        {
+                            return ReportWrongArgument(s);
+                        }
+                        break;
+                    case Parameters.CloseTimeoutMSecs:
+                        if (!Int32.TryParse(p[1], out _paramCloseTimeoutMSecs))
+                        {
+                            return ReportWrongArgument(s);
+                        }
+                        break;
+                    case Parameters.ReceiveTimeoutMSecs:
+                        if (!Int32.TryParse(p[1], out _paramReceiveTimeoutMSecs))
+                        {
+                            return ReportWrongArgument(s);
+                        }
+                        break;
+                    case Parameters.SendTimeoutMSecs:
+                        if (!Int32.TryParse(p[1], out _paramSendTimeoutMSecs))
+                        {
+                            return ReportWrongArgument(s);
+                        }
+                        break;
+                    case Parameters.CustomConnectionPoolSize:
+                        if (!Int32.TryParse(p[1], out _customConnectionPoolSize))
+                        {
+                            return ReportWrongArgument(s);
+                        }
+                        break;
                     case Parameters.ReportingUrl:
                         _paramReportingUrl = p[1];
                         break;
@@ -413,6 +454,11 @@ namespace SharedPoolsOfWCFObjects
                 clientCertThumbprint: _paramClientCertThumbprint,
                 clientCertStoreName: _paramCertStoreName,
                 clientCertStoreLocation: _paramCertStoreLocation,
+                openTimeoutMSecs: _paramOpenTimeoutMSecs,
+                closeTimeoutMSecs: _paramCloseTimeoutMSecs,
+                receiveTimeoutMSecs: _paramReceiveTimeoutMSecs,
+                sendTimeoutMSecs: _paramSendTimeoutMSecs,
+                customConnectionPoolSize: _customConnectionPoolSize,
                 debugMode: _paramDebugMode);
 
             // Rather than passing additional parameters to the test via generic types we use a static method
