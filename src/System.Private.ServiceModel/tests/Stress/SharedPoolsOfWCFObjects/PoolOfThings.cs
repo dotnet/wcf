@@ -316,7 +316,9 @@ namespace SharedPoolsOfWCFObjects
             }
             if (instance != null && !_instanceValidator(instance))
             {
-                TestUtils.ReportFailure("returning bad instance", debugBreak: true);
+                // This is really not a failure because the same instance may be obtained by multiple threads
+                // so the validation will fail if one of these threads closes it before others had a chance to validate
+                TestUtils.ReportFailure("returning bad instance", debugBreak: false);
             }
             return instance;
         }

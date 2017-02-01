@@ -28,6 +28,8 @@ namespace SharedPoolsOfWCFObjects
         static CreateAndCloseFactoryAndChannelFullCycleTest()
         {
             s_test = new TestTemplate();
+            // we do not expect exceptions here since we're not closing anything during usage
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = false;
         }
 
         // A full cycle of creating a pool of channel factories, using each factory to create
@@ -72,6 +74,8 @@ namespace SharedPoolsOfWCFObjects
         static CreateAndCloseFactoryAndChannelFullCycleTestAsync()
         {
             s_test = new TestTemplate();
+            // we do not expect exceptions here since we're not closing anything during usage
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = false;
         }
         public static async Task<int> CreateFactoriesAndChannelsUseAllOnceCloseAllAsync()
         {
@@ -126,6 +130,8 @@ namespace SharedPoolsOfWCFObjects
         static PooledFactories()
         {
             s_test = new TestTemplate();
+            // we do not expect exceptions here since we're not closing anything during usage
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = false;
             s_pooledChannelFactories = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<ChannelFactory<ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories,
@@ -160,6 +166,8 @@ namespace SharedPoolsOfWCFObjects
         static PooledFactoriesAsync()
         {
             s_test = new TestTemplate();
+            // we do not expect exceptions here since we're not closing anything during usage
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = false;
             s_pooledChannelFactories = StaticDisposablesHelper.AddDisposable(
                 new PoolOfAsyncThings<ChannelFactory<ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories,
@@ -206,6 +214,8 @@ namespace SharedPoolsOfWCFObjects
         static PooledFactoriesAndChannels()
         {
             s_test = new TestTemplate();
+            // we do not expect exceptions here since we're not closing anything during usage
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = false;
             s_pooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
                 new PoolOfThings<FactoryAndPoolOfItsObjects<ChannelFactory<ChannelType>, ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories, // # of pooled FactoryAndPoolOfItsObjects
@@ -268,6 +278,8 @@ namespace SharedPoolsOfWCFObjects
         static PooledFactoriesAndChannelsAsync()
         {
             s_test = new TestTemplate();
+            // we do not expect exceptions here since we're not closing anything during usage
+            (s_test as IExceptionPolicy).RelaxedExceptionPolicy = false;
             s_pooledFactoriesAndChannels = StaticDisposablesHelper.AddDisposable(
                 new PoolOfAsyncThings<FactoryAndPoolOfItsAsyncObjects<ChannelFactory<ChannelType>, ChannelType>>(
                     maxSize: s_test.TestParameters.MaxPooledFactories, // # of pooled FactoryAndPoolOfItsObjects
