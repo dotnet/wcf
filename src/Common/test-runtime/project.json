@@ -1,48 +1,1090 @@
 {
-  "dependencies": {
-    "coveralls.io": "1.4",
-    "OpenCover": "4.6.519",
-    "ReportGenerator": "2.4.3",
-    "Microsoft.NETCore.TestHost": "1.2.0-beta-24911-02",
-    "Microsoft.NETCore.Runtime.CoreCLR": "1.2.0-beta-24911-02",
-    "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
-    "xunit.console.netcore": "1.0.3-prerelease-00925-01",
-    "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
-    "System.Collections.Concurrent": "4.4.0-beta-24911-02",
-    "System.Console": "4.4.0-beta-24911-02",
-    "System.Diagnostics.Contracts": "4.4.0-beta-24911-02",
-    "System.Diagnostics.Tracing": "4.4.0-beta-24911-02",
-    "System.Linq": "4.4.0-beta-24911-02",
-    "System.Linq.Parallel": "4.4.0-beta-24911-02",
-    "System.Linq.Queryable": "4.4.0-beta-24911-02",
-    "System.Net.Http": "4.4.0-beta-24911-02",
-    "System.Net.WebHeaderCollection": "4.4.0-beta-24911-02",
-    "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
-    "System.Reflection.DispatchProxy": "4.4.0-beta-24911-02",
-    "System.Reflection.Extensions": "4.4.0-beta-24911-02",
-    "System.ServiceModel.Duplex": "4.4.0-beta-25217-01",
-    "System.ServiceModel.Http": "4.4.0-beta-25217-01",
-    "System.ServiceModel.NetTcp": "4.4.0-beta-25217-01",
-    "System.ServiceModel.Primitives": "4.4.0-beta-25217-01",
-    "System.ServiceModel.Security": "4.4.0-beta-25217-01",
-    "System.Runtime.Extensions": "4.4.0-beta-24911-02",
-    "System.Runtime.Serialization.Primitives": "4.4.0-beta-24911-02",
-    "System.Runtime.Serialization.Xml": "4.4.0-beta-24911-02",
-    "System.Threading.Timer": "4.4.0-beta-24911-02",
-    "System.Xml.XmlSerializer": "4.4.0-beta-24911-02"
-  },
+  "dependencies": {},
   "frameworks": {
+    "netstandard2.0": {
+      "dependencies": {
+        "coveralls.io": "1.4",
+        "OpenCover": "4.6.519",
+        "ReportGenerator": "2.4.3",
+        "Microsoft.NETCore.TestHost": "1.2.0-beta-24911-02",
+        "NETStandard.Library": "2.0.0-preview1-25131-01",
+        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
+        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
+        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
+        "System.Reflection.DispatchProxy": {
+          "version": "4.4.0-beta-24911-02",
+          "exclude": "all"
+        },
+        "System.ServiceModel.Duplex": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.Http": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.NetTcp": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.Primitives": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.Security": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        }
+      }
+    },
     "netstandard1.3": {
-      "System.Net.Security": "4.4.0-beta-24605-03"
+      "dependencies": {
+        "System.Net.Security": "4.4.0-beta-24911-02",
+        "coveralls.io": "1.4",
+        "OpenCover": "4.6.519",
+        "ReportGenerator": "2.4.3",
+        "Microsoft.NETCore.TestHost": "1.2.0-beta-24911-02",
+        "Microsoft.NETCore.Runtime.CoreCLR": "1.2.0-beta-24911-02",
+        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
+        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
+        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
+        "System.Collections.Concurrent": "4.4.0-beta-24911-02",
+        "System.Console": "4.4.0-beta-24911-02",
+        "System.Diagnostics.Contracts": "4.4.0-beta-24911-02",
+        "System.Diagnostics.Tracing": "4.4.0-beta-24911-02",
+        "System.Linq": "4.4.0-beta-24911-02",
+        "System.Linq.Parallel": "4.4.0-beta-24911-02",
+        "System.Linq.Queryable": "4.4.0-beta-24911-02",
+        "System.Net.Http": "4.4.0-beta-24911-02",
+        "System.Net.WebHeaderCollection": "4.4.0-beta-24911-02",
+        "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
+        "System.Reflection.DispatchProxy": "4.4.0-beta-24911-02",
+        "System.Reflection.Extensions": "4.4.0-beta-24911-02",
+        "System.ServiceModel.Duplex": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Http": "4.4.0-beta-25217-01",
+        "System.ServiceModel.NetTcp": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Primitives": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Security": "4.4.0-beta-25217-01",
+        "System.Runtime.Extensions": "4.4.0-beta-24911-02",
+        "System.Runtime.Serialization.Primitives": "4.4.0-beta-24911-02",
+        "System.Runtime.Serialization.Xml": "4.4.0-beta-24911-02",
+        "System.Threading.Timer": "4.4.0-beta-24911-02",
+        "System.Xml.XmlSerializer": "4.4.0-beta-24911-02"
+      }
     },
     "netcoreapp1.1": {
-      "System.Net.Security": "4.4.0-beta-24605-03"
+      "dependencies": {
+        "System.Net.Security": "4.4.0-beta-24911-02",
+        "coveralls.io": "1.4",
+        "OpenCover": "4.6.519",
+        "ReportGenerator": "2.4.3",
+        "Microsoft.NETCore.TestHost": "1.2.0-beta-24911-02",
+        "Microsoft.NETCore.Runtime.CoreCLR": "1.2.0-beta-24911-02",
+        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
+        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
+        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
+        "System.Collections.Concurrent": "4.4.0-beta-24911-02",
+        "System.Console": "4.4.0-beta-24911-02",
+        "System.Diagnostics.Contracts": "4.4.0-beta-24911-02",
+        "System.Diagnostics.Tracing": "4.4.0-beta-24911-02",
+        "System.Linq": "4.4.0-beta-24911-02",
+        "System.Linq.Parallel": "4.4.0-beta-24911-02",
+        "System.Linq.Queryable": "4.4.0-beta-24911-02",
+        "System.Net.Http": "4.4.0-beta-24911-02",
+        "System.Net.WebHeaderCollection": "4.4.0-beta-24911-02",
+        "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
+        "System.Reflection.DispatchProxy": "4.4.0-beta-24911-02",
+        "System.Reflection.Extensions": "4.4.0-beta-24911-02",
+        "System.ServiceModel.Duplex": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Http": "4.4.0-beta-25217-01",
+        "System.ServiceModel.NetTcp": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Primitives": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Security": "4.4.0-beta-25217-01",
+        "System.Runtime.Extensions": "4.4.0-beta-24911-02",
+        "System.Runtime.Serialization.Primitives": "4.4.0-beta-24911-02",
+        "System.Runtime.Serialization.Xml": "4.4.0-beta-24911-02",
+        "System.Threading.Timer": "4.4.0-beta-24911-02",
+        "System.Xml.XmlSerializer": "4.4.0-beta-24911-02"
+      }
+    },
+    "netcoreapp2.0": {
+      "dependencies": {
+        "coveralls.io": "1.4",
+        "OpenCover": "4.6.519",
+        "ReportGenerator": "2.4.3",
+        "Microsoft.NETCore.TestHost": "1.2.0-beta-24911-02",
+        "Microsoft.NETCore.App": "2.0.0-beta-001624-00",
+        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
+        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
+        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
+        "System.ServiceModel.Duplex": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.Http": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.NetTcp": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.Primitives": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "System.ServiceModel.Security": {
+          "version": "4.4.0-beta-25217-01",
+          "exclude": "all"
+        },
+        "Microsoft.CSharp": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "Microsoft.VisualBasic": {
+          "version": "10.1.0",
+          "exclude": "all"
+        },
+        "Microsoft.Win32.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "Microsoft.Win32.Registry": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.AppContext": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Buffers": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Collections": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Collections.Concurrent": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Collections.Immutable": {
+          "version": "1.3.0",
+          "exclude": "all"
+        },
+        "System.ComponentModel": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.ComponentModel.Annotations": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Console": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Diagnostics.Debug": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Diagnostics.DiagnosticSource": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Diagnostics.FileVersionInfo": {
+          "version": "4.0.0",
+          "exclude": "all"
+        },
+        "System.Diagnostics.Process": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Diagnostics.StackTrace": {
+          "version": "4.0.1",
+          "exclude": "all"
+        },
+        "System.Diagnostics.Tools": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Diagnostics.Tracing": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Dynamic.Runtime": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Globalization": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Globalization.Calendars": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Globalization.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO.Compression.ZipFile": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO.FileSystem": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO.FileSystem.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO.FileSystem.Watcher": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO.MemoryMappedFiles": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.IO.UnmanagedMemoryStream": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Linq": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Linq.Expressions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Linq.Parallel": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Linq.Queryable": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Net.NameResolution": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Net.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Net.Requests": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Net.Sockets": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Net.WebHeaderCollection": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Numerics.Vectors": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.ObjectModel": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection.DispatchProxy": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection.Emit": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection.Emit.ILGeneration": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection.Emit.Lightweight": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection.Metadata": {
+          "version": "1.4.1",
+          "exclude": "all"
+        },
+        "System.Reflection.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Reflection.TypeExtensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Resources.Reader": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Resources.ResourceManager": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Runtime": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Runtime.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Runtime.Handles": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Runtime.InteropServices": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Runtime.InteropServices.RuntimeInformation": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Runtime.Loader": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Runtime.Numerics": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Claims": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Cryptography.Algorithms": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Cryptography.Cng": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Cryptography.Csp": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Cryptography.Encoding": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Cryptography.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Cryptography.X509Certificates": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Principal": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Security.Principal.Windows": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Text.Encoding": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Text.Encoding.CodePages": {
+          "version": "4.0.1",
+          "exclude": "all"
+        },
+        "System.Text.Encoding.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Text.RegularExpressions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading.Overlapped": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading.Tasks": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading.Tasks.Dataflow": {
+          "version": "4.7.0",
+          "exclude": "all"
+        },
+        "System.Threading.Tasks.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading.Tasks.Parallel": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading.Thread": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading.ThreadPool": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Threading.Timer": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Xml.ReaderWriter": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Xml.XDocument": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "System.Xml.XmlDocument": {
+          "version": "4.0.1",
+          "exclude": "all"
+        },
+        "System.Xml.XPath": {
+          "version": "4.0.1",
+          "exclude": "all"
+        },
+        "System.Xml.XPath.XDocument": {
+          "version": "4.0.1",
+          "exclude": "all"
+        },
+        "runtime.any.System.Collections": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Diagnostics.Tools": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Diagnostics.Tracing": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Globalization": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Globalization.Calendars": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.IO": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Reflection": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Reflection.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Reflection.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Resources.ResourceManager": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Runtime": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Runtime.Handles": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Runtime.InteropServices": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Text.Encoding": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Text.Encoding.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Threading.Tasks": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.any.System.Threading.Timer": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.native.System.Security.Cryptography.Apple": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.runtime.native.System": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.runtime.native.System.Net.Http": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.runtime.native.System.Net.Security": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.Microsoft.Win32.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.System.Console": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.System.Diagnostics.Debug": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.System.IO.FileSystem": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.System.Net.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.System.Net.Sockets": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.System.Private.Uri": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.unix.System.Runtime.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win.Microsoft.Win32.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win.System.Console": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win.System.Diagnostics.Debug": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win.System.IO.FileSystem": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win.System.Net.Primitives": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win.System.Net.Sockets": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win.System.Runtime.Extensions": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x64.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x64.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x64.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x64.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x64.Microsoft.NETCore.Windows.ApiSets": {
+          "version": "1.0.1",
+          "exclude": "all"
+        },
+        "runtime.win7-x64.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x86.Microsoft.NETCore.DotNetHost": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x86.Microsoft.NETCore.DotNetHostPolicy": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x86.Microsoft.NETCore.DotNetHostResolver": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x86.Microsoft.NETCore.Jit": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x86.Microsoft.NETCore.Runtime.CoreCLR": {
+          "version": "1.1.0",
+          "exclude": "all"
+        },
+        "runtime.win7-x86.Microsoft.NETCore.Windows.ApiSets": {
+          "version": "1.0.1",
+          "exclude": "all"
+        },
+        "runtime.win7-x86.runtime.native.System.IO.Compression": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win7.System.Private.Uri": {
+          "version": "4.3.0",
+          "exclude": "all"
+        },
+        "runtime.win8-x64.Microsoft.NETCore.Windows.ApiSets": {
+          "version": "1.0.1",
+          "exclude": "all"
+        },
+        "runtime.win8-x86.Microsoft.NETCore.Windows.ApiSets": {
+          "version": "1.0.1",
+          "exclude": "all"
+        },
+        "runtime.win81-x64.Microsoft.NETCore.Windows.ApiSets": {
+          "version": "1.0.1",
+          "exclude": "all"
+        },
+        "runtime.win81-x86.Microsoft.NETCore.Windows.ApiSets": {
+          "version": "1.0.1",
+          "exclude": "all"
+        }
+      }
     },
     "uap10.0": {
       "dependencies": {
         "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
         "System.Console": "4.4.0-beta-24911-02",
-        "microsoft.xunit.runner.uwp": "1.0.3-prerelease-00921-01"
+        "microsoft.xunit.runner.uwp": "1.0.3-prerelease-00921-01",
+        "coveralls.io": "1.4",
+        "OpenCover": "4.6.519",
+        "ReportGenerator": "2.4.3",
+        "Microsoft.NETCore.TestHost": "1.2.0-beta-24911-02",
+        "Microsoft.NETCore.Runtime.CoreCLR": "1.2.0-beta-24911-02",
+        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
+        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
+        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
+        "System.Collections.Concurrent": "4.4.0-beta-24911-02",
+        "System.Diagnostics.Contracts": "4.4.0-beta-24911-02",
+        "System.Diagnostics.Tracing": "4.4.0-beta-24911-02",
+        "System.Linq": "4.4.0-beta-24911-02",
+        "System.Linq.Parallel": "4.4.0-beta-24911-02",
+        "System.Linq.Queryable": "4.4.0-beta-24911-02",
+        "System.Net.Http": "4.4.0-beta-24911-02",
+        "System.Net.WebHeaderCollection": "4.4.0-beta-24911-02",
+        "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
+        "System.Reflection.DispatchProxy": "4.4.0-beta-24911-02",
+        "System.Reflection.Extensions": "4.4.0-beta-24911-02",
+        "System.ServiceModel.Duplex": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Http": "4.4.0-beta-25217-01",
+        "System.ServiceModel.NetTcp": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Primitives": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Security": "4.4.0-beta-25217-01",
+        "System.Runtime.Extensions": "4.4.0-beta-24911-02",
+        "System.Runtime.Serialization.Primitives": "4.4.0-beta-24911-02",
+        "System.Runtime.Serialization.Xml": "4.4.0-beta-24911-02",
+        "System.Threading.Timer": "4.4.0-beta-24911-02",
+        "System.Xml.XmlSerializer": "4.4.0-beta-24911-02"
       }
     }
   },
@@ -85,6 +1127,25 @@
     },
     "coreFx.Test.netcoreapp1.1": {
       "netcoreapp1.1": [
+        "win7-x86",
+        "win7-x64",
+        "win10-arm64",
+        "osx.10.10-x64",
+        "centos.7-x64",
+        "debian.8-x64",
+        "rhel.7-x64",
+        "ubuntu.14.04-x64",
+        "ubuntu.16.04-x64",
+        "ubuntu.16.10-x64",
+        "fedora.23-x64",
+        "fedora.24-x64",
+        "linux-x64",
+        "opensuse.13.2-x64",
+        "opensuse.42.1-x64"
+      ]
+    },
+    "coreFx.Test.netcoreapp2.0": {
+      "netcoreapp2.0": [
         "win7-x86",
         "win7-x64",
         "win10-arm64",

@@ -370,6 +370,13 @@
         <NuGetTargetMoniker>.NETStandard,Version=v1.7</NuGetTargetMoniker>
       </PropertyGroup>
     </When>
+    <When Condition="'$(TargetGroup)'=='netstandard2.0'">
+      <PropertyGroup>
+        <PackageTargetFramework>netstandard2.0</PackageTargetFramework>
+        <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+        <NuGetTargetMoniker>.NETStandard,Version=v2.0</NuGetTargetMoniker>
+      </PropertyGroup>
+    </When>
     <When Condition="'$(TargetGroup)'=='netstandard13aot'">
       <PropertyGroup>
         <PackageTargetFramework>netstandard1.3</PackageTargetFramework>
@@ -499,10 +506,14 @@
 
   <!-- Default Test platform to deploy the netstandard compiled tests to -->
   <PropertyGroup>
-    <DefaultTestTFM>netcoreapp1.1</DefaultTestTFM>
+    <DefaultTestTFM>netcoreapp2.0</DefaultTestTFM>
     <TestTFM Condition="'$(TestTFM)'==''">$(DefaultTestTFM)</TestTFM>
     <!-- we default FilterToTestTFM to DefaultTestTFM if it is not explicity defined -->
     <FilterToTestTFM Condition="'$(FilterToTestTFM)'==''">$(DefaultTestTFM)</FilterToTestTFM>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TestNugetTargetMoniker Condition="'$(TestTFM)' == 'netcoreapp2.0'">.NETCoreApp,Version=v2.0</TestNugetTargetMoniker>
   </PropertyGroup>
 
   <PropertyGroup>

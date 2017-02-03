@@ -106,5 +106,7 @@
       <ReferencePath Include="$(PackagesDir)runtime.win7-x64.Microsoft.NETCore.Runtime.CoreCLR\1.2.0-$(CoreClrExpectedPrerelease)\runtimes\win7-x64\lib\netstandard1.0\System.Private.CoreLib.dll"/>
     </ItemGroup>
   </Target>
+  
+  <Import Condition="'$(TargetGroup)'=='netstandard2.0'" Project="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\NETStandard.Library.targets" />
 
 </Project>
