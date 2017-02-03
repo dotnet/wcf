@@ -1092,6 +1092,7 @@ namespace System.ServiceModel.Channels
         public System.ServiceModel.Channels.MessageHeaderInfo this[int index] { get { return default(System.ServiceModel.Channels.MessageHeaderInfo); } }
         public System.Xml.UniqueId MessageId { get { return default(System.Xml.UniqueId); } set { } }
         public System.ServiceModel.Channels.MessageVersion MessageVersion { get { return default(System.ServiceModel.Channels.MessageVersion); } }
+        public System.ServiceModel.Channels.UnderstoodHeaders UnderstoodHeaders { get { return default(System.ServiceModel.Channels.UnderstoodHeaders); } }
         public System.Xml.UniqueId RelatesTo { get { return default(System.Xml.UniqueId); } set { } }
         public System.ServiceModel.EndpointAddress ReplyTo { get { return default(System.ServiceModel.EndpointAddress); } set { } }
         public System.Uri To { get { return default(System.Uri); } set { } }
@@ -1212,6 +1213,15 @@ namespace System.ServiceModel.Channels
         public virtual long MaxReceivedMessageSize { get { return default(long); } set { } }
         public abstract string Scheme { get; }
         public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default(T); }
+    }
+    public sealed partial class UnderstoodHeaders : System.Collections.Generic.IEnumerable<System.ServiceModel.Channels.MessageHeaderInfo>
+    {
+        internal UnderstoodHeaders() { }
+        public void Add(System.ServiceModel.Channels.MessageHeaderInfo headerInfo) { }
+        public bool Contains(System.ServiceModel.Channels.MessageHeaderInfo headerInfo) { return default(bool); }
+        public System.Collections.Generic.IEnumerator<System.ServiceModel.Channels.MessageHeaderInfo> GetEnumerator() { return default(System.Collections.Generic.IEnumerator<System.ServiceModel.Channels.MessageHeaderInfo>); }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return default(System.Collections.IEnumerator); }
+        public void Remove(System.ServiceModel.Channels.MessageHeaderInfo headerInfo) { }
     }
 }
 namespace System.ServiceModel.Description
