@@ -9,6 +9,7 @@
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <CoreFxExpectedPrerelease>beta-24911-02</CoreFxExpectedPrerelease>
+    <StandardExpectedPrerelease>beta-25003-02</StandardExpectedPrerelease>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
@@ -31,6 +32,7 @@
     <RemoteDependencyBuildInfo Include="CoreFx">
       <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
+      <DisabledPackages>NETStandard.Library</DisabledPackages>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreClr">
       <BuildInfoPath>$(BaseDotNetBuildInfo)coreclr/$(DependencyBranch)</BuildInfoPath>
@@ -71,6 +73,10 @@
     <StaticDependency Include="Microsoft.TargetingPack.Private.NETNative">
       <Version>1.1.0-beta-24607-01</Version>
     </StaticDependency>
+    <DependencyBuildInfo Include="NETStandard.Library">
+      <PackageId>NETStandard.Library</PackageId>
+      <Version>2.0.0-$(StandardExpectedPrerelease)</Version>
+    </DependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(StaticDependency)">
       <PackageId>%(Identity)</PackageId>
@@ -81,6 +87,6 @@
       <PackageId>microsoft.xunit.runner.uwp</PackageId>
       <Version>$(AppXRunnerVersion)</Version>
     </DependencyBuildInfo>
-    
+
   </ItemGroup>
 </Project>
