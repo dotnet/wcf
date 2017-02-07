@@ -92,13 +92,27 @@ namespace System.ServiceModel.Channels
 
         protected static void OnReceiveTimeout(SocketConnection socketConnection)
         {
-            socketConnection.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, socketConnection._receiveTimeout), TransferOperation.Read);
+            try
+            {
+                socketConnection.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, socketConnection._receiveTimeout), TransferOperation.Read);
+            }
+            catch (SocketException)
+            {
+                // Guard against unhandled SocketException in timer callbacks
+            }
         }
 
         protected static void OnSendTimeout(SocketConnection socketConnection)
         {
-            socketConnection.Abort(4,	// TraceEventType.Warning
-                SR.Format(SR.SocketAbortedSendTimedOut, socketConnection._sendTimeout), TransferOperation.Write);
+            try
+            {
+                socketConnection.Abort(4,	// TraceEventType.Warning
+                    SR.Format(SR.SocketAbortedSendTimedOut, socketConnection._sendTimeout), TransferOperation.Write);
+            }
+            catch (SocketException)
+            {
+                // Guard against unhandled SocketException in timer callbacks
+            }
         }
 
         public void Abort()
