@@ -34,9 +34,7 @@ namespace System.ServiceModel.Description
         {
             if (operation == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("operation");
-#pragma warning suppress 56506 // Declaring contract cannot be null
             Reflector parentReflector = new Reflector(operation.DeclaringContract.Namespace, operation.DeclaringContract.ContractType);
-#pragma warning suppress 56506 // parentReflector cannot be null
             _reflector = parentReflector.ReflectOperation(operation, attribute ?? new XmlSerializerFormatAttribute());
         }
 
