@@ -42,6 +42,18 @@ namespace System.Collections.Generic {
            void IList.Insert(int index, object value) { }
            void IList.Remove(object value) { }
       }
+    public partial class KeyedByTypeCollection<TItem> : System.Collections.ObjectModel.KeyedCollection<Type, TItem>
+    {
+        public KeyedByTypeCollection() { }
+        public KeyedByTypeCollection(IEnumerable<TItem> items) { }
+        public T Find<T>() { return default(T); }
+        public T Remove<T>() { return default(T); }
+        public System.Collections.ObjectModel.Collection<T> FindAll<T>() { return default(System.Collections.ObjectModel.Collection<T>); }
+        public System.Collections.ObjectModel.Collection<T> RemoveAll<T>() { return default(System.Collections.ObjectModel.Collection<T>); }
+        protected override Type GetKeyForItem(TItem item) { return default(Type); }
+        protected override void InsertItem(int index, TItem item) { }
+        protected override void SetItem(int index, TItem item) { }
+    }
 }
 namespace System.IdentityModel.Selectors {
   public abstract partial class X509CertificateValidator {
@@ -1380,6 +1392,8 @@ namespace System.ServiceModel.Description
     public partial class OperationDescription
     {
         public OperationDescription(string name, System.ServiceModel.Description.ContractDescription declaringContract) { }
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public System.Collections.Generic.KeyedByTypeCollection<System.ServiceModel.Description.IOperationBehavior> Behaviors { get { return default(System.Collections.Generic.KeyedByTypeCollection<System.ServiceModel.Description.IOperationBehavior>); } }
         public System.ServiceModel.Description.ContractDescription DeclaringContract { get { return default(System.ServiceModel.Description.ContractDescription); } set { } }
         public System.ServiceModel.Description.FaultDescriptionCollection Faults { get { return default(System.ServiceModel.Description.FaultDescriptionCollection); } }
         public bool IsOneWay { get { return default(bool); } }
@@ -1406,6 +1420,16 @@ namespace System.ServiceModel.Description
         public System.ServiceModel.Description.ContractDescription Contract { get { return default(System.ServiceModel.Description.ContractDescription); } set { } }
         public System.Collections.ObjectModel.KeyedCollection<System.Type, System.ServiceModel.Description.IEndpointBehavior> EndpointBehaviors { get { return default(System.Collections.ObjectModel.KeyedCollection<System.Type, System.ServiceModel.Description.IEndpointBehavior>); } }
         public string Name { get { return default(string); } set { } }
+    }
+    public partial class XmlSerializerOperationBehavior : System.ServiceModel.Description.IOperationBehavior
+    {
+        public XmlSerializerOperationBehavior(System.ServiceModel.Description.OperationDescription operation) { }
+        public XmlSerializerOperationBehavior(System.ServiceModel.Description.OperationDescription operation, System.ServiceModel.XmlSerializerFormatAttribute attribute) { }
+        public System.ServiceModel.XmlSerializerFormatAttribute XmlSerializerFormatAttribute { get { return default(System.ServiceModel.XmlSerializerFormatAttribute); } }
+        void System.ServiceModel.Description.IOperationBehavior.Validate(System.ServiceModel.Description.OperationDescription description) { }
+        void System.ServiceModel.Description.IOperationBehavior.AddBindingParameters(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Channels.BindingParameterCollection parameters) { }
+        void System.ServiceModel.Description.IOperationBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.DispatchOperation dispatch) { }
+        void System.ServiceModel.Description.IOperationBehavior.ApplyClientBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.ClientOperation proxy) { }
     }
 }
 namespace System.ServiceModel.Dispatcher
