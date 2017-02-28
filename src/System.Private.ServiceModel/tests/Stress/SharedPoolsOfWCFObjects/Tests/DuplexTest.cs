@@ -54,12 +54,12 @@ namespace SharedPoolsOfWCFObjects
             var duplexCallback = new DuplexCallback();
             return TestHelpers.CreateDuplexChannelFactory<WcfService1.IDuplexService>(CreateEndPointAddress(), CreateBinding(), duplexCallback);
         }
-        public override Func<WcfService1.IDuplexService, int> UseChannel()
+        public override Func<WcfService1.IDuplexService, int> UseChannelImpl()
         {
             return (channel) =>
             {
                 int callbacks = _params.CallbacksToExpect;
-                int result = _useChannelStats.CallFuncAndRecordStats(() => { return channel.GetAsyncCallbackData(1, callbacks); }, RelaxedExceptionPolicy);
+                int result = channel.GetAsyncCallbackData(1, callbacks);
                 // we can't guarantee the correctness of the result in case of relaxed exception policy
                 if (!RelaxedExceptionPolicy)
                 {
@@ -72,12 +72,12 @@ namespace SharedPoolsOfWCFObjects
                 return callbacks + 1;
             };
         }
-        public override Func<WcfService1.IDuplexService, Task<int>> UseAsyncChannel()
+        public override Func<WcfService1.IDuplexService, Task<int>> UseAsyncChannelImpl()
         {
             return async (channel) =>
             {
                 int callbacks = _params.CallbacksToExpect;
-                int result = await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync<int>(() => channel.GetAsyncCallbackDataAsync(1, callbacks), RelaxedExceptionPolicy);
+                int result = await channel.GetAsyncCallbackDataAsync(1, callbacks);
 
                 // we can't guarantee the correctness of the result in case of relaxed exception policy
                 if (!RelaxedExceptionPolicy)

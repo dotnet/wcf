@@ -23,6 +23,8 @@ namespace SharedPoolsOfWCFObjects
         private Func<Task<IStressDataCollector>> _ensureReportingChannelFunc = null;
 
         private RunId _rsRunId = null;
+        private int _heartBeatFailures = 0;
+        private const int MaxHeartBeatFailuresToReport = 10;
 
         public RunReportingService(string url)
         {
@@ -79,7 +81,15 @@ namespace SharedPoolsOfWCFObjects
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("HeartBeat Failed " + e.ToString());
+                    var hb = Interlocked.Increment(ref _heartBeatFailures);
+                    if (hb < MaxHeartBeatFailuresToReport)
+                    {
+                        Console.WriteLine("HeartBeat Failed " + e.ToString());
+                    }
+                    else if (hb == MaxHeartBeatFailuresToReport)
+                    {
+                        Console.WriteLine("Too many heartbeat failures, ignoring from now.");
+                    }
                 }
             }
         }

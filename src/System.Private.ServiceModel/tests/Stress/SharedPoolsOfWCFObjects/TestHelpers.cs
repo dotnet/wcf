@@ -851,6 +851,14 @@ namespace SharedPoolsOfWCFObjects
             }
             return false;
         }
+
+        public static int SendTimeoutMs
+        {
+            get
+            {
+                return s_sendTimeoutMSeconds;
+            }
+        }
     }
 
 

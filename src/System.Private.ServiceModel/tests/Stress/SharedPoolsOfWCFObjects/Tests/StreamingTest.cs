@@ -110,7 +110,7 @@ namespace SharedPoolsOfWCFObjects
 
     public class StreamingTest<StreamingService, TestParams> : CommonTest<StreamingService, TestParams>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, IStreamingTestParams, new()
-        where StreamingService : IStreamingService
+        where StreamingService : class, IStreamingService
     {
         public override Binding CreateBinding()
         {
@@ -122,10 +122,9 @@ namespace SharedPoolsOfWCFObjects
             return TestHelpers.CreateEndPointStreamingAddress();
         }
 
-        public override Func<StreamingService, Task<int>> UseAsyncChannel()
+        public override Func<StreamingService, Task<int>> UseAsyncChannelImpl()
         {
-            return async (channel) =>
-                await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(() => RunAllScenariosAsync(channel), RelaxedExceptionPolicy);
+            return async (channel) => await RunAllScenariosAsync(channel);
         }
         public async Task<int> RunAllScenariosAsync(StreamingService channel)
         {
@@ -187,12 +186,9 @@ namespace SharedPoolsOfWCFObjects
             }
         }
 
-        public override Func<StreamingService, int> UseChannel()
+        public override Func<StreamingService, int> UseChannelImpl()
         {
-            return (channel) =>
-            {
-                return _useChannelStats.CallFuncAndRecordStats(() => RunAllScenarios(channel), RelaxedExceptionPolicy);
-            };
+            return (channel) => RunAllScenarios(channel);
         }
         public int RunAllScenarios(StreamingService channel)
         {

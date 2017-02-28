@@ -20,6 +20,8 @@ namespace SharedPoolsOfWCFObjects
         // For perf we do not want to ignore/replace pooled factories and channels that did not pass ITestTemplate validation checks
         public bool ReplaceInvalidPooledFactories { get { return false; } }
         public bool ReplaceInvalidPooledChannels { get { return false; } }
+        // No timeout tracking for perf tests
+        public bool TrackServiceCallTimeouts { get { return false; } }
     }
 
     // This class represents a relaxed failure criteria currently used for stress tests.
@@ -40,6 +42,8 @@ namespace SharedPoolsOfWCFObjects
         // For some stress tests we might want to ignore/replace pooled factories and channels that did not pass ITestTemplate validation checks
         virtual public bool ReplaceInvalidPooledFactories { get { return true; } }
         virtual public bool ReplaceInvalidPooledChannels { get { return true; } }
+        // All stress tests track all service call timeouts
+        public bool TrackServiceCallTimeouts { get { return true; } }
     }
 
     public class CommonStressTestParams : CommonStressExceptionPolicyParam, IPoolTestParameter, IStatsCollectingTestParameter
@@ -82,6 +86,7 @@ namespace SharedPoolsOfWCFObjects
 
     public abstract class CommonTest<ChannelType, TestParams> : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy
     where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, new()
+    where ChannelType: class
     {
         protected TestParams _params;
         protected CallStats _createChannelStats;
@@ -93,7 +98,7 @@ namespace SharedPoolsOfWCFObjects
         protected CallStats _useChannelAsyncStats;
         protected CallStats _openChannelStats;
         protected CallStats _openChannelAsyncStats;
-
+        OperationTimeoutTracker<ChannelType> _timeoutTracker;
 
         public CommonTest()
         {
@@ -107,6 +112,17 @@ namespace SharedPoolsOfWCFObjects
             _closeFactoryAsyncStats = new CallStats(_params.SunnyDayMaxStatsSamples, _params.RainyDayMaxStatsSamples, _params.ExceptionHandler);
             _openChannelStats = new CallStats(_params.SunnyDayMaxStatsSamples, _params.RainyDayMaxStatsSamples, _params.ExceptionHandler);
             _openChannelAsyncStats = new CallStats(_params.SunnyDayMaxStatsSamples, _params.RainyDayMaxStatsSamples, _params.ExceptionHandler);
+
+            // Figure out the service calls timeout value
+            int timeoutMs = TestHelpers.SendTimeoutMs;
+            if (timeoutMs <= 0)
+            {
+                // If the timeout was not set then one alternative (to just using the usual default timeout)
+                // would be to wait for a binding to be created and then getting its timeout and only then initialize _timeoutTracker. 
+                // This involves some additional synchronization which we want to avoid here.
+                timeoutMs = 60000; 
+            }
+            _timeoutTracker = new OperationTimeoutTracker<ChannelType>(timeoutMs, ReportTimeout);
         }
 
         public TestParams TestParameters
@@ -172,8 +188,61 @@ namespace SharedPoolsOfWCFObjects
                 : _closeChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(() =>
                     TestHelpers.CloseChannelAsync(channel), RelaxedExceptionPolicy);
         }
-        public abstract Func<ChannelType, int> UseChannel();
-        public abstract Func<ChannelType, Task<int>> UseAsyncChannel();
+        virtual public Func<ChannelType, int> UseChannel()
+        {
+            if (_params.TrackServiceCallTimeouts)
+            {
+                return (channel) =>
+                {
+                    using (_timeoutTracker.StartTrackingOperation(channel))
+                    {
+                        return _useChannelStats.CallFuncAndRecordStats(
+                            () => UseChannelImpl()(channel),
+                            RelaxedExceptionPolicy);
+                    }
+                };
+            }
+            else
+            {
+                return (channel) =>
+                {
+                    return _useChannelStats.CallFuncAndRecordStats(
+                        () => UseChannelImpl()(channel),
+                        RelaxedExceptionPolicy);
+                };
+            }
+        }
+        public abstract Func<ChannelType, int> UseChannelImpl();
+
+        virtual public Func<ChannelType, Task<int>> UseAsyncChannel()
+        {
+            if (_params.TrackServiceCallTimeouts)
+            {
+                // this func -
+                return async (channel) =>
+                {
+                    // - track timeouts of -
+                    using (_timeoutTracker.StartTrackingOperation(channel))
+                    {
+                        // - the test calls wrapped in timing tracking stats
+                        return await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(
+                            () => UseAsyncChannelImpl()(channel),
+                            RelaxedExceptionPolicy);
+                    }
+                };
+            }
+            else
+            {
+                return async (channel) =>
+                {
+                    return await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(
+                        () => UseAsyncChannelImpl()(channel),
+                        RelaxedExceptionPolicy);
+                };
+            }
+        }
+
+        public abstract Func<ChannelType, Task<int>> UseAsyncChannelImpl();
 
         virtual public bool ValidateChannel(ChannelType channel)
         {
@@ -186,6 +255,18 @@ namespace SharedPoolsOfWCFObjects
         virtual public bool ValidateFactory(ChannelFactory<ChannelType> factory)
         {
             return (RelaxedExceptionPolicy && _params.ReplaceInvalidPooledFactories) ? TestHelpers.IsCommunicationObjectUsable<ChannelType>(factory) : true;
+        }
+
+        static void ReportTimeout(ChannelType[] requestList)
+        {
+            if (requestList.Length > 0)
+            {
+                string type = typeof(ChannelType).ToString();
+                Console.WriteLine();
+                string message = type + " requests timed out: " + requestList.Length;
+                TestUtils.ReportFailure(message: message, debugBreak: true);
+                GC.KeepAlive(requestList);
+            }
         }
     }
 }
