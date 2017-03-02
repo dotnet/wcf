@@ -44,7 +44,7 @@ namespace System.ServiceModel
         protected override System.TimeSpan DefaultCloseTimeout { get { return default(System.TimeSpan); } }
         protected override System.TimeSpan DefaultOpenTimeout { get { return default(System.TimeSpan); } }
         public System.Threading.SynchronizationContext SynchronizationContext { get { return default(System.Threading.SynchronizationContext); } set { } }
-        System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext> System.ServiceModel.IExtensibleObject<System.ServiceModel.InstanceContext>.Extensions { get { return default(System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext>); } }
+        public System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext> Extensions { get { return default(System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext>); } }
         public object GetServiceInstance(System.ServiceModel.Channels.Message message) { return default(object); }
         protected override void OnAbort() { }
         protected override System.IAsyncResult OnBeginClose(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }

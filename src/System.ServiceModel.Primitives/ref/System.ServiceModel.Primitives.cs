@@ -303,6 +303,17 @@ namespace System.ServiceModel
         public string Type { get { return default(string); } set { } }
         public override string ToString() { return default(string); }
     }
+    public sealed partial class ExtensionCollection<T> : System.Collections.Generic.SynchronizedCollection<System.ServiceModel.IExtension<T>>, System.ServiceModel.IExtensionCollection<T> where T : System.ServiceModel.IExtensibleObject<T>
+    {
+        public ExtensionCollection(T owner) { }
+        public ExtensionCollection(T owner, object syncRoot) : base(syncRoot) { }
+        protected override void ClearItems() { }
+        public E Find<E>() { return default(E); }
+        public System.Collections.ObjectModel.Collection<E> FindAll<E>() { return default(System.Collections.ObjectModel.Collection<E>); }
+        protected override void InsertItem(int index, System.ServiceModel.IExtension<T> item) { }
+        protected override void RemoveItem(int index) { }
+        protected override void SetItem(int index, System.ServiceModel.IExtension<T> item) { }
+    }
     public partial class FaultCode
     {
         public FaultCode(string name) { }
