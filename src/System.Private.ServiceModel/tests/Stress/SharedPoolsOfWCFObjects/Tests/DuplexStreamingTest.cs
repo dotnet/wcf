@@ -43,7 +43,7 @@ namespace SharedPoolsOfWCFObjects
 
     internal class DuplexStreamingTest<StreamingService, TestParams> : StreamingTest<StreamingService, TestParams>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, IDuplexStreamingTestParams, IStreamingTestParams, new()
-        where StreamingService : IDuplexStreamingService
+        where StreamingService : class, IDuplexStreamingService
     {
         public override EndpointAddress CreateEndPointAddress()
         {

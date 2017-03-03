@@ -129,7 +129,6 @@ namespace SharedPoolsOfWCFObjects
 
         public static void Main(string[] args)
         {
-            Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64);
             var test = new Program();
 
             if (test.ProcessRunOptions(args))

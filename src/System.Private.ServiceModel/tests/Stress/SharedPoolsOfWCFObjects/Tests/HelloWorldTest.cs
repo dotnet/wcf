@@ -11,19 +11,19 @@ namespace SharedPoolsOfWCFObjects
     public class HelloWorldTest<TestParams> : CommonTest<WcfService1.IService1, TestParams>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, new()
     {
-        public override Func<WcfService1.IService1, int> UseChannel()
+        public override Func<WcfService1.IService1, int> UseChannelImpl()
         {
             return (channel) =>
             {
-                _useChannelStats.CallActionAndRecordStats(() => channel.GetData(44), RelaxedExceptionPolicy);
+                channel.GetData(44);
                 return 1;
             };
         }
-        public override Func<WcfService1.IService1, Task<int>> UseAsyncChannel()
+        public override Func<WcfService1.IService1, Task<int>> UseAsyncChannelImpl()
         {
             return async (channel) =>
             {
-                await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(() => channel.GetDataAsync(44), RelaxedExceptionPolicy);
+                await channel.GetDataAsync(44);
                 return 1;
             };
         }
@@ -32,12 +32,11 @@ namespace SharedPoolsOfWCFObjects
     public class HelloWorldAPMTest<TestParams> : HelloWorldTest<TestParams>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, new()
     {
-        public override Func<WcfService1.IService1, Task<int>> UseAsyncChannel()
+        public override Func<WcfService1.IService1, Task<int>> UseAsyncChannelImpl()
         {
             return async (channel) =>
             {
-                await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(() => Task.Factory.FromAsync(channel.BeginGetData, channel.EndGetData, 44, null),
-                    RelaxedExceptionPolicy);
+                await Task.Factory.FromAsync(channel.BeginGetData, channel.EndGetData, 44, null);
                 return 1;
             };
         }

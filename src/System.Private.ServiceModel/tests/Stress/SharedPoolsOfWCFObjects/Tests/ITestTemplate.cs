@@ -42,6 +42,7 @@ namespace SharedPoolsOfWCFObjects
         Func<Exception, bool> ExceptionHandler { get; }
         bool ReplaceInvalidPooledFactories { get; }
         bool ReplaceInvalidPooledChannels { get; }
+        bool TrackServiceCallTimeouts { get; }
     }
 
     public interface IPoolTestParameter
