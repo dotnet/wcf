@@ -2,7 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
@@ -24,8 +26,8 @@ namespace SharedPoolsOfWCFObjects
         StreamNone = 0,
         StreamOut = 1,
         StreamIn = 2,
-        StreamEcho = 4,
-        StreamAll = StreamOut | StreamIn | StreamEcho
+        StreamEcho = 3,
+        StreamAll = 4
     };
 
     public class StreamingStressTestParams : CommonStressTestParams, IStreamingTestParams
@@ -67,7 +69,6 @@ namespace SharedPoolsOfWCFObjects
         public static StreamingScenarios StreamingScenario { get; set; }
     }
 
-
     public class StreamingPerfStartupTestParams : StreamingPerfTestParamsBase
     {
         public override int CurrentStreamSize
@@ -107,11 +108,37 @@ namespace SharedPoolsOfWCFObjects
         override public int MaxPooledFactories { get { return 12; } }
     }
 
+    public class StreamingRequestContext<ChannelType> : BasicRequestContext<ChannelType>
+    {
+        public StreamingScenarios TestScenario { get; set; }
+        public int StreamSize { get; set; }
+        public int BufferSize { get; set; }
+        public bool VerifyStreamContent { get; set; }
+    }
 
-    public class StreamingTest<StreamingService, TestParams> : CommonTest<StreamingService, TestParams>
+    public class StreamingTest<StreamingService, TestParams> : CommonMultiCallTest<StreamingService, TestParams, StreamingRequestContext<StreamingService>>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, IStreamingTestParams, new()
         where StreamingService : class, IStreamingService
     {
+        private static Func<StreamingRequestContext<StreamingService>, Task<int>>[][] s_asyncFuncs = new Func<StreamingRequestContext<StreamingService>, Task<int>>[][]
+        {
+            new Func<StreamingRequestContext<StreamingService>, Task<int>>[] { },                           // StreamNone = 0
+            new Func<StreamingRequestContext<StreamingService>, Task<int>>[] { TestGetIntFromStreamAsync }, // StreamOut = 1
+            new Func<StreamingRequestContext<StreamingService>, Task<int>>[] { TestGetStreamFromIntAsync }, // StreamIn = 2
+            new Func<StreamingRequestContext<StreamingService>, Task<int>>[] { TestEchoStreamAsync },       // StreamEcho = 3
+            new Func<StreamingRequestContext<StreamingService>, Task<int>>[] {
+                TestGetIntFromStreamAsync, TestGetStreamFromIntAsync, TestEchoStreamAsync                   // StreamAll = 4
+            }
+        };
+        private static Func<StreamingRequestContext<StreamingService>, int>[][] s_syncFuncs = new Func<StreamingRequestContext<StreamingService>, int>[][]
+        {
+            new Func<StreamingRequestContext<StreamingService>, int>[]{ },                                  // StreamNone = 0
+            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetStreamFromInt },             // StreamOut = 1
+            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetIntFromStream },             // StreamIn = 2
+            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestEchoStream },                   // StreamEcho = 3
+            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetStreamFromInt, TestGetIntFromStream, TestEchoStream }    // StreamAll = 4
+        };
+
         public override Binding CreateBinding()
         {
             return TestHelpers.CreateStreamingBinding(_params.MaxStreamSize);
@@ -122,136 +149,118 @@ namespace SharedPoolsOfWCFObjects
             return TestHelpers.CreateEndPointStreamingAddress();
         }
 
-        public override Func<StreamingService, Task<int>> UseAsyncChannelImpl()
+        public override Func<StreamingRequestContext<StreamingService>, int>[] UseChannelImplFuncs()
         {
-            return async (channel) => await RunAllScenariosAsync(channel);
+            return s_syncFuncs[(int)StreamingPerfTestParamsBase.StreamingScenario];
         }
-        public async Task<int> RunAllScenariosAsync(StreamingService channel)
-        {
-            var requestedStreamSize = _params.CurrentStreamSize;
-            var bufSize = _params.CurrentBufferSize;
-            int requestsMade = 0;
-            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamIn) != 0)
-            {
-                await TestGetStreamFromIntAsync(channel, requestedStreamSize, bufSize);
-                requestsMade++;
-            }
-            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamOut) != 0)
-            {
-                await TestGetIntFromStreamAsync(channel, requestedStreamSize, bufSize);
-                requestsMade++;
-            }
-            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamEcho) != 0)
-            {
-                await TestEchoStreamAsync(channel, requestedStreamSize, bufSize);
-                requestsMade++;
-            }
 
-            return requestsMade;
-        }
-        private async Task TestGetStreamFromIntAsync(StreamingService channel, int requestedStreamSize, int bufSize)
+        public override Func<StreamingRequestContext<StreamingService>, Task<int>>[] UseChannelAsyncImplFuncs()
         {
-            using (var stream = await channel.GetStreamFromIntAsync(requestedStreamSize))
+            return s_asyncFuncs[(int)StreamingPerfTestParamsBase.StreamingScenario];
+        }
+        protected override StreamingRequestContext<StreamingService> CaptureRequestContext(StreamingService channel)
+        {
+            return new StreamingRequestContext<StreamingService>()
             {
-                var receivedStreamSize = await VerifiableStream.VerifyStreamAsync(stream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
-                if (receivedStreamSize != requestedStreamSize)
+                Channel = channel,
+                // skip InitialCommunicationState, StartTime, and TestScenario - they get updated before each service call
+                StreamSize = _params.CurrentStreamSize,
+                BufferSize = _params.CurrentBufferSize,
+                VerifyStreamContent = _params.VerifyStreamContent
+            };
+        }
+        protected override string PrintRequestDetails(StreamingRequestContext<StreamingService> requestDetails)
+        {
+            return base.PrintRequestDetails(requestDetails) + 
+                String.Format (", TestScenario {0}, StreamSize {1}", requestDetails.TestScenario, requestDetails.StreamSize);
+        }
+
+        private static async Task<int> TestGetStreamFromIntAsync(StreamingRequestContext<StreamingService> details)
+        {
+            details.TestScenario = StreamingScenarios.StreamIn; // update the scenario
+            using (var stream = await details.Channel.GetStreamFromIntAsync(details.StreamSize))
+            {
+                var receivedStreamSize = await VerifiableStream.VerifyStreamAsync(stream, details.StreamSize, details.BufferSize, details.VerifyStreamContent);
+                if (receivedStreamSize != details.StreamSize)
                 {
-                    VerifiableStream.ReportIncorrectStreamSize(receivedStreamSize, requestedStreamSize);
+                    VerifiableStream.ReportIncorrectStreamSize(receivedStreamSize, details.StreamSize);
                 }
             }
+            return 1;
         }
-        private async Task TestGetIntFromStreamAsync(StreamingService channel, int requestedStreamSize, int bufSize)
+        private static async Task<int> TestGetIntFromStreamAsync(StreamingRequestContext<StreamingService> details)
         {
-            using (var stream = new VerifiableStream(requestedStreamSize))
+            details.TestScenario = StreamingScenarios.StreamOut;
+            using (var stream = new VerifiableStream(details.StreamSize))
             {
-                int receivedSize = await channel.GetIntFromStreamAsync(stream);
-                if (receivedSize != requestedStreamSize)
+                int receivedSize = await details.Channel.GetIntFromStreamAsync(stream);
+                if (receivedSize != details.StreamSize)
                 {
-                    VerifiableStream.ReportIncorrectStreamSize(receivedSize, requestedStreamSize);
+                    VerifiableStream.ReportIncorrectStreamSize(receivedSize, details.StreamSize);
                 }
             }
+            return 1;
         }
-        private async Task TestEchoStreamAsync(StreamingService channel, int requestedStreamSize, int bufSize)
+        private static async Task<int> TestEchoStreamAsync(StreamingRequestContext<StreamingService> details)
         {
-            using (var stream = new VerifiableStream(requestedStreamSize))
+            details.TestScenario = StreamingScenarios.StreamEcho;
+            using (var stream = new VerifiableStream(details.StreamSize))
             {
-                using (var receivedStream = await channel.EchoStreamAsync(stream))
+                using (var receivedStream = await details.Channel.EchoStreamAsync(stream))
                 {
-                    var receivedSize = await VerifiableStream.VerifyStreamAsync(receivedStream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
-                    if (receivedSize != requestedStreamSize)
+                    var receivedSize = await VerifiableStream.VerifyStreamAsync(receivedStream, details.StreamSize, details.BufferSize, details.VerifyStreamContent);
+                    if (receivedSize != details.StreamSize)
                     {
-                        VerifiableStream.ReportIncorrectStreamSize(receivedSize, requestedStreamSize);
+                        VerifiableStream.ReportIncorrectStreamSize(receivedSize, details.StreamSize);
                     }
                 }
             }
+            return 1;
         }
-
-        public override Func<StreamingService, int> UseChannelImpl()
+        private static int TestGetStreamFromInt(StreamingRequestContext<StreamingService> details)
         {
-            return (channel) => RunAllScenarios(channel);
-        }
-        public int RunAllScenarios(StreamingService channel)
-        {
-            var requestedStreamSize = _params.CurrentStreamSize;
-            // Are variations of the buffer size important? 
-            // Maybe, since just like the stream size they contribute to timing variations...
-            var bufSize = _params.CurrentBufferSize;
-            int requestsMade = 0;
-
-            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamIn) != 0)
+            details.TestScenario = StreamingScenarios.StreamIn;
+            bool verifyStreamContent = details.VerifyStreamContent;
+            using (var stream = details.Channel.GetStreamFromInt(details.StreamSize))
             {
-                TestGetStreamFromInt(channel, requestedStreamSize, bufSize);
-                requestsMade++;
-            }
-            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamOut) != 0)
-            {
-                TestGetIntFromStream(channel, requestedStreamSize, bufSize);
-                requestsMade++;
-            }
-            if ((StreamingPerfTestParamsBase.StreamingScenario & StreamingScenarios.StreamEcho) != 0)
-            {
-                TestEchoStream(channel, requestedStreamSize, bufSize);
-                requestsMade++;
-            }
-            return requestsMade;
-        }
-        private void TestGetStreamFromInt(StreamingService channel, int requestedStreamSize, int bufSize)
-        {
-            using (var stream = channel.GetStreamFromInt(requestedStreamSize))
-            {
-                var receivedStreamSize = VerifiableStream.VerifyStream(stream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
-                if (receivedStreamSize != requestedStreamSize)
+                var receivedStreamSize = VerifiableStream.VerifyStream(stream, details.StreamSize, details.BufferSize, verifyStreamContent);
+                if (receivedStreamSize != details.StreamSize)
                 {
-                    VerifiableStream.ReportIncorrectStreamSize(receivedStreamSize, requestedStreamSize);
+                    VerifiableStream.ReportIncorrectStreamSize(receivedStreamSize, details.StreamSize);
                 }
             }
+            return 1;
         }
-        private void TestGetIntFromStream(StreamingService channel, int requestedStreamSize, int bufSize)
+        private static int TestGetIntFromStream(StreamingRequestContext<StreamingService> details)
         {
-            using (var stream = new VerifiableStream(requestedStreamSize))
+            details.TestScenario = StreamingScenarios.StreamOut;
+            using (var stream = new VerifiableStream(details.StreamSize))
             {
-                int receivedSize = channel.GetIntFromStream(stream);
+                int receivedSize = details.Channel.GetIntFromStream(stream);
 
-                if (receivedSize != requestedStreamSize)
+                if (receivedSize != details.StreamSize)
                 {
-                    VerifiableStream.ReportIncorrectStreamSize(receivedSize, requestedStreamSize);
+                    VerifiableStream.ReportIncorrectStreamSize(receivedSize, details.StreamSize);
                 }
             }
+            return 1;
         }
-        private void TestEchoStream(StreamingService channel, int requestedStreamSize, int bufSize)
+        private static int TestEchoStream(StreamingRequestContext<StreamingService> details)
         {
-            using (var stream = new VerifiableStream(requestedStreamSize))
+            details.TestScenario = StreamingScenarios.StreamEcho;
+            using (var stream = new VerifiableStream(details.StreamSize))
             {
-                using (var receivedStream = channel.EchoStream(stream))
+                using (var receivedStream = details.Channel.EchoStream(stream))
                 {
-                    var receivedSize = VerifiableStream.VerifyStream(receivedStream, requestedStreamSize, bufSize, _params.VerifyStreamContent);
+                    var receivedSize = VerifiableStream.VerifyStream(receivedStream, details.StreamSize, details.BufferSize, details.VerifyStreamContent);
 
-                    if (receivedSize != requestedStreamSize)
+                    if (receivedSize != details.StreamSize)
                     {
-                        VerifiableStream.ReportIncorrectStreamSize(receivedSize, requestedStreamSize);
+                        VerifiableStream.ReportIncorrectStreamSize(receivedSize, details.StreamSize);
                     }
                 }
             }
+            return 1;
         }
     }
     public class VerifiableStream : Stream

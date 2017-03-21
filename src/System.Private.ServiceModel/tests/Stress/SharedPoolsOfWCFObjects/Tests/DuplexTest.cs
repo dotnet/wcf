@@ -42,7 +42,7 @@ namespace SharedPoolsOfWCFObjects
         public int CallbacksToExpect { get { return NumberOfDuplexCallbacks; } }
     }
 
-    public class DuplexTest<TestParams> : CommonTest<WcfService1.IDuplexService, TestParams>
+    public class DuplexTest<TestParams> : CommonTest<WcfService1.IDuplexService, TestParams, BasicRequestContext<IDuplexService>>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, IDuplexParams, new()
     {
         public override EndpointAddress CreateEndPointAddress()
@@ -54,43 +54,37 @@ namespace SharedPoolsOfWCFObjects
             var duplexCallback = new DuplexCallback();
             return TestHelpers.CreateDuplexChannelFactory<WcfService1.IDuplexService>(CreateEndPointAddress(), CreateBinding(), duplexCallback);
         }
-        public override Func<WcfService1.IDuplexService, int> UseChannelImpl()
+        public override int UseChannelImpl(IDuplexService channel)
         {
-            return (channel) =>
+            int callbacks = _params.CallbacksToExpect;
+            int result = channel.GetAsyncCallbackData(1, callbacks);
+            // we can't guarantee the correctness of the result in case of relaxed exception policy
+            if (!RelaxedExceptionPolicy)
             {
-                int callbacks = _params.CallbacksToExpect;
-                int result = channel.GetAsyncCallbackData(1, callbacks);
-                // we can't guarantee the correctness of the result in case of relaxed exception policy
-                if (!RelaxedExceptionPolicy)
+                int expected = (1 + callbacks) * callbacks / 2;
+                if (result != expected)
                 {
-                    int expected = (1 + callbacks) * callbacks / 2;
-                    if (result != expected)
-                    {
-                        TestUtils.ReportFailure("Unexpected result. Expected: " + expected + " result: " + result);
-                    }
+                    TestUtils.ReportFailure("Unexpected result. Expected: " + expected + " result: " + result);
                 }
-                return callbacks + 1;
-            };
+            }
+            return callbacks + 1;
         }
-        public override Func<WcfService1.IDuplexService, Task<int>> UseAsyncChannelImpl()
+        public override async Task<int> UseAsyncChannelImpl(IDuplexService channel)
         {
-            return async (channel) =>
-            {
-                int callbacks = _params.CallbacksToExpect;
-                int result = await channel.GetAsyncCallbackDataAsync(1, callbacks);
+            int callbacks = _params.CallbacksToExpect;
+            int result = await channel.GetAsyncCallbackDataAsync(1, callbacks);
 
-                // we can't guarantee the correctness of the result in case of relaxed exception policy
-                if (!RelaxedExceptionPolicy)
+            // we can't guarantee the correctness of the result in case of relaxed exception policy
+            if (!RelaxedExceptionPolicy)
+            {
+                int expected = (1 + callbacks) * callbacks / 2;
+                if (result != expected)
                 {
-                    int expected = (1 + callbacks) * callbacks / 2;
-                    if (result != expected)
-                    {
-                        TestUtils.ReportFailure("Unexpected result. Expected: " + expected + "result: " + result);
-                    }
+                    TestUtils.ReportFailure("Unexpected result. Expected: " + expected + "result: " + result);
                 }
-                // count our call to GetAsyncCallbackDataAsync and each callback call as a separate request
-                return callbacks + 1;
-            };
+            }
+            // count our call to GetAsyncCallbackDataAsync and each callback call as a separate request
+            return callbacks + 1;
         }
     }
 

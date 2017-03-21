@@ -18,9 +18,9 @@ namespace SharedPoolsOfWCFObjects
     public class OperationTimeoutTracker<TOperationToken>
         where TOperationToken : class
     {
-        int _timeoutMs;
-        Action<TOperationToken[]> _timeoutCallback;
-        TimeoutTracker _currentTimeoutTracker;
+        private int _timeoutMs;
+        private Action<TOperationToken[]> _timeoutCallback;
+        private TimeoutTracker _currentTimeoutTracker;
 
         /// <summary>
         /// All operations tracked by this instance will need to have
@@ -57,12 +57,12 @@ namespace SharedPoolsOfWCFObjects
             return _currentTimeoutTracker.TrackOperationTimeout(t);
         }
 
-        public class TimeoutTracker : IDisposable
+        private class TimeoutTracker : IDisposable
         {
-            ITrackingList<TOperationToken> _list = new CircularArrayList<TOperationToken>();
-            Timer _timer;
-            int _disposed;
-            Action<TOperationToken[]> _timeoutCallback;
+            private ITrackingList<TOperationToken> _list = new CircularArrayList<TOperationToken>();
+            private Timer _timer;
+            private int _disposed;
+            private Action<TOperationToken[]> _timeoutCallback;
 
             public TimeoutTracker(int timeoutMs, Action<TOperationToken[]> timeoutCallback)
             {
@@ -98,10 +98,10 @@ namespace SharedPoolsOfWCFObjects
             }
         }
 
-        public class StopTrackingToken : IDisposable
+        private class StopTrackingToken : IDisposable
         {
-            ITrackingList<TOperationToken> _list;
-            int _index;
+            private ITrackingList<TOperationToken> _list;
+            private int _index;
             public StopTrackingToken(ITrackingList<TOperationToken> list, int index)
             {
                 _list = list;
@@ -112,76 +112,76 @@ namespace SharedPoolsOfWCFObjects
                 _list.Remove(_index);
             }
         }
-    }
 
-    public interface ITrackingList<T>
-    {
-        int Add(T t);
-        void Remove(int i);
-        T[] ToArray();
-    }
-
-    /// <summary>
-    /// This is a specialized collection to handle fast rate of adding/removing elements.
-    /// To avoid serializing threads its Add and Remove operations are lock free.
-    /// </summary>
-    public class CircularArrayList<T> : ITrackingList<T>
-        where T : class
-    {
-        const int Capacity = 1000;
-        const int MaxCapacity = 8000;
-        // Small initial capacity may significantly impact its performance when going over its size.
-        // To deal with this it has a self-adjusting capacity multiplier for future collection instances.
-        static int s_capacityMultiplier = 1;
-        int _sizeAdjustedOnce = 0;
-        int _currentSize = Capacity * s_capacityMultiplier;
-        T[] _list = new T[Capacity * s_capacityMultiplier];
-        long _currIdx = 0;
-
-        public int Add(T t)
+        private interface ITrackingList<T>
         {
-            int idx = 0;
-            long startIdx = _currIdx;
-            do
-            {
-                // There are several different strategies for choosing the initial index in the array
-                // Depending on size, NUMA architecture, and cuncurrency some may work better than others...
-                idx = (int)(Interlocked.Increment(ref _currIdx) % _currentSize);
+            int Add(T t);
+            void Remove(int i);
+            T[] ToArray();
+        }
 
-                // A context switch can cause a large difference between _currIdx and startIdx so this check is not reliable
-                // but we still treat it as a sign that we need to increase the array capacity next time
-                if (idx > startIdx + _currentSize)
+        /// <summary>
+        /// This is a specialized collection to handle fast rate of adding/removing elements.
+        /// To avoid serializing threads its Add and Remove operations are lock free.
+        /// </summary>
+        private class CircularArrayList<T> : ITrackingList<T>
+            where T : class
+        {
+            private const int Capacity = 1000;
+            private const int MaxCapacity = 8000;
+            // Small initial capacity may significantly impact its performance when going over its size.
+            // To deal with this it has a self-adjusting capacity multiplier for future collection instances.
+            private static int s_capacityMultiplier = 1;
+            private int _sizeAdjustedOnce = 0;
+            private int _currentSize = Capacity * s_capacityMultiplier;
+            private T[] _list = new T[Capacity * s_capacityMultiplier];
+            private long _currIdx = 0;
+
+            public int Add(T t)
+            {
+                int idx = 0;
+                long startIdx = _currIdx;
+                do
                 {
-                    if (Interlocked.CompareExchange(ref _sizeAdjustedOnce, 1, 0) == 0)
+                    // There are several different strategies for choosing the initial index in the array
+                    // Depending on size, NUMA architecture, and cuncurrency some may work better than others...
+                    idx = (int)(Interlocked.Increment(ref _currIdx) % _currentSize);
+
+                    // A context switch can cause a large difference between _currIdx and startIdx so this check is not reliable
+                    // but we still treat it as a sign that we need to increase the array capacity next time
+                    if (idx > startIdx + _currentSize)
                     {
-                        if (Capacity * s_capacityMultiplier < MaxCapacity)
+                        if (Interlocked.CompareExchange(ref _sizeAdjustedOnce, 1, 0) == 0)
                         {
-                            s_capacityMultiplier *= 2;
+                            if (Capacity * s_capacityMultiplier < MaxCapacity)
+                            {
+                                s_capacityMultiplier *= 2;
+                            }
                         }
                     }
                 }
-            }
-            while (_list[idx] != null);
+                while (_list[idx] != null);
 
-            // If a thread makes a full loop ahead of the other one then both threads get the same index
-            // so we use interlocked compare exchange to take care of this case
-            if (Interlocked.CompareExchange(ref _list[idx], t, null) == null)
+                // If a thread makes a full loop ahead of the other one then both threads get the same index
+                // so we use interlocked compare exchange to take care of this case
+                if (Interlocked.CompareExchange(ref _list[idx], t, null) == null)
+                {
+                    return idx;
+                }
+                // This thread will have to try again
+                return Add(t);
+            }
+
+            public void Remove(int index)
             {
-                return idx;
+                Debug.Assert(_list[index] != null, "Missing element");
+                _list[index] = null;
             }
-            // This thread will have to try again
-            return Add(t);
-        }
 
-        public void Remove(int index)
-        {
-            Debug.Assert(_list[index] != null, "Missing element");
-            _list[index] = null;
-        }
-
-        public T[] ToArray()
-        {
-            return _list.Where(_ => _ != null).ToArray();
+            public T[] ToArray()
+            {
+                return _list.Where(_ => _ != null).ToArray();
+            }
         }
     }
 }

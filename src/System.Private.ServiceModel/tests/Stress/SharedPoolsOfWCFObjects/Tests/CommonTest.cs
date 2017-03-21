@@ -2,8 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Diagnostics;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SharedPoolsOfWCFObjects
@@ -21,7 +24,7 @@ namespace SharedPoolsOfWCFObjects
         public bool ReplaceInvalidPooledFactories { get { return false; } }
         public bool ReplaceInvalidPooledChannels { get { return false; } }
         // No timeout tracking for perf tests
-        public bool TrackServiceCallTimeouts { get { return false; } }
+        virtual public bool TrackServiceCallTimeouts { get { return false; } }
     }
 
     // This class represents a relaxed failure criteria currently used for stress tests.
@@ -43,7 +46,7 @@ namespace SharedPoolsOfWCFObjects
         virtual public bool ReplaceInvalidPooledFactories { get { return true; } }
         virtual public bool ReplaceInvalidPooledChannels { get { return true; } }
         // All stress tests track all service call timeouts
-        public bool TrackServiceCallTimeouts { get { return true; } }
+        virtual public bool TrackServiceCallTimeouts { get { return true; } }
     }
 
     public class CommonStressTestParams : CommonStressExceptionPolicyParam, IPoolTestParameter, IStatsCollectingTestParameter
@@ -84,9 +87,24 @@ namespace SharedPoolsOfWCFObjects
         public int PreemptiveCloseFactoryTimeout { get { return 0; } }
     }
 
-    public abstract class CommonTest<ChannelType, TestParams> : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy
+    public class BasicRequestContext<ChannelType>
+    {
+        public ChannelType Channel { get; set; }
+        public DateTime StartTime { get; set; }
+        public CommunicationState InitialCommunicationState { get; set; }
+    }
+
+    // Base parent class for the tests that make 1 service call per test iteration
+    // It implements all ITestTemplate methods and takes care of additional common tasks such as:
+    // - handling most common test parameters
+    // - recording timings of factory/channel/service calls
+    // - detecting and reporting service request timeouts
+    //
+    // Derived classes need to override 2 abstract methods
+    // UseChannelImpl() and UseAsyncChannelImpl() where they should make the actual service calls
+    public abstract class CommonTest<ChannelType, TestParams, CapturedRequestContext> : ITestTemplate<ChannelType, TestParams>, IExceptionPolicy
     where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, new()
-    where ChannelType: class
+    where CapturedRequestContext : BasicRequestContext<ChannelType>
     {
         protected TestParams _params;
         protected CallStats _createChannelStats;
@@ -98,7 +116,7 @@ namespace SharedPoolsOfWCFObjects
         protected CallStats _useChannelAsyncStats;
         protected CallStats _openChannelStats;
         protected CallStats _openChannelAsyncStats;
-        OperationTimeoutTracker<ChannelType> _timeoutTracker;
+        protected OperationTimeoutTracker<CapturedRequestContext> _timeoutTracker;
 
         public CommonTest()
         {
@@ -114,37 +132,39 @@ namespace SharedPoolsOfWCFObjects
             _openChannelAsyncStats = new CallStats(_params.SunnyDayMaxStatsSamples, _params.RainyDayMaxStatsSamples, _params.ExceptionHandler);
 
             // Figure out the service calls timeout value
-            int timeoutMs = TestHelpers.SendTimeoutMs;
-            if (timeoutMs <= 0)
+            EffectiveTimeoutMs = TestHelpers.SendTimeoutMs;
+            if (EffectiveTimeoutMs <= 0)
             {
                 // If the timeout was not set then one alternative (to just using the usual default timeout)
                 // would be to wait for a binding to be created and then getting its timeout and only then initialize _timeoutTracker. 
                 // This involves some additional synchronization which we want to avoid here.
-                timeoutMs = 60000; 
+                EffectiveTimeoutMs = 60000;
             }
-            _timeoutTracker = new OperationTimeoutTracker<ChannelType>(timeoutMs, ReportTimeout);
+            if (_params.TrackServiceCallTimeouts)
+            {
+                _timeoutTracker = new OperationTimeoutTracker<CapturedRequestContext>(EffectiveTimeoutMs, ReportTimeout);
+            }
         }
 
-        public TestParams TestParameters
+        // IExceptionPolicy:
+        virtual public bool RelaxedExceptionPolicy { get; set; }
+
+        // ITestTemplate:
+        virtual public TestParams TestParameters
         {
             get
             {
                 return _params;
             }
         }
-
-        virtual public bool RelaxedExceptionPolicy { get; set; }
-
         virtual public EndpointAddress CreateEndPointAddress()
         {
             return TestHelpers.CreateEndPointHelloAddress();
         }
-
         virtual public Binding CreateBinding()
         {
             return TestHelpers.CreateBinding();
         }
-
         virtual public ChannelFactory<ChannelType> CreateChannelFactory()
         {
             return TestHelpers.CreateChannelFactory<ChannelType>(CreateEndPointAddress(), CreateBinding());
@@ -161,7 +181,6 @@ namespace SharedPoolsOfWCFObjects
                 : _closeFactoryAsyncStats.CallAsyncFuncAndRecordStatsAsync(() =>
                     TestHelpers.CloseFactoryAsync(factory), RelaxedExceptionPolicy);
         }
-
         virtual public ChannelType CreateChannel(ChannelFactory<ChannelType> factory)
         {
             return _createChannelStats.CallFuncAndRecordStats(TestHelpers.CreateChannel, factory, RelaxedExceptionPolicy);
@@ -170,12 +189,10 @@ namespace SharedPoolsOfWCFObjects
         {
             _openChannelStats.CallActionAndRecordStats(() => TestHelpers.OpenChannel(channel), RelaxedExceptionPolicy);
         }
-
         virtual public Task OpenChannelAsync(ChannelType channel)
         {
             return _openChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(() => TestHelpers.OpenChannelAsync(channel), RelaxedExceptionPolicy);
         }
-
         virtual public void CloseChannel(ChannelType channel)
         {
             _closeChannelStats.CallActionAndRecordStats(() => TestHelpers.CloseChannel(channel), RelaxedExceptionPolicy);
@@ -190,60 +207,26 @@ namespace SharedPoolsOfWCFObjects
         }
         virtual public Func<ChannelType, int> UseChannel()
         {
-            if (_params.TrackServiceCallTimeouts)
+            return (channel) =>
             {
-                return (channel) =>
-                {
-                    using (_timeoutTracker.StartTrackingOperation(channel))
-                    {
-                        return _useChannelStats.CallFuncAndRecordStats(
-                            () => UseChannelImpl()(channel),
-                            RelaxedExceptionPolicy);
-                    }
-                };
-            }
-            else
-            {
-                return (channel) =>
+                using (StartTrackingOperation(channel))
                 {
                     return _useChannelStats.CallFuncAndRecordStats(
-                        () => UseChannelImpl()(channel),
-                        RelaxedExceptionPolicy);
-                };
-            }
+                        () => UseChannelImpl(channel), RelaxedExceptionPolicy);
+                }
+            };
         }
-        public abstract Func<ChannelType, int> UseChannelImpl();
-
         virtual public Func<ChannelType, Task<int>> UseAsyncChannel()
         {
-            if (_params.TrackServiceCallTimeouts)
+            return async (channel) =>
             {
-                // this func -
-                return async (channel) =>
-                {
-                    // - track timeouts of -
-                    using (_timeoutTracker.StartTrackingOperation(channel))
-                    {
-                        // - the test calls wrapped in timing tracking stats
-                        return await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(
-                            () => UseAsyncChannelImpl()(channel),
-                            RelaxedExceptionPolicy);
-                    }
-                };
-            }
-            else
-            {
-                return async (channel) =>
+                using (StartTrackingOperation(channel))
                 {
                     return await _useChannelAsyncStats.CallAsyncFuncAndRecordStatsAsync(
-                        () => UseAsyncChannelImpl()(channel),
-                        RelaxedExceptionPolicy);
-                };
-            }
+                        () => UseAsyncChannelImpl(channel), RelaxedExceptionPolicy);
+                }
+            };
         }
-
-        public abstract Func<ChannelType, Task<int>> UseAsyncChannelImpl();
-
         virtual public bool ValidateChannel(ChannelType channel)
         {
             // if the scenario that uses our test may close/fault our channel (RelaxedExceptionPolicy)
@@ -251,21 +234,154 @@ namespace SharedPoolsOfWCFObjects
             // then we validate the channel, otherwise we skip the validation
             return (RelaxedExceptionPolicy && _params.ReplaceInvalidPooledChannels) ? TestHelpers.IsCommunicationObjectUsable<ChannelType>(channel) : true;
         }
-
         virtual public bool ValidateFactory(ChannelFactory<ChannelType> factory)
         {
             return (RelaxedExceptionPolicy && _params.ReplaceInvalidPooledFactories) ? TestHelpers.IsCommunicationObjectUsable<ChannelType>(factory) : true;
         }
 
-        static void ReportTimeout(ChannelType[] requestList)
+        // children can capture more details about the test request and present these details their own way
+        virtual protected CapturedRequestContext CaptureRequestContext(ChannelType channel)
+        {
+            return new BasicRequestContext<ChannelType>()
+            {
+                Channel = channel,
+                InitialCommunicationState = (channel as ICommunicationObject).State,
+                StartTime = DateTime.Now
+            } as CapturedRequestContext;
+        }
+        virtual protected string PrintRequestDetails(CapturedRequestContext requestDetails)
+        {
+            return String.Format("Initial state {0}, current state {1}, execution time {2}",
+                requestDetails.InitialCommunicationState,
+                (requestDetails.Channel as ICommunicationObject).State,
+                DateTime.Now.Subtract(requestDetails.StartTime).TotalSeconds);
+        }
+
+        // abstract methods to make the actual service calls:
+        public abstract int UseChannelImpl(ChannelType c);
+        public abstract Task<int> UseAsyncChannelImpl(ChannelType c);
+
+        // timetout tracking
+        private IDisposable StartTrackingOperation(ChannelType channel)
+        {
+            if (_params.TrackServiceCallTimeouts)
+            {
+                return _timeoutTracker.StartTrackingOperation(CaptureRequestContext(channel));
+            }
+            else
+            {
+                return null;
+            }
+        }
+        private int EffectiveTimeoutMs { get; set; }
+        private void ReportTimeout(CapturedRequestContext[] requestList)
         {
             if (requestList.Length > 0)
             {
                 string type = typeof(ChannelType).ToString();
                 Console.WriteLine();
-                string message = type + " requests timed out: " + requestList.Length;
-                TestUtils.ReportFailure(message: message, debugBreak: true);
+                StringBuilder message = new StringBuilder();
+                message.AppendFormat(" {0} requests of type {1} timed out.\r\n Their states are:\r\n", requestList.Length, type.ToString());
+                foreach (var requestInfo in requestList)
+                {
+                    message.AppendLine(PrintRequestDetails(requestInfo));
+                }
+                // also print the longest execution times for comparison
+                message.AppendLine("Top 10 async \"sunny day\" recent execution times (s):");
+                AppendStats(message, _useChannelAsyncStats.SunnyDay.CurrentTimings);
+                message.AppendLine("Top 10 async \"rainy day\" recent execution times (s):");
+                AppendStats(message, _useChannelAsyncStats.RainyDay.CurrentTimings);
+                message.AppendLine("Top 10 sync \"sunny day\" recent execution times (s):");
+                AppendStats(message, _useChannelStats.SunnyDay.CurrentTimings);
+                message.AppendLine("Top 10 sync \"rainy day\" recent execution times (s):");
+                AppendStats(message, _useChannelStats.RainyDay.CurrentTimings);
+
+                TestUtils.ReportFailure(message: message.ToString(), debugBreak: true);
                 GC.KeepAlive(requestList);
+            }
+        }
+        static void AppendStats(StringBuilder message, long[] timings)
+        {
+            foreach (long ticks in timings.OrderByDescending(t1 => t1).Take(10))
+            {
+                if (ticks > 0)
+                {
+                    message.AppendLine(((double)ticks / Stopwatch.Frequency).ToString());
+                }
+            }
+        }
+    }
+
+    // Tests that make multiple service calls per test often require per call timeout and timing tracking
+    // Unlike its parent CommonTest class (which directly calls into child-provided UseChannelImpl* methods) 
+    // this class obtains a request context once and iterates through an array of child-provided funcs
+    public abstract class CommonMultiCallTest<ChannelType, TestParams, CapturedRequestContext> : CommonTest<ChannelType, TestParams, CapturedRequestContext>
+    where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, new()
+    where CapturedRequestContext : BasicRequestContext<ChannelType>
+    {
+        // Override the parent class UseChannel() and UseAsyncChannel() to handle multiple calls differently
+        public override Func<ChannelType, int> UseChannel()
+        {
+            return (channel) =>
+            {
+                int totalCalls = 0;
+
+                // This mutable call context is captured once per test iteration
+                // Both the funcs provided by the child class and StartTrackingOperation are free to modify it
+                var crd = CaptureRequestContext (channel);
+
+                foreach (var func in UseChannelImplFuncs())
+                {
+                    using (StartTrackingOperation(crd))
+                    {
+                        totalCalls += _useChannelStats.CallFuncAndRecordStats(
+                            () => func(crd), RelaxedExceptionPolicy);
+                    }
+                }
+                return totalCalls;
+            };
+        }
+        public override Func<ChannelType, Task<int>> UseAsyncChannel()
+        {
+            return async (channel) =>
+            {
+                int totalCalls = 0;
+                var crd = CaptureRequestContext(channel);
+                foreach (var func in UseChannelAsyncImplFuncs())
+                {
+                    using (StartTrackingOperation(crd))
+                    {
+                        totalCalls += await _useChannelStats.CallAsyncFuncAndRecordStatsAsync(
+                            () => func(crd), RelaxedExceptionPolicy);
+                    }
+                }
+                return totalCalls;
+            };
+        }
+
+        // Children classes need to provide a list of funcs, each func makes a signle service call request.
+        // The funcs take an instance of CapturedRequestContext which is created by a virtual method CaptureRequestContext
+        // Note that the funcs still return int (or Task<int>) to signify how many service calls have been made.
+        // This is done to account for special cases like duplex callbacks which are considered separate calls
+        public abstract Func<CapturedRequestContext, Task<int>>[] UseChannelAsyncImplFuncs();
+        public abstract Func<CapturedRequestContext, int>[] UseChannelImplFuncs();
+
+        // Override parent class abstract methods that will never get called
+        public override int UseChannelImpl(ChannelType c) { throw new NotImplementedException(); }
+        public override Task<int> UseAsyncChannelImpl(ChannelType c) { throw new NotImplementedException(); }
+
+        private IDisposable StartTrackingOperation(CapturedRequestContext operationDetails)
+        {
+            if (_params.TrackServiceCallTimeouts)
+            {
+                // Update channel state and start time in CapturedRequestContext before each call
+                operationDetails.InitialCommunicationState = (operationDetails.Channel as ICommunicationObject).State;
+                operationDetails.StartTime = DateTime.Now;
+                return _timeoutTracker.StartTrackingOperation(operationDetails);
+            }
+            else
+            {
+                return null;
             }
         }
     }
