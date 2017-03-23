@@ -69,6 +69,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("ChannelExtensibility.svc//ChannelExtensibility"); }
     }
 
+    public static string UnderstoodHeaders
+    {
+        get { return GetEndpointAddress("UnderstoodHeaders.svc//UnderstoodHeaders"); }
+    }
+
     #region WebSocket Addresses
     public static string NetHttpWebSocketTransport_Address
     {
