@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ValueMustBeInRange" xml:space="preserve">
+    <value>The value of this argument must fall within the range {0} to {1}.</value>
+  </data>
+  <data name="SynchronizedCollectionWrongType1" xml:space="preserve">
+    <value>A value of type '{0}' cannot be added to the generic collection, because the collection has been parameterized with a different type.</value>
+  </data>
+  <data name="SynchronizedCollectionWrongTypeNull" xml:space="preserve">
+    <value>A null value cannot be added to the generic collection, because the collection has been parameterized with a value type.</value>
+  </data>
+  <data name="ShipAssertExceptionMessage" xml:space="preserve">
+    <value>An unexpected failure occurred. Applications should not attempt to handle this error. For diagnostic purposes, this English message is associated with the failure: '{0}'.</value>
+  </data>
+  <data name="MultipleIdentities" xml:space="preserve">
+    <value>The extensions cannot contain an Identity if one is supplied as a constructor argument.</value>
+  </data>
+  <data name="UriMustBeAbsolute" xml:space="preserve">
+    <value>The given URI must be absolute.</value>
+  </data>
+  <data name="AddressingVersionNotSupported" xml:space="preserve">
+    <value>Addressing Version '{0}' is not supported.</value>
+  </data>
+  <data name="SFxNameCannotBeEmpty" xml:space="preserve">
+    <value>The Name property must be a non-empty string.</value>
+  </data>
+  <data name="SFXUnvalidNamespaceValue" xml:space="preserve">
+    <value>Value '{0}' provided for {1} property is an invalid URI.</value>
+  </data>
+  <data name="ValueMustBeNonNegative" xml:space="preserve">
+    <value>The value of this argument must be non-negative.</value>
+  </data>
+  <data name="SFxWrapperNameCannotBeEmpty" xml:space="preserve">
+    <value>Wrapper element name cannot be empty.</value>
+  </data>
+  <data name="SFxInterleavedContextScopes0" xml:space="preserve">
+    <value>This OperationContextScope is being disposed out of order.</value>
+  </data>
+  <data name="SFxContextModifiedInsideScope0" xml:space="preserve">
+    <value>The value of OperationContext.Current is not the OperationContext value installed by this OperationContextScope.</value>
+  </data>
+  <data name="SFxConfigurationNameCannotBeEmpty" xml:space="preserve">
+    <value>The ConfigurationName property must be a non-empty string.</value>
+  </data>
+  <data name="XmlLangAttributeMissing" xml:space="preserve">
+    <value>Required xml:lang attribute value is missing.</value>
+  </data>
+  <data name="InvalidXmlQualifiedName" xml:space="preserve">
+    <value>Expected XML qualified name, found '{0}'.</value>
+  </data>
+  <data name="UnboundPrefixInQName" xml:space="preserve">
+    <value>Unbound prefix used in qualified name '{0}'.</value>
+  </data>
+  <data name="XmlInvalidConversion" xml:space="preserve">
+    <value>The value '{0}' cannot be parsed as the type '{1}'.</value>
+  </data>
+  <data name="ExpectedElementMissing" xml:space="preserve">
+    <value>Element '{0}' with namespace '{1}' not found.</value>
+  </data>
+  <data name="MessageHeaderIsNull0" xml:space="preserve">
+    <value>The value of the addressHeaders argument is invalid because the collection contains null values. Null is not a valid value for the AddressHeaderCollection.</value>
+  </data>
+  <data name="MultipleMessageHeaders" xml:space="preserve">
+    <value>Multiple headers with name '{0}' and namespace '{1}' found.</value>
+  </data>
+  <data name="BodyWriterCanOnlyBeWrittenOnce" xml:space="preserve">
+    <value>The body writer does not support writing more than once because it is not buffered.</value>
+  </data>
+  <data name="BodyWriterReturnedIsNotBuffered" xml:space="preserve">
+    <value>The body writer returned from OnCreateBufferedCopy was not buffered.</value>
+  </data>
+  <data name="BufferIsNotRightSizeForBufferManager" xml:space="preserve">
+    <value>This buffer cannot be returned to the buffer manager because it is the wrong size.</value>
+  </data>
+  <data name="MessageClosed" xml:space="preserve">
+    <value>Message is closed.</value>
+  </data>
+  <data name="MessageHasBeenCopied" xml:space="preserve">
+    <value>This message cannot support the operation because it has been copied.</value>
+  </data>
+  <data name="MessageHasBeenWritten" xml:space="preserve">
+    <value>This message cannot support the operation because it has been written.</value>
+  </data>
+  <data name="MessageHasBeenRead" xml:space="preserve">
+    <value>This message cannot support the operation because it has been read.</value>
+  </data>
+  <data name="InvalidMessageState" xml:space="preserve">
+    <value>An internal error has occurred. Invalid MessageState.</value>
+  </data>
+  <data name="MessageIsEmpty" xml:space="preserve">
+    <value>The body of the message cannot be read because it is empty.</value>
+  </data>
+  <data name="MessageBodyIsUnknown" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="MessageBodyIsStream" xml:space="preserve">
+    <value>... stream ...</value>
+  </data>
+  <data name="EncoderMessageVersionMismatch" xml:space="preserve">
+    <value>The message version of the outgoing message ({0}) does not match that of the encoder ({1}). Make sure the binding is configured with the same version as the message.</value>
+  </data>
+  <data name="SFXHeaderNameCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Header name cannot be null or empty.</value>
+  </data>
+  <data name="SFXUnvalidNamespaceParam" xml:space="preserve">
+    <value>Parameter value '{0}' is an invalid URI.</value>
+  </data>
+  <data name="EnvelopeVersionUnknown" xml:space="preserve">
+    <value>Unrecognized envelope version: {0}.</value>
+  </data>
+  <data name="MessageHeaderVersionMismatch" xml:space="preserve">
+    <value>The version of the header(s) ({0}) differs from the version of the message ({1}).</value>
+  </data>
+  <data name="InvalidEnumValue" xml:space="preserve">
+    <value>Unexpected internal enum value: {0}.</value>
+  </data>
+  <data name="MultipleRelatesToHeaders" xml:space="preserve">
+    <value> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</value>
+  </data>
+  <data name="HeaderNotFound" xml:space="preserve">
+    <value>There is not a header with name {0} and namespace {1} in the message.</value>
+  </data>
+  <data name="ObjectDisposed" xml:space="preserve">
+    <value>The {0} object has been disposed.</value>
+  </data>
+  <data name="MessagePropertyNotFound" xml:space="preserve">
+    <value>A property with the name '{0}' is not present.</value>
+  </data>
+  <data name="MessagePropertyReturnedNullCopy" xml:space="preserve">
+    <value>The IMessageProperty could not be copied. CreateCopy returned null.</value>
+  </data>
+  <data name="DuplicateMessageProperty" xml:space="preserve">
+    <value>A property with the name '{0}' already exists.</value>
+  </data>
+  <data name="MessagePropertiesArraySize0" xml:space="preserve">
+    <value>The array passed does not have enough space to hold all the properties contained by this collection.</value>
+  </data>
+  <data name="EnvelopeVersionNotSupported" xml:space="preserve">
+    <value>Envelope Version '{0}' is not supported.</value>
+  </data>
+  <data name="CannotDetectAddressingVersion" xml:space="preserve">
+    <value>Cannot detect WS-Addressing version. EndpointReference does not start with an Element.</value>
+  </data>
+  <data name="UnexpectedDuplicateElement" xml:space="preserve">
+    <value>'{0}' from namespace '{1}' is not expected to appear more than once</value>
+  </data>
+  <data name="AddressingExtensionInBadNS" xml:space="preserve">
+    <value>The element '{0}' in namespace '{1}' is not valid. This either means that element '{0}' is a duplicate element, or that it is not a legal extension because extension elements cannot be in the addressing namespace.</value>
+  </data>
+  <data name="UnexpectedElementExpectingElement" xml:space="preserve">
+    <value>'{0}' from namespace '{1}' is not expected. Expecting element '{2}' from namespace '{3}'</value>
+  </data>
+  <data name="InvalidUriValue" xml:space="preserve">
+    <value>Value '{0}' provided for '{1}' from namespace '{2}' is an invalid absolute URI.</value>
+  </data>
+  <data name="AddressingExtensionInBadNS" xml:space="preserve">
+    <value>The element '{0}' in namespace '{1}' is not valid. This either means that element '{0}' is a duplicate element, or that it is not a legal extension because extension elements cannot be in the addressing namespace.</value>
+  </data>
+  <data name="SeekNotSupported" xml:space="preserve">
+    <value>Seek is not supported on this stream.</value>
+  </data>
+  <data name="ReadNotSupported" xml:space="preserve">
+    <value>Read is not supported on this stream.</value>
+  </data>
+  <data name="BufferedOutputStreamQuotaExceeded" xml:space="preserve">
+    <value>The size quota for this stream ({0}) has been exceeded.</value>
+  </data>
+  <data name="XmlBufferQuotaExceeded" xml:space="preserve">
+    <value>The size necessary to buffer the XML content exceeded the buffer quota.</value>
+  </data>
+  <data name="XmlBufferInInvalidState" xml:space="preserve">
+    <value>An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</value>
+  </data>
+  <data name="RequestMessageDoesNotHaveAMessageID" xml:space="preserve">
+    <value>A reply message cannot be created because the request message does not have a MessageID.</value>
+  </data>
+  <data name="MessageBodyToStringError" xml:space="preserve">
+    <value>... Error reading body: {0}: {1} ...</value>
+  </data>
+  <data name="InvalidReaderPositionOnCreateMessage" xml:space="preserve">
+    <value>The XmlReader used for the body of the message must be positioned on an element.</value>
+  </data>
+  <data name="EncoderEnvelopeVersionMismatch" xml:space="preserve">
+    <value>The envelope version of the incoming message ({0}) does not match that of the encoder ({1}). Make sure the binding is configured with the same version as the expected messages.</value>
+  </data>
+  <data name="MessageBodyMissing" xml:space="preserve">
+    <value>A body element was not found inside the message envelope.</value>
+  </data>
+  <data name="HeaderAlreadyNotUnderstood" xml:space="preserve">
+    <value>The message header with name '{0}' and namespace '{1}' is not present in the set of understood headers.</value>
+  </data>
+  <data name="AsyncResultCompletedTwice" xml:space="preserve">
+    <value>The IAsyncResult implementation '{0}' tried to complete a single operation multiple times. This could be caused by an incorrect application IAsyncResult implementation or other extensibility code, such as an IAsyncResult that returns incorrect CompletedSynchronously values or invokes the AsyncCallback multiple times.</value>
+  </data>
+  <data name="AsyncCallbackThrewException" xml:space="preserve">
+    <value>Async Callback threw an exception.</value>
+  </data>
+  <data name="InvalidNullAsyncResult" xml:space="preserve">
+    <value>A null value was returned from an async 'Begin' method or passed to an AsyncCallback. Async 'Begin' implementations must return a non-null IAsyncResult and pass the same IAsyncResult object as the parameter to the AsyncCallback.</value>
+  </data>
+  <data name="AsyncResultAlreadyEnded" xml:space="preserve">
+    <value>End cannot be called twice on an AsyncResult.</value>
+  </data>
+  <data name="InvalidAsyncResult" xml:space="preserve">
+    <value>An incorrect IAsyncResult was provided to an 'End' method. The IAsyncResult object passed to 'End' must be the one returned from the matching 'Begin' or passed to the callback provided to 'Begin'.</value>
+  </data>
+  <data name="Xml_InvalidNodeType" xml:space="preserve">
+    <value>'{0}' is an invalid XmlNodeType.</value>
+  </data>
+  <data name="UnexpectedEmptyElementExpectingClaim" xml:space="preserve">
+    <value>The '{0}' from the '{1}' namespace is empty and does not specify a valid identity claim. </value>
+  </data>
+  <data name="UnrecognizedIdentityType" xml:space="preserve">
+    <value>Unrecognized identity type Name='{0}', Namespace='{1}'.</value>
+  </data>
+  <data name="InvalidIdentityElement" xml:space="preserve">
+    <value>Cannot read the Identity element. The Identity type is not supported or the Identity element is empty.</value>
+  </data>
+  <data name="UnrecognizedClaimTypeForIdentity" xml:space="preserve">
+    <value>The ClaimType '{0}' is not recognized. Expected ClaimType '{1}'.</value>
+  </data>
+  <data name="UnrecognizedIdentityPropertyType" xml:space="preserve">
+    <value>Unrecognized identity property type: '{0}'.</value>
+  </data>
+  <data name="SFxInvalidChannelToOperationContext" xml:space="preserve">
+    <value>Invalid IContextChannel passed to OperationContext. Must be either a server dispatching channel or a client proxy channel.</value>
+  </data>
+  <data name="Addressing200408ToStringFormat" xml:space="preserve">
+    <value>Addressing200408 ({0})</value>
+  </data>
+  <data name="MessageBufferIsClosed" xml:space="preserve">
+    <value>MessageBuffer is closed.</value>
+  </data>
+  <data name="MessageHeaderVersionNotSupported" xml:space="preserve">
+    <value>The '{0}' header cannot be added because it does not support the specified message version '{1}'.</value>
+  </data>
+  <data name="HeaderAlreadyUnderstood" xml:space="preserve">
+    <value>The message header with name '{0}' and namespace '{1}' is already present in the set of understood headers.</value>
+  </data>
+  <data name="MultipleMessageHeadersWithActor" xml:space="preserve">
+    <value>Multiple headers with name '{0}' and namespace '{1}' and role '{2}' found.</value>
+  </data>
+  <data name="HeadersCannotBeAddedToEnvelopeVersion" xml:space="preserve">
+    <value>Envelope Version '{0}' does not support adding Message Headers.</value>
+  </data>
+  <data name="AddressingHeadersCannotBeAddedToAddressingVersion" xml:space="preserve">
+    <value>Addressing Version '{0}' does not support adding WS-Addressing headers.</value>
+  </data>
+  <data name="SFxCannotSetExtensionsByIndex" xml:space="preserve">
+    <value>This collection does not support setting extensions by index.  Please consider using the InsertItem or RemoveItem methods.</value>
+  </data>
+  <data name="MessageBodyReaderInvalidReadState" xml:space="preserve">
+    <value>The body reader is in ReadState '{0}' and cannot be consumed.</value>
+  </data>
+  <data name="MessageVersionUnknown" xml:space="preserve">
+    <value>Unrecognized message version.</value>
+  </data>
+  <data name="GenericCallbackException" xml:space="preserve">
+    <value>GenericCallbackException</value>
+  </data>
+</root>
