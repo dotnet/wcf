@@ -1,44 +1,33 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Threading.Tasks;
+using WcfService1;
 
 namespace SharedPoolsOfWCFObjects
 {
-    public class HelloWorldTest<TestParams> : CommonTest<WcfService1.IService1, TestParams>
+    public class HelloWorldTest<TestParams> : CommonTest<IService1, TestParams, BasicRequestContext<IService1>>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, new()
     {
-        public override Func<WcfService1.IService1, int> UseChannelImpl()
+        public override int UseChannelImpl(IService1 channel)
         {
-            return (channel) =>
-            {
-                channel.GetData(44);
-                return 1;
-            };
+            channel.GetData(44);
+            return 1;
         }
-        public override Func<WcfService1.IService1, Task<int>> UseAsyncChannelImpl()
+        public override async Task<int> UseAsyncChannelImpl(IService1 channel)
         {
-            return async (channel) =>
-            {
-                await channel.GetDataAsync(44);
-                return 1;
-            };
+            await channel.GetDataAsync(44);
+            return 1;
         }
     }
 
     public class HelloWorldAPMTest<TestParams> : HelloWorldTest<TestParams>
         where TestParams : IExceptionHandlingPolicyParameter, IPoolTestParameter, IStatsCollectingTestParameter, new()
     {
-        public override Func<WcfService1.IService1, Task<int>> UseAsyncChannelImpl()
+        public override async Task<int> UseAsyncChannelImpl(IService1 channel)
         {
-            return async (channel) =>
-            {
-                await Task.Factory.FromAsync(channel.BeginGetData, channel.EndGetData, 44, null);
-                return 1;
-            };
+            await Task.Factory.FromAsync(channel.BeginGetData, channel.EndGetData, 44, null);
+            return 1;
         }
     }
 }

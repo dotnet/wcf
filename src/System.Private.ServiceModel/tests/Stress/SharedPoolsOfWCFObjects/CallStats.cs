@@ -210,6 +210,19 @@ namespace SharedPoolsOfWCFObjects
             }
         }
 
+        public long[] CurrentTimings
+        {
+            get
+            {
+                long[] copy = new long[_timings.Length];
+                for (int i = 0; i < _timings.Length; i++)
+                {
+                    copy[i] = _timings[i];
+                }
+                return copy;
+            }
+        }
+
         public static TimingPercentileStats CalculateSomePercentiles(long[] timingArr)
         {
             var stats = new TimingPercentileStats()
