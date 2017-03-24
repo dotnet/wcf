@@ -52,13 +52,8 @@
         "CommonTypes": [
             "System.ServiceModel.ClientBase<TChannel>",
             "System.ServiceModel.IClientChannel",
-            "System.ServiceModel.ICommunicationObject",
             "System.ServiceModel.Channels.IChannel",
-            "System.ServiceModel.IContextChannel",
-            "System.ServiceModel.IExtensibleObject<T>",
-            "System.ServiceModel.DataContractFormatAttribute",
             "System.ServiceModel.Description.IOperationBehavior",
-            "System.ServiceModel.Channels.Message",
             "System.ServiceModel.FaultException<TDetail>"
         ]
     },
@@ -66,10 +61,24 @@
         "Name": "System.ServiceModel.Security",
         "Description": "Provides common security types for consuming and communicating with services.",
         "CommonTypes": [
-            "System.ServiceModel.DnsEndpointIdentity",
-            "System.ServiceModel.MessageSecurityVersion",
-            "System.ServiceModel.UpnEndpointIdentity",
-            "System.ServiceModel.SpnEndpointIdentity"
+            "System.ServiceModel.MessageSecurityVersion"
         ]
-    }
+    },
+	{
+		"Name": "System.ServiceModel.Common",
+		"Description": "Provides types common to clients and services.",
+		"CommonTypes": [
+            "System.ServiceModel.Channels.Message",
+            "System.ServiceModel.IContextChannel",
+            "System.ServiceModel.IExtensibleObject<T>",
+            "System.ServiceModel.DataContractFormatAttribute",
+            "System.ServiceModel.ICommunicationObject",
+            "System.ServiceModel.DnsEndpointIdentity",
+            "System.ServiceModel.UpnEndpointIdentity",
+            "System.ServiceModel.SpnEndpointIdentity",
+			"System.ServiceModel.OperationContext",
+			"System.ServiceModel.OperationContractAttribute",
+			"System.ServiceModel.ServiceContractAttribute"
+		]
+	}
 ]
