@@ -1550,6 +1550,12 @@ namespace System.ServiceModel.Security
         public SecurityAccessDeniedException(string message) { }
         public SecurityAccessDeniedException(string message, System.Exception innerException) { }
     }
+    public partial class SecurityNegotiationException : System.ServiceModel.CommunicationException
+    {
+        public SecurityNegotiationException() { }
+        public SecurityNegotiationException(string message) { }
+        public SecurityNegotiationException(string message, System.Exception innerException) { }
+    }
     public sealed partial class UserNamePasswordClientCredential
     {
         internal UserNamePasswordClientCredential() { }
