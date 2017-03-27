@@ -4,7 +4,7 @@
   <PropertyGroup>
     <AssemblyName>System.ServiceModel.Common</AssemblyName>
     <IsPartialFacadeAssembly Condition="'$(TargetGroup)' == 'net46'">true</IsPartialFacadeAssembly>
-    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard1.3</PackageTargetFramework>
+    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard1.3;netcore50</PackageTargetFramework>
     <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v1.3</NuGetTargetMoniker>
     <TargetingPackNugetPackageId Condition="'$(TargetGroup)' == 'net46'">Microsoft.TargetingPack.NETFramework.v4.6</TargetingPackNugetPackageId>
     <ProjectGuid>{B2E3F773-926F-407E-AC81-D42978F37FA9}</ProjectGuid>
