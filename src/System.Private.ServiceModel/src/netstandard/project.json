@@ -1,0 +1,12 @@
+{
+  "frameworks": {
+    "netstandard2.0": {
+      "dependencies": {
+        "NETStandard.Library": "2.0.0-beta-25003-02",
+        "System.Security.Principal.Windows": "4.3.0",
+        "System.Reflection.DispatchProxy": "4.3.0",
+        "System.Runtime.InteropServices.RuntimeInformation": "4.3.0"
+      }
+    }
+  }
+}
