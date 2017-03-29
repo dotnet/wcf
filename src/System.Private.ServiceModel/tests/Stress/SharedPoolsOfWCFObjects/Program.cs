@@ -52,6 +52,7 @@ namespace SharedPoolsOfWCFObjects
         public const string ReceiveTimeoutMSecs = "receivetimeoutmsecs";
         public const string SendTimeoutMSecs = "sendtimeoutmsecs";
         public const string CustomConnectionPoolSize = "customconnectionpoolsize";
+        public const string ExitOnSuccess = "ExitOnSuccess";
 
         public const string BindingSecurityMode = "bindingsecuritymode";
         public const string HttpClientCredentialType = "httpclientcredentialtype";
@@ -95,6 +96,7 @@ namespace SharedPoolsOfWCFObjects
         private int _paramReceiveTimeoutMSecs = 0;
         private int _paramSendTimeoutMSecs = 0;
         private int _customConnectionPoolSize = -1;
+        private bool _paramExitOnSuccess = false;
 
         // Right now this is just a boolean switch to allow more tracing
         private bool _paramDebugMode = false;
@@ -416,6 +418,12 @@ namespace SharedPoolsOfWCFObjects
                             return ReportWrongArgument(s);
                         }
                         break;
+                    case Parameters.ExitOnSuccess:
+                        if (!Boolean.TryParse(p[1].ToLower(), out _paramExitOnSuccess))
+                        {
+                            return ReportWrongArgument(s);
+                        }
+                        break;
                     case Parameters.ReportingUrl:
                         _paramReportingUrl = p[1];
                         break;
@@ -484,6 +492,10 @@ namespace SharedPoolsOfWCFObjects
             while (true)
             {
                 RunStressImpl();
+                if (_paramExitOnSuccess)
+                {
+                    break;
+                }
                 Console.WriteLine("Stress run is finished. Press Enter to induce a GC.");
                 Console.ReadLine();
                 GC.Collect(2, mode: GCCollectionMode.Forced, blocking: true);
