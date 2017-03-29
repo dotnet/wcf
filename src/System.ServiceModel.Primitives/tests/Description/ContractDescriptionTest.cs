@@ -192,4 +192,13 @@ public static class ContractDescriptionTest
         Assert.True(operation != null, "Failed to find Reply operation in contract.");
         Assert.True(operation.IsOneWay, "Expected Reply operation to be IsOneWay.");
     }
+
+    [WcfFact]
+    public static void ContractDescription_GetContract()
+    {
+        // Simple validation of the newly exposed "public ContractDescription GetContract(Type contractType);" method
+        ContractDescription contractDescription = ContractDescription.GetContract(typeof(IDescriptionTestsService));
+        Assert.True(String.Equals(typeof(IDescriptionTestsService).Name, contractDescription.ContractType.Name));
+        Assert.True(String.Equals("http://tempuri.org/", contractDescription.Namespace));
+    }
 }
