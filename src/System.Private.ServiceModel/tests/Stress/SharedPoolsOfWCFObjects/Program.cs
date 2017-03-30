@@ -52,7 +52,7 @@ namespace SharedPoolsOfWCFObjects
         public const string ReceiveTimeoutMSecs = "receivetimeoutmsecs";
         public const string SendTimeoutMSecs = "sendtimeoutmsecs";
         public const string CustomConnectionPoolSize = "customconnectionpoolsize";
-        public const string ExitOnSuccess = "ExitOnSuccess";
+        public const string ExitOnSuccess = "exitonsuccess";
 
         public const string BindingSecurityMode = "bindingsecuritymode";
         public const string HttpClientCredentialType = "httpclientcredentialtype";
