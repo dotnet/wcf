@@ -1,14 +1,2219 @@
 {
   "Packages": {
+    "Accessibility": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "CustomMarshalers": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "ISymWrapper": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.Activities.Build": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.Build": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.Build.Conversion.v4.0": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.Build.Engine": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.Build.Framework": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.Build.Tasks.v4.0": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.Build.Utilities.v4.0": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "Microsoft.CSharp": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "Microsoft.Devices.Sensors": {
+      "InboxOn": {
+        "wp8": "8.0.0.0"
+      }
+    },
+    "Microsoft.JScript": {
+      "InboxOn": {
+        "net45": "10.0.0.0"
+      }
+    },
+    "Microsoft.Phone": {
+      "InboxOn": {
+        "wp8": "8.0.0.0"
+      }
+    },
+    "Microsoft.Phone.Controls": {
+      "InboxOn": {
+        "wp8": "8.0.0.0"
+      }
+    },
+    "Microsoft.Phone.Controls.Maps": {
+      "InboxOn": {
+        "wp8": "8.0.0.0"
+      }
+    },
+    "Microsoft.Phone.Interop": {
+      "InboxOn": {
+        "wp8": "8.0.0.0"
+      }
+    },
+    "Microsoft.Phone.Maps": {
+      "InboxOn": {
+        "wp8": "8.0.0.0"
+      }
+    },
+    "Microsoft.Phone.Reactive": {
+      "InboxOn": {
+        "wp8": "8.0.0.0"
+      }
+    },
+    "Microsoft.VisualBasic": {
+      "InboxOn": {
+        "net45": "10.0.0.0",
+        "portable45-net45+win8+wpa81": "10.0.0.0",
+        "portable46-net451+win81+wpa81": "10.0.0.0",
+        "portable46-win81+wpa81": "10.0.0.0",
+        "portable46-net451+win81": "10.0.0.0",
+        "portable45-net45+win8": "10.0.0.0",
+        "win8": "10.0.0.0",
+        "wpa81": "10.0.0.0"
+      }
+    },
+    "Microsoft.VisualBasic.Compatibility": {
+      "InboxOn": {
+        "net45": "10.0.0.0"
+      }
+    },
+    "Microsoft.VisualBasic.Compatibility.Data": {
+      "InboxOn": {
+        "net45": "10.0.0.0"
+      }
+    },
+    "Microsoft.VisualC": {
+      "InboxOn": {
+        "net45": "10.0.0.0"
+      }
+    },
+    "Microsoft.VisualC.STLCLR": {
+      "InboxOn": {
+        "net45": "2.0.0.0"
+      }
+    },
+    "Microsoft.Win32.Primitives": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "Microsoft.Xna.Framework": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.Avatar": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.Game": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.GamerServices": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.GamerServicesExtensions": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.Graphics": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.Input.Touch": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.Interop": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "Microsoft.Xna.Framework.MediaLibraryExtensions": {
+      "InboxOn": {
+        "wp8": "4.0.0.0"
+      }
+    },
+    "mscorlib": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "mscorlib.Extensions": {
+      "InboxOn": {
+        "wp8": "2.0.5.0"
+      }
+    },
+    "PresentationBuildTasks": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationCore": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationFramework": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationFramework.Aero": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationFramework.Aero2": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationFramework.AeroLite": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationFramework.Classic": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationFramework.Luna": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "PresentationFramework.Royale": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "ReachFramework": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "SMDiagnostics": {
+      "InboxOn": {
+        "monoandroid10": "Any"
+      }
+    },
+    "sysglobl": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Activities": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Activities.Core.Presentation": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Activities.DurableInstancing": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Activities.Presentation": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Activities.Statements": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.AddIn": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.AddIn.Contract": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.AppContext": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Collections": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Collections.Concurrent": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Collections.NonGeneric": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Collections.Specialized": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ComponentModel": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ComponentModel.Annotations": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ComponentModel.Composition": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ComponentModel.Composition.Registration": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.ComponentModel.DataAnnotations": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ComponentModel.EventBasedAsync": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ComponentModel.Primitives": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ComponentModel.TypeConverter": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Configuration": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Configuration.Install": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Console": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Core": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Data": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Data.Common": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Data.DataSetExtensions": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Data.Entity": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Data.Entity.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Data.Linq": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "wp8": "8.0.0.0"
+      }
+    },
+    "System.Data.OracleClient": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Data.Services": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Data.Services.Client": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Data.Services.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Data.SqlClient": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Data.SqlXml": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Deployment": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Device": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "wp8": "2.0.5.0"
+      }
+    },
+    "System.Diagnostics.Contracts": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.Debug": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.FileVersionInfo": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.PerformanceCounter": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.Process": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.StackTrace": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.TextWriterTraceListener": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.Tools": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.TraceEvent": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.TraceSource": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Diagnostics.Tracing": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net451": "4.0.10.0",
+        "net46": "4.0.20.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.10.0",
+        "portable46-win81+wpa81": "4.0.10.0",
+        "portable46-net451+win81": "4.0.10.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "win81": "4.0.10.0",
+        "wpa81": "4.0.10.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.DirectoryServices": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.DirectoryServices.AccountManagement": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.DirectoryServices.Protocols": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Drawing": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Drawing.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Drawing.Primitives": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Dynamic": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Dynamic.Runtime": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.EnterpriseServices": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any"
+      }
+    },
+    "System.Globalization": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Globalization.Calendars": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Globalization.Extensions": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IdentityModel": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.IdentityModel.Selectors": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.IdentityModel.Services": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.IO": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.Compression": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.Compression.FileSystem": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.Compression.ZipFile": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.FileSystem": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.FileSystem.DriveInfo": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.FileSystem.Primitives": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.FileSystem.Watcher": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.IsolatedStorage": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.Log": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.IO.MemoryMappedFiles": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.IO.UnmanagedMemoryStream": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Json": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Linq": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Linq.Expressions": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Linq.Parallel": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Linq.Queryable": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Management": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Management.Instrumentation": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Messaging": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Net": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "3.9.0.0",
+        "portable45-net45+win8+wp8+wpa81": "3.9.0.0",
+        "portable46-win81+wp81": "3.9.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "3.9.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "3.9.0.0",
+        "portable46-wp81+wpa81": "3.9.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "3.9.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.AuthenticationManager": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Cache": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Http": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Http.Rtc": {
+      "InboxOn": {
+        "win8": "4.0.0.0"
+      }
+    },
+    "System.Net.Http.WebRequest": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any"
+      }
+    },
+    "System.Net.Http.WebRequestHandler": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.HttpListener": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Mail": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.NameResolution": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.NetworkInformation": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Ping": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Primitives": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "3.9.0.0",
+        "portable45-net45+win8+wp8+wpa81": "3.9.0.0",
+        "portable46-win81+wp81": "3.9.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "3.9.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "3.9.0.0",
+        "portable46-wp81+wpa81": "3.9.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "3.9.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Requests": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "3.9.0.0",
+        "portable45-net45+win8+wp8+wpa81": "3.9.0.0",
+        "portable46-win81+wp81": "3.9.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "3.9.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "3.9.0.0",
+        "portable46-wp81+wpa81": "3.9.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "3.9.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Security": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.ServicePoint": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Sockets": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.Utilities": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.WebHeaderCollection": {
+      "InboxOn": {
+        "net46": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.WebSockets": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Net.WebSockets.Client": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Numerics": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Numerics.Vectors": {
+      "InboxOn": {
+        "net46": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ObjectModel": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Observable": {
+      "InboxOn": {
+        "wp8": "2.0.5.0"
+      }
+    },
+    "System.Printing": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
     "System.Private.ServiceModel": {
       "StableVersions": [
         "4.0.0",
         "4.1.0"
       ],
       "BaselineVersion": "4.4.0",
+      "InboxOn": {},
       "AssemblyVersionInPackageVersion": {
-        "4.1.1.0": "4.4.0",
-        "4.1.0.0": "4.4.0"
+        "4.1.0.0": "4.4.0",
+        "4.1.1.0": "4.4.0"
+      }
+    },
+    "System.Reflection": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Reflection.Context": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "win8": "4.0.0.0"
+      }
+    },
+    "System.Reflection.DispatchProxy": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Reflection.Emit": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any",
+        "xamarinmac20": "Any"
+      }
+    },
+    "System.Reflection.Emit.ILGeneration": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "wp8": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Reflection.Emit.Lightweight": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "wp8": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Reflection.Extensions": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Reflection.Primitives": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Reflection.TypeExtensions": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Resources.ReaderWriter": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Resources.ResourceManager": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net451": "4.0.10.0",
+        "net46": "4.0.20.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.10.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.10.0",
+        "portable46-net451+win81": "4.0.10.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "win81": "4.0.10.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.10.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Caching": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Runtime.CompilerServices.VisualC": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.DurableInstancing": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Runtime.Extensions": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Handles": {
+      "InboxOn": {
+        "net46": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.InteropServices": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net451": "4.0.10.0",
+        "net46": "4.0.20.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.10.0",
+        "portable46-win81+wpa81": "4.0.10.0",
+        "portable46-net451+win81": "4.0.10.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "win81": "4.0.10.0",
+        "wpa81": "4.0.10.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.InteropServices.RuntimeInformation": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.InteropServices.WindowsRuntime": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Numerics": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Remoting": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Runtime.Serialization": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Serialization.Formatters": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Serialization.Formatters.Soap": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Runtime.Serialization.Json": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Serialization.Primitives": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.Serialization.Xml": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Runtime.WindowsRuntime": {
+      "InboxOn": {
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.10.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "win8": "4.0.0.0",
+        "win81": "4.0.10.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.10.0"
+      }
+    },
+    "System.Runtime.WindowsRuntime.UI.Xaml": {
+      "InboxOn": {
+        "portable46-win81+wpa81": "4.0.0.0",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0"
+      }
+    },
+    "System.Security": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Security.Claims": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.Cryptography.Algorithms": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.Cryptography.Csp": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.Cryptography.Encoding": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.Cryptography.Primitives": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.Cryptography.ProtectedData": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.Cryptography.X509Certificates": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.Principal": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Security.SecureString": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ServiceModel": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable46-win81+wp81": "3.9.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "3.9.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "3.9.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "3.9.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ServiceModel.Activation": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.ServiceModel.Activities": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.ServiceModel.Channels": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.ServiceModel.Discovery": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
       }
     },
     "System.ServiceModel.Duplex": {
@@ -17,6 +2222,18 @@
         "4.0.1"
       ],
       "BaselineVersion": "4.4.0",
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      },
       "AssemblyVersionInPackageVersion": {
         "4.0.0.0": "4.0.0",
         "4.0.1.0": "4.0.1",
@@ -31,6 +2248,23 @@
         "4.1.0"
       ],
       "BaselineVersion": "4.4.0",
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable46-win81+wp81": "3.9.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "3.9.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "3.9.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "3.9.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      },
       "AssemblyVersionInPackageVersion": {
         "3.9.0.0": "3.9.0",
         "4.0.0.0": "4.0.0",
@@ -39,12 +2273,34 @@
         "4.1.1.0": "4.4.0"
       }
     },
+    "System.ServiceModel.Internals": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
     "System.ServiceModel.NetTcp": {
       "StableVersions": [
         "4.0.0",
         "4.1.0"
       ],
       "BaselineVersion": "4.4.0",
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      },
       "AssemblyVersionInPackageVersion": {
         "4.0.0.0": "4.0.0",
         "4.1.0.0": "4.1.0",
@@ -58,12 +2314,33 @@
         "4.1.0"
       ],
       "BaselineVersion": "4.4.0",
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable46-win81+wp81": "3.9.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "3.9.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "3.9.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "3.9.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      },
       "AssemblyVersionInPackageVersion": {
         "3.9.0.0": "3.9.0",
         "4.0.0.0": "4.0.0",
         "4.1.0.0": "4.1.0",
         "4.1.1.0": "4.1.1",
         "4.2.0.0": "4.4.0"
+      }
+    },
+    "System.ServiceModel.Routing": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
       }
     },
     "System.ServiceModel.Security": {
@@ -73,13 +2350,669 @@
         "4.0.1"
       ],
       "BaselineVersion": "4.4.0",
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable46-win81+wp81": "3.9.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "3.9.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "3.9.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "3.9.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      },
       "AssemblyVersionInPackageVersion": {
         "3.9.0.0": "3.9.0",
         "4.0.0.0": "4.0.0",
         "4.0.1.0": "4.0.1",
         "4.0.2.0": "4.4.0"
       }
+    },
+    "System.ServiceModel.Web": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.ServiceProcess": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Speech": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Text.Encoding": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Text.Encoding.CodePages": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Text.Encoding.Extensions": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Text.RegularExpressions": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Threading": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Threading.Tasks": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Threading.Tasks.Parallel": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Threading.Thread": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Threading.ThreadPool": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Threading.Timer": {
+      "InboxOn": {
+        "net451": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win81": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Transactions": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Web": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Abstractions": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.ApplicationServices": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.DataVisualization": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.DataVisualization.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.DynamicData": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.DynamicData.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Entity": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Entity.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Extensions": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Extensions.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Mobile": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.RegularExpressions": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Routing": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Web.Services": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Windows": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.6.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Windows.Controls.Ribbon": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Windows.Forms": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Windows.Forms.DataVisualization": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Windows.Forms.DataVisualization.Design": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Windows.Input.Manipulations": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Windows.Presentation": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Workflow.Activities": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Workflow.ComponentModel": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Workflow.Runtime": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.WorkflowServices": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Xaml": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "System.Xml": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.Linq": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.ReaderWriter": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.Serialization": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "2.0.5.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.XDocument": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.XmlDocument": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.XmlSerializer": {
+      "InboxOn": {
+        "net45": "4.0.0.0",
+        "net46": "4.0.10.0",
+        "portable45-net45+win8+wpa81": "4.0.0.0",
+        "portable46-net451+win81+wpa81": "4.0.0.0",
+        "portable46-win81+wp81+wpa81": "4.0.0.0",
+        "portable45-net45+win8+wp8+wpa81": "4.0.0.0",
+        "portable46-win81+wp81": "4.0.0.0",
+        "portable46-win81+wpa81": "4.0.0.0",
+        "portable46-net451+win81": "4.0.0.0",
+        "portable45-net45+wp8": "4.0.0.0",
+        "portable45-net45+win8": "4.0.0.0",
+        "portable45-net45+win8+wp8": "4.0.0.0",
+        "portable46-wp81+wpa81": "4.0.0.0",
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "win8": "4.0.0.0",
+        "wp8": "4.0.0.0",
+        "wpa81": "4.0.0.0",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.XPath": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.XPath.XDocument": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.XPath.XmlDocument": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "System.Xml.Xsl.Primitives": {
+      "InboxOn": {
+        "monoandroid10": "Any",
+        "monotouch10": "Any",
+        "xamarinios10": "Any",
+        "xamarinmac20": "Any",
+        "xamarintvos10": "Any",
+        "xamarinwatchos10": "Any"
+      }
+    },
+    "UIAutomationClient": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "UIAutomationClientsideProviders": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "UIAutomationProvider": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "UIAutomationTypes": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "WindowsBase": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "WindowsFormsIntegration": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
+    },
+    "XamlBuildTask": {
+      "InboxOn": {
+        "net45": "4.0.0.0"
+      }
     }
   },
-  "ModulesToPackages": {}
+  "ModulesToPackages": {},
+  "MetaPackages": {}
 }

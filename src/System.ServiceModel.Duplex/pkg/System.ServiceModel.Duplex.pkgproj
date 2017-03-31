@@ -17,6 +17,9 @@
     <InboxOnTargetFramework Include="xamarinmac20" />
     <InboxOnTargetFramework Include="xamarintvos10" />
     <InboxOnTargetFramework Include="xamarinwatchos10" />
+    <!-- we've already shipped reference assembly versions with higher revisions
+         than what's inbox (4.0.1.0, 4.0.2.0) so we must permit this. -->
+    <ValidatePackageSuppression Include="PermitInboxRevsion" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

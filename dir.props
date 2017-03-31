@@ -15,6 +15,9 @@
     <!-- Temp change to make OS X build behave as a Linux build -->
     <OsEnvironment Condition="'$(OsEnvironment)'=='' AND '$(OS)'=='OSX'">Unix</OsEnvironment>
     <OsEnvironment Condition="'$(OsEnvironment)'==''">$(OS)</OsEnvironment>
+
+    <!-- Dumpling is not optional currently.  Issue: https://github.com/dotnet/buildtools/issues/1414 --> 
+    <CrashDumpFolder Condition="'$(TargetOS)' == 'Windows_NT'">%TMP%\CoreRunCrashDumps</CrashDumpFolder>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -48,6 +51,10 @@
     <ToolsDir Condition="'$(UseToolRuntimeForToolsDir)'=='true'">$(ToolRuntimePath)</ToolsDir>
     <ToolsDir Condition="'$(ToolsDir)'==''">$(ProjectDir)Tools/</ToolsDir>
     <ToolRuntimePath Condition="'$(ToolRuntimePath)'==''">$(ToolsDir)</ToolRuntimePath>
+	
+	<!-- Prevent Roslyn.Common.props from mis-resolving these .targets files by providing relative values --> 
+    <CSharpCoreTargetsPath>$(ToolsDir)Microsoft.CSharp.Core.targets</CSharpCoreTargetsPath>
+    <VisualBasicCoreTargetsPath>$(ToolsDir)Microsoft.VisualBasic.Core.targets</VisualBasicCoreTargetsPath>
 
     <!-- needs to be defined all the time to avoid indexing every file from the root -->
     <GeneratedProjectJsonDir>$(ObjDir)generated</GeneratedProjectJsonDir>
