@@ -15,6 +15,9 @@
     <!-- Temp change to make OS X build behave as a Linux build -->
     <OsEnvironment Condition="'$(OsEnvironment)'=='' AND '$(OS)'=='OSX'">Unix</OsEnvironment>
     <OsEnvironment Condition="'$(OsEnvironment)'==''">$(OS)</OsEnvironment>
+
+    <!-- Dumpling is not optional currently.  Issue: https://github.com/dotnet/buildtools/issues/1414 --> 
+    <CrashDumpFolder Condition="'$(TargetOS)' == 'Windows_NT'">%TMP%\CoreRunCrashDumps</CrashDumpFolder>
   </PropertyGroup>
 
   <PropertyGroup>
