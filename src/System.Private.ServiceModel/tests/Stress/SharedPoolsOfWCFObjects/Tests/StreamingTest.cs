@@ -134,8 +134,8 @@ namespace SharedPoolsOfWCFObjects
         private static Func<StreamingRequestContext<StreamingService>, int>[][] s_syncFuncs = new Func<StreamingRequestContext<StreamingService>, int>[][]
         {
             new Func<StreamingRequestContext<StreamingService>, int>[]{ },                                  // StreamNone = 0
-            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetStreamFromInt },             // StreamOut = 1
-            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetIntFromStream },             // StreamIn = 2
+            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetIntFromStream },             // StreamOut = 1
+            new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetStreamFromInt },             // StreamIn = 2
             new Func<StreamingRequestContext<StreamingService>, int>[]{ TestEchoStream },                   // StreamEcho = 3
             new Func<StreamingRequestContext<StreamingService>, int>[]{ TestGetStreamFromInt, TestGetIntFromStream, TestEchoStream }    // StreamAll = 4
         };
