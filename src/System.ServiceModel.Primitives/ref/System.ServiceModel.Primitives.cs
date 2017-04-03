@@ -1274,7 +1274,7 @@ namespace System.ServiceModel.Description
         public string ConfigurationName { get { return default(string); } set { } }
         public System.Collections.ObjectModel.KeyedCollection<System.Type, System.ServiceModel.Description.IContractBehavior> ContractBehaviors { get { return default(System.Collections.ObjectModel.KeyedCollection<System.Type, System.ServiceModel.Description.IContractBehavior>); } }
         public System.Type ContractType { get { return default(System.Type); } set { } }
-        public System.ServiceModel.Description.ContractDescription GetContract(System.Type contractType) { return default(System.ServiceModel.Description.ContractDescription); }
+        public static System.ServiceModel.Description.ContractDescription GetContract(System.Type contractType) { return default(System.ServiceModel.Description.ContractDescription); }
         public string Name { get { return default(string); } set { } }
         public string Namespace { get { return default(string); } set { } }
         public System.ServiceModel.Description.OperationDescriptionCollection Operations { get { return default(System.ServiceModel.Description.OperationDescriptionCollection); } }
