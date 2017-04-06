@@ -11,11 +11,21 @@ using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    [ServiceContract, XmlSerializerFormat(SupportFaults = true)]
-    interface IXmlSFAttribute
+    [ServiceContract, XmlSerializerFormat]
+    public interface IXmlSFAttribute
     {
         [OperationContract, XmlSerializerFormat(SupportFaults = true)]
-        [FaultContract(typeof(FaultDetailWithXmlSerializerFormatAttribute_SupportFaults), Action = "http://tempuri.org/IWcfService/FaultDetailWithXmlSerializerFormatAttribute_SupportFaults", Name = "FaultDetailWithXmlSerializerFormatAttribute_SupportFaults", Namespace = "http://www.contoso.com/wcfnamespace")]
-        void TestXmlSerializerSupportsFaults(string faultMsg);
+        [FaultContract(typeof(FaultDetailWithXmlSerializerFormatAttribute),
+            Action = "http://tempuri.org/IWcfService/FaultDetailWithXmlSerializerFormatAttribute",
+            Name = "FaultDetailWithXmlSerializerFormatAttribute",
+            Namespace = "http://www.contoso.com/wcfnamespace")]
+        void TestXmlSerializerSupportsFaults_True();
+
+        [OperationContract, XmlSerializerFormat]
+        [FaultContract(typeof(FaultDetailWithXmlSerializerFormatAttribute),
+            Action = "http://tempuri.org/IWcfService/FaultDetailWithXmlSerializerFormatAttribute",
+            Name = "FaultDetailWithXmlSerializerFormatAttribute",
+            Namespace = "http://www.contoso.com/wcfnamespace")]
+        void TestXmlSerializerSupportsFaults_False();
     }
 }

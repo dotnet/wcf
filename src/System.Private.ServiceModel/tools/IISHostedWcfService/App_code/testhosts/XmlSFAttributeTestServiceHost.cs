@@ -18,7 +18,7 @@ namespace WcfService
             return serviceHost;
         }
     }
-    public class XmlSFAttributeTestServiceHost : TestServiceHostBase<IWcfService>
+    public class XmlSFAttributeTestServiceHost : TestServiceHostBase<IXmlSFAttribute>
     {
         protected override string Address { get { return "XmlSFAttribute"; } }
 

@@ -17,9 +17,14 @@ namespace WcfService
     [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any)]
     public class XmlSFAttribute : IXmlSFAttribute
     {
-        public void TestXmlSerializerSupportsFaults(string faultMsg)
+        public void TestXmlSerializerSupportsFaults_True()
         {
-            throw new FaultException<FaultDetailWithXmlSerializerFormatAttribute_SupportFaults>(new FaultDetailWithXmlSerializerFormatAttribute_SupportFaults(faultMsg));
+            throw new FaultException<FaultDetailWithXmlSerializerFormatAttribute>(new FaultDetailWithXmlSerializerFormatAttribute { UsedDataContractSerializer = true } );
+        }
+
+        public void TestXmlSerializerSupportsFaults_False()
+        {
+            throw new FaultException<FaultDetailWithXmlSerializerFormatAttribute>(new FaultDetailWithXmlSerializerFormatAttribute { UsedDataContractSerializer = true } );
         }
     }
 }
