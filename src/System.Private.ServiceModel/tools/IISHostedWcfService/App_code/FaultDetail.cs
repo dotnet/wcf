@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
@@ -26,28 +27,24 @@ namespace WcfService
         }
     }
 
-    // SupportFaults property
-    // true if the XmlSerializer should be used for reading and writing faults; false if the DataContractSerializer should be used. The default is false.
-    [System.Runtime.Serialization.DataContract(Name = "FaultDetailWithXmlSerializerFormatAttribute_SupportFaults", Namespace = "http://www.contoso.com/wcfnamespace")]
-    public class FaultDetailWithXmlSerializerFormatAttribute_SupportFaults
+    // FaultException<TDetail> Class with a property that will map to a different element name on the client depending on what serializer is used.
+    [DataContract(Name = "FaultDetailWithXmlSerializerFormatAttribute", Namespace = "http://www.contoso.com/wcfnamespace")]
+    public class FaultDetailWithXmlSerializerFormatAttribute
     {
-        private string _report;
+        private bool _usedSerializer;
 
-        public FaultDetailWithXmlSerializerFormatAttribute_SupportFaults()
+        public FaultDetailWithXmlSerializerFormatAttribute()
         {
         }
 
-        public FaultDetailWithXmlSerializerFormatAttribute_SupportFaults(string message)
-        {
-            _report = message;
-        }
-
+        // If XmlSerializer is use this property will map to the element named "UsedXmlSerializer" on the client.
+        // If DataContract Serializer is used this property will map to the element named "UsedDataContractSerializer" on the client.
         [DataMember]
-        [XmlElement(ElementName = "FooBar")]
-        public string Message
+        [XmlElement(ElementName = "UsedXmlSerializer")]
+        public bool UsedDataContractSerializer
         {
-            get { return _report; }
-            set { _report = value; }
+            get { return _usedSerializer; }
+            set { _usedSerializer = value; }
         }
     }
 }
