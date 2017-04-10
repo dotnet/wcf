@@ -541,6 +541,8 @@ namespace System.ServiceModel
         public OperationContractAttribute() { }
         public string Action { get { return default(string); } set { } }
         public bool AsyncPattern { get { return default(bool); } set { } }
+        public bool IsInitiating { get { return default(bool); } set { } }
+        public bool IsTerminating { get { return default(bool); } set { } }
         public bool IsOneWay { get { return default(bool); } set { } }
         public string Name { get { return default(string); } set { } }
         public string ReplyAction { get { return default(string); } set { } }
@@ -585,6 +587,13 @@ namespace System.ServiceModel
         public string ConfigurationName { get { return default(string); } set { } }
         public string Name { get { return default(string); } set { } }
         public string Namespace { get { return default(string); } set { } }
+        public SessionMode SessionMode { get { return SessionMode.Allowed; } set { } }
+    }
+    public enum SessionMode
+    {
+        Allowed,
+        Required,
+        NotAllowed,
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(1092), Inherited = true, AllowMultiple = true)]
     public sealed partial class ServiceKnownTypeAttribute : System.Attribute
