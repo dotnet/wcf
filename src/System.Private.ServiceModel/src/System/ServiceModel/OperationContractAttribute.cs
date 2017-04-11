@@ -18,6 +18,7 @@ namespace System.ServiceModel
         private string _replyAction = null;
         private bool _asyncPattern = false;
         private bool _isInitiating = true;
+        private bool _isTerminating = false;
         private bool _isOneWay = false;
         private ProtectionLevel _protectionLevel = ProtectionLevel.None;
         private bool _hasProtectionLevel = false;
@@ -108,6 +109,12 @@ namespace System.ServiceModel
         {
             get { return _isInitiating; }
             set { _isInitiating = value; }
+        }
+
+        public bool IsTerminating
+        {
+            get { return _isTerminating; }
+            set { _isTerminating = value; }
         }
 
         internal bool IsSessionOpenNotificationEnabled
