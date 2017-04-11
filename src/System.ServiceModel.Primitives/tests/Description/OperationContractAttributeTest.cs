@@ -31,7 +31,7 @@ public static class OperationContractAttributeTest
         {
             channelFactory.CreateChannel();
         });
-        Assert.True(exception.Message.Contains("The contract 'INonInitiatingNonTerminatingService' is not self-consistent"));
+        Assert.True(exception.Message.Contains("INonInitiatingNonTerminatingService"));
     }
 
     static ChannelFactory<T> CreateChannelFactoryHelper<T>(string url)
