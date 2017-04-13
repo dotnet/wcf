@@ -114,7 +114,8 @@ namespace SharedPoolsOfWCFObjects
         public int StreamSize { get; set; }
         public int BufferSize { get; set; }
         public bool VerifyStreamContent { get; set; }
-        public Stream TheStream { get; set; }
+        public Stream StreamIn { get; set; }
+        public Stream StreamOut { get; set; }
     }
 
     public class StreamingTest<StreamingService, TestParams> : CommonMultiCallTest<StreamingService, TestParams, StreamingRequestContext<StreamingService>>
@@ -173,7 +174,7 @@ namespace SharedPoolsOfWCFObjects
         protected override string PrintRequestDetails(StreamingRequestContext<StreamingService> requestDetails)
         {
             return base.PrintRequestDetails(requestDetails) + 
-                String.Format (", TestScenario {0}, StreamSize {1}, StreamPosition {2}", requestDetails.TestScenario, requestDetails.StreamSize, requestDetails.TheStream?.Position);
+                String.Format (", TestScenario {0}, StreamSize {1}, StreamInPosition {2}, StreamOutPosition {3}", requestDetails.TestScenario, requestDetails.StreamSize, requestDetails.StreamIn?.Position, requestDetails.StreamOut?.Position);
         }
 
         private static async Task<int> TestGetStreamFromIntAsync(StreamingRequestContext<StreamingService> details)
@@ -181,7 +182,7 @@ namespace SharedPoolsOfWCFObjects
             details.TestScenario = StreamingScenarios.StreamIn; // update the scenario
             using (var stream = await details.Channel.GetStreamFromIntAsync(details.StreamSize))
             {
-                details.TheStream = stream;
+                details.StreamIn = stream;
                 var receivedStreamSize = await VerifiableStream.VerifyStreamAsync(stream, details.StreamSize, details.BufferSize, details.VerifyStreamContent);
                 if (receivedStreamSize != details.StreamSize)
                 {
@@ -195,7 +196,7 @@ namespace SharedPoolsOfWCFObjects
             details.TestScenario = StreamingScenarios.StreamOut;
             using (var stream = new VerifiableStream(details.StreamSize))
             {
-                details.TheStream = stream;
+                details.StreamOut = stream;
                 int receivedSize = await details.Channel.GetIntFromStreamAsync(stream);
                 if (receivedSize != details.StreamSize)
                 {
@@ -209,9 +210,10 @@ namespace SharedPoolsOfWCFObjects
             details.TestScenario = StreamingScenarios.StreamEcho;
             using (var stream = new VerifiableStream(details.StreamSize))
             {
-                details.TheStream = stream;
+                details.StreamOut = stream;
                 using (var receivedStream = await details.Channel.EchoStreamAsync(stream))
                 {
+                    details.StreamIn = receivedStream;
                     var receivedSize = await VerifiableStream.VerifyStreamAsync(receivedStream, details.StreamSize, details.BufferSize, details.VerifyStreamContent);
                     if (receivedSize != details.StreamSize)
                     {
@@ -227,7 +229,7 @@ namespace SharedPoolsOfWCFObjects
             bool verifyStreamContent = details.VerifyStreamContent;
             using (var stream = details.Channel.GetStreamFromInt(details.StreamSize))
             {
-                details.TheStream = stream;
+                details.StreamIn = stream;
                 var receivedStreamSize = VerifiableStream.VerifyStream(stream, details.StreamSize, details.BufferSize, verifyStreamContent);
                 if (receivedStreamSize != details.StreamSize)
                 {
@@ -241,7 +243,7 @@ namespace SharedPoolsOfWCFObjects
             details.TestScenario = StreamingScenarios.StreamOut;
             using (var stream = new VerifiableStream(details.StreamSize))
             {
-                details.TheStream = stream;
+                details.StreamOut = stream;
                 int receivedSize = details.Channel.GetIntFromStream(stream);
 
                 if (receivedSize != details.StreamSize)
@@ -256,9 +258,10 @@ namespace SharedPoolsOfWCFObjects
             details.TestScenario = StreamingScenarios.StreamEcho;
             using (var stream = new VerifiableStream(details.StreamSize))
             {
-                details.TheStream = stream;
+                details.StreamOut = stream;
                 using (var receivedStream = details.Channel.EchoStream(stream))
                 {
+                    details.StreamIn = receivedStream;
                     var receivedSize = VerifiableStream.VerifyStream(receivedStream, details.StreamSize, details.BufferSize, details.VerifyStreamContent);
 
                     if (receivedSize != details.StreamSize)
