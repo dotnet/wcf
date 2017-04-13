@@ -14,11 +14,13 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
-    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard1.7</PackageTargetFramework>
+    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard2.0</PackageTargetFramework>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
     <PackageTargetRuntime Condition="'$(OSGroup)' == 'Unix'">unix</PackageTargetRuntime>
     <PackageTargetRuntime Condition="'$(OSGroup)' == 'Windows_NT'">win7</PackageTargetRuntime>
-    <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v1.7</NuGetTargetMoniker>
+    <TargetGroup Condition="'$(TargetGroup)' == ''">netstandard2.0</TargetGroup>
+    <NuGetTargetMoniker Condition="'$(TargetGroup)' == 'netstandard2.0'">.NETStandard,Version=v2.0</NuGetTargetMoniker>
+    <TargetFrameworkIdentifier Condition="'$(TargetGroup)' == 'netstandard2.0'">.NETStandard</TargetFrameworkIdentifier>
   </PropertyGroup>
   <!-- Default configurations to help VS understand the options -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unix_Debug|AnyCPU'" />
@@ -41,17 +43,22 @@
     <ProjectJson>$(MsBuildThisFileDirectory)windows\project.json</ProjectJson>
     <ProjectLockJson>$(MsBuildThisFileDirectory)windows\project.lock.json</ProjectLockJson>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
+    <ProjectJson>$(MsBuildThisFileDirectory)netstandard\project.json</ProjectJson>
+    <ProjectLockJson>$(MsBuildThisFileDirectory)netstandard\project.lock.json</ProjectLockJson>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(TargetGroup)' != 'netcore50' AND '$(TargetsWindows)' == 'true'">
     <DefineConstants>$(DefineConstants);SUPPORTS_WINDOWSIDENTITY</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <ExcludeCompile Condition="'$(TargetGroup)' == 'netstandard2.0'" Include="$(MsBuildThisFileDirectory)\Framework\**\*.cs" />
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
     </Compile>
     <Compile Include="$(CommonPath)\System\__HResults.cs">
       <Link>Common\System\__HResults.cs</Link>
     </Compile>
-    <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" />
+    <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" Exclude="@(ExcludeCompile)" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
@@ -61,5 +68,12 @@
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
     <TargetingPackReference Include="Windows" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
+    <!-- Copy ref to output to enable APICompat for the facades that directly reference this project -->
+    <Content Include="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\ref\netstandard.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <Import Condition="'$(TargetGroup)'=='netstandard2.0'" Project="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\NETStandard.Library.targets" />
 </Project>
