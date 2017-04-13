@@ -4,11 +4,12 @@ Prerequisites:
 - Windows Server 2016 or Windows 10 with "Containers" feature enabled
 - Latest [Docker](https://www.docker.com) version installed
 - If running Docker inside a VM, make sure you [enabled nested virtualization for the VM](https://blogs.technet.microsoft.com/virtualization/2015/10/13/windows-insider-preview-nested-virtualization/) 
-
+- For getting started with Windows containers please refer to this document: https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/quick-start-windows-10
+- For running a sample (and similar simple service apps) in a container you can follow a blog post by Jeffrey T. Fritz at https://blogs.msdn.microsoft.com/webdev/2017/02/20/lets-try-wcf-self-hosted-services-in-a-container/
 
 
 ### 1. Sample app
-These are the steps for creating a sample WCF service and client. If you already have a sample WCF service app (or even host it in a container as described in an excellent blog post by Jeffrey T. Fritz at https://blogs.msdn.microsoft.com/webdev/2017/02/20/lets-try-wcf-self-hosted-services-in-a-container/), and a corresponding .NET Core WCF client project then you may skip the sample app creation and proceed to step 2. 
+These are the steps for creating a sample WCF service and client. If you already have a sample WCF service app, and a corresponding .NET Core WCF client project then you may skip the sample app creation and proceed to step 2. 
 For the purpose of this demo we’ll go ahead and just create a WCF service app from a default project template. Among other things this will generate a service and a data contract that look like the one below (IService1.cs):
 
 ~~~
@@ -141,3 +142,4 @@ $pass = ConvertTo-SecureString -AsPlainText -Force password
 Import-pfxcertificate -certStoreLocation Cert:LocalMachine\My -Password $pass -FilePath client_cert.pfx
 Import-Certificate -certStoreLocation Cert:LocalMachine\Root -FilePath cert_authority_public.cer
 ~~~
+
