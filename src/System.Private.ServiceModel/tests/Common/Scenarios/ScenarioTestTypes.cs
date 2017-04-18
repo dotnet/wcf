@@ -1349,3 +1349,32 @@ public class Manager : Employee
     [DataMember]
     public int OfficeId { get; set; }
 }
+
+[DataContract(Name = "FaultDetailWithXmlSerializerFormatAttribute", Namespace = "http://www.contoso.com/wcfnamespace")]
+public class FaultDetailWithXmlSerializerFormatAttribute
+{
+    private bool _usedXmlSerializer;
+    private bool _usedDataContractSerializer;
+
+    public FaultDetailWithXmlSerializerFormatAttribute()
+    {
+    }
+
+    // If the Fault from the server was sent using the Xml Serializer this property will be set to 'true'
+    [DataMember]
+    [XmlElement]
+    public bool UsedXmlSerializer
+    {
+        get { return _usedXmlSerializer; }
+        set { _usedXmlSerializer = value; }
+    }
+
+    // If the Fault from the server was sent using the Data Contract Serializer this property will be set to 'true'
+    [DataMember]
+    [XmlElement]
+    public bool UsedDataContractSerializer
+    {
+        get { return _usedDataContractSerializer; }
+        set { _usedDataContractSerializer = value; }
+    }
+}
