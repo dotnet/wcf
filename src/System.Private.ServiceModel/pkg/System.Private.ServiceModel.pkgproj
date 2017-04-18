@@ -6,6 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\System.Private.ServiceModel.builds" />
+    <HarvestIncludePaths Include="runtimes/unix/lib/netstandard1.3" />
+    <HarvestIncludePaths Include="runtimes/win7/lib/netstandard1.3" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
