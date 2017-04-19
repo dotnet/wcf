@@ -513,6 +513,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <!-- Todo:  This should be added in https://github.com/dotnet/buildtools/blob/66dc7235af5e0a9f3edcaa929da7f0a5fdd21259/src/Microsoft.DotNet.Build.Tasks/PackageFiles/tests.targets#L69 -->
     <TestNugetTargetMoniker Condition="'$(TestTFM)' == 'netcoreapp2.0'">.NETCoreApp,Version=v2.0</TestNugetTargetMoniker>
   </PropertyGroup>
 

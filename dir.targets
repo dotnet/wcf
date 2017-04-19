@@ -107,6 +107,8 @@
     </ItemGroup>
   </Target>
   
+  <!-- This import is needed because we're still using project.json to restore packages. 
+       Once we switch to MSBuild it will automatically handle target imports from the packages themselves. -->
   <Import Condition="'$(TargetGroup)'=='netstandard2.0'" Project="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\NETStandard.Library.targets" />
 
 </Project>
