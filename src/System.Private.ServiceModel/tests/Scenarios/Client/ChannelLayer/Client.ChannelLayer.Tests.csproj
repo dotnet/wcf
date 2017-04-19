@@ -2,7 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TestCategories>OuterLoop</TestCategories>
-    <Configuration Condition="'$(Configuration)'==''">$(OS)_Debug</Configuration>
   </PropertyGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
@@ -16,7 +15,7 @@
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{1DFF7AF1-5873-4984-B871-73F2F9A84239}</ProjectGuid>
-    <NugetTargetMoniker>.NETStandard,Version=v1.3</NugetTargetMoniker>
+    <TargetGroup Condition="'$(TargetGroup)'==''" >netstandard1.3</TargetGroup>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />

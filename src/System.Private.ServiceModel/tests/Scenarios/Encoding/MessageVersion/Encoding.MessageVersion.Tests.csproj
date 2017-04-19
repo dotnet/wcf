@@ -2,7 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TestCategories>OuterLoop</TestCategories>
-    <Configuration Condition="'$(Configuration)'==''">$(OS)_Debug</Configuration>
   </PropertyGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
@@ -15,7 +14,7 @@
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{604EBABB-0160-48EF-AE10-FEAE8DE39F19}</ProjectGuid>
-    <NugetTargetMoniker>.NETStandard,Version=v1.3</NugetTargetMoniker>
+    <TargetGroup Condition="'$(TargetGroup)'==''" >netstandard1.3</TargetGroup>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
