@@ -6,6 +6,8 @@
       <SupportedFramework>net46;netcore50;netcoreapp1.0;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.Primitives.builds" />
+    <HarvestIncludePaths Include="ref/netstandard1.0" />
+    <HarvestIncludePaths Include="ref/netstandard1.1" />
     <!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
     <InboxOnTargetFramework Include="MonoAndroid10" />
     <InboxOnTargetFramework Include="MonoTouch10" />
@@ -19,6 +21,10 @@
     <InboxOnTargetFramework Include="xamarinmac20" />
     <InboxOnTargetFramework Include="xamarintvos10" />
     <InboxOnTargetFramework Include="xamarinwatchos10" />
+    <ValidatePackageSuppression Include="PermitMissingImplementation">
+      <!-- Supported inbox by all ns1.0-1.2 frameworks -->
+      <Value>.NETStandard,Version=v1.0;.NETStandard,Version=v1.1;.NETStandard,Version=v1.2</Value>
+    </ValidatePackageSuppression>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
