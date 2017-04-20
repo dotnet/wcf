@@ -11,30 +11,12 @@
         "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
         "xunit.console.netcore": "1.0.3-prerelease-00925-01",
         "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
-        "System.Reflection.DispatchProxy": {
-          "version": "4.4.0-beta-24911-02",
-          "exclude": "all"
-        },
-        "System.ServiceModel.Duplex": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.Http": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.NetTcp": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.Primitives": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.Security": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        }
+        "System.Reflection.DispatchProxy": "4.4.0-beta-24911-02",
+        "System.ServiceModel.Duplex": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Http": "4.4.0-beta-25217-01",
+        "System.ServiceModel.NetTcp": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Primitives": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Security": "4.4.0-beta-25217-01"
       }
     },
     "netstandard1.3": {
@@ -117,26 +99,11 @@
         "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
         "xunit.console.netcore": "1.0.3-prerelease-00925-01",
         "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
-        "System.ServiceModel.Duplex": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.Http": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.NetTcp": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.Primitives": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
-        "System.ServiceModel.Security": {
-          "version": "4.4.0-beta-25217-01",
-          "exclude": "all"
-        },
+        "System.ServiceModel.Duplex": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Http": "4.4.0-beta-25217-01",
+        "System.ServiceModel.NetTcp": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Primitives": "4.4.0-beta-25217-01",
+        "System.ServiceModel.Security": "4.4.0-beta-25217-01",
         "Microsoft.CSharp": {
           "version": "4.3.0",
           "exclude": "all"
