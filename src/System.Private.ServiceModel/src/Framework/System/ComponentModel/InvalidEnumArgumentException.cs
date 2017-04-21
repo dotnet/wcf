@@ -7,6 +7,7 @@ using System.Globalization;
 
 namespace System.ComponentModel
 {
+#if NETStandard13
     /// <devdoc>
     ///    <para>The exception that is thrown when using invalid arguments that are enumerators.</para>
     /// </devdoc>
@@ -51,4 +52,5 @@ namespace System.ComponentModel
         {
         }
     }
+#endif
 }
