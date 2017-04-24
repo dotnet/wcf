@@ -552,6 +552,11 @@ namespace System.ServiceModel
         Document = 0,
         Rpc = 1,
     }
+    public enum OperationFormatUse
+    {
+        Literal,
+        Encoded,
+    }
     public partial class ProtocolException : System.ServiceModel.CommunicationException
     {
         public ProtocolException(string message) { }
@@ -623,6 +628,7 @@ namespace System.ServiceModel
         public XmlSerializerFormatAttribute() { }
         public System.ServiceModel.OperationFormatStyle Style { get { return default(System.ServiceModel.OperationFormatStyle); } set { } }
         public bool SupportFaults { get { return default(bool); } set { } }
+        public OperationFormatUse Use{ get { throw null; } set { } }
     }
 }
 namespace System.ServiceModel.Channels
