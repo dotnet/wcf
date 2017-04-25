@@ -412,7 +412,7 @@ public static class ServiceUtilHelper
 
     public static string GetEndpointAddress(string endpoint, string protocol = "http")
     {
-        return string.Format(@"{0}/{1}", BuildBaseUri(protocol), endpoint);
+        return string.Format(@"{0}{1}", BuildBaseUri(protocol), endpoint);
     }
 
     private static string GetResourceAddress(string resource, string protocol = "http")
