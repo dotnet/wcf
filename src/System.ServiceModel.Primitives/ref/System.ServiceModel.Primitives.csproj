@@ -3,8 +3,8 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <PackageTargetFramework>netstandard1.3;netcore50</PackageTargetFramework>
-    <NuGetTargetMoniker>.NETStandard,Version=v1.3</NuGetTargetMoniker>
+    <PackageTargetFramework>netstandard2.0</PackageTargetFramework>
+    <NuGetTargetMoniker>.NETStandard,Version=v2.0</NuGetTargetMoniker>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="System.ServiceModel.Primitives.cs" />
@@ -12,6 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
+    <!-- Copy ref to output to enable APICompat for the facades that directly reference this project -->
+    <Content Include="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\ref\netstandard.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
