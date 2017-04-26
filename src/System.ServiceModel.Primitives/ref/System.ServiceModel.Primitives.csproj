@@ -5,6 +5,7 @@
     <OutputType>Library</OutputType>
     <PackageTargetFramework>netstandard2.0</PackageTargetFramework>
     <NuGetTargetMoniker>.NETStandard,Version=v2.0</NuGetTargetMoniker>
+    <TargetGroup Condition="'$(TargetGroup)' == ''">netstandard2.0</TargetGroup>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="System.ServiceModel.Primitives.cs" />

@@ -2,9 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
-    <Project Include="System.ServiceModel.NetTcp.csproj" >
-      <TargetGroup>net46</TargetGroup>
-    </Project>
     <Project Include="System.ServiceModel.NetTcp.csproj">
     </Project>
   </ItemGroup>

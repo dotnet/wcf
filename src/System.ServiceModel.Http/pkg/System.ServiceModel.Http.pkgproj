@@ -3,15 +3,14 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
     <ProjectReference Include="..\ref\System.ServiceModel.Http.csproj">
-      <SupportedFramework>net46;netcoreapp1.0;$(AllXamarinFrameworks)</SupportedFramework>
+      <SupportedFramework>netcoreapp2.0;net461;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
     <ProjectReference Include="..\src\System.ServiceModel.Http.builds" />
     <HarvestIncludePaths Include="ref/netcore50;lib/netcore50" />
     <HarvestIncludePaths Include="ref/netstandard1.0" />
     <HarvestIncludePaths Include="ref/netstandard1.1" />
-    <HarvestIncludePaths Include="ref/netstandard1.3">
-      <SupportedFramework>netcore50</SupportedFramework>
-    </HarvestIncludePaths>
+    <HarvestIncludePaths Include="ref/netstandard1.3;lib/netstandard1.3" />
+    <HarvestIncludePaths Include="ref/net46;lib/net46" />
     <InboxOnTargetFramework Include="MonoAndroid10" />
     <InboxOnTargetFramework Include="MonoTouch10" />
     <InboxOnTargetFramework Include="net45">
