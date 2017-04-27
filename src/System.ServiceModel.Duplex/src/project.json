@@ -7,11 +7,6 @@
         "System.Reflection.DispatchProxy": "4.4.0-preview1-25220-02",
         "System.Runtime.InteropServices.RuntimeInformation": "4.4.0-preview1-25218-03"
       }
-    },
-    "net46": {
-      "dependencies": {
-        "Microsoft.TargetingPack.NETFramework.v4.6": "1.0.1"
-      }
     }
   }
 }
