@@ -542,3 +542,21 @@ public interface IDataContractResolverService
     [OperationContract(Action = "http://tempuri.org/IDataContractResolverService/AddEmployee")]
     void AddEmployee(Employee employee);
 }
+
+[ServiceContract(SessionMode = SessionMode.Required)]
+public interface ISessionTestsDefaultService
+{
+    [OperationContract(IsInitiating = true, IsTerminating = false)]
+    int MethodAInitiating(int a);
+
+    [OperationContract(IsInitiating = false, IsTerminating = false)]
+    int MethodBNonInitiating(int b);
+
+    [OperationContract(IsInitiating = false, IsTerminating = true)]
+    SessionTestsCompositeType MethodCTerminating();
+}
+
+[ServiceContract(SessionMode = SessionMode.Required)]
+public interface ISessionTestsShortTimeoutService : ISessionTestsDefaultService
+{
+}

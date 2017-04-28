@@ -533,6 +533,23 @@ public static partial class Endpoints
         }
     }
 
+    public static string Tcp_Session_Tests_Default_Service
+    {
+        get
+        {
+            return GetEndpointAddress("SessionTestsDefaultService.svc/tcp-sessions", protocol: "net.tcp");
+        }
+    }
+
+    public static string Tcp_Session_Tests_Short_Timeout_Service
+    {
+        get
+        {
+            return GetEndpointAddress("SessionTestsShortTimeoutService.svc", protocol: "net.tcp");
+        }
+    }
+
+
     #endregion net.tcp Addresses
 }
 

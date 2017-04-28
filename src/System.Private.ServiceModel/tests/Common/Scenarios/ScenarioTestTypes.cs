@@ -1349,3 +1349,12 @@ public class Manager : Employee
     [DataMember]
     public int OfficeId { get; set; }
 }
+
+[DataContract]
+public class SessionTestsCompositeType
+{
+    [DataMember]
+    public int MethodAValue { get; set; }
+    [DataMember]
+    public int MethodBValue { get; set; }
+}
