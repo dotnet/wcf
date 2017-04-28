@@ -3,10 +3,6 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
     <Project Include="System.ServiceModel.Duplex.Tests.csproj" >
-      <TargetGroup>netstandard1.3</TargetGroup>
-      <TestTFMs>netcore50;netcoreapp1.1;netcoreapp2.0</TestTFMs>
-    </Project>
-    <Project Include="System.ServiceModel.Duplex.Tests.csproj" >
       <TargetGroup>netstandard2.0</TargetGroup>
       <TestTFMs>netcoreapp2.0</TestTFMs>
     </Project> 
