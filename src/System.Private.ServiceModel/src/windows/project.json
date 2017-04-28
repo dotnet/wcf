@@ -7,7 +7,7 @@
         "Microsoft.TargetingPack.Private.NETNative": "1.1.0-beta-24607-01",
         "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
         "Microsoft.TargetingPack.Private.WinRT": "1.0.3",
-        "Microsoft.NETCore.Platforms": "2.0.0-preview1-25220-02",
+        "Microsoft.NETCore.Platforms": "2.0.0-preview2-25228-01",
         "System.Collections": "4.4.0-beta-24911-02",
         "System.Collections.Concurrent": "4.4.0-beta-24911-02",
         "System.Collections.NonGeneric": "4.4.0-beta-24911-02",
@@ -30,10 +30,10 @@
         "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
         "System.ObjectModel": "4.4.0-beta-24911-02",
         "System.Reflection": "4.4.0-beta-24911-02",
-        "System.Reflection.DispatchProxy": "4.4.0-preview1-25220-02",
+        "System.Reflection.DispatchProxy": "4.4.0-preview2-25228-01",
         "System.Reflection.Extensions": "4.4.0-beta-24911-02",
         "System.Reflection.Primitives": "4.4.0-beta-24911-02",
-        "System.Reflection.TypeExtensions": "4.4.0-preview1-25220-02",
+        "System.Reflection.TypeExtensions": "4.4.0-preview2-25228-01",
         "System.Resources.ResourceManager": "4.4.0-beta-24911-02",
         "System.Runtime": "4.4.0-beta-24911-02",
         "System.Runtime.Extensions": "4.4.0-beta-24911-02",
@@ -55,9 +55,9 @@
     },
     "netstandard2.0": {
       "dependencies": {
-        "NETStandard.Library": "2.0.0-preview1-25131-01",
-        "System.Security.Principal.Windows": "4.4.0-preview1-25220-02",
-        "System.Reflection.DispatchProxy": "4.4.0-preview1-25220-02",
+        "NETStandard.Library": "2.0.0-preview2-25228-01",
+        "System.Security.Principal.Windows": "4.4.0-preview2-25228-01",
+        "System.Reflection.DispatchProxy": "4.4.0-preview2-25228-01",
         "System.Runtime.InteropServices.RuntimeInformation": "4.4.0-preview1-25218-03"
       }
     }
