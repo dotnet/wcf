@@ -1,15 +1,15 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>830b35eafa3fd07cc893321e5c0013ad48a6712b</CoreFxCurrentRef>
-    <CoreClrCurrentRef>2718aebf9298724ee788f871287bdc82ec950722</CoreClrCurrentRef>
+    <CoreFxCurrentRef>65e6186cee146b0dbe65dcfab0055c6c5c635cbd</CoreFxCurrentRef>
+    <CoreClrCurrentRef>65e6186cee146b0dbe65dcfab0055c6c5c635cbd</CoreClrCurrentRef>
     <WCFCurrentRef>43f8d65aadc9dd4b30cb976652961bbbdcd15f5f</WCFCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <CoreFxExpectedPrerelease>preview2-25228-01</CoreFxExpectedPrerelease>
-    <StandardExpectedPrerelease>preview2-25228-01</StandardExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview1-25228-02</CoreFxExpectedPrerelease>
+    <StandardExpectedPrerelease>preview1-25228-01</StandardExpectedPrerelease>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
@@ -21,6 +21,7 @@
   <PropertyGroup>
     <BaseDotNetBuildInfo>build-info/dotnet/</BaseDotNetBuildInfo>
     <DependencyBranch>master</DependencyBranch>
+    <CoreDependencyBranch>release/2.0.0</CoreDependencyBranch>
     <CurrentRefXmlPath>$(MSBuildThisFileFullPath)</CurrentRefXmlPath>
   </PropertyGroup>
 
@@ -30,13 +31,13 @@
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreFx">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(DependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
       <!-- manually pick up a new baseline in order to get package dependencies updated -->
       <DisabledPackages>Microsoft.Private.PackageBaseline;NETStandard.Library</DisabledPackages>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreClr">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)coreclr/$(DependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)coreclr/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreClrCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
 
