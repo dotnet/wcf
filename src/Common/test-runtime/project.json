@@ -95,7 +95,7 @@
         "OpenCover": "4.6.519",
         "ReportGenerator": "2.4.3",
         "Microsoft.NETCore.TestHost": "2.0.0-preview1-25228-01",
-        "Microsoft.NETCore.App": "2.0.0-beta-001624-00",
+        "Microsoft.NETCore.App": "2.0.0-preview1-002101-00",
         "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
         "xunit.console.netcore": "1.0.3-prerelease-00925-01",
         "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
@@ -1112,7 +1112,6 @@
       "netcoreapp2.0": [
         "win7-x86",
         "win7-x64",
-        "win10-arm64",
         "osx.10.10-x64",
         "centos.7-x64",
         "debian.8-x64",
