@@ -15,14 +15,14 @@ def osGroupMap = ['Ubuntu':'Linux',
                   'Ubuntu14.04':'Linux',
                   'Ubuntu16.04':'Linux',
                   'Debian8.4':'Linux',
-                  'OSX':'OSX',
+                  'OSX.10.12':'OSX.10.12',
                   'Windows_NT':'Windows_NT',
                   'CentOS7.1': 'Linux',
                   'OpenSUSE13.2': 'Linux',
                   'RHEL7.2': 'Linux']
 
 // Map of osName -> nuget runtime
-def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
+def targetNugetRuntimeMap = ['OSX.10.12' : 'osx.10.12-x64',
                              'Ubuntu' : 'ubuntu.14.04-x64',
                              'Ubuntu14.04' : 'ubuntu.14.04-x64',
                              'Ubuntu16.04' : 'ubuntu.16.04-x64',
@@ -36,7 +36,7 @@ def osShortName = ['Windows 10': 'win10',
                    'Windows 7' : 'win7',
                    'Windows_NT' : 'windows_nt',
                    'Ubuntu14.04' : 'ubuntu14.04',
-                   'OSX' : 'osx',
+                   'OSX.10.12' : 'osx',
                    'Windows Nano 2016' : 'winnano16',
                    'Ubuntu16.04' : 'ubuntu16.04',
                    'CentOS7.1' : 'centos7.1',
@@ -185,7 +185,7 @@ wcfUtilities = new WcfUtilities()
 // Subset runs on every PR, the ones that don't run per PR can be requested via a magic phrase
 // **************************
 
-def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu16.04', 'Debian8.4', 'CentOS7.1', 'OpenSUSE13.2', 'Fedora23', 'RHEL7.2', 'OSX']
+def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu16.04', 'Debian8.4', 'CentOS7.1', 'OpenSUSE13.2', 'Fedora23', 'RHEL7.2', 'OSX.10.12']
 [true, false].each { isPR ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleOuterloopPlatforms.each { os ->
@@ -210,7 +210,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             }
 
             // Set the affinity.  OS name matches the machine affinity.
-            if (os == 'Windows_NT' || os == 'OSX') {
+            if (os == 'Windows_NT' || os == 'OSX.10.12') {
                 // Set affinity for elevated machines on Windows
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
             } 
@@ -238,7 +238,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // Set up appropriate triggers. PR on demand, otherwise daily
             if (isPR) {
                 // Set PR trigger.
-                if ( os == 'Windows_NT' || os == 'Ubuntu14.04' || os == 'CentOS7.1' || os == 'OSX' ) {
+                if ( os == 'Windows_NT' || os == 'Ubuntu14.04' || os == 'CentOS7.1' || os == 'OSX.10.12' ) {
                     Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
                 } 
                 else {                  
@@ -261,7 +261,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
 // Subset runs on every PR, the ones that don't run per PR can be requested via a magic phrase
 // **************************
 
-def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu16.04', 'Debian8.4', 'CentOS7.1', 'OpenSUSE13.2', 'Fedora23', 'RHEL7.2', 'OSX']
+def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu16.04', 'Debian8.4', 'CentOS7.1', 'OpenSUSE13.2', 'Fedora23', 'RHEL7.2', 'OSX.10.12']
 [true, false].each { isPR ->
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleInnerloopPlatforms.each { os -> 
@@ -308,7 +308,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // Set up triggers
             if (isPR) {
                 // Set PR trigger
-                if ( os == 'Windows_NT' || os == 'Ubuntu14.04' || os == 'CentOS7.1' || os == 'OSX' ) {
+                if ( os == 'Windows_NT' || os == 'Ubuntu14.04' || os == 'CentOS7.1' || os == 'OSX.10.12' ) {
                     Utilities.addGithubPRTriggerForBranch(newJob, branch, "InnerLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+innerloop|innerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
                 } 
                 else {
