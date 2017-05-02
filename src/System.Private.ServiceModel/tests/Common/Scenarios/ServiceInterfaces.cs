@@ -542,3 +542,21 @@ public interface IDataContractResolverService
     [OperationContract(Action = "http://tempuri.org/IDataContractResolverService/AddEmployee")]
     void AddEmployee(Employee employee);
 }
+
+[ServiceContract, XmlSerializerFormat]
+public interface IXmlSFAttribute
+{
+    [OperationContract, XmlSerializerFormat(SupportFaults = true)]
+    [FaultContract(typeof(FaultDetailWithXmlSerializerFormatAttribute),
+        Action = "http://tempuri.org/IWcfService/FaultDetailWithXmlSerializerFormatAttribute",
+        Name = "FaultDetailWithXmlSerializerFormatAttribute",
+        Namespace = "http://www.contoso.com/wcfnamespace")]
+    void TestXmlSerializerSupportsFaults_True();
+
+    [OperationContract, XmlSerializerFormat]
+    [FaultContract(typeof(FaultDetailWithXmlSerializerFormatAttribute),
+        Action = "http://tempuri.org/IWcfService/FaultDetailWithXmlSerializerFormatAttribute",
+        Name = "FaultDetailWithXmlSerializerFormatAttribute",
+        Namespace = "http://www.contoso.com/wcfnamespace")]
+    void TestXmlSerializerSupportsFaults_False();
+}
