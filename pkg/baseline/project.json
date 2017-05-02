@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "Microsoft.Private.PackageBaseline": "2.0.0-preview1-25218-03",
+    "Microsoft.Private.PackageBaseline": "2.0.0-preview1-25228-01",
     "System.ServiceModel.Duplex": "4.3.0",
     "System.ServiceModel.Http": "4.3.0",
     "System.ServiceModel.NetTcp": "4.3.0",
