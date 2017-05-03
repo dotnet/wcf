@@ -13,6 +13,7 @@ using Infrastructure.Common;
 public partial class IdentityTests : ConditionalWcfTest
 {
     [WcfFact]
+    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     // The product code will check the Dns identity from the server and throw if it does not match what is specified in DnsEndpointIdentity
