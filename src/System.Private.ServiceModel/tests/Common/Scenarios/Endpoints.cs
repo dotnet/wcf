@@ -33,6 +33,11 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("BasicHttp_4_4_0.svc//Basic"); }
     }
+    
+    public static string HttpBaseAddress_Basic_Soap
+    {
+        get { return GetEndpointAddress("BasicHttpSoap.svc//Basic"); }
+    }
 
     public static string HttpBaseAddress_NetHttp
     {

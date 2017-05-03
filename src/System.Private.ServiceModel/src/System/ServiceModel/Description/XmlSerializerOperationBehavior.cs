@@ -166,6 +166,20 @@ namespace System.ServiceModel.Description
                 proxy.FaultFormatter = (IClientFaultFormatter)CreateFaultFormatter(proxy.FaultContractInfos);
         }
 
+        public Collection<XmlMapping> GetXmlMappings()
+        {
+            var mappings = new Collection<XmlMapping>();
+            if (OperationReflector.Request != null && OperationReflector.Request.HeadersMapping != null)
+                mappings.Add(OperationReflector.Request.HeadersMapping);
+            if (OperationReflector.Request != null && OperationReflector.Request.BodyMapping != null)
+                mappings.Add(OperationReflector.Request.BodyMapping);
+            if (OperationReflector.Reply != null && OperationReflector.Reply.HeadersMapping != null)
+                mappings.Add(OperationReflector.Reply.HeadersMapping);
+            if (OperationReflector.Reply != null && OperationReflector.Reply.BodyMapping != null)
+                mappings.Add(OperationReflector.Reply.BodyMapping);
+
+            return mappings;
+        }
 
         // helper for reflecting operations
         internal class Reflector
@@ -226,6 +240,7 @@ namespace System.ServiceModel.Description
                 internal readonly OperationDescription Operation;
                 internal readonly XmlSerializerFormatAttribute Attribute;
 
+                internal readonly bool IsEncoded;
                 internal readonly bool IsRpc;
                 internal readonly bool IsOneWay;
                 internal readonly bool RequestRequiresSerialization;
@@ -243,13 +258,14 @@ namespace System.ServiceModel.Description
                     Fx.Assert(operation != null, "");
                     Fx.Assert(attr != null, "");
 
-                    OperationFormatter.Validate(operation, attr.Style == OperationFormatStyle.Rpc, false/*IsEncoded*/);
+                    OperationFormatter.Validate(operation, attr.Style == OperationFormatStyle.Rpc, attr.IsEncoded);
 
                     _parent = parent;
 
                     this.Operation = operation;
                     this.Attribute = attr;
 
+                    IsEncoded = attr.IsEncoded;
                     this.IsRpc = (attr.Style == OperationFormatStyle.Rpc);
                     this.IsOneWay = operation.Messages.Count == 1;
 
@@ -342,7 +358,7 @@ namespace System.ServiceModel.Description
                         {
                             if (knownType == null)
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxKnownTypeNull, Operation.Name)));
-                            _parent._importer.IncludeType(knownType);
+                            _parent._importer.IncludeType(knownType, IsEncoded);
                         }
                         _request = CreateMessageInfo(this.Operation.Messages[0], ":Request");
                         // We don't do the following check at Net Native runtime because XmlMapping.XsdElementName 
@@ -389,9 +405,8 @@ namespace System.ServiceModel.Description
                     if (message.IsUntypedMessage)
                         return null;
                     MessageInfo info = new MessageInfo();
-                    bool isEncoded = false;
                     if (message.IsTypedMessage)
-                        key = message.MessageType.FullName + ":" + isEncoded + ":" + IsRpc;
+                        key = message.MessageType.FullName + ":" + IsEncoded + ":" + IsRpc;
                     XmlMembersMapping headersMapping = LoadHeadersMapping(message, key + ":Headers");
                     info.SetHeaders(_parent._generation.AddSerializer(headersMapping));
                     MessagePartDescriptionCollection rpcEncodedTypedMessgeBodyParts;
@@ -426,8 +441,17 @@ namespace System.ServiceModel.Description
                             else
                             {
                                 string headerName, headerNs;
-                                headerName = memberMapping.XsdElementName;
-                                headerNs = memberMapping.Namespace;
+                                if (IsEncoded)
+                                {
+                                    headerName = memberMapping.TypeName;
+                                    headerNs = memberMapping.TypeNamespace;
+                                }
+                                else
+                                {
+                                    headerName = memberMapping.XsdElementName;
+                                    headerNs = memberMapping.Namespace;
+                                }
+
                                 if (headerName != header.Name)
                                 {
                                     if (message.MessageType != null)
@@ -454,11 +478,23 @@ namespace System.ServiceModel.Description
                     MessagePartDescription returnPart;
                     string wrapperName, wrapperNs;
                     MessagePartDescriptionCollection bodyParts;
-                    rpcEncodedTypedMessageBodyParts = null;
-                    returnPart = OperationFormatter.IsValidReturnValue(message.Body.ReturnValue) ? message.Body.ReturnValue : null;
-                    bodyParts = message.Body.Parts;
-                    wrapperName = message.Body.WrapperName;
-                    wrapperNs = message.Body.WrapperNamespace;
+                    if (IsEncoded && message.IsTypedMessage && message.Body.WrapperName == null)
+                    {
+                        MessagePartDescription wrapperPart = GetWrapperPart(message);
+                        returnPart = null;
+                        rpcEncodedTypedMessageBodyParts = bodyParts = GetWrappedParts(wrapperPart);
+                        wrapperName = wrapperPart.Name;
+                        wrapperNs = wrapperPart.Namespace;
+                    }
+                    else
+                    {
+                        rpcEncodedTypedMessageBodyParts = null;
+                        returnPart = OperationFormatter.IsValidReturnValue(message.Body.ReturnValue) ? message.Body.ReturnValue : null;
+                        bodyParts = message.Body.Parts;
+                        wrapperName = message.Body.WrapperName;
+                        wrapperNs = message.Body.WrapperNamespace;
+                    }
+
                     bool isWrapped = (wrapperName != null);
                     bool hasReturnValue = returnPart != null;
                     int paramCount = bodyParts.Count + (hasReturnValue ? 1 : 0);
@@ -470,14 +506,55 @@ namespace System.ServiceModel.Description
                     XmlReflectionMember[] members = new XmlReflectionMember[paramCount];
                     int paramIndex = 0;
                     if (hasReturnValue)
-                        members[paramIndex++] = XmlSerializerHelper.GetXmlReflectionMember(returnPart, IsRpc, isWrapped);
+                        members[paramIndex++] = XmlSerializerHelper.GetXmlReflectionMember(returnPart, IsRpc, IsEncoded, isWrapped);
 
                     for (int i = 0; i < bodyParts.Count; i++)
-                        members[paramIndex++] = XmlSerializerHelper.GetXmlReflectionMember(bodyParts[i], IsRpc, isWrapped);
+                        members[paramIndex++] = XmlSerializerHelper.GetXmlReflectionMember(bodyParts[i], IsRpc, IsEncoded, isWrapped);
 
                     if (!isWrapped)
                         wrapperNs = ContractNamespace;
                     return ImportMembersMapping(wrapperName, wrapperNs, members, isWrapped, IsRpc, mappingKey);
+                }
+
+                private MessagePartDescription GetWrapperPart(MessageDescription message)
+                {
+                    if (message.Body.Parts.Count != 1)
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxRpcMessageMustHaveASingleBody, Operation.Name, message.MessageName)));
+
+                    MessagePartDescription bodyPart = message.Body.Parts[0];
+                    Type bodyObjectType = bodyPart.Type;
+                    if (bodyObjectType.BaseType != null && bodyObjectType.BaseType != typeof(object))
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxBodyObjectTypeCannotBeInherited, bodyObjectType.FullName)));
+                    if (typeof(IEnumerable).IsAssignableFrom(bodyObjectType))
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxBodyObjectTypeCannotBeInterface, bodyObjectType.FullName, typeof(IEnumerable).FullName)));
+                    if (typeof(IXmlSerializable).IsAssignableFrom(bodyObjectType))
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxBodyObjectTypeCannotBeInterface, bodyObjectType.FullName, typeof(IXmlSerializable).FullName)));
+
+                    return bodyPart;
+                }
+
+                private MessagePartDescriptionCollection GetWrappedParts(MessagePartDescription bodyPart)
+                {
+                    Type bodyObjectType = bodyPart.Type;
+                    MessagePartDescriptionCollection partList = new MessagePartDescriptionCollection();
+                    foreach (MemberInfo member in bodyObjectType.GetMembers(BindingFlags.Instance | BindingFlags.Public))
+                    {
+                        if ((member.MemberType & (MemberTypes.Field | MemberTypes.Property)) == 0)
+                            continue;
+                        if (member.IsDefined(typeof(SoapIgnoreAttribute), false/*inherit*/))
+                            continue;
+
+                        XmlName xmlName = new XmlName(member.Name);
+                        MessagePartDescription part = new MessagePartDescription(xmlName.EncodedName, string.Empty);
+                        part.AdditionalAttributesProvider = part.MemberInfo = member;
+                        part.Index = part.SerializationPosition = partList.Count;
+                        part.Type = (member.MemberType == MemberTypes.Property) ? ((PropertyInfo)member).PropertyType : ((FieldInfo)member).FieldType;
+                        if (bodyPart.HasProtectionLevel)
+                            part.ProtectionLevel = bodyPart.ProtectionLevel;
+                        partList.Add(part);
+                    }
+
+                    return partList;
                 }
 
                 private XmlMembersMapping LoadHeadersMapping(MessageDescription message, string mappingKey)
@@ -486,6 +563,8 @@ namespace System.ServiceModel.Description
 
                     if (headerCount == 0)
                         return null;
+                    if (IsEncoded)
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxHeadersAreNotSupportedInEncoded, message.MessageName)));
 
                     int unknownHeaderCount = 0, headerIndex = 0;
                     XmlReflectionMember[] members = new XmlReflectionMember[headerCount];
@@ -494,7 +573,7 @@ namespace System.ServiceModel.Description
                         MessageHeaderDescription header = message.Headers[i];
                         if (!header.IsUnknownHeaderCollection)
                         {
-                            members[headerIndex++] = XmlSerializerHelper.GetXmlReflectionMember(header, false/*isRpc*/, false/*isWrapped*/);
+                            members[headerIndex++] = XmlSerializerHelper.GetXmlReflectionMember(header, false/*isRpc*/, IsEncoded, false/*isWrapped*/);
                         }
                         else
                         {
@@ -520,7 +599,7 @@ namespace System.ServiceModel.Description
                 internal XmlMembersMapping ImportMembersMapping(string elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement, bool rpc, string mappingKey)
                 {
                     string key = mappingKey.StartsWith(":", StringComparison.Ordinal) ? _keyBase + mappingKey : mappingKey;
-                    return _parent._importer.ImportMembersMapping(new XmlName(elementName, true /*isEncoded*/), ns, members, hasWrapperElement, rpc, key);
+                    return _parent._importer.ImportMembersMapping(new XmlName(elementName, true /*isEncoded*/), ns, members, hasWrapperElement, rpc, IsEncoded, key);
                 }
 
                 internal XmlMembersMapping ImportFaultElement(FaultDescription fault, out XmlQualifiedName elementName)
@@ -532,20 +611,20 @@ namespace System.ServiceModel.Description
                     string faultNamespace = fault.Namespace;
                     if (faultElementName == null)
                     {
-                        XmlTypeMapping mapping = _parent._importer.ImportTypeMapping(fault.DetailType);
-                        faultElementName = new XmlName(mapping.ElementName, false /*isEncoded*/);
+                        XmlTypeMapping mapping = _parent._importer.ImportTypeMapping(fault.DetailType, IsEncoded);
+                        faultElementName = new XmlName(mapping.ElementName, IsEncoded);
                         faultNamespace = mapping.Namespace;
                         if (faultElementName == null)
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxFaultTypeAnonymous, this.Operation.Name, fault.DetailType.FullName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxFaultTypeAnonymous, Operation.Name, fault.DetailType.FullName)));
                     }
 
                     elementName = new XmlQualifiedName(faultElementName.DecodedName, faultNamespace);
 
                     members[0] = XmlSerializerHelper.GetXmlReflectionMember(null /*memberName*/, faultElementName, faultNamespace, fault.DetailType,
-                        null /*additionalAttributesProvider*/, false /*isMultiple*/, false /*isWrapped*/);
+                        null /*additionalAttributesProvider*/, false /*isMultiple*/, IsEncoded, false /*isWrapped*/);
 
                     string mappingKey = "fault:" + faultElementName.DecodedName + ":" + faultNamespace;
-                    return ImportMembersMapping(faultElementName.EncodedName, faultNamespace, members, false /*hasWrapperElement*/, this.IsRpc, mappingKey);
+                    return ImportMembersMapping(faultElementName.EncodedName, faultNamespace, members, false /*hasWrapperElement*/, IsRpc, mappingKey);
                 }
             }
 
@@ -553,6 +632,7 @@ namespace System.ServiceModel.Description
             {
                 private readonly string _defaultNs;
                 private XmlReflectionImporter _xmlImporter;
+                private SoapReflectionImporter _soapImporter;
                 private Dictionary<string, XmlMembersMapping> _xmlMappings;
                 private HashSet<Type> _includedTypes;
 
@@ -560,6 +640,20 @@ namespace System.ServiceModel.Description
                 {
                     _defaultNs = defaultNs;
                     _xmlImporter = null;
+                    _soapImporter = null;
+                }
+
+                private SoapReflectionImporter SoapImporter
+                {
+                    get
+                    {
+                        if (_soapImporter == null)
+                        {
+                            _soapImporter = new SoapReflectionImporter(NamingHelper.CombineUriStrings(_defaultNs, "encoded"));
+                        }
+
+                        return _soapImporter;
+                    }
                 }
 
                 private XmlReflectionImporter XmlImporter
@@ -598,7 +692,7 @@ namespace System.ServiceModel.Description
                     }
                 }
 
-                internal XmlMembersMapping ImportMembersMapping(XmlName elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement, bool rpc, string mappingKey)
+                internal XmlMembersMapping ImportMembersMapping(XmlName elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement, bool rpc, bool isEncoded, string mappingKey)
                 {
                     XmlMembersMapping mapping;
                     string mappingName = elementName.DecodedName;
@@ -607,18 +701,25 @@ namespace System.ServiceModel.Description
                         return mapping;
                     }
 
-                    mapping = this.XmlImporter.ImportMembersMapping(mappingName, ns, members, hasWrapperElement, rpc);
+                    if (isEncoded)
+                        mapping = SoapImporter.ImportMembersMapping(mappingName, ns, members, hasWrapperElement, rpc);
+                    else
+                        mapping = XmlImporter.ImportMembersMapping(mappingName, ns, members, hasWrapperElement, rpc);
+
                     mapping.SetKey(mappingKey);
                     XmlMappings.Add(mappingKey, mapping);
                     return mapping;
                 }
 
-                internal XmlTypeMapping ImportTypeMapping(Type type)
+                internal XmlTypeMapping ImportTypeMapping(Type type, bool isEncoded)
                 {
-                    return this.XmlImporter.ImportTypeMapping(type);
+                    if (isEncoded)
+                        return SoapImporter.ImportTypeMapping(type);
+                    else
+                        return XmlImporter.ImportTypeMapping(type);
                 }
 
-                internal void IncludeType(Type knownType)
+                internal void IncludeType(Type knownType, bool isEncoded)
                 {
                     // XmlReflectionImporter.IncludeTypes calls XmlReflectionImporter.ImportTypeMapping to generate mappings
                     // for types and store those mappings.
@@ -633,7 +734,11 @@ namespace System.ServiceModel.Description
                     if (IncludedTypes.Contains(knownType))
                         return;
 
-                    this.XmlImporter.IncludeType(knownType);
+                    if (isEncoded)
+                        SoapImporter.IncludeType(knownType);
+                    else
+                        XmlImporter.IncludeType(knownType);
+
                     IncludedTypes.Add(knownType);
                 }
             }
@@ -852,19 +957,22 @@ namespace System.ServiceModel.Description
 
     internal static class XmlSerializerHelper
     {
-        static internal XmlReflectionMember GetXmlReflectionMember(MessagePartDescription part, bool isRpc, bool isWrapped)
+        static internal XmlReflectionMember GetXmlReflectionMember(MessagePartDescription part, bool isRpc, bool isEncoded, bool isWrapped)
         {
             string ns = isRpc ? null : part.Namespace;
-            MemberInfo additionalAttributesProvider = null;
-            if (part.AdditionalAttributesProvider.MemberInfo != null)
+            ICustomAttributeProvider additionalAttributesProvider = null;
+            if (isEncoded || part.AdditionalAttributesProvider.MemberInfo != null)
                 additionalAttributesProvider = part.AdditionalAttributesProvider.MemberInfo;
             XmlName memberName = string.IsNullOrEmpty(part.UniquePartName) ? null : new XmlName(part.UniquePartName, true /*isEncoded*/);
             XmlName elementName = part.XmlName;
-            return GetXmlReflectionMember(memberName, elementName, ns, part.Type, additionalAttributesProvider, part.Multiple, isWrapped);
+            return GetXmlReflectionMember(memberName, elementName, ns, part.Type, additionalAttributesProvider, part.Multiple, isEncoded, isWrapped);
         }
 
-        static internal XmlReflectionMember GetXmlReflectionMember(XmlName memberName, XmlName elementName, string ns, Type type, MemberInfo additionalAttributesProvider, bool isMultiple, bool isWrapped)
+        static internal XmlReflectionMember GetXmlReflectionMember(XmlName memberName, XmlName elementName, string ns, Type type, ICustomAttributeProvider additionalAttributesProvider, bool isMultiple, bool isEncoded, bool isWrapped)
         {
+            if (isEncoded && isMultiple)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxMultiplePartsNotAllowedInEncoded, elementName.DecodedName, ns)));
+
             XmlReflectionMember member = new XmlReflectionMember();
             member.MemberName = (memberName ?? elementName).DecodedName;
             member.MemberType = type;
@@ -872,79 +980,102 @@ namespace System.ServiceModel.Description
                 member.MemberType = member.MemberType.GetElementType();
             if (isMultiple)
                 member.MemberType = member.MemberType.MakeArrayType();
+
             if (additionalAttributesProvider != null)
             {
-#if NETStandard13
-                member.XmlAttributes = XmlAttributesHelper.CreateXmlAttributes(additionalAttributesProvider);
-#else
-                member.XmlAttributes = new XmlAttributes(additionalAttributesProvider);
-#endif
+                if (isEncoded)
+                    member.SoapAttributes = new SoapAttributes(additionalAttributesProvider);
+                else
+                    member.XmlAttributes = new XmlAttributes(additionalAttributesProvider);
             }
 
-            if (member.XmlAttributes == null)
-                member.XmlAttributes = new XmlAttributes();
-            else
+            if (isEncoded)
             {
-                Type invalidAttributeType = null;
-                if (member.XmlAttributes.XmlAttribute != null)
-                    invalidAttributeType = typeof(XmlAttributeAttribute);
-                else if (member.XmlAttributes.XmlAnyAttribute != null && !isWrapped)
-                    invalidAttributeType = typeof(XmlAnyAttributeAttribute);
-                else if (member.XmlAttributes.XmlChoiceIdentifier != null)
-                    invalidAttributeType = typeof(XmlChoiceIdentifierAttribute);
-                else if (member.XmlAttributes.XmlIgnore)
-                    invalidAttributeType = typeof(XmlIgnoreAttribute);
-                else if (member.XmlAttributes.Xmlns)
-                    invalidAttributeType = typeof(XmlNamespaceDeclarationsAttribute);
-                else if (member.XmlAttributes.XmlText != null)
-                    invalidAttributeType = typeof(XmlTextAttribute);
-                else if (member.XmlAttributes.XmlEnum != null)
-                    invalidAttributeType = typeof(XmlEnumAttribute);
-                if (invalidAttributeType != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(isWrapped ? SR.SFxInvalidXmlAttributeInWrapped : SR.SFxInvalidXmlAttributeInBare, invalidAttributeType, elementName.DecodedName)));
-                if (member.XmlAttributes.XmlArray != null && isMultiple)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxXmlArrayNotAllowedForMultiple, elementName.DecodedName, ns)));
-            }
-
-
-            bool isArray = member.MemberType.IsArray;
-            if ((isArray && !isMultiple && member.MemberType != typeof(byte[])) ||
-                (!isArray && typeof(IEnumerable).IsAssignableFrom(member.MemberType) && member.MemberType != typeof(string) && !typeof(XmlNode).IsAssignableFrom(member.MemberType) && !typeof(IXmlSerializable).IsAssignableFrom(member.MemberType)))
-            {
-                if (member.XmlAttributes.XmlArray != null)
+                if (member.SoapAttributes == null)
+                    member.SoapAttributes = new SoapAttributes();
+                else
                 {
-                    if (member.XmlAttributes.XmlArray.ElementName == String.Empty)
-                        member.XmlAttributes.XmlArray.ElementName = elementName.DecodedName;
-                    if (member.XmlAttributes.XmlArray.Namespace == null)
-                        member.XmlAttributes.XmlArray.Namespace = ns;
+                    Type invalidAttributeType = null;
+                    if (member.SoapAttributes.SoapAttribute != null)
+                        invalidAttributeType = typeof(SoapAttributeAttribute);
+                    else if (member.SoapAttributes.SoapIgnore)
+                        invalidAttributeType = typeof(SoapIgnoreAttribute);
+                    else if (member.SoapAttributes.SoapType != null)
+                        invalidAttributeType = typeof(SoapTypeAttribute);
+                    if (invalidAttributeType != null)
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidSoapAttribute, invalidAttributeType, elementName.DecodedName)));
                 }
-                else if (HasNoXmlParameterAttributes(member.XmlAttributes))
-                {
-                    member.XmlAttributes.XmlArray = new XmlArrayAttribute();
-                    member.XmlAttributes.XmlArray.ElementName = elementName.DecodedName;
-                    member.XmlAttributes.XmlArray.Namespace = ns;
-                }
+
+                if (member.SoapAttributes.SoapElement == null)
+                    member.SoapAttributes.SoapElement = new SoapElementAttribute(elementName.DecodedName);
             }
             else
             {
-                if (member.XmlAttributes.XmlElements == null || member.XmlAttributes.XmlElements.Count == 0)
+                if (member.XmlAttributes == null)
+                    member.XmlAttributes = new XmlAttributes();
+                else
                 {
-                    if (HasNoXmlParameterAttributes(member.XmlAttributes))
+                    Type invalidAttributeType = null;
+                    if (member.XmlAttributes.XmlAttribute != null)
+                        invalidAttributeType = typeof(XmlAttributeAttribute);
+                    else if (member.XmlAttributes.XmlAnyAttribute != null && !isWrapped)
+                        invalidAttributeType = typeof(XmlAnyAttributeAttribute);
+                    else if (member.XmlAttributes.XmlChoiceIdentifier != null)
+                        invalidAttributeType = typeof(XmlChoiceIdentifierAttribute);
+                    else if (member.XmlAttributes.XmlIgnore)
+                        invalidAttributeType = typeof(XmlIgnoreAttribute);
+                    else if (member.XmlAttributes.Xmlns)
+                        invalidAttributeType = typeof(XmlNamespaceDeclarationsAttribute);
+                    else if (member.XmlAttributes.XmlText != null)
+                        invalidAttributeType = typeof(XmlTextAttribute);
+                    else if (member.XmlAttributes.XmlEnum != null)
+                        invalidAttributeType = typeof(XmlEnumAttribute);
+                    if (invalidAttributeType != null)
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(isWrapped ? SR.SFxInvalidXmlAttributeInWrapped : SR.SFxInvalidXmlAttributeInBare, invalidAttributeType, elementName.DecodedName)));
+                    if (member.XmlAttributes.XmlArray != null && isMultiple)
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxXmlArrayNotAllowedForMultiple, elementName.DecodedName, ns)));
+                }
+
+
+                bool isArray = member.MemberType.IsArray;
+                if ((isArray && !isMultiple && member.MemberType != typeof(byte[])) ||
+                   (!isArray && typeof(IEnumerable).IsAssignableFrom(member.MemberType) && member.MemberType != typeof(string) && !typeof(XmlNode).IsAssignableFrom(member.MemberType) && !typeof(IXmlSerializable).IsAssignableFrom(member.MemberType)))
+                {
+                    if (member.XmlAttributes.XmlArray != null)
                     {
-                        XmlElementAttribute elementAttribute = new XmlElementAttribute();
-                        elementAttribute.ElementName = elementName.DecodedName;
-                        elementAttribute.Namespace = ns;
-                        member.XmlAttributes.XmlElements.Add(elementAttribute);
+                        if (member.XmlAttributes.XmlArray.ElementName == String.Empty)
+                            member.XmlAttributes.XmlArray.ElementName = elementName.DecodedName;
+                        if (member.XmlAttributes.XmlArray.Namespace == null)
+                            member.XmlAttributes.XmlArray.Namespace = ns;
+                    }
+                    else if (HasNoXmlParameterAttributes(member.XmlAttributes))
+                    {
+                        member.XmlAttributes.XmlArray = new XmlArrayAttribute();
+                        member.XmlAttributes.XmlArray.ElementName = elementName.DecodedName;
+                        member.XmlAttributes.XmlArray.Namespace = ns;
                     }
                 }
                 else
                 {
-                    foreach (XmlElementAttribute elementAttribute in member.XmlAttributes.XmlElements)
+                    if (member.XmlAttributes.XmlElements == null || member.XmlAttributes.XmlElements.Count == 0)
                     {
-                        if (elementAttribute.ElementName == String.Empty)
+                        if (HasNoXmlParameterAttributes(member.XmlAttributes))
+                        {
+                            XmlElementAttribute elementAttribute = new XmlElementAttribute();
                             elementAttribute.ElementName = elementName.DecodedName;
-                        if (elementAttribute.Namespace == null)
                             elementAttribute.Namespace = ns;
+                            member.XmlAttributes.XmlElements.Add(elementAttribute);
+                        }
+                    }
+                    else
+                    {
+                        foreach (XmlElementAttribute elementAttribute in member.XmlAttributes.XmlElements)
+                        {
+                            if (elementAttribute.ElementName == String.Empty)
+                                elementAttribute.ElementName = elementName.DecodedName;
+                            if (elementAttribute.Namespace == null)
+                                elementAttribute.Namespace = ns;
+                        }
                     }
                 }
             }

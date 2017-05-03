@@ -316,3 +316,22 @@ public class ManagerDataContractResolver : DataContractResolver
         }
     }
 }
+
+public class SoapComplexType
+{
+    private bool _boolValue;
+    private string _stringValue;
+
+    public bool BoolValue
+    {
+        get { return _boolValue; }
+        set { _boolValue = value; }
+    }
+
+    public string StringValue
+    {
+        get { return _stringValue; }
+        set { _stringValue = value; }
+    }
+}
+    
