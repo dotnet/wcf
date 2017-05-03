@@ -197,6 +197,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available))]
     [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
+    [Issue(1888)]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_TimeOut_Long_Running_Operation()
     {

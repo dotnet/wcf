@@ -25,6 +25,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
     // to pass a variation or fail a variation. 
 
     [WcfFact]
+    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Localhost_Address_EchoString()
@@ -96,6 +97,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
     }
 
     [WcfFact]
+    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_DomainName_Address_EchoString()
@@ -172,6 +174,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
     }
 
     [WcfFact]
+    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Fqdn_Address_EchoString()
