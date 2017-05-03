@@ -13,7 +13,7 @@ namespace WcfService
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            BasicHttpTestServiceHost serviceHost = new BasicHttpTestServiceHost(serviceType, baseAddresses);
+            var serviceHost = new BasicHttpSoapTestServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
