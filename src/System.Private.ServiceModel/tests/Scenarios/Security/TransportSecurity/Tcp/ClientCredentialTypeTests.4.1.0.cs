@@ -13,6 +13,7 @@ using Xunit;
 public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 {
     [WcfFact]
+    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_EchoString()
@@ -61,6 +62,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_CustomValidator_EchoString()
@@ -113,6 +115,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     public static void TcpClientCredentialType_Certificate_With_ServerAltName_EchoString()

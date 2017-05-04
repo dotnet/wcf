@@ -74,6 +74,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("UnderstoodHeaders.svc//UnderstoodHeaders"); }
     }
 
+    public static string XmlSFAttribute_Address
+    {
+        get { return GetEndpointAddress("XmlSFAttribute.svc//XmlSFAttribute"); }
+    }
+
     #region WebSocket Addresses
     public static string NetHttpWebSocketTransport_Address
     {

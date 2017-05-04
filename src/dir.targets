@@ -2,6 +2,10 @@
   <PropertyGroup>
     <ErrorIfBuildToolsRestoredFromIndividualProject Condition="!Exists('$(ToolsDir)')">true</ErrorIfBuildToolsRestoredFromIndividualProject>
   </PropertyGroup>
+
+  <PropertyGroup Condition="$(NuGetTargetMoniker.StartsWith('.NETStandard,'))">
+    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
+  </PropertyGroup>
   
   <Import Project="..\dir.targets" />
 

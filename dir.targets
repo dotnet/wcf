@@ -111,5 +111,4 @@
        Once we switch to MSBuild it will automatically handle target imports from the packages themselves. -->
   <Import Condition="'$(TargetGroup)'=='netstandard2.0' and Exists('$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\NETStandard.Library.targets')"
           Project="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\NETStandard.Library.targets" />
-
 </Project>

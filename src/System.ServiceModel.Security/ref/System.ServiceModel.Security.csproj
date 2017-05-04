@@ -3,8 +3,9 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <PackageTargetFramework>netstandard1.1;netcore50</PackageTargetFramework>
-    <NuGetTargetMoniker>.NETStandard,Version=v1.1</NuGetTargetMoniker>
+    <PackageTargetFramework>netstandard2.0</PackageTargetFramework>
+    <NuGetTargetMoniker>.NETStandard,Version=v2.0</NuGetTargetMoniker>
+    <TargetGroup Condition="'$(TargetGroup)' == ''">netstandard2.0</TargetGroup>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="System.ServiceModel.Security.cs" />

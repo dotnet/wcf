@@ -4,8 +4,8 @@
   <PropertyGroup>
     <AssemblyName>System.ServiceModel.Http</AssemblyName>
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
-    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard1.3</PackageTargetFramework>
-    <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v1.3</NuGetTargetMoniker>
+    <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard2.0</PackageTargetFramework>
+    <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v2.0</NuGetTargetMoniker>
   </PropertyGroup>
   <!-- Help VS understand available configurations -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
