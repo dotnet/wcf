@@ -1358,6 +1358,7 @@ public class SessionTestsCompositeType
     public int MethodAValue { get; set; }
     [DataMember]
     public int MethodBValue { get; set; }
+}
 
 [DataContract(Name = "FaultDetailWithXmlSerializerFormatAttribute", Namespace = "http://www.contoso.com/wcfnamespace")]
 public class FaultDetailWithXmlSerializerFormatAttribute

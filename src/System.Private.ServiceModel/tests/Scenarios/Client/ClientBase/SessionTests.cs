@@ -14,7 +14,7 @@ public static class SessionTests
     // A basic test to verify that a session gets created and terminated
     [WcfFact]
     [OuterLoop]
-    static void Test_IsInitiating_IsTerminating()
+    public static void Test_IsInitiating_IsTerminating()
     {
         ChannelFactory<ISessionTestsDefaultService> factory = null;
         ISessionTestsDefaultService channel = null;
@@ -47,7 +47,7 @@ public static class SessionTests
 
     [WcfFact]
     [OuterLoop]
-    static void Test_IsInitiating_IsTerminating_Separate_Channels()
+    public static void Test_IsInitiating_IsTerminating_Separate_Channels()
     {
         ChannelFactory<ISessionTestsDefaultService> channelFactory = null;
         ISessionTestsDefaultService channel1 = null, channel2 = null;
@@ -80,7 +80,7 @@ public static class SessionTests
             // and return the original values of the service field instance
             // Our implementation of IService1 has InstanceContextMode = InstanceContextMode.PerSession
             // so all dataA&B* should have the original values == 0
-            Assert.Equal(dataA1 & dataB1 & dataA2 & dataB2, 0);
+            Assert.Equal(0, dataA1 | dataB1 | dataA2 | dataB2);
 
             // The session ids should be different for 2 different channels
             Assert.NotEqual(sessionId1, sessionId2);
@@ -96,7 +96,7 @@ public static class SessionTests
 
     [WcfFact]
     [OuterLoop]
-    static void Test_Negative_Calling_NonInitiating_Method_First()
+    public static void Test_Negative_Calling_NonInitiating_Method_First()
     {
         using (var factory = CreateChannelFactoryHelper<ISessionTestsDefaultService>(Endpoints.Tcp_Session_Tests_Default_Service))
         {
@@ -119,7 +119,7 @@ public static class SessionTests
     [Issue(1402)]
     [WcfFact]
     [OuterLoop]
-    static void Test_Negative_Calling_Initiating_After_Calling_Terminating()
+    public static void Test_Negative_Calling_Initiating_After_Calling_Terminating()
     {
         using (var factory = CreateChannelFactoryHelper<ISessionTestsDefaultService>(Endpoints.Tcp_Session_Tests_Default_Service))
         {
@@ -144,7 +144,7 @@ public static class SessionTests
     [Issue(1402)]
     [WcfFact]
     [OuterLoop]
-    static void Test_Negative_Calling_Terminating_Twice()
+    public static void Test_Negative_Calling_Terminating_Twice()
     {
         using (var factory = CreateChannelFactoryHelper<ISessionTestsDefaultService>(Endpoints.Tcp_Session_Tests_Default_Service))
         {
@@ -168,7 +168,7 @@ public static class SessionTests
 
     [WcfFact]
     [OuterLoop]
-    static void Test_Implicit_Session_Initiation_And_Termination()
+    public static void Test_Implicit_Session_Initiation_And_Termination()
     {
         using (var factory = CreateChannelFactoryHelper<ISessionTestsShortTimeoutService>(Endpoints.Tcp_Session_Tests_Short_Timeout_Service))
         {
@@ -185,7 +185,7 @@ public static class SessionTests
                 // The service behind service2Url has the same contract and implementation as service1Url
                 // But it has a different binding with a very short receiveTimeout ="00:00:02"
                 // So waiting for just 5 seconds is enough to get the connection and the session implicitly closed
-                Task.Delay(8080).Wait();
+                Task.Delay(5000).Wait();
                 Assert.Throws<System.ServiceModel.CommunicationException>(() =>
                 {
                     channel.MethodCTerminating();

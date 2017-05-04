@@ -11,21 +11,21 @@ namespace WcfService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class SessionTestsDefaultService : ISessionTestsDefaultService
     {
-        private int _AValue = 0, _BValue = 0;
+        private int _aValue = 0, _bValue = 0;
 
         public int MethodAInitiating(int a)
         {
-            return Interlocked.Exchange(ref _AValue, a);
+            return Interlocked.Exchange(ref _aValue, a);
         }
 
         public int MethodBNonInitiating(int b)
         {
-            return Interlocked.Exchange(ref _BValue, b);
+            return Interlocked.Exchange(ref _bValue, b);
         }
 
         public SessionTestsCompositeType MethodCTerminating()
         {
-            return new SessionTestsCompositeType() { MethodAValue = _AValue, MethodBValue = _BValue };
+            return new SessionTestsCompositeType() { MethodAValue = _aValue, MethodBValue = _bValue };
         }
     }
 

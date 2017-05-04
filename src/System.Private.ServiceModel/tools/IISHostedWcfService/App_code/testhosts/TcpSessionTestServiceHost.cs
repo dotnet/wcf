@@ -19,6 +19,7 @@ namespace WcfService
             return serviceHost;
         }
     }
+
     public class TcpSessionTestServiceHost : TestServiceHostBase<ISessionTestsDefaultService>
     {
         protected override string Address { get { return "tcp-sessions"; } }
