@@ -183,9 +183,9 @@ public static class SessionTests
                 channel.MethodBNonInitiating(0xB);
 
                 // The service behind service2Url has the same contract and implementation as service1Url
-                // But it has a different binding with a very short receiveTimeout ="00:00:02"
-                // So waiting for just 5 seconds is enough to get the connection and the session implicitly closed
-                Task.Delay(5000).Wait();
+                // But it has a different binding with a very short receiveTimeout ="00:00:05"
+                // So waiting for just 10 seconds is enough to get the connection and the session implicitly closed
+                Task.Delay(10000).Wait();
                 Assert.Throws<System.ServiceModel.CommunicationException>(() =>
                 {
                     channel.MethodCTerminating();
