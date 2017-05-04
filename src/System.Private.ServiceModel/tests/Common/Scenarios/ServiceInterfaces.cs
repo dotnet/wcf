@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -543,6 +543,25 @@ public interface IDataContractResolverService
     void AddEmployee(Employee employee);
 }
 
+
+[ServiceContract(SessionMode = SessionMode.Required)]
+public interface ISessionTestsDefaultService
+{
+    [OperationContract(IsInitiating = true, IsTerminating = false)]
+    int MethodAInitiating(int a);
+
+    [OperationContract(IsInitiating = false, IsTerminating = false)]
+    int MethodBNonInitiating(int b);
+
+    [OperationContract(IsInitiating = false, IsTerminating = true)]
+    SessionTestsCompositeType MethodCTerminating();
+}
+
+[ServiceContract(SessionMode = SessionMode.Required)]
+public interface ISessionTestsShortTimeoutService : ISessionTestsDefaultService
+{
+}
+
 [ServiceContract, XmlSerializerFormat]
 public interface IXmlSFAttribute
 {
@@ -559,4 +578,5 @@ public interface IXmlSFAttribute
         Name = "FaultDetailWithXmlSerializerFormatAttribute",
         Namespace = "http://www.contoso.com/wcfnamespace")]
     void TestXmlSerializerSupportsFaults_False();
+
 }

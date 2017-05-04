@@ -91,6 +91,8 @@ namespace SelfHostedWCFService
             CreateHost<TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost, WcfService.WcfService>("TcpTransportSecuritySslClientCredentialTypeCertificate.svc", tcpBaseAddress);
             CreateHost<TcpVerifyDNSTestServiceHost, WcfService.WcfService>("TcpVerifyDNS.svc", tcpBaseAddress);
             CreateHost<TcpCertificateValidationPeerTrustTestServiceHost, WcfService.WcfService>("NetTcpCertValModePeerTrust.svc", tcpBaseAddress);
+            CreateHost<TcpSessionTestServiceHost, WcfService.SessionTestsDefaultService>("SessionTestsDefaultService.svc", tcpBaseAddress);
+            CreateHost<TcpSessionShortTimeoutTestServiceHost, WcfService.SessionTestsShortTimeoutService>("SessionTestsShortTimeoutService.svc", tcpBaseAddress);
             CreateHost<DuplexWebSocketTestServiceHost, WcfWebSocketService>("DuplexWebSocket.svc", websocketBaseAddress);
             CreateHost<WebSocketTransportTestServiceHost, WcfWebSocketTransportUsageAlwaysService>("WebSocketTransport.svc", websocketBaseAddress);
             CreateHost<WebSocketHttpDuplexBinaryStreamedTestServiceHost, WSDuplexService>("WebSocketHttpDuplexBinaryStreamed.svc", websocketBaseAddress);
