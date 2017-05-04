@@ -43,7 +43,6 @@ public static class SessionTests
         {
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
         }
-//throw new Exception("");
     }
 
     [WcfFact]
@@ -117,7 +116,7 @@ public static class SessionTests
         }
     }
 
-    [ActiveIssue(1402)]
+    [Issue(1402)]
     [WcfFact]
     [OuterLoop]
     static void Test_Negative_Calling_Initiating_After_Calling_Terminating()
@@ -142,7 +141,7 @@ public static class SessionTests
         }
     }
 
-    [ActiveIssue(1402)]
+    [Issue(1402)]
     [WcfFact]
     [OuterLoop]
     static void Test_Negative_Calling_Terminating_Twice()
