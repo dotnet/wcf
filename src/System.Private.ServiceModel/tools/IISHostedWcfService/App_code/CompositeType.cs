@@ -334,4 +334,20 @@ public class SoapComplexType
         set { _stringValue = value; }
     }
 }
-    
+
+[SoapType(Namespace = "WcfService")]
+public class CustomerObject
+{
+    public string Name { get; set; }
+    public object Data { get; set; }
+}
+
+[Serializable]
+[SoapType(Namespace = "WcfService")]
+public partial class AdditionalData
+{
+    public string Field
+    {
+        get; set;
+    }
+}

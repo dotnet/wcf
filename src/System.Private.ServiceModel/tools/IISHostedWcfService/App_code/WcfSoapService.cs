@@ -11,6 +11,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace WcfService
 {
@@ -24,6 +25,12 @@ namespace WcfService
         public SoapComplexType EchoComositeTypeXmlSerializerFormatSoap(SoapComplexType complexObject)
         {
             return complexObject;
+        }
+
+        [return: MessageParameter(Name = "ProcessCustomerDataReturn"), SoapElement(DataType = "string")]
+        public string ProcessCustomerData([MessageParameter(Name = "CustomerData")] CustomerObject customerData)
+        {
+            return customerData.Name + ((AdditionalData)customerData.Data).Field;
         }
     }
 }

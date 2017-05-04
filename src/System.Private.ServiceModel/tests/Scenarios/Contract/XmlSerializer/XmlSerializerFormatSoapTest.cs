@@ -43,4 +43,19 @@ public static partial class XmlSerializerFormatTests
         Assert.Equal(value.BoolValue, response.BoolValue);
         Assert.Equal(value.StringValue, response.StringValue);
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void ProcessCustomerData_XmlSerializerFormat_Soap()
+    {
+        var binding = new BasicHttpBinding();
+        var endpointAddress = new EndpointAddress(s_basicSoapEndpointAddress);
+        var factory = new ChannelFactory<IWcfSoapService>(binding, endpointAddress);
+        IWcfSoapService serviceProxy = factory.CreateChannel();
+
+        CustomerObject value = new CustomerObject() { Name = "MyName", Data = new AdditionalData() { Field = "Foo" } };
+        string response = serviceProxy.ProcessCustomerData(value);
+
+        Assert.Equal("MyNameFoo", response);
+    }
 }

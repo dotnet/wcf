@@ -130,6 +130,12 @@ public interface IWcfSoapService
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoComositeTypeXmlSerializerFormatSoap", ReplyAction = "http://tempuri.org/IWcfService/EchoComositeTypeXmlSerializerFormatSoapResponse")]
     [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
     SoapComplexType EchoComositeTypeXmlSerializerFormatSoap(SoapComplexType c);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/ProcessCustomerData", ReplyAction = "http://tempuri.org/IWcfSoapService/ProcessCustomerDataResponse")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
+    [ServiceKnownType(typeof(AdditionalData))]
+    [return: MessageParameter(Name = "ProcessCustomerDataReturn")]
+    string ProcessCustomerData(CustomerObject CustomerData);
 }
 
 // This type share the same name space with IWcfServiceXmlGenerated.

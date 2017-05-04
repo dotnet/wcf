@@ -20,5 +20,12 @@ namespace WcfService
         [OperationContract(Action = "http://tempuri.org/IWcfService/EchoComositeTypeXmlSerializerFormatSoap")]
         [XmlSerializerFormat(Use = OperationFormatUse.Encoded)]
         SoapComplexType EchoComositeTypeXmlSerializerFormatSoap(SoapComplexType c);
+
+        [OperationContract(Action = "http://tempuri.org/IWcfService/ProcessCustomerData")]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
+        [ServiceKnownType(typeof(AdditionalData))]
+        [return: MessageParameter(Name = "ProcessCustomerDataReturn")]
+        [return: System.Xml.Serialization.SoapElement(DataType = "string")]
+        string ProcessCustomerData([MessageParameter(Name = "CustomerData")]CustomerObject customerData);
     }
 }
