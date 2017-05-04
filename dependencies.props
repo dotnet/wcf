@@ -1,15 +1,15 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>37a403b8d4534caa5f359d4d3ec4d02f9b6077a4</CoreFxCurrentRef>
-    <CoreClrCurrentRef>c2ec9626f15debe0348f0b125654f6eb1c56aaba</CoreClrCurrentRef>
+    <CoreFxCurrentRef>1ec7eb334c406a82a41c020e73ff1717a0e90f92</CoreFxCurrentRef>
+    <CoreClrCurrentRef>f4e6d7f7e3c10cbd87d5d9e0fcee32e9aa19f6d1</CoreClrCurrentRef>
     <WCFCurrentRef>c9a03fe0c3309508cb509a4ffdd6dc8b79ed525e</WCFCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <CoreFxExpectedPrerelease>preview1-25302-01</CoreFxExpectedPrerelease>
-    <StandardExpectedPrerelease>preview1-25301-01</StandardExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-25304-02</CoreFxExpectedPrerelease>
+    <StandardExpectedPrerelease>preview2-25304-01</StandardExpectedPrerelease>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
@@ -31,13 +31,13 @@
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreFx">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(CoreDependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
       <!-- manually pick up a new baseline in order to get package dependencies updated -->
       <DisabledPackages>Microsoft.Private.PackageBaseline;NETStandard.Library</DisabledPackages>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreClr">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)coreclr/$(CoreDependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)coreclr/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreClrCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
 
