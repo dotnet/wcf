@@ -1453,6 +1453,7 @@ namespace System.ServiceModel.Description
         public XmlSerializerOperationBehavior(System.ServiceModel.Description.OperationDescription operation) { }
         public XmlSerializerOperationBehavior(System.ServiceModel.Description.OperationDescription operation, System.ServiceModel.XmlSerializerFormatAttribute attribute) { }
         public System.ServiceModel.XmlSerializerFormatAttribute XmlSerializerFormatAttribute { get { return default(System.ServiceModel.XmlSerializerFormatAttribute); } }
+        public System.Collections.ObjectModel.Collection<System.Xml.Serialization.XmlMapping> GetXmlMappings() { throw null; }
         void System.ServiceModel.Description.IOperationBehavior.Validate(System.ServiceModel.Description.OperationDescription description) { }
         void System.ServiceModel.Description.IOperationBehavior.AddBindingParameters(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Channels.BindingParameterCollection parameters) { }
         void System.ServiceModel.Description.IOperationBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.DispatchOperation dispatch) { }

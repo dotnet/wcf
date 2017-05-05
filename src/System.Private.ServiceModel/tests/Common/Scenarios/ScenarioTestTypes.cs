@@ -1213,6 +1213,41 @@ public class XmlVeryComplexType
     }
 }
 
+public class SoapComplexType
+{
+    private bool _boolValue;
+    private string _stringValue;
+
+    public bool BoolValue
+    {
+        get { return _boolValue; }
+        set { _boolValue = value; }
+    }
+
+    public string StringValue
+    {
+        get { return _stringValue; }
+        set { _stringValue = value; }
+    }
+}
+
+[SoapType(Namespace = "WcfService")]
+public class CustomerObject
+{
+    public string Name { get; set; }
+    public object Data { get; set; }
+}
+
+[Serializable]
+[SoapType(Namespace = "WcfService")]
+public partial class AdditionalData
+{
+    public string Field
+    {
+        get; set;
+    }
+}
+
 // This type should be used by XmlSerializerFormat_EchoVeryComplexType only.
 // The type should not ever be instantiated. 
 public class NonInstantiatedType

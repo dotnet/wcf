@@ -1932,4 +1932,22 @@
   <data name="Xml_InvalidNodeType" xml:space="preserve">
     <value>'{0}' is an invalid XmlNodeType.</value>
   </data>
+  <data name="SFxRpcMessageMustHaveASingleBody" xml:space="preserve">
+    <value>RPC Message {1} in operation {0} must have a single MessageBodyMember.</value>
+  </data>
+  <data name="SFxBodyObjectTypeCannotBeInherited" xml:space="preserve">
+    <value>Type {0} cannot inherit from any class other than object to be used as body object in RPC style.</value>
+  </data>
+  <data name="SFxBodyObjectTypeCannotBeInterface" xml:space="preserve">
+    <value>Type {0} implements interface {1} which is not supported for body object in RPC style.</value>
+  </data>
+  <data name="SFxHeadersAreNotSupportedInEncoded" xml:space="preserve">
+    <value>Message {0} must not have headers to be used in RPC encoded style.</value>
+  </data>
+  <data name="SFxMultiplePartsNotAllowedInEncoded" xml:space="preserve">
+    <value>Part {1}:{0} is repeating and is not supported in Soap Encoding.</value>
+  </data>
+  <data name="SFxInvalidSoapAttribute" xml:space="preserve">
+    <value>XmlSerializer attribute {0} is not valid in {1}. Only SoapElement attribute is supported.</value>
+  </data>
 </root>
