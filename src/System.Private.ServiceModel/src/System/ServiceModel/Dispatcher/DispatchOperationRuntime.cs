@@ -23,6 +23,7 @@ namespace System.ServiceModel.Dispatcher
         private readonly IDispatchMessageFormatter _formatter;
         private IParameterInspector[] _inspectors;
         private readonly IOperationInvoker _invoker;
+        private readonly bool _isTerminating;
         private readonly bool _isSessionOpenNotificationEnabled;
         private readonly string _name;
         private readonly ImmutableDispatchRuntime _parent;
@@ -55,7 +56,7 @@ namespace System.ServiceModel.Dispatcher
             _serializeReply = operation.SerializeReply;
             _formatter = operation.Formatter;
             _invoker = operation.Invoker;
-
+            _isTerminating = operation.IsTerminating;
             _isSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
             _action = operation.Action;
             _name = operation.Name;
@@ -96,6 +97,11 @@ namespace System.ServiceModel.Dispatcher
         internal bool IsOneWay
         {
             get { return _isOneWay; }
+        }
+
+        internal bool IsTerminating
+        {
+            get { return _isTerminating; }
         }
 
         internal string Name

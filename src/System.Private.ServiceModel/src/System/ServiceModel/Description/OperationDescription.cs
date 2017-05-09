@@ -11,13 +11,14 @@ using System.Reflection;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Name={_name}, IsInitiating={_isInitiating}")]
+    [DebuggerDisplay("Name={_name}, IsInitiating={_isInitiating}, IsTerminating={_isTerminating}")]
     public class OperationDescription
     {
         internal const string SessionOpenedAction = Channels.WebSocketTransportSettings.ConnectionOpenedAction;
 
         private XmlName _name;
         private bool _isInitiating;
+        private bool _isTerminating;
         private bool _isSessionOpenNotificationEnabled;
         private ContractDescription _declaringContract;
         private FaultDescriptionCollection _faults;
@@ -49,6 +50,7 @@ namespace System.ServiceModel.Description
             }
             _declaringContract = declaringContract;
             _isInitiating = true;
+            _isTerminating = false;
             _faults = new FaultDescriptionCollection();
             _messages = new MessageDescriptionCollection();
             _behaviors = new KeyedByTypeCollection<IOperationBehavior>();
@@ -162,6 +164,12 @@ namespace System.ServiceModel.Description
         {
             EnsureInvariants();
             return Messages[0].Direction == MessageDirection.Output;
+        }
+
+        public bool IsTerminating
+        {
+            get { return _isTerminating; }
+            set { _isTerminating = value; }
         }
 
         public Collection<Type> KnownTypes

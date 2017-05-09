@@ -954,6 +954,8 @@ namespace System.ServiceModel.Description
 
             OperationDescription operationDescription = new OperationDescription(operationName.EncodedName, declaringContract);
             operationDescription.IsInitiating = opAttr.IsInitiating;
+            operationDescription.IsTerminating = opAttr.IsTerminating;
+
             operationDescription.IsSessionOpenNotificationEnabled = opAttr.IsSessionOpenNotificationEnabled;
 
             operationDescription.HasNoDisposableParameters = ServiceReflector.HasNoDisposableParameters(methodInfo);

@@ -26,6 +26,7 @@ namespace System.ServiceModel.Dispatcher
         private readonly bool _enableFaults;
         private InstanceBehavior _instance;
         private readonly bool _manualAddressing;
+        private readonly TerminatingOperationBehavior _terminate;
         private readonly ThreadBehavior _thread;
         private readonly bool _validateMustUnderstand;
         private readonly bool _sendAsynchronously;
@@ -54,6 +55,7 @@ namespace System.ServiceModel.Dispatcher
             _enableFaults = dispatch.EnableFaults;
             _instance = new InstanceBehavior(dispatch, this);
             _manualAddressing = dispatch.ManualAddressing;
+            _terminate = TerminatingOperationBehavior.CreateIfNecessary(dispatch);
             _thread = new ThreadBehavior(dispatch);
             _sendAsynchronously = dispatch.ChannelDispatcher.SendAsynchronously;
             _correlationCount = dispatch.MaxParameterInspectors;
@@ -826,6 +828,21 @@ namespace System.ServiceModel.Dispatcher
                     }
                 }
 
+                if (_terminate != null)
+                {
+                    try
+                    {
+                        _terminate.AfterReply(ref rpc);
+                    }
+                    catch (Exception e)
+                    {
+                        if (Fx.IsFatal(e))
+                        {
+                            throw;
+                        }
+                        _error.HandleError(e);
+                    }
+                }
 
                 if (rpc.SuccessfullyIncrementedActivity)
                 {

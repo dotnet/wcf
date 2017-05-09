@@ -42,6 +42,7 @@ namespace System.ServiceModel.Dispatcher
         private bool _hasRegisterBeenCalled;
         private bool _hasSession;
         private int _isPumpAcquired;
+        private bool _isChannelTerminated;
         private bool _isConcurrent;
         private bool _isManualAddressing;
         private MessageVersion _messageVersion;
@@ -277,6 +278,11 @@ namespace System.ServiceModel.Dispatcher
                 if (MessageLogger.LoggingEnabled)
                 {
                     MessageLogger.LogMessage(ref message, (operation.IsOneWay ? MessageLoggingSource.ServiceLevelReceiveDatagram : MessageLoggingSource.ServiceLevelReceiveRequest) | MessageLoggingSource.LastChance);
+                }
+
+                if (operation.IsTerminating && _hasSession)
+                {
+                    _isChannelTerminated = true;
                 }
 
                 bool hasOperationContextBeenSet;
@@ -694,6 +700,14 @@ namespace System.ServiceModel.Dispatcher
                     this.ReleasePump();
                     return true;
                 }
+
+                if (_isChannelTerminated)
+                {
+                    ReleasePump();
+                    ReplyChannelTerminated(request);
+                    return true;
+                }
+
                 if (_requestInfo.RequestContext != null)
                 {
                     Fx.Assert("ChannelHandler.HandleRequest: this.requestInfo.RequestContext != null");
@@ -849,6 +863,16 @@ namespace System.ServiceModel.Dispatcher
                 string reason = SR.Format(SR.SFxNoEndpointMatchingContract, request.RequestMessage.Headers.Action);
                 ReplyFailure(request, code, reason, _messageVersion.Addressing.FaultAction);
             }
+        }
+
+        private void ReplyChannelTerminated(RequestContext request)
+        {
+            FaultCode code = FaultCode.CreateSenderFaultCode(FaultCodeConstants.Codes.SessionTerminated,
+                FaultCodeConstants.Namespaces.NetDispatch);
+            string reason = SR.Format(SR.SFxChannelTerminated0);
+            string action = FaultCodeConstants.Actions.NetDispatcher;
+            Message fault = Message.CreateMessage(_messageVersion, code, reason, action);
+            ReplyFailure(request, fault, action, reason, code);
         }
 
         private void ReplyFailure(RequestContext request, FaultCode code, string reason)

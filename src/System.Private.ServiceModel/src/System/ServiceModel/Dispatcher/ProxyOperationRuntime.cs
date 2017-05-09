@@ -17,6 +17,7 @@ namespace System.ServiceModel.Dispatcher
         private readonly IClientMessageFormatter _formatter;
         private readonly bool _isInitiating;
         private readonly bool _isOneWay;
+        private readonly bool _isTerminating;
         private readonly bool _isSessionOpenNotificationEnabled;
         private readonly string _name;
         private readonly IParameterInspector[] _parameterInspectors;
@@ -46,6 +47,7 @@ namespace System.ServiceModel.Dispatcher
             _formatter = operation.Formatter;
             _isInitiating = operation.IsInitiating;
             _isOneWay = operation.IsOneWay;
+            _isTerminating = operation.IsTerminating;
             _isSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
             _name = operation.Name;
             _parameterInspectors = EmptyArray<IParameterInspector>.ToArray(operation.ParameterInspectors);
@@ -104,6 +106,11 @@ namespace System.ServiceModel.Dispatcher
         internal bool IsOneWay
         {
             get { return _isOneWay; }
+        }
+
+        internal bool IsTerminating
+        {
+            get { return _isTerminating; }
         }
 
         internal bool IsSessionOpenNotificationEnabled
