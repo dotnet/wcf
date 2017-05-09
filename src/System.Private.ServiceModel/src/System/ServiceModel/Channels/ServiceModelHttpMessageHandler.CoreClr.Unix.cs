@@ -10,7 +10,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace System.ServiceModel.Channels
 {
-#if FEATURE_CORECLR
+#if FEATURE_CORECLR && !TARGETS_WINDOWS
     public partial class ServiceModelHttpMessageHandler
     {
         private readonly HttpClientHandler _innerHandler;
@@ -66,6 +66,12 @@ namespace System.ServiceModel.Channels
         public bool SupportsProxy
         {
             get { return _innerHandler.SupportsProxy; }
+        }
+
+        public IWebProxy Proxy
+        {
+            get { return null; }
+            set { throw new PlatformNotSupportedException(); }
         }
 
         public bool SupportsClientCertificates

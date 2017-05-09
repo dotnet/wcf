@@ -70,6 +70,12 @@ namespace System.ServiceModel.Channels
             get { return false; /* Only uses wininet configured proxy */ }
         }
 
+        public IWebProxy Proxy
+        {
+            get { return null; }
+            set { throw new PlatformNotSupportedException(); }
+        }
+
         public bool SupportsClientCertificates
         {
             get { return true; } 
