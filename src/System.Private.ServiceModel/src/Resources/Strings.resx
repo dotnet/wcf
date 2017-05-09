@@ -606,6 +606,18 @@
   <data name="RequestChannelWaitForReplyTimedOut" xml:space="preserve">
     <value>The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</value>
   </data>
+  <data name="HttpProxyRequiresSingleAuthScheme" xml:space="preserve">
+    <value>The '{0}' authentication scheme has been specified for the proxy on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</value>
+  </data>
+  <data name="UseDefaultWebProxyCantBeUsedWithExplicitProxyAddress" xml:space="preserve">
+    <value>You cannot specify an explicit Proxy Address as well as UseDefaultWebProxy=true in your HTTP Transport Binding Element.</value>
+  </data>
+  <data name="ProxyImpersonationLevelMismatch" xml:space="preserve">
+    <value>The HTTP proxy authentication credential specified an impersonation level restriction ({0}) that is stricter than the restriction for target server authentication ({1}).</value>
+  </data>
+  <data name="ProxyAuthenticationLevelMismatch" xml:space="preserve">
+    <value>The HTTP proxy authentication credential specified an mutual authentication requirement ({0}) that is stricter than the requirement for target server authentication ({1}).</value>
+  </data>
   <data name="HttpIfModifiedSinceParseError" xml:space="preserve">
     <value>The value specified, '{0}', for the If-Modified-Since header does not parse into a valid date. Check the property value and ensure that it is of the proper format.</value>
   </data>

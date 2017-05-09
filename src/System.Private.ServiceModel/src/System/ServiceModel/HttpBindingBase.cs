@@ -43,6 +43,21 @@ namespace System.ServiceModel
             }
         }
 
+        [DefaultValue(HttpTransportDefaults.BypassProxyOnLocal)]
+        public bool BypassProxyOnLocal
+        {
+            get
+            {
+                return _httpTransport.BypassProxyOnLocal;
+            }
+
+            set
+            {
+                _httpTransport.BypassProxyOnLocal = value;
+                _httpsTransport.BypassProxyOnLocal = value;
+            }
+        }
+
         [DefaultValue(HttpTransportDefaults.HostNameComparisonMode)]
         public HostNameComparisonMode HostNameComparisonMode
         {
@@ -103,6 +118,22 @@ namespace System.ServiceModel
             }
         }
 
+        [DefaultValue(HttpTransportDefaults.ProxyAddress)]
+        [TypeConverter(typeof(UriTypeConverter))]
+        public Uri ProxyAddress
+        {
+            get
+            {
+                return _httpTransport.ProxyAddress;
+            }
+
+            set
+            {
+                _httpTransport.ProxyAddress = value;
+                _httpsTransport.ProxyAddress = value;
+            }
+        }
+
         public XmlDictionaryReaderQuotas ReaderQuotas
         {
             get
@@ -118,7 +149,7 @@ namespace System.ServiceModel
                 }
 
                 value.CopyTo(_textEncoding.ReaderQuotas);
-                this.SetReaderQuotas(value);
+                SetReaderQuotas(value);
             }
         }
 
@@ -126,13 +157,13 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.GetTransport().Scheme;
+                return GetTransport().Scheme;
             }
         }
 
         public EnvelopeVersion EnvelopeVersion
         {
-            get { return this.GetEnvelopeVersion(); }
+            get { return GetEnvelopeVersion(); }
         }
 
         public Encoding TextEncoding
@@ -163,11 +194,18 @@ namespace System.ServiceModel
             }
         }
 
+        [DefaultValue(HttpTransportDefaults.UseDefaultWebProxy)]
         public bool UseDefaultWebProxy
         {
             get
             {
                 return _httpTransport.UseDefaultWebProxy;
+            }
+
+            set
+            {
+                _httpTransport.UseDefaultWebProxy = value;
+                _httpsTransport.UseDefaultWebProxy = value;
             }
         }
 
@@ -230,9 +268,9 @@ namespace System.ServiceModel
 
         internal TransportBindingElement GetTransport()
         {
-            Fx.Assert(this.BasicHttpSecurity != null, "this.BasicHttpSecurity should not return null from a derived class.");
+            Fx.Assert(BasicHttpSecurity != null, "this.BasicHttpSecurity should not return null from a derived class.");
 
-            BasicHttpSecurity basicHttpSecurity = this.BasicHttpSecurity;
+            BasicHttpSecurity basicHttpSecurity = BasicHttpSecurity;
             if (basicHttpSecurity.Mode == BasicHttpSecurityMode.Transport || basicHttpSecurity.Mode == BasicHttpSecurityMode.TransportWithMessageCredential)
             {
                 basicHttpSecurity.EnableTransportSecurity(_httpsTransport);
@@ -260,7 +298,7 @@ namespace System.ServiceModel
         // In the Win8 profile, some settings for the binding security are not supported.
         internal virtual void CheckSettings()
         {
-            BasicHttpSecurity security = this.BasicHttpSecurity;
+            BasicHttpSecurity security = BasicHttpSecurity;
             if (security == null)
             {
                 return;

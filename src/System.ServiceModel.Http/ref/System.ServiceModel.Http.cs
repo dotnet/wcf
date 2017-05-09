@@ -58,6 +58,8 @@ namespace System.ServiceModel
         internal HttpBindingBase() { }
         [System.ComponentModel.DefaultValueAttribute(false)]
         public bool AllowCookies { get { return default(bool); } set { } }
+        [System.ComponentModel.DefaultValue(false)]
+        public bool BypassProxyOnLocal { get { return default(bool); } set { } }
         public System.ServiceModel.EnvelopeVersion EnvelopeVersion { get { return default(System.ServiceModel.EnvelopeVersion); } }
         [System.ComponentModel.DefaultValueAttribute((long)524288)]
         public long MaxBufferPoolSize { get { return default(long); } set { } }
@@ -65,11 +67,16 @@ namespace System.ServiceModel
         public int MaxBufferSize { get { return default(int); } set { } }
         [System.ComponentModel.DefaultValueAttribute((long)65536)]
         public long MaxReceivedMessageSize { get { return default(long); } set { } }
+        [System.ComponentModel.DefaultValueAttribute(null)]
+        [System.ComponentModel.TypeConverter(typeof(System.UriTypeConverter))]
+        public System.Uri ProxyAddress { get { return default(System.Uri); } set { } }
         public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default(System.Xml.XmlDictionaryReaderQuotas); } set { } }
         public override string Scheme { get { return default(string); } }
         public System.Text.Encoding TextEncoding { get { return default(System.Text.Encoding); } set { } }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.TransferMode)(0))]
         public System.ServiceModel.TransferMode TransferMode { get { return default(System.ServiceModel.TransferMode); } set { } }
+        [System.ComponentModel.DefaultValue(true)]
+        public bool UseDefaultWebProxy { get { return default(bool); } set { } }
     }
     public enum HttpClientCredentialType
     {
@@ -81,10 +88,19 @@ namespace System.ServiceModel
         Ntlm = 3,
         Windows = 4,
     }
+    public enum HttpProxyCredentialType
+    {
+        None,
+        Basic,
+        Digest,
+        Ntlm,
+        Windows,
+    }
     public sealed partial class HttpTransportSecurity
     {
         public HttpTransportSecurity() { }
         public System.ServiceModel.HttpClientCredentialType ClientCredentialType { get { return default(System.ServiceModel.HttpClientCredentialType); } set { } }
+        public System.ServiceModel.HttpProxyCredentialType ProxyCredentialType { get { return default(System.ServiceModel.HttpProxyCredentialType); } set { } }
     }
     public partial class NetHttpBinding : System.ServiceModel.HttpBindingBase
     {
@@ -155,12 +171,21 @@ namespace System.ServiceModel.Channels
         public bool AllowCookies { get { return default(bool); } set { } }
         [System.ComponentModel.DefaultValueAttribute((System.Net.AuthenticationSchemes)(32768))]
         public System.Net.AuthenticationSchemes AuthenticationScheme { get { return default(System.Net.AuthenticationSchemes); } set { } }
+        [System.ComponentModel.DefaultValue(false)]
+        public bool BypassProxyOnLocal { get { return default(bool); } set { } }
         [System.ComponentModel.DefaultValueAttribute(65536)]
         public int MaxBufferSize { get { return default(int); } set { } }
+        [System.ComponentModel.DefaultValue(null)]
+        [System.ComponentModel.TypeConverter(typeof(System.UriTypeConverter))]
+        public System.Uri ProxyAddress { get { return default(System.Uri); } set { } }
+        [System.ComponentModel.DefaultValueAttribute((System.Net.AuthenticationSchemes)(32768))]
+        public System.Net.AuthenticationSchemes ProxyAuthenticationScheme { get { return default(System.Net.AuthenticationSchemes); } set { } }
         public override string Scheme { get { return default(string); } }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.TransferMode)(0))]
         public System.ServiceModel.TransferMode TransferMode { get { return default(System.ServiceModel.TransferMode); } set { } }
         public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default(System.ServiceModel.Channels.WebSocketTransportSettings); } set { } }
+        [System.ComponentModel.DefaultValue(true)]
+        public bool UseDefaultWebProxy { get { return default(bool); } set { } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
         public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(bool); }
         public override System.ServiceModel.Channels.BindingElement Clone() { return default(System.ServiceModel.Channels.BindingElement); }
