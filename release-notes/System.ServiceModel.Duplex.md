@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 4.4.0-preview1-25303-02
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/4.4.0-preview1-25303-02)
+* [Release tag](https://github.com/dotnet/wcf/tree/v2.0.0-preview1)
+
 ### 4.3.0
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/4.3.0)
