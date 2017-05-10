@@ -252,10 +252,7 @@ namespace System.ServiceModel.Channels
                     SR.InvalidTokenProvided, _serverTokenProvider.GetType(), typeof(X509SecurityToken))));
             }
 
-            // dotnet/wcf#1574
-            // ORIGINAL CODE: 
-            // _serverCertificate = new X509Certificate2(x509Token.Certificate.Handle);
-            _serverCertificate = x509Token.Certificate.CloneCertificateInternal(); 
+            _serverCertificate = new X509Certificate2(x509Token.Certificate);
         }
 
         private void CleanupServerCertificate()
@@ -713,10 +710,7 @@ namespace System.ServiceModel.Channels
         {
             // Note: add ref to handle since the caller will reset the cert after the callback return.
 
-            // dotnet/wcf#1574
-            // ORIGINAL CODE: 
-            // X509Certificate2 certificate2 = new X509Certificate2(certificate.Handle);
-            X509Certificate2 certificate2 = certificate.CloneCertificateInternal(); 
+            X509Certificate2 certificate2 = new X509Certificate2(certificate);
 
             SecurityToken token = new X509SecurityToken(certificate2, false);
             ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies = _serverCertificateAuthenticator.ValidateToken(token);

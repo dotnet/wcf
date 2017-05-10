@@ -33,11 +33,7 @@ namespace System.IdentityModel.Claims
             if (certificate == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
             
-            // dotnet/wcf#1574
-            // ORIGINAL CODE: 
-            // _certificate = clone ? new X509Certificate2(certificate.Handle) : certificate;
-
-            _certificate = clone ? certificate.CloneCertificateInternal() : certificate;
+             _certificate = clone ? new X509Certificate2(certificate) : certificate;
         }
 
         private X509CertificateClaimSet(X509CertificateClaimSet from)
@@ -515,11 +511,7 @@ namespace System.IdentityModel.Claims
         internal X509Identity(X509Certificate2 certificate, bool clone, bool disposable)
             : base(X509, X509)
         {
-            // dotnet/wcf#1574
-            // ORIGINAL CODE: 
-            // _certificate = clone ? new X509Certificate2(certificate.Handle) : certificate;
-
-            _certificate = clone ? certificate.CloneCertificateInternal() : certificate;
+             _certificate = clone ? new X509Certificate2(certificate) : certificate;
 
             _disposable = clone || disposable;
         }

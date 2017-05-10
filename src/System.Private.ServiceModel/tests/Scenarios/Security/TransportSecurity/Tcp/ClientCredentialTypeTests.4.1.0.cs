@@ -115,10 +115,9 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
-    [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    public static void TcpClientCredentialType_Certificate_With_ServerAltName_EchoString()
+    public static void TcpClientCredentialType_None_With_ServerAltName_EchoString()
     {
         EndpointAddress endpointAddress = null;
         string testString = "Hello";
