@@ -1950,4 +1950,10 @@
   <data name="SFxInvalidSoapAttribute" xml:space="preserve">
     <value>XmlSerializer attribute {0} is not valid in {1}. Only SoapElement attribute is supported.</value>
   </data>
+  <data name="SFxTerminatingOperationAlreadyCalled1" xml:space="preserve">
+    <value>This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </value>
+  </data>
+  <data name="SFxChannelTerminated0" xml:space="preserve">
+    <value>An operation marked as IsTerminating has already been invoked on this channel, causing the channel's connection to terminate.  No more operations may be invoked on this channel.  Please re-create the channel to continue communication.</value>
+  </data>
 </root>

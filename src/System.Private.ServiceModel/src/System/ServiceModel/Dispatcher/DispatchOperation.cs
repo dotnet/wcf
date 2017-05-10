@@ -14,6 +14,7 @@ namespace System.ServiceModel.Dispatcher
         private IDispatchMessageFormatter _formatter;
         private IDispatchFaultFormatter _faultFormatter;
         private IOperationInvoker _invoker;
+        private bool _isTerminating;
         private bool _isSessionOpenNotificationEnabled;
         private readonly string _name;
         private readonly SynchronizedCollection<IParameterInspector> _parameterInspectors;
@@ -144,6 +145,19 @@ namespace System.ServiceModel.Dispatcher
                 {
                     _parent.InvalidateRuntime();
                     _invoker = value;
+                }
+            }
+        }
+
+        public bool IsTerminating
+        {
+            get { return _isTerminating; }
+            set
+            {
+                lock (_parent.ThisLock)
+                {
+                    _parent.InvalidateRuntime();
+                    _isTerminating = value;
                 }
             }
         }

@@ -288,6 +288,11 @@ namespace System.Runtime
             return (new AsyncThunk(callback)).ThunkFrame;
         }
 
+        public static Action<T1> ThunkCallback<T1>(Action<T1> callback)
+        {
+            return (new ActionThunk<T1>(callback)).ThunkFrame;
+        }
+
         [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.UseNewGuidHelperRule,
             Justification = "These are the core methods that should be used for all other Guid(string) calls.")]
         public static Guid CreateGuid(string guidString)

@@ -528,6 +528,8 @@ namespace System.ServiceModel
         public System.ServiceModel.Channels.MessageProperties OutgoingMessageProperties { get { return default(System.ServiceModel.Channels.MessageProperties); } }
         public System.ServiceModel.Channels.RequestContext RequestContext { get { return default(System.ServiceModel.Channels.RequestContext); } set { } }
         public event System.EventHandler OperationCompleted { add { } remove { } }
+        public T GetCallbackChannel<T>() { return default(T); }
+        public System.ServiceModel.IContextChannel Channel { get { return default(System.ServiceModel.IContextChannel); } }
     }
     public sealed partial class OperationContextScope : System.IDisposable
     {

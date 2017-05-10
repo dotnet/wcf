@@ -116,7 +116,6 @@ public static class SessionTests
         }
     }
 
-    [Issue(1402)]
     [WcfFact]
     [OuterLoop]
     public static void Test_Negative_Calling_Initiating_After_Calling_Terminating()
@@ -141,7 +140,6 @@ public static class SessionTests
         }
     }
 
-    [Issue(1402)]
     [WcfFact]
     [OuterLoop]
     public static void Test_Negative_Calling_Terminating_Twice()
