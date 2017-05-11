@@ -5,7 +5,11 @@
     <Project Include="System.ServiceModel.Duplex.Tests.csproj" >
       <TargetGroup>netstandard2.0</TargetGroup>
       <TestTFMs>netcoreapp2.0</TestTFMs>
-    </Project> 
+    </Project>
+    <Project Include="System.ServiceModel.Duplex.Tests.csproj" >
+      <TargetGroup>uap10.0</TargetGroup>
+      <TestTFMs>netcore50aot</TestTFMs>
+    </Project>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.traversal.targets))\dir.traversal.targets" />
 </Project>
