@@ -29,7 +29,6 @@ public static partial class XmlSerializerFormatTests
 
     [WcfFact]
     [OuterLoop]
-    [Issue(1884)]
     public static void EchoComositeType_XmlSerializerFormat_Soap()
     {
         RunWcfSoapServiceTest((serviceProxy) =>
