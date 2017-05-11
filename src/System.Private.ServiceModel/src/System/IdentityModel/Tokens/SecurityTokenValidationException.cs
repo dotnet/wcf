@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Runtime.Serialization;
 
 namespace System.IdentityModel.Tokens
 {
+    [Serializable]
     public class SecurityTokenValidationException : SecurityTokenException
     {
         public SecurityTokenValidationException()
@@ -19,6 +21,11 @@ namespace System.IdentityModel.Tokens
 
         public SecurityTokenValidationException(String message, Exception innerException)
             : base(message, innerException)
+        {
+        }
+
+        protected SecurityTokenValidationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
