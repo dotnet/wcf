@@ -28,8 +28,7 @@ namespace System.ServiceModel
 #if TARGETS_WINDOWS
             return new X509Certificate2(certificateToClone.Handle);
 #else
-            byte[] certificateBytes = certificateToClone.Export(X509ContentType.Pfx, string.Empty);
-            X509Certificate2 certificateToClone2 = new X509Certificate2(certificateBytes, string.Empty);
+            X509Certificate2 certificateToClone2 = new X509Certificate2(certificateToClone);
 
             X509Certificate2Collection collection = new X509Certificate2Collection(certificateToClone2);
             X509Certificate2Collection copyCollection = collection.Find(X509FindType.FindByThumbprint, certificateToClone2.Thumbprint, false);
