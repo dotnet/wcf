@@ -54,10 +54,7 @@ namespace System.IdentityModel.Tokens
 
             _id = id;
 
-            // dotnet/wcf#1574
-            // ORIGINAL CODE: 
-            // _certificate = clone ? new X509Certificate2(certificate.Handle) : certificate;
-            _certificate = clone ? certificate.CloneCertificateInternal() : certificate;
+            _certificate = clone ? new X509Certificate2(certificate) : certificate;
 
             // if the cert needs to be cloned then the token owns the clone and should dispose it
             _disposable = clone || disposable;
