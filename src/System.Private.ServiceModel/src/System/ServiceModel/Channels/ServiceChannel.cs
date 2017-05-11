@@ -2281,7 +2281,7 @@ namespace System.ServiceModel.Channels
 
             internal class AsyncWaiter : AsyncResult, IWaiter
             {
-                private static Action<object> s_timerCallback = new Action<object>(TimerCallback);
+                private static TimerCallback s_timeoutCallback = new TimerCallback(Fx.ThunkCallback<object>(TimeoutCallback));
 
                 private CallOnceManager _manager;
                 private TimeSpan _timeout;
@@ -2296,7 +2296,7 @@ namespace System.ServiceModel.Channels
 
                     if (timeout != TimeSpan.MaxValue)
                     {
-                        _timer = new Timer(new TimerCallback(s_timerCallback), this, timeout, TimeSpan.FromMilliseconds(-1));
+                        _timer = new Timer(s_timeoutCallback, this, timeout, TimeSpan.FromMilliseconds(-1));
                     }
                 }
 
@@ -2326,7 +2326,7 @@ namespace System.ServiceModel.Channels
                     }
                 }
 
-                private static void TimerCallback(object state)
+                private static void TimeoutCallback(object state)
                 {
                     AsyncWaiter _this = (AsyncWaiter)state;
                     _this.Complete(false, _this._manager._channel.GetOpenTimeoutException(_this._timeout));
