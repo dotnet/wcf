@@ -2,10 +2,10 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
-    <Project Include="System.ServiceModel.Duplex.Tests.csproj" >
+    <!--<Project Include="System.ServiceModel.Duplex.Tests.csproj" >
       <TargetGroup>netstandard2.0</TargetGroup>
       <TestTFMs>netcoreapp2.0</TestTFMs>
-    </Project>
+    </Project>-->
     <Project Include="System.ServiceModel.Duplex.Tests.csproj" >
       <TargetGroup>uap10.0</TargetGroup>
       <TestTFMs>netcore50aot</TestTFMs>
