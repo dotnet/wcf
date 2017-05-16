@@ -11,6 +11,7 @@ using Xunit;
 public class SetupValidationTests : ConditionalWcfTest
 {
     [WcfFact]
+    [Issue(1913, OS = OSID.AnyUnix)]
     [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
@@ -36,6 +37,7 @@ public class SetupValidationTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(1913, OS = OSID.AnyUnix)]
     [Condition(nameof(Client_Certificate_Installed))]
     [OuterLoop]
     public static void Client_Certificate_Correctly_Installed()
@@ -60,6 +62,7 @@ public class SetupValidationTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(1913, OS = OSID.AnyUnix)]
     [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Peer_Certificate_Installed))]
     [OuterLoop]

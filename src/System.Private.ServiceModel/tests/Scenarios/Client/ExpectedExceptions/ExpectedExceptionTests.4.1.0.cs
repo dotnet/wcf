@@ -329,7 +329,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
     public static void TCP_ServiceCertExpired_Throw_MessageSecurityException()

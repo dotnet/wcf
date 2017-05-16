@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -118,6 +118,24 @@ public interface IWcfServiceXmlGenerated
     [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlVeryComplexType"),
     XmlSerializerFormat]
     XmlVeryComplexType EchoXmlVeryComplexType(XmlVeryComplexType complex);
+}
+
+[ServiceContract(ConfigurationName = "IWcfSoapService")]
+public interface IWcfSoapService
+{
+    [OperationContract(Action = "http://tempuri.org/IWcfService/CombineStringXmlSerializerFormatSoap", ReplyAction = "http://tempuri.org/IWcfService/CombineStringXmlSerializerFormatSoapResponse")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
+    string CombineStringXmlSerializerFormatSoap(string message1, string message2);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/EchoComositeTypeXmlSerializerFormatSoap", ReplyAction = "http://tempuri.org/IWcfService/EchoComositeTypeXmlSerializerFormatSoapResponse")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
+    SoapComplexType EchoComositeTypeXmlSerializerFormatSoap(SoapComplexType c);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/ProcessCustomerData", ReplyAction = "http://tempuri.org/IWcfSoapService/ProcessCustomerDataResponse")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
+    [ServiceKnownType(typeof(AdditionalData))]
+    [return: MessageParameter(Name = "ProcessCustomerDataReturn")]
+    string ProcessCustomerData(CustomerObject CustomerData);
 }
 
 // This type share the same name space with IWcfServiceXmlGenerated.
@@ -543,6 +561,25 @@ public interface IDataContractResolverService
     void AddEmployee(Employee employee);
 }
 
+
+[ServiceContract(SessionMode = SessionMode.Required)]
+public interface ISessionTestsDefaultService
+{
+    [OperationContract(IsInitiating = true, IsTerminating = false)]
+    int MethodAInitiating(int a);
+
+    [OperationContract(IsInitiating = false, IsTerminating = false)]
+    int MethodBNonInitiating(int b);
+
+    [OperationContract(IsInitiating = false, IsTerminating = true)]
+    SessionTestsCompositeType MethodCTerminating();
+}
+
+[ServiceContract(SessionMode = SessionMode.Required)]
+public interface ISessionTestsShortTimeoutService : ISessionTestsDefaultService
+{
+}
+
 [ServiceContract, XmlSerializerFormat]
 public interface IXmlSFAttribute
 {
@@ -559,4 +596,5 @@ public interface IXmlSFAttribute
         Name = "FaultDetailWithXmlSerializerFormatAttribute",
         Namespace = "http://www.contoso.com/wcfnamespace")]
     void TestXmlSerializerSupportsFaults_False();
+
 }

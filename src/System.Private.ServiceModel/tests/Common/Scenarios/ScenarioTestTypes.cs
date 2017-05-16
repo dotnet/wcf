@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -1213,6 +1213,41 @@ public class XmlVeryComplexType
     }
 }
 
+public class SoapComplexType
+{
+    private bool _boolValue;
+    private string _stringValue;
+
+    public bool BoolValue
+    {
+        get { return _boolValue; }
+        set { _boolValue = value; }
+    }
+
+    public string StringValue
+    {
+        get { return _stringValue; }
+        set { _stringValue = value; }
+    }
+}
+
+[SoapType(Namespace = "WcfService")]
+public class CustomerObject
+{
+    public string Name { get; set; }
+    public object Data { get; set; }
+}
+
+[Serializable]
+[SoapType(Namespace = "WcfService")]
+public partial class AdditionalData
+{
+    public string Field
+    {
+        get; set;
+    }
+}
+
 // This type should be used by XmlSerializerFormat_EchoVeryComplexType only.
 // The type should not ever be instantiated. 
 public class NonInstantiatedType
@@ -1348,6 +1383,16 @@ public class Manager : Employee
 {
     [DataMember]
     public int OfficeId { get; set; }
+}
+
+
+[DataContract]
+public class SessionTestsCompositeType
+{
+    [DataMember]
+    public int MethodAValue { get; set; }
+    [DataMember]
+    public int MethodBValue { get; set; }
 }
 
 [DataContract(Name = "FaultDetailWithXmlSerializerFormatAttribute", Namespace = "http://www.contoso.com/wcfnamespace")]

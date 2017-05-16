@@ -12,7 +12,6 @@ using Xunit;
 public partial class ExpectedExceptionTests : ConditionalWcfTest
 {
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     // Confirm that the Validate method of the custom X509CertificateValidator is called and that an exception thrown there is handled correctly.

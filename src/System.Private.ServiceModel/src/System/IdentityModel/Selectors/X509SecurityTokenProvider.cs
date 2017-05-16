@@ -28,11 +28,7 @@ namespace System.IdentityModel.Selectors
             _clone = clone;
             if (_clone)
             {
-                // dotnet/wcf#1574
-                // ORIGINAL CODE: 
-                // _certificate = new X509Certificate2(certificate.Handle);
-
-                _certificate = certificate.CloneCertificateInternal();
+                _certificate = new X509Certificate2(certificate);
             }
             else
             {

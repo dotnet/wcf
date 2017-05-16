@@ -134,6 +134,7 @@ namespace System.ServiceModel.Description
             child.EndMethod = operation.EndMethod;
             child.IsOneWay = operation.IsOneWay;
             child.IsInitiating = operation.IsInitiating;
+            child.IsTerminating = operation.IsTerminating;
             child.IsSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
             for (int i = 0; i < operation.Faults.Count; i++)
             {
@@ -160,6 +161,7 @@ namespace System.ServiceModel.Description
 
             child.HasNoDisposableParameters = operation.HasNoDisposableParameters;
 
+            child.IsTerminating = operation.IsTerminating;
             child.IsSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
             for (int i = 0; i < operation.Faults.Count; i++)
             {

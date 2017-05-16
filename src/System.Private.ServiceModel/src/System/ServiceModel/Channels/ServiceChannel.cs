@@ -47,6 +47,7 @@ namespace System.ServiceModel.Channels
         private readonly bool _openBinder = false;
         private TimeSpan _operationTimeout;
         private object _proxy;
+        private string _terminatingOperationName;
         private bool _hasChannelStartedAutoClosing;
         private bool _hasCleanedUpChannelCollections;
         private EventTraceActivity _eventActivity;
@@ -566,6 +567,11 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxNonInitiatingOperation1, operation.Name)));
             }
 
+            if (_terminatingOperationName != null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxTerminatingOperationAlreadyCalled1, _terminatingOperationName)));
+            }
+
             if (_hasChannelStartedAutoClosing)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.SFxClientOutputSessionAutoClosed));
@@ -934,6 +940,7 @@ namespace System.ServiceModel.Channels
                                                                                   operation.Name,
                                                                                   rpc.Reply.Headers.Action,
                                                                                   operation.ReplyAction));
+                            TerminateIfNecessary(ref rpc);
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                         }
                     }
@@ -947,6 +954,7 @@ namespace System.ServiceModel.Channels
                         }
                         ThrowIfFaultUnderstood(rpc.Reply, fault, action, rpc.Reply.Version, rpc.Channel.GetProperty<FaultConverter>());
                         FaultException fe = rpc.Operation.FaultFormatter.Deserialize(fault, action);
+                        TerminateIfNecessary(ref rpc);
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(fe);
                     }
 
@@ -982,6 +990,7 @@ namespace System.ServiceModel.Channels
                     }
                 }
             }
+            TerminateIfNecessary(ref rpc);
 
             if (WcfEventSource.Instance.ServiceChannelCallStopIsEnabled())
             {
@@ -993,6 +1002,15 @@ namespace System.ServiceModel.Channels
                 WcfEventSource.Instance.ServiceChannelCallStop(rpc.EventTraceActivity, rpc.Action,
                                             _clientRuntime.ContractName,
                                             remoteAddress);
+            }
+        }
+
+        private void TerminateIfNecessary(ref ProxyRpc rpc)
+        {
+            if (rpc.Operation.IsTerminating)
+            {
+                _terminatingOperationName = rpc.Operation.Name;
+                TerminatingOperationBehavior.AfterReply(ref rpc);
             }
         }
 
@@ -2263,7 +2281,7 @@ namespace System.ServiceModel.Channels
 
             internal class AsyncWaiter : AsyncResult, IWaiter
             {
-                private static Action<object> s_timerCallback = new Action<object>(TimerCallback);
+                private static TimerCallback s_timeoutCallback = new TimerCallback(Fx.ThunkCallback<object>(TimeoutCallback));
 
                 private CallOnceManager _manager;
                 private TimeSpan _timeout;
@@ -2278,7 +2296,7 @@ namespace System.ServiceModel.Channels
 
                     if (timeout != TimeSpan.MaxValue)
                     {
-                        _timer = new Timer(new TimerCallback(s_timerCallback), this, timeout, TimeSpan.FromMilliseconds(-1));
+                        _timer = new Timer(s_timeoutCallback, this, timeout, TimeSpan.FromMilliseconds(-1));
                     }
                 }
 
@@ -2308,7 +2326,7 @@ namespace System.ServiceModel.Channels
                     }
                 }
 
-                private static void TimerCallback(object state)
+                private static void TimeoutCallback(object state)
                 {
                     AsyncWaiter _this = (AsyncWaiter)state;
                     _this.Complete(false, _this._manager._channel.GetOpenTimeoutException(_this._timeout));

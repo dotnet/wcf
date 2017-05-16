@@ -37,6 +37,7 @@ namespace System.ServiceModel.Dispatcher
         private IClientFaultFormatter _faultFormatter;
         private bool _isInitiating = true;
         private bool _isOneWay;
+        private bool _isTerminating;
         private bool _isSessionOpenNotificationEnabled;
         private string _name;
 
@@ -190,6 +191,19 @@ namespace System.ServiceModel.Dispatcher
                 {
                     _parent.InvalidateRuntime();
                     _isOneWay = value;
+                }
+            }
+        }
+
+        public bool IsTerminating
+        {
+            get { return _isTerminating; }
+            set
+            {
+                lock (_parent.ThisLock)
+                {
+                    _parent.InvalidateRuntime();
+                    _isTerminating = value;
                 }
             }
         }

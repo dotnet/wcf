@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Diagnostics;
+using System.Runtime.Serialization;
 using System.Security;
 using System.ServiceModel;
 
@@ -286,6 +287,11 @@ namespace System.Runtime
         public static AsyncCallback ThunkCallback(AsyncCallback callback)
         {
             return (new AsyncThunk(callback)).ThunkFrame;
+        }
+
+        public static Action<T1> ThunkCallback<T1>(Action<T1> callback)
+        {
+            return (new ActionThunk<T1>(callback)).ThunkFrame;
         }
 
         [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.UseNewGuidHelperRule,
@@ -1001,18 +1007,30 @@ namespace System.Runtime
             }
         }
 
+        [Serializable]
         internal class InternalException : Exception
         {
             public InternalException(string description)
                 : base(InternalSR.ShipAssertExceptionMessage(description))
             {
             }
+
+            protected InternalException(SerializationInfo info, StreamingContext context)
+                : base(info, context)
+            {
+            }
         }
 
+        [Serializable]
         internal class FatalInternalException : InternalException
         {
             public FatalInternalException(string description)
                 : base(description)
+            {
+            }
+
+            protected FatalInternalException(SerializationInfo info, StreamingContext context)
+                : base(info, context)
             {
             }
         }

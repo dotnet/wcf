@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Runtime;
+using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     internal class ActionMismatchAddressingException : ProtocolException
     {
         private string _httpActionHeader;
@@ -18,6 +19,11 @@ namespace System.ServiceModel
         {
             _httpActionHeader = httpActionHeader;
             _soapActionHeader = soapActionHeader;
+        }
+
+        protected ActionMismatchAddressingException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
 
         public string HttpActionHeader

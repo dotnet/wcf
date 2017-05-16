@@ -2,17 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Globalization;
+using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     public class ProtocolException : CommunicationException
     {
         public ProtocolException() { }
         public ProtocolException(string message) : base(message) { }
         public ProtocolException(string message, Exception innerException) : base(message, innerException) { }
+        protected ProtocolException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         internal static ProtocolException ReceiveShutdownReturnedNonNull(Message message)
         {

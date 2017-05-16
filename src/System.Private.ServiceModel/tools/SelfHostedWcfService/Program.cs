@@ -42,7 +42,8 @@ namespace SelfHostedWCFService
             CreateHost<BasicAuthTestServiceHost, WcfUserNameService>("BasicAuth.svc", httpsBaseAddress);
             CreateHost<BasicHttpsTestServiceHost, WcfService.WcfService>("BasicHttps.svc", httpsBaseAddress);
             CreateHost<BasicHttpTestServiceHost, WcfService.WcfService>("BasicHttp.svc", httpBaseAddress);
-            CreateHost<BasicHttpTestServiceHost_4_4_0, WcfService_4_4_0>("BasicHttp_4_4_0.svc", httpBaseAddress);
+            CreateHost<BasicHttpTestServiceHost_4_4_0, WcfService_4_4_0>("BasicHttp_4_4_0.svc", httpBaseAddress);            
+            CreateHost<BasicHttpSoapTestServiceHost, WcfSoapService>("BasicHttpSoap.svc", httpBaseAddress);            
             CreateHost<CustomTextEncoderBufferedTestServiceHost,WcfService.WcfService>("CustomTextEncoderBuffered.svc", httpBaseAddress);
             CreateHost<CustomTextEncoderStreamedTestServiceHost, WcfService.WcfService>("CustomTextEncoderStreamed.svc", httpBaseAddress);
             CreateHost<DefaultCustomHttpTestServiceHost, WcfService.WcfService>("DefaultCustomHttp.svc", httpBaseAddress);
@@ -91,6 +92,8 @@ namespace SelfHostedWCFService
             CreateHost<TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost, WcfService.WcfService>("TcpTransportSecuritySslClientCredentialTypeCertificate.svc", tcpBaseAddress);
             CreateHost<TcpVerifyDNSTestServiceHost, WcfService.WcfService>("TcpVerifyDNS.svc", tcpBaseAddress);
             CreateHost<TcpCertificateValidationPeerTrustTestServiceHost, WcfService.WcfService>("NetTcpCertValModePeerTrust.svc", tcpBaseAddress);
+            CreateHost<TcpSessionTestServiceHost, WcfService.SessionTestsDefaultService>("SessionTestsDefaultService.svc", tcpBaseAddress);
+            CreateHost<TcpSessionShortTimeoutTestServiceHost, WcfService.SessionTestsShortTimeoutService>("SessionTestsShortTimeoutService.svc", tcpBaseAddress);
             CreateHost<DuplexWebSocketTestServiceHost, WcfWebSocketService>("DuplexWebSocket.svc", websocketBaseAddress);
             CreateHost<WebSocketTransportTestServiceHost, WcfWebSocketTransportUsageAlwaysService>("WebSocketTransport.svc", websocketBaseAddress);
             CreateHost<WebSocketHttpDuplexBinaryStreamedTestServiceHost, WSDuplexService>("WebSocketHttpDuplexBinaryStreamed.svc", websocketBaseAddress);

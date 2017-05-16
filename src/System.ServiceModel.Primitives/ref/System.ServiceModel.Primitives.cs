@@ -68,6 +68,7 @@ namespace System.ServiceModel
         public ActionNotSupportedException() { }
         public ActionNotSupportedException(string message) { }
         public ActionNotSupportedException(string message, System.Exception innerException) { }
+        protected ActionNotSupportedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public abstract partial class ChannelFactory : System.ServiceModel.Channels.CommunicationObject, System.IDisposable, System.ServiceModel.Channels.IChannelFactory, System.ServiceModel.ICommunicationObject
     {
@@ -207,18 +208,21 @@ namespace System.ServiceModel
         public CommunicationException() { }
         public CommunicationException(string message) { }
         public CommunicationException(string message, System.Exception innerException) { }
+        protected CommunicationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class CommunicationObjectAbortedException : System.ServiceModel.CommunicationException
     {
         public CommunicationObjectAbortedException() { }
         public CommunicationObjectAbortedException(string message) { }
         public CommunicationObjectAbortedException(string message, System.Exception innerException) { }
+        protected CommunicationObjectAbortedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class CommunicationObjectFaultedException : System.ServiceModel.CommunicationException
     {
         public CommunicationObjectFaultedException() { }
         public CommunicationObjectFaultedException(string message) { }
         public CommunicationObjectFaultedException(string message, System.Exception innerException) { }
+        protected CommunicationObjectFaultedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public enum CommunicationState
     {
@@ -276,6 +280,7 @@ namespace System.ServiceModel
     {
         public EndpointNotFoundException(string message) { }
         public EndpointNotFoundException(string message, System.Exception innerException) { }
+        protected EndpointNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public sealed partial class EnvelopeVersion
     {
@@ -342,6 +347,7 @@ namespace System.ServiceModel
         public FaultException() { }
         public FaultException(System.ServiceModel.Channels.MessageFault fault, string action) { }
         public FaultException(System.ServiceModel.FaultReason reason, System.ServiceModel.FaultCode code, string action) { }
+        protected FaultException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public string Action { get { return default(string); } }
         public System.ServiceModel.FaultCode Code { get { return default(System.ServiceModel.FaultCode); } }
         public override string Message { get { return default(string); } }
@@ -353,6 +359,7 @@ namespace System.ServiceModel
     public partial class FaultException<TDetail> : System.ServiceModel.FaultException
     {
         public FaultException(TDetail detail, System.ServiceModel.FaultReason reason, System.ServiceModel.FaultCode code, string action) { }
+        protected FaultException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public TDetail Detail { get { return default(TDetail); } }
         public override System.ServiceModel.Channels.MessageFault CreateMessageFault() { return default(System.ServiceModel.Channels.MessageFault); }
         public override string ToString() { return default(string); }
@@ -440,6 +447,7 @@ namespace System.ServiceModel
         public InvalidMessageContractException() { }
         public InvalidMessageContractException(string message) { }
         public InvalidMessageContractException(string message, System.Exception innerException) { }
+        protected InvalidMessageContractException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(384), AllowMultiple = false, Inherited = false)]
     public partial class MessageHeaderAttribute : MessageContractMemberAttribute
@@ -505,6 +513,7 @@ namespace System.ServiceModel
         public MessageHeaderException(string message, string headerName, string ns, bool isDuplicate) : base(default(string)) { }
         public MessageHeaderException(string message, string headerName, string ns, bool isDuplicate, System.Exception innerException) : base(default(string)) { }
         public MessageHeaderException(string message, string headerName, string ns, System.Exception innerException) : base(default(string)) { }
+        protected MessageHeaderException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public string HeaderName { get { return default(string); } }
         public string HeaderNamespace { get { return default(string); } }
         public bool IsDuplicate { get { return default(bool); } }
@@ -528,6 +537,8 @@ namespace System.ServiceModel
         public System.ServiceModel.Channels.MessageProperties OutgoingMessageProperties { get { return default(System.ServiceModel.Channels.MessageProperties); } }
         public System.ServiceModel.Channels.RequestContext RequestContext { get { return default(System.ServiceModel.Channels.RequestContext); } set { } }
         public event System.EventHandler OperationCompleted { add { } remove { } }
+        public T GetCallbackChannel<T>() { return default(T); }
+        public System.ServiceModel.IContextChannel Channel { get { return default(System.ServiceModel.IContextChannel); } }
     }
     public sealed partial class OperationContextScope : System.IDisposable
     {
@@ -561,11 +572,13 @@ namespace System.ServiceModel
     {
         public ProtocolException(string message) { }
         public ProtocolException(string message, System.Exception innerException) { }
+        protected ProtocolException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class QuotaExceededException : System.Exception
     {
         public QuotaExceededException(string message) { }
         public QuotaExceededException(string message, System.Exception innerException) { }
+        protected QuotaExceededException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public enum SecurityMode
     {
@@ -578,11 +591,13 @@ namespace System.ServiceModel
     {
         public ServerTooBusyException(string message) { }
         public ServerTooBusyException(string message, System.Exception innerException) { }
+        protected ServerTooBusyException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class ServiceActivationException : System.ServiceModel.CommunicationException
     {
         public ServiceActivationException(string message) { }
         public ServiceActivationException(string message, System.Exception innerException) { }
+        protected ServiceActivationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(1028), Inherited = false, AllowMultiple = false)]
     public sealed partial class ServiceContractAttribute : System.Attribute
@@ -1453,6 +1468,7 @@ namespace System.ServiceModel.Description
         public XmlSerializerOperationBehavior(System.ServiceModel.Description.OperationDescription operation) { }
         public XmlSerializerOperationBehavior(System.ServiceModel.Description.OperationDescription operation, System.ServiceModel.XmlSerializerFormatAttribute attribute) { }
         public System.ServiceModel.XmlSerializerFormatAttribute XmlSerializerFormatAttribute { get { return default(System.ServiceModel.XmlSerializerFormatAttribute); } }
+        public System.Collections.ObjectModel.Collection<System.Xml.Serialization.XmlMapping> GetXmlMappings() { throw null; }
         void System.ServiceModel.Description.IOperationBehavior.Validate(System.ServiceModel.Description.OperationDescription description) { }
         void System.ServiceModel.Description.IOperationBehavior.AddBindingParameters(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Channels.BindingParameterCollection parameters) { }
         void System.ServiceModel.Description.IOperationBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.DispatchOperation dispatch) { }
@@ -1560,17 +1576,20 @@ namespace System.ServiceModel.Security
     {
         public MessageSecurityException(string message) { }
         public MessageSecurityException(string message, System.Exception innerException) { }
+        protected MessageSecurityException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class SecurityAccessDeniedException : System.ServiceModel.CommunicationException
     {
         public SecurityAccessDeniedException(string message) { }
         public SecurityAccessDeniedException(string message, System.Exception innerException) { }
+        protected SecurityAccessDeniedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class SecurityNegotiationException : System.ServiceModel.CommunicationException
     {
         public SecurityNegotiationException() { }
         public SecurityNegotiationException(string message) { }
         public SecurityNegotiationException(string message, System.Exception innerException) { }
+        protected SecurityNegotiationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public sealed partial class UserNamePasswordClientCredential
     {

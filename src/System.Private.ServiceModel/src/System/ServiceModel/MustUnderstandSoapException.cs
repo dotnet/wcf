@@ -6,14 +6,17 @@
 using System.Xml;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     internal class MustUnderstandSoapException : CommunicationException
     {
         // for serialization
         public MustUnderstandSoapException() { }
+        protected MustUnderstandSoapException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         private Collection<MessageHeaderInfo> _notUnderstoodHeaders;
         private EnvelopeVersion _envelopeVersion;

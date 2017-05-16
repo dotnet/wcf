@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Diagnostics.Contracts;
+using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     public class MessageHeaderException : ProtocolException
     {
         private string _headerName;
@@ -64,5 +65,6 @@ namespace System.ServiceModel
 
         // for serialization
         public MessageHeaderException() { }
+        protected MessageHeaderException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

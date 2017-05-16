@@ -12,15 +12,18 @@ namespace System.ServiceModel
     public sealed class HttpTransportSecurity
     {
         internal const HttpClientCredentialType DefaultClientCredentialType = HttpClientCredentialType.None;
-        internal const string DefaultRealm = System.ServiceModel.Channels.HttpTransportDefaults.Realm;
+        internal const HttpProxyCredentialType DefaultProxyCredentialType = HttpProxyCredentialType.None;
+        internal const string DefaultRealm = HttpTransportDefaults.Realm;
 
         private HttpClientCredentialType _clientCredentialType;
+        private HttpProxyCredentialType _proxyCredentialType;
         private string _realm;
 
 
         public HttpTransportSecurity()
         {
             _clientCredentialType = DefaultClientCredentialType;
+            _proxyCredentialType = DefaultProxyCredentialType;
             _realm = DefaultRealm;
         }
 
@@ -33,7 +36,22 @@ namespace System.ServiceModel
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
+
                 _clientCredentialType = value;
+            }
+        }
+
+        public HttpProxyCredentialType ProxyCredentialType
+        {
+            get { return _proxyCredentialType; }
+            set
+            {
+                if (!HttpProxyCredentialTypeHelper.IsDefined(value))
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                }
+
+                _proxyCredentialType = value;
             }
         }
 

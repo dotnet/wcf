@@ -606,6 +606,18 @@
   <data name="RequestChannelWaitForReplyTimedOut" xml:space="preserve">
     <value>The request channel timed out while waiting for a reply after {0}. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.</value>
   </data>
+  <data name="HttpProxyRequiresSingleAuthScheme" xml:space="preserve">
+    <value>The '{0}' authentication scheme has been specified for the proxy on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</value>
+  </data>
+  <data name="UseDefaultWebProxyCantBeUsedWithExplicitProxyAddress" xml:space="preserve">
+    <value>You cannot specify an explicit Proxy Address as well as UseDefaultWebProxy=true in your HTTP Transport Binding Element.</value>
+  </data>
+  <data name="ProxyImpersonationLevelMismatch" xml:space="preserve">
+    <value>The HTTP proxy authentication credential specified an impersonation level restriction ({0}) that is stricter than the restriction for target server authentication ({1}).</value>
+  </data>
+  <data name="ProxyAuthenticationLevelMismatch" xml:space="preserve">
+    <value>The HTTP proxy authentication credential specified an mutual authentication requirement ({0}) that is stricter than the requirement for target server authentication ({1}).</value>
+  </data>
   <data name="HttpIfModifiedSinceParseError" xml:space="preserve">
     <value>The value specified, '{0}', for the If-Modified-Since header does not parse into a valid date. Check the property value and ensure that it is of the proper format.</value>
   </data>
@@ -1931,5 +1943,29 @@
   </data>
   <data name="Xml_InvalidNodeType" xml:space="preserve">
     <value>'{0}' is an invalid XmlNodeType.</value>
+  </data>
+  <data name="SFxRpcMessageMustHaveASingleBody" xml:space="preserve">
+    <value>RPC Message {1} in operation {0} must have a single MessageBodyMember.</value>
+  </data>
+  <data name="SFxBodyObjectTypeCannotBeInherited" xml:space="preserve">
+    <value>Type {0} cannot inherit from any class other than object to be used as body object in RPC style.</value>
+  </data>
+  <data name="SFxBodyObjectTypeCannotBeInterface" xml:space="preserve">
+    <value>Type {0} implements interface {1} which is not supported for body object in RPC style.</value>
+  </data>
+  <data name="SFxHeadersAreNotSupportedInEncoded" xml:space="preserve">
+    <value>Message {0} must not have headers to be used in RPC encoded style.</value>
+  </data>
+  <data name="SFxMultiplePartsNotAllowedInEncoded" xml:space="preserve">
+    <value>Part {1}:{0} is repeating and is not supported in Soap Encoding.</value>
+  </data>
+  <data name="SFxInvalidSoapAttribute" xml:space="preserve">
+    <value>XmlSerializer attribute {0} is not valid in {1}. Only SoapElement attribute is supported.</value>
+  </data>
+  <data name="SFxTerminatingOperationAlreadyCalled1" xml:space="preserve">
+    <value>This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </value>
+  </data>
+  <data name="SFxChannelTerminated0" xml:space="preserve">
+    <value>An operation marked as IsTerminating has already been invoked on this channel, causing the channel's connection to terminate.  No more operations may be invoked on this channel.  Please re-create the channel to continue communication.</value>
   </data>
 </root>

@@ -41,6 +41,8 @@ namespace System.ServiceModel.Channels
         private volatile MruCache<string, string> _credentialHashCache;
         private volatile MruCache<string, HttpClient> _httpClientCache;
         private int _maxBufferSize;
+        private IWebProxy _proxy;
+        private WebProxyFactory _proxyFactory;
         private SecurityCredentialsManager _channelCredentials;
         private SecurityTokenManager _securityTokenManager;
         private TransferMode _transferMode;
@@ -97,10 +99,34 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SR.Format(SR.HttpRequiresSingleAuthScheme,
                     bindingElement.AuthenticationScheme));
             }
+
             _authenticationScheme = bindingElement.AuthenticationScheme;
             _maxBufferSize = bindingElement.MaxBufferSize;
             _transferMode = bindingElement.TransferMode;
-            _useDefaultWebProxy = bindingElement.UseDefaultWebProxy;
+
+            if (bindingElement.ProxyAddress != null)
+            {
+                if (bindingElement.UseDefaultWebProxy)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.UseDefaultWebProxyCantBeUsedWithExplicitProxyAddress));
+                }
+
+                if (bindingElement.ProxyAuthenticationScheme == AuthenticationSchemes.Anonymous)
+                {
+                    _proxy = new WebProxy(bindingElement.ProxyAddress, bindingElement.BypassProxyOnLocal);
+                }
+                else
+                {
+                    _proxy = null;
+                    _proxyFactory =
+                        new WebProxyFactory(bindingElement.ProxyAddress, bindingElement.BypassProxyOnLocal,
+                        bindingElement.ProxyAuthenticationScheme);
+                }
+            }
+            else if (!bindingElement.UseDefaultWebProxy)
+            {
+                _proxy = new WebProxy();
+            }
 
             _channelCredentials = context.BindingParameters.Find<SecurityCredentialsManager>();
             _securityCapabilities = bindingElement.GetProperty<ISecurityCapabilities>(context);
@@ -227,7 +253,8 @@ namespace System.ServiceModel.Channels
             return _httpCookieContainerManager;
         }
 
-        internal async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, SecurityTokenProviderContainer tokenProvider,
+        internal async Task<HttpClient> GetHttpClientAsync(EndpointAddress to,
+            SecurityTokenProviderContainer tokenProvider, SecurityTokenProviderContainer proxyTokenProvider,
             SecurityTokenContainer clientCertificateToken, CancellationToken cancellationToken)
         {
             var impersonationLevelWrapper = new OutWrapper<TokenImpersonationLevel>();
@@ -235,14 +262,6 @@ namespace System.ServiceModel.Channels
             NetworkCredential credential = await HttpChannelUtilities.GetCredentialAsync(_authenticationScheme,
                 tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
 
-            return GetHttpClient(to, credential, impersonationLevelWrapper.Value, authenticationLevelWrapper.Value,
-                        clientCertificateToken);
-        }
-
-        internal HttpClient GetHttpClient(EndpointAddress to, NetworkCredential credential,
-            TokenImpersonationLevel impersonationLevel, AuthenticationLevel authenticationLevel,
-            SecurityTokenContainer clientCertificateToken)
-        {
             if (_httpClientCache == null)
             {
                 lock (ThisLock)
@@ -256,7 +275,8 @@ namespace System.ServiceModel.Channels
 
             HttpClient httpClient;
 
-            string connectionGroupName = GetConnectionGroupName(credential, authenticationLevel, impersonationLevel,
+            string connectionGroupName = GetConnectionGroupName(credential, authenticationLevelWrapper.Value,
+                impersonationLevelWrapper.Value,
                 clientCertificateToken);
 
             X509CertificateEndpointIdentity remoteCertificateIdentity = to.Identity as X509CertificateEndpointIdentity;
@@ -266,44 +286,69 @@ namespace System.ServiceModel.Channels
                     remoteCertificateIdentity.Certificates[0].Thumbprint);
             }
 
-            connectionGroupName = connectionGroupName == null ? string.Empty : connectionGroupName;
-
+            connectionGroupName = connectionGroupName ?? string.Empty;
+            bool foundHttpClient;
             lock (_httpClientCache)
             {
-                if (!_httpClientCache.TryGetValue(connectionGroupName, out httpClient))
+                foundHttpClient = _httpClientCache.TryGetValue(connectionGroupName, out httpClient);
+            }
+
+            if (!foundHttpClient)
+            {
+                var clientHandler = GetHttpMessageHandler(to, clientCertificateToken);
+                clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+
+                if (_proxy != null)
                 {
-                    var clientHandler = GetHttpMessageHandler(to, clientCertificateToken);
-                    clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                    clientHandler.UseCookies = _allowCookies;
-                    if (_allowCookies)
-                    {
-                        clientHandler.CookieContainer = _httpCookieContainerManager.CookieContainer;
-                    }
+                    clientHandler.Proxy = _proxy;
+                }
+                else if (_proxyFactory != null)
+                {
+                    clientHandler.Proxy = await _proxyFactory.CreateWebProxyAsync(authenticationLevelWrapper.Value,
+                        impersonationLevelWrapper.Value, proxyTokenProvider, cancellationToken);
+                }
 
-                    clientHandler.PreAuthenticate = true;
-                    if (clientHandler.SupportsProxy)
-                    {
-                        clientHandler.UseProxy = _useDefaultWebProxy;
-                    }
+                clientHandler.UseCookies = _allowCookies;
+                if (_allowCookies)
+                {
+                    clientHandler.CookieContainer = _httpCookieContainerManager.CookieContainer;
+                }
 
-                    clientHandler.UseDefaultCredentials = false;
-                    if (credential == CredentialCache.DefaultCredentials)
+                clientHandler.PreAuthenticate = true;
+                if (clientHandler.SupportsProxy)
+                {
+                    clientHandler.UseProxy = _useDefaultWebProxy;
+                }
+
+                clientHandler.UseDefaultCredentials = false;
+                if (credential == CredentialCache.DefaultCredentials)
+                {
+                    clientHandler.UseDefaultCredentials = true;
+                }
+                else
+                {
+                    clientHandler.Credentials = credential;
+                }
+
+                httpClient = new HttpClient(clientHandler);
+
+                // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1 
+                // prevents a call to CancellationToken.CancelAfter that HttpClient does internally which
+                // causes TimerQueue contention at high load.
+                httpClient.Timeout = Timeout.InfiniteTimeSpan;
+
+                lock (_httpClientCache)
+                {
+                    HttpClient tempHttpClient;
+                    if (_httpClientCache.TryGetValue(connectionGroupName, out tempHttpClient))
                     {
-                        clientHandler.UseDefaultCredentials = true;
+                        httpClient.Dispose();
+                        httpClient = tempHttpClient;
                     }
                     else
                     {
-                        clientHandler.Credentials = credential;
+                        _httpClientCache.Add(connectionGroupName, httpClient);
                     }
-
-                    httpClient = new HttpClient(clientHandler);
-
-                    // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1 
-                    // prevents a call to CancellationToken.CancelAfter that HttpClient does internally which
-                    // causes TimerQueue contention at high load.
-                    httpClient.Timeout = Timeout.InfiniteTimeSpan;
-
-                    _httpClientCache.Add(connectionGroupName, httpClient);
                 }
             }
 
@@ -567,7 +612,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            string inputString = TransferModeHelper.IsRequestStreamed(this.TransferMode) ? "streamed" : string.Empty;
+            string inputString = TransferModeHelper.IsRequestStreamed(TransferMode) ? "streamed" : string.Empty;
 
             if (IsWindowsAuth(_authenticationScheme))
             {
@@ -653,21 +698,30 @@ namespace System.ServiceModel.Channels
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private void CreateAndOpenTokenProvidersCore(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider)
+        private void CreateAndOpenTokenProvidersCore(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider, out SecurityTokenProviderContainer proxyTokenProvider)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             tokenProvider = CreateAndOpenTokenProvider(timeoutHelper.RemainingTime(), AuthenticationScheme, to, via, channelParameters);
+            if (_proxyFactory != null)
+            {
+                proxyTokenProvider = CreateAndOpenTokenProvider(timeoutHelper.RemainingTime(), _proxyFactory.AuthenticationScheme, to, via, channelParameters);
+            }
+            else
+            {
+                proxyTokenProvider = null;
+            }
         }
 
-        internal void CreateAndOpenTokenProviders(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider)
+        internal void CreateAndOpenTokenProviders(EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeSpan timeout, out SecurityTokenProviderContainer tokenProvider, out SecurityTokenProviderContainer proxyTokenProvider)
         {
             if (!IsSecurityTokenManagerRequired())
             {
                 tokenProvider = null;
+                proxyTokenProvider = null;
             }
             else
             {
-                CreateAndOpenTokenProvidersCore(to, via, channelParameters, timeout, out tokenProvider);
+                CreateAndOpenTokenProvidersCore(to, via, channelParameters, timeout, out tokenProvider, out proxyTokenProvider);
             }
         }
 
@@ -690,6 +744,7 @@ namespace System.ServiceModel.Channels
         {
             private HttpChannelFactory<IRequestChannel> _factory;
             private SecurityTokenProviderContainer _tokenProvider;
+            private SecurityTokenProviderContainer _proxyTokenProvider;
             private ChannelParameterCollection _channelParameters;
 
             public HttpClientRequestChannel(HttpChannelFactory<IRequestChannel> factory, EndpointAddress to, Uri via, bool manualAddressing)
@@ -741,7 +796,7 @@ namespace System.ServiceModel.Channels
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 if (!ManualAddressing)
                 {
-                    Factory.CreateAndOpenTokenProviders(RemoteAddress, Via, _channelParameters, timeoutHelper.RemainingTime(), out _tokenProvider);
+                    Factory.CreateAndOpenTokenProviders(RemoteAddress, Via, _channelParameters, timeoutHelper.RemainingTime(), out _tokenProvider, out _proxyTokenProvider);
                 }
             }
 
@@ -831,19 +886,21 @@ namespace System.ServiceModel.Channels
             protected async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via, SecurityTokenContainer clientCertificateToken, TimeoutHelper timeoutHelper)
             {
                 SecurityTokenProviderContainer requestTokenProvider;
+                SecurityTokenProviderContainer requestProxyTokenProvider;
                 if (ManualAddressing)
                 {
                     Factory.CreateAndOpenTokenProviders(to, via, _channelParameters, timeoutHelper.RemainingTime(),
-                        out requestTokenProvider);
+                        out requestTokenProvider, out requestProxyTokenProvider);
                 }
                 else
                 {
                     requestTokenProvider = _tokenProvider;
+                    requestProxyTokenProvider = _proxyTokenProvider;
                 }
 
                 try
                 {
-                    return await Factory.GetHttpClientAsync(to, requestTokenProvider, clientCertificateToken, await timeoutHelper.GetCancellationTokenAsync());
+                    return await Factory.GetHttpClientAsync(to, requestTokenProvider, requestProxyTokenProvider, clientCertificateToken, await timeoutHelper.GetCancellationTokenAsync());
                 }
                 finally
                 {
@@ -1262,5 +1319,72 @@ namespace System.ServiceModel.Channels
                 }
             }
         }
+
+        class WebProxyFactory
+        {
+            Uri _address;
+            bool _bypassOnLocal;
+            AuthenticationSchemes _authenticationScheme;
+
+            public WebProxyFactory(Uri address, bool bypassOnLocal, AuthenticationSchemes authenticationScheme)
+            {
+                _address = address;
+                _bypassOnLocal = bypassOnLocal;
+
+                if (!authenticationScheme.IsSingleton())
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(nameof(authenticationScheme), SR.Format(SR.HttpRequiresSingleAuthScheme,
+                        authenticationScheme));
+                }
+
+                _authenticationScheme = authenticationScheme;
+            }
+
+            internal AuthenticationSchemes AuthenticationScheme
+            {
+                get
+                {
+                    return _authenticationScheme;
+                }
+            }
+
+            public async Task<IWebProxy> CreateWebProxyAsync(AuthenticationLevel requestAuthenticationLevel, TokenImpersonationLevel requestImpersonationLevel, SecurityTokenProviderContainer tokenProvider, CancellationToken token)
+            {
+                WebProxy result = new WebProxy(_address, _bypassOnLocal);
+
+                if (_authenticationScheme != AuthenticationSchemes.Anonymous)
+                {
+                    var impersonationLevelWrapper = new OutWrapper<TokenImpersonationLevel>();
+                    var authenticationLevelWrapper = new OutWrapper<AuthenticationLevel>();
+                    NetworkCredential credential = await HttpChannelUtilities.GetCredentialAsync(_authenticationScheme,
+                        tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, token);
+
+                    // The impersonation level for target auth is also used for proxy auth (by System.Net).  Therefore,
+                    // fail if the level stipulated for proxy auth is more restrictive than that for target auth.
+                    if (!TokenImpersonationLevelHelper.IsGreaterOrEqual(impersonationLevelWrapper.Value, requestImpersonationLevel))
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
+                            SR.ProxyImpersonationLevelMismatch, impersonationLevelWrapper.Value, requestImpersonationLevel)));
+                    }
+
+                    // The authentication level for target auth is also used for proxy auth (by System.Net).  
+                    // Therefore, fail if proxy auth requires mutual authentication but target auth does not.
+                    if ((authenticationLevelWrapper.Value == AuthenticationLevel.MutualAuthRequired) &&
+                        (requestAuthenticationLevel != AuthenticationLevel.MutualAuthRequired))
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
+                            SR.ProxyAuthenticationLevelMismatch, authenticationLevelWrapper.Value, requestAuthenticationLevel)));
+                    }
+
+                    CredentialCache credentials = new CredentialCache();
+                    credentials.Add(_address, AuthenticationSchemesHelper.ToString(_authenticationScheme),
+                        credential);
+                    result.Credentials = credentials;
+                }
+
+                return result;
+            }
+        }
+
     }
 }

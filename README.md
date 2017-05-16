@@ -65,8 +65,8 @@ This repo contains the following library components.
 |**System.ServiceModel.Primitives**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Primitives.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the common types used by all of the WCF libraries.|
 |**System.ServiceModel.Http**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Http.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).|
 |**System.ServiceModel.NetTcp**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.NetTcp.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).|
-|**System.ServiceModel.Duplex**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Duplex.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit 2-way ("duplex") exchanges of messages.  This library is currently under construction and not yet fully functional.|
-|**System.ServiceModel.Security**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/v/System.ServiceModel.Security.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that support additional security features. This library is currently under construction and not yet fully functional|
+|**System.ServiceModel.Duplex**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Duplex.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit 2-way ("duplex") exchanges of messages.|
+|**System.ServiceModel.Security**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Security.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that support additional security features.|
 
 ## License
 
@@ -82,7 +82,7 @@ There are many .NET related projects on GitHub.
 - The
 [.NET home repo](https://github.com/Microsoft/dotnet) links to 100s of .NET projects, from Microsoft and the community.
 - The [.NET Core repo](https://github.com/dotnet/core) links to .NET Core related projects from Microsoft.
-- The [ASP.NET home repo](https://github.com/aspnet/home) is the best place to start learning about ASP.NET 5.
+- The [ASP.NET home repo](https://github.com/aspnet/home) is the best place to start learning about ASP.NET Core.
 - [dotnet.github.io](http://dotnet.github.io) is a good place to discover .NET Foundation projects.
 
 ## The Windows Communication Foundation Story

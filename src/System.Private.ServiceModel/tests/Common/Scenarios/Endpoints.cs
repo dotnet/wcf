@@ -33,6 +33,11 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("BasicHttp_4_4_0.svc//Basic"); }
     }
+    
+    public static string HttpBaseAddress_Basic_Soap
+    {
+        get { return GetEndpointAddress("BasicHttpSoap.svc//Basic"); }
+    }
 
     public static string HttpBaseAddress_NetHttp
     {
@@ -537,6 +542,23 @@ public static partial class Endpoints
             return GetEndpointAddress("DuplexCallbackTcpCertificateCredential.svc/tcp-certificate-callback", protocol: "net.tcp");
         }
     }
+
+    public static string Tcp_Session_Tests_Default_Service
+    {
+        get
+        {
+            return GetEndpointAddress("SessionTestsDefaultService.svc/tcp-sessions", protocol: "net.tcp");
+        }
+    }
+
+    public static string Tcp_Session_Tests_Short_Timeout_Service
+    {
+        get
+        {
+            return GetEndpointAddress("SessionTestsShortTimeoutService.svc", protocol: "net.tcp");
+        }
+    }
+
 
     #endregion net.tcp Addresses
 }
