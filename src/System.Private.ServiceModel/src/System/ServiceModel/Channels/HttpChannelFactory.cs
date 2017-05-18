@@ -1229,18 +1229,13 @@ namespace System.ServiceModel.Channels
                             }
                             else
                             {
-                                try
+                                if (!_httpRequestMessage.Headers.TryAddWithoutValidation(name, value))
                                 {
-                                    _httpRequestMessage.Headers.Add(name, value);
-                                }
-                                catch (Exception addHeaderException)
-                                {
-                                    throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(
-                                                    SR.CopyHttpHeaderFailed,
-                                                    name,
-                                                    value,
-                                                    HttpChannelUtilities.HttpRequestHeadersTypeName),
-                                                    addHeaderException));
+                                        throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(
+                                                SR.CopyHttpHeaderFailed,
+                                                name,
+                                                value,
+                                                _httpRequestMessage.Headers.GetType().Name)));
                                 }
                             }
                         }
