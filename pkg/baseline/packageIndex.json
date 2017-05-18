@@ -1,5 +1,17 @@
 {
   "Packages": {
+    "_Comments": {
+      "_StableVersions": [
+        "Released versions."
+      ],
+      "_BaselineVersion": [
+        "Used to determine the minimum version used for all packages in the repo."
+      ],
+      "_AssemblyVersionInPackageVersion": [
+        "Used to understand what version of a package to reference.",
+        "Then raise the package version of the reference so that its at least the baseline version."
+      ]
+    },
     "System.Private.ServiceModel": {
       "StableVersions": [
         "4.0.0",
@@ -9,7 +21,7 @@
       "BaselineVersion": "4.4.0",
       "InboxOn": {},
       "AssemblyVersionInPackageVersion": {
-        "4.1.1.0": "4.4.0",
+        "4.1.1.0": "4.3.0",
         "4.1.2.0": "4.4.0"
       }
     },
