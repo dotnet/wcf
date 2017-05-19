@@ -7,21 +7,17 @@
     <PackageTargetFramework Condition="'$(PackageTargetFramework)'==''">netstandard2.0</PackageTargetFramework>
     <NuGetTargetMoniker Condition="'$(TargetGroup)' == ''">.NETStandard,Version=v2.0</NuGetTargetMoniker>
   </PropertyGroup>
-  <!-- Help VS understand available configurations -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net461_Debug|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net461_Release|AnyCPU'" />
-  <ItemGroup>
-    <TargetingPackReference Include="mscorlib" Condition="'$(TargetGroup)' == 'net46'" />
-    <TargetingPackReference Include="System.IdentityModel" Condition="'$(TargetGroup)' == 'net461'" />
-    <TargetingPackReference Include="System.ServiceModel" Condition="'$(TargetGroup)' == 'net461'" />
-    <ProjectReference Include="$(SourceDir)System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" Condition="'$(TargetGroup)' != 'net461'">
-      <AdditionalProperties>OSGroup=Windows_NT</AdditionalProperties>
-    </ProjectReference>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Windows_NT-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Windows_NT-Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Release|AnyCPU'" />
+  <ItemGroup Condition="'$(TargetGroup)' == 'netfx'">
+    <Reference Include="mscorlib" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
+  <ItemGroup Condition="'$(TargetGroup)' != 'netfx'">
+    <ProjectReference Include="$(SourceDir)System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

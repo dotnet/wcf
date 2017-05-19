@@ -3,10 +3,6 @@
     <ErrorIfBuildToolsRestoredFromIndividualProject Condition="!Exists('$(ToolsDir)')">true</ErrorIfBuildToolsRestoredFromIndividualProject>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(NuGetTargetMoniker.StartsWith('.NETStandard,'))">
-    <TargetFrameworkIdentifier>.NETStandard</TargetFrameworkIdentifier>
-  </PropertyGroup>
-  
   <Import Project="..\dir.targets" />
 
   <!-- Returns the assembly version of the project for consumption
@@ -27,8 +23,5 @@
   <Target Name="DumpTargets" BeforeTargets="ResolveProjectReferences">
     <Message Text="DumpTargets> $(OutputPath), C=[$(Configuration)], CG=[$(ConfigurationGroup)], OG=[$(OSGroup)], TG=[$(TargetGroup)]" Importance="Low" />
   </Target>
-  
-  <!-- Workaround for issue seen after build tools update, some test projects mysteriously lose this target despite not needing it --> 
-  <Target Name="GetTargetFrameworkProperties"/>
 
 </Project>

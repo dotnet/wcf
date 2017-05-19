@@ -12,6 +12,7 @@ syntax: glob
 *.sln.docstates
 
 # Build results
+.idea/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -28,6 +29,9 @@ msbuild.wrn
 
 # Cross building rootfs
 cross/rootfs/
+cross/android-rootfs/
+# add x86 as it is ignored in 'Build results'
+!cross/x86
 
 # Visual Studio 2015
 .vs/
@@ -173,6 +177,7 @@ ClientBin/
 node_modules/
 *.metaproj
 *.metaproj.tmp
+bin.localpkg/
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -267,6 +272,3 @@ Session.vim
 # Private test configuration and binaries.
 config.ps1
 **/IISApplications
-
-# WCF copied test project.json files
-# src/System.Private.ServiceModel/tests/Scenarios/**/project.json
