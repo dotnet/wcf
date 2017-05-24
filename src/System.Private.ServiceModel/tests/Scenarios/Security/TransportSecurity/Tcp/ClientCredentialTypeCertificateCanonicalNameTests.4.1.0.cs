@@ -204,6 +204,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
 
             serviceProxy = factory.CreateChannel();

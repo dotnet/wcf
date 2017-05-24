@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.Text;
@@ -26,6 +27,7 @@ public partial class IdentityTests : ConditionalWcfTest
 
         EndpointAddress endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_VerifyDNS_Address), new DnsEndpointIdentity("wrongone"));
         ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
         IWcfService serviceProxy = factory.CreateChannel();
 
         try
