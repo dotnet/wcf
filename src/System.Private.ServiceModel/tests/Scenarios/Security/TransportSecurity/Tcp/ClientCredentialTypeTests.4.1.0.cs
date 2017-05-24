@@ -133,6 +133,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
             endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_ClientCredentialType_Certificate_With_ServerAltName_Address));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
 
             serviceProxy = factory.CreateChannel();
