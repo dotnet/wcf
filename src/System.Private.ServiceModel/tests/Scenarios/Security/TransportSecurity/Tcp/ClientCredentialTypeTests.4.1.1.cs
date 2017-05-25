@@ -193,6 +193,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
                 Endpoints.Tcp_CustomBinding_SslStreamSecurity_Address));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
             factory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
 
             serviceProxy = factory.CreateChannel();
