@@ -1968,4 +1968,7 @@
   <data name="SFxChannelTerminated0" xml:space="preserve">
     <value>An operation marked as IsTerminating has already been invoked on this channel, causing the channel's connection to terminate.  No more operations may be invoked on this channel.  Please re-create the channel to continue communication.</value>
   </data>
+  <data name="PeerTrustNotSupportedOnOSX" xml:space="preserve">
+    <value>Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</value>
+  </data>
 </root>

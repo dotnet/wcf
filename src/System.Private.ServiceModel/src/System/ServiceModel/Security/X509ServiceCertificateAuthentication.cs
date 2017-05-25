@@ -5,6 +5,7 @@
 
 using System.IdentityModel.Selectors;
 using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace System.ServiceModel.Security
@@ -59,6 +60,13 @@ namespace System.ServiceModel.Security
             set
             {
                 X509CertificateValidationModeHelper.Validate(value);
+
+                if ((value == X509CertificateValidationMode.PeerTrust || value == X509CertificateValidationMode.PeerOrChainTrust) && 
+                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    throw ExceptionHelper.PlatformNotSupported(SR.PeerTrustNotSupportedOnOSX);
+                }
+
                 ThrowIfImmutable();
                 _certificateValidationMode = value;
             }
