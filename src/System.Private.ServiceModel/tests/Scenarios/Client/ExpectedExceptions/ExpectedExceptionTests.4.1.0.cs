@@ -372,7 +372,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
     [OuterLoop]
     // Verify product throws SecurityNegotiationException when the service cert is revoked
     public static void TCP_ServiceCertRevoked_Throw_SecurityNegotiationException()

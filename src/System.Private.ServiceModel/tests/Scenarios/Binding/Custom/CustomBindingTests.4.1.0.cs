@@ -5,6 +5,7 @@
 
 using Infrastructure.Common;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Xunit;
@@ -31,6 +32,7 @@ public partial class CustomBindingTests : ConditionalWcfTest
 
             var endpointIdentity = new DnsEndpointIdentity(Endpoints.Tcp_CustomBinding_SslStreamSecurity_HostName);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(new Uri(Endpoints.Tcp_CustomBinding_SslStreamSecurity_Address), endpointIdentity));
+            factory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
