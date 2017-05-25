@@ -98,7 +98,7 @@
         "OpenCover": "4.6.519",
         "ReportGenerator": "2.4.3",
         "Microsoft.NETCore.TestHost": "2.0.0-preview2-25304-01",
-        "Microsoft.NETCore.App": "2.1.0-preview1-25323-04",
+        "Microsoft.NETCore.App": "2.0.0-preview2-25324-03",
         "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
         "xunit.console.netcore": "1.0.3-prerelease-00925-01",
         "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
