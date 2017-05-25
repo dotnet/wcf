@@ -10,4 +10,15 @@
     <HarvestIncludePaths Include="runtimes/win7/lib/netstandard1.3" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+
+  <Target Name="SetDependencyVersion" AfterTargets="GetNuGetPackageDependencies">
+    <ItemGroup>
+      <Dependency Condition="'%(Identity)' == 'System.Reflection.DispatchProxy' AND '%(TargetFramework)' == 'netstandard1.3'">
+        <Version>4.3.0</Version>
+      </Dependency>
+      <Dependency Condition="'%(Identity)' == 'System.Security.Principal.Windows' AND '%(TargetFramework)' == 'netstandard1.3'">
+        <Version>4.3.0</Version>
+      </Dependency>
+    </ItemGroup>
+  </Target>
 </Project>
