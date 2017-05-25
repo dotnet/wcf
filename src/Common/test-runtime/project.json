@@ -20,78 +20,6 @@
         "System.ServiceModel.Security": "4.4.0-preview1-25302-01"
       }
     },
-    "netstandard1.3": {
-      "dependencies": {
-        "System.Net.Security": "4.4.0-beta-24911-02",
-        "coveralls.io": "1.4",
-        "OpenCover": "4.6.519",
-        "ReportGenerator": "2.4.3",
-        "Microsoft.NETCore.TestHost": "2.0.0-preview2-25304-01",
-        "Microsoft.NETCore.Runtime.CoreCLR": "2.0.0-preview2-25304-01",
-        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
-        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
-        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
-        "System.Collections.Concurrent": "4.4.0-beta-24911-02",
-        "System.Console": "4.4.0-beta-24911-02",
-        "System.Diagnostics.Contracts": "4.4.0-beta-24911-02",
-        "System.Diagnostics.Tracing": "4.4.0-beta-24911-02",
-        "System.Linq": "4.4.0-beta-24911-02",
-        "System.Linq.Parallel": "4.4.0-beta-24911-02",
-        "System.Linq.Queryable": "4.4.0-beta-24911-02",
-        "System.Net.Http": "4.4.0-preview1-25218-03",
-        "System.Net.Http.WinHttpHandler": "4.4.0-preview2-25309-01",
-        "System.Net.WebHeaderCollection": "4.4.0-beta-24911-02",
-        "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
-        "System.Reflection.DispatchProxy": "4.4.0-preview2-25309-01",
-        "System.Reflection.Extensions": "4.4.0-beta-24911-02",
-        "System.ServiceModel.Duplex": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Http": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.NetTcp": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Primitives": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Security": "4.4.0-preview1-25302-01",
-        "System.Runtime.Extensions": "4.4.0-beta-24911-02",
-        "System.Runtime.Serialization.Primitives": "4.4.0-beta-24911-02",
-        "System.Runtime.Serialization.Xml": "4.4.0-beta-24911-02",
-        "System.Threading.Timer": "4.4.0-beta-24911-02",
-        "System.Xml.XmlSerializer": "4.4.0-beta-24911-02"
-      }
-    },
-    "netcoreapp1.1": {
-      "dependencies": {
-        "System.Net.Security": "4.4.0-beta-24911-02",
-        "coveralls.io": "1.4",
-        "OpenCover": "4.6.519",
-        "ReportGenerator": "2.4.3",
-        "Microsoft.NETCore.TestHost": "2.0.0-preview2-25304-01",
-        "Microsoft.NETCore.Runtime.CoreCLR": "2.0.0-preview2-25304-01",
-        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
-        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
-        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
-        "System.Collections.Concurrent": "4.4.0-beta-24911-02",
-        "System.Console": "4.4.0-beta-24911-02",
-        "System.Diagnostics.Contracts": "4.4.0-beta-24911-02",
-        "System.Diagnostics.Tracing": "4.4.0-beta-24911-02",
-        "System.Linq": "4.4.0-beta-24911-02",
-        "System.Linq.Parallel": "4.4.0-beta-24911-02",
-        "System.Linq.Queryable": "4.4.0-beta-24911-02",
-        "System.Net.Http": "4.4.0-preview1-25218-03",
-        "System.Net.Http.WinHttpHandler": "4.4.0-preview2-25309-01",
-        "System.Net.WebHeaderCollection": "4.4.0-beta-24911-02",
-        "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
-        "System.Reflection.DispatchProxy": "4.4.0-preview2-25309-01",
-        "System.Reflection.Extensions": "4.4.0-beta-24911-02",
-        "System.ServiceModel.Duplex": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Http": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.NetTcp": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Primitives": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Security": "4.4.0-preview1-25302-01",
-        "System.Runtime.Extensions": "4.4.0-beta-24911-02",
-        "System.Runtime.Serialization.Primitives": "4.4.0-beta-24911-02",
-        "System.Runtime.Serialization.Xml": "4.4.0-beta-24911-02",
-        "System.Threading.Timer": "4.4.0-beta-24911-02",
-        "System.Xml.XmlSerializer": "4.4.0-beta-24911-02"
-      }
-    },
     "netcoreapp2.0": {
       "dependencies": {
         "coveralls.io": "1.4",
@@ -1021,52 +949,9 @@
           "exclude": "all"
         }
       }
-    },
-    "uap10.0": {
-      "dependencies": {
-        "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-        "System.Console": "4.4.0-beta-24911-02",
-        "microsoft.xunit.runner.uwp": "1.0.3-prerelease-00921-01",
-        "coveralls.io": "1.4",
-        "OpenCover": "4.6.519",
-        "ReportGenerator": "2.4.3",
-        "Microsoft.NETCore.TestHost": "2.0.0-preview2-25304-01",
-        "Microsoft.NETCore.Runtime.CoreCLR": "2.0.0-preview2-25304-01",
-        "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
-        "xunit.console.netcore": "1.0.3-prerelease-00925-01",
-        "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
-        "System.Collections.Concurrent": "4.4.0-beta-24911-02",
-        "System.Diagnostics.Contracts": "4.4.0-beta-24911-02",
-        "System.Diagnostics.Tracing": "4.4.0-beta-24911-02",
-        "System.Linq": "4.4.0-beta-24911-02",
-        "System.Linq.Parallel": "4.4.0-beta-24911-02",
-        "System.Linq.Queryable": "4.4.0-beta-24911-02",
-        "System.Net.Http": "4.4.0-preview1-25218-03",
-        "System.Net.WebHeaderCollection": "4.4.0-beta-24911-02",
-        "System.Net.WebSockets.Client": "4.4.0-beta-24911-02",
-        "System.Reflection.DispatchProxy": "4.4.0-preview2-25309-01",
-        "System.Reflection.Extensions": "4.4.0-beta-24911-02",
-        "System.ServiceModel.Duplex": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Http": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.NetTcp": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Primitives": "4.4.0-preview1-25302-01",
-        "System.ServiceModel.Security": "4.4.0-preview1-25302-01",
-        "System.Runtime.Extensions": "4.4.0-beta-24911-02",
-        "System.Runtime.Serialization.Primitives": "4.4.0-beta-24911-02",
-        "System.Runtime.Serialization.Xml": "4.4.0-beta-24911-02",
-        "System.Threading.Timer": "4.4.0-beta-24911-02",
-        "System.Xml.XmlSerializer": "4.4.0-beta-24911-02"
-      }
     }
   },
   "supports": {
-    "coreFx.Test.net46": {
-      "net46": [
-        "",
-        "win-x86",
-        "win-x64"
-      ]
-    },
     "coreFx.Test.net461": {
       "net461": [
         "",
@@ -1086,30 +971,6 @@
         "",
         "win-x86",
         "win-x64"
-      ]
-    },
-    "coreFx.Test.netcore50": {
-      "uap10.0": [
-        "win10-x86-aot",
-        "win10-x64-aot"
-      ]
-    },
-    "coreFx.Test.netcoreapp1.1": {
-      "netcoreapp1.1": [
-        "win7-x86",
-        "win7-x64",
-        "win10-arm64",
-        "osx.10.10-x64",
-        "centos.7-x64",
-        "debian.8-x64",
-        "rhel.7-x64",
-        "ubuntu.14.04-x64",
-        "ubuntu.16.04-x64",
-        "ubuntu.16.10-x64",
-        "fedora.24-x64",
-        "linux-x64",
-        "opensuse.13.2-x64",
-        "opensuse.42.1-x64"
       ]
     },
     "coreFx.Test.netcoreapp2.0": {
