@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace System.Runtime
 {
-    [Serializable]
     internal class FatalException : Exception
     {
         public FatalException()
@@ -25,6 +24,7 @@ namespace System.Runtime
 
         protected FatalException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
     }
 }

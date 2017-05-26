@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace System.IdentityModel.Tokens
 {
-    [Serializable]
     public class SecurityTokenException : Exception
     {
         public SecurityTokenException()
@@ -27,6 +26,7 @@ namespace System.IdentityModel.Tokens
         protected SecurityTokenException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
     }
 }

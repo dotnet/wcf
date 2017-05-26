@@ -8,7 +8,6 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
-    [Serializable]
     internal class ActionMismatchAddressingException : ProtocolException
     {
         private string _httpActionHeader;
@@ -24,6 +23,7 @@ namespace System.ServiceModel
         protected ActionMismatchAddressingException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
 
         public string HttpActionHeader
