@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace System.ServiceModel.Dispatcher
 {
-    [Serializable]
     internal abstract class InvalidBodyAccessException : Exception
     {
         protected InvalidBodyAccessException(string message)
@@ -22,6 +21,7 @@ namespace System.ServiceModel.Dispatcher
         protected InvalidBodyAccessException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
     }
 }

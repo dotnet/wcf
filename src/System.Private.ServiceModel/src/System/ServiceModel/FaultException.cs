@@ -11,7 +11,6 @@ using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel
 {
-    [Serializable]
     [KnownType(typeof(FaultException.FaultCodeData))]
     [KnownType(typeof(FaultException.FaultCodeData[]))]
     [KnownType(typeof(FaultException.FaultReasonData))]
@@ -118,10 +117,7 @@ namespace System.ServiceModel
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _code = this.ReconstructFaultCode(info, "code");
-            _reason = this.ReconstructFaultReason(info, "reason");
-            _fault = (MessageFault)info.GetValue("messageFault", typeof(MessageFault));
-            _action = (string)info.GetString("action");
+            throw new PlatformNotSupportedException();
         }
 
         public string Action
@@ -250,19 +246,6 @@ namespace System.ServiceModel
             return (reason != null) ? reason : DefaultReason;
         }
 
-        internal FaultCode ReconstructFaultCode(SerializationInfo info, string key)
-        {
-            FaultCodeData[] data = (FaultCodeData[])info.GetValue(key, typeof(FaultCodeData[]));
-            return FaultCodeData.Construct(data);
-        }
-
-        internal FaultReason ReconstructFaultReason(SerializationInfo info, string key)
-        {
-            FaultReasonData[] data = (FaultReasonData[])info.GetValue(key, typeof(FaultReasonData[]));
-            return FaultReasonData.Construct(data);
-        }
-
-        [Serializable]
         internal class FaultCodeData
         {
             private string _name;
@@ -347,7 +330,6 @@ namespace System.ServiceModel
         }
     }
 
-    [Serializable]
     public class FaultException<TDetail> : FaultException
     {
         private TDetail _detail;
@@ -397,7 +379,7 @@ namespace System.ServiceModel
         protected FaultException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _detail = (TDetail)info.GetValue("detail", typeof(TDetail));
+            throw new PlatformNotSupportedException();
         }
 
         public TDetail Detail

@@ -1007,7 +1007,6 @@ namespace System.Runtime
             }
         }
 
-        [Serializable]
         internal class InternalException : Exception
         {
             public InternalException(string description)
@@ -1018,6 +1017,7 @@ namespace System.Runtime
             protected InternalException(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {
+                throw new PlatformNotSupportedException();
             }
         }
 
@@ -1032,6 +1032,7 @@ namespace System.Runtime
             protected FatalInternalException(SerializationInfo info, StreamingContext context)
                 : base(info, context)
             {
+                throw new PlatformNotSupportedException();
             }
         }
     }

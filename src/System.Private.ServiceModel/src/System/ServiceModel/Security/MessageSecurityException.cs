@@ -7,7 +7,6 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Security
 {
-    [Serializable]
     public class MessageSecurityException : CommunicationException
     {
         private MessageFault _fault;
@@ -31,6 +30,7 @@ namespace System.ServiceModel.Security
         protected MessageSecurityException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
 
         internal MessageSecurityException(string message, Exception innerException, MessageFault fault)

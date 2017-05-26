@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace System.ServiceModel.Security
 {
-    [Serializable]
     public class SecurityNegotiationException : CommunicationException
     {
         public SecurityNegotiationException()
@@ -27,6 +26,7 @@ namespace System.ServiceModel.Security
         protected SecurityNegotiationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
     }
 }
