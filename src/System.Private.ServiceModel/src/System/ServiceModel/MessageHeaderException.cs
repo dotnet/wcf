@@ -8,7 +8,6 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
-    [Serializable]
     public class MessageHeaderException : ProtocolException
     {
         private string _headerName;
@@ -65,6 +64,6 @@ namespace System.ServiceModel
 
         // for serialization
         public MessageHeaderException() { }
-        protected MessageHeaderException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected MessageHeaderException(SerializationInfo info, StreamingContext context) : base(info, context) { throw new PlatformNotSupportedException(); }
     }
 }

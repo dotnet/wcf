@@ -6,12 +6,11 @@ using System.Runtime.Serialization;
 
 namespace System.ServiceModel
 {
-    [Serializable]
     public class EndpointNotFoundException : CommunicationException
     {
         public EndpointNotFoundException() { }
         public EndpointNotFoundException(string message) : base(message) { }
         public EndpointNotFoundException(string message, Exception innerException) : base(message, innerException) { }
-        protected EndpointNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected EndpointNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) { throw new PlatformNotSupportedException(); }
     }
 }
