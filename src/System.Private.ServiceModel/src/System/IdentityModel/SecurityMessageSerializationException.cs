@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace System.IdentityModel
 {
-    [Serializable]
     public class SecurityMessageSerializationException : Exception
     {
         public SecurityMessageSerializationException()
@@ -27,6 +26,7 @@ namespace System.IdentityModel
         protected SecurityMessageSerializationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
     }
 }

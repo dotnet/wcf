@@ -9,12 +9,11 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
-    [Serializable]
     public class ActionNotSupportedException : CommunicationException
     {
         public ActionNotSupportedException() { }
         public ActionNotSupportedException(string message) : base(message) { }
-        public ActionNotSupportedException(string message, Exception innerException) : base(message, innerException) { }
+        public ActionNotSupportedException(string message, Exception innerException) : base(message, innerException) { throw new PlatformNotSupportedException(); }
         protected ActionNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         internal Message ProvideFault(MessageVersion messageVersion)

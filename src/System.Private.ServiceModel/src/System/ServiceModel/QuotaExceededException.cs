@@ -8,7 +8,6 @@ using System.Runtime.Serialization;
 
 namespace System.ServiceModel
 {
-    [Serializable]
     public class QuotaExceededException : Exception
     {
         public QuotaExceededException()
@@ -29,6 +28,7 @@ namespace System.ServiceModel
         protected QuotaExceededException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
     }
 }

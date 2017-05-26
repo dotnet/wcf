@@ -11,12 +11,11 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
-    [Serializable]
     internal class MustUnderstandSoapException : CommunicationException
     {
         // for serialization
         public MustUnderstandSoapException() { }
-        protected MustUnderstandSoapException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected MustUnderstandSoapException(SerializationInfo info, StreamingContext context) : base(info, context) { throw new PlatformNotSupportedException(); }
 
         private Collection<MessageHeaderInfo> _notUnderstoodHeaders;
         private EnvelopeVersion _envelopeVersion;

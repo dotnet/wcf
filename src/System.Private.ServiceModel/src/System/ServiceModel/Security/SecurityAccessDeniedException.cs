@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace System.ServiceModel.Security
 {
-    [Serializable]
     public class SecurityAccessDeniedException : CommunicationException
     {
         public SecurityAccessDeniedException(String message)
@@ -22,6 +21,7 @@ namespace System.ServiceModel.Security
         protected SecurityAccessDeniedException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            throw new PlatformNotSupportedException();
         }
     }
 }
