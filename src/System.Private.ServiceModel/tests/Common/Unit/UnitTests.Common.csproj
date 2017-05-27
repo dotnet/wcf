@@ -17,8 +17,12 @@
     <ProjectGuid>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</ProjectGuid>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetGroup)' != 'uap10.0'">
     <Compile Include="**\*.cs" />
+  </ItemGroup>
+  <!-- The Harvested version of uap10.0 in our NetStandard2.0 package did not contain API IChannelInitiator -->
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap10.0'">
+    <Compile Include="**\*.cs" Exclude="MockInteractiveChannelInitializer.cs;MockChannelInitializer.cs"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(WcfDuplexPkgProj)" />
