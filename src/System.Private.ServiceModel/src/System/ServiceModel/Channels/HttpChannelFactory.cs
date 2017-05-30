@@ -37,7 +37,6 @@ namespace System.ServiceModel.Channels
         private bool _allowCookies;
         private AuthenticationSchemes _authenticationScheme;
         private HttpCookieContainerManager _httpCookieContainerManager;
-        private HttpClient _httpClient;
         private volatile MruCache<string, string> _credentialHashCache;
         private volatile MruCache<string, HttpClient> _httpClientCache;
         private int _maxBufferSize;
@@ -571,11 +570,13 @@ namespace System.ServiceModel.Channels
         protected override void OnClosed()
         {
             base.OnClosed();
-            var httpClientToDispose = _httpClient;
-            if (httpClientToDispose != null)
+            if (_httpClientCache != null && !_httpClientCache.IsDisposed)
             {
-                _httpClient = null;
-                httpClientToDispose.Dispose();
+                lock (_httpClientCache)
+                {
+                    _httpClientCache.Dispose();
+                    _httpClientCache = null;
+                }
             }
         }
 
