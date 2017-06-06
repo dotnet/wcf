@@ -580,6 +580,45 @@ public interface ISessionTestsShortTimeoutService : ISessionTestsDefaultService
 {
 }
 
+[ServiceContract(CallbackContract = typeof(ISessionTestsDuplexCallback), SessionMode = SessionMode.Required)]
+public interface ISessionTestsDuplexService
+{
+    [OperationContract]
+    int NonTerminatingMethodCallingDuplexCallbacks(
+       int callsToClientCallbackToMake,
+       int callsToTerminatingClientCallbackToMake,
+       int callsToClientSideOnlyTerminatingClientCallbackToMake,
+       int callsToNonTerminatingMethodToMakeInsideClientCallback,
+       int callsToTerminatingMethodToMakeInsideClientCallback);
+
+    [OperationContract]
+    int TerminatingMethodCallingDuplexCallbacks(
+        int callsToClientCallbackToMake,
+        int callsToTerminatingClientCallbackToMake,
+        int callsToClientSideOnlyTerminatingClientCallbackToMake,
+        int callsToNonTerminatingMethodToMakeInsideClientCallback,
+        int callsToTerminatingMethodToMakeInsideClientCallback);
+
+    [OperationContract(IsInitiating = true, IsTerminating = false)]
+    int NonTerminatingMethod();
+
+    [OperationContract(IsInitiating = true, IsTerminating = true)]
+    int TerminatingMethod();
+}
+
+[ServiceContract(SessionMode = SessionMode.Required)]
+public interface ISessionTestsDuplexCallback
+{
+    [OperationContract(IsInitiating = true, IsTerminating = false)]
+    int ClientCallback(int callsToNonTerminatingMethodToMake, int callsToTerminatingMethodToMake);
+
+    [OperationContract(IsInitiating = true, IsTerminating = true)]
+    int TerminatingClientCallback(int callsToNonTerminatingMethodToMake, int callsToTerminatingMethodToMake);
+
+    [OperationContract(IsInitiating = true, IsTerminating = true)]
+    int ClientSideOnlyTerminatingClientCallback(int callsToNonTerminatingMethodToMake, int callsToTerminatingMethodToMake);
+}
+
 [ServiceContract, XmlSerializerFormat]
 public interface IXmlSFAttribute
 {

@@ -56,4 +56,26 @@ namespace WcfService
         {
         }
     }
+
+    public class TcpSessionDuplexTestServiceHostFactory : ServiceHostFactory
+    {
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            TcpSessionDuplexTestServiceHost serviceHost = new TcpSessionDuplexTestServiceHost(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+    public class TcpSessionDuplexTestServiceHost : TestServiceHostBase<ISessionTestsDuplexService>
+    {
+        protected override string Address { get { return ""; } }
+        protected override Binding GetBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false};
+        }
+
+        public TcpSessionDuplexTestServiceHost(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+        }
+    }
 }
