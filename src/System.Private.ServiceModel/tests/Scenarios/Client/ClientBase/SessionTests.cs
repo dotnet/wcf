@@ -5,6 +5,7 @@
 using System;
 using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
@@ -202,5 +203,348 @@ public static class SessionTests
         binding.Security = new NetTcpSecurity();
         binding.Security.Mode = SecurityMode.None;
         return new ChannelFactory<T>(binding, helloEndpoint);
+    }
+
+    // Without CallbackBehaviorAttribute (and ConcurrencyMode = ConcurrencyMode.Multiple) support
+    // a few duplex session tests are not going to be able to call the service from within our callback. 
+    // This is tracked by issue #1959
+
+    //[CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    public class SessionTestsDuplexCallback : ISessionTestsDuplexCallback
+    {
+        public bool ClosedCalled { get; set; }
+        public bool ClosingCalled { get; set; }
+        public bool FaultedCalled { get; set; }
+        public int ClientCallback(int callsToNonTerminatingMethodToMake, int callsToTerminatingMethodToMake)
+        {
+            return ClientCallbackImpl(callsToNonTerminatingMethodToMake, callsToTerminatingMethodToMake);
+        }
+
+        public int TerminatingClientCallback(int callsToNonTerminatingMethodToMake, int callsToTerminatingMethodToMake)
+        {
+            return ClientCallbackImpl(callsToNonTerminatingMethodToMake, callsToTerminatingMethodToMake);
+        }
+
+        public int ClientSideOnlyTerminatingClientCallback(int callsToNonTerminatingMethodToMake, int callsToTerminatingMethodToMake)
+        {
+            return ClientCallbackImpl(callsToNonTerminatingMethodToMake, callsToTerminatingMethodToMake);
+        }
+
+        private int ClientCallbackImpl(int callsToNonTerminatingMethodToMake, int callsToTerminatingMethodToMake)
+        {
+            int numCalls = 0;
+            var channel = OperationContext.Current.GetCallbackChannel<ISessionTestsDuplexService>();
+            var c = OperationContext.Current.Channel;
+
+            Assert.Equal(s_channel.GetHashCode(), c.GetHashCode());
+            Assert.Equal(s_channel.GetHashCode(), channel.GetHashCode());
+
+            OperationContext.Current.Channel.Closed += (sender, e) =>
+            {
+                ClosedCalled = true;
+            };
+            OperationContext.Current.Channel.Closing += (sender, e) =>
+            {
+                ClosingCalled = true;
+            };
+            OperationContext.Current.Channel.Faulted += (sender, e) =>
+            {
+                FaultedCalled = true;
+            };
+
+            // Rather than dealing with a large number of combinations of various exceptions arising from both sides,
+            // the test is structured to return the total count of successful calls that were made both directions.
+
+            // terminating ones go first
+            for (int i = 0; i < callsToTerminatingMethodToMake; i++)
+            {
+                try
+                {
+                    numCalls += channel.TerminatingMethod();
+                }
+                catch
+                { }
+            }
+            // followed by non-terminating calls
+            for (int i = 0; i < callsToNonTerminatingMethodToMake; i++)
+            {
+                try
+                {
+                    numCalls += channel.NonTerminatingMethod();
+                }
+                catch
+                { }
+            }
+
+            return numCalls + 1; // +1 for this call
+        }
+    }
+
+    // Simple case with no terminating methods and no additional calls from the callback
+    [WcfFact]
+    [OuterLoop]
+    public static void NonTerminatingMethodCallingDuplexCallbacksNoReentrantCalls()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(      // + 1 
+                callsToClientCallbackToMake: 2,                                     // + 2  
+                callsToTerminatingClientCallbackToMake: 0,
+                callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
+                callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
+                callsToTerminatingMethodToMakeInsideClientCallback: 0);
+
+            Assert.Equal(result, 3);
+
+            ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
+        }
+    }
+
+    // Simple case with no terminating methods. 
+    // Multiple calls to the service from within the callback
+    [WcfFact]
+    [OuterLoop]
+    [Issue(1959)]
+    public static void NonTerminatingMethodCallingDuplexCallbacksCallingService()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(      // + 1 
+            callsToClientCallbackToMake: 2,                                     // + 2  
+            callsToTerminatingClientCallbackToMake: 0,
+            callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
+            callsToNonTerminatingMethodToMakeInsideClientCallback: 2,           // + 2 * 2
+            callsToTerminatingMethodToMakeInsideClientCallback: 0);
+
+            Assert.Equal(result, 7);
+
+            ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
+        }
+    }
+
+    // Call terminating method with client callback not calling the service again
+    [WcfFact]
+    [OuterLoop]
+    public static void TerminatingMethodCallingDuplexCallbacksNoReentrantCalls()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            var result = s_channel.TerminatingMethodCallingDuplexCallbacks(         // + 1
+            callsToClientCallbackToMake: 2,                                     // + 2
+            callsToTerminatingClientCallbackToMake: 0,
+            callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
+            callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
+            callsToTerminatingMethodToMakeInsideClientCallback: 0);
+
+            Assert.Equal(result, 3);
+
+            // verify that after this we can not make another call
+            // note: we really expect ChannelTerminatedException but it is not exposed publically yet
+            // so we pass the base class instead
+            ResultsVerificationHelper<CommunicationException>(
+                canMakeServiceCall: false,
+                cbClosedCalled: false,      // Note that closed hasn't been called in this case
+                cbClosingCalled: false,
+                cbFaultedCalled: false);
+        }
+    }
+
+    // Call terminating method with client callback trying (and failing) to call non-terminating service method
+    [WcfFact]
+    [OuterLoop]
+    [Issue(1959)]
+    public static void TerminatingMethodCallingDuplexCallbacksFailingToCallService()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            var result = s_channel.TerminatingMethodCallingDuplexCallbacks(         // + 1
+            callsToClientCallbackToMake: 2,                                     // + 2 
+            callsToTerminatingClientCallbackToMake: 0,
+            callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
+            callsToNonTerminatingMethodToMakeInsideClientCallback: 2,           // + 0 as they will fail
+            callsToTerminatingMethodToMakeInsideClientCallback: 0);
+
+            Assert.Equal(result, 3);
+
+            // verify that after this we can not make another call
+            // note: we really expect ChannelTerminatedException but it is not exposed publically yet
+            // so we pass the base class instead
+            ResultsVerificationHelper<CommunicationException>(canMakeServiceCall: false, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
+        }
+    }
+
+    // Call non-terminating service method which calls client-side-only terminating callback 
+    // Verify that the client will only accept one terminating callback call
+    [WcfFact]
+    [OuterLoop]
+    public static void NonTerminatingMethodCallingClientSideOnlyTerminatingDuplexCallbacks()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(  // + 1 
+            callsToClientCallbackToMake: 1,                                 // + 0
+            callsToTerminatingClientCallbackToMake: 0,
+            callsToClientSideOnlyTerminatingClientCallbackToMake: 2,        // + 1 (not 2)
+            callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
+            callsToTerminatingMethodToMakeInsideClientCallback: 0);
+
+            Assert.Equal(result, 2);
+
+            // even though the server can't call any callbacks anymore we can still call the service
+            ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
+        }
+    }
+
+    // Call non-terminating service method which calls client-side-only terminating callback 
+    // which calls a non-terminating service method
+    [WcfFact]
+    [OuterLoop]
+    [Issue(1959)]
+    public static void NonTerminatingMethodCallingClientSideTerminatingDuplexCallbacksCallingServer()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(  // + 1
+            callsToClientCallbackToMake: 1,                                 // + 0
+            callsToTerminatingClientCallbackToMake: 0,
+            callsToClientSideOnlyTerminatingClientCallbackToMake: 2,        // + 1 (not 2)
+            callsToNonTerminatingMethodToMakeInsideClientCallback: 2,       // + 2 (not 2*2)
+            callsToTerminatingMethodToMakeInsideClientCallback: 0);
+
+            Assert.Equal(result, 4);
+
+            // even though the server can't call any callbacks anymore we can still call the server
+            ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
+        }
+    }
+
+    // A non-terminating method with non-terminating client callback calling terminating service method
+    [WcfFact]
+    [OuterLoop]
+    [Issue(1959)]
+    public static void NonTerminatingMethodCallingDuplexCallbacksCallingTerminatingService()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            Assert.Throws<CommunicationException>(() =>
+            {
+                var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(
+                    callsToClientCallbackToMake: 2,
+                    callsToTerminatingClientCallbackToMake: 0,
+                    callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
+                    callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
+                    callsToTerminatingMethodToMakeInsideClientCallback: 1);         // this causes the original call to fail
+            });
+        }
+    }
+
+    // Call a non-terminating service method that calls terminating client callback
+    [WcfFact]
+    [OuterLoop]
+    public static void NonTerminatingMethodCallingTerminatingDuplexCallbacks()
+    {
+        using (DuplexTestSetupHelper())
+        {
+            // Should be Assert.Throws<ChannelTerminatedException>(), () =>
+            // but ChannelTerminatedException isn't exposed
+            // and our version of Assert.Throws requires the exact exception type
+            try
+            {
+                var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(
+                callsToClientCallbackToMake: 0,
+                callsToTerminatingClientCallbackToMake: 1,                      // this causes the original call to fail
+                callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
+                callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
+                callsToTerminatingMethodToMakeInsideClientCallback: 0);
+            }
+            catch (Exception e)
+            {
+                Assert.True(e is CommunicationException);
+            }
+        }
+    }
+
+    // A few helper methods to reuse the common code
+    private static SessionTestsDuplexCallback s_duplexCallback = null;
+    private static ISessionTestsDuplexService s_channel = null;
+
+    public class DuplexTestCleanupHelper : IDisposable
+    {
+        private List<ICommunicationObject> _objectsToClose = new List<ICommunicationObject>();
+
+        public void AddObjectToClose(Object o)
+        {
+            _objectsToClose.Add((ICommunicationObject)o);
+        }
+
+        public void Dispose()
+        {
+            foreach (var o in _objectsToClose)
+            {
+                ScenarioTestHelpers.CloseCommunicationObjects(o);
+            }
+        }
+    }
+
+    // Returns IDisposable to unify the cleanup for all scenarios
+    private static IDisposable DuplexTestSetupHelper()
+    {
+        var cleanupHelper = new DuplexTestCleanupHelper();
+        var duplexEndpoint = new EndpointAddress(Endpoints.Tcp_Session_Tests_Duplex_Service);
+        var binding = new NetTcpBinding();
+        binding.Security = new NetTcpSecurity();
+        binding.Security.Mode = SecurityMode.None;
+
+        var duplexCallback = s_duplexCallback = new SessionTestsDuplexCallback();
+        var instanceContext = new InstanceContext(duplexCallback);
+
+        var factory = new DuplexChannelFactory<ISessionTestsDuplexService>(instanceContext, binding, duplexEndpoint);
+        cleanupHelper.AddObjectToClose(factory);
+        s_channel = factory.CreateChannel();
+        cleanupHelper.AddObjectToClose(s_channel);
+        ((ICommunicationObject)s_channel).Open();
+
+        var ctxChannel = (IContextChannel)s_channel;
+        ctxChannel.Closed += (sender, e) =>
+        {
+            Logger.LogInformation("Closed");
+        };
+        ctxChannel.Closing += (sender, e) =>
+        {
+            Logger.LogInformation("Closing");
+        };
+        ctxChannel.Faulted += (sender, e) =>
+        {
+            Logger.LogInformation("Faulted");
+        };
+
+        return cleanupHelper;
+    }
+
+    private static void ResultsVerificationHelper<ExpectedException>(bool canMakeServiceCall, bool cbClosedCalled, bool cbClosingCalled, bool cbFaultedCalled)
+        where ExpectedException : Exception
+    {
+        if (canMakeServiceCall)
+        {
+            var result2 = s_channel.NonTerminatingMethod();
+            Assert.Equal(result2, 1);
+        }
+        else
+        {
+            // This should really be Assert.Throws(Is.Typeof<ExpectedException>(), () => {
+            // but some of the exceptions that can be passed here are not exposed publically yet
+            // tracked by WCF issue #1962
+            try
+            {
+                var result2 = s_channel.NonTerminatingMethod();
+            }
+            catch (Exception e)
+            {
+                Assert.True(e is ExpectedException);
+            }
+        }
+        Assert.Equal(cbClosedCalled, s_duplexCallback.ClosedCalled);
+        Assert.Equal(cbClosingCalled, s_duplexCallback.ClosingCalled);
+        Assert.Equal(cbFaultedCalled, s_duplexCallback.FaultedCalled);
     }
 }
