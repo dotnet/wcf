@@ -7,7 +7,6 @@
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.ServiceModel.Primitives.Tests</RootNamespace>
     <AssemblyName>System.ServiceModel.Primitives.Tests</AssemblyName>
@@ -16,36 +15,27 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{856A232C-4292-4AC7-87FE-41AE0C22C4E4}</ProjectGuid>
   </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants Condition="'$(TargetGroup)' == 'netcoreapp'">$(DefineConstants);FEATURE_ETLEVENTS</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
+    <Compile Include="$(WcfInfrastructureCommonDir)**\*.cs" />
+    <Compile Include="$(WcfUnitTestCommonDir)**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(WcfSourcePkgProj)">
-      <Name>System.Private.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfDuplexPkgProj)'>
-      <Name>System.ServiceModel.Duplex</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfHttpPkgProj)'>
-      <Name>System.ServiceModel.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfNetTcpPkgProj)'>
-      <Name>System.ServiceModel.NetTcp</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfPrimitivesPkgProj)'>
-      <Name>System.ServiceModel.Primitives</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfSecurityPkgProj)'>
-      <Name>System.ServiceModel.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfUnitTestCommonProj)'>
-      <Project>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</Project>
-      <Name>UnitTests.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(WcfInfrastructureCommonProj)">
-      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
-      <Name>Infrastructure.Common</Name>
-    </ProjectReference>
+    <!-- Some internal types are needed, so we reference the implementation assembly, rather than the reference assembly. -->
+    <TargetingPackExclusions Include="System.ServiceModel.Primitives" />
+    <ReferenceFromRuntime Include="System.Private.ServiceModel" />
+
+    <ReferenceFromRuntime Include="xunit.execution.dotnet" />
   </ItemGroup>
+
+  <Import Project="$(WcfInfrastructureCommonDir)testproperties.props" />
+  <Import Project="$(WcfInfrastructureCommonDir)testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <!-- Add our code-gen target after the imports above because they reset $(CoreCompileDependsOn) -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);CreateTestProperties</CoreCompileDependsOn>
+  </PropertyGroup>
 </Project>

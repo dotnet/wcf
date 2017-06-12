@@ -74,7 +74,7 @@
     <OutputType>Library</OutputType>
     <!-- Default any assembly not specifying a key to use the Open Key -->
     <AssemblyKey>Open</AssemblyKey>
-    <RunApiCompat>true</RunApiCompat>
+    <!--<RunApiCompat>true</RunApiCompat>-->
     <!-- Build as portable by default -->
     <PortableBuild Condition="'$(PortableBuild)' == ''">true</PortableBuild>
   </PropertyGroup>
@@ -248,6 +248,10 @@
     <PackagesBasePath Condition="'$(PackagesBasePath)'==''">$(BinDir)$(OSPlatformConfig)</PackagesBasePath>
     <PackageOutputPath Condition="'$(PackageOutputPath)'==''">$(PackageOutputRoot)$(ConfigurationGroup)/</PackageOutputPath>
     <SymbolPackageOutputPath Condition="'$(SymbolPackageOutputPath)'==''">$(PackageOutputPath)symbols/</SymbolPackageOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OptionalToolingJsonPath>$(ProjectDir)\external\test-runtime\optional.json</OptionalToolingJsonPath>
   </PropertyGroup>
 
   <PropertyGroup>

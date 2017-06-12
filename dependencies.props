@@ -12,6 +12,8 @@
     <CoreFxCurrentRef>368eeab3bf02cc55086e170d500cfbb15c974acc</CoreFxCurrentRef>
     <WCFCurrentRef>c9a03fe0c3309508cb509a4ffdd6dc8b79ed525e</WCFCurrentRef>
     <StandardCurrentRef>a10b32352e820a22d976e9df11b0e737443045e2</StandardCurrentRef>
+    <ProjectNTfsCurrentRef>f5fb8b6cb0eba67faffd6282297d8c5bf915eece</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>f5fb8b6cb0eba67faffd6282297d8c5bf915eece</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
@@ -21,11 +23,21 @@
     <NETStandardPackageVersion>2.1.0-preview1-25319-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25319-02</MicrosoftNETCoreAppPackageVersion>
+
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.4.0-preview2-25319-02</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+
+    <ProjectNTfsExpectedPrerelease>beta-25331-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>beta-25331-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-25331-00</ProjectNTfsTestILCPackageVersion>
+
+    <PlatformPackageVersion>2.1.0-preview1-25324-02</PlatformPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview1-25409-01</CoreClrPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
+    <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>1.0.1-prerelease-01616-05</XunitNetcoreExtensionsVersion>
   </PropertyGroup>
 
@@ -48,6 +60,14 @@
       <!-- manually pick up a new baseline in order to get package dependencies updated -->
       <DisabledPackages>Microsoft.Private.PackageBaseline;NETStandard.Library</DisabledPackages>
     </RemoteDependencyBuildInfo>
+    <RemoteDependencyBuildInfo Include="ProjectNTfs">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs/$(DependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(ProjectNTfsCurrentRef)</CurrentRef>
+    </RemoteDependencyBuildInfo>
+    <RemoteDependencyBuildInfo Include="ProjectNTfsTestILC">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs-testilc/$(DependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(ProjectNTfsTestILCCurrentRef)</CurrentRef>
+    </RemoteDependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
       <RawVersionsBaseUrl>https://raw.githubusercontent.com/dotnet/versions</RawVersionsBaseUrl>
@@ -68,6 +88,21 @@
       <ElementName>NETStandardPackageVersion</ElementName>
       <PackageId>$(NETStandardPackageId)</PackageId>
     </XmlUpdateStep>
+    <!--<XmlUpdateStep Include="ProjectNTfs">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>ProjectNTfsExpectedPrerelease</ElementName>
+      <BuildInfoName>ProjectNTfs</BuildInfoName>
+    </XmlUpdateStep>-->
+    <!--<XmlUpdateStep Include="ProjectNTfsTestILC">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>ProjectNTfsTestILCExpectedPrerelease</ElementName>
+      <BuildInfoName>ProjectNTfsTestILC</BuildInfoName>
+    </XmlUpdateStep>-->
+    <!--<XmlUpdateStep Include="ProjectNTfsTestILC">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>ProjectNTfsTestILCPackageVersion</ElementName>
+      <PackageId>TestILC.amd64ret</PackageId>
+    </XmlUpdateStep>-->
   </ItemGroup>
 
   <PropertyGroup>

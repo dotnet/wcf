@@ -24,6 +24,18 @@
     <PackageReference Include="Microsoft.xunit.netcore.extensions">
       <Version>$(XunitNetcoreExtensionsVersion)</Version>
     </PackageReference>
+    <PackageReference Include="xunit.performance.api">
+      <Version>$(XunitPerfAnalysisPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.performance.core">
+      <Version>$(XunitPerfAnalysisPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.performance.execution">
+      <Version>$(XunitPerfAnalysisPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.performance.metrics">
+      <Version>$(XunitPerfAnalysisPackageVersion)</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.3rdpartytools.MarkdownLog">
       <Version>0.10.0-alpha-experimental</Version>
     </PackageReference>
@@ -72,6 +84,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetGroup)' != 'uapaot'">
+    <PackageToInclude Include="xunit.performance.core"/>
+    <PackageToInclude Include="xunit.performance.api"/>
+    <PackageToInclude Include="xunit.performance.execution"/>
+    <PackageToInclude Include="xunit.performance.metrics"/>
+    <PackageToInclude Include="Microsoft.Diagnostics.Tracing.TraceEvent"/>
     <PackageToInclude Include="Microsoft.3rdpartytools.MarkdownLog"/>
     <PackageToInclude Include="CommandLineParser" />
   </ItemGroup>

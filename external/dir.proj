@@ -9,10 +9,10 @@
   <ItemGroup>
     <Project Include="netstandard/netstandard.depproj" />
     <Project Include="netfx/netfx.depproj" />
+    <Project Include="corefx/corefx.depproj" />
     <Project Include="runtime/runtime.depproj" />
     <Project Include="test-runtime/XUnit.Runtime.depproj" />
     <Project Include="harvestPackages/harvestPackages.netstandard1.6.depproj" />
-    <Project Condition="'$(ILLinkTrimAssembly)' != 'false'" Include="ILLink/ILLink.depproj" />
   </ItemGroup>
 
   <Import Project="../dir.traversal.targets" />

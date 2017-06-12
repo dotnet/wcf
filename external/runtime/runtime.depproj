@@ -8,12 +8,27 @@
     <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uap'">win10-$(ArchGroup)</NugetRuntimeIdentifier>
     <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uapaot'">win10-$(ArchGroup)-aot</NugetRuntimeIdentifier>
     <RidSpecificAssets>true</RidSpecificAssets>
+    <CoreFxPrivatePackageName>NETCoreApp</CoreFxPrivatePackageName>
+    <CoreFxPrivatePackageName Condition="'$(TargetGroup)' == 'uap'">UAP</CoreFxPrivatePackageName>
+    <CoreFxPrivatePackageName Condition="'$(TargetGroup)' == 'uapaot'">UAP</CoreFxPrivatePackageName>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(TargetGroup)' == 'uapaot'">
     <!-- System.Private.* can't be on the ILCInputFolder since ilc.exe needs to use the matching one from its toolchain. -->
     <BinPlaceILCInputFolder>false</BinPlaceILCInputFolder>
     <NuGetDeploySourceItem>Reference</NuGetDeploySourceItem>
   </PropertyGroup>
+  <ItemGroup Condition="'$(TargetGroup)'=='uapaot'">
+    <PackageReference Include="Microsoft.TargetingPack.Private.NETNative">
+      <Version>1.1.0-$(ProjectNTfsExpectedPrerelease)</Version>
+    </PackageReference>
+    <FileToExclude Include="System.Private.CoreLib.Augments" />
+    <FileToExclude Include="System.Private.CoreLib.DynamicDelegate" />
+    <FileToExclude Include="System.Private.CoreLib.WinRTInterop" />
+    <PackageReference Include="NETStandard.Library">
+      <Version>$(NETStandardPackageVersion)</Version>
+    </PackageReference>
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetGroup)'!='uapaot'">
     <PackageReference Include="Microsoft.NETCore.Platforms">
@@ -30,6 +45,12 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy">
       <Version>2.0.0-preview2-25310-02</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Private.CoreFx.$(CoreFxPrivatePackageName)">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
   </ItemGroup>
 

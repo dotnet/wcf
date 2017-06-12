@@ -21,7 +21,7 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(WcfPrimitivesPkgProj)" />
+    <ProjectReference Include="$(WcfPrimitivesRefProj)" />
   </ItemGroup>
   <ItemGroup>
     <None Include="testproperties.props" />

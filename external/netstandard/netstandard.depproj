@@ -18,9 +18,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsNETStandard2x)' == 'true'">
-    <PackageReference Condition="'$(TargetsWindows)'=='true'" Include="System.Security.Principal.Windows">
-      <Version>4.5.0-preview2-25319-04</Version>
-    </PackageReference>
     <PackageReference Include="System.Reflection.DispatchProxy">
       <Version>	4.5.0-preview2-25319-04</Version>
     </PackageReference>
