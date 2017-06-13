@@ -14,7 +14,7 @@ using Xunit;
 public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 {
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
+    [Issue(1945, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(Peer_Certificate_Installed),
@@ -62,7 +62,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
+    [Issue(1945, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(Peer_Certificate_Installed),
@@ -121,7 +121,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
+    [Issue(1945, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
@@ -215,7 +215,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(1886, OS = OSID.AnyOSX)]
+    [Issue(1945, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
