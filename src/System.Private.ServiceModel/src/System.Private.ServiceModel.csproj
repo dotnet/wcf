@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
     <!-- Copy ref to output to enable APICompat for the facades that directly reference this project -->
-    <Content Include="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\ref\netstandard.dll">
+    <Content Include="$(PackagesDir)NETStandard.Library\$(NETStandardPackageVersion)\build\netstandard2.0\ref\netstandard.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

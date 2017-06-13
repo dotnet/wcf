@@ -1,20 +1,22 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>368eeab3bf02cc55086e170d500cfbb15c974acc</CoreFxCurrentRef>
-    <CoreClrCurrentRef>f4e6d7f7e3c10cbd87d5d9e0fcee32e9aa19f6d1</CoreClrCurrentRef>
+    <CoreFxCurrentRef>534770cbd98c4083de4d93b809f2e0968f0f856a</CoreFxCurrentRef>
     <WCFCurrentRef>c9a03fe0c3309508cb509a4ffdd6dc8b79ed525e</WCFCurrentRef>
+    <StandardCurrentRef>8f8313cbe4b0f4d89c4d0835e08e3e340a18eec0</StandardCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <CoreFxExpectedPrerelease>preview2-25309-01</CoreFxExpectedPrerelease>
-    <StandardExpectedPrerelease>preview2-25309-01</StandardExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-25405-01</CoreFxExpectedPrerelease>
+    <NETStandardPackageVersion>2.0.0-preview2-25401-01</NETStandardPackageVersion>
+    <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
+    <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25407-01</MicrosoftNETCoreAppPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
@@ -31,14 +33,14 @@
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreFx">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(DependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
       <!-- manually pick up a new baseline in order to get package dependencies updated -->
-      <DisabledPackages>Microsoft.Private.PackageBaseline;NETStandard.Library</DisabledPackages>
+      <DisabledPackages>Microsoft.Private.PackageBaseline</DisabledPackages>
     </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="CoreClr">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)coreclr/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(CoreClrCurrentRef)</CurrentRef>
+    <RemoteDependencyBuildInfo Include="Standard">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)standard/$(CoreDependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(StandardCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
@@ -49,6 +51,11 @@
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>CoreFxExpectedPrerelease</ElementName>
       <BuildInfoName>CoreFx</BuildInfoName>
+    </XmlUpdateStep>
+    <XmlUpdateStep Include="Standard">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>NETStandardPackageVersion</ElementName>
+      <PackageId>$(NETStandardPackageId)</PackageId>
     </XmlUpdateStep>
   </ItemGroup>
 
@@ -75,9 +82,10 @@
     <StaticDependency Include="Microsoft.TargetingPack.Private.NETNative">
       <Version>1.1.0-beta-24607-01</Version>
     </StaticDependency>
+
     <DependencyBuildInfo Include="NETStandard.Library">
       <PackageId>NETStandard.Library</PackageId>
-      <Version>2.0.0-$(StandardExpectedPrerelease)</Version>
+      <Version>$(NETStandardPackageVersion)</Version>
     </DependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(StaticDependency)">
