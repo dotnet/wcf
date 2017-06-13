@@ -2,61 +2,76 @@
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
     <CoreFxCurrentRef>534770cbd98c4083de4d93b809f2e0968f0f856a</CoreFxCurrentRef>
-    <WCFCurrentRef>c9a03fe0c3309508cb509a4ffdd6dc8b79ed525e</WCFCurrentRef>
+    <WCFCurrentRef>a2ba4d6141ef25bdb4c2d2c014b9e1f305a0ea90</WCFCurrentRef>
     <StandardCurrentRef>8f8313cbe4b0f4d89c4d0835e08e3e340a18eec0</StandardCurrentRef>
+    <CoreSetupCurrentRef>c2c072242cb0bdea99efb7349d69492f83200a7d</CoreSetupCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <CoreFxExpectedPrerelease>preview2-25405-01</CoreFxExpectedPrerelease>
+    <WcfExpectedPrerelease>preview2-25413-01</WcfExpectedPrerelease>
     <NETStandardPackageVersion>2.0.0-preview2-25401-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
+    <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25407-01</MicrosoftNETCoreAppPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
-    <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25407-01</MicrosoftNETCoreAppPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
   <PropertyGroup>
     <BaseDotNetBuildInfo>build-info/dotnet/</BaseDotNetBuildInfo>
-    <DependencyBranch>master</DependencyBranch>
     <CoreDependencyBranch>release/2.0.0</CoreDependencyBranch>
     <CurrentRefXmlPath>$(MSBuildThisFileFullPath)</CurrentRefXmlPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <RemoteDependencyBuildInfo Include="WCF">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(DependencyBranch)</BuildInfoPath>
+    <!--<RemoteDependencyBuildInfo Include="WCF">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreFx">
       <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
-      <!-- manually pick up a new baseline in order to get package dependencies updated -->
+      --><!-- manually pick up a new baseline in order to get package dependencies updated --><!--
       <DisabledPackages>Microsoft.Private.PackageBaseline</DisabledPackages>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="Standard">
       <BuildInfoPath>$(BaseDotNetBuildInfo)standard/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(StandardCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
+    <RemoteDependencyBuildInfo Include="CoreSetup">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)core-setup/$(CoreDependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(CoreSetupCurrentRef)</CurrentRef>
+    </RemoteDependencyBuildInfo>-->
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
       <RawVersionsBaseUrl>https://raw.githubusercontent.com/dotnet/versions</RawVersionsBaseUrl>
     </DependencyBuildInfo>
 
-    <XmlUpdateStep Include="CoreFx">
+    <!--<XmlUpdateStep Include="CoreFx">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>CoreFxExpectedPrerelease</ElementName>
       <BuildInfoName>CoreFx</BuildInfoName>
+    </XmlUpdateStep>
+    <XmlUpdateStep Include="WCF">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>WcfExpectedPrerelease</ElementName>
+      <BuildInfoName>WCF</BuildInfoName>
     </XmlUpdateStep>
     <XmlUpdateStep Include="Standard">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>NETStandardPackageVersion</ElementName>
       <PackageId>$(NETStandardPackageId)</PackageId>
     </XmlUpdateStep>
+    <XmlUpdateStep Include="CoreSetup">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>MicrosoftNETCoreAppPackageVersion</ElementName>
+      <PackageId>Microsoft.NETCore.App</PackageId>
+    </XmlUpdateStep>-->
   </ItemGroup>
 
   <!-- Set up dependencies on packages that aren't found in a BuildInfo. -->
