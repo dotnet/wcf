@@ -29,14 +29,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <RemoteDependencyBuildInfo Include="WCF">
+    <!--<RemoteDependencyBuildInfo Include="WCF">
       <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="CoreFx">
       <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
-       <!--manually pick up a new baseline in order to get package dependencies updated--> 
+      --><!-- manually pick up a new baseline in order to get package dependencies updated --><!--
       <DisabledPackages>Microsoft.Private.PackageBaseline</DisabledPackages>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="Standard">
@@ -46,13 +46,13 @@
     <RemoteDependencyBuildInfo Include="CoreSetup">
       <BuildInfoPath>$(BaseDotNetBuildInfo)core-setup/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(CoreSetupCurrentRef)</CurrentRef>
-    </RemoteDependencyBuildInfo>
+    </RemoteDependencyBuildInfo>-->
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
       <RawVersionsBaseUrl>https://raw.githubusercontent.com/dotnet/versions</RawVersionsBaseUrl>
     </DependencyBuildInfo>
 
-    <XmlUpdateStep Include="CoreFx">
+    <!--<XmlUpdateStep Include="CoreFx">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>CoreFxExpectedPrerelease</ElementName>
       <BuildInfoName>CoreFx</BuildInfoName>
@@ -71,7 +71,7 @@
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>MicrosoftNETCoreAppPackageVersion</ElementName>
       <PackageId>Microsoft.NETCore.App</PackageId>
-    </XmlUpdateStep>
+    </XmlUpdateStep>-->
   </ItemGroup>
 
   <!-- Set up dependencies on packages that aren't found in a BuildInfo. -->
