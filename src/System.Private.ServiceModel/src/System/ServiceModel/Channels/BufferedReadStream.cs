@@ -141,12 +141,13 @@ namespace System.ServiceModel.Channels
 
         public override void Flush()
         {
-            throw new NotSupportedException(nameof(Flush));
+            // Read streams do not need to flush.
         }
 
         public override Task FlushAsync(CancellationToken cancellationToken)
         {
-            throw new NotSupportedException(nameof(FlushAsync));
+            // Read streams do not need to flush.
+            return Task.CompletedTask;
         }
 
 
