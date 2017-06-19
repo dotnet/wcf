@@ -35,6 +35,7 @@
     <FileToExclude Include="System.EnterpriseServices" />
     <FileToExclude Include="System.EnterpriseServices.Thunk" />
     <FileToExclude Include="System.EnterpriseServices.Wrapper" />
+    <FileToExclude Include="@(CoreSetupWcfAssemblies)" />
   </ItemGroup>
 
   <Target Name="FilterNETStandardShims" BeforeTargets="FilterNugetPackages"
