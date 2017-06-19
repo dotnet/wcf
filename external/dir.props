@@ -21,7 +21,7 @@
       <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
     </CoreSetupPackageReference>
     <CoreSetupPackageReference Include="Microsoft.NETCore.TestHost">
-      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
+      <Version>$(CoreClrPackageVersion)</Version>
     </CoreSetupPackageReference>
     <CoreSetupPackageReference Include="Microsoft.NETCore.DotNetHost">
       <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
