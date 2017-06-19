@@ -19,7 +19,7 @@
 
   <ItemGroup Condition="'$(IsNETStandard2x)' == 'true'">
     <PackageReference Include="System.Reflection.DispatchProxy">
-      <Version>	4.5.0-preview2-25319-04</Version>
+      <Version>4.4.0-preview2-25316-01</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime">
       <Version>4.4.0-beta-24913-02</Version>
