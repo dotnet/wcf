@@ -10,4 +10,40 @@
     <!-- We need configuration-specific assets files. -->
     <RestoreOutputPath>$(IntermediateOutputPath)</RestoreOutputPath>
   </PropertyGroup>
+
+  <!-- Determine name and version of packages to use from Core-Setup. -->
+  <PropertyGroup>
+    <_UseUwpCoreSetupPackages Condition="'$(TargetGroup)' == 'uap' or '$(TargetGroup)' == 'uapaot'">true</_UseUwpCoreSetupPackages>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(_UseUwpCoreSetupPackages)' != 'true'">
+    <CoreSetupPackageReference Include="Microsoft.NETCore.App">
+      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
+    </CoreSetupPackageReference>
+    <CoreSetupPackageReference Include="Microsoft.NETCore.TestHost">
+      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
+    </CoreSetupPackageReference>
+    <CoreSetupPackageReference Include="Microsoft.NETCore.DotNetHost">
+      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
+    </CoreSetupPackageReference>
+    <CoreSetupPackageReference Include="Microsoft.NETCore.DotNetHostPolicy">
+      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
+    </CoreSetupPackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(_UseUwpCoreSetupPackages)' == 'true'">
+    <CoreSetupPackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>$(MicrosoftNETCoreUwpPackageVersion)</Version>
+    </CoreSetupPackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Assemblies to skip copying from CoreSetupPackageReference because they build in WCF. -->
+    <CoreSetupWcfAssemblies Include="System.Private.ServiceModel" />
+    <CoreSetupWcfAssemblies Include="System.ServiceModel.Duplex" />
+    <CoreSetupWcfAssemblies Include="System.ServiceModel.Http" />
+    <CoreSetupWcfAssemblies Include="System.ServiceModel.NetTcp" />
+    <CoreSetupWcfAssemblies Include="System.ServiceModel.Primitives" />
+    <CoreSetupWcfAssemblies Include="System.ServiceModel.Security" />
+  </ItemGroup>
 </Project>

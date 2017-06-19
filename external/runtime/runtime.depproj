@@ -8,9 +8,6 @@
     <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uap'">win10-$(ArchGroup)</NugetRuntimeIdentifier>
     <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uapaot'">win10-$(ArchGroup)-aot</NugetRuntimeIdentifier>
     <RidSpecificAssets>true</RidSpecificAssets>
-    <CoreFxPrivatePackageName>NETCoreApp</CoreFxPrivatePackageName>
-    <CoreFxPrivatePackageName Condition="'$(TargetGroup)' == 'uap'">UAP</CoreFxPrivatePackageName>
-    <CoreFxPrivatePackageName Condition="'$(TargetGroup)' == 'uapaot'">UAP</CoreFxPrivatePackageName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetGroup)' == 'uapaot'">
@@ -30,28 +27,9 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetGroup)'!='uapaot'">
-    <PackageReference Include="Microsoft.NETCore.Platforms">
-      <Version>$(PlatformPackageVersion)</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR">
-      <Version>$(CoreClrPackageVersion)</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.TestHost">
-      <Version>$(CoreClrPackageVersion)</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.DotNetHost">
-      <Version>2.0.0-preview2-25310-02</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy">
-      <Version>2.0.0-preview2-25310-02</Version>
-    </PackageReference>
-  </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.Private.CoreFx.$(CoreFxPrivatePackageName)">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
-    </PackageReference>
+    <PackageReference Include="@(CoreSetupPackageReference)" />
+    <FileToExclude Include="@(CoreSetupWcfAssemblies)" />
   </ItemGroup>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />

@@ -8,15 +8,11 @@
     <BinPlaceRef>true</BinPlaceRef>
     <NuGetDeploySourceItem>Reference</NuGetDeploySourceItem>
     <NugetRuntimeIdentifier>None</NugetRuntimeIdentifier>
-    <CoreFxPrivatePackageName>NETCoreApp</CoreFxPrivatePackageName>
-    <CoreFxPrivatePackageName Condition="'$(TargetGroup)' == 'uap'">UAP</CoreFxPrivatePackageName>
-    <CoreFxPrivatePackageName Condition="'$(TargetGroup)' == 'uapaot'">UAP</CoreFxPrivatePackageName>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(NETStandardVersion)' == ''">
-    <PackageReference Include="Microsoft.Private.CoreFx.$(CoreFxPrivatePackageName)">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
-    </PackageReference>
+    <PackageReference Include="@(CoreSetupPackageReference)" />
+    <FileToExclude Include="@(CoreSetupWcfAssemblies)" />
   </ItemGroup>
 
   <ItemGroup>
