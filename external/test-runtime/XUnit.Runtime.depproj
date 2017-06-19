@@ -112,7 +112,9 @@
     <Warning Text="Could not find the UAP Tools at '$(UAPToolsFolder)'. Please run sync." Condition="('$(UAPToolsFolder)'=='' or !Exists('$(UAPToolsFolder)')) AND '$(BuildAllConfigurations)' != 'true'" />
 
     <ItemGroup Condition="'$(UAPToolsFolder)'!=''">
-      <RunnerFolderContents Include="$(UAPToolsFolder)\Runner\**\*" />
+      <RunnerFolderContentsBuiltByWcf Include="@(CoreSetupWcfAssemblies -> '$(UAPToolsFolder)\Runner\%(Identity).dll')" />
+      <RunnerFolderContents Include="$(UAPToolsFolder)\Runner\**\*"
+                            Exclude="@(RunnerFolderContentsBuiltByWcf)"/>
       <LauncherFolderContents Include="$(UAPToolsFolder)\Launcher\**\*" />
     </ItemGroup>
 
