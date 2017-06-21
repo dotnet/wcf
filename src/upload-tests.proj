@@ -1,6 +1,6 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
-  <!-- CoreFX-Specific Helix test submission project.
+  <!-- WCF-Specific Helix test submission project.
        TODOS:
          - Add support for storing test-project-specific timeouts, use this instead of default if available
   -->
@@ -75,7 +75,7 @@
     <HelixConfigLabel>$(ConfigurationGroup)</HelixConfigLabel>
   </PropertyGroup>
 
-  <Target Name="CoreFXPreCloudBuild" >
+  <Target Name="WCFPreCloudBuild" >
     <!-- Put anything you want to do before submitting the general purpose helix job here.
          Helix requires properly formatted work items and accessible zip files / others to upload, which we'll construct here. -->
 
@@ -127,17 +127,17 @@
 
   <!-- main Entrypoint -->
   <Target Name="Build">
-    <Message Text="CoreFX-specific Helix test upload project, beginning submission to Helix" />
+    <Message Text="WCF-specific Helix test upload project, beginning submission to Helix" />
     <Message Condition="'$(EnableCloudTest)' == 'false'" Text="... will skip upload / submission due to property 'EnableCloudTest' being set to 'false'" />
     <Message Condition="'$(SkipSendToHelix)' == 'true'"  Text="... will skip submission due to property 'SkipSendToHelix' being set to 'true'" />
-    <CallTarget Condition="'$(EnableCloudTest)' != 'false'" Targets="CoreFXPreCloudBuild;CompressRuntimeDir;HelixCloudBuild" />
+    <CallTarget Condition="'$(EnableCloudTest)' != 'false'" Targets="WCFPreCloudBuild;CompressRuntimeDir;HelixCloudBuild" />
     <CallTarget Condition="'$(LocalHelixExecution)' == 'true'" Targets="ExecuteLocally" />
 
   </Target>
 
   <!-- Local Execution entrypoint, can be invoked directly -->
   <!-- Sample direct command line:
-          msbuild upload-tests.proj /t:ExecuteLocally /p:LocalExecutionTestList=C:\GIT\corefx\bin\tests\Windows_NT.AnyCPU.Release\archive\TestList.json 
+          msbuild upload-tests.proj /t:ExecuteLocally /p:LocalExecutionTestList=C:\git\wcf\bin\tests\Windows_NT.AnyCPU.Release\archive\TestList.json 
                                     /p:LocalExecutionTestFilter=System.IO
   -->
   <Target Name="ExecuteLocally">
@@ -154,7 +154,8 @@
     <SimulateHelixExecution JobList="$(LocalExecutionTestList)"
                             WorkItemExecutionFilter="$(LocalExecutionTestFilter)"
                             ExecutionFolder="$(LocalExecutionFolder)"
-                            CorrelationId="$(LocalExecutionCorrelationId)">
+                            CorrelationId="$(LocalExecutionCorrelationId)"
+                            PythonExecutable="$(PythonExecutable)">
       <Output TaskParameter="ExecutionLogs" ItemName="LocalExecutionLogs"/>
     </SimulateHelixExecution>
     <Message Text="Execution complete.%0aLogs:%0a" />
