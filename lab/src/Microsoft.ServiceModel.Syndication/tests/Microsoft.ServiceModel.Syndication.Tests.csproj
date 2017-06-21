@@ -2,7 +2,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <RuntimeFrameworkVersion>2.0.0-preview2-25301-07</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>2.0.0-preview2-25309-07</RuntimeFrameworkVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -18,6 +18,18 @@
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestFeeds\">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Folder>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestFeeds\SimpleRssFeed.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
