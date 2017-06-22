@@ -25,14 +25,8 @@
     <TargetingPackExclusions Include="System.ServiceModel.Http" />
     <ReferenceFromRuntime Include="System.Private.ServiceModel" />
 
-    <ProjectReference Include='$(WcfUnitTestCommonProj)'>
-      <Project>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</Project>
-      <Name>UnitTests.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(WcfInfrastructureCommonProj)">
-      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
-      <Name>Infrastructure.Common</Name>
-    </ProjectReference>
+    <ProjectReference Include='$(WcfUnitTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

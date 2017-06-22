@@ -78,19 +78,9 @@
     <PackageToInclude Include="xunit.extensibility.core"/>
     <PackageToInclude Include="xunit.extensibility.execution"/>
     <PackageToInclude Include="xunit.runner.utility"/>
-    <PackageToInclude Include="xunit.Sdk"/>
     <PackageToInclude Include="Microsoft.xunit.netcore.extensions"/>
     <PackageToInclude Include="Newtonsoft.Json"/>
     <PackageToInclude Include="$(XUnitRunnerPackageId)" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
-    <UAPToolsPackageVersion>1.0.5</UAPToolsPackageVersion>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
-    <PackageReference Include="Microsoft.DotNet.UAP.TestTools">
-      <Version>$(UAPToolsPackageVersion)</Version>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetGroup)' != 'uapaot'">
@@ -111,6 +101,7 @@
           Condition="'$(TargetGroup)'=='uap'" >
 
     <PropertyGroup>
+      <UAPToolsPackageVersion>1.0.2</UAPToolsPackageVersion>
       <UAPToolsPackageName>microsoft.dotnet.uap.testtools</UAPToolsPackageName>
 
       <UAPToolsFolder Condition="'$(UAPToolsFolder)'==''">$(PackagesDir)$(UAPToolsPackageName)\$(UAPToolsPackageVersion)\Tools</UAPToolsFolder>
