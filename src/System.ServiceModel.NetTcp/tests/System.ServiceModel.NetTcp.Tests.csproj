@@ -7,31 +7,25 @@
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System.ServiceModel.Http.Tests</RootNamespace>
-    <AssemblyName>System.ServiceModel.Http.Tests</AssemblyName>
+    <RootNamespace>System.ServiceModel.NetTcp.Tests</RootNamespace>
+    <AssemblyName>System.ServiceModel.NetTcp.Tests</AssemblyName>
     <TestCategories>InnerLoop</TestCategories>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProjectGuid>{0DE9D9C2-10FB-4DF0-9668-7BD5290EC936}</ProjectGuid>
+    <ProjectGuid>{135C7EE5-6E44-4619-ADD5-589034443AE7}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(WcfSourcePkgProj)">
-      <Name>System.Private.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfHttpPkgProj)'>
-      <Name>System.ServiceModel.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfPrimitivesPkgProj)'>
-      <Name>System.ServiceModel.Primitives</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfSecurityPkgProj)'>
-      <Name>System.ServiceModel.Security</Name>
-    </ProjectReference>
+    <!-- Some internal types are needed, so we reference the implementation assembly, rather than the reference assembly. -->
+    <TargetingPackExclusions Include="System.ServiceModel.Primitives" />
+    <TargetingPackExclusions Include="System.ServiceModel.Duplex" />
+    <TargetingPackExclusions Include="System.ServiceModel.Http" />
+    <TargetingPackExclusions Include="System.ServiceModel.NetTcp" />
+    <ReferenceFromRuntime Include="System.Private.ServiceModel" />
+
     <ProjectReference Include='$(WcfUnitTestCommonProj)'>
       <Project>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</Project>
       <Name>UnitTests.Common</Name>

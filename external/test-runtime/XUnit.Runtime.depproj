@@ -78,9 +78,19 @@
     <PackageToInclude Include="xunit.extensibility.core"/>
     <PackageToInclude Include="xunit.extensibility.execution"/>
     <PackageToInclude Include="xunit.runner.utility"/>
+    <PackageToInclude Include="xunit.Sdk"/>
     <PackageToInclude Include="Microsoft.xunit.netcore.extensions"/>
     <PackageToInclude Include="Newtonsoft.Json"/>
     <PackageToInclude Include="$(XUnitRunnerPackageId)" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
+    <UAPToolsPackageVersion>1.0.5</UAPToolsPackageVersion>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+    <PackageReference Include="Microsoft.DotNet.UAP.TestTools">
+      <Version>$(UAPToolsPackageVersion)</Version>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetGroup)' != 'uapaot'">
@@ -96,12 +106,11 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 
   <!-- Retrieve the UAP Tools to the TestHost folder -->
-  <Target Name="CopyUAPToolsToTestHost" 
+  <Target Name="CopyUAPToolsToTestHost"
           AfterTargets="RestorePackages"
           Condition="'$(TargetGroup)'=='uap'" >
 
     <PropertyGroup>
-      <UAPToolsPackageVersion>1.0.2</UAPToolsPackageVersion>
       <UAPToolsPackageName>microsoft.dotnet.uap.testtools</UAPToolsPackageName>
 
       <UAPToolsFolder Condition="'$(UAPToolsFolder)'==''">$(PackagesDir)$(UAPToolsPackageName)\$(UAPToolsPackageVersion)\Tools</UAPToolsFolder>
@@ -119,12 +128,12 @@
     </ItemGroup>
 
     <Copy Condition="'$(UAPToolsFolder)'!=''"
-          SourceFiles="@(RunnerFolderContents)" 
+          SourceFiles="@(RunnerFolderContents)"
           DestinationFolder="$(TestHostRootPath)\Runner\%(RecursiveDir)"
           SkipUnchangedFiles="true"/>
 
     <Copy Condition="'$(UAPToolsFolder)'!=''"
-          SourceFiles="@(LauncherFolderContents)" 
+          SourceFiles="@(LauncherFolderContents)"
           DestinationFolder="$(TestHostRootPath)\Launcher\%(RecursiveDir)"
           SkipUnchangedFiles="true"/>
   </Target>
@@ -164,7 +173,7 @@
             Text="Error: looks the package $(PackagesDir)$(XUnitRunnerPackageId)\$(XUnitPackageVersion) not restored or missing xunit.console.exe."
     />
     <ItemGroup>
-      <ReferenceCopyLocalPaths 
+      <ReferenceCopyLocalPaths
         Include="$(PackagesDir)$(XUnitRunnerPackageId)\$(XUnitPackageVersion)\tools\*.*"
         Exclude="$(PackagesDir)$(XUnitRunnerPackageId)\$(XUnitPackageVersion)\tools\xunit.console.exe.config"
       >
@@ -173,5 +182,5 @@
         <NuGetPackageVersion>$(XUnitPackageVersion)</NuGetPackageVersion>
       </ReferenceCopyLocalPaths>
     </ItemGroup>
-</Target>
+  </Target>
 </Project>
