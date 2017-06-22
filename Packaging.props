@@ -4,7 +4,7 @@
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)LICENSE.TXT</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)THIRD-PARTY-NOTICES.TXT</PackageThirdPartyNoticesFile>
-    <RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>
+    <!--<RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>--> <!--Not needed for WCF-->
     <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</ReleaseNotes>
     <ProjectUrl>https://dot.net</ProjectUrl>
     <!-- Add a condition for this when we are able to run on .NET Core -->
@@ -42,6 +42,14 @@
       Second, we aren't yet building pdbs, which the nuspecs specify.
     -->
     <SkipBuildPackages>true</SkipBuildPackages>
+  </PropertyGroup>
+
+  <!--
+    Disable designer marker: not included in WCF before BuildTools 2.0.
+    For info on this feature, see https://github.com/dotnet/corefx/commit/8d7870ad127d5b25968835ceb22a6c87eb7e73f8
+  -->
+  <PropertyGroup>
+    <IncludeDesignerMarker Condition="'$(IncludeDesignerMarker)' == ''">false</IncludeDesignerMarker>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
