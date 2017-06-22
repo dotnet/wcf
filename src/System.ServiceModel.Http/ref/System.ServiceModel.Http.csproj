@@ -23,7 +23,9 @@
     <Reference Include="System.Net.WebHeaderCollection" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.Serialization.Xml" />
-    <Reference Include="System.ServiceModel.Primitives" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SourceDir)System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.csproj" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
