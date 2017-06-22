@@ -96,7 +96,7 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 
   <!-- Retrieve the UAP Tools to the TestHost folder -->
-  <Target Name="CopyUAPToolsToTestHost" 
+  <Target Name="CopyUAPToolsToTestHost"
           AfterTargets="RestorePackages"
           Condition="'$(TargetGroup)'=='uap'" >
 
@@ -119,12 +119,12 @@
     </ItemGroup>
 
     <Copy Condition="'$(UAPToolsFolder)'!=''"
-          SourceFiles="@(RunnerFolderContents)" 
+          SourceFiles="@(RunnerFolderContents)"
           DestinationFolder="$(TestHostRootPath)\Runner\%(RecursiveDir)"
           SkipUnchangedFiles="true"/>
 
     <Copy Condition="'$(UAPToolsFolder)'!=''"
-          SourceFiles="@(LauncherFolderContents)" 
+          SourceFiles="@(LauncherFolderContents)"
           DestinationFolder="$(TestHostRootPath)\Launcher\%(RecursiveDir)"
           SkipUnchangedFiles="true"/>
   </Target>
@@ -177,7 +177,7 @@
             Text="Error: looks the package $(PackagesDir)$(XUnitRunnerPackageId)\$(XUnitPackageVersion) not restored or missing xunit.console.exe."
     />
     <ItemGroup>
-      <ReferenceCopyLocalPaths 
+      <ReferenceCopyLocalPaths
         Include="$(PackagesDir)$(XUnitRunnerPackageId)\$(XUnitPackageVersion)\tools\*.*"
         Exclude="$(PackagesDir)$(XUnitRunnerPackageId)\$(XUnitPackageVersion)\tools\xunit.console.exe.config"
       >
@@ -186,5 +186,5 @@
         <NuGetPackageVersion>$(XUnitPackageVersion)</NuGetPackageVersion>
       </ReferenceCopyLocalPaths>
     </ItemGroup>
-</Target>
+  </Target>
 </Project>

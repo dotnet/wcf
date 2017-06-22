@@ -7,7 +7,6 @@
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UnitTests.Common</RootNamespace>
     <AssemblyName>UnitTests.Common</AssemblyName>
@@ -15,15 +14,14 @@
     <CLSCompliant>false</CLSCompliant>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</ProjectGuid>
-    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(WcfDuplexPkgProj)" />
-    <ProjectReference Include="$(WcfHttpPkgProj)" />
-    <ProjectReference Include="$(WcfPrimitivesPkgProj)" />
+    <ProjectReference Include="$(WcfDuplexRefProj)" />
+    <ProjectReference Include="$(WcfHttpRefProj)" />
+    <ProjectReference Include="$(WcfPrimitivesRefProj)" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UnitTests.Common.rd.xml">

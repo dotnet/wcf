@@ -3,40 +3,29 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <!--<IsPartialFacadeAssembly Condition="'$(TargetGroup)' == 'netfx'">true</IsPartialFacadeAssembly>-->
+    <IsPartialFacadeAssembly Condition="'$(TargetGroup)' == 'netfx'">true</IsPartialFacadeAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Release|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Release|AnyCPU'" />
   <ItemGroup>
-    <Compile Include="System.ServiceModel.Primitives.cs" />
-    <Compile Include="System.ServiceModel.Primitives.Manual.cs" />
+    <Compile Include="System.ServiceModel.Http.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetGroup)' == 'netfx'">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Runtime.Serialization.Primitives" />
-    <Reference Include="System.Runtime.Serialization.Xml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.ReaderWriter" />
-    <Reference Include="System.Xml.XmlSerializer" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetGroup)' != 'netfx'">
     <Reference Include="netstandard" />
-    <Reference Include="System.Collections" />
-    <Reference Include="System.ComponentModel.EventBasedAsync" />
+    <Reference Include="System.ComponentModel.TypeConverter" />
     <Reference Include="System.Net.Primitives" />
-    <Reference Include="System.ObjectModel" />
+    <Reference Include="System.Net.WebHeaderCollection" />
     <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.Serialization.Primitives" />
     <Reference Include="System.Runtime.Serialization.Xml" />
-    <Reference Include="System.Security.Cryptography.X509Certificates" />
-    <Reference Include="System.Security.Principal" />
-    <Reference Include="System.Threading" />
-    <Reference Include="System.Xml.ReaderWriter" />
-    <Reference Include="System.Xml.XmlSerializer" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SourceDir)System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.csproj" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

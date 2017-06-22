@@ -8,8 +8,7 @@ using Xunit.Sdk;
 
 namespace Infrastructure.Common
 {
-    // TODO: Use the common tests projects instead of hardcoding System.ServiceModel.Primitives here.
-    [XunitTestCaseDiscoverer("Infrastructure.Common.WcfFactDiscoverer", "System.ServiceModel.Primitives.Tests")]
+    [XunitTestCaseDiscoverer("Infrastructure.Common.WcfFactDiscoverer", "Infrastructure.Common")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class WcfFactAttribute : FactAttribute
     {
