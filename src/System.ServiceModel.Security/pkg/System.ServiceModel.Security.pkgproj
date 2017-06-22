@@ -9,8 +9,7 @@
     <HarvestIncludePaths Include="ref/netcore50;lib/netcore50" />
     <HarvestIncludePaths Include="ref/netstandard1.0" />
     <HarvestIncludePaths Include="ref/netstandard1.1" />
-    <HarvestIncludePaths Include="ref/netstandard1.3" />
-    <HarvestIncludePaths Include="ref/net46;lib/net46" />
+    <HarvestIncludePaths Include="lib/netstandard1.3" />
     <!-- although this contract is inbox in .Net 4.5, we ship the new version as out-of-box in .Net 4.6 and later. -->
     <InboxOnTargetFramework Include="net45">
       <FrameworkReference>System.ServiceModel</FrameworkReference>
