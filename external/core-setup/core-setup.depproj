@@ -17,16 +17,16 @@
 
   <ItemGroup>
     <PackageReference Include="System.Security.Principal.Windows">
-      <Version>4.5.0-preview2-25319-04</Version>
+      <Version>4.4.0-preview2-25316-01</Version>
     </PackageReference>
     <PackageReference Include="System.Security.AccessControl">
-      <Version>4.5.0-preview2-25319-04</Version>
+      <Version>4.4.0-preview2-25316-01</Version>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetsWindows)'=='true'">
     <PackageReference Include="System.Net.Http.WinHttpHandler">
-      <Version>4.5.0-preview2-25319-04</Version>
+      <Version>4.4.0-preview2-25316-01</Version>
     </PackageReference>
   </ItemGroup>
 
