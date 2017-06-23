@@ -166,7 +166,7 @@ wcfUtilities = new WcfUtilities()
         // Set up standard options.
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         // Add the unit test results
-        Utilities.addXUnitDotNETResults(newJob, 'bin/tests/**/testResults.xml')
+        Utilities.addXUnitDotNETResults(newJob, 'bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml')
         
         // Set up appropriate triggers. PR on demand, otherwise on change pushed
         if (isPR) {
