@@ -32,17 +32,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <!-- *** start WCF Content *** -->
-    <ExcludeProjects Include="System.Private.ServiceModel\tests\Scenarios\SelfHostWcfService\WcfService.csproj" />
-    
-    <Project Include="*\tests\**\*.builds" Exclude="@(ExcludeProjects)">
-    <!-- *** end WCF Content *** -->
-      <BuildAllOSGroups Condition="'$(OSGroup)' != '' OR '$(FilterToOSGroup)' != ''">false</BuildAllOSGroups>
-      <FilterToOSGroup Condition="'$(_OriginalOSGroup)' == ''">$(OSEnvironment)</FilterToOSGroup>
-    </Project>
-  </ItemGroup>
-  
-  <ItemGroup>
     <Project Include="$(MSBuildThisFileDirectory)*\tests\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" />
   </ItemGroup>
 

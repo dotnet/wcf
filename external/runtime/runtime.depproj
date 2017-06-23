@@ -29,6 +29,9 @@
 
   <ItemGroup>
     <PackageReference Include="@(CoreSetupPackageReference)" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler">
+      <Version>4.4.0-preview2-25316-01</Version>
+    </PackageReference>
     <FileToExclude Include="@(CoreSetupWcfAssemblies)" />
   </ItemGroup>
 

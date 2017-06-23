@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <!--if ServiceUri is set, the service has been already started on another machine-->
-  <Target Name="WcfSetup" BeforeTargets="BuildAllProjects" Condition="($(WithCategories.Contains('OuterLoop')) or '$(OuterLoop)' == 'true') and ('$(ServiceUri)' == '') and $(FilterToOSGroup) == 'Windows_NT'" >
+  <Target Name="WcfSetup" BeforeTargets="BuildAllProjects" Condition="($(Outerloop) == 'true') and ('$(ServiceUri)' == '') and $(OS) == 'Windows_NT'" >
     <Delete Files="$(WcfSelfHostSetupLog)" Condition="Exists('$(WcfSelfHostSetupLog)')" />
     <Exec Command="$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tools\scripts\StartWCFSelfHostedSvc.cmd" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="WcfSetupErrorCode"/>
