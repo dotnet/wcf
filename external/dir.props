@@ -12,11 +12,7 @@
   </PropertyGroup>
 
   <!-- Determine name and version of packages to use from Core-Setup. -->
-  <PropertyGroup>
-    <_UseUwpCoreSetupPackages Condition="'$(TargetGroup)' == 'uap' or '$(TargetGroup)' == 'uapaot'">true</_UseUwpCoreSetupPackages>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(_UseUwpCoreSetupPackages)' != 'true'">
+  <ItemGroup Condition="'$(TargetGroup)' == 'netstandard' or '$(TargetGroup)' == 'netcoreapp'">
     <CoreSetupPackageReference Include="Microsoft.NETCore.App">
       <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
     </CoreSetupPackageReference>
@@ -31,7 +27,7 @@
     </CoreSetupPackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(_UseUwpCoreSetupPackages)' == 'true'">
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap' or '$(TargetGroup)' == 'uapaot'">
     <CoreSetupPackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>$(MicrosoftNETCoreUwpPackageVersion)</Version>
     </CoreSetupPackageReference>
