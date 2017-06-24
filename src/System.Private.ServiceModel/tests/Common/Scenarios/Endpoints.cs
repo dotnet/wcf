@@ -559,6 +559,13 @@ public static partial class Endpoints
         }
     }
 
+    public static string Tcp_Session_Tests_Duplex_Service
+    {
+        get
+        {
+            return GetEndpointAddress("SessionTestsDuplexService.svc", protocol: "net.tcp");
+        }
+    }
 
     #endregion net.tcp Addresses
 }
