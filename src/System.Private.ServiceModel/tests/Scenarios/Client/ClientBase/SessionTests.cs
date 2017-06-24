@@ -309,7 +309,7 @@ public static class SessionTests
     {
         using (DuplexTestSetupHelper())
         {
-            var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(      // + 1 
+            var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(  // + 1 
             callsToClientCallbackToMake: 2,                                     // + 2  
             callsToTerminatingClientCallbackToMake: 0,
             callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
@@ -329,7 +329,7 @@ public static class SessionTests
     {
         using (DuplexTestSetupHelper())
         {
-            var result = s_channel.TerminatingMethodCallingDuplexCallbacks(         // + 1
+            var result = s_channel.TerminatingMethodCallingDuplexCallbacks(     // + 1
             callsToClientCallbackToMake: 2,                                     // + 2
             callsToTerminatingClientCallbackToMake: 0,
             callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
@@ -357,7 +357,7 @@ public static class SessionTests
     {
         using (DuplexTestSetupHelper())
         {
-            var result = s_channel.TerminatingMethodCallingDuplexCallbacks(         // + 1
+            var result = s_channel.TerminatingMethodCallingDuplexCallbacks(     // + 1
             callsToClientCallbackToMake: 2,                                     // + 2 
             callsToTerminatingClientCallbackToMake: 0,
             callsToClientSideOnlyTerminatingClientCallbackToMake: 0,
@@ -382,9 +382,9 @@ public static class SessionTests
         using (DuplexTestSetupHelper())
         {
             var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(  // + 1 
-            callsToClientCallbackToMake: 1,                                 // + 0
+            callsToClientCallbackToMake: 1,                                     // + 0
             callsToTerminatingClientCallbackToMake: 0,
-            callsToClientSideOnlyTerminatingClientCallbackToMake: 2,        // + 1 (not 2)
+            callsToClientSideOnlyTerminatingClientCallbackToMake: 2,            // + 1 (not 2)
             callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
             callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
@@ -405,10 +405,10 @@ public static class SessionTests
         using (DuplexTestSetupHelper())
         {
             var result = s_channel.NonTerminatingMethodCallingDuplexCallbacks(  // + 1
-            callsToClientCallbackToMake: 1,                                 // + 0
+            callsToClientCallbackToMake: 1,                                     // + 0
             callsToTerminatingClientCallbackToMake: 0,
-            callsToClientSideOnlyTerminatingClientCallbackToMake: 2,        // + 1 (not 2)
-            callsToNonTerminatingMethodToMakeInsideClientCallback: 2,       // + 2 (not 2*2)
+            callsToClientSideOnlyTerminatingClientCallbackToMake: 2,            // + 1 (not 2)
+            callsToNonTerminatingMethodToMakeInsideClientCallback: 2,           // + 2 (not 2*2)
             callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
             Assert.Equal(result, 4);
