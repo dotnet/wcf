@@ -3,9 +3,9 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
     <ProjectReference Include="..\ref\System.ServiceModel.Http.csproj">
-      <SupportedFramework>netcoreapp2.0;net461;$(AllXamarinFrameworks)</SupportedFramework>
+      <SupportedFramework>netcoreapp2.0;net461;uap10.1;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
-    <ProjectReference Include="..\src\System.ServiceModel.Http.builds" />
+    <ProjectReference Include="..\src\System.ServiceModel.Http.csproj" />
     <HarvestIncludePaths Include="ref/netcore50;lib/netcore50" />
     <HarvestIncludePaths Include="ref/netstandard1.0" />
     <HarvestIncludePaths Include="ref/netstandard1.1" />

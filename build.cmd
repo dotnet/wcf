@@ -4,7 +4,7 @@ setlocal
 if /I [%1] == [-?] goto Usage
 
 :Build
-call %~dp0build-managed.cmd %*
+call %~dp0build-managed.cmd -BuildPackages=true %*
 exit /b %ERRORLEVEL%
 
 :Usage

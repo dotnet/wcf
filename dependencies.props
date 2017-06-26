@@ -1,20 +1,46 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
+
+  <!-- For detailed explanation of the reference versions see:
+
+        https://github.com/dotnet/buildtools/blob/master/Documentation/project-nuget-dependencies.md
+        https://github.com/dotnet/buildtools/blob/master/Documentation/annotated-dependency-props.md
+
+       These ref versions are pulled from https://github.com/dotnet/versions.
+  -->
   <PropertyGroup>
-    <CoreFxCurrentRef>368eeab3bf02cc55086e170d500cfbb15c974acc</CoreFxCurrentRef>
-    <CoreClrCurrentRef>f4e6d7f7e3c10cbd87d5d9e0fcee32e9aa19f6d1</CoreClrCurrentRef>
+    <CoreFxCurrentRef>703d40525af4a09f5566cd3d8f334b3736b68fae</CoreFxCurrentRef>
     <WCFCurrentRef>c9a03fe0c3309508cb509a4ffdd6dc8b79ed525e</WCFCurrentRef>
+    <StandardCurrentRef>a10b32352e820a22d976e9df11b0e737443045e2</StandardCurrentRef>
+    <ProjectNTfsCurrentRef>f5fb8b6cb0eba67faffd6282297d8c5bf915eece</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>f5fb8b6cb0eba67faffd6282297d8c5bf915eece</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <CoreFxExpectedPrerelease>preview2-25309-01</CoreFxExpectedPrerelease>
-    <StandardExpectedPrerelease>preview2-25309-01</StandardExpectedPrerelease>
+    <WCFExpectedPrerelease>preview1-25302-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-25316-01</CoreFxExpectedPrerelease>
+    <NETStandardPackageVersion>2.1.0-preview1-25319-01</NETStandardPackageVersion>
+    <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
+    <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25319-02</MicrosoftNETCoreAppPackageVersion>
+    <MicrosoftNETCoreUwpPackageVersion>5.4.0-preview2-25319-02</MicrosoftNETCoreUwpPackageVersion>
+
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.4.0-preview2-25319-02</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+
+    <ProjectNTfsExpectedPrerelease>beta-25331-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>beta-25331-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-25331-00</ProjectNTfsTestILCPackageVersion>
+
+    <PlatformPackageVersion>2.1.0-preview1-25324-02</PlatformPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview1-25409-01</CoreClrPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
+    <CoreFxBaseLinePackageVersion>2.0.0-preview2-25304-02</CoreFxBaseLinePackageVersion>
+    <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
+    <XunitNetcoreExtensionsVersion>1.0.1-prerelease-01616-05</XunitNetcoreExtensionsVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
@@ -36,21 +62,54 @@
       <!-- manually pick up a new baseline in order to get package dependencies updated -->
       <DisabledPackages>Microsoft.Private.PackageBaseline;NETStandard.Library</DisabledPackages>
     </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="CoreClr">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)coreclr/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(CoreClrCurrentRef)</CurrentRef>
+    <RemoteDependencyBuildInfo Include="ProjectNTfs">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs/$(DependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(ProjectNTfsCurrentRef)</CurrentRef>
+    </RemoteDependencyBuildInfo>
+    <RemoteDependencyBuildInfo Include="ProjectNTfsTestILC">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs-testilc/$(DependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(ProjectNTfsTestILCCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
       <RawVersionsBaseUrl>https://raw.githubusercontent.com/dotnet/versions</RawVersionsBaseUrl>
     </DependencyBuildInfo>
 
+    <XmlUpdateStep Include="WCF">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>WCFExpectedPrerelease</ElementName>
+      <BuildInfoName>WCF</BuildInfoName>
+    </XmlUpdateStep>
     <XmlUpdateStep Include="CoreFx">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>CoreFxExpectedPrerelease</ElementName>
       <BuildInfoName>CoreFx</BuildInfoName>
     </XmlUpdateStep>
+    <XmlUpdateStep Include="Standard">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>NETStandardPackageVersion</ElementName>
+      <PackageId>$(NETStandardPackageId)</PackageId>
+    </XmlUpdateStep>
+    <!--<XmlUpdateStep Include="ProjectNTfs">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>ProjectNTfsExpectedPrerelease</ElementName>
+      <BuildInfoName>ProjectNTfs</BuildInfoName>
+    </XmlUpdateStep>-->
+    <!--<XmlUpdateStep Include="ProjectNTfsTestILC">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>ProjectNTfsTestILCExpectedPrerelease</ElementName>
+      <BuildInfoName>ProjectNTfsTestILC</BuildInfoName>
+    </XmlUpdateStep>-->
+    <!--<XmlUpdateStep Include="ProjectNTfsTestILC">
+      <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>ProjectNTfsTestILCPackageVersion</ElementName>
+      <PackageId>TestILC.amd64ret</PackageId>
+    </XmlUpdateStep>-->
   </ItemGroup>
+
+  <PropertyGroup>
+    <XUnitPackageVersion>2.3.0-beta1-build3642</XUnitPackageVersion>
+  </PropertyGroup>
 
   <!-- Set up dependencies on packages that aren't found in a BuildInfo. -->
   <ItemGroup>
@@ -68,17 +127,16 @@
       <Version>1.0.3</Version>
     </StaticDependency>
 
-    <StaticDependency Include="Microsoft.xunit.netcore.extensions;Microsoft.DotNet.BuildTools.TestSuite">
-      <Version>1.0.1-prerelease-01001-04</Version>
+    <XUnitDependency Include="xunit"/>
+    <XUnitDependency Include="xunit.runner.utility"/>
+    <XUnitDependency Include="xunit.runner.console"/>
+    <StaticDependency Include="@(XUnitDependency)">
+      <Version>$(XUnitPackageVersion)</Version>
     </StaticDependency>
 
-    <StaticDependency Include="Microsoft.TargetingPack.Private.NETNative">
-      <Version>1.1.0-beta-24607-01</Version>
+    <StaticDependency Include="Microsoft.xunit.netcore.extensions;Microsoft.DotNet.BuildTools.TestSuite">
+      <Version>$(XunitNetcoreExtensionsVersion)</Version>
     </StaticDependency>
-    <DependencyBuildInfo Include="NETStandard.Library">
-      <PackageId>NETStandard.Library</PackageId>
-      <Version>2.0.0-$(StandardExpectedPrerelease)</Version>
-    </DependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(StaticDependency)">
       <PackageId>%(Identity)</PackageId>

@@ -9,20 +9,28 @@
     <ProjectUrl>https://dot.net</ProjectUrl>
     <!-- Add a condition for this when we are able to run on .NET Core -->
     <PackagingTaskDir>$(ToolsDir)net46/</PackagingTaskDir>
+    <LicenseUrl>https://github.com/dotnet/corefx/blob/master/LICENSE.TXT</LicenseUrl>
     <!-- defined in buildtools packaging.targets, but we need this before targets are imported -->
     <PackagePlatform Condition="'$(PackagePlatform)' == ''">$(Platform)</PackagePlatform>
     <PackagePlatform Condition="'$(PackagePlatform)' == 'amd64'">x64</PackagePlatform>
     <NativePackagePath>$(MSBuildThisFileDirectory)src/Native/pkg</NativePackagePath>
-    <XmlDocFileRoot>$(PackagesDir)Microsoft.Private.Intellisense/1.0.0-rc4-24206-00/xmldocs</XmlDocFileRoot>
+
+    <XmlDocPackage>Microsoft.Private.Intellisense</XmlDocPackage>
+    <XmlDocPackageVersion>1.0.0-rc4-24206-00</XmlDocPackageVersion>
+    <XmlDocFileRoot>$(PackagesDir)$(XmlDocPackage.ToLowerInvariant())/$(XmlDocPackageVersion)/xmldocs</XmlDocFileRoot>
+    <XmlDocDir>$(BinDir)docs</XmlDocDir>
+
+    <!-- By default the packaging targets will package desktop facades as ref,
+         but we don't use this as we now build partial-reference-facades. -->
+    <PackageDesktopAsRef>false</PackageDesktopAsRef>
+
     <!-- We're currently not building a "live" baseline, instead we're using .NETCore 1.0 RTM stable versions as the baseline -->
     <SkipBaseLineCheck>true</SkipBaseLineCheck>
-    <LineupPackageVersion Condition="'$(LineupPackageVersion)' == ''">1.2.0</LineupPackageVersion>
-    <PlatformPackageVersion Condition="'$(PlatformPackageVersion)' == ''">1.2.0</PlatformPackageVersion>
 
     <!-- by default all packages will use the same version which revs with respect to product version -->
     <PackageVersion Condition="'$(PackageVersion)' == ''">4.5.0</PackageVersion>
     <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
-    <LicenseUrl>https://github.com/dotnet/wcf/blob/master/LICENSE.TXT</LicenseUrl>    
+    <SkipGenerationCheck>true</SkipGenerationCheck>
   </PropertyGroup>
 
   <Import Condition="Exists('pkg/baseline/baseline.props') AND '$(MSBuildProjectExtension)' == '.pkgproj'" Project="pkg/baseline/baseline.props" />
@@ -34,6 +42,14 @@
       Second, we aren't yet building pdbs, which the nuspecs specify.
     -->
     <SkipBuildPackages>true</SkipBuildPackages>
+  </PropertyGroup>
+
+  <!--
+    Disable designer marker: not included in WCF before BuildTools 2.0.
+    For info on this feature, see https://github.com/dotnet/corefx/commit/8d7870ad127d5b25968835ceb22a6c87eb7e73f8
+  -->
+  <PropertyGroup>
+    <IncludeDesignerMarker Condition="'$(IncludeDesignerMarker)' == ''">false</IncludeDesignerMarker>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
@@ -50,6 +66,12 @@
     <!-- Add version file to packages -->
     <File Condition="Exists('$(SyncInfoFile)')"
           Include="$(SyncInfoFile)" >
+        <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    </File>
+
+    <!-- Add a marker to help the designer optimize & share .NET Core packages -->
+    <File Condition="'$(IncludeDesignerMarker)' != 'false'"
+          Include="$(ProjectDir)pkg/useSharedDesignerContext.txt">
         <SkipPackageFileCheck>true</SkipPackageFileCheck>
     </File>
   </ItemGroup>

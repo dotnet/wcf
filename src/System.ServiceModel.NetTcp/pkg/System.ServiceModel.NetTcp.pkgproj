@@ -3,9 +3,9 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <ItemGroup>
     <ProjectReference Include="..\ref\System.ServiceModel.NetTcp.csproj">
-      <SupportedFramework>netcoreapp2.0;net461;$(AllXamarinFrameworks)</SupportedFramework>
+      <SupportedFramework>netcoreapp2.0;net461;uap10.1;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
-    <ProjectReference Include="..\src\System.ServiceModel.NetTcp.builds" />
+    <ProjectReference Include="..\src\System.ServiceModel.NetTcp.csproj" />
     <HarvestIncludePaths Include="ref/netcore50;lib/netcore50" />
     <HarvestIncludePaths Include="ref/netstandard1.1" />
     <HarvestIncludePaths Include="ref/netstandard1.3;lib/netstandard1.3" />
@@ -23,7 +23,7 @@
     <InboxOnTargetFramework Include="xamarintvos10" />
     <InboxOnTargetFramework Include="xamarinwatchos10" />
     <ValidatePackageSuppression Include="PermitMissingImplementation">
-      <!-- Supported inbox by all ns1.1-1.2 frameworks -->
+      <!-- Supported inbox by all ns1.0-1.2 frameworks -->
       <Value>.NETStandard,Version=v1.1;.NETStandard,Version=v1.2</Value>
     </ValidatePackageSuppression>
   </ItemGroup>

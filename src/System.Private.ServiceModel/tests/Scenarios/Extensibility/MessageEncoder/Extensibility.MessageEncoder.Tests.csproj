@@ -1,48 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <TestCategories>OuterLoop</TestCategories>
-  </PropertyGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Extensibility.MessageEncoder.Tests</RootNamespace>
     <AssemblyName>Extensibility.MessageEncoder.Tests</AssemblyName>
+    <TestCategories>OuterLoop</TestCategories>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{79551997-6C99-446E-B4BF-6F3659FA6B64}</ProjectGuid>
-    <TargetGroup Condition="'$(TargetGroup)'==''" >netstandard1.3</TargetGroup>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(WcfSourcePkgProj)">
-      <Name>System.Private.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfDuplexPkgProj)'>
-      <Name>System.ServiceModel.Duplex</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfHttpPkgProj)'>
-      <Name>System.ServiceModel.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfNetTcpPkgProj)'>
-      <Name>System.ServiceModel.NetTcp</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfPrimitivesPkgProj)'>
-      <Name>System.ServiceModel.Primitives</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(WcfInfrastructureCommonProj)">
-      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
-      <Name>Infrastructure.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfScenarioTestCommonProj)'>
-      <Project>{9098B41C-9C2E-4FC6-B7D8-FC3411736A22}</Project>
-      <Name>ScenarioTests.Common</Name>
-    </ProjectReference>
+    <ReferenceFromRuntime Include="System.Private.ServiceModel" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Duplex" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Http" />
+    <ReferenceFromRuntime Include="System.ServiceModel.NetTcp" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Primitives" />
+
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

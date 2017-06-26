@@ -5,7 +5,7 @@
     <PreventImplementationReference>true</PreventImplementationReference>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\System.Private.ServiceModel.builds" />
+    <ProjectReference Include="..\src\System.Private.ServiceModel.csproj" />
     <HarvestIncludePaths Include="runtimes/unix/lib/netstandard1.3" />
     <HarvestIncludePaths Include="runtimes/win7/lib/netstandard1.3" />
     <HarvestIncludePaths Include="runtimes/win7/lib/netcore50" />

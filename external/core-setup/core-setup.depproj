@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <PropertyGroup>
+    <NETStandardVersion Condition="$(NuGetTargetMoniker.StartsWith('.NETStandard,Version=v'))">$(NuGetTargetMoniker.SubString(22))</NETStandardVersion>
+    <IsNETStandard1x Condition="$(NETStandardVersion.StartsWith('1.'))">true</IsNETStandard1x>
+    <IsNETStandard2x Condition="$(NETStandardVersion.StartsWith('2.'))">true</IsNETStandard2x>
+    <BinPlaceRef>true</BinPlaceRef>
+    <NuGetDeploySourceItem>Reference</NuGetDeploySourceItem>
+    <NugetRuntimeIdentifier>None</NugetRuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(NETStandardVersion)' == ''">
+    <PackageReference Include="@(CoreSetupPackageReference)" />
+    <FileToExclude Include="@(CoreSetupWcfAssemblies)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Security.Principal.Windows">
+      <Version>4.4.0-preview2-25316-01</Version>
+    </PackageReference>
+    <PackageReference Include="System.Security.AccessControl">
+      <Version>4.4.0-preview2-25316-01</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetsWindows)'=='true'">
+    <PackageReference Include="System.Net.Http.WinHttpHandler">
+      <Version>4.4.0-preview2-25316-01</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- for all configurations this project provides refs for that configuration -->
+    <BinPlaceConfiguration Include="$(Configuration)">
+      <RefPath>$(RefPath)</RefPath>
+    </BinPlaceConfiguration>
+  </ItemGroup>
+
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+</Project>

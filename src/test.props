@@ -1,15 +1,29 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <WcfSourceProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfSourceProj>
+
     <WcfSourcePkgProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj'))</WcfSourcePkgProj>
     <WcfDuplexPkgProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Duplex\pkg\System.ServiceModel.Duplex.pkgproj'))</WcfDuplexPkgProj>
     <WcfHttpPkgProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Http\pkg\System.ServiceModel.Http.pkgproj'))</WcfHttpPkgProj>
     <WcfPrimitivesPkgProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Primitives\pkg\System.ServiceModel.Primitives.pkgproj'))</WcfPrimitivesPkgProj>
     <WcfNetTcpPkgProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.NetTcp\pkg\System.ServiceModel.NetTcp.pkgproj'))</WcfNetTcpPkgProj>
     <WcfSecurityPkgProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Security\pkg\System.ServiceModel.Security.pkgproj'))</WcfSecurityPkgProj>
+
+    <WcfSourceRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\ref\System.Private.ServiceModel.csproj'))</WcfSourceRefProj>
+    <WcfDuplexRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Duplex\ref\System.ServiceModel.Duplex.csproj'))</WcfDuplexRefProj>
+    <WcfHttpRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Http\ref\System.ServiceModel.Http.csproj'))</WcfHttpRefProj>
+    <WcfPrimitivesRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.csproj'))</WcfPrimitivesRefProj>
+    <WcfNetTcpRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.csproj'))</WcfNetTcpRefProj>
+    <WcfSecurityRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.ServiceModel.Security\ref\System.ServiceModel.Security.csproj'))</WcfSecurityRefProj>
+
     <WcfUnitTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj'))</WcfUnitTestCommonProj>
     <WcfScenarioTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.csproj'))</WcfScenarioTestCommonProj>
     <WcfInfrastructureCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj'))</WcfInfrastructureCommonProj>
+  </PropertyGroup>
+  <PropertyGroup>
+    <WcfUnitTestCommonDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Unit\'))</WcfUnitTestCommonDir>
+    <WcfScenarioTestCommonDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Scenarios\'))</WcfScenarioTestCommonDir>
+    <WcfInfrastructureCommonDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Infrastructure\'))</WcfInfrastructureCommonDir>
   </PropertyGroup>
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>

@@ -7,7 +7,6 @@
   <PropertyGroup>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.ServiceModel.Primitives.Tests</RootNamespace>
     <AssemblyName>System.ServiceModel.Primitives.Tests</AssemblyName>
@@ -20,32 +19,17 @@
     <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(WcfSourcePkgProj)">
-      <Name>System.Private.ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfDuplexPkgProj)'>
-      <Name>System.ServiceModel.Duplex</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfHttpPkgProj)'>
-      <Name>System.ServiceModel.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfNetTcpPkgProj)'>
-      <Name>System.ServiceModel.NetTcp</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfPrimitivesPkgProj)'>
-      <Name>System.ServiceModel.Primitives</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfSecurityPkgProj)'>
-      <Name>System.ServiceModel.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include='$(WcfUnitTestCommonProj)'>
-      <Project>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</Project>
-      <Name>UnitTests.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(WcfInfrastructureCommonProj)">
-      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
-      <Name>Infrastructure.Common</Name>
-    </ProjectReference>
+    <!-- Some internal types are needed, so we reference the implementation assembly, rather than the reference assembly. -->
+    <TargetingPackExclusions Include="System.ServiceModel.Primitives" />
+    <TargetingPackExclusions Include="System.ServiceModel.Duplex" />
+    <TargetingPackExclusions Include="System.ServiceModel.Http" />
+    <TargetingPackExclusions Include="System.ServiceModel.NetTcp" />
+    <ReferenceFromRuntime Include="System.Private.ServiceModel" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Primitives" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Duplex" />
+
+    <ProjectReference Include='$(WcfUnitTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
