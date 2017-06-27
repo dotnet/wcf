@@ -291,7 +291,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // Set up standard options
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
-            Utilities.addXUnitDotNETResults(newJob, 'bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml')
+            Utilities.addXUnitDotNETResults(newJob, "bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml")
 
             def archiveContents = "msbuild.log"
 
