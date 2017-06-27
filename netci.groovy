@@ -1,4 +1,5 @@
 // Import the utility functionality.
+// Temporary change to validate CI.
 
 import jobs.generation.Utilities;
 import jobs.generation.JobReport;
@@ -266,6 +267,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
     configurationGroupList.each { configurationGroup ->
         supportedFullCycleInnerloopPlatforms.each { os -> 
             def newJobName = "${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
+            def targetGroup = "netcoreapp"
             
             def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
             
@@ -273,7 +275,8 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             {
                 newJob.with {
                     steps {
-                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd -${configurationGroup} -- /p:OSGroup=${osGroupMap[os]}")
+                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd -${configurationGroup} -os:${osGroup} -framework:${targetGroup}")
+                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build-tests.cmd -${configurationGroup} -os:${osGroup} -framework:${targetGroup} -- /p:IsCIBuild=true")
                         batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
                     }
                 }
@@ -281,7 +284,9 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             else {
                 newJob.with {
                     steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -- /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]}")
+                    def useServerGC = (configurationGroup == 'Release' && isPR) ? 'useServerGC' : ''
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -framework:${targetGroup} -os:${osGroup}")
+                        shell("HOME=\$WORKSPACE/tempHome ./build-tests.sh -${configurationGroup.toLowerCase()} -framework:${targetGroup} -os:${osGroup} -- ${useServerGC} /p:IsCIBuild=true")
                     }
                 }
             }
