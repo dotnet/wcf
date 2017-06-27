@@ -166,7 +166,7 @@ wcfUtilities = new WcfUtilities()
         // Set up standard options.
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         // Add the unit test results
-        Utilities.addXUnitDotNETResults(newJob, 'bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml')
+        Utilities.addXUnitDotNETResults(newJob, "bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml")
         
         // Set up appropriate triggers. PR on demand, otherwise on change pushed
         if (isPR) {
@@ -224,7 +224,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // Set up standard options.
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
-            Utilities.addXUnitDotNETResults(newJob, 'bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml')
+            Utilities.addXUnitDotNETResults(newJob, "bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml")
             // Add archival for the built data.
             Utilities.addArchival(newJob, "msbuild.log", '', doNotFailIfNothingArchived=true, archiveOnlyIfSuccessful=false)
 
