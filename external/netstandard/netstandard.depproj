@@ -17,12 +17,25 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(IsNETStandard2x)' == 'true'">
+  <ItemGroup>
+    <PackageReference Include="@(RefAndRuntimePackageReference)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsNETStandard2x)' == 'true' or
+                        '$(TargetGroup)' == 'uap'">
     <PackageReference Include="System.Reflection.DispatchProxy">
-      <Version>4.4.0-preview2-25316-01</Version>
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
-    <PackageReference Include="System.Runtime">
-      <Version>4.4.0-beta-24913-02</Version>
+
+    <!--
+      Always include these packages to compile against, even though their
+      runtimes may not be included depending on configuration.
+    -->
+    <PackageReference Include="System.Security.Principal.Windows">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http.WinHttpHandler">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
