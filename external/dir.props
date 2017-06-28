@@ -11,30 +11,28 @@
     <RestoreOutputPath>$(IntermediateOutputPath)</RestoreOutputPath>
   </PropertyGroup>
 
-  <!-- Determine name and version of packages to use from Core-Setup. -->
-  <ItemGroup Condition="'$(TargetGroup)' == 'netstandard' or '$(TargetGroup)' == 'netcoreapp'">
-    <CoreSetupPackageReference Include="Microsoft.NETCore.App">
-      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
-    </CoreSetupPackageReference>
-    <CoreSetupPackageReference Include="Microsoft.NETCore.TestHost">
-      <Version>$(CoreClrPackageVersion)</Version>
-    </CoreSetupPackageReference>
-    <CoreSetupPackageReference Include="Microsoft.NETCore.DotNetHost">
-      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
-    </CoreSetupPackageReference>
-    <CoreSetupPackageReference Include="Microsoft.NETCore.DotNetHostPolicy">
-      <Version>$(MicrosoftNETCoreAppPackageVersion)</Version>
-    </CoreSetupPackageReference>
+  <!-- Packages needed in multiple depprojs. -->
+  <ItemGroup>
+    <RefAndRuntimePackageReference Include="System.Security.AccessControl">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </RefAndRuntimePackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap' or '$(TargetGroup)' == 'uapaot'">
-    <CoreSetupPackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>$(MicrosoftNETCoreUwpPackageVersion)</Version>
-    </CoreSetupPackageReference>
+  <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
+    <RefAndRuntimePackageReference Include="Microsoft.Private.CoreFx.NETCoreApp">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </RefAndRuntimePackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap' or
+                        '$(TargetGroup)' == 'uapaot'">
+    <RefAndRuntimePackageReference Include="Microsoft.Private.CoreFx.UAP">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </RefAndRuntimePackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Assemblies to skip copying from CoreSetupPackageReference because they build in WCF. -->
+    <!-- Assemblies to skip copying from packages because they build in WCF. -->
     <CoreSetupWcfAssemblies Include="System.Private.ServiceModel" />
     <CoreSetupWcfAssemblies Include="System.ServiceModel.Duplex" />
     <CoreSetupWcfAssemblies Include="System.ServiceModel.Http" />

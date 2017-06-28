@@ -51,6 +51,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="@(RefAndRuntimePackageReference)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Always include these packages to compile against, even though their
+      runtimes may not be included depending on configuration.
+    -->
+    <PackageReference Include="System.Security.Principal.Windows">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http.WinHttpHandler">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- for all configurations this project provides refs for that configuration -->
     <BinPlaceConfiguration Include="$(Configuration)">
       <RefPath>$(RefPath)</RefPath>
