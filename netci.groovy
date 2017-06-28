@@ -233,6 +233,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // will test against WcfServiceUri.
             // The current design limitation means that if we allow concurrent builds, it becomes possible to pave over 
             // the server endpoint with mismatched code while another test is running.
+
             // Due to this design limitation, we have to disable concurrent builds for outerloops 
             newJob.concurrentBuild(false)
 
@@ -268,6 +269,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
         supportedFullCycleInnerloopPlatforms.each { os -> 
             def newJobName = "${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             def targetGroup = "netcoreapp"
+            def osGroup = osGroupMap[osName]
             
             def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
             
