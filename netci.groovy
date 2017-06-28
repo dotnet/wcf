@@ -205,8 +205,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             else {
                 newJob.with {
                     steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
-                    }
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")                    }
                 }
             }
 
@@ -233,7 +232,6 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // will test against WcfServiceUri.
             // The current design limitation means that if we allow concurrent builds, it becomes possible to pave over 
             // the server endpoint with mismatched code while another test is running.
-
             // Due to this design limitation, we have to disable concurrent builds for outerloops 
             newJob.concurrentBuild(false)
 
