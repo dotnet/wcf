@@ -12,7 +12,9 @@
   </PropertyGroup>
 
   <!-- Packages needed in multiple depprojs. -->
-  <ItemGroup>
+  <ItemGroup Condition="'$(IsNETStandard2x)' == 'true' or
+                        '$(TargetGroup)' == 'uap' or
+                        '$(TargetGroup)' == 'netcoreapp'">
     <RefAndRuntimePackageReference Include="System.Security.AccessControl">
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </RefAndRuntimePackageReference>
