@@ -205,7 +205,8 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             else {
                 newJob.with {
                     steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")                    }
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
+                    }
                 }
             }
 
