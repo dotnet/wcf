@@ -1,5 +1,4 @@
 // Import the utility functionality.
-// Temporary change to validate CI.
 
 import jobs.generation.Utilities;
 import jobs.generation.JobReport;
@@ -154,10 +153,12 @@ wcfUtilities = new WcfUtilities()
         def os = 'Windows_NT'
         def newJobName = "outerloop_selfhost_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
         def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
+        def targetGroup = "netcoreapp"
         
         newJob.with {
             steps {
-                batchFile("build.cmd -${configurationGroup} -outerloop -- /p:OSGroup=${osGroupMap[os]}")
+                batchFile("build.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]}")
+                batchFile("build-tests.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]} -outerloop -- /p:IsCIBuild=true")
             }
         }
 
@@ -167,7 +168,7 @@ wcfUtilities = new WcfUtilities()
         // Set up standard options.
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         // Add the unit test results
-        Utilities.addXUnitDotNETResults(newJob, "bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml")
+        Utilities.addXUnitDotNETResults(newJob, 'bin/**/testResults.xml')
         
         // Set up appropriate triggers. PR on demand, otherwise on change pushed
         if (isPR) {
@@ -192,20 +193,23 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
         supportedFullCycleOuterloopPlatforms.each { os ->
             def newJobName = "outerloop_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
             def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
+            def targetGroup = "netcoreapp"
             
             wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branch, isPR)
             
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
                     steps {
-                        batchFile("build.cmd -${configurationGroup} -outerloop -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=%WcfServiceUri% /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
+                        batchFile("build.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]}")
+                        batchFile("build-tests.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]} -outerloop -- /p:ServiceUri=%WcfServiceUri% /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true /p:IsCIBuild=true")
                     }
                 }
             } 
             else {
                 newJob.with {
                     steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true")
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()}")
+                        shell("HOME=\$WORKSPACE/tempHome ./build-tests.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:IsCIBuild=true")
                     }
                 }
             }
@@ -225,7 +229,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // Set up standard options.
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
-            Utilities.addXUnitDotNETResults(newJob, "bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml")
+            Utilities.addXUnitDotNETResults(newJob, 'bin/**/testResults.xml')
             // Add archival for the built data.
             Utilities.addArchival(newJob, "msbuild.log", '', doNotFailIfNothingArchived=true, archiveOnlyIfSuccessful=false)
 
@@ -296,7 +300,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             // Set up standard options
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
-            Utilities.addXUnitDotNETResults(newJob, "bin/${osGroupMap[os]}.AnyCPU.${configurationGroup}/**/testResults.xml")
+            Utilities.addXUnitDotNETResults(newJob, 'bin/**/testResults.xml')
 
             def archiveContents = "msbuild.log"
 
