@@ -4,7 +4,6 @@
   <PropertyGroup>
     <NETStandardVersion Condition="$(NuGetTargetMoniker.StartsWith('.NETStandard,Version=v'))">$(NuGetTargetMoniker.SubString(22))</NETStandardVersion>
     <IsNETStandard1x Condition="$(NETStandardVersion.StartsWith('1.'))">true</IsNETStandard1x>
-    <IsNETStandard2x Condition="$(NETStandardVersion.StartsWith('2.'))">true</IsNETStandard2x>
     <BinPlaceRef>true</BinPlaceRef>
     <NuGetDeploySourceItem>Reference</NuGetDeploySourceItem>
     <NugetRuntimeIdentifier>None</NugetRuntimeIdentifier>
@@ -14,28 +13,6 @@
   <ItemGroup>
     <PackageReference Include="NETStandard.Library">
       <Version>$(NETStandardPackageVersion)</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="@(RefAndRuntimePackageReference)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(IsNETStandard2x)' == 'true' or
-                        '$(TargetGroup)' == 'uap'">
-    <PackageReference Include="System.Reflection.DispatchProxy">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
-    </PackageReference>
-
-    <!--
-      Always include these packages to compile against, even though their
-      runtimes may not be included depending on configuration.
-    -->
-    <PackageReference Include="System.Security.Principal.Windows">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
-    </PackageReference>
-    <PackageReference Include="System.Net.Http.WinHttpHandler">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
