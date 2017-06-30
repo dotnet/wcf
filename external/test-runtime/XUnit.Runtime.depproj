@@ -157,19 +157,6 @@
           DestinationFiles="$(TestHostRootPath)\TestILC\%(TestILCFolderContents.RecursiveDir)%(TestILCFolderContents.Filename)%(TestILCFolderContents.Extension)"
           SkipUnchangedFiles="true" />
 
-    <!--
-      Copy clrcompression.dll into ILCInputFolder. This is needed in WCF and not
-      CoreFX: in CoreFX, clrcompression.dll is a build output.
-
-      Without clrcompression.dll, the xunit runner no-ops when using RunTests.
-      It works during a vertical build because Run.cmd adds environment
-      variables that allow the runner to find the BuildTools clrcompression.dll.
-    -->
-    <Copy Condition="'$(TestILCFolder)'!=''"
-          SourceFiles="$(TestILCFolder)\ExternalFiles\Framework\clrcompression.dll"
-          DestinationFiles="$(TestHostRootPath)\ILCInputFolder\clrcompression.dll"
-          SkipUnchangedFiles="true" />
-
   </Target>
 
   <Target Name="AddXunitConsoleRunner" BeforeTargets="ResolveReferences" Condition="'$(TargetGroup)' == 'netfx'">
