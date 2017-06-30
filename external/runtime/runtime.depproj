@@ -48,22 +48,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="@(RefAndRuntimePackageReference)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetGroup)' == 'netstandard' or
-                        '$(TargetGroup)' == 'netcoreapp'">
-    <PackageReference Include="System.Security.Principal.Windows">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
-    </PackageReference>
-
-    <PackageReference Include="System.Net.Http.WinHttpHandler"
-                      Condition="'$(TargetsWindows)'=='true'">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
-    </PackageReference>
-  </ItemGroup>
-
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 
   <!-- Setup the testing shared framework host -->
