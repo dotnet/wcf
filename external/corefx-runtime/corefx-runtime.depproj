@@ -14,8 +14,7 @@
     <PackageReference Include="@(RefAndRuntimePackageReference)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetGroup)' == 'netstandard' or
-                        '$(TargetGroup)' == 'netcoreapp'">
+  <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
     <PackageReference Include="System.Security.Principal.Windows">
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
