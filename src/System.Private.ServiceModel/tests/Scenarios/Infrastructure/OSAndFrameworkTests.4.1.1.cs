@@ -18,6 +18,7 @@ public class OSAndFrameworkTests
                                    RuntimeInformation.FrameworkDescription));
     }
 
+    [Issue(2024)]
     [WcfFact]
     [OuterLoop]
     public static void OSID_Was_Detected()
