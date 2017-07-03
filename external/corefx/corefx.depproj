@@ -11,19 +11,47 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="@(RefAndRuntimePackageReference)" />
+    <PackageReference Include="System.Security.AccessControl">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
+    <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap' or
+                        '$(TargetGroup)' == 'uapaot'">
+    <PackageReference Include="Microsoft.Private.CoreFx.UAP">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp' or
+                        '$(TargetGroup)' == 'netstandard'">
+    <PackageReference Include="System.Reflection.DispatchProxy">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
     <PackageReference Include="System.Security.Principal.Windows">
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
 
     <PackageReference Include="System.Net.Http.WinHttpHandler"
-                      Condition="'$(TargetsWindows)'=='true'">
+                      Condition="'$(TargetsWindows)' == 'true' or
+                                 '$(TargetGroup)' == 'netstandard'">
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
   </ItemGroup>
+
+  <!-- The depproj deploys runtime assets. This target also deploys reference assets. -->
+  <Target Name="CopyRefAssets" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <_ReferenceAssets Include="@(Reference)" Condition="'%(Reference.NuGetPackageId)' != ''" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_ReferenceAssets)" DestinationFolder="$(RefPath)" />
+  </Target>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

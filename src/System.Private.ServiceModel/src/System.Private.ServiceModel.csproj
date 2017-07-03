@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(TargetsWindows)'=='true'">
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetsWindows)'=='true'">
+  <ItemGroup Condition="'$(TargetGroup)' != 'uap' AND '$(TargetsWindows)'=='true'">
     <Reference Include="System.Net.Http.WinHttpHandler" />
   </ItemGroup>
   <ItemGroup>
