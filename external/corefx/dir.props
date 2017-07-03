@@ -1,0 +1,23 @@
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\dir.props" />
+
+  <!-- Packages needed in multiple depprojs. -->
+  <ItemGroup Condition="'$(TargetGroup)' != 'uapaot'">
+    <RefAndRuntimePackageReference Include="System.Security.AccessControl">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </RefAndRuntimePackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
+    <RefAndRuntimePackageReference Include="Microsoft.Private.CoreFx.NETCoreApp">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </RefAndRuntimePackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap' or
+                        '$(TargetGroup)' == 'uapaot'">
+    <RefAndRuntimePackageReference Include="Microsoft.Private.CoreFx.UAP">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </RefAndRuntimePackageReference>
+  </ItemGroup>
+</Project>
