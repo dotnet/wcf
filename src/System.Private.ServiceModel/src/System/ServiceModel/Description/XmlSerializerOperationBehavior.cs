@@ -1127,16 +1127,24 @@ namespace System.ServiceModel.Description
         private static XmlSerializer[] FromMappingsViaInjection(XmlMapping[] mappings, Type type)
         {
             XmlSerializer[] serializers = new XmlSerializer[mappings.Length];
+
+            bool generatedSerializerNotFound = false;
             for (int i = 0; i < serializers.Length; i++)
             {
                 Type t;
                 GeneratedXmlSerializers.GetGeneratedSerializers().TryGetValue(mappings[i].GetKey(), out t);
                 if (t == null)
                 {
-                    throw new InvalidOperationException(SR.Format(SR.SFxXmlSerializerIsNotFound, type));
+                    generatedSerializerNotFound = true;
+                    break;
                 }
 
                 serializers[i] = new XmlSerializer(t);
+            }
+
+            if (generatedSerializerNotFound)
+            {
+                return XmlSerializer.FromMappings(mappings, type);
             }
 
             return serializers;
