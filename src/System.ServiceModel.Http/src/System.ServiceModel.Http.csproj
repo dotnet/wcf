@@ -4,15 +4,15 @@
   <PropertyGroup>
     <AssemblyName>System.ServiceModel.Http</AssemblyName>
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
-    <!-- UAP10.1 is not yet mapped to netstandard2.0, manually duplicate this ref -->
-    <PackageTargetFramework Condition="'$(TargetGroup)' == 'netstandard'">netstandard2.0;uap10.1</PackageTargetFramework>
+    <!-- UAP10vNext is not yet mapped to netstandard2.0, manually duplicate this ref -->
+    <PackageTargetFramework Condition="'$(TargetGroup)' == 'netstandard'">netstandard2.0;$(UAPvNextTFM)</PackageTargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Windows_NT-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Windows_NT-Release|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Release|AnyCPU'" />
   <ItemGroup>
-    <SuppressPackageTargetFrameworkCompatibility Include="uap10.1" />
+    <SuppressPackageTargetFrameworkCompatibility Include="$(UAPvNextTFM)" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetGroup)' == 'netfx'">
     <Reference Include="mscorlib" />

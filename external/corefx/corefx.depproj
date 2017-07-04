@@ -10,6 +10,12 @@
     <RidSpecificAssets>true</RidSpecificAssets>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetGroup)' == 'uap' or '$(TargetGroup)' == 'uapaot'">
+    <!-- Temporarily Override restore moniker since corefx's targeting pack still uses uap10.1 moniker -->
+    <NuGetTargetMoniker>UAP,Version=v10.1</NuGetTargetMoniker>
+    <NuGetTargetMonikerShort>uap10.1</NuGetTargetMonikerShort>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Security.AccessControl">
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
