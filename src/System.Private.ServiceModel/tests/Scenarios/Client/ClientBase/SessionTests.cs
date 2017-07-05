@@ -185,10 +185,23 @@ public static class SessionTests
                 // But it has a different binding with a very short receiveTimeout ="00:00:05"
                 // So waiting for just 10 seconds is enough to get the connection and the session implicitly closed
                 Task.Delay(10000).Wait();
-                Assert.Throws<System.ServiceModel.CommunicationException>(() =>
+                try
                 {
                     channel.MethodCTerminating();
-                });
+                    Assert.True(false, "channel.MethodCTerminating() should throw, but it didn't.");
+                }
+                catch(CommunicationException)
+                {
+                    // channel.MethodCTerminating threw CommunicationException on NetCore
+                }
+                catch (System.IO.IOException)
+                {
+                    // channel.MethodCTerminating threw CommunicationException on uap
+                }
+                catch (Exception e)
+                {
+                    Assert.True(false, $"channel.MethodCTerminating() threw unexpected exception: {e}");
+                }
             }
             finally
             {
