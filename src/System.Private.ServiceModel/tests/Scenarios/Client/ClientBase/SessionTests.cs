@@ -196,7 +196,7 @@ public static class SessionTests
                 }
                 catch (System.IO.IOException)
                 {
-                    // channel.MethodCTerminating threw CommunicationException on uap
+                    // channel.MethodCTerminating threw IOException on uap
                 }
                 catch (Exception e)
                 {
