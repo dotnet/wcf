@@ -29,7 +29,7 @@
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetGroup)' != 'uap'">
-    <DefineConstants>$(DefineConstants);FEATURE_CORECLR;SUPPORTS_WINDOWSIDENTITY</DefineConstants>
+    <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetsWindows)'=='true'">
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
@@ -158,9 +158,6 @@
     <Reference Include="Windows" />
     <Reference Include="System.Runtime.WindowsRuntime" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetGroup)' != 'uap' AND '$(TargetsWindows)' == 'true'">
-    <DefineConstants>$(DefineConstants);SUPPORTS_WINDOWSIDENTITY</DefineConstants>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
