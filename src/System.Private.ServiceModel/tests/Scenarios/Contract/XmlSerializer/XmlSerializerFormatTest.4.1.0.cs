@@ -39,7 +39,6 @@ public static partial class XmlSerializerFormatTests
 
     [WcfFact]
     [OuterLoop]
-    [Issue(702, Framework = FrameworkID.NetCore | FrameworkID.NetNative)]
     public static void MessageHeader_RequestTypeWithUsesMessageHeaderAttribute()
     {
         // *** SETUP *** \\
