@@ -236,7 +236,6 @@ namespace System.ServiceModel.Channels
                 SecurityUtils.CloseTokenProviderIfRequired(_clientTokenProvider, timeoutHelper.RemainingTime());
             }
 
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
             private static SecurityMessageProperty CreateServerSecurity(NegotiateStream negotiateStream)
             {
                 GenericIdentity remoteIdentity = (GenericIdentity)negotiateStream.RemoteIdentity;
@@ -254,7 +253,6 @@ namespace System.ServiceModel.Channels
                     return null;
                 }
             }
-#endif // SUPPORTS_WINDOWSIDENTITY
 
             protected override Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
             {
@@ -266,8 +264,6 @@ namespace System.ServiceModel.Channels
                 return retVal;
             }
 
-
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
             protected override async Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurity)
             {
                 NegotiateStream negotiateStream;
@@ -303,14 +299,7 @@ namespace System.ServiceModel.Channels
 
                 return negotiateStream;
             }
-#else
-            protected override Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurity)
-            {
-                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
-            }
-#endif // SUPPORTS_WINDOWSIDENTITY 
 
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
             private void InitiateUpgradePrepare(
                 Stream stream,
                 out NegotiateStream negotiateStream,
@@ -353,7 +342,6 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(SR.Format(SR.StreamMutualAuthNotSatisfied)));
                 }
             }
-#endif // SUPPORTS_WINDOWSIDENTITY 
         }
     }
 }

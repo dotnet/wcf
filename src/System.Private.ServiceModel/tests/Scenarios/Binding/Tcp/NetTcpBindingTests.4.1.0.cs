@@ -15,7 +15,6 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     //                         - ClientCredentialType = Windows
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available))]
-    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [OuterLoop]
     public static void DefaultSettings_Echo_RoundTrips_String()
     {
@@ -51,7 +50,6 @@ public partial class Binding_Tcp_NetTcpBindingTests : ConditionalWcfTest
     // By default ClientCredentialType will be 'Windows'
     // SecurityMode is Transport by default with NetTcpBinding, this test explicitly sets it.
     [WcfFact]
-    [Issue(832, Framework = FrameworkID.NetNative)] // Windows Stream Security is not supported in NET Native
     [Condition(nameof(Windows_Authentication_Available))]
     [OuterLoop]
     public static void SecurityModeTransport_Echo_RoundTrips_String()
