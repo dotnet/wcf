@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <PropertyGroup>
+    <!-- support cross-targeting by choosing a RID to restore when running on a different machine that what we're build for -->
+    <NugetRuntimeIdentifier Condition="'$(OSGroup)' == 'Windows_NT' AND '$(RunningOnUnix)' == 'true'">win7-x64</NugetRuntimeIdentifier>
+    <NugetRuntimeIdentifier Condition="'$(OSGroup)' == 'Unix' AND '$(RunningOnUnix)' != 'true'">ubuntu.14.04-x64</NugetRuntimeIdentifier>
+    <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uap'">win10-$(ArchGroup)</NugetRuntimeIdentifier>
+    <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uapaot'">win10-$(ArchGroup)-aot</NugetRuntimeIdentifier>
+    <RidSpecificAssets>true</RidSpecificAssets>
+    <WcfPackageVersion Condition="'$(WcfPackageVersion)' == ''">$(PackageVersion)-$(PreReleaseLabel)-$(BuildNumberMajor)-$(BuildNumberMinor)</WcfPackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetGroup)' == 'uap' or '$(TargetGroup)' == 'uapaot'">
+    <!-- Temporarily Override restore moniker since corefx's targeting pack still uses uap10.1 moniker -->
+    <NuGetTargetMoniker>UAP,Version=v10.1</NuGetTargetMoniker>
+    <NuGetTargetMonikerShort>uap10.1</NuGetTargetMonikerShort>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Private.ServiceModel">
+      <Version>$(WcfPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="System.ServiceModel.Duplex">
+      <Version>$(WcfPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="System.ServiceModel.Http">
+      <Version>$(WcfPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="System.ServiceModel.NetTcp">
+      <Version>$(WcfPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="System.ServiceModel.Primitives">
+      <Version>$(WcfPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="System.ServiceModel.Security">
+      <Version>$(WcfPackageVersion)</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- The depproj deploys runtime assets. This target also deploys reference assets. -->
+  <Target Name="CopyRefAssets" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <_ReferenceAssets Include="@(Reference)" Condition="'%(Reference.NuGetPackageId)' != ''" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_ReferenceAssets)" DestinationFolder="$(RefPath)" />
+  </Target>
+
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+</Project>

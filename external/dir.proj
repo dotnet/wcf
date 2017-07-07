@@ -16,5 +16,10 @@
     <Project Include="winrt/winrt.depproj" />
   </ItemGroup>
 
+  <!-- Build tests against packages -->
+  <ItemGroup Condition="'$(BuildAgainstPackages)' == 'true'">
+    <Project Include="wcf/wcf.depproj" />
+  </ItemGroup>
+
   <Import Project="../dir.traversal.targets" />
 </Project>
