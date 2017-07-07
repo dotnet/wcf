@@ -2,13 +2,13 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PackageConfigurations>
+      uap-Windows_NT;
       netstandard-Windows_NT;
       netstandard-Unix;
     </PackageConfigurations>
     <BuildConfigurations>
       $(PackageConfigurations);
       netstandard;
-      uap-Windows_NT;
     </BuildConfigurations>
   </PropertyGroup>
 </Project>

@@ -9,24 +9,24 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>2c2a0c0d6ee600d9d016553d3c705967dd991371</CoreFxCurrentRef>
+    <CoreFxCurrentRef>893c05a4163f89f9ef0bdc69b2f1debda10a05c4</CoreFxCurrentRef>
     <WCFCurrentRef>c9a03fe0c3309508cb509a4ffdd6dc8b79ed525e</WCFCurrentRef>
-    <StandardCurrentRef>a10b32352e820a22d976e9df11b0e737443045e2</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>f5fb8b6cb0eba67faffd6282297d8c5bf915eece</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>f5fb8b6cb0eba67faffd6282297d8c5bf915eece</ProjectNTfsTestILCCurrentRef>
+    <StandardCurrentRef>9d670595478e52f203b9b8925576ce5e7f6826dd</StandardCurrentRef>
+    <ProjectNTfsCurrentRef>d1cec650123d1124f51b6144a149453abd45bee4</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>d1cec650123d1124f51b6144a149453abd45bee4</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <WCFExpectedPrerelease>preview1-25302-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview1-25427-03</CoreFxExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-25506-02</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-25319-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-25427-03</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-25506-02</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
 
     <ProjectNTfsExpectedPrerelease>beta-25331-00</ProjectNTfsExpectedPrerelease>
     <ProjectNTfsTestILCExpectedPrerelease>beta-25331-00</ProjectNTfsTestILCExpectedPrerelease>
@@ -36,7 +36,7 @@
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
-    <CoreFxBaseLinePackageVersion>2.0.0-preview2-25304-02</CoreFxBaseLinePackageVersion>
+    <CoreFxBaseLinePackageVersion>2.1.0-preview2-25506-02</CoreFxBaseLinePackageVersion>
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>1.0.1-prerelease-01616-05</XunitNetcoreExtensionsVersion>
 
