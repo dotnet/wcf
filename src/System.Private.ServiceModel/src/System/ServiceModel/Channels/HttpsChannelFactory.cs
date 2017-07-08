@@ -237,8 +237,21 @@ namespace System.ServiceModel.Channels
                 }
 
                 X509SecurityToken x509Token = (X509SecurityToken)clientCertificateToken.Token;
+                ValidateClientCertificate(x509Token.Certificate);
                 handler.ClientCertificates.Add(x509Token.Certificate);
             }
+        }
+
+        private static void ValidateClientCertificate(X509Certificate2 certificate)
+        {
+#if FEATURE_NETNATIVE
+            bool found;
+            X509CertificateInitiatorClientCredential.TryGetUapCertificate(certificate, out found);
+            if (!found)
+            {
+                throw ExceptionHelper.PlatformNotSupported("Directly setting the Certificate is not supported for HTTP yet. Use X509CertificateInitiatorClientCredential.SetCertificate instead");
+            }
+#endif // FEATURE_NETNATIVE
         }
 
         protected class HttpsClientRequestChannel : HttpClientRequestChannel

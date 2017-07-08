@@ -12,12 +12,10 @@ namespace System.ServiceModel.Channels
 {
     internal static class ChannelBindingUtility
     {
-#if !FEATURE_NETNATIVE
         public static ChannelBinding GetToken(SslStream stream)
         {
             return GetToken(stream.TransportContext);
         }
-#endif // !FEATURE_NETNATIVE
 
         public static ChannelBinding GetToken(TransportContext context)
         {

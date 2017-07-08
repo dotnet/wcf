@@ -374,13 +374,7 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-#if FEATURE_NETNATIVE
-                // As UWP apps use StreamSocket which can't downgrade a socket to not have SSL
-                // the connection can't be recycled back into the pool on close.
-                if (_upgrade != null || abort)
-#else
                 if (abort)
-#endif
                 {
                     _connectionPoolHelper.Abort();
                 }
