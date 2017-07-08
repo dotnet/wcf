@@ -17,7 +17,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Security;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Windows.Security.Cryptography.Certificates;
 using RTApiInformation = Windows.Foundation.Metadata.ApiInformation;
 using RTHttpBaseProtocolFilter = Windows.Web.Http.Filters.HttpBaseProtocolFilter;
 using RTHttpCacheReadBehavior = Windows.Web.Http.Filters.HttpCacheReadBehavior;
@@ -283,16 +283,7 @@ namespace System.ServiceModel.Channels
             {
                 bool foundCertificate = false;
                 var firstCertificate = ClientCertificates[0];
-                foreach (var extension in firstCertificate.Extensions)
-                {
-                    var attachmentExtension = extension as X509CertificateInitiatorClientCredential.X509UwpCertificateAttachmentExtension;
-                    if (attachmentExtension != null && attachmentExtension.AttachedCertificate != null)
-                    {
-                        _rtFilter.ClientCertificate = attachmentExtension.AttachedCertificate;
-                        foundCertificate = true;
-                        break;
-                    }
-                }
+                _rtFilter.ClientCertificate = X509CertificateInitiatorClientCredential.TryGetUapCertificate(firstCertificate, out foundCertificate);
                 Contract.Assert(foundCertificate, "We shouldn't be able to have an X509Certificate2 which doesn't have an attached UWP Certificate");
             }
         }

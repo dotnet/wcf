@@ -835,7 +835,7 @@ namespace System.ServiceModel.Security
         {
             if (findValue == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("findValue");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(findValue));
             }
 
             X509Store store = new X509Store(storeName, storeLocation);
@@ -848,6 +848,7 @@ namespace System.ServiceModel.Security
                 {
                     return new X509Certificate2(certs[0]);
                 }
+
                 if (throwIfMultipleOrNoMatch)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateCertificateLoadException(

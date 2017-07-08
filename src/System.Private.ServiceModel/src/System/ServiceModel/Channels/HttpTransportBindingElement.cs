@@ -33,9 +33,7 @@ namespace System.ServiceModel.Channels
         private bool _unsafeConnectionNtlmAuthentication;
         private bool _useDefaultWebProxy;
         private WebSocketTransportSettings _webSocketSettings;
-#if !FEATURE_NETNATIVE
         private ExtendedProtectionPolicy _extendedProtectionPolicy;
-#endif // !FEATURE_NETNATIVE
         private HttpMessageHandlerFactory _httpMessageHandlerFactory;
         private int _maxPendingAccepts;
 
@@ -79,9 +77,7 @@ namespace System.ServiceModel.Channels
             _unsafeConnectionNtlmAuthentication = elementToBeCloned._unsafeConnectionNtlmAuthentication;
             _useDefaultWebProxy = elementToBeCloned._useDefaultWebProxy;
             _webSocketSettings = elementToBeCloned._webSocketSettings.Clone();
-#if !FEATURE_NETNATIVE
             _extendedProtectionPolicy = elementToBeCloned.ExtendedProtectionPolicy;
-#endif // !FEATURE_NETNATIVE
             this.MessageHandlerFactory = elementToBeCloned.MessageHandlerFactory;
         }
 
@@ -164,7 +160,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-#if !FEATURE_NETNATIVE
         public ExtendedProtectionPolicy ExtendedProtectionPolicy
         {
             get
@@ -187,7 +182,6 @@ namespace System.ServiceModel.Channels
                 _extendedProtectionPolicy = value;
             }
         }
-#endif // !FEATURE_NETNATIVE
 
         // MB#26970: used by MEX to ensure that we don't conflict on base-address scoped settings
         internal bool InheritBaseAddressSettings
@@ -476,12 +470,10 @@ namespace System.ServiceModel.Channels
             {
                 return (T)(object)this.TransferMode;
             }
-#if !FEATURE_NETNATIVE
             else if (typeof(T) == typeof(ExtendedProtectionPolicy))
             {
                 return (T)(object)this.ExtendedProtectionPolicy;
             }
-#endif //!FEATURE_NETNATIVE
             else if (typeof(T) == typeof(ITransportCompressionSupport))
             {
                 return (T)(object)new TransportCompressionSupportHelper();

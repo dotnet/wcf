@@ -27,12 +27,26 @@ namespace System.ServiceModel.Security
             _isReadOnly = other._isReadOnly;
         }
 
+        public X509Certificate2 Certificate
+        {
+            get
+            {
+                return _certificate;
+            }
+            set
+            {
+                ThrowIfImmutable();
+                _certificate = value;
+            }
+        }
+
         public void SetCertificate(string subjectName, StoreLocation storeLocation, StoreName storeName)
         {
             if (subjectName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("subjectName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(subjectName));
             }
+
             SetCertificate(storeLocation, storeName, DefaultFindType, subjectName);
         }
 
