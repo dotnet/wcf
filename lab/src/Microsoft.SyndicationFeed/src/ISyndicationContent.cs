@@ -2,13 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.IO;
-
 namespace Microsoft.SyndicationFeed
 {
     public interface ISyndicationContent
     {
-        Stream Stream { get; }
+        string Value { get; }
 
         //
         // TODO:

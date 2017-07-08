@@ -7,7 +7,5 @@ namespace Microsoft.SyndicationFeed
     public interface ISyndicationText : ISyndicationContent
     {
         string Type { get; }
-
-        string Text { get; }
     }
 }

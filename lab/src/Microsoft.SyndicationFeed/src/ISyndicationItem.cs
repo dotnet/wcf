@@ -15,7 +15,7 @@ namespace Microsoft.SyndicationFeed
 
         string Copyright { get; }
 
-        string Summary { get; }
+        string Description { get; }
 
         IEnumerable<ISyndicationPerson> Authors { get; }
 
@@ -23,7 +23,7 @@ namespace Microsoft.SyndicationFeed
 
         IEnumerable<ISyndicationCategory> Categories { get; }
 
-        ISyndicationContent Content { get; }
+        string Content { get; }
 
         IEnumerable<ISyndicationPerson> Contributors { get; }
 
