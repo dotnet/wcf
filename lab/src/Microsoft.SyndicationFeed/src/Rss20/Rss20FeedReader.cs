@@ -65,7 +65,7 @@ namespace Microsoft.SyndicationFeed
 
         public Task<ISyndicationCategory> ReadCategory()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task<ISyndicationContent> ReadContent()
@@ -104,15 +104,15 @@ namespace Microsoft.SyndicationFeed
             throw new NotImplementedException();
         }
 
-        public Task<ISyndicationPerson> ReadPerson()
+        public async Task<ISyndicationPerson> ReadPerson()
         {
             if (ElementType != SyndicationElementType.Person)
             {
-                throw new XmlException("Unknown Link");
+                throw new XmlException("Unknown Person");
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            throw new NotImplementedException();
+            return _formatter.ParsePerson(await _reader.ReadOuterXmlAsync());
         }
 
         public Task Skip()

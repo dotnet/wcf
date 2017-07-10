@@ -26,6 +26,7 @@ namespace Microsoft.SyndicationFeed
         public ISyndicationItem ParseItem(string value)
         {
             XmlReader reader = XmlReader.Create(new StringReader(value));
+            reader.MoveToContent();
             return ParseItem(reader);
         }
 
@@ -37,6 +38,7 @@ namespace Microsoft.SyndicationFeed
         public ISyndicationPerson ParsePerson(string value)
         {
             XmlReader reader = XmlReader.Create(new StringReader(value));
+            reader.MoveToContent();
             return ParsePerson(reader);
         }
 
@@ -65,14 +67,7 @@ namespace Microsoft.SyndicationFeed
         {
             var person = new SyndicationPerson();
 
-            bool isEmpty = reader.IsEmptyElement;
-
-            reader.ReadStartElement();
-            if (!isEmpty) {
-                string email = reader.ReadString();
-                reader.ReadEndElement();
-                person.Email = email;
-            }
+            person.Email = reader.ReadElementContentAsString();
 
             return person;
         }
@@ -81,7 +76,7 @@ namespace Microsoft.SyndicationFeed
         {
             SyndicationContent content = new SyndicationContent();
 
-            content.Value = reader.ReadElementContentAsString();
+            content.Value = reader.ReadOuterXml();
 
             return content;
         }
