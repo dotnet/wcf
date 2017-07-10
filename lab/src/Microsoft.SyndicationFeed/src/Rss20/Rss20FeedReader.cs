@@ -13,7 +13,7 @@ namespace Microsoft.SyndicationFeed
         private XmlReader _reader;
         private ISyndicationFeedFormatter _formatter;
         private bool _knownFeed;
-
+        private bool _currentSet;
 
         public Rss20FeedReader(XmlReader reader) 
             : this(reader, new Rss20FeedFormatter())
@@ -39,28 +39,17 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<bool> Read()
         {
-            await EnsureRead();
-
-            while (await _reader.ReadAsync())
-            {
-                switch (_reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        ElementType = GetElementType();
-                        ElementName = _reader.Name;
-                        return true;
-
-                    default:
-                        // Keep reading
-                        await _reader.SkipAsync();
-                        break;
-                }
+            if (_currentSet) {
+                //
+                // The reader is already advanced, return status
+                _currentSet = false;
+                return !_reader.EOF;
             }
-
-            ElementType = SyndicationElementType.None;
-            ElementName = null;
-
-            return false;
+            else {
+                //
+                // Advance the reader
+                return await MoveNext(false);
+            }
         }
 
         public Task<ISyndicationCategory> ReadCategory()
@@ -70,12 +59,13 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationContent> ReadContent()
         {
-            if (ElementType != SyndicationElementType.Content) {
-                throw new XmlException("Unknown Item");
-                //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
-            }
+            string xml = await _reader.ReadOuterXmlAsync();
 
-            return _formatter.ParseContent(await _reader.ReadOuterXmlAsync());
+            ISyndicationContent content = _formatter.ParseContent(xml);
+
+            await MoveNext();
+
+            return content;
         }
 
         public async Task<ISyndicationItem> ReadItem()
@@ -86,11 +76,13 @@ namespace Microsoft.SyndicationFeed
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            await _reader.MoveToContentAsync();
+            string xml = await _reader.ReadOuterXmlAsync();
 
-            string content = await _reader.ReadOuterXmlAsync();
+            ISyndicationItem item = _formatter.ParseItem(xml);
 
-            return _formatter.ParseItem(content);
+            await MoveNext();
+
+            return item;
         }
 
         public Task<ISyndicationLink> ReadLink()
@@ -112,13 +104,47 @@ namespace Microsoft.SyndicationFeed
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            return _formatter.ParsePerson(await _reader.ReadOuterXmlAsync());
+            string content = await _reader.ReadOuterXmlAsync();
+
+            ISyndicationPerson person = _formatter.ParsePerson(content);
+
+            await MoveNext();
+
+            return person;
         }
 
         public Task Skip()
         {
             return _reader.SkipAsync();
             //throw new NotImplementedException();
+        }
+
+        private async Task<bool> MoveNext(bool setCurrent = true)
+        {
+
+            await EnsureRead();
+
+            while (await _reader.ReadAsync()) {
+                switch (_reader.NodeType) {
+                    case XmlNodeType.Element:
+                        ElementType = GetElementType();
+                        ElementName = _reader.Name;
+                        _currentSet = setCurrent;
+                        return true;
+
+                    default:
+                        // Keep reading
+                        break;
+                }
+            }
+
+            //
+            // Reset
+            ElementType = SyndicationElementType.None;
+            ElementName = null;
+            _currentSet = false;
+
+            return false;
         }
 
         private SyndicationElementType GetElementType()
