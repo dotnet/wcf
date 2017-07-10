@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.SyndicationFeed
 {
-    public interface ISyndicationUrl : ISyndicationContent
+    public interface ISyndicationUrl
     {
         Uri Url { get; }
 

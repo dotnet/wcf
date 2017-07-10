@@ -18,7 +18,9 @@ namespace Microsoft.SyndicationFeed
 
         public ISyndicationContent ParseContent(string value)
         {
-            throw new NotImplementedException();
+            XmlReader reader = XmlReader.Create(new StringReader(value));
+            reader.MoveToContent();
+            return ParseContent(reader);
         }
 
         public ISyndicationItem ParseItem(string value)
@@ -34,13 +36,14 @@ namespace Microsoft.SyndicationFeed
 
         public ISyndicationPerson ParsePerson(string value)
         {
-            throw new NotImplementedException();
+            XmlReader reader = XmlReader.Create(new StringReader(value));
+            return ParsePerson(reader);
         }
 
 
         private SyndicationItem ParseItem(XmlReader reader)
         {
-            SyndicationItem item = new SyndicationItem();
+            var item = new SyndicationItem();
 
             bool isEmpty = reader.IsEmptyElement;
 
@@ -58,6 +61,30 @@ namespace Microsoft.SyndicationFeed
             return item;
         }
 
+        private SyndicationPerson ParsePerson(XmlReader reader)
+        {
+            var person = new SyndicationPerson();
+
+            bool isEmpty = reader.IsEmptyElement;
+
+            reader.ReadStartElement();
+            if (!isEmpty) {
+                string email = reader.ReadString();
+                reader.ReadEndElement();
+                person.Email = email;
+            }
+
+            return person;
+        }
+
+        private SyndicationContent ParseContent(XmlReader reader)
+        {
+            SyndicationContent content = new SyndicationContent();
+
+            content.Value = reader.ReadElementContentAsString();
+
+            return content;
+        }
 
         private void FillItemAttributes(SyndicationItem item, XmlReader reader)
         {

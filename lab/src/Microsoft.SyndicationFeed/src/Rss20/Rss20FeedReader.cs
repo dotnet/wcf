@@ -39,7 +39,7 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<bool> Read()
         {
-            EnsureRead();
+            await EnsureRead();
 
             while (await _reader.ReadAsync())
             {
@@ -68,9 +68,14 @@ namespace Microsoft.SyndicationFeed
             throw new System.NotImplementedException();
         }
 
-        public Task<ISyndicationContent> ReadContent()
+        public async Task<ISyndicationContent> ReadContent()
         {
-            throw new System.NotImplementedException();
+            if (ElementType != SyndicationElementType.Content) {
+                throw new XmlException("Unknown Item");
+                //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
+            }
+
+            return _formatter.ParseContent(await _reader.ReadOuterXmlAsync());
         }
 
         public async Task<ISyndicationItem> ReadItem()
@@ -133,11 +138,19 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        private void EnsureRead()
+        private async Task EnsureRead()
         {
             if (!_knownFeed)
             {
-                _knownFeed = _reader.IsStartElement(Rss20Constants.RssTag, Rss20Constants.Rss20Namespace);
+                _knownFeed = _reader.IsStartElement(Rss20Constants.RssTag, Rss20Constants.Rss20Namespace)
+                                && _reader.GetAttribute(Rss20Constants.VersionTag).Equals(Rss20Constants.Version);
+
+                //
+                // Read <rss>
+                if (_knownFeed) {
+                    await _reader.ReadAsync();
+                    _knownFeed = _reader.IsStartElement(Rss20Constants.ChannelTag, Rss20Constants.Rss20Namespace);
+                }
 
                 if (!_knownFeed)
                 {

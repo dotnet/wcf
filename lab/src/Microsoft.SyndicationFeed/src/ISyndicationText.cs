@@ -4,8 +4,9 @@
 
 namespace Microsoft.SyndicationFeed
 {
-    public interface ISyndicationText : ISyndicationContent
+    public interface ISyndicationText
     {
+        string Text { get; }
         string Type { get; }
     }
 }

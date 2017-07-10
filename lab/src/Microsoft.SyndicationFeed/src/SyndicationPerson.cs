@@ -4,15 +4,12 @@
 
 namespace Microsoft.SyndicationFeed
 {
-    public enum SyndicationElementType
+    class SyndicationPerson : ISyndicationPerson
     {
-        None = 0,
-        Item,
-        Person,
-        Link,
-        Content,
-        Category,
-        Url,
-        Text
+        public string Email { get; set; }
+
+        public string Name { get; set; }
+
+        public string Uri { get; set; }
     }
 }
