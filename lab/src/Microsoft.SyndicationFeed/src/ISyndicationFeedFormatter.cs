@@ -15,5 +15,7 @@ namespace Microsoft.SyndicationFeed
         ISyndicationCategory ParseCategory(string value);
 
         ISyndicationContent ParseContent(string value);
+
+        T ParseValue<T>(string value);
     }
 }

@@ -13,7 +13,9 @@ namespace Microsoft.SyndicationFeed
     {
         public ISyndicationCategory ParseCategory(string value)
         {
-            throw new NotImplementedException();
+            XmlReader reader = XmlReader.Create(new StringReader(value));
+            reader.MoveToContent();
+            return ParseCategory(reader);
         }
 
         public ISyndicationContent ParseContent(string value)
@@ -36,7 +38,9 @@ namespace Microsoft.SyndicationFeed
 
         public ISyndicationLink ParseLink(string value)
         {
-            throw new NotImplementedException();
+            XmlReader reader = XmlReader.Create(new StringReader(value));
+            reader.MoveToContent();
+            return ParseLink(reader);
         }
 
         public ISyndicationPerson ParsePerson(string value)
@@ -48,6 +52,59 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
+        public T ParseValue<T>(string value)
+        {
+            Type type = typeof(T);
+
+            // String
+            if (type == typeof(string))
+            {
+                return (T)(object)value;
+            }
+
+            // DateTimeOffset
+            if (type == typeof(DateTimeOffset))
+            {
+                return (T)(object)DateTimeUtils.Parse(value);
+            }
+
+            // Enum
+            if (type.IsEnum)
+            {
+                return (T) Enum.Parse(typeof(T), value, true);
+            }
+
+            // Fall back default
+            return (T) Convert.ChangeType(value, typeof(T));
+        }
+
+        private ISyndicationLink ParseLink(XmlReader reader)
+        {
+            var link = new SyndicationLink();
+            bool isEmpty = reader.IsEmptyElement;
+
+            if (!isEmpty)
+            {
+                string uriText = reader.ReadElementContentAsString();
+                link.Uri = new Uri(uriText);
+            }
+            
+            return link;
+        }
+
+        private ISyndicationCategory ParseCategory(XmlReader reader)
+        {
+            var category = new SyndicationCategory();
+
+            bool isEmpty = reader.IsEmptyElement;
+
+            if (!isEmpty)
+            {
+                category.Name = reader.ReadElementContentAsString();
+            }
+
+            return category;
+        }
 
         private SyndicationItem ParseItem(XmlReader reader)
         {
@@ -196,7 +253,7 @@ namespace Microsoft.SyndicationFeed
                         string str = reader.ReadString();
                         if (!string.IsNullOrEmpty(str))
                         {
-                            item.PublishDate = DateTimeUtils.Parse(str);
+                            item.PublishDate = ParseValue<DateTimeOffset>(str);
                         }
 
                         reader.ReadEndElement();

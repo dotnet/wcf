@@ -25,5 +25,7 @@ namespace Microsoft.SyndicationFeed
         Task<ISyndicationContent> ReadContent();
 
         Task<ISyndicationCategory> ReadCategory();
+
+        Task<T> ReadValue<T>();
     }
 }
