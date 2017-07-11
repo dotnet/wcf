@@ -52,15 +52,22 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public Task<ISyndicationCategory> ReadCategory()
+        public async Task<ISyndicationCategory> ReadCategory()
         {
-            throw new NotImplementedException();
+
+            string xml = await _reader.ReadOuterXmlAsync();
+
+            ISyndicationCategory category = _formatter.ParseCategory(xml);
+
+            await MoveNext();
+
+            return category;
         }
 
         public async Task<ISyndicationContent> ReadContent()
         {
             string xml = await _reader.ReadOuterXmlAsync();
-
+            
             ISyndicationContent content = _formatter.ParseContent(xml);
 
             await MoveNext();
@@ -85,7 +92,7 @@ namespace Microsoft.SyndicationFeed
             return item;
         }
 
-        public Task<ISyndicationLink> ReadLink()
+        public async Task<ISyndicationLink> ReadLink()
         {
             if (ElementType != SyndicationElementType.Link)
             {
@@ -93,7 +100,13 @@ namespace Microsoft.SyndicationFeed
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            throw new NotImplementedException();
+            string xml = await _reader.ReadOuterXmlAsync();
+
+            ISyndicationLink link = _formatter.ParseLink(xml);
+
+            await MoveNext();
+
+            return link;
         }
 
         public async Task<ISyndicationPerson> ReadPerson()
@@ -111,6 +124,16 @@ namespace Microsoft.SyndicationFeed
             await MoveNext();
 
             return person;
+        }
+
+        public async Task<T> ReadValue<T>()
+        {
+
+            string value = await _reader.ReadElementContentAsStringAsync();
+
+            await MoveNext();
+
+            return _formatter.ParseValue<T>(value);
         }
 
         public Task Skip()
@@ -184,6 +207,12 @@ namespace Microsoft.SyndicationFeed
                     //throw new XmlException(SR.GetString(SR.UnknownFeedXml, reader.LocalName, reader.NamespaceURI));
                 }
             }
+        }
+
+        private void ResetCurrent()
+        {
+            ElementType = SyndicationElementType.None;
+            ElementName = null;
         }
     }
 }
