@@ -18,16 +18,20 @@ namespace Microsoft.SyndicationFeed
 
         public ISyndicationContent ParseContent(string value)
         {
-            XmlReader reader = XmlReader.Create(new StringReader(value));
-            reader.MoveToContent();
-            return ParseContent(reader);
+            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            {
+                reader.MoveToContent();
+                return ParseContent(reader);
+            }
         }
 
         public ISyndicationItem ParseItem(string value)
         {
-            XmlReader reader = XmlReader.Create(new StringReader(value));
-            reader.MoveToContent();
-            return ParseItem(reader);
+            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            { 
+                reader.MoveToContent();
+                return ParseItem(reader);
+            }
         }
 
         public ISyndicationLink ParseLink(string value)
@@ -37,9 +41,11 @@ namespace Microsoft.SyndicationFeed
 
         public ISyndicationPerson ParsePerson(string value)
         {
-            XmlReader reader = XmlReader.Create(new StringReader(value));
-            reader.MoveToContent();
-            return ParsePerson(reader);
+            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            {
+                reader.MoveToContent();
+                return ParsePerson(reader);
+            }
         }
 
 
