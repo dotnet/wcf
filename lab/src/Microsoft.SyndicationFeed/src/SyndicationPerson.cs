@@ -11,5 +11,7 @@ namespace Microsoft.SyndicationFeed
         public string Name { get; set; }
 
         public string Uri { get; set; }
+
+        public string RelationshipType { get; set; }
     }
 }

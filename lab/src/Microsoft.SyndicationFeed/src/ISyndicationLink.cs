@@ -17,9 +17,5 @@ namespace Microsoft.SyndicationFeed
         string RelationshipType { get; }
 
         long Length { get; }
-
-        //
-        // TODO:
-        // Add support for Extensions
     }
 }

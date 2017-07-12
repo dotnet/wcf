@@ -8,9 +8,8 @@ namespace Microsoft.SyndicationFeed
     {
         string Title { get; }
 
-        string Uri { get;  }
+        string Url { get;  }
 
-        string Link { get; }
-        
+        ISyndicationLink Link { get; }
     }
 }

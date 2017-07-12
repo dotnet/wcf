@@ -12,11 +12,8 @@ namespace Microsoft.SyndicationFeed
 
         string Name { get; }
 
-        [SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Scope = "property", Justification = "The Uri represents a unique category and not a network location")]
         string Uri { get; }
 
-        //
-        // TODO:
-        // Add support for Extensions
+        string RelationshipType { get; }
     }
 }

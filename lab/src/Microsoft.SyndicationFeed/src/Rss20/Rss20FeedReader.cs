@@ -10,8 +10,7 @@ namespace Microsoft.SyndicationFeed
 {
     public class Rss20FeedReader : ISyndicationFeedReader
     {
-        private XmlReader _reader;
-        private ISyndicationFeedFormatter _formatter;
+        private readonly XmlReader _reader;
         private bool _knownFeed;
         private bool _currentSet;
 
@@ -20,10 +19,10 @@ namespace Microsoft.SyndicationFeed
         {
         }
 
-        private Rss20FeedReader(XmlReader reader, ISyndicationFeedFormatter formatter)
+        public Rss20FeedReader(XmlReader reader, ISyndicationFeedFormatter formatter)
         {
             _reader = reader ?? throw new ArgumentNullException(nameof(reader));
-            _formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+            Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
 
             ElementType = SyndicationElementType.None;
 
@@ -32,6 +31,8 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentException("Synchronous XmlReader is not supported", nameof(reader));
             }
         }
+
+        public ISyndicationFeedFormatter Formatter { get; private set; }
 
         public SyndicationElementType ElementType { get; private set; }
 
@@ -54,10 +55,12 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationCategory> ReadCategory()
         {
+            if (ElementType != SyndicationElementType.Category)
+            {
+                throw new XmlException("Unknown Category");
+            }
 
-            string xml = await _reader.ReadOuterXmlAsync();
-
-            ISyndicationCategory category = _formatter.ParseCategory(xml);
+            ISyndicationCategory category = Formatter.ParseCategory(await _reader.ReadOuterXmlAsync());
 
             await MoveNext();
 
@@ -66,9 +69,10 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationContent> ReadContent()
         {
-            string xml = await _reader.ReadOuterXmlAsync();
+            //
+            // Any element can be read as ISyndicationContent
             
-            ISyndicationContent content = _formatter.ParseContent(xml);
+            ISyndicationContent content = Formatter.ParseContent(await _reader.ReadOuterXmlAsync());
 
             await MoveNext();
 
@@ -85,7 +89,7 @@ namespace Microsoft.SyndicationFeed
 
             string xml = await _reader.ReadOuterXmlAsync();
 
-            ISyndicationItem item = _formatter.ParseItem(xml);
+            ISyndicationItem item = Formatter.ParseItem(xml);
 
             await MoveNext();
 
@@ -102,7 +106,7 @@ namespace Microsoft.SyndicationFeed
 
             string xml = await _reader.ReadOuterXmlAsync();
 
-            ISyndicationLink link = _formatter.ParseLink(xml);
+            ISyndicationLink link = Formatter.ParseLink(xml);
 
             await MoveNext();
 
@@ -119,7 +123,7 @@ namespace Microsoft.SyndicationFeed
 
             string content = await _reader.ReadOuterXmlAsync();
 
-            ISyndicationPerson person = _formatter.ParsePerson(content);
+            ISyndicationPerson person = Formatter.ParsePerson(content);
 
             await MoveNext();
 
@@ -128,23 +132,23 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<T> ReadValue<T>()
         {
+            ISyndicationContent content = await ReadContent();
 
-            string value = await _reader.ReadElementContentAsStringAsync();
+            if (!Formatter.TryParseValue(content.GetValue(), out T value))
+            {
+                throw new FormatException();
+            }
 
-            await MoveNext();
-
-            return _formatter.ParseValue<T>(value);
+            return value;
         }
 
         public Task Skip()
         {
             return _reader.SkipAsync();
-            //throw new NotImplementedException();
         }
 
         private async Task<bool> MoveNext(bool setCurrent = true)
         {
-
             await EnsureRead();
 
             while (await _reader.ReadAsync()) {
@@ -176,12 +180,17 @@ namespace Microsoft.SyndicationFeed
             {
                 case Rss20Constants.ItemTag:
                     return SyndicationElementType.Item;
+
                 case Rss20Constants.LinkTag:
                     return SyndicationElementType.Link;
+
                 case Rss20Constants.CategoryTag:
                     return SyndicationElementType.Category;
+
                 case Rss20Constants.AuthorTag:
+                case Rss20Constants.ManagingEditorTag:
                     return SyndicationElementType.Person;
+
                 default:
                     return SyndicationElementType.Content;
             }

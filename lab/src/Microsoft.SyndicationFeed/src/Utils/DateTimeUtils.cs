@@ -10,24 +10,18 @@ namespace Microsoft.SyndicationFeed
 {
     static class DateTimeUtils
     {
-        public static DateTimeOffset Parse(string value)
+        public static bool TryParse(string value, out DateTimeOffset result)
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException(nameof(value));
+                return false;
             }
 
             StringBuilder sb = new StringBuilder(value.Trim());
 
             if (sb.Length < 18)
             {
-                throw new FormatException();
-
-                /*
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                new XmlException(FeedUtils.AddLineInfo(reader,
-                SR.ErrorParsingDateTime)));
-                 */
+                return false;
             }
 
             if (sb[3] == ',')
@@ -41,23 +35,14 @@ namespace Microsoft.SyndicationFeed
 
             CollapseWhitespaces(sb);
 
-            if (char.IsDigit(sb[1]))
-            {
-                // two-digit day, we are good
-            }
-            else
+            if (!char.IsDigit(sb[1]))
             {
                 sb.Insert(0, '0');
             }
 
             if (sb.Length < 19)
             {
-                throw new FormatException();
-                /*
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new XmlException(FeedUtils.AddLineInfo(reader,
-                    SR.ErrorParsingDateTime)));
-                */
+                return false;
             }
 
             bool thereAreSeconds = (sb[17] == ':');
@@ -71,22 +56,13 @@ namespace Microsoft.SyndicationFeed
 
             string wellFormattedString = sb.ToString();
 
-            DateTimeOffset theTime;
             string parseFormat = thereAreSeconds ? "dd MMM yyyy HH:mm:ss zzz" : "dd MMM yyyy HH:mm zzz";
 
-            if (DateTimeOffset.TryParseExact(wellFormattedString, parseFormat,
-                CultureInfo.InvariantCulture.DateTimeFormat,
-                (isUtc ? DateTimeStyles.AdjustToUniversal : DateTimeStyles.None), out theTime))
-            {
-                return theTime;
-            }
-
-            throw new FormatException();
-            /*
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                new XmlException(FeedUtils.AddLineInfo(reader,
-                SR.ErrorParsingDateTime)));
-            */
+            return DateTimeOffset.TryParseExact(wellFormattedString, 
+                                                parseFormat, 
+                                                CultureInfo.InvariantCulture.DateTimeFormat,
+                                                isUtc ? DateTimeStyles.AdjustToUniversal : DateTimeStyles.None,
+                                                out result);
         }
 
 

@@ -17,8 +17,6 @@ namespace Microsoft.SyndicationFeed
 
         public string Description { get; set; }
 
-        public IEnumerable<ISyndicationPerson> Authors { get; set; }
-
         public Uri BaseUri { get; set; }
 
         public IEnumerable<ISyndicationCategory> Categories { get; set; }

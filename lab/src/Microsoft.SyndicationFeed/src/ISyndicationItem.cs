@@ -17,8 +17,6 @@ namespace Microsoft.SyndicationFeed
 
         string Description { get; }
 
-        IEnumerable<ISyndicationPerson> Authors { get; }
-
         Uri BaseUri { get; }
 
         IEnumerable<ISyndicationCategory> Categories { get; }
@@ -32,9 +30,5 @@ namespace Microsoft.SyndicationFeed
         DateTimeOffset LastUpdatedTime { get; }
 
         DateTimeOffset PublishDate { get; }
-
-        //
-        // TODO:
-        // Add support for Extensions
     }
 }
