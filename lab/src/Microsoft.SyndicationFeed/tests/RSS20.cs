@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -48,6 +49,43 @@ namespace Microsoft.SyndicationFeed.Tests
                 ISyndicationContent content = await reader.ReadContent();
                 content = await reader.ReadContent();
                 content = await reader.ReadContent();
+            }
+        }
+
+        [Fact]
+        public async Task ReadWithExtentions()
+        {
+            var dir = Directory.GetCurrentDirectory();
+
+            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true }))
+            {
+                var reader = new Rss20FeedReader(xmlReader);
+
+                while (await reader.Read())
+                {
+                    if (reader.ElementType == SyndicationElementType.Item)
+                    {
+                        // Read as content
+                        ISyndicationContent content = await reader.ReadContent();
+                        Console.WriteLine(content.Name);
+
+                        // Enuemrate children
+                        foreach (var c in reader.Formatter.ParseChildren(content.RawContent))
+                        {
+                            Console.WriteLine("\t" + c.Name);
+
+                            if (c.Name == "title" ||
+                                c.Name == "description")
+                            {
+                                Console.WriteLine("\t" + c.GetValue());
+                            }
+                        }
+
+                        // Process as Item
+                        ISyndicationItem item = reader.Formatter.ParseItem(content.RawContent);
+                        Console.WriteLine(item);
+                    }
+                }
             }
         }
     }

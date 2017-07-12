@@ -2,7 +2,7 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
    <channel>
       <author>abc</author>
-      <title><![CDATA[Lorem ipsum feed for an interval of 1 minutes]]></title>
+      <title asd="123"><![CDATA[Lorem ipsum feed for an interval of 1 minutes]]></title>
       <description><![CDATA[This is a constantly updating lorem ipsum feed]]></description>
       <link>http://example.com/</link>
       <generator>RSS for Node</generator>

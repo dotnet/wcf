@@ -2,14 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Collections.Generic;
+
 namespace Microsoft.SyndicationFeed
 {
     public interface ISyndicationContent
     {
-        string Value { get; }
+        string Name { get; }
 
-        //
-        // TODO:
-        // Add support for Extensions
+        string RawContent { get; }
+
+        IEnumerable<SyndicationAttribute> Attributes { get; }
+
+        string GetValue();
     }
 }

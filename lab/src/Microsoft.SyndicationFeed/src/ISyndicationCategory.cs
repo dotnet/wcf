@@ -11,9 +11,5 @@ namespace Microsoft.SyndicationFeed
         string Label { get; }
 
         string Scheme { get; }
-
-        //
-        // TODO:
-        // Add support for Extensions
     }
 }

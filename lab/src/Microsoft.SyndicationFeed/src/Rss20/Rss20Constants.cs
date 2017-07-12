@@ -10,6 +10,7 @@ namespace Microsoft.SyndicationFeed
         public const string CategoryTag = "category";
         public const string ChannelTag = "channel";
         public const string CopyrightTag = "copyright";
+        public const string CommentsTag = "comments";
         public const string DescriptionTag = "description";
         public const string DomainTag = "domain";
         public const string EnclosureTag = "enclosure";
@@ -34,5 +35,6 @@ namespace Microsoft.SyndicationFeed
         public const string UrlTag = "url";
         public const string Version = "2.0";
         public const string VersionTag = "version";
+        public const string AlternateLink = "alternate";
     }
 }
