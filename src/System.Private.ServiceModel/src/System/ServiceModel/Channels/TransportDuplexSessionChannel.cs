@@ -61,6 +61,14 @@ namespace System.ServiceModel.Channels
             protected set { _duplexSession = value; }
         }
 
+        protected SemaphoreSlim SendLock
+        {
+            get
+            {
+                return _sendLock;
+            }
+        }
+
         protected BufferManager BufferManager
         {
             get
