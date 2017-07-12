@@ -247,71 +247,100 @@ namespace System.ServiceModel.Channels
             // initialize a new decoder
             _decoder = new ClientDuplexDecoder(0);
             byte[] ackBuffer = new byte[1];
-            await connection.WriteAsync(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime());
 
-            if (_upgrade != null)
+            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
             {
-                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
+                                                SR.Format(SR.CloseTimedOut, timeout),
+                                                TimeoutHelper.CreateEnterTimedOutException(timeout)));
+            }
 
-                await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime());
-                var connectionWrapper = new OutWrapper<IConnection>();
-                connectionWrapper.Value = connection;
-                bool upgradeInitiated = await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connectionWrapper, _decoder, this, timeoutHelper.RemainingTime());
-                connection = connectionWrapper.Value;
-                if (!upgradeInitiated)
+            try
+            {
+                await connection.WriteAsync(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime());
+
+                if (_upgrade != null)
                 {
-                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, this.Via, MessageEncoder.ContentType, timeoutHelper.RemainingTime());
+                    StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+
+                    await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime());
+                    var connectionWrapper = new OutWrapper<IConnection>();
+                    connectionWrapper.Value = connection;
+                    bool upgradeInitiated = await ConnectionUpgradeHelper.InitiateUpgradeAsync(upgradeInitiator, connectionWrapper, _decoder, this, timeoutHelper.RemainingTime());
+                    connection = connectionWrapper.Value;
+                    if (!upgradeInitiated)
+                    {
+                        await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, this.Via, MessageEncoder.ContentType, timeoutHelper.RemainingTime());
+                    }
+
+                    SetRemoteSecurity(upgradeInitiator);
+                    await upgradeInitiator.CloseAsync(timeoutHelper.RemainingTime());
+
+                    await connection.WriteAsync(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
                 }
 
-                SetRemoteSecurity(upgradeInitiator);
-                await upgradeInitiator.CloseAsync(timeoutHelper.RemainingTime());
+                int ackBytesRead = await connection.ReadAsync(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
 
-                await connection.WriteAsync(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
+                if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
+                {
+                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, Via,
+                        MessageEncoder.ContentType, timeoutHelper.RemainingTime());
+                }
+
+                return connection;
             }
-
-            int ackBytesRead = await connection.ReadAsync(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
-
-            if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
+            finally
             {
-                await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, Via,
-                    MessageEncoder.ContentType, timeoutHelper.RemainingTime());
+                SendLock.Release();
             }
-
-            return connection;
         }
 
 
         private IConnection SendPreamble(IConnection connection, ArraySegment<byte> preamble, ref TimeoutHelper timeoutHelper)
         {
-            // initialize a new decoder
-            _decoder = new ClientDuplexDecoder(0);
-            byte[] ackBuffer = new byte[1];
-            connection.Write(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime());
-
-            if (_upgrade != null)
+            TimeSpan timeout = timeoutHelper.RemainingTime();
+            if (!SendLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
             {
-                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
+                                                SR.Format(SR.CloseTimedOut, timeout),
+                                                TimeoutHelper.CreateEnterTimedOutException(timeout)));
+            }
+            try
+            {
+                // initialize a new decoder
+                _decoder = new ClientDuplexDecoder(0);
+                byte[] ackBuffer = new byte[1];
+                connection.Write(preamble.Array, preamble.Offset, preamble.Count, true, timeoutHelper.RemainingTime());
 
-                upgradeInitiator.Open(timeoutHelper.RemainingTime());
-                if (!ConnectionUpgradeHelper.InitiateUpgrade(upgradeInitiator, ref connection, _decoder, this, ref timeoutHelper))
+                if (_upgrade != null)
                 {
-                    ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, this.Via, MessageEncoder.ContentType, ref timeoutHelper);
+                    StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+
+                    upgradeInitiator.Open(timeoutHelper.RemainingTime());
+                    if (!ConnectionUpgradeHelper.InitiateUpgrade(upgradeInitiator, ref connection, _decoder, this, ref timeoutHelper))
+                    {
+                        ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, this.Via, MessageEncoder.ContentType, ref timeoutHelper);
+                    }
+
+                    SetRemoteSecurity(upgradeInitiator);
+                    upgradeInitiator.Close(timeoutHelper.RemainingTime());
+                    connection.Write(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
                 }
 
-                SetRemoteSecurity(upgradeInitiator);
-                upgradeInitiator.Close(timeoutHelper.RemainingTime());
-                connection.Write(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
-            }
+                // read ACK
+                int ackBytesRead = connection.Read(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
+                if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
+                {
+                    ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, Via,
+                        MessageEncoder.ContentType, ref timeoutHelper);
+                }
 
-            // read ACK
-            int ackBytesRead = connection.Read(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
-            if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
+                return connection;
+            }
+            finally
             {
-                ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, Via,
-                    MessageEncoder.ContentType, ref timeoutHelper);
+                SendLock.Release();
             }
-
-            return connection;
         }
 
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
