@@ -130,6 +130,22 @@ namespace Microsoft.SyndicationFeed
             return person;
         }
 
+        public async Task<ISyndicationImage> ReadImage()
+        {
+            if (ElementType != SyndicationElementType.Image)
+            {
+                throw new XmlException("Unknown Image");
+                //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
+            }
+
+            ISyndicationImage image = Formatter.ParseImage(await _reader.ReadOuterXmlAsync());
+
+            await MoveNext();
+
+            return image;
+        }
+
+
         public async Task<T> ReadValue<T>()
         {
             ISyndicationContent content = await ReadContent();
@@ -190,6 +206,9 @@ namespace Microsoft.SyndicationFeed
                 case Rss20Constants.AuthorTag:
                 case Rss20Constants.ManagingEditorTag:
                     return SyndicationElementType.Person;
+
+                case Rss20Constants.ImageTag:
+                    return SyndicationElementType.Image;
 
                 default:
                     return SyndicationElementType.Content;

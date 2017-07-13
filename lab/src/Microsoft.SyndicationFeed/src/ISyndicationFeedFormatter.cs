@@ -18,6 +18,8 @@ namespace Microsoft.SyndicationFeed
 
         ISyndicationContent ParseContent(string value);
 
+        ISyndicationImage ParseImage(string value);
+
         IEnumerable<ISyndicationContent> ParseChildren(string content);
 
         bool TryParseValue<T>(string value, out T result);
