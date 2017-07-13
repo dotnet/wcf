@@ -82,6 +82,20 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
+        public ISyndicationImage ParseImage(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            {
+                reader.MoveToContent();
+                return ParseImage(reader);
+            }
+        }
+
         public bool TryParseValue<T>(string value, out T result)
         {
             result = default(T);
@@ -137,6 +151,68 @@ namespace Microsoft.SyndicationFeed
             return (result = (T) Convert.ChangeType(value, typeof(T))) != null;
         }
 
+
+        public ISyndicationImage ParseImage(XmlReader reader)
+        {
+            SyndicationImage image = null;
+
+            if (!reader.IsEmptyElement)
+            {
+                reader.ReadStartElement();
+
+                string title = null;
+                Uri url = null;
+                ISyndicationLink link = null;
+                string relationship = Rss20Constants.ImageTag;
+                string description = null;
+
+                while (reader.IsStartElement())
+                {
+                    //
+                    // Url
+                    if (reader.IsStartElement(Rss20Constants.UrlTag, Rss20Constants.Rss20Namespace))
+                    {
+                        string uri = reader.ReadElementString();
+                        TryParseValue(uri, out url);
+                    }
+
+                    //
+                    // Title
+                    if(reader.IsStartElement(Rss20Constants.TitleTag, Rss20Constants.Rss20Namespace))
+                    {
+                        title = reader.ReadElementString();
+                    }
+
+                    //
+                    // Link
+                    if (reader.IsStartElement(Rss20Constants.LinkTag, Rss20Constants.Rss20Namespace))
+                    {
+                        link = ParseLink(reader.ReadOuterXml());
+                    }
+
+                    //
+                    // Description
+                    if (reader.IsStartElement(Rss20Constants.DescriptionTag, Rss20Constants.Rss20Namespace))
+                    {
+                        description = reader.ReadElementString();
+                    }
+                }
+
+                reader.ReadEndElement(); //image end
+
+                if(url != null)
+                {
+                    image = new SyndicationImage(url);
+                    image.Desciption = description;
+                    image.RelationshipType = relationship;
+                    image.Title = title;
+                    image.Link = link;
+                }
+            }
+
+            return image;
+        }
+        
         public IEnumerable<ISyndicationContent> ParseChildren(string content)
         {
             if (content == null)
@@ -263,6 +339,7 @@ namespace Microsoft.SyndicationFeed
                                           reader.IsStartElement() ? reader.ReadOuterXml() : string.Empty);
         }
 
+
         private void FillItem(SyndicationItem item, XmlReader reader)
         {
             string fallbackAlternateLink = null;
@@ -384,11 +461,11 @@ namespace Microsoft.SyndicationFeed
             }
 
             // if there's no content and no alternate link set the summary as the item content
-            if (item.Content == null && !readAlternateLink)
-            {
-                item.Content = item.Description;
-                item.Description = null;
-            }
+            //if (item.Content == null && !readAlternateLink)
+            //{
+            //    item.Content = item.Description;
+            //    item.Description = null;
+            //}
 
             item.Links = links;
             item.Contributors = contributors;

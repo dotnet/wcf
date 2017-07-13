@@ -11,6 +11,7 @@ namespace Microsoft.SyndicationFeed
         Person,
         Link,
         Content,
-        Category
+        Category,
+        Image
     }
 }

@@ -26,13 +26,21 @@ namespace Microsoft.SyndicationFeed.Tests
                         ISyndicationContent content = await reader.ReadContent();
                         Console.WriteLine(content);
                     }
+
                     if (reader.ElementType == SyndicationElementType.Item) {
                         ISyndicationItem item = await reader.ReadItem();
                         Console.WriteLine(item);
                     }
+
                     if (reader.ElementType == SyndicationElementType.Person) {
                         ISyndicationPerson person = await reader.ReadPerson();
                         Console.WriteLine(person);
+                    }
+
+                    if (reader.ElementType == SyndicationElementType.Image)
+                    {
+                        ISyndicationImage image = await reader.ReadImage();
+                        Console.WriteLine(image);
                     }
                 }
             }
