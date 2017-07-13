@@ -281,7 +281,6 @@ namespace Microsoft.SyndicationFeed
             {
                 // Title
                 link.Title = reader.ReadContentAsString();
-
                 // Url is the content, if not set as attribute
                 Uri uri;
                 if (link.Uri == null && 
@@ -291,7 +290,8 @@ namespace Microsoft.SyndicationFeed
                     link.Uri = uri;
                 }
             }
-            
+            reader.ReadEndElement();
+
             return link;
         }
 
