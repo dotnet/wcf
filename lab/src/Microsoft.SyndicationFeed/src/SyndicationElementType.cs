@@ -11,8 +11,6 @@ namespace Microsoft.SyndicationFeed
         Person,
         Link,
         Content,
-        Category,
-        Url,
-        Text
+        Category
     }
 }

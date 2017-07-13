@@ -13,22 +13,16 @@ namespace Microsoft.SyndicationFeed
 
         string Title { get; }
 
-        string Copyright { get; }
-
         string Description { get; }
 
-        Uri BaseUri { get; }
-
         IEnumerable<ISyndicationCategory> Categories { get; }
-
-        string Content { get; }
 
         IEnumerable<ISyndicationPerson> Contributors { get; }
 
         IEnumerable<ISyndicationLink> Links { get; }
 
-        DateTimeOffset LastUpdatedTime { get; }
+        DateTimeOffset LastUpdated { get; }
 
-        DateTimeOffset PublishDate { get; }
+        DateTimeOffset Published { get; }
     }
 }
