@@ -60,4 +60,6 @@
       RelativePathBaseDirectory="$(PackagesDir)"
       OverwriteDestination="true" />
   </Target>
+
+  <Import Project="$(MSBuildThisFileDirectory)GenerateDepsJson.targets" />
 </Project>
