@@ -147,14 +147,14 @@ namespace Microsoft.SyndicationFeed
             return _reader.SkipAsync();
         }
 
-        private async Task<bool> MoveNext(bool setCurrent = true)
+        protected async Task<bool> MoveNext(bool setCurrent = true)
         {
             await EnsureRead();
 
             while (await _reader.ReadAsync()) {
                 switch (_reader.NodeType) {
                     case XmlNodeType.Element:
-                        ElementType = GetElementType();
+                        ElementType = MapElementType();
                         ElementName = _reader.Name;
                         _currentSet = setCurrent;
                         return true;
@@ -174,7 +174,7 @@ namespace Microsoft.SyndicationFeed
             return false;
         }
 
-        private SyndicationElementType GetElementType()
+        protected virtual SyndicationElementType MapElementType()
         {
             switch (_reader.Name)
             {
@@ -216,12 +216,6 @@ namespace Microsoft.SyndicationFeed
                     //throw new XmlException(SR.GetString(SR.UnknownFeedXml, reader.LocalName, reader.NamespaceURI));
                 }
             }
-        }
-
-        private void ResetCurrent()
-        {
-            ElementType = SyndicationElementType.None;
-            ElementName = null;
         }
     }
 }

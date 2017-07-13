@@ -171,7 +171,11 @@ namespace Microsoft.SyndicationFeed
             SyndicationAttribute attrUrl = FindAttribute(attrs, "url");
             if (attrUrl != null)
             {
-                link.Uri = new Uri(attrUrl.Value);
+                Uri uri;
+                if (TryParseValue(attrUrl.Value, out uri))
+                {
+                    link.Uri = uri;
+                }
             }
 
             //
@@ -233,8 +237,6 @@ namespace Microsoft.SyndicationFeed
 
             bool isEmpty = reader.IsEmptyElement;
 
-            FillItemAttributes(item, reader);
-
             if (!isEmpty)
             {
                 FillItem(item, reader);
@@ -261,16 +263,6 @@ namespace Microsoft.SyndicationFeed
                                           reader.IsStartElement() ? reader.ReadOuterXml() : string.Empty);
         }
 
-        private void FillItemAttributes(SyndicationItem item, XmlReader reader)
-        {
-            SyndicationAttribute urlAttr = FindAttribute(XmlUtils.ReadAttributes(reader), "base", XmlUtils.XmlNs);
-
-            if (urlAttr != null)
-            {
-                item.BaseUri = UriUtils.Combine(item.BaseUri, urlAttr.Value);
-            }
-        }
-
         private void FillItem(SyndicationItem item, XmlReader reader)
         {
             string fallbackAlternateLink = null;
@@ -295,7 +287,6 @@ namespace Microsoft.SyndicationFeed
                 else if (reader.IsStartElement(Rss20Constants.LinkTag, Rss20Constants.Rss20Namespace))
                 {
                     SyndicationLink link = ParseLink(reader);
-                    link.Uri = link.Uri ?? item.BaseUri;
                     link.RelationshipType = Rss20Constants.AlternateLink;
 
                     links.Add(link);
@@ -361,7 +352,7 @@ namespace Microsoft.SyndicationFeed
                         DateTimeOffset dt;
                         if (TryParseValue(ParseContent(reader).GetValue(), out dt))
                         {
-                            item.PublishDate = dt;
+                            item.Published = dt;
                         }
                     }
                 }
