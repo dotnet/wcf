@@ -139,7 +139,7 @@ namespace Microsoft.SyndicationFeed
             if (type == typeof(Uri))
             {
                 Uri uri;
-                if (Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out uri))
+                if (UriUtils.TryParse(value, out uri))
                 {
                     result = (T)(object)uri;
                     return true;
@@ -224,12 +224,14 @@ namespace Microsoft.SyndicationFeed
 
             if (!string.IsNullOrEmpty(content))
             {
-                XmlReader reader = XmlReader.Create(new StringReader(content));
-                reader.ReadStartElement();
-
-                while (reader.IsStartElement())
+                using (XmlReader reader = XmlReader.Create(new StringReader(content)))
                 {
-                    items.Add(ParseContent(reader));
+                    reader.ReadStartElement();
+
+                    while (reader.IsStartElement())
+                    {
+                        items.Add(ParseContent(reader));
+                    }
                 }
             }
 
@@ -470,12 +472,12 @@ namespace Microsoft.SyndicationFeed
         {
             if (ns != null)
             {
-                return collection.FirstOrDefault(a => a.Name.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
-                                                      a.Name.Namespace.Equals(XmlUtils.XmlNs, StringComparison.OrdinalIgnoreCase));
+                return collection.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
+                                                      a.Namespace.Equals(XmlUtils.XmlNs, StringComparison.OrdinalIgnoreCase));
             }
             else
             {
-                return collection.FirstOrDefault(a => a.Name.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                return collection.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             }
         }
     }
