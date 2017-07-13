@@ -163,7 +163,6 @@ namespace Microsoft.SyndicationFeed
                 string title = null;
                 Uri url = null;
                 ISyndicationLink link = null;
-                string relationship = Rss20Constants.ImageTag;
                 string description = null;
 
                 while (reader.IsStartElement())
@@ -173,7 +172,11 @@ namespace Microsoft.SyndicationFeed
                     if (reader.IsStartElement(Rss20Constants.UrlTag, Rss20Constants.Rss20Namespace))
                     {
                         string uri = reader.ReadElementString();
-                        TryParseValue(uri, out url);
+                        if(!TryParseValue(uri, out url)) 
+                        {
+                            //Image parse failed
+                            throw new ArgumentException("The image can't be constructed with an invalid url");
+                        }
                     }
 
                     //
@@ -199,15 +202,12 @@ namespace Microsoft.SyndicationFeed
                 }
 
                 reader.ReadEndElement(); //image end
-
-                if(url != null)
-                {
-                    image = new SyndicationImage(url);
-                    image.Desciption = description;
-                    image.RelationshipType = relationship;
-                    image.Title = title;
-                    image.Link = link;
-                }
+                
+                image = new SyndicationImage(url);
+                image.Desciption = description;
+                image.RelationshipType = Rss20Constants.ImageTag;
+                image.Title = title;
+                image.Link = link;
             }
 
             return image;
@@ -459,13 +459,6 @@ namespace Microsoft.SyndicationFeed
                 links.Add(link);
                 readAlternateLink = true;
             }
-
-            // if there's no content and no alternate link set the summary as the item content
-            //if (item.Content == null && !readAlternateLink)
-            //{
-            //    item.Content = item.Description;
-            //    item.Description = null;
-            //}
 
             item.Links = links;
             item.Contributors = contributors;

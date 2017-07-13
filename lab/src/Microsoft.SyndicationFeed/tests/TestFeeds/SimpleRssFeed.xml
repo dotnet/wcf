@@ -7,16 +7,11 @@
     <description>&lt;div&gt;Most recent news from Microsoft&lt;/div&gt;</description>
     <managingEditor>jerry@microsoft.com</managingEditor>
     <lastBuildDate>Mon, 19 Jun 2017 11:52:39 -0700</lastBuildDate>
-    
-    
     <image>
       <url>http://2.bp.blogspot.com/-NA5Jb-64eUg/URx8CSdcj_I/AAAAAAAAAUo/eCx0irI0rq0/s1600/bg_Microsoft_logo3-20120824073001907469-620x349.jpg</url>
       <title>Microsoft News</title>
       <link>http://www.microsoft.com/news</link>
     </image>
-
-    <icon>http://asdasdas.com</icon>
-    
     <a10:id>123FeedID</a10:id>
     <CustomElement>asd</CustomElement>
     <item>
