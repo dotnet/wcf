@@ -24,5 +24,10 @@ namespace Microsoft.SyndicationFeed
 
             return new Uri(rootBase, newBase);
         }
+
+        public static bool TryParse(string value, out Uri result)
+        {
+            return Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out result);
+        }
     }
 }

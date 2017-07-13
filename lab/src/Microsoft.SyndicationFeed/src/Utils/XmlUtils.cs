@@ -12,16 +12,6 @@ namespace Microsoft.SyndicationFeed
     {
         public const string XmlNs = "http://www.w3.org/XML/1998/namespace";
 
-        public static bool IsXmlns(string name, string ns)
-        {
-            return name == "xmlns" || ns == "http://www.w3.org/2000/xmlns/";
-        }
-
-        public static bool IsXmlSchemaType(string name, string ns)
-        {
-            return name == "type" && ns == "http://www.w3.org/2001/XMLSchema-instance";
-        }
-
         public static string GetValue(string xmlNode)
         {
             using (XmlReader reader = XmlReader.Create(new StringReader(xmlNode)))
@@ -57,11 +47,21 @@ namespace Microsoft.SyndicationFeed
                         continue;
                     }
 
-                    attributes.Add(new SyndicationAttribute(new XmlQualifiedName(name, ns), reader.Value));
+                    attributes.Add(new SyndicationAttribute(name, ns, reader.Value));
                 }
             }
 
             return attributes;
+        }
+
+        private static bool IsXmlns(string name, string ns)
+        {
+            return name == "xmlns" || ns == "http://www.w3.org/2000/xmlns/";
+        }
+
+        private static bool IsXmlSchemaType(string name, string ns)
+        {
+            return name == "type" && ns == "http://www.w3.org/2001/XMLSchema-instance";
         }
     }
 }
