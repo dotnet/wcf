@@ -16,34 +16,13 @@ namespace Microsoft.SyndicationFeed.Tests
         [Fact]
         public async Task ReadWhile()
         {
-            var dir = Directory.GetCurrentDirectory();
+            await ReadWhile(@"..\..\..\TestFeeds\rss20.xml");
+        }
 
-            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true })) {
-                var reader = new Rss20FeedReader(xmlReader);
-
-                while (await reader.Read()) {
-                    if (reader.ElementType == SyndicationElementType.Content) {
-                        ISyndicationContent content = await reader.ReadContent();
-                        Console.WriteLine(content);
-                    }
-
-                    if (reader.ElementType == SyndicationElementType.Item) {
-                        ISyndicationItem item = await reader.ReadItem();
-                        Console.WriteLine(item);
-                    }
-
-                    if (reader.ElementType == SyndicationElementType.Person) {
-                        ISyndicationPerson person = await reader.ReadPerson();
-                        Console.WriteLine(person);
-                    }
-
-                    if (reader.ElementType == SyndicationElementType.Image)
-                    {
-                        ISyndicationImage image = await reader.ReadImage();
-                        Console.WriteLine(image);
-                    }
-                }
-            }
+        [Fact]
+        public async Task ReadWhile_3GB()
+        {
+            await ReadWhile(@"\\funbox\Share\Personal\jconde\Microsoft.ServiceModel.Syndication\tests\bin\Debug\netcoreapp2.0\feed3Gb.xml");
         }
 
         [Fact]
@@ -63,8 +42,6 @@ namespace Microsoft.SyndicationFeed.Tests
         [Fact]
         public async Task ReadWithExtentions()
         {
-            var dir = Directory.GetCurrentDirectory();
-
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true }))
             {
                 var reader = new Rss20FeedReader(xmlReader);
@@ -78,7 +55,7 @@ namespace Microsoft.SyndicationFeed.Tests
                         Console.WriteLine(content.Name);
 
                         // Enuemrate children
-                        foreach (var c in reader.Formatter.ParseChildren(content.RawContent))
+                        foreach (var c in content.Fields)
                         {
                             Console.WriteLine("\t" + c.Name);
 
@@ -92,6 +69,45 @@ namespace Microsoft.SyndicationFeed.Tests
                         // Process as Item
                         ISyndicationItem item = reader.Formatter.ParseItem(content.RawContent);
                         Console.WriteLine(item);
+                    }
+                }
+            }
+        }
+
+        private async Task ReadWhile(string filePath)
+        {
+            using (var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings() { Async = true }))
+            {
+                var reader = new Rss20FeedReader(xmlReader);
+
+                while (await reader.Read())
+                {
+                    switch (reader.ElementType)
+                    {
+                        case SyndicationElementType.Link:
+                            ISyndicationLink link = await reader.ReadLink();
+                            Console.WriteLine(link);
+                            break;
+
+                        case SyndicationElementType.Item:
+                            ISyndicationItem item = await reader.ReadItem();
+                            Console.WriteLine(item);
+                            break;
+
+                        case SyndicationElementType.Person:
+                            ISyndicationPerson person = await reader.ReadPerson();
+                            Console.WriteLine(person);
+                            break;
+
+                        case SyndicationElementType.Image:
+                            ISyndicationImage image = await reader.ReadImage();
+                            Console.WriteLine(image);
+                            break;
+
+                        default:
+                            ISyndicationContent content = await reader.ReadContent();
+                            Console.WriteLine(content);
+                            break;
                     }
                 }
             }

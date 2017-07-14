@@ -26,20 +26,6 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationContent ParseContent(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
-            {
-                reader.MoveToContent();
-                return ParseContent(reader);
-            }
-        }
-
         public ISyndicationItem ParseItem(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -212,31 +198,6 @@ namespace Microsoft.SyndicationFeed
 
             return image;
         }
-        
-        public IEnumerable<ISyndicationContent> ParseChildren(string content)
-        {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            var items = new List<ISyndicationContent>();
-
-            if (!string.IsNullOrEmpty(content))
-            {
-                using (XmlReader reader = XmlReader.Create(new StringReader(content)))
-                {
-                    reader.ReadStartElement();
-
-                    while (reader.IsStartElement())
-                    {
-                        items.Add(ParseContent(reader));
-                    }
-                }
-            }
-
-            return items;
-        }
 
         private SyndicationLink ParseLink(XmlReader reader)
         {
@@ -337,13 +298,6 @@ namespace Microsoft.SyndicationFeed
             return person;
         }
 
-        private SyndicationContent ParseContent(XmlReader reader)
-        {
-            return new SyndicationContent(reader.Name, 
-                                          reader.IsStartElement() ? reader.ReadOuterXml() : string.Empty);
-        }
-
-
         private void FillItem(SyndicationItem item, XmlReader reader)
         {
             string fallbackAlternateLink = null;
@@ -431,7 +385,7 @@ namespace Microsoft.SyndicationFeed
                     if (!reader.IsEmptyElement)
                     {
                         DateTimeOffset dt;
-                        if (TryParseValue(ParseContent(reader).GetValue(), out dt))
+                        if (TryParseValue(new SyndicationContent(reader.ReadOuterXml()).GetValue(), out dt))
                         {
                             item.Published = dt;
                         }
