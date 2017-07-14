@@ -184,22 +184,6 @@ namespace Microsoft.SyndicationFeed
             }
             while (await _reader.ReadAsync());
 
-            /*
-            while (await _reader.ReadAsync()) {
-                switch (_reader.NodeType) {
-                    case XmlNodeType.Element:
-                        ElementType = MapElementType();
-                        ElementName = _reader.Name;
-                        _currentSet = setCurrent;
-                        return true;
-
-                    default:
-                        // Keep reading
-                        break;
-                }
-            }
-            */
-
             //
             // Reset
             ElementType = SyndicationElementType.None;
