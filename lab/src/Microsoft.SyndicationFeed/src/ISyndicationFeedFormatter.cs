@@ -16,11 +16,7 @@ namespace Microsoft.SyndicationFeed
 
         ISyndicationCategory ParseCategory(string value);
 
-        ISyndicationContent ParseContent(string value);
-
         ISyndicationImage ParseImage(string value);
-
-        IEnumerable<ISyndicationContent> ParseChildren(string content);
 
         bool TryParseValue<T>(string value, out T result);
     }

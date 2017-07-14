@@ -40,6 +40,8 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<bool> Read()
         {
+            await InitRead();
+
             if (_currentSet) {
                 //
                 // The reader is already advanced, return status
@@ -47,14 +49,24 @@ namespace Microsoft.SyndicationFeed
                 return !_reader.EOF;
             }
             else {
-                //
-                // Advance the reader
-                return await MoveNext(false);
+                if (ElementType != SyndicationElementType.None)
+                {
+                    await Skip();
+                    return !_reader.EOF;
+                }
+                else
+                {
+                    //
+                    // Advance the reader
+                    return await MoveNext(false);
+                }
             }
         }
 
         public async Task<ISyndicationCategory> ReadCategory()
         {
+            await EnsureRead();
+
             if (ElementType != SyndicationElementType.Category)
             {
                 throw new XmlException("Unknown Category");
@@ -69,10 +81,16 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationContent> ReadContent()
         {
+            await EnsureRead();
+
             //
             // Any element can be read as ISyndicationContent
-            
-            ISyndicationContent content = Formatter.ParseContent(await _reader.ReadOuterXmlAsync());
+            if (ElementType == SyndicationElementType.None)
+            {
+                throw new XmlException("Unknown Content");
+            }
+
+            ISyndicationContent content = new SyndicationContent(await _reader.ReadOuterXmlAsync());
 
             await MoveNext();
 
@@ -81,6 +99,8 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationItem> ReadItem()
         {
+            await EnsureRead();
+
             if (ElementType != SyndicationElementType.Item)
             {
                 throw new XmlException("Unknown Item");
@@ -98,6 +118,8 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationLink> ReadLink()
         {
+            await EnsureRead();
+
             if (ElementType != SyndicationElementType.Link)
             {
                 throw new XmlException("Unknown Link");
@@ -115,6 +137,8 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationPerson> ReadPerson()
         {
+            await EnsureRead();
+
             if (ElementType != SyndicationElementType.Person)
             {
                 throw new XmlException("Unknown Person");
@@ -132,6 +156,8 @@ namespace Microsoft.SyndicationFeed
 
         public async Task<ISyndicationImage> ReadImage()
         {
+            await EnsureRead();
+
             if (ElementType != SyndicationElementType.Image)
             {
                 throw new XmlException("Unknown Image");
@@ -158,15 +184,14 @@ namespace Microsoft.SyndicationFeed
             return value;
         }
 
-        public Task Skip()
+        public async Task Skip()
         {
-            return _reader.SkipAsync();
+            await _reader.SkipAsync();
+            await MoveNext(false);
         }
 
         protected async Task<bool> MoveNext(bool setCurrent = true)
         {
-            await EnsureRead();
-
             do
             {
                 switch (_reader.NodeType)
@@ -219,6 +244,16 @@ namespace Microsoft.SyndicationFeed
         }
 
         private async Task EnsureRead()
+        {
+            await InitRead();
+
+            if (ElementType == SyndicationElementType.None)
+            {
+                await Read();
+            }
+        }
+
+        private async Task InitRead()
         {
             if (!_knownFeed)
             {
