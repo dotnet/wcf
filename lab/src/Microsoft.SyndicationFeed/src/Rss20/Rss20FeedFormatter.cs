@@ -293,7 +293,9 @@ namespace Microsoft.SyndicationFeed
                     link.Uri = uri;
                 }
             }
-            
+
+            reader.ReadEndElement();
+
             return link;
         }
 

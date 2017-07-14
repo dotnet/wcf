@@ -167,6 +167,24 @@ namespace Microsoft.SyndicationFeed
         {
             await EnsureRead();
 
+            do
+            {
+                switch (_reader.NodeType)
+                {
+                    case XmlNodeType.Element:
+                        ElementType = MapElementType();
+                        ElementName = _reader.Name;
+                        _currentSet = setCurrent;
+                        return true;
+
+                    default:
+                        // Keep reading
+                        break;
+                }
+            }
+            while (await _reader.ReadAsync());
+
+            /*
             while (await _reader.ReadAsync()) {
                 switch (_reader.NodeType) {
                     case XmlNodeType.Element:
@@ -180,6 +198,7 @@ namespace Microsoft.SyndicationFeed
                         break;
                 }
             }
+            */
 
             //
             // Reset
@@ -234,6 +253,9 @@ namespace Microsoft.SyndicationFeed
                     throw new XmlException("Unknown Feed");
                     //throw new XmlException(SR.GetString(SR.UnknownFeedXml, reader.LocalName, reader.NamespaceURI));
                 }
+
+                // Read <channel>
+                await _reader.ReadAsync();
             }
         }
     }
