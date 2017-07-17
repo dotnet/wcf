@@ -7,7 +7,9 @@ namespace Microsoft.SyndicationFeed
     public interface ISyndicationAttribute
     {
         string Name { get; }
+
         string Namespace { get; }
+
         string Value { get; }
     }
 }

@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace Microsoft.SyndicationFeed
@@ -53,6 +54,39 @@ namespace Microsoft.SyndicationFeed
 
             return attributes;
         }
+
+        public static Task<string> ReadOuterXmlAsync(XmlReader reader)
+        {
+            if (reader.Settings.Async)
+            {
+                return reader.ReadOuterXmlAsync();
+            }
+
+            return Task.FromResult(reader.ReadOuterXml());
+        }
+
+        public static Task SkipAsync(XmlReader reader)
+        {
+            if (reader.Settings.Async)
+            {
+                return reader.SkipAsync();
+            }
+
+            reader.Skip();
+
+            return Task.CompletedTask;
+        }
+
+        public static Task<bool> ReadAsync(XmlReader reader)
+        {
+            if (reader.Settings.Async)
+            {
+                return reader.ReadAsync();
+            }
+
+            return Task.FromResult(reader.Read());
+        }
+
 
         private static bool IsXmlns(string name, string ns)
         {
