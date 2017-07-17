@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed
 {
-    public class Rss20FeedReader : ISyndicationFeedReader
+    public sealed class Rss20FeedReader : ISyndicationFeedReader
     {
         private readonly XmlReader _reader;
         private bool _knownFeed;
@@ -25,11 +25,6 @@ namespace Microsoft.SyndicationFeed
             Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
 
             ElementType = SyndicationElementType.None;
-
-            if (!_reader.Settings.Async)
-            {
-                throw new ArgumentException("Synchronous XmlReader is not supported", nameof(reader));
-            }
         }
 
         public ISyndicationFeedFormatter Formatter { get; private set; }
@@ -72,7 +67,7 @@ namespace Microsoft.SyndicationFeed
                 throw new XmlException("Unknown Category");
             }
 
-            ISyndicationCategory category = Formatter.ParseCategory(await _reader.ReadOuterXmlAsync());
+            ISyndicationCategory category = Formatter.ParseCategory(await XmlUtils.ReadOuterXmlAsync(_reader));
 
             await MoveNext();
 
@@ -90,7 +85,7 @@ namespace Microsoft.SyndicationFeed
                 throw new XmlException("Unknown Content");
             }
 
-            ISyndicationContent content = new SyndicationContent(await _reader.ReadOuterXmlAsync());
+            ISyndicationContent content = new SyndicationContent(await XmlUtils.ReadOuterXmlAsync(_reader));
 
             await MoveNext();
 
@@ -107,9 +102,7 @@ namespace Microsoft.SyndicationFeed
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            string xml = await _reader.ReadOuterXmlAsync();
-
-            ISyndicationItem item = Formatter.ParseItem(xml);
+            ISyndicationItem item = Formatter.ParseItem(await XmlUtils.ReadOuterXmlAsync(_reader));
 
             await MoveNext();
 
@@ -126,9 +119,7 @@ namespace Microsoft.SyndicationFeed
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            string xml = await _reader.ReadOuterXmlAsync();
-
-            ISyndicationLink link = Formatter.ParseLink(xml);
+            ISyndicationLink link = Formatter.ParseLink(await XmlUtils.ReadOuterXmlAsync(_reader));
 
             await MoveNext();
 
@@ -145,9 +136,7 @@ namespace Microsoft.SyndicationFeed
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            string content = await _reader.ReadOuterXmlAsync();
-
-            ISyndicationPerson person = Formatter.ParsePerson(content);
+            ISyndicationPerson person = Formatter.ParsePerson(await XmlUtils.ReadOuterXmlAsync(_reader));
 
             await MoveNext();
 
@@ -164,7 +153,7 @@ namespace Microsoft.SyndicationFeed
                 //throw new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
             }
 
-            ISyndicationImage image = Formatter.ParseImage(await _reader.ReadOuterXmlAsync());
+            ISyndicationImage image = Formatter.ParseImage(await XmlUtils.ReadOuterXmlAsync(_reader));
 
             await MoveNext();
 
@@ -186,28 +175,25 @@ namespace Microsoft.SyndicationFeed
 
         public async Task Skip()
         {
-            await _reader.SkipAsync();
+            await XmlUtils.SkipAsync(_reader);
             await MoveNext(false);
         }
 
-        protected async Task<bool> MoveNext(bool setCurrent = true)
+        private async Task<bool> MoveNext(bool setCurrent = true)
         {
             do
             {
-                switch (_reader.NodeType)
+                if (_reader.NodeType == XmlNodeType.Element)
                 {
-                    case XmlNodeType.Element:
-                        ElementType = MapElementType();
-                        ElementName = _reader.Name;
-                        _currentSet = setCurrent;
-                        return true;
+                    ElementType = MapElementType();
+                    ElementName = _reader.Name;
 
-                    default:
-                        // Keep reading
-                        break;
+                    _currentSet = setCurrent;
+
+                    return true;
                 }
             }
-            while (await _reader.ReadAsync());
+            while (await XmlUtils.ReadAsync(_reader));
 
             //
             // Reset
@@ -218,7 +204,7 @@ namespace Microsoft.SyndicationFeed
             return false;
         }
 
-        protected virtual SyndicationElementType MapElementType()
+        private SyndicationElementType MapElementType()
         {
             switch (_reader.Name)
             {
@@ -263,7 +249,7 @@ namespace Microsoft.SyndicationFeed
                 //
                 // Read <rss>
                 if (_knownFeed) {
-                    await _reader.ReadAsync();
+                    await XmlUtils.ReadAsync(_reader);
                     _knownFeed = _reader.IsStartElement(Rss20Constants.ChannelTag, Rss20Constants.Rss20Namespace);
                 }
 
@@ -274,7 +260,7 @@ namespace Microsoft.SyndicationFeed
                 }
 
                 // Read <channel>
-                await _reader.ReadAsync();
+                await XmlUtils.ReadAsync(_reader);
             }
         }
     }

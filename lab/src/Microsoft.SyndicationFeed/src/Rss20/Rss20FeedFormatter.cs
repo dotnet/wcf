@@ -13,7 +13,7 @@ namespace Microsoft.SyndicationFeed
 {
     public class Rss20FeedFormatter : ISyndicationFeedFormatter
     {
-        public ISyndicationCategory ParseCategory(string value)
+        public virtual ISyndicationCategory ParseCategory(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -27,7 +27,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationItem ParseItem(string value)
+        public virtual ISyndicationItem ParseItem(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -41,7 +41,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationLink ParseLink(string value)
+        public virtual ISyndicationLink ParseLink(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -55,7 +55,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationPerson ParsePerson(string value)
+        public virtual ISyndicationPerson ParsePerson(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -69,7 +69,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationImage ParseImage(string value)
+        public virtual ISyndicationImage ParseImage(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -83,7 +83,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public bool TryParseValue<T>(string value, out T result)
+        public virtual bool TryParseValue<T>(string value, out T result)
         {
             result = default(T);
 
@@ -136,19 +136,16 @@ namespace Microsoft.SyndicationFeed
             return (result = (T) Convert.ChangeType(value, typeof(T))) != null;
         }
 
-
-        public ISyndicationImage ParseImage(XmlReader reader)
+        private ISyndicationImage ParseImage(XmlReader reader)
         {
-            SyndicationImage image = null;
+            string title = string.Empty;
+            string description = string.Empty;
+            Uri url = null;
+            ISyndicationLink link = null;
 
             if (!reader.IsEmptyElement)
             {
                 reader.ReadStartElement();
-
-                string title = null;
-                Uri url = null;
-                ISyndicationLink link = null;
-                string description = null;
 
                 while (reader.IsStartElement())
                 {
@@ -156,11 +153,9 @@ namespace Microsoft.SyndicationFeed
                     // Url
                     if (reader.IsStartElement(Rss20Constants.UrlTag, Rss20Constants.Rss20Namespace))
                     {
-                        string uri = reader.ReadElementContentAsString();
-                        if(!TryParseValue(uri, out url)) 
+                        if (!TryParseValue(reader.ReadElementString(), out url)) 
                         {
-                            //Image parse failed
-                            throw new ArgumentException("The image can't be constructed with an invalid url");
+                            throw new FormatException("Invalid image url");
                         }
                     }
 
@@ -187,20 +182,27 @@ namespace Microsoft.SyndicationFeed
                 }
 
                 reader.ReadEndElement(); //image end
-                
-                image = new SyndicationImage(url);
-                image.Desciption = description;
-                image.RelationshipType = Rss20Constants.ImageTag;
-                image.Title = title;
-                image.Link = link;
             }
 
-            return image;
+            if (url == null)
+            {
+                throw new FormatException("Invalid image url");
+            }
+
+            return new SyndicationImage(url) {
+                Title = title,
+                Desciption = description,
+                Link = link,
+                RelationshipType = Rss20Constants.ImageTag
+            };
         }
 
         private SyndicationLink ParseLink(XmlReader reader)
         {
-            var link = new SyndicationLink();
+            Uri uri = null;
+            string title = string.Empty;
+            long length = 0;
+            string type = string.Empty;
 
             IEnumerable<SyndicationAttribute> attrs = XmlUtils.ReadAttributes(reader);
 
@@ -209,11 +211,7 @@ namespace Microsoft.SyndicationFeed
             SyndicationAttribute attrUrl = FindAttribute(attrs, "url");
             if (attrUrl != null)
             {
-                Uri uri;
-                if (TryParseValue(attrUrl.Value, out uri))
-                {
-                    link.Uri = uri;
-                }
+                TryParseValue(attrUrl.Value, out uri);
             }
 
             //
@@ -221,11 +219,7 @@ namespace Microsoft.SyndicationFeed
             SyndicationAttribute attrLength = FindAttribute(attrs, "length");
             if (attrLength != null)
             {
-                int length;
-                if (TryParseValue(attrLength.Value, out length))
-                {
-                    link.Length = length;
-                }
+                TryParseValue(attrLength.Value, out length);
             }
 
             //
@@ -233,7 +227,7 @@ namespace Microsoft.SyndicationFeed
             SyndicationAttribute attrType = FindAttribute(attrs, "type");
             if (attrType != null)
             {
-                link.MediaType = attrType.Value;
+                type = attrType.Value;
             }
 
 
@@ -242,20 +236,22 @@ namespace Microsoft.SyndicationFeed
             if (!reader.IsEmptyElement)
             {
                 // Title
-                link.Title = reader.ReadContentAsString();
+                title = reader.ReadContentAsString();
+
                 // Url is the content, if not set as attribute
-                Uri uri;
-                if (link.Uri == null && 
-                    !string.IsNullOrEmpty(link.Title) &&
-                    TryParseValue(link.Title, out uri))
+                if (uri == null && !string.IsNullOrEmpty(title))
                 {
-                    link.Uri = uri;
+                    TryParseValue(title, out uri);
                 }
             }
 
             reader.ReadEndElement();
 
-            return link;
+            return new SyndicationLink(uri) {
+                Title = title,
+                Length = length,
+                MediaType = type,
+            };
         }
 
         private static ISyndicationCategory ParseCategory(XmlReader reader)
@@ -409,11 +405,12 @@ namespace Microsoft.SyndicationFeed
             // Add a fallback Link
             if (!readAlternateLink && fallbackAlternateLink != null)
             {
-                var link = new SyndicationLink();
-                link.Uri = new Uri(fallbackAlternateLink, UriKind.RelativeOrAbsolute);
-
-                links.Add(link);
-                readAlternateLink = true;
+                Uri url;
+                if (TryParseValue(fallbackAlternateLink, out url))
+                {
+                    var link = new SyndicationLink(url);
+                    links.Add(link);
+                }
             }
 
             item.Links = links;
