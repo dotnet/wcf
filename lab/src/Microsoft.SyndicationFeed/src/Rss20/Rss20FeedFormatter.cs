@@ -153,7 +153,7 @@ namespace Microsoft.SyndicationFeed
                     // Url
                     if (reader.IsStartElement(Rss20Constants.UrlTag, Rss20Constants.Rss20Namespace))
                     {
-                        if (!TryParseValue(reader.ReadElementString(), out url)) 
+                        if (!TryParseValue(reader.ReadElementContentAsString(), out url)) 
                         {
                             throw new FormatException("Invalid image url");
                         }
