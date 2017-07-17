@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
@@ -40,38 +41,58 @@ namespace Microsoft.SyndicationFeed.Tests
         }
 
         [Fact]
-        public async Task ReadWithExtentions()
+        public async Task ReadItemAsContent()
         {
-            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true }))
-            {
+            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true })) {
                 var reader = new Rss20FeedReader(xmlReader);
 
-                while (await reader.Read())
-                {
-                    if (reader.ElementType == SyndicationElementType.Item)
-                    {
+                while (await reader.Read()) {
+                    if (reader.ElementType == SyndicationElementType.Item) {
                         // Read as content
                         ISyndicationContent content = await reader.ReadContent();
-                        Console.WriteLine(content.Name);
 
-                        // Enuemrate children
-                        foreach (var c in content.Fields)
-                        {
-                            Console.WriteLine("\t" + c.Name);
+                        var fields = content.Fields.ToArray();
+                        Assert.Equal(fields.Length, 6);
 
-                            if (c.Name == "title" ||
-                                c.Name == "description")
-                            {
-                                Console.WriteLine("\t" + c.GetValue());
-                            }
-                        }
+                        Assert.Equal("title", fields[0].Name);
+                        Assert.False(string.IsNullOrEmpty(fields[0].GetValue()));
 
-                        // Process as Item
-                        ISyndicationItem item = reader.Formatter.ParseItem(content.RawContent);
-                        Console.WriteLine(item);
+                        Assert.Equal("description", fields[1].Name);
+                        Assert.False(string.IsNullOrEmpty(fields[1].GetValue()));
+
+                        Assert.Equal("link", fields[2].Name);
+                        Assert.False(string.IsNullOrEmpty(fields[2].GetValue()));
+
+                        Assert.Equal("guid", fields[3].Name);
+                        Assert.Equal(fields[3].Attributes.Count(), 1);
+                        Assert.False(string.IsNullOrEmpty(fields[3].GetValue()));
+
+                        Assert.Equal("dc:creator", fields[4].Name);
+                        Assert.False(string.IsNullOrEmpty(fields[4].GetValue()));
+
+                        Assert.Equal("pubDate", fields[5].Name);
+                        Assert.False(string.IsNullOrEmpty(fields[5].GetValue()));
                     }
                 }
             }
+        }
+
+        [Fact]
+        public async Task CountItems()
+        {
+            int itemCount = 0;
+
+            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true })) {
+                var reader = new Rss20FeedReader(xmlReader);
+
+                while (await reader.Read()) {
+                    if (reader.ElementType == SyndicationElementType.Item) {
+                        itemCount++;
+                    }
+                }
+            }
+
+            Assert.Equal(itemCount, 10);
         }
 
         private async Task ReadWhile(string filePath)

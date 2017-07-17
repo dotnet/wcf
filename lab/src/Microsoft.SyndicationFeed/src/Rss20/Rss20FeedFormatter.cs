@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 
 namespace Microsoft.SyndicationFeed
@@ -109,16 +110,14 @@ namespace Microsoft.SyndicationFeed
             }
 
             //
-            // Enum
-            if (type.IsEnum)
-            {
-                object o;
-                if (Enum.TryParse(typeof(T), value, true, out o))
-                {
-                    result = (T)o;
-                    return true;
-                }
-            }
+            // Todo being added in netstandard 2.0
+            //if (type.GetTypeInfo().IsEnum)
+            //{
+            //    if (Enum.TryParse(typeof(T), value, true, out T o)) {
+            //        result = (T)(object)o;
+            //        return true;
+            //    }
+            //}
 
             //
             // Uri
@@ -164,7 +163,7 @@ namespace Microsoft.SyndicationFeed
                     // Title
                     if(reader.IsStartElement(Rss20Constants.TitleTag, Rss20Constants.Rss20Namespace))
                     {
-                        title = reader.ReadElementString();
+                        title = reader.ReadElementContentAsString();
                     }
 
                     //
@@ -178,7 +177,7 @@ namespace Microsoft.SyndicationFeed
                     // Description
                     if (reader.IsStartElement(Rss20Constants.DescriptionTag, Rss20Constants.Rss20Namespace))
                     {
-                        description = reader.ReadElementString();
+                        description = reader.ReadElementContentAsString();
                     }
                 }
 
@@ -310,7 +309,7 @@ namespace Microsoft.SyndicationFeed
                 // Title
                 if (reader.IsStartElement(Rss20Constants.TitleTag, Rss20Constants.Rss20Namespace))
                 {
-                    item.Title = reader.ReadElementString();
+                    item.Title = reader.ReadElementContentAsString();
                 }
                 //
                 // Link
@@ -326,7 +325,7 @@ namespace Microsoft.SyndicationFeed
                 // Description
                 else if (reader.IsStartElement(Rss20Constants.DescriptionTag, Rss20Constants.Rss20Namespace))
                 {
-                    item.Description = reader.ReadElementString();
+                    item.Description = reader.ReadElementContentAsString();
                 }
                 //
                 // Author
@@ -366,7 +365,7 @@ namespace Microsoft.SyndicationFeed
                     string permalinkString = reader.GetAttribute(Rss20Constants.IsPermaLinkTag, Rss20Constants.Rss20Namespace);
                     bool isPermalink = (permalinkString == null) || permalinkString.Equals("false", StringComparison.OrdinalIgnoreCase);
 
-                    item.Id = reader.ReadElementString();
+                    item.Id = reader.ReadElementContentAsString();
 
                     if (isPermalink)
                     {
