@@ -42,10 +42,8 @@ namespace System.IdentityModel.Claims
                 return Rsa;
             if (claimType == ClaimTypes.Thumbprint)
                 return Thumbprint;
-#if SUPPORTS_WINDOWSIDENTITY
             if (claimType == ClaimTypes.Upn)
                 return Upn;
-#endif // SUPPORTS_WINDOWSIDENTITY
             if (claimType == ClaimTypes.X500DistinguishedName)
                 return X500DistinguishedName;
             return Default;
@@ -267,7 +265,6 @@ namespace System.IdentityModel.Claims
                 if (upn1 == null || upn2 == null)
                     return false;
 
-#if SUPPORTS_WINDOWSIDENTITY
                 SecurityIdentifier sid1;
                 if (!TryLookupSidFromName(upn1, out sid1))
                     return false;
@@ -278,12 +275,6 @@ namespace System.IdentityModel.Claims
                     return false;
 
                 return sid1 == sid2;
-#else
-                // If WindowsIdentity isn't supported, then we can't
-                // retrieve the SecurityIdentifier's to compare so
-                // must return false
-                return false;
-#endif // SUPPORTS_WINDOWSIDENTITY
             }
 
             int IEqualityComparer.GetHashCode(object obj)
@@ -292,17 +283,14 @@ namespace System.IdentityModel.Claims
                 if (upn == null)
                     return 0;
 
-#if SUPPORTS_WINDOWSIDENTITY
                 // Normalize to sid
                 SecurityIdentifier sid;
                 if (TryLookupSidFromName(upn, out sid))
                     return sid.GetHashCode();
-#endif // SUPPORTS_WINDOWSIDENTITY
 
                 return StringComparer.OrdinalIgnoreCase.GetHashCode(upn);
             }
 
-#if SUPPORTS_WINDOWSIDENTITY
             private bool TryLookupSidFromName(string upn, out SecurityIdentifier sid)
             {
                 sid = null;
@@ -316,7 +304,6 @@ namespace System.IdentityModel.Claims
                 }
                 return sid != null;
             }
-#endif // SUPPORTS_WINDOWSIDENTITY        
         }
     }
 }

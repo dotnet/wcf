@@ -27,15 +27,25 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetsWindows)'=='true'">
-    <PackageReference Include="System.Net.Http.WinHttpHandler">
-      <Version>4.4.0-preview2-25316-01</Version>
+  <ItemGroup Condition="'$(TargetGroup)'!='uapaot'">
+    <PackageReference Include="Microsoft.NETCore.Platforms">
+      <Version>$(PlatformPackageVersion)</Version>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="@(CoreSetupPackageReference)" />
-    <FileToExclude Include="@(CoreSetupWcfAssemblies)" />
+    <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR">
+      <Version>$(CoreClrPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.TestHost">
+      <Version>$(CoreClrPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="runtime.native.System.Data.SqlClient.sni">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.DotNetHost">
+      <Version>$(DotNetHostPackageVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy">
+      <Version>$(DotNetHostPackageVersion)</Version>
+    </PackageReference>
   </ItemGroup>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />

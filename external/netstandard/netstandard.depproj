@@ -4,7 +4,6 @@
   <PropertyGroup>
     <NETStandardVersion Condition="$(NuGetTargetMoniker.StartsWith('.NETStandard,Version=v'))">$(NuGetTargetMoniker.SubString(22))</NETStandardVersion>
     <IsNETStandard1x Condition="$(NETStandardVersion.StartsWith('1.'))">true</IsNETStandard1x>
-    <IsNETStandard2x Condition="$(NETStandardVersion.StartsWith('2.'))">true</IsNETStandard2x>
     <BinPlaceRef>true</BinPlaceRef>
     <NuGetDeploySourceItem>Reference</NuGetDeploySourceItem>
     <NugetRuntimeIdentifier>None</NugetRuntimeIdentifier>
@@ -14,15 +13,6 @@
   <ItemGroup>
     <PackageReference Include="NETStandard.Library">
       <Version>$(NETStandardPackageVersion)</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(IsNETStandard2x)' == 'true'">
-    <PackageReference Include="System.Reflection.DispatchProxy">
-      <Version>4.4.0-preview2-25316-01</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime">
-      <Version>4.4.0-beta-24913-02</Version>
     </PackageReference>
   </ItemGroup>
 

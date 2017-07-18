@@ -296,22 +296,6 @@ namespace System.ServiceModel.Security
             return CreateWindowsIdentity();
         }
 
-#if !SUPPORTS_WINDOWSIDENTITY
-        internal static EndpointIdentity CreateWindowsIdentity(bool spnOnly)
-        {
-            EndpointIdentity identity = null;
-            if (spnOnly)
-            {
-                identity = EndpointIdentity.CreateSpnIdentity(String.Format(CultureInfo.InvariantCulture, "host/{0}", DnsCache.MachineName));
-            }
-            else
-            {
-                throw ExceptionHelper.PlatformNotSupported();
-            }
-
-            return identity;
-        }
-#else
         private static bool IsSystemAccount(WindowsIdentity self)
         {
             SecurityIdentifier sid = self.User;
@@ -375,7 +359,6 @@ namespace System.ServiceModel.Security
                 return new WindowsIdentity(token, authType);
             return new WindowsIdentity(token);
         }
-#endif // !SUPPORTS_WINDOWSIDENTITY
 
         internal static string GetSpnFromIdentity(EndpointIdentity identity, EndpointAddress target)
         {
@@ -468,11 +451,7 @@ namespace System.ServiceModel.Security
             if (principalName.Contains("@") || principalName.Contains(@"\"))
             {
                 identityClaim = new Claim(ClaimTypes.Upn, principalName, Rights.Identity);
-#if SUPPORTS_WINDOWSIDENTITY
                 primaryPrincipal = Claim.CreateUpnClaim(principalName);
-#else
-                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported"); 
-#endif // SUPPORTS_WINDOWSIDENTITY
             }
             else
             {
@@ -503,14 +482,10 @@ namespace System.ServiceModel.Security
                 WindowsClaimSet windows = claimSet as WindowsClaimSet;
                 if (windows != null)
                 {
-#if SUPPORTS_WINDOWSIDENTITY
                     if (str.Length > 0)
                         str.Append(", ");
 
                     AppendIdentityName(str, windows.WindowsIdentity);
-#else
-                    throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
-#endif // SUPPORTS_WINDOWSIDENTITY 
                 }
                 else
                 {
@@ -572,7 +547,7 @@ namespace System.ServiceModel.Security
                 }
             }
             // Same format as X509Identity
-            str.Append(String.IsNullOrEmpty(value) ? "<x509>" : value);
+            str.Append(string.IsNullOrEmpty(value) ? "<x509>" : value);
             str.Append("; ");
             str.Append(certificate.Thumbprint);
         }
@@ -584,7 +559,6 @@ namespace System.ServiceModel.Security
             {
                 name = identity.Name;
             }
-#pragma warning suppress 56500
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -594,8 +568,7 @@ namespace System.ServiceModel.Security
                 // suppress exception, this is just info.
             }
 
-            str.Append(String.IsNullOrEmpty(name) ? "<null>" : name);
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
+            str.Append(string.IsNullOrEmpty(name) ? "<null>" : name);
             WindowsIdentity windows = identity as WindowsIdentity;
             if (windows != null)
             {
@@ -614,11 +587,7 @@ namespace System.ServiceModel.Security
                     str.Append(sid.SecurityIdentifier.ToString());
                 }
             }
-#else
-            throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
-#endif // SUPPORTS_WINDOWSIDENTITY
         }
-
 
         internal static void OpenTokenProviderIfRequired(SecurityTokenProvider tokenProvider, TimeSpan timeout)
         {
@@ -802,7 +771,6 @@ namespace System.ServiceModel.Security
 
                 // CurrentUser could be set muliple times
                 // This is fine because it does not affect the value returned.
-#if SUPPORTS_WINDOWSIDENTITY
                 try
                 {
                     using (WindowsIdentity self = WindowsIdentity.GetCurrent())
@@ -816,10 +784,6 @@ namespace System.ServiceModel.Security
                     //so returning a username which is very unlikely to be a real username;
                     s_currentUser = DefaultCurrentUser;
                 }
-#else
-                // There's no way to retrieve the current logged in user Id in UWP apps
-                s_currentUser = DefaultCurrentUser;
-#endif // SUPPORTS_WINDOWSIDENTITY
 
                 return s_currentUser;
             }
@@ -871,7 +835,7 @@ namespace System.ServiceModel.Security
         {
             if (findValue == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("findValue");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(findValue));
             }
 
             X509Store store = new X509Store(storeName, storeLocation);
@@ -884,6 +848,7 @@ namespace System.ServiceModel.Security
                 {
                     return new X509Certificate2(certs[0]);
                 }
+
                 if (throwIfMultipleOrNoMatch)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateCertificateLoadException(
@@ -949,7 +914,6 @@ namespace System.ServiceModel.Security
             }
         }
 
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
         public static void ValidateAnonymityConstraint(WindowsIdentity identity, bool allowUnauthenticatedCallers)
         {
             if (!allowUnauthenticatedCallers && identity.User.IsWellKnown(WellKnownSidType.AnonymousSid))
@@ -958,7 +922,6 @@ namespace System.ServiceModel.Security
                     new SecurityTokenValidationException(SR.Format(SR.AnonymousLogonsAreNotAllowed)));
             }
         }
-#endif // SUPPORTS_WINDOWSIDENTITY 
 
         // This is the workaround, Since store.Certificates returns a full collection
         // of certs in store.  These are holding native resources.

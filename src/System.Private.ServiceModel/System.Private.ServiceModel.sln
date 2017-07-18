@@ -1,38 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Private.ServiceModel", "src\System.Private.ServiceModel.csproj", "{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-		Unix_Debug|Any CPU = Unix_Debug|Any CPU
-		Unix_Release|Any CPU = Unix_Release|Any CPU
-		Windows_Debug|Any CPU = Windows_Debug|Any CPU
-		Windows_netcore50_Debug|Any CPU = Windows_netcore50_Debug|Any CPU
-		Windows_netcore50_Release|Any CPU = Windows_netcore50_Release|Any CPU
-		Windows_Release|Any CPU = Windows_Release|Any CPU
+		netcoreapp-Unix-Debug|Any CPU = netcoreapp-Unix-Debug|Any CPU
+		netcoreapp-Unix-Release|Any CPU = netcoreapp-Unix-Release|Any CPU
+		netcoreapp-Windows_NT-Debug|Any CPU = netcoreapp-Windows_NT-Debug|Any CPU
+		netcoreapp-Windows_NT-Release|Any CPU = netcoreapp-Windows_NT-Release|Any CPU
+		uap-Windows_NT-Debug|Any CPU = uap-Windows_NT-Debug|Any CPU
+		uap-Windows_NT-Release|Any CPU = uap-Windows_NT-Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Debug|Any CPU.ActiveCfg = Windows_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Debug|Any CPU.Build.0 = Windows_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Release|Any CPU.ActiveCfg = Windows_Release|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Release|Any CPU.Build.0 = Windows_Release|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Unix_Debug|Any CPU.ActiveCfg = Unix_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Unix_Debug|Any CPU.Build.0 = Unix_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Unix_Release|Any CPU.ActiveCfg = Unix_Release|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Unix_Release|Any CPU.Build.0 = Unix_Release|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_Debug|Any CPU.ActiveCfg = Windows_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_Debug|Any CPU.Build.0 = Windows_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_netcore50_Debug|Any CPU.ActiveCfg = Windows_netcore50_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_netcore50_Debug|Any CPU.Build.0 = Windows_netcore50_Debug|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_netcore50_Release|Any CPU.ActiveCfg = Windows_netcore50_Release|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_netcore50_Release|Any CPU.Build.0 = Windows_netcore50_Release|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_Release|Any CPU.ActiveCfg = Windows_Release|Any CPU
-		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.Windows_Release|Any CPU.Build.0 = Windows_Release|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Unix-Debug|Any CPU.ActiveCfg = netcoreapp-Unix-Debug|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Unix-Debug|Any CPU.Build.0 = netcoreapp-Unix-Debug|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Unix-Release|Any CPU.ActiveCfg = netcoreapp-Unix-Release|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Unix-Release|Any CPU.Build.0 = netcoreapp-Unix-Release|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Windows_NT-Debug|Any CPU.ActiveCfg = netcoreapp-Windows_NT-Debug|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Windows_NT-Debug|Any CPU.Build.0 = netcoreapp-Windows_NT-Debug|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Windows_NT-Release|Any CPU.ActiveCfg = netcoreapp-Windows_NT-Release|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.netcoreapp-Windows_NT-Release|Any CPU.Build.0 = netcoreapp-Windows_NT-Release|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.uap-Windows_NT-Debug|Any CPU.ActiveCfg = uap-Windows_NT-Debug|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.uap-Windows_NT-Debug|Any CPU.Build.0 = uap-Windows_NT-Debug|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.uap-Windows_NT-Release|Any CPU.ActiveCfg = uap-Windows_NT-Release|Any CPU
+		{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}.uap-Windows_NT-Release|Any CPU.Build.0 = uap-Windows_NT-Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

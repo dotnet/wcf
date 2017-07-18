@@ -7,14 +7,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime;
 using System.Threading.Tasks;
-#if FEATURE_NETNATIVE
-using System.Collections.Generic;
-
-using Windows.Networking;
-using Windows.Networking.Connectivity;
-using Windows.Networking.Sockets;
-using RTSocketError = Windows.Networking.Sockets.SocketError;
-#endif
 
 namespace System.ServiceModel.Channels
 {
@@ -47,19 +39,7 @@ namespace System.ServiceModel.Channels
                         {
                             try
                             {
-#if FEATURE_NETNATIVE
-                                var hostNamesList = NetworkInformation.GetHostNames();
-                                foreach (var entry in hostNamesList)
-                                {
-                                    if (entry.Type == HostNameType.DomainName)
-                                    {
-                                        s_machineName = entry.CanonicalName;
-                                        break;
-                                    }
-                                }
-#else
                                 s_machineName = Dns.GetHostEntryAsync(String.Empty).GetAwaiter().GetResult().HostName;
-#endif
                             }
                             catch (SocketException)
                             {
@@ -130,45 +110,10 @@ namespace System.ServiceModel.Channels
             return hostAddresses;
         }
 
-#if FEATURE_NETNATIVE
-        internal static async Task<IPAddress[]> LookupHostName(string hostName)
-        {
-            try
-            {
-                IReadOnlyList<EndpointPair> data = await DatagramSocket.GetEndpointPairsAsync(new HostName(hostName), "0").AsTask();
-                List<IPAddress> addresses = new List<IPAddress>(data.Count);
-                if (data != null && data.Count > 0)
-                {
-                    foreach (EndpointPair item in data)
-                    {
-                        if (item != null && item.RemoteHostName != null &&
-                                      (item.RemoteHostName.Type == HostNameType.Ipv4 || item.RemoteHostName.Type == HostNameType.Ipv6))
-                        {
-                            IPAddress address;
-                            if(IPAddress.TryParse(item.RemoteHostName.CanonicalName, out address))
-                            {
-                                addresses.Add(address);
-                            }
-                        }
-                    }
-                }
-                return addresses.ToArray();
-            }
-            catch (Exception exception)
-            {
-                if (RTSocketError.GetStatus(exception.HResult) != SocketErrorStatus.Unknown)
-                {
-                    throw new SocketException(exception.HResult & 0x0000FFFF);
-                }
-                throw;
-            }
-        }
-#else
         internal static async Task<IPAddress[]> LookupHostName(string hostName)
         {
             return (await Dns.GetHostEntryAsync(hostName)).AddressList;
         }
-#endif
 
         internal class DnsCacheEntry
         {

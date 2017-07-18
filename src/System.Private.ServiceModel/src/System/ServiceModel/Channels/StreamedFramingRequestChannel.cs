@@ -104,12 +104,10 @@ namespace System.ServiceModel.Channels
                     ConnectionUpgradeHelper.DecodeFramingFault(decoder, connection, Via, _messageEncoder.ContentType, ref timeoutHelper);
                 }
 
-#if FEATURE_CORECLR // ExtendedProtection
                 if (channelBindingProvider != null && channelBindingProvider.IsChannelBindingSupportEnabled)
                 {
                     _channelBindingToken = channelBindingProvider.GetChannelBinding(upgradeInitiator, ChannelBindingKind.Endpoint);
                 }
-#endif // FEATURE_CORECLR // ExtendedProtection
 
                 remoteSecurity = StreamSecurityUpgradeInitiator.GetRemoteSecurity(upgradeInitiator);
 

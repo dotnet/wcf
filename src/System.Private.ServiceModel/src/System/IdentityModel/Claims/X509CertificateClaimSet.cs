@@ -197,11 +197,7 @@ namespace System.IdentityModel.Claims
 
             value = _certificate.GetNameInfo(X509NameType.UpnName, false);
             if (!string.IsNullOrEmpty(value))
-#if SUPPORTS_WINDOWSIDENTITY
                 claims.Add(Claim.CreateUpnClaim(value));
-#else
-                throw ExceptionHelper.PlatformNotSupported();
-#endif // SUPPORTS_WINDOWSIDENTITY
 
             value = _certificate.GetNameInfo(X509NameType.UrlName, false);
             if (!string.IsNullOrEmpty(value))

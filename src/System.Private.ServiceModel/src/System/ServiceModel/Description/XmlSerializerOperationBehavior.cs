@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -706,7 +707,11 @@ namespace System.ServiceModel.Description
                     else
                         mapping = XmlImporter.ImportMembersMapping(mappingName, ns, members, hasWrapperElement, rpc);
 
+#if FEATURE_NETNATIVE
+                    mapping.SetKeyInternal(mappingKey);
+#else
                     mapping.SetKey(mappingKey);
+#endif
                     XmlMappings.Add(mappingKey, mapping);
                     return mapping;
                 }
@@ -1115,35 +1120,54 @@ namespace System.ServiceModel.Description
                 return new XmlSerializer[0];
             }
 
-#if NETStandard13
-            Array mappingArray = XmlMappingTypesHelper.InitializeArray(XmlMappingTypesHelper.XmlMappingType, mappings);
-            MethodInfo method = typeof(XmlSerializer).GetMethod("FromMappings", new Type[] { XmlMappingTypesHelper.XmlMappingType.MakeArrayType(), typeof(Type) });
-            object result = method.Invoke(null, new object[] { mappingArray, type });
-
-            return (XmlSerializer[])result;
-#else
             return XmlSerializer.FromMappings(mappings, type);
-#endif
         }
 #if FEATURE_NETNATIVE
 
         private static XmlSerializer[] FromMappingsViaInjection(XmlMapping[] mappings, Type type)
         {
             XmlSerializer[] serializers = new XmlSerializer[mappings.Length];
+
+            bool generatedSerializerNotFound = false;
             for (int i = 0; i < serializers.Length; i++)
             {
                 Type t;
-                GeneratedXmlSerializers.GetGeneratedSerializers().TryGetValue(mappings[i].Key, out t);
+                GeneratedXmlSerializers.GetGeneratedSerializers().TryGetValue(mappings[i].GetKey(), out t);
                 if (t == null)
                 {
-                    throw new InvalidOperationException(SR.Format(SR.SFxXmlSerializerIsNotFound, type));
+                    generatedSerializerNotFound = true;
+                    break;
                 }
 
                 serializers[i] = new XmlSerializer(t);
+            }
+
+            if (generatedSerializerNotFound)
+            {
+                return XmlSerializer.FromMappings(mappings, type);
             }
 
             return serializers;
         }
 #endif
     }
+
+#if FEATURE_NETNATIVE
+    internal static class XmlMappingExtension
+    {
+        private static ConcurrentDictionary<XmlMapping, string> s_dictionary = new ConcurrentDictionary<XmlMapping, string>();
+
+        public static string GetKey(this XmlMapping mapping)
+        {
+            s_dictionary.TryGetValue(mapping, out string key);
+            return key;
+        }
+
+        public static void SetKeyInternal(this XmlMapping mapping, string key)
+        {
+            mapping.SetKey(key);
+            s_dictionary.TryAdd(mapping, key);
+        }
+    }
+#endif
 }

@@ -13,26 +13,6 @@ namespace System.ServiceModel.Security
 {
     public partial class X509CertificateInitiatorClientCredential
     {
-        public X509Certificate2 Certificate
-        {
-            get
-            {
-                return _certificate;
-            }
-            set
-            {
-                ThrowIfImmutable();
-                if (value == null)
-                {
-                    _certificate = value;
-                }
-                else
-                {
-                    throw ExceptionHelper.PlatformNotSupported("Directly setting the Certificate is not supported yet. Use SetCertificate instead");
-                }
-            }
-        }
-
         internal bool CloneCertificate
         {
             get
@@ -45,14 +25,15 @@ namespace System.ServiceModel.Security
         {
             if (findValue == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("findValue");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(findValue));
             }
+
             ThrowIfImmutable();
             var dotNetCertificate = SecurityUtils.GetCertificateFromStore(storeName, storeLocation, findType, findValue, null);
-            IReadOnlyList<Certificate> uwpCertificates;
+            IReadOnlyList<Certificate> uapCertificates;
             try
             {
-                uwpCertificates = GetCertificatesFromWinRTStore(dotNetCertificate);
+                uapCertificates = GetCertificatesFromWinRTStore(dotNetCertificate);
             }
             catch (Exception)
             {
@@ -60,13 +41,13 @@ namespace System.ServiceModel.Security
                     storeName, storeLocation, findType, findValue, null, 0));
             }
 
-            if (uwpCertificates.Count != 1)
+            if (uapCertificates.Count != 1)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(SecurityUtils.CreateCertificateLoadException(
-                    storeName, storeLocation, findType, findValue, null, uwpCertificates.Count));
+                    storeName, storeLocation, findType, findValue, null, uapCertificates.Count));
             }
 
-            AttachUwpCertificate(dotNetCertificate, uwpCertificates[0]);
+            AttachUapCertificate(dotNetCertificate, uapCertificates[0]);
             _certificate = dotNetCertificate;
         }
 
@@ -81,9 +62,24 @@ namespace System.ServiceModel.Security
             return CertificateStores.FindAllAsync(query).AsTask().GetAwaiter().GetResult();
         }
 
-        private void AttachUwpCertificate(X509Certificate2 dotNetCertificate, Certificate uwpCertificate)
+        internal static Certificate TryGetUapCertificate(X509Certificate2 certificate, out bool success)
         {
-            dotNetCertificate.Extensions.Add(new X509UwpCertificateAttachmentExtension(uwpCertificate));
+            foreach (var extension in certificate.Extensions)
+            {
+                if (extension is X509UwpCertificateAttachmentExtension attachmentExtension)
+                {
+                    success = true;
+                    return attachmentExtension.AttachedCertificate;
+                }
+            }
+
+            success = false;
+            return null;
+        }
+
+        private void AttachUapCertificate(X509Certificate2 dotNetCertificate, Certificate uapCertificate)
+        {
+            dotNetCertificate.Extensions.Add(new X509UwpCertificateAttachmentExtension(uapCertificate));
         }
 
         internal class X509UwpCertificateAttachmentExtension : X509Extension

@@ -35,13 +35,8 @@ namespace System.ServiceModel.Channels
 
         internal override IConnectionInitiator GetConnectionInitiator()
         {
-#if FEATURE_NETNATIVE
-            IConnectionInitiator socketConnectionInitiator = new RTSocketConnectionInitiator(
+            IConnectionInitiator socketConnectionInitiator = new SocketConnectionInitiator(
                 ConnectionBufferSize);
-#else
-            IConnectionInitiator socketConnectionInitiator = new CoreClrSocketConnectionInitiator(
-                ConnectionBufferSize);
-#endif
 
             return new BufferedConnectionInitiator(socketConnectionInitiator,
                 MaxOutputDelay, ConnectionBufferSize);

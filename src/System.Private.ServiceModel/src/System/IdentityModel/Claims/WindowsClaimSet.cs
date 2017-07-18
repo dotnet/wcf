@@ -2,9 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-#if SUPPORTS_WINDOWSIDENTITY
-
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
 using System.Runtime;
@@ -251,5 +248,3 @@ namespace System.IdentityModel.Claims
         }
     }
 }
-
-#endif // SUPPORTS_WINDOWSIDENTITY

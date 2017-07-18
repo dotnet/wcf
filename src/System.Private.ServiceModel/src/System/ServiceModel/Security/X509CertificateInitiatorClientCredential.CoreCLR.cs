@@ -11,19 +11,6 @@ namespace System.ServiceModel.Security
 {
     public partial class X509CertificateInitiatorClientCredential
     {
-        public X509Certificate2 Certificate
-        {
-            get
-            {
-                return _certificate;
-            }
-            set
-            {
-                ThrowIfImmutable();
-                _certificate = value;
-            }
-        }
-
         internal bool CloneCertificate
         {
             get
@@ -36,8 +23,9 @@ namespace System.ServiceModel.Security
         {
             if (findValue == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("findValue");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(findValue));
             }
+
             ThrowIfImmutable();
             _certificate = SecurityUtils.GetCertificateFromStore(storeName, storeLocation, findType, findValue, null);
         }

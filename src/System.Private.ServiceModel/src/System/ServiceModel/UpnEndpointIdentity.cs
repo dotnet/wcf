@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.ComponentModel;
 using System.Security.Principal;
 using System.IdentityModel.Claims;
@@ -16,15 +15,13 @@ namespace System.ServiceModel
 {
     public class UpnEndpointIdentity : EndpointIdentity
     {
-#if SUPPORTS_WINDOWSIDENTITY
 #pragma warning disable 0414 // We don't use this yet in the initial stubbing - remove this once we have references again. 
         private SecurityIdentifier _upnSid;
         private bool _hasUpnSidBeenComputed;
         private WindowsIdentity _windowsIdentity;
 #pragma warning restore 0414
-#endif // SUPPORTS_WINDOWSIDENTITY
 
-        private Object _thisLock = new Object();
+        private object _thisLock = new object();
 
         public UpnEndpointIdentity(string upnName)
         {
@@ -47,7 +44,6 @@ namespace System.ServiceModel
             Initialize(identity);
         }
 
-#if SUPPORTS_WINDOWSIDENTITY
         internal UpnEndpointIdentity(WindowsIdentity windowsIdentity)
         {
             if (windowsIdentity == null)
@@ -110,7 +106,6 @@ namespace System.ServiceModel
         {
             throw ExceptionHelper.PlatformNotSupported();
         }
-#endif // SUPPORTS_WINDOWSIDENTITY
 
         internal override void WriteContentsTo(XmlDictionaryWriter writer)
         {
@@ -120,7 +115,6 @@ namespace System.ServiceModel
             writer.WriteElementString(XD.AddressingDictionary.Upn, XD.AddressingDictionary.IdentityExtensionNamespace, (string)this.IdentityClaim.Resource);
         }
 
-#if SUPPORTS_WINDOWSIDENTITY
         internal SecurityIdentifier GetUpnSid()
         {
             Fx.Assert(ClaimTypes.Upn.Equals(this.IdentityClaim.ClaimType), "");
@@ -136,7 +130,6 @@ namespace System.ServiceModel
                             NTAccount userAccount = new NTAccount(upn);
                             _upnSid = userAccount.Translate(typeof(SecurityIdentifier)) as SecurityIdentifier;
                         }
-#pragma warning suppress 56500 // covered by FxCOP
                         catch (Exception e)
                         {
                             // Always immediately rethrow fatal exceptions.
@@ -161,6 +154,5 @@ namespace System.ServiceModel
             }
             return _upnSid;
         }
-#endif
     }
 }

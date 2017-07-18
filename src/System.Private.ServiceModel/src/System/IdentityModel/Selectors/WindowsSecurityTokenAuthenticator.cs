@@ -33,13 +33,9 @@ namespace System.IdentityModel.Selectors
 
         protected override ReadOnlyCollection<IAuthorizationPolicy> ValidateTokenCore(SecurityToken token)
         {
-#if SUPPORTS_WINDOWSIDENTITY // NegotiateStream
             WindowsSecurityToken windowsToken = (WindowsSecurityToken)token;
             WindowsClaimSet claimSet = new WindowsClaimSet(windowsToken.WindowsIdentity, windowsToken.AuthenticationType, _includeWindowsGroups, windowsToken.ValidTo);
             return SecurityUtils.CreateAuthorizationPolicies(claimSet, windowsToken.ValidTo);
-#else // SUPPORTS_WINDOWSIDENTITY
-            throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
-#endif // SUPPORTS_WINDOWSIDENTITY
         }
     }
 }
