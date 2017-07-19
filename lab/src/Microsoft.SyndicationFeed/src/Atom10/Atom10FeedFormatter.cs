@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Microsoft.SyndicationFeed.Atom10
+namespace Microsoft.SyndicationFeed
 {
     public class Atom10FeedFormatter : ISyndicationFeedFormatter
     {

@@ -20,11 +20,11 @@ namespace Microsoft.SyndicationFeed.Tests
             await ReadWhile(@"..\..\..\TestFeeds\rss20.xml");
         }
 
-        [Fact]
-        public async Task ReadWhile_3GB()
-        {
-            await ReadWhile(@"\\funbox\Share\Personal\jconde\Microsoft.ServiceModel.Syndication\tests\bin\Debug\netcoreapp2.0\feed3Gb.xml");
-        }
+        //[Fact]
+        //public async Task ReadWhile_3GB()
+        //{
+        //    await ReadWhile(@"\\funbox\Share\Personal\jconde\Microsoft.ServiceModel.Syndication\tests\bin\Debug\netcoreapp2.0\feed3Gb.xml");
+        //}
 
         [Fact]
         public async Task ReadSequential()

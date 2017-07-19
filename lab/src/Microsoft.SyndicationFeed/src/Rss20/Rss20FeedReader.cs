@@ -66,7 +66,8 @@ namespace Microsoft.SyndicationFeed
             bool knownFeed = _reader.IsStartElement(Rss20Constants.RssTag, Rss20Constants.Rss20Namespace) &&
                              _reader.GetAttribute(Rss20Constants.VersionTag).Equals(Rss20Constants.Version);
 
-            if (knownFeed) {
+            if (knownFeed)
+            {
                 // Read<rss>
                 await XmlUtils.ReadAsync(_reader);
 

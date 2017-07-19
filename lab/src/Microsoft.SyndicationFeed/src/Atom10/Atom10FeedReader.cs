@@ -3,11 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Threading.Tasks;
 using System.Xml;
 
-namespace Microsoft.SyndicationFeed.Atom10
+namespace Microsoft.SyndicationFeed
 {
-    class Atom10FeedReader : SyndicationFeedReaderBase
+    public class Atom10FeedReader : SyndicationFeedReaderBase
     {
         private readonly XmlReader _reader;
         private bool _knownFeed;
@@ -21,6 +22,17 @@ namespace Microsoft.SyndicationFeed.Atom10
             : base(reader, formatter)
         {
             _reader = reader;
+        }
+
+        public override async Task<bool> Read()
+        {
+            if (!_knownFeed)
+            {
+                await InitRead();
+                _knownFeed = true;
+            }
+
+            return await base.Read();
         }
 
         protected override SyndicationElementType MapElementType(string elementName)
@@ -47,5 +59,22 @@ namespace Microsoft.SyndicationFeed.Atom10
                     return SyndicationElementType.Content;
             }
         }
+
+        private async Task InitRead()
+        {
+            // Check <feed>
+            bool knownFeed = _reader.IsStartElement(Atom10Constants.FeedTag, Atom10Constants.Atom10Namespace);
+
+            if (knownFeed)
+            {
+                //Read <feed>
+                await XmlUtils.ReadAsync(_reader);
+            }
+            else
+            {
+                throw new XmlException("Unkown Atom Feed");
+            }
+        }
+
     }
 }
