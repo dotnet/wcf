@@ -16,14 +16,18 @@
     <name>Sam Ruby</name>
   </contributor>
 
-  <category term="sports"/>
+  <category term="sports" label="testLabel"/>
   
   <icon>/icon.jpg</icon>
 
   <logo>/logo.jpg</logo>
   <updated>2005-07-31T12:29:29Z</updated>
   <id>tag:example.org,2003:3</id>
+  
+  
   <link rel="alternate" type="text/html" hreflang="en" href="http://example.org/"/>
+  
+  
   <link rel="self" type="application/atom+xml" href="http://example.org/feed.atom"/>
   <rights>Copyright (c) 2003, Mark Pilgrim</rights>
   <generator uri="http://www.example.com/" version="1.0">

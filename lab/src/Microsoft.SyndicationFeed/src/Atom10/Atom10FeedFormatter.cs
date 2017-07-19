@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -45,7 +46,16 @@ namespace Microsoft.SyndicationFeed
 
         public ISyndicationLink ParseLink(string value)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            {
+                reader.MoveToContent();
+                return ParseLink(reader);
+            }
         }
 
         public ISyndicationPerson ParsePerson(string value)
@@ -173,6 +183,7 @@ namespace Microsoft.SyndicationFeed
 
             string term = reader.GetAttribute("term");
 
+            // term is required by the spec.
             if (string.IsNullOrEmpty(term))
             {
                 throw new FormatException("The category doesn't contain term attribute.");
@@ -180,12 +191,49 @@ namespace Microsoft.SyndicationFeed
 
             var category = new SyndicationCategory()
             {
-                Name = term
+                Name = term,
+                Scheme = reader.GetAttribute("schme"),
+                Label = reader.GetAttribute("label")
             };
 
             reader.Read();
             return category;
         }
 
+        private SyndicationLink ParseLink(XmlReader reader)
+        {
+
+            Uri uri = null;
+            long length = 0;
+            string relationshipType = reader.Name;
+
+            string lenghtRead = reader.GetAttribute("length");
+            if (!string.IsNullOrEmpty(lenghtRead))
+            {
+                TryParseValue(lenghtRead, out length);
+            }
+
+            string href = reader.GetAttribute("href");
+            if(string.IsNullOrEmpty(href))
+            {
+                throw new ArgumentNullException("The link does not contain href attribute.");
+            }
+
+            if (!TryParseValue(href ,out uri))
+            {
+                throw new FormatException("Unrecognized href format.");
+            }
+
+
+
+            SyndicationLink link = new SyndicationLink(uri)
+            {
+                Title = reader.GetAttribute("title"),
+                Length = length,
+                MediaType = reader.GetAttribute("type"),
+                RelationshipType = reader.GetAttribute("rel")
+            };
+            return link;            
+        }
     }
 }
