@@ -101,5 +101,21 @@ namespace Microsoft.SyndicationFeed.Tests
             }
         }
 
+        [Fact]
+        public async Task AtomReader_ReadItem()
+        {
+            using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
+            {
+                var reader = new Atom10FeedReader(xmlReader);
+                while (await reader.Read())
+                {
+                    if (reader.ElementType == SyndicationElementType.Item)
+                    {
+                        ISyndicationItem item = await reader.ReadItem();
+                    }
+                }
+            }
+        }
+
     }
 }
