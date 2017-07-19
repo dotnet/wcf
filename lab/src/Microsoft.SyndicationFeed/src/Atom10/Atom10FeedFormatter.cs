@@ -17,7 +17,16 @@ namespace Microsoft.SyndicationFeed
 
         public ISyndicationImage ParseImage(string value)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            {
+                reader.MoveToContent();
+                return ParseImage(reader);
+            }
         }
 
         public ISyndicationItem ParseItem(string value)
@@ -37,7 +46,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using(XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
             {
                 reader.MoveToContent();
                 return ParsePerson(reader);
@@ -47,7 +56,24 @@ namespace Microsoft.SyndicationFeed
 
         public bool TryParseValue<T>(string value, out T result)
         {
-            throw new NotImplementedException();
+            result = default(T);
+            Type type = typeof(T);
+
+            //
+            // Uri
+            if (type == typeof(Uri))
+            {
+                Uri uri;
+                if (UriUtils.TryParse(value, out uri))
+                {
+                    result = (T)(object)uri;
+                    return true;
+                }
+            }
+
+            //
+            // Fall back default
+            return (result = (T)Convert.ChangeType(value, typeof(T))) != null;
         }
 
         private SyndicationPerson ParsePerson(XmlReader reader)
@@ -80,6 +106,22 @@ namespace Microsoft.SyndicationFeed
             reader.ReadEndElement(); //end of author / contributor
 
             return person;
+        }
+
+        private SyndicationImage ParseImage(XmlReader reader)
+        {
+            //
+            // Atom Icon and Logo only contain one string with an Uri.
+            string relationshipType = reader.Name;
+            Uri uri = null;
+            if (!TryParseValue(reader.ReadElementContentAsString(), out uri))
+            {
+                throw new FormatException("Invalid image url.");
+            }
+
+            SyndicationImage image = new SyndicationImage(uri);
+            image.RelationshipType = relationshipType;
+            return image;
         }
 
     }

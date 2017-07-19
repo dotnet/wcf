@@ -49,6 +49,7 @@ namespace Microsoft.SyndicationFeed
                     return SyndicationElementType.Category;
 
                 case Atom10Constants.LogoTag:
+                case Atom10Constants.IconTag:
                     return SyndicationElementType.Image;
 
                 case Atom10Constants.AuthorTag:

@@ -155,7 +155,7 @@ namespace Microsoft.SyndicationFeed
                     {
                         if (!TryParseValue(reader.ReadElementContentAsString(), out url)) 
                         {
-                            throw new FormatException("Invalid image url");
+                            throw new FormatException("Invalid image url.");
                         }
                     }
 

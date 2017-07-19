@@ -21,6 +21,7 @@ namespace Microsoft.SyndicationFeed
         public const string HrefTag = "href";
         public const string HtmlMediaType = "text/html";
         public const string HtmlType = "html";
+        public const string IconTag = "icon";
         public const string IdTag = "id";
         public const string LabelTag = "label";
         public const string LengthTag = "length";
@@ -46,5 +47,6 @@ namespace Microsoft.SyndicationFeed
         public const string XHtmlMediaType = "application/xhtml+xml";
         public const string XHtmlType = "xhtml";
         public const string XmlMediaType = "text/xml";
+
     }
 }
