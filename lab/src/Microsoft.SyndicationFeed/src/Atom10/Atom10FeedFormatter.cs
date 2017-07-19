@@ -12,7 +12,16 @@ namespace Microsoft.SyndicationFeed
     {
         public ISyndicationCategory ParseCategory(string value)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            using(XmlReader reader = XmlReader.Create(new StringReader(value)))
+            {
+                reader.MoveToContent();
+                return ParseCategory(reader);
+            }
         }
 
         public ISyndicationImage ParseImage(string value)
@@ -57,7 +66,38 @@ namespace Microsoft.SyndicationFeed
         public bool TryParseValue<T>(string value, out T result)
         {
             result = default(T);
+
             Type type = typeof(T);
+
+            //
+            // String
+            if (type == typeof(string))
+            {
+                result = (T)(object)value;
+                return true;
+            }
+
+            //
+            // DateTimeOffset
+            //if (type == typeof(DateTimeOffset))
+            //{
+            //    DateTimeOffset dt;
+            //    if (DateTimeUtils.TryParse(value, out dt))
+            //    {
+            //        result = (T)(object)dt;
+            //        return true;
+            //    }
+            //}
+
+            //
+            // Todo being added in netstandard 2.0
+            //if (type.GetTypeInfo().IsEnum)
+            //{
+            //    if (Enum.TryParse(typeof(T), value, true, out T o)) {
+            //        result = (T)(object)o;
+            //        return true;
+            //    }
+            //}
 
             //
             // Uri
@@ -122,6 +162,29 @@ namespace Microsoft.SyndicationFeed
             SyndicationImage image = new SyndicationImage(uri);
             image.RelationshipType = relationshipType;
             return image;
+        }
+
+        private SyndicationCategory ParseCategory(XmlReader reader)
+        {
+            if (!reader.HasAttributes)
+            {
+                throw new FormatException("The category doesn't contain any attribute.");
+            }
+
+            string term = reader.GetAttribute("term");
+
+            if (string.IsNullOrEmpty(term))
+            {
+                throw new FormatException("The category doesn't contain term attribute.");
+            }
+
+            var category = new SyndicationCategory()
+            {
+                Name = term
+            };
+
+            reader.Read();
+            return category;
         }
 
     }

@@ -15,6 +15,9 @@
   <contributor>
     <name>Sam Ruby</name>
   </contributor>
+
+  <category term="sports"/>
+  
   <icon>/icon.jpg</icon>
 
   <logo>/logo.jpg</logo>

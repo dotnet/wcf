@@ -58,5 +58,21 @@ namespace Microsoft.SyndicationFeed.Tests
             }
         }
 
+        [Fact]
+        public async Task AtomReader_ReadCategory()
+        {
+            using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
+            {
+                var reader = new Atom10FeedReader(xmlReader);
+                while (await reader.Read())
+                {
+                    if (reader.ElementType == SyndicationElementType.Category)
+                    {
+                        ISyndicationCategory category = await reader.ReadCategory();
+                    }
+                }
+            }
+        }
+
     }
 }
