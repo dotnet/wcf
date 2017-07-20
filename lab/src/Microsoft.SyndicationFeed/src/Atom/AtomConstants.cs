@@ -4,7 +4,7 @@
 
 namespace Microsoft.SyndicationFeed
 {
-    static class Atom10Constants
+    static class AtomConstants
     {
         public const string AlternateTag = "alternate";
         public const string Atom10Namespace = "http://www.w3.org/2005/Atom";
@@ -47,6 +47,5 @@ namespace Microsoft.SyndicationFeed
         public const string XHtmlMediaType = "application/xhtml+xml";
         public const string XHtmlType = "xhtml";
         public const string XmlMediaType = "text/xml";
-
     }
 }

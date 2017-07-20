@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -15,7 +16,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml",new XmlReaderSettings { Async = true }))
             {
-                var reader = new Atom10FeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader);
                 while(await reader.Read())
                 {
                     ISyndicationContent content = await reader.ReadContent();
@@ -28,7 +29,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new Atom10FeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader);
                 while (await reader.Read())
                 {
                     if(reader.ElementType == SyndicationElementType.Person)
@@ -44,7 +45,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new Atom10FeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader);
                 int imagesRead = 0;
 
                 List<String> contentsOfImages = new List<string>();
@@ -69,7 +70,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new Atom10FeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader);
                 while (await reader.Read())
                 {
                     if (reader.ElementType == SyndicationElementType.Category)
@@ -86,7 +87,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new Atom10FeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader);
                 List<string> hrefs = new List<string>();
                 while (await reader.Read())
                 {
@@ -106,16 +107,95 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new Atom10FeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader);
                 while (await reader.Read())
                 {
                     if (reader.ElementType == SyndicationElementType.Item)
                     {
-                        ISyndicationItem item = await reader.ReadItem();
+                        IAtomEntry item = await reader.ReadEntry();
+
+
+                        //Assert content of item
+                        Assert.True(item.Title == "Atom draft-07 snapshot");
+
+                        int links = 0;
+                        foreach (var link in item.Links)
+                        {
+                            links++;
+                        }
+
+                        Assert.True(links == 3);
+
+                        int persons = 0;
+                        foreach (var person in item.Contributors)
+                        {
+                            persons++;
+                        }
+
+                        Assert.True(persons == 3);
+                        Assert.True(item.Rights == "All rights Reserved. Contoso.");
+                        Assert.True(item.Id == "tag:example.org,2003:3.2397");
                     }
                 }
             }
         }
 
+        [Fact]
+        public async Task AtomReader_ReadItemContent()
+        {
+            using( XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
+            {
+                var reader = new AtomFeedReader(xmlReader);
+
+                while (await reader.Read())
+                {
+                    if(reader.ElementType == SyndicationElementType.Item)
+                    {
+                        ISyndicationContent content = await reader.ReadContent();
+
+                        var fields = content.Fields.ToArray();
+
+                        Assert.True(fields.Length == 12);
+
+                        Assert.True(fields[0].Name == "title");
+                        Assert.False(string.IsNullOrEmpty(fields[0].GetValue()));
+
+                        Assert.True(fields[1].Name == "link");
+                        Assert.False(string.IsNullOrEmpty(fields[1].RawContent));
+
+                        Assert.True(fields[2].Name == "link");
+                        Assert.False(string.IsNullOrEmpty(fields[2].RawContent));
+
+                        Assert.True(fields[3].Name == "id");
+                        Assert.False(string.IsNullOrEmpty(fields[3].GetValue()));
+
+                        Assert.True(fields[4].Name == "updated");
+                        Assert.False(string.IsNullOrEmpty(fields[4].GetValue()));
+
+                        Assert.True(fields[5].Name == "published");
+                        Assert.False(string.IsNullOrEmpty(fields[5].GetValue()));
+
+                        Assert.True(fields[6].Name == "source");
+                        Assert.False(string.IsNullOrEmpty(fields[6].RawContent));
+
+                        Assert.True(fields[7].Name == "author");
+                        Assert.False(string.IsNullOrEmpty(fields[7].RawContent));
+
+                        Assert.True(fields[8].Name == "contributor");
+                        Assert.False(string.IsNullOrEmpty(fields[8].RawContent));
+
+                        Assert.True(fields[9].Name == "contributor");
+                        Assert.False(string.IsNullOrEmpty(fields[9].RawContent));
+
+                        Assert.True(fields[10].Name == "rights");
+                        Assert.False(string.IsNullOrEmpty(fields[10].GetValue()));
+
+                        Assert.True(fields[11].Name == "content");
+                        Assert.False(string.IsNullOrEmpty(fields[11].RawContent));
+
+                    }
+                }
+            }
+        }
     }
 }

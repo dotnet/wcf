@@ -13,7 +13,7 @@ namespace Microsoft.SyndicationFeed
     sealed class SyndicationContent : ISyndicationContent
     {
         private string _name;
-        private IEnumerable<SyndicationAttribute> _attributes;
+        private IEnumerable<ISyndicationAttribute> _attributes;
         private IEnumerable<ISyndicationContent> _children;
 
         public SyndicationContent(string rawContent)
@@ -35,14 +35,14 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public IEnumerable<SyndicationAttribute> Attributes
+        public IEnumerable<ISyndicationAttribute> Attributes
         {
             get 
             {
                 if (_attributes == null)
                 {
                     _attributes = !string.IsNullOrEmpty(RawContent) ? XmlUtils.ReadAttributes(RawContent) :
-                                                                      Enumerable.Empty<SyndicationAttribute>();
+                                                                      Enumerable.Empty<ISyndicationAttribute>();
                 }
 
                 return _attributes;

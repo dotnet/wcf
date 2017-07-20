@@ -87,6 +87,11 @@ namespace Microsoft.SyndicationFeed
         {
             result = default(T);
 
+            if (value == null)
+            {
+                return false;
+            }
+
             Type type = typeof(T);
 
             //
@@ -102,7 +107,7 @@ namespace Microsoft.SyndicationFeed
             if (type == typeof(DateTimeOffset))
             {
                 DateTimeOffset dt;
-                if (DateTimeUtils.TryParse(value, out dt))
+                if (DateTimeUtils.TryParseRss(value, out dt))
                 {
                     result = (T)(object)dt;
                     return true;
@@ -204,11 +209,11 @@ namespace Microsoft.SyndicationFeed
             long length = 0;
             string type = string.Empty;
 
-            IEnumerable<SyndicationAttribute> attrs = XmlUtils.ReadAttributes(reader);
+            IEnumerable<ISyndicationAttribute> attrs = XmlUtils.ReadAttributes(reader);
 
             //
             // Url
-            SyndicationAttribute attrUrl = FindAttribute(attrs, "url");
+            ISyndicationAttribute attrUrl = FindAttribute(attrs, "url");
             if (attrUrl != null)
             {
                 TryParseValue(attrUrl.Value, out uri);
@@ -216,7 +221,7 @@ namespace Microsoft.SyndicationFeed
 
             //
             // Length
-            SyndicationAttribute attrLength = FindAttribute(attrs, "length");
+            ISyndicationAttribute attrLength = FindAttribute(attrs, "length");
             if (attrLength != null)
             {
                 TryParseValue(attrLength.Value, out length);
@@ -224,7 +229,7 @@ namespace Microsoft.SyndicationFeed
 
             //
             // Type
-            SyndicationAttribute attrType = FindAttribute(attrs, "type");
+            ISyndicationAttribute attrType = FindAttribute(attrs, "type");
             if (attrType != null)
             {
                 type = attrType.Value;
@@ -419,7 +424,7 @@ namespace Microsoft.SyndicationFeed
         }
 
 
-        private static SyndicationAttribute FindAttribute(IEnumerable<SyndicationAttribute> collection, string name, string ns = null)
+        private static ISyndicationAttribute FindAttribute(IEnumerable<ISyndicationAttribute> collection, string name, string ns = null)
         {
             if (ns != null)
             {

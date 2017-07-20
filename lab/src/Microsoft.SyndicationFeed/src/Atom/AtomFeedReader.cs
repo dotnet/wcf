@@ -8,17 +8,17 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed
 {
-    public class Atom10FeedReader : SyndicationFeedReaderBase
+    public class AtomFeedReader : SyndicationFeedReaderBase
     {
         private readonly XmlReader _reader;
         private bool _knownFeed;
 
-        public Atom10FeedReader(XmlReader reader)
-            : this(reader, new Atom10FeedFormatter())
+        public AtomFeedReader(XmlReader reader)
+            : this(reader, new AtomFeedFormatter())
         {                
         }
 
-        public Atom10FeedReader(XmlReader reader, ISyndicationFeedFormatter formatter) 
+        public AtomFeedReader(XmlReader reader, ISyndicationFeedFormatter formatter) 
             : base(reader, formatter)
         {
             _reader = reader;
@@ -35,25 +35,37 @@ namespace Microsoft.SyndicationFeed
             return await base.Read();
         }
 
+        public virtual async Task<IAtomEntry> ReadEntry()
+        {
+            IAtomEntry item = await base.ReadItem() as IAtomEntry;
+
+            if (item == null)
+            {
+                throw new FormatException("Invalid Atom entry");
+            }
+
+            return item;
+        }
+
         protected override SyndicationElementType MapElementType(string elementName)
         {
             switch (elementName)
             {
-                case Atom10Constants.EntryTag:
+                case AtomConstants.EntryTag:
                     return SyndicationElementType.Item;
 
-                case Atom10Constants.LinkTag:
+                case AtomConstants.LinkTag:
                     return SyndicationElementType.Link;
 
-                case Atom10Constants.CategoryTag:
+                case AtomConstants.CategoryTag:
                     return SyndicationElementType.Category;
 
-                case Atom10Constants.LogoTag:
-                case Atom10Constants.IconTag:
+                case AtomConstants.LogoTag:
+                case AtomConstants.IconTag:
                     return SyndicationElementType.Image;
 
-                case Atom10Constants.AuthorTag:
-                case Atom10Constants.ContributorTag:
+                case AtomConstants.AuthorTag:
+                case AtomConstants.ContributorTag:
                     return SyndicationElementType.Person;
 
                 default:
@@ -64,7 +76,7 @@ namespace Microsoft.SyndicationFeed
         private async Task InitRead()
         {
             // Check <feed>
-            bool knownFeed = _reader.IsStartElement(Atom10Constants.FeedTag, Atom10Constants.Atom10Namespace);
+            bool knownFeed = _reader.IsStartElement(AtomConstants.FeedTag, AtomConstants.Atom10Namespace);
 
             if (knownFeed)
             {

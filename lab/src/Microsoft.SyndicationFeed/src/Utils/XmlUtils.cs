@@ -22,7 +22,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public static IEnumerable<SyndicationAttribute> ReadAttributes(string content)
+        public static IEnumerable<ISyndicationAttribute> ReadAttributes(string content)
         {
             using (XmlReader reader = XmlReader.Create(new StringReader(content)))
             {
@@ -31,7 +31,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public static IEnumerable<SyndicationAttribute> ReadAttributes(XmlReader reader)
+        public static IEnumerable<ISyndicationAttribute> ReadAttributes(XmlReader reader)
         {
             // Read attributes
             var attributes = new List<SyndicationAttribute>();

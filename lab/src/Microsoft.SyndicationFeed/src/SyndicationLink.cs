@@ -22,5 +22,7 @@ namespace Microsoft.SyndicationFeed
         public string RelationshipType { get; set; }
 
         public long Length { get; set; }
+
+        public DateTimeOffset LastUpdated { get; set; }
     }
 }
