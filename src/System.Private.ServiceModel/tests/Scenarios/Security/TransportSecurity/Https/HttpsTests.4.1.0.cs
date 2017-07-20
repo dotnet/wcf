@@ -171,7 +171,6 @@ public partial class HttpsTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(959, Framework = FrameworkID.NetNative)] // Server certificate validation not supported in NET Native
     [Issue(1295, OS = OSID.AnyCentOS | OSID.AnyFedora | OSID.AnyOpenSUSE | OSID.AnyOSX | OSID.AnyRHEL)] // A libcurl built with OpenSSL is required
     [OuterLoop]
     public static void ServerCertificateValidation_EchoString()

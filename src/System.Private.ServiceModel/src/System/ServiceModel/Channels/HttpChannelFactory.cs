@@ -294,7 +294,7 @@ namespace System.ServiceModel.Channels
 
             if (!foundHttpClient)
             {
-                var clientHandler = GetHttpMessageHandler(to, clientCertificateToken);
+                var clientHandler = GetHttpClientHandler(to, clientCertificateToken);
                 clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
 
                 if (_proxy != null)
@@ -354,9 +354,9 @@ namespace System.ServiceModel.Channels
             return httpClient;
         }
 
-        internal virtual ServiceModelHttpMessageHandler GetHttpMessageHandler(EndpointAddress to, SecurityTokenContainer clientCertificateToken)
+        internal virtual HttpClientHandler GetHttpClientHandler(EndpointAddress to, SecurityTokenContainer clientCertificateToken)
         {
-            return new ServiceModelHttpMessageHandler();
+            return new HttpClientHandler();
         }
 
         internal ICredentials GetCredentials()

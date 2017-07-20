@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace System.ServiceModel.Security
@@ -27,6 +27,17 @@ namespace System.ServiceModel.Security
             _isReadOnly = other._isReadOnly;
         }
 
+        internal bool CloneCertificate
+        {
+            get
+            {
+                // The clone constructor of X509Certificate2 doesn't copy the private key
+                // on non-windows platforms so we have to use the same certificate object
+                // and risk the user Dispose'ing the certificate.
+                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            }
+        }
+
         public X509Certificate2 Certificate
         {
             get
@@ -48,6 +59,17 @@ namespace System.ServiceModel.Security
             }
 
             SetCertificate(storeLocation, storeName, DefaultFindType, subjectName);
+        }
+
+        public void SetCertificate(StoreLocation storeLocation, StoreName storeName, X509FindType findType, object findValue)
+        {
+            if (findValue == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(findValue));
+            }
+
+            ThrowIfImmutable();
+            _certificate = SecurityUtils.GetCertificateFromStore(storeName, storeLocation, findType, findValue, null);
         }
 
         internal void MakeReadOnly()
