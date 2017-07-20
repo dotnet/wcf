@@ -19,9 +19,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using(XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using(XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
+                if(reader.Name != AtomConstants.CategoryTag)
+                {
+                    throw new FormatException("Invalid Atom category");
+                }
+
                 return ParseCategory(reader);
             }
         }
@@ -33,9 +39,14 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+                if (reader.Name != AtomConstants.IconTag && reader.Name != AtomConstants.LogoTag)
+                {
+                    throw new FormatException("Invalid Atom image");
+                }
+
                 return ParseImage(reader);
             }
         }
@@ -52,9 +63,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
+                if (reader.Name != AtomConstants.EntryTag)
+                {
+                    throw new FormatException("Invalid Atom entry");
+                }
+
                 return ParseEntry(reader);
             }
         }
@@ -66,9 +83,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
+                if (reader.Name != AtomConstants.LinkTag)
+                {
+                    throw new FormatException("Invalid Atom link");
+                }
+
                 return ParseLink(reader);
             }
         }
@@ -80,12 +103,16 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+                if (reader.Name != AtomConstants.AuthorTag && reader.Name != AtomConstants.ContributorTag)
+                {
+                    throw new FormatException("Invalid Atom person");
+                }
+
                 return ParsePerson(reader);
             }
-
         }
 
         public bool TryParseValue<T>(string value, out T result)
@@ -424,6 +451,15 @@ namespace Microsoft.SyndicationFeed
             }
 
             return source;
+        }
+
+        private XmlReader CreateXmlReader(string value)
+        {
+            return XmlReader.Create(new StringReader(value),
+                                    new XmlReaderSettings()
+                                    {
+                                        IgnoreProcessingInstructions = true
+                                    });
         }
     }
 }

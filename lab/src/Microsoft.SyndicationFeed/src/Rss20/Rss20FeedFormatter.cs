@@ -20,9 +20,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
+                if(reader.Name != Rss20Constants.CategoryTag)
+                {
+                    throw new FormatException("Invalid Rss category");
+                }
+
                 return ParseCategory(reader);
             }
         }
@@ -34,9 +40,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
-            { 
+            using (XmlReader reader = CreateXmlReader(value))
+            {
                 reader.MoveToContent();
+
+                if (reader.Name != Rss20Constants.ItemTag)
+                {
+                    throw new FormatException("Invalid Rss item");
+                }
+
                 return ParseItem(reader);
             }
         }
@@ -48,9 +60,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
+                if(reader.Name != Rss20Constants.LinkTag)
+                {
+                    throw new FormatException("Invalid Rss Link");
+                }
+
                 return ParseLink(reader);
             }
         }
@@ -62,9 +80,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
+                if(reader.Name != Rss20Constants.AuthorTag && reader.Name != Rss20Constants.ManagingEditorTag)
+                {
+                    throw new FormatException("Invalid Rss Person");
+                }
+
                 return ParsePerson(reader);
             }
         }
@@ -76,9 +100,15 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = XmlReader.Create(new StringReader(value)))
+            using (XmlReader reader = CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
+                if(reader.Name != Rss20Constants.ImageTag)
+                {
+                    throw new FormatException("Invalid Rss Image");
+                }
+
                 return ParseImage(reader);
             }
         }
@@ -141,7 +171,7 @@ namespace Microsoft.SyndicationFeed
             return (result = (T) Convert.ChangeType(value, typeof(T))) != null;
         }
 
-        private ISyndicationImage ParseImage(XmlReader reader)
+        private SyndicationImage ParseImage(XmlReader reader)
         {
             string title = string.Empty;
             string description = string.Empty;
@@ -204,43 +234,36 @@ namespace Microsoft.SyndicationFeed
 
         private SyndicationLink ParseLink(XmlReader reader)
         {
-            Uri uri = null;
-            string title = string.Empty;
-            long length = 0;
-            string type = string.Empty;
-
-            IEnumerable<ISyndicationAttribute> attrs = XmlUtils.ReadAttributes(reader);
 
             //
             // Url
-            ISyndicationAttribute attrUrl = FindAttribute(attrs, "url");
-            if (attrUrl != null)
+            Uri uri = null;
+            string url = reader.GetAttribute("url");
+            if(url != null)
             {
-                TryParseValue(attrUrl.Value, out uri);
+                if (!TryParseValue(url,out uri))
+                {
+                    throw new FormatException("Invalid url attribute format.");
+                }
             }
 
             //
             // Length
-            ISyndicationAttribute attrLength = FindAttribute(attrs, "length");
-            if (attrLength != null)
-            {
-                TryParseValue(attrLength.Value, out length);
-            }
+            long length = 0;
+            TryParseValue(reader.GetAttribute("length"), out length);
 
             //
             // Type
-            ISyndicationAttribute attrType = FindAttribute(attrs, "type");
-            if (attrType != null)
-            {
-                type = attrType.Value;
-            }
-
-
+            string type = string.Empty;
+            TryParseValue(reader.GetAttribute("type"), out type);
+            
             reader.ReadStartElement();
 
+            //
+            // Title
+            string title = string.Empty;
             if (!reader.IsEmptyElement)
             {
-                // Title
                 title = reader.ReadContentAsString();
 
                 // Url is the content, if not set as attribute
@@ -259,7 +282,7 @@ namespace Microsoft.SyndicationFeed
             };
         }
 
-        private static ISyndicationCategory ParseCategory(XmlReader reader)
+        private static SyndicationCategory ParseCategory(XmlReader reader)
         {
             var category = new SyndicationCategory();
 
@@ -422,19 +445,14 @@ namespace Microsoft.SyndicationFeed
             item.Contributors = contributors;
             item.Categories = categories;
         }
-
-
-        private static ISyndicationAttribute FindAttribute(IEnumerable<ISyndicationAttribute> collection, string name, string ns = null)
+        
+        private XmlReader CreateXmlReader(string value)
         {
-            if (ns != null)
-            {
-                return collection.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
-                                                      a.Namespace.Equals(XmlUtils.XmlNs, StringComparison.OrdinalIgnoreCase));
-            }
-            else
-            {
-                return collection.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-            }
+            return XmlReader.Create(new StringReader(value), 
+                                    new XmlReaderSettings()
+                                    {
+                                        IgnoreProcessingInstructions = true
+                                    });
         }
     }
 }

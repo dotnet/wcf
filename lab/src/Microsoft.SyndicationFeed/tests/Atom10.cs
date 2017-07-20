@@ -29,14 +29,21 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
+                var persons = new List<ISyndicationPerson>();
                 var reader = new AtomFeedReader(xmlReader);
                 while (await reader.Read())
                 {
                     if(reader.ElementType == SyndicationElementType.Person)
                     {
                         ISyndicationPerson person = await reader.ReadPerson();
+                        persons.Add(person);
                     }
                 }
+
+                Assert.True(persons.Count() == 2);
+                Assert.True(persons[0].Name == "Mark Pilgrim");
+                Assert.True(persons[1].Name == "Sam Ruby");
+
             }
         }
 
@@ -113,8 +120,7 @@ namespace Microsoft.SyndicationFeed.Tests
                     if (reader.ElementType == SyndicationElementType.Item)
                     {
                         IAtomEntry item = await reader.ReadEntry();
-
-
+                        
                         //Assert content of item
                         Assert.True(item.Title == "Atom draft-07 snapshot");
 
