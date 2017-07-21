@@ -87,6 +87,14 @@ namespace Microsoft.SyndicationFeed
             return Task.FromResult(reader.Read());
         }
 
+        public static XmlReader CreateXmlReader(string value)
+        {
+            return XmlReader.Create(new StringReader(value),
+                                    new XmlReaderSettings()
+                                    {
+                                        IgnoreProcessingInstructions = true
+                                    });
+        }
 
         private static bool IsXmlns(string name, string ns)
         {

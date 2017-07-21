@@ -4,9 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Microsoft.SyndicationFeed
@@ -20,11 +17,11 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using(XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
-                if(reader.Name != AtomConstants.CategoryTag)
+                if (reader.Name != AtomConstants.CategoryTag)
                 {
                     throw new FormatException("Invalid Atom category");
                 }
@@ -40,7 +37,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
                 if (reader.Name != AtomConstants.IconTag && reader.Name != AtomConstants.LogoTag)
@@ -64,7 +61,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
@@ -84,7 +81,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
@@ -104,7 +101,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
                 if (reader.Name != AtomConstants.AuthorTag && reader.Name != AtomConstants.ContributorTag)
@@ -139,16 +136,17 @@ namespace Microsoft.SyndicationFeed
             // DateTimeOffset
             if (type == typeof(DateTimeOffset))
             {
-                DateTimeOffset dt;
-                if (TryParseAtomDate(value, out dt))
+                if (Atom.DateTimeParser.TryParseDate(value, out DateTimeOffset dt))
                 {
                     result = (T)(object)dt;
                     return true;
                 }
+
+                return false;
             }
 
             //
-            // Todo being added in netstandard 2.0
+            // TODO: being added in netstandard 2.0
             //if (type.GetTypeInfo().IsEnum)
             //{
             //    if (Enum.TryParse(typeof(T), value, true, out T o)) {
@@ -161,12 +159,13 @@ namespace Microsoft.SyndicationFeed
             // Uri
             if (type == typeof(Uri))
             {
-                Uri uri;
-                if (UriUtils.TryParse(value, out uri))
+                if (UriUtils.TryParse(value, out Uri uri))
                 {
                     result = (T)(object)uri;
                     return true;
                 }
+
+                return false;
             }
 
             //
@@ -216,14 +215,16 @@ namespace Microsoft.SyndicationFeed
             // Atom Icon and Logo only contain one string with an Uri.
             string relationshipType = reader.Name;
             Uri uri = null;
+
             if (!TryParseValue(reader.ReadElementContentAsString(), out uri))
             {
                 throw new FormatException("Invalid image url.");
             }
 
-            SyndicationImage image = new SyndicationImage(uri);
-            image.RelationshipType = relationshipType;
-            return image;
+            return new SyndicationImage(uri)
+            {
+                RelationshipType = relationshipType
+            };
         }
 
         private SyndicationCategory ParseCategory(XmlReader reader)
@@ -241,15 +242,17 @@ namespace Microsoft.SyndicationFeed
                 throw new FormatException("The category doesn't contain term attribute.");
             }
 
-            var category = new SyndicationCategory()
-            {
-                Name = term,
-                Scheme = reader.GetAttribute("schme"),
-                Label = reader.GetAttribute("label")
-            };
+            string scheme = reader.GetAttribute("term");
+            string label = reader.GetAttribute("label");
 
             reader.Read();
-            return category;
+
+            return new SyndicationCategory()
+            {
+                Name = term,
+                Scheme = scheme,
+                Label = label
+            };
         }
 
         private SyndicationLink ParseLink(XmlReader reader)
@@ -308,9 +311,6 @@ namespace Microsoft.SyndicationFeed
 
             reader.ReadStartElement();
 
-            string date;
-            DateTimeOffset dto;
-
             while (reader.IsStartElement())
             {
                 switch (reader.LocalName)
@@ -348,12 +348,12 @@ namespace Microsoft.SyndicationFeed
                         break;
 
                     //
-                    // PublishedTag
+                    // Published
                     case AtomConstants.PublishedTag:
-                        date = reader.ReadElementContentAsString();
-                        TryParseAtomDate(date, out dto);
-                        item.Published = dto;
-                        //parse the date
+                        if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset published))
+                        {
+                            item.Published = published;
+                        }
                         break;
 
                     //
@@ -365,9 +365,7 @@ namespace Microsoft.SyndicationFeed
                     //
                     // Source
                     case AtomConstants.SourceFeedTag:
-
                         links.Add(ParseSource(reader));
-
                         break;
 
                     //
@@ -385,10 +383,10 @@ namespace Microsoft.SyndicationFeed
                     //
                     // Updated
                     case AtomConstants.UpdatedTag:
-                        date = reader.ReadElementContentAsString();                        
-                        TryParseAtomDate(date, out dto);
-                        item.LastUpdated = dto;
-                        //parse the date
+                        if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset updated))
+                        {
+                            item.LastUpdated = updated;
+                        }
                         break;
 
                     //
@@ -408,24 +406,18 @@ namespace Microsoft.SyndicationFeed
 
         private SyndicationLink ParseSource(XmlReader reader)
         {
-            SyndicationLink source = null;
-            Uri id = null;
+            Uri url = null;
             string title = null;
-            string updated = null;
-            string relationship = reader.LocalName;
+            DateTimeOffset lastUpdated;
 
             reader.ReadStartElement();
+
             while (reader.IsStartElement())
             {
                 switch (reader.LocalName)
                 {
                     case AtomConstants.IdTag:
-                        string url = reader.ReadElementContentAsString();
-                        if (TryParseValue(url, out id))
-                        {
-                            source = new SyndicationLink(id);
-                        }
-
+                        TryParseValue(reader.ReadElementContentAsString(), out url);
                         break;
 
                     case AtomConstants.TitleTag:
@@ -433,9 +425,11 @@ namespace Microsoft.SyndicationFeed
                         break;
 
                     case AtomConstants.UpdatedTag:
-                        updated = reader.ReadElementContentAsString();
+                        TryParseValue(reader.ReadElementContentAsString(), out lastUpdated);
                         break;
 
+                    //
+                    // Unrecognized tags
                     default:
                         reader.Skip();
                         break;
@@ -444,64 +438,17 @@ namespace Microsoft.SyndicationFeed
 
             reader.ReadEndElement(); // end of source tag
 
-            if (source != null)
+            if (url == null)
             {
-                source.Title = title;
-                source.RelationshipType = relationship;
-                DateTimeOffset sourceDate;
-                if (TryParseValue(updated, out sourceDate))
-                {
-                    source.LastUpdated = sourceDate;
-                }
+                throw new FormatException("Invalid <id> element");
             }
 
-            return source;
-        }
-
-        private XmlReader CreateXmlReader(string value)
-        {
-            return XmlReader.Create(new StringReader(value),
-                                    new XmlReaderSettings()
-                                    {
-                                        IgnoreProcessingInstructions = true
-                                    });
-        }
-
-        private bool TryParseAtomDate(string dateTimeString, out DateTimeOffset result)
-        {
-            const string Rfc3339LocalDateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
-            const string Rfc3339UTCDateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
-
-            dateTimeString = dateTimeString.Trim();
-
-            if (dateTimeString[19] == '.')
+            return new SyndicationLink(url)
             {
-                // remove any fractional seconds, we choose to ignore them
-                int i = 20;
-                while (dateTimeString.Length > i && char.IsDigit(dateTimeString[i]))
-                {
-                    ++i;
-                }
-                dateTimeString = dateTimeString.Substring(0, 19) + dateTimeString.Substring(i);
-            }
-
-            DateTimeOffset localTime;
-            if (DateTimeOffset.TryParseExact(dateTimeString, Rfc3339LocalDateTimeFormat,
-                CultureInfo.InvariantCulture.DateTimeFormat,
-                DateTimeStyles.None, out localTime))
-            {
-                result = localTime;
-                return true;
-            }
-            DateTimeOffset utcTime;
-            if (DateTimeOffset.TryParseExact(dateTimeString, Rfc3339UTCDateTimeFormat,
-                CultureInfo.InvariantCulture.DateTimeFormat,
-                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out utcTime))
-            {
-                result = utcTime;
-                return true;
-            }
-            return false;
+                Title = title,
+                RelationshipType = AtomConstants.SourceFeedTag,
+                LastUpdated = lastUpdated
+            };
         }
     }
 }
