@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <PropertyGroup>
+    <ServiceModelFacade>$(BaseIntermediateOutputPath)shims/netcoreapp/facades/System.ServiceModel.dll</ServiceModelFacade>
+    <!-- Skip package validation since this package will now contain the shims and this is not allowed by validation -->
+    <SkipValidatePackage>true</SkipValidatePackage>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\ref\System.ServiceModel.Primitives.csproj">
       <SupportedFramework>netcoreapp2.0;net461;$(UAPvNextTFM);$(AllXamarinFrameworks)</SupportedFramework>
@@ -28,6 +33,22 @@
       <!-- Supported inbox by all ns1.0-1.2 frameworks -->
       <Value>.NETStandard,Version=v1.0;.NETStandard,Version=v1.1;.NETStandard,Version=v1.2</Value>
     </ValidatePackageSuppression>
+    <!-- Impl shim of System.ServiceModel.dll for UAP -->
+    <File Include="$(ServiceModelFacade)">
+      <TargetPath Condition="'$(_targetRuntime)' == ''">lib/$(UAPvNextTFM)</TargetPath>
+    </File>
+    <!-- Impl shim of System.ServiceModel.dll for netstandard2.0 -->
+    <File Include="$(ServiceModelFacade)">
+      <TargetPath Condition="'$(_targetRuntime)' == ''">lib/netstandard2.0</TargetPath>
+    </File>
+    <!-- Ref shim of System.ServiceModel.dll for UAP -->
+    <File Include="$(ServiceModelFacade)">
+      <TargetPath Condition="'$(_targetRuntime)' == ''">ref/$(UAPvNextTFM)</TargetPath>
+    </File>
+    <!-- Ref shim of System.ServiceModel.dll for netstandard2.0 -->
+    <File Include="$(ServiceModelFacade)">
+      <TargetPath Condition="'$(_targetRuntime)' == ''">ref/netstandard2.0</TargetPath>
+    </File>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

@@ -8,8 +8,7 @@
         <StrongNameSig Condition="'%(NetfxReference.StrongNameSig)' == ''">StrongName</StrongNameSig>
         <StrongNameSig Condition="'%(NetfxReference.StrongNameSig)' != ''">%(NetfxReference.StrongNameSig)</StrongNameSig>
       </NetFxContracts>
-      <NETStandardContracts Include="$(NetStandardRefPath)netstandard.dll" />
-      <GenFacadesContracts Include="@(NetFxContracts);@(NETStandardContracts)" />
+      <GenFacadesContracts Include="@(NetFxContracts)" />
       <GenFacadesSeeds Include="$(RefPath)*.dll" />
     </ItemGroup>
   </Target>
@@ -22,7 +21,7 @@
   <!-- Generate Facades -->
   <Target Name="RunGenFacades"
           DependsOnTargets="GetGenFacadesInputs"
-          Inputs="@(GenFacadesContracts);@(GenFacadeSeeds)"
+          Inputs="@(GenFacadesContracts);@(GenFacadesSeeds)"
           Outputs="$(GenFacadesSemaphoreFile)">
 
     <PropertyGroup>
@@ -47,21 +46,11 @@
           Command="$(GenFacadesCmd) -contracts:&quot;@(NetFxContracts)&quot; @&quot;$(GenFacadesResponseFile)&quot;"
           WorkingDirectory="$(ToolRuntimePath)" />
 
-    <Exec Condition="'@(NETStandardContracts)' != ''"
-          Command="$(GenFacadesCmd) -contracts:&quot;@(NETStandardContracts)&quot; @&quot;$(GenFacadesResponseFile)&quot;"
-          WorkingDirectory="$(ToolRuntimePath)" />
-
     <WriteSigningRequired
         Condition="'@(NetFxContracts)' != '' and '$(SkipSigning)' != 'true' and '$(SignType)' != 'oss'"
         AuthenticodeSig="Microsoft"
         StrongNameSig="%(NetFxContracts.StrongNameSig)"
         MarkerFile="$(GenFacadesOutputPath)%(NetFxContracts.Filename)%(NetFxContracts.Extension).requires_signing" />
-
-    <WriteSigningRequired
-        Condition="'@(NETStandardContracts)' != '' and '$(SkipSigning)' != 'true' and '$(SignType)' != 'oss'"
-        AuthenticodeSig="Microsoft"
-        StrongNameSig="Open"
-        MarkerFile="$(GenFacadesOutputPath)%(NETStandardContracts.Filename)%(NETStandardContracts.Extension).requires_signing" />
 
     <Touch Files="$(GenFacadesSemaphoreFile)" AlwaysCreate="true" />
   </Target>
