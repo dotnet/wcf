@@ -225,7 +225,6 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
                nameof(SPN_Available))]
-    [Issue(1262)]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
