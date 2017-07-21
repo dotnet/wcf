@@ -21,7 +21,7 @@
   <!-- Generate Facades -->
   <Target Name="RunGenFacades"
           DependsOnTargets="GetGenFacadesInputs"
-          Inputs="@(GenFacadesContracts);@(GenFacadeSeeds)"
+          Inputs="@(GenFacadesContracts);@(GenFacadesSeeds)"
           Outputs="$(GenFacadesSemaphoreFile)">
 
     <PropertyGroup>
