@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -12,7 +13,7 @@ namespace Microsoft.SyndicationFeed
 {
     public class AtomFeedFormatter : ISyndicationFeedFormatter
     {
-        public ISyndicationCategory ParseCategory(string value)
+        public virtual ISyndicationCategory ParseCategory(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -32,7 +33,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationImage ParseImage(string value)
+        public virtual ISyndicationImage ParseImage(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -51,7 +52,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationItem ParseItem(string value)
+        public virtual ISyndicationItem ParseItem(string value)
         {
             return ParseEntry(value);
         }
@@ -76,7 +77,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationLink ParseLink(string value)
+        public virtual ISyndicationLink ParseLink(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -96,7 +97,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public ISyndicationPerson ParsePerson(string value)
+        public virtual ISyndicationPerson ParsePerson(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -115,7 +116,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public bool TryParseValue<T>(string value, out T result)
+        public virtual bool TryParseValue<T>(string value, out T result)
         {
             result = default(T);
 
@@ -139,7 +140,7 @@ namespace Microsoft.SyndicationFeed
             if (type == typeof(DateTimeOffset))
             {
                 DateTimeOffset dt;
-                if (DateTimeUtils.TryParseAtom(value, out dt))
+                if (TryParseAtomDate(value, out dt))
                 {
                     result = (T)(object)dt;
                     return true;
@@ -196,6 +197,10 @@ namespace Microsoft.SyndicationFeed
 
                     case AtomConstants.UriTag:
                         person.Uri = reader.ReadElementContentAsString();
+                        break;
+
+                    default:
+                        reader.Skip();
                         break;
                 }
             }
@@ -289,13 +294,13 @@ namespace Microsoft.SyndicationFeed
 
             if (!isEmpty)
             {
-                FillItems(item, reader);
+                FillItem(item, reader);
             }
 
             return item;
         }
 
-        private void FillItems(AtomEntry item, XmlReader reader)
+        private void FillItem(AtomEntry item, XmlReader reader)
         {
             var categories = new List<ISyndicationCategory>();
             var contributors = new List<ISyndicationPerson>();
@@ -346,7 +351,7 @@ namespace Microsoft.SyndicationFeed
                     // PublishedTag
                     case AtomConstants.PublishedTag:
                         date = reader.ReadElementContentAsString();
-                        DateTimeUtils.TryParseAtom(date, out dto);
+                        TryParseAtomDate(date, out dto);
                         item.Published = dto;
                         //parse the date
                         break;
@@ -381,7 +386,7 @@ namespace Microsoft.SyndicationFeed
                     // Updated
                     case AtomConstants.UpdatedTag:
                         date = reader.ReadElementContentAsString();                        
-                        DateTimeUtils.TryParseAtom(date, out dto);
+                        TryParseAtomDate(date, out dto);
                         item.LastUpdated = dto;
                         //parse the date
                         break;
@@ -460,6 +465,43 @@ namespace Microsoft.SyndicationFeed
                                     {
                                         IgnoreProcessingInstructions = true
                                     });
+        }
+
+        private bool TryParseAtomDate(string dateTimeString, out DateTimeOffset result)
+        {
+            const string Rfc3339LocalDateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
+            const string Rfc3339UTCDateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
+
+            dateTimeString = dateTimeString.Trim();
+
+            if (dateTimeString[19] == '.')
+            {
+                // remove any fractional seconds, we choose to ignore them
+                int i = 20;
+                while (dateTimeString.Length > i && char.IsDigit(dateTimeString[i]))
+                {
+                    ++i;
+                }
+                dateTimeString = dateTimeString.Substring(0, 19) + dateTimeString.Substring(i);
+            }
+
+            DateTimeOffset localTime;
+            if (DateTimeOffset.TryParseExact(dateTimeString, Rfc3339LocalDateTimeFormat,
+                CultureInfo.InvariantCulture.DateTimeFormat,
+                DateTimeStyles.None, out localTime))
+            {
+                result = localTime;
+                return true;
+            }
+            DateTimeOffset utcTime;
+            if (DateTimeOffset.TryParseExact(dateTimeString, Rfc3339UTCDateTimeFormat,
+                CultureInfo.InvariantCulture.DateTimeFormat,
+                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out utcTime))
+            {
+                result = utcTime;
+                return true;
+            }
+            return false;
         }
     }
 }

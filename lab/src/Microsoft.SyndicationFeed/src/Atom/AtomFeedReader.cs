@@ -76,9 +76,8 @@ namespace Microsoft.SyndicationFeed
         private async Task InitRead()
         {
             // Check <feed>
-            bool knownFeed = _reader.IsStartElement(AtomConstants.FeedTag, AtomConstants.Atom10Namespace);
 
-            if (knownFeed)
+            if (_reader.IsStartElement(AtomConstants.FeedTag, AtomConstants.Atom10Namespace))
             {
                 //Read <feed>
                 await XmlUtils.ReadAsync(_reader);
@@ -88,6 +87,5 @@ namespace Microsoft.SyndicationFeed
                 throw new XmlException("Unkown Atom Feed");
             }
         }
-
     }
 }
