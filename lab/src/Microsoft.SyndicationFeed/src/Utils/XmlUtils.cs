@@ -92,7 +92,10 @@ namespace Microsoft.SyndicationFeed
             return XmlReader.Create(new StringReader(value),
                                     new XmlReaderSettings()
                                     {
-                                        IgnoreProcessingInstructions = true
+                                        ConformanceLevel = ConformanceLevel.Fragment,
+                                        DtdProcessing = DtdProcessing.Ignore,
+                                        IgnoreComments = true,
+                                        IgnoreWhitespace = true
                                     });
         }
 

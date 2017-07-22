@@ -18,7 +18,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
@@ -38,7 +38,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
@@ -58,7 +58,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
@@ -78,7 +78,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
@@ -98,7 +98,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(value));
             }
 
-            using (XmlReader reader = CreateXmlReader(value))
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
 
@@ -113,62 +113,7 @@ namespace Microsoft.SyndicationFeed
 
         public virtual bool TryParseValue<T>(string value, out T result)
         {
-            result = default(T);
-
-            if (value == null)
-            {
-                return false;
-            }
-
-            Type type = typeof(T);
-
-            //
-            // String
-            if (type == typeof(string))
-            {
-                result = (T)(object)value;
-                return true;
-            }
-
-            //
-            // DateTimeOffset
-            if (type == typeof(DateTimeOffset))
-            {
-                if (Rss.DateTimeParser.TryParseDate(value, out DateTimeOffset dt))
-                {
-                    result = (T)(object)dt;
-                    return true;
-                }
-
-                return false;
-            }
-
-            //
-            // TODO: being added in netstandard 2.0
-            //if (type.GetTypeInfo().IsEnum)
-            //{
-            //    if (Enum.TryParse(typeof(T), value, true, out T o)) {
-            //        result = (T)(object)o;
-            //        return true;
-            //    }
-            //}
-
-            //
-            // Uri
-            if (type == typeof(Uri))
-            {
-                if (UriUtils.TryParse(value, out Uri uri))
-                {
-                    result = (T)(object)uri;
-                    return true;
-                }
-
-                return false;
-            }
-
-            //
-            // Fall back default
-            return (result = (T) Convert.ChangeType(value, typeof(T))) != null;
+            return Converter.TryParseValue<T>(value, out result);
         }
 
         private SyndicationImage ParseImage(XmlReader reader)
@@ -286,26 +231,9 @@ namespace Microsoft.SyndicationFeed
         {
             var category = new SyndicationCategory();
 
-            if (!reader.IsEmptyElement)
-            {
-                category.Name = reader.ReadElementContentAsString();
-            }
+            category.Name = reader.ReadElementContentAsString();
 
             return category;
-        }
-
-        private SyndicationItem ParseItem(XmlReader reader)
-        {
-            var item = new SyndicationItem();
-
-            bool isEmpty = reader.IsEmptyElement;
-
-            if (!isEmpty)
-            {
-                FillItem(item, reader);
-            }
-
-            return item;
         }
 
         private SyndicationPerson ParsePerson(XmlReader reader)
@@ -320,8 +248,10 @@ namespace Microsoft.SyndicationFeed
             return person;
         }
 
-        private void FillItem(SyndicationItem item, XmlReader reader)
+        private SyndicationItem ParseItem(XmlReader reader)
         {
+            SyndicationItem item = new SyndicationItem();
+
             string fallbackAlternateLink = null;
             bool readAlternateLink = false;
 
@@ -404,13 +334,9 @@ namespace Microsoft.SyndicationFeed
                 // PubDate
                 else if (reader.IsStartElement(Rss20Constants.PubDateTag, Rss20Constants.Rss20Namespace))
                 {
-                    if (!reader.IsEmptyElement)
+                    if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset dt))
                     {
-                        DateTimeOffset dt;
-                        if (TryParseValue(new SyndicationContent(reader.ReadOuterXml()).GetValue(), out dt))
-                        {
-                            item.Published = dt;
-                        }
+                        item.Published = dt;
                     }
                 }
                 //
@@ -444,15 +370,8 @@ namespace Microsoft.SyndicationFeed
             item.Links = links;
             item.Contributors = contributors;
             item.Categories = categories;
-        }
-        
-        private XmlReader CreateXmlReader(string value)
-        {
-            return XmlReader.Create(new StringReader(value), 
-                                    new XmlReaderSettings()
-                                    {
-                                        IgnoreProcessingInstructions = true
-                                    });
+
+            return item;
         }
     }
 }

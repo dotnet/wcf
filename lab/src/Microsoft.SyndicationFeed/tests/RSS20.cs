@@ -15,18 +15,6 @@ namespace Microsoft.SyndicationFeed.Tests
     public class RSS20
     {
         [Fact]
-        public async Task ReadWhile()
-        {
-            await ReadWhile(@"..\..\..\TestFeeds\rss20.xml");
-        }
-
-        //[Fact]
-        //public async Task ReadWhile_3GB()
-        //{
-        //    await ReadWhile(@"\\funbox\Share\Personal\jconde\Microsoft.ServiceModel.Syndication\tests\bin\Debug\netcoreapp2.0\feed3Gb.xml");
-        //}
-
-        [Fact]
         public async Task ReadSequential()
         {
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true })) {
@@ -95,9 +83,10 @@ namespace Microsoft.SyndicationFeed.Tests
             Assert.Equal(itemCount, 10);
         }
 
-        private async Task ReadWhile(string filePath)
+        [Fact]
+        private async Task ReadWhile()
         {
-            using (var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings() { Async = true }))
+            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true }))
             {
                 var reader = new Rss20FeedReader(xmlReader);
 

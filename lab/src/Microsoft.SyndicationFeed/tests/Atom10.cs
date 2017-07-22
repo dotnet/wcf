@@ -123,22 +123,8 @@ namespace Microsoft.SyndicationFeed.Tests
                         
                         //Assert content of item
                         Assert.True(item.Title == "Atom draft-07 snapshot");
-
-                        int links = 0;
-                        foreach (var link in item.Links)
-                        {
-                            links++;
-                        }
-
-                        Assert.True(links == 3);
-
-                        int persons = 0;
-                        foreach (var person in item.Contributors)
-                        {
-                            persons++;
-                        }
-
-                        Assert.True(persons == 3);
+                        Assert.True(item.Links.Count() == 3);
+                        Assert.True(item.Contributors.Count() == 3);
                         Assert.True(item.Rights == "All rights Reserved. Contoso.");
                         Assert.True(item.Id == "tag:example.org,2003:3.2397");
                     }

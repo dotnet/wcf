@@ -115,62 +115,7 @@ namespace Microsoft.SyndicationFeed
 
         public virtual bool TryParseValue<T>(string value, out T result)
         {
-            result = default(T);
-
-            if (value == null)
-            {
-                return false;
-            }
-
-            Type type = typeof(T);
-
-            //
-            // String
-            if (type == typeof(string))
-            {
-                result = (T)(object)value;
-                return true;
-            }
-
-            //
-            // DateTimeOffset
-            if (type == typeof(DateTimeOffset))
-            {
-                if (Atom.DateTimeParser.TryParseDate(value, out DateTimeOffset dt))
-                {
-                    result = (T)(object)dt;
-                    return true;
-                }
-
-                return false;
-            }
-
-            //
-            // TODO: being added in netstandard 2.0
-            //if (type.GetTypeInfo().IsEnum)
-            //{
-            //    if (Enum.TryParse(typeof(T), value, true, out T o)) {
-            //        result = (T)(object)o;
-            //        return true;
-            //    }
-            //}
-
-            //
-            // Uri
-            if (type == typeof(Uri))
-            {
-                if (UriUtils.TryParse(value, out Uri uri))
-                {
-                    result = (T)(object)uri;
-                    return true;
-                }
-
-                return false;
-            }
-
-            //
-            // Fall back default
-            return (result = (T)Convert.ChangeType(value, typeof(T))) != null;
+            return Converter.TryParseValue<T>(value, out result);
         }
 
         private SyndicationPerson ParsePerson(XmlReader reader)
@@ -218,7 +163,7 @@ namespace Microsoft.SyndicationFeed
 
             if (!TryParseValue(reader.ReadElementContentAsString(), out uri))
             {
-                throw new FormatException("Invalid image url.");
+                throw new FormatException("Invalid image url");
             }
 
             return new SyndicationImage(uri)
@@ -228,24 +173,19 @@ namespace Microsoft.SyndicationFeed
         }
 
         private SyndicationCategory ParseCategory(XmlReader reader)
-        {
-            if (!reader.HasAttributes)
-            {
-                throw new FormatException("The category doesn't contain any attribute.");
-            }
-
+        {       
             string term = reader.GetAttribute("term");
 
             // term is required by the spec.
             if (string.IsNullOrEmpty(term))
             {
-                throw new FormatException("The category doesn't contain term attribute.");
+                throw new FormatException("Required attribute 'term'");
             }
 
-            string scheme = reader.GetAttribute("term");
+            string scheme = reader.GetAttribute("scheme");
             string label = reader.GetAttribute("label");
 
-            reader.Read();
+            reader.Skip();
 
             return new SyndicationCategory()
             {
@@ -278,7 +218,7 @@ namespace Microsoft.SyndicationFeed
             // type
             string rel = reader.GetAttribute("rel");
 
-            reader.Read(); // end
+            reader.Skip();
 
             return new SyndicationLink(uri)
             {
@@ -404,7 +344,7 @@ namespace Microsoft.SyndicationFeed
             item.Contributors = contributors;
         }
 
-        private SyndicationLink ParseSource(XmlReader reader)
+        private ISyndicationLink ParseSource(XmlReader reader)
         {
             Uri url = null;
             string title = null;
@@ -417,7 +357,14 @@ namespace Microsoft.SyndicationFeed
                 switch (reader.LocalName)
                 {
                     case AtomConstants.IdTag:
-                        TryParseValue(reader.ReadElementContentAsString(), out url);
+                        if (url == null)
+                        {
+                            TryParseValue(reader.ReadElementContentAsString(), out url);
+                        }
+                        else
+                        {
+                            reader.Skip();
+                        }
                         break;
 
                     case AtomConstants.TitleTag:
@@ -426,6 +373,17 @@ namespace Microsoft.SyndicationFeed
 
                     case AtomConstants.UpdatedTag:
                         TryParseValue(reader.ReadElementContentAsString(), out lastUpdated);
+                        break;
+
+                    case AtomConstants.LinkTag:
+                        if (url == null)
+                        {
+                            url = ParseLink(reader).Uri;
+                        }
+                        else
+                        {
+                            reader.Skip();
+                        }
                         break;
 
                     //
@@ -440,7 +398,7 @@ namespace Microsoft.SyndicationFeed
 
             if (url == null)
             {
-                throw new FormatException("Invalid <id> element");
+                throw new FormatException("Invalid source link");
             }
 
             return new SyndicationLink(url)
