@@ -361,14 +361,10 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public static void SetServerCertificateValidationCallback(ServiceModelHttpMessageHandler handler)
+        public static void SetServerCertificateValidationCallback(HttpClientHandler handler)
         {
-            if (!handler.SupportsCertificateValidationCallback)
-            {
-                throw ExceptionHelper.PlatformNotSupported("Server certificate validation not supported yet");
-            }
-            handler.ServerCertificateValidationCallback =
-                ChainValidator(handler.ServerCertificateValidationCallback);
+            handler.ServerCertificateCustomValidationCallback =
+                ChainValidator(handler.ServerCertificateCustomValidationCallback);
         }
 
         private static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ChainValidator(Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> previousValidator)
@@ -380,14 +376,15 @@ namespace System.ServiceModel.Channels
 
             Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> chained =
                 (request, certificate, chain, sslPolicyErrors) =>
-            {
-                bool valid = OnValidateServerCertificate(request, certificate, chain, sslPolicyErrors);
-                if (valid)
                 {
-                    return previousValidator(request, certificate, chain, sslPolicyErrors);
-                }
-                return false;
-            };
+                    bool valid = OnValidateServerCertificate(request, certificate, chain, sslPolicyErrors);
+                    if (valid)
+                    {
+                        return previousValidator(request, certificate, chain, sslPolicyErrors);
+                    }
+
+                    return false;
+                };
             return chained;
         }
 

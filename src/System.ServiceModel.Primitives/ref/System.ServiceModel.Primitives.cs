@@ -107,7 +107,7 @@ namespace System.ServiceModel
         public virtual TChannel CreateChannel(System.ServiceModel.EndpointAddress address, System.Uri via) { return default(TChannel); }
         protected override System.ServiceModel.Description.ServiceEndpoint CreateDescription() { return default(System.ServiceModel.Description.ServiceEndpoint); }
     }
-    public abstract partial class ClientBase<TChannel> : System.ServiceModel.ICommunicationObject where TChannel : class
+    public abstract partial class ClientBase<TChannel> : System.IDisposable, System.ServiceModel.ICommunicationObject where TChannel : class
     {
         protected ClientBase() { }
         protected ClientBase(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
@@ -139,6 +139,7 @@ namespace System.ServiceModel
         void System.ServiceModel.ICommunicationObject.EndOpen(System.IAsyncResult result) { }
         void System.ServiceModel.ICommunicationObject.Open() { }
         void System.ServiceModel.ICommunicationObject.Open(System.TimeSpan timeout) { }
+        void System.IDisposable.Dispose() { }
         protected delegate System.IAsyncResult BeginOperationDelegate(object[] inValues, System.AsyncCallback asyncCallback, object state);
         protected partial class ChannelBase<T> : System.IDisposable, System.ServiceModel.Channels.IChannel, System.ServiceModel.Channels.IOutputChannel, System.ServiceModel.Channels.IRequestChannel, System.ServiceModel.IClientChannel, System.ServiceModel.ICommunicationObject, System.ServiceModel.IContextChannel, System.ServiceModel.IExtensibleObject<System.ServiceModel.IContextChannel> where T : class
         {
