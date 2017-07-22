@@ -22,7 +22,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public static IEnumerable<SyndicationAttribute> ReadAttributes(string content)
+        public static IEnumerable<ISyndicationAttribute> ReadAttributes(string content)
         {
             using (XmlReader reader = XmlReader.Create(new StringReader(content)))
             {
@@ -31,7 +31,7 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
-        public static IEnumerable<SyndicationAttribute> ReadAttributes(XmlReader reader)
+        public static IEnumerable<ISyndicationAttribute> ReadAttributes(XmlReader reader)
         {
             // Read attributes
             var attributes = new List<SyndicationAttribute>();
@@ -87,6 +87,17 @@ namespace Microsoft.SyndicationFeed
             return Task.FromResult(reader.Read());
         }
 
+        public static XmlReader CreateXmlReader(string value)
+        {
+            return XmlReader.Create(new StringReader(value),
+                                    new XmlReaderSettings()
+                                    {
+                                        ConformanceLevel = ConformanceLevel.Fragment,
+                                        DtdProcessing = DtdProcessing.Ignore,
+                                        IgnoreComments = true,
+                                        IgnoreWhitespace = true
+                                    });
+        }
 
         private static bool IsXmlns(string name, string ns)
         {

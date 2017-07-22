@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Threading.Tasks;
 using System.Xml;
 
 namespace Microsoft.SyndicationFeed
 {
-    public class Rss20FeedReader : SyndicationFeedReaderBase
+    public class AtomFeedReader : SyndicationFeedReaderBase
     {
         private readonly XmlReader _reader;
         private bool _knownFeed;
 
-        public Rss20FeedReader(XmlReader reader) 
-            : this(reader, new Rss20FeedFormatter())
-        {
+        public AtomFeedReader(XmlReader reader)
+            : this(reader, new AtomFeedFormatter())
+        {                
         }
 
-        public Rss20FeedReader(XmlReader reader, ISyndicationFeedFormatter formatter)
+        public AtomFeedReader(XmlReader reader, ISyndicationFeedFormatter formatter) 
             : base(reader, formatter)
         {
             _reader = reader;
@@ -33,55 +34,58 @@ namespace Microsoft.SyndicationFeed
 
             return await base.Read();
         }
-        
+
+        public virtual async Task<IAtomEntry> ReadEntry()
+        {
+            IAtomEntry item = await base.ReadItem() as IAtomEntry;
+
+            if (item == null)
+            {
+                throw new FormatException("Invalid Atom entry");
+            }
+
+            return item;
+        }
+
         protected override SyndicationElementType MapElementType(string elementName)
         {
             switch (elementName)
             {
-                case Rss20Constants.ItemTag:
+                case AtomConstants.EntryTag:
                     return SyndicationElementType.Item;
 
-                case Rss20Constants.LinkTag:
+                case AtomConstants.LinkTag:
                     return SyndicationElementType.Link;
 
-                case Rss20Constants.CategoryTag:
+                case AtomConstants.CategoryTag:
                     return SyndicationElementType.Category;
 
-                case Rss20Constants.AuthorTag:
-                case Rss20Constants.ManagingEditorTag:
-                    return SyndicationElementType.Person;
-
-                case Rss20Constants.ImageTag:
+                case AtomConstants.LogoTag:
+                case AtomConstants.IconTag:
                     return SyndicationElementType.Image;
+
+                case AtomConstants.AuthorTag:
+                case AtomConstants.ContributorTag:
+                    return SyndicationElementType.Person;
 
                 default:
                     return SyndicationElementType.Content;
             }
         }
 
-
         private async Task InitRead()
         {
-            // Check <rss>
-            bool knownFeed = _reader.IsStartElement(Rss20Constants.RssTag, Rss20Constants.Rss20Namespace) &&
-                             _reader.GetAttribute(Rss20Constants.VersionTag).Equals(Rss20Constants.Version);
+            // Check <feed>
 
-            if (knownFeed)
+            if (_reader.IsStartElement(AtomConstants.FeedTag, AtomConstants.Atom10Namespace))
             {
-                // Read<rss>
+                //Read <feed>
                 await XmlUtils.ReadAsync(_reader);
-
-                // Check <channel>
-                knownFeed = _reader.IsStartElement(Rss20Constants.ChannelTag, Rss20Constants.Rss20Namespace);
             }
-
-            if (!knownFeed)
+            else
             {
-                throw new XmlException("Unknown Rss Feed");
+                throw new XmlException("Unkown Atom Feed");
             }
-
-            // Read <channel>
-            await XmlUtils.ReadAsync(_reader);
         }
     }
 }

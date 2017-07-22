@@ -14,7 +14,7 @@ namespace Microsoft.SyndicationFeed
 
         IEnumerable<ISyndicationContent> Fields { get; }
 
-        IEnumerable<SyndicationAttribute> Attributes { get; }
+        IEnumerable<ISyndicationAttribute> Attributes { get; }
 
         string GetValue();
     }

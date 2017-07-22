@@ -1,8 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System;
+﻿using System;
 using System.Globalization;
 using System.Text;
 
@@ -10,7 +6,22 @@ namespace Microsoft.SyndicationFeed
 {
     static class DateTimeUtils
     {
-        public static bool TryParse(string value, out DateTimeOffset result)
+        public static bool TryParseDate(string value, out DateTimeOffset result)
+        {
+            if(TryParseDateRfc3339(value, out result))
+            {
+                return true;
+            }
+
+            if (TryParseDateRssSpec(value, out result))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryParseDateRssSpec(string value, out DateTimeOffset result)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -58,13 +69,12 @@ namespace Microsoft.SyndicationFeed
 
             string parseFormat = thereAreSeconds ? "dd MMM yyyy HH:mm:ss zzz" : "dd MMM yyyy HH:mm zzz";
 
-            return DateTimeOffset.TryParseExact(wellFormattedString, 
-                                                parseFormat, 
+            return DateTimeOffset.TryParseExact(wellFormattedString,
+                                                parseFormat,
                                                 CultureInfo.InvariantCulture.DateTimeFormat,
                                                 isUtc ? DateTimeStyles.AdjustToUniversal : DateTimeStyles.None,
                                                 out result);
         }
-
 
         private static string NormalizeTimeZone(string rfc822TimeZone, out bool isUtc)
         {
@@ -197,6 +207,43 @@ namespace Microsoft.SyndicationFeed
             }
             // we have already trimmed the start and end so there cannot be a trail of white spaces in the end
             //Fx.Assert(builder.Length == 0 || builder[builder.Length - 1] != ' ', "The string builder doesnt end in a white space");
+        }
+
+        private static bool TryParseDateRfc3339(string dateTimeString, out DateTimeOffset result)
+        {
+            const string Rfc3339LocalDateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
+            const string Rfc3339UTCDateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
+
+            dateTimeString = dateTimeString.Trim();
+
+            if (dateTimeString[19] == '.')
+            {
+                // remove any fractional seconds, we choose to ignore them
+                int i = 20;
+                while (dateTimeString.Length > i && char.IsDigit(dateTimeString[i]))
+                {
+                    ++i;
+                }
+                dateTimeString = dateTimeString.Substring(0, 19) + dateTimeString.Substring(i);
+            }
+
+            DateTimeOffset localTime;
+            if (DateTimeOffset.TryParseExact(dateTimeString, Rfc3339LocalDateTimeFormat,
+                CultureInfo.InvariantCulture.DateTimeFormat,
+                DateTimeStyles.None, out localTime))
+            {
+                result = localTime;
+                return true;
+            }
+            DateTimeOffset utcTime;
+            if (DateTimeOffset.TryParseExact(dateTimeString, Rfc3339UTCDateTimeFormat,
+                CultureInfo.InvariantCulture.DateTimeFormat,
+                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out utcTime))
+            {
+                result = utcTime;
+                return true;
+            }
+            return false;
         }
     }
 }
