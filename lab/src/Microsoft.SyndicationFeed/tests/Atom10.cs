@@ -84,6 +84,8 @@ namespace Microsoft.SyndicationFeed.Tests
                     {
                         ISyndicationCategory category = await reader.ReadCategory();
                         Assert.True(category.Name == "sports");
+                        Assert.True(category.Label == "testLabel");
+                        Assert.True(category.Scheme == "testScheme");
                     }
                 }
             }

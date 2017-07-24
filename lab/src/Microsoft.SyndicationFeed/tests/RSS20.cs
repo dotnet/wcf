@@ -122,5 +122,58 @@ namespace Microsoft.SyndicationFeed.Tests
                 }
             }
         }
+
+        [Fact]
+        public async Task ReadFeedElements()
+        {
+            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
+            {
+                var reader = new Rss20FeedReader(xmlReader);
+                int items = 0;
+                while (await reader.Read())
+                {
+                    switch (reader.ElementType)
+                    {
+                        case SyndicationElementType.Person:
+                            ISyndicationPerson person = await reader.ReadPerson();
+                            Assert.True(person.Email == "John Smith");
+                            break;
+
+                        case SyndicationElementType.Link:
+                            ISyndicationLink link = await reader.ReadLink();
+                            Assert.True(link.Length == 123);
+                            Assert.True(link.MediaType == "testType");
+                            Assert.True(link.Uri.OriginalString == "http://example.com/");
+                            break;
+
+                        case SyndicationElementType.Image:
+                            ISyndicationImage image = await reader.ReadImage();
+                            Assert.True(image.Title == "Microsoft News");
+                            Assert.True(image.Desciption == "Test description");
+                            Assert.True(image.Url.OriginalString == "http://2.bp.blogspot.com/-NA5Jb-64eUg/URx8CSdcj_I/AAAAAAAAAUo/eCx0irI0rq0/s1600/bg_Microsoft_logo3-20120824073001907469-620x349.jpg");
+                            break;
+
+                        case SyndicationElementType.Item:
+                            items++;
+                            ISyndicationItem item = await reader.ReadItem();
+
+                            if (items == 1)
+                            {
+                                Assert.True(item.Title == "Lorem ipsum 2017-07-06T20:25:00+00:00");
+                                Assert.True(item.Description == "Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.");
+                                Assert.True(item.Links.Count() == 1);
+                            }
+                            else if(items == 2)
+                            {
+                                Assert.True(item.Title == "Lorem ipsum 2017-07-06T20:24:00+00:00");
+                                Assert.True(item.Description == "Do ipsum dolore veniam minim est cillum aliqua ea.");
+                                Assert.True(item.Links.Count() == 1);
+                            }
+
+                            break;
+                    }
+                }
+            }
+        }
     }
 }

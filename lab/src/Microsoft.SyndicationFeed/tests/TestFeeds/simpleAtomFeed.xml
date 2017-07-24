@@ -15,7 +15,7 @@
     <name>Sam Ruby</name>
   </contributor>
 
-  <category term="sports" label="testLabel"/>
+  <category term="sports" label="testLabel" scheme="testScheme"/>
   
   <icon>/icon.jpg</icon>
 
