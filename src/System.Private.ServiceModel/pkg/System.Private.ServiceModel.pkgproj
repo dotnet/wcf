@@ -3,6 +3,8 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <PreventImplementationReference>true</PreventImplementationReference>
+    <!-- workaround for https://github.com/dotnet/buildtools/issues/1529 -->
+    <HarvestVersion>4.3.0</HarvestVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\System.Private.ServiceModel.builds" />
