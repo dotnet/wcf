@@ -1,19 +1,19 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>534770cbd98c4083de4d93b809f2e0968f0f856a</CoreFxCurrentRef>
-    <WCFCurrentRef>a2ba4d6141ef25bdb4c2d2c014b9e1f305a0ea90</WCFCurrentRef>
-    <StandardCurrentRef>8f8313cbe4b0f4d89c4d0835e08e3e340a18eec0</StandardCurrentRef>
-    <CoreSetupCurrentRef>c2c072242cb0bdea99efb7349d69492f83200a7d</CoreSetupCurrentRef>
+    <CoreFxCurrentRef>9529e54360c94f4f3c1e54782c61171ff974ca58</CoreFxCurrentRef>
+    <WCFCurrentRef>9529e54360c94f4f3c1e54782c61171ff974ca58</WCFCurrentRef>
+    <StandardCurrentRef>9529e54360c94f4f3c1e54782c61171ff974ca58</StandardCurrentRef>
+    <CoreSetupCurrentRef>9529e54360c94f4f3c1e54782c61171ff974ca58</CoreSetupCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <CoreFxExpectedPrerelease>preview2-25405-01</CoreFxExpectedPrerelease>
-    <WcfExpectedPrerelease>preview2-25413-01</WcfExpectedPrerelease>
-    <NETStandardPackageVersion>2.0.0-preview2-25401-01</NETStandardPackageVersion>
+    <CoreFxExpectedPrerelease>preview3-25519-03</CoreFxExpectedPrerelease>
+    <WcfExpectedPrerelease>preview3-25525-04</WcfExpectedPrerelease>
+    <NETStandardPackageVersion>2.0.0</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
-    <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25407-01</MicrosoftNETCoreAppPackageVersion>
+    <MicrosoftNETCoreAppPackageVersion>2.0.0</MicrosoftNETCoreAppPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
