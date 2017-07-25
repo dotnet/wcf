@@ -297,6 +297,15 @@ namespace Microsoft.SyndicationFeed
                     contributors.Add(person);
                 }
                 //
+                // Managing Editor
+                else if (reader.IsStartElement(Rss20Constants.AuthorTag, Rss20Constants.Rss20Namespace))
+                {
+                    SyndicationPerson person = ParsePerson(reader);
+                    person.RelationshipType = Rss20Constants.ManagingEditorTag;
+
+                    contributors.Add(person);
+                }
+                //
                 // Category
                 else if (reader.IsStartElement(Rss20Constants.CategoryTag, Rss20Constants.Rss20Namespace))
                 {
