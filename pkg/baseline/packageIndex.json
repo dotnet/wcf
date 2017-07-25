@@ -12,11 +12,15 @@
         "Then raise the package version of the reference so that its at least the baseline version."
       ]
     },
+    "System.Runtime.WindowsRuntime": {
+      "BaselineVersion": "4.3.0"
+    },
     "System.Private.ServiceModel": {
       "StableVersions": [
         "4.0.0",
         "4.1.0",
-        "4.3.0"
+        "4.3.0",
+        "4.4.0"
       ],
       "BaselineVersion": "4.4.0",
       "InboxOn": {},
@@ -29,7 +33,8 @@
       "StableVersions": [
         "4.0.0",
         "4.0.1",
-        "4.3.0"
+        "4.3.0",
+        "4.4.0"
       ],
       "BaselineVersion": "4.4.0",
       "InboxOn": {},
@@ -46,7 +51,8 @@
         "4.0.0",
         "4.0.10",
         "4.1.0",
-        "4.3.0"
+        "4.3.0",
+        "4.4.0"
       ],
       "BaselineVersion": "4.4.0",
       "InboxOn": {},
@@ -63,7 +69,8 @@
       "StableVersions": [
         "4.0.0",
         "4.1.0",
-        "4.3.0"
+        "4.3.0",
+        "4.4.0"
       ],
       "BaselineVersion": "4.4.0",
       "InboxOn": {},
@@ -79,7 +86,8 @@
         "3.9.0",
         "4.0.0",
         "4.1.0",
-        "4.3.0"
+        "4.3.0",
+        "4.4.0"
       ],
       "BaselineVersion": "4.4.0",
       "InboxOn": {},
@@ -96,7 +104,8 @@
         "3.9.0",
         "4.0.0",
         "4.0.1",
-        "4.3.0"
+        "4.3.0",
+        "4.4.0"
       ],
       "BaselineVersion": "4.4.0",
       "InboxOn": {},
