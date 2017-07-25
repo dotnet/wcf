@@ -22,6 +22,7 @@ namespace System.ServiceModel.Channels
         private string _defaultFaultAction;
         private const string AddressingNoneToStringFormat = "AddressingNone ({0})";
         private const string Addressing10ToStringFormat = "Addressing10 ({0})";
+        private const string Addressing200408ToStringFormat = "Addressing200408 ({0})";
 
         private static AddressingVersion s_none = new AddressingVersion(AddressingNoneStrings.Namespace, XD.AddressingNoneDictionary.Namespace,
             AddressingNoneToStringFormat, new MessagePartSpecification(), null, null, null, null, null);
@@ -33,7 +34,7 @@ namespace System.ServiceModel.Channels
         private static MessagePartSpecification s_addressing10SignedMessageParts;
 
         private static AddressingVersion s_addressing200408 = new AddressingVersion(Addressing200408Strings.Namespace,
-            XD.Addressing200408Dictionary.Namespace, SR.Addressing200408ToStringFormat, Addressing200408SignedMessageParts,
+            XD.Addressing200408Dictionary.Namespace, Addressing200408ToStringFormat, Addressing200408SignedMessageParts,
             Addressing200408Strings.Anonymous, XD.Addressing200408Dictionary.Anonymous, null,
             Addressing200408Strings.FaultAction, Addressing200408Strings.DefaultFaultAction);
         private static MessagePartSpecification s_addressing200408SignedMessageParts;
