@@ -17,6 +17,7 @@ namespace System.ServiceModel
         private static ActivityIdFlowDictionary s_activityIdFlowDictionary;
         private static AddressingDictionary s_addressingDictionary;
         private static Addressing10Dictionary s_addressing10Dictionary;
+        private static Addressing200408Dictionary s_addressing200408Dictionary;
         private static AddressingNoneDictionary s_addressingNoneDictionary;
         private static MessageDictionary s_messageDictionary;
         private static Message11Dictionary s_message11Dictionary;
@@ -56,6 +57,16 @@ namespace System.ServiceModel
                 if (s_addressing10Dictionary == null)
                     s_addressing10Dictionary = new Addressing10Dictionary(Dictionary);
                 return s_addressing10Dictionary;
+            }
+        }
+
+        static public Addressing200408Dictionary Addressing200408Dictionary
+        {
+            get
+            {
+                if (s_addressing200408Dictionary == null)
+                    s_addressing200408Dictionary = new Addressing200408Dictionary(Dictionary);
+                return s_addressing200408Dictionary;
             }
         }
 
@@ -259,6 +270,20 @@ namespace System.ServiceModel
             this.ReplyRelationship = dictionary.CreateString(ServiceModelStringsVersion1.String102, 102);
             this.NoneAddress = dictionary.CreateString(ServiceModelStringsVersion1.String103, 103);
             this.Metadata = dictionary.CreateString(ServiceModelStringsVersion1.String104, 104);
+        }
+    }
+
+    internal class Addressing200408Dictionary
+    {
+        public XmlDictionaryString Namespace;
+        public XmlDictionaryString Anonymous;
+        public XmlDictionaryString FaultAction;
+ 
+        public Addressing200408Dictionary(ServiceModelDictionary dictionary)
+        {
+            this.Namespace = dictionary.CreateString(ServiceModelStringsVersion1.String105, 105);
+            this.Anonymous = dictionary.CreateString(ServiceModelStringsVersion1.String106, 106);
+            this.FaultAction = dictionary.CreateString(ServiceModelStringsVersion1.String107, 107);
         }
     }
 
