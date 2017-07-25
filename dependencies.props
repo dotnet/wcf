@@ -9,8 +9,8 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</CoreFxCurrentRef>
-    <WCFCurrentRef>4d3456e4db27f7ecd3b9e9900460d73918ff8f16</WCFCurrentRef>
+    <CoreFxCurrentRef>e88abc0df1b3d330e10b4a91e04fbac321c82979</CoreFxCurrentRef>
+    <WCFCurrentRef>e88abc0df1b3d330e10b4a91e04fbac321c82979</WCFCurrentRef>
     <StandardCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</StandardCurrentRef>
     <ProjectNTfsCurrentRef>640876b7b36e7f365f2cf602ee4e547da9158f25</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>640876b7b36e7f365f2cf602ee4e547da9158f25</ProjectNTfsTestILCCurrentRef>
@@ -18,15 +18,15 @@
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview1-25519-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview1-25505-02</CoreFxExpectedPrerelease>
+    <WCFExpectedPrerelease>preview1-25525-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview1-25525-01</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-25518-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-25505-02</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-25525-01</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
 
     <ProjectNTfsExpectedPrerelease>rel-25519-02</ProjectNTfsExpectedPrerelease>
     <ProjectNTfsTestILCExpectedPrerelease>rel-25519-02</ProjectNTfsTestILCExpectedPrerelease>
