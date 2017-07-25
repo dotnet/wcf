@@ -171,6 +171,9 @@ namespace Microsoft.SyndicationFeed.Tests
                             }
 
                             break;
+
+                        default:
+                            break;
                     }
                 }
             }

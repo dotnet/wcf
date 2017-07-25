@@ -13,7 +13,7 @@
       </image>
       <generator>RSS for Node</generator>
       <lastBuildDate>Thu, 06 Jul 2017 20:25:17 GMT</lastBuildDate>
-      <author><![CDATA[John Smith]]></author>
+      <managingEditor><![CDATA[John Smith]]></managingEditor>
       <pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate>
       <copyright><![CDATA[Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.]]></copyright>
       <ttl>60</ttl>
