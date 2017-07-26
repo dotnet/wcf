@@ -10,11 +10,8 @@
     <GenerateCodeCoverageReportForAll>true</GenerateCodeCoverageReportForAll>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(RunningSharedFrameworkValidation)'=='true'">
-    <TestProjectExclusions Include="$(MSBuildThisFileDirectory)*\tests\**\System.Data.Odbc.Tests.csproj" />
-    <TestProjectExclusions Include="$(MSBuildThisFileDirectory)*\tests\**\System.IO.Pipes.Tests.csproj" />
-    <TestProjectExclusions Include="$(MSBuildThisFileDirectory)*\tests\**\Microsoft.XmlSerializer.Generator.Tests.csproj" />
-    <TestProjectExclusions Include="$(MSBuildThisFileDirectory)*\tests\**\System.Reflection.Context.Tests.csproj" />
+  <ItemGroup>
+    <TestProjectExclusions Include="$(MSBuildThisFileDirectory)System.Private.ServiceModel\tests\Scenarios\AllScenarioTests.csproj" />
   </ItemGroup>
 
   <!-- For UAP we are using an APPX that is registered with a unique ID. Because of that we need to run tests sequentially -->
@@ -32,7 +29,17 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Project Include="$(MSBuildThisFileDirectory)*\tests\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" />
+    <!--If a uapaot run use the single scenario test project by default-->
+    <Project Include="$(MSBuildThisFileDirectory)System.Private.ServiceModel\tests\Scenarios\AllScenarioTests.csproj" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'!='true'" />
+
+    <!--In VSTS build separate scenario projects even for uapaot.-->
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'=='true'" />
+    
+    <!--All non-uapaot runs use the separate scenario test projects.-->
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'!='uapaot'" />
+
+    <!--Always include unit test projects.-->
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\*$(_ProjectPattern).csproj" />
   </ItemGroup>
 
   <Import Project="$(ToolsDir)Build.Post.targets" Condition="Exists('$(ToolsDir)Build.Post.targets')" />
