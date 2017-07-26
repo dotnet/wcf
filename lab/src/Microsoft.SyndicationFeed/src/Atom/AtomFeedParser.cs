@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed
 {
-    public class AtomFeedFormatter : ISyndicationFeedFormatter
+    public class AtomFeedParser : ISyndicationFeedParser
     {
         public virtual ISyndicationCategory ParseCategory(string value)
         {

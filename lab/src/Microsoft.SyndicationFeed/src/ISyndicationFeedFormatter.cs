@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+
 namespace Microsoft.SyndicationFeed
 {
     public interface ISyndicationFeedFormatter
     {
-        ISyndicationItem ParseItem(string value);
+        string Format(ISyndicationContent content);
 
-        ISyndicationLink ParseLink(string value);
+        string Format(ISyndicationCategory category);
 
-        ISyndicationPerson ParsePerson(string value);
+        string Format(ISyndicationImage image);
 
-        ISyndicationCategory ParseCategory(string value);
+        string Format(ISyndicationItem item);
 
-        ISyndicationImage ParseImage(string value);
+        string Format(ISyndicationPerson person);
 
-        ISyndicationContent ParseContent(string value);
+        string Format(ISyndicationLink link);
 
-        bool TryParseValue<T>(string value, out T result);
+        string FormatValue<T>(T value);
     }
 }
