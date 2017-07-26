@@ -193,7 +193,7 @@ namespace System.ServiceModel.Channels
                 _replyTo = message.Headers.ReplyTo;
                 if (message.Version.Addressing == AddressingVersion.WSAddressingAugust2004)
                 {
-                    this.from = message.Headers.From;
+                    _from = message.Headers.From;
                 }
                 else 
                 {
