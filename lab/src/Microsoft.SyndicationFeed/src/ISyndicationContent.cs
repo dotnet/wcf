@@ -10,12 +10,10 @@ namespace Microsoft.SyndicationFeed
     {
         string Name { get; }
 
-        string RawContent { get; }
+        string Value { get; }
 
         IEnumerable<ISyndicationContent> Fields { get; }
 
         IEnumerable<ISyndicationAttribute> Attributes { get; }
-
-        string GetValue();
     }
 }

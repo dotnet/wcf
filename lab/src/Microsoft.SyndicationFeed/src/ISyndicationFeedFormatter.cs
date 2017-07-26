@@ -16,6 +16,8 @@ namespace Microsoft.SyndicationFeed
 
         ISyndicationImage ParseImage(string value);
 
+        ISyndicationContent ParseContent(string value);
+
         bool TryParseValue<T>(string value, out T result);
     }
 }
