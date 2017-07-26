@@ -4,106 +4,53 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
 
 namespace Microsoft.SyndicationFeed
 {
     public sealed class SyndicationContent : ISyndicationContent
     {
-        private string _name;
-        private IEnumerable<ISyndicationAttribute> _attributes;
-        private IEnumerable<ISyndicationContent> _children;
+        private List<ISyndicationAttribute> _attributes = new List<ISyndicationAttribute>();
+        private List<ISyndicationContent> _children = new List<ISyndicationContent>();
 
-        public SyndicationContent(string rawContent)
+        public SyndicationContent(string name, string value = null)
         {
-            RawContent = rawContent ?? throw new ArgumentNullException(nameof(rawContent));
-        }
-
-        public string RawContent { get; private set; }
-
-        public string Name {
-            get 
+            if (string.IsNullOrEmpty(name))
             {
-                if (_name == null)
-                {
-                    _name = ParseName(RawContent);
-                }
-
-                return _name;
+                throw new ArgumentNullException(nameof(name));
             }
+
+            Name = name;
+            Value = value;
         }
 
-        public IEnumerable<ISyndicationAttribute> Attributes
+        public string Name { get; private set; }
+
+        public string Value { get; set; }
+
+        public IEnumerable<ISyndicationAttribute> Attributes 
         {
             get 
             {
-                if (_attributes == null)
-                {
-                    _attributes = !string.IsNullOrEmpty(RawContent) ? XmlUtils.ReadAttributes(RawContent) :
-                                                                      Enumerable.Empty<ISyndicationAttribute>();
-                }
-
                 return _attributes;
             }
         }
 
-        public IEnumerable<ISyndicationContent> Fields 
+        public IEnumerable<ISyndicationContent> Fields
         {
             get 
             {
-                if (_children == null)
-                {
-                    _children = ParseChildren(RawContent);
-                }
-
                 return _children;
             }
         }
 
-        public string GetValue()
+        public void AddAttribute(ISyndicationAttribute attribute)
         {
-            if (string.IsNullOrEmpty(RawContent))
-            {
-                throw new ArgumentNullException(nameof(RawContent));
-            }
-
-            return XmlUtils.GetValue(RawContent);
+            _attributes.Add(attribute ?? throw new ArgumentNullException(nameof(attribute)));
         }
 
-        private static IEnumerable<ISyndicationContent> ParseChildren(string content)
+        public void AddField(ISyndicationContent field)
         {
-            var items = new List<ISyndicationContent>();
-
-            if (!string.IsNullOrEmpty(content))
-            {
-                using (XmlReader reader = XmlReader.Create(new StringReader(content)))
-                {
-                    reader.ReadStartElement();
-
-                    while (reader.IsStartElement())
-                    {
-                        items.Add(new SyndicationContent(reader.ReadOuterXml()));
-                    }
-                }
-            }
-
-            return items;
-        }
-
-        private static string ParseName(string content)
-        {
-            if (!string.IsNullOrEmpty(content))
-            {
-                using (XmlReader reader = XmlReader.Create(new StringReader(content)))
-                {
-                    reader.MoveToContent();
-                    return reader.Name;
-                }
-            }
-
-            return string.Empty;
+            _children.Add(field ?? throw new ArgumentNullException(nameof(field)));
         }
     }
 }

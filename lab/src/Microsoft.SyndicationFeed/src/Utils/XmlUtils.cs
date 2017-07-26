@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -20,39 +19,6 @@ namespace Microsoft.SyndicationFeed
                 reader.MoveToContent();
                 return reader.ReadElementContentAsString();
             }
-        }
-
-        public static IEnumerable<ISyndicationAttribute> ReadAttributes(string content)
-        {
-            using (XmlReader reader = XmlReader.Create(new StringReader(content)))
-            {
-                reader.MoveToContent();
-                return ReadAttributes(reader);
-            }
-        }
-
-        public static IEnumerable<ISyndicationAttribute> ReadAttributes(XmlReader reader)
-        {
-            // Read attributes
-            var attributes = new List<SyndicationAttribute>();
-
-            if (reader.HasAttributes)
-            {
-                while (reader.MoveToNextAttribute())
-                {
-                    string ns = reader.NamespaceURI;
-                    string name = reader.LocalName;
-
-                    if (IsXmlns(name, ns) || IsXmlSchemaType(name, ns))
-                    {
-                        continue;
-                    }
-
-                    attributes.Add(new SyndicationAttribute(name, ns, reader.Value));
-                }
-            }
-
-            return attributes;
         }
 
         public static Task<string> ReadOuterXmlAsync(XmlReader reader)
@@ -98,7 +64,7 @@ namespace Microsoft.SyndicationFeed
                                         IgnoreWhitespace = true
                                     });
         }
-
+        
         public static Task WriteRaw(XmlWriter writer, string content)
         {
 
@@ -109,6 +75,62 @@ namespace Microsoft.SyndicationFeed
 
             writer.WriteRaw(content);
             return Task.CompletedTask;
+        }
+
+        public static ISyndicationContent ReadXmlNode(XmlReader reader)
+        {
+            var content = new SyndicationContent(reader.Name);
+
+            //
+            // Attributes
+            if (reader.HasAttributes)
+            {
+                while (reader.MoveToNextAttribute())
+                {
+                    string ns = reader.NamespaceURI;
+                    string name = reader.LocalName;
+
+                    if (IsXmlns(name, ns) || IsXmlSchemaType(name, ns))
+                    {
+                        continue;
+                    }
+
+                    content.AddAttribute(new SyndicationAttribute(name, ns, reader.Value));
+                }
+
+                reader.MoveToContent();
+            }
+
+            //
+            // Content
+            if (!reader.IsEmptyElement)
+            {
+                reader.ReadStartElement();
+
+                //
+                // Value
+                if (reader.HasValue)
+                {
+                    content.Value = reader.ReadContentAsString();
+                }
+                //
+                // Children
+                else
+                {
+                    while (reader.IsStartElement())
+                    {
+                        content.AddField(ReadXmlNode(reader));
+                    }
+                }
+
+                reader.ReadEndElement(); // end
+            }
+            else
+            {
+                reader.Skip();
+            }
+
+            return content;
         }
 
         private static bool IsXmlns(string name, string ns)

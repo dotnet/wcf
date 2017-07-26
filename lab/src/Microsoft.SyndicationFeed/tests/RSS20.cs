@@ -43,23 +43,23 @@ namespace Microsoft.SyndicationFeed.Tests
                         Assert.Equal(fields.Length, 6);
 
                         Assert.Equal("title", fields[0].Name);
-                        Assert.False(string.IsNullOrEmpty(fields[0].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[0].Value));
 
                         Assert.Equal("description", fields[1].Name);
-                        Assert.False(string.IsNullOrEmpty(fields[1].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[1].Value));
 
                         Assert.Equal("link", fields[2].Name);
-                        Assert.False(string.IsNullOrEmpty(fields[2].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[2].Value));
 
                         Assert.Equal("guid", fields[3].Name);
                         Assert.Equal(fields[3].Attributes.Count(), 1);
-                        Assert.False(string.IsNullOrEmpty(fields[3].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[3].Value));
 
                         Assert.Equal("dc:creator", fields[4].Name);
-                        Assert.False(string.IsNullOrEmpty(fields[4].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[4].Value));
 
                         Assert.Equal("pubDate", fields[5].Name);
-                        Assert.False(string.IsNullOrEmpty(fields[5].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[5].Value));
                     }
                 }
             }
