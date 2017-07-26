@@ -143,7 +143,7 @@ namespace Microsoft.SyndicationFeed.Tests
 
                 while (await reader.Read())
                 {
-                    if(reader.ElementType == SyndicationElementType.Item)
+                    if (reader.ElementType == SyndicationElementType.Item)
                     {
                         ISyndicationContent content = await reader.ReadContent();
 
@@ -152,40 +152,40 @@ namespace Microsoft.SyndicationFeed.Tests
                         Assert.True(fields.Length == 12);
 
                         Assert.True(fields[0].Name == "title");
-                        Assert.False(string.IsNullOrEmpty(fields[0].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[0].Value));
 
                         Assert.True(fields[1].Name == "link");
-                        Assert.False(string.IsNullOrEmpty(fields[1].RawContent));
+                        Assert.True(fields[1].Attributes.Count() > 0);
 
                         Assert.True(fields[2].Name == "link");
-                        Assert.False(string.IsNullOrEmpty(fields[2].RawContent));
+                        Assert.True(fields[2].Attributes.Count() > 0);
 
                         Assert.True(fields[3].Name == "id");
-                        Assert.False(string.IsNullOrEmpty(fields[3].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[3].Value));
 
                         Assert.True(fields[4].Name == "updated");
-                        Assert.False(string.IsNullOrEmpty(fields[4].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[4].Value));
 
                         Assert.True(fields[5].Name == "published");
-                        Assert.False(string.IsNullOrEmpty(fields[5].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[5].Value));
 
                         Assert.True(fields[6].Name == "source");
-                        Assert.False(string.IsNullOrEmpty(fields[6].RawContent));
+                        Assert.True(fields[6].Fields.Count() > 0);
 
                         Assert.True(fields[7].Name == "author");
-                        Assert.False(string.IsNullOrEmpty(fields[7].RawContent));
+                        Assert.True(fields[7].Fields.Count() > 0);
 
                         Assert.True(fields[8].Name == "contributor");
-                        Assert.False(string.IsNullOrEmpty(fields[8].RawContent));
+                        Assert.True(fields[8].Fields.Count() > 0);
 
                         Assert.True(fields[9].Name == "contributor");
-                        Assert.False(string.IsNullOrEmpty(fields[9].RawContent));
+                        Assert.True(fields[9].Fields.Count() > 0);
 
                         Assert.True(fields[10].Name == "rights");
-                        Assert.False(string.IsNullOrEmpty(fields[10].GetValue()));
+                        Assert.False(string.IsNullOrEmpty(fields[10].Value));
 
                         Assert.True(fields[11].Name == "content");
-                        Assert.False(string.IsNullOrEmpty(fields[11].RawContent));
+                        Assert.True(fields[11].Fields.Count() > 0);
 
                     }
                 }
