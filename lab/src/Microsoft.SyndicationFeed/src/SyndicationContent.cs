@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed
 {
-    sealed class SyndicationContent : ISyndicationContent
+    public sealed class SyndicationContent : ISyndicationContent
     {
         private string _name;
         private IEnumerable<ISyndicationAttribute> _attributes;

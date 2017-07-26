@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.SyndicationFeed
 {
-    sealed class SyndicationImage : ISyndicationImage
+    public sealed class SyndicationImage : ISyndicationImage
     {
         public SyndicationImage(Uri url)
         {

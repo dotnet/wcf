@@ -99,6 +99,18 @@ namespace Microsoft.SyndicationFeed
                                     });
         }
 
+        public static Task WriteRaw(XmlWriter writer, string content)
+        {
+
+            if (writer.Settings.Async)
+            {
+                return writer.WriteRawAsync(content);
+            }
+
+            writer.WriteRaw(content);
+            return Task.CompletedTask;
+        }
+
         private static bool IsXmlns(string name, string ns)
         {
             return name == "xmlns" || ns == "http://www.w3.org/2000/xmlns/";

@@ -4,7 +4,7 @@
 
 namespace Microsoft.SyndicationFeed
 {
-    sealed class SyndicationCategory : ISyndicationCategory
+    public sealed class SyndicationCategory : ISyndicationCategory
     {
         public string Name { get; set; }
 
