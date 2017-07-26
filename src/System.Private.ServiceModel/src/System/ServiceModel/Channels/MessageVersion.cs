@@ -139,6 +139,8 @@ namespace System.ServiceModel.Channels
             int code = 0;
             if (this.Envelope == EnvelopeVersion.Soap11)
                 code += 1;
+            if (this.Addressing == AddressingVersion.WSAddressingAugust2004)
+                code += 2;
             return code;
         }
 
