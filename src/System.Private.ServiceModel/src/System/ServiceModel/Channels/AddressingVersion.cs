@@ -39,7 +39,6 @@ namespace System.ServiceModel.Channels
             Addressing200408Strings.FaultAction, Addressing200408Strings.DefaultFaultAction);
         private static MessagePartSpecification s_addressing200408SignedMessageParts;
 
-
         private AddressingVersion(string ns, XmlDictionaryString dictionaryNs, string toStringFormat,
             MessagePartSpecification signedMessageParts, string anonymous, XmlDictionaryString dictionaryAnonymous, string none, string faultAction, string defaultFaultAction)
         {
