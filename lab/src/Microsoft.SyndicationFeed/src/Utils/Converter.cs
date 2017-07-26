@@ -67,5 +67,10 @@ namespace Microsoft.SyndicationFeed
             // Fall back default
             return (result = (T)Convert.ChangeType(value, typeof(T))) != null;
         }
+
+        public static string FormatValue<T>(T value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

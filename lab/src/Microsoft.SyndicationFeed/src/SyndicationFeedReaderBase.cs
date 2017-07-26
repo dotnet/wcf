@@ -14,15 +14,15 @@ namespace Microsoft.SyndicationFeed
         private bool _currentSet;
         
 
-        public SyndicationFeedReaderBase(XmlReader reader, ISyndicationFeedFormatter formatter)
+        public SyndicationFeedReaderBase(XmlReader reader, ISyndicationFeedParser parser)
         {
             _reader = reader ?? throw new ArgumentNullException(nameof(reader));
-            Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+            Parser = parser ?? throw new ArgumentNullException(nameof(parser));
 
             ElementType = SyndicationElementType.None;
         }
 
-        public ISyndicationFeedFormatter Formatter { get; private set; }
+        public ISyndicationFeedParser Parser { get; private set; }
 
         public SyndicationElementType ElementType { get; private set; }
 
@@ -69,7 +69,7 @@ namespace Microsoft.SyndicationFeed
                 throw new InvalidOperationException("Unknown Category");
             }
 
-            return Formatter.ParseCategory(await ReadElementAsString());
+            return Parser.ParseCategory(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationContent> ReadContent()
@@ -86,7 +86,7 @@ namespace Microsoft.SyndicationFeed
                 throw new InvalidOperationException("Unknown Content");
             }
 
-            return Formatter.ParseContent(await ReadElementAsString());
+            return Parser.ParseContent(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationItem> ReadItem()
@@ -101,7 +101,7 @@ namespace Microsoft.SyndicationFeed
                 throw new InvalidOperationException("Unknown Item");
             }
                 
-            return Formatter.ParseItem(await ReadElementAsString());
+            return Parser.ParseItem(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationLink> ReadLink()
@@ -116,7 +116,7 @@ namespace Microsoft.SyndicationFeed
                 throw new InvalidOperationException("Unknown Link");
             }
 
-            return Formatter.ParseLink(await ReadElementAsString());
+            return Parser.ParseLink(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationPerson> ReadPerson()
@@ -131,7 +131,7 @@ namespace Microsoft.SyndicationFeed
                 throw new InvalidOperationException("Unknown Person");
             }
 
-            return Formatter.ParsePerson(await ReadElementAsString());
+            return Parser.ParsePerson(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationImage> ReadImage()
@@ -146,7 +146,7 @@ namespace Microsoft.SyndicationFeed
                 throw new InvalidOperationException("Unknown Image");
             }
 
-            return Formatter.ParseImage(await ReadElementAsString());
+            return Parser.ParseImage(await ReadElementAsString());
         }
 
 
@@ -154,7 +154,7 @@ namespace Microsoft.SyndicationFeed
         {
             ISyndicationContent content = await ReadContent();
 
-            if (!Formatter.TryParseValue(content.Value, out T value))
+            if (!Parser.TryParseValue(content.Value, out T value))
             {
                 throw new FormatException();
             }

@@ -19,5 +19,9 @@ namespace Microsoft.SyndicationFeed
         Task Write(ISyndicationPerson person);
 
         Task Write(ISyndicationLink link);
+
+        Task WriteValue<T>(string name, T value);
+
+        Task WriteElement(string content);
     }
 }

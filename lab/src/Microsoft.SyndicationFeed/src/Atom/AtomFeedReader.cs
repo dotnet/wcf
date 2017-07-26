@@ -14,12 +14,12 @@ namespace Microsoft.SyndicationFeed
         private bool _knownFeed;
 
         public AtomFeedReader(XmlReader reader)
-            : this(reader, new AtomFeedFormatter())
+            : this(reader, new AtomFeedParser())
         {                
         }
 
-        public AtomFeedReader(XmlReader reader, ISyndicationFeedFormatter formatter) 
-            : base(reader, formatter)
+        public AtomFeedReader(XmlReader reader, ISyndicationFeedParser parser) 
+            : base(reader, parser)
         {
             _reader = reader;
         }
