@@ -13,12 +13,12 @@ namespace Microsoft.SyndicationFeed
         private bool _knownFeed;
 
         public Rss20FeedReader(XmlReader reader) 
-            : this(reader, new Rss20FeedFormatter())
+            : this(reader, new Rss20FeedParser())
         {
         }
 
-        public Rss20FeedReader(XmlReader reader, ISyndicationFeedFormatter formatter)
-            : base(reader, formatter)
+        public Rss20FeedReader(XmlReader reader, ISyndicationFeedParser parser)
+            : base(reader, parser)
         {
             _reader = reader;
         }
