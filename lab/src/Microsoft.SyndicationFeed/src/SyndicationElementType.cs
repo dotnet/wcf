@@ -7,11 +7,11 @@ namespace Microsoft.SyndicationFeed
     public enum SyndicationElementType
     {
         None = 0,
-        Item,
-        Person,
-        Link,
-        Content,
-        Category,
-        Image
+        Item = 1,
+        Person = 2,
+        Link = 3,
+        Content = 4,
+        Category = 5,
+        Image = 6
     }
 }

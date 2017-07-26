@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 namespace Microsoft.SyndicationFeed
@@ -104,12 +105,28 @@ namespace Microsoft.SyndicationFeed
             using (XmlReader reader = XmlUtils.CreateXmlReader(value))
             {
                 reader.MoveToContent();
+
                 if (reader.Name != AtomConstants.AuthorTag && reader.Name != AtomConstants.ContributorTag)
                 {
                     throw new FormatException("Invalid Atom person");
                 }
 
                 return ParsePerson(reader);
+            }
+        }
+
+        public virtual ISyndicationContent ParseContent(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
+            {
+                reader.MoveToContent();
+
+                return XmlUtils.ReadXmlNode(reader);
             }
         }
 

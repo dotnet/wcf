@@ -111,6 +111,22 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
+        public virtual ISyndicationContent ParseContent(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
+            {
+                reader.MoveToContent();
+
+                return XmlUtils.ReadXmlNode(reader);
+            }
+        }
+
+
         public virtual bool TryParseValue<T>(string value, out T result)
         {
             return Converter.TryParseValue<T>(value, out result);
@@ -332,7 +348,7 @@ namespace Microsoft.SyndicationFeed
                 else if (reader.IsStartElement(Rss20Constants.GuidTag, Rss20Constants.Rss20Namespace))
                 {
                     string permalinkString = reader.GetAttribute(Rss20Constants.IsPermaLinkTag, Rss20Constants.Rss20Namespace);
-                    bool isPermalink = (permalinkString == null) || permalinkString.Equals("false", StringComparison.OrdinalIgnoreCase);
+                    bool isPermalink = (permalinkString != null) && permalinkString.Equals("true", StringComparison.OrdinalIgnoreCase);
 
                     item.Id = reader.ReadElementContentAsString();
 

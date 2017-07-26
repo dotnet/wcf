@@ -51,6 +51,12 @@ namespace Microsoft.SyndicationFeed
             }
         }
 
+        public virtual async Task Skip()
+        {
+            await XmlUtils.SkipAsync(_reader);
+            await MoveNext(false);
+        }
+
         public virtual async Task<ISyndicationCategory> ReadCategory()
         {
             if (ElementType == SyndicationElementType.None)
@@ -60,12 +66,10 @@ namespace Microsoft.SyndicationFeed
 
             if (ElementType != SyndicationElementType.Category)
             {
-                throw new XmlException("Unknown Category");
+                throw new InvalidOperationException("Unknown Category");
             }
 
-            ISyndicationContent content = await ReadContent();
-
-            return Formatter.ParseCategory(content.RawContent);
+            return Formatter.ParseCategory(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationContent> ReadContent()
@@ -79,14 +83,10 @@ namespace Microsoft.SyndicationFeed
             // Any element can be read as ISyndicationContent
             if (ElementType == SyndicationElementType.None)
             {
-                throw new XmlException("Unknown Content");
+                throw new InvalidOperationException("Unknown Content");
             }
 
-            ISyndicationContent content = new SyndicationContent(await XmlUtils.ReadOuterXmlAsync(_reader));
-
-            await MoveNext();
-
-            return content;
+            return Formatter.ParseContent(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationItem> ReadItem()
@@ -98,12 +98,10 @@ namespace Microsoft.SyndicationFeed
 
             if (ElementType != SyndicationElementType.Item)
             {
-                throw new XmlException("Unknown Item");
+                throw new InvalidOperationException("Unknown Item");
             }
-
-            ISyndicationContent content = await ReadContent();
-
-            return Formatter.ParseItem(content.RawContent);
+                
+            return Formatter.ParseItem(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationLink> ReadLink()
@@ -115,12 +113,10 @@ namespace Microsoft.SyndicationFeed
 
             if (ElementType != SyndicationElementType.Link)
             {
-                throw new XmlException("Unknown Link");
+                throw new InvalidOperationException("Unknown Link");
             }
 
-            ISyndicationContent content = await ReadContent();
-
-            return Formatter.ParseLink(content.RawContent);
+            return Formatter.ParseLink(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationPerson> ReadPerson()
@@ -132,12 +128,10 @@ namespace Microsoft.SyndicationFeed
 
             if (ElementType != SyndicationElementType.Person)
             {
-                throw new XmlException("Unknown Person");
+                throw new InvalidOperationException("Unknown Person");
             }
 
-            ISyndicationContent content = await ReadContent();
-
-            return Formatter.ParsePerson(content.RawContent);
+            return Formatter.ParsePerson(await ReadElementAsString());
         }
 
         public virtual async Task<ISyndicationImage> ReadImage()
@@ -149,12 +143,10 @@ namespace Microsoft.SyndicationFeed
 
             if (ElementType != SyndicationElementType.Image)
             {
-                throw new XmlException("Unknown Image");
+                throw new InvalidOperationException("Unknown Image");
             }
 
-            ISyndicationContent content = await ReadContent();
-
-            return Formatter.ParseImage(content.RawContent);
+            return Formatter.ParseImage(await ReadElementAsString());
         }
 
 
@@ -162,7 +154,7 @@ namespace Microsoft.SyndicationFeed
         {
             ISyndicationContent content = await ReadContent();
 
-            if (!Formatter.TryParseValue(content.GetValue(), out T value))
+            if (!Formatter.TryParseValue(content.Value, out T value))
             {
                 throw new FormatException();
             }
@@ -170,11 +162,17 @@ namespace Microsoft.SyndicationFeed
             return value;
         }
 
-        public virtual async Task Skip()
+        public virtual async Task<string> ReadElementAsString()
         {
-            await XmlUtils.SkipAsync(_reader);
-            await MoveNext(false);
+            string result = await XmlUtils.ReadOuterXmlAsync(_reader);
+
+            await MoveNext();
+
+            return result;
         }
+
+
+        protected abstract SyndicationElementType MapElementType(string elementName);
 
         private async Task<bool> MoveNext(bool setCurrent = true)
         {
@@ -200,7 +198,5 @@ namespace Microsoft.SyndicationFeed
 
             return false;
         }
-
-        protected abstract SyndicationElementType MapElementType(string elementName);
     }
 }
