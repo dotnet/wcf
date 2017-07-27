@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -64,7 +65,7 @@ namespace Microsoft.SyndicationFeed
                                         IgnoreWhitespace = true
                                     });
         }
-        
+
         public static Task WriteRaw(XmlWriter writer, string content)
         {
 

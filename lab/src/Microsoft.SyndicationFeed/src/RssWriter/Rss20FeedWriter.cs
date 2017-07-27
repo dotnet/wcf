@@ -12,24 +12,28 @@ namespace Microsoft.SyndicationFeed
     {
         private XmlWriter _writer;
 
-        public ISyndicationFeedSerializer Serializer { get; private set; }
+        public ISyndicationFeedFormatter Formatter { get; private set; }
 
 
         public Rss20FeedWriter(XmlWriter writer)
-            : this(writer, new Rss20Serializer())
+            : this(writer, new Rss20Formatter(writer.Settings))
         {
         }
 
-        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedSerializer serializer)
+        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter)
         {
-            _writer = writer;
-            Serializer = serializer;
+            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
+            Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         }
 
         public virtual Task Write(ISyndicationContent content)
         {
-            string xml = Serializer.Serialize(content);
-            return XmlUtils.WriteRaw(_writer, xml);
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
         }
 
         public virtual Task Write(ISyndicationCategory category)
@@ -53,6 +57,16 @@ namespace Microsoft.SyndicationFeed
         }
 
         public virtual Task Write(ISyndicationLink link)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task WriteValue<T>(string name, T value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task WriteElement(string content)
         {
             throw new NotImplementedException();
         }
