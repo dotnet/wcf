@@ -14,7 +14,7 @@ namespace Microsoft.SyndicationFeed
         public string Title { get; set; }
 
         public string Description { get; set; }
-        
+
         public IEnumerable<ISyndicationCategory> Categories { get; set; }
        
         public IEnumerable<ISyndicationPerson> Contributors { get; set; }
@@ -24,6 +24,8 @@ namespace Microsoft.SyndicationFeed
         public DateTimeOffset LastUpdated { get; set; }
 
         public DateTimeOffset Published { get; set; }
+
+        public string ContentType { get; set; }
 
         public string Summary { get; set; }
 
