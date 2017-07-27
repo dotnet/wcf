@@ -42,4 +42,31 @@ public static partial class TextEncodingTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void TextMessageEncoder_QuotedCharSet_In_Response_ContentType()
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService channel = null;
+        string testQuotedCharSetContentType = "text/xml; param1 = value1; charset=\"utf-8\"; param2 = value2; param3 = \"value3\"";
+
+        Binding binding = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            channel = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            channel.ReturnContentType(testQuotedCharSetContentType);
+        }
+        finally
+        {
+            // *** CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
+        }
+    }
 }
