@@ -54,8 +54,18 @@ namespace Microsoft.SyndicationFeed
 
         public virtual string Format(ISyndicationImage image)
         {
-            throw new NotImplementedException();
+            if(image == null)
+            {
+                throw new ArgumentNullException(nameof(image));
+            }
+
+            using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
+            {
+                Write(image, writer);
+                return sb.ToString();
+            }
         }
+        
 
         public virtual string Format(ISyndicationItem item)
         {
@@ -135,6 +145,43 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentException("Invalid relationshipType");
             }
 
+            writer.Flush();
+        }
+
+        private void Write(ISyndicationImage image, XmlWriter writer)
+        {
+            // Required URL - Title - Link
+            if (string.IsNullOrEmpty(image.Title))
+            {
+                throw new ArgumentNullException("Image requires a title");
+            }
+
+            if (image.Link == null)
+            {
+                throw new ArgumentNullException("Image requires a link");
+            }
+
+            if (image.Url == null)
+            {
+                throw new ArgumentNullException("Image requires an url");
+            }
+
+            //Write <image>
+            writer.WriteStartElement(Rss20Constants.ImageTag);
+
+            //Write required contents of image
+            writer.WriteElementString(Rss20Constants.UrlTag, image.Url.OriginalString);
+            writer.WriteElementString(Rss20Constants.TitleTag, image.Title);
+            writer.WriteElementString(Rss20Constants.LinkTag, image.Link.Uri.OriginalString); // THIS MUST BE CHANGED TO USE LINK PARSER, WAITING FOR IMPLEMENTATION
+
+            //Write optional elements
+            if (!string.IsNullOrEmpty(image.Desciption))
+            {
+                writer.WriteElementString(Rss20Constants.DescriptionTag, image.Desciption);
+            }
+
+            //Close image tag </image>
+            writer.WriteEndElement();
             writer.Flush();
         }
     }

@@ -64,5 +64,40 @@ namespace Microsoft.SyndicationFeed.Tests
             string res = sb.ToString();
             Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><document><author>author@email.com</author><managingEditor>mEditor@email.com</managingEditor></document>");
         }
+
+        [Fact]
+        public async Task Rss20Writer_WriteImage()
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+            {
+                //<document>
+                xmlWriter.WriteStartElement("document");
+
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+
+                Uri url = new Uri("http://testuriforimage.com");
+                Uri urlForLink = new Uri("http://testuriforlink.com");
+                SyndicationLink link = new SyndicationLink(urlForLink);
+
+                SyndicationImage image = new SyndicationImage(url)
+                {
+                    Title = "Testing image title",
+                    Desciption = "testing image description",
+                    Link = link
+                };
+
+                await writer.Write(image);
+
+                //</document>
+                xmlWriter.WriteEndElement();
+                xmlWriter.Flush();
+            }
+
+            string res = sb.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><document><image><url>http://testuriforimage.com</url><title>Testing image title</title><link>http://testuriforlink.com</link><description>testing image description</description></image></document>");
+        }
     }
 }

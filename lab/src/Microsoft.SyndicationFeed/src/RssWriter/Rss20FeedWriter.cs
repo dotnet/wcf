@@ -47,7 +47,12 @@ namespace Microsoft.SyndicationFeed
 
         public virtual Task Write(ISyndicationImage image)
         {
-            throw new NotImplementedException();
+            if (image == null)
+            {
+                throw new ArgumentNullException(nameof(image));
+            }
+
+            return XmlUtils.WriteRaw(_writer, Formatter.Format(image));
         }
 
         public virtual Task Write(ISyndicationItem item)
