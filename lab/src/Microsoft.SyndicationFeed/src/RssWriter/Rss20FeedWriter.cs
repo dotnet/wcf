@@ -12,6 +12,9 @@ namespace Microsoft.SyndicationFeed
     public class Rss20FeedWriter : ISyndicationFeedWriter
     {
         private XmlWriter _writer;
+
+        private bool _rssDocumentCreated = false;
+
         public Rss20FeedWriter(XmlWriter writer)
             : this(writer, new Rss20Formatter(writer.Settings))
         {
@@ -32,6 +35,11 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(content));
             }
 
+            if (!_rssDocumentCreated)
+            {
+                OpenDocument();
+            }
+
             return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
         }
 
@@ -41,7 +49,12 @@ namespace Microsoft.SyndicationFeed
             {
                 throw new ArgumentNullException(nameof(category));
             }
-            
+
+            if (!_rssDocumentCreated)
+            {
+                OpenDocument();
+            }
+
             return XmlUtils.WriteRaw(_writer, Formatter.Format(category));
         }
 
@@ -50,6 +63,11 @@ namespace Microsoft.SyndicationFeed
             if (image == null)
             {
                 throw new ArgumentNullException(nameof(image));
+            }
+
+            if (!_rssDocumentCreated)
+            {
+                OpenDocument();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(image));
@@ -68,19 +86,27 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentNullException(nameof(person));
             }
 
-            string res = Formatter.Format(person);
+            if (!_rssDocumentCreated)
+            {
+                OpenDocument();
+            }
 
-            XmlReader reader = XmlReader.Create(new StringReader(res));
-
-            //_writer.WriteNode(reader, true);
-
-            return XmlUtils.WriteRaw(_writer, res);
-            //return Task.CompletedTask;
+            return XmlUtils.WriteRaw(_writer, Formatter.Format(person));
         }
 
         public virtual Task Write(ISyndicationLink link)
         {
-            throw new NotImplementedException();
+            if (link == null)
+            {
+                throw new ArgumentNullException(nameof(link));
+            }
+
+            if (!_rssDocumentCreated)
+            {
+                OpenDocument();
+            }
+
+            return XmlUtils.WriteRaw(_writer, Formatter.Format(link));
         }
 
         public Task WriteValue<T>(string name, T value)
@@ -90,7 +116,16 @@ namespace Microsoft.SyndicationFeed
 
         public Task WriteElement(string content)
         {
-            throw new NotImplementedException();
+            return XmlUtils.WriteRaw(_writer, content);
+        }
+
+        private void OpenDocument()
+        {
+            //Write <rss version="2.0">
+            _writer.WriteStartElement(Rss20Constants.RssTag);
+            _writer.WriteAttributeString(Rss20Constants.VersionTag, Rss20Constants.Version);
+            _writer.WriteStartElement(Rss20Constants.ChannelTag);
+            _rssDocumentCreated = true;
         }
     }
 }

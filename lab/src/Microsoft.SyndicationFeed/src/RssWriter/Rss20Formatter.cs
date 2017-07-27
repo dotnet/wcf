@@ -66,7 +66,6 @@ namespace Microsoft.SyndicationFeed
             }
         }
         
-
         public virtual string Format(ISyndicationItem item)
         {
             throw new NotImplementedException();
@@ -89,10 +88,21 @@ namespace Microsoft.SyndicationFeed
 
         public virtual string Format(ISyndicationLink link)
         {
-            throw new NotImplementedException();
-        }
+            if (link == null)
+            {
+                throw new ArgumentNullException(nameof(link));
+            }
 
-        public string FormatValue<T>(T value)
+            using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
+            {
+                Write(link, writer);
+
+                return sb.ToString();
+            }
+        }
+                
+
+        public virtual string FormatValue<T>(T value)
         {
             throw new NotImplementedException();
         }
@@ -181,6 +191,53 @@ namespace Microsoft.SyndicationFeed
             }
 
             //Close image tag </image>
+            writer.WriteEndElement();
+            writer.Flush();
+        }
+
+        private void Write(ISyndicationLink link, XmlWriter writer)
+        {
+            //Write <Link>
+            writer.WriteStartElement(Rss20Constants.LinkTag);
+
+            //Write attributes if exist
+
+            //
+            // lenght attribute
+            if (link.Length != 0)
+            {
+                writer.WriteAttributeString(Rss20Constants.LengthTag, link.Length.ToString());
+            }
+
+            //
+            // type attribute
+            if (!string.IsNullOrEmpty(link.MediaType))
+            {
+                writer.WriteAttributeString(Rss20Constants.TypeTag, link.MediaType);
+            }
+
+            //
+            // url attribute
+            if (link.Uri.OriginalString != link.Title)
+            {
+                if (string.IsNullOrEmpty(link.Title))
+                {
+                    writer.WriteString(link.Uri.ToString());
+                }
+                else
+                {
+                    writer.WriteAttributeString(Rss20Constants.UrlTag, link.Uri.ToString());
+                }
+            }
+
+            //
+            // title 
+            if (!string.IsNullOrEmpty(link.Title))
+            {
+                writer.WriteString(link.Title);
+            }
+
+            // close link tag </link>
             writer.WriteEndElement();
             writer.Flush();
         }

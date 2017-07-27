@@ -200,7 +200,7 @@ namespace Microsoft.SyndicationFeed
             // Url
             Uri uri = null;
             string url = reader.GetAttribute("url");
-            if(url != null)
+            if (url != null)
             {
                 if (!TryParseValue(url,out uri))
                 {
@@ -218,7 +218,6 @@ namespace Microsoft.SyndicationFeed
             string type = string.Empty;
             TryParseValue(reader.GetAttribute("type"), out type);
             
-            //reader.ReadStartElement();
 
             //
             // Title

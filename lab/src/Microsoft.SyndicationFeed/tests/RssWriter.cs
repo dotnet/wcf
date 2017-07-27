@@ -29,7 +29,7 @@ namespace Microsoft.SyndicationFeed.Tests
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><category>Test Category</category>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><category>Test Category</category></channel></rss>");
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace Microsoft.SyndicationFeed.Tests
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><document><author>author@email.com</author><managingEditor>mEditor@email.com</managingEditor></document>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><document><rss version=\"2.0\"><channel><author>author@email.com</author><managingEditor>mEditor@email.com</managingEditor></channel></rss></document>");
         }
 
         [Fact]
@@ -73,8 +73,6 @@ namespace Microsoft.SyndicationFeed.Tests
 
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
-                //<document>
-                xmlWriter.WriteStartElement("document");
 
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
 
@@ -90,14 +88,89 @@ namespace Microsoft.SyndicationFeed.Tests
                 };
 
                 await writer.Write(image);
-
-                //</document>
-                xmlWriter.WriteEndElement();
+                
                 xmlWriter.Flush();
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><document><image><url>http://testuriforimage.com</url><title>Testing image title</title><link>http://testuriforlink.com</link><description>testing image description</description></image></document>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><image><url>http://testuriforimage.com</url><title>Testing image title</title><link>http://testuriforlink.com</link><description>testing image description</description></image></channel></rss>");
+        }
+
+        [Fact]
+        public async Task Rss20Writer_WriteLink_onlyUrl()
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+            {
+                
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                
+                Uri urlForLink = new Uri("http://testuriforlink.com");
+                SyndicationLink link = new SyndicationLink(urlForLink);
+                
+                await writer.Write(link);
+                
+                xmlWriter.Flush();
+            }
+
+            string res = sb.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><link>http://testuriforlink.com/</link></channel></rss>");
+        }
+
+        [Fact]
+        public async Task Rss20Writer_WriteLink_allElements()
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+            {
+
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+
+                Uri urlForLink = new Uri("http://testuriforlink.com");
+                SyndicationLink link = new SyndicationLink(urlForLink)
+                {
+                    Title = "Test title",
+                    Length = 123,
+                    MediaType = "mp3/video"
+                };
+
+                await writer.Write(link);
+
+                xmlWriter.Flush();
+            }
+
+            string res = sb.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><link length=\"123\" type=\"mp3/video\" url=\"http://testuriforlink.com/\">Test title</link></channel></rss>");
+        }
+
+        [Fact]
+        public async Task Rss20Writer_WriteLink_uriEqualsTitle()
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+            {
+
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+
+                Uri urlForLink = new Uri("http://testuriforlink.com");
+                SyndicationLink link = new SyndicationLink(urlForLink)
+                {
+                    Title = "http://testuriforlink.com"
+                };
+
+                await writer.Write(link);
+
+                xmlWriter.Flush();
+            }
+
+            string res = sb.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><link>http://testuriforlink.com</link></channel></rss>");
         }
     }
 }
