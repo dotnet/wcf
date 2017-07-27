@@ -67,7 +67,7 @@ class WcfUtilities
             currentWcfPRService = wcfPRServiceCount + 100
         } else if (branch.toLowerCase() == "release/1.1.0") {
             currentWcfPRService = wcfPRServiceCount + 200
-        } else if (branch.toLowerCase() == "ws-trust") {
+        } else if (branch.toLowerCase() == "release/uwp6.0") {
             currentWcfPRService = wcfPRServiceCount + 300
         }
 
