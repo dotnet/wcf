@@ -40,6 +40,7 @@ namespace Microsoft.SyndicationFeed.Tests
 
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
+                xmlWriter.WriteStartElement("document");
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
                 SyndicationPerson author = new SyndicationPerson()
                 {
@@ -56,11 +57,12 @@ namespace Microsoft.SyndicationFeed.Tests
                 await writer.Write(author);
                 await writer.Write(managingEditor);
 
+                xmlWriter.WriteEndElement();
                 xmlWriter.Flush();
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><category>Test Category</category>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><document><author>author@email.com</author><managingEditor>mEditor@email.com</managingEditor></document>");
         }
     }
 }

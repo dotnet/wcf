@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -64,7 +65,12 @@ namespace Microsoft.SyndicationFeed
 
             string res = Formatter.Format(person);
 
+            XmlReader reader = XmlReader.Create(new StringReader(res));
+
+            //_writer.WriteNode(reader, true);
+
             return XmlUtils.WriteRaw(_writer, res);
+            //return Task.CompletedTask;
         }
 
         public virtual Task Write(ISyndicationLink link)
