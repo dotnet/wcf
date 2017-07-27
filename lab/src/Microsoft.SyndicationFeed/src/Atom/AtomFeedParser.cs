@@ -225,15 +225,27 @@ namespace Microsoft.SyndicationFeed
             long length = 0;
             TryParseValue(reader.GetAttribute("length"), out length);
 
-            // href
+            // type
+            string rel = reader.GetAttribute("rel") ?? AtomConstants.AlternateTag;
+
             Uri uri = null;
-            if (!TryParseValue(reader.GetAttribute("href"), out uri))
+
+            // href
+            if (uri == null)
             {
-                throw new FormatException("Invalid href attribute format");
+                TryParseValue(reader.GetAttribute("href"), out uri);
             }
 
-            // type
-            string rel = reader.GetAttribute("rel");
+            // src
+            if (uri == null)
+            {
+                TryParseValue(reader.GetAttribute("src"), out uri);
+            }
+
+            if (uri == null)
+            {
+                throw new FormatException("Invalid uri");
+            }
 
             reader.Skip();
 
@@ -242,7 +254,7 @@ namespace Microsoft.SyndicationFeed
                 Title = title,
                 Length = length,
                 MediaType = type,
-                RelationshipType = rel ?? AtomConstants.AlternateTag
+                RelationshipType = rel 
             };
         }
 
@@ -275,20 +287,31 @@ namespace Microsoft.SyndicationFeed
                     //
                     // Category
                     case AtomConstants.CategoryTag:
-                        SyndicationCategory category = ParseCategory(reader);
+                        categories.Add(ParseCategory(reader));
                         break;
+
                     //
                     // Content
                     case AtomConstants.ContentTag:
-                        item.Description = reader.ReadInnerXml();
+                        item.ContentType = reader.GetAttribute(AtomConstants.TypeTag) ?? AtomConstants.PlaintextType;
+
+                        if (string.IsNullOrEmpty(reader.GetAttribute(AtomConstants.SourceTag)))
+                        {
+                            item.Description = reader.ReadInnerXml();
+                        }
+                        else
+                        {
+                            SyndicationLink src = ParseLink(reader);
+                            src.RelationshipType = AtomConstants.ContentTag;
+                            links.Add(src);
+                        }
                         break;
 
                     //
                     // Author/Contributor
                     case AtomConstants.AuthorTag:
                     case AtomConstants.ContributorTag:
-                        SyndicationPerson person = ParsePerson(reader);
-                        contributors.Add(person);
+                        contributors.Add(ParsePerson(reader));
                         break;
 
                     //
@@ -300,8 +323,7 @@ namespace Microsoft.SyndicationFeed
                     //
                     // Link
                     case AtomConstants.LinkTag:
-                        SyndicationLink link = ParseLink(reader);
-                        links.Add(link);
+                        links.Add(ParseLink(reader));
                         break;
 
                     //

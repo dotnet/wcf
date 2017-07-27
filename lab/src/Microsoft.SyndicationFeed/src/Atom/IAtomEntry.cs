@@ -6,6 +6,8 @@ namespace Microsoft.SyndicationFeed
 {
     public interface IAtomEntry : ISyndicationItem
     {
+        string ContentType { get; }
+
         string Summary { get; }
 
         string Rights { get; }
