@@ -18,7 +18,7 @@ namespace Microsoft.SyndicationFeed
             _settings = settings?.Clone() ?? new XmlWriterSettings();
 
             _settings.Async = false;
-            _settings.CloseOutput = false;
+            //_settings.CloseOutput = false;
             _settings.OmitXmlDeclaration = true;
         }
 
@@ -64,7 +64,17 @@ namespace Microsoft.SyndicationFeed
 
         public virtual string Format(ISyndicationPerson person)
         {
-            throw new NotImplementedException();
+            if (person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
+            using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
+            {
+                Write(person, writer);
+
+                return sb.ToString();
+            }
         }
 
         public virtual string Format(ISyndicationLink link)
@@ -90,7 +100,42 @@ namespace Microsoft.SyndicationFeed
 
         private void Write(ISyndicationCategory category, XmlWriter writer)
         {
-            throw new NotImplementedException();
+
+            if (string.IsNullOrEmpty(category.Name))
+            {
+                throw new ArgumentNullException(nameof(category.Name));
+            }
+
+            writer.WriteElementString(Rss20Constants.CategoryTag,category.Name);
+            writer.Flush();
+        }
+
+        private void Write(ISyndicationPerson person, XmlWriter writer)
+        {
+            if (string.IsNullOrEmpty(person.RelationshipType))
+            {
+                throw new ArgumentException(nameof(person.RelationshipType));
+            }
+
+            if (string.IsNullOrEmpty(person.Email))
+            {
+                throw new ArgumentException(nameof(person.Email));
+            }
+
+            if(person.RelationshipType == Rss20Constants.AuthorTag)
+            {
+                writer.WriteElementString(Rss20Constants.AuthorTag, person.Email);
+            }
+            else if (person.RelationshipType == Rss20Constants.ManagingEditorTag)
+            {
+                writer.WriteElementString(Rss20Constants.ManagingEditorTag, person.Email);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid relationshipType");
+            }
+
+            writer.Flush();
         }
     }
 }

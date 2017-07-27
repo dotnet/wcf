@@ -14,7 +14,7 @@ namespace Microsoft.SyndicationFeed.Tests
     public class RssWriter
     {
         [Fact]
-        public async Task Rss20Writer_WriteContent()
+        public async Task Rss20Writer_WriteCategory()
         {
 
             StringBuilder sb = new StringBuilder();
@@ -22,13 +22,45 @@ namespace Microsoft.SyndicationFeed.Tests
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
-                SyndicationContent content = new SyndicationContent("<title>Hello World</title>");
-                await writer.Write(content);
+                SyndicationCategory category = new SyndicationCategory();
+                category.Name = "Test Category";
+                await writer.Write(category);
                 xmlWriter.Flush();
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><title>Hello World</title>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><category>Test Category</category>");
+        }
+
+        [Fact]
+        public async Task Rss20Writer_WritePerson()
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+            {
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                SyndicationPerson author = new SyndicationPerson()
+                {
+                    Email = "author@email.com",
+                    RelationshipType = Rss20Constants.AuthorTag
+                };
+
+                SyndicationPerson managingEditor = new SyndicationPerson()
+                {
+                    Email = "mEditor@email.com",
+                    RelationshipType = Rss20Constants.ManagingEditorTag
+                };
+
+                await writer.Write(author);
+                await writer.Write(managingEditor);
+
+                xmlWriter.Flush();
+            }
+
+            string res = sb.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><category>Test Category</category>");
         }
     }
 }

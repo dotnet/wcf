@@ -11,10 +11,6 @@ namespace Microsoft.SyndicationFeed
     public class Rss20FeedWriter : ISyndicationFeedWriter
     {
         private XmlWriter _writer;
-
-        public ISyndicationFeedFormatter Formatter { get; private set; }
-
-
         public Rss20FeedWriter(XmlWriter writer)
             : this(writer, new Rss20Formatter(writer.Settings))
         {
@@ -25,6 +21,8 @@ namespace Microsoft.SyndicationFeed
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
             Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
         }
+
+        public ISyndicationFeedFormatter Formatter { get; private set; }
 
         public virtual Task Write(ISyndicationContent content)
         {
@@ -38,7 +36,12 @@ namespace Microsoft.SyndicationFeed
 
         public virtual Task Write(ISyndicationCategory category)
         {
-            throw new NotImplementedException();
+            if(category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+            
+            return XmlUtils.WriteRaw(_writer, Formatter.Format(category));
         }
 
         public virtual Task Write(ISyndicationImage image)
@@ -53,7 +56,15 @@ namespace Microsoft.SyndicationFeed
 
         public virtual Task Write(ISyndicationPerson person)
         {
-            throw new NotImplementedException();
+
+            if(person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
+            string res = Formatter.Format(person);
+
+            return XmlUtils.WriteRaw(_writer, res);
         }
 
         public virtual Task Write(ISyndicationLink link)
