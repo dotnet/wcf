@@ -13,6 +13,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{452BA2A7-81AD-4146-AD02-35EC242FF0EB}</ProjectGuid>
   </PropertyGroup>
+  <PropertyGroup>
+    <_XunitOptions>$(_XunitOptions) -parallel none</_XunitOptions>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
   </ItemGroup>
