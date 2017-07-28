@@ -299,11 +299,10 @@ namespace Microsoft.SyndicationFeed
                 {
                     categories.Add(ParseCategory(reader));
                 }
-
-
+                
                 //
                 // Content
-                else if(reader.IsStartElement(AtomConstants.ContentTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.ContentTag, AtomConstants.Atom10Namespace))
                 {
                     item.ContentType = reader.GetAttribute(AtomConstants.TypeTag) ?? AtomConstants.PlaintextType;
 
@@ -321,28 +320,28 @@ namespace Microsoft.SyndicationFeed
 
                 //
                 // Author/Contributor
-                else if(reader.IsStartElement(AtomConstants.AuthorTag, AtomConstants.Atom10Namespace) || reader.IsStartElement(AtomConstants.ContributorTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.AuthorTag, AtomConstants.Atom10Namespace) || reader.IsStartElement(AtomConstants.ContributorTag, AtomConstants.Atom10Namespace))
                 {
                     contributors.Add(ParsePerson(reader));
                 }
 
                 //
                 // Id
-                else if(reader.IsStartElement(AtomConstants.IdTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.IdTag, AtomConstants.Atom10Namespace))
                 {
                     item.Id = reader.ReadElementContentAsString();
                 }
 
                 //
                 // Link
-                else if(reader.IsStartElement(AtomConstants.LinkTag, AtomConstants.Atom10Namespace))
-                {
+                else if (reader.IsStartElement(AtomConstants.LinkTag, AtomConstants.Atom10Namespace))
+                { 
                     links.Add(ParseLink(reader));
                 }
 
                 //
                 // Published
-                else if(reader.IsStartElement(AtomConstants.PublishedTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.PublishedTag, AtomConstants.Atom10Namespace))
                 {
                     if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset published))
                     {
@@ -352,21 +351,21 @@ namespace Microsoft.SyndicationFeed
 
                 //
                 // Rights
-                else if(reader.IsStartElement(AtomConstants.RightsTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.RightsTag, AtomConstants.Atom10Namespace))
                 {
                     item.Rights = reader.ReadElementContentAsString();
                 }
 
                 //
                 // Source
-                else if(reader.IsStartElement(AtomConstants.SourceFeedTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.SourceFeedTag, AtomConstants.Atom10Namespace))
                 {
                     links.Add(ParseSource(reader));
                 }
 
                 //
                 // Summary
-                else if(reader.IsStartElement(AtomConstants.SummaryTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.SummaryTag, AtomConstants.Atom10Namespace))
                 {
                     item.Summary = reader.ReadElementContentAsString();
                 }
@@ -380,7 +379,7 @@ namespace Microsoft.SyndicationFeed
 
                 //
                 // Updated
-                else if(reader.IsStartElement(AtomConstants.UpdatedTag, AtomConstants.Atom10Namespace))
+                else if (reader.IsStartElement(AtomConstants.UpdatedTag, AtomConstants.Atom10Namespace))
                 {
                     if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset updated))
                     {

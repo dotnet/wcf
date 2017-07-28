@@ -22,7 +22,7 @@ namespace Microsoft.SyndicationFeed
             {
                 reader.MoveToContent();
 
-                if(reader.Name != Rss20Constants.CategoryTag)
+                if (reader.Name != Rss20Constants.CategoryTag)
                 {
                     throw new FormatException("Invalid Rss category");
                 }
@@ -62,7 +62,7 @@ namespace Microsoft.SyndicationFeed
             {
                 reader.MoveToContent();
 
-                if(reader.Name != Rss20Constants.LinkTag)
+                if (reader.Name != Rss20Constants.LinkTag)
                 {
                     throw new FormatException("Invalid Rss Link");
                 }
@@ -82,7 +82,7 @@ namespace Microsoft.SyndicationFeed
             {
                 reader.MoveToContent();
 
-                if(reader.Name != Rss20Constants.AuthorTag && reader.Name != Rss20Constants.ManagingEditorTag)
+                if (reader.Name != Rss20Constants.AuthorTag && reader.Name != Rss20Constants.ManagingEditorTag)
                 {
                     throw new FormatException("Invalid Rss Person");
                 }
@@ -102,7 +102,7 @@ namespace Microsoft.SyndicationFeed
             {
                 reader.MoveToContent();
 
-                if(reader.Name != Rss20Constants.ImageTag)
+                if (reader.Name != Rss20Constants.ImageTag)
                 {
                     throw new FormatException("Invalid Rss Image");
                 }
@@ -157,7 +157,7 @@ namespace Microsoft.SyndicationFeed
 
                     //
                     // Title
-                    if(reader.IsStartElement(Rss20Constants.TitleTag, Rss20Constants.Rss20Namespace))
+                    if (reader.IsStartElement(Rss20Constants.TitleTag, Rss20Constants.Rss20Namespace))
                     {
                         title = reader.ReadElementContentAsString();
                     }
@@ -218,7 +218,6 @@ namespace Microsoft.SyndicationFeed
             string type = string.Empty;
             TryParseValue(reader.GetAttribute("type"), out type);
             
-
             //
             // Title
             string title = string.Empty;
@@ -286,6 +285,7 @@ namespace Microsoft.SyndicationFeed
                 {
                     item.Title = reader.ReadElementContentAsString();
                 }
+
                 //
                 // Link
                 else if (reader.IsStartElement(Rss20Constants.LinkTag, Rss20Constants.Rss20Namespace))
@@ -296,12 +296,14 @@ namespace Microsoft.SyndicationFeed
                     links.Add(link);
                     readAlternateLink = true;
                 }
+
                 //
                 // Description
                 else if (reader.IsStartElement(Rss20Constants.DescriptionTag, Rss20Constants.Rss20Namespace))
                 {
                     item.Description = reader.ReadElementContentAsString();
                 }
+
                 //
                 // Author
                 else if (reader.IsStartElement(Rss20Constants.AuthorTag, Rss20Constants.Rss20Namespace))
@@ -311,12 +313,14 @@ namespace Microsoft.SyndicationFeed
 
                     contributors.Add(person);
                 }
+
                 //
                 // Category
                 else if (reader.IsStartElement(Rss20Constants.CategoryTag, Rss20Constants.Rss20Namespace))
                 {
                     categories.Add(ParseCategory(reader));
                 }
+
                 //
                 // Comments
                 else if (reader.IsStartElement(Rss20Constants.CommentsTag, Rss20Constants.Rss20Namespace))
@@ -325,6 +329,7 @@ namespace Microsoft.SyndicationFeed
                     link.RelationshipType = Rss20Constants.CommentsTag;
                     links.Add(link);
                 }
+
                 //
                 // Enclosure
                 else if (reader.IsStartElement(Rss20Constants.EnclosureTag, Rss20Constants.Rss20Namespace))
@@ -333,6 +338,7 @@ namespace Microsoft.SyndicationFeed
                     link.RelationshipType = Rss20Constants.EnclosureTag;
                     links.Add(link);
                 }
+
                 //
                 // Guid
                 else if (reader.IsStartElement(Rss20Constants.GuidTag, Rss20Constants.Rss20Namespace))
@@ -347,6 +353,7 @@ namespace Microsoft.SyndicationFeed
                         fallbackAlternateLink = item.Id;
                     }
                 }
+
                 //
                 // PubDate
                 else if (reader.IsStartElement(Rss20Constants.PubDateTag, Rss20Constants.Rss20Namespace))
@@ -356,6 +363,7 @@ namespace Microsoft.SyndicationFeed
                         item.Published = dt;
                     }
                 }
+
                 //
                 // Source
                 else if (reader.IsStartElement(Rss20Constants.SourceTag, Rss20Constants.Rss20Namespace))
