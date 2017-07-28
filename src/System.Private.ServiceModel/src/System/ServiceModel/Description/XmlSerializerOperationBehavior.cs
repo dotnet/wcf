@@ -966,8 +966,8 @@ namespace System.ServiceModel.Description
         {
             string ns = isRpc ? null : part.Namespace;
             ICustomAttributeProvider additionalAttributesProvider = null;
-            if (isEncoded || part.AdditionalAttributesProvider.MemberInfo != null)
-                additionalAttributesProvider = part.AdditionalAttributesProvider.MemberInfo;
+            if (isEncoded || part.AdditionalAttributesProvider is MemberInfo)
+                additionalAttributesProvider = part.AdditionalAttributesProvider;
             XmlName memberName = string.IsNullOrEmpty(part.UniquePartName) ? null : new XmlName(part.UniquePartName, true /*isEncoded*/);
             XmlName elementName = part.XmlName;
             return GetXmlReflectionMember(memberName, elementName, ns, part.Type, additionalAttributesProvider, part.Multiple, isEncoded, isWrapped);

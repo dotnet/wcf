@@ -22,7 +22,7 @@ namespace System.ServiceModel.Description
         private ProtectionLevel _protectionLevel;
         private bool _hasProtectionLevel;
         private MemberInfo _memberInfo;
-        private CustomAttributeProvider _additionalAttributesProvider;
+        private ICustomAttributeProvider _additionalAttributesProvider;
 
         private bool _multiple;
         private string _baseType;
@@ -134,7 +134,7 @@ namespace System.ServiceModel.Description
             set { _memberInfo = value; }
         }
 
-        internal CustomAttributeProvider AdditionalAttributesProvider
+        internal ICustomAttributeProvider AdditionalAttributesProvider
         {
             get { return _additionalAttributesProvider ?? _memberInfo; }
             set { _additionalAttributesProvider = value; }
