@@ -187,7 +187,7 @@ namespace Microsoft.SyndicationFeed
 
             return new SyndicationImage(url) {
                 Title = title,
-                Desciption = description,
+                Description = description,
                 Link = link,
                 RelationshipType = Rss20Constants.ImageTag
             };

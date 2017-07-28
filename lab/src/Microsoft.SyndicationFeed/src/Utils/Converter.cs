@@ -70,7 +70,32 @@ namespace Microsoft.SyndicationFeed
 
         public static string FormatValue<T>(T value)
         {
-            throw new NotImplementedException();
+            Type type = typeof(T);
+
+            //
+            // Long
+            if (type == typeof(long))
+            {
+                return value.ToString();
+            }
+
+            //
+            // Int
+            if (type == typeof(int))
+            {
+                return value.ToString();
+            }
+
+            //
+            // Uri
+            if (type == typeof(Uri))
+            {
+                return value.ToString();
+            }
+
+            //
+            // Default
+            return value.ToString();
         }
     }
 }

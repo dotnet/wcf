@@ -83,7 +83,7 @@ namespace Microsoft.SyndicationFeed.Tests
                 SyndicationImage image = new SyndicationImage(url)
                 {
                     Title = "Testing image title",
-                    Desciption = "testing image description",
+                    Description = "testing image description",
                     Link = link
                 };
 
@@ -93,7 +93,7 @@ namespace Microsoft.SyndicationFeed.Tests
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><image><url>http://testuriforimage.com</url><title>Testing image title</title><link>http://testuriforlink.com</link><description>testing image description</description></image></channel></rss>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><image><url>http://testuriforimage.com/</url><title>Testing image title</title><link>http://testuriforlink.com/</link><description>testing image description</description></image></channel></rss>");
         }
 
         [Fact]

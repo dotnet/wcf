@@ -100,11 +100,10 @@ namespace Microsoft.SyndicationFeed
                 return sb.ToString();
             }
         }
-                
-
+        
         public virtual string FormatValue<T>(T value)
         {
-            throw new NotImplementedException();
+            return Converter.FormatValue(value);
         }
         
         private XmlWriter CreateXmlWriter(out StringBuilder sb)
@@ -115,6 +114,8 @@ namespace Microsoft.SyndicationFeed
 
         private void Write(ISyndicationContent content, XmlWriter writer)
         {
+
+
             throw new NotImplementedException();
         }
 
@@ -180,14 +181,14 @@ namespace Microsoft.SyndicationFeed
             writer.WriteStartElement(Rss20Constants.ImageTag);
 
             //Write required contents of image
-            writer.WriteElementString(Rss20Constants.UrlTag, image.Url.OriginalString);
+            writer.WriteElementString(Rss20Constants.UrlTag, FormatValue(image.Url));
             writer.WriteElementString(Rss20Constants.TitleTag, image.Title);
-            writer.WriteElementString(Rss20Constants.LinkTag, image.Link.Uri.OriginalString); // THIS MUST BE CHANGED TO USE LINK PARSER, WAITING FOR IMPLEMENTATION
+            writer.WriteRaw(Format(image.Link));
 
             //Write optional elements
-            if (!string.IsNullOrEmpty(image.Desciption))
+            if (!string.IsNullOrEmpty(image.Description))
             {
-                writer.WriteElementString(Rss20Constants.DescriptionTag, image.Desciption);
+                writer.WriteElementString(Rss20Constants.DescriptionTag, image.Description);
             }
 
             //Close image tag </image>
@@ -206,7 +207,7 @@ namespace Microsoft.SyndicationFeed
             // lenght attribute
             if (link.Length != 0)
             {
-                writer.WriteAttributeString(Rss20Constants.LengthTag, link.Length.ToString());
+                writer.WriteAttributeString(Rss20Constants.LengthTag, FormatValue(link.Length));
             }
 
             //
@@ -226,7 +227,7 @@ namespace Microsoft.SyndicationFeed
                 }
                 else
                 {
-                    writer.WriteAttributeString(Rss20Constants.UrlTag, link.Uri.ToString());
+                    writer.WriteAttributeString(Rss20Constants.UrlTag, FormatValue(link.Uri));
                 }
             }
 
