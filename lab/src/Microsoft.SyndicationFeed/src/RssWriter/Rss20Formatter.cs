@@ -124,7 +124,40 @@ namespace Microsoft.SyndicationFeed
 
         private void Write(ISyndicationContent content, XmlWriter writer)
         {
-            throw new NotImplementedException();
+            //
+            // Write opening name 
+            writer.WriteStartElement(content.Name);
+
+            //
+            // Write attributes
+            foreach (var attribute in content.Attributes)
+            {
+                writer.WriteAttributeString(attribute.Name, attribute.Namespace, attribute.Value);
+            }
+
+            var fields = (List<ISyndicationContent>)content.Fields;
+
+            if (fields.Count == 0)
+            {
+                //
+                // This element has no children.
+                writer.WriteString(content.Value);
+            }
+
+            else
+            {
+                //
+                // Write Fields
+                foreach (var field in fields)
+                {
+                    writer.WriteRaw(Format(field));
+                }
+            }
+
+            //
+            // Write closing name 
+            writer.WriteEndElement();
+            writer.Flush();
         }
 
         private void Write(ISyndicationCategory category, XmlWriter writer)
@@ -398,6 +431,6 @@ namespace Microsoft.SyndicationFeed
 
             writer.WriteEndElement(); // </item>
             writer.Flush();
-        }
+        }        
     }
 }
