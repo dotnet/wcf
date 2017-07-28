@@ -120,7 +120,27 @@ namespace Microsoft.SyndicationFeed
 
         public Task WriteValue<T>(string name, T value)
         {
-            throw new NotImplementedException();
+
+            if (!_rssDocumentCreated)
+            {
+                OpenDocument();
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var valueString = Converter.FormatValue(value);
+
+            if (string.IsNullOrEmpty(valueString))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            SyndicationContent content = new SyndicationContent(name, valueString);
+
+            return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
         }
 
         public Task WriteElement(string content)
