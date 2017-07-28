@@ -235,15 +235,42 @@ namespace Microsoft.SyndicationFeed.Tests
 
                 item.Id = "Unique ID for this item";
 
-                item.Published = DateTimeOffset.Now;
+                DateTimeOffset time;
+                DateTimeOffset.TryParse("Fri, 28 Jul 2017 19:07:32 GMT",out time);
 
+                item.Published = time;
+                
                 await writer.Write(item);
 
                 xmlWriter.Flush();
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><item><title>First item on ItemWriter</title><link>http://testuriforlinks.com/</link><enclosure url=\"http://testuriforlinks.com/\" length=\"4123\" type=\"audio/mpeg\" /><comments>http://testuriforlinks.com/</comments><source url=\"http://testuriforlinks.com/\">Anonymous Blog</source><description>Brief description of an item</description><author>person@email.com</author><guid>Unique ID for this item</guid><pubDate>Fri, 28 Jul 2017 18:42:31 GMT</pubDate></item></channel></rss>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><item><title>First item on ItemWriter</title><link>http://testuriforlinks.com/</link><enclosure url=\"http://testuriforlinks.com/\" length=\"4123\" type=\"audio/mpeg\" /><comments>http://testuriforlinks.com/</comments><source url=\"http://testuriforlinks.com/\">Anonymous Blog</source><description>Brief description of an item</description><author>person@email.com</author><guid>Unique ID for this item</guid><pubDate>Fri, 28 Jul 2017 19:07:32 GMT</pubDate></item></channel></rss>");
+        }
+
+        [Fact]
+        public async Task Rss20Writer_WriteContent()
+        {
+            SyndicationContent content = null;
+
+            using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\CustomXml.xml"))
+            {
+                Rss20FeedReader reader = new Rss20FeedReader(xmlReader);
+                content = (SyndicationContent)await reader.ReadContent();
+            }
+
+            StringBuilder sb = new StringBuilder();
+            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+            {
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+
+                await writer.Write(content);
+                xmlWriter.Flush();
+            }
+
+            string res = sb.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><NewItem><enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/mpeg\" /><title>Lorem ipsum 2017-07-06T20:25:00+00:00</title><description>Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.</description><link>http://example.com/test/1499372700</link><guid isPermaLink=\"true\">http://example.com/test/1499372700</guid><pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate></NewItem></channel></rss>");
         }
     }
 }
