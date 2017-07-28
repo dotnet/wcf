@@ -94,6 +94,14 @@ namespace Microsoft.SyndicationFeed
             }
 
             //
+            // DateTimeOffset
+            if (type == typeof(DateTimeOffset))
+            {
+                DateTimeOffset dto = (DateTimeOffset)(object)value;
+                return dto.ToString("r");
+            }
+
+            //
             // Default
             return value.ToString();
         }
