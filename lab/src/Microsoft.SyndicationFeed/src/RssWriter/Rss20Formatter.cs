@@ -68,9 +68,19 @@ namespace Microsoft.SyndicationFeed
         
         public virtual string Format(ISyndicationItem item)
         {
-            throw new NotImplementedException();
-        }
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
+            using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
+            {
+                Write(item, writer);
+
+                return sb.ToString();
+            }
+        }
+        
         public virtual string Format(ISyndicationPerson person)
         {
             if (person == null)
@@ -114,8 +124,6 @@ namespace Microsoft.SyndicationFeed
 
         private void Write(ISyndicationContent content, XmlWriter writer)
         {
-
-
             throw new NotImplementedException();
         }
 
@@ -195,12 +203,9 @@ namespace Microsoft.SyndicationFeed
             writer.WriteEndElement();
             writer.Flush();
         }
-
-        private void Write(ISyndicationLink link, XmlWriter writer)
+        
+        private void FormatLink(ISyndicationLink link, XmlWriter writer)
         {
-            //Write <Link>
-            writer.WriteStartElement(Rss20Constants.LinkTag);
-
             //Write attributes if exist
 
             //
@@ -223,7 +228,7 @@ namespace Microsoft.SyndicationFeed
             {
                 if (string.IsNullOrEmpty(link.Title))
                 {
-                    writer.WriteString(link.Uri.ToString());
+                    writer.WriteString(FormatValue(link.Uri));
                 }
                 else
                 {
@@ -237,9 +242,161 @@ namespace Microsoft.SyndicationFeed
             {
                 writer.WriteString(link.Title);
             }
+        }
 
+        private void FormatEnclosure(ISyndicationLink link, XmlWriter writer)
+        {
+            //
+            // Url
+            writer.WriteAttributeString(Rss20Constants.UrlTag,FormatValue(link.Uri));
+
+            //
+            // Length
+            if (link.Length == 0)
+            {
+                throw new ArgumentException("Enclosure requires length attribute");
+            }
+
+            writer.WriteAttributeString(Rss20Constants.LengthTag, FormatValue(link.Length));
+
+            //
+            // MediaType
+            if (string.IsNullOrEmpty(link.MediaType))
+            {
+                throw new ArgumentNullException("Enclosure requires a MediaType");
+            }
+
+            writer.WriteAttributeString(Rss20Constants.TypeTag, link.MediaType);
+
+        }
+
+        private void FormatComments(ISyndicationLink link, XmlWriter writer)
+        {
+            writer.WriteString(FormatValue(link.Uri));
+        }
+
+        private void FormatSource(ISyndicationLink link, XmlWriter writer)
+        {
+            //
+            // Url
+            writer.WriteAttributeString(Rss20Constants.UrlTag, FormatValue(link.Uri));
+
+            //
+            // Title
+            if (!string.IsNullOrEmpty(link.Title))
+            {
+                writer.WriteString(link.Title);
+            }
+        }
+
+        private void Write(ISyndicationLink link, XmlWriter writer)
+        {
+
+            if (link.RelationshipType == null)
+            {
+                throw new ArgumentNullException(nameof(link.RelationshipType));
+            }
+
+            //Write <Link> / <enclosure> / <comments> / <source>
+            writer.WriteStartElement(link.RelationshipType);
+
+            switch (link.RelationshipType)
+            {
+                case Rss20Constants.LinkTag:
+                    FormatLink(link, writer);
+                    break;
+
+                case Rss20Constants.EnclosureTag:
+                    FormatEnclosure(link, writer);
+                    break;
+
+                case Rss20Constants.CommentsTag:
+                    FormatComments(link, writer);
+                    break;
+
+                case Rss20Constants.SourceTag:
+                    FormatSource(link, writer);
+                    break;
+
+                default:
+                    break;
+            }
+            
             // close link tag </link>
             writer.WriteEndElement();
+            writer.Flush();
+        }
+
+        private void Write(ISyndicationItem item, XmlWriter writer)
+        {
+            // Spec requires to have at least one title or description
+            if(string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
+            {
+                throw new ArgumentNullException("RSS Item requires a title or a description");
+            }
+            
+            // Write <item> tag
+            writer.WriteStartElement(Rss20Constants.ItemTag);
+
+            //
+            // Title
+            if (!string.IsNullOrEmpty(item.Title))
+            {
+                writer.WriteElementString(Rss20Constants.TitleTag, item.Title);
+            }
+
+            //
+            // Links
+            if (item.Links != null)
+            {
+                foreach (var link in item.Links)
+                {
+                    writer.WriteRaw(Format(link));
+                }
+            }
+
+            //
+            // Description
+            if (!string.IsNullOrEmpty(item.Description))
+            {
+                writer.WriteElementString(Rss20Constants.DescriptionTag, item.Description);
+            }
+
+            //
+            // Authors (persons)
+            if (item.Contributors != null)
+            {
+                foreach (var person in item.Contributors)
+                {
+                    writer.WriteRaw(Format(person));
+                }
+            }
+
+            //
+            // Cathegory
+            if (item.Categories != null)
+            {
+                foreach (var category in item.Categories)
+                {
+                    writer.WriteRaw(Format(category));
+                }
+            }
+
+            //
+            // Guid (id)
+            if (!string.IsNullOrEmpty(item.Id))
+            {
+                writer.WriteElementString(Rss20Constants.GuidTag, item.Id);
+            }
+
+            //
+            // PubDate
+            if (!item.Published.Equals(DateTimeOffset.MinValue))
+            {
+                writer.WriteElementString(Rss20Constants.PubDateTag, FormatValue(item.Published));
+            }
+
+            writer.WriteEndElement(); // </item>
             writer.Flush();
         }
     }

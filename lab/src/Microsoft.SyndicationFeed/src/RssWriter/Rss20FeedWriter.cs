@@ -75,7 +75,17 @@ namespace Microsoft.SyndicationFeed
 
         public virtual Task Write(ISyndicationItem item)
         {
-            throw new NotImplementedException();
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            if (!_rssDocumentCreated)
+            {
+                OpenDocument();
+            }
+
+            return XmlUtils.WriteRaw(_writer, Formatter.Format(item));
         }
 
         public virtual Task Write(ISyndicationPerson person)
