@@ -143,26 +143,36 @@ namespace Microsoft.SyndicationFeed
 
             //Read inner elements of person
             reader.ReadStartElement();
-
+            
             while (reader.IsStartElement())
             {
-                switch (reader.LocalName)
+
+                //
+                // Name
+                if (reader.IsStartElement(AtomConstants.NameTag, AtomConstants.Atom10Namespace))
                 {
-                    case AtomConstants.NameTag:
-                        person.Name = reader.ReadElementContentAsString();
-                        break;
+                    person.Name = reader.ReadElementContentAsString();
+                }
 
-                    case AtomConstants.EmailTag:
-                        person.Email = reader.ReadElementContentAsString();
-                        break;
+                //
+                // Email
+                else if (reader.IsStartElement(AtomConstants.EmailTag, AtomConstants.Atom10Namespace))
+                {
+                    person.Email = reader.ReadElementContentAsString();
+                }
 
-                    case AtomConstants.UriTag:
-                        person.Uri = reader.ReadElementContentAsString();
-                        break;
+                //
+                // Uri
+                else if (reader.IsStartElement(AtomConstants.UriTag, AtomConstants.Atom10Namespace))
+                {
+                    person.Uri = reader.ReadElementContentAsString();
+                }
 
-                    default:
-                        reader.Skip();
-                        break;
+                //
+                // Unrecognized tag
+                else
+                {
+                    reader.Skip();
                 }
             }
 

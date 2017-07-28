@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.SyndicationFeed
 {
-    sealed class SyndicationItem : ISyndicationItem
+    public sealed class SyndicationItem : ISyndicationItem
     {
         public string Id { get; set; }
 

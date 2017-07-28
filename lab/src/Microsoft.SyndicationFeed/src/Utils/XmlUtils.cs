@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -65,6 +66,17 @@ namespace Microsoft.SyndicationFeed
                                     });
         }
 
+        public static Task WriteRaw(XmlWriter writer, string content)
+        {
+
+            if (writer.Settings.Async)
+            {
+                return writer.WriteRawAsync(content);
+            }
+
+            writer.WriteRaw(content);
+            return Task.CompletedTask;
+        }
 
         public static ISyndicationContent ReadXmlNode(XmlReader reader)
         {
@@ -121,7 +133,6 @@ namespace Microsoft.SyndicationFeed
 
             return content;
         }
-
 
         private static bool IsXmlns(string name, string ns)
         {
