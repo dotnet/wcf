@@ -412,44 +412,48 @@ namespace Microsoft.SyndicationFeed
 
             while (reader.IsStartElement())
             {
-                switch (reader.LocalName)
+                //
+                // Id tag
+                if (reader.IsStartElement(AtomConstants.IdTag, AtomConstants.Atom10Namespace))
                 {
-                    case AtomConstants.IdTag:
-                        if (url == null)
-                        {
-                            TryParseValue(reader.ReadElementContentAsString(), out url);
-                        }
-                        else
-                        {
-                            reader.Skip();
-                        }
-                        break;
-
-                    case AtomConstants.TitleTag:
-                        title = reader.ReadElementContentAsString();
-                        break;
-
-                    case AtomConstants.UpdatedTag:
-                        TryParseValue(reader.ReadElementContentAsString(), out lastUpdated);
-                        break;
-
-                    case AtomConstants.LinkTag:
-                        if (url == null)
-                        {
-                            url = ParseLink(reader).Uri;
-                        }
-                        else
-                        {
-                            reader.Skip();
-                        }
-                        break;
-
-                    //
-                    // Unrecognized tags
-                    default:
+                    if (url == null)
+                    {
+                        TryParseValue(reader.ReadElementContentAsString(), out url);
+                    }
+                    else
+                    {
                         reader.Skip();
-                        break;
+                    }
                 }
+
+                //
+                // Title tag
+                else if (reader.IsStartElement(AtomConstants.TitleTag, AtomConstants.Atom10Namespace))
+                {
+                    title = reader.ReadElementContentAsString();
+                }
+
+                //
+                // Updated tag
+                else if (reader.IsStartElement(AtomConstants.UpdatedTag, AtomConstants.Atom10Namespace))
+                {
+                    TryParseValue(reader.ReadElementContentAsString(), out lastUpdated);
+                }
+
+                //
+                // Link tag
+                else if (reader.IsStartElement(AtomConstants.LinkTag, AtomConstants.Atom10Namespace))
+                {
+                    if (url == null)
+                    {
+                        url = ParseLink(reader).Uri;
+                    }
+                    else
+                    {
+                        reader.Skip();
+                    }
+                }
+                
             }
 
             reader.ReadEndElement(); // end of source tag
