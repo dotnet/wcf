@@ -4,7 +4,7 @@
 
 namespace Microsoft.SyndicationFeed
 {
-    sealed class SyndicationPerson : ISyndicationPerson
+    public class SyndicationPerson : ISyndicationPerson
     {
         public string Email { get; set; }
 

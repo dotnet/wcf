@@ -5,7 +5,7 @@
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Microsoft.SyndicationFeed
+namespace Microsoft.SyndicationFeed.Rss
 {
     public class Rss20FeedReader : SyndicationFeedReaderBase
     {

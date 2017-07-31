@@ -10,6 +10,8 @@ namespace Microsoft.SyndicationFeed
     {
         string Name { get; }
 
+        string Namespace { get; }
+
         string Value { get; }
 
         IEnumerable<ISyndicationContent> Fields { get; }

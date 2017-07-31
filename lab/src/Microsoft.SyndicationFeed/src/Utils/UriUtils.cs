@@ -8,23 +8,6 @@ namespace Microsoft.SyndicationFeed
 {
     static class UriUtils
     {
-        public static Uri Combine(Uri rootBase, string newBase)
-        {
-            if (string.IsNullOrEmpty(newBase))
-            {
-                return rootBase;
-            }
-
-            Uri newBaseUri = new Uri(newBase, UriKind.RelativeOrAbsolute);
-
-            if (rootBase == null || newBaseUri.IsAbsoluteUri)
-            {
-                return newBaseUri;
-            }
-
-            return new Uri(rootBase, newBase);
-        }
-
         public static bool TryParse(string value, out Uri result)
         {
             return Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out result);
