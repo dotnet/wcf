@@ -279,95 +279,103 @@ namespace Microsoft.SyndicationFeed.Atom
 
             while (reader.IsStartElement())
             {
-                switch (reader.LocalName)
+                //
+                // Category
+                if (reader.IsStartElement(AtomConstants.CategoryTag, AtomConstants.Atom10Namespace))
                 {
-                    //
-                    // Category
-                    case AtomConstants.CategoryTag:
-                        item.AddCategory(ParseCategory(reader));
-                        break;
+                    item.AddCategory(ParseCategory(reader));
+                }
+                
+                //
+                // Content
+                else if(reader.IsStartElement(AtomConstants.ContentTag, AtomConstants.Atom10Namespace))
+                {
+                    item.ContentType = reader.GetAttribute(AtomConstants.TypeTag) ?? AtomConstants.PlaintextType;
 
-                    //
-                    // Content
-                    case AtomConstants.ContentTag:
-                        item.ContentType = reader.GetAttribute(AtomConstants.TypeTag) ?? AtomConstants.PlaintextType;
-
-                        if (string.IsNullOrEmpty(reader.GetAttribute(AtomConstants.SourceTag)))
-                        {
-                            item.Description = reader.ReadInnerXml();
-                        }
-                        else
-                        {
-                            item.AddLink(ParseLink(reader));
-                        }
-                        break;
-
-                    //
-                    // Author/Contributor
-                    case AtomConstants.AuthorTag:
-                    case AtomConstants.ContributorTag:
-                        item.AddContributor(ParsePerson(reader));
-                        break;
-
-                    //
-                    // Id
-                    case AtomConstants.IdTag:
-                        item.Id = reader.ReadElementContentAsString();
-                        break;
-
-                    //
-                    // Link
-                    case AtomConstants.LinkTag:
+                    if (string.IsNullOrEmpty(reader.GetAttribute(AtomConstants.SourceTag)))
+                    {
+                        item.Description = reader.ReadInnerXml();
+                    }
+                    else
+                    {
                         item.AddLink(ParseLink(reader));
-                        break;
+                    }
+                }
+                
+                //
+                // Author/Contributor
+                else if(reader.IsStartElement(AtomConstants.AuthorTag, AtomConstants.Atom10Namespace) || reader.IsStartElement(AtomConstants.ContributorTag, AtomConstants.Atom10Namespace))
+                {
+                    item.AddContributor(ParsePerson(reader));
+                }
+                
+                //
+                // Id
+                else if(reader.IsStartElement(AtomConstants.IdTag, AtomConstants.Atom10Namespace))
+                {
+                    item.Id = reader.ReadElementContentAsString();
+                }
 
-                    //
-                    // Published
-                    case AtomConstants.PublishedTag:
-                        if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset published))
-                        {
-                            item.Published = published;
-                        }
-                        break;
+                //
+                // Link
+                else if(reader.IsStartElement(AtomConstants.LinkTag, AtomConstants.Atom10Namespace))
+                {
+                    item.AddLink(ParseLink(reader));
+                }
 
-                    //
-                    // Rights
-                    case AtomConstants.RightsTag:
-                        item.Rights = reader.ReadElementContentAsString();
-                        break;
+                //
+                // Published
+                else if(reader.IsStartElement(AtomConstants.PublishedTag, AtomConstants.Atom10Namespace))
+                {
+                    if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset published))
+                    {
+                        item.Published = published;
+                    }
+                }
 
-                    //
-                    // Source
-                    case AtomConstants.SourceFeedTag:
-                        item.AddLink(ParseSource(reader));
-                        break;
+                //
+                // Rights
+                else if(reader.IsStartElement(AtomConstants.RightsTag, AtomConstants.Atom10Namespace))
+                {
+                    item.Rights = reader.ReadElementContentAsString();
+                }
 
-                    //
-                    // Summary
-                    case AtomConstants.SummaryTag:
-                        item.Summary = reader.ReadElementContentAsString();
-                        break;
+                //
+                // Source
+                else if(reader.IsStartElement(AtomConstants.SourceFeedTag, AtomConstants.Atom10Namespace))
+                {
+                    item.AddLink(ParseSource(reader));
+                }
 
-                    //
-                    // Title
-                    case AtomConstants.TitleTag:
-                        item.Title = reader.ReadElementContentAsString();
-                        break;
+                //
+                // Summary
+                else if(reader.IsStartElement(AtomConstants.SummaryTag, AtomConstants.Atom10Namespace))
+                {
+                    item.Summary = reader.ReadElementContentAsString();
+                }
 
-                    //
-                    // Updated
-                    case AtomConstants.UpdatedTag:
-                        if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset updated))
-                        {
-                            item.LastUpdated = updated;
-                        }
-                        break;
+                //
+                // Title
+                else if (reader.IsStartElement(AtomConstants.TitleTag, AtomConstants.Atom10Namespace))
+                {
+                    item.Title = reader.ReadElementContentAsString();
+                }
 
-                    //
-                    // Unrecognized tags
-                    default:
-                        reader.Skip();
-                        break;
+                //
+                // Updated
+                else if(reader.IsStartElement(AtomConstants.UpdatedTag, AtomConstants.Atom10Namespace))
+                {
+                    if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset updated))
+                    {
+                        item.LastUpdated = updated;
+                    }
+                }
+
+                //
+                // Unrecognized tags
+                else
+                {
+                    reader.Skip();
                 }
             }
 
