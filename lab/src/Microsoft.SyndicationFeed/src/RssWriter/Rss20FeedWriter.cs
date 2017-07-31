@@ -44,7 +44,7 @@ namespace Microsoft.SyndicationFeed
 
         public virtual Task Write(ISyndicationCategory category)
         {
-            if(category == null)
+            if (category == null)
             {
                 throw new ArgumentNullException(nameof(category));
             }
@@ -90,7 +90,7 @@ namespace Microsoft.SyndicationFeed
         public virtual Task Write(ISyndicationPerson person)
         {
 
-            if(person == null)
+            if (person == null)
             {
                 throw new ArgumentNullException(nameof(person));
             }

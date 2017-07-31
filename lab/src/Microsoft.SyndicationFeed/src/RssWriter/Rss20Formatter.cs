@@ -162,7 +162,6 @@ namespace Microsoft.SyndicationFeed
 
         private void Write(ISyndicationCategory category, XmlWriter writer)
         {
-
             if (string.IsNullOrEmpty(category.Name))
             {
                 throw new ArgumentNullException(nameof(category.Name));
@@ -184,7 +183,7 @@ namespace Microsoft.SyndicationFeed
                 throw new ArgumentException(nameof(person.Email));
             }
 
-            if(person.RelationshipType == Rss20Constants.AuthorTag)
+            if (person.RelationshipType == Rss20Constants.AuthorTag)
             {
                 writer.WriteElementString(Rss20Constants.AuthorTag, person.Email);
             }
@@ -300,7 +299,6 @@ namespace Microsoft.SyndicationFeed
             }
 
             writer.WriteAttributeString(Rss20Constants.TypeTag, link.MediaType);
-
         }
 
         private void FormatComments(ISyndicationLink link, XmlWriter writer)
@@ -324,7 +322,6 @@ namespace Microsoft.SyndicationFeed
 
         private void Write(ISyndicationLink link, XmlWriter writer)
         {
-
             if (link.RelationshipType == null)
             {
                 throw new ArgumentNullException(nameof(link.RelationshipType));
@@ -363,7 +360,7 @@ namespace Microsoft.SyndicationFeed
         private void Write(ISyndicationItem item, XmlWriter writer)
         {
             // Spec requires to have at least one title or description
-            if(string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
+            if (string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
             {
                 throw new ArgumentNullException("RSS Item requires a title or a description");
             }
