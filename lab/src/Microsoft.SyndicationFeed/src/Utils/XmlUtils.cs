@@ -78,9 +78,11 @@ namespace Microsoft.SyndicationFeed
             return Task.CompletedTask;
         }
 
-        public static ISyndicationContent ReadXmlNode(XmlReader reader)
+        public static ISyndicationContent ReadSyndicationContent(XmlReader reader)
         {
             var content = new SyndicationContent(reader.Name);
+
+            content.Namespace = reader.NamespaceURI;
 
             //
             // Attributes
@@ -120,7 +122,7 @@ namespace Microsoft.SyndicationFeed
                 {
                     while (reader.IsStartElement())
                     {
-                        content.AddField(ReadXmlNode(reader));
+                        content.AddField(ReadSyndicationContent(reader));
                     }
                 }
 

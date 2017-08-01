@@ -8,9 +8,10 @@ namespace Microsoft.SyndicationFeed
 {
     public sealed class SyndicationLink : ISyndicationLink
     {
-        public SyndicationLink(Uri url)
+        public SyndicationLink(Uri url, string relationshipType = null)
         {
-            Uri = url;
+            Uri = url ?? throw new ArgumentNullException(nameof(url));
+            RelationshipType = relationshipType;
         }
 
         public Uri Uri { get; private set; }
@@ -19,7 +20,7 @@ namespace Microsoft.SyndicationFeed
 
         public string MediaType { get; set; }
 
-        public string RelationshipType { get; set; }
+        public string RelationshipType { get; }
 
         public long Length { get; set; }
 

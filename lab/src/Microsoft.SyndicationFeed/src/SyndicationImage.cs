@@ -8,12 +8,13 @@ namespace Microsoft.SyndicationFeed
 {
     public sealed class SyndicationImage : ISyndicationImage
     {
-        public SyndicationImage(Uri url)
+        public SyndicationImage(Uri url, string relationshipType = null)
         {
             Url = url ?? throw new ArgumentNullException(nameof(url));
+            RelationshipType = relationshipType;
         }
 
-        public string Title { get; set; } = String.Empty;
+        public string Title { get; set; }
 
         public Uri Url { get; private set; }
 

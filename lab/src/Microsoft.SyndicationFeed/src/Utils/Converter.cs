@@ -12,11 +12,6 @@ namespace Microsoft.SyndicationFeed
         {
             result = default(T);
 
-            if (value == null)
-            {
-                return false;
-            }
-
             Type type = typeof(T);
 
             //
@@ -25,6 +20,11 @@ namespace Microsoft.SyndicationFeed
             {
                 result = (T)(object)value;
                 return true;
+            }
+
+            if (value == null)
+            {
+                return false;
             }
 
             //

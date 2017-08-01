@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
 
-namespace Microsoft.SyndicationFeed.Tests
+namespace Microsoft.SyndicationFeed.Rss
 {
     public class RssWriter
     {
@@ -22,8 +22,7 @@ namespace Microsoft.SyndicationFeed.Tests
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
-                SyndicationCategory category = new SyndicationCategory();
-                category.Name = "Test Category";
+                SyndicationCategory category = new SyndicationCategory("Test Category");
                 await writer.Write(category);
                 xmlWriter.Flush();
             }
@@ -78,10 +77,7 @@ namespace Microsoft.SyndicationFeed.Tests
 
                 Uri url = new Uri("http://testuriforimage.com");
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink)
-                {
-                    RelationshipType = Rss20Constants.LinkTag
-                };
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag);
 
                 SyndicationImage image = new SyndicationImage(url)
                 {
@@ -111,10 +107,7 @@ namespace Microsoft.SyndicationFeed.Tests
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
                 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink)
-                {
-                    RelationshipType = Rss20Constants.LinkTag
-                };
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag);
                 
                 await writer.Write(link);
                 
@@ -137,12 +130,11 @@ namespace Microsoft.SyndicationFeed.Tests
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink)
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag)
                 {
                     Title = "Test title",
                     Length = 123,
-                    MediaType = "mp3/video",
-                    RelationshipType = Rss20Constants.LinkTag
+                    MediaType = "mp3/video"
                 };
 
                 await writer.Write(link);
@@ -166,10 +158,9 @@ namespace Microsoft.SyndicationFeed.Tests
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink)
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag)
                 {
-                    Title = "http://testuriforlink.com",
-                    RelationshipType = Rss20Constants.LinkTag
+                    Title = "http://testuriforlink.com"
                 };
 
                 await writer.Write(link);
@@ -193,45 +184,37 @@ namespace Microsoft.SyndicationFeed.Tests
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
 
                 Uri url = new Uri("http://testuriforlinks.com");
-                SyndicationLink link = new SyndicationLink(url)
-                {
-                    RelationshipType = Rss20Constants.LinkTag
-                };
+                SyndicationLink link = new SyndicationLink(url, Rss20Constants.LinkTag);
 
-                SyndicationLink enclosureLink = new SyndicationLink(url)
+                SyndicationLink enclosureLink = new SyndicationLink(url, Rss20Constants.EnclosureTag)
                 {
                     Title = "http://enclosurelink.com",
-                    RelationshipType = Rss20Constants.EnclosureTag,
                     Length = 4123,
                     MediaType = "audio/mpeg"
                 };
 
-                SyndicationLink commentsLink = new SyndicationLink(url)
-                {
-                    RelationshipType = Rss20Constants.CommentsTag
-                };
+                SyndicationLink commentsLink = new SyndicationLink(url, Rss20Constants.CommentsTag);
 
-                SyndicationLink sourceLink = new SyndicationLink(url)
+                SyndicationLink sourceLink = new SyndicationLink(url, Rss20Constants.SourceTag)
                 {
-                    RelationshipType = Rss20Constants.SourceTag,
                     Title = "Anonymous Blog"
                 };
 
                 SyndicationItem item = new SyndicationItem();
 
                 item.Title = "First item on ItemWriter";
-                var links = new List<SyndicationLink>() { link, enclosureLink, commentsLink, sourceLink };
-                item.Links = links;
+                item.AddLink(link);
+                item.AddLink(enclosureLink);
+                item.AddLink(commentsLink);
+                item.AddLink(sourceLink);
 
                 item.Description = "Brief description of an item";
 
-                var contributors = new List<SyndicationPerson>() {
-                    new SyndicationPerson() {
-                        Email = "person@email.com", RelationshipType = Rss20Constants.AuthorTag
-                    }
-                };
-                
-                item.Contributors = contributors;
+                item.AddContributor(new SyndicationPerson()
+                {
+                    Email = "person@email.com",
+                    RelationshipType = Rss20Constants.AuthorTag
+                });
 
                 item.Id = "Unique ID for this item";
 
