@@ -16,6 +16,6 @@ namespace Microsoft.SyndicationFeed
 
         string RelationshipType { get; }
 
-        string Desciption { get; }
+        string Description { get; }
     }
 }

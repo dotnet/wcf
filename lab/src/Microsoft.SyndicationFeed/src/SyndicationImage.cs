@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.SyndicationFeed
 {
-    public class SyndicationImage : ISyndicationImage
+    public sealed class SyndicationImage : ISyndicationImage
     {
         public SyndicationImage(Uri url, string relationshipType = null)
         {
@@ -22,6 +22,6 @@ namespace Microsoft.SyndicationFeed
 
         public string RelationshipType { get; set; }
 
-        public string Desciption { get; set; }
+        public string Description { get; set; }
     }
 }
