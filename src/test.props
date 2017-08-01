@@ -25,6 +25,9 @@
     <WcfScenarioTestCommonDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Scenarios\'))</WcfScenarioTestCommonDir>
     <WcfInfrastructureCommonDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Infrastructure\'))</WcfInfrastructureCommonDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <BuildSeparateScenarioProjects Condition=" '$(BuildSeparateScenarioProjects)' == '' ">false</BuildSeparateScenarioProjects>
+  </PropertyGroup>
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>
   </PropertyGroup>
