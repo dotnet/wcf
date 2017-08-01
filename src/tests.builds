@@ -36,7 +36,7 @@
     <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'=='true'" />
     
     <!--All non-uapaot runs use the separate scenario test projects.-->
-    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'!='uapaot'" />
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'!='uapaot' and '$(OuterLoop)' == 'true'" />
 
     <!--Always include unit test projects.-->
     <Project Include="$(MSBuildThisFileDirectory)*\tests\*$(_ProjectPattern).csproj" />
