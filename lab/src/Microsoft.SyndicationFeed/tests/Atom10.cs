@@ -1,6 +1,7 @@
 ﻿using Microsoft.SyndicationFeed.Atom;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -16,7 +17,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml",new XmlReaderSettings { Async = true }))
             {
-                var reader = new AtomFeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
                 while(await reader.Read())
                 {
                     ISyndicationContent content = await reader.ReadContent();
@@ -30,7 +31,7 @@ namespace Microsoft.SyndicationFeed.Tests
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
                 var persons = new List<ISyndicationPerson>();
-                var reader = new AtomFeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
                 while (await reader.Read())
                 {
                     if(reader.ElementType == SyndicationElementType.Person)
@@ -42,6 +43,8 @@ namespace Microsoft.SyndicationFeed.Tests
 
                 Assert.True(persons.Count() == 2);
                 Assert.True(persons[0].Name == "Mark Pilgrim");
+                Assert.True(persons[0].Email == "f8dy@example.com");
+                Assert.True(persons[0].Uri == "http://example.org/");
                 Assert.True(persons[1].Name == "Sam Ruby");
 
             }
@@ -52,7 +55,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new AtomFeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
                 int imagesRead = 0;
 
                 List<String> contentsOfImages = new List<string>();
@@ -77,7 +80,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new AtomFeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
                 while (await reader.Read())
                 {
                     if (reader.ElementType == SyndicationElementType.Category)
@@ -96,7 +99,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new AtomFeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
                 List<string> hrefs = new List<string>();
                 while (await reader.Read())
                 {
@@ -116,7 +119,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new AtomFeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
                 while (await reader.Read())
                 {
                     if (reader.ElementType == SyndicationElementType.Item)
@@ -139,7 +142,7 @@ namespace Microsoft.SyndicationFeed.Tests
         {
             using( XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml", new XmlReaderSettings { Async = true }))
             {
-                var reader = new AtomFeedReader(xmlReader);
+                var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
 
                 while (await reader.Read())
                 {
@@ -191,5 +194,89 @@ namespace Microsoft.SyndicationFeed.Tests
                 }
             }
         }
+
+        //[Fact]
+        //public async Task AtomReader_ReadItemXTimesParser1()
+        //{
+        //    Stopwatch sw = new Stopwatch();
+        //    sw.Start();
+        //    for (int i=0; i<80000; i++)
+        //    {
+        //        using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml"))
+        //        {
+        //            var reader = new AtomFeedReader(xmlReader);
+
+        //            while (await reader.Read())
+        //            {
+
+        //                switch (reader.ElementType)
+        //                {
+        //                    case SyndicationElementType.Link:
+        //                        ISyndicationLink link = await reader.ReadLink();
+        //                        break;
+
+        //                    case SyndicationElementType.Item:
+        //                        ISyndicationItem item = await reader.ReadEntry();
+        //                        break;
+
+        //                    case SyndicationElementType.Person:
+        //                        ISyndicationPerson person = await reader.ReadPerson();
+        //                        break;
+
+        //                    case SyndicationElementType.Image:
+        //                        ISyndicationImage image = await reader.ReadImage();
+        //                        break;
+
+        //                    default:
+        //                        ISyndicationContent content = await reader.ReadContent();
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    sw.Stop();
+        //}
+
+        //[Fact]
+        //public async Task AtomReader_ReadItemXTimesParser2()
+        //{
+        //    Stopwatch sw = new Stopwatch();
+        //    sw.Start();
+        //    for (int i = 0; i < 80000; i++)
+        //    {
+        //        using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml"))
+        //        {
+        //            var reader = new AtomFeedReader(xmlReader, new AtomFeedParser2());
+
+        //            while (await reader.Read())
+        //            {
+
+        //                switch (reader.ElementType)
+        //                {
+        //                    case SyndicationElementType.Link:
+        //                        ISyndicationLink link = await reader.ReadLink();
+        //                        break;
+
+        //                    case SyndicationElementType.Item:
+        //                        ISyndicationItem item = await reader.ReadEntry();
+        //                        break;
+
+        //                    case SyndicationElementType.Person:
+        //                        ISyndicationPerson person = await reader.ReadPerson();
+        //                        break;
+
+        //                    case SyndicationElementType.Image:
+        //                        ISyndicationImage image = await reader.ReadImage();
+        //                        break;
+
+        //                    default:
+        //                        ISyndicationContent content = await reader.ReadContent();
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    sw.Stop();
+        //}
     }
 }
