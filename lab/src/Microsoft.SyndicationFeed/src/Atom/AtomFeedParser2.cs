@@ -49,7 +49,7 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new FormatException("Invalid Atom feed");
             }
 
-            return CreateItem(content);
+            return CreateEntry(content);
         }
         
         public ISyndicationLink ParseLink(string value)
@@ -107,18 +107,19 @@ namespace Microsoft.SyndicationFeed.Atom
             {
                 throw new ArgumentNullException(nameof(content));
             }
-            
-            if (content.Attributes.GetAtom(AtomConstants.TermTag) == null)
+
+            string term = content.Attributes.GetAtom(AtomConstants.TermTag);
+
+            if (term == null)
             {
                 throw new FormatException("Invalid Atom category, requires Term attribute");
             }
 
-            SyndicationCategory category = new SyndicationCategory(content.Attributes.GetAtom(AtomConstants.TermTag));
-
-            category.Scheme = content.Attributes.GetAtom(AtomConstants.SchemeTag);
-            category.Label = content.Attributes.GetAtom(AtomConstants.LabelTag);
-
-            return category;
+            return new SyndicationCategory(term)
+            {
+                Scheme = content.Attributes.GetAtom(AtomConstants.SchemeTag),
+                Label = content.Attributes.GetAtom(AtomConstants.LabelTag)
+            };
         }
 
         protected virtual ISyndicationImage CreateImage(ISyndicationContent content)
@@ -128,16 +129,12 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new ArgumentNullException(nameof(content));
             }
 
-
             if (!TryParseValue(content.Value, out Uri uri))
             {
                 throw new FormatException("Invalid Atom image url");
             }
 
-            SyndicationImage image = new SyndicationImage(uri);
-            image.RelationshipType = content.Name;
-
-            return image;
+            return new SyndicationImage(uri, content.Name);
         }
 
         protected virtual ISyndicationLink CreateLink(ISyndicationContent content)
@@ -167,7 +164,7 @@ namespace Microsoft.SyndicationFeed.Atom
             // href
             TryParseValue(content.Attributes.GetAtom(AtomConstants.HrefTag), out Uri uri);
 
-            //src
+            // src
             if (uri == null)
             {
                 TryParseValue(content.Attributes.GetAtom(AtomConstants.SourceTag), out uri);
@@ -200,7 +197,7 @@ namespace Microsoft.SyndicationFeed.Atom
             foreach (var field in content.Fields)
             {
                 // content does not contain atom's namespace. So if we receibe a different namespace we will ignore it.
-                if (field.Namespace != "" && field.Namespace != AtomConstants.Atom10Namespace)
+                if (field.Namespace != AtomConstants.Atom10Namespace)
                 {
                     continue;
                 }
@@ -225,7 +222,7 @@ namespace Microsoft.SyndicationFeed.Atom
                         person.Uri = field.Value;
                         break;
                     //
-                    // Unrecognized tag
+                    // Unrecognized field
                     default:
                         break;
                 }
@@ -234,7 +231,7 @@ namespace Microsoft.SyndicationFeed.Atom
             return person;
         }
 
-        protected virtual IAtomEntry CreateItem(ISyndicationContent content)
+        protected virtual IAtomEntry CreateEntry(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -247,7 +244,7 @@ namespace Microsoft.SyndicationFeed.Atom
             foreach (var field in content.Fields)
             {
                 // content does not contain atom's namespace. So if we receibe a different namespace we will ignore it.
-                if (field.Namespace != "" && field.Namespace != AtomConstants.Atom10Namespace)
+                if (field.Namespace != AtomConstants.Atom10Namespace)
                 {
                     continue;
                 }
@@ -269,6 +266,10 @@ namespace Microsoft.SyndicationFeed.Atom
                         if (field.Attributes.GetAtom(AtomConstants.SourceTag) != null)
                         {
                             item.AddLink(CreateLink(field));
+                        }
+                        else
+                        {
+                            item.Description = field.Value;
                         }
 
                         break;
@@ -358,7 +359,7 @@ namespace Microsoft.SyndicationFeed.Atom
             foreach (var field in content.Fields)
             {
                 // content does not contain atom's namespace. So if we receibe a different namespace we will ignore it.
-                if (field.Namespace != "" && field.Namespace != AtomConstants.Atom10Namespace)
+                if (field.Namespace != AtomConstants.Atom10Namespace)
                 {
                     continue;
                 }
@@ -421,8 +422,7 @@ namespace Microsoft.SyndicationFeed.Atom
     {
         public static string GetAtom(this IEnumerable<ISyndicationAttribute> attributes, string name)
         {
-            return attributes.FirstOrDefault(a => a.Name == name && a.Namespace == "")?.Value;
+            return attributes.FirstOrDefault(a => a.Name == name && a.Namespace == string.Empty)?.Value;
         }
     }
-
 }

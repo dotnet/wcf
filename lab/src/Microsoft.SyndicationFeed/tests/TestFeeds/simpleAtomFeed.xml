@@ -14,7 +14,7 @@
   <contributor>
     <name>Sam Ruby</name>
   </contributor>
-
+  
   <category term="sports" label="testLabel" scheme="testScheme"/>
   
   <icon>/icon.jpg</icon>
@@ -58,11 +58,13 @@
     </contributor>
     <rights>All rights Reserved. Contoso.</rights>
     <content type="xhtml" xml:lang="en" xml:base="http://diveintomark.org/">
+      <![CDATA[
       <div>
         <p>
           <i>[Update: The Atom draft is finished.]</i>
         </p>
       </div>
+      ]]>
     </content>
   </entry>
 
@@ -93,11 +95,13 @@
     </contributor>
     <rights>All rights Reserved. Contoso.</rights>
     <content type="xhtml" xml:lang="en" xml:base="http://diveintomark.org/">
+      <![CDATA[
       <div>
         <p>
           <i>[Update: The Atom draft is finished.]</i>
         </p>
       </div>
+      ]]>
     </content>
   </entry>
   
