@@ -4,14 +4,80 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Xml;
 
-namespace Microsoft.SyndicationFeed
+namespace Microsoft.SyndicationFeed.Rss
 {
     public class Rss20FeedParser : ISyndicationFeedParser
     {
-        public virtual ISyndicationCategory ParseCategory(string value)
+        public ISyndicationCategory ParseCategory(string value)
+        {
+            ISyndicationContent content = ParseContent(value);
+
+            if (content.Name != Rss20Constants.CategoryTag || 
+                content.Namespace != Rss20Constants.Rss20Namespace)
+            {
+                throw new FormatException("Invalid Rss category");
+            }
+
+            return CreateCategory(content);
+        }
+
+        public ISyndicationItem ParseItem(string value)
+        {
+            ISyndicationContent content = ParseContent(value);
+
+            if (content.Name != Rss20Constants.ItemTag || 
+                content.Namespace != Rss20Constants.Rss20Namespace)
+            {
+                throw new FormatException("Invalid Rss item");
+            }
+
+            return CreateItem(content);
+        }
+
+        public ISyndicationLink ParseLink(string value)
+        {
+            ISyndicationContent content = ParseContent(value);
+
+            if (content.Name != Rss20Constants.LinkTag || 
+                content.Namespace != Rss20Constants.Rss20Namespace)
+            {
+                throw new FormatException("Invalid Rss link");
+            }
+
+            return CreateLink(content);
+        }
+
+        public ISyndicationPerson ParsePerson(string value)
+        {
+            ISyndicationContent content = ParseContent(value);
+
+            if ((content.Name != Rss20Constants.AuthorTag && 
+                 content.Name != Rss20Constants.ManagingEditorTag) ||
+                content.Namespace != Rss20Constants.Rss20Namespace)
+            {
+                throw new FormatException("Invalid Rss Person");
+            }
+
+            return CreatePerson(content);
+        }
+
+        public ISyndicationImage ParseImage(string value)
+        {
+            ISyndicationContent content = ParseContent(value);
+
+            if (content.Name != Rss20Constants.ImageTag ||
+                content.Namespace != Rss20Constants.Rss20Namespace)
+            {
+                throw new FormatException("Invalid Rss Image");
+            }
+
+            return CreateImage(content);
+        }
+
+        public ISyndicationContent ParseContent(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -22,374 +88,262 @@ namespace Microsoft.SyndicationFeed
             {
                 reader.MoveToContent();
 
-                if(reader.Name != Rss20Constants.CategoryTag)
-                {
-                    throw new FormatException("Invalid Rss category");
-                }
-
-                return ParseCategory(reader);
+                return XmlUtils.ReadSyndicationContent(reader);
             }
         }
-
-        public virtual ISyndicationItem ParseItem(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
-            {
-                reader.MoveToContent();
-
-                if (reader.Name != Rss20Constants.ItemTag)
-                {
-                    throw new FormatException("Invalid Rss item");
-                }
-
-                return ParseItem(reader);
-            }
-        }
-
-        public virtual ISyndicationLink ParseLink(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
-            {
-                reader.MoveToContent();
-
-                if(reader.Name != Rss20Constants.LinkTag)
-                {
-                    throw new FormatException("Invalid Rss Link");
-                }
-
-                return ParseLink(reader);
-            }
-        }
-
-        public virtual ISyndicationPerson ParsePerson(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
-            {
-                reader.MoveToContent();
-
-                if(reader.Name != Rss20Constants.AuthorTag && reader.Name != Rss20Constants.ManagingEditorTag)
-                {
-                    throw new FormatException("Invalid Rss Person");
-                }
-
-                return ParsePerson(reader);
-            }
-        }
-
-        public virtual ISyndicationImage ParseImage(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
-            {
-                reader.MoveToContent();
-
-                if(reader.Name != Rss20Constants.ImageTag)
-                {
-                    throw new FormatException("Invalid Rss Image");
-                }
-
-                return ParseImage(reader);
-            }
-        }
-
-        public virtual ISyndicationContent ParseContent(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            using (XmlReader reader = XmlUtils.CreateXmlReader(value))
-            {
-                reader.MoveToContent();
-
-                return XmlUtils.ReadXmlNode(reader);
-            }
-        }
-
 
         public virtual bool TryParseValue<T>(string value, out T result)
         {
             return Converter.TryParseValue<T>(value, out result);
         }
 
-        private SyndicationImage ParseImage(XmlReader reader)
+        protected virtual ISyndicationItem CreateItem(ISyndicationContent content)
         {
-            string title = string.Empty;
-            string description = string.Empty;
-            Uri url = null;
-            ISyndicationLink link = null;
-
-            if (!reader.IsEmptyElement)
+            if (content == null)
             {
-                reader.ReadStartElement();
+                throw new ArgumentNullException(nameof(content));
+            }
 
-                while (reader.IsStartElement())
+            var item = new SyndicationItem();
+
+            string fallbackAlternateLink = null;
+            bool hasAlternateLink = false;
+
+            foreach (var field in content.Fields)
+            {
+                if (field.Namespace != Rss20Constants.Rss20Namespace)
+                {
+                    continue;
+                }
+
+                switch (field.Name)
                 {
                     //
-                    // Url
-                    if (reader.IsStartElement(Rss20Constants.UrlTag, Rss20Constants.Rss20Namespace))
-                    {
-                        if (!TryParseValue(reader.ReadElementContentAsString(), out url)) 
-                        {
-                            throw new FormatException("Invalid image url.");
-                        }
-                    }
-
-                    //
                     // Title
-                    if(reader.IsStartElement(Rss20Constants.TitleTag, Rss20Constants.Rss20Namespace))
-                    {
-                        title = reader.ReadElementContentAsString();
-                    }
+                    case Rss20Constants.TitleTag:
+                        item.Title = field.Value;
+                        break;
 
                     //
                     // Link
-                    if (reader.IsStartElement(Rss20Constants.LinkTag, Rss20Constants.Rss20Namespace))
-                    {
-                        link = ParseLink(reader.ReadOuterXml());
-                    }
+                    case Rss20Constants.LinkTag:
+                        item.AddLink(CreateLink(field));
+                        hasAlternateLink = true;
+                        break;
+
+                    // Description
+                    case Rss20Constants.DescriptionTag:
+                        item.Description = field.Value;
+                        break;
 
                     //
-                    // Description
-                    if (reader.IsStartElement(Rss20Constants.DescriptionTag, Rss20Constants.Rss20Namespace))
-                    {
-                        description = reader.ReadElementContentAsString();
-                    }
+                    // Author
+                    case Rss20Constants.AuthorTag:
+                        item.AddContributor(CreatePerson(field));
+                        break;
+
+                    //
+                    // Category
+                    case Rss20Constants.CategoryTag:
+                        break;
+
+                    //
+                    // Links
+                    case Rss20Constants.CommentsTag:
+                    case Rss20Constants.EnclosureTag:
+                    case Rss20Constants.SourceTag:
+                        item.AddLink(CreateLink(field));
+                        break;
+
+                    //
+                    // Guid
+                    case Rss20Constants.GuidTag:
+                        item.Id = field.Value;
+
+                        if (!hasAlternateLink && 
+                            TryParseValue(field.Attributes.GetRss(Rss20Constants.IsPermaLinkTag), out bool isPermalink) &&
+                            isPermalink)
+                        {
+                            fallbackAlternateLink = field.Value;
+                        }
+                        break;
+
+                    //
+                    // PubDate
+                    case Rss20Constants.PubDateTag:
+                        if (TryParseValue(field.Value, out DateTimeOffset dt))
+                        {
+                            item.Published = dt;
+                        }
+                        break;
+
+                    default:
+                        break;
                 }
-
-                reader.ReadEndElement(); //image end
             }
 
-            if (url == null)
+            //
+            // Add a fallback Link
+            if (!hasAlternateLink &&
+                fallbackAlternateLink != null &&
+                TryParseValue(fallbackAlternateLink, out Uri url))
             {
-                throw new FormatException("Invalid image url");
+                item.AddLink(new SyndicationLink(url, Rss20Constants.AlternateLink));
             }
 
-            return new SyndicationImage(url) {
-                Title = title,
-                Desciption = description,
-                Link = link,
-                RelationshipType = Rss20Constants.ImageTag
-            };
+            return item;
         }
 
-        private SyndicationLink ParseLink(XmlReader reader)
+        protected virtual ISyndicationLink CreateLink(ISyndicationContent content)
         {
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
 
             //
             // Url
             Uri uri = null;
-            string url = reader.GetAttribute("url");
-            if(url != null)
+            string url = content.Attributes.GetRss("url");
+
+            if (url != null)
             {
-                if (!TryParseValue(url,out uri))
+                if (!TryParseValue(url, out uri))
                 {
-                    throw new FormatException("Invalid url attribute format.");
+                    throw new FormatException("Invalid url attribute");
+                }
+            }
+            else
+            {
+                if (!TryParseValue(content.Value, out uri))
+                {
+                    throw new FormatException("Invalid url");
                 }
             }
 
             //
             // Length
             long length = 0;
-            TryParseValue(reader.GetAttribute("length"), out length);
+            TryParseValue(content.Attributes.GetRss("length"), out length);
 
             //
             // Type
-            string type = string.Empty;
-            TryParseValue(reader.GetAttribute("type"), out type);
-            
-            //reader.ReadStartElement();
+            string type = content.Attributes.GetRss("type");
 
             //
-            // Title
-            string title = string.Empty;
-            if (!reader.IsEmptyElement)
-            {
-                title = reader.ReadElementContentAsString();
+            // rel
+            string rel = (content.Name == Rss20Constants.LinkTag) ? Rss20Constants.AlternateLink : content.Name;
 
-                // Url is the content, if not set as attribute
-                if (uri == null && !string.IsNullOrEmpty(title))
-                {
-                    TryParseValue(title, out uri);
-                }
-            }
-            else
+            return new SyndicationLink(uri, rel)
             {
-                reader.Skip();
-            }
-
-            return new SyndicationLink(uri) {
-                Title = title,
+                Title = content.Value,
                 Length = length,
-                MediaType = type,
+                MediaType = type
             };
         }
 
-        private SyndicationCategory ParseCategory(XmlReader reader)
+        protected virtual ISyndicationPerson CreatePerson(ISyndicationContent content)
         {
-            var category = new SyndicationCategory();
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
 
-            category.Name = reader.ReadElementContentAsString();
-
-            return category;
+            return new SyndicationPerson()
+            {
+                Email = content.Value,
+                RelationshipType = content.Name
+            };
         }
 
-        private SyndicationPerson ParsePerson(XmlReader reader)
+        protected virtual ISyndicationImage CreateImage(ISyndicationContent content)
         {
-            var person = new SyndicationPerson();
-
-            if (!reader.IsEmptyElement)
+            if (content == null)
             {
-                person.Email = reader.ReadElementContentAsString();
+                throw new ArgumentNullException(nameof(content));
             }
 
-            return person;
+            string title = null;
+            string description = null;
+            Uri url = null;
+            ISyndicationLink link = null;
+
+            foreach (var field in content.Fields)
+            {
+                if (field.Namespace != Rss20Constants.Rss20Namespace)
+                {
+                    continue;
+                }
+
+                switch (field.Name)
+                {
+                    //
+                    // Title
+                    case Rss20Constants.TitleTag:
+                        title = field.Value;
+                        break;
+
+                    //
+                    // Url
+                    case Rss20Constants.UrlTag:
+                        if (!TryParseValue(field.Value, out url))
+                        {
+                            throw new FormatException($"Invalid image url '{field.Value}'");
+                        }
+                        break;
+
+                    //
+                    // Link
+                    case Rss20Constants.LinkTag:
+                        link = CreateLink(field);
+                        break;
+
+                    //
+                    // Description
+                    case Rss20Constants.DescriptionTag:
+                        description = field.Value;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+  
+            if (url == null)
+            {
+                throw new FormatException("Image url not found");
+            }
+
+            return new SyndicationImage(url, Rss20Constants.ImageTag)
+            {
+                Title = title,
+                Desciption = description,
+                Link = link
+            };
         }
 
-        private SyndicationItem ParseItem(XmlReader reader)
+        protected virtual ISyndicationCategory CreateCategory(ISyndicationContent content)
         {
-            SyndicationItem item = new SyndicationItem();
-
-            string fallbackAlternateLink = null;
-            bool readAlternateLink = false;
-
-            var links = new List<ISyndicationLink>();
-            var contributors = new List<ISyndicationPerson>();
-            var categories = new List<ISyndicationCategory>();
-
-            reader.ReadStartElement();
-
-            while (reader.IsStartElement())
+            if (content == null)
             {
-                //
-                // Title
-                if (reader.IsStartElement(Rss20Constants.TitleTag, Rss20Constants.Rss20Namespace))
-                {
-                    item.Title = reader.ReadElementContentAsString();
-                }
-                //
-                // Link
-                else if (reader.IsStartElement(Rss20Constants.LinkTag, Rss20Constants.Rss20Namespace))
-                {
-                    SyndicationLink link = ParseLink(reader);
-                    link.RelationshipType = Rss20Constants.AlternateLink;
-
-                    links.Add(link);
-                    readAlternateLink = true;
-                }
-                //
-                // Description
-                else if (reader.IsStartElement(Rss20Constants.DescriptionTag, Rss20Constants.Rss20Namespace))
-                {
-                    item.Description = reader.ReadElementContentAsString();
-                }
-                //
-                // Author
-                else if (reader.IsStartElement(Rss20Constants.AuthorTag, Rss20Constants.Rss20Namespace))
-                {
-                    SyndicationPerson person = ParsePerson(reader);
-                    person.RelationshipType = Rss20Constants.AuthorTag;
-
-                    contributors.Add(person);
-                }
-                //
-                // Category
-                else if (reader.IsStartElement(Rss20Constants.CategoryTag, Rss20Constants.Rss20Namespace))
-                {
-                    categories.Add(ParseCategory(reader));
-                }
-                //
-                // Comments
-                else if (reader.IsStartElement(Rss20Constants.CommentsTag, Rss20Constants.Rss20Namespace))
-                {
-                    SyndicationLink link = ParseLink(reader);
-                    link.RelationshipType = Rss20Constants.CommentsTag;
-                    links.Add(link);
-                }
-                //
-                // Enclosure
-                else if (reader.IsStartElement(Rss20Constants.EnclosureTag, Rss20Constants.Rss20Namespace))
-                {
-                    SyndicationLink link = ParseLink(reader);
-                    link.RelationshipType = Rss20Constants.EnclosureTag;
-                    links.Add(link);
-                }
-                //
-                // Guid
-                else if (reader.IsStartElement(Rss20Constants.GuidTag, Rss20Constants.Rss20Namespace))
-                {
-                    string permalinkString = reader.GetAttribute(Rss20Constants.IsPermaLinkTag, Rss20Constants.Rss20Namespace);
-                    bool isPermalink = (permalinkString != null) && permalinkString.Equals("true", StringComparison.OrdinalIgnoreCase);
-
-                    item.Id = reader.ReadElementContentAsString();
-
-                    if (isPermalink)
-                    {
-                        fallbackAlternateLink = item.Id;
-                    }
-                }
-                //
-                // PubDate
-                else if (reader.IsStartElement(Rss20Constants.PubDateTag, Rss20Constants.Rss20Namespace))
-                {
-                    if (TryParseValue(reader.ReadElementContentAsString(), out DateTimeOffset dt))
-                    {
-                        item.Published = dt;
-                    }
-                }
-                //
-                // Source
-                else if (reader.IsStartElement(Rss20Constants.SourceTag, Rss20Constants.Rss20Namespace))
-                {
-                    SyndicationLink link = ParseLink(reader);
-                    link.RelationshipType = Rss20Constants.SourceTag;
-                    links.Add(link);
-                }
-                else
-                {
-                    // Skip Unknown tags
-                    reader.Skip();
-                }
+                throw new ArgumentNullException(nameof(content));
             }
 
-            reader.ReadEndElement(); // end
-
-            // Add a fallback Link
-            if (!readAlternateLink && fallbackAlternateLink != null)
+            if (content.Value == null)
             {
-                Uri url;
-                if (TryParseValue(fallbackAlternateLink, out url))
-                {
-                    var link = new SyndicationLink(url);
-                    links.Add(link);
-                }
+                throw new FormatException("Invalid Rss category name");
             }
 
-            item.Links = links;
-            item.Contributors = contributors;
-            item.Categories = categories;
+            return new SyndicationCategory(content.Value);
+        }
+    }
 
-            return item;
+
+    static class RssAttributeExtentions
+    {
+        public static string GetRss(this IEnumerable<ISyndicationAttribute> attributes, string name)
+        {
+            return attributes.FirstOrDefault(a => a.Name == name && a.Namespace == Rss20Constants.Rss20Namespace)?.Value;
         }
     }
 }

@@ -2,28 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-
-namespace Microsoft.SyndicationFeed
+namespace Microsoft.SyndicationFeed.Atom
 {
-    sealed class AtomEntry : IAtomEntry
+    public class AtomEntry : SyndicationItem, IAtomEntry
     {
-        public string Id { get; set; }
+        public AtomEntry()
+        {
+        }
 
-        public string Title { get; set; }
-
-        public string Description { get; set; }
-
-        public IEnumerable<ISyndicationCategory> Categories { get; set; }
-       
-        public IEnumerable<ISyndicationPerson> Contributors { get; set; }
-
-        public IEnumerable<ISyndicationLink> Links { get; set; }
-
-        public DateTimeOffset LastUpdated { get; set; }
-
-        public DateTimeOffset Published { get; set; }
+        public AtomEntry(IAtomEntry item) 
+            : base(item)
+        {
+            ContentType = item.ContentType;
+            Summary = item.Summary;
+            Rights = item.Rights;
+        }
 
         public string ContentType { get; set; }
 

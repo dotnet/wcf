@@ -7,10 +7,10 @@ using System.Collections.Generic;
 
 namespace Microsoft.SyndicationFeed
 {
-    public sealed class SyndicationContent : ISyndicationContent
+    public class SyndicationContent : ISyndicationContent
     {
-        private List<ISyndicationAttribute> _attributes = new List<ISyndicationAttribute>();
-        private List<ISyndicationContent> _children = new List<ISyndicationContent>();
+        private ICollection<ISyndicationAttribute> _attributes = new List<ISyndicationAttribute>();
+        private ICollection<ISyndicationContent> _children = new List<ISyndicationContent>();
 
         public SyndicationContent(string name, string value = null)
         {
@@ -24,6 +24,8 @@ namespace Microsoft.SyndicationFeed
         }
 
         public string Name { get; private set; }
+
+        public string Namespace { get; set; }
 
         public string Value { get; set; }
 
