@@ -373,7 +373,7 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (s_anonymousToHeader200408 == null)
-                    s_anonymousToHeader200408 = new AnonymousToHeader(AddressingVersion.WSAddressing200408);
+                    s_anonymousToHeader200408 = new AnonymousToHeader(AddressingVersion.WSAddressingAugust2004);
                 return s_anonymousToHeader200408;
             }
         }
@@ -402,7 +402,7 @@ namespace System.ServiceModel.Channels
             {
                 if (addressingVersion == AddressingVersion.WSAddressing10)
                     return AnonymousTo10;
-                else if (addressingVersion == AddressingVersion.WSAddressing200408)
+                else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
                     return AnonymousTo200408;
                 else
                     // Verify that only WSA10 and WSA200408 is supported
@@ -424,7 +424,7 @@ namespace System.ServiceModel.Channels
             {
                 if (addressingVersion == AddressingVersion.WSAddressing10)
                     return AnonymousTo10;
-                else if (addressingVersion == AddressingVersion.WSAddressing200408)
+                else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
                     return AnonymousTo200408;
                 else
                     // Verify that only WSA10 is supported
@@ -476,7 +476,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (version == AddressingVersion.WSAddressing10)
                         return AnonymousTo10;
-                    else if (version == AddressingVersion.WSAddressing200408)
+                    else if (version == AddressingVersion.WSAddressingAugust2004)
                         return AnonymousTo200408;
                     else
                         throw ExceptionHelper.PlatformNotSupported();
