@@ -164,7 +164,7 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             if (string.IsNullOrEmpty(category.Name))
             {
-                throw new ArgumentNullException(nameof(category.Name));
+                throw new FormatException("Invalid category name");
             }
 
             writer.WriteElementString(Rss20Constants.CategoryTag,category.Name);

@@ -21,7 +21,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
                 SyndicationCategory category = new SyndicationCategory("Test Category");
                 await writer.Write(category);
                 xmlWriter.Flush();
@@ -40,7 +40,7 @@ namespace Microsoft.SyndicationFeed.Rss
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
                 xmlWriter.WriteStartElement("document");
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
                 SyndicationPerson author = new SyndicationPerson()
                 {
                     Email = "author@email.com",
@@ -73,7 +73,7 @@ namespace Microsoft.SyndicationFeed.Rss
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
 
                 Uri url = new Uri("http://testuriforimage.com");
                 Uri urlForLink = new Uri("http://testuriforlink.com");
@@ -104,7 +104,7 @@ namespace Microsoft.SyndicationFeed.Rss
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
                 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
                 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
                 SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag);
@@ -127,7 +127,7 @@ namespace Microsoft.SyndicationFeed.Rss
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
                 SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag)
@@ -155,7 +155,7 @@ namespace Microsoft.SyndicationFeed.Rss
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
                 SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag)
@@ -181,7 +181,7 @@ namespace Microsoft.SyndicationFeed.Rss
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
 
                 Uri url = new Uri("http://testuriforlinks.com");
                 SyndicationLink link = new SyndicationLink(url, Rss20Constants.LinkTag);
@@ -246,7 +246,7 @@ namespace Microsoft.SyndicationFeed.Rss
             StringBuilder sb = new StringBuilder();
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
 
                 await writer.Write(content);
                 xmlWriter.Flush();
@@ -262,7 +262,7 @@ namespace Microsoft.SyndicationFeed.Rss
             var sb = new StringBuilder();
             using (XmlWriter xmlWriter = XmlWriter.Create(sb))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter2(xmlWriter.Settings));
                 await writer.WriteValue("CustomTag", "Custom Content");
                 xmlWriter.Flush();
             }
