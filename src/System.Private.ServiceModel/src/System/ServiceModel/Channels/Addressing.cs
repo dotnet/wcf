@@ -350,6 +350,7 @@ namespace System.ServiceModel.Channels
         private const bool mustUnderstandValue = true;
 
         private static ToHeader s_anonymousToHeader10;
+        private static ToHeader s_anonymousToHeader200408;
 
         protected ToHeader(Uri to, AddressingVersion version)
             : base(version)
@@ -367,6 +368,15 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private static ToHeader AnonymousTo200408
+        {
+            get
+            {
+                if (s_anonymousToHeader200408 == null)
+                    s_anonymousToHeader200408 = new AnonymousToHeader(AddressingVersion.WSAddressing200408);
+                return s_anonymousToHeader200408;
+            }
+        }
 
         public override XmlDictionaryString DictionaryName
         {
@@ -392,8 +402,10 @@ namespace System.ServiceModel.Channels
             {
                 if (addressingVersion == AddressingVersion.WSAddressing10)
                     return AnonymousTo10;
+                else if (addressingVersion == AddressingVersion.WSAddressing200408)
+                    return AnonymousTo200408;
                 else
-                    // Verify that only WSA10 is supported
+                    // Verify that only WSA10 and WSA200408 is supported
                     throw ExceptionHelper.PlatformNotSupported();
             }
             else
@@ -412,6 +424,8 @@ namespace System.ServiceModel.Channels
             {
                 if (addressingVersion == AddressingVersion.WSAddressing10)
                     return AnonymousTo10;
+                else if (addressingVersion == AddressingVersion.WSAddressing200408)
+                    return AnonymousTo200408;
                 else
                     // Verify that only WSA10 is supported
                     throw ExceptionHelper.PlatformNotSupported();
@@ -462,6 +476,8 @@ namespace System.ServiceModel.Channels
                 {
                     if (version == AddressingVersion.WSAddressing10)
                         return AnonymousTo10;
+                    else if (version == AddressingVersion.WSAddressing200408)
+                        return AnonymousTo200408;
                     else
                         throw ExceptionHelper.PlatformNotSupported();
                 }
