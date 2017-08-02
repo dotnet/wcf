@@ -229,7 +229,7 @@ namespace Microsoft.SyndicationFeed.Rss
             //
             // Type
             string type = content.Attributes.GetRss("type");
-
+            
             //
             // rel
             string rel = (content.Name == Rss20Constants.LinkTag) ? Rss20Constants.AlternateLink : content.Name;
@@ -282,7 +282,7 @@ namespace Microsoft.SyndicationFeed.Rss
                     case Rss20Constants.TitleTag:
                         title = field.Value;
                         break;
-
+                        
                     //
                     // Url
                     case Rss20Constants.UrlTag:
@@ -297,7 +297,7 @@ namespace Microsoft.SyndicationFeed.Rss
                     case Rss20Constants.LinkTag:
                         link = CreateLink(field);
                         break;
-
+                        
                     //
                     // Description
                     case Rss20Constants.DescriptionTag:
@@ -317,7 +317,7 @@ namespace Microsoft.SyndicationFeed.Rss
             return new SyndicationImage(url, Rss20Constants.ImageTag)
             {
                 Title = title,
-                Desciption = description,
+                Description = description,
                 Link = link
             };
         }

@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.SyndicationFeed
 {
-    public class SyndicationCategory : ISyndicationCategory
+    public sealed class SyndicationCategory : ISyndicationCategory
     {
         public SyndicationCategory(string name)
         {
