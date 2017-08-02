@@ -31,7 +31,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
             {
-                Write(content, writer);
+                XmlUtils.Write(content, writer);
                 writer.Flush();
                 return sb.ToString();
             }
@@ -106,43 +106,6 @@ namespace Microsoft.SyndicationFeed.Rss
                 default:
                     return null;
             }
-        }
-
-        protected virtual void Write(ISyndicationContent content, XmlWriter writer)
-        {
-            //
-            // Write opening name 
-            writer.WriteStartElement(content.Name);
-
-            //
-            // Write attributes
-            foreach (var attribute in content.Attributes)
-            {
-                writer.WriteAttributeString(attribute.Name, attribute.Namespace, attribute.Value);
-            }
-
-            var fields = (List<ISyndicationContent>)content.Fields;
-
-            if (fields.Count == 0)
-            {
-                //
-                // This element has no children.
-                writer.WriteString(content.Value);
-            }
-
-            else
-            {
-                //
-                // Write Fields
-                foreach (var field in fields)
-                {
-                    writer.WriteRaw(Format(field));
-                }
-            }
-
-            //
-            // Write closing name 
-            writer.WriteEndElement();
         }
 
         protected virtual ISyndicationContent CreateContent(ISyndicationCategory category)
