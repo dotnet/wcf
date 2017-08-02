@@ -32,18 +32,13 @@ namespace Microsoft.SyndicationFeed.Rss
             using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
             {
                 Write(content, writer);
-
+                writer.Flush();
                 return sb.ToString();
             }
         }
 
         public string Format(ISyndicationCategory category)
         {
-            if (category == null)
-            {
-                throw new ArgumentNullException(nameof(category));
-            }
-
             ISyndicationContent content = CreateContent(category);
 
             return Format(content);
@@ -51,11 +46,6 @@ namespace Microsoft.SyndicationFeed.Rss
         
         public string Format(ISyndicationImage image)
         {
-            if(image == null)
-            {
-                throw new ArgumentNullException(nameof(image));
-            }
-
             ISyndicationContent content = CreateContent(image);
 
             return Format(content);
@@ -63,11 +53,6 @@ namespace Microsoft.SyndicationFeed.Rss
 
         public string Format(ISyndicationPerson person)
         {
-            if (person == null)
-            {
-                throw new ArgumentNullException(nameof(person));
-            }
-
             ISyndicationContent content = CreateContent(person);
 
             return Format(content);
@@ -75,11 +60,6 @@ namespace Microsoft.SyndicationFeed.Rss
 
         public string Format(ISyndicationItem item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
             ISyndicationContent content = CreateContent(item);
 
             return Format(content);
@@ -87,11 +67,6 @@ namespace Microsoft.SyndicationFeed.Rss
 
         public string Format(ISyndicationLink link)
         {
-            if (link == null)
-            {
-                throw new ArgumentNullException(nameof(link));
-            }
-
             ISyndicationContent content = CreateContent(link);
 
             return Format(content);
@@ -100,6 +75,226 @@ namespace Microsoft.SyndicationFeed.Rss
         public virtual string FormatValue<T>(T value)
         {
             return Converter.FormatValue(value);
+        }
+
+        protected virtual ISyndicationContent CreateContent(ISyndicationLink link)
+        {
+            if (link == null)
+            {
+                throw new ArgumentNullException(nameof(link));
+            }
+
+            if (link == null)
+            {
+                throw new ArgumentNullException(nameof(link));
+            }
+
+            switch (link.RelationshipType)
+            {
+                case Rss20Constants.LinkTag:
+                    return CreateLinkContent(link);
+
+                case Rss20Constants.EnclosureTag:
+                    return CreateEnclosureContent(link);
+
+                case Rss20Constants.CommentsTag:
+                    return CreateCommentsContent(link);
+
+                case Rss20Constants.SourceTag:
+                    return CreateSourceContent(link);
+
+                default:
+                    return null;
+            }
+        }
+
+        protected virtual void Write(ISyndicationContent content, XmlWriter writer)
+        {
+            //
+            // Write opening name 
+            writer.WriteStartElement(content.Name);
+
+            //
+            // Write attributes
+            foreach (var attribute in content.Attributes)
+            {
+                writer.WriteAttributeString(attribute.Name, attribute.Namespace, attribute.Value);
+            }
+
+            var fields = (List<ISyndicationContent>)content.Fields;
+
+            if (fields.Count == 0)
+            {
+                //
+                // This element has no children.
+                writer.WriteString(content.Value);
+            }
+
+            else
+            {
+                //
+                // Write Fields
+                foreach (var field in fields)
+                {
+                    writer.WriteRaw(Format(field));
+                }
+            }
+
+            //
+            // Write closing name 
+            writer.WriteEndElement();
+        }
+
+        protected virtual ISyndicationContent CreateContent(ISyndicationCategory category)
+        {
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            if (string.IsNullOrEmpty(category.Name))
+            {
+                throw new FormatException("Invalid category name");
+            }
+
+            return new SyndicationContent(Rss20Constants.CategoryTag, category.Name);
+        }
+
+        protected virtual ISyndicationContent CreateContent(ISyndicationPerson person)
+        {
+            if (person == null)
+            {
+                throw new ArgumentNullException(nameof(person));
+            }
+
+            if (string.IsNullOrEmpty(person.RelationshipType))
+            {
+                throw new ArgumentException("RelationshipType");
+            }
+
+            if (string.IsNullOrEmpty(person.Email))
+            {
+                throw new ArgumentException("Email");
+            }
+
+            return new SyndicationContent(person.RelationshipType, person.Email);
+        }
+
+        protected virtual ISyndicationContent CreateContent(ISyndicationImage image)
+        {
+            if (image == null)
+            {
+                throw new ArgumentNullException(nameof(image));
+            }
+
+            // Required URL - Title - Link
+            if (string.IsNullOrEmpty(image.Title))
+            {
+                throw new ArgumentNullException("Image requires a title");
+            }
+
+            if (image.Link == null)
+            {
+                throw new ArgumentNullException("Image requires a link");
+            }
+
+            if (image.Url == null)
+            {
+                throw new ArgumentNullException("Image requires an url");
+            }
+
+            var content = new SyndicationContent(Rss20Constants.ImageTag);
+
+            //Write required contents of image
+            content.AddField(new SyndicationContent(Rss20Constants.UrlTag, FormatValue(image.Url)));
+            content.AddField(new SyndicationContent(Rss20Constants.TitleTag, image.Title));
+            content.AddField(CreateContent(image.Link));
+
+
+            //Write optional elements
+            if (!string.IsNullOrEmpty(image.Description))
+            {
+                content.AddField(new SyndicationContent(Rss20Constants.DescriptionTag, image.Description));
+            }
+
+            return content;
+        }
+
+        protected virtual ISyndicationContent CreateContent(ISyndicationItem item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            // Spec requires to have at least one title or description
+            if (string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
+            {
+                throw new ArgumentNullException("RSS Item requires a title or a description");
+            }
+
+            // Write <item> tag
+            var content = new SyndicationContent(Rss20Constants.ItemTag);
+
+            //
+            // Title
+            if (!string.IsNullOrEmpty(item.Title))
+            {
+                content.AddField(new SyndicationContent(Rss20Constants.TitleTag, item.Title));
+            }
+
+            //
+            // Links
+            if (item.Links != null)
+            {
+                foreach (var link in item.Links)
+                {
+                    content.AddField(CreateContent(link));
+                }
+            }
+
+            //
+            // Description
+            if (!string.IsNullOrEmpty(item.Description))
+            {
+                content.AddField(new SyndicationContent(Rss20Constants.DescriptionTag, item.Description));
+            }
+
+            //
+            // Authors (persons)
+            if (item.Contributors != null)
+            {
+                foreach (var person in item.Contributors)
+                {
+                    content.AddField(CreateContent(person));
+                }
+            }
+
+            //
+            // Cathegory
+            if (item.Categories != null)
+            {
+                foreach (var category in item.Categories)
+                {
+                    content.AddField(CreateContent(category));
+                }
+            }
+
+            //
+            // Guid (id)
+            if (!string.IsNullOrEmpty(item.Id))
+            {
+                content.AddField(new SyndicationContent(Rss20Constants.GuidTag, item.Id));
+            }
+
+            //
+            // PubDate
+            if (item.Published != DateTimeOffset.MinValue)
+            {
+                content.AddField(new SyndicationContent(Rss20Constants.PubDateTag, FormatValue(item.Published)));
+            }
+
+            return content;
         }
 
         private XmlWriter CreateXmlWriter(out StringBuilder sb)
@@ -204,203 +399,6 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             return content;
-        }
-        
-        protected virtual ISyndicationContent CreateContent(ISyndicationLink link)
-        {
-            if (link == null)
-            {
-                throw new ArgumentNullException(nameof(link));
-            }
-
-            switch (link.RelationshipType)
-            {
-                case Rss20Constants.LinkTag:
-                    return CreateLinkContent(link);
-
-                case Rss20Constants.EnclosureTag:
-                    return CreateEnclosureContent(link);
-
-                case Rss20Constants.CommentsTag:
-                    return CreateCommentsContent(link);
-
-                case Rss20Constants.SourceTag:
-                    return CreateSourceContent(link);
-
-                default:
-                    return null;
-            }
-        }
-
-        protected virtual void Write(ISyndicationContent content, XmlWriter writer)
-        {
-            //
-            // Write opening name 
-            writer.WriteStartElement(content.Name);
-
-            //
-            // Write attributes
-            foreach (var attribute in content.Attributes)
-            {
-                writer.WriteAttributeString(attribute.Name, attribute.Namespace, attribute.Value);
-            }
-
-            var fields = (List<ISyndicationContent>)content.Fields;
-
-            if (fields.Count == 0)
-            {
-                //
-                // This element has no children.
-                writer.WriteString(content.Value);
-            }
-
-            else
-            {
-                //
-                // Write Fields
-                foreach (var field in fields)
-                {
-                    writer.WriteRaw(Format(field));
-                }
-            }
-
-            //
-            // Write closing name 
-            writer.WriteEndElement();
-            writer.Flush();
-        }
-
-        protected virtual ISyndicationContent CreateContent(ISyndicationCategory category)
-        {
-
-            if (string.IsNullOrEmpty(category.Name))
-            {
-                throw new FormatException("Invalid category name");
-            }
-
-            return new SyndicationContent(Rss20Constants.CategoryTag, category.Name);
-        }
-
-        protected virtual ISyndicationContent CreateContent(ISyndicationPerson person)
-        {
-            if (string.IsNullOrEmpty(person.RelationshipType))
-            {
-                throw new ArgumentException(nameof(person.RelationshipType));
-            }
-
-            if (string.IsNullOrEmpty(person.Email))
-            {
-                throw new ArgumentException(nameof(person.Email));
-            }
-
-            return new SyndicationContent(person.RelationshipType, person.Email);
-        }
-
-        protected virtual ISyndicationContent CreateContent(ISyndicationImage image)
-        {
-            // Required URL - Title - Link
-            if (string.IsNullOrEmpty(image.Title))
-            {
-                throw new ArgumentNullException("Image requires a title");
-            }
-
-            if (image.Link == null)
-            {
-                throw new ArgumentNullException("Image requires a link");
-            }
-
-            if (image.Url == null)
-            {
-                throw new ArgumentNullException("Image requires an url");
-            }
-
-            var content = new SyndicationContent(Rss20Constants.ImageTag);
-
-            //Write required contents of image
-            content.AddField(new SyndicationContent(Rss20Constants.UrlTag, FormatValue(image.Url)));
-            content.AddField(new SyndicationContent(Rss20Constants.TitleTag, image.Title));
-            content.AddField(CreateContent(image.Link));
-
-
-            //Write optional elements
-            if (!string.IsNullOrEmpty(image.Description))
-            {
-                content.AddField(new SyndicationContent(Rss20Constants.DescriptionTag, image.Description));
-            }
-
-            return content;
-        }
-
-        protected virtual ISyndicationContent CreateContent(ISyndicationItem item)
-        {
-            // Spec requires to have at least one title or description
-            if (string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
-            {
-                throw new ArgumentNullException("RSS Item requires a title or a description");
-            }
-
-            // Write <item> tag
-            var content = new SyndicationContent(Rss20Constants.ItemTag);
-
-            //
-            // Title
-            if (!string.IsNullOrEmpty(item.Title))
-            {
-                content.AddField( new SyndicationContent(Rss20Constants.TitleTag, item.Title) );
-            }
-
-            //
-            // Links
-            if (item.Links != null)
-            {
-                foreach (var link in item.Links)
-                {
-                    content.AddField(CreateContent(link));
-                }
-            }
-
-            //
-            // Description
-            if (!string.IsNullOrEmpty(item.Description))
-            {
-                content.AddField(new SyndicationContent(Rss20Constants.DescriptionTag, item.Description));
-            }
-
-            //
-            // Authors (persons)
-            if (item.Contributors != null)
-            {
-                foreach (var person in item.Contributors)
-                {
-                    content.AddField(CreateContent(person));
-                }
-            }
-
-            //
-            // Cathegory
-            if (item.Categories != null)
-            {
-                foreach (var category in item.Categories)
-                {
-                    content.AddField(CreateContent(category));
-                }
-            }
-
-            //
-            // Guid (id)
-            if (!string.IsNullOrEmpty(item.Id))
-            {
-                content.AddField(new SyndicationContent(Rss20Constants.GuidTag, item.Id));
-            }
-
-            //
-            // PubDate
-            if (!item.Published.Equals(DateTimeOffset.MinValue))
-            {
-                content.AddField(new SyndicationContent(Rss20Constants.PubDateTag, FormatValue(item.Published)));
-            }
-
-            return content;
-        }
+        }               
     }
 }

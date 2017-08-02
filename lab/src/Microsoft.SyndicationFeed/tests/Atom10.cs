@@ -212,7 +212,7 @@ namespace Microsoft.SyndicationFeed.Tests
                         switch (reader.ElementType)
                         {
                             case SyndicationElementType.Link:
-                                //ISyndicationLink link = await reader.ReadLink();
+                                ISyndicationLink link = await reader.ReadLink();
                                 break;
 
                             case SyndicationElementType.Item:
@@ -220,15 +220,15 @@ namespace Microsoft.SyndicationFeed.Tests
                                 break;
 
                             case SyndicationElementType.Person:
-                                //ISyndicationPerson person = await reader.ReadPerson();
+                                ISyndicationPerson person = await reader.ReadPerson();
                                 break;
 
                             case SyndicationElementType.Image:
-                                //ISyndicationImage image = await reader.ReadImage();
+                                ISyndicationImage image = await reader.ReadImage();
                                 break;
 
                             default:
-                                //ISyndicationContent content = await reader.ReadContent();
+                                ISyndicationContent content = await reader.ReadContent();
                                 break;
                         }
                     }
