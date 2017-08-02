@@ -11,6 +11,5 @@ namespace Microsoft.SyndicationFeed.Rss
         public const string Comments = "comments";
         public const string Enclosure = "enclosure";
         public const string Source = "source";
-        public const string Link = "link";
     }
 }

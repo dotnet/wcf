@@ -91,7 +91,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             switch (link.RelationshipType)
             {
-                case Rss20Constants.LinkTag:
+                case Rss20Constants.AlternateLink:
                     return CreateLinkContent(link);
 
                 case Rss20Constants.EnclosureTag:
@@ -312,7 +312,7 @@ namespace Microsoft.SyndicationFeed.Rss
         private ISyndicationContent CreateLinkContent(ISyndicationLink link)
         {
             //Write attributes if exist
-            var content = new SyndicationContent(link.RelationshipType);
+            var content = new SyndicationContent(Rss20Constants.LinkTag);
 
             //
             // Lenght
@@ -367,7 +367,11 @@ namespace Microsoft.SyndicationFeed.Rss
 
             //
             // Url
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.UrlTag, FormatValue(link.Uri)));
+            string url = FormatValue(link.Uri);
+            if (link.Title != url)
+            {
+                content.AddAttribute(new SyndicationAttribute(Rss20Constants.UrlTag, url));
+            }
 
             //
             // Title

@@ -77,7 +77,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
                 Uri url = new Uri("http://testuriforimage.com");
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link);
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate);
 
                 SyndicationImage image = new SyndicationImage(url)
                 {
@@ -107,7 +107,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
                 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link);
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate);
                 
                 await writer.Write(link);
                 
@@ -130,7 +130,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link)
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate)
                 {
                     Title = "Test title",
                     Length = 123,
@@ -158,7 +158,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link)
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate)
                 {
                     Title = "http://testuriforlink.com"
                 };
@@ -184,7 +184,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
 
                 Uri url = new Uri("http://testuriforlinks.com");
-                SyndicationLink link = new SyndicationLink(url, Rss20LinkTypes.Link);
+                SyndicationLink link = new SyndicationLink(url, Rss20LinkTypes.Alternate);
 
                 SyndicationLink enclosureLink = new SyndicationLink(url, Rss20LinkTypes.Enclosure)
                 {
@@ -273,6 +273,60 @@ namespace Microsoft.SyndicationFeed.Rss
 
             var res = sb.ToString();
             Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><CustomTag>Custom Content</CustomTag></channel></rss>");
+        }
+
+        [Fact]
+        public async Task Rss20Writer_ReadAndWriteFeed()
+        {
+            string res = null;
+            using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
+            {
+                var reader = new Rss20FeedReader(xmlReader);
+
+                var sb = new StringBuilder();
+
+                using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+                {
+
+                    var writer = new Rss20FeedWriter(xmlWriter);
+
+
+                    while (await reader.Read())
+                    {
+                        switch (reader.ElementType)
+                        {
+                            case SyndicationElementType.Link:
+                                ISyndicationLink link = await reader.ReadLink();
+                                await writer.Write(link);
+                                break;
+
+                            case SyndicationElementType.Item:
+                                ISyndicationItem item = await reader.ReadItem();
+                                await writer.Write(item);
+                                break;
+
+                            case SyndicationElementType.Person:
+                                ISyndicationPerson person = await reader.ReadPerson();
+                                await writer.Write(person);
+                                break;
+
+                            case SyndicationElementType.Image:
+                                ISyndicationImage image = await reader.ReadImage();
+                                await writer.Write(image);
+                                break;
+
+                            default:
+                                ISyndicationContent content = await reader.ReadContent();
+                                await writer.Write(content);
+                                break;
+                        }
+                    }
+
+                    xmlWriter.Flush();
+                }
+                res = sb.ToString();
+                Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><title asd=\"123\">Lorem ipsum feed for an interval of 1 minutes</title><description>This is a constantly updating lorem ipsum feed</description><link length=\"123\" type=\"testType\">http://example.com/</link><image><url>http://2.bp.blogspot.com/-NA5Jb-64eUg/URx8CSdcj_I/AAAAAAAAAUo/eCx0irI0rq0/s1600/bg_Microsoft_logo3-20120824073001907469-620x349.jpg</url><title>Microsoft News</title><link>http://www.microsoft.com/news</link><description>Test description</description></image><generator>RSS for Node</generator><lastBuildDate>Thu, 06 Jul 2017 20:25:17 GMT</lastBuildDate><managingEditor>John Smith</managingEditor><pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate><copyright>Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.</copyright><ttl>60</ttl><item><title>Lorem ipsum 2017-07-06T20:25:00+00:00</title><enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/mpeg\" /><link>http://example.com/test/1499372700</link><description>Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.</description><guid isPermaLink=\"true\">http://example.com/test/1499372700</guid><pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate></item><item><title>Lorem ipsum 2017-07-06T20:24:00+00:00</title><link>http://example.com/test/1499372640</link><enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/mpeg\" /><description>Do ipsum dolore veniam minim est cillum aliqua ea.</description><guid isPermaLink=\"true\">http://example.com/test/1499372640</guid><pubDate>Thu, 06 Jul 2017 20:24:00 GMT</pubDate></item></channel></rss>");
+            }
         }
     }
 }
