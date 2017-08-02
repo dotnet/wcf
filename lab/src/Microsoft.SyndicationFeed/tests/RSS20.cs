@@ -160,13 +160,13 @@ namespace Microsoft.SyndicationFeed.Tests
                             {
                                 Assert.True(item.Title == "Lorem ipsum 2017-07-06T20:25:00+00:00");
                                 Assert.True(item.Description == "Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.");
-                                Assert.True(item.Links.Count() == 2);
+                                Assert.True(item.Links.Count() == 3);
                             }
                             else if(items == 2)
                             {
                                 Assert.True(item.Title == "Lorem ipsum 2017-07-06T20:24:00+00:00");
                                 Assert.True(item.Description == "Do ipsum dolore veniam minim est cillum aliqua ea.");
-                                Assert.True(item.Links.Count() == 2);
+                                Assert.True(item.Links.Count() == 3);
                             }
 
                             break;

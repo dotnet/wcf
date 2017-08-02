@@ -106,9 +106,6 @@ namespace Microsoft.SyndicationFeed.Rss
 
             var item = new SyndicationItem();
 
-            string fallbackAlternateLink = null;
-            bool hasAlternateLink = false;
-
             foreach (var field in content.Fields)
             {
                 if (field.Namespace != Rss20Constants.Rss20Namespace)
@@ -128,7 +125,6 @@ namespace Microsoft.SyndicationFeed.Rss
                     // Link
                     case Rss20Constants.LinkTag:
                         item.AddLink(CreateLink(field));
-                        hasAlternateLink = true;
                         break;
 
                     // Description
@@ -160,11 +156,12 @@ namespace Microsoft.SyndicationFeed.Rss
                     case Rss20Constants.GuidTag:
                         item.Id = field.Value;
 
-                        if (!hasAlternateLink && 
-                            TryParseValue(field.Attributes.GetRss(Rss20Constants.IsPermaLinkTag), out bool isPermalink) &&
-                            isPermalink)
+                        // permaLink
+                        if (TryParseValue(field.Attributes.GetRss(Rss20Constants.IsPermaLinkTag), out bool isPermalink) &&
+                            isPermalink &&
+                            TryParseValue(field.Value, out Uri permaLink))
                         {
-                            fallbackAlternateLink = field.Value;
+                            item.AddLink(new SyndicationLink(permaLink, Rss20Constants.GuidTag));
                         }
                         break;
 
@@ -180,15 +177,6 @@ namespace Microsoft.SyndicationFeed.Rss
                     default:
                         break;
                 }
-            }
-
-            //
-            // Add a fallback Link
-            if (!hasAlternateLink &&
-                fallbackAlternateLink != null &&
-                TryParseValue(fallbackAlternateLink, out Uri url))
-            {
-                item.AddLink(new SyndicationLink(url, Rss20Constants.AlternateLink));
             }
 
             return item;

@@ -44,13 +44,13 @@ namespace Microsoft.SyndicationFeed.Rss
                 SyndicationPerson author = new SyndicationPerson()
                 {
                     Email = "author@email.com",
-                    RelationshipType = Rss20Constants.AuthorTag
+                    RelationshipType = Rss20ContributorTypes.Author
                 };
 
                 SyndicationPerson managingEditor = new SyndicationPerson()
                 {
                     Email = "mEditor@email.com",
-                    RelationshipType = Rss20Constants.ManagingEditorTag
+                    RelationshipType = Rss20ContributorTypes.ManagingEditor
                 };
 
                 await writer.Write(author);
@@ -77,7 +77,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
                 Uri url = new Uri("http://testuriforimage.com");
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag);
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link);
 
                 SyndicationImage image = new SyndicationImage(url)
                 {
@@ -107,7 +107,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
                 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag);
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link);
                 
                 await writer.Write(link);
                 
@@ -130,7 +130,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag)
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link)
                 {
                     Title = "Test title",
                     Length = 123,
@@ -158,7 +158,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
 
                 Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20Constants.LinkTag)
+                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Link)
                 {
                     Title = "http://testuriforlink.com"
                 };
@@ -184,21 +184,23 @@ namespace Microsoft.SyndicationFeed.Rss
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
 
                 Uri url = new Uri("http://testuriforlinks.com");
-                SyndicationLink link = new SyndicationLink(url, Rss20Constants.LinkTag);
+                SyndicationLink link = new SyndicationLink(url, Rss20LinkTypes.Link);
 
-                SyndicationLink enclosureLink = new SyndicationLink(url, Rss20Constants.EnclosureTag)
+                SyndicationLink enclosureLink = new SyndicationLink(url, Rss20LinkTypes.Enclosure)
                 {
                     Title = "http://enclosurelink.com",
                     Length = 4123,
                     MediaType = "audio/mpeg"
                 };
 
-                SyndicationLink commentsLink = new SyndicationLink(url, Rss20Constants.CommentsTag);
+                SyndicationLink commentsLink = new SyndicationLink(url, Rss20LinkTypes.Comments);
 
-                SyndicationLink sourceLink = new SyndicationLink(url, Rss20Constants.SourceTag)
+                SyndicationLink sourceLink = new SyndicationLink(url, Rss20LinkTypes.Source)
                 {
                     Title = "Anonymous Blog"
                 };
+
+                SyndicationLink guidLink = new SyndicationLink(url, Rss20LinkTypes.Guid);
 
                 SyndicationItem item = new SyndicationItem();
 
@@ -207,13 +209,15 @@ namespace Microsoft.SyndicationFeed.Rss
                 item.AddLink(enclosureLink);
                 item.AddLink(commentsLink);
                 item.AddLink(sourceLink);
+                item.AddLink(guidLink);
+
 
                 item.Description = "Brief description of an item";
 
                 item.AddContributor(new SyndicationPerson()
                 {
                     Email = "person@email.com",
-                    RelationshipType = Rss20Constants.AuthorTag
+                    RelationshipType =  Rss20ContributorTypes.Author
                 });
 
                 item.Id = "Unique ID for this item";
@@ -229,7 +233,7 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             string res = sb.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><item><title>First item on ItemWriter</title><link>http://testuriforlinks.com/</link><enclosure url=\"http://testuriforlinks.com/\" length=\"4123\" type=\"audio/mpeg\" /><comments>http://testuriforlinks.com/</comments><source url=\"http://testuriforlinks.com/\">Anonymous Blog</source><description>Brief description of an item</description><author>person@email.com</author><guid>Unique ID for this item</guid><pubDate>Fri, 28 Jul 2017 19:07:32 GMT</pubDate></item></channel></rss>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><item><title>First item on ItemWriter</title><link>http://testuriforlinks.com/</link><enclosure url=\"http://testuriforlinks.com/\" length=\"4123\" type=\"audio/mpeg\" /><comments>http://testuriforlinks.com/</comments><source url=\"http://testuriforlinks.com/\">Anonymous Blog</source><description>Brief description of an item</description><author>person@email.com</author><guid isPermaLink=\"true\">Unique ID for this item</guid><pubDate>Fri, 28 Jul 2017 19:07:32 GMT</pubDate></item></channel></rss>", res);
         }
 
         [Fact]

@@ -190,6 +190,8 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(item));
             }
 
+            bool isPermaLink = false;
+
             // Spec requires to have at least one title or description
             if (string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
             {
@@ -212,6 +214,12 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 foreach (var link in item.Links)
                 {
+                    if (link.RelationshipType == Rss20Constants.GuidTag)
+                    {
+                        isPermaLink = true;
+                        continue;
+                    }
+
                     content.AddField(CreateContent(link));
                 }
             }
@@ -247,7 +255,14 @@ namespace Microsoft.SyndicationFeed.Rss
             // Guid (id)
             if (!string.IsNullOrEmpty(item.Id))
             {
-                content.AddField(new SyndicationContent(Rss20Constants.GuidTag, item.Id));
+                SyndicationContent guid = new SyndicationContent(Rss20Constants.GuidTag, item.Id);
+
+                if (isPermaLink)
+                {
+                    guid.AddAttribute(new SyndicationAttribute(Rss20Constants.IsPermaLinkTag,"true"));
+                }
+
+                content.AddField(guid);
             }
 
             //
