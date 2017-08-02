@@ -195,46 +195,46 @@ namespace Microsoft.SyndicationFeed.Tests
             }
         }
 
-        //[Fact]
-        //public async Task AtomReader_ReadItemXTimesParser1()
-        //{
-        //    Stopwatch sw = new Stopwatch();
-        //    sw.Start();
-        //    for (int i = 0; i < 40000; i++)
-        //    {
-        //        using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml"))
-        //        {
-        //            var reader = new AtomFeedReader(xmlReader, new AtomFeedParser());
+        [Fact]
+        public async Task AtomReader_ReadItemXTimesParser1()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            for (int i = 0; i < 1; i++)
+            {
+                using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\simpleAtomFeed.xml"))
+                {
+                    var reader = new AtomFeedReader(xmlReader, new AtomFeedParser());
 
-        //            while (await reader.Read())
-        //            {
+                    while (await reader.Read())
+                    {
 
-        //                switch (reader.ElementType)
-        //                {
-        //                    case SyndicationElementType.Link:
-        //                        //ISyndicationLink link = await reader.ReadLink();
-        //                        break;
+                        switch (reader.ElementType)
+                        {
+                            case SyndicationElementType.Link:
+                                //ISyndicationLink link = await reader.ReadLink();
+                                break;
 
-        //                    case SyndicationElementType.Item:
-        //                        ISyndicationItem item = await reader.ReadEntry();
-        //                        break;
+                            case SyndicationElementType.Item:
+                                ISyndicationItem item = await reader.ReadEntry();
+                                break;
 
-        //                    case SyndicationElementType.Person:
-        //                        //ISyndicationPerson person = await reader.ReadPerson();
-        //                        break;
+                            case SyndicationElementType.Person:
+                                //ISyndicationPerson person = await reader.ReadPerson();
+                                break;
 
-        //                    case SyndicationElementType.Image:
-        //                        //ISyndicationImage image = await reader.ReadImage();
-        //                        break;
+                            case SyndicationElementType.Image:
+                                //ISyndicationImage image = await reader.ReadImage();
+                                break;
 
-        //                    default:
-        //                        //ISyndicationContent content = await reader.ReadContent();
-        //                        break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    sw.Stop();
-        //}
+                            default:
+                                //ISyndicationContent content = await reader.ReadContent();
+                                break;
+                        }
+                    }
+                }
+            }
+            sw.Stop();
+        }
     }
 }

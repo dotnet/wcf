@@ -9,11 +9,11 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public class Rss20Formatter2 : ISyndicationFeedFormatter
+    public class Rss20Formatter : ISyndicationFeedFormatter
     {
         XmlWriterSettings _settings;
 
-        public Rss20Formatter2(XmlWriterSettings settings)
+        public Rss20Formatter(XmlWriterSettings settings)
         {
             _settings = settings?.Clone() ?? new XmlWriterSettings();
 
