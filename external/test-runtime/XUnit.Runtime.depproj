@@ -83,6 +83,16 @@
     <PackageToInclude Include="$(XUnitRunnerPackageId)" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
+    <UAPToolsPackageVersion>1.0.14</UAPToolsPackageVersion>
+  </PropertyGroup>
+ 
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+    <PackageReference Include="Microsoft.DotNet.UAP.TestTools">
+      <Version>$(UAPToolsPackageVersion)</Version>
+    </PackageReference>
+  </ItemGroup>  
+
   <ItemGroup Condition="'$(TargetGroup)' != 'uapaot'">
     <PackageToInclude Include="xunit.performance.core"/>
     <PackageToInclude Include="xunit.performance.api"/>
@@ -101,10 +111,9 @@
           Condition="'$(TargetGroup)'=='uap'" >
 
     <PropertyGroup>
-      <UAPToolsPackageVersion>1.0.2</UAPToolsPackageVersion>
       <UAPToolsPackageName>microsoft.dotnet.uap.testtools</UAPToolsPackageName>
 
-      <UAPToolsFolder Condition="'$(UAPToolsFolder)'==''">$(PackagesDir)$(UAPToolsPackageName)\$(UAPToolsPackageVersion)\Tools</UAPToolsFolder>
+      <UAPToolsFolder Condition="'$(UAPToolsFolder)'==''">$(PackagesDir)$(UAPToolsPackageName)\$(UAPToolsPackageVersion)\Tools\$(ArchGroup)</UAPToolsFolder>
       <UAPToolsFolder>$(UAPToolsFolder.Replace('/', '\'))</UAPToolsFolder>
     </PropertyGroup>
 
