@@ -22,6 +22,7 @@ namespace System.ServiceModel.Channels
         private string _defaultFaultAction;
         private const string AddressingNoneToStringFormat = "AddressingNone ({0})";
         private const string Addressing10ToStringFormat = "Addressing10 ({0})";
+        private const string Addressing200408ToStringFormat = "Addressing200408 ({0})";
 
         private static AddressingVersion s_none = new AddressingVersion(AddressingNoneStrings.Namespace, XD.AddressingNoneDictionary.Namespace,
             AddressingNoneToStringFormat, new MessagePartSpecification(), null, null, null, null, null);
@@ -32,6 +33,11 @@ namespace System.ServiceModel.Channels
             Addressing10Strings.FaultAction, Addressing10Strings.DefaultFaultAction);
         private static MessagePartSpecification s_addressing10SignedMessageParts;
 
+        private static AddressingVersion s_addressing200408 = new AddressingVersion(Addressing200408Strings.Namespace,
+            XD.Addressing200408Dictionary.Namespace, Addressing200408ToStringFormat, Addressing200408SignedMessageParts,
+            Addressing200408Strings.Anonymous, XD.Addressing200408Dictionary.Anonymous, null,
+            Addressing200408Strings.FaultAction, Addressing200408Strings.DefaultFaultAction);
+        private static MessagePartSpecification s_addressing200408SignedMessageParts;
 
         private AddressingVersion(string ns, XmlDictionaryString dictionaryNs, string toStringFormat,
             MessagePartSpecification signedMessageParts, string anonymous, XmlDictionaryString dictionaryAnonymous, string none, string faultAction, string defaultFaultAction)
@@ -57,6 +63,11 @@ namespace System.ServiceModel.Channels
             _defaultFaultAction = defaultFaultAction;
         }
 
+
+        public static AddressingVersion WSAddressingAugust2004
+        {
+            get { return s_addressing200408; }
+        }
 
         public static AddressingVersion WSAddressing10
         {
@@ -96,6 +107,28 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private static MessagePartSpecification Addressing200408SignedMessageParts
+        {
+            get
+            {
+                if (s_addressing200408SignedMessageParts == null)
+                {
+                    MessagePartSpecification s = new MessagePartSpecification(
+                        new XmlQualifiedName(AddressingStrings.To, Addressing200408Strings.Namespace),
+                        new XmlQualifiedName(AddressingStrings.From, Addressing200408Strings.Namespace),
+                        new XmlQualifiedName(AddressingStrings.FaultTo, Addressing200408Strings.Namespace),
+                        new XmlQualifiedName(AddressingStrings.ReplyTo, Addressing200408Strings.Namespace),
+                        new XmlQualifiedName(AddressingStrings.MessageId, Addressing200408Strings.Namespace),
+                        new XmlQualifiedName(AddressingStrings.RelatesTo, Addressing200408Strings.Namespace),
+                        new XmlQualifiedName(AddressingStrings.Action, Addressing200408Strings.Namespace)
+                        );
+                    s.MakeReadOnly();
+                    s_addressing200408SignedMessageParts = s;
+                }
+
+                return s_addressing200408SignedMessageParts;
+            }
+        }
 
         internal XmlDictionaryString DictionaryNamespace
         {

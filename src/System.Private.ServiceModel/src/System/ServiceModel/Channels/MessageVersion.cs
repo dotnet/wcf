@@ -17,6 +17,8 @@ namespace System.ServiceModel.Channels
         private static MessageVersion s_soap12;
         private static MessageVersion s_soap11Addressing10;
         private static MessageVersion s_soap12Addressing10;
+        private static MessageVersion s_soap11Addressing200408;
+        private static MessageVersion s_soap12Addressing200408;
         private const string MessageVersionToStringFormat = "{0} {1}";
 
         static MessageVersion()
@@ -26,6 +28,8 @@ namespace System.ServiceModel.Channels
             s_soap12 = new MessageVersion(EnvelopeVersion.Soap12, AddressingVersion.None);
             s_soap11Addressing10 = new MessageVersion(EnvelopeVersion.Soap11, AddressingVersion.WSAddressing10);
             s_soap12Addressing10 = new MessageVersion(EnvelopeVersion.Soap12, AddressingVersion.WSAddressing10);
+            s_soap11Addressing200408 = new MessageVersion(EnvelopeVersion.Soap11, AddressingVersion.WSAddressingAugust2004);
+            s_soap12Addressing200408 = new MessageVersion(EnvelopeVersion.Soap12, AddressingVersion.WSAddressingAugust2004);
         }
 
         private MessageVersion(EnvelopeVersion envelopeVersion, AddressingVersion addressingVersion)
@@ -57,6 +61,10 @@ namespace System.ServiceModel.Channels
                 {
                     return s_soap12Addressing10;
                 }
+                else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
+                {
+                    return s_soap12Addressing200408;
+                }
                 else if (addressingVersion == AddressingVersion.None)
                 {
                     return s_soap12;
@@ -72,6 +80,10 @@ namespace System.ServiceModel.Channels
                 if (addressingVersion == AddressingVersion.WSAddressing10)
                 {
                     return s_soap11Addressing10;
+                }
+                else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
+                {
+                    return s_soap11Addressing200408;
                 }
                 else if (addressingVersion == AddressingVersion.None)
                 {
@@ -127,6 +139,8 @@ namespace System.ServiceModel.Channels
             int code = 0;
             if (this.Envelope == EnvelopeVersion.Soap11)
                 code += 1;
+            if (this.Addressing == AddressingVersion.WSAddressingAugust2004)
+                code += 2;
             return code;
         }
 
@@ -143,6 +157,16 @@ namespace System.ServiceModel.Channels
         public static MessageVersion Soap11WSAddressing10
         {
             get { return s_soap11Addressing10; }
+        }
+
+        public static MessageVersion Soap12WSAddressingAugust2004
+        {
+            get { return s_soap12Addressing200408; }
+        }
+
+        public static MessageVersion Soap11WSAddressingAugust2004
+        {
+            get { return s_soap11Addressing200408; }
         }
 
         public static MessageVersion Soap11

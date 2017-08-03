@@ -63,9 +63,17 @@ namespace System.ServiceModel.Channels
                         {
                             WriteHeader(writer, MessageVersion.Soap12WSAddressing10);
                         }
+                        else if (IsMessageVersionSupported(MessageVersion.Soap12WSAddressingAugust2004))
+                        {
+                            WriteHeader(writer, MessageVersion.Soap12WSAddressingAugust2004);
+                        }
                         else if (IsMessageVersionSupported(MessageVersion.Soap11WSAddressing10))
                         {
                             WriteHeader(writer, MessageVersion.Soap11WSAddressing10);
+                        }
+                        else if (IsMessageVersionSupported(MessageVersion.Soap11WSAddressingAugust2004))
+                        {
+                            WriteHeader(writer, MessageVersion.Soap11WSAddressingAugust2004);
                         }
                         else if (IsMessageVersionSupported(MessageVersion.Soap12))
                         {

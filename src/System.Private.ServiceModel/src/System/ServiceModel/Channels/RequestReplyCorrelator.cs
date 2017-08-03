@@ -99,6 +99,17 @@ namespace System.ServiceModel.Channels
             {
                 destination = info.ReplyTo;
             }
+            else if (reply.Version.Addressing == AddressingVersion.WSAddressingAugust2004)
+            {
+                if (info.HasFrom)
+                {
+                    destination = info.From;
+                }
+                else
+                {
+                    destination = EndpointAddress.AnonymousAddress;
+                }
+            }
 
             if (destination != null)
             {
@@ -180,7 +191,14 @@ namespace System.ServiceModel.Channels
             {
                 _faultTo = message.Headers.FaultTo;
                 _replyTo = message.Headers.ReplyTo;
-                _from = null;
+                if (message.Version.Addressing == AddressingVersion.WSAddressingAugust2004)
+                {
+                    _from = message.Headers.From;
+                }
+                else 
+                {
+                    _from = null;
+                }
             }
 
             internal EndpointAddress FaultTo
