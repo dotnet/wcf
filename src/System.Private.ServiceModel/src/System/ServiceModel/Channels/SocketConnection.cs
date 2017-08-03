@@ -315,7 +315,7 @@ namespace System.ServiceModel.Channels
 
         private void CancelSendTimer()
         {
-            _sendTimer.Cancel();
+            _sendTimer?.Cancel();
         }
 
         private void CloseAsyncAndLinger()
