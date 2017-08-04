@@ -958,8 +958,7 @@ namespace System.ServiceModel
             }
             else if (IsNone)
             {
-                //FIXME: throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion", SR.Format(SR.SFxNone2004));
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion", SR.Format("The WS-Addressing \"none\" value is not valid for the August 2004 version of WS-Addressing."));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion", SR.Format(SR.SFxNone2004));
             }
             else
             {

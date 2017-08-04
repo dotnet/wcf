@@ -1971,4 +1971,10 @@
   <data name="PeerTrustNotSupportedOnOSX" xml:space="preserve">
     <value>Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</value>
   </data>
+  <data name="SFxNone2004" xml:space="preserve">
+    <value>The WS-Addressing "none" value is not valid for the August 2004 version of WS-Addressing.</value>
+  </data>
+  <data name="SFxRequestHasInvalidFromOnClient" xml:space="preserve">
+    <value>The request message has From='{0}' but IContextChannel.LocalAddress is '{1}'.  When ManualAddressing is false, these values must be the same, null, or EndpointAddress.AnonymousAddress.  Enable ManualAddressing or avoid setting From on the message.</value>
+  </data>
 </root>
