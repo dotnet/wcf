@@ -87,7 +87,7 @@ namespace Microsoft.SyndicationFeed.Atom
             {
                 reader.MoveToContent();
 
-                return XmlUtils.ReadSyndicationContent(reader);
+                return reader.ReadSyndicationContent();
             }
         }
 

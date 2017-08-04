@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+<rss version="2.0">
    <channel>
       <title asd="123"><![CDATA[Lorem ipsum feed for an interval of 1 minutes]]></title>
       <description><![CDATA[This is a constantly updating lorem ipsum feed]]></description>
@@ -22,7 +22,7 @@
          <description><![CDATA[Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.]]></description>
          <link>http://example.com/test/1499372700</link>
          <guid isPermaLink="true">http://example.com/test/1499372700</guid>
-         <dc:creator><![CDATA[John Smith]]></dc:creator>
+         <author><![CDATA[John Smith]]></author>
          <pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate>
       </item>
       <item>
@@ -30,7 +30,7 @@
          <description><![CDATA[Do ipsum dolore veniam minim est cillum aliqua ea.]]></description>
          <link>http://example.com/test/1499372640</link>
          <guid isPermaLink="true">http://example.com/test/1499372640</guid>
-         <dc:creator><![CDATA[John Smith]]></dc:creator>
+         <author><![CDATA[John Smith]]></author>
          <pubDate>Thu, 06 Jul 2017 20:24:00 GMT</pubDate>
         <enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3" length="12216320" type="audio/mpeg">Ignored Text</enclosure>
       </item>

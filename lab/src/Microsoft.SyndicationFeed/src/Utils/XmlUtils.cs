@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -77,70 +78,28 @@ namespace Microsoft.SyndicationFeed
             return Task.CompletedTask;
         }
 
-        public static ISyndicationContent ReadSyndicationContent(XmlReader reader)
+
+        public static void SplitName(string name, out string prefix, out string localName)
         {
-            var content = new SyndicationContent(reader.Name);
-
-            content.Namespace = reader.NamespaceURI;
-
-            //
-            // Attributes
-            if (reader.HasAttributes)
+            int i = name.IndexOf(':');
+            if (i > 0)
             {
-                while (reader.MoveToNextAttribute())
-                {
-                    string ns = reader.NamespaceURI;
-                    string name = reader.LocalName;
-
-                    if (IsXmlns(name, ns) || IsXmlSchemaType(name, ns))
-                    {
-                        continue;
-                    }
-
-                    content.AddAttribute(new SyndicationAttribute(name, ns, reader.Value));
-                }
-
-                reader.MoveToContent();
-            }
-
-            //
-            // Content
-            if (!reader.IsEmptyElement)
-            {
-                reader.ReadStartElement();
-
-                //
-                // Value
-                if (reader.HasValue)
-                {
-                    content.Value = reader.ReadContentAsString();
-                }
-                //
-                // Children
-                else
-                {
-                    while (reader.IsStartElement())
-                    {
-                        content.AddField(ReadSyndicationContent(reader));
-                    }
-                }
-
-                reader.ReadEndElement(); // end
+                prefix = name.Substring(0, i);
+                localName = name.Substring(i + 1);
             }
             else
             {
-                reader.Skip();
+                prefix = null;
+                localName = name;
             }
-
-            return content;
         }
 
-        private static bool IsXmlns(string name, string ns)
+        public static bool IsXmlns(string name, string ns)
         {
             return name == "xmlns" || ns == "http://www.w3.org/2000/xmlns/";
         }
 
-        private static bool IsXmlSchemaType(string name, string ns)
+        public static bool IsXmlSchemaType(string name, string ns)
         {
             return name == "type" && ns == "http://www.w3.org/2001/XMLSchema-instance";
         }
