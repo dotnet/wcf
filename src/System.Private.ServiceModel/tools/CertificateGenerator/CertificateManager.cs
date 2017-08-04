@@ -46,7 +46,7 @@ namespace WcfTestCommon
         {
             BridgeConfigurationChanged(null, new EventArgs());
 
-            // Unintall only the certificates this process added
+            // Uninstalls only the certificates this process added
             UninstallAllCertificates(force: false);
         }
 
