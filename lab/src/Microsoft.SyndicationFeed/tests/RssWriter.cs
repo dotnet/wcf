@@ -4,7 +4,9 @@
 
 using Microsoft.SyndicationFeed.Tests;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -288,7 +290,7 @@ namespace Microsoft.SyndicationFeed.Rss
             var res = sb.ToString();
             Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-16\"?><rss version=\"2.0\"><channel><CustomTag>Custom Content</CustomTag></channel></rss>");
         }
-
+        
         [Fact]
         public async Task Rss20Writer_ReadAndWriteFeed_TestResultWithRss20Test()
         {
@@ -387,21 +389,115 @@ namespace Microsoft.SyndicationFeed.Rss
                 res = sw.ToString();
             }
 
+            
             var originalReader = XmlReader.Create(filePath);
             var resReader = XmlReader.Create(new StringReader(res));
 
-            var listOriginal = await RSS20.RssReadFeedContent(originalReader);
-            var listRes = await RSS20.RssReadFeedContent(resReader);
+            await CompareFeeds(new Rss20FeedReader(originalReader), new Rss20FeedReader(resReader));
+            
+        }
 
-            for (int i=0; i<listOriginal.Count; i++)
+        private async Task CompareFeeds(ISyndicationFeedReader f1, ISyndicationFeedReader f2)
+        {
+            while (await f1.Read() && await f2.Read())
             {
-                Assert.True(listOriginal[i].Name == listRes[i].Name);
-                if (!string.IsNullOrEmpty(listOriginal[i].Value))
+                Assert.True(f1.ElementType == f2.ElementType);
+
+                switch (f1.ElementType)
                 {
-                    Assert.True(listOriginal[i].Value == listRes[i].Value);
+                    case SyndicationElementType.Item:
+                        ISyndicationItem item1 = await f1.ReadItem();
+                        ISyndicationItem item2 = await f2.ReadItem();
+                        CompareItem(item1, item2);
+                        break;
+
+                    case SyndicationElementType.Person:
+                        ISyndicationPerson person1 = await f1.ReadPerson();
+                        ISyndicationPerson person2 = await f2.ReadPerson();
+                        ComparePerson(person1, person2);
+                        break;
+
+                    case SyndicationElementType.Image:
+                        ISyndicationImage image1 = await f1.ReadImage();
+                        ISyndicationImage image2 = await f2.ReadImage();
+                        CompareImage(image1, image2);
+                        break;
+
+                    default:
+                        ISyndicationContent content1 = await f1.ReadContent();
+                        ISyndicationContent content2 = await f2.ReadContent();
+                        CompareContent(content1, content2);
+                        break;
                 }
             }
+        }
 
+        [Fact]
+        public async Task Rss20Writer_WriteNamespaces()
+        {
+
+            StringWriterWithEncoding sw = new StringWriterWithEncoding(Encoding.UTF8);
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            {
+
+                var list = new List<SyndicationAttribute>()
+                {
+                    new SyndicationAttribute("xmlns:content", "http://purl.org/rss/1.0/modules/content/"),
+                    new SyndicationAttribute("xmlns:media", "http://search.yahoo.com/mrss/"),
+                };
+
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, list);
+
+                await writer.WriteValue("hello", "world");
+            }
+
+            string res = sw.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\"><channel><hello>world</hello></channel></rss>");
+        }
+
+        void ComparePerson(ISyndicationPerson person1, ISyndicationPerson person2)
+        {
+            Assert.True(person1.Email == person2.Email);
+            Assert.True(person1.RelationshipType == person2.RelationshipType);
+        }
+
+        void CompareImage(ISyndicationImage image1, ISyndicationImage image2)
+        {
+            Assert.True(image1.RelationshipType == image2.RelationshipType);
+            Assert.True(image1.Url == image2.Url);
+            Assert.True(image1.Link.Uri.ToString() == image2.Link.Uri.ToString());
+            Assert.True(image1.Description == image2.Description);
+        }
+
+        void CompareItem(ISyndicationItem item1, ISyndicationItem item2)
+        {
+            Assert.True(item1.Id == item2.Id);
+            Assert.True(item1.Title == item2.Title);
+            Assert.True(item1.LastUpdated == item2.LastUpdated);
+        }
+
+        void CompareContent(ISyndicationContent content1, ISyndicationContent content2)
+        {
+            Assert.True(content1.Name == content2.Name);
+
+            //Compare attributes
+            foreach (var a in content1.Attributes)
+            {
+                var a2 = content2.Attributes.Single(att => att.Name == a.Name);
+                Assert.True(a.Name == a2.Name);
+                Assert.True(a.Namespace == a2.Namespace);
+                Assert.True(a.Value == a2.Value);
+            }
+
+            //Compare fields
+            foreach (var f in content1.Fields)
+            {
+                var f2 = content2.Fields.Single(field => field.Name == f.Name && field.Value == f.Value);
+                CompareContent(f, f2);
+            }
+
+            Assert.True(content1.Value == content2.Value);
         }
     }
 }

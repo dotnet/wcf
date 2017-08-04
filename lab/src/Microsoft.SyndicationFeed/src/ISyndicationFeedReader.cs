@@ -22,6 +22,8 @@ namespace Microsoft.SyndicationFeed
 
         Task<ISyndicationPerson> ReadPerson();
 
+        Task<ISyndicationImage> ReadImage();
+
         Task<ISyndicationContent> ReadContent();
 
         Task<ISyndicationCategory> ReadCategory();

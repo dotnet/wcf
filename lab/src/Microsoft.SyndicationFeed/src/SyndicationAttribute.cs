@@ -13,10 +13,10 @@ namespace Microsoft.SyndicationFeed
         {
         }
 
-        public SyndicationAttribute(string name, string nameSpace, string value)
+        public SyndicationAttribute(string name, string ns, string value)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Namespace = nameSpace ?? throw new ArgumentNullException(nameof(nameSpace));
+            Namespace = ns ?? throw new ArgumentNullException(nameof(ns));
             Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
