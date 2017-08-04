@@ -402,11 +402,8 @@ namespace System.ServiceModel.Channels
             {
                 if (addressingVersion == AddressingVersion.WSAddressing10)
                     return AnonymousTo10;
-                else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
-                    return AnonymousTo200408;
                 else
-                    // Verify that only WSA10 and WSA200408 is supported
-                    throw ExceptionHelper.PlatformNotSupported();
+                    return AnonymousTo200408;
             }
             else
             {
@@ -424,11 +421,8 @@ namespace System.ServiceModel.Channels
             {
                 if (addressingVersion == AddressingVersion.WSAddressing10)
                     return AnonymousTo10;
-                else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
-                    return AnonymousTo200408;
                 else
-                    // Verify that only WSA10 is supported
-                    throw ExceptionHelper.PlatformNotSupported();
+                    return AnonymousTo200408;
             }
             else
             {

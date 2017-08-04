@@ -616,8 +616,7 @@ namespace System.ServiceModel.Channels
                         EndpointAddress from = headers.From;
                         if ((from != null) && !from.IsAnonymous && (localUri != from.Uri))
                         {
-                            // FIXME: string text = SR.Format(SR.SFxRequestHasInvalidFromOnClient, from.Uri, localUri);
-                            string text = SR.Format("The request message has From='{0}' but IContextChannel.LocalAddress is '{1}'.  When ManualAddressing is false, these values must be the same, null, or EndpointAddress.AnonymousAddress.  Enable ManualAddressing or avoid setting From on the message.", faultTo.Uri, localUri);
+                            string text = SR.Format(SR.SFxRequestHasInvalidFromOnClient, from.Uri, localUri);
                             Exception error = new InvalidOperationException(text);
                             throw TraceUtility.ThrowHelperError(error, rpc.Request);
                         }
