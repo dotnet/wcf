@@ -53,12 +53,22 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("HttpSoap11.svc//http-soap11"); }
     }
+	
+	public static string HttpSoap11WSA2004_Address
+	{
+		get { return GetEndpointAddress("HttpSoap11WSA2004.svc//http-Soap11WSA2004"); }
+	}
 
     public static string HttpSoap12_Address
     {
         get { return GetEndpointAddress("HttpSoap12.svc//http-soap12"); }
     }
 
+	public static string HttpSoap12WSA2004_Address
+	{
+		get { return GetEndpointAddress("HttpSoap12WSA2004.svc//http-Soap12WSA2004"); }
+	}
+	
     public static string HttpBinary_Address
     {
         get { return GetEndpointAddress("HttpBinary.svc//http-binary"); }

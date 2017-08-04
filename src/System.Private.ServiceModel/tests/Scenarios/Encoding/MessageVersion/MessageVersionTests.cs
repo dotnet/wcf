@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -15,7 +15,7 @@ public static partial class MessageVersionTests
     // Client and Server bindings setup exactly the same using Soap12WSA10
     [WcfFact]
     [OuterLoop]
-    public static void SameBinding_Soap12WSA10_EchoString()
+    public static void SameBinding_Soap12WSA2004_EchoString()
     {
         CustomBinding binding = null;
         EndpointAddress endpointAddress = null;
@@ -27,8 +27,8 @@ public static partial class MessageVersionTests
         try
         {
             // *** SETUP *** \\
-            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap12WSAddressing10, Encoding.UTF8), new HttpTransportBindingElement());
-            endpointAddress = new EndpointAddress(Endpoints.HttpSoap12_Address);
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap12WSAddressingAugust2004, Encoding.UTF8), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpSoap12WSA2004_Address);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
 
@@ -51,20 +51,20 @@ public static partial class MessageVersionTests
 
     [WcfFact]
     [OuterLoop]
-    public static void SameBinding_Soap11_EchoString()
+    public static void SameBinding_Soap11WSA2004_EchoString()
     {
         CustomBinding binding = null;
         EndpointAddress endpointAddress = null;
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
-        string testString = "Hello";
         string result = null;
+        string testString = "Hello";
 
         try
         {
             // *** SETUP *** \\
-            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpTransportBindingElement());
-            endpointAddress = new EndpointAddress(Endpoints.HttpSoap11_Address);
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11WSAddressingAugust2004, Encoding.UTF8), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpSoap11WSA2004_Address);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
 

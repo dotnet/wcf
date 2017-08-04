@@ -60,8 +60,10 @@ namespace SelfHostedWCFService
             CreateHost<HttpsNtlmTestServiceHost, WcfService.WcfService>("WindowAuthenticationNtlm/HttpsNtlm.svc", httpsBaseAddress);
             CreateHost<HttpSoap11TestServiceHost, WcfService.WcfService>("HttpSoap11.svc", httpBaseAddress);
             CreateHost<HttpsSoap11TestServiceHost, WcfService.WcfService>("HttpsSoap11.svc", httpsBaseAddress);
+            CreateHost<HttpSoap11WSA2004TestServiceHost, WcfService.WcfService>("HttpSoap11WSA2004.svc", httpBaseAddress);
             CreateHost<HttpsSoap12TestServiceHost, WcfService.WcfService>("HttpsSoap12.svc", httpsBaseAddress);
             CreateHost<HttpSoap12TestServiceHost, WcfService.WcfService>("HttpSoap12.svc", httpBaseAddress);
+            CreateHost<HttpSoap12WSA2004TestServiceHost, WcfService.WcfService>("HttpSoap12WSA2004.svc", httpBaseAddress);
             CreateHost<HttpsWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpsWindows.svc", httpsBaseAddress);
             CreateHost<HttpWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpWindows.svc", httpBaseAddress);
             CreateHost<NetHttpTestServiceHost, WcfService.WcfService>("NetHttp.svc", httpBaseAddress);
