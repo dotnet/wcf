@@ -88,7 +88,7 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 reader.MoveToContent();
 
-                return XmlUtils.ReadSyndicationContent(reader);
+                return reader.ReadSyndicationContent();
             }
         }
 

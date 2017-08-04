@@ -31,8 +31,10 @@ namespace Microsoft.SyndicationFeed.Rss
 
             using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
             {
-                XmlUtils.Write(content, writer);
+                writer.WriteSyndicationContent(content);
+
                 writer.Flush();
+
                 return sb.ToString();
             }
         }

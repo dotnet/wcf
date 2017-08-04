@@ -4,6 +4,7 @@
 
 using Microsoft.SyndicationFeed.Rss;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -123,9 +124,15 @@ namespace Microsoft.SyndicationFeed.Tests
         }
 
         [Fact]
-        public async Task ReadFeedElements()
+        public static async Task ReadFeedElements()
         {
-            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
+            var reader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true });
+            await TestReadFeedElements(reader);
+        }
+                
+        public static async Task TestReadFeedElements(XmlReader outerXmlReader)
+        {
+            using (var xmlReader = outerXmlReader)
             {
                 var reader = new Rss20FeedReader(xmlReader);
                 int items = 0;
@@ -176,6 +183,24 @@ namespace Microsoft.SyndicationFeed.Tests
                     }
                 }
             }
+        }
+
+
+        public static async Task<List<ISyndicationContent>> RssReadFeedContent(XmlReader xmlReader)
+        {
+            var list = new List<ISyndicationContent>();
+
+            using (XmlReader xReader = xmlReader)
+            {
+                var reader = new Rss20FeedReader(xReader);
+
+                while(await reader.Read())
+                {
+                    list.Add(await reader.ReadContent());
+                }
+            }
+
+            return list;
         }
     }
 }

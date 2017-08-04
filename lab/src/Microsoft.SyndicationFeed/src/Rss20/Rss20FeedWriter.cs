@@ -12,7 +12,7 @@ namespace Microsoft.SyndicationFeed.Rss
     {
         private XmlWriter _writer;
 
-        private bool _rssDocumentCreated = false;
+        private bool _feedStarted = false;
 
         public Rss20FeedWriter(XmlWriter writer)
             : this(writer, new Rss20Formatter(writer.Settings))
@@ -34,9 +34,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
@@ -49,9 +49,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(category));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(category));
@@ -64,9 +64,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(image));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(image));
@@ -79,9 +79,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(item));
@@ -95,9 +95,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(person));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(person));
@@ -110,9 +110,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(link));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(link));
@@ -121,9 +121,9 @@ namespace Microsoft.SyndicationFeed.Rss
         public Task WriteValue<T>(string name, T value)
         {
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             if (string.IsNullOrEmpty(name))
@@ -148,13 +148,13 @@ namespace Microsoft.SyndicationFeed.Rss
             return XmlUtils.WriteRaw(_writer, content);
         }
 
-        private void OpenDocument()
+        private void StartFeed()
         {
             //Write <rss version="2.0">
             _writer.WriteStartElement(Rss20Constants.RssTag);
             _writer.WriteAttributeString(Rss20Constants.VersionTag, Rss20Constants.Version);
             _writer.WriteStartElement(Rss20Constants.ChannelTag);
-            _rssDocumentCreated = true;
+            _feedStarted = true;
         }
     }
 }
