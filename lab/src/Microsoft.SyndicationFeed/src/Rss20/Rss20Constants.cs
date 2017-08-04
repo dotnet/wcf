@@ -4,7 +4,7 @@
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public static class Rss20Constants
+    static class Rss20Constants
     {
         public const string AuthorTag = "author";
         public const string CategoryTag = "category";

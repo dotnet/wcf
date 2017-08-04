@@ -4,6 +4,7 @@
 
 using Microsoft.SyndicationFeed.Rss;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -123,9 +124,15 @@ namespace Microsoft.SyndicationFeed.Tests
         }
 
         [Fact]
-        public async Task ReadFeedElements()
+        public static async Task ReadFeedElements()
         {
-            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
+            var reader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true });
+            await TestReadFeedElements(reader);
+        }
+                
+        public static async Task TestReadFeedElements(XmlReader outerXmlReader)
+        {
+            using (var xmlReader = outerXmlReader)
             {
                 var reader = new Rss20FeedReader(xmlReader);
                 int items = 0;
@@ -160,13 +167,13 @@ namespace Microsoft.SyndicationFeed.Tests
                             {
                                 Assert.True(item.Title == "Lorem ipsum 2017-07-06T20:25:00+00:00");
                                 Assert.True(item.Description == "Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.");
-                                Assert.True(item.Links.Count() == 2);
+                                Assert.True(item.Links.Count() == 3);
                             }
                             else if(items == 2)
                             {
                                 Assert.True(item.Title == "Lorem ipsum 2017-07-06T20:24:00+00:00");
                                 Assert.True(item.Description == "Do ipsum dolore veniam minim est cillum aliqua ea.");
-                                Assert.True(item.Links.Count() == 2);
+                                Assert.True(item.Links.Count() == 3);
                             }
 
                             break;
@@ -176,6 +183,24 @@ namespace Microsoft.SyndicationFeed.Tests
                     }
                 }
             }
+        }
+
+
+        public static async Task<List<ISyndicationContent>> RssReadFeedContent(XmlReader xmlReader)
+        {
+            var list = new List<ISyndicationContent>();
+
+            using (XmlReader xReader = xmlReader)
+            {
+                var reader = new Rss20FeedReader(xReader);
+
+                while(await reader.Read())
+                {
+                    list.Add(await reader.ReadContent());
+                }
+            }
+
+            return list;
         }
     }
 }

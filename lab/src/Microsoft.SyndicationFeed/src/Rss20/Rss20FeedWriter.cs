@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -11,18 +12,29 @@ namespace Microsoft.SyndicationFeed.Rss
     public class Rss20FeedWriter : ISyndicationFeedWriter
     {
         private XmlWriter _writer;
-
-        private bool _rssDocumentCreated = false;
+        private bool _feedStarted;
+        private IEnumerable<ISyndicationAttribute> _attributes;
 
         public Rss20FeedWriter(XmlWriter writer)
             : this(writer, new Rss20Formatter(writer.Settings))
         {
         }
 
+        public Rss20FeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes)
+            : this(writer, new Rss20Formatter(writer.Settings), attributes)
+        {
+        }
+
         public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter)
+            : this(writer, formatter, null)
+        {
+        }
+
+        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter, IEnumerable<ISyndicationAttribute> namespaces)
         {
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
             Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
+            _attributes = namespaces; // optional
         }
 
         public ISyndicationFeedFormatter Formatter { get; private set; }
@@ -34,9 +46,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
@@ -49,9 +61,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(category));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(category));
@@ -64,9 +76,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(image));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(image));
@@ -79,9 +91,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(item));
@@ -95,9 +107,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(person));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(person));
@@ -110,9 +122,9 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(link));
             }
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             return XmlUtils.WriteRaw(_writer, Formatter.Format(link));
@@ -121,9 +133,9 @@ namespace Microsoft.SyndicationFeed.Rss
         public Task WriteValue<T>(string name, T value)
         {
 
-            if (!_rssDocumentCreated)
+            if (!_feedStarted)
             {
-                OpenDocument();
+                StartFeed();
             }
 
             if (string.IsNullOrEmpty(name))
@@ -148,13 +160,27 @@ namespace Microsoft.SyndicationFeed.Rss
             return XmlUtils.WriteRaw(_writer, content);
         }
 
-        private void OpenDocument()
+        private void StartFeed()
         {
             //Write <rss version="2.0">
             _writer.WriteStartElement(Rss20Constants.RssTag);
+
+            //Write namespaces if exist
+            if (_attributes != null)
+            {
+                foreach (var ns in _attributes)
+                {
+                    if(ns.Namespace != null)
+                    {
+                        XmlUtils.SplitName(ns.Name,out string prefix, out string localname);
+                        _writer.WriteAttributeString(prefix, localname, null, ns.Value);
+                    }
+                }
+            }
+
             _writer.WriteAttributeString(Rss20Constants.VersionTag, Rss20Constants.Version);
             _writer.WriteStartElement(Rss20Constants.ChannelTag);
-            _rssDocumentCreated = true;
+            _feedStarted = true;
         }
     }
 }

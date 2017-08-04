@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+  <channel>
+    <title>NDTV News  - Latest</title>
+    <link>http://www.ndtv.com/</link>
+    <lastBuildDate>August 03, 2017 02:50 AM</lastBuildDate>
+    <newsAppVersion>0.6</newsAppVersion>
+    <timezone>GMT+05:30</timezone>
+    <recordcount>200</recordcount>
+    
+    <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://feeds.feedburner.com/ndtvnews-latest" />
+    <feedburner:info xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" uri="ndtvnews-latest" />
+    
+    <item>
+      <guid isPermaLink="false" ignore="" identifier="story-news-1732763" cache="1">1732763</guid>
+      <title><![CDATA[Vikram Goud Wanted Sympathy To Contest Polls, Paid Shooters 50 Lakh: Cops]]></title>
+      <link><![CDATA[http://www.ndtv.com/hyderabad-news/congress-leader-vikram-goud-wanted-sympathy-to-contest-polls-paid-shooters-50-lakh-cops-1732763]]></link>
+      <updatedAt>August 03, 2017 02:37 AM</updatedAt>
+      <pubDate>Thu, 03 Aug 2017 02:37:09 +0530</pubDate>
+      <StoryImage><![CDATA[https://i.ndtvimg.com/i/2017-07/vikram-goud_240x180_71501227973.jpg]]></StoryImage>
+      <category><![CDATA[Hyderabad]]></category>
+      <description><![CDATA[Vikram Goud, the son of a former Andhra Pradesh minister, was rushed to Hyderabad's Apollo Hospital with multiple bullet injuries last week. But once the police initiated a probe, Vikram, from victim,...]]></description>
+      <fullimage><![CDATA[https://i.ndtvimg.com/i/2017-07/vikram-goud_650x400_51501227990.jpg]]></fullimage>
+      <video_id />
+      <source>NDTV</source>
+    </item>
+    <item>
+      <guid isPermaLink="false" ignore="" identifier="story-news-1732758" cache="1">1732758</guid>
+      <title><![CDATA[Mission 2019: Amit Shah On 3-Day Haryana Visit]]></title>
+      <link><![CDATA[http://www.ndtv.com/india-news/mission-2019-amit-shah-on-3-day-haryana-visit-1732758]]></link>
+      <updatedAt>August 03, 2017 01:33 AM</updatedAt>
+      <pubDate>Thu, 03 Aug 2017 01:33:51 +0530</pubDate>
+      <StoryImage><![CDATA[https://i.ndtvimg.com/i/2017-07/amit-shah-pti_240x180_41500780211.jpg]]></StoryImage>
+      <category><![CDATA[All India]]></category>
+      <description><![CDATA[BJP president Amit Shah today began his Haryana visit from Bahadurgarh and is slated to hold a series of meetings and review works undertaken by the M L Khattar government during his three-day stay.]]></description>
+      <fullimage><![CDATA[https://i.ndtvimg.com/i/2017-07/amit-shah-650_650x400_61501222017.jpg]]></fullimage>
+      <video_id />
+      <source>PTI</source>
+    </item>
+    <item>
+      <guid isPermaLink="false" ignore="" identifier="story-news-1732755" cache="1">1732755</guid>
+      <title><![CDATA[Futuristic Hyperloop Transport Vehicle Passes Another Test]]></title>
+      <link><![CDATA[http://www.ndtv.com/world-news/futuristic-hyperloop-transport-vehicle-passes-another-test-1732755]]></link>
+      <updatedAt>August 03, 2017 01:30 AM</updatedAt>
+      <pubDate>Thu, 03 Aug 2017 01:30:16 +0530</pubDate>
+      <StoryImage><![CDATA[https://i.ndtvimg.com/i/2017-08/hyperloop-reuters_240x180_51501703688.jpg]]></StoryImage>
+      <category><![CDATA[World]]></category>
+      <description><![CDATA[The near-supersonic rail system known as hyperloop has passed another key milestone on its path to become reality, the US startup Hyperloop One said Wednesday]]></description>
+      <fullimage><![CDATA[https://i.ndtvimg.com/i/2017-08/hyperloop-reuters_650x400_41501703709.jpg]]></fullimage>
+      <video_id />
+      <source>AFP</source>
+    </item>
+  
+</channel>
+</rss>
