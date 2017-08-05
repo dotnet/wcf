@@ -91,17 +91,12 @@ namespace Microsoft.SyndicationFeed.Atom
             }
         }
 
-        private XmlReader CreateXmlReader(string value)
-        {
-            return XmlUtils.CreateXmlReader(value);
-        }
-
         public virtual bool TryParseValue<T>(string value, out T result)
         {
             return Converter.TryParseValue<T>(value, out result);
         }
-        
-        protected virtual ISyndicationCategory CreateCategory(ISyndicationContent content)
+
+        public virtual ISyndicationCategory CreateCategory(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -122,7 +117,7 @@ namespace Microsoft.SyndicationFeed.Atom
             };
         }
 
-        protected virtual ISyndicationImage CreateImage(ISyndicationContent content)
+        public virtual ISyndicationImage CreateImage(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -137,7 +132,7 @@ namespace Microsoft.SyndicationFeed.Atom
             return new SyndicationImage(uri, content.Name);
         }
 
-        protected virtual ISyndicationLink CreateLink(ISyndicationContent content)
+        public virtual ISyndicationLink CreateLink(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -183,7 +178,7 @@ namespace Microsoft.SyndicationFeed.Atom
             };
         }
 
-        protected virtual ISyndicationPerson CreatePerson(ISyndicationContent content)
+        public virtual ISyndicationPerson CreatePerson(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -231,7 +226,7 @@ namespace Microsoft.SyndicationFeed.Atom
             return person;
         }
 
-        protected virtual IAtomEntry CreateEntry(ISyndicationContent content)
+        public virtual IAtomEntry CreateEntry(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -345,7 +340,7 @@ namespace Microsoft.SyndicationFeed.Atom
             return item;
         }
 
-        protected virtual ISyndicationLink CreateSource(ISyndicationContent content)
+        public virtual ISyndicationLink CreateSource(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -415,6 +410,11 @@ namespace Microsoft.SyndicationFeed.Atom
                 Title = title,
                 LastUpdated = lastUpdated
             };
+        }
+
+        private XmlReader CreateXmlReader(string value)
+        {
+            return XmlUtils.CreateXmlReader(value);
         }
     }
 
