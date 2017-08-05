@@ -97,7 +97,7 @@ namespace Microsoft.SyndicationFeed.Rss
             return Converter.TryParseValue<T>(value, out result);
         }
 
-        protected virtual ISyndicationItem CreateItem(ISyndicationContent content)
+        public virtual ISyndicationItem CreateItem(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -182,7 +182,7 @@ namespace Microsoft.SyndicationFeed.Rss
             return item;
         }
 
-        protected virtual ISyndicationLink CreateLink(ISyndicationContent content)
+        public virtual ISyndicationLink CreateLink(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -230,7 +230,7 @@ namespace Microsoft.SyndicationFeed.Rss
             };
         }
 
-        protected virtual ISyndicationPerson CreatePerson(ISyndicationContent content)
+        public virtual ISyndicationPerson CreatePerson(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -244,7 +244,7 @@ namespace Microsoft.SyndicationFeed.Rss
             };
         }
 
-        protected virtual ISyndicationImage CreateImage(ISyndicationContent content)
+        public virtual ISyndicationImage CreateImage(ISyndicationContent content)
         {
             if (content == null)
             {
@@ -310,7 +310,7 @@ namespace Microsoft.SyndicationFeed.Rss
             };
         }
 
-        protected virtual ISyndicationCategory CreateCategory(ISyndicationContent content)
+        public virtual ISyndicationCategory CreateCategory(ISyndicationContent content)
         {
             if (content == null)
             {
