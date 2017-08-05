@@ -5,14 +5,12 @@
 namespace Microsoft.ServiceModel.Syndication
 {
     using System;
-    using System.Collections.ObjectModel;
-    using System.Runtime.Serialization;
-    using System.Xml.Serialization;
     using System.Collections.Generic;
-    using System.Xml;
+    using System.Collections.ObjectModel;
     using System.Runtime.CompilerServices;
-
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
+    using System.Threading.Tasks;
+    using System.Xml;
+    
     public class ServiceDocument : IExtensibleSyndicationObject
     {
         private Uri _baseUri;
@@ -70,16 +68,11 @@ namespace Microsoft.ServiceModel.Syndication
             }
         }
 
-        public static ServiceDocument Load(XmlReader reader)
-        {
-            return Load<ServiceDocument>(reader);
-        }
-
-        public static TServiceDocument Load<TServiceDocument>(XmlReader reader)
+        public static async Task<TServiceDocument> LoadAsync<TServiceDocument>(XmlReader reader)
             where TServiceDocument : ServiceDocument, new()
         {
             AtomPub10ServiceDocumentFormatter<TServiceDocument> formatter = new AtomPub10ServiceDocumentFormatter<TServiceDocument>();
-            formatter.ReadFrom(reader);
+            await formatter.ReadFromAsync(reader);
             return (TServiceDocument)(object)formatter.Document;
         }
 
@@ -88,9 +81,9 @@ namespace Microsoft.ServiceModel.Syndication
             return new AtomPub10ServiceDocumentFormatter(this);
         }
 
-        public void Save(XmlWriter writer)
+        public Task Save(XmlWriter writer)
         {
-            new AtomPub10ServiceDocumentFormatter(this).WriteTo(writer);
+            return new AtomPub10ServiceDocumentFormatter(this).WriteToAsync(writer);
         }
 
         protected internal virtual Workspace CreateWorkspace()
@@ -108,17 +101,17 @@ namespace Microsoft.ServiceModel.Syndication
             return false;
         }
 
-        protected internal virtual void WriteAttributeExtensions(XmlWriter writer, string version)
+        protected internal virtual Task WriteAttributeExtensionsAsync(XmlWriter writer, string version)
         {
-            _extensions.WriteAttributeExtensions(writer);
+            return _extensions.WriteAttributeExtensionsAsync(writer);
         }
 
-        protected internal virtual void WriteElementExtensions(XmlWriter writer, string version)
+        protected internal virtual Task WriteElementExtensionsAsync(XmlWriter writer, string version)
         {
-            _extensions.WriteElementExtensions(writer);
+            return _extensions.WriteElementExtensionsAsync(writer);
         }
 
-        internal void LoadElementExtensions(XmlReader readerOverUnparsedExtensions, int maxExtensionSize)
+        internal void LoadElementExtensions(XmlReaderWrapper readerOverUnparsedExtensions, int maxExtensionSize)
         {
             _extensions.LoadElementExtensions(readerOverUnparsedExtensions, maxExtensionSize);
         }

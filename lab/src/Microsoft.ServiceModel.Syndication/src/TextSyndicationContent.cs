@@ -5,15 +5,10 @@
 namespace Microsoft.ServiceModel.Syndication
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.Schema;
-    using System.Xml.Serialization;
     using System.Runtime.CompilerServices;
+    using System.Xml;
 
     // NOTE: This class implements Clone so if you add any members, please update the copy ctor
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
     public class TextSyndicationContent : SyndicationContent
     {
         private string _text;
@@ -27,7 +22,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (!TextSyndicationContentKindHelper.IsDefined(textKind))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("textKind"));
+                throw new ArgumentOutOfRangeException(nameof(textKind));
             }
             _text = text;
             _textKind = textKind;
@@ -38,7 +33,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (source == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("source");
+                throw new ArgumentNullException(nameof(source));
             }
             _text = source._text;
             _textKind = source._textKind;

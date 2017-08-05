@@ -1,3 +1,5 @@
+XmlNodeIsNotAnElement=The XmlReader is not currently in a node of type Element.
+InvalidSkipHours=The hour can't be lower than 0 or greater than 23.
 NoIPEndpointsFoundForHost=No IPEndpoints were found for host {0}.
 DnsResolveFailed=No DNS entries exist for host {0}.
 RequiredAttributeMissing=Attribute '{0}' is required on element '{1}'.

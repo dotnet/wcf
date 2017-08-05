@@ -6,14 +6,11 @@ namespace Microsoft.ServiceModel.Syndication
 {
     using System;
     using System.Collections.Generic;
-    using System.Xml;
-    using System.Collections.ObjectModel;
-    using System.Xml.Serialization;
-    using System.Runtime.Serialization;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
+    using System.Xml;
 
     // NOTE: This class implements Clone so if you add any members, please update the copy ctor
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
     public class SyndicationLink : IExtensibleSyndicationObject
     {
         private Uri _baseUri;
@@ -33,7 +30,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (length < 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("length"));
+                throw new ArgumentOutOfRangeException(nameof(length));
             }
             _baseUri = null;
             _uri = uri;
@@ -52,7 +49,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (source == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("source");
+                throw new ArgumentNullException(nameof(source));
             }
             _length = source._length;
             _mediaType = source._mediaType;
@@ -86,7 +83,7 @@ namespace Microsoft.ServiceModel.Syndication
             {
                 if (value < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
                 _length = value;
             }
@@ -179,14 +176,14 @@ namespace Microsoft.ServiceModel.Syndication
             return false;
         }
 
-        protected internal virtual void WriteAttributeExtensions(XmlWriter writer, string version)
+        protected internal virtual Task WriteAttributeExtensionsAsync(XmlWriter writer, string version)
         {
-            _extensions.WriteAttributeExtensions(writer);
+            return _extensions.WriteAttributeExtensionsAsync(writer);
         }
 
-        protected internal virtual void WriteElementExtensions(XmlWriter writer, string version)
+        protected internal virtual Task WriteElementExtensionsAsync(XmlWriter writer, string version)
         {
-            _extensions.WriteElementExtensions(writer);
+            return _extensions.WriteElementExtensionsAsync(writer);
         }
 
         internal void LoadElementExtensions(XmlReader readerOverUnparsedExtensions, int maxExtensionSize)

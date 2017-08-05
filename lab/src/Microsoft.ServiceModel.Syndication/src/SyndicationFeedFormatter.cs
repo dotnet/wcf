@@ -6,16 +6,14 @@
 
 namespace Microsoft.ServiceModel.Syndication
 {
-    using System;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.Runtime;
-    using System.Runtime.Serialization;
-    using System.Xml;
-    using System.Runtime.CompilerServices;
     using Microsoft.ServiceModel.Syndication.Resources;
+    using System;
+    using System.Globalization;
+    using System.Runtime.Serialization;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Xml;
 
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
     [DataContract]
     public abstract class SyndicationFeedFormatter
     {
@@ -30,7 +28,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feedToWrite == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feedToWrite");
+                throw new ArgumentNullException(nameof(feedToWrite));
             }
             _feed = feedToWrite;
         }
@@ -43,25 +41,24 @@ namespace Microsoft.ServiceModel.Syndication
             }
         }
 
-        public abstract string Version
-        { get; }
+        public abstract string Version { get; }
 
         public abstract bool CanRead(XmlReader reader);
 
-        public abstract void ReadFrom(XmlReader reader);
+        public abstract Task ReadFromAsync(XmlReader reader, CancellationToken ct);
 
         public override string ToString()
         {
-            return String.Format(CultureInfo.CurrentCulture, "{0}, SyndicationVersion={1}", this.GetType(), this.Version);
+            return string.Format(CultureInfo.CurrentCulture, "{0}, SyndicationVersion={1}", this.GetType(), this.Version);
         }
 
-        public abstract void WriteTo(XmlWriter writer);
+        public abstract Task WriteToAsync(XmlWriter writer, CancellationToken ct);
 
         internal static protected SyndicationCategory CreateCategory(SyndicationFeed feed)
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
             return GetNonNullValue<SyndicationCategory>(feed.CreateCategory(), SR.FeedCreatedNullCategory);
         }
@@ -70,7 +67,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             return GetNonNullValue<SyndicationCategory>(item.CreateCategory(), SR.ItemCreatedNullCategory);
         }
@@ -79,7 +76,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
             return GetNonNullValue<SyndicationItem>(feed.CreateItem(), SR.FeedCreatedNullItem);
         }
@@ -88,7 +85,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
             return GetNonNullValue<SyndicationLink>(feed.CreateLink(), SR.FeedCreatedNullPerson);
         }
@@ -97,7 +94,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             return GetNonNullValue<SyndicationLink>(item.CreateLink(), SR.ItemCreatedNullPerson);
         }
@@ -106,7 +103,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
             return GetNonNullValue<SyndicationPerson>(feed.CreatePerson(), SR.FeedCreatedNullPerson);
         }
@@ -115,7 +112,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             return GetNonNullValue<SyndicationPerson>(item.CreatePerson(), SR.ItemCreatedNullPerson);
         }
@@ -124,7 +121,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
             feed.LoadElementExtensions(reader, maxExtensionSize);
         }
@@ -133,7 +130,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             item.LoadElementExtensions(reader, maxExtensionSize);
         }
@@ -142,7 +139,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (category == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("category");
+                throw new ArgumentNullException(nameof(category));
             }
             category.LoadElementExtensions(reader, maxExtensionSize);
         }
@@ -151,7 +148,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (link == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("link");
+                throw new ArgumentNullException(nameof(link));
             }
             link.LoadElementExtensions(reader, maxExtensionSize);
         }
@@ -160,7 +157,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (person == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("person");
+                throw new ArgumentNullException(nameof(person));
             }
             person.LoadElementExtensions(reader, maxExtensionSize);
         }
@@ -169,12 +166,14 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
+
             if (FeedUtils.IsXmlns(name, ns))
             {
                 return true;
             }
+
             return feed.TryParseAttribute(name, ns, value, version);
         }
 
@@ -182,7 +181,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             if (FeedUtils.IsXmlns(name, ns))
             {
@@ -195,7 +194,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (category == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("category");
+                throw new ArgumentNullException(nameof(category));
             }
             if (FeedUtils.IsXmlns(name, ns))
             {
@@ -208,7 +207,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (link == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("link");
+                throw new ArgumentNullException(nameof(link));
             }
             if (FeedUtils.IsXmlns(name, ns))
             {
@@ -221,7 +220,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (person == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("person");
+                throw new ArgumentNullException(nameof(person));
             }
             if (FeedUtils.IsXmlns(name, ns))
             {
@@ -239,8 +238,9 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
+
             return feed.TryParseElement(reader, version);
         }
 
@@ -248,7 +248,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             return item.TryParseElement(reader, version);
         }
@@ -257,7 +257,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (category == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("category");
+                throw new ArgumentNullException(nameof(category));
             }
             return category.TryParseElement(reader, version);
         }
@@ -266,7 +266,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (link == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("link");
+                throw new ArgumentNullException(nameof(link));
             }
             return link.TryParseElement(reader, version);
         }
@@ -275,112 +275,109 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (person == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("person");
+                throw new ArgumentNullException(nameof(person));
             }
             return person.TryParseElement(reader, version);
         }
 
-        internal static protected void WriteAttributeExtensions(XmlWriter writer, SyndicationFeed feed, string version)
+        internal static protected async Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationFeed feed, string version)
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
-            feed.WriteAttributeExtensions(writer, version);
+            await feed.WriteAttributeExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteAttributeExtensions(XmlWriter writer, SyndicationItem item, string version)
+        internal static protected Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationItem item, string version)
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
-            item.WriteAttributeExtensions(writer, version);
+            return item.WriteAttributeExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteAttributeExtensions(XmlWriter writer, SyndicationCategory category, string version)
+        internal static protected Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationCategory category, string version)
         {
             if (category == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("category");
+                throw new ArgumentNullException(nameof(category));
             }
-            category.WriteAttributeExtensions(writer, version);
+            return category.WriteAttributeExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteAttributeExtensions(XmlWriter writer, SyndicationLink link, string version)
+        internal static protected Task WriteAttributeExtensions(XmlWriter writer, SyndicationLink link, string version)
         {
             if (link == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("link");
+                throw new ArgumentNullException(nameof(link));
             }
-            link.WriteAttributeExtensions(writer, version);
+            return link.WriteAttributeExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteAttributeExtensions(XmlWriter writer, SyndicationPerson person, string version)
+        internal static protected Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationPerson person, string version)
         {
             if (person == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("person");
+                throw new ArgumentNullException(nameof(person));
             }
-            person.WriteAttributeExtensions(writer, version);
+            return person.WriteAttributeExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteElementExtensions(XmlWriter writer, SyndicationFeed feed, string version)
+        internal static protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationFeed feed, string version)
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
-            feed.WriteElementExtensions(writer, version);
+            return feed.WriteElementExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteElementExtensions(XmlWriter writer, SyndicationItem item, string version)
+        internal static protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationItem item, string version)
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
-            item.WriteElementExtensions(writer, version);
+            return item.WriteElementExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteElementExtensions(XmlWriter writer, SyndicationCategory category, string version)
+        internal static protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationCategory category, string version)
         {
             if (category == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("category");
+                throw new ArgumentNullException(nameof(category));
             }
-            category.WriteElementExtensions(writer, version);
+            return category.WriteElementExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteElementExtensions(XmlWriter writer, SyndicationLink link, string version)
+        internal static protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationLink link, string version)
         {
             if (link == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("link");
+                throw new ArgumentNullException(nameof(link));
             }
-            link.WriteElementExtensions(writer, version);
+            return link.WriteElementExtensionsAsync(writer, version);
         }
 
-        internal static protected void WriteElementExtensions(XmlWriter writer, SyndicationPerson person, string version)
+        internal static protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationPerson person, string version)
         {
             if (person == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("person");
+                throw new ArgumentNullException(nameof(person));
             }
-            person.WriteElementExtensions(writer, version);
+
+            return person.WriteElementExtensionsAsync(writer, version);
         }
 
-        internal protected virtual void SetFeed(SyndicationFeed feed)
-        {
-            if (feed == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
-            }
-            _feed = feed;
+        internal protected virtual void SetFeed(SyndicationFeed feed) { 
+            _feed = feed ?? throw new ArgumentNullException(nameof(feed));
         }
 
         internal static void CloseBuffer(XmlBuffer buffer, XmlDictionaryWriter extWriter)
         {
+            
             if (buffer == null)
             {
                 return;
@@ -390,7 +387,7 @@ namespace Microsoft.ServiceModel.Syndication
             buffer.Close();
         }
 
-        internal static void CreateBufferIfRequiredAndWriteNode(ref XmlBuffer buffer, ref XmlDictionaryWriter extWriter, XmlReader reader, int maxExtensionSize)
+        internal static async Task<Tuple<XmlBuffer,XmlDictionaryWriter>> CreateBufferIfRequiredAndWriteNodeAsync(XmlBuffer buffer, XmlDictionaryWriter extWriter, XmlReader reader, int maxExtensionSize)
         {
             if (buffer == null)
             {
@@ -398,7 +395,21 @@ namespace Microsoft.ServiceModel.Syndication
                 extWriter = buffer.OpenSection(XmlDictionaryReaderQuotas.Max);
                 extWriter.WriteStartElement(Rss20Constants.ExtensionWrapperTag);
             }
-            extWriter.WriteNode(reader, false);
+
+            XmlDictionaryReader dictionaryReader = reader as XmlDictionaryReader;
+            if (dictionaryReader != null)
+            {
+                // Reimplementing WriteNode for XmlDictionaryWriter asynchronously depends on multiple internal methods
+                // so isn't feasible to reimplement here. As the primary scenario will be usage with an XmlReader which
+                // isn't an XmlDictionaryReader, deferring to the synchronous implementation is a reasonable fallback.
+                extWriter.WriteNode(reader, false);
+            }
+            else
+            {
+                await extWriter.WriteNodeAsync(reader, false);
+            }
+
+            return Tuple.Create(buffer, extWriter);
         }
 
         internal static SyndicationFeed CreateFeedInstance(Type feedType)
@@ -417,17 +428,19 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (feed == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("feed");
+                throw new ArgumentNullException(nameof(feed));
             }
+
             CloseBuffer(buffer, writer);
             feed.LoadElementExtensions(buffer);
         }
 
         internal static void LoadElementExtensions(XmlBuffer buffer, XmlDictionaryWriter writer, SyndicationItem item)
         {
+
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             CloseBuffer(buffer, writer);
             item.LoadElementExtensions(buffer);
@@ -437,8 +450,9 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (category == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("category");
+                throw new ArgumentNullException(nameof(category));
             }
+
             CloseBuffer(buffer, writer);
             category.LoadElementExtensions(buffer);
         }
@@ -447,8 +461,9 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (link == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("link");
+                throw new ArgumentNullException(nameof(link));
             }
+
             CloseBuffer(buffer, writer);
             link.LoadElementExtensions(buffer);
         }
@@ -457,10 +472,19 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (person == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("person");
+                throw new ArgumentNullException(nameof(person));
             }
+
             CloseBuffer(buffer, writer);
             person.LoadElementExtensions(buffer);
+        }
+
+        internal static async Task MoveToStartElementAsync(XmlReaderWrapper reader)
+        {
+            if (!await reader.IsStartElementAsync())
+            {
+                XmlExceptionHelper.ThrowStartElementExpected(XmlDictionaryReader.CreateDictionaryReader(reader));
+            }
         }
 
         internal static void MoveToStartElement(XmlReader reader)
@@ -471,113 +495,11 @@ namespace Microsoft.ServiceModel.Syndication
             }
         }
 
-        internal static void TraceFeedReadBegin()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationReadFeedBegin, SR.GetString(SR.TraceCodeSyndicationFeedReadBegin));
-#endif
-            }
-        }
-
-        internal static void TraceFeedReadEnd()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationReadFeedEnd, SR.GetString(SR.TraceCodeSyndicationFeedReadEnd));
-
-#endif
-            }
-        }
-
-        internal static void TraceFeedWriteBegin()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationWriteFeedBegin, SR.GetString(SR.TraceCodeSyndicationFeedWriteBegin));
-#endif
-            }
-        }
-
-        internal static void TraceFeedWriteEnd()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationWriteFeedEnd, SR.GetString(SR.TraceCodeSyndicationFeedWriteEnd));
-#endif
-            }
-        }
-
-        internal static void TraceItemReadBegin()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationReadItemBegin, SR.GetString(SR.TraceCodeSyndicationItemReadBegin));
-#endif
-            }
-        }
-
-        internal static void TraceItemReadEnd()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationReadItemEnd, SR.GetString(SR.TraceCodeSyndicationItemReadEnd));
-#endif
-            }
-        }
-
-        internal static void TraceItemWriteBegin()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationWriteItemBegin, SR.GetString(SR.TraceCodeSyndicationItemWriteBegin));
-#endif
-            }
-        }
-
-        internal static void TraceItemWriteEnd()
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationWriteItemEnd, SR.GetString(SR.TraceCodeSyndicationItemWriteEnd));
-
-#endif
-            }
-        }
-
-        internal static void TraceSyndicationElementIgnoredOnRead(XmlReader reader)
-        {
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-#if disabled
-
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.SyndicationProtocolElementIgnoredOnRead, SR.GetString(SR.TraceCodeSyndicationProtocolElementIgnoredOnRead, reader.NodeType, reader.LocalName, reader.NamespaceURI));
-#endif
-            }
-        }
 
         protected abstract SyndicationFeed CreateFeedInstance();
 
         private static T GetNonNullValue<T>(T value, string errorMsg)
         {
-            if (value == null)
-            {
-                //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(errorMsg)));
-            }
             return value;
         }
 
@@ -585,14 +507,14 @@ namespace Microsoft.ServiceModel.Syndication
         {
             private static void ThrowXmlException(XmlDictionaryReader reader, string res, string arg1)
             {
-                string s = SR.GetString(res, arg1);
+                string s = string.Format(res, arg1);
                 IXmlLineInfo lineInfo = reader as IXmlLineInfo;
                 if (lineInfo != null && lineInfo.HasLineInfo())
                 {
-                    s += " " + SR.GetString(SR.XmlLineInfo, lineInfo.LineNumber, lineInfo.LinePosition);
+                    s += " " + string.Format(SR.XmlLineInfo, lineInfo.LineNumber, lineInfo.LinePosition);
                 }
 
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(s));
+                throw new XmlException(s);
             }
 
             private static string GetName(string prefix, string localName)
@@ -606,23 +528,23 @@ namespace Microsoft.ServiceModel.Syndication
             private static string GetWhatWasFound(XmlDictionaryReader reader)
             {
                 if (reader.EOF)
-                    return SR.GetString(SR.XmlFoundEndOfFile);
+                    return SR.XmlFoundEndOfFile;
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
-                        return SR.GetString(SR.XmlFoundElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
+                        return string.Format(SR.XmlFoundElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
                     case XmlNodeType.EndElement:
-                        return SR.GetString(SR.XmlFoundEndElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
+                        return string.Format(SR.XmlFoundEndElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
                     case XmlNodeType.Text:
                     case XmlNodeType.Whitespace:
                     case XmlNodeType.SignificantWhitespace:
-                        return SR.GetString(SR.XmlFoundText, reader.Value);
+                        return string.Format(SR.XmlFoundText, reader.Value);
                     case XmlNodeType.Comment:
-                        return SR.GetString(SR.XmlFoundComment, reader.Value);
+                        return string.Format(SR.XmlFoundComment, reader.Value);
                     case XmlNodeType.CDATA:
-                        return SR.GetString(SR.XmlFoundCData, reader.Value);
+                        return string.Format(SR.XmlFoundCData, reader.Value);
                 }
-                return SR.GetString(SR.XmlFoundNodeType, reader.NodeType);
+                return string.Format(SR.XmlFoundNodeType, reader.NodeType);
             }
 
             static public void ThrowStartElementExpected(XmlDictionaryReader reader)
