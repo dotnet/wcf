@@ -164,32 +164,7 @@ namespace Microsoft.SyndicationFeed.Rss
             Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><link length=\"123\" type=\"mp3/video\" url=\"http://testuriforlink.com/\">Test title</link></channel></rss>");
         }
 
-        [Fact]
-        public async Task Rss20Writer_WriteLink_uriEqualsTitle()
-        {
-
-            var sw = new StringWriterWithEncoding(Encoding.UTF8);
-
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
-            {
-
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
-
-                Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate)
-                {
-                    Title = "http://testuriforlink.com"
-                };
-
-                await writer.Write(link);
-
-                xmlWriter.Flush();
-            }
-
-            string res = sw.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><link>http://testuriforlink.com</link></channel></rss>");
-        }
-        
+             
         [Fact]
         public async Task Rss20Writer_WriteItem()
         {
@@ -475,6 +450,7 @@ namespace Microsoft.SyndicationFeed.Rss
             Assert.True(item1.Id == item2.Id);
             Assert.True(item1.Title == item2.Title);
             Assert.True(item1.LastUpdated == item2.LastUpdated);
+
         }
 
         void CompareContent(ISyndicationContent content1, ISyndicationContent content2)

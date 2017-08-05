@@ -190,6 +190,10 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             //
+            // Title
+            string title = content.Value;
+
+            //
             // Url
             Uri uri = null;
             string url = content.Attributes.GetRss("url");
@@ -207,6 +211,8 @@ namespace Microsoft.SyndicationFeed.Rss
                 {
                     throw new FormatException("Invalid url");
                 }
+
+                title = null;
             }
 
             //
@@ -224,7 +230,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             return new SyndicationLink(uri, rel)
             {
-                Title = content.Value,
+                Title = title,
                 Length = length,
                 MediaType = type
             };
