@@ -178,7 +178,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 }
             }
 
-            _writer.WriteAttributeString(Rss20Constants.VersionTag, Rss20Constants.Version);
+            _writer.WriteAttributeString(Rss20ElementNames.Version, Rss20Constants.Version);
             _writer.WriteStartElement(Rss20Constants.ChannelTag);
             _feedStarted = true;
         }

@@ -38,20 +38,20 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             switch (elementName)
             {
-                case Rss20Constants.ItemTag:
+                case Rss20ElementNames.Item:
                     return SyndicationElementType.Item;
 
-                case Rss20Constants.LinkTag:
+                case Rss20ElementNames.Link:
                     return SyndicationElementType.Link;
 
-                case Rss20Constants.CategoryTag:
+                case Rss20ElementNames.Category:
                     return SyndicationElementType.Category;
 
-                case Rss20Constants.AuthorTag:
-                case Rss20Constants.ManagingEditorTag:
+                case Rss20ElementNames.Author:
+                case Rss20ElementNames.ManagingEditor:
                     return SyndicationElementType.Person;
 
-                case Rss20Constants.ImageTag:
+                case Rss20ElementNames.Image:
                     return SyndicationElementType.Image;
 
                 default:
@@ -64,7 +64,7 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             // Check <rss>
             bool knownFeed = _reader.IsStartElement(Rss20Constants.RssTag, Rss20Constants.Rss20Namespace) &&
-                             _reader.GetAttribute(Rss20Constants.VersionTag).Equals(Rss20Constants.Version);
+                             _reader.GetAttribute(Rss20ElementNames.Version).Equals(Rss20Constants.Version);
 
             if (knownFeed)
             {
