@@ -15,7 +15,7 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20Constants.CategoryTag || 
+            if (content.Name != Rss20ElementNames.Category || 
                 content.Namespace != Rss20Constants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss category");
@@ -28,7 +28,7 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20Constants.ItemTag || 
+            if (content.Name != Rss20ElementNames.Item || 
                 content.Namespace != Rss20Constants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss item");
@@ -41,7 +41,7 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20Constants.LinkTag || 
+            if (content.Name != Rss20ElementNames.Link || 
                 content.Namespace != Rss20Constants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss link");
@@ -54,8 +54,8 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if ((content.Name != Rss20Constants.AuthorTag && 
-                 content.Name != Rss20Constants.ManagingEditorTag) ||
+            if ((content.Name != Rss20ElementNames.Author && 
+                 content.Name != Rss20ElementNames.ManagingEditor) ||
                 content.Namespace != Rss20Constants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss Person");
@@ -68,7 +68,7 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20Constants.ImageTag ||
+            if (content.Name != Rss20ElementNames.Image ||
                 content.Namespace != Rss20Constants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss Image");
@@ -117,43 +117,43 @@ namespace Microsoft.SyndicationFeed.Rss
                 {
                     //
                     // Title
-                    case Rss20Constants.TitleTag:
+                    case Rss20ElementNames.Title:
                         item.Title = field.Value;
                         break;
 
                     //
                     // Link
-                    case Rss20Constants.LinkTag:
+                    case Rss20ElementNames.Link:
                         item.AddLink(CreateLink(field));
                         break;
 
                     // Description
-                    case Rss20Constants.DescriptionTag:
+                    case Rss20ElementNames.Description:
                         item.Description = field.Value;
                         break;
 
                     //
                     // Author
-                    case Rss20Constants.AuthorTag:
+                    case Rss20ElementNames.Author:
                         item.AddContributor(CreatePerson(field));
                         break;
 
                     //
                     // Category
-                    case Rss20Constants.CategoryTag:
+                    case Rss20ElementNames.Category:
                         break;
 
                     //
                     // Links
-                    case Rss20Constants.CommentsTag:
-                    case Rss20Constants.EnclosureTag:
-                    case Rss20Constants.SourceTag:
+                    case Rss20ElementNames.Comments:
+                    case Rss20ElementNames.Enclosure:
+                    case Rss20ElementNames.Source:
                         item.AddLink(CreateLink(field));
                         break;
 
                     //
                     // Guid
-                    case Rss20Constants.GuidTag:
+                    case Rss20ElementNames.Guid:
                         item.Id = field.Value;
 
                         // permaLink
@@ -161,13 +161,13 @@ namespace Microsoft.SyndicationFeed.Rss
                             isPermalink &&
                             TryParseValue(field.Value, out Uri permaLink))
                         {
-                            item.AddLink(new SyndicationLink(permaLink, Rss20Constants.GuidTag));
+                            item.AddLink(new SyndicationLink(permaLink, Rss20ElementNames.Guid));
                         }
                         break;
 
                     //
                     // PubDate
-                    case Rss20Constants.PubDateTag:
+                    case Rss20ElementNames.PubDate:
                         if (TryParseValue(field.Value, out DateTimeOffset dt))
                         {
                             item.Published = dt;
@@ -226,7 +226,7 @@ namespace Microsoft.SyndicationFeed.Rss
             
             //
             // rel
-            string rel = (content.Name == Rss20Constants.LinkTag) ? Rss20Constants.AlternateLink : content.Name;
+            string rel = (content.Name == Rss20ElementNames.Link) ? Rss20LinkTypes.Alternate : content.Name;
 
             return new SyndicationLink(uri, rel)
             {
@@ -273,13 +273,13 @@ namespace Microsoft.SyndicationFeed.Rss
                 {
                     //
                     // Title
-                    case Rss20Constants.TitleTag:
+                    case Rss20ElementNames.Title:
                         title = field.Value;
                         break;
                         
                     //
                     // Url
-                    case Rss20Constants.UrlTag:
+                    case Rss20ElementNames.Url:
                         if (!TryParseValue(field.Value, out url))
                         {
                             throw new FormatException($"Invalid image url '{field.Value}'");
@@ -288,13 +288,13 @@ namespace Microsoft.SyndicationFeed.Rss
 
                     //
                     // Link
-                    case Rss20Constants.LinkTag:
+                    case Rss20ElementNames.Link:
                         link = CreateLink(field);
                         break;
                         
                     //
                     // Description
-                    case Rss20Constants.DescriptionTag:
+                    case Rss20ElementNames.Description:
                         description = field.Value;
                         break;
 
@@ -308,7 +308,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new FormatException("Image url not found");
             }
 
-            return new SyndicationImage(url, Rss20Constants.ImageTag)
+            return new SyndicationImage(url, Rss20ElementNames.Image)
             {
                 Title = title,
                 Description = description,

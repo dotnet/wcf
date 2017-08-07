@@ -91,13 +91,13 @@ namespace Microsoft.SyndicationFeed.Rss
 
             switch (link.RelationshipType)
             {
-                case Rss20Constants.EnclosureTag:
+                case Rss20ElementNames.Enclosure:
                     return CreateEnclosureContent(link);
 
-                case Rss20Constants.CommentsTag:
+                case Rss20ElementNames.Comments:
                     return CreateCommentsContent(link);
 
-                case Rss20Constants.SourceTag:
+                case Rss20ElementNames.Source:
                     return CreateSourceContent(link);
 
                 default:
@@ -117,7 +117,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new FormatException("Invalid category name");
             }
 
-            return new SyndicationContent(Rss20Constants.CategoryTag, category.Name);
+            return new SyndicationContent(Rss20ElementNames.Category, category.Name);
         }
 
         public virtual ISyndicationContent CreateContent(ISyndicationPerson person)
@@ -134,7 +134,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException("Invalid person Email");
             }
 
-            return new SyndicationContent(person.RelationshipType ?? Rss20Constants.AuthorTag, person.Email);
+            return new SyndicationContent(person.RelationshipType ?? Rss20ElementNames.Author, person.Email);
         }
 
         public virtual ISyndicationContent CreateContent(ISyndicationImage image)
@@ -160,18 +160,18 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException("Image requires an url");
             }
 
-            var content = new SyndicationContent(Rss20Constants.ImageTag);
+            var content = new SyndicationContent(Rss20ElementNames.Image);
 
             // Write required contents of image
-            content.AddField(new SyndicationContent(Rss20Constants.UrlTag, FormatValue(image.Url)));
-            content.AddField(new SyndicationContent(Rss20Constants.TitleTag, image.Title));
+            content.AddField(new SyndicationContent(Rss20ElementNames.Url, FormatValue(image.Url)));
+            content.AddField(new SyndicationContent(Rss20ElementNames.Title, image.Title));
             content.AddField(CreateContent(image.Link));
 
 
             // Write optional elements
             if (!string.IsNullOrEmpty(image.Description))
             {
-                content.AddField(new SyndicationContent(Rss20Constants.DescriptionTag, image.Description));
+                content.AddField(new SyndicationContent(Rss20ElementNames.Description, image.Description));
             }
 
             return content;
@@ -193,13 +193,13 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             // Write <item> tag
-            var content = new SyndicationContent(Rss20Constants.ItemTag);
+            var content = new SyndicationContent(Rss20ElementNames.Item);
 
             //
             // Title
             if (!string.IsNullOrEmpty(item.Title))
             {
-                content.AddField(new SyndicationContent(Rss20Constants.TitleTag, item.Title));
+                content.AddField(new SyndicationContent(Rss20ElementNames.Title, item.Title));
             }
 
             //
@@ -208,7 +208,7 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 foreach (var link in item.Links)
                 {
-                    if (link.RelationshipType == Rss20Constants.GuidTag)
+                    if (link.RelationshipType == Rss20ElementNames.Guid)
                     {
                         isPermaLink = true;
                         continue;
@@ -222,7 +222,7 @@ namespace Microsoft.SyndicationFeed.Rss
             // Description
             if (!string.IsNullOrEmpty(item.Description))
             {
-                content.AddField(new SyndicationContent(Rss20Constants.DescriptionTag, item.Description));
+                content.AddField(new SyndicationContent(Rss20ElementNames.Description, item.Description));
             }
 
             //
@@ -249,7 +249,7 @@ namespace Microsoft.SyndicationFeed.Rss
             // Guid (id)
             if (!string.IsNullOrEmpty(item.Id))
             {
-                SyndicationContent guid = new SyndicationContent(Rss20Constants.GuidTag, item.Id);
+                SyndicationContent guid = new SyndicationContent(Rss20ElementNames.Guid, item.Id);
 
                 if (isPermaLink)
                 {
@@ -263,7 +263,7 @@ namespace Microsoft.SyndicationFeed.Rss
             // PubDate
             if (item.Published != DateTimeOffset.MinValue)
             {
-                content.AddField(new SyndicationContent(Rss20Constants.PubDateTag, FormatValue(item.Published)));
+                content.AddField(new SyndicationContent(Rss20ElementNames.PubDate, FormatValue(item.Published)));
             }
 
             return content;
@@ -277,11 +277,11 @@ namespace Microsoft.SyndicationFeed.Rss
         
         private ISyndicationContent CreateEnclosureContent(ISyndicationLink link)
         {
-            var content = new SyndicationContent(Rss20Constants.EnclosureTag);
+            var content = new SyndicationContent(Rss20ElementNames.Enclosure);
 
             //
             // Url
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.UrlTag, FormatValue(link.Uri)));
+            content.AddAttribute(new SyndicationAttribute(Rss20ElementNames.Url, FormatValue(link.Uri)));
 
             //
             // Length
@@ -308,10 +308,10 @@ namespace Microsoft.SyndicationFeed.Rss
             SyndicationContent content;
 
             if (string.IsNullOrEmpty(link.RelationshipType) || 
-                link.RelationshipType == Rss20Constants.AlternateLink)
+                link.RelationshipType == Rss20LinkTypes.Alternate)
             {
                 // Regular <link>
-                content = new SyndicationContent(Rss20Constants.LinkTag);
+                content = new SyndicationContent(Rss20ElementNames.Link);
             }
             else
             {
@@ -346,7 +346,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             if (content.Value != null)
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.UrlTag, url));
+                content.AddAttribute(new SyndicationAttribute(Rss20ElementNames.Url, url));
             }
             else
             {
@@ -374,7 +374,7 @@ namespace Microsoft.SyndicationFeed.Rss
             string url = FormatValue(link.Uri);
             if (link.Title != url)
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.UrlTag, url));
+                content.AddAttribute(new SyndicationAttribute(Rss20ElementNames.Url, url));
             }
 
             //
