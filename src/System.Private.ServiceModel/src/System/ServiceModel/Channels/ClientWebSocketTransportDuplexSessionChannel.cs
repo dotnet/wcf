@@ -27,8 +27,8 @@ namespace System.ServiceModel.Channels
         private volatile bool _cleanupStarted;
         private volatile bool _cleanupIdentity;
 
-        public ClientWebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, ClientWebSocketFactory connectionFactory, EndpointAddress remoteAddresss, Uri via)
-            : base(channelFactory, remoteAddresss, via)
+        public ClientWebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, ClientWebSocketFactory connectionFactory, EndpointAddress remoteAddress, Uri via)
+            : base(channelFactory, remoteAddress, via)
         {
             Contract.Assert(channelFactory != null, "connection factory must be set");
             _channelFactory = channelFactory;

@@ -364,7 +364,7 @@ public static class ServiceUtilHelper
     {
         get
         {
-            // We assume the self hosted service does not have test service base addess, only the host name passed
+            // We assume the self hosted service does not have test service base address, only the host name passed
             // This will satisfy all current requirements
             if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
             {
