@@ -4,13 +4,11 @@
 
 namespace Microsoft.ServiceModel.Syndication
 {
-    using System.Collections.ObjectModel;
-    using System.Xml;
-    using System.Xml.Serialization;
-    using System.Runtime.Serialization;
-    using System.Globalization;
-    using System;
     using Microsoft.ServiceModel.Syndication.Resources;
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Xml;
 
     internal static class FeedUtils
     {
@@ -19,7 +17,7 @@ namespace Microsoft.ServiceModel.Syndication
             IXmlLineInfo lineInfo = reader as IXmlLineInfo;
             if (lineInfo != null && lineInfo.HasLineInfo())
             {
-                error = String.Format(CultureInfo.InvariantCulture, "{0} {1}", SR.GetString(SR.ErrorInLine, lineInfo.LineNumber, lineInfo.LinePosition), SR.GetString(error));
+                error = string.Format(CultureInfo.InvariantCulture, "{0} {1}", string.Format(SR.ErrorInLine, lineInfo.LineNumber, lineInfo.LinePosition), error);
             }
             return error;
         }
@@ -81,11 +79,13 @@ namespace Microsoft.ServiceModel.Syndication
             {
                 return rootBase;
             }
+
             Uri newBaseUri = new Uri(newBase, UriKind.RelativeOrAbsolute);
             if (rootBase == null || newBaseUri.IsAbsoluteUri)
             {
                 return newBaseUri;
             }
+
             return new Uri(rootBase, newBase);
         }
 

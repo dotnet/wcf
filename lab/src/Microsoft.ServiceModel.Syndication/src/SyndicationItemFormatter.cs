@@ -5,17 +5,12 @@
 namespace Microsoft.ServiceModel.Syndication
 {
     using System;
-    using System.Collections.Generic;
-    using System.Xml;
-    using System.Runtime.Serialization;
     using System.Globalization;
-    using System.Xml.Serialization;
-    using System.Xml.Schema;
-    using System.Diagnostics.CodeAnalysis;
-    using DiagnosticUtility = Microsoft.ServiceModel.DiagnosticUtility;
     using System.Runtime.CompilerServices;
+    using System.Runtime.Serialization;
+    using System.Threading.Tasks;
+    using System.Xml;
 
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
     [DataContract]
     public abstract class SyndicationItemFormatter
     {
@@ -30,7 +25,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (itemToWrite == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("itemToWrite");
+                throw new ArgumentNullException(nameof(itemToWrite));
             }
             _item = itemToWrite;
         }
@@ -47,28 +42,23 @@ namespace Microsoft.ServiceModel.Syndication
         { get; }
 
         public abstract bool CanRead(XmlReader reader);
-
-        public abstract void ReadFrom(XmlReader reader);
+        
+        public abstract Task ReadFromAsync(XmlReader reader);
 
         public override string ToString()
         {
-            return String.Format(CultureInfo.CurrentCulture, "{0}, SyndicationVersion={1}", this.GetType(), this.Version);
+            return string.Format(CultureInfo.CurrentCulture, "{0}, SyndicationVersion={1}", this.GetType(), this.Version);
         }
 
-        public abstract void WriteTo(XmlWriter writer);
+        public abstract Task WriteToAsync(XmlWriter writer);
 
         internal protected virtual void SetItem(SyndicationItem item)
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw new ArgumentNullException(nameof(item));
             }
             _item = item;
-        }
-
-        internal static void CreateBufferIfRequiredAndWriteNode(ref XmlBuffer buffer, ref XmlDictionaryWriter extWriter, XmlDictionaryReader reader, int maxExtensionSize)
-        {
-            SyndicationFeedFormatter.CreateBufferIfRequiredAndWriteNode(ref buffer, ref extWriter, reader, maxExtensionSize);
         }
 
         internal static SyndicationItem CreateItemInstance(Type itemType)
@@ -185,46 +175,46 @@ namespace Microsoft.ServiceModel.Syndication
             return SyndicationFeedFormatter.TryParseElement(reader, person, version);
         }
 
-        protected static void WriteAttributeExtensions(XmlWriter writer, SyndicationItem item, string version)
+        protected static async Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationItem item, string version)
         {
-            SyndicationFeedFormatter.WriteAttributeExtensions(writer, item, version);
+            await SyndicationFeedFormatter.WriteAttributeExtensionsAsync(writer, item, version);
         }
 
-        protected static void WriteAttributeExtensions(XmlWriter writer, SyndicationCategory category, string version)
+        protected static async Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationCategory category, string version)
         {
-            SyndicationFeedFormatter.WriteAttributeExtensions(writer, category, version);
+            await SyndicationFeedFormatter.WriteAttributeExtensionsAsync(writer, category, version);
         }
 
-        protected static void WriteAttributeExtensions(XmlWriter writer, SyndicationLink link, string version)
+        protected static async Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationLink link, string version)
         {
-            SyndicationFeedFormatter.WriteAttributeExtensions(writer, link, version);
+            await SyndicationFeedFormatter.WriteAttributeExtensions(writer, link, version);
         }
 
-        protected static void WriteAttributeExtensions(XmlWriter writer, SyndicationPerson person, string version)
+        protected static async Task WriteAttributeExtensionsAsync(XmlWriter writer, SyndicationPerson person, string version)
         {
-            SyndicationFeedFormatter.WriteAttributeExtensions(writer, person, version);
+            await SyndicationFeedFormatter.WriteAttributeExtensionsAsync(writer, person, version);
         }
 
-        protected static void WriteElementExtensions(XmlWriter writer, SyndicationItem item, string version)
+        protected static async Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationItem item, string version)
         {
-            SyndicationFeedFormatter.WriteElementExtensions(writer, item, version);
+            await SyndicationFeedFormatter.WriteElementExtensionsAsync(writer, item, version);
         }
 
         protected abstract SyndicationItem CreateItemInstance();
 
-        protected void WriteElementExtensions(XmlWriter writer, SyndicationCategory category, string version)
+        protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationCategory category, string version)
         {
-            SyndicationFeedFormatter.WriteElementExtensions(writer, category, version);
+            return SyndicationFeedFormatter.WriteElementExtensionsAsync(writer, category, version);
         }
 
-        protected void WriteElementExtensions(XmlWriter writer, SyndicationLink link, string version)
+        protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationLink link, string version)
         {
-            SyndicationFeedFormatter.WriteElementExtensions(writer, link, version);
+            return SyndicationFeedFormatter.WriteElementExtensionsAsync(writer, link, version);
         }
 
-        protected void WriteElementExtensions(XmlWriter writer, SyndicationPerson person, string version)
+        protected Task WriteElementExtensionsAsync(XmlWriter writer, SyndicationPerson person, string version)
         {
-            SyndicationFeedFormatter.WriteElementExtensions(writer, person, version);
+            return SyndicationFeedFormatter.WriteElementExtensionsAsync(writer, person, version);
         }
     }
 }

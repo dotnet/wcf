@@ -4,17 +4,15 @@
 
 namespace Microsoft.ServiceModel.Syndication
 {
+    using Microsoft.ServiceModel.Syndication.Resources;
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
-    using System.Runtime.Serialization;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.CompilerServices;
-    using Microsoft.ServiceModel.Syndication.Resources;
 
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
     public abstract class SyndicationContent
     {
         private Dictionary<XmlQualifiedName, string> _attributeExtensions;
@@ -75,9 +73,9 @@ namespace Microsoft.ServiceModel.Syndication
             return new XmlSyndicationContent(Atom10Constants.XmlMediaType, dataContractObject, dataContractSerializer);
         }
 
-        public static XmlSyndicationContent CreateXmlContent(XmlReader xmlReader)
+        public static XmlSyndicationContent CreateXmlContent(XmlReader XmlReaderWrapper)
         {
-            return new XmlSyndicationContent(xmlReader);
+            return new XmlSyndicationContent(XmlReaderWrapper);
         }
 
         public static XmlSyndicationContent CreateXmlContent(object xmlSerializerObject, XmlSerializer serializer)
@@ -87,18 +85,21 @@ namespace Microsoft.ServiceModel.Syndication
 
         public abstract SyndicationContent Clone();
 
-        public void WriteTo(XmlWriter writer, string outerElementName, string outerElementNamespace)
+        public async Task WriteToAsync(XmlWriter writer, string outerElementName, string outerElementNamespace)
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw new ArgumentNullException(nameof(writer));
             }
             if (string.IsNullOrEmpty(outerElementName))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.GetString(SR.OuterElementNameNotSpecified));
+                throw new ArgumentException(SR.OuterElementNameNotSpecified);
             }
-            writer.WriteStartElement(outerElementName, outerElementNamespace);
-            writer.WriteAttributeString(Atom10Constants.TypeTag, string.Empty, this.Type);
+
+            writer = XmlWriterWrapper.CreateFromWriter(writer);
+
+            await writer.WriteStartElementAsync(outerElementName, outerElementNamespace);
+            await writer.WriteAttributeStringAsync(Atom10Constants.TypeTag, string.Empty, this.Type);
             if (_attributeExtensions != null)
             {
                 foreach (XmlQualifiedName key in _attributeExtensions.Keys)
@@ -110,19 +111,19 @@ namespace Microsoft.ServiceModel.Syndication
                     string attrValue;
                     if (_attributeExtensions.TryGetValue(key, out attrValue))
                     {
-                        writer.WriteAttributeString(key.Name, key.Namespace, attrValue);
+                        await writer.WriteAttributeStringAsync(key.Name, key.Namespace, attrValue);
                     }
                 }
             }
             WriteContentsTo(writer);
-            writer.WriteEndElement();
+            await writer.WriteEndElementAsync();
         }
 
         internal void CopyAttributeExtensions(SyndicationContent source)
         {
             if (source == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("source");
+                throw new ArgumentNullException(nameof(source));
             }
             if (source._attributeExtensions != null)
             {

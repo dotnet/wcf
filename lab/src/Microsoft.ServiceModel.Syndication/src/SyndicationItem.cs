@@ -4,19 +4,14 @@
 
 namespace Microsoft.ServiceModel.Syndication
 {
+    using Microsoft.ServiceModel.Syndication.Resources;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Text;
+    using System.Threading.Tasks;
     using System.Xml;
-    using System.Runtime.Serialization;
-    using System.Xml.Serialization;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.CompilerServices;
-    using Microsoft.ServiceModel.Syndication.Resources;
 
     // NOTE: This class implements Clone so if you add any members, please update the copy ctor
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
     public class SyndicationItem : IExtensibleSyndicationObject
     {
         private Collection<SyndicationPerson> _authors;
@@ -55,6 +50,7 @@ namespace Microsoft.ServiceModel.Syndication
             {
                 this.Title = new TextSyndicationContent(title);
             }
+
             _content = content;
             if (itemAlternateLink != null)
             {
@@ -68,7 +64,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (source == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("source");
+                throw new ArgumentNullException(nameof(source));
             }
             _extensions = source._extensions.Clone();
             _authors = FeedUtils.ClonePersons(source._authors);
@@ -202,41 +198,36 @@ namespace Microsoft.ServiceModel.Syndication
             set { _title = value; }
         }
 
-        public static SyndicationItem Load(XmlReader reader)
+        public static Task<SyndicationItem> LoadAsync(XmlReader reader)
         {
-            return Load<SyndicationItem>(reader);
+            return LoadAsync<SyndicationItem>(reader);
         }
-
-        public static TSyndicationItem Load<TSyndicationItem>(XmlReader reader)
+        
+        public static async Task<TSyndicationItem> LoadAsync<TSyndicationItem>(XmlReader reader)
             where TSyndicationItem : SyndicationItem, new()
         {
             if (reader == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+                throw new ArgumentNullException(nameof(reader));
             }
-            Atom10ItemFormatter<TSyndicationItem> atomSerializer = new Atom10ItemFormatter<TSyndicationItem>();
-            if (atomSerializer.CanRead(reader))
-            {
-                atomSerializer.ReadFrom(reader);
-                return atomSerializer.Item as TSyndicationItem;
-            }
+
             Rss20ItemFormatter<TSyndicationItem> rssSerializer = new Rss20ItemFormatter<TSyndicationItem>();
+
             if (rssSerializer.CanRead(reader))
             {
-                rssSerializer.ReadFrom(reader);
+                await rssSerializer.ReadFromAsync(reader);
                 return rssSerializer.Item as TSyndicationItem;
             }
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI)));
+
+            throw new XmlException(string.Format(SR.UnknownItemXml, reader.LocalName, reader.NamespaceURI));
         }
 
 
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "0#permalink", Justification = "permalink is a term defined in the RSS format")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Permalink", Justification = "permalink is a term defined in the RSS format")]
         public void AddPermalink(Uri permalink)
         {
             if (permalink == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("permalink");
+                throw new ArgumentNullException(nameof(permalink));
             }
             this.Id = permalink.AbsoluteUri;
             this.Links.Add(SyndicationLink.CreateAlternateLink(permalink));
@@ -262,14 +253,14 @@ namespace Microsoft.ServiceModel.Syndication
             return new Rss20ItemFormatter(this, serializeExtensionsAsAtom);
         }
 
-        public void SaveAsAtom10(XmlWriter writer)
+        public Task SaveAsAtom10(XmlWriter writer)
         {
-            this.GetAtom10Formatter().WriteTo(writer);
+            return GetAtom10Formatter().WriteToAsync(writer);
         }
 
-        public void SaveAsRss20(XmlWriter writer)
+        public Task SaveAsRss20(XmlWriter writer)
         {
-            this.GetRss20Formatter().WriteTo(writer);
+            return GetRss20Formatter().WriteToAsync(writer);
         }
 
         protected internal virtual SyndicationCategory CreateCategory()
@@ -303,14 +294,14 @@ namespace Microsoft.ServiceModel.Syndication
             return false;
         }
 
-        protected internal virtual void WriteAttributeExtensions(XmlWriter writer, string version)
+        protected internal virtual Task WriteAttributeExtensionsAsync(XmlWriter writer, string version)
         {
-            _extensions.WriteAttributeExtensions(writer);
+            return _extensions.WriteAttributeExtensionsAsync(writer);
         }
 
-        protected internal virtual void WriteElementExtensions(XmlWriter writer, string version)
+        protected internal virtual Task WriteElementExtensionsAsync(XmlWriter writer, string version)
         {
-            _extensions.WriteElementExtensions(writer);
+            return _extensions.WriteElementExtensionsAsync(writer);
         }
 
         internal void LoadElementExtensions(XmlReader readerOverUnparsedExtensions, int maxExtensionSize)

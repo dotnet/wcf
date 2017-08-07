@@ -7,9 +7,8 @@ namespace Microsoft.ServiceModel.Syndication
     using System;
     using System.Collections.ObjectModel;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using System.Xml.Serialization;
     using System.Xml;
+    using System.Threading.Tasks;
 
     // NOTE: This class implements Clone so if you add any members, please update the copy ctor
     internal struct ExtensibleSyndicationObject : IExtensibleSyndicationObject
@@ -86,11 +85,12 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (readerOverUnparsedExtensions == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("readerOverUnparsedExtensions");
+                throw new ArgumentNullException(nameof(readerOverUnparsedExtensions));
             }
+
             if (maxExtensionSize < 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxExtensionSize"));
+                throw new ArgumentOutOfRangeException(nameof(maxExtensionSize));
             }
             XmlDictionaryReader r = XmlDictionaryReader.CreateDictionaryReader(readerOverUnparsedExtensions);
             _elementExtensions = new SyndicationElementExtensionCollection(CreateXmlBuffer(r, maxExtensionSize));
@@ -102,31 +102,35 @@ namespace Microsoft.ServiceModel.Syndication
             _elementExtensions = new SyndicationElementExtensionCollection(buffer);
         }
 
-        internal void WriteAttributeExtensions(XmlWriter writer)
+        internal async Task WriteAttributeExtensionsAsync(XmlWriter writer)
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw new ArgumentNullException(nameof(writer));
             }
+
+            writer = XmlWriterWrapper.CreateFromWriter(writer);
+
             if (_attributeExtensions != null)
             {
                 foreach (XmlQualifiedName qname in _attributeExtensions.Keys)
                 {
                     string value = _attributeExtensions[qname];
-                    writer.WriteAttributeString(qname.Name, qname.Namespace, value);
+                    await writer.WriteAttributeStringAsync(qname.Name, qname.Namespace, value);
                 }
             }
         }
 
-        internal void WriteElementExtensions(XmlWriter writer)
+        internal async Task WriteElementExtensionsAsync(XmlWriter writer)
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw new ArgumentNullException(nameof(writer));
             }
+
             if (_elementExtensions != null)
             {
-                _elementExtensions.WriteTo(writer);
+                await _elementExtensions.WriteToAsync(writer);
             }
         }
 

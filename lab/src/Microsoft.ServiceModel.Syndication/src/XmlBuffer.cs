@@ -2,31 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-/*
- *  Some parts of the code have been disabled for testing purposes.
- *  
- */
-
-#define BINARY
-
 namespace Microsoft.ServiceModel
 {
+    using Microsoft.ServiceModel.Syndication.Resources;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Xml;
-    using System.IO; // added to use buffered stream
-    using System.Runtime;
-    using System.ServiceModel.Channels;
-    using Microsoft.ServiceModel.Syndication.Resources;
-
 
     internal class XmlBuffer
     {
         private List<Section> _sections;
         private byte[] _buffer;
         private int _offset;
-        private BufferedStream _stream; //BufferedStream - Original: BufferedOutputStream
+        private BufferedStream _stream;
         private BufferState _bufferState;
         private XmlDictionaryWriter _writer;
         private XmlDictionaryReaderQuotas _quotas;
@@ -70,13 +59,10 @@ namespace Microsoft.ServiceModel
         public XmlBuffer(int maxBufferSize)
         {
             if (maxBufferSize < 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxBufferSize", maxBufferSize,
-                                                                            SR.GetString(SR.ValueMustBeNonNegative)));
-
-            int initialBufferSize = Math.Min(512, maxBufferSize);
-
+                throw new ArgumentOutOfRangeException(nameof(maxBufferSize), maxBufferSize, SR.ValueMustBeNonNegative);
+            
+            int initialBufferSize = Math.Min(512, maxBufferSize); 
             _stream = new BufferedStream(new MemoryStream(), initialBufferSize);
-
             _sections = new List<Section>(1);
         }
 
@@ -96,7 +82,7 @@ namespace Microsoft.ServiceModel
         public XmlDictionaryWriter OpenSection(XmlDictionaryReaderQuotas quotas)
         {
             if (_bufferState != BufferState.Created)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+                throw CreateInvalidStateException();
             _bufferState = BufferState.Writing;
             _quotas = new XmlDictionaryReaderQuotas();
             quotas.CopyTo(_quotas);
@@ -109,7 +95,7 @@ namespace Microsoft.ServiceModel
         public void CloseSection()
         {
             if (_bufferState != BufferState.Writing)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+                throw CreateInvalidStateException();
             _writer.Close();
             _bufferState = BufferState.Created;
 
@@ -121,12 +107,8 @@ namespace Microsoft.ServiceModel
         public void Close()
         {
             if (_bufferState != BufferState.Created)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+                throw CreateInvalidStateException();
             _bufferState = BufferState.Reading;
-
-            //buffer = stream.ToArray(out bufferSize); NOT SUPPORTED
-
-            //Implementation to do the same that the line above
             _buffer = new byte[_stream.Length];
             _stream.Position = 0;
             _stream.Read(_buffer, 0, _buffer.Length);
@@ -137,14 +119,14 @@ namespace Microsoft.ServiceModel
 
         private Exception CreateInvalidStateException()
         {
-            return new InvalidOperationException(SR.GetString(SR.XmlBufferInInvalidState));
+            return new InvalidOperationException(SR.XmlBufferInInvalidState);
         }
 
 
         public XmlDictionaryReader GetReader(int sectionIndex)
         {
             if (_bufferState != BufferState.Reading)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+                throw CreateInvalidStateException();
             Section section = _sections[sectionIndex];
             XmlDictionaryReader reader = XmlDictionaryReader.CreateBinaryReader(_buffer, section.Offset, section.Size, null, section.Quotas, null, null);
 
@@ -155,7 +137,7 @@ namespace Microsoft.ServiceModel
         public void WriteTo(int sectionIndex, XmlWriter writer)
         {
             if (_bufferState != BufferState.Reading)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+                throw CreateInvalidStateException();
             XmlDictionaryReader reader = GetReader(sectionIndex);
             try
             {
