@@ -310,7 +310,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if (this.IsOnServer)
                     {
-                        string text = SR.SFxSetManualAddresssingOnChannelDispatcher0;
+                        string text = SR.SFxSetManualAddressingOnChannelDispatcher0;
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(text));
                     }
                     else

@@ -32,9 +32,9 @@ namespace System.ServiceModel.Channels
                   ITransportFactorySettings settings,
                   EndpointAddress localAddress,
                   Uri localVia,
-                  EndpointAddress remoteAddresss,
+                  EndpointAddress remoteAddress,
                   Uri via)
-                : base(manager, remoteAddresss, via, settings.ManualAddressing, settings.MessageVersion)
+                : base(manager, remoteAddress, via, settings.ManualAddressing, settings.MessageVersion)
         {
             _localAddress = localAddress;
             _localVia = localVia;
