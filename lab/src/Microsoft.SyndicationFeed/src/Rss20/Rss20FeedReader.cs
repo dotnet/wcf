@@ -58,8 +58,7 @@ namespace Microsoft.SyndicationFeed.Rss
                     return SyndicationElementType.Content;
             }
         }
-
-
+        
         private async Task InitRead()
         {
             // Check <rss>

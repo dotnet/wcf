@@ -332,7 +332,6 @@ namespace Microsoft.SyndicationFeed.Rss
         }
     }
 
-
     static class RssAttributeExtentions
     {
         public static string GetRss(this IEnumerable<ISyndicationAttribute> attributes, string name)
