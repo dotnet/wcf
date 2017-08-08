@@ -153,7 +153,7 @@ namespace Microsoft.SyndicationFeed.Atom
 
             //
             // rel
-            string rel = content.Attributes.GetAtom(AtomLinkTypes.Relative) ?? ((content.Name == AtomElementNames.Link) ? AtomLinkTypes.Alternate : content.Name);
+            string rel = content.Attributes.GetAtom(AtomElementNames.Rel) ?? ((content.Name == AtomElementNames.Link) ? AtomLinkTypes.Alternate : content.Name);
 
             //
             // href
@@ -256,7 +256,7 @@ namespace Microsoft.SyndicationFeed.Atom
                     // Content
                     case AtomElementNames.Content:
 
-                        item.ContentType = field.Attributes.GetAtom(AtomElementNames.Type) ?? AtomMediaTypes.PlaintextType;
+                        item.ContentType = field.Attributes.GetAtom(AtomElementNames.Type) ?? AtomConstants.PlainTextContentType;
 
                         if (field.Attributes.GetAtom(AtomElementNames.Source) != null)
                         {

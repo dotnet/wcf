@@ -10,5 +10,6 @@ namespace Microsoft.SyndicationFeed.Atom
         public const string Atom10Prefix = "a10";
         public const string FeedTag = "feed";
         public const string SpecificationLink = "http://atompub.org/2005/08/17/draft-ietf-atompub-format-11.html";
+        public const string PlainTextContentType = "text";
     }
 }
