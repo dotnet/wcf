@@ -10,6 +10,7 @@ namespace Microsoft.SyndicationFeed.Atom
         public const string Content = "content";
         public const string Email = "email";
         public const string Entry = "entry";
+        public const string Feed = "feed";
         public const string Generator = "generator";
         public const string Icon = "icon";
         public const string Id = "id";

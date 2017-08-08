@@ -7,9 +7,9 @@ namespace Microsoft.SyndicationFeed.Atom
     public static class AtomLinkTypes
     {
         public const string Alternate = "alternate";
-        public const string Self = "self";
+        public const string Content = "content";
         public const string Enclosure = "enclosure";
         public const string Related = "related";
-        public const string Content = "content";
+        public const string Self = "self";
     }
 }

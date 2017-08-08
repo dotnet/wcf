@@ -8,6 +8,7 @@ namespace Microsoft.SyndicationFeed.Rss
     {
         public const string Author = "author";
         public const string Category = "category";
+        public const string Channel = "channel";
         public const string Copyright = "copyright";
         public const string Comments = "comments";
         public const string Description = "description";
@@ -22,6 +23,7 @@ namespace Microsoft.SyndicationFeed.Rss
         public const string Link = "link";
         public const string ManagingEditor = "managingEditor";
         public const string PubDate = "pubDate";
+        public const string Rss = "rss";
         public const string Source = "source";
         public const string Title = "title";
         public const string Url = "url";

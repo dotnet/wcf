@@ -103,7 +103,7 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new ArgumentNullException(nameof(content));
             }
 
-            string term = content.Attributes.GetAtom(AtomAttributes.Term);
+            string term = content.Attributes.GetAtom(AtomConstants.Term);
 
             if (term == null)
             {
@@ -112,8 +112,8 @@ namespace Microsoft.SyndicationFeed.Atom
 
             return new SyndicationCategory(term)
             {
-                Scheme = content.Attributes.GetAtom(AtomAttributes.Scheme),
-                Label = content.Attributes.GetAtom(AtomAttributes.Label)
+                Scheme = content.Attributes.GetAtom(AtomConstants.Scheme),
+                Label = content.Attributes.GetAtom(AtomConstants.Label)
             };
         }
 
@@ -144,25 +144,25 @@ namespace Microsoft.SyndicationFeed.Atom
             string title = content.Attributes.GetAtom(AtomElementNames.Title);
 
             // type
-            string type = content.Attributes.GetAtom(AtomAttributes.Type);
+            string type = content.Attributes.GetAtom(AtomConstants.Type);
 
             //
             // length
             long length = 0;
-            TryParseValue(content.Attributes.GetAtom(AtomAttributes.Length), out length);
+            TryParseValue(content.Attributes.GetAtom(AtomConstants.Length), out length);
 
             //
             // rel
-            string rel = content.Attributes.GetAtom(AtomAttributes.Rel) ?? ((content.Name == AtomElementNames.Link) ? AtomLinkTypes.Alternate : content.Name);
+            string rel = content.Attributes.GetAtom(AtomConstants.Rel) ?? ((content.Name == AtomElementNames.Link) ? AtomLinkTypes.Alternate : content.Name);
 
             //
             // href
-            TryParseValue(content.Attributes.GetAtom(AtomAttributes.Href), out Uri uri);
+            TryParseValue(content.Attributes.GetAtom(AtomConstants.Href), out Uri uri);
 
             // src
             if (uri == null)
             {
-                TryParseValue(content.Attributes.GetAtom(AtomAttributes.Source), out uri);
+                TryParseValue(content.Attributes.GetAtom(AtomConstants.Source), out uri);
             }
 
             if (uri == null)
@@ -256,9 +256,9 @@ namespace Microsoft.SyndicationFeed.Atom
                     // Content
                     case AtomElementNames.Content:
 
-                        item.ContentType = field.Attributes.GetAtom(AtomAttributes.Type) ?? AtomConstants.PlainTextContentType;
+                        item.ContentType = field.Attributes.GetAtom(AtomConstants.Type) ?? AtomConstants.PlainTextContentType;
 
-                        if (field.Attributes.GetAtom(AtomAttributes.Source) != null)
+                        if (field.Attributes.GetAtom(AtomConstants.Source) != null)
                         {
                             item.AddLink(CreateLink(field));
                         }

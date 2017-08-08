@@ -77,7 +77,7 @@ namespace Microsoft.SyndicationFeed.Atom
         {
             // Check <feed>
 
-            if (_reader.IsStartElement(AtomConstants.FeedTag, AtomConstants.Atom10Namespace))
+            if (_reader.IsStartElement(AtomElementNames.Feed, AtomConstants.Atom10Namespace))
             {
                 //Read <feed>
                 await XmlUtils.ReadAsync(_reader);

@@ -163,7 +163,7 @@ namespace Microsoft.SyndicationFeed.Rss
         private void StartFeed()
         {
             //Write <rss version="2.0">
-            _writer.WriteStartElement(Rss20Constants.RssTag);
+            _writer.WriteStartElement(Rss20ElementNames.Rss);
 
             //Write namespaces if exist
             if (_attributes != null)
@@ -179,7 +179,7 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             _writer.WriteAttributeString(Rss20ElementNames.Version, Rss20Constants.Version);
-            _writer.WriteStartElement(Rss20Constants.ChannelTag);
+            _writer.WriteStartElement(Rss20ElementNames.Channel);
             _feedStarted = true;
         }
     }
