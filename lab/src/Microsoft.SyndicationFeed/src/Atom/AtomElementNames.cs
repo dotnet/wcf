@@ -23,14 +23,6 @@ namespace Microsoft.SyndicationFeed.Atom
         public const string Summary = "summary";
         public const string Title = "title";
         public const string Updated = "updated";
-        public const string Href = "href";
-        public const string Label = "label";
-        public const string Scheme = "scheme";
-        public const string Source = "src";
         public const string Uri = "uri";
-        public const string Term = "term";
-        public const string Type = "type";
-        public const string Length = "length";
-        public const string Rel = "rel";
     }
 }
