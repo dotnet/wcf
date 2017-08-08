@@ -51,21 +51,21 @@ namespace Microsoft.SyndicationFeed.Atom
         {
             switch (elementName)
             {
-                case AtomConstants.EntryTag:
+                case AtomElementNames.Entry:
                     return SyndicationElementType.Item;
 
-                case AtomConstants.LinkTag:
+                case AtomElementNames.Link:
                     return SyndicationElementType.Link;
 
-                case AtomConstants.CategoryTag:
+                case AtomElementNames.Category:
                     return SyndicationElementType.Category;
 
-                case AtomConstants.LogoTag:
-                case AtomConstants.IconTag:
+                case AtomElementNames.Logo:
+                case AtomElementNames.Icon:
                     return SyndicationElementType.Image;
 
-                case AtomConstants.AuthorTag:
-                case AtomConstants.ContributorTag:
+                case AtomContributorTypes.Author:
+                case AtomContributorTypes.Contributor:
                     return SyndicationElementType.Person;
 
                 default:
