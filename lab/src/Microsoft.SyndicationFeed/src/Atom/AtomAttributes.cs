@@ -4,7 +4,7 @@
 
 namespace Microsoft.SyndicationFeed.Atom
 {
-    public static class AtomAttributes
+    static class AtomAttributes
     {
         public const string Rel = "rel";
         public const string Href = "href";
