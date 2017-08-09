@@ -38,13 +38,13 @@ Supported features
 |              |Transport              |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |Message                |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)     |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)    |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)           | [:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)    |
 |Client Authentication|Basic           |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
-|              |Digest                 |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :grey_question:|
+|              |Digest                 |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:|
 |              |NTLM                   |:white_check_mark:                   |:white_check_mark:                  |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)           | [:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)    |
 |              |Kerberos/TCP           |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)     |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |Kerberos/HTTP          |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:           | :white_check_mark:    |
 |              |Certificate/TCP       |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |Certificate/HTTP      |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                      |:white_check_mark: 
-|              |Certificate/PeerTrust      |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :grey_question:                     |
+|              |Certificate/PeerTrust      |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | [:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)                     |
 |Service Authentication|Certificate    |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |SPNIdentity/TCP    |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)          |:white_check_mark:          |:white_check_mark:                  | :white_check_mark:          |
 |              |SPNIdentity/HTTP    |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)          |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)          |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)                  | [:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)          |
@@ -57,7 +57,7 @@ Supported features
 |Management    |ETW Tracing            |[:no_entry_sign:](https://github.com/dotnet/wcf/releases/tag/v2.0)      |:white_check_mark:                  |:white_check_mark:          |:white_check_mark:     |          
 
 
-#### Platforms
+#### More Information
 &ensp;&ensp;For more details about what UWP is please see this [dotnet Glossary doc](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/glossary.md).
 
 &ensp;&ensp;For supported platforms and other details please see the [.NET Core 2.0 Release Notes](https://github.com/dotnet/core/blob/master/release-notes/2.0/2.0.md).
