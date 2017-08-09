@@ -156,13 +156,15 @@ namespace Microsoft.SyndicationFeed.Rss
                     case Rss20ElementNames.Guid:
                         item.Id = field.Value;
 
-                        // permaLink
-                        if (TryParseValue(field.Attributes.GetRss(Rss20Constants.IsPermaLinkTag), out bool isPermalink) &&
-                            isPermalink &&
+                        // isPermaLink
+                        string isPermaLinkAttr = field.Attributes.GetRss(Rss20Constants.IsPermaLinkTag);
+
+                        if ((isPermaLinkAttr == null || (TryParseValue(isPermaLinkAttr, out bool isPermalink) && isPermalink)) &&
                             TryParseValue(field.Value, out Uri permaLink))
                         {
                             item.AddLink(new SyndicationLink(permaLink, Rss20ElementNames.Guid));
                         }
+
                         break;
 
                     //
@@ -243,11 +245,12 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
-            return new SyndicationPerson()
+            if (string.IsNullOrEmpty(content.Value))
             {
-                Email = content.Value,
-                RelationshipType = content.Name
-            };
+                throw new ArgumentNullException("Content value is required");
+            }
+
+            return new SyndicationPerson(null, content.Value, content.Name);
         }
 
         public virtual ISyndicationImage CreateImage(ISyndicationContent content)

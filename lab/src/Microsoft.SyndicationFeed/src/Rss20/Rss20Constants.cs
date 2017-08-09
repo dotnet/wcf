@@ -6,9 +6,9 @@ namespace Microsoft.SyndicationFeed.Rss
 {
     static class Rss20Constants
     {
-        public const string Version = "2.0";
         public const string Rss20Namespace = "";
         public const string SpecificationLink = "http://blogs.law.harvard.edu/tech/rss";
+        public const string Version = "2.0";
 
         public const string IsPermaLinkTag = "isPermaLink";
         public const string LengthTag = "length";

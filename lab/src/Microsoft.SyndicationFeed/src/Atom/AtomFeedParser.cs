@@ -185,9 +185,9 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var person = new SyndicationPerson();
-
-            person.RelationshipType = content.Name;
+            string name = null;
+            string email = null;
+            string uri = null;
 
             foreach (var field in content.Fields)
             {
@@ -202,19 +202,19 @@ namespace Microsoft.SyndicationFeed.Atom
                     //
                     // Name
                     case AtomElementNames.Name:
-                        person.Name = field.Value;
+                        name = field.Value;
                         break;
 
                     //
                     // Email
                     case AtomElementNames.Email:
-                        person.Email = field.Value;
+                        email = field.Value;
                         break;
 
                     //
                     // Uri
                     case AtomElementNames.Uri:
-                        person.Uri = field.Value;
+                        uri = field.Value;
                         break;
                     //
                     // Unrecognized field
@@ -223,7 +223,10 @@ namespace Microsoft.SyndicationFeed.Atom
                 }
             }
 
-            return person;
+            return new SyndicationPerson(name, email, content.Name)
+            {
+                Uri = uri
+            };
         }
 
         public virtual IAtomEntry CreateEntry(ISyndicationContent content)

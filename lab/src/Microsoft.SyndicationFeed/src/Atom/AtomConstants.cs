@@ -8,17 +8,17 @@ namespace Microsoft.SyndicationFeed.Atom
     {
         public const string Atom10Namespace = "http://www.w3.org/2005/Atom";
         public const string Atom10Prefix = "a10";
-        public const string SpecificationLink = "http://atompub.org/2005/08/17/draft-ietf-atompub-format-11.html";
         public const string PlainTextContentType = "text";
+        public const string SpecificationLink = "http://atompub.org/2005/08/17/draft-ietf-atompub-format-11.html";
 
-        public const string Rel = "rel";
         public const string Href = "href";
-        public const string Source = "src";
+        public const string Label = "label";
         public const string Length = "length";
+        public const string Rel = "rel";
+        public const string Scheme = "scheme";
+        public const string Source = "src";
         public const string Type = "type";
         public const string Term = "term";
-        public const string Label = "label";
         public const string Uri = "uri";
-        public const string Scheme = "scheme";
     }
 }

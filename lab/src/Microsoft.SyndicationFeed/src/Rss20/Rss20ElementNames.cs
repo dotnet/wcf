@@ -9,8 +9,8 @@ namespace Microsoft.SyndicationFeed.Rss
         public const string Author = "author";
         public const string Category = "category";
         public const string Channel = "channel";
-        public const string Copyright = "copyright";
         public const string Comments = "comments";
+        public const string Copyright = "copyright";
         public const string Description = "description";
         public const string Domain = "domain";
         public const string Enclosure = "enclosure";

@@ -7,9 +7,9 @@ namespace Microsoft.SyndicationFeed.Rss
     public static class Rss20LinkTypes
     {
         public const string Alternate = "alternate";
-        public const string Guid = "guid";
         public const string Comments = "comments";
         public const string Enclosure = "enclosure";
+        public const string Guid = "guid";
         public const string Source = "source";
     }
 }
