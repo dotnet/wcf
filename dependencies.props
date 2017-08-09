@@ -98,21 +98,21 @@
       <ElementName>NETStandardPackageVersion</ElementName>
       <PackageId>$(NETStandardPackageId)</PackageId>
     </XmlUpdateStep>-->
-    <!--<XmlUpdateStep Include="ProjectNTfs">
+    <XmlUpdateStep Include="ProjectNTfs">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>ProjectNTfsExpectedPrerelease</ElementName>
       <BuildInfoName>ProjectNTfs</BuildInfoName>
-    </XmlUpdateStep>-->
-    <!--<XmlUpdateStep Include="ProjectNTfsTestILC">
+    </XmlUpdateStep>
+    <XmlUpdateStep Include="ProjectNTfsTestILC">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>ProjectNTfsTestILCExpectedPrerelease</ElementName>
       <BuildInfoName>ProjectNTfsTestILC</BuildInfoName>
-    </XmlUpdateStep>-->
-    <!--<XmlUpdateStep Include="ProjectNTfsTestILC">
+    </XmlUpdateStep>
+    <XmlUpdateStep Include="ProjectNTfsTestILC">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>ProjectNTfsTestILCPackageVersion</ElementName>
       <PackageId>TestILC.amd64ret</PackageId>
-    </XmlUpdateStep>-->
+    </XmlUpdateStep>
   </ItemGroup>
 
   <PropertyGroup>
