@@ -30,13 +30,13 @@
   
   <ItemGroup>
     <!--If a uapaot run use the single scenario test project by default-->
-    <Project Include="$(MSBuildThisFileDirectory)System.Private.ServiceModel\tests\Scenarios\AllScenarioTests.csproj" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'!='true'" />
+    <Project Include="$(MSBuildThisFileDirectory)System.Private.ServiceModel\tests\Scenarios\AllScenarioTests.csproj" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'!='true' and '$(OuterLoop)' == 'true'" />
 
     <!--In VSTS build separate scenario projects even for uapaot.-->
     <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'=='uapaot' and '$(BuildSeparateScenarioProjects)'=='true'" />
     
     <!--All non-uapaot runs use the separate scenario test projects.-->
-    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'!='uapaot'" />
+    <Project Include="$(MSBuildThisFileDirectory)*\tests\Scenarios\**\*$(_ProjectPattern).csproj" Exclude="@(TestProjectExclusions)" Condition="'$(TargetGroup)'!='uapaot' and '$(OuterLoop)' == 'true'" />
 
     <!--Always include unit test projects.-->
     <Project Include="$(MSBuildThisFileDirectory)*\tests\*$(_ProjectPattern).csproj" />

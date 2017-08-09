@@ -22,6 +22,7 @@
     <FileToExclude Include="System.Private.CoreLib.Augments" />
     <FileToExclude Include="System.Private.CoreLib.DynamicDelegate" />
     <FileToExclude Include="System.Private.CoreLib.WinRTInterop" />
+    <FileToExclude Include="System.Private.ServiceModel" />
     <PackageReference Include="NETStandard.Library">
       <Version>$(NETStandardPackageVersion)</Version>
     </PackageReference>
