@@ -157,12 +157,12 @@ namespace Microsoft.SyndicationFeed.Rss
                         item.Id = field.Value;
 
                         // isPermaLink
-                        string isPermaLinkAttr = field.Attributes.GetRss(Rss20Constants.IsPermaLinkTag);
+                        string isPermaLinkAttr = field.Attributes.GetRss(Rss20Constants.IsPermaLink);
 
                         if ((isPermaLinkAttr == null || (TryParseValue(isPermaLinkAttr, out bool isPermalink) && isPermalink)) &&
                             TryParseValue(field.Value, out Uri permaLink))
                         {
-                            item.AddLink(new SyndicationLink(permaLink, Rss20ElementNames.Guid));
+                            item.AddLink(new SyndicationLink(permaLink, Rss20LinkTypes.Guid));
                         }
 
                         break;

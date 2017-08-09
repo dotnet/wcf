@@ -4,6 +4,10 @@
 
 namespace Microsoft.SyndicationFeed.Rss
 {
+    /// <summary>
+    /// RSS 2.0 elements 
+    /// http://blogs.law.harvard.edu/tech/rss 
+    /// </summary>
     public static class Rss20ElementNames
     {
         public const string Author = "author";

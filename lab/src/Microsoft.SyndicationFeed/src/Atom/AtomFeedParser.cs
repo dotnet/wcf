@@ -408,7 +408,7 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new FormatException("Invalid source link");
             }
 
-            return new SyndicationLink(url, AtomElementNames.SourceFeed)
+            return new SyndicationLink(url, AtomLinkTypes.Source)
             {
                 Title = title,
                 LastUpdated = lastUpdated

@@ -72,6 +72,7 @@ namespace Microsoft.SyndicationFeed.Rss
         [Fact]
         public async Task Rss20Writer_WriteImage()
         {
+            Uri uri = new Uri("http://testuriforlink.com");
 
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
@@ -80,15 +81,11 @@ namespace Microsoft.SyndicationFeed.Rss
 
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(xmlWriter.Settings));
 
-                Uri url = new Uri("http://testuriforimage.com");
-                Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate);
-
-                SyndicationImage image = new SyndicationImage(url)
+                var image = new SyndicationImage(uri)
                 {
                     Title = "Testing image title",
                     Description = "testing image description",
-                    Link = link
+                    Link = new SyndicationLink(uri)
                 };
 
                 await writer.Write(image);
@@ -97,7 +94,7 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             string res = sw.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><image><url>http://testuriforimage.com/</url><title>Testing image title</title><link>http://testuriforlink.com/</link><description>testing image description</description></image></channel></rss>");
+            Assert.True(res == $"<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><image><url>{uri}</url><title>Testing image title</title><link>{uri}</link><description>testing image description</description></image></channel></rss>");
         }
 
         [Fact]
@@ -393,7 +390,7 @@ namespace Microsoft.SyndicationFeed.Rss
                     new SyndicationAttribute("xmlns:media", "http://search.yahoo.com/mrss/"),
                 };
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, list);
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(), list);
 
                 await writer.WriteValue("hello", "world");
             }

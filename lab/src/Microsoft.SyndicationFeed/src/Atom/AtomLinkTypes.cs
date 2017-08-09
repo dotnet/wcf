@@ -11,5 +11,6 @@ namespace Microsoft.SyndicationFeed.Atom
         public const string Enclosure = "enclosure";
         public const string Related = "related";
         public const string Self = "self";
+        public const string Source = "source";
     }
 }

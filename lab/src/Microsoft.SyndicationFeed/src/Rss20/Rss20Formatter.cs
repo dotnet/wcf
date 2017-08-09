@@ -250,7 +250,7 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 var guid = new SyndicationContent(Rss20ElementNames.Guid, item.Id);
 
-                guid.AddAttribute(new SyndicationAttribute(Rss20Constants.IsPermaLinkTag, "false"));
+                guid.AddAttribute(new SyndicationAttribute(Rss20Constants.IsPermaLink, "false"));
 
                 content.AddField(guid);
             }
@@ -286,7 +286,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentException("Enclosure requires length attribute");
             }
 
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.LengthTag, FormatValue(link.Length)));
+            content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
 
             //
             // MediaType
@@ -295,7 +295,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException("Enclosure requires a MediaType");
             }
 
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.TypeTag, link.MediaType));
+            content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
             return content;
         }
 
@@ -319,14 +319,14 @@ namespace Microsoft.SyndicationFeed.Rss
             // Lenght
             if (link.Length != 0)
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.LengthTag, FormatValue(link.Length)));
+                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
             }
 
             //
             // Type
             if (!string.IsNullOrEmpty(link.MediaType))
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.TypeTag, link.MediaType));
+                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
             }
 
             //
