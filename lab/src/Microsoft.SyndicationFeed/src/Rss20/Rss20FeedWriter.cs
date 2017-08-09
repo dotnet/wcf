@@ -30,11 +30,11 @@ namespace Microsoft.SyndicationFeed.Rss
         {
         }
 
-        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter, IEnumerable<ISyndicationAttribute> namespaces)
+        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter, IEnumerable<ISyndicationAttribute> attributes)
         {
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
             Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
-            _attributes = namespaces; // optional
+            _attributes = attributes; // optional
         }
 
         public ISyndicationFeedFormatter Formatter { get; private set; }
@@ -155,7 +155,7 @@ namespace Microsoft.SyndicationFeed.Rss
             return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
         }
 
-        public Task WriteElement(string content)
+        public Task WriteRaw(string content)
         {
             return XmlUtils.WriteRaw(_writer, content);
         }
