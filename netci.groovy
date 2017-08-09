@@ -333,7 +333,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
 }
 
 // **************************
-// Define outerloop testing on Windows_NT for UAP, run locally on each machine.
+// Define outerloop testing on Windows_NT for UAP, run locally on each machine. ***NOW TEST IT***
 // **************************
 
 [true, false].each { isPR -> 
