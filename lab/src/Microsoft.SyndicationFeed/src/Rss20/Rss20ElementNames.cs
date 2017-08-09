@@ -28,5 +28,13 @@ namespace Microsoft.SyndicationFeed.Rss
         public const string Title = "title";
         public const string Url = "url";
         public const string Version = "version";
+        
+        public const string Cloud = "cloud";
+        public const string Docs = "docs";
+        public const string Rating = "rating";
+        public const string SkipDays = "skipDays";
+        public const string SkipHours = "skipHours";
+        public const string TextInput = "textInput";
+        public const string TimeToLive = "ttl";
     }
 }

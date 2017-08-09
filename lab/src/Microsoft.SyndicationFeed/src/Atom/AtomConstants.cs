@@ -20,5 +20,6 @@ namespace Microsoft.SyndicationFeed.Atom
         public const string Type = "type";
         public const string Term = "term";
         public const string Uri = "uri";
+        public const string Version = "version";
     }
 }
