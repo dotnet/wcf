@@ -27,7 +27,7 @@ Supported features
 |TransferMode  |Buffered (sync/async)  |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |Streamed (sync/async)  |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:           |
 |MessageVersion|SOAP 1.1 UTF8          |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
-|              |SOAP 1.2 UTF8          |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
+.0|              |SOAP 1.2 UTF8          |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |Contracts     |DataContract           |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |XmlSerializer          |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |MessageFormat          |:white_check_mark:                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
@@ -60,4 +60,4 @@ Supported features
 #### More Information
 &ensp;&ensp;For more details about what UWP is please see this [dotnet Glossary doc](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/glossary.md).
 
-&ensp;&ensp;For supported platforms and other details please see the [.NET Core 2.0 Release Notes](https://github.com/dotnet/core/blob/master/release-notes/2.0/2.0.md).
+&ensp;&ensp;For supported platforms and other details please see the [.NET Core 2.0 Release Notes](https://github.com/dotnet/core/blob/master/release-notes/2.0/2.0.0.md).
