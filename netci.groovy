@@ -339,7 +339,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
 [true, false].each { isPR -> 
     configurationGroupList.each { configurationGroup ->
         def os = 'Windows_NT'
-        def newJobName = "outerloop_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
+        def newJobName = "outerloop_${os.toLowerCase()}_UAP_${configurationGroup.toLowerCase()}"
         def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
         def targetGroup = "uap"
         
