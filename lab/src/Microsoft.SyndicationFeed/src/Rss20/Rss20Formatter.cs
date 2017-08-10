@@ -12,7 +12,7 @@ namespace Microsoft.SyndicationFeed.Rss
     {
         XmlWriterSettings _settings;
 
-        public Rss20Formatter(XmlWriterSettings settings)
+        public Rss20Formatter(XmlWriterSettings settings = null)
         {
             _settings = settings?.Clone() ?? new XmlWriterSettings();
 
@@ -184,8 +184,6 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(item));
             }
 
-            bool isPermaLink = false;
-
             // Spec requires to have at least one title or description
             if (string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
             {
@@ -204,14 +202,15 @@ namespace Microsoft.SyndicationFeed.Rss
 
             //
             // Links
+            ISyndicationLink guidLink = null;
+
             if (item.Links != null)
             {
                 foreach (var link in item.Links)
                 {
                     if (link.RelationshipType == Rss20ElementNames.Guid)
                     {
-                        isPermaLink = true;
-                        continue;
+                        guidLink = link;
                     }
 
                     content.AddField(CreateContent(link));
@@ -247,14 +246,11 @@ namespace Microsoft.SyndicationFeed.Rss
 
             //
             // Guid (id)
-            if (!string.IsNullOrEmpty(item.Id))
+            if (guidLink == null && !string.IsNullOrEmpty(item.Id))
             {
-                SyndicationContent guid = new SyndicationContent(Rss20ElementNames.Guid, item.Id);
+                var guid = new SyndicationContent(Rss20ElementNames.Guid, item.Id);
 
-                if (isPermaLink)
-                {
-                    guid.AddAttribute(new SyndicationAttribute(Rss20Constants.IsPermaLinkTag,"true"));
-                }
+                guid.AddAttribute(new SyndicationAttribute(Rss20Constants.IsPermaLink, "false"));
 
                 content.AddField(guid);
             }
@@ -290,7 +286,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentException("Enclosure requires length attribute");
             }
 
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.LengthTag, FormatValue(link.Length)));
+            content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
 
             //
             // MediaType
@@ -299,7 +295,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException("Enclosure requires a MediaType");
             }
 
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.TypeTag, link.MediaType));
+            content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
             return content;
         }
 
@@ -323,14 +319,14 @@ namespace Microsoft.SyndicationFeed.Rss
             // Lenght
             if (link.Length != 0)
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.LengthTag, FormatValue(link.Length)));
+                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
             }
 
             //
             // Type
             if (!string.IsNullOrEmpty(link.MediaType))
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.TypeTag, link.MediaType));
+                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
             }
 
             //

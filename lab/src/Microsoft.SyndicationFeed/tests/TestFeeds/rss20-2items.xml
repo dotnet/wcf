@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss xmlns:example="http://contoso.com/syndication/feed/examples" version="2.0">
    <channel>
       <title asd="123"><![CDATA[Lorem ipsum feed for an interval of 1 minutes]]></title>
       <description><![CDATA[This is a constantly updating lorem ipsum feed]]></description>
@@ -24,6 +24,7 @@
          <guid isPermaLink="true">http://example.com/test/1499372700</guid>
          <author><![CDATA[John Smith]]></author>
          <pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate>
+         <example:customElement>Testing Custom Elements</example:customElement>
       </item>
       <item>
          <title><![CDATA[Lorem ipsum 2017-07-06T20:24:00+00:00]]></title>
@@ -32,7 +33,8 @@
          <guid isPermaLink="true">http://example.com/test/1499372640</guid>
          <author><![CDATA[John Smith]]></author>
          <pubDate>Thu, 06 Jul 2017 20:24:00 GMT</pubDate>
-        <enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3" length="12216320" type="audio/mpeg">Ignored Text</enclosure>
-      </item>
+         <enclosure url="http://www.scripting.com/mp3s/weatherReportSuite.mp3" length="12216320" type="audio/mpeg">Ignored Text</enclosure>
+         <example:customElement>Testing Custom Elements</example:customElement>      
+     </item>
    </channel>
 </rss>

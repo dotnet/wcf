@@ -58,12 +58,11 @@ namespace Microsoft.SyndicationFeed.Rss
                     return SyndicationElementType.Content;
             }
         }
-
-
+        
         private async Task InitRead()
         {
             // Check <rss>
-            bool knownFeed = _reader.IsStartElement(Rss20Constants.RssTag, Rss20Constants.Rss20Namespace) &&
+            bool knownFeed = _reader.IsStartElement(Rss20ElementNames.Rss, Rss20Constants.Rss20Namespace) &&
                              _reader.GetAttribute(Rss20ElementNames.Version).Equals(Rss20Constants.Version);
 
             if (knownFeed)
@@ -72,7 +71,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 await XmlUtils.ReadAsync(_reader);
 
                 // Check <channel>
-                knownFeed = _reader.IsStartElement(Rss20Constants.ChannelTag, Rss20Constants.Rss20Namespace);
+                knownFeed = _reader.IsStartElement(Rss20ElementNames.Channel, Rss20Constants.Rss20Namespace);
             }
 
             if (!knownFeed)
