@@ -22,6 +22,6 @@ namespace Microsoft.SyndicationFeed
 
         Task WriteValue<T>(string name, T value);
 
-        Task WriteElement(string content);
+        Task WriteRaw(string content);
     }
 }

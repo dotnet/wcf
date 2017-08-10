@@ -148,8 +148,7 @@ namespace Microsoft.SyndicationFeed
 
             return Parser.ParseImage(await ReadElementAsString());
         }
-
-
+        
         public virtual async Task<T> ReadValue<T>()
         {
             ISyndicationContent content = await ReadContent();
@@ -170,8 +169,7 @@ namespace Microsoft.SyndicationFeed
 
             return result;
         }
-
-
+        
         protected abstract SyndicationElementType MapElementType(string elementName);
 
         private async Task<bool> MoveNext(bool setCurrent = true)

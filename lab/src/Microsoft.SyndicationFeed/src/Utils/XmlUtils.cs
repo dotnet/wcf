@@ -68,13 +68,32 @@ namespace Microsoft.SyndicationFeed
 
         public static Task WriteRaw(XmlWriter writer, string content)
         {
+            //
+            // If the xml writer is configured to omit duplicate namespaces use WriteNode to allow the writer to conform
+            if (writer.Settings.NamespaceHandling == NamespaceHandling.OmitDuplicates)
+            {
+                using (XmlReader reader = XmlReader.Create(new StringReader(content)))
+                {
+                    if (writer.Settings.Async)
+                    {
+                        return writer.WriteNodeAsync(reader, false);
+                    }
 
+                    writer.WriteNode(reader, false);
+
+                    return Task.CompletedTask;
+                }
+            }
+
+            //
+            // Write directly as string for better performance
             if (writer.Settings.Async)
             {
                 return writer.WriteRawAsync(content);
             }
 
             writer.WriteRaw(content);
+
             return Task.CompletedTask;
         }
 

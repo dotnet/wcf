@@ -20,21 +20,11 @@ namespace Microsoft.SyndicationFeed.Rss
         {
         }
 
-        public Rss20FeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes)
-            : this(writer, new Rss20Formatter(writer.Settings), attributes)
-        {
-        }
-
-        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter)
-            : this(writer, formatter, null)
-        {
-        }
-
-        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter, IEnumerable<ISyndicationAttribute> namespaces)
+        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter, IEnumerable<ISyndicationAttribute> attributes = null)
         {
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
             Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
-            _attributes = namespaces; // optional
+            _attributes = attributes; // optional
         }
 
         public ISyndicationFeedFormatter Formatter { get; private set; }
@@ -51,7 +41,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 StartFeed();
             }
 
-            return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
+            return WriteRaw(Formatter.Format(content));
         }
 
         public virtual Task Write(ISyndicationCategory category)
@@ -66,7 +56,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 StartFeed();
             }
 
-            return XmlUtils.WriteRaw(_writer, Formatter.Format(category));
+            return WriteRaw(Formatter.Format(category));
         }
 
         public virtual Task Write(ISyndicationImage image)
@@ -81,7 +71,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 StartFeed();
             }
 
-            return XmlUtils.WriteRaw(_writer, Formatter.Format(image));
+            return WriteRaw(Formatter.Format(image));
         }
 
         public virtual Task Write(ISyndicationItem item)
@@ -96,7 +86,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 StartFeed();
             }
 
-            return XmlUtils.WriteRaw(_writer, Formatter.Format(item));
+            return WriteRaw(Formatter.Format(item));
         }
 
         public virtual Task Write(ISyndicationPerson person)
@@ -112,7 +102,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 StartFeed();
             }
 
-            return XmlUtils.WriteRaw(_writer, Formatter.Format(person));
+            return WriteRaw(Formatter.Format(person));
         }
 
         public virtual Task Write(ISyndicationLink link)
@@ -127,12 +117,11 @@ namespace Microsoft.SyndicationFeed.Rss
                 StartFeed();
             }
 
-            return XmlUtils.WriteRaw(_writer, Formatter.Format(link));
+            return WriteRaw(Formatter.Format(link));
         }
 
-        public Task WriteValue<T>(string name, T value)
+        public virtual Task WriteValue<T>(string name, T value)
         {
-
             if (!_feedStarted)
             {
                 StartFeed();
@@ -143,19 +132,17 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(name));
             }
 
-            var valueString = Converter.FormatValue(value);
+            string valueString = Formatter.FormatValue(value);
 
-            if (string.IsNullOrEmpty(valueString))
+            if (valueString == null)
             {
-                throw new ArgumentNullException(nameof(value));
+                throw new FormatException(nameof(value));
             }
-
-            SyndicationContent content = new SyndicationContent(name, valueString);
-
-            return XmlUtils.WriteRaw(_writer, Formatter.Format(content));
+            
+            return WriteRaw(Formatter.Format(new SyndicationContent(name, valueString)));
         }
 
-        public Task WriteElement(string content)
+        public virtual Task WriteRaw(string content)
         {
             return XmlUtils.WriteRaw(_writer, content);
         }
@@ -163,23 +150,23 @@ namespace Microsoft.SyndicationFeed.Rss
         private void StartFeed()
         {
             //Write <rss version="2.0">
-            _writer.WriteStartElement(Rss20Constants.RssTag);
+            _writer.WriteStartElement(Rss20ElementNames.Rss);
 
             //Write namespaces if exist
             if (_attributes != null)
             {
                 foreach (var ns in _attributes)
                 {
-                    if(ns.Namespace != null)
+                    if (ns.Namespace != null)
                     {
-                        XmlUtils.SplitName(ns.Name,out string prefix, out string localname);
+                        XmlUtils.SplitName(ns.Name, out string prefix, out string localname);
                         _writer.WriteAttributeString(prefix, localname, null, ns.Value);
                     }
                 }
             }
 
             _writer.WriteAttributeString(Rss20ElementNames.Version, Rss20Constants.Version);
-            _writer.WriteStartElement(Rss20Constants.ChannelTag);
+            _writer.WriteStartElement(Rss20ElementNames.Channel);
             _feedStarted = true;
         }
     }

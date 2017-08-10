@@ -15,7 +15,7 @@ namespace Microsoft.SyndicationFeed.Atom
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != AtomConstants.CategoryTag)
+            if (content.Name != AtomElementNames.Category)
             {
                 throw new FormatException("Invalid Atom Category");
             }
@@ -27,7 +27,7 @@ namespace Microsoft.SyndicationFeed.Atom
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != AtomConstants.LogoTag && content.Name != AtomConstants.IconTag)
+            if (content.Name != AtomElementNames.Logo && content.Name != AtomElementNames.Icon)
             {
                 throw new FormatException("Invalid Atom Image");
             }
@@ -44,7 +44,7 @@ namespace Microsoft.SyndicationFeed.Atom
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != AtomConstants.EntryTag)
+            if (content.Name != AtomElementNames.Entry)
             {
                 throw new FormatException("Invalid Atom feed");
             }
@@ -56,7 +56,7 @@ namespace Microsoft.SyndicationFeed.Atom
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != AtomConstants.LinkTag)
+            if (content.Name != AtomElementNames.Link)
             {
                 throw new FormatException("Invalid Atom Link");
             }
@@ -68,7 +68,7 @@ namespace Microsoft.SyndicationFeed.Atom
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != AtomConstants.AuthorTag && content.Name != AtomConstants.ContributorTag)
+            if (content.Name != AtomContributorTypes.Author && content.Name != AtomContributorTypes.Contributor)
             {
                 throw new FormatException("Invalid Atom person");
             }
@@ -103,7 +103,7 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new ArgumentNullException(nameof(content));
             }
 
-            string term = content.Attributes.GetAtom(AtomConstants.TermTag);
+            string term = content.Attributes.GetAtom(AtomConstants.Term);
 
             if (term == null)
             {
@@ -112,8 +112,8 @@ namespace Microsoft.SyndicationFeed.Atom
 
             return new SyndicationCategory(term)
             {
-                Scheme = content.Attributes.GetAtom(AtomConstants.SchemeTag),
-                Label = content.Attributes.GetAtom(AtomConstants.LabelTag)
+                Scheme = content.Attributes.GetAtom(AtomConstants.Scheme),
+                Label = content.Attributes.GetAtom(AtomConstants.Label)
             };
         }
 
@@ -141,28 +141,28 @@ namespace Microsoft.SyndicationFeed.Atom
 
             //
             // title
-            string title = content.Attributes.GetAtom(AtomConstants.TitleTag);
+            string title = content.Attributes.GetAtom(AtomElementNames.Title);
 
             // type
-            string type = content.Attributes.GetAtom(AtomConstants.TypeTag);
+            string type = content.Attributes.GetAtom(AtomConstants.Type);
 
             //
             // length
             long length = 0;
-            TryParseValue(content.Attributes.GetAtom(AtomConstants.LengthTag), out length);
+            TryParseValue(content.Attributes.GetAtom(AtomConstants.Length), out length);
 
             //
             // rel
-            string rel = content.Attributes.GetAtom(AtomConstants.RelativeTag) ?? ((content.Name == AtomConstants.LinkTag) ? AtomConstants.AlternateTag : content.Name);
+            string rel = content.Attributes.GetAtom(AtomConstants.Rel) ?? ((content.Name == AtomElementNames.Link) ? AtomLinkTypes.Alternate : content.Name);
 
             //
             // href
-            TryParseValue(content.Attributes.GetAtom(AtomConstants.HrefTag), out Uri uri);
+            TryParseValue(content.Attributes.GetAtom(AtomConstants.Href), out Uri uri);
 
             // src
             if (uri == null)
             {
-                TryParseValue(content.Attributes.GetAtom(AtomConstants.SourceTag), out uri);
+                TryParseValue(content.Attributes.GetAtom(AtomConstants.Source), out uri);
             }
 
             if (uri == null)
@@ -185,9 +185,9 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var person = new SyndicationPerson();
-
-            person.RelationshipType = content.Name;
+            string name = null;
+            string email = null;
+            string uri = null;
 
             foreach (var field in content.Fields)
             {
@@ -201,20 +201,20 @@ namespace Microsoft.SyndicationFeed.Atom
                 {
                     //
                     // Name
-                    case AtomConstants.NameTag:
-                        person.Name = field.Value;
+                    case AtomElementNames.Name:
+                        name = field.Value;
                         break;
 
                     //
                     // Email
-                    case AtomConstants.EmailTag:
-                        person.Email = field.Value;
+                    case AtomElementNames.Email:
+                        email = field.Value;
                         break;
 
                     //
                     // Uri
-                    case AtomConstants.UriTag:
-                        person.Uri = field.Value;
+                    case AtomElementNames.Uri:
+                        uri = field.Value;
                         break;
                     //
                     // Unrecognized field
@@ -223,7 +223,10 @@ namespace Microsoft.SyndicationFeed.Atom
                 }
             }
 
-            return person;
+            return new SyndicationPerson(name, email, content.Name)
+            {
+                Uri = uri
+            };
         }
 
         public virtual IAtomEntry CreateEntry(ISyndicationContent content)
@@ -248,17 +251,17 @@ namespace Microsoft.SyndicationFeed.Atom
                 {
                     //
                     // Category
-                    case AtomConstants.CategoryTag:
+                    case AtomElementNames.Category:
                         item.AddCategory(CreateCategory(field));
                         break;
 
                     //
                     // Content
-                    case AtomConstants.ContentTag:
+                    case AtomElementNames.Content:
 
-                        item.ContentType = field.Attributes.GetAtom(AtomConstants.TypeTag) ?? AtomConstants.PlaintextType;
+                        item.ContentType = field.Attributes.GetAtom(AtomConstants.Type) ?? AtomConstants.PlainTextContentType;
 
-                        if (field.Attributes.GetAtom(AtomConstants.SourceTag) != null)
+                        if (field.Attributes.GetAtom(AtomConstants.Source) != null)
                         {
                             item.AddLink(CreateLink(field));
                         }
@@ -271,26 +274,26 @@ namespace Microsoft.SyndicationFeed.Atom
 
                     //
                     // Author/Contributor
-                    case AtomConstants.AuthorTag:
-                    case AtomConstants.ContributorTag:
+                    case AtomContributorTypes.Author:
+                    case AtomContributorTypes.Contributor:
                         item.AddContributor(CreatePerson(field));
                         break;
 
                     //
                     // Id
-                    case AtomConstants.IdTag:
+                    case AtomElementNames.Id:
                         item.Id = field.Value;
                         break;
 
                     //
                     // Link
-                    case AtomConstants.LinkTag:
+                    case AtomElementNames.Link:
                         item.AddLink(CreateLink(field));
                         break;
 
                     //
                     // Published
-                    case AtomConstants.PublishedTag:
+                    case AtomElementNames.Published:
                         if (TryParseValue(field.Value, out DateTimeOffset published))
                         {
                             item.Published = published;
@@ -299,30 +302,30 @@ namespace Microsoft.SyndicationFeed.Atom
 
                     //
                     // Rights
-                    case AtomConstants.RightsTag:
+                    case AtomElementNames.Rights:
                         item.Rights = field.Value;
                         break;
 
                     //
                     // Source
-                    case AtomConstants.SourceFeedTag:
+                    case AtomElementNames.SourceFeed:
                         item.AddLink(CreateSource(field));
                         break;
                     //
                     // Summary
-                    case AtomConstants.SummaryTag:
+                    case AtomElementNames.Summary:
                         item.Summary = field.Value;
                         break;
 
                     //
                     // Title
-                    case AtomConstants.TitleTag:
+                    case AtomElementNames.Title:
                         item.Title = field.Value;
                         break;
 
                     //
                     // Updated
-                    case AtomConstants.UpdatedTag:
+                    case AtomElementNames.Updated:
                         if (TryParseValue(field.Value, out DateTimeOffset updated))
                         {
                             item.LastUpdated = updated;
@@ -363,7 +366,7 @@ namespace Microsoft.SyndicationFeed.Atom
                 {
                     //
                     // Id
-                    case AtomConstants.IdTag:
+                    case AtomElementNames.Id:
 
                         if (url == null)
                         {
@@ -374,19 +377,19 @@ namespace Microsoft.SyndicationFeed.Atom
 
                     //
                     // Title
-                    case AtomConstants.TitleTag:
+                    case AtomElementNames.Title:
                         title = field.Value;
                         break;
 
                     //
                     // Updated
-                    case AtomConstants.UpdatedTag:
+                    case AtomElementNames.Updated:
                         TryParseValue(field.Value, out lastUpdated);
                         break;
 
                     //
                     // Link
-                    case AtomConstants.LinkTag:
+                    case AtomElementNames.Link:
                         if(url == null)
                         {
                             url = CreateLink(field).Uri;
@@ -405,7 +408,7 @@ namespace Microsoft.SyndicationFeed.Atom
                 throw new FormatException("Invalid source link");
             }
 
-            return new SyndicationLink(url, AtomConstants.SourceFeedTag)
+            return new SyndicationLink(url, AtomLinkTypes.Source)
             {
                 Title = title,
                 LastUpdated = lastUpdated
