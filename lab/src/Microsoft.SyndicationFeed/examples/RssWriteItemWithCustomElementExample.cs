@@ -6,6 +6,7 @@
 using Microsoft.SyndicationFeed;
 using Microsoft.SyndicationFeed.Rss;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
@@ -21,14 +22,19 @@ class RssWriteItemWithCustomElement
         var sw = new StringWriter();
         using (XmlWriter xmlWriter = XmlWriter.Create(sw))
         {
-            var formatter = new Rss20Formatter();
-            var writer = new Rss20FeedWriter(xmlWriter);
+            var formatter = new Rss20Formatter(xmlWriter.Settings);
+            var namespaces = new List<SyndicationAttribute>()
+            {
+                new SyndicationAttribute("xmlns:example", "http://contoso.com/syndication/feed/examples")
+            };
+
+            var writer = new Rss20FeedWriter(xmlWriter, formatter, namespaces);
               
             // Create item
             var item = new SyndicationItem()
             {
-                Title = "Rss Writer Avaliable",
-                Description = "The new Rss Writer is now open source!",
+                Title = "Rss Writer Available",
+                Description = "The new RSS Writer is now open source!",
                 Id = "https://github.com/dotnet/wcf/tree/lab/lab/src/Microsoft.SyndicationFeed/src",
                 Published = DateTimeOffset.UtcNow
             };
@@ -41,7 +47,7 @@ class RssWriteItemWithCustomElement
             var content = new SyndicationContent(formatter.CreateContent(item));
 
             // Add custom fields/attributes
-            content.AddField(new SyndicationContent("CustomElement", "My Value"));
+            content.AddField(new SyndicationContent("example:customElement", "http://contoso.com/syndication/feed/examples", "Custom Value"));
 
             // Write 
             await writer.Write(content);

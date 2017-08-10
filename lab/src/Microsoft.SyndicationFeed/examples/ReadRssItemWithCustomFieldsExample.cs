@@ -44,8 +44,8 @@ class ReadRssItemWithCustomFields
                     Console.WriteLine($"Item: {item.Title}");
 
                     //
-                    // Get <customElement> field
-                    ISyndicationContent customElement = content.Fields.FirstOrDefault(f => f.Name == "customElement");
+                    // Get <example:customElement> field
+                    ISyndicationContent customElement = content.Fields.FirstOrDefault(f => f.Name == "example:customElement");
 
                     if (customElement != null)
                     {

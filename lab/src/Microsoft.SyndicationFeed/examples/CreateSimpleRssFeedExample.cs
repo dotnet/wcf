@@ -59,7 +59,7 @@ class CreateSimpleRssFeed
                 {
                     Id = "https://github.com/dotnet/wcf/tree/lab/lab/src/Microsoft.SyndicationFeed/src",
                     Title = $"Item #{i + 1}",
-                    Description = "The new Rss Writer is now open source!",
+                    Description = "The new RSS Writer is now open source!",
                     Published = DateTimeOffset.UtcNow
                 };
 

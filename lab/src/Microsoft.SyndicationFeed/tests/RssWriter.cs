@@ -198,12 +198,12 @@ namespace Microsoft.SyndicationFeed.Rss
         [Fact]
         public async Task Rss20Writer_WriteContent()
         {
-            SyndicationContent content = null;
+            ISyndicationContent content = null;
 
             using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\CustomXml.xml"))
             {
                 Rss20FeedReader reader = new Rss20FeedReader(xmlReader);
-                content = (SyndicationContent)await reader.ReadContent();
+                content = await reader.ReadContent();
             }
 
             StringBuilder sb = new StringBuilder();
@@ -392,11 +392,12 @@ namespace Microsoft.SyndicationFeed.Rss
 
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(), list);
 
-                await writer.WriteValue("hello", "world");
+                var test = new SyndicationContent("content:hello", "http://purl.org/rss/1.0/modules/content/", "world");
+                await writer.Write(test);
             }
 
             string res = sw.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\"><channel><hello>world</hello></channel></rss>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\"><channel><content:hello>world</content:hello></channel></rss>");
         }
 
         void ComparePerson(ISyndicationPerson person1, ISyndicationPerson person2)

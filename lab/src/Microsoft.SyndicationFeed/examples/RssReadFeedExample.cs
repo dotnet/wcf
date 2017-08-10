@@ -22,7 +22,7 @@ class RssReadFeed
         using (var xmlReader = XmlReader.Create(filePath))
         {
             // Instantiate an Rss20FeedReader using the XmlReader.
-            // This will assign as default an Rss20FeedParser as parser.
+            // This will assign as default an Rss20FeedParser as the parser.
             var feedReader = new Rss20FeedReader(xmlReader);
 
             //

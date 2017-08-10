@@ -138,7 +138,7 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 throw new FormatException(nameof(value));
             }
-
+            
             return WriteRaw(Formatter.Format(new SyndicationContent(name, valueString)));
         }
 
@@ -157,9 +157,9 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 foreach (var ns in _attributes)
                 {
-                    if(ns.Namespace != null)
+                    if (ns.Namespace != null)
                     {
-                        XmlUtils.SplitName(ns.Name,out string prefix, out string localname);
+                        XmlUtils.SplitName(ns.Name, out string prefix, out string localname);
                         _writer.WriteAttributeString(prefix, localname, null, ns.Value);
                     }
                 }
