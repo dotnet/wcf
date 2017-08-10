@@ -386,18 +386,17 @@ namespace Microsoft.SyndicationFeed.Rss
 
                 var list = new List<SyndicationAttribute>()
                 {
-                    new SyndicationAttribute("xmlns:content", "http://purl.org/rss/1.0/modules/content/"),
-                    new SyndicationAttribute("xmlns:media", "http://search.yahoo.com/mrss/"),
+                    new SyndicationAttribute("xmlns:content", "http://contoso.com"),
                 };
 
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(), list);
 
-                var test = new SyndicationContent("content:hello", "http://purl.org/rss/1.0/modules/content/", "world");
+                var test = new SyndicationContent("content:hello", "http://contoso.com", "world");
                 await writer.Write(test);
             }
 
             string res = sw.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:media=\"http://search.yahoo.com/mrss/\" version=\"2.0\"><channel><content:hello>world</content:hello></channel></rss>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\" xmlns:content=\"http://contoso.com/\"><channel><content:hello>world</content:hello></channel></rss>");
         }
 
         void ComparePerson(ISyndicationPerson person1, ISyndicationPerson person2)

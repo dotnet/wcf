@@ -19,13 +19,14 @@ class RssWriteItemWithCustomElement
 {
     public static async Task WriteCustomItem()
     {
+        const string ExampleNs = "http://contoso.com/syndication/feed/examples";
         var sw = new StringWriter();
         using (XmlWriter xmlWriter = XmlWriter.Create(sw))
         {
             var formatter = new Rss20Formatter(xmlWriter.Settings);
             var namespaces = new List<SyndicationAttribute>()
             {
-                new SyndicationAttribute("xmlns:example", "http://contoso.com/syndication/feed/examples")
+                new SyndicationAttribute("xmlns:example", ExampleNs)
             };
 
             var writer = new Rss20FeedWriter(xmlWriter, formatter, namespaces);
@@ -47,7 +48,7 @@ class RssWriteItemWithCustomElement
             var content = new SyndicationContent(formatter.CreateContent(item));
 
             // Add custom fields/attributes
-            content.AddField(new SyndicationContent("example:customElement", "http://contoso.com/syndication/feed/examples", "Custom Value"));
+            content.AddField(new SyndicationContent("example:customElement", ExampleNs, "Custom Value"));
 
             // Write 
             await writer.Write(content);
