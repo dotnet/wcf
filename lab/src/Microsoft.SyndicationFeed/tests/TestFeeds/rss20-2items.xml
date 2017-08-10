@@ -24,8 +24,8 @@
          <guid isPermaLink="true">http://example.com/test/1499372700</guid>
          <author><![CDATA[John Smith]]></author>
          <pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate>
-         <example:customElement>Testing Custom Elements</example:customElement>      
-     </item>
+         <example:customElement>Testing Custom Elements</example:customElement>
+      </item>
       <item>
          <title><![CDATA[Lorem ipsum 2017-07-06T20:24:00+00:00]]></title>
          <description><![CDATA[Do ipsum dolore veniam minim est cillum aliqua ea.]]></description>

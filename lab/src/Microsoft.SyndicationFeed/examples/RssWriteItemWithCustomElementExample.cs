@@ -21,7 +21,7 @@ class RssWriteItemWithCustomElement
     {
         const string ExampleNs = "http://contoso.com/syndication/feed/examples";
         var sw = new StringWriter();
-        using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { NamespaceHandling = NamespaceHandling.OmitDuplicates}))
         {
             var formatter = new Rss20Formatter(xmlWriter.Settings);
             var namespaces = new List<SyndicationAttribute>()
@@ -56,7 +56,7 @@ class RssWriteItemWithCustomElement
             // Done
             xmlWriter.Flush();
         }
-        
+
         Console.WriteLine(sw.ToString());
     }
 }

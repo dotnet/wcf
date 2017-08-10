@@ -20,7 +20,7 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 throw new FormatException("Invalid Rss category");
             }
-
+            
             return CreateCategory(content);
         }
 

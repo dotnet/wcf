@@ -5,6 +5,7 @@
 using Microsoft.SyndicationFeed.Tests;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -381,22 +382,22 @@ namespace Microsoft.SyndicationFeed.Rss
 
             StringWriterWithEncoding sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { NamespaceHandling = NamespaceHandling.OmitDuplicates}))
             {
 
                 var list = new List<SyndicationAttribute>()
                 {
-                    new SyndicationAttribute("xmlns:content", "http://contoso.com"),
+                    new SyndicationAttribute("xmlns:content", "http://contoso.com/"),
                 };
 
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, new Rss20Formatter(), list);
 
-                var test = new SyndicationContent("content:hello", "http://contoso.com", "world");
+                var test = new SyndicationContent("content:hello", "http://contoso.com/", "world");
                 await writer.Write(test);
             }
 
             string res = sw.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\" xmlns:content=\"http://contoso.com/\"><channel><content:hello>world</content:hello></channel></rss>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://contoso.com/\" version=\"2.0\"><channel><content:hello>world</content:hello></channel></rss>");
         }
 
         void ComparePerson(ISyndicationPerson person1, ISyndicationPerson person2)
