@@ -445,5 +445,51 @@ namespace Microsoft.SyndicationFeed.Rss
 
             Assert.True(content1.Value == content2.Value);
         }
+
+        [Fact]
+        public async Task RssWriter_TestFormatterWriterWithNamespaces()
+        {
+            const string ExampleNs = "http://contoso.com/syndication/feed/examples";
+            var sw = new StringWriter();
+            using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { NamespaceHandling = NamespaceHandling.OmitDuplicates }))
+            {
+                var attributes = new List<SyndicationAttribute>()
+            {
+                new SyndicationAttribute("xmlns:example", ExampleNs)
+            };
+
+                var formatter = new Rss20Formatter(attributes, xmlWriter.Settings);
+                var writer = new Rss20FeedWriter(xmlWriter, attributes, formatter);
+
+                // Create item
+                var item = new SyndicationItem()
+                {
+                    Title = "Rss Writer Available",
+                    Description = "The new RSS Writer is now open source!",
+                    Id = "https://github.com/dotnet/wcf/tree/lab/lab/src/Microsoft.SyndicationFeed/src",
+                    Published = DateTimeOffset.UtcNow
+                };
+
+                item.AddCategory(new SyndicationCategory("Technology"));
+                item.AddContributor(new SyndicationPerson(null, "test@mail.com"));
+
+                //
+                // Format the item as SyndicationContent
+                var content = new SyndicationContent(formatter.CreateContent(item));
+
+                // Add custom fields/attributes
+                content.AddField(new SyndicationContent("example:customElement", ExampleNs, "Custom Value"));
+                content.AddField(new SyndicationContent("example:customElement", ExampleNs, "Custom Value"));
+
+                // Write 
+                await writer.Write(content);
+                await writer.Write(content);
+
+                // Done
+                xmlWriter.Flush();
+            }
+            string res = sw.ToString();
+        }
+        
     }
 }

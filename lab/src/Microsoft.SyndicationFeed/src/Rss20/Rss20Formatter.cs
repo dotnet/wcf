@@ -14,6 +14,8 @@ namespace Microsoft.SyndicationFeed.Rss
     {
         XmlWriterSettings _settings;
         IEnumerable<ISyndicationAttribute> _attributes;
+        XmlWriter _wrapperWriter;
+        StringBuilder _wrapperBuilder;
 
         public Rss20Formatter()
             : this(null, null)
@@ -42,30 +44,37 @@ namespace Microsoft.SyndicationFeed.Rss
 
             int start = 0;
 
-            using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
+            //
+            // Create a wrapper that contains the known attributes
+            if (_wrapperWriter == null)
             {
+                _wrapperWriter = CreateXmlWriter(out _wrapperBuilder);
+
+                _wrapperWriter.WriteStartElement("w");
+                
                 //
-                // Create a wrapper that contains the known attributes
+                // When writing for the first time, the writer will only write "<w" 
+                // As we clear the whole string, when we write the content we have "><content>"
+                // Set start to 1 to ignore ">".
+                start = 1;
+
                 if (_attributes != null)
                 {
-                    writer.WriteStartElement("w");
-
                     foreach (var a in _attributes)
                     {
-                        writer.WriteSyndicationAttribute(a);
+                        _wrapperWriter.WriteSyndicationAttribute(a);
                     }
-
-                    writer.Flush();
-
-                    start = sb.Length + 1;
                 }
-
-                writer.WriteSyndicationContent(content);
-
-                writer.Flush();
-
-                return sb.ToString(start, sb.Length - start);
+                _wrapperWriter.Flush();
             }
+
+            _wrapperBuilder.Remove(0, _wrapperBuilder.Length);
+
+            _wrapperWriter.WriteSyndicationContent(content);
+
+            _wrapperWriter.Flush();
+
+            return _wrapperBuilder.ToString(start, _wrapperBuilder.Length-start);
         }
 
         public string Format(ISyndicationCategory category)
