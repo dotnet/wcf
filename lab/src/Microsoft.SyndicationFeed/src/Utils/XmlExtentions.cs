@@ -116,7 +116,7 @@ namespace Microsoft.SyndicationFeed
 
         public static void WriteSyndicationAttribute(this XmlWriter writer, ISyndicationAttribute attr)
         {
-            if (!string.IsNullOrEmpty(attr.Namespace))
+            if (attr.Namespace != null)
             {
                 XmlUtils.SplitName(attr.Name, out string prefix, out string localName);
 

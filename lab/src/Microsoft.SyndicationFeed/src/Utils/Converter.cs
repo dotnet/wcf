@@ -41,6 +41,19 @@ namespace Microsoft.SyndicationFeed
             }
 
             //
+            // DateTime
+            if (type == typeof(DateTime))
+            {
+                if (DateTimeUtils.TryParseDate(value, out DateTimeOffset dt))
+                {
+                    result = (T)(object) dt.DateTime;
+                    return true;
+                }
+
+                return false;
+            }
+
+            //
             // TODO: being added in netstandard 2.0
             //if (type.GetTypeInfo().IsEnum)
             //{
@@ -71,33 +84,20 @@ namespace Microsoft.SyndicationFeed
         public static string FormatValue<T>(T value)
         {
             Type type = typeof(T);
-
-            //
-            // Long
-            if (type == typeof(long))
-            {
-                return value.ToString();
-            }
-
-            //
-            // Int
-            if (type == typeof(int))
-            {
-                return value.ToString();
-            }
-
-            //
-            // Uri
-            if (type == typeof(Uri))
-            {
-                return value.ToString();
-            }
-
+            
             //
             // DateTimeOffset
             if (type == typeof(DateTimeOffset))
             {
                 DateTimeOffset dto = (DateTimeOffset)(object)value;
+                return dto.ToString("r");
+            }
+
+            //
+            // DateTime
+            if (type == typeof(DateTime))
+            {
+                DateTimeOffset dto = new DateTimeOffset((DateTime)(object)value);
                 return dto.ToString("r");
             }
 

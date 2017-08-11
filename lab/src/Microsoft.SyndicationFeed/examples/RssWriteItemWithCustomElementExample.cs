@@ -21,15 +21,15 @@ class RssWriteItemWithCustomElement
     {
         const string ExampleNs = "http://contoso.com/syndication/feed/examples";
         var sw = new StringWriter();
-        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { NamespaceHandling = NamespaceHandling.OmitDuplicates}))
+        using (XmlWriter xmlWriter = XmlWriter.Create(sw))
         {
-            var formatter = new Rss20Formatter(xmlWriter.Settings);
-            var namespaces = new List<SyndicationAttribute>()
+            var attributes = new List<SyndicationAttribute>()
             {
                 new SyndicationAttribute("xmlns:example", ExampleNs)
             };
 
-            var writer = new Rss20FeedWriter(xmlWriter, formatter, namespaces);
+            var formatter = new Rss20Formatter(attributes, xmlWriter.Settings);
+            var writer = new Rss20FeedWriter(xmlWriter, attributes, formatter);
               
             // Create item
             var item = new SyndicationItem()
