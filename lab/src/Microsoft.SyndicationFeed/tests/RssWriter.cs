@@ -479,7 +479,6 @@ namespace Microsoft.SyndicationFeed.Rss
 
                 // Add custom fields/attributes
                 content.AddField(new SyndicationContent("example:customElement", ExampleNs, "Custom Value"));
-                content.AddField(new SyndicationContent("example:customElement", ExampleNs, "Custom Value"));
 
                 // Write 
                 await writer.Write(content);

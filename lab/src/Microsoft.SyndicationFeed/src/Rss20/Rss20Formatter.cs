@@ -12,9 +12,8 @@ namespace Microsoft.SyndicationFeed.Rss
 {
     public class Rss20Formatter : ISyndicationFeedFormatter
     {
-        IEnumerable<ISyndicationAttribute> _attributes;
         XmlWriter _writer;
-        StringBuilder _buffer = new StringBuilder();
+        StringBuilder _buffer;
 
         public Rss20Formatter()
             : this(null, null)
@@ -23,12 +22,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
         public Rss20Formatter(IEnumerable<ISyndicationAttribute> knownAttributes, XmlWriterSettings settings)
         {
-            if (knownAttributes != null && knownAttributes.Count() > 0)
-            {
-                _attributes = knownAttributes;
-            }
-
-            InitXmlWriter(settings?.Clone() ?? new XmlWriterSettings());
+            InitXmlWriter(settings?.Clone() ?? new XmlWriterSettings(), knownAttributes);
         }
 
         public string Format(ISyndicationContent content)
@@ -38,24 +32,18 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
-            _writer.WriteSyndicationContent(content);
-
-            _writer.Flush();
-
-            string result;
-
-            if (_attributes != null)
+            try
             {
-                result = _buffer.ToString(1, _buffer.Length - 1);
-                _buffer.Remove(1, _buffer.Length - 1);
+                _writer.WriteSyndicationContent(content);
+
+                _writer.Flush();
+
+                return _buffer.ToString();
             }
-            else
+            finally
             {
-                result = _buffer.ToString();
                 _buffer.Clear();
             }
-
-            return result;
         }
 
 
@@ -400,27 +388,30 @@ namespace Microsoft.SyndicationFeed.Rss
             return content;
         }
 
-        private void InitXmlWriter(XmlWriterSettings settings)
+        private void InitXmlWriter(XmlWriterSettings settings, IEnumerable<ISyndicationAttribute> attributes)
         {
             settings.Async = false;
             settings.OmitXmlDeclaration = true;
             settings.ConformanceLevel = ConformanceLevel.Fragment;
 
+            _buffer = new StringBuilder();
             _writer = XmlWriter.Create(_buffer, settings);
 
             //
             // Apply global attributes
-            if (_attributes != null)
+            if (attributes != null && attributes.Count() > 0)
             {
                 _writer.WriteStartElement("w");
 
-                foreach (var a in _attributes)
+                foreach (var a in attributes)
                 {
                     _writer.WriteSyndicationAttribute(a);
                 }
 
-                _writer.Flush();
+                _writer.WriteStartElement("y");
+                _writer.WriteEndElement();
 
+                _writer.Flush();
                 _buffer.Clear();
             }
         }
