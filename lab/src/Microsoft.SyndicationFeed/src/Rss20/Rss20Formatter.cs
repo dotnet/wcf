@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -11,13 +13,24 @@ namespace Microsoft.SyndicationFeed.Rss
     public class Rss20Formatter : ISyndicationFeedFormatter
     {
         XmlWriterSettings _settings;
+        IEnumerable<ISyndicationAttribute> _attributes;
 
-        public Rss20Formatter(XmlWriterSettings settings = null)
+        public Rss20Formatter()
+            : this(null, null)
+        {
+        }
+
+        public Rss20Formatter(IEnumerable<ISyndicationAttribute> knownAttributes, XmlWriterSettings settings)
         {
             _settings = settings?.Clone() ?? new XmlWriterSettings();
 
             _settings.Async = false;
             _settings.OmitXmlDeclaration = true;
+
+            if (knownAttributes != null && knownAttributes.Count() > 0)
+            {
+                _attributes = knownAttributes;
+            }
         }
 
         public string Format(ISyndicationContent content)
@@ -27,13 +40,31 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
+            int start = 0;
+
             using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
             {
+                //
+                // Create a wrapper that contains the known attributes
+                if (_attributes != null)
+                {
+                    writer.WriteStartElement("w");
+
+                    foreach (var a in _attributes)
+                    {
+                        writer.WriteSyndicationAttribute(a);
+                    }
+
+                    writer.Flush();
+
+                    start = sb.Length + 1;
+                }
+
                 writer.WriteSyndicationContent(content);
 
                 writer.Flush();
 
-                return sb.ToString();
+                return sb.ToString(start, sb.Length - start);
             }
         }
 

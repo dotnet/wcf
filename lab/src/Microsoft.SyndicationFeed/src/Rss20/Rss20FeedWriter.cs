@@ -15,16 +15,16 @@ namespace Microsoft.SyndicationFeed.Rss
         private bool _feedStarted;
         private IEnumerable<ISyndicationAttribute> _attributes;
 
-        public Rss20FeedWriter(XmlWriter writer)
-            : this(writer, new Rss20Formatter(writer.Settings))
+        public Rss20FeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes = null)
+            : this(writer, attributes, new Rss20Formatter(attributes, writer.Settings))
         {
         }
 
-        public Rss20FeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter, IEnumerable<ISyndicationAttribute> attributes = null)
+        public Rss20FeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes, ISyndicationFeedFormatter formatter)
         {
             _writer = writer ?? throw new ArgumentNullException(nameof(writer));
             Formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
-            _attributes = attributes; // optional
+            _attributes = attributes;
         }
 
         public ISyndicationFeedFormatter Formatter { get; private set; }
@@ -149,19 +149,15 @@ namespace Microsoft.SyndicationFeed.Rss
 
         private void StartFeed()
         {
-            //Write <rss version="2.0">
+            // Write <rss version="2.0">
             _writer.WriteStartElement(Rss20ElementNames.Rss);
 
-            //Write namespaces if exist
+            // Write attributes if exist
             if (_attributes != null)
             {
-                foreach (var ns in _attributes)
+                foreach (var a in _attributes)
                 {
-                    if (ns.Namespace != null)
-                    {
-                        XmlUtils.SplitName(ns.Name, out string prefix, out string localname);
-                        _writer.WriteAttributeString(prefix, localname, null, ns.Value);
-                    }
+                    _writer.WriteSyndicationAttribute(a);
                 }
             }
 

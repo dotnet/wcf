@@ -23,13 +23,13 @@ class RssWriteItemWithCustomElement
         var sw = new StringWriter();
         using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { NamespaceHandling = NamespaceHandling.OmitDuplicates}))
         {
-            var formatter = new Rss20Formatter(xmlWriter.Settings);
+            var formatter = new Rss20Formatter(null, xmlWriter.Settings);
             var namespaces = new List<SyndicationAttribute>()
             {
                 new SyndicationAttribute("xmlns:example", ExampleNs)
             };
 
-            var writer = new Rss20FeedWriter(xmlWriter, formatter, namespaces);
+            var writer = new Rss20FeedWriter(xmlWriter, namespaces, formatter);
               
             // Create item
             var item = new SyndicationItem()
