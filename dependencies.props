@@ -9,17 +9,17 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>350f3fd2c97bd2d3b29e80de8db2de57ab9487ac</CoreFxCurrentRef>
-    <WCFCurrentRef>350f3fd2c97bd2d3b29e80de8db2de57ab9487ac</WCFCurrentRef>
+    <CoreFxCurrentRef>f40a6005f1ec1a35127d86a7e51bf580b2173f8a</CoreFxCurrentRef>
+    <WCFCurrentRef>f40a6005f1ec1a35127d86a7e51bf580b2173f8a</WCFCurrentRef>
     <StandardCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>ae3b47a51f55508a7b02f4cf77627417d12e10d8</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>ae3b47a51f55508a7b02f4cf77627417d12e10d8</ProjectNTfsTestILCCurrentRef>
+    <ProjectNTfsCurrentRef>f40a6005f1ec1a35127d86a7e51bf580b2173f8a</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>f40a6005f1ec1a35127d86a7e51bf580b2173f8a</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview1-25609-03</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview1-25609-01</CoreFxExpectedPrerelease>
+    <WCFExpectedPrerelease>preview1-25611-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview1-25611-01</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-25518-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
@@ -28,9 +28,9 @@
     -->
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-25531-01</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>rel-25609-00</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>rel-25609-00</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-25608-00</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>rel-25611-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>rel-25611-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-25611-00</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
