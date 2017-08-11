@@ -12,10 +12,9 @@ namespace Microsoft.SyndicationFeed.Rss
 {
     public class Rss20Formatter : ISyndicationFeedFormatter
     {
-        XmlWriterSettings _settings;
         IEnumerable<ISyndicationAttribute> _attributes;
-        XmlWriter _wrapperWriter;
-        StringBuilder _wrapperBuilder;
+        XmlWriter _writer;
+        StringBuilder _buffer = new StringBuilder();
 
         public Rss20Formatter()
             : this(null, null)
@@ -24,15 +23,12 @@ namespace Microsoft.SyndicationFeed.Rss
 
         public Rss20Formatter(IEnumerable<ISyndicationAttribute> knownAttributes, XmlWriterSettings settings)
         {
-            _settings = settings?.Clone() ?? new XmlWriterSettings();
-
-            _settings.Async = false;
-            _settings.OmitXmlDeclaration = true;
-
             if (knownAttributes != null && knownAttributes.Count() > 0)
             {
                 _attributes = knownAttributes;
             }
+
+            InitXmlWriter(settings?.Clone() ?? new XmlWriterSettings());
         }
 
         public string Format(ISyndicationContent content)
@@ -42,40 +38,26 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
-            int start = 0;
+            _writer.WriteSyndicationContent(content);
 
-            //
-            // Create a wrapper that contains the known attributes
-            if (_wrapperWriter == null)
+            _writer.Flush();
+
+            string result;
+
+            if (_attributes != null)
             {
-                _wrapperWriter = CreateXmlWriter(out _wrapperBuilder);
-
-                _wrapperWriter.WriteStartElement("w");
-                
-                //
-                // When writing for the first time, the writer will only write "<w" 
-                // As we clear the whole string, when we write the content we have "><content>"
-                // Set start to 1 to ignore ">".
-                start = 1;
-
-                if (_attributes != null)
-                {
-                    foreach (var a in _attributes)
-                    {
-                        _wrapperWriter.WriteSyndicationAttribute(a);
-                    }
-                }
-                _wrapperWriter.Flush();
+                result = _buffer.ToString(1, _buffer.Length - 1);
+                _buffer.Remove(1, _buffer.Length - 1);
+            }
+            else
+            {
+                result = _buffer.ToString();
+                _buffer.Clear();
             }
 
-            _wrapperBuilder.Remove(0, _wrapperBuilder.Length);
-
-            _wrapperWriter.WriteSyndicationContent(content);
-
-            _wrapperWriter.Flush();
-
-            return _wrapperBuilder.ToString(start, _wrapperBuilder.Length-start);
+            return result;
         }
+
 
         public string Format(ISyndicationCategory category)
         {
@@ -305,11 +287,6 @@ namespace Microsoft.SyndicationFeed.Rss
             return content;
         }
 
-        private XmlWriter CreateXmlWriter(out StringBuilder sb)
-        {
-            sb = new StringBuilder();
-            return XmlWriter.Create(sb, _settings.Clone());
-        }
         
         private ISyndicationContent CreateEnclosureContent(ISyndicationLink link)
         {
@@ -421,6 +398,31 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             return content;
-        }               
+        }
+
+        private void InitXmlWriter(XmlWriterSettings settings)
+        {
+            settings.Async = false;
+            settings.OmitXmlDeclaration = true;
+            settings.ConformanceLevel = ConformanceLevel.Fragment;
+
+            _writer = XmlWriter.Create(_buffer, settings);
+
+            //
+            // Apply global attributes
+            if (_attributes != null)
+            {
+                _writer.WriteStartElement("w");
+
+                foreach (var a in _attributes)
+                {
+                    _writer.WriteSyndicationAttribute(a);
+                }
+
+                _writer.Flush();
+
+                _buffer.Clear();
+            }
+        }
     }
 }

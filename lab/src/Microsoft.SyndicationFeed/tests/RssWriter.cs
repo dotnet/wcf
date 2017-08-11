@@ -393,12 +393,12 @@ namespace Microsoft.SyndicationFeed.Rss
 
                 Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, list);
 
-                var test = new SyndicationContent("content:hello", "http://contoso.com/", "world");
-                await writer.Write(test);
+                await writer.Write(new SyndicationContent("content:hello", "http://contoso.com/", "world"));
+                await writer.Write(new SyndicationContent("content:world", "http://contoso.com/", "hello"));
             }
 
             string res = sw.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://contoso.com/\" version=\"2.0\"><channel><content:hello>world</content:hello></channel></rss>");
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://contoso.com/\" version=\"2.0\"><channel><content:hello>world</content:hello><content:world>hello</content:world></channel></rss>");
         }
 
         void ComparePerson(ISyndicationPerson person1, ISyndicationPerson person2)
