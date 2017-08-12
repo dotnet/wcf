@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -10,14 +12,17 @@ namespace Microsoft.SyndicationFeed.Rss
 {
     public class Rss20Formatter : ISyndicationFeedFormatter
     {
-        XmlWriterSettings _settings;
+        XmlWriter _writer;
+        StringBuilder _buffer;
 
-        public Rss20Formatter(XmlWriterSettings settings = null)
+        public Rss20Formatter()
+            : this(null, null)
         {
-            _settings = settings?.Clone() ?? new XmlWriterSettings();
+        }
 
-            _settings.Async = false;
-            _settings.OmitXmlDeclaration = true;
+        public Rss20Formatter(IEnumerable<ISyndicationAttribute> knownAttributes, XmlWriterSettings settings)
+        {
+            InitXmlWriter(settings?.Clone() ?? new XmlWriterSettings(), knownAttributes);
         }
 
         public string Format(ISyndicationContent content)
@@ -27,15 +32,20 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
-            using (XmlWriter writer = CreateXmlWriter(out StringBuilder sb))
+            try
             {
-                writer.WriteSyndicationContent(content);
+                _writer.WriteSyndicationContent(content);
 
-                writer.Flush();
+                _writer.Flush();
 
-                return sb.ToString();
+                return _buffer.ToString();
+            }
+            finally
+            {
+                _buffer.Clear();
             }
         }
+
 
         public string Format(ISyndicationCategory category)
         {
@@ -265,11 +275,6 @@ namespace Microsoft.SyndicationFeed.Rss
             return content;
         }
 
-        private XmlWriter CreateXmlWriter(out StringBuilder sb)
-        {
-            sb = new StringBuilder();
-            return XmlWriter.Create(sb, _settings.Clone());
-        }
         
         private ISyndicationContent CreateEnclosureContent(ISyndicationLink link)
         {
@@ -381,6 +386,34 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             return content;
-        }               
+        }
+
+        private void InitXmlWriter(XmlWriterSettings settings, IEnumerable<ISyndicationAttribute> attributes)
+        {
+            settings.Async = false;
+            settings.OmitXmlDeclaration = true;
+            settings.ConformanceLevel = ConformanceLevel.Fragment;
+
+            _buffer = new StringBuilder();
+            _writer = XmlWriter.Create(_buffer, settings);
+
+            //
+            // Apply global attributes
+            if (attributes != null && attributes.Count() > 0)
+            {
+                _writer.WriteStartElement("w");
+
+                foreach (var a in attributes)
+                {
+                    _writer.WriteSyndicationAttribute(a);
+                }
+
+                _writer.WriteStartElement("y");
+                _writer.WriteEndElement();
+
+                _writer.Flush();
+                _buffer.Clear();
+            }
+        }
     }
 }
