@@ -274,7 +274,7 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallClientCertificateFromServer()
     {
-        X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(ClientCertificateResource), "test", X509KeyStorageFlags.PersistKeySet);
+        X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(ClientCertificateResource), "test", X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet);
         return CertificateManager.InstallCertificateToMyStore(clientCertificate);
     }
 
@@ -283,7 +283,7 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallPeerCertificateFromServer()
     {
-        X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.PersistKeySet);
+        X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet);
         return CertificateManager.InstallCertificateToTrustedPeopleStore(peerCertificate);
     }
 

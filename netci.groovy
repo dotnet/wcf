@@ -332,6 +332,51 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
     }
 }
 
+// **************************
+// Define outerloop testing on Windows_NT for UAP, run locally on each machine.
+// **************************
+
+// [true, false].each { isPR -> 
+    // configurationGroupList.each { configurationGroup ->
+        // def os = 'Windows_NT'
+        // def newJobName = "outerloop_${os.toLowerCase()}_UAP_${configurationGroup.toLowerCase()}"
+        // def newJob = job(Utilities.getFullJobName(project, newJobName, isPR))
+        // def targetGroup = "uap"
+        
+        // newJob.with {
+            // steps {
+                // batchFile("build.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]}")
+                // batchFile("build-tests.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]} -outerloop -- /p:ServiceUri=%WcfServiceUri% /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true /p:IsCIBuild=true")
+            // }
+        // }
+
+        // // Set affinity for elevated machines
+        // Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
+
+        // // Set up standard options.
+        // Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
+        // // Add the unit test results
+        // Utilities.addXUnitDotNETResults(newJob, 'bin/**/testResults.xml')
+
+        // // Our outerloops rely on us calling WcfPRServiceUri to sync server code, after which the client 
+            // // will test against WcfServiceUri.
+            // // The current design limitation means that if we allow concurrent builds, it becomes possible to pave over 
+            // // the server endpoint with mismatched code while another test is running.
+            // // Due to this design limitation, we have to disable concurrent builds for outerloops 
+            // newJob.concurrentBuild(false)
+        
+        // // Set up appropriate triggers. PR on demand, otherwise on change pushed
+        // if (isPR) {
+            // // Set PR trigger.
+            // Utilities.addGithubPRTriggerForBranch(newJob, branch, "OuterLoop ${os} ${configurationGroup}", "(?i).*test\\W+(all\\W+outerloop|outerloop\\W+${os}).*", false /*triggerOnPhraseOnly*/)
+        // } 
+        // else {
+            // // Set a push trigger
+            // Utilities.addGithubPushTrigger(newJob)
+        // }
+    // } 
+// } 
+
 JobReport.Report.generateJobReport(out)
 
 Utilities.createHelperJob(this, project, branch,
