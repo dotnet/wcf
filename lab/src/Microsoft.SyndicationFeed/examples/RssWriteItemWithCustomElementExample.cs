@@ -21,7 +21,7 @@ class RssWriteItemWithCustomElement
     {
         const string ExampleNs = "http://contoso.com/syndication/feed/examples";
         var sw = new StringWriter();
-        using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Async = true, Indent = true }))
         {
             var attributes = new List<SyndicationAttribute>()
             {

@@ -19,7 +19,7 @@ class ReadRssItemWithCustomFields
         //
         // Create an XmlReader from file
         // Example: ..\tests\TestFeeds\rss20-2items.xml
-        using (var xmlReader = XmlReader.Create(filepath))
+        using (var xmlReader = XmlReader.Create(filepath, new XmlReaderSettings() { Async = true }))
         {
             //
             // Instantiate an Rss20FeedReader

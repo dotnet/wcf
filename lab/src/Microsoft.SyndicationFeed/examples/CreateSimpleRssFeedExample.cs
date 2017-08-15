@@ -18,7 +18,7 @@ class CreateSimpleRssFeed
     {
         var sw = new StringWriter();
 
-        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Indent = true }))
+        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Async = true , Indent = true }))
         {
             var writer = new Rss20FeedWriter(xmlWriter);
 
