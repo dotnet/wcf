@@ -19,7 +19,7 @@ A folder with examples can be found [here](examples).
 
 ### Create an RssReader and Read a Feed ###
 ```
-using (var xmlReader = XmlReader.Create(filePath))
+using (var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings() { Async = true }))
 {
     var feedReader = new Rss20FeedReader(xmlReader);
 
@@ -64,7 +64,7 @@ using (var xmlReader = XmlReader.Create(filePath))
 ### Create an RssWriter and Write an Rss Item ###
 ```
 var sw = new StringWriter();
-using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Async = true, Indent = true }))
 {
     var writer = new Rss20FeedWriter(xmlWriter);
       

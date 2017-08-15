@@ -17,7 +17,7 @@ class AtomFeedReaderExample
         //
         // Create an XmlReader from file
         // Example: ..\tests\TestFeeds\simpleAtomFeed.xml
-        using (XmlReader xmlReader = XmlReader.Create(filePath))
+        using (XmlReader xmlReader = XmlReader.Create(filePath, new XmlReaderSettings() { Async = true }))
         {
             //
             // Create an AtomFeedReader
