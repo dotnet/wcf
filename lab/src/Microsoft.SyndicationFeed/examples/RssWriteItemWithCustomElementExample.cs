@@ -35,8 +35,8 @@ class RssWriteItemWithCustomElement
             var item = new SyndicationItem()
             {
                 Title = "Rss Writer Available",
-                Description = "The new RSS Writer is now open source!",
-                Id = "https://github.com/dotnet/wcf/tree/lab/lab/src/Microsoft.SyndicationFeed/src",
+                Description = "The new RSS Writer is now available as a NuGet package!",
+                Id = "https://www.nuget.org/packages/Microsoft.SyndicationFeed",
                 Published = DateTimeOffset.UtcNow
             };
 

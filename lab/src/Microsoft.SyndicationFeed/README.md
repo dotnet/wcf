@@ -74,8 +74,8 @@ using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Asyn
     var item = new SyndicationItem()
     {
         Title = "Rss Writer Avaliable",
-        Description = "The new Rss Writer is now open source!",
-        Id = "https://github.com/dotnet/wcf/tree/lab/lab/src/Microsoft.SyndicationFeed/src",
+        Description = "The new Rss Writer is now available as a NuGet Package!",
+        Id = "https://www.nuget.org/packages/Microsoft.SyndicationFeed",
         Published = DateTimeOffset.UtcNow
     };
 
