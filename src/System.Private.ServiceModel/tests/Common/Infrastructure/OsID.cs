@@ -9,7 +9,7 @@ namespace Infrastructure.Common
     // Enum to indicate a known operating system.
     // The elements in this enum represent all known operating systems
     // against which the product can be run.  Please update this enum
-    // as new operating systems bceome available for testing.
+    // as new operating systems become available for testing.
     // It uses [Flags] because it is a bitmask that allows bitwise
     // combinations in scenarios like the [Issue] attribute.
 
