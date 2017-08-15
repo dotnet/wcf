@@ -8,6 +8,12 @@
 
 ## Version History
 
+### 4.4.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Primitives/4.4.0)
+* [Release tag](https://github.com/dotnet/wcf/tree/v2.0.0)
+* [Supported features](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v2.0.0.md)
+
 ### 4.4.0-preview2-25419-01
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Primitives/4.4.0-preview2-25419-01)
