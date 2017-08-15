@@ -5,11 +5,10 @@
 namespace Microsoft.ServiceModel.Syndication
 {
     using System;
-    using System.Xml;
     using System.Runtime.CompilerServices;
+    using System.Xml;
 
     // NOTE: This class implements Clone so if you add any members, please update the copy ctor
-    [TypeForwardedFrom("System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35")]
     public class UrlSyndicationContent : SyndicationContent
     {
         private string _mediaType;
@@ -19,7 +18,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (url == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("url");
+                throw new ArgumentNullException(nameof(url));
             }
             _url = url;
             _mediaType = mediaType;
@@ -30,7 +29,7 @@ namespace Microsoft.ServiceModel.Syndication
         {
             if (source == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("source");
+                throw new ArgumentNullException(nameof(source));
             }
             _url = source._url;
             _mediaType = source._mediaType;

@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestFeeds\SimpleRssFeed.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="TestFeeds\*.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

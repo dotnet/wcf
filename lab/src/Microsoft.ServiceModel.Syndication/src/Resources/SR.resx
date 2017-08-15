@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="XmlNodeIsNotAnElement" xml:space="preserve">
+    <value>The XmlReader is not currently in a node of type Element.</value>
+  </data>
+  <data name="InvalidSkipHours" xml:space="preserve">
+    <value>The hour can't be lower than 0 or greater than 23.</value>
+  </data>
   <data name="NoIPEndpointsFoundForHost" xml:space="preserve">
     <value>No IPEndpoints were found for host {0}.</value>
   </data>

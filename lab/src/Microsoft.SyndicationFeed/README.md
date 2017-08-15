@@ -1,9 +1,11 @@
 # Microsoft.SyndicationFeed
-Microsoft.SyndicationFeed provides APIs similar to .NETs own XML Reader to simplify the reading and writing of RSS 2.0 and Atom syndication feeds. The syndication feed readers and writers were developed with extensiblity and customization in mind to allow consumers to support their own custom feed elements. The syndication feed reader parses items on demand rather than in one large chunk, which enables this library to be used asynchronously on syndication feeds of arbitrary size.
+Microsoft.SyndicationFeed provides APIs similar to .NET XMLReader to simplify the reading and writing of RSS 2.0 and Atom syndication feeds. The syndication feed readers and writers were developed with extensiblity and customization in mind to allow consumers to support their own custom feed elements. Syndication Feed operations are on demand, which enables this library to be used on syndication feeds of arbitrary size or stream latency.
 
 ### Requirements:
 * [Visual Studio 2017](https://www.visualstudio.com/vs/whatsnew/)
-* [DotNet Core 2.0 Preview](https://www.microsoft.com/net/core/preview#windowscmd)
+
+### Supports:
+* .NET Standard 1.3
 
 ### Building:
 * The solution will build in Visual Studio 2017 after cloning.
