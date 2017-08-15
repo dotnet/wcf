@@ -191,7 +191,7 @@ namespace System.ServiceModel.Channels
 
         private bool RemoteCertificateValidationCallback(HttpRequestMessage sender, X509Certificate2 certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            Fx.Assert(_sslCertificateValidator != null, "sslCertificateAuthentidation should not be null.");
+            Fx.Assert(_sslCertificateValidator != null, "sslCertificateValidator should not be null.");
 
             try
             {

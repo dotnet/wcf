@@ -137,7 +137,7 @@ namespace Infrastructure.Common
             return index == 0;
         }
 
-        // Returns 'true' if ambient credentials are avaiable to use
+        // Returns 'true' if ambient credentials are available to use
         public static bool AreAmbientCredentialsAvailable()
         {
             // Requires solution to https://github.com/dotnet/wcf/issues/1095
