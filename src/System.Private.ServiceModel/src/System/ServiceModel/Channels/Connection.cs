@@ -721,10 +721,10 @@ namespace System.ServiceModel.Channels
             return _bytesRead;
         }
 
-        private void OnRead(Task<int> antecedant, object state)
+        private void OnRead(Task<int> antecedent, object state)
         {
             Contract.Requires(_readResult == null, "StreamConnection: OnRead called twice.");
-            _readResult = antecedant;
+            _readResult = antecedent;
             _readCallback(state);
         }
 
