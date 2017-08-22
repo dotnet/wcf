@@ -18,7 +18,7 @@ class CreateSimpleRssFeed
     {
         var sw = new StringWriter();
 
-        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Indent = true }))
+        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Async = true , Indent = true }))
         {
             var writer = new Rss20FeedWriter(xmlWriter);
 
@@ -57,9 +57,9 @@ class CreateSimpleRssFeed
             {
                 var item = new SyndicationItem()
                 {
-                    Id = "https://github.com/dotnet/wcf/tree/lab/lab/src/Microsoft.SyndicationFeed/src",
+                    Id = "https://www.nuget.org/packages/Microsoft.SyndicationFeed",
                     Title = $"Item #{i + 1}",
-                    Description = "The new RSS Writer is now open source!",
+                    Description = "The new RSS Writer is available as a NuGet package!",
                     Published = DateTimeOffset.UtcNow
                 };
 

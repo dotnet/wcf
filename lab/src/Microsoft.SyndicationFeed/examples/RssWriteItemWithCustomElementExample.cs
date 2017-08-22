@@ -21,7 +21,7 @@ class RssWriteItemWithCustomElement
     {
         const string ExampleNs = "http://contoso.com/syndication/feed/examples";
         var sw = new StringWriter();
-        using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+        using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Async = true, Indent = true }))
         {
             var attributes = new List<SyndicationAttribute>()
             {
@@ -35,8 +35,8 @@ class RssWriteItemWithCustomElement
             var item = new SyndicationItem()
             {
                 Title = "Rss Writer Available",
-                Description = "The new RSS Writer is now open source!",
-                Id = "https://github.com/dotnet/wcf/tree/lab/lab/src/Microsoft.SyndicationFeed/src",
+                Description = "The new RSS Writer is now available as a NuGet package!",
+                Id = "https://www.nuget.org/packages/Microsoft.SyndicationFeed",
                 Published = DateTimeOffset.UtcNow
             };
 
