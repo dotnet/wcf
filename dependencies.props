@@ -9,8 +9,8 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>ff438ee5a9d3a0acc7dc8fcf79e6fa3612c55a78</CoreFxCurrentRef>
-    <WCFCurrentRef>ff438ee5a9d3a0acc7dc8fcf79e6fa3612c55a78</WCFCurrentRef>
+    <CoreFxCurrentRef>2d31a6120146ae771b7984b2b10b4547b024abc8</CoreFxCurrentRef>
+    <WCFCurrentRef>2d31a6120146ae771b7984b2b10b4547b024abc8</WCFCurrentRef>
     <StandardCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</StandardCurrentRef>
     <ProjectNTfsCurrentRef>ff438ee5a9d3a0acc7dc8fcf79e6fa3612c55a78</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>ff438ee5a9d3a0acc7dc8fcf79e6fa3612c55a78</ProjectNTfsTestILCCurrentRef>
@@ -18,8 +18,8 @@
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview1-25622-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview1-25622-01</CoreFxExpectedPrerelease>
+    <WCFExpectedPrerelease>preview1-25623-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview1-25623-01</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-25518-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
