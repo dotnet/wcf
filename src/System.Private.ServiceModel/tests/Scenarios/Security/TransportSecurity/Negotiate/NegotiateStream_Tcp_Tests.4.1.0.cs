@@ -275,6 +275,7 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(2147, OS = OSID.AnyOSX | OSID.AnyUnix)]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
