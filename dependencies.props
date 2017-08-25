@@ -9,28 +9,28 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>5b20aed750792e206f7ec8409d7939246283f87b</CoreFxCurrentRef>
-    <WCFCurrentRef>c9a03fe0c3309508cb509a4ffdd6dc8b79ed525e</WCFCurrentRef>
+    <CoreFxCurrentRef>9a19a5852cedb164108dfece6d0a6de9f89f0c44</CoreFxCurrentRef>
+    <WCFCurrentRef>9a19a5852cedb164108dfece6d0a6de9f89f0c44</WCFCurrentRef>
     <StandardCurrentRef>9d670595478e52f203b9b8925576ce5e7f6826dd</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>d1cec650123d1124f51b6144a149453abd45bee4</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>d1cec650123d1124f51b6144a149453abd45bee4</ProjectNTfsTestILCCurrentRef>
+    <ProjectNTfsCurrentRef>9a19a5852cedb164108dfece6d0a6de9f89f0c44</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>9a19a5852cedb164108dfece6d0a6de9f89f0c44</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview1-25302-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview2-25607-02</CoreFxExpectedPrerelease>
+    <WCFExpectedPrerelease>preview2-25625-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-25625-02</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-25319-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-25524-02</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-25625-02</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>beta-25331-00</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>beta-25331-00</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-25331-00</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>beta-25625-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>beta-25625-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-25625-00</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
