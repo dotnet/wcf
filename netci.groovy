@@ -27,7 +27,6 @@ def targetNugetRuntimeMap = ['OSX' : 'osx.10.10-x64',
                              'Ubuntu16.04' : 'ubuntu.16.04-x64',
                              'Debian8.4' : 'debian.8-x64',
                              'CentOS7.1' : 'centos.7-x64',
-                             'OpenSUSE13.2' : 'opensuse.13.2-x64',
                              'RHEL7.2': 'rhel.7-x64']
 
 def osShortName = ['Windows 10': 'win10',
@@ -39,7 +38,6 @@ def osShortName = ['Windows 10': 'win10',
                    'Ubuntu16.04' : 'ubuntu16.04',
                    'CentOS7.1' : 'centos7.1',
                    'Debian8.4' : 'debian8.4',
-                   'OpenSUSE13.2' : 'opensuse13.2',
                    'RHEL7.2' : 'rhel7.2']
 
 def configurationGroupList = ['Debug', 'Release']
