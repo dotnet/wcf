@@ -4,6 +4,8 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -66,7 +68,52 @@ namespace Microsoft.SyndicationFeed
                                     });
         }
 
-        public static Task WriteRaw(XmlWriter writer, string content)
+        public static XmlWriter CreateXmlWriter(XmlWriterSettings settings, IEnumerable<ISyndicationAttribute> attributes, StringBuilder buffer)
+        {
+            settings.Async = false;
+            settings.OmitXmlDeclaration = true;
+            settings.ConformanceLevel = ConformanceLevel.Fragment;
+
+            XmlWriter writer = XmlWriter.Create(buffer, settings);
+
+            //
+            // Apply attributes
+            if (attributes != null && attributes.Count() > 0)
+            {
+                //
+                // Create element wrapper
+                ISyndicationAttribute xmlns = attributes.FirstOrDefault(a => a.Name == "xmlns");
+
+                if (xmlns != null)
+                {
+                    writer.WriteStartElement("w", xmlns.Value);
+                }
+                else
+                {
+                    writer.WriteStartElement("w");
+                }
+
+                //
+                // Write attributes
+                foreach (var a in attributes)
+                {
+                    if (a != xmlns)
+                    {
+                        writer.WriteSyndicationAttribute(a);
+                    }
+                }
+
+                writer.WriteStartElement("y");
+                writer.WriteEndElement();
+
+                writer.Flush();
+                buffer.Clear();
+            }
+
+            return writer;
+        }
+
+        public static Task WriteRawAsync(XmlWriter writer, string content)
         {
             if (writer.Settings.Async)
             {
@@ -78,6 +125,17 @@ namespace Microsoft.SyndicationFeed
             return Task.CompletedTask;
         }
 
+        public static Task FlushAsync(XmlWriter writer)
+        {
+            if (writer.Settings.Async)
+            {
+                return writer.FlushAsync();
+            }
+
+            writer.Flush();
+
+            return Task.CompletedTask;
+        }
 
         public static void SplitName(string name, out string prefix, out string localName)
         {

@@ -22,7 +22,8 @@ namespace Microsoft.SyndicationFeed.Rss
 
         public Rss20Formatter(IEnumerable<ISyndicationAttribute> knownAttributes, XmlWriterSettings settings)
         {
-            InitXmlWriter(settings?.Clone() ?? new XmlWriterSettings(), knownAttributes);
+            _buffer = new StringBuilder();
+            _writer = XmlUtils.CreateXmlWriter(settings?.Clone() ?? new XmlWriterSettings(), knownAttributes, _buffer);
         }
 
         public string Format(ISyndicationContent content)
@@ -34,7 +35,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             try
             {
-                _writer.WriteSyndicationContent(content);
+                _writer.WriteSyndicationContent(content, null);
 
                 _writer.Flush();
 
@@ -45,7 +46,6 @@ namespace Microsoft.SyndicationFeed.Rss
                 _buffer.Clear();
             }
         }
-
 
         public string Format(ISyndicationCategory category)
         {
@@ -321,20 +321,6 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             //
-            // Lenght
-            if (link.Length != 0)
-            {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
-            }
-
-            //
-            // Type
-            if (!string.IsNullOrEmpty(link.MediaType))
-            {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
-            }
-
-            //
             // title 
             if (!string.IsNullOrEmpty(link.Title))
             {
@@ -354,6 +340,19 @@ namespace Microsoft.SyndicationFeed.Rss
                 content.Value = url;
             }
 
+            //
+            // Type
+            if (!string.IsNullOrEmpty(link.MediaType))
+            {
+                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
+            }
+
+            //
+            // Lenght
+            if (link.Length != 0)
+            {
+                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
+            }
 
             return content;
         }
@@ -386,34 +385,6 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             return content;
-        }
-
-        private void InitXmlWriter(XmlWriterSettings settings, IEnumerable<ISyndicationAttribute> attributes)
-        {
-            settings.Async = false;
-            settings.OmitXmlDeclaration = true;
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
-
-            _buffer = new StringBuilder();
-            _writer = XmlWriter.Create(_buffer, settings);
-
-            //
-            // Apply global attributes
-            if (attributes != null && attributes.Count() > 0)
-            {
-                _writer.WriteStartElement("w");
-
-                foreach (var a in attributes)
-                {
-                    _writer.WriteSyndicationAttribute(a);
-                }
-
-                _writer.WriteStartElement("y");
-                _writer.WriteEndElement();
-
-                _writer.Flush();
-                _buffer.Clear();
-            }
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Atom
 {
-    public class AtomFeedParser : ISyndicationFeedParser
+    public class AtomParser : ISyndicationFeedParser
     {
         public ISyndicationCategory ParseCategory(string value)
         {
@@ -308,7 +308,7 @@ namespace Microsoft.SyndicationFeed.Atom
 
                     //
                     // Source
-                    case AtomElementNames.SourceFeed:
+                    case AtomElementNames.Source:
                         item.AddLink(CreateSource(field));
                         break;
                     //

@@ -64,21 +64,25 @@ namespace Microsoft.SyndicationFeed
             return content;
         }
 
-        public static void WriteSyndicationContent(this XmlWriter writer, ISyndicationContent content)
+        public static void WriteSyndicationContent(this XmlWriter writer, ISyndicationContent content, string defaultNs)
         {
+            string ns = content.Namespace ?? defaultNs;
+
             //
             // Write opening 
-            if (!string.IsNullOrEmpty(content.Namespace))
+            if (ns != null)
             {
                 XmlUtils.SplitName(content.Name, out string prefix, out string localName);
 
+                prefix = writer.LookupPrefix(ns) ?? prefix;
+
                 if (prefix != null)
                 {
-                    writer.WriteStartElement(prefix, localName, content.Namespace);
+                    writer.WriteStartElement(prefix, localName, ns);
                 }
                 else
                 {
-                    writer.WriteStartElement(localName, content.Namespace);
+                    writer.WriteStartElement(localName, ns);
                 }
             }
             else
@@ -88,9 +92,12 @@ namespace Microsoft.SyndicationFeed
 
             //
             // Write attributes
-            foreach (var a in content.Attributes)
+            if (content.Attributes != null)
             {
-                writer.WriteSyndicationAttribute(a);
+                foreach (var a in content.Attributes)
+                {
+                    writer.WriteSyndicationAttribute(a);
+                }
             }
 
             //
@@ -103,9 +110,12 @@ namespace Microsoft.SyndicationFeed
             // Write Fields
             else
             {
-                foreach (var field in content.Fields)
+                if (content.Fields != null)
                 {
-                    writer.WriteSyndicationContent(field);
+                    foreach (var field in content.Fields)
+                    {
+                        writer.WriteSyndicationContent(field, defaultNs);
+                    }
                 }
             }
 
@@ -116,23 +126,25 @@ namespace Microsoft.SyndicationFeed
 
         public static void WriteSyndicationAttribute(this XmlWriter writer, ISyndicationAttribute attr)
         {
-            if (attr.Namespace != null)
-            {
-                XmlUtils.SplitName(attr.Name, out string prefix, out string localName);
+            XmlUtils.SplitName(attr.Name, out string prefix, out string localName);
 
-                if (prefix != null)
-                {
-                    writer.WriteAttributeString(prefix, localName, attr.Namespace, attr.Value);
-                }
-                else
-                {
-                    writer.WriteAttributeString(localName, attr.Namespace, attr.Value);
-                }
+            prefix = prefix ?? writer.LookupPrefix(attr.Namespace ?? string.Empty);
+
+            if (prefix == string.Empty)
+            {
+                writer.WriteStartAttribute(attr.Name);
+            }
+            else if (prefix != null)
+            {
+                writer.WriteStartAttribute(prefix, localName, attr.Namespace);
             }
             else
             {
-                writer.WriteAttributeString(attr.Name, attr.Value);
+                writer.WriteStartAttribute(localName, attr.Namespace);
             }
+
+            writer.WriteString(attr.Value);
+            writer.WriteEndAttribute();
         }
     }
 }

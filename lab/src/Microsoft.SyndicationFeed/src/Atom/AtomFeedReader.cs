@@ -14,7 +14,7 @@ namespace Microsoft.SyndicationFeed.Atom
         private bool _knownFeed;
 
         public AtomFeedReader(XmlReader reader)
-            : this(reader, new AtomFeedParser())
+            : this(reader, new AtomParser())
         {                
         }
 
