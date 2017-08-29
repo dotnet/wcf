@@ -9,15 +9,15 @@ namespace Microsoft.SyndicationFeed
     public sealed class SyndicationAttribute : ISyndicationAttribute
     {
         public SyndicationAttribute(string name, string value) :
-            this(name, string.Empty, value)
+            this(name, null, value)
         {
         }
 
         public SyndicationAttribute(string name, string ns, string value)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            Namespace = ns ?? throw new ArgumentNullException(nameof(ns));
             Value = value ?? throw new ArgumentNullException(nameof(value));
+            Namespace = ns;
         }
 
         public string Name { get; private set; }

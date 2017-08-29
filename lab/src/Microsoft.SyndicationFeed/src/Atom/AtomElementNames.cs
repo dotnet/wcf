@@ -19,7 +19,7 @@ namespace Microsoft.SyndicationFeed.Atom
         public const string Name = "name";
         public const string Published = "published";
         public const string Rights = "rights";
-        public const string SourceFeed = "source";
+        public const string Source = "source";
         public const string Subtitle = "subtitle";
         public const string Summary = "summary";
         public const string Title = "title";

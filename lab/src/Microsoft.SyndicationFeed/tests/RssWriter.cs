@@ -4,8 +4,6 @@
 
 using Microsoft.SyndicationFeed.Tests;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -35,15 +33,14 @@ namespace Microsoft.SyndicationFeed.Rss
         [Fact]
         public async Task Rss20Writer_WriteCategory()
         {
-
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            using (var xmlWriter = XmlWriter.Create(sw))
             {
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, null, new Rss20Formatter(null, xmlWriter.Settings));
-                SyndicationCategory category = new SyndicationCategory("Test Category");
-                await writer.Write(category);
-                xmlWriter.Flush();
+                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+
+                await writer.Write(new SyndicationCategory("Test Category"));
+                await writer.Flush();
             }
 
             string res = sw.ToString();
@@ -55,15 +52,14 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            using (var xmlWriter = XmlWriter.Create(sw))
             {                
-                var writer = new Rss20FeedWriter(xmlWriter, null , new Rss20Formatter(null,null));
+                var writer = new Rss20FeedWriter(xmlWriter);
 
                 await writer.Write(new SyndicationPerson("author", "author@email.com"));
                 await writer.Write(new SyndicationPerson("mEditor", "mEditor@email.com", Rss20ContributorTypes.ManagingEditor));
 
-                xmlWriter.WriteEndElement();
-                xmlWriter.Flush();
+                await writer.Flush();
             }
 
             string res = sw.ToString();
@@ -77,21 +73,18 @@ namespace Microsoft.SyndicationFeed.Rss
 
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            using (var xmlWriter = XmlWriter.Create(sw))
             {
+                var writer = new Rss20FeedWriter(xmlWriter);
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, null, new Rss20Formatter(null, xmlWriter.Settings));
-
-                var image = new SyndicationImage(uri)
+                await writer.Write(new SyndicationImage(uri)
                 {
                     Title = "Testing image title",
                     Description = "testing image description",
                     Link = new SyndicationLink(uri)
-                };
+                });
 
-                await writer.Write(image);
-                
-                xmlWriter.Flush();
+                await writer.Flush();
             }
 
             string res = sw.ToString();
@@ -101,20 +94,14 @@ namespace Microsoft.SyndicationFeed.Rss
         [Fact]
         public async Task Rss20Writer_WriteLink_onlyUrl()
         {
-
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            using (var xmlWriter = XmlWriter.Create(sw))
             {
+                var writer = new Rss20FeedWriter(xmlWriter);
                 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, null, new Rss20Formatter(null, xmlWriter.Settings));
-                
-                Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate);
-                
-                await writer.Write(link);
-                
-                xmlWriter.Flush();
+                await writer.Write(new SyndicationLink(new Uri("http://testuriforlink.com")));
+                await writer.Flush();
             }
 
             string res = sw.ToString();
@@ -124,29 +111,25 @@ namespace Microsoft.SyndicationFeed.Rss
         [Fact]
         public async Task Rss20Writer_WriteLink_allElements()
         {
-
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            var link = new SyndicationLink(new Uri("http://testuriforlink.com"))
             {
+                Title = "Test title",
+                Length = 123,
+                MediaType = "mp3/video"
+            };
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, null, new Rss20Formatter(null, xmlWriter.Settings));
-
-                Uri urlForLink = new Uri("http://testuriforlink.com");
-                SyndicationLink link = new SyndicationLink(urlForLink, Rss20LinkTypes.Alternate)
-                {
-                    Title = "Test title",
-                    Length = 123,
-                    MediaType = "mp3/video"
-                };
+            using (var xmlWriter = XmlWriter.Create(sw))
+            {
+                var writer = new Rss20FeedWriter(xmlWriter);
 
                 await writer.Write(link);
-
-                xmlWriter.Flush();
+                await writer.Flush();
             }
 
             string res = sw.ToString();
-            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><link length=\"123\" type=\"mp3/video\" url=\"http://testuriforlink.com/\">Test title</link></channel></rss>");
+            Assert.True(res == $"<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><link url=\"{link.Uri}\" type=\"{link.MediaType}\" length=\"{link.Length}\">{link.Title}</link></channel></rss>");
         }
 
              
@@ -186,10 +169,12 @@ namespace Microsoft.SyndicationFeed.Rss
             // Write
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            using (var xmlWriter = XmlWriter.Create(sw))
             {
-                await new Rss20FeedWriter(xmlWriter).Write(item);
-                xmlWriter.Flush();
+                var writer = new Rss20FeedWriter(xmlWriter);
+
+                await writer.Write(item);
+                await writer.Flush();
             }
 
             string res = sw.ToString();
@@ -201,19 +186,24 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = null;
 
-            using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\CustomXml.xml"))
+            //
+            // Read
+            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\CustomXml.xml"))
             {
                 Rss20FeedReader reader = new Rss20FeedReader(xmlReader);
                 content = await reader.ReadContent();
             }
 
+            //
+            // Write
             StringBuilder sb = new StringBuilder();
-            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+
+            using (var xmlWriter = XmlWriter.Create(sb))
             {
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, null, new Rss20Formatter(null, xmlWriter.Settings));
+                var writer = new Rss20FeedWriter(xmlWriter);
 
                 await writer.Write(content);
-                xmlWriter.Flush();
+                await writer.Flush();
             }
 
             string res = sb.ToString();
@@ -224,11 +214,13 @@ namespace Microsoft.SyndicationFeed.Rss
         public async Task Rss20Writer_WriteValue()
         {
             var sb = new StringBuilder();
-            using (XmlWriter xmlWriter = XmlWriter.Create(sb))
+
+            using (var xmlWriter = XmlWriter.Create(sb))
             {
-                var writer = new Rss20FeedWriter(xmlWriter, null, new Rss20Formatter(null, xmlWriter.Settings));
+                var writer = new Rss20FeedWriter(xmlWriter);
+
                 await writer.WriteValue("CustomTag", "Custom Content");
-                xmlWriter.Flush();
+                await writer.Flush();
             }
 
             var res = sb.ToString();
@@ -236,55 +228,49 @@ namespace Microsoft.SyndicationFeed.Rss
         }
         
         [Fact]
-        public async Task Rss20Writer_ReadAndWriteFeed_TestResultWithRss20Test()
+        public async Task Rss20Writer_Echo()
         {
             string res = null;
-            using (XmlReader xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
+            using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
             {
                 var reader = new Rss20FeedReader(xmlReader);
 
                 var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-                using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+                using (var xmlWriter = XmlWriter.Create(sw))
                 {
-
                     var writer = new Rss20FeedWriter(xmlWriter);
-
 
                     while (await reader.Read())
                     {
                         switch (reader.ElementType)
                         {
                             case SyndicationElementType.Item:
-                                ISyndicationItem item = await reader.ReadItem();
-                                await writer.Write(item);
+                                await writer.Write(await reader.ReadItem());
                                 break;
 
                             case SyndicationElementType.Person:
-                                ISyndicationPerson person = await reader.ReadPerson();
-                                await writer.Write(person);
+                                await writer.Write(await reader.ReadPerson());
                                 break;
 
                             case SyndicationElementType.Image:
-                                ISyndicationImage image = await reader.ReadImage();
-                                await writer.Write(image);
+                                await writer.Write(await reader.ReadImage());
                                 break;
 
                             default:
-                                ISyndicationContent content = await reader.ReadContent();
-                                await writer.Write(content);
+                                await writer.Write(await reader.ReadContent());
                                 break;
                         }
                     }
 
-                    xmlWriter.Flush();
+                    await writer.Flush();
                 }
+
                 res = sw.ToString();
                 Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><title asd=\"123\">Lorem ipsum feed for an interval of 1 minutes</title><description>This is a constantly updating lorem ipsum feed</description><link length=\"123\" type=\"testType\">http://example.com/</link><image><url>http://2.bp.blogspot.com/-NA5Jb-64eUg/URx8CSdcj_I/AAAAAAAAAUo/eCx0irI0rq0/s1600/bg_Microsoft_logo3-20120824073001907469-620x349.jpg</url><title>Microsoft News</title><link>http://www.microsoft.com/news</link><description>Test description</description></image><generator>RSS for Node</generator><lastBuildDate>Thu, 06 Jul 2017 20:25:17 GMT</lastBuildDate><managingEditor>John Smith</managingEditor><pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate><copyright>Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.</copyright><ttl>60</ttl><item><title>Lorem ipsum 2017-07-06T20:25:00+00:00</title><enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/mpeg\" /><link>http://example.com/test/1499372700</link><guid>http://example.com/test/1499372700</guid><description>Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.</description><author>John Smith</author><pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate></item><item><title>Lorem ipsum 2017-07-06T20:24:00+00:00</title><link>http://example.com/test/1499372640</link><guid>http://example.com/test/1499372640</guid><enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/mpeg\" /><description>Do ipsum dolore veniam minim est cillum aliqua ea.</description><author>John Smith</author><pubDate>Thu, 06 Jul 2017 20:24:00 GMT</pubDate></item></channel></rss>");
             }
 
-            XmlReader newReader = XmlReader.Create(new StringReader(res));
-            await RSS20.TestReadFeedElements(newReader);
+            await RSS20.TestReadFeedElements(XmlReader.Create(new StringReader(res)));
         }
 
         [Fact]
@@ -292,13 +278,14 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             string filePath = @"..\..\..\TestFeeds\internetRssFeed.xml";
             string res = null;
-            using (XmlReader xmlReader = XmlReader.Create(filePath, new XmlReaderSettings() { Async = true }))
+
+            using (var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings() { Async = true }))
             {
                 var reader = new Rss20FeedReader(xmlReader);
 
                 var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-                using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+                using (var xmlWriter = XmlWriter.Create(sw))
                 {
                     var writer = new Rss20FeedWriter(xmlWriter);
 
@@ -307,37 +294,31 @@ namespace Microsoft.SyndicationFeed.Rss
                         switch (reader.ElementType)
                         {
                             case SyndicationElementType.Item:
-                                ISyndicationItem item = await reader.ReadItem();
-                                await writer.Write(item);
+                                await writer.Write(await reader.ReadItem());
                                 break;
 
                             case SyndicationElementType.Person:
-                                ISyndicationPerson person = await reader.ReadPerson();
-                                await writer.Write(person);
+                                await writer.Write(await reader.ReadPerson());
                                 break;
 
                             case SyndicationElementType.Image:
-                                ISyndicationImage image = await reader.ReadImage();
-                                await writer.Write(image);
+                                await writer.Write(await reader.ReadImage());
                                 break;
 
                             default:
-                                ISyndicationContent content = await reader.ReadContent();
-                                await writer.Write(content);
+                                await writer.Write(await reader.ReadContent());
                                 break;
                         }
                     }
 
-                    xmlWriter.Flush();
+                    await writer.Flush();
                 }
+
                 res = sw.ToString();
             }
 
-            
-            var originalReader = XmlReader.Create(filePath);
-            var resReader = XmlReader.Create(new StringReader(res));
-
-            await CompareFeeds(new Rss20FeedReader(originalReader), new Rss20FeedReader(resReader));
+            await CompareFeeds(new Rss20FeedReader(XmlReader.Create(filePath)), 
+                               new Rss20FeedReader(XmlReader.Create(new StringReader(res))));
             
         }
 
@@ -350,27 +331,19 @@ namespace Microsoft.SyndicationFeed.Rss
                 switch (f1.ElementType)
                 {
                     case SyndicationElementType.Item:
-                        ISyndicationItem item1 = await f1.ReadItem();
-                        ISyndicationItem item2 = await f2.ReadItem();
-                        CompareItem(item1, item2);
+                        CompareItem(await f1.ReadItem(), await f2.ReadItem());
                         break;
 
                     case SyndicationElementType.Person:
-                        ISyndicationPerson person1 = await f1.ReadPerson();
-                        ISyndicationPerson person2 = await f2.ReadPerson();
-                        ComparePerson(person1, person2);
+                        ComparePerson(await f1.ReadPerson(), await f2.ReadPerson());
                         break;
 
                     case SyndicationElementType.Image:
-                        ISyndicationImage image1 = await f1.ReadImage();
-                        ISyndicationImage image2 = await f2.ReadImage();
-                        CompareImage(image1, image2);
+                        CompareImage(await f1.ReadImage(), await f2.ReadImage());
                         break;
 
                     default:
-                        ISyndicationContent content1 = await f1.ReadContent();
-                        ISyndicationContent content2 = await f2.ReadContent();
-                        CompareContent(content1, content2);
+                        CompareContent(await f1.ReadContent(), await f2.ReadContent());
                         break;
                 }
             }
@@ -379,22 +352,17 @@ namespace Microsoft.SyndicationFeed.Rss
         [Fact]
         public async Task Rss20Writer_WriteNamespaces()
         {
+            var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
-            StringWriterWithEncoding sw = new StringWriterWithEncoding(Encoding.UTF8);
-
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { }))
-            //using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { NamespaceHandling = NamespaceHandling.OmitDuplicates}))
+            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
             {
+                var writer = new Rss20FeedWriter(xmlWriter, 
+                                                 new SyndicationAttribute[] { new SyndicationAttribute("xmlns:content", "http://contoso.com/")});
 
-                var list = new List<SyndicationAttribute>()
-                {
-                    new SyndicationAttribute("xmlns:content", "http://contoso.com/"),
-                };
+                await writer.Write(new SyndicationContent("hello", "http://contoso.com/", "world"));
+                await writer.Write(new SyndicationContent("world", "http://contoso.com/", "hello"));
 
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter, list);
-
-                await writer.Write(new SyndicationContent("content:hello", "http://contoso.com/", "world"));
-                await writer.Write(new SyndicationContent("content:world", "http://contoso.com/", "hello"));
+                await writer.Flush();
             }
 
             string res = sw.ToString();
@@ -451,12 +419,10 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             const string ExampleNs = "http://contoso.com/syndication/feed/examples";
             var sw = new StringWriter();
-            using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { NamespaceHandling = NamespaceHandling.OmitDuplicates }))
+
+            using (var xmlWriter = XmlWriter.Create(sw))
             {
-                var attributes = new List<SyndicationAttribute>()
-            {
-                new SyndicationAttribute("xmlns:example", ExampleNs)
-            };
+                var attributes = new SyndicationAttribute[] { new SyndicationAttribute("xmlns:example", ExampleNs) };
 
                 var formatter = new Rss20Formatter(attributes, xmlWriter.Settings);
                 var writer = new Rss20FeedWriter(xmlWriter, attributes, formatter);
@@ -478,17 +444,16 @@ namespace Microsoft.SyndicationFeed.Rss
                 var content = new SyndicationContent(formatter.CreateContent(item));
 
                 // Add custom fields/attributes
-                content.AddField(new SyndicationContent("example:customElement", ExampleNs, "Custom Value"));
+                content.AddField(new SyndicationContent("customElement", ExampleNs, "Custom Value"));
 
                 // Write 
                 await writer.Write(content);
                 await writer.Write(content);
 
-                // Done
-                xmlWriter.Flush();
+                await writer.Flush();
             }
+
             string res = sw.ToString();
         }
-        
     }
 }

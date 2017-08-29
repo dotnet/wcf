@@ -14,7 +14,7 @@ namespace Microsoft.SyndicationFeed
         private ICollection<ISyndicationContent> _children;
 
         public SyndicationContent(string name, string value = null)
-            : this(name, string.Empty, value)
+            : this(name, null, value)
         {
         }
 
@@ -28,7 +28,7 @@ namespace Microsoft.SyndicationFeed
 
             Name = name;
             Value = value;
-            Namespace = ns ?? throw new ArgumentNullException(nameof(ns));
+            Namespace = ns;
 
             _attributes = new List<ISyndicationAttribute>();
             _children = new List<ISyndicationContent>();

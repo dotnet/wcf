@@ -36,11 +36,6 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (!_feedStarted)
-            {
-                StartFeed();
-            }
-
             return WriteRaw(Formatter.Format(content));
         }
 
@@ -49,11 +44,6 @@ namespace Microsoft.SyndicationFeed.Rss
             if (category == null)
             {
                 throw new ArgumentNullException(nameof(category));
-            }
-
-            if (!_feedStarted)
-            {
-                StartFeed();
             }
 
             return WriteRaw(Formatter.Format(category));
@@ -66,11 +56,6 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(image));
             }
 
-            if (!_feedStarted)
-            {
-                StartFeed();
-            }
-
             return WriteRaw(Formatter.Format(image));
         }
 
@@ -81,25 +66,14 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (!_feedStarted)
-            {
-                StartFeed();
-            }
-
             return WriteRaw(Formatter.Format(item));
         }
 
         public virtual Task Write(ISyndicationPerson person)
         {
-
             if (person == null)
             {
                 throw new ArgumentNullException(nameof(person));
-            }
-
-            if (!_feedStarted)
-            {
-                StartFeed();
             }
 
             return WriteRaw(Formatter.Format(person));
@@ -112,21 +86,11 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(link));
             }
 
-            if (!_feedStarted)
-            {
-                StartFeed();
-            }
-
             return WriteRaw(Formatter.Format(link));
         }
 
         public virtual Task WriteValue<T>(string name, T value)
         {
-            if (!_feedStarted)
-            {
-                StartFeed();
-            }
-
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException(nameof(name));
@@ -144,7 +108,17 @@ namespace Microsoft.SyndicationFeed.Rss
 
         public virtual Task WriteRaw(string content)
         {
-            return XmlUtils.WriteRaw(_writer, content);
+            if (!_feedStarted)
+            {
+                StartFeed();
+            }
+
+            return XmlUtils.WriteRawAsync(_writer, content);
+        }
+
+        public Task Flush()
+        {
+            return XmlUtils.FlushAsync(_writer);
         }
 
         private void StartFeed()
