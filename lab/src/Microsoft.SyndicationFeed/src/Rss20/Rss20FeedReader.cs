@@ -7,13 +7,13 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public class Rss20FeedReader : SyndicationFeedReaderBase
+    public class Rss20FeedReader : XmlFeedReader
     {
         private readonly XmlReader _reader;
         private bool _knownFeed;
 
         public Rss20FeedReader(XmlReader reader) 
-            : this(reader, new Rss20FeedParser())
+            : this(reader, new Rss20Parser())
         {
         }
 

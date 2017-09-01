@@ -11,8 +11,8 @@ namespace Microsoft.SyndicationFeed.Atom
 {
     public class AtomFormatter : ISyndicationFeedFormatter
     {
-        XmlWriter _writer;
-        StringBuilder _buffer;
+        private readonly XmlWriter _writer;
+        private readonly StringBuilder _buffer;
 
         public AtomFormatter()
             : this(null, null)

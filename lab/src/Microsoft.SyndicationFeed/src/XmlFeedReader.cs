@@ -8,13 +8,12 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed
 {
-    public abstract class SyndicationFeedReaderBase : ISyndicationFeedReader
+    public abstract class XmlFeedReader : ISyndicationFeedReader
     {
         private readonly XmlReader _reader;
         private bool _currentSet;
         
-
-        public SyndicationFeedReaderBase(XmlReader reader, ISyndicationFeedParser parser)
+        protected XmlFeedReader(XmlReader reader, ISyndicationFeedParser parser)
         {
             _reader = reader ?? throw new ArgumentNullException(nameof(reader));
             Parser = parser ?? throw new ArgumentNullException(nameof(parser));

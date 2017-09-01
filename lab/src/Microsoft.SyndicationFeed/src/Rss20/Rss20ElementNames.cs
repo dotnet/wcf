@@ -18,7 +18,6 @@ namespace Microsoft.SyndicationFeed.Rss
         public const string Copyright = "copyright";
         public const string Description = "description";
         public const string Docs = "docs";
-        public const string Domain = "domain";
         public const string Enclosure = "enclosure";
         public const string Generator = "generator";
         public const string Guid = "guid";
@@ -38,6 +37,6 @@ namespace Microsoft.SyndicationFeed.Rss
         public const string TimeToLive = "ttl";
         public const string Title = "title";
         public const string Url = "url";
-        public const string Version = "version";        
+        public const string Version = "version";
     }
 }

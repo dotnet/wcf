@@ -10,35 +10,37 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Atom
 {
-    public class AtomFeedWriter : ISyndicationFeedWriter
+    public class AtomFeedWriter : XmlFeedWriter
     {
-        private XmlWriter _writer;
+        private readonly XmlWriter _writer;
+        private readonly IEnumerable<ISyndicationAttribute> _attributes;
         private bool _feedStarted;
-        private IEnumerable<ISyndicationAttribute> _attributes;
 
         public AtomFeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes = null)
             : this(writer, attributes, null)
         {
         }
 
-        public AtomFeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes, ISyndicationFeedFormatter formatter)
+        public AtomFeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes, ISyndicationFeedFormatter formatter) :
+            this(writer, formatter, EnsureXmlNs(attributes ?? Enumerable.Empty<ISyndicationAttribute>()))
         {
-            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
-            _attributes = EnsureXmlNs(attributes ?? Enumerable.Empty<ISyndicationAttribute>());
-
-            Formatter = formatter ?? new AtomFormatter(_attributes, writer.Settings);
         }
 
-        public ISyndicationFeedFormatter Formatter { get; private set; }
-
-        public virtual Task WriteTitle(string value, string type = null)
+        private AtomFeedWriter(XmlWriter writer, ISyndicationFeedFormatter formatter, IEnumerable<ISyndicationAttribute> attributes) :
+            base(writer, formatter ?? new AtomFormatter(attributes, writer.Settings))
         {
-            return WriteText(AtomElementNames.Title, value, type);
+            _writer = writer;
+            _attributes = attributes;
         }
 
-        public virtual Task WriteSubtitle(string value, string type = null)
+        public virtual Task WriteTitle(string value)
         {
-            return WriteText(AtomElementNames.Subtitle, value, type);
+            return WriteText(AtomElementNames.Title, value, null);
+        }
+
+        public virtual Task WriteSubtitle(string value)
+        {
+            return WriteText(AtomElementNames.Subtitle, value, null);
         }
 
         public virtual Task WriteId(string value)
@@ -61,12 +63,12 @@ namespace Microsoft.SyndicationFeed.Atom
             return WriteValue(AtomElementNames.Updated, dt);
         }
 
-        public virtual Task WriteRights(string value, string type = null)
+        public virtual Task WriteRights(string value)
         {
-            return WriteText(AtomElementNames.Rights, value, type);
+            return WriteText(AtomElementNames.Rights, value, null);
         }
 
-        public virtual Task WriteGenerator(string value, string uri = null, string version = null)
+        public virtual Task WriteGenerator(string value, string uri, string version)
         {
             if (value == null)
             {
@@ -88,70 +90,13 @@ namespace Microsoft.SyndicationFeed.Atom
             return Write(generator);
         }
 
-        public virtual Task Write(ISyndicationContent content)
-        {
-            return WriteRaw(Formatter.Format(content ?? throw new ArgumentNullException(nameof(content))));
-        }
-
-        public virtual Task Write(ISyndicationCategory category)
-        {
-            return WriteRaw(Formatter.Format(category ?? throw new ArgumentNullException(nameof(category))));
-        }
-
-        public virtual Task Write(ISyndicationImage image)
-        {
-            return WriteRaw(Formatter.Format(image ?? throw new ArgumentNullException(nameof(image))));
-        }
-
-        public virtual Task Write(ISyndicationItem item)
-        {
-            return WriteRaw(Formatter.Format(item ?? throw new ArgumentNullException(nameof(item))));
-        }
-
-        public virtual Task Write(ISyndicationPerson person)
-        {
-            return WriteRaw(Formatter.Format(person ?? throw new ArgumentNullException(nameof(person))));
-        }
-
-        public virtual Task Write(ISyndicationLink link)
-        {
-            return WriteRaw(Formatter.Format(link ?? throw new ArgumentNullException(nameof(link))));
-        }
-
-        public virtual Task WriteValue<T>(string name, T value)
+        public virtual Task WriteText(string name, string value, string type)
         {
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
 
-            string valueString = Formatter.FormatValue(value);
-
-            if (valueString == null)
-            {
-                throw new FormatException(nameof(value));
-            }
-            
-            return WriteRaw(Formatter.Format(new SyndicationContent(name, valueString)));
-        }
-
-        public virtual Task WriteRaw(string content)
-        {
-            if (!_feedStarted)
-            {
-                StartFeed();
-            }
-
-            return XmlUtils.WriteRawAsync(_writer, content);
-        }
-
-        public Task Flush()
-        {
-            return XmlUtils.FlushAsync(_writer);
-        }
-
-        private Task WriteText(string name, string value, string type)
-        {
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
@@ -165,6 +110,16 @@ namespace Microsoft.SyndicationFeed.Atom
             }
 
             return Write(content);
+        }
+
+        public override Task WriteRaw(string content)
+        {
+            if (!_feedStarted)
+            {
+                StartFeed();
+            }
+
+            return XmlUtils.WriteRawAsync(_writer, content);
         }
 
         private void StartFeed()
