@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
 
-namespace Microsoft.SyndicationFeed.Tests
+namespace Microsoft.SyndicationFeed.Tests.Rss
 {
-    public class RSS20
+    public class RssReader
     {
         [Fact]
         public async Task ReadSequential()

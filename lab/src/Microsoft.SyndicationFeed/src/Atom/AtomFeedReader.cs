@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Atom
 {
-    public class AtomFeedReader : SyndicationFeedReaderBase
+    public class AtomFeedReader : XmlFeedReader
     {
         private readonly XmlReader _reader;
         private bool _knownFeed;

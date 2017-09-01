@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -12,8 +11,8 @@ namespace Microsoft.SyndicationFeed.Rss
 {
     public class Rss20Formatter : ISyndicationFeedFormatter
     {
-        XmlWriter _writer;
-        StringBuilder _buffer;
+        private readonly XmlWriter _writer;
+        private readonly StringBuilder _buffer;
 
         public Rss20Formatter()
             : this(null, null)

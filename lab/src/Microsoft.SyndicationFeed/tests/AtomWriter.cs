@@ -5,7 +5,6 @@
 using Microsoft.SyndicationFeed.Atom;
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -228,7 +227,7 @@ namespace Microsoft.SyndicationFeed.Tests.Atom
                                                 new ISyndicationAttribute[] { new SyndicationAttribute("xmlns:atom", "http://www.w3.org/2005/Atom") });
 
                 await writer.WriteTitle(title);
-                await writer.WriteGenerator(generator, uri);
+                await writer.WriteGenerator(generator, uri, null);
 
                 await writer.Flush();
             }
@@ -255,12 +254,12 @@ namespace Microsoft.SyndicationFeed.Tests.Atom
             using (var xmlWriter = XmlWriter.Create(sw))
             {
                 var attributes = new ISyndicationAttribute[] { new SyndicationAttribute("xmlns:atom", "http://www.w3.org/2005/Atom") };
-                var writer = new Rss.Rss20FeedWriter(xmlWriter, attributes);
+                var writer = new SyndicationFeed.Rss.Rss20FeedWriter(xmlWriter, attributes);
                 var formatter = new AtomFormatter(attributes, xmlWriter.Settings);
 
                 //
                 // Write Rss elements
-                await writer.WriteValue(Rss.Rss20ElementNames.Title, "Rss Title");
+                await writer.WriteValue(SyndicationFeed.Rss.Rss20ElementNames.Title, "Rss Title");
                 await writer.Write(author);
                 await writer.Write(new SyndicationItem()
                 {

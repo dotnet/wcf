@@ -8,5 +8,6 @@ namespace Microsoft.SyndicationFeed.Rss
     {
         public const string Author = "author";
         public const string ManagingEditor = "managingEditor";
+        public const string WebMaster = "webMaster";
     }
 }

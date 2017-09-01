@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.SyndicationFeed.Tests;
+using Microsoft.SyndicationFeed.Rss;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
 
-namespace Microsoft.SyndicationFeed.Rss
+namespace Microsoft.SyndicationFeed.Tests.Rss
 {
     public class RssWriter
     {
@@ -31,13 +31,13 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WriteCategory()
+        public async Task WriteCategory()
         {
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
             using (var xmlWriter = XmlWriter.Create(sw))
             {
-                Rss20FeedWriter writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new Rss20FeedWriter(xmlWriter);
 
                 await writer.Write(new SyndicationCategory("Test Category"));
                 await writer.Flush();
@@ -48,7 +48,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WritePerson()
+        public async Task WritePerson()
         {
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
@@ -67,7 +67,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WriteImage()
+        public async Task WriteImage()
         {
             Uri uri = new Uri("http://testuriforlink.com");
 
@@ -92,7 +92,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WriteLink_onlyUrl()
+        public async Task WriteLink_onlyUrl()
         {
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
@@ -109,7 +109,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WriteLink_allElements()
+        public async Task WriteLink_allElements()
         {
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
@@ -134,7 +134,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
              
         [Fact]
-        public async Task Rss20Writer_WriteItem()
+        public async Task WriteItem()
         {
             var url = new Uri("https://contoso.com/");
 
@@ -182,7 +182,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WriteContent()
+        public async Task WriteContent()
         {
             ISyndicationContent content = null;
 
@@ -211,7 +211,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WriteValue()
+        public async Task WriteValue()
         {
             var sb = new StringBuilder();
 
@@ -228,7 +228,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
         
         [Fact]
-        public async Task Rss20Writer_Echo()
+        public async Task Echo()
         {
             string res = null;
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
@@ -270,11 +270,11 @@ namespace Microsoft.SyndicationFeed.Rss
                 Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><title asd=\"123\">Lorem ipsum feed for an interval of 1 minutes</title><description>This is a constantly updating lorem ipsum feed</description><link length=\"123\" type=\"testType\">http://example.com/</link><image><url>http://2.bp.blogspot.com/-NA5Jb-64eUg/URx8CSdcj_I/AAAAAAAAAUo/eCx0irI0rq0/s1600/bg_Microsoft_logo3-20120824073001907469-620x349.jpg</url><title>Microsoft News</title><link>http://www.microsoft.com/news</link><description>Test description</description></image><generator>RSS for Node</generator><lastBuildDate>Thu, 06 Jul 2017 20:25:17 GMT</lastBuildDate><managingEditor>John Smith</managingEditor><pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate><copyright>Michael Bertolacci, licensed under a Creative Commons Attribution 3.0 Unported License.</copyright><ttl>60</ttl><item><title>Lorem ipsum 2017-07-06T20:25:00+00:00</title><enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/mpeg\" /><link>http://example.com/test/1499372700</link><guid>http://example.com/test/1499372700</guid><description>Exercitation sit dolore mollit et est eiusmod veniam aute officia veniam ipsum.</description><author>John Smith</author><pubDate>Thu, 06 Jul 2017 20:25:00 GMT</pubDate></item><item><title>Lorem ipsum 2017-07-06T20:24:00+00:00</title><link>http://example.com/test/1499372640</link><guid>http://example.com/test/1499372640</guid><enclosure url=\"http://www.scripting.com/mp3s/weatherReportSuite.mp3\" length=\"12216320\" type=\"audio/mpeg\" /><description>Do ipsum dolore veniam minim est cillum aliqua ea.</description><author>John Smith</author><pubDate>Thu, 06 Jul 2017 20:24:00 GMT</pubDate></item></channel></rss>");
             }
 
-            await RSS20.TestReadFeedElements(XmlReader.Create(new StringReader(res)));
+            await RssReader.TestReadFeedElements(XmlReader.Create(new StringReader(res)));
         }
 
         [Fact]
-        public async Task Rss20Writer_CompareContents()
+        public async Task CompareContents()
         {
             string filePath = @"..\..\..\TestFeeds\internetRssFeed.xml";
             string res = null;
@@ -350,7 +350,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task Rss20Writer_WriteNamespaces()
+        public async Task WriteNamespaces()
         {
             var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
@@ -367,6 +367,60 @@ namespace Microsoft.SyndicationFeed.Rss
 
             string res = sw.ToString();
             Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss xmlns:content=\"http://contoso.com/\" version=\"2.0\"><channel><content:hello>world</content:hello><content:world>hello</content:world></channel></rss>");
+        }
+
+        [Fact]
+        public async Task WriteCloud()
+        {
+            var sw = new StringWriterWithEncoding(Encoding.UTF8);
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            {
+                var writer = new Rss20FeedWriter(xmlWriter);
+
+                await writer.WriteCloud(new Uri("http://podcast.contoso.com/rpc"), "xmlStorageSystem.rssPleaseNotify", "xml-rpc");
+
+                await writer.Flush();
+            }
+
+            string res = sw.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><cloud domain=\"podcast.contoso.com\" port=\"80\" path=\"/rpc\" registerProcedure=\"xmlStorageSystem.rssPleaseNotify\" protocol=\"xml-rpc\" /></channel></rss>");
+        }
+
+        [Fact]
+        public async Task WriteSkipDays()
+        {
+            var sw = new StringWriterWithEncoding(Encoding.UTF8);
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            {
+                var writer = new Rss20FeedWriter(xmlWriter);
+
+                await writer.WriteSkipDays(new DayOfWeek[] { DayOfWeek.Friday, DayOfWeek.Monday });
+
+                await writer.Flush();
+            }
+
+            string res = sw.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><skipDays><day>Friday</day><day>Monday</day></skipDays></channel></rss>");
+        }
+
+        [Fact]
+        public async Task WriteSkipHours()
+        {
+            var sw = new StringWriterWithEncoding(Encoding.UTF8);
+
+            using (XmlWriter xmlWriter = XmlWriter.Create(sw))
+            {
+                var writer = new Rss20FeedWriter(xmlWriter);
+
+                await writer.WriteSkipHours(new byte[] { 0, 4, 1, 11, 23, 20 });
+
+                await writer.Flush();
+            }
+
+            string res = sw.ToString();
+            Assert.True(res == "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\"><channel><skipHours><hour>0</hour><hour>4</hour><hour>1</hour><hour>11</hour><hour>23</hour><hour>20</hour></skipHours></channel></rss>");
         }
 
         void ComparePerson(ISyndicationPerson person1, ISyndicationPerson person2)
@@ -415,7 +469,7 @@ namespace Microsoft.SyndicationFeed.Rss
         }
 
         [Fact]
-        public async Task RssWriter_TestFormatterWriterWithNamespaces()
+        public async Task FormatterWriterWithNamespaces()
         {
             const string ExampleNs = "http://contoso.com/syndication/feed/examples";
             var sw = new StringWriter();
