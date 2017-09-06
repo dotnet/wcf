@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using Microsoft.SyndicationFeed;
 using Microsoft.SyndicationFeed.Rss;
 using System;
@@ -21,6 +20,7 @@ class RssWriteItemWithCustomElement
     {
         const string ExampleNs = "http://contoso.com/syndication/feed/examples";
         var sw = new StringWriter();
+
         using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Async = true, Indent = true }))
         {
             var attributes = new List<SyndicationAttribute>()
@@ -28,8 +28,8 @@ class RssWriteItemWithCustomElement
                 new SyndicationAttribute("xmlns:example", ExampleNs)
             };
 
-            var formatter = new Rss20Formatter(attributes, xmlWriter.Settings);
-            var writer = new Rss20FeedWriter(xmlWriter, attributes, formatter);
+            var formatter = new RssFormatter(attributes, xmlWriter.Settings);
+            var writer = new RssFeedWriter(xmlWriter, attributes, formatter);
               
             // Create item
             var item = new SyndicationItem()
@@ -41,7 +41,7 @@ class RssWriteItemWithCustomElement
             };
 
             item.AddCategory(new SyndicationCategory("Technology"));
-            item.AddContributor(new SyndicationPerson(null, "test@mail.com"));
+            item.AddContributor(new SyndicationPerson("test", "test@mail.com"));
 
             //
             // Format the item as SyndicationContent

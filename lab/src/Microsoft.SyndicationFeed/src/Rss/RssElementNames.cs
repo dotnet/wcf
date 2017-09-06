@@ -8,7 +8,7 @@ namespace Microsoft.SyndicationFeed.Rss
     /// RSS 2.0 elements 
     /// http://blogs.law.harvard.edu/tech/rss 
     /// </summary>
-    public static class Rss20ElementNames
+    public static class RssElementNames
     {
         public const string Author = "author";
         public const string Category = "category";

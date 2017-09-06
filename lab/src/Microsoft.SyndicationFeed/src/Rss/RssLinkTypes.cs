@@ -4,7 +4,7 @@
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public static class Rss20LinkTypes
+    public static class RssLinkTypes
     {
         public const string Alternate = "alternate";
         public const string Comments = "comments";
