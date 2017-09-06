@@ -7,17 +7,17 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public class Rss20FeedReader : XmlFeedReader
+    public class RssFeedReader : XmlFeedReader
     {
         private readonly XmlReader _reader;
         private bool _knownFeed;
 
-        public Rss20FeedReader(XmlReader reader) 
-            : this(reader, new Rss20Parser())
+        public RssFeedReader(XmlReader reader) 
+            : this(reader, new RssParser())
         {
         }
 
-        public Rss20FeedReader(XmlReader reader, ISyndicationFeedParser parser)
+        public RssFeedReader(XmlReader reader, ISyndicationFeedParser parser)
             : base(reader, parser)
         {
             _reader = reader;
@@ -38,20 +38,20 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             switch (elementName)
             {
-                case Rss20ElementNames.Item:
+                case RssElementNames.Item:
                     return SyndicationElementType.Item;
 
-                case Rss20ElementNames.Link:
+                case RssElementNames.Link:
                     return SyndicationElementType.Link;
 
-                case Rss20ElementNames.Category:
+                case RssElementNames.Category:
                     return SyndicationElementType.Category;
 
-                case Rss20ElementNames.Author:
-                case Rss20ElementNames.ManagingEditor:
+                case RssElementNames.Author:
+                case RssElementNames.ManagingEditor:
                     return SyndicationElementType.Person;
 
-                case Rss20ElementNames.Image:
+                case RssElementNames.Image:
                     return SyndicationElementType.Image;
 
                 default:
@@ -62,8 +62,8 @@ namespace Microsoft.SyndicationFeed.Rss
         private async Task InitRead()
         {
             // Check <rss>
-            bool knownFeed = _reader.IsStartElement(Rss20ElementNames.Rss, Rss20Constants.Rss20Namespace) &&
-                             _reader.GetAttribute(Rss20ElementNames.Version).Equals(Rss20Constants.Version);
+            bool knownFeed = _reader.IsStartElement(RssElementNames.Rss, RssConstants.Rss20Namespace) &&
+                             _reader.GetAttribute(RssElementNames.Version).Equals(RssConstants.Version);
 
             if (knownFeed)
             {
@@ -71,7 +71,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 await XmlUtils.ReadAsync(_reader);
 
                 // Check <channel>
-                knownFeed = _reader.IsStartElement(Rss20ElementNames.Channel, Rss20Constants.Rss20Namespace);
+                knownFeed = _reader.IsStartElement(RssElementNames.Channel, RssConstants.Rss20Namespace);
             }
 
             if (!knownFeed)

@@ -37,7 +37,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.Write(new SyndicationCategory("Test Category"));
                 await writer.Flush();
@@ -54,10 +54,10 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sw))
             {                
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.Write(new SyndicationPerson("author", "author@email.com"));
-                await writer.Write(new SyndicationPerson("mEditor", "mEditor@email.com", Rss20ContributorTypes.ManagingEditor));
+                await writer.Write(new SyndicationPerson("mEditor", "mEditor@email.com", RssContributorTypes.ManagingEditor));
 
                 await writer.Flush();
             }
@@ -75,7 +75,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.Write(new SyndicationImage(uri)
                 {
@@ -98,7 +98,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
                 
                 await writer.Write(new SyndicationLink(new Uri("http://testuriforlink.com")));
                 await writer.Flush();
@@ -122,7 +122,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.Write(link);
                 await writer.Flush();
@@ -149,19 +149,19 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
             };
 
             item.AddLink(new SyndicationLink(url));
-            item.AddLink(new SyndicationLink(url, Rss20LinkTypes.Enclosure)
+            item.AddLink(new SyndicationLink(url, RssLinkTypes.Enclosure)
             {
                 Title = "https://contoso.com/",
                 Length = 4123,
                 MediaType = "audio/mpeg"
             });
-            item.AddLink(new SyndicationLink(url, Rss20LinkTypes.Comments));
-            item.AddLink(new SyndicationLink(url, Rss20LinkTypes.Source)
+            item.AddLink(new SyndicationLink(url, RssLinkTypes.Comments));
+            item.AddLink(new SyndicationLink(url, RssLinkTypes.Source)
             {
                 Title = "Anonymous Blog"
             });
 
-            item.AddLink(new SyndicationLink(new Uri(item.Id), Rss20LinkTypes.Guid));
+            item.AddLink(new SyndicationLink(new Uri(item.Id), RssLinkTypes.Guid));
 
             item.AddContributor(new SyndicationPerson("person", "person@email.com"));
 
@@ -171,7 +171,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.Write(item);
                 await writer.Flush();
@@ -190,7 +190,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
             // Read
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\CustomXml.xml"))
             {
-                Rss20FeedReader reader = new Rss20FeedReader(xmlReader);
+                RssFeedReader reader = new RssFeedReader(xmlReader);
                 content = await reader.ReadContent();
             }
 
@@ -200,7 +200,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sb))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.Write(content);
                 await writer.Flush();
@@ -217,7 +217,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlWriter = XmlWriter.Create(sb))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.WriteValue("CustomTag", "Custom Content");
                 await writer.Flush();
@@ -233,13 +233,13 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
             string res = null;
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20-2items.xml", new XmlReaderSettings() { Async = true }))
             {
-                var reader = new Rss20FeedReader(xmlReader);
+                var reader = new RssFeedReader(xmlReader);
 
                 var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
                 using (var xmlWriter = XmlWriter.Create(sw))
                 {
-                    var writer = new Rss20FeedWriter(xmlWriter);
+                    var writer = new RssFeedWriter(xmlWriter);
 
                     while (await reader.Read())
                     {
@@ -281,13 +281,13 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings() { Async = true }))
             {
-                var reader = new Rss20FeedReader(xmlReader);
+                var reader = new RssFeedReader(xmlReader);
 
                 var sw = new StringWriterWithEncoding(Encoding.UTF8);
 
                 using (var xmlWriter = XmlWriter.Create(sw))
                 {
-                    var writer = new Rss20FeedWriter(xmlWriter);
+                    var writer = new RssFeedWriter(xmlWriter);
 
                     while (await reader.Read())
                     {
@@ -317,8 +317,8 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
                 res = sw.ToString();
             }
 
-            await CompareFeeds(new Rss20FeedReader(XmlReader.Create(filePath)), 
-                               new Rss20FeedReader(XmlReader.Create(new StringReader(res))));
+            await CompareFeeds(new RssFeedReader(XmlReader.Create(filePath)), 
+                               new RssFeedReader(XmlReader.Create(new StringReader(res))));
             
         }
 
@@ -356,7 +356,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (XmlWriter xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter, 
+                var writer = new RssFeedWriter(xmlWriter, 
                                                  new SyndicationAttribute[] { new SyndicationAttribute("xmlns:content", "http://contoso.com/")});
 
                 await writer.Write(new SyndicationContent("hello", "http://contoso.com/", "world"));
@@ -376,7 +376,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (XmlWriter xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.WriteCloud(new Uri("http://podcast.contoso.com/rpc"), "xmlStorageSystem.rssPleaseNotify", "xml-rpc");
 
@@ -394,7 +394,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (XmlWriter xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.WriteSkipDays(new DayOfWeek[] { DayOfWeek.Friday, DayOfWeek.Monday });
 
@@ -412,7 +412,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (XmlWriter xmlWriter = XmlWriter.Create(sw))
             {
-                var writer = new Rss20FeedWriter(xmlWriter);
+                var writer = new RssFeedWriter(xmlWriter);
 
                 await writer.WriteSkipHours(new byte[] { 0, 4, 1, 11, 23, 20 });
 
@@ -478,8 +478,8 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
             {
                 var attributes = new SyndicationAttribute[] { new SyndicationAttribute("xmlns:example", ExampleNs) };
 
-                var formatter = new Rss20Formatter(attributes, xmlWriter.Settings);
-                var writer = new Rss20FeedWriter(xmlWriter, attributes, formatter);
+                var formatter = new RssFormatter(attributes, xmlWriter.Settings);
+                var writer = new RssFeedWriter(xmlWriter, attributes, formatter);
 
                 // Create item
                 var item = new SyndicationItem()

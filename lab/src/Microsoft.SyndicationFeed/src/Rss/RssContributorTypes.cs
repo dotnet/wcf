@@ -4,7 +4,7 @@
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public static class Rss20ContributorTypes
+    public static class RssContributorTypes
     {
         public const string Author = "author";
         public const string ManagingEditor = "managingEditor";

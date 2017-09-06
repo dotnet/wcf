@@ -20,15 +20,15 @@ class CreateSimpleRssFeed
 
         using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings() { Async = true , Indent = true }))
         {
-            var writer = new Rss20FeedWriter(xmlWriter);
+            var writer = new RssFeedWriter(xmlWriter);
 
             //
             // Add Title
-            await writer.WriteValue(Rss20ElementNames.Title, "Example of Rss20FeedWriter");
+            await writer.WriteTitle("Example of Rss20FeedWriter");
 
             //
             // Add Description
-            await writer.WriteValue(Rss20ElementNames.Description, "Hello World, RSS!");
+            await writer.WriteDescription("Hello World, RSS!");
 
             //
             // Add Link
@@ -36,11 +36,11 @@ class CreateSimpleRssFeed
 
             //
             // Add managing editor
-            await writer.Write(new SyndicationPerson(null, "managingeditor@contoso.com", Rss20ContributorTypes.ManagingEditor));
+            await writer.Write(new SyndicationPerson("managingeditor", "managingeditor@contoso.com", RssContributorTypes.ManagingEditor));
 
             //
             // Add publish date
-            await writer.WriteValue(Rss20ElementNames.PubDate, DateTimeOffset.UtcNow);
+            await writer.WritePubDate(DateTimeOffset.UtcNow);
 
             //
             // Add custom element
@@ -65,7 +65,7 @@ class CreateSimpleRssFeed
 
                 item.AddLink(new SyndicationLink(new Uri("https://github.com/dotnet/wcf")));
                 item.AddCategory(new SyndicationCategory("Technology"));
-                item.AddContributor(new SyndicationPerson(null, "user@contoso.com", Rss20ContributorTypes.Author));
+                item.AddContributor(new SyndicationPerson(null, "user@contoso.com", RssContributorTypes.Author));
 
                 await writer.Write(item);
             }

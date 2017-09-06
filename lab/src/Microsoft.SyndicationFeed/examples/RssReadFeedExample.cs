@@ -2,10 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using Microsoft.SyndicationFeed;
 using Microsoft.SyndicationFeed.Rss;
-using System;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -23,11 +21,11 @@ class RssReadFeed
         {
             // Instantiate an Rss20FeedReader using the XmlReader.
             // This will assign as default an Rss20FeedParser as the parser.
-            var feedReader = new Rss20FeedReader(xmlReader);
+            var feedReader = new RssFeedReader(xmlReader);
 
             //
             // Read the feed
-            while(await feedReader.Read())
+            while (await feedReader.Read())
             {
                 switch (feedReader.ElementType)
                 {

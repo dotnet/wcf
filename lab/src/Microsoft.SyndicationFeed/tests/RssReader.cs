@@ -18,7 +18,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
         public async Task ReadSequential()
         {
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true })) {
-                var reader = new Rss20FeedReader(xmlReader);
+                var reader = new RssFeedReader(xmlReader);
 
                 await reader.Read();
 
@@ -33,7 +33,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
         {
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true }))
             {
-                var reader = new Rss20FeedReader(xmlReader);
+                var reader = new RssFeedReader(xmlReader);
 
                 while (await reader.Read())
                 {
@@ -76,7 +76,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
             int itemCount = 0;
 
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true })) {
-                var reader = new Rss20FeedReader(xmlReader);
+                var reader = new RssFeedReader(xmlReader);
 
                 while (await reader.Read()) {
                     if (reader.ElementType == SyndicationElementType.Item) {
@@ -93,7 +93,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
         {
             using (var xmlReader = XmlReader.Create(@"..\..\..\TestFeeds\rss20.xml", new XmlReaderSettings() { Async = true }))
             {
-                var reader = new Rss20FeedReader(xmlReader);
+                var reader = new RssFeedReader(xmlReader);
 
                 while (await reader.Read())
                 {
@@ -134,7 +134,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
         {
             using (var xmlReader = outerXmlReader)
             {
-                var reader = new Rss20FeedReader(xmlReader);
+                var reader = new RssFeedReader(xmlReader);
                 int items = 0;
                 while (await reader.Read())
                 {
@@ -192,7 +192,7 @@ namespace Microsoft.SyndicationFeed.Tests.Rss
 
             using (XmlReader xReader = xmlReader)
             {
-                var reader = new Rss20FeedReader(xReader);
+                var reader = new RssFeedReader(xReader);
 
                 while(await reader.Read())
                 {

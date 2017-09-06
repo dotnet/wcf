@@ -10,19 +10,19 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public class Rss20FeedWriter : XmlFeedWriter
+    public class RssFeedWriter : XmlFeedWriter
     {
         private readonly XmlWriter _writer;
         private bool _feedStarted;
         private readonly IEnumerable<ISyndicationAttribute> _attributes;
 
-        public Rss20FeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes = null)
+        public RssFeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes = null)
             : this(writer, attributes, null)
         {
         }
 
-        public Rss20FeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes, ISyndicationFeedFormatter formatter) :
-            base(writer, formatter ?? new Rss20Formatter(attributes, writer.Settings))
+        public RssFeedWriter(XmlWriter writer, IEnumerable<ISyndicationAttribute> attributes, ISyndicationFeedFormatter formatter) :
+            base(writer, formatter ?? new RssFormatter(attributes, writer.Settings))
         {
             _writer = writer;
             _attributes = attributes;
@@ -35,7 +35,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(value));
             }
 
-            return WriteValue(Rss20ElementNames.Title, value);
+            return WriteValue(RssElementNames.Title, value);
         }
 
         public virtual Task WriteDescription(string value)
@@ -45,7 +45,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(value));
             }
 
-            return WriteValue(Rss20ElementNames.Description, value);
+            return WriteValue(RssElementNames.Description, value);
         }
 
         public virtual Task WriteLanguage(CultureInfo culture)
@@ -55,7 +55,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(culture));
             }
 
-            return WriteValue(Rss20ElementNames.Language, culture.Name);
+            return WriteValue(RssElementNames.Language, culture.Name);
         }
 
         public virtual Task WriteCopyright(string value)
@@ -65,7 +65,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(value));
             }
 
-            return WriteValue(Rss20ElementNames.Copyright, value);
+            return WriteValue(RssElementNames.Copyright, value);
         }
 
         public virtual Task WritePubDate(DateTimeOffset dt)
@@ -75,7 +75,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentException(nameof(dt));
             }
 
-            return WriteValue(Rss20ElementNames.PubDate, dt);
+            return WriteValue(RssElementNames.PubDate, dt);
         }
 
         public virtual Task WriteLastBuildDate(DateTimeOffset dt)
@@ -85,7 +85,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentException(nameof(dt));
             }
 
-            return WriteValue(Rss20ElementNames.LastBuildDate, dt);
+            return WriteValue(RssElementNames.LastBuildDate, dt);
         }
 
         public virtual Task WriteGenerator(string value)
@@ -95,12 +95,12 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(value));
             }
 
-            return WriteValue(Rss20ElementNames.Generator, value);
+            return WriteValue(RssElementNames.Generator, value);
         }
 
         public virtual Task WriteDocs()
         {
-            return WriteValue(Rss20ElementNames.Docs, Rss20Constants.SpecificationLink);
+            return WriteValue(RssElementNames.Docs, RssConstants.SpecificationLink);
         }
 
         public virtual Task WriteCloud(Uri uri, string registerProcedure, string protocol)
@@ -120,7 +120,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(registerProcedure));
             }
 
-            var cloud = new SyndicationContent(Rss20ElementNames.Cloud);
+            var cloud = new SyndicationContent(RssElementNames.Cloud);
 
             cloud.AddAttribute(new SyndicationAttribute("domain", uri.GetComponents(UriComponents.Host, UriFormat.UriEscaped)));
             cloud.AddAttribute(new SyndicationAttribute("port", uri.GetComponents(UriComponents.StrongPort, UriFormat.UriEscaped)));
@@ -138,7 +138,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentException(nameof(ttl));
             }
 
-            return WriteValue(Rss20ElementNames.TimeToLive, (long) Math.Max(1, Math.Ceiling(ttl.TotalMinutes)));
+            return WriteValue(RssElementNames.TimeToLive, (long) Math.Max(1, Math.Ceiling(ttl.TotalMinutes)));
         }
 
         public virtual Task WriteSkipHours(IEnumerable<byte> hours)
@@ -148,7 +148,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(hours));
             }
 
-            var skipHours = new SyndicationContent(Rss20ElementNames.SkipHours);
+            var skipHours = new SyndicationContent(RssElementNames.SkipHours);
 
             foreach (var h in hours)
             {
@@ -170,7 +170,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException(nameof(days));
             }
 
-            var skipDays = new SyndicationContent(Rss20ElementNames.SkipDays);
+            var skipDays = new SyndicationContent(RssElementNames.SkipDays);
 
             foreach (var d in days)
             {
@@ -193,7 +193,7 @@ namespace Microsoft.SyndicationFeed.Rss
         private void StartFeed()
         {
             // Write <rss version="2.0">
-            _writer.WriteStartElement(Rss20ElementNames.Rss);
+            _writer.WriteStartElement(RssElementNames.Rss);
 
             // Write attributes if exist
             if (_attributes != null)
@@ -204,8 +204,8 @@ namespace Microsoft.SyndicationFeed.Rss
                 }
             }
 
-            _writer.WriteAttributeString(Rss20ElementNames.Version, Rss20Constants.Version);
-            _writer.WriteStartElement(Rss20ElementNames.Channel);
+            _writer.WriteAttributeString(RssElementNames.Version, RssConstants.Version);
+            _writer.WriteStartElement(RssElementNames.Channel);
             _feedStarted = true;
         }
     }

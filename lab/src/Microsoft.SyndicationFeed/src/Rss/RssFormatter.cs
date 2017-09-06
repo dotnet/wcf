@@ -9,17 +9,17 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public class Rss20Formatter : ISyndicationFeedFormatter
+    public class RssFormatter : ISyndicationFeedFormatter
     {
         private readonly XmlWriter _writer;
         private readonly StringBuilder _buffer;
 
-        public Rss20Formatter()
+        public RssFormatter()
             : this(null, null)
         {
         }
 
-        public Rss20Formatter(IEnumerable<ISyndicationAttribute> knownAttributes, XmlWriterSettings settings)
+        public RssFormatter(IEnumerable<ISyndicationAttribute> knownAttributes, XmlWriterSettings settings)
         {
             _buffer = new StringBuilder();
             _writer = XmlUtils.CreateXmlWriter(settings?.Clone() ?? new XmlWriterSettings(), knownAttributes, _buffer);
@@ -100,13 +100,13 @@ namespace Microsoft.SyndicationFeed.Rss
 
             switch (link.RelationshipType)
             {
-                case Rss20ElementNames.Enclosure:
+                case RssElementNames.Enclosure:
                     return CreateEnclosureContent(link);
 
-                case Rss20ElementNames.Comments:
+                case RssElementNames.Comments:
                     return CreateCommentsContent(link);
 
-                case Rss20ElementNames.Source:
+                case RssElementNames.Source:
                     return CreateSourceContent(link);
 
                 default:
@@ -126,7 +126,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new FormatException("Invalid category name");
             }
 
-            return new SyndicationContent(Rss20ElementNames.Category, category.Name);
+            return new SyndicationContent(RssElementNames.Category, category.Name);
         }
 
         public virtual ISyndicationContent CreateContent(ISyndicationPerson person)
@@ -143,7 +143,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException("Invalid person Email");
             }
 
-            return new SyndicationContent(person.RelationshipType ?? Rss20ElementNames.Author, person.Email);
+            return new SyndicationContent(person.RelationshipType ?? RssElementNames.Author, person.Email);
         }
 
         public virtual ISyndicationContent CreateContent(ISyndicationImage image)
@@ -169,18 +169,18 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException("Image requires an url");
             }
 
-            var content = new SyndicationContent(Rss20ElementNames.Image);
+            var content = new SyndicationContent(RssElementNames.Image);
 
             // Write required contents of image
-            content.AddField(new SyndicationContent(Rss20ElementNames.Url, FormatValue(image.Url)));
-            content.AddField(new SyndicationContent(Rss20ElementNames.Title, image.Title));
+            content.AddField(new SyndicationContent(RssElementNames.Url, FormatValue(image.Url)));
+            content.AddField(new SyndicationContent(RssElementNames.Title, image.Title));
             content.AddField(CreateContent(image.Link));
 
 
             // Write optional elements
             if (!string.IsNullOrEmpty(image.Description))
             {
-                content.AddField(new SyndicationContent(Rss20ElementNames.Description, image.Description));
+                content.AddField(new SyndicationContent(RssElementNames.Description, image.Description));
             }
 
             return content;
@@ -200,13 +200,13 @@ namespace Microsoft.SyndicationFeed.Rss
             }
 
             // Write <item> tag
-            var content = new SyndicationContent(Rss20ElementNames.Item);
+            var content = new SyndicationContent(RssElementNames.Item);
 
             //
             // Title
             if (!string.IsNullOrEmpty(item.Title))
             {
-                content.AddField(new SyndicationContent(Rss20ElementNames.Title, item.Title));
+                content.AddField(new SyndicationContent(RssElementNames.Title, item.Title));
             }
 
             //
@@ -217,7 +217,7 @@ namespace Microsoft.SyndicationFeed.Rss
             {
                 foreach (var link in item.Links)
                 {
-                    if (link.RelationshipType == Rss20ElementNames.Guid)
+                    if (link.RelationshipType == RssElementNames.Guid)
                     {
                         guidLink = link;
                     }
@@ -230,7 +230,7 @@ namespace Microsoft.SyndicationFeed.Rss
             // Description
             if (!string.IsNullOrEmpty(item.Description))
             {
-                content.AddField(new SyndicationContent(Rss20ElementNames.Description, item.Description));
+                content.AddField(new SyndicationContent(RssElementNames.Description, item.Description));
             }
 
             //
@@ -257,9 +257,9 @@ namespace Microsoft.SyndicationFeed.Rss
             // Guid (id)
             if (guidLink == null && !string.IsNullOrEmpty(item.Id))
             {
-                var guid = new SyndicationContent(Rss20ElementNames.Guid, item.Id);
+                var guid = new SyndicationContent(RssElementNames.Guid, item.Id);
 
-                guid.AddAttribute(new SyndicationAttribute(Rss20Constants.IsPermaLink, "false"));
+                guid.AddAttribute(new SyndicationAttribute(RssConstants.IsPermaLink, "false"));
 
                 content.AddField(guid);
             }
@@ -268,7 +268,7 @@ namespace Microsoft.SyndicationFeed.Rss
             // PubDate
             if (item.Published != DateTimeOffset.MinValue)
             {
-                content.AddField(new SyndicationContent(Rss20ElementNames.PubDate, FormatValue(item.Published)));
+                content.AddField(new SyndicationContent(RssElementNames.PubDate, FormatValue(item.Published)));
             }
 
             return content;
@@ -277,11 +277,11 @@ namespace Microsoft.SyndicationFeed.Rss
         
         private ISyndicationContent CreateEnclosureContent(ISyndicationLink link)
         {
-            var content = new SyndicationContent(Rss20ElementNames.Enclosure);
+            var content = new SyndicationContent(RssElementNames.Enclosure);
 
             //
             // Url
-            content.AddAttribute(new SyndicationAttribute(Rss20ElementNames.Url, FormatValue(link.Uri)));
+            content.AddAttribute(new SyndicationAttribute(RssElementNames.Url, FormatValue(link.Uri)));
 
             //
             // Length
@@ -290,7 +290,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentException("Enclosure requires length attribute");
             }
 
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
+            content.AddAttribute(new SyndicationAttribute(RssConstants.Length, FormatValue(link.Length)));
 
             //
             // MediaType
@@ -299,7 +299,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new ArgumentNullException("Enclosure requires a MediaType");
             }
 
-            content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
+            content.AddAttribute(new SyndicationAttribute(RssConstants.Type, link.MediaType));
             return content;
         }
 
@@ -308,10 +308,10 @@ namespace Microsoft.SyndicationFeed.Rss
             SyndicationContent content;
 
             if (string.IsNullOrEmpty(link.RelationshipType) || 
-                link.RelationshipType == Rss20LinkTypes.Alternate)
+                link.RelationshipType == RssLinkTypes.Alternate)
             {
                 // Regular <link>
-                content = new SyndicationContent(Rss20ElementNames.Link);
+                content = new SyndicationContent(RssElementNames.Link);
             }
             else
             {
@@ -332,7 +332,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             if (content.Value != null)
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20ElementNames.Url, url));
+                content.AddAttribute(new SyndicationAttribute(RssElementNames.Url, url));
             }
             else
             {
@@ -343,14 +343,14 @@ namespace Microsoft.SyndicationFeed.Rss
             // Type
             if (!string.IsNullOrEmpty(link.MediaType))
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Type, link.MediaType));
+                content.AddAttribute(new SyndicationAttribute(RssConstants.Type, link.MediaType));
             }
 
             //
             // Lenght
             if (link.Length != 0)
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20Constants.Length, FormatValue(link.Length)));
+                content.AddAttribute(new SyndicationAttribute(RssConstants.Length, FormatValue(link.Length)));
             }
 
             return content;
@@ -373,7 +373,7 @@ namespace Microsoft.SyndicationFeed.Rss
             string url = FormatValue(link.Uri);
             if (link.Title != url)
             {
-                content.AddAttribute(new SyndicationAttribute(Rss20ElementNames.Url, url));
+                content.AddAttribute(new SyndicationAttribute(RssElementNames.Url, url));
             }
 
             //

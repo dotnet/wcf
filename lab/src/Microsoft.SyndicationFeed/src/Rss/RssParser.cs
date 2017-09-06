@@ -9,14 +9,14 @@ using System.Xml;
 
 namespace Microsoft.SyndicationFeed.Rss
 {
-    public class Rss20Parser : ISyndicationFeedParser
+    public class RssParser : ISyndicationFeedParser
     {
         public ISyndicationCategory ParseCategory(string value)
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20ElementNames.Category || 
-                content.Namespace != Rss20Constants.Rss20Namespace)
+            if (content.Name != RssElementNames.Category || 
+                content.Namespace != RssConstants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss category");
             }
@@ -28,8 +28,8 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20ElementNames.Item || 
-                content.Namespace != Rss20Constants.Rss20Namespace)
+            if (content.Name != RssElementNames.Item || 
+                content.Namespace != RssConstants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss item");
             }
@@ -41,8 +41,8 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20ElementNames.Link || 
-                content.Namespace != Rss20Constants.Rss20Namespace)
+            if (content.Name != RssElementNames.Link || 
+                content.Namespace != RssConstants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss link");
             }
@@ -54,9 +54,9 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if ((content.Name != Rss20ElementNames.Author && 
-                 content.Name != Rss20ElementNames.ManagingEditor) ||
-                content.Namespace != Rss20Constants.Rss20Namespace)
+            if ((content.Name != RssElementNames.Author && 
+                 content.Name != RssElementNames.ManagingEditor) ||
+                content.Namespace != RssConstants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss Person");
             }
@@ -68,8 +68,8 @@ namespace Microsoft.SyndicationFeed.Rss
         {
             ISyndicationContent content = ParseContent(value);
 
-            if (content.Name != Rss20ElementNames.Image ||
-                content.Namespace != Rss20Constants.Rss20Namespace)
+            if (content.Name != RssElementNames.Image ||
+                content.Namespace != RssConstants.Rss20Namespace)
             {
                 throw new FormatException("Invalid Rss Image");
             }
@@ -108,7 +108,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             foreach (var field in content.Fields)
             {
-                if (field.Namespace != Rss20Constants.Rss20Namespace)
+                if (field.Namespace != RssConstants.Rss20Namespace)
                 {
                     continue;
                 }
@@ -117,59 +117,59 @@ namespace Microsoft.SyndicationFeed.Rss
                 {
                     //
                     // Title
-                    case Rss20ElementNames.Title:
+                    case RssElementNames.Title:
                         item.Title = field.Value;
                         break;
 
                     //
                     // Link
-                    case Rss20ElementNames.Link:
+                    case RssElementNames.Link:
                         item.AddLink(CreateLink(field));
                         break;
 
                     // Description
-                    case Rss20ElementNames.Description:
+                    case RssElementNames.Description:
                         item.Description = field.Value;
                         break;
 
                     //
                     // Author
-                    case Rss20ElementNames.Author:
+                    case RssElementNames.Author:
                         item.AddContributor(CreatePerson(field));
                         break;
 
                     //
                     // Category
-                    case Rss20ElementNames.Category:
+                    case RssElementNames.Category:
                         break;
 
                     //
                     // Links
-                    case Rss20ElementNames.Comments:
-                    case Rss20ElementNames.Enclosure:
-                    case Rss20ElementNames.Source:
+                    case RssElementNames.Comments:
+                    case RssElementNames.Enclosure:
+                    case RssElementNames.Source:
                         item.AddLink(CreateLink(field));
                         break;
 
                     //
                     // Guid
-                    case Rss20ElementNames.Guid:
+                    case RssElementNames.Guid:
                         item.Id = field.Value;
 
                         // isPermaLink
-                        string isPermaLinkAttr = field.Attributes.GetRss(Rss20Constants.IsPermaLink);
+                        string isPermaLinkAttr = field.Attributes.GetRss(RssConstants.IsPermaLink);
 
                         if ((isPermaLinkAttr == null || (TryParseValue(isPermaLinkAttr, out bool isPermalink) && isPermalink)) &&
                             TryParseValue(field.Value, out Uri permaLink))
                         {
-                            item.AddLink(new SyndicationLink(permaLink, Rss20LinkTypes.Guid));
+                            item.AddLink(new SyndicationLink(permaLink, RssLinkTypes.Guid));
                         }
 
                         break;
 
                     //
                     // PubDate
-                    case Rss20ElementNames.PubDate:
+                    case RssElementNames.PubDate:
                         if (TryParseValue(field.Value, out DateTimeOffset dt))
                         {
                             item.Published = dt;
@@ -228,7 +228,7 @@ namespace Microsoft.SyndicationFeed.Rss
             
             //
             // rel
-            string rel = (content.Name == Rss20ElementNames.Link) ? Rss20LinkTypes.Alternate : content.Name;
+            string rel = (content.Name == RssElementNames.Link) ? RssLinkTypes.Alternate : content.Name;
 
             return new SyndicationLink(uri, rel)
             {
@@ -267,7 +267,7 @@ namespace Microsoft.SyndicationFeed.Rss
 
             foreach (var field in content.Fields)
             {
-                if (field.Namespace != Rss20Constants.Rss20Namespace)
+                if (field.Namespace != RssConstants.Rss20Namespace)
                 {
                     continue;
                 }
@@ -276,13 +276,13 @@ namespace Microsoft.SyndicationFeed.Rss
                 {
                     //
                     // Title
-                    case Rss20ElementNames.Title:
+                    case RssElementNames.Title:
                         title = field.Value;
                         break;
                         
                     //
                     // Url
-                    case Rss20ElementNames.Url:
+                    case RssElementNames.Url:
                         if (!TryParseValue(field.Value, out url))
                         {
                             throw new FormatException($"Invalid image url '{field.Value}'");
@@ -291,13 +291,13 @@ namespace Microsoft.SyndicationFeed.Rss
 
                     //
                     // Link
-                    case Rss20ElementNames.Link:
+                    case RssElementNames.Link:
                         link = CreateLink(field);
                         break;
                         
                     //
                     // Description
-                    case Rss20ElementNames.Description:
+                    case RssElementNames.Description:
                         description = field.Value;
                         break;
 
@@ -311,7 +311,7 @@ namespace Microsoft.SyndicationFeed.Rss
                 throw new FormatException("Image url not found");
             }
 
-            return new SyndicationImage(url, Rss20ElementNames.Image)
+            return new SyndicationImage(url, RssElementNames.Image)
             {
                 Title = title,
                 Description = description,
@@ -339,7 +339,7 @@ namespace Microsoft.SyndicationFeed.Rss
     {
         public static string GetRss(this IEnumerable<ISyndicationAttribute> attributes, string name)
         {
-            return attributes.FirstOrDefault(a => a.Name == name && a.Namespace == Rss20Constants.Rss20Namespace)?.Value;
+            return attributes.FirstOrDefault(a => a.Name == name && a.Namespace == RssConstants.Rss20Namespace)?.Value;
         }
     }
 }
