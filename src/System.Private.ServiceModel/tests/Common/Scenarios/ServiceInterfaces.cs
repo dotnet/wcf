@@ -136,6 +136,10 @@ public interface IWcfSoapService
     [ServiceKnownType(typeof(AdditionalData))]
     [return: MessageParameter(Name = "ProcessCustomerDataReturn")]
     string ProcessCustomerData(CustomerObject CustomerData);
+
+    [OperationContract(Action = "http://tempuri.org/IWcfService/Ping", ReplyAction = "http://tempuri.org/IWcfSoapService/PingResponse")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
+    PingEncodedResponse Ping(PingEncodedRequest request);
 }
 
 // This type share the same name space with IWcfServiceXmlGenerated.

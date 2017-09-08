@@ -59,6 +59,24 @@ public static partial class XmlSerializerFormatTests
         });
     }
 
+    [WcfFact]
+    [OuterLoop]
+    public static void TestCreateChannel()
+    {
+        RunWcfSoapServiceTest((serviceProxy) =>
+        {
+            // *** EXECUTE *** \\
+            int intValue = 11;
+            string intString = intValue.ToString();
+            var request = new PingEncodedRequest(intString);
+            PingEncodedResponse response = serviceProxy.Ping(request);
+
+            // *** VALIDATE *** \\
+            Assert.NotNull(response);
+            Assert.Equal(intValue, response.@Return);
+        });
+    }
+
     private static void RunWcfSoapServiceTest(Action<IWcfSoapService> testMethod)
     {
         BasicHttpBinding binding;

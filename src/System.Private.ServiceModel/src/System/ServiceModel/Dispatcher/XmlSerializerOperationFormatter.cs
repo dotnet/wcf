@@ -31,7 +31,7 @@ namespace System.ServiceModel.Dispatcher
 
         public XmlSerializerOperationFormatter(OperationDescription description, XmlSerializerFormatAttribute xmlSerializerFormatAttribute,
             MessageInfo requestMessageInfo, MessageInfo replyMessageInfo) :
-            base(description, xmlSerializerFormatAttribute.Style == OperationFormatStyle.Rpc, false/*isEncoded*/)
+            base(description, xmlSerializerFormatAttribute.Style == OperationFormatStyle.Rpc, xmlSerializerFormatAttribute.IsEncoded)
         {
             _requestMessageInfo = requestMessageInfo;
             _replyMessageInfo = replyMessageInfo;
