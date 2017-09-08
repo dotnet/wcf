@@ -14,6 +14,7 @@
     <StandardCurrentRef>9d670595478e52f203b9b8925576ce5e7f6826dd</StandardCurrentRef>
     <ProjectNTfsCurrentRef>c1d0ae92811153cfc50a2dc364bfa1ef73ad18e0</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>c1d0ae92811153cfc50a2dc364bfa1ef73ad18e0</ProjectNTfsTestILCCurrentRef>
+    <BuildToolsCurrentRef>7c9088cd9078e1d90be01eb94a3f66ba0a33c9f4</BuildToolsCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
@@ -74,6 +75,10 @@
       <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs-testilc/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(ProjectNTfsTestILCCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
+    <RemoteDependencyBuildInfo Include="BuildTools">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)buildtools/$(DependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(BuildToolsCurrentRef)</CurrentRef>
+    </RemoteDependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
       <RawVersionsBaseUrl>https://raw.githubusercontent.com/dotnet/versions</RawVersionsBaseUrl>
@@ -114,6 +119,11 @@
       <ElementName>ProjectNTfsTestILCPackageVersion</ElementName>
       <PackageId>TestILC.amd64ret</PackageId>
     </XmlUpdateStep>
+    <UpdateStep Include="BuildTools">
+      <UpdaterType>File</UpdaterType>
+      <Path>$(MSBuildThisFileDirectory)BuildToolsVersion.txt</Path>
+      <PackageId>Microsoft.DotNet.BuildTools</PackageId>
+    </UpdateStep>
   </ItemGroup>
 
   <PropertyGroup>
