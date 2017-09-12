@@ -13,9 +13,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{1DFF7AF1-5873-4984-B871-73F2F9A84239}</ProjectGuid>
   </PropertyGroup>
-  <PropertyGroup>
-    <_XunitOptions>$(_XunitOptions) -parallel none</_XunitOptions>
-  </PropertyGroup>
+  <PropertyGroup> 
+    <_XunitOptions>$(_XunitOptions) -maxthreads 16 </_XunitOptions>
+  </PropertyGroup> 
   <ItemGroup>
     <Compile Include="**\*.cs" />
   </ItemGroup>
