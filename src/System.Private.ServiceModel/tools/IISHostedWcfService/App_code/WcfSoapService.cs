@@ -35,7 +35,8 @@ namespace WcfService
         
         public PingEncodedResponse Ping(PingEncodedRequest request)
         {
-            return new PingEncodedResponse() { @Return = Int32.TryParse(request.Pinginfo, out int requestIntValue) ? requestIntValue : -1 };
+            int requestIntValue;
+            return new PingEncodedResponse() { @Return = Int32.TryParse(request.Pinginfo, out requestIntValue) ? requestIntValue : -1 };
         }
     }
 }
