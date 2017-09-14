@@ -32,5 +32,11 @@ namespace WcfService
         {
             return customerData.Name + ((AdditionalData)customerData.Data).Field;
         }
+        
+        public PingEncodedResponse Ping(PingEncodedRequest request)
+        {
+            int requestIntValue;
+            return new PingEncodedResponse() { @Return = Int32.TryParse(request.Pinginfo, out requestIntValue) ? requestIntValue : -1 };
+        }
     }
 }

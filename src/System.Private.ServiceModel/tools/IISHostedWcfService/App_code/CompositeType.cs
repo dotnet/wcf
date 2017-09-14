@@ -351,3 +351,25 @@ public partial class AdditionalData
         get; set;
     }
 }
+
+[MessageContract(WrapperName = "PingResponse", IsWrapped = true)]
+public class PingEncodedResponse
+{
+    [MessageBodyMember(Namespace = "", Order = 0)]
+    public int @Return;
+}
+
+[MessageContract(WrapperName = "Ping", IsWrapped = true)]
+public class PingEncodedRequest
+{
+
+    [MessageBodyMember(Namespace = "", Order = 0)]
+    public string Pinginfo;
+
+    public PingEncodedRequest() { }
+
+    public PingEncodedRequest(string pinginfo)
+    {
+        this.Pinginfo = pinginfo;
+    }
+}

@@ -27,5 +27,9 @@ namespace WcfService
         [return: MessageParameter(Name = "ProcessCustomerDataReturn")]
         [return: System.Xml.Serialization.SoapElement(DataType = "string")]
         string ProcessCustomerData([MessageParameter(Name = "CustomerData")]CustomerObject customerData);
+        
+        [OperationContract(Action = "http://tempuri.org/IWcfService/Ping", ReplyAction = "http://tempuri.org/IWcfSoapService/PingResponse")]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, SupportFaults = true, Use = OperationFormatUse.Encoded)]
+        PingEncodedResponse Ping(PingEncodedRequest request);
     }
 }
