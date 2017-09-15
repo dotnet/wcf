@@ -1,12 +1,15 @@
 {
   "dependencies": {
+    "System.Collections.Concurrent": "4.3.0",
     "System.Net.Http": "4.3.0",
+    "System.Runtime.Extensions": "4.3.0",
     "System.ServiceModel.Duplex": "4.3.0-preview1-24530-01",
     "System.ServiceModel.Http": "4.3.0-preview1-24530-01",
     "System.ServiceModel.NetTcp": "4.3.0-preview1-24530-01",
     "System.ServiceModel.Primitives": "4.3.0-preview1-24530-01",
     "System.ServiceModel.Security": "4.3.0-preview1-24530-01",
     "System.Threading.Timer": "4.3.0",
+    "System.Xml.XmlSerializer": "4.3.0",
     "test-runtime": {
       "target": "project",
       "exclude": "compile"

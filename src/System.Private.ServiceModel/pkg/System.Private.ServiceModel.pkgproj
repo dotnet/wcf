@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\src\System.Private.ServiceModel.builds" />
   </ItemGroup>
+  <Target Name="GetTargetFrameworkProperties"></Target>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
