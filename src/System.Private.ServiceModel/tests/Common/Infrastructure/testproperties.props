@@ -82,6 +82,10 @@
     <PropertyGroup Condition="'$(Peer_Certificate_Installed)' == ''">
       <Peer_Certificate_Installed></Peer_Certificate_Installed>
     </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(OSXPeer_Certificate_Installed)' == ''">
+      <OSXPeer_Certificate_Installed></OSXPeer_Certificate_Installed>
+    </PropertyGroup>
   
     <PropertyGroup Condition="'$(SPN_Available)' == ''">
       <SPN_Available></SPN_Available>

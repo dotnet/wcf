@@ -1,7 +1,9 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 using System;
+using System.IO;
 using System.Security.Cryptography; 
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -58,6 +60,22 @@ namespace Infrastructure.Common
             }
         }
 
+        internal static string OSXCustomKeychainFilePath
+        {
+            get
+            {
+                return Path.Combine(Environment.CurrentDirectory, "wcfLocal.keychain");
+            }
+        }
+
+        internal static string OSXCustomKeychainPassword
+        {
+            get
+            {
+                return "WCFKeychainFilePassword";
+            }
+        }
+
         // Adds the given certificate to the given store unless it is
         // already present.  Returns the  certificate either already in
         // the store or the one requested.
@@ -104,6 +122,41 @@ namespace Infrastructure.Common
             return resultCert;
         }
 
+        // Adds the given certificate to the given keychain unless it is
+        // already present.  Returns the  certificate either already in
+        // the store or the one requested.
+        public static X509Certificate2 AddToOSXKeyChainIfNeeded(SafeKeychainHandle keychain,
+                                                          X509Certificate2 certificate)
+        {
+            X509Certificate2 resultCert = null;
+            lock (s_certificateLock)
+            {
+                using (X509Store store = new X509Store(keychain.DangerousGetHandle()))
+                {
+                    // No need to open X509Store as it is already opened with mode of MaxAllowed 
+                    resultCert = CertificateFromThumbprint(store, certificate.Thumbprint, validOnly: false);
+                    // Not already in store.  We need to add it.
+                    if (resultCert == null)
+                    {
+                        try
+                        {
+                            // We don't need the private key and the X509Certificate2 instance wasn't created as exportable.
+                            // This creates a new certificate instance with only the public key so that it can be added to keychain.
+                            var publicOnly = new X509Certificate2(certificate.RawData);
+                            store.Add(publicOnly);
+                            resultCert = publicOnly;
+                        }
+                        catch (CryptographicException inner)
+                        {
+                            throw new InvalidOperationException($"Error while attempting to install cert with thumbprint '{certificate.Thumbprint}' into OSX custom keychain.", inner);
+                        }
+                    }
+                }
+            }
+
+            return resultCert;
+        }
+
         // Returns the certificate matching the given thumbprint from the given store.
         // Returns null if not found.
         private static X509Certificate2 CertificateFromThumbprint(X509Store store, string thumbprint, bool validOnly)
@@ -127,6 +180,20 @@ namespace Infrastructure.Common
             return resultCert;
         }
 
+        private static X509Certificate2 KeychainCertificateFromThumbprint(string thumbprint, bool validOnly)
+        {
+            X509Certificate2 resultCert = null;
+            using (SafeKeychainHandle handle = SafeKeychainHandle.Open(CertificateManager.OSXCustomKeychainFilePath, CertificateManager.OSXCustomKeychainPassword))
+            {
+                using (X509Store store = new X509Store(handle.DangerousGetHandle()))
+                {
+                    resultCert = CertificateFromThumbprint(store, thumbprint, validOnly);
+                }
+            }
+
+            return resultCert;
+        }
+
         // Retrieves a root certificate matching the given thumbprint from the root store
         public static X509Certificate2 RootCertificateFromThumprint(string thumbprint, bool validOnly)
         {
@@ -143,6 +210,12 @@ namespace Infrastructure.Common
         public static X509Certificate2 PeerCertificateFromThumprint(string thumbprint, bool validOnly)
         {
             return CertificateFromThumbprint(StoreName.TrustedPeople, StoreLocation.CurrentUser, thumbprint, validOnly);
+        }
+
+        // Retrieves a server certificate matching the given thumbprint from a OSX local Keychain store
+        public static X509Certificate2 OSXLocalKeychainCertificateFromThumprint(string thumbprint, bool validOnly)
+        {
+            return KeychainCertificateFromThumbprint(thumbprint, validOnly);
         }
 
         // Install the certificate into the Root store and returns its thumbprint.
@@ -177,6 +250,29 @@ namespace Infrastructure.Common
             // StoreLocation.CurrentUser is supported on both Linux and Windows 
             // Furthermore, installing this cert to this location does not require sudo or admin elevation
             certificate = AddToStoreIfNeeded(StoreName.TrustedPeople, StoreLocation.CurrentUser, certificate);
+
+            return certificate;
+        }
+
+        // Install the certificate into a custom keychain on OSX. The TrustedPeople store isn't supported
+        // on OSX but a similar mechanism can be achieved by creating a custom keychain and using it in
+        // the same way as the TrustedPeople store.
+        // It will not install the certificate if it is already present in the store.
+        // It returns the thumbprint of the certificate, regardless whether it was added or found.
+        public static X509Certificate2 InstallCertificateToOSXKeychainStore(X509Certificate2 certificate)
+        {
+            SafeKeychainHandle keychain;
+
+            if (!File.Exists(OSXCustomKeychainFilePath))
+            {
+                keychain = SafeKeychainHandle.Create(OSXCustomKeychainFilePath, OSXCustomKeychainPassword);
+            }
+            else
+            {
+                keychain = SafeKeychainHandle.Open(OSXCustomKeychainFilePath, OSXCustomKeychainPassword);
+            }
+
+            certificate = AddToOSXKeyChainIfNeeded(keychain, certificate);
 
             return certificate;
         }

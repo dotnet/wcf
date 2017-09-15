@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using Xunit;
 
@@ -57,6 +56,28 @@ namespace Infrastructure.Common
             }
         }
 
+        // Detector used by [ConditionalFact(nameof(OSXPeer_Certificate_Installed)].
+        // It will attempt to install the server certificate in a local keychain if
+        // is not already present, and then it will check whether the install
+        // succeeded.  A 'true' return is a guarantee a server certificate is
+        // installed in the certificate store.
+        public static bool IsOSXKeychainCertificateInstalled()
+        {
+            try
+            {
+                ServiceUtilHelper.EnsureOSXKeychainCertificateInstalled();
+                return true;
+            }
+            catch
+            {
+                // Errors installing the certificate are captured and will be
+                // reported when an attempt is made to use it.  But for the
+                // purposes of this detector, a failure only propagates as
+                // a 'false' return.
+                return false;
+            }
+        }
+
         // Detector used by [ConditionalFact(nameof(Peer_Certificate_Installed)].
         // It will attempt to install the server certificate in the certificate store if
         // is not already present, and then it will check whether the install
@@ -78,6 +99,7 @@ namespace Infrastructure.Common
                 return false;
             }
         }
+
         // Returns 'true' if the server is running IIS-hosted
         public static bool IsIISHosted()
         {
