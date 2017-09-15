@@ -52,14 +52,18 @@ namespace Infrastructure.Common
 
         OSX_10_10 =              0x00020000,
         OSX_10_11 =              0x00040000,
-        AnyOSX = OSX_10_10 | OSX_10_11,
+        OSX_10_12 =              0x00080000,
+        AnyOSX = OSX_10_10 | OSX_10_11 | OSX_10_12,
 
-        RHEL_7 =                 0x00080000,
+        RHEL_7 =                 0x00100000,
         AnyRHEL = RHEL_7,
 
-        Ubuntu_14_04 =           0x00100000,
-        Ubuntu_16_04 =           0x00200000,
+        Ubuntu_14_04 =           0x00200000,
+        Ubuntu_16_04 =           0x00400000,
         AnyUbuntu = Ubuntu_14_04 | Ubuntu_16_04,
+
+        // Note, check all values to work out the next number. OSX_10_12 is out of sequence as it
+        // appeared after all the previous values has already been assigned.
 
         // 'Any' combinations must explicitly name only known flags so "G" formatting
         // can be used to show a comma separated list of the bitmask.

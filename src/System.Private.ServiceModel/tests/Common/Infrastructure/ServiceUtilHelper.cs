@@ -28,12 +28,14 @@ public static class ServiceUtilHelper
     private static bool s_rootCertAvailabilityChecked = false;
     private static bool s_clientCertAvailabilityChecked = false;
     private static bool s_peerCertAvailabilityChecked = false;
+    private static bool s_osXPeerCertAvailabilityChecked = false;
     private static X509Certificate2 s_rootCertificate = null;
     private static X509Certificate2 s_clientCertificate = null;
     private static X509Certificate2 s_peerCertificate = null;
     private static string s_rootCertInstallErrorMessage = null;
     private static string s_clientCertInstallErrorMessage = null;
     private static string s_peerCertInstallErrorMessage = null;
+    private static string s_osXKeychainCertInstallErrorMessage = null;
 
     public static X509Certificate2 RootCertificate
     {
@@ -66,6 +68,10 @@ public static class ServiceUtilHelper
     {
         get { return CertificateManager.PlatformSpecificRootStoreLocation; }
     }
+
+    public static string OSXCustomKeychainPassword => CertificateManager.OSXCustomKeychainPassword;
+
+    public static string OSXCustomKeychainFilePath => CertificateManager.OSXCustomKeychainFilePath;
 
     // Tries to ensure that the root certificate is installed into
     // the root store.  It obtains the root certificate from the service
@@ -211,6 +217,60 @@ public static class ServiceUtilHelper
     }
 
     // Tries to ensure that the peer trust certificate is installed into
+    // a local OSX keychain.  It obtains the certificate from the service
+    // utility endpoint and either installs it or verifies that a matching
+    // one is already installed.  InvalidOperationException will be thrown
+    // if an error occurred attempting to install the certificate. This
+    // method may be called multiple times but will attempt the installation
+    // once only.
+    public static void EnsureOSXKeychainCertificateInstalled()
+    {
+        if (!s_osXPeerCertAvailabilityChecked)
+        {
+            lock (s_certLock)
+            {
+                if (!s_osXPeerCertAvailabilityChecked)
+                {
+                    X509Certificate2 peerCertificate = null;
+                    string thumbprint = null;
+
+                    try
+                    {
+                        // Once only, we interrogate the service utility endpoint
+                        // for the server certificate and install it locally if it
+                        // is not already in the store.
+                        peerCertificate = InstallOSXPeerCertificateFromServer();
+
+                        // If we had a certificate from the service endpoint, verify it was installed
+                        // by retrieving it from the store by thumbprint.
+                        if (peerCertificate != null)
+                        {
+                            thumbprint = peerCertificate.Thumbprint;
+                            peerCertificate = CertificateManager.OSXLocalKeychainCertificateFromThumprint(thumbprint, validOnly: false);
+                            if (peerCertificate == null)
+                            {
+                                s_clientCertInstallErrorMessage =
+                                    $"Failed to find a server certificate matching thumbprint '{thumbprint}'";
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        s_osXKeychainCertInstallErrorMessage = ex.ToString();
+                    }
+
+                    s_peerCertificate = peerCertificate;
+                    s_osXPeerCertAvailabilityChecked = true;
+                }
+            }
+        }
+
+        // If the installation failed, throw an exception everytime
+        // this method is called.
+        ThrowIfOSXKeychainCertificateInstallationError();
+    }
+
+    // Tries to ensure that the peer trust certificate is installed into
     // the TrustedPeople store.  It obtains the certificate from the service
     // utility endpoint and either installs it or verifies that a matching
     // one is already installed.  InvalidOperationException will be thrown
@@ -274,8 +334,27 @@ public static class ServiceUtilHelper
     // propagated back to the caller.
     private static X509Certificate2 InstallClientCertificateFromServer()
     {
-        X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(ClientCertificateResource), "test", X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet);
+        X509KeyStorageFlags storageFlags = X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet;
+        if((OSHelper.Current & OSID.AnyOSX) == OSHelper.Current)
+        {
+            // The PersistKeySet flag causes an exception on OSX when constructing an X509Certificate2 object.
+            // The UserKeySet flag is meaningless on OSX. The Exportable flag means the private certificate
+            // can be retrieved from the X509Certificate2 instance which is needed to be able to store the
+            // certificate in the user keychain.
+            storageFlags = X509KeyStorageFlags.Exportable;
+        }
+
+        X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(ClientCertificateResource), "test", storageFlags);
         return CertificateManager.InstallCertificateToMyStore(clientCertificate);
+    }
+
+    // Acquires the peer trust certificate from the service utility endpoint and
+    // attempts to install it into the our custom keychain store.  All failures are
+    // propagated back to the caller.
+    private static X509Certificate2 InstallOSXPeerCertificateFromServer()
+    {
+        X509Certificate2 peerCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(PeerCertificateResource), "test", X509KeyStorageFlags.DefaultKeySet);
+        return CertificateManager.InstallCertificateToOSXKeychainStore(peerCertificate);
     }
 
     // Acquires the peer trust certificate from the service utility endpoint and
@@ -311,6 +390,15 @@ public static class ServiceUtilHelper
         {
             throw new InvalidOperationException(
                 String.Format("The peer certificate could not be installed: {0}", s_peerCertInstallErrorMessage));
+        }
+    }
+
+    private static void ThrowIfOSXKeychainCertificateInstallationError()
+    {
+        if(s_osXKeychainCertInstallErrorMessage != null)
+        {
+            throw new InvalidOperationException(
+                String.Format("The OSX local Keychain certificate could not be installed: {0}", s_osXKeychainCertInstallErrorMessage));
         }
     }
 

@@ -216,6 +216,47 @@ namespace Infrastructure.Common
             return result;
         }
 
+        // Returns 'true' if the peer trust certificate is installed in a local
+        // keychain and can be used.  Precedence based on the current value of
+        // this condition is:
+        //  blank:    attempt to install certificate and return the result
+        //  'true':   attempt to install certificate and return true
+        //  'false':  bypass certificate installation and return false
+        public static bool OSXPeer_Certificate_Installed()
+        {
+            // If we're not running on OSX, none of the keychain api's
+            // will work so fail fast if not on OSX.
+            if((OSHelper.Current & OSID.AnyOSX) != OSHelper.Current)
+            {
+                return false;
+            }
+
+            // If the condition is unknown, attempt to install and use the
+            // results of that install attempt as the value to return.
+            bool result = GetConditionValue(nameof(OSXPeer_Certificate_Installed),
+                                            ConditionalTestDetectors.IsOSXKeychainCertificateInstalled);
+
+            // Regardless whether the value was 'true' on entry or was detected
+            // to be true, ensure we have attempted to install and verify the
+            // certificate is installed.  This guarantees installation errors
+            // are captured and reported in both cases.
+            if (result)
+            {
+                try
+                {
+                    ServiceUtilHelper.EnsureOSXKeychainCertificateInstalled();
+                }
+                catch
+                {
+                    // Errors in certificate installation are caught and reported
+                    // when an attempt is made to access it.  But for the purposes
+                    // of this conditional test, an error does not affect the result.
+                }
+            }
+
+            return result;
+        }
+
         // Returns 'true' if ambient credentials are available to use.
         public static bool Ambient_Credentials_Available()
         {

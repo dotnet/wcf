@@ -45,6 +45,7 @@ namespace Infrastructure.Common
 
             new Tuple<string, OSID>("osx.10.10", OSID.OSX_10_10),
             new Tuple<string, OSID>("osx.10.11", OSID.OSX_10_11),
+            new Tuple<string, OSID>("osx.10.12", OSID.OSX_10_12),
             new Tuple<string, OSID>("osx", OSID.AnyOSX),
 
             new Tuple<string, OSID>("rhel.7", OSID.RHEL_7),
@@ -74,6 +75,10 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("Microsoft Windows 10.", OSID.Windows_10 | OSID.Windows_Server_2016),
             new Tuple<string, OSID>(MicrosoftWindowsPhoneName, OSID.WindowsPhone),
             new Tuple<string, OSID>(MicrosoftWindowsName, OSID.AnyWindows),  // reserved for "Don't know which version"
+            new Tuple<string, OSID>("Darwin 14", OSID.OSX_10_10),
+            new Tuple<string, OSID>("Darwin 15", OSID.OSX_10_11),
+            new Tuple<string, OSID>("Darwin 16", OSID.OSX_10_12),
+            new Tuple<string, OSID>("Darwin", OSID.AnyOSX),
         };
 
         private static string CurrentOSDescription
