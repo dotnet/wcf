@@ -2,6 +2,34 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+/* Peer certificate validation relies on two certificate stores. For a certificate to be
+ * considered valid, it MUST exist in the TrustedPeople certificate store, and it MUST NOT
+ * exist in the Disallowed certificate store. The certificate store model (keychains) in
+ * OSX don't completely map to the Windows certificate store model. The concept of a
+ * TrustedPeople store doesn't exist by default in OSX, but you can create a custom keychain
+ * and define your own usage semantics to be equivalent. This test uses a custom keychain
+ * which contains the public certificate of a trusted remote host. The built in Peer 
+ * certificate validator has been copied below and modified to work with this custom keychain.
+ * The class OSXPeerCertificateValidator contains this validator.
+ * 
+ * Our test infrastructure creates a custom keychain and installs a certificate into it. This
+ * can be simply done with the following code:
+ * 
+ *     byte[] certBytes = File.ReadAllBytes(pathToCertificate);
+ *     // Use X509KeyStorageFlags.Exportable if certificate contains private key
+ *     var clientCertificate = new X509Certificate2(certBytes, "certificateFilePassword", X509KeyStorageFlags.DefaultKeySet);
+ *     var keychainHandle = SafeKeychainHandle.Create(keychainFilePath, password);
+ *     using (X509Store store = new X509Store(keychain.DangerousGetHandle()))
+ *     {
+ *         store.Add(clientCertificate);
+ *     }
+ * 
+ * You can also create and install certificates into a custom keychain using OSX shell
+ * utilities. The SafeKeychainHandle class exists as part of our test infrastructure but
+ * can be copied standalone. It can be found at:
+ * 
+ * src/System.Private.ServiceModel/tests/Common/Infrastructure/SafeKeychainHandle.cs
+ */
 
 using Infrastructure.Common;
 using System;
@@ -86,24 +114,6 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
             }
         }
 
-        // This is a workaround, Since store.Certificates returns a full collection
-        // of certs in store.  These are holding native resources.
-        internal static void ResetAllCertificates(X509Certificate2Collection certificates)
-        {
-            if (certificates != null)
-            {
-                for (int i = 0; i < certificates.Count; ++i)
-                {
-                    ResetCertificate(certificates[i]);
-                }
-            }
-        }
-
-        internal static void ResetCertificate(X509Certificate2 certificate)
-        {
-            certificate.Dispose();
-        }
-
         internal bool TryValidate(X509Certificate2 certificate, out Exception exception)
         {
             // Checklist
@@ -151,6 +161,24 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 
             exception = null;
             return true;
+        }
+
+        // This is a workaround, Since store.Certificates returns a full collection
+        // of certs in store.  These are holding native resources.
+        internal static void ResetAllCertificates(X509Certificate2Collection certificates)
+        {
+            if (certificates != null)
+            {
+                for (int i = 0; i < certificates.Count; ++i)
+                {
+                    ResetCertificate(certificates[i]);
+                }
+            }
+        }
+
+        internal static void ResetCertificate(X509Certificate2 certificate)
+        {
+            certificate.Dispose();
         }
 
         internal static string GetCertificateId(X509Certificate2 certificate)
