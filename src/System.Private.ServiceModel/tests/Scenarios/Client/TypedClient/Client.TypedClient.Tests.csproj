@@ -16,8 +16,90 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{09EB5A34-9F50-4349-B8D9-D8E82A3FAE8E}</ProjectGuid>
   </PropertyGroup>
+  <!-- Test Source -->
   <ItemGroup>
     <Compile Include="**\*.cs" />
+  </ItemGroup>
+  <!-- Infrastructure Test Helpers -->
+  <ItemGroup>
+    <Compile Include="$(CommonInfrastructureTestPath)\BridgeClient.cs">
+      <Link>Common\BridgeClient.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\BridgeClientAuthenticationManager.cs">
+      <Link>Common\BridgeClientAuthenticationManager.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\CertificateManager.cs">
+      <Link>Common\CertificateManager.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\ConditionalTestDetectors.cs">
+      <Link>Common\ConditionalTestDetectors.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\ConditionalWcfTest.cs">
+      <Link>Common\ConditionalWcfTest.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\FrameworkHelper.cs">
+      <Link>Common\FrameworkHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\FrameworkID.cs">
+      <Link>Common\FrameworkID.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\JsonSerializer.cs">
+      <Link>Common\JsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\OSHelper.cs">
+      <Link>Common\OSHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\OsID.cs">
+      <Link>Common\OsID.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\ServiceUtilHelper.cs">
+      <Link>Common\ServiceUtilHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\TestEventListener.cs">
+      <Link>Common\TestEventListener.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\TestProperties.cs">
+      <Link>Common\TestProperties.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\ConditionAttribute.cs">
+      <Link>Common\xunit\ConditionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\IssueAttribute.cs">
+      <Link>Common\xunit\IssueAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfFactDiscoverer.cs">
+      <Link>Common\xunit\WcfFactDiscoverer.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfSkippableAttribute.cs">
+      <Link>Common\xunit\WcfSkippableAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfTestCase.cs">
+      <Link>Common\xunit\WcfTestCase.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfTestDiscoverer.cs">
+      <Link>Common\xunit\WcfTestDiscoverer.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfTheoryDiscoverer.cs">
+      <Link>Common\xunit\WcfTheoryDiscoverer.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <!-- Scenario Test Helpers -->
+  <ItemGroup>
+    <Compile Include="$(CommonScenarioTestPath)\Endpoints.cs">
+      <Link>Common\Endpoints.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonScenarioTestPath)\ScenarioTestHelpers.cs">
+      <Link>Common\ScenarioTestHelpers.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonScenarioTestPath)\ScenarioTestTypes.cs">
+      <Link>Common\ScenarioTestTypes.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonScenarioTestPath)\ServiceInterfaces.cs">
+      <Link>Common\ServiceInterfaces.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonScenarioTestPath)\TestMockStream.cs">
+      <Link>Common\TestMockStream.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
@@ -38,14 +120,12 @@
     <ProjectReference Include='$(WcfPrimitivesPkgProj)'>
       <Name>System.ServiceModel.Primitives</Name>
     </ProjectReference>
-    <ProjectReference Include='$(WcfScenarioTestCommonProj)'>
-      <Project>{9098B41C-9C2E-4FC6-B7D8-FC3411736A22}</Project>
-      <Name>ScenarioTests.Common</Name>
-    </ProjectReference>
-        <ProjectReference Include="$(WcfInfrastructureCommonProj)">
-      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
-      <Name>Infrastructure.Common</Name>
-    </ProjectReference>
   </ItemGroup>
+  <Import Project="$(CommonInfrastructureTestPath)\testproperties.props" />
+  <Import Project="$(CommonInfrastructureTestPath)\testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <!-- Add our code-gen target after the imports above because they reset $(CoreCompileDependsOn) -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);CreateTestProperties</CoreCompileDependsOn>
+  </PropertyGroup>
 </Project>

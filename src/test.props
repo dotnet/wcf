@@ -10,6 +10,9 @@
     <WcfUnitTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj'))</WcfUnitTestCommonProj>
     <WcfScenarioTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.csproj'))</WcfScenarioTestCommonProj>
     <WcfInfrastructureCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj'))</WcfInfrastructureCommonProj>
+    <CommonUnitTestPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Unit'))</CommonUnitTestPath>
+    <CommonInfrastructureTestPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Infrastructure'))</CommonInfrastructureTestPath>
+    <CommonScenarioTestPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\tests\Common\Scenarios'))</CommonScenarioTestPath>
   </PropertyGroup>
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>

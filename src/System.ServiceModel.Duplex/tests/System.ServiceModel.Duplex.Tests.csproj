@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">$(OS)_Debug</Configuration>
   </PropertyGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -15,9 +14,74 @@
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{D18E6999-B42A-449C-91FE-2F78E7A20E6E}</ProjectGuid>
+    <CLSCompliant>false</CLSCompliant>
   </PropertyGroup>
+  <!-- Test Source -->
   <ItemGroup>
     <Compile Include="**\*.cs" />
+  </ItemGroup>
+  <!-- Infrastructure Test Helpers -->
+  <ItemGroup>
+    <Compile Include="$(CommonInfrastructureTestPath)\BridgeClient.cs">
+      <Link>Common\BridgeClient.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\BridgeClientAuthenticationManager.cs">
+      <Link>Common\BridgeClientAuthenticationManager.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\CertificateManager.cs">
+      <Link>Common\CertificateManager.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\ConditionalTestDetectors.cs">
+      <Link>Common\ConditionalTestDetectors.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\ConditionalWcfTest.cs">
+      <Link>Common\ConditionalWcfTest.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\FrameworkHelper.cs">
+      <Link>Common\FrameworkHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\FrameworkID.cs">
+      <Link>Common\FrameworkID.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\JsonSerializer.cs">
+      <Link>Common\JsonSerializer.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\OSHelper.cs">
+      <Link>Common\OSHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\OsID.cs">
+      <Link>Common\OsID.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\ServiceUtilHelper.cs">
+      <Link>Common\ServiceUtilHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\TestEventListener.cs">
+      <Link>Common\TestEventListener.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\TestProperties.cs">
+      <Link>Common\TestProperties.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\ConditionAttribute.cs">
+      <Link>Common\xunit\ConditionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\IssueAttribute.cs">
+      <Link>Common\xunit\IssueAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfFactDiscoverer.cs">
+      <Link>Common\xunit\WcfFactDiscoverer.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfSkippableAttribute.cs">
+      <Link>Common\xunit\WcfSkippableAttribute.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfTestCase.cs">
+      <Link>Common\xunit\WcfTestCase.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfTestDiscoverer.cs">
+      <Link>Common\xunit\WcfTestDiscoverer.cs</Link>
+    </Compile>
+    <Compile Include="$(CommonInfrastructureTestPath)\xunit\WcfTheoryDiscoverer.cs">
+      <Link>Common\xunit\WcfTheoryDiscoverer.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
@@ -29,10 +93,12 @@
     <ProjectReference Include="$(WcfDuplexPkgProj)">
       <Name>System.ServiceModel.Duplex</Name>
     </ProjectReference>
-    <ProjectReference Include="$(WcfInfrastructureCommonProj)">
-      <Project>{AFD69665-89A3-42AE-A32E-AB2CBBE6EE7E}</Project>
-      <Name>Infrastructure.Common</Name>
-    </ProjectReference>
   </ItemGroup>
+  <Import Project="$(CommonInfrastructureTestPath)\testproperties.props" />
+  <Import Project="$(CommonInfrastructureTestPath)\testproperties.targets" />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <!-- Add our code-gen target after the imports above because they reset $(CoreCompileDependsOn) -->
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);CreateTestProperties</CoreCompileDependsOn>
+  </PropertyGroup>
 </Project>
