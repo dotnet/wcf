@@ -12,8 +12,8 @@
     <CoreFxCurrentRef>94b11463ab7db0f924e97154243e2be7410ec1c6</CoreFxCurrentRef>
     <WCFCurrentRef>1d624c353e5e733520be250bca4e8ed02ebf066a</WCFCurrentRef>
     <StandardCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>94b11463ab7db0f924e97154243e2be7410ec1c6</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>94b11463ab7db0f924e97154243e2be7410ec1c6</ProjectNTfsTestILCCurrentRef>
+    <ProjectNTfsCurrentRef>8cd983ea0756ec0b094cce18c820b9d1b9d2b107</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>8cd983ea0756ec0b094cce18c820b9d1b9d2b107</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
@@ -28,9 +28,9 @@
     -->
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-25531-01</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>rel-25715-01</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>rel-25715-01</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-25715-01</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>rel-25720-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>rel-25720-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-25720-00</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
