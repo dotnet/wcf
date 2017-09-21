@@ -24,14 +24,12 @@ case $OSName in
 
     Linux)
         OS=Linux
-        source /etc/os-release
-        if [ "$ID" == "centos" -o "$ID" == "rhel" ]; then
-            __DOTNET_PKG=dotnet-dev-centos-x64
-        elif [ "$ID" == "ubuntu" -o "$ID" == "debian" ]; then
-            __DOTNET_PKG=dotnet-dev-ubuntu-x64
+        if [ ! -e /etc/os-release ]; then
+            echo "Cannot determine Linux distribution, asuming Ubuntu 14.04."
+            __DOTNET_PKG=dotnet-dev-ubuntu.14.04-x64
         else
-            echo "Unsupported Linux distribution '$ID' detected. Downloading ubuntu-x64 tools."
-            __DOTNET_PKG=dotnet-dev-ubuntu-x64
+            source /etc/os-release
+            __DOTNET_PKG="dotnet-dev-$ID.$VERSION_ID-x64"
         fi
         ;;
 
@@ -41,6 +39,12 @@ case $OSName in
         __DOTNET_PKG=dotnet-dev-ubuntu-x64
         ;;
 esac
+
+display_error_message()
+{
+    echo "Please check the detailed log that follows." 1>&2
+    cat "$__init_tools_log" 1>&2
+}
 
 if [ ! -e $__PROJECT_JSON_FILE ]; then
     if [ -e $__TOOLRUNTIME_DIR ]; then rm -rf -- $__TOOLRUNTIME_DIR; fi
@@ -55,16 +59,10 @@ if [ ! -e $__PROJECT_JSON_FILE ]; then
             mkdir -p "$__DOTNET_PATH"
             wget -q -O $__DOTNET_PATH/dotnet.tar ${__DOTNET_LOCATION}
         else
-            curl -sSL --create-dirs -o $__DOTNET_PATH/dotnet.tar ${__DOTNET_LOCATION}
+            curl --retry 10 -sSL --create-dirs -o $__DOTNET_PATH/dotnet.tar ${__DOTNET_LOCATION}
         fi
         cd $__DOTNET_PATH
         tar -xf $__DOTNET_PATH/dotnet.tar
-        if [ -n "$BUILDTOOLS_OVERRIDE_RUNTIME" ]; then
-            find $__DOTNET_PATH -name *.ni.* | xargs rm 2>/dev/null
-            cp -R $BUILDTOOLS_OVERRIDE_RUNTIME/* $__DOTNET_PATH/bin
-            cp -R $BUILDTOOLS_OVERRIDE_RUNTIME/* $__DOTNET_PATH/bin/dnx
-            cp -R $BUILDTOOLS_OVERRIDE_RUNTIME/* $__DOTNET_PATH/runtime/coreclr
-        fi
 
         cd $__scriptpath
     fi
@@ -76,12 +74,19 @@ if [ ! -e $__PROJECT_JSON_FILE ]; then
         echo "Restoring BuildTools version $__BUILD_TOOLS_PACKAGE_VERSION..."
         echo "Running: $__DOTNET_CMD restore \"$__PROJECT_JSON_FILE\" --packages $__PACKAGES_DIR --source $__BUILDTOOLS_SOURCE" >> $__init_tools_log
         $__DOTNET_CMD restore "$__PROJECT_JSON_FILE" --packages $__PACKAGES_DIR --source $__BUILDTOOLS_SOURCE >> $__init_tools_log
-        if [ ! -e "$__BUILD_TOOLS_PATH/init-tools.sh" ]; then echo "ERROR: Could not restore build tools correctly. See '$__init_tools_log' for more details."; fi
+        if [ ! -e "$__BUILD_TOOLS_PATH/init-tools.sh" ]; then 
+            echo "ERROR: Could not restore build tools correctly." 1>&2
+            display_error_message
+        fi
     fi
 
     echo "Initializing BuildTools..."
     echo "Running: $__BUILD_TOOLS_PATH/init-tools.sh $__scriptpath $__DOTNET_CMD $__TOOLRUNTIME_DIR" >> $__init_tools_log
     $__BUILD_TOOLS_PATH/init-tools.sh $__scriptpath $__DOTNET_CMD $__TOOLRUNTIME_DIR >> $__init_tools_log
+    if [ "$?" != "0" ]; then
+        echo "ERROR: An error occured when trying to initialize the tools." 1>&2
+        display_error_message
+    fi
     echo "Done initializing tools."
 else
     echo "Tools are already initialized"
