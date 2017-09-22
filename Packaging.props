@@ -4,11 +4,9 @@
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)pkg/dotnet_library_license.txt</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)pkg/ThirdPartyNotices.txt</PackageThirdPartyNoticesFile>
-    
-    <!-- *** start WCF Content *** -->
-    <!-- *** this file is located differently in corefx *** -->
-    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1/runtime.json</RuntimeIdGraphDefinitionFile>
-    <!-- *** end WCF Content *** -->
+    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1/runtime.json</RuntimeIdGraphDefinitionFile> <!-- WCF Content -->
+    <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799417</ReleaseNotes>
+    <ProjectUrl>https://dot.net</ProjectUrl>
 
     <!-- Add a condition for this when we are able to run on .NET Core -->
     <PackagingTaskDir>$(ToolsDir)net45/</PackagingTaskDir>
