@@ -21,6 +21,12 @@ if /I [%1]==[native] (
     goto Next
 )
 
+if /I [%1] == [managed] (
+    set __buildSpec=managed
+    set processedArgs=!processedArgs! %1
+    goto Next
+)
+
 if [!processedArgs!]==[] (
   call set unprocessedBuildArgs=!__args!
 ) else (
