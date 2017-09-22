@@ -166,7 +166,6 @@ __generateversionsource=false
 __buildmanaged=false
 __buildnative=false
 __TestNugetRuntimeId=win7-x64
-__OfficialBuildIdArg=
 
 # Use uname to determine what the CPU is.
 CPUName=$(uname -p)
@@ -352,11 +351,7 @@ while :; do
             __ServerGC=1
             ;;
         *)
-          if [[ $1 == "/p:OfficialBuildId="* ]]; then
-            __OfficialBuildIdArg=$1
-          else
             __UnprocessedBuildArgs="$__UnprocessedBuildArgs $1"
-          fi
     esac
 
     shift
