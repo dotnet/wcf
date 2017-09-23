@@ -8,7 +8,6 @@ setlocal EnableDelayedExpansion
 
 :ReadArguments
 :: Read in the args to determine whether to run the native build, managed build, or both (default)
-set OfficialBuildIdArg=
 set "__args= %*"
 set processedArgs=
 set unprocessedBuildArgs=
@@ -19,23 +18,6 @@ if [%1]==[] goto Tools
 if /I [%1]==[native] (
     set __buildSpec=native
     set processedArgs=!processedArgs! %1
-    goto Next
-)
-
-if /I [%1] == [managed] (
-    set __buildSpec=managed
-    set processedArgs=!processedArgs! %1
-    goto Next
-)
-
-if /I [%1] == [/p:OfficialBuildId] (
-    if /I [%2]==[] (
-        echo Error: officialbuildid arg should have a value
-        exit /b 1
-    )
-    set processedArgs=!processedArgs! %1=%2
-    set OfficialBuildIdArg=/p:OfficialBuildId=%2
-    shift /1
     goto Next
 )
 
@@ -77,7 +59,9 @@ echo [%time%] Building Native Libraries...
 :: Generate Native versioning assets
 set __binDir=%~dp0bin
 set __versionLog=%~dp0version.log
-msbuild "%~dp0build.proj" /nologo /t:GenerateVersionHeader /p:NativeVersionHeaderFile="%__binDir%\obj\_version.h" /p:GenerateVersionHeader=true %OfficialBuildIdArg% > "%__versionLog%"
+if not exist "%__binDir%\obj\_version.h" (
+    msbuild "%~dp0build.proj" /nologo /t:GenerateVersionHeader /p:GenerateNativeVersionInfo=true > "%__versionLog%"
+)
 IF EXIST "%~dp0src\native\Windows\build-native.cmd" (
     call %~dp0src\native\Windows\build-native.cmd %__args% >nativebuild.log
     IF ERRORLEVEL 1 (
@@ -115,7 +99,7 @@ call :build %__args%
 goto :AfterBuild
 
 :build
-%_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=normal;LogFile="%_buildlog%";Append "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" !unprocessedBuildArgs! %_buildpostfix% %OfficialBuildIdArg%
+%_buildprefix% msbuild "%_buildproj%" /nologo /maxcpucount /v:minimal /clp:Summary /nodeReuse:false /flp:v=normal;LogFile="%_buildlog%";Append "/l:BinClashLogger,%_binclashLoggerDll%;LogFile=%_binclashlog%" !unprocessedBuildArgs! %_buildpostfix%
 set BUILDERRORLEVEL=%ERRORLEVEL%
 goto :eof
 
