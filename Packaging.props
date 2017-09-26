@@ -1,14 +1,12 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PreReleaseLabel>rc3</PreReleaseLabel>
+    <PreReleaseLabel>servicing</PreReleaseLabel>
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)pkg/dotnet_library_license.txt</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)pkg/ThirdPartyNotices.txt</PackageThirdPartyNoticesFile>
-    
-    <!-- *** start WCF Content *** -->
-    <!-- *** this file is located differently in corefx *** -->
-    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1/runtime.json</RuntimeIdGraphDefinitionFile>
-    <!-- *** end WCF Content *** -->
+    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1/runtime.json</RuntimeIdGraphDefinitionFile> <!-- WCF Content -->
+    <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799417</ReleaseNotes>
+    <ProjectUrl>https://dot.net</ProjectUrl>
 
     <!-- Add a condition for this when we are able to run on .NET Core -->
     <PackagingTaskDir>$(ToolsDir)net45/</PackagingTaskDir>
@@ -16,6 +14,8 @@
     <PackagePlatform Condition="'$(PackagePlatform)' == ''">$(Platform)</PackagePlatform>
     <PackagePlatform Condition="'$(PackagePlatform)' == 'amd64'">x64</PackagePlatform>
     <NativePackagePath>$(MSBuildThisFileDirectory)src/Native/pkg</NativePackagePath>
+    <!-- We're currently not building a "live" baseline, instead we're using .NETCore 1.0 RTM stable versions as the baseline -->
+    <SkipBaseLineCheck>true</SkipBaseLineCheck>
   </PropertyGroup>
 
   <Import Condition="Exists('pkg/baseline/baseline.props')" Project="pkg/baseline/baseline.props" />

@@ -40,6 +40,7 @@
     <ObjDir Condition="'$(ObjDir)'==''">$(BinDir)obj/</ObjDir>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'==''">$(ObjDir)</BaseIntermediateOutputPath>
     <TestWorkingDir Condition="'$(TestWorkingDir)'==''">$(BinDir)tests/</TestWorkingDir>
+    <PackageOutputRoot Condition="'$(PackageOutputRoot)'=='' and '$(NonShippingPackage)' == 'true'">$(BinDir)packages_noship/</PackageOutputRoot>
     <PackageOutputRoot Condition="'$(PackageOutputRoot)'==''">$(BinDir)packages/</PackageOutputRoot>
 
     <!-- Input Directories -->
@@ -85,6 +86,8 @@
     <CoreFxVersionsIdentityRegex>^(?i)((System\..*)|(NETStandard\.Library)|(Microsoft\.CSharp)|(Microsoft\.Private\.PackageBaseline)|(Microsoft\.NETCore.*)|(Microsoft\.TargetingPack\.Private\.(CoreCLR|NETNative))|(Microsoft\.Win32\..*)|(Microsoft\.VisualBasic))(?&lt;!TestData)(?&lt;!System\.Data\.SqlClient)$</CoreFxVersionsIdentityRegex>
   </PropertyGroup>
 
+  <Import Project="$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props" Condition="Exists('$(MSBuildThisFileDirectory)pkg/ExternalPackages/versions.props')" />
+
   <ItemGroup>
     <ValidationPattern Include="CoreFxVersions">
       <IdentityRegex>$(CoreFxVersionsIdentityRegex)</IdentityRegex>
@@ -128,8 +131,8 @@
 
   <!-- list of directories to perform batch restore -->
   <ItemGroup>
-    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)/src" />
-    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)/pkg" />
+    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)src" />
+    <DnuRestoreDir Include="$(MSBuildThisFileDirectory)pkg" />
     <DnuRestoreDir Condition="'$(BuildTestsAgainstPackages)' == 'true'" Include="$(GeneratedProjectJsonDir)" />
   </ItemGroup>
 
@@ -154,7 +157,7 @@
   <!-- Create a collection of all project.json files for dependency updates. -->
   <ItemGroup>
     <ProjectJsonFiles Include="$(SourceDir)**/project.json" />
-    <ProjectJsonFiles Include="$(MSBuildThisFileDirectory)/pkg/**/project.json" />
+    <ProjectJsonFiles Include="$(MSBuildThisFileDirectory)pkg/**/project.json" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(BuildAllProjects)'=='true'">
@@ -197,6 +200,8 @@
     <!-- By default make all libraries to be AnyCPU but individual projects can override it if they need to -->
     <Platform>AnyCPU</Platform>
     <OutputType>Library</OutputType>
+    <!-- dotnet/corefx#8899 tracks fixing this -->
+    <RunApiCompat Condition="'$(OSEnvironment)' == 'Windows_NT'">true</RunApiCompat>
   </PropertyGroup>
 
   <!--
@@ -488,8 +493,8 @@
 
   <!-- Set up some common paths -->
   <PropertyGroup>
-    <CommonPath>$(SourceDir)Common/src</CommonPath>
-    <CommonTestPath>$(SourceDir)Common/tests</CommonTestPath>
+    <CommonPath>$(SourceDir)Common\src</CommonPath>
+    <CommonTestPath>$(SourceDir)Common\tests</CommonTestPath>
   </PropertyGroup>
 
   <!-- Set up the default output and intermediate paths -->
