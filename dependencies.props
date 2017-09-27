@@ -1,7 +1,7 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>3cac2a855c405b22a13616745e398ca4841bb957</CoreFxCurrentRef>
+    <CoreFxCurrentRef>37c3365e889b40af7e954d2e9f510b899ae2950e</CoreFxCurrentRef>
     <WCFCurrentRef>3cac2a855c405b22a13616745e398ca4841bb957</WCFCurrentRef>
     <StandardCurrentRef>3cac2a855c405b22a13616745e398ca4841bb957</StandardCurrentRef>
     <CoreSetupCurrentRef>3cac2a855c405b22a13616745e398ca4841bb957</CoreSetupCurrentRef>
@@ -9,7 +9,7 @@
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <CoreFxExpectedPrerelease>servicing-25714-01</CoreFxExpectedPrerelease>
+    <CoreFxExpectedPrerelease>servicing-25727-01</CoreFxExpectedPrerelease>
     <WcfExpectedPrerelease>stable</WcfExpectedPrerelease>
     <NETStandardPackageVersion>2.0.1</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
