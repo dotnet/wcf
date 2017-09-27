@@ -31,7 +31,7 @@
   <ItemGroup Condition="'$(TargetGroup)' == 'uap' or
                         '$(TargetGroup)' == 'uapaot'">
     <PackageReference Include="Microsoft.Private.CoreFx.UAP">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+      <Version>$(MicrosoftPrivateCoreFxUAPPackageVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
