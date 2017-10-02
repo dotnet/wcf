@@ -1,10 +1,10 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>23359c17ebe3ba84865dda6b81792d27b160b0d6</CoreFxCurrentRef>
+    <CoreFxCurrentRef>d81e861736525aff8ffb68aca974a2a5f7ef6263</CoreFxCurrentRef>
     <WCFCurrentRef>3cac2a855c405b22a13616745e398ca4841bb957</WCFCurrentRef>
     <StandardCurrentRef>23359c17ebe3ba84865dda6b81792d27b160b0d6</StandardCurrentRef>
-    <CoreSetupCurrentRef>c2c072242cb0bdea99efb7349d69492f83200a7d</CoreSetupCurrentRef>
+    <CoreSetupCurrentRef>3ff6a3bc49768b25f548e9c8ab8fe63a227827d0</CoreSetupCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
@@ -13,7 +13,7 @@
     <WcfExpectedPrerelease>stable</WcfExpectedPrerelease>
     <NETStandardPackageVersion>2.0.0</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
-    <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25407-01</MicrosoftNETCoreAppPackageVersion>
+    <MicrosoftNETCoreAppPackageVersion>2.0.0</MicrosoftNETCoreAppPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
