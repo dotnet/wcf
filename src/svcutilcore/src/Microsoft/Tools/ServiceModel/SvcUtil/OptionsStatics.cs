@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //-----------------------------------------------------------------------------
 namespace Microsoft.Tools.ServiceModel.SvcUtil
@@ -113,13 +113,13 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             public static readonly CommandSwitch ServiceContract = new CommandSwitch(Options.Cmd.ServiceContract, Abbr.ServiceContract, SwitchType.Flag);
             public static readonly CommandSwitch SyncOnly = new CommandSwitch(Options.Cmd.SyncOnly, Options.Cmd.SyncOnly, SwitchType.Flag);
 
-            public static readonly CommandSwitch[] All = new CommandSwitch[] { Async, Directory, Target, Help, NoLogo, NoConfig, MergeConfig, Out, Language, Config,
-                                                                        ToolConfig, Reference, ServiceName, Nostdlib, ExcludeType, CollectionType, Serializable,
+            public static readonly CommandSwitch[] All = new CommandSwitch[] { Async, Directory, Target, Help, NoLogo, NoConfig, MergeConfig, Out, Language, Config, 
+                                                                        ToolConfig, Reference, ServiceName, Nostdlib, ExcludeType, CollectionType, Serializable, 
                                                                         Serializer, Namespace, Internal, MessageContract, ImportXmlTypes, Validate, 
 #if DEBUG
                                                                         Debug,
 #endif
-                                                                        EnableDataBinding, DataContractOnly, TargetClientVersion, UseSerializerForFaults, Wrapped,
+                                                                        EnableDataBinding, DataContractOnly, TargetClientVersion, UseSerializerForFaults, Wrapped, 
                                                                         ServiceContract, SyncOnly };
 
         }
