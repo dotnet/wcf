@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //-----------------------------------------------------------------------------
 namespace Microsoft.Tools.ServiceModel.SvcUtil
@@ -19,7 +19,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
         protected OutputModule(Options options)
         {
-            //directoryPath = PathHelper.TryGetDirectoryPath(options.DirectoryArg);
+            directoryPath = PathHelper.TryGetDirectoryPath(options.DirectoryArg);
         }
 
         protected string BuildFilePath(string filepath, string extension, string option)
@@ -31,8 +31,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         {
             internal static string BuildFilePath(string directoryPath, string filepath, string extension, string option)
             {
-                //Tool.Assert(!string.IsNullOrEmpty(filepath), "filename must have a valid value");
-                //Tool.Assert(!string.IsNullOrEmpty(extension), "extension must have a valid value");
+                Tool.Assert(!string.IsNullOrEmpty(filepath), "filename must have a valid value");
+                Tool.Assert(!string.IsNullOrEmpty(extension), "extension must have a valid value");
 
                 string outputFileWithExtension = GetFilepathWithExtension(filepath, extension);
 
@@ -79,22 +79,20 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 {
                     if (!string.IsNullOrEmpty(option))
                     {
-                        throw new InvalidOperationException();
-                        //throw new ToolArgumentException(SR.GetString(SR.ErrPathTooLong, path, Options.Cmd.Directory, option), ptle);
+                        throw new ToolArgumentException(SR.Format(SR.ErrPathTooLong, path, Options.Cmd.Directory, option), ptle);
                     }
                     else
                     {
-                        throw new InvalidOperationException();
-                        //throw new ToolArgumentException(SR.GetString(SR.ErrPathTooLongDirOnly, path, Options.Cmd.Directory), ptle);
+                        throw new ToolArgumentException(SR.Format(SR.ErrPathTooLongDirOnly, path, Options.Cmd.Directory), ptle);
                     }
                 }
 #pragma warning suppress 56500 // covered by FxCOP
                 catch (Exception e)
                 {
-                    //if (Tool.IsFatal(e))
-                    //    throw;
-                    throw new InvalidOperationException();
-                    //throw new ToolArgumentException(SR.GetString(SR.ErrInvalidPath, path, option), e);
+                    if (Tool.IsFatal(e))
+                        throw;
+
+                    throw new ToolArgumentException(SR.Format(SR.ErrInvalidPath, path, option), e);
                 }
             }
         }
@@ -110,11 +108,10 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 #pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
-                throw new InvalidOperationException();
-                //if (Tool.IsFatal(e))
-                //    throw;
+                if (Tool.IsFatal(e))
+                    throw;
 
-                //throw new ToolRuntimeException(SR.GetString(SR.ErrCannotCreateDirectory, path), e);
+                throw new ToolRuntimeException(SR.Format(SR.ErrCannotCreateDirectory, path), e);
             }
         }
 
@@ -136,8 +133,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
                 for (uint i = 1; i < uint.MaxValue; i++)
                 {
-                    //string uniqueFileName = filename + i.ToString(NumberFormatInfo.InvariantInfo);
-                    string uniqueFileName = filename + i.ToString();
+                    string uniqueFileName = filename + i.ToString(NumberFormatInfo.InvariantInfo);
                     string uniqueFileNameWithExtension = PathHelper.GetFilepathWithExtension(uniqueFileName, extension);
                     if (!UniquifyFileName_NameExists(uniqueFileNameWithExtension))
                     {
@@ -145,8 +141,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                         return uniqueFileName;
                     }
                 }
-                //throw new ToolRuntimeException(SR.GetString(SR.ErrUnableToUniquifyFilename, fileNameWithExtension), null);
-                throw new InvalidOperationException();
+                throw new ToolRuntimeException(SR.Format(SR.ErrUnableToUniquifyFilename, fileNameWithExtension), null);
+
             }
 
             static bool UniquifyFileName_NameExists(string fileName)
