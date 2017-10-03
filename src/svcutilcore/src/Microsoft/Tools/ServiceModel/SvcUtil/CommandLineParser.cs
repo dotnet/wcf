@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //-----------------------------------------------------------------------------
 namespace Microsoft.Tools.ServiceModel.SvcUtil
@@ -175,8 +175,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
                 //if we have something which begins with '/' or '-', throw if nothing after it
                 if (arg.Length == 1)
-                    throw new ArgumentException();
-                //throw new ArgumentException(SR.GetString(SR.ErrSwitchMissing, arg));
+                    throw new ArgumentException(SR.Format(SR.ErrSwitchMissing, arg));
 
                 //yank switch indicator ('/' or '-') off of command argument
                 arg = arg.Substring(1);
@@ -184,8 +183,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 //check to make sure delimiter does not start off switch
                 delim = arg.IndexOfAny(new char[] { ':', '=' });
                 if (delim == 0)
-                    throw new ArgumentException();
-                //throw new ArgumentException(SR.GetString(SR.ErrUnexpectedDelimiter));
+                    throw new ArgumentException(SR.Format(SR.ErrUnexpectedDelimiter));
 
                 //if there is no value, than create a null string
                 if (delim == (-1))
@@ -203,29 +201,26 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 //if no match found, then throw an exception
                 argSwitch = CommandSwitch.FindSwitch(arg.ToLower(CultureInfo.InvariantCulture), switches);
                 if (argSwitch == null)
-                    throw new ArgumentException();
-                //throw new ArgumentException(SR.GetString(SR.ErrUnknownSwitch, arg.ToLower(CultureInfo.InvariantCulture)));
+                    throw new ArgumentException(SR.Format(SR.ErrUnknownSwitch, arg.ToLower(CultureInfo.InvariantCulture)));
 
                 //check if switch is allowed to have a value
                 // if not and a value has been specified, then thrown an exception
                 if (argSwitch.SwitchType == SwitchType.Flag)
                 {
                     if (!argIsFlag)
-                        throw new ArgumentException();
-                        //throw new ArgumentException(SR.GetString(SR.ErrUnexpectedValue, arg.ToLower(CultureInfo.InvariantCulture)));
+                        throw new ArgumentException(SR.Format(SR.ErrUnexpectedValue, arg.ToLower(CultureInfo.InvariantCulture)));
                 }
                 else
                 {
                     if (argIsFlag)
-                        throw new ArgumentException();
-                    //throw new ArgumentException(SR.GetString(SR.ErrExpectedValue, arg.ToLower(CultureInfo.InvariantCulture)));
+                        throw new ArgumentException(SR.Format(SR.ErrExpectedValue, arg.ToLower(CultureInfo.InvariantCulture)));
                 }
 
                 //check if switch is allowed to be specified multiple times
                 // if not and it has already been specified and a new value has been paresd, throw an exception
                 if (argSwitch.SwitchType != SwitchType.ValueList && arguments.ContainsArgument(argSwitch.Name))
                 {
-                    //throw new ArgumentException(SR.GetString(SR.ErrSingleUseSwitch, arg.ToLower(CultureInfo.InvariantCulture)));
+                    throw new ArgumentException(SR.Format(SR.ErrSingleUseSwitch, arg.ToLower(CultureInfo.InvariantCulture)));
                 }
                 else
                 {
