@@ -43,101 +43,21 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         {
             switch (toolMode)
             {
-                //case ToolMode.DataContractImport:
-                //    this.ImportDataContracts(inputModule);
-                //    break;
-
-                //case ToolMode.ProxyGeneration:
-                //case ToolMode.ServiceContractGeneration:
-                //    this.ImportServiceContracts(inputModule);
-                //    break;
-
-                //case ToolMode.DataContractExport:
-                //    this.ExportDataContracts(inputModule);
-                //    break;
-
-                //case ToolMode.Validate:
-                //    return this.ValidateServices(inputModule);
-
-                //case ToolMode.MetadataFromAssembly:
-                //    return this.ExportServiceContracts(inputModule);
-
-                //case ToolMode.WSMetadataExchange:
-                //    this.ExportDownloadedMetadata(inputModule);
-                //    break;
-
                 case ToolMode.XmlSerializerGeneration:
-                    this.GenerateSerializer(inputModule);
+                    GenerateSerializer(inputModule);
                     break;
+                case ToolMode.DataContractImport:
+                case ToolMode.ProxyGeneration:
+                case ToolMode.ServiceContractGeneration:
+                case ToolMode.DataContractExport:
+                case ToolMode.Validate:
+                case ToolMode.MetadataFromAssembly:
+                case ToolMode.WSMetadataExchange:
+                    throw new ArgumentException(SR.ErrInvalidTarget);
             }
+
             return ToolExitCodes.Success;
         }
-
-        //void ImportServiceContracts(InputModule inputModule)
-        //{
-        //    ImportModule importModule = new ImportModule(options, inputModule.InputConfiguration, inputModule.MetadataDocuments);
-        //    importModule.ImportServiceContracts();
-
-        //    ToolConsole.WriteLine(SR.Format(SR.GeneratingFiles));
-
-        //    CodeGenOutputModule outputModule = new CodeGenOutputModule(options, inputModule.MetadataDocuments);
-        //    outputModule.Save(importModule.CodeCompileUnit, importModule.Configuration, importModule.ConfigWasGenerated);
-        //}
-
-        //void ExportDownloadedMetadata(InputModule inputModule)
-        //{
-        //    ToolConsole.WriteLine(SR.Format(SR.SavingDownloadedMetadata));
-
-        //    MetadataOutputModule outputModule = new MetadataOutputModule(options);
-        //    outputModule.SaveMetadata(inputModule.MetadataDocuments);
-        //}
-
-        //void ImportDataContracts(InputModule inputModule)
-        //{
-        //    ImportModule importModule = new ImportModule(options, null, inputModule.MetadataDocuments);
-        //    importModule.ImportDataContracts();
-
-        //    ToolConsole.WriteLine(SR.Format(SR.GeneratingFiles));
-
-        //    CodeGenOutputModule outputModule = new CodeGenOutputModule(options, inputModule.MetadataDocuments);
-        //    outputModule.Save(importModule.CodeCompileUnit,
-        //        null /* configuration */, false /* configWasGenerated */);
-        //}
-
-        //void ExportDataContracts(InputModule inputModule)
-        //{
-        //    ExportModule exportModule = new ExportModule(options);
-        //    exportModule.ExportDataContracts(inputModule.Assemblies);
-
-        //    MetadataOutputModule outputModule = new MetadataOutputModule(options);
-        //    outputModule.SaveMetadata(exportModule.GetGeneratedMetadata());
-        //}
-
-        //ToolExitCodes ValidateServices(InputModule inputModule)
-        //{
-        //    ExportModule exportModule = new ExportModule(options);
-        //    return exportModule.ValidateTypes(inputModule.Assemblies);
-        //}
-
-        //ToolExitCodes ExportServiceContracts(InputModule inputModule)
-        //{
-        //    ToolExitCodes exitCode;
-        //    ExportModule exportModule = new ExportModule(options);
-        //    ToolConsole.WriteLine(SR.Format(SR.GeneratingMetadata));
-            
-        //    exitCode = exportModule.ExportMetadata(inputModule.Assemblies);
-
-        //    if (!exportModule.MetadataWasGenerated)
-        //    {
-        //        ToolConsole.WriteWarning(SR.Format(SR.NoMetadataWasGenerated, Options.Cmd.ServiceName, Options.Cmd.DataContractOnly));
-        //    }
-        //    else
-        //    {
-        //        MetadataOutputModule outputModule = new MetadataOutputModule(options);
-        //        outputModule.SaveMetadata(exportModule.GetGeneratedMetadata());
-        //    }
-        //    return exitCode;
-        //}
 
         ToolExitCodes GenerateSerializer(InputModule inputModule)
         {
