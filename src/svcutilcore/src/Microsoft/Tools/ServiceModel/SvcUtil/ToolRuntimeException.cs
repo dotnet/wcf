@@ -22,6 +22,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         {
         }
 
+        internal ToolRuntimeException(string message) : base(message)
+        {
+        }
 
         internal ToolRuntimeException(String message, Exception innerException) : base (message, innerException) 
         {
