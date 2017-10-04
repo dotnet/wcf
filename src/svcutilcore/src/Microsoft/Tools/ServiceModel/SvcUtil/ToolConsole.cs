@@ -160,18 +160,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             HelpGenerator.WriteCommonOptionsHelp();
             ToolConsole.WriteLine();
             ToolConsole.WriteLine();
-            HelpGenerator.WriteCodeGenerationHelp();
-            ToolConsole.WriteLine();
-            ToolConsole.WriteLine();
-            HelpGenerator.WriteMetadataExportHelp();
-            ToolConsole.WriteLine();
-            ToolConsole.WriteLine();
-            HelpGenerator.WriteValidationHelp();
-            ToolConsole.WriteLine();
-            ToolConsole.WriteLine();
-            HelpGenerator.WriteMetadataDownloadHelp();
-            ToolConsole.WriteLine();
-            ToolConsole.WriteLine();
             HelpGenerator.WriteXmlSerializerTypeGenerationHelp();
             ToolConsole.WriteLine();
             ToolConsole.WriteLine();
@@ -189,10 +177,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             {
                 ToolConsole.WriteLine(SR.Format(SR.HelpUsage1));
                 ToolConsole.WriteLine();
-                ToolConsole.WriteLine(SR.Format(SR.HelpUsage2));
-                ToolConsole.WriteLine(SR.Format(SR.HelpUsage3));
-                ToolConsole.WriteLine(SR.Format(SR.HelpUsage4));
-                ToolConsole.WriteLine(SR.Format(SR.HelpUsage5));
                 ToolConsole.WriteLine(SR.Format(SR.HelpUsage6));
             }
 
@@ -306,24 +290,25 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             internal static void WriteCommonOptionsHelp()
             {
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpCommonOptionsCategory));
-                helpCategory.Options = new ArgumentInfo[5];
+                var options = new List<ArgumentInfo>();
+                ArgumentInfo option;
+                option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Target, SR.Format(SR.ParametersOutputType));
+                option.HelpText = SR.Format(SR.HelpTargetOutputType, Options.Targets.Code, Options.Targets.Metadata, Options.Targets.XmlSerializer);
+                options.Add(option);
 
-                helpCategory.Options[0] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Target, SR.Format(SR.ParametersOutputType));
-                helpCategory.Options[0].HelpText = SR.Format(SR.HelpTargetOutputType, Options.Targets.Code, Options.Targets.Metadata, Options.Targets.XmlSerializer);
+                option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Directory, SR.Format(SR.ParametersDirectory));
+                option.HelpText = SR.Format(SR.HelpDirectory, Options.Abbr.Directory);
+                options.Add(option);
 
-                helpCategory.Options[1] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Directory, SR.Format(SR.ParametersDirectory));
-                helpCategory.Options[1].HelpText = SR.Format(SR.HelpDirectory, Options.Abbr.Directory);
+                option = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.NoLogo);
+                option.HelpText = SR.Format(SR.HelpNologo);
+                options.Add(option);
 
-                helpCategory.Options[2] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ToolConfig, SR.Format(SR.ParametersToolConfig));
-                helpCategory.Options[2].BeginGroup = true;
-                helpCategory.Options[2].HelpText = SR.Format(SR.HelpToolConfig);
+                option = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Help);
+                option.HelpText = SR.Format(SR.HelpHelp, Options.Abbr.Help);
+                options.Add(option);
 
-                helpCategory.Options[3] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.NoLogo);
-                helpCategory.Options[3].HelpText = SR.Format(SR.HelpNologo);
-
-                helpCategory.Options[4] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Help);
-                helpCategory.Options[4].HelpText = SR.Format(SR.HelpHelp, Options.Abbr.Help);
-
+                helpCategory.Options = options.ToArray();
                 helpCategory.WriteHelp();
             }
 
@@ -439,14 +424,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpExamples));
                 helpCategory.WriteHelp();
 
-                WriteExample(SR.Format(SR.HelpExamples2), SR.Format(SR.HelpExamples3));
-                WriteExample(SR.Format(SR.HelpExamples4), SR.Format(SR.HelpExamples5));
-                WriteExample(SR.Format(SR.HelpExamples6), SR.Format(SR.HelpExamples7));
-                WriteExample(SR.Format(SR.HelpExamples8), SR.Format(SR.HelpExamples9));
-                WriteExample(SR.Format(SR.HelpExamples10), SR.Format(SR.HelpExamples11));
-                WriteExample(SR.Format(SR.HelpExamples12), SR.Format(SR.HelpExamples13));
-                WriteExample(SR.Format(SR.HelpExamples14), SR.Format(SR.HelpExamples15));
-                WriteExample(SR.Format(SR.HelpExamples16), SR.Format(SR.HelpExamples17));
                 WriteExample(SR.Format(SR.HelpExamples18), SR.Format(SR.HelpExamples19));
             }
 
