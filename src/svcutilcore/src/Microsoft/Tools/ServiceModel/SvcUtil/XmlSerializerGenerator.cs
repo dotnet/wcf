@@ -76,11 +76,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     MethodInfo method = typeof(System.Xml.Serialization.XmlSerializer).GetMethod("GenerateSerializer", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                     if (method == null)
                     {
-                        throw new PlatformNotSupportedException();
+                        throw new ToolRuntimeException(SR.GenerateSerializerNotFound);
                     }
                     else
                     {
-                        success = (bool)method.Invoke(null, new object[] { types, mappings, fs });
+                        success = (bool)method.Invoke(null, new object[] { types.ToArray(), mappings.ToArray(), fs });
                     }
                 }
             }

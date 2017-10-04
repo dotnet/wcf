@@ -11,10 +11,10 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
     using System.Threading;
     using System.Runtime.ConstrainedExecution;
 
-    static class Tool
+    public static class Tool
     {
 
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             
             try
