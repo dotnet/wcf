@@ -789,4 +789,7 @@
   <data name="WcfTrademarkForCmdLine" xml:space="preserve">
     <value>Microsoft (R) Windows (R) Communication Foundation</value>
   </data>
+  <data name="GenerateSerializerNotFound" xml:space="preserve">
+    <value>Svcutil does not work with the framework of the version being used. 'System.Xml.Serialization.XmlSerializer' does not have a method named 'GenerateSerializer'.</value>
+  </data>
 </root>
