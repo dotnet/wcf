@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Tools.ServiceModel.SvcUtil.Tests
 {
-    [ServiceContract(ConfigurationName = "IWcfService")]
-    public interface IWcfServiceXmlGenerated
+    [ServiceContract(ConfigurationName = "ISimpleSvcutilService")]
+    public interface ISimpleSvcutilService
     {
-        [OperationContract(Action = "http://tempuri.org/IWcfService/EchoXmlSerializerFormat", ReplyAction = "http://tempuri.org/IWcfService/EchoXmlSerializerFormatResponse")]
         [XmlSerializerFormat]
+        [OperationContract(Action = "http://tempuri.org/ISimpleSvcutilService/EchoXmlSerializerFormat", ReplyAction = "http://tempuri.org/ISimpleSvcutilService/EchoXmlSerializerFormatResponse")]
         string EchoXmlSerializerFormat(string message);
     }
 }

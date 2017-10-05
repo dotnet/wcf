@@ -12,13 +12,32 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{E0A4893E-975E-415A-90B6-57871EB864E6}</ProjectGuid>
   </PropertyGroup>
-  <ItemGroup>
+  <PropertyGroup>
+    <XmlSerializerTestSource>..\..\System.Private.ServiceModel\tests\Scenarios\Contract\XmlSerializer\</XmlSerializerTestSource>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard-Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Release|AnyCPU'" />
+  <PropertyGroup>
+    <SkipTestsOnPlatform Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'netfx' OR '$(ArchGroup)' == 'arm' OR '$(ArchGroup)' == 'arm64' OR '$(ArchGroup)' == 'armel'">true</SkipTestsOnPlatform>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(SkipTestsOnPlatform)' != 'true' ">
     <Compile Include="**\*.cs" />
+    <Compile Include="$(XmlSerializerTestSource)**\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(SkipTestsOnPlatform)' == 'true' ">
+    <Compile Include=".\AlwaysPassTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
     <ProjectReference Include="../src/svcutilcore.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <ReferenceFromRuntime Include="xunit.execution.dotnet" />
     <ReferenceFromRuntime Include="System.Private.ServiceModel" />
     <ReferenceFromRuntime Include="System.ServiceModel.Duplex" />
     <ReferenceFromRuntime Include="System.ServiceModel.Http" />
