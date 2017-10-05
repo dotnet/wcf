@@ -568,43 +568,43 @@
           "version": "4.3.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.Microsoft.NETCore.DotNetHost": {
+        "runtime.opensuse.42.2-x64.Microsoft.NETCore.DotNetHost": {
           "version": "1.1.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.Microsoft.NETCore.DotNetHostPolicy": {
+        "runtime.opensuse.42.2-x64.Microsoft.NETCore.DotNetHostPolicy": {
           "version": "1.1.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.Microsoft.NETCore.DotNetHostResolver": {
+        "runtime.opensuse.42.2-x64.Microsoft.NETCore.DotNetHostResolver": {
           "version": "1.1.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.Microsoft.NETCore.Jit": {
+        "runtime.opensuse.42.2-x64.Microsoft.NETCore.Jit": {
           "version": "1.1.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.Microsoft.NETCore.Runtime.CoreCLR": {
+        "runtime.opensuse.42.2-x64.Microsoft.NETCore.Runtime.CoreCLR": {
           "version": "1.1.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.runtime.native.System": {
+        "runtime.opensuse.42.2-x64.runtime.native.System": {
           "version": "4.3.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.runtime.native.System.IO.Compression": {
+        "runtime.opensuse.42.2-x64.runtime.native.System.IO.Compression": {
           "version": "4.3.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.runtime.native.System.Net.Http": {
+        "runtime.opensuse.42.2-x64.runtime.native.System.Net.Http": {
           "version": "4.3.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.runtime.native.System.Net.Security": {
+        "runtime.opensuse.42.2-x64.runtime.native.System.Net.Security": {
           "version": "4.3.0",
           "exclude": "all"
         },
-        "runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
+        "runtime.opensuse.42.2-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
           "version": "4.3.0",
           "exclude": "all"
         },
@@ -988,7 +988,7 @@
         "fedora.25-x64",
         "linux-x64",
         "opensuse.13.2-x64",
-        "opensuse.42.1-x64"
+        "opensuse.42.2-x64"
       ]
     }
   }
