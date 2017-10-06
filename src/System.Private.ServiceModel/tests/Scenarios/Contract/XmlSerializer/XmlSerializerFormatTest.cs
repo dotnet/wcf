@@ -7,9 +7,22 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 using System;
+using System.Reflection;
+using System.Xml.Serialization;
 
 public static partial class XmlSerializerFormatTests
 {
+#if SVCUTILTESTS
+    private static readonly string SerializationModeSetterName = "set_Mode";
+
+    static XmlSerializerFormatTests()
+    {
+        MethodInfo method = typeof(XmlSerializer).GetMethod(SerializationModeSetterName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.True(method != null, $"No method named {SerializationModeSetterName}");
+        method.Invoke(null, new object[] { 3 });
+    }
+#endif
+
     [WcfFact]
     [OuterLoop]
     public static void XmlSerializerFormatAttribute_SupportFaults()
