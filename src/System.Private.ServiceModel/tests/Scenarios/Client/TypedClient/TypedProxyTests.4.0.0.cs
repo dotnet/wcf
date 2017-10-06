@@ -191,9 +191,9 @@ public static partial class TypedProxyTests
                 {
                     int startThread = Environment.CurrentManagedThreadId;
                     result = await serviceProxy.EchoAsync("Hello");
-
-                    Assert.True(startThread == Environment.CurrentManagedThreadId, String.Format("Expected continuation to happen on thread {0} but actually continued on thread {1}",
-                                                                                                    startThread, Environment.CurrentManagedThreadId));
+                    var currentStack = new System.Diagnostics.StackTrace(true);
+                    Assert.True(startThread == Environment.CurrentManagedThreadId, string.Format("Expected continuation to happen on thread {0} but actually continued on thread {1}. Call stack:\r\n{2}",
+                                                                                                    startThread, Environment.CurrentManagedThreadId, currentStack.ToString()));
                 });
             }).Wait(ScenarioTestHelpers.TestTimeout);
 
