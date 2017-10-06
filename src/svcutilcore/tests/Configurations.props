@@ -5,6 +5,7 @@
       uap;
       netfx;
       netstandard;
+      netcoreapp;
     </BuildConfigurations>
   </PropertyGroup>
 </Project>
