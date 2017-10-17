@@ -79,4 +79,13 @@ namespace WcfService
             }
         }
     }
+
+    public abstract class TestServiceHostBase<ContractType1, ContractType2> : TestServiceHostBase<ContractType1>
+    {
+        public TestServiceHostBase(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+            ServiceEndpoint endpoint2 = this.AddServiceEndpoint(typeof(ContractType2), GetBinding(), Address);
+        }
+    }
 }

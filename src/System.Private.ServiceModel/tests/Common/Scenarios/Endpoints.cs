@@ -94,6 +94,36 @@ public static partial class Endpoints
         get { return GetEndpointAddress("XmlSFAttribute.svc//XmlSFAttribute"); }
     }
 
+    public static string BasciHttpRpcEncSingleNs_Address
+    {
+        get { return GetEndpointAddress("BasciHttpRpcEncSingleNs.svc//XmlSFAttribute"); }
+    }
+
+    public static string BasicHttpRpcLitSingleNs_Address
+    {
+        get { return GetEndpointAddress("BasicHttpRpcLitSingleNs.svc//XmlSFAttribute"); }
+    }
+
+    public static string BasicHttpDocLitSingleNs_Address
+    {
+        get { return GetEndpointAddress("BasicHttpDocLitSingleNs.svc//XmlSFAttribute"); }
+    }
+
+    public static string BasicHttpRpcEncMultiNs_Address
+    {
+        get { return GetEndpointAddress("BasicHttpRpcEncMultiNs.svc//XmlSFAttribute"); }
+    }
+
+    public static string BasicHttpRpcLitMultiNs_Address
+    {
+        get { return GetEndpointAddress("BasicHttpRpcLitMultiNs.svc//XmlSFAttribute"); }
+    }
+
+    public static string BasicHttpDocLitMultiNs_Address
+    {
+        get { return GetEndpointAddress("BasicHttpDocLitMultiNs.svc//XmlSFAttribute"); }
+    }
+
     #region WebSocket Addresses
     public static string NetHttpWebSocketTransport_Address
     {

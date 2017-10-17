@@ -7,6 +7,10 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 
 public static partial class XmlSerializerFormatTests
 {
@@ -69,4 +73,198 @@ public static partial class XmlSerializerFormatTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void RpcEncodedWsdlTest()
+    {
+        Assert.True(RunVariation(Endpoints.BasciHttpRpcEncSingleNs_Address));
+        Assert.True(RunVariation(Endpoints.BasicHttpRpcLitSingleNs_Address));
+        Assert.True(RunVariation(Endpoints.BasicHttpDocLitSingleNs_Address));
+    }
+
+    private static bool RunVariation(string serviceAddress)
+    {
+        string wsdlGeneratedFile = $"{new Guid()}wsdlGened.cs";
+        string singleWsdlGeneratedFile = $"{new Guid()}SingleWsdlGened.cs";
+
+        try
+        {    
+            string wsdlArguments = $"{serviceAddress}?wsdl /syncOnly /noConfig /ser:XmlSerializer /o:{wsdlGeneratedFile}";
+            string singleWsdlArguments = $"{serviceAddress}?singleWsdl /syncOnly /noConfig /ser:XmlSerializer /o:{singleWsdlGeneratedFile}";
+
+            //Todo: run tool
+            //Tool.Main(wsdlArguments.ToString().Split(new Char[] { ' ' }));
+            //Tool.Main(singleWsdlArguments.ToString().Split(new Char[] { ' ' }));
+
+            return CompareFile(wsdlGeneratedFile, singleWsdlGeneratedFile, null, false);
+        }
+
+        catch
+        {
+            return false;
+        }
+
+        finally
+        {
+            if (File.Exists(wsdlGeneratedFile))
+            {
+                File.Delete(wsdlGeneratedFile);
+            }
+
+            if (File.Exists(singleWsdlGeneratedFile))
+            {
+                File.Delete(singleWsdlGeneratedFile);
+            }
+        }
+    }
+
+    #region Result validator
+    static string[] FilteredWords = new string[]
+        {
+            "System.Xml.Serialization.XmlSerializerVersionAttribute",
+            "System.Reflection.AssemblyVersionAttribute",
+            @"//------------------",
+            @"\[Microsoft",
+            @"^//.*:[0-9]\.[0-9]\.[0-9][0-9][0-9][0-9][0-9]\.[0-9][0-9]",
+            @",^'.*:[0-9]\.[0-9]\.[0-9][0-9][0-9][0-9][0-9]\.[0-9][0-9]",
+            "Runtime Version",
+            "System.CodeDom.Compiler.GeneratedCodeAttribute",
+            "userPrincipalName",
+            "^[0-9][0-9]*.[0-9][0-9]*",
+            "^---",
+            @"^//",
+            "^'"
+        };
+    static Regex filter = new Regex(string.Join("|", FilteredWords));
+    static Regex bracketFilter = new Regex(@"[\d\w\@\(\)]+[\s]*\{$");
+
+    private static bool CompareFile(string expectedFile, string generatedFile, string toolsBinDir, bool runFilter)
+    {
+        string[] expected;
+        string[] generated;
+
+        try
+        {
+            expected = File.ReadAllLines(expectedFile);
+        }
+        catch (FileNotFoundException)
+        {
+            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
+            return false;
+        }
+        catch (DirectoryNotFoundException)
+        {
+            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
+            return false;
+        }
+
+        try
+        {
+            generated = File.ReadAllLines(generatedFile);
+        }
+        catch (FileNotFoundException)
+        {
+            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
+            return false;
+        }
+        catch (DirectoryNotFoundException)
+        {
+            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
+            return false;
+        }
+
+
+        if (runFilter)
+        {
+            expected = RunWordFilter(expected);
+            generated = RunWordFilter(generated);
+        }
+
+        if (!string.IsNullOrEmpty(toolsBinDir))
+        {
+            // Saving the filtered versions of the code for debugging purposes
+            File.WriteAllLines(string.Format(@"{0}\generated.txt", toolsBinDir), generated);
+            File.WriteAllLines(string.Format(@"{0}\expected.txt", toolsBinDir), expected);
+        }
+
+        //Log.Info("Validating files: \n{0}\nand\n{1}", expectedFile, generatedFile);
+        bool filesMatch = true;
+
+        // sort lines to have a normalized version
+        Array.Sort(generated);
+        Array.Sort(expected);
+
+        if (!string.IsNullOrEmpty(toolsBinDir))
+        {
+            // Saving the sorted versions of the code for debugging purposes
+            File.WriteAllLines(string.Format(@"{0}\generatedSorted.txt", toolsBinDir), generated);
+            File.WriteAllLines(string.Format(@"{0}\expectedSorted.txt", toolsBinDir), expected);
+        }
+
+        // don't bother comparing the files
+        if (expected.Length != generated.Length)
+        {
+            //Log.Error("File lengths DON'T match");
+            return false;
+        }
+
+        for (int i = 0; i < expected.Length; i++)
+        {
+            if (string.Compare(expected[i], generated[i], StringComparison.CurrentCulture) != 0)
+            {
+                filesMatch = false;
+                //Log.Error("Comparison mismatch at line {2}:\nExpected:\n{0} \nActual:\n{1}", expected[i], generated[i], i + 1);
+            }
+        }
+        if (filesMatch)
+        {
+            //Log.Info("PASS: Files match");
+        }
+        return filesMatch;
+    }
+
+    private static string[] RunWordFilter(string[] text)
+    {
+        List<string> result = new List<string>();
+        foreach (string line in text)
+        {
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                // get rid of the non-relevant sections that can cause conflicts
+                if (!filter.Match(line).Success)
+                {
+                    // Turn lines like this: 
+                    // class MyClass {
+                    // into this:
+                    // class MyClass
+                    // {
+                    if (!bracketFilter.Match(line).Success)
+                    {
+                        result.Add(line);
+                    }
+                    else
+                    {
+                        result.Add(line.Remove(line.IndexOf('{')).TrimEnd());
+                        StringBuilder builder = new StringBuilder();
+                        foreach (char c in line.ToCharArray())
+                        {
+                            if (Char.IsWhiteSpace(c))
+                            {
+                                builder.Append(c);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        builder.Append('{');
+                        result.Add(builder.ToString());
+                    }
+                }
+            }
+        }
+        return result.ToArray();
+    }
+    #endregion
 }
