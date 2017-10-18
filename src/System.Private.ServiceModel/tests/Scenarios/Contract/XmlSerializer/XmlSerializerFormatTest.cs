@@ -74,9 +74,10 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
+#if SVCUTILTESTS
     [WcfFact]
     [OuterLoop]
-    public static void RpcEncodedWsdlTest()
+    public static void XmlSFAttributeWsdlTest()
     {
         //single contract namespace
         Assert.True(RunVariation(Endpoints.BasciHttpRpcEncSingleNs_Address));
@@ -98,12 +99,9 @@ public static partial class XmlSerializerFormatTests
             string wsdlArguments = $"{serviceAddress}?wsdl /syncOnly /noConfig /ser:XmlSerializer /o:{wsdlGeneratedFile}";
             string singleWsdlArguments = $"{serviceAddress}?singleWsdl /syncOnly /noConfig /ser:XmlSerializer /o:{singleWsdlGeneratedFile}";
 
-            //Todo: run tool and verify
-            //Tool.Main(wsdlArguments.ToString().Split(new Char[] { ' ' }));
-            //Tool.Main(singleWsdlArguments.ToString().Split(new Char[] { ' ' }));
-            //return CompareFile(wsdlGeneratedFile, singleWsdlGeneratedFile, null, false);
-
-            return true; //to unblock test run
+            Tool.Main(wsdlArguments.ToString().Split(new Char[] { ' ' }));
+            Tool.Main(singleWsdlArguments.ToString().Split(new Char[] { ' ' }));
+            return CompareFile(wsdlGeneratedFile, singleWsdlGeneratedFile, null, false);
         }
 
         catch
@@ -125,7 +123,7 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
-    #region Result validator
+#region Result validator
     static string[] FilteredWords = new string[]
         {
             "System.Xml.Serialization.XmlSerializerVersionAttribute",
@@ -156,12 +154,10 @@ public static partial class XmlSerializerFormatTests
         }
         catch (FileNotFoundException)
         {
-            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
             return false;
         }
         catch (DirectoryNotFoundException)
         {
-            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
             return false;
         }
 
@@ -171,15 +167,12 @@ public static partial class XmlSerializerFormatTests
         }
         catch (FileNotFoundException)
         {
-            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
             return false;
         }
         catch (DirectoryNotFoundException)
-        {
-            //Log.Error(string.Format("{0}: {1}", e.GetType(), e.Message));
+        {            
             return false;
         }
-
 
         if (runFilter)
         {
@@ -194,10 +187,10 @@ public static partial class XmlSerializerFormatTests
             File.WriteAllLines(string.Format(@"{0}\expected.txt", toolsBinDir), expected);
         }
 
-        //Log.Info("Validating files: \n{0}\nand\n{1}", expectedFile, generatedFile);
+        // Validating generatedFile
         bool filesMatch = true;
 
-        // sort lines to have a normalized version
+        // Sort lines to have a normalized version
         Array.Sort(generated);
         Array.Sort(expected);
 
@@ -211,7 +204,6 @@ public static partial class XmlSerializerFormatTests
         // don't bother comparing the files
         if (expected.Length != generated.Length)
         {
-            //Log.Error("File lengths DON'T match");
             return false;
         }
 
@@ -220,13 +212,9 @@ public static partial class XmlSerializerFormatTests
             if (string.Compare(expected[i], generated[i], StringComparison.CurrentCulture) != 0)
             {
                 filesMatch = false;
-                //Log.Error("Comparison mismatch at line {2}:\nExpected:\n{0} \nActual:\n{1}", expected[i], generated[i], i + 1);
             }
         }
-        if (filesMatch)
-        {
-            //Log.Info("PASS: Files match");
-        }
+
         return filesMatch;
     }
 
@@ -249,6 +237,7 @@ public static partial class XmlSerializerFormatTests
                     {
                         result.Add(line);
                     }
+
                     else
                     {
                         result.Add(line.Remove(line.IndexOf('{')).TrimEnd());
@@ -264,13 +253,17 @@ public static partial class XmlSerializerFormatTests
                                 break;
                             }
                         }
+
                         builder.Append('{');
                         result.Add(builder.ToString());
                     }
                 }
             }
         }
+
         return result.ToArray();
     }
     #endregion
+
+#endif
 }
