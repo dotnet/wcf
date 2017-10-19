@@ -5,13 +5,16 @@
 
 using System;
 using System.ServiceModel;
-using System.Threading.Tasks;
 
 namespace WcfService
 {
     [ServiceContract(Namespace = "http://contoso.com/calc")]
     public interface ICalculator
     {
+
+        [OperationContract]
+        int Sum2(int i, int j);
+
         [OperationContract]
         int Sum(IntParams par);
 

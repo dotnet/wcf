@@ -645,6 +645,9 @@ public interface IXmlSFAttribute
 public interface ICalculator
 {
     [OperationContract]
+    int Sum2(int i, int j);
+
+    [OperationContract]
     int Sum(IntParams par);
 
     [OperationContract]
@@ -664,7 +667,7 @@ public interface ICalculator
 }
 
 [ServiceContract]
-interface IHelloWorld
+public interface IHelloWorld
 {
     [OperationContract]
     void SayHello(string name);

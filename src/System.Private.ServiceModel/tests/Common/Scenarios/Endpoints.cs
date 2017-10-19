@@ -96,32 +96,32 @@ public static partial class Endpoints
 
     public static string BasciHttpRpcEncSingleNs_Address
     {
-        get { return GetEndpointAddress("BasciHttpRpcEncSingleNs.svc"); }
+        get { return GetEndpointAddress("BasicHttpRpcEncSingleNs.svc//Basic"); }
     }
 
     public static string BasicHttpRpcLitSingleNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcLitSingleNs.svc"); }
+        get { return GetEndpointAddress("BasicHttpRpcLitSingleNs.svc//Basic"); }
     }
 
     public static string BasicHttpDocLitSingleNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpDocLitSingleNs.svc"); }
+        get { return GetEndpointAddress("BasicHttpDocLitSingleNs.svc//Basic"); }
     }
 
     public static string BasicHttpRpcEncMultiNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcEncMultiNs.svc"); }
+        get { return GetEndpointAddress("BasicHttpRpcEncMultiNs.svc//Basic"); }
     }
 
     public static string BasicHttpRpcLitMultiNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcLitMultiNs.svc"); }
+        get { return GetEndpointAddress("BasicHttpRpcLitMultiNs.svc//Basic"); }
     }
 
     public static string BasicHttpDocLitMultiNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpDocLitMultiNs.svc"); }
+        get { return GetEndpointAddress("BasicHttpDocLitMultiNs.svc//Basic"); }
     }
 
     #region WebSocket Addresses

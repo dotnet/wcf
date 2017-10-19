@@ -7,10 +7,6 @@ using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
 using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 public static partial class XmlSerializerFormatTests
 {
@@ -74,196 +70,70 @@ public static partial class XmlSerializerFormatTests
         }
     }
 
-#if SVCUTILTESTS
     [WcfFact]
     [OuterLoop]
     public static void XmlSFAttributeWsdlTest()
     {
-        //single contract namespace
-        Assert.True(RunVariation(Endpoints.BasciHttpRpcEncSingleNs_Address));
-        Assert.True(RunVariation(Endpoints.BasicHttpRpcLitSingleNs_Address));
-        Assert.True(RunVariation(Endpoints.BasicHttpDocLitSingleNs_Address));
-
-        //multiple binding namespaces : not implement test
-
-        //multiple contract namesapaces : not implement negative test, svcutil on ?singlewsdl should fail
+        RunVariation(Endpoints.BasciHttpRpcEncSingleNs_Address);
+        RunVariation(Endpoints.BasicHttpRpcLitSingleNs_Address);
+        RunVariation(Endpoints.BasicHttpDocLitSingleNs_Address);
+        RunVariation(Endpoints.BasicHttpRpcEncMultiNs_Address, true);
+        RunVariation(Endpoints.BasicHttpRpcLitMultiNs_Address, true);
+        RunVariation(Endpoints.BasicHttpDocLitMultiNs_Address, true);
     }
 
-    private static bool RunVariation(string serviceAddress)
+    private static void RunVariation(string serviceAddress, bool isMultiNs = false)
     {
-        string wsdlGeneratedFile = $"{new Guid()}\\wsdlGened.cs";
-        string singleWsdlGeneratedFile = $"{new Guid()}\\SingleWsdlGened.cs";
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<ICalculator> factory1 = null;
+        ChannelFactory<IHelloWorld> factory2 = null;
+        ICalculator serviceProxy1 = null;
+        IHelloWorld serviceProxy2 = null;
 
-        try
-        {    
-            string wsdlArguments = $"{serviceAddress}?wsdl /syncOnly /noConfig /ser:XmlSerializer /o:{wsdlGeneratedFile}";
-            string singleWsdlArguments = $"{serviceAddress}?singleWsdl /syncOnly /noConfig /ser:XmlSerializer /o:{singleWsdlGeneratedFile}";
-
-            Tool.Main(wsdlArguments.ToString().Split(new Char[] { ' ' }));
-            Tool.Main(singleWsdlArguments.ToString().Split(new Char[] { ' ' }));
-            return CompareFile(wsdlGeneratedFile, singleWsdlGeneratedFile, null, false);
-        }
-
-        catch
+        // *** SETUP *** \\
+        binding = new BasicHttpBinding();
+        endpointAddress = new EndpointAddress(serviceAddress);
+        factory1 = new ChannelFactory<ICalculator>(binding, endpointAddress);
+        serviceProxy1 = factory1.CreateChannel();
+        if (isMultiNs)
         {
-            return false;
+            factory2 = new ChannelFactory<IHelloWorld>(binding, endpointAddress);
+            serviceProxy2 = factory2.CreateChannel();
         }
 
+        // *** EXECUTE Variation *** \\
+        try
+        {
+            var intParam = new IntParams() { p1 = 5, p2 = 10 };
+            var floatParam = new FloatParams() { p1 = 5.0f, p2 = 10.0f };
+            var byteParam = new ByteParams() { p1 = 5, p2 = 10 };
+
+            Assert.Equal(3, serviceProxy1.Sum2(1, 2));
+            Assert.Equal(intParam.p1 + intParam.p2, serviceProxy1.Sum(intParam));
+            Assert.Equal(string.Format("{0}{1}", intParam.p1, intParam.p2), serviceProxy1.Concatenate(intParam));
+            Assert.Equal((float)(floatParam.p1 / floatParam.p2), serviceProxy1.Divide(floatParam));
+            Assert.Equal((new byte[] { byteParam.p1, byteParam.p2 }), serviceProxy1.CreateSet(byteParam));
+            Assert.Equal(DateTime.Now.Date, serviceProxy1.GetCurrentDateTime().Date);
+            serviceProxy1.DoSomething(intParam);
+
+            if (isMultiNs)
+            {
+                serviceProxy2.SayHello("test string");
+            }
+        }
+        catch (Exception ex)
+        {
+            Assert.True(false, ex.Message);
+        }
         finally
         {
-            if (File.Exists(wsdlGeneratedFile))
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy1);
+            if (isMultiNs)
             {
-                File.Delete(wsdlGeneratedFile);
-            }
-
-            if (File.Exists(singleWsdlGeneratedFile))
-            {
-                File.Delete(singleWsdlGeneratedFile);
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy2);
             }
         }
-    }
-
-#region Result validator
-    static string[] FilteredWords = new string[]
-        {
-            "System.Xml.Serialization.XmlSerializerVersionAttribute",
-            "System.Reflection.AssemblyVersionAttribute",
-            @"//------------------",
-            @"\[Microsoft",
-            @"^//.*:[0-9]\.[0-9]\.[0-9][0-9][0-9][0-9][0-9]\.[0-9][0-9]",
-            @",^'.*:[0-9]\.[0-9]\.[0-9][0-9][0-9][0-9][0-9]\.[0-9][0-9]",
-            "Runtime Version",
-            "System.CodeDom.Compiler.GeneratedCodeAttribute",
-            "userPrincipalName",
-            "^[0-9][0-9]*.[0-9][0-9]*",
-            "^---",
-            @"^//",
-            "^'"
-        };
-    static Regex filter = new Regex(string.Join("|", FilteredWords));
-    static Regex bracketFilter = new Regex(@"[\d\w\@\(\)]+[\s]*\{$");
-
-    private static bool CompareFile(string expectedFile, string generatedFile, string toolsBinDir, bool runFilter)
-    {
-        string[] expected;
-        string[] generated;
-
-        try
-        {
-            expected = File.ReadAllLines(expectedFile);
-        }
-        catch (FileNotFoundException)
-        {
-            return false;
-        }
-        catch (DirectoryNotFoundException)
-        {
-            return false;
-        }
-
-        try
-        {
-            generated = File.ReadAllLines(generatedFile);
-        }
-        catch (FileNotFoundException)
-        {
-            return false;
-        }
-        catch (DirectoryNotFoundException)
-        {            
-            return false;
-        }
-
-        if (runFilter)
-        {
-            expected = RunWordFilter(expected);
-            generated = RunWordFilter(generated);
-        }
-
-        if (!string.IsNullOrEmpty(toolsBinDir))
-        {
-            // Saving the filtered versions of the code for debugging purposes
-            File.WriteAllLines(string.Format(@"{0}\generated.txt", toolsBinDir), generated);
-            File.WriteAllLines(string.Format(@"{0}\expected.txt", toolsBinDir), expected);
-        }
-
-        // Validating generatedFile
-        bool filesMatch = true;
-
-        // Sort lines to have a normalized version
-        Array.Sort(generated);
-        Array.Sort(expected);
-
-        if (!string.IsNullOrEmpty(toolsBinDir))
-        {
-            // Saving the sorted versions of the code for debugging purposes
-            File.WriteAllLines(string.Format(@"{0}\generatedSorted.txt", toolsBinDir), generated);
-            File.WriteAllLines(string.Format(@"{0}\expectedSorted.txt", toolsBinDir), expected);
-        }
-
-        // don't bother comparing the files
-        if (expected.Length != generated.Length)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < expected.Length; i++)
-        {
-            if (string.Compare(expected[i], generated[i], StringComparison.CurrentCulture) != 0)
-            {
-                filesMatch = false;
-            }
-        }
-
-        return filesMatch;
-    }
-
-    private static string[] RunWordFilter(string[] text)
-    {
-        List<string> result = new List<string>();
-        foreach (string line in text)
-        {
-            if (!string.IsNullOrWhiteSpace(line))
-            {
-                // get rid of the non-relevant sections that can cause conflicts
-                if (!filter.Match(line).Success)
-                {
-                    // Turn lines like this: 
-                    // class MyClass {
-                    // into this:
-                    // class MyClass
-                    // {
-                    if (!bracketFilter.Match(line).Success)
-                    {
-                        result.Add(line);
-                    }
-
-                    else
-                    {
-                        result.Add(line.Remove(line.IndexOf('{')).TrimEnd());
-                        StringBuilder builder = new StringBuilder();
-                        foreach (char c in line.ToCharArray())
-                        {
-                            if (Char.IsWhiteSpace(c))
-                            {
-                                builder.Append(c);
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-
-                        builder.Append('{');
-                        result.Add(builder.ToString());
-                    }
-                }
-            }
-        }
-
-        return result.ToArray();
-    }
-    #endregion
-
-#endif
+    } 
 }

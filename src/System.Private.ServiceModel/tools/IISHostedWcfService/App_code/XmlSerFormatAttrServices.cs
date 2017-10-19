@@ -13,6 +13,13 @@ namespace WcfService
     {
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+        public int Sum2(int i, int j)
+        {
+            return i + j;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public int Sum(IntParams par)
         {
             return par.p1 + par.p2;
@@ -36,7 +43,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public void DoSomething(IntParams par)
         {
-            Console.WriteLine("Inside DoSomething method...params: {0} {1}", par.p1, par.p2);
+            Console.WriteLine("From RpcEncSingleNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
         }
 
         [OperationBehavior]
@@ -59,6 +66,13 @@ namespace WcfService
     {
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
+        public int Sum2(int i, int j)
+        {
+            return i + j;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
             return par.p1 + par.p2;
@@ -82,7 +96,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public void DoSomething(IntParams par)
         {
-            Console.WriteLine("Inside DoSomething method...params: {0} {1}", par.p1, par.p2);
+            Console.WriteLine("From RpcLitSingleNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
         }
 
         [OperationBehavior]
@@ -105,6 +119,13 @@ namespace WcfService
     {
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
+        public int Sum2(int i, int j)
+        {
+            return i + j;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
             return par.p1 + par.p2;
@@ -128,7 +149,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public void DoSomething(IntParams par)
         {
-            Console.WriteLine("Inside DoSomething method...params: {0} {1}", par.p1, par.p2);
+            Console.WriteLine("From DocLitSingleNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
         }
 
         [OperationBehavior]
@@ -151,6 +172,13 @@ namespace WcfService
     {
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+        public int Sum2(int i, int j)
+        {
+            return i + j;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public int Sum(IntParams par)
         {
             return par.p1 + par.p2;
@@ -174,7 +202,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public void DoSomething(IntParams par)
         {
-            Console.WriteLine("Inside DoSomething method...params: {0} {1}", par.p1, par.p2);
+            Console.WriteLine("From RpcEncMultiNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
         }
 
         [OperationBehavior]
@@ -195,7 +223,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public void SayHello(string name)
         {
-            Console.WriteLine("Hello {0}", name);
+            Console.WriteLine("From RpcLitMultiNsService, inside SayHello method, you entered: {0}", name);
         }
     }
 
@@ -204,6 +232,13 @@ namespace WcfService
     {
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
+        public int Sum2(int i, int j)
+        {
+            return i + j;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
             return par.p1 + par.p2;
@@ -227,7 +262,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public void DoSomething(IntParams par)
         {
-            Console.WriteLine("Inside DoSomething method...params: {0} {1}", par.p1, par.p2);
+            Console.WriteLine("From RpcLitMultiNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
         }
 
         [OperationBehavior]
@@ -248,7 +283,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public void SayHello(string name)
         {
-            Console.WriteLine("Hello {0}", name);
+            Console.WriteLine("From RpcLitMultiNsService, inside SayHello method, you entered: {0}", name);
         }
     }
 
@@ -257,6 +292,13 @@ namespace WcfService
     {
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
+        public int Sum2(int i, int j)
+        {
+            return i + j;
+        }
+
+        [OperationBehavior]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public int Sum(IntParams par)
         {
             return par.p1 + par.p2;
@@ -280,7 +322,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public void DoSomething(IntParams par)
         {
-            Console.WriteLine("Inside DoSomething method...params: {0} {1}", par.p1, par.p2);
+            Console.WriteLine("From DocLitMultiNsService inside DoSomething method, params: {0} {1}", par.p1, par.p2);
         }
 
         [OperationBehavior]
@@ -301,7 +343,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public void SayHello(string name)
         {
-            Console.WriteLine("Hello {0}", name);
+            Console.WriteLine("From DocLitMultiNsService, inside SayHello method, you entered: {0}", name);
         }
     }
 }
