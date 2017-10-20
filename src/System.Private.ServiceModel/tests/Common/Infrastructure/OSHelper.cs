@@ -79,6 +79,10 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("Darwin 15", OSID.OSX_10_11),
             new Tuple<string, OSID>("Darwin 16", OSID.OSX_10_12),
             new Tuple<string, OSID>("Darwin", OSID.AnyOSX),
+            new Tuple<string, OSID>("Debian", OSID.AnyDebian),
+            new Tuple<string, OSID>("generic", OSID.AnyUbuntu),
+            new Tuple<string, OSID>("3.10.0-229.11.1.el7.x86_64", OSID.CentOS_7_1),
+            new Tuple<string, OSID>("3.10.0-327.el7.x86_64", OSID.RHEL_7),
         };
 
         private static string CurrentOSDescription
