@@ -8,36 +8,35 @@ using System.ServiceModel;
 
 namespace WcfService
 {
-    [ServiceContract(Namespace = "http://contoso.com/calc")]
+    [ServiceContract(Namespace = "http://contoso.com/calc"), XmlSerializerFormat]
     public interface ICalculator
     {
-
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         int Sum2(int i, int j);
 
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         int Sum(IntParams par);
 
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         float Divide(FloatParams par);
 
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         string Concatenate(IntParams par);
 
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         void DoSomething(IntParams par);
 
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         DateTime GetCurrentDateTime();
 
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         byte[] CreateSet(ByteParams par);
     }
 
-    [ServiceContract]
+    [ServiceContract, XmlSerializerFormat]
     public interface IHelloWorld
     {
-        [OperationContract]
+        [OperationContract, XmlSerializerFormat]
         void SayHello(string name);
     }
 
