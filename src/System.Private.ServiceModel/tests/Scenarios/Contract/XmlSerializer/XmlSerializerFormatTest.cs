@@ -69,4 +69,111 @@ public static partial class XmlSerializerFormatTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcEncSingleNsTest()
+    {
+        RunVariation(Endpoints.BasciHttpRpcEncSingleNs_Address);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcLitSingleNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpRpcLitSingleNs_Address);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeDocLitSingleNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpDocLitSingleNs_Address);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcEncDualNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpRpcEncDualNs_Address, true);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcLitDualNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpRpcLitDualNs_Address, true);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeDocLitDualNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpDocLitDualNs_Address, true);
+    }
+
+    private static void RunVariation(string serviceAddress, bool isMultiNs = false)
+    {
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<ICalculator> factory1 = null;
+        ChannelFactory<IHelloWorld> factory2 = null;
+        ICalculator serviceProxy1 = null;
+        IHelloWorld serviceProxy2 = null;
+
+        // *** SETUP *** \\
+        binding = new BasicHttpBinding();
+        endpointAddress = new EndpointAddress(serviceAddress);
+        factory1 = new ChannelFactory<ICalculator>(binding, endpointAddress);
+        serviceProxy1 = factory1.CreateChannel();
+        if (isMultiNs)
+        {
+            factory2 = new ChannelFactory<IHelloWorld>(binding, endpointAddress);
+            serviceProxy2 = factory2.CreateChannel();
+        }
+
+        // *** EXECUTE Variation *** \\
+        try
+        {
+            var dateTime = DateTime.Now;
+            string testStr = "test string";
+            var intParams = new IntParams() { P1 = 5, P2 = 10 };
+            var floatParams = new FloatParams() { P1 = 5.0f, P2 = 10.0f };
+            var byteParams = new ByteParams() { P1 = 5, P2 = 10 };
+
+            Assert.Equal(3, serviceProxy1.Sum2(1, 2));
+            Assert.Equal(intParams.P1 + intParams.P2, serviceProxy1.Sum(intParams));
+            Assert.Equal(string.Format("{0}{1}", intParams.P1, intParams.P2), serviceProxy1.Concatenate(intParams));
+            Assert.Equal((float)(floatParams.P1 / floatParams.P2), serviceProxy1.Divide(floatParams));
+            Assert.Equal((new byte[] { byteParams.P1, byteParams.P2 }), serviceProxy1.CreateSet(byteParams));
+            Assert.Equal(dateTime, serviceProxy1.ReturnInputDateTime(dateTime));
+
+            Assert.Null(serviceProxy1.GetIntParamsProperty());
+            serviceProxy1.SetIntParamsProperty(intParams);
+            IntParams intParamsProp = serviceProxy1.GetIntParamsProperty();
+            Assert.NotNull(intParamsProp);
+            Assert.Equal(intParams.P1, intParamsProp.P1);
+            Assert.Equal(intParams.P2, intParamsProp.P2);
+
+            if (isMultiNs)
+            {
+                Assert.Equal(null, serviceProxy2.GetStringField());
+                serviceProxy2.SetStringField(testStr);
+                Assert.Equal(testStr, serviceProxy2.GetStringField());
+            }
+        }
+        catch (Exception ex)
+        {
+            Assert.True(false, ex.Message);
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy1);
+            if (isMultiNs)
+            {
+                ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy2);
+            }
+        }
+    } 
 }
