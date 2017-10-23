@@ -109,19 +109,19 @@ public static partial class Endpoints
         get { return GetEndpointAddress("BasicHttpDocLitSingleNs.svc//Basic"); }
     }
 
-    public static string BasicHttpRpcEncMultiNs_Address
+    public static string BasicHttpRpcEncDualNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcEncMultiNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpRpcEncDualNs.svc//Basic"); }
     }
 
-    public static string BasicHttpRpcLitMultiNs_Address
+    public static string BasicHttpRpcLitDualNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpRpcLitMultiNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpRpcLitDualNs.svc//Basic"); }
     }
 
-    public static string BasicHttpDocLitMultiNs_Address
+    public static string BasicHttpDocLitDualNs_Address
     {
-        get { return GetEndpointAddress("BasicHttpDocLitMultiNs.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttpDocLitDualNs.svc//Basic"); }
     }
 
     #region WebSocket Addresses

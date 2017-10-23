@@ -72,14 +72,44 @@ public static partial class XmlSerializerFormatTests
 
     [WcfFact]
     [OuterLoop]
-    public static void XmlSFAttributeWsdlTest()
+    public static void XmlSFAttributeRpcEncSingleNsTest()
     {
         RunVariation(Endpoints.BasciHttpRpcEncSingleNs_Address);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcLitSingleNsTest()
+    {
         RunVariation(Endpoints.BasicHttpRpcLitSingleNs_Address);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeDocLitSingleNsTest()
+    {
         RunVariation(Endpoints.BasicHttpDocLitSingleNs_Address);
-        RunVariation(Endpoints.BasicHttpRpcEncMultiNs_Address, true);
-        RunVariation(Endpoints.BasicHttpRpcLitMultiNs_Address, true);
-        RunVariation(Endpoints.BasicHttpDocLitMultiNs_Address, true);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcEncDualNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpRpcEncDualNs_Address, true);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcLitDualNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpRpcLitDualNs_Address, true);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeDocLitDualNsTest()
+    {
+        RunVariation(Endpoints.BasicHttpDocLitDualNs_Address, true);
     }
 
     private static void RunVariation(string serviceAddress, bool isMultiNs = false)
@@ -105,21 +135,31 @@ public static partial class XmlSerializerFormatTests
         // *** EXECUTE Variation *** \\
         try
         {
-            var intParam = new IntParams() { p1 = 5, p2 = 10 };
-            var floatParam = new FloatParams() { p1 = 5.0f, p2 = 10.0f };
-            var byteParam = new ByteParams() { p1 = 5, p2 = 10 };
+            var dateTime = DateTime.Now;
+            string testStr = "test string";
+            var intParams = new IntParams() { P1 = 5, P2 = 10 };
+            var floatParams = new FloatParams() { P1 = 5.0f, P2 = 10.0f };
+            var byteParams = new ByteParams() { P1 = 5, P2 = 10 };
 
             Assert.Equal(3, serviceProxy1.Sum2(1, 2));
-            Assert.Equal(intParam.p1 + intParam.p2, serviceProxy1.Sum(intParam));
-            Assert.Equal(string.Format("{0}{1}", intParam.p1, intParam.p2), serviceProxy1.Concatenate(intParam));
-            Assert.Equal((float)(floatParam.p1 / floatParam.p2), serviceProxy1.Divide(floatParam));
-            Assert.Equal((new byte[] { byteParam.p1, byteParam.p2 }), serviceProxy1.CreateSet(byteParam));
-            Assert.Equal(DateTime.Now.Date, serviceProxy1.GetCurrentDateTime().Date);
-            serviceProxy1.DoSomething(intParam);
+            Assert.Equal(intParams.P1 + intParams.P2, serviceProxy1.Sum(intParams));
+            Assert.Equal(string.Format("{0}{1}", intParams.P1, intParams.P2), serviceProxy1.Concatenate(intParams));
+            Assert.Equal((float)(floatParams.P1 / floatParams.P2), serviceProxy1.Divide(floatParams));
+            Assert.Equal((new byte[] { byteParams.P1, byteParams.P2 }), serviceProxy1.CreateSet(byteParams));
+            Assert.Equal(dateTime, serviceProxy1.ReturnInputDateTime(dateTime));
+
+            Assert.Null(serviceProxy1.GetIntParamsProperty());
+            serviceProxy1.SetIntParamsProperty(intParams);
+            IntParams intParamsProp = serviceProxy1.GetIntParamsProperty();
+            Assert.NotNull(intParamsProp);
+            Assert.Equal(intParams.P1, intParamsProp.P1);
+            Assert.Equal(intParams.P2, intParamsProp.P2);
 
             if (isMultiNs)
             {
-                serviceProxy2.SayHello("test string");
+                Assert.Equal(null, serviceProxy2.GetStringField());
+                serviceProxy2.SetStringField(testStr);
+                Assert.Equal(testStr, serviceProxy2.GetStringField());
             }
         }
         catch (Exception ex)

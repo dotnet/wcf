@@ -657,10 +657,13 @@ public interface ICalculator
     string Concatenate(IntParams par);
 
     [OperationContract, XmlSerializerFormat]
-    void DoSomething(IntParams par);
+    void SetIntParamsProperty(IntParams par);
 
     [OperationContract, XmlSerializerFormat]
-    DateTime GetCurrentDateTime();
+    IntParams GetIntParamsProperty();
+
+    [OperationContract, XmlSerializerFormat]
+    DateTime ReturnInputDateTime(DateTime dt);
 
     [OperationContract, XmlSerializerFormat]
     byte[] CreateSet(ByteParams par);
@@ -670,23 +673,26 @@ public interface ICalculator
 public interface IHelloWorld
 {
     [OperationContract, XmlSerializerFormat]
-    void SayHello(string name);
+    void SetStringField(string testString);
+
+    [OperationContract, XmlSerializerFormat]
+    string GetStringField();
 }
 
 public class IntParams
 {
-    public int p1;
-    public int p2;
+    public int P1;
+    public int P2;
 }
 
 public class FloatParams
 {
-    public float p1;
-    public float p2;
+    public float P1;
+    public float P2;
 }
 
 public class ByteParams
 {
-    public byte p1;
-    public byte p2;
+    public byte P1;
+    public byte P2;
 }
