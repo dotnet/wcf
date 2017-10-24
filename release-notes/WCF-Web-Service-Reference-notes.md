@@ -4,6 +4,12 @@ WCF Web Service Reference connected services provider is now part of Visual Stud
 
 ## Release History
 
+### 10/23/2017 - Visual Studio 2017 v15.5 Preview 2.0 [27019.01.d15rel]
+
+* User interface improvements, for example, added UI to display service operations of selected service to help selecting the right service when multiple similar services are available.
+* Fixed an issue with error message "It was not possible to find any compatible framework version..." which can happen when .NET Core 1.0 SDK is not installed ([#2340](https://github.com/dotnet/wcf/issues/2340)).
+* Other bug fixes.
+
 ### 10/11/2017 - Visual Studio 2017 v15.5 Preview 1.0 [27009.1.d15rel]
 
 * WCF Web Service Reference connected services provider is included in VS 2017 starting with this release.
