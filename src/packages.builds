@@ -24,8 +24,21 @@
 
   <ItemGroup Condition="'$(BuildAllPackages)' == 'false' AND '$(SkipManagedPackageBuild)' != 'true'" >
     <!-- add specific builds / pkgproj's here to include in servicing builds -->
-    
-    
+    <Project Include="System.ServiceModel.Duplex\pkg\System.ServiceModel.Duplex.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="System.ServiceModel.Http\pkg\System.ServiceModel.Http.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="System.ServiceModel.NetTcp\pkg\System.ServiceModel.NetTcp.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="System.ServiceModel.Primitives\pkg\System.ServiceModel.Primitives.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="System.ServiceModel.Security\pkg\System.ServiceModel.Security.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
   </ItemGroup>
 
   <UsingTask TaskName="GenerateNetStandardSupportTable" AssemblyFile="$(PackagingTaskDir)Microsoft.DotNet.Build.Tasks.Packaging.dll" />
