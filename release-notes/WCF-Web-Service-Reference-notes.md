@@ -6,8 +6,9 @@ WCF Web Service Reference connected services provider is now part of Visual Stud
 
 ### 10/23/2017 - Visual Studio 2017 v15.5 Preview 2.0 [27019.01.d15rel]
 
-* User interface improvements, for example, added UI to display service operations of selected service to help selecting the right service when multiple similar services are available.
+* User interface improvements, for example, added UI to display operations of selected service to help selecting the right service when multiple similar services are available.
 * Fixed an issue with error message "It was not possible to find any compatible framework version..." which can happen when .NET Core 1.0 SDK is not installed ([#2340](https://github.com/dotnet/wcf/issues/2340)).
+* Fixed an issue with error message “the service at following uri does not have a valid endpoint” which can happen when a wsdl file imports other wsdl/schema documents ([#2254](https://github.com/dotnet/wcf/issues/2254)).
 * Other bug fixes.
 
 ### 10/11/2017 - Visual Studio 2017 v15.5 Preview 1.0 [27009.1.d15rel]
