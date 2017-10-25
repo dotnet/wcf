@@ -148,6 +148,7 @@ public static partial class XmlSerializerFormatTests
             Assert.Equal((new byte[] { byteParams.P1, byteParams.P2 }), serviceProxy1.CreateSet(byteParams));
             Assert.Equal(dateTime, serviceProxy1.ReturnInputDateTime(dateTime));
 
+            serviceProxy1.SetIntParamsProperty(null);
             Assert.Null(serviceProxy1.GetIntParamsProperty());
             serviceProxy1.SetIntParamsProperty(intParams);
             IntParams intParamsProp = serviceProxy1.GetIntParamsProperty();
@@ -157,7 +158,8 @@ public static partial class XmlSerializerFormatTests
 
             if (isMultiNs)
             {
-                Assert.Equal(null, serviceProxy2.GetStringField());
+                serviceProxy2.SetStringField(null);
+                Assert.Null(serviceProxy2.GetStringField());
                 serviceProxy2.SetStringField(testStr);
                 Assert.Equal(testStr, serviceProxy2.GetStringField());
             }
@@ -174,6 +176,6 @@ public static partial class XmlSerializerFormatTests
             {
                 ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy2);
             }
-        }
+        }        
     } 
 }
