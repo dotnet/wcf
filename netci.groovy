@@ -200,15 +200,8 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
                     }
                 }
             }
-            else if (isPR) {
-                newJob.with {
-                    steps {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()}")
-                        shell("HOME=\$WORKSPACE/tempHome ./build-tests.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=\$WcfServiceUri /p:SSL_Available=true /p:IsCIBuild=true")
-                    }
-                }
-            }
-            //Enable Certificate Tests on non PR runs first to ensure they are reliable, will enable on PR if we are green for one week
+            // We have enabled all certificate tests except peer trust tests on linux OSs. Enabling peer trust tests on Linux OSs
+            // needs further investigations.
             else {
                 newJob.with {
                     steps {
