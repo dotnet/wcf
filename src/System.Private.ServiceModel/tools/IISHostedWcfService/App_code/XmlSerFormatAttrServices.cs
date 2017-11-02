@@ -56,8 +56,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as IntParams;
         }
 
@@ -123,8 +122,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as IntParams;
         }
 
@@ -190,8 +188,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as IntParams;
         }
 
@@ -257,8 +254,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as IntParams;
         }
 
@@ -290,8 +286,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
         public string GetAndRemoveString(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as string;
         }
     }
@@ -343,8 +338,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as IntParams;
         }
 
@@ -376,8 +370,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
         public string GetAndRemoveString(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as string;
         }
     }
@@ -429,8 +422,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as IntParams;
         }
 
@@ -462,8 +454,7 @@ namespace WcfService
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
         public string GetAndRemoveString(Guid guid)
         {
-            object value;
-            s_sessions.TryRemove(guid, out value);
+            s_sessions.TryRemove(guid, out object value);
             return value as string;
         }
     }
