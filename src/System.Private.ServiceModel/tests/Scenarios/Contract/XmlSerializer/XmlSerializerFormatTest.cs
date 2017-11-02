@@ -148,7 +148,6 @@ public static partial class XmlSerializerFormatTests
             Assert.Equal((new byte[] { byteParams.P1, byteParams.P2 }), serviceProxy1.CreateSet(byteParams));
             Assert.Equal(dateTime, serviceProxy1.ReturnInputDateTime(dateTime));
 
-
             Guid guid = Guid.NewGuid();
             serviceProxy1.AddIntParams(guid, intParams);
             IntParams outputIntParams = serviceProxy1.GetAndRemoveIntParams(guid);
