@@ -657,10 +657,10 @@ public interface ICalculator
     string Concatenate(IntParams par);
 
     [OperationContract, XmlSerializerFormat]
-    void SetIntParamsProperty(IntParams par);
+    void AddIntParams(Guid guid, IntParams par);
 
     [OperationContract, XmlSerializerFormat]
-    IntParams GetIntParamsProperty();
+    IntParams GetAndRemoveIntParams(Guid guid);
 
     [OperationContract, XmlSerializerFormat]
     DateTime ReturnInputDateTime(DateTime dt);
@@ -673,10 +673,10 @@ public interface ICalculator
 public interface IHelloWorld
 {
     [OperationContract, XmlSerializerFormat]
-    void SetStringField(string testString);
+    void AddString(Guid guid, string testString);
 
     [OperationContract, XmlSerializerFormat]
-    string GetStringField();
+    string GetAndRemoveString(Guid guid);
 }
 
 public class IntParams

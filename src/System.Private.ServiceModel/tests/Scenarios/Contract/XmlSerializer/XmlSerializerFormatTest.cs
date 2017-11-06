@@ -148,20 +148,18 @@ public static partial class XmlSerializerFormatTests
             Assert.Equal((new byte[] { byteParams.P1, byteParams.P2 }), serviceProxy1.CreateSet(byteParams));
             Assert.Equal(dateTime, serviceProxy1.ReturnInputDateTime(dateTime));
 
-            serviceProxy1.SetIntParamsProperty(null);
-            Assert.Null(serviceProxy1.GetIntParamsProperty());
-            serviceProxy1.SetIntParamsProperty(intParams);
-            IntParams intParamsProp = serviceProxy1.GetIntParamsProperty();
-            Assert.NotNull(intParamsProp);
-            Assert.Equal(intParams.P1, intParamsProp.P1);
-            Assert.Equal(intParams.P2, intParamsProp.P2);
+            Guid guid = Guid.NewGuid();
+            serviceProxy1.AddIntParams(guid, intParams);
+            IntParams outputIntParams = serviceProxy1.GetAndRemoveIntParams(guid);
+            Assert.NotNull(outputIntParams);
+            Assert.Equal(intParams.P1, outputIntParams.P1);
+            Assert.Equal(intParams.P2, outputIntParams.P2);
 
             if (isMultiNs)
             {
-                serviceProxy2.SetStringField(null);
-                Assert.Null(serviceProxy2.GetStringField());
-                serviceProxy2.SetStringField(testStr);
-                Assert.Equal(testStr, serviceProxy2.GetStringField());
+                Guid guid2 = Guid.NewGuid();
+                serviceProxy2.AddString(guid2, testStr);                
+                Assert.Equal(testStr, serviceProxy2.GetAndRemoveString(guid2));
             }
         }
         catch (Exception ex)

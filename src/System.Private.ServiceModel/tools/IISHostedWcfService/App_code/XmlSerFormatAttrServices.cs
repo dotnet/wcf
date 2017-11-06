@@ -4,6 +4,7 @@
 
 
 using System;
+using System.Collections.Concurrent;
 using System.ServiceModel;
 
 namespace WcfService
@@ -11,7 +12,7 @@ namespace WcfService
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class RpcEncSingleNsService : ICalculator
     {
-        public static IntParams IntParamsProp { get; set; }
+        private static ConcurrentDictionary<Guid, object> s_sessions = new ConcurrentDictionary<Guid, object>();
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
@@ -43,16 +44,21 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public void SetIntParamsProperty(IntParams par)
+        public void AddIntParams(Guid guid, IntParams par)
         {
-            IntParamsProp = par;
+            if (!s_sessions.TryAdd(guid, par))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }                
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public IntParams GetIntParamsProperty()
+        public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            return IntParamsProp;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as IntParams;
         }
 
         [OperationBehavior]
@@ -73,7 +79,7 @@ namespace WcfService
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class RpcLitSingleNsService : ICalculator
     {
-        public static IntParams IntParamsProp { get; set; }
+        private static ConcurrentDictionary<Guid, object> s_sessions = new ConcurrentDictionary<Guid, object>();
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
@@ -105,16 +111,21 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public void SetIntParamsProperty(IntParams par)
+        public void AddIntParams(Guid guid, IntParams par)
         {
-            IntParamsProp = par;
+            if (!s_sessions.TryAdd(guid, par))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public IntParams GetIntParamsProperty()
+        public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            return IntParamsProp;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as IntParams;
         }
 
         [OperationBehavior]
@@ -135,7 +146,7 @@ namespace WcfService
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class DocLitSingleNsService : ICalculator
     {
-        public static IntParams IntParamsProp { get; set; }
+        private static ConcurrentDictionary<Guid, object> s_sessions = new ConcurrentDictionary<Guid, object>();
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
@@ -167,16 +178,21 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public void SetIntParamsProperty(IntParams par)
+        public void AddIntParams(Guid guid, IntParams par)
         {
-            IntParamsProp = par;
+            if (!s_sessions.TryAdd(guid, par))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public IntParams GetIntParamsProperty()
+        public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            return IntParamsProp;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as IntParams;
         }
 
         [OperationBehavior]
@@ -197,8 +213,7 @@ namespace WcfService
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class RpcEncDualNsService : ICalculator, IHelloWorld
     {
-        public static IntParams IntParamsProp { get; set; }
-        public static string StringField;
+        private static ConcurrentDictionary<Guid, object> s_sessions = new ConcurrentDictionary<Guid, object>();
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
@@ -230,16 +245,21 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public void SetIntParamsProperty(IntParams par)
+        public void AddIntParams(Guid guid, IntParams par)
         {
-            IntParamsProp = par;
+            if (!s_sessions.TryAdd(guid, par))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public IntParams GetIntParamsProperty()
+        public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            return IntParamsProp;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as IntParams;
         }
 
         [OperationBehavior]
@@ -258,24 +278,28 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public void SetStringField(string str)
+        public void AddString(Guid guid, string testString)
         {
-            StringField = str;
+            if (!s_sessions.TryAdd(guid, testString))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
-        public string GetStringField()
+        public string GetAndRemoveString(Guid guid)
         {
-            return StringField;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as string;
         }
     }
 
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class RpcLitDualNsService : ICalculator, IHelloWorld
     {
-        public static IntParams IntParamsProp { get; set; }
-        public static string StringField;
+        private static ConcurrentDictionary<Guid, object> s_sessions = new ConcurrentDictionary<Guid, object>();
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
@@ -307,16 +331,21 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public void SetIntParamsProperty(IntParams par)
+        public void AddIntParams(Guid guid, IntParams par)
         {
-            IntParamsProp = par;
+            if (!s_sessions.TryAdd(guid, par))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public IntParams GetIntParamsProperty()
+        public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            return IntParamsProp;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as IntParams;
         }
 
         [OperationBehavior]
@@ -335,24 +364,28 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public void SetStringField(string str)
+        public void AddString(Guid guid, string testString)
         {
-            StringField = str;
+            if (!s_sessions.TryAdd(guid, testString))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
-        public string GetStringField()
+        public string GetAndRemoveString(Guid guid)
         {
-            return StringField;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as string;
         }
     }
 
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class DocLitDualNsService : ICalculator, IHelloWorld
     {
-        public static IntParams IntParamsProp { get; set; }
-        public static string StringField;
+        private static ConcurrentDictionary<Guid, object> s_sessions = new ConcurrentDictionary<Guid, object>();
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
@@ -384,16 +417,21 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public void SetIntParamsProperty(IntParams par)
+        public void AddIntParams(Guid guid, IntParams par)
         {
-            IntParamsProp = par;
+            if (!s_sessions.TryAdd(guid, par))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public IntParams GetIntParamsProperty()
+        public IntParams GetAndRemoveIntParams(Guid guid)
         {
-            return IntParamsProp;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as IntParams;
         }
 
         [OperationBehavior]
@@ -412,16 +450,21 @@ namespace WcfService
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public void SetStringField(string str)
+        public void AddString(Guid guid, string testString)
         {
-            StringField = str;
+            if (!s_sessions.TryAdd(guid, testString))
+            {
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
+            }
         }
 
         [OperationBehavior]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
-        public string GetStringField()
+        public string GetAndRemoveString(Guid guid)
         {
-            return StringField;
+            object value;
+            s_sessions.TryRemove(guid, out value);
+            return value as string;
         }
     }
 }
