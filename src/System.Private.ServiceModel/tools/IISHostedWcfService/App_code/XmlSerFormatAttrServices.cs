@@ -48,7 +48,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, par))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }                
         }
 
@@ -115,7 +115,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, par))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
@@ -182,7 +182,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, par))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
@@ -249,7 +249,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, par))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
@@ -282,7 +282,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, testString))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
@@ -335,7 +335,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, par))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
@@ -368,7 +368,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, testString))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
@@ -421,7 +421,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, par))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
@@ -454,7 +454,7 @@ namespace WcfService
         {
             if (!s_sessions.TryAdd(guid, testString))
             {
-                throw new InvalidOperationException($"Guid {guid} already existed, and the value was {s_sessions[guid]}.");
+                throw new InvalidOperationException(string.Format("Guid {0} already existed, and the value was {1}.", guid, s_sessions[guid]));
             }
         }
 
