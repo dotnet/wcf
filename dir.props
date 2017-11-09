@@ -570,6 +570,10 @@
     <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' == ''">$(IntermediateOutputRootPath)$(MSBuildProjectName)/$(TargetOutputRelPath)</IntermediateOutputPath>
 
     <TestPath Condition="'$(TestPath)'==''">$(TestWorkingDir)$(OSPlatformConfig)/$(MSBuildProjectName)/$(TestTargetOutputRelPath)</TestPath>
+    <RefRootPath>$(BinDir)ref/</RefRootPath>
+    <RefPath>$(RefRootPath)netcoreapp/</RefPath>
+    <NetStandardRefPath>$(RefRootPath)netstandard/</NetStandardRefPath>
+    <NetFxRefPath>$(RefRootPath)netfx/</NetFxRefPath>
 
     <PackagesBasePath Condition="'$(PackagesBasePath)'==''">$(BinDir)$(OSPlatformConfig)</PackagesBasePath>
     <PackageOutputPath Condition="'$(PackageOutputPath)'==''">$(PackageOutputRoot)$(ConfigurationGroup)/</PackageOutputPath>
