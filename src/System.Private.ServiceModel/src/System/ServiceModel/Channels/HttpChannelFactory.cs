@@ -50,6 +50,7 @@ namespace System.ServiceModel.Channels
         private bool _useDefaultWebProxy;
         private Lazy<string> _webSocketSoapContentType;
         private SHA512 _hashAlgorithm;
+        private bool _keepAliveEnabled;
 
         internal HttpChannelFactory(HttpTransportBindingElement bindingElement, BindingContext context)
             : base(bindingElement, context, HttpTransportDefaults.GetDefaultMessageEncoderFactory())
@@ -102,6 +103,7 @@ namespace System.ServiceModel.Channels
             _authenticationScheme = bindingElement.AuthenticationScheme;
             _maxBufferSize = bindingElement.MaxBufferSize;
             _transferMode = bindingElement.TransferMode;
+            _keepAliveEnabled = bindingElement.KeepAliveEnabled;
 
             if (bindingElement.ProxyAddress != null)
             {
@@ -330,6 +332,9 @@ namespace System.ServiceModel.Channels
                 }
 
                 httpClient = new HttpClient(clientHandler);
+
+                if(!_keepAliveEnabled)
+                   httpClient.DefaultRequestHeaders.ConnectionClose = true;
 
                 // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1 
                 // prevents a call to CancellationToken.CancelAfter that HttpClient does internally which

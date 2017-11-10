@@ -42,4 +42,41 @@ public static class Binding_Http_BasicHttpBindingTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void HttpKeepAliveDisabled_Echo_RoundTrips_True()
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        Binding binding = null;
+        CustomBinding customBinding = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            customBinding = new CustomBinding(binding);
+            var httpElement = customBinding.Elements.Find<HttpTransportBindingElement>();
+            httpElement.KeepAliveEnabled = false;
+
+            factory = new ChannelFactory<IWcfService>(customBinding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            bool result = serviceProxy.IsHttpKeepAliveDisabled();
+
+            // *** VALIDATE *** \\
+            Assert.True(result, "Error: expected response from service: 'true' Actual was: 'false'");
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }

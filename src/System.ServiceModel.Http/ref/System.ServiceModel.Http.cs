@@ -186,6 +186,8 @@ namespace System.ServiceModel.Channels
         public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default(System.ServiceModel.Channels.WebSocketTransportSettings); } set { } }
         [System.ComponentModel.DefaultValue(true)]
         public bool UseDefaultWebProxy { get { return default(bool); } set { } }
+        [System.ComponentModel.DefaultValue(true)]
+        public bool KeepAliveEnabled { get { return default(bool); } set { } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
         public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(bool); }
         public override System.ServiceModel.Channels.BindingElement Clone() { return default(System.ServiceModel.Channels.BindingElement); }
