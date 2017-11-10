@@ -83,6 +83,9 @@ public interface IWcfService
 
     [OperationContract]
     void ReturnContentType(string contentType);
+
+    [OperationContract]
+    bool IsHttpKeepAliveDisabled();
 }
 
 [ServiceContract]
