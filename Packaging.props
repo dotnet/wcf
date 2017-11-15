@@ -1,6 +1,6 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PreReleaseLabel>preview1</PreReleaseLabel>
+    <PreReleaseLabel>servicing</PreReleaseLabel>
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)pkg/dotnet_library_license.txt</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)pkg/ThirdPartyNotices.txt</PackageThirdPartyNoticesFile>
@@ -21,7 +21,7 @@
     <PlatformPackageVersion Condition="'$(PlatformPackageVersion)' == ''">1.0.2</PlatformPackageVersion>
 
   <!-- by default all packages will use the same version which revs with respect to product version -->
-  <PackageVersion Condition="'$(PackageVersion)' == ''">4.3.0</PackageVersion>
+  <PackageVersion Condition="'$(PackageVersion)' == ''">4.3.1</PackageVersion>
   </PropertyGroup>
   
   <Import Condition="Exists('pkg/baseline/baseline.props')" Project="pkg/baseline/baseline.props" />
