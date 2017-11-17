@@ -13,7 +13,8 @@
 
   <Target Name="GetGenFacadesInputs">
     <ItemGroup>
-      <GenFacadesContracts Include="$(NetFxRefPath)*.dll" />
+      <NetFxContracts Include="$(NetFxRefPath)*.dll" />
+      <GenFacadesContracts Include="@(NetFxContracts)" />
       <GenFacadesSeeds Include="$(RefRootPath)\System.ServiceModel.*/**/*.dll" />
     </ItemGroup>
   </Target>
@@ -32,7 +33,6 @@
           Outputs="$(GenFacadesSemaphoreFile)">
 
     <PropertyGroup>
-      <!--<GenFacadesArgs>$(GenFacadesArgs) -contracts:"@(GenFacadesContracts, ',')"</GenFacadesArgs>-->
       <GenFacadesArgs>$(GenFacadesArgs) -seeds:"@(GenFacadesSeeds, ',')"</GenFacadesArgs>
       <GenFacadesArgs>$(GenFacadesArgs) -facadePath:"$(GenFacadesOutputPath)"</GenFacadesArgs>
       <GenFacadesArgs>$(GenFacadesArgs) -producePdb:false</GenFacadesArgs>
@@ -49,7 +49,11 @@
 
     <Exec Command="$(GenFacadesCmd) -contracts:&quot;$(NetFxRefPath)&quot; @&quot;$(GenFacadesResponseFile)&quot;" WorkingDirectory="$(ToolRuntimePath)" />
 
-    <!--Exec Command="$(GenFacadesCmd) -contracts:$(NetStandardRefPath)netstandard.dll @&quot;$(GenFacadesResponseFile)&quot;" WorkingDirectory="$(ToolRuntimePath)" /-->
+    <WriteSigningRequired
+        Condition="'@(NetFxContracts)' != '' and '$(SkipSigning)' != 'true' and '$(SignType)' != 'oss'"
+        AuthenticodeSig="Microsoft"
+        StrongNameSig="StrongName"
+        MarkerFile="$(GenFacadesOutputPath)%(NetFxContracts.Filename)%(NetFxContracts.Extension).requires_signing" />
 
     <!-- Copy the facades to the package ref and lib folders to be included in the packages -->
     <ItemGroup>
