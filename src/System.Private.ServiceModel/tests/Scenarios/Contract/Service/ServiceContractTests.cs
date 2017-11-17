@@ -686,12 +686,15 @@ public static partial class ServiceContractTests
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy1 = null;
         IWcfService serviceProxy2 = null;
+        string expectedEcho1 = "first";
+        string expectedEcho2 = "second";
 
         try
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.CloseTimeout = ScenarioTestHelpers.TestTimeout;
+            binding.SendTimeout = ScenarioTestHelpers.TestTimeout;
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             serviceProxy1 = factory.CreateChannel();
             serviceProxy2 = factory.CreateChannel();
@@ -705,8 +708,42 @@ public static partial class ServiceContractTests
             Assert.True(factory.State == CommunicationState.Closed,
                         String.Format("Expected factory state 'Closed', actual was '{0}'", factory.State));
 
-            Assert.Throws<TaskCanceledException>(() => t1.GetAwaiter().GetResult());
-            Assert.Throws<TaskCanceledException>(() => t2.GetAwaiter().GetResult());
+            Exception exception1 = null;
+            Exception exception2 = null;
+            string actualEcho1 = null;
+            string actualEcho2 = null;
+
+            // Verification is slightly more complex for the close with active operations because
+            // we don't know which might have completed first and whether the channel factory
+            // was able to close and dispose either channel before it completed.  So we just
+            // ensure the Tasks complete with an exception or a successful return and have
+            // been closed by the factory.
+            try
+            {
+                actualEcho1 = t1.GetAwaiter().GetResult();
+            }
+            catch (Exception e)
+            {
+                exception1 = e;
+            }
+
+            try
+            {
+                actualEcho2 = t2.GetAwaiter().GetResult();
+            }
+            catch (Exception e)
+            {
+                exception2 = e;
+            }
+
+            Assert.True(exception1 != null || actualEcho1 != null, "First operation should have thrown Exception or returned an echo");
+            Assert.True(exception2 != null || actualEcho2 != null, "Second operation should have thrown Exception or returned an echo");
+
+            Assert.True(actualEcho1 == null || String.Equals(expectedEcho1, actualEcho1),
+                        String.Format("First operation returned '{0}' but expected '{1}'.", expectedEcho1, actualEcho1));
+
+            Assert.True(actualEcho2 == null || String.Equals(expectedEcho2, actualEcho2),
+            String.Format("Second operation returned '{0}' but expected '{1}'.", expectedEcho2, actualEcho2));
 
             Assert.True(((ICommunicationObject)serviceProxy1).State == CommunicationState.Closed,
                             String.Format("Expected channel 1 state 'Closed', actual was '{0}'", ((ICommunicationObject)serviceProxy1).State));
@@ -721,7 +758,7 @@ public static partial class ServiceContractTests
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy1,
-                                                          (ICommunicationObject)serviceProxy2, 
+                                                          (ICommunicationObject)serviceProxy2,
                                                           factory);
         }
     }
