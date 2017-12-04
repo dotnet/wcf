@@ -13,6 +13,7 @@
 
   <PropertyGroup>
     <InputOSGroup Condition="'$(InputOSGroup)'==''">$(OSEnvironment)</InputOSGroup>
+	<OSGroup Condition="$(OverrideOSGroup) != ''">$(OverrideOSGroup)</OSGroup>
   </PropertyGroup>
 
   <!-- Build Tools Versions -->
