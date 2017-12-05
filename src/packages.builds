@@ -16,7 +16,22 @@
 
   <ItemGroup Condition="'$(BuildAllPackages)' == 'false' AND '$(SkipManagedPackageBuild)' != 'true'" >
     <!-- add specific builds / pkgproj's here to include in servicing builds -->
+    <Project Include="$(MSBuildThisFileDirectory)\System.Private.ServiceModel\pkg\System.Private.ServiceModel.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Duplex\pkg\System.ServiceModel.Duplex.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Http\pkg\System.ServiceModel.Http.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.NetTcp\pkg\System.ServiceModel.NetTcp.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
     <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Primitives\pkg\System.ServiceModel.Primitives.builds">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Security\pkg\System.ServiceModel.Security.builds">
       <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
     </Project>
   </ItemGroup>
