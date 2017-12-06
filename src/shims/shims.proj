@@ -16,6 +16,7 @@
       <NetFxContracts Include="$(NetFxRefPath)*.dll" />
       <GenFacadesContracts Include="@(NetFxContracts)" />
       <GenFacadesSeeds Include="$(RefRootPath)\System.ServiceModel.*/**/*.dll" />
+	  <GenFacadesSeeds Include="$(MSBuildThisFileDirectory)\..\ExternalApis\System.ServiceModel.Syndication.dll" />
     </ItemGroup>
   </Target>
 
