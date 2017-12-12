@@ -874,5 +874,25 @@
     <StablePackage Include="System.ServiceModel.Security">
       <Version>4.0.1</Version>
     </StablePackage>
+
+    <!-- NETCore Servicing WCF -->
+    <StablePackage Include="System.Private.ServiceModel">
+      <Version>4.1.1</Version>
+    </StablePackage>
+    <StablePackage Include="System.ServiceModel.Duplex">
+      <Version>4.0.2</Version>
+    </StablePackage>
+    <StablePackage Include="System.ServiceModel.Http">
+      <Version>4.1.1</Version>
+    </StablePackage>
+    <StablePackage Include="System.ServiceModel.NetTcp">
+      <Version>4.1.1</Version>
+    </StablePackage>
+    <StablePackage Include="System.ServiceModel.Primitives">
+      <Version>4.1.1</Version>
+    </StablePackage>
+    <StablePackage Include="System.ServiceModel.Security">
+      <Version>4.0.2</Version>
+    </StablePackage>
   </ItemGroup>
 </Project>
