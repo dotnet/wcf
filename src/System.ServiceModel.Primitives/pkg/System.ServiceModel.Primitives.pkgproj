@@ -9,7 +9,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- workaround for https://github.com/dotnet/buildtools/issues/1529 -->
-    <HarvestVersion>4.3.0</HarvestVersion>
+    <HarvestVersion>4.3.1</HarvestVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\ref\System.ServiceModel.Primitives.csproj">
