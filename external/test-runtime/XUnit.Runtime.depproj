@@ -52,10 +52,10 @@
       <Version>4.6.519</Version>
     </PackageReference>
     <PackageReference Include="ReportGenerator">
-      <Version>2.5.0</Version>
+      <Version>3.0.1</Version>
     </PackageReference>
     <PackageReference Include="System.IO.Compression.TestData">
-      <Version>1.0.5-prerelease</Version>
+      <Version>1.0.6-prerelease</Version>
     </PackageReference>
     <PackageReference Include="System.IO.Packaging.TestData">
       <Version>1.0.0-prerelease</Version>
@@ -84,7 +84,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
-    <UAPToolsPackageVersion>1.0.14</UAPToolsPackageVersion>
+    <UAPToolsPackageVersion>1.0.17</UAPToolsPackageVersion>
   </PropertyGroup>
  
   <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
