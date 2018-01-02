@@ -26,6 +26,9 @@
     <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp">
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
+    <PackageReference Include="System.ComponentModel.Composition">
+      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetGroup)' == 'uap' or
