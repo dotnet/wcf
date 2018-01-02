@@ -10,19 +10,19 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>b9cda52e4a30ceb4da59acdf4159d6e98b4c4853</CoreFxCurrentRef>
-    <WCFCurrentRef>b9cda52e4a30ceb4da59acdf4159d6e98b4c4853</WCFCurrentRef>
-    <StandardCurrentRef>b9cda52e4a30ceb4da59acdf4159d6e98b4c4853</StandardCurrentRef>
+    <WCFCurrentRef>012ed2593948eb48ad0a8e4a8609637b34d45aba</WCFCurrentRef>
+    <StandardCurrentRef>012ed2593948eb48ad0a8e4a8609637b34d45aba</StandardCurrentRef>
     <ProjectNTfsCurrentRef>b9cda52e4a30ceb4da59acdf4159d6e98b4c4853</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>b9cda52e4a30ceb4da59acdf4159d6e98b4c4853</ProjectNTfsTestILCCurrentRef>
-    <BuildToolsCurrentRef>b9cda52e4a30ceb4da59acdf4159d6e98b4c4853</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>b9cda52e4a30ceb4da59acdf4159d6e98b4c4853</CoreClrCurrentRef>
+    <BuildToolsCurrentRef>012ed2593948eb48ad0a8e4a8609637b34d45aba</BuildToolsCurrentRef>
+    <CoreClrCurrentRef>012ed2593948eb48ad0a8e4a8609637b34d45aba</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26102-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview2-26102-02</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview1-26102-01</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-26101-01</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.1.0-preview1-26102-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
@@ -43,7 +43,7 @@
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-prerelease-02312-02</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-preview1-26102-01</CoreClrPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview1-26102-02</CoreClrPackageVersion>
     <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
