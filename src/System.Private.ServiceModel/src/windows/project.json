@@ -35,6 +35,7 @@
     "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
     "System.Runtime.Serialization.Xml": "4.1.0",
     "System.Security.Claims": "4.0.0",
+    "System.Security.Cryptography.Encoding": "4.0.0",
     "System.Security.Cryptography.X509Certificates": "4.3.0",
     "System.Security.Principal": "4.0.0",
     "System.Text.Encoding": "4.0.10",
