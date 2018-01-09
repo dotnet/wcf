@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.Tests</RootNamespace>
+    <AssemblyName>Microsoft.Tools.ServiceModel.SvcUtil.Tests</AssemblyName>
+    <SignAssembly>false</SignAssembly>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ProjectGuid>{E0A4893E-975E-415A-90B6-57871EB864E6}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);SVCUTILTESTS</DefineConstants>
+    <XmlSerializerTestSource>..\..\System.Private.ServiceModel\tests\Scenarios\Contract\XmlSerializer\</XmlSerializerTestSource>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard-Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netfx-Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Release|AnyCPU'" />
+  <PropertyGroup>
+    <SkipTestsOnPlatform Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'netfx' OR '$(ArchGroup)' == 'arm' OR '$(ArchGroup)' == 'arm64' OR '$(ArchGroup)' == 'armel'">true</SkipTestsOnPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
+    <!-- We're building netcoreap, run on the test CLI
+         Reuse the same runtimeconfig that the tests use. -->
+     <GeneratorRuntimeConfig>$(ToolsDir)xunit.console.netcore.runtimeconfig.json</GeneratorRuntimeConfig>
+     <GeneratorCliPath>$(TestHostRootPath)</GeneratorCliPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetGroup)' != 'netcoreapp'">
+    <!-- We're building some non-netcoreapp target, run on the Tools CLI.
+         Reuse the same runtimeconfig used by CSC. -->
+     <GeneratorRuntimeConfig>$(ToolsDir)csc.runtimeconfig.json</GeneratorRuntimeConfig>
+     <GeneratorCliPath>$(ToolsDir)dotnetcli/</GeneratorCliPath>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(SkipTestsOnPlatform)' != 'true' ">
+    <Compile Include="**\*.cs" />
+    <Compile Include="$(XmlSerializerTestSource)**\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(SkipTestsOnPlatform)' == 'true' ">
+    <Compile Include=".\AlwaysPassTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(GeneratorRuntimeConfig)">
+      <!-- Rename it to match the Generator application name -->
+      <Link>svcutilcore.runtimeconfig.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ReferenceFromRuntime Include="svcutilcore">
+      <Private>true</Private>
+    </ReferenceFromRuntime>
+    <ReferenceFromRuntime Include="xunit.execution.dotnet" />
+    <ReferenceFromRuntime Include="System.Private.ServiceModel" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Duplex" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Http" />
+    <ReferenceFromRuntime Include="System.ServiceModel.NetTcp" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Primitives" />
+    <ReferenceFromRuntime Include="System.ServiceModel.Security" />
+  </ItemGroup>
+  <!-- This target runs before binplacing as it needs to provide a test assembly to binplace, and depends on CopyFilesToOutputDirectory
+       so that the Generator app dll and runtimeconfig will be copied to the OutputPath -->
+  <Target Name="GenerateSerializationAssembly" DependsOnTargets="CopyFilesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" Condition=" '$(SkipTestsOnPlatform)' != 'true' " >
+    <PropertyGroup>
+      <InputAssembly>ScenarioTests.Common</InputAssembly>
+      <SerializerName>$(InputAssembly).XmlSerializers</SerializerName>
+    </PropertyGroup>
+    <Message Text="Running Serialization Tool" Importance="normal" />
+    <PropertyGroup>
+      <CorrectedOutputPath>$(OutputPath.Replace('/', '\'))</CorrectedOutputPath>
+    </PropertyGroup>
+    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)svcutilcore.dll /t:xmlserializer $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
+    <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
+    <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true' AND '$(MSBuildRuntimeType)' != 'core'" 
+         OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll" 
+         References="@(ReferencePath);@(IntermediateAssembly)" 
+         EmitDebugInformation="$(DebugSymbols)"  
+         DebugType="$(DebugType)" 
+         Sources="$(CorrectedOutputPath)$(SerializerName).cs" 
+         TargetType="Library" 
+         ToolExe="$(CscToolExe)" 
+         ToolPath="$(CscToolPath)" 
+         DisabledWarnings="$(NoWarn), 219" 
+         UseSharedCompilation="true" />
+    <!-- when building on core CSC requires the OverrideToolHost parameter, but this is not supported by desktop csc -->
+    <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true' AND '$(MSBuildRuntimeType)' == 'core'" 
+         OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll" 
+         References="@(ReferencePath);@(IntermediateAssembly)" 
+         EmitDebugInformation="$(DebugSymbols)"  
+         DebugType="$(DebugType)" 
+         Sources="$(CorrectedOutputPath)$(SerializerName).cs" 
+         TargetType="Library" 
+         ToolExe="$(CscToolExe)" 
+         ToolPath="$(CscToolPath)" 
+         OverrideToolHost="$(OverrideToolHost)" 
+         DisabledWarnings="$(NoWarn), 219" 
+         UseSharedCompilation="true" />
+    <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).dll') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).dll"/>
+
+    <ItemGroup>
+      <!-- Include the Serializer in ReferenceCopyLocalPaths so that it will be binplaced -->
+      <ReferenceCopyLocalPaths Include="$(CorrectedOutputPath)$(SerializerName).dll" />
+    </ItemGroup>
+  </Target>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+</Project>
