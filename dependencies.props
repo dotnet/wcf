@@ -10,19 +10,19 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>4d855270cd2346cb49c3e443bec45c0d7becf571</CoreFxCurrentRef>
-    <WCFCurrentRef>a59abef3a67ac631c01a74b50a27467a70cc57f5</WCFCurrentRef>
-    <StandardCurrentRef>a59abef3a67ac631c01a74b50a27467a70cc57f5</StandardCurrentRef>
+    <WCFCurrentRef>28b98abfb14e7df163a3cdb367215a9b3ab41749</WCFCurrentRef>
+    <StandardCurrentRef>28b98abfb14e7df163a3cdb367215a9b3ab41749</StandardCurrentRef>
     <ProjectNTfsCurrentRef>4d855270cd2346cb49c3e443bec45c0d7becf571</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>4d855270cd2346cb49c3e443bec45c0d7becf571</ProjectNTfsTestILCCurrentRef>
     <BuildToolsCurrentRef>a59abef3a67ac631c01a74b50a27467a70cc57f5</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>4d855270cd2346cb49c3e443bec45c0d7becf571</CoreClrCurrentRef>
+    <CoreClrCurrentRef>28b98abfb14e7df163a3cdb367215a9b3ab41749</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26108-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview2-26109-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview1-26109-01</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-26108-01</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.1.0-preview1-26109-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
@@ -43,7 +43,7 @@
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-prerelease-02312-02</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-preview1-26108-06</CoreClrPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview1-26109-01</CoreClrPackageVersion>
     <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
