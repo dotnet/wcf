@@ -7,6 +7,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
     using System.Globalization;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
+    using System.IO;
 
     internal enum SwitchType
     {
@@ -201,7 +202,18 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 //if no match found, then throw an exception
                 argSwitch = CommandSwitch.FindSwitch(arg.ToLower(CultureInfo.InvariantCulture), switches);
                 if (argSwitch == null)
+                {
+                    // Paths start with "/" on Unix, so the arg could potentially be a path.
+                    // If we didn't find any matched option, check and see if it's a path.
+                    string potentialPath = "/" + arg;
+                    if (File.Exists(potentialPath))
+                    {
+                        arguments.Add(string.Empty, potentialPath);
+                        continue;
+                    }
+
                     throw new ArgumentException(SR.Format(SR.ErrUnknownSwitch, arg.ToLower(CultureInfo.InvariantCulture)));
+                }
 
                 //check if switch is allowed to have a value
                 // if not and a value has been specified, then thrown an exception
