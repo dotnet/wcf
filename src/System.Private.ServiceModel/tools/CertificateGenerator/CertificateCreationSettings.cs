@@ -5,8 +5,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace WcfTestCommon
 {
@@ -25,6 +24,7 @@ namespace WcfTestCommon
         public DateTime ValidityNotAfter { get; set; }
         public CertificateValidityType ValidityType { get; set; }
         public bool IncludeCrlDistributionPoint { get; set; } = true;
+        public List<KeyPurposeID> EKU { get; set; }
     }
 
     [Serializable]

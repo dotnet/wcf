@@ -86,6 +86,7 @@ namespace SelfHostedWCFService
             CreateHost<TcpNoSecurityTestServiceHost, WcfService.WcfService>("TcpNoSecurity.svc", tcpBaseAddress);
             CreateHost<TcpDefaultResourceTestServiceHost, WcfService.WcfService>("TcpDefault.svc", tcpBaseAddress);
             CreateHost<TcpNoSecurityTextTestServiceHost, WcfService.WcfService>("TcpNoSecurityText.svc", tcpBaseAddress);
+            CreateHost<TcpInvalidEkuServerCertTestServiceHost, WcfService.WcfService>("TcpInvalidEkuServerCert.svc", tcpBaseAddress);
             CreateHost<TcpRevokedServerCertTestServiceHost, WcfService.WcfService>("TcpRevokedServerCert.svc", tcpBaseAddress);
             CreateHost<TcpStreamedNoSecurityTestServiceHost, WcfService.WcfService>("TcpStreamedNoSecurity.svc", tcpBaseAddress);
             CreateHost<TcpTransportSecuritySslCustomCertValidationTestServiceHost, WcfService.WcfService>("TcpTransportSecuritySslCustomCertValidation.svc", tcpBaseAddress);

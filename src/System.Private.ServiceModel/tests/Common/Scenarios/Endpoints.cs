@@ -439,6 +439,22 @@ public static partial class Endpoints
         }
     }
 
+    public static string Tcp_InvalidEkuServerCertResource_HostName
+    {
+        get
+        {
+            return ServiceUtilHelper.ServiceHostName;
+        }
+    }
+
+    public static string Tcp_InvalidEkuServerCertResource_Address
+    {
+        get
+        {
+            return GetEndpointAddress("TcpInvalidEkuServerCert.svc//tcp-InvalidEkuServerCert", protocol: "net.tcp");
+        }
+    }
+
     public static string Tcp_RevokedServerCertResource_HostName
     {
         get

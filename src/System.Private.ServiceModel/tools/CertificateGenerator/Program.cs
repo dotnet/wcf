@@ -168,6 +168,17 @@ namespace CertUtil
             };
             CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
+            //TcpInvalidEkuServerCert
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - TcpInvalidEkuServerCert",
+                ValidityType = CertificateValidityType.Valid,
+                Subject = s_fqdn,
+                SubjectAlternativeNames = new string[] { s_fqdn, s_hostname, "localhost" },
+                EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID> { Org.BouncyCastle.Asn1.X509.KeyPurposeID.IdKPClientAuth }
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
             //Create and install client cert
             certificateCreationSettings = new CertificateCreationSettings()
             {

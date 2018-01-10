@@ -12,6 +12,7 @@ using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
+using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Crypto.Prng;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
@@ -281,7 +282,6 @@ namespace WcfTestCommon
             EnsureInitialized();
 
             s_certGenerator.Reset();
-            s_certGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
             // Tag on the generation time to prevent caching of the cert CRL in Linux
             X509Name authorityX509Name = CreateX509Name(string.Format("{0} {1}", _authorityCanonicalName, DateTime.Now.ToString("s")));
@@ -319,7 +319,14 @@ namespace WcfTestCommon
             s_certGenerator.SetPublicKey(keyPair.Public);
 
             s_certGenerator.AddExtension(X509Extensions.BasicConstraints, true, new BasicConstraints(isAuthority));
-            s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
+            if (certificateCreationSettings.EKU == null || certificateCreationSettings.EKU.Count == 0)
+            {
+                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(KeyPurposeID.IdKPServerAuth, KeyPurposeID.IdKPClientAuth));
+            }
+            else
+            {
+                s_certGenerator.AddExtension(X509Extensions.ExtendedKeyUsage, false, new ExtendedKeyUsage(certificateCreationSettings.EKU));
+            }
 
             if (!isAuthority)
             {
@@ -380,7 +387,8 @@ namespace WcfTestCommon
                 s_certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
             }
 
-            X509Certificate cert = s_certGenerator.Generate(_authorityKeyPair.Private, _random);
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlthorithm, _authorityKeyPair.Private, _random);
+            X509Certificate cert = s_certGenerator.Generate(signatureFactory);
 
             switch (certificateCreationSettings.ValidityType)
             {
@@ -468,7 +476,6 @@ namespace WcfTestCommon
             //There is no need to update CRL.
             s_crlGenerator.SetNextUpdate(now.Add(ValidityPeriod));
             s_crlGenerator.SetIssuerDN(PrincipalUtilities.GetSubjectX509Principal(signingCertificate));
-            s_crlGenerator.SetSignatureAlgorithm(_signatureAlthorithm);
 
             s_crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(signingCertificate));
 
@@ -480,7 +487,8 @@ namespace WcfTestCommon
                 s_crlGenerator.AddCrlEntry(new BigInteger(kvp.Key, 16), kvp.Value, CrlReason.CessationOfOperation);
             }
 
-            X509Crl crl = s_crlGenerator.Generate(_authorityKeyPair.Private, _random);
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlthorithm, _authorityKeyPair.Private, _random);
+            X509Crl crl = s_crlGenerator.Generate(signatureFactory);
             crl.Verify(_authorityKeyPair.Public);
 
             Trace.WriteLine(string.Format("[CertificateGenerator] has created a Certificate Revocation List :"));
