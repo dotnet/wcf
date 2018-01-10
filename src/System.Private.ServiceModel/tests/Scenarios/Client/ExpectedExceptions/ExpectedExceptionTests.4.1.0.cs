@@ -420,6 +420,53 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
+    // Verify product throws SecurityNegotiationException when the service cert only has the ClientAuth usage
+    public static void TCP_ServiceCertInvalidEKU_Throw_SecurityNegotiationException()
+    {
+        string testString = "Hello";
+        NetTcpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        // *** SETUP *** \\
+        binding = new NetTcpBinding();
+        binding.Security.Mode = SecurityMode.Transport;
+        binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+        endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_InvalidEkuServerCertResource_Address), new DnsEndpointIdentity(Endpoints.Tcp_InvalidEkuServerCertResource_HostName));
+        factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+        serviceProxy = factory.CreateChannel();
+
+        // *** EXECUTE *** \\
+        try
+        {
+            serviceProxy.Echo(testString);
+            Assert.True(false, "Expected: SecurityNegotiationException, Actual: no exception");
+        }
+        catch (CommunicationException exception)
+        {
+            // *** VALIDATION *** \\
+            // Cannot explicitly catch a SecurityNegotiationException as it is not in the public contract.
+            string exceptionType = exception.GetType().Name;
+            if (exceptionType != "SecurityNegotiationException")
+            {
+                Assert.True(false, string.Format("Expected type SecurityNegotiationException, Actual: {0}", exceptionType));
+            }
+
+            Assert.True(exception.Message.Contains(Endpoints.Tcp_RevokedServerCertResource_HostName),
+                                                    string.Format("Expected message contains {0}, actual message: {1}",
+                                                    Endpoints.Tcp_RevokedServerCertResource_HostName,
+                                                    exception.ToString()));
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
     public static void Abort_During_Implicit_Open_Closes_Sync_Waiters()
     {
         // This test is a regression test of an issue with CallOnceManager.
