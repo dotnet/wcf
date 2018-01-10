@@ -49,7 +49,7 @@
   <ItemGroup>
     <Content Include="$(GeneratorRuntimeConfig)">
       <!-- Rename it to match the Generator application name -->
-      <Link>svcutilcore.runtimeconfig.json</Link>
+      <Link>dotnet-svcutilcore.runtimeconfig.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -58,7 +58,7 @@
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
   <ItemGroup>
-    <ReferenceFromRuntime Include="svcutilcore">
+    <ReferenceFromRuntime Include="dotnet-svcutilcore">
       <Private>true</Private>
     </ReferenceFromRuntime>
     <ReferenceFromRuntime Include="xunit.execution.dotnet" />
@@ -80,7 +80,7 @@
     <PropertyGroup>
       <CorrectedOutputPath>$(OutputPath.Replace('/', '\'))</CorrectedOutputPath>
     </PropertyGroup>
-    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)svcutilcore.dll /t:xmlserializer $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
+    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutilcore.dll /t:xmlserializer $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
     <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true' AND '$(MSBuildRuntimeType)' != 'core'" 
          OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll" 
