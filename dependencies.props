@@ -10,15 +10,15 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>40697681be31dff83b6c3b75a6de0d3adbc790a7</CoreFxCurrentRef>
-    <WCFCurrentRef>40697681be31dff83b6c3b75a6de0d3adbc790a7</WCFCurrentRef>
+    <WCFCurrentRef>a4bbae545689db7ff8cac1dd06480b1ed826ea11</WCFCurrentRef>
     <StandardCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>40697681be31dff83b6c3b75a6de0d3adbc790a7</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>40697681be31dff83b6c3b75a6de0d3adbc790a7</ProjectNTfsTestILCCurrentRef>
+    <ProjectNTfsCurrentRef>a4bbae545689db7ff8cac1dd06480b1ed826ea11</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>a4bbae545689db7ff8cac1dd06480b1ed826ea11</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-25729-02</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview1-26110-02</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview1-25801-01</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-25518-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
@@ -28,9 +28,9 @@
     -->
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-25531-01</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>rel-25728-00</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>rel-25728-00</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-25728-00</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>rel-26106-03</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>rel-26106-03</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-26106-03</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
