@@ -6,6 +6,7 @@
 using System.IdentityModel.Selectors;
 using System.Runtime;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 namespace System.ServiceModel.Security
@@ -16,6 +17,8 @@ namespace System.ServiceModel.Security
         internal const X509RevocationMode DefaultRevocationMode = X509RevocationMode.Online;
         internal const StoreLocation DefaultTrustedStoreLocation = StoreLocation.CurrentUser;
         private static X509CertificateValidator s_defaultCertificateValidator;
+        // ASN.1 description: {iso(1) identified-organization(3) dod(6) internet(1) security(5) mechanisms(5) pkix(7) kp(3) serverAuth(1)}
+        static readonly Oid serverAuthOid = new Oid("1.3.6.1.5.5.7.3.1", "1.3.6.1.5.5.7.3.1");
 
         private X509CertificateValidationMode _certificateValidationMode = DefaultCertificateValidationMode;
         private X509RevocationMode _revocationMode = DefaultRevocationMode;
@@ -44,6 +47,7 @@ namespace System.ServiceModel.Security
                 {
                     bool useMachineContext = DefaultTrustedStoreLocation == StoreLocation.LocalMachine;
                     X509ChainPolicy chainPolicy = new X509ChainPolicy();
+                    chainPolicy.ApplicationPolicy.Add(serverAuthOid);
                     chainPolicy.RevocationMode = DefaultRevocationMode;
                     s_defaultCertificateValidator = X509CertificateValidator.CreateChainTrustValidator(useMachineContext, chainPolicy);
                 }
@@ -130,6 +134,7 @@ namespace System.ServiceModel.Security
             {
                 bool useMachineContext = _trustedStoreLocation == StoreLocation.LocalMachine;
                 X509ChainPolicy chainPolicy = new X509ChainPolicy();
+                chainPolicy.ApplicationPolicy.Add(serverAuthOid);
                 chainPolicy.RevocationMode = _revocationMode;
                 if (_certificateValidationMode == X509CertificateValidationMode.ChainTrust)
                 {
