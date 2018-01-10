@@ -1,10 +1,11 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <PlatformPackageVersion Condition="'$(PlatformPackageVersion)' == ''">1.0.2</PlatformPackageVersion>
     <PreReleaseLabel>servicing</PreReleaseLabel>
     <PackageDescriptionFile>$(ProjectDir)pkg/descriptions.json</PackageDescriptionFile>
     <PackageLicenseFile>$(ProjectDir)pkg/dotnet_library_license.txt</PackageLicenseFile>
     <PackageThirdPartyNoticesFile>$(ProjectDir)pkg/ThirdPartyNotices.txt</PackageThirdPartyNoticesFile>
-    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/1.0.1/runtime.json</RuntimeIdGraphDefinitionFile> <!-- WCF Content -->
+    <RuntimeIdGraphDefinitionFile>$(PackagesDir)Microsoft.NETCore.Platforms/$(PlatformPackageVersion)/runtime.json</RuntimeIdGraphDefinitionFile> <!-- WCF Content -->
     <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799417</ReleaseNotes>
     <ProjectUrl>https://dot.net</ProjectUrl>
 
