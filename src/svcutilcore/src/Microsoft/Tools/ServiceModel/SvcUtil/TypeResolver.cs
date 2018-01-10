@@ -1,29 +1,29 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
-
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.ServiceModel;
 
-    class TypeResolver
+    internal class TypeResolver
     {
-        Assembly assembly;
-        Options toolOptions;
+        private Assembly _assembly;
+        private Options _toolOptions;
 
         internal TypeResolver(Options toolOptions)
         {
-            this.toolOptions = toolOptions;
+            _toolOptions = toolOptions;
         }
 
         public Assembly ResolveType(object sender, ResolveEventArgs args)
         {
-            if (assembly != null)
+            if (_assembly != null)
             {
-                return assembly;
+                return _assembly;
             }
 
             return null;
@@ -33,9 +33,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         {
             AssemblyName assemblyName = new AssemblyName(args.Name);
 
-            if (assembly != null && AssemblyName.ReferenceMatchesDefinition(assembly.GetName(), assemblyName))
+            if (_assembly != null && AssemblyName.ReferenceMatchesDefinition(_assembly.GetName(), assemblyName))
             {
-                return assembly;
+                return _assembly;
             }
 
             Assembly refAssembly = FindAssembly(assemblyName);
@@ -49,18 +49,18 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         {
             get
             {
-                return this.assembly;
+                return _assembly;
             }
             set
             {
-                this.assembly = value;
+                _assembly = value;
             }
         }
 
-        Assembly FindAssembly(AssemblyName assemblyName)
+        private Assembly FindAssembly(AssemblyName assemblyName)
         {
             Assembly match = null;
-            foreach (Assembly refAssembly in toolOptions.ReferencedAssemblies)
+            foreach (Assembly refAssembly in _toolOptions.ReferencedAssemblies)
             {
                 if (AssemblyName.ReferenceMatchesDefinition(refAssembly.GetName(), assemblyName))
                 {
@@ -81,7 +81,5 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         {
             internal Exception(string message) : base(message) { }
         }
-
     }
-
 }

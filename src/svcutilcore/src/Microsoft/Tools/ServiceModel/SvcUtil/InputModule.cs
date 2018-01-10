@@ -1,6 +1,7 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
@@ -17,30 +18,30 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
     using System.Threading;
     using System.Runtime.InteropServices;
 
-    partial class InputModule
+    internal partial class InputModule
     {
-        static readonly XmlReaderSettings xmlReaderSettings;
-        List<Assembly> assemblies;
-        const long MaxRecievedMexMessageSize = (long)(64 * 1024 * 1024); //64MB
-        const int MaxNameTableCharCount = 1024 * 1024; //1MB
+        private static readonly XmlReaderSettings s_xmlReaderSettings;
+        private List<Assembly> _assemblies;
+        private const long MaxRecievedMexMessageSize = (long)(64 * 1024 * 1024); //64MB
+        private const int MaxNameTableCharCount = 1024 * 1024; //1MB
 
         internal List<Assembly> Assemblies
         {
             get
             {
-                if (assemblies == null)
-                    assemblies = new List<Assembly>();
-                return assemblies;
+                if (_assemblies == null)
+                    _assemblies = new List<Assembly>();
+                return _assemblies;
             }
         }
 
         static InputModule()
         {
-            xmlReaderSettings = new XmlReaderSettings();
-            xmlReaderSettings.XmlResolver = null;
+            s_xmlReaderSettings = new XmlReaderSettings();
+            s_xmlReaderSettings.XmlResolver = null;
         }
 
-        InputModule()
+        private InputModule()
         {
         }
 
@@ -56,29 +57,28 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             return inputs;
         }
 
-        partial class InputModuleLoader
+        private partial class InputModuleLoader
         {
-            readonly InputModule newInputModule;
-            readonly Options options;
+            private readonly InputModule _newInputModule;
+            private readonly Options _options;
 
             internal InputModuleLoader(InputModule newInputModule, Options options)
             {
-                this.options = options;
-                this.newInputModule = newInputModule;
+                _options = options;
+                _newInputModule = newInputModule;
             }
 
             internal void LoadInputs()
             {
-
                 //Load Input Parameters
                 //-------------------------------------------------------------------------------------------
-                foreach (string path in options.InputParameters)
+                foreach (string path in _options.InputParameters)
                 {
                     LoadInputItem(path);
                 }
             }
 
-            void LoadInputItem(string path)
+            private void LoadInputItem(string path)
             {
                 Uri serviceUri;
                 FileInfo[] inputFiles;
@@ -108,9 +108,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
             }
 
-            void LoadInputItem_AsFilePath(FileInfo[] inputFiles, string path)
+            private void LoadInputItem_AsFilePath(FileInfo[] inputFiles, string path)
             {
-                ToolMode? mode = options.GetToolMode();
+                ToolMode? mode = _options.GetToolMode();
                 foreach (FileInfo fileInfo in inputFiles)
                 {
                     if (!LoadFile(fileInfo, mode))
@@ -120,7 +120,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
             }
 
-            bool LoadFile(FileInfo fileInfo, ToolMode? mode)
+            private bool LoadFile(FileInfo fileInfo, ToolMode? mode)
             {
                 if (mode == ToolMode.XmlSerializerGeneration)
                 {
@@ -130,7 +130,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 throw new PlatformNotSupportedException();
             }
 
-            bool LoadFileAsAssembly(FileInfo fileInfo)
+            private bool LoadFileAsAssembly(FileInfo fileInfo)
             {
                 Assembly assembly;
                 try
@@ -148,11 +148,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     throw;
                 }
 
-                newInputModule.Assemblies.Add(assembly);
+                _newInputModule.Assemblies.Add(assembly);
 
                 try
                 {
-                    options.SetAllowedModes(ToolMode.MetadataFromAssembly, ToolMode.MetadataFromAssembly | ToolMode.DataContractExport | ToolMode.Validate | ToolMode.XmlSerializerGeneration, null, fileInfo.FullName);
+                    _options.SetAllowedModes(ToolMode.MetadataFromAssembly, ToolMode.MetadataFromAssembly | ToolMode.DataContractExport | ToolMode.Validate | ToolMode.XmlSerializerGeneration, null, fileInfo.FullName);
                 }
                 catch (InvalidToolModeException)
                 {
@@ -160,11 +160,10 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
 
                 return true;
-
             }
 
             //Finds files that match a path (includes wildcards)
-            static bool TryFindFiles(string path, out FileInfo[] fileInfos)
+            private static bool TryFindFiles(string path, out FileInfo[] fileInfos)
             {
                 char[] invalidPathChars = Path.GetInvalidPathChars();
                 if (path.IndexOfAny(invalidPathChars) != -1)
@@ -196,15 +195,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 return true;
             }
 
-            ToolArgumentException CreateInputException(string inputSrc)
+            private ToolArgumentException CreateInputException(string inputSrc)
             {
-
-                if (options.ModeSettingOption != null)
+                if (_options.ModeSettingOption != null)
                 {
-                    string modeSettingStr = options.GetCommandLineString(options.ModeSettingOption, options.ModeSettingValue);
-                    if (options.ModeSettingOption == Options.Cmd.Target)
+                    string modeSettingStr = _options.GetCommandLineString(_options.ModeSettingOption, _options.ModeSettingValue);
+                    if (_options.ModeSettingOption == Options.Cmd.Target)
                     {
-                        return new ToolInputException(SR.Format(SR.ErrInputConflictsWithTarget, Options.Cmd.Target, options.ModeSettingValue, inputSrc));
+                        return new ToolInputException(SR.Format(SR.ErrInputConflictsWithTarget, Options.Cmd.Target, _options.ModeSettingValue, inputSrc));
                     }
                     else
                     {
@@ -213,9 +211,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
                 else
                 {
-                    if (options.ModeSettingValue != null)
+                    if (_options.ModeSettingValue != null)
                     {
-                        return new ToolInputException(SR.Format(SR.ErrConflictingInputs, options.ModeSettingValue, inputSrc));
+                        return new ToolInputException(SR.Format(SR.ErrConflictingInputs, _options.ModeSettingValue, inputSrc));
                     }
                     else
                     {
@@ -257,12 +255,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     ToolConsole.WriteLine("  " + e.Message, 2);
                 }
 
-                types = Array.FindAll<Type>(rtle.Types, delegate(Type t) { return t != null; });
+                types = Array.FindAll<Type>(rtle.Types, delegate (Type t) { return t != null; });
                 if (types.Length == 0)
                 {
                     throw new ToolInputException(SR.Format(SR.ErrCouldNotLoadTypesFromAssemblyAt, assembly.Location));
                 }
-
             }
             return types;
         }

@@ -1,6 +1,7 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
@@ -12,79 +13,79 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
     using System.ServiceModel;
 
 
-    partial class Options
+    internal partial class Options
     {
-        ToolMode? defaultMode;
-        ToolMode validModes = ToolMode.Any;
-        string modeSettingOption;
-        string modeSettingValue;
+        private ToolMode? _defaultMode;
+        private ToolMode _validModes = ToolMode.Any;
+        private string _modeSettingOption;
+        private string _modeSettingValue;
 
-        string targetValue;
+        private string _targetValue;
 
-        string outputFileArg;
-        string directoryArg;
-        string configFileArg;
+        private string _outputFileArg;
+        private string _directoryArg;
+        private string _configFileArg;
 
-        SerializerMode serializer;
-        bool asyncMethods;
-        bool internalTypes;
-        bool serializableAttribute;
-        bool importXmlTypes;
-        bool typedMessages;
-        bool noLogo;
-        bool noConfig;
-        bool mergeConfig;
-        bool dataContractOnly;
+        private SerializerMode _serializer;
+        private bool _asyncMethods;
+        private bool _internalTypes;
+        private bool _serializableAttribute;
+        private bool _importXmlTypes;
+        private bool _typedMessages;
+        private bool _noLogo;
+        private bool _noConfig;
+        private bool _mergeConfig;
+        private bool _dataContractOnly;
 
-        bool enableDataBinding;
-        string serviceName;
-        List<string> inputParameters;
-        List<Type> referencedTypes;
-        List<Assembly> referencedAssemblies;
-        List<Type> referencedCollectionTypes;
-        Dictionary<string, Type> excludedTypes;
-        bool nostdlib;
-        Dictionary<string, string> namespaceMappings;
-        TypeResolver typeResolver;
-        TargetClientVersionMode targetClientVersion;
-        bool useSerializerForFaults;
-        bool wrapped;
-        bool serviceContractGeneration;
-        bool syncMethodOnly;
+        private bool _enableDataBinding;
+        private string _serviceName;
+        private List<string> _inputParameters;
+        private List<Type> _referencedTypes;
+        private List<Assembly> _referencedAssemblies;
+        private List<Type> _referencedCollectionTypes;
+        private Dictionary<string, Type> _excludedTypes;
+        private bool _nostdlib;
+        private Dictionary<string, string> _namespaceMappings;
+        private TypeResolver _typeResolver;
+        private TargetClientVersionMode _targetClientVersion;
+        private bool _useSerializerForFaults;
+        private bool _wrapped;
+        private bool _serviceContractGeneration;
+        private bool _syncMethodOnly;
 
-        internal string OutputFileArg { get { return outputFileArg; } }
-        internal string DirectoryArg { get { return directoryArg; } }
-        internal string ConfigFileArg { get { return configFileArg; } }
-        internal bool AsyncMethods { get { return asyncMethods; } }
-        internal bool InternalTypes { get { return internalTypes; } }
-        internal bool SerializableAttribute { get { return serializableAttribute; } }
-        internal SerializerMode Serializer { get { return serializer; } }
-        internal bool ImportXmlTypes { get { return importXmlTypes; } }
-        internal bool TypedMessages { get { return typedMessages; } }
-        internal bool NoLogo { get { return noLogo; } }
-        internal bool NoConfig { get { return noConfig || dataContractOnly; } }
-        internal bool MergeConfig { get { return mergeConfig; } }
-        internal string ServiceName { get { return serviceName; } }
-        internal bool EnableDataBinding { get { return enableDataBinding; } }
+        internal string OutputFileArg { get { return _outputFileArg; } }
+        internal string DirectoryArg { get { return _directoryArg; } }
+        internal string ConfigFileArg { get { return _configFileArg; } }
+        internal bool AsyncMethods { get { return _asyncMethods; } }
+        internal bool InternalTypes { get { return _internalTypes; } }
+        internal bool SerializableAttribute { get { return _serializableAttribute; } }
+        internal SerializerMode Serializer { get { return _serializer; } }
+        internal bool ImportXmlTypes { get { return _importXmlTypes; } }
+        internal bool TypedMessages { get { return _typedMessages; } }
+        internal bool NoLogo { get { return _noLogo; } }
+        internal bool NoConfig { get { return _noConfig || _dataContractOnly; } }
+        internal bool MergeConfig { get { return _mergeConfig; } }
+        internal string ServiceName { get { return _serviceName; } }
+        internal bool EnableDataBinding { get { return _enableDataBinding; } }
 
-        internal List<string> InputParameters { get { return inputParameters; } }
-        internal List<Type> ReferencedTypes { get { return referencedTypes; } }
-        internal List<Assembly> ReferencedAssemblies { get { return referencedAssemblies; } }
-        internal List<Type> ReferencedCollectionTypes { get { return referencedCollectionTypes; } }
-        internal bool Nostdlib { get { return nostdlib; } }
-        internal Dictionary<string, string> NamespaceMappings { get { return namespaceMappings; } }
+        internal List<string> InputParameters { get { return _inputParameters; } }
+        internal List<Type> ReferencedTypes { get { return _referencedTypes; } }
+        internal List<Assembly> ReferencedAssemblies { get { return _referencedAssemblies; } }
+        internal List<Type> ReferencedCollectionTypes { get { return _referencedCollectionTypes; } }
+        internal bool Nostdlib { get { return _nostdlib; } }
+        internal Dictionary<string, string> NamespaceMappings { get { return _namespaceMappings; } }
 
-        internal TypeResolver TypeResolver { get { return typeResolver; } }
+        internal TypeResolver TypeResolver { get { return _typeResolver; } }
 
-        internal string ModeSettingOption { get { return modeSettingOption; } }
-        internal string ModeSettingValue { get { return modeSettingValue; } }
-        internal TargetClientVersionMode TargetClientVersion { get { return targetClientVersion; } }
-        internal bool UseSerializerForFaults { get { return useSerializerForFaults; } }
-        internal bool Wrapped { get { return wrapped; } }
-        internal bool ServiceContractGeneration { get { return serviceContractGeneration; } }
-        internal bool SyncMethodOnly { get { return syncMethodOnly; } }
+        internal string ModeSettingOption { get { return _modeSettingOption; } }
+        internal string ModeSettingValue { get { return _modeSettingValue; } }
+        internal TargetClientVersionMode TargetClientVersion { get { return _targetClientVersion; } }
+        internal bool UseSerializerForFaults { get { return _useSerializerForFaults; } }
+        internal bool Wrapped { get { return _wrapped; } }
+        internal bool ServiceContractGeneration { get { return _serviceContractGeneration; } }
+        internal bool SyncMethodOnly { get { return _syncMethodOnly; } }
 
-        Options(ArgumentDictionary arguments)
+        private Options(ArgumentDictionary arguments)
         {
             OptionProcessingHelper optionProcessor = new OptionProcessingHelper(this, arguments);
             optionProcessor.ProcessArguments();
@@ -112,34 +113,34 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             Tool.Assert(IsSingleBit(newDefaultMode), "newDefaultMode must Always represent a single mode!");
 
             //update/filter list of valid modes
-            this.validModes &= validModes;
-            if (this.validModes == ToolMode.None)
+            _validModes &= validModes;
+            if (_validModes == ToolMode.None)
                 throw new InvalidToolModeException();
 
 
-            bool currentDefaultIsValid = (this.defaultMode.HasValue && (this.defaultMode & this.validModes) != ToolMode.None);
-            bool newDefaultIsValid = (newDefaultMode & this.validModes) != ToolMode.None;
+            bool currentDefaultIsValid = (_defaultMode.HasValue && (_defaultMode & _validModes) != ToolMode.None);
+            bool newDefaultIsValid = (newDefaultMode & _validModes) != ToolMode.None;
             if (!currentDefaultIsValid)
             {
                 if (newDefaultIsValid)
-                    this.defaultMode = newDefaultMode;
+                    _defaultMode = newDefaultMode;
                 else
-                    this.defaultMode = null;
+                    _defaultMode = null;
             }
 
             //If this is true, then this is an explicit mode setting
             if (IsSingleBit(validModes))
             {
-                this.modeSettingOption = option;
-                this.modeSettingValue = value;
+                _modeSettingOption = option;
+                _modeSettingValue = value;
             }
         }
 
         internal ToolMode? GetToolMode()
         {
-            if (IsSingleBit(this.validModes))
-                return this.validModes;
-            return this.defaultMode;
+            if (IsSingleBit(_validModes))
+                return _validModes;
+            return _defaultMode;
         }
 
         internal string GetCommandLineString(string option, string value)
@@ -147,7 +148,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             return (value == null) ? option : option + ":" + value;
         }
 
-        static bool IsSingleBit(ToolMode mode)
+        private static bool IsSingleBit(ToolMode mode)
         {
             //figures out if the mode has a single bit set ( is a power of 2)
             int x = (int)mode;
@@ -156,21 +157,21 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
         internal bool IsTypeExcluded(Type type)
         {
-            return OptionProcessingHelper.IsTypeSpecified(type, this.excludedTypes, Options.Cmd.ExcludeType);
+            return OptionProcessingHelper.IsTypeSpecified(type, _excludedTypes, Options.Cmd.ExcludeType);
         }
 
-        class OptionProcessingHelper
+        private class OptionProcessingHelper
         {
-            Options parent;
-            ArgumentDictionary arguments;
+            private Options _parent;
+            private ArgumentDictionary _arguments;
 
 
-            static Type typeOfDateTimeOffset = typeof(DateTimeOffset);
+            private static Type s_typeOfDateTimeOffset = typeof(DateTimeOffset);
 
             internal OptionProcessingHelper(Options options, ArgumentDictionary arguments)
             {
-                this.parent = options;
-                this.arguments = arguments;
+                _parent = options;
+                _arguments = arguments;
             }
 
             internal void ProcessArguments()
@@ -198,95 +199,93 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 ParseReferenceAssemblies();
             }
 
-            void ParseServiceContractOption()
+            private void ParseServiceContractOption()
             {
-                parent.serviceContractGeneration = arguments.ContainsArgument(Options.Cmd.ServiceContract);
-                if (parent.serviceContractGeneration)
+                _parent._serviceContractGeneration = _arguments.ContainsArgument(Options.Cmd.ServiceContract);
+                if (_parent._serviceContractGeneration)
                 {
                     SetAllowedModesFromOption(ToolMode.ServiceContractGeneration, ToolMode.ServiceContractGeneration, Options.Cmd.ServiceContract, null);
                 }
             }
 
-            bool CheckForHelpOption()
+            private bool CheckForHelpOption()
             {
-                if (arguments.ContainsArgument(Options.Cmd.Help) || arguments.Count == 0)
+                if (_arguments.ContainsArgument(Options.Cmd.Help) || _arguments.Count == 0)
                 {
-                    parent.SetAllowedModes(ToolMode.DisplayHelp, ToolMode.DisplayHelp, Options.Cmd.Help, null);
+                    _parent.SetAllowedModes(ToolMode.DisplayHelp, ToolMode.DisplayHelp, Options.Cmd.Help, null);
                     return true;
                 }
                 return false;
             }
 
-            void CheckForTargetOrValidateOptions()
+            private void CheckForTargetOrValidateOptions()
             {
-                if (arguments.ContainsArgument(Options.Cmd.Target))
+                if (_arguments.ContainsArgument(Options.Cmd.Target))
                 {
-                    ParseTargetOption(arguments.GetArgument(Options.Cmd.Target));
+                    ParseTargetOption(_arguments.GetArgument(Options.Cmd.Target));
                 }
 
-                if (arguments.ContainsArgument(Options.Cmd.Validate))
+                if (_arguments.ContainsArgument(Options.Cmd.Validate))
                 {
                     try
                     {
-                        parent.SetAllowedModes(ToolMode.Validate, ToolMode.Validate, Options.Cmd.Validate, null);
+                        _parent.SetAllowedModes(ToolMode.Validate, ToolMode.Validate, Options.Cmd.Validate, null);
                     }
                     catch (InvalidToolModeException)
                     {
                         throw new ToolOptionException(SR.Format(SR.ErrValidateInvalidUse, Options.Cmd.Validate, Options.Cmd.Target));
                     }
 
-                    if (!arguments.ContainsArgument(Options.Cmd.ServiceName))
+                    if (!_arguments.ContainsArgument(Options.Cmd.ServiceName))
                     {
                         throw new ToolOptionException(SR.Format(SR.ErrValidateRequiresServiceName, Options.Cmd.ServiceName));
                     }
                 }
             }
 
-            void ParseTargetOption(string targetValue)
+            private void ParseTargetOption(string targetValue)
             {
                 try
                 {
                     if (String.Equals(targetValue, Options.Targets.Metadata, StringComparison.OrdinalIgnoreCase))
                     {
-                        parent.SetAllowedModes(ToolMode.MetadataFromAssembly, ToolMode.MetadataFromAssembly | ToolMode.DataContractExport | ToolMode.WSMetadataExchange, Options.Cmd.Target, targetValue);
+                        _parent.SetAllowedModes(ToolMode.MetadataFromAssembly, ToolMode.MetadataFromAssembly | ToolMode.DataContractExport | ToolMode.WSMetadataExchange, Options.Cmd.Target, targetValue);
                     }
                     else if (String.Equals(targetValue, Options.Targets.Code, StringComparison.OrdinalIgnoreCase))
                     {
-                        parent.SetAllowedModes(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.Target, targetValue);
+                        _parent.SetAllowedModes(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.Target, targetValue);
                     }
                     else if (String.Equals(targetValue, Options.Targets.XmlSerializer, StringComparison.OrdinalIgnoreCase))
                     {
-                        parent.SetAllowedModes(ToolMode.XmlSerializerGeneration, ToolMode.XmlSerializerGeneration, Options.Cmd.Target, targetValue);
+                        _parent.SetAllowedModes(ToolMode.XmlSerializerGeneration, ToolMode.XmlSerializerGeneration, Options.Cmd.Target, targetValue);
                     }
                     else
                     {
                         throw new ToolOptionException(SR.Format(SR.ErrInvalidTarget, Options.Cmd.Target, targetValue, Options.Targets.SupportedTargets));
                     }
-                    parent.targetValue = targetValue;
+                    _parent._targetValue = targetValue;
                 }
                 catch (InvalidToolModeException)
                 {
                     Tool.Assert(true, "This should have been the first check and shouldn't ever be called");
                 }
-
             }
 
-            void CheckForBasicOptions()
+            private void CheckForBasicOptions()
             {
-                parent.noLogo = arguments.ContainsArgument(Options.Cmd.NoLogo);
+                _parent._noLogo = _arguments.ContainsArgument(Options.Cmd.NoLogo);
 #if DEBUG
-                ToolConsole.SetOptions(arguments.ContainsArgument(Options.Cmd.Debug));
+                ToolConsole.SetOptions(_arguments.ContainsArgument(Options.Cmd.Debug));
 #endif
             }
 
-            void ProcessDirectoryOption()
+            private void ProcessDirectoryOption()
             {
                 // Directory
                 //---------------------------------------------------------------------------------------------------------
-                if (arguments.ContainsArgument(Options.Cmd.Directory))
+                if (_arguments.ContainsArgument(Options.Cmd.Directory))
                 {
-
-                    string directoryArgValue = arguments.GetArgument(Options.Cmd.Directory);
+                    string directoryArgValue = _arguments.GetArgument(Options.Cmd.Directory);
 
                     try
                     {
@@ -295,7 +294,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                         if (!directoryArgValue.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
                             directoryArgValue += Path.DirectorySeparatorChar;
 
-                        parent.directoryArg = Path.GetFullPath(directoryArgValue);
+                        _parent._directoryArg = Path.GetFullPath(directoryArgValue);
                     }
                     catch (ToolOptionException)
                     {
@@ -312,11 +311,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
                 else
                 {
-                    parent.directoryArg = null;
+                    _parent._directoryArg = null;
                 }
             }
 
-            static void ValidateIsDirectoryPathOnly(string arg, string value)
+            private static void ValidateIsDirectoryPathOnly(string arg, string value)
             {
                 ValidatePath(arg, value);
                 FileInfo fileInfo = new FileInfo(value);
@@ -324,7 +323,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     throw new ToolOptionException(SR.Format(SR.ErrDirectoryPointsToAFile, arg, value));
             }
 
-            static void ValidatePath(string arg, string value)
+            private static void ValidatePath(string arg, string value)
             {
                 int invalidCharacterIndex = value.IndexOfAny(Path.GetInvalidPathChars());
 
@@ -335,48 +334,48 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
             }
 
-            void ProcessOutputOption()
+            private void ProcessOutputOption()
             {
-                if (arguments.ContainsArgument(Options.Cmd.Out))
+                if (_arguments.ContainsArgument(Options.Cmd.Out))
                 {
-                    parent.outputFileArg = arguments.GetArgument(Options.Cmd.Out);
+                    _parent._outputFileArg = _arguments.GetArgument(Options.Cmd.Out);
 
-                    if (parent.outputFileArg != string.Empty)
+                    if (_parent._outputFileArg != string.Empty)
                     {
                         SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.XmlSerializerGeneration | ToolMode.ServiceContractGeneration, Options.Cmd.Out, "");
 
-                        ValidatePath(Options.Cmd.Out, parent.outputFileArg);
+                        ValidatePath(Options.Cmd.Out, _parent._outputFileArg);
                     }
                 }
                 else
                 {
-                    parent.outputFileArg = null;
+                    _parent._outputFileArg = null;
                 }
             }
 
-            void ProcessServiceNameOption()
+            private void ProcessServiceNameOption()
             {
-                if (arguments.ContainsArgument(Options.Cmd.ServiceName))
+                if (_arguments.ContainsArgument(Options.Cmd.ServiceName))
                 {
-                    parent.serviceName = arguments.GetArgument(Options.Cmd.ServiceName);
+                    _parent._serviceName = _arguments.GetArgument(Options.Cmd.ServiceName);
 
-                    if (parent.serviceName != string.Empty)
+                    if (_parent._serviceName != string.Empty)
                     {
                         SetAllowedModesFromOption(ToolMode.MetadataFromAssembly, ToolMode.MetadataFromAssembly | ToolMode.Validate, Options.Cmd.ServiceName, "");
                     }
                 }
                 else
                 {
-                    parent.serviceName = null;
+                    _parent._serviceName = null;
                 }
             }
 
-            void ReadInputArguments()
+            private void ReadInputArguments()
             {
-                parent.inputParameters = new List<string>(arguments.GetArguments(String.Empty));
+                _parent._inputParameters = new List<string>(_arguments.GetArguments(String.Empty));
             }
 
-            void ParseMiscCodeGenOptions()
+            private void ParseMiscCodeGenOptions()
             {
                 ParseSerializerOption();
 
@@ -386,46 +385,46 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
                 ParseTargetClientVersionOption();
 
-                parent.wrapped = arguments.ContainsArgument(Options.Cmd.Wrapped);
-                if (parent.wrapped)
+                _parent._wrapped = _arguments.ContainsArgument(Options.Cmd.Wrapped);
+                if (_parent._wrapped)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.Wrapped, null);
 
-                parent.useSerializerForFaults = arguments.ContainsArgument(Options.Cmd.UseSerializerForFaults);
-                if (parent.useSerializerForFaults)
+                _parent._useSerializerForFaults = _arguments.ContainsArgument(Options.Cmd.UseSerializerForFaults);
+                if (_parent._useSerializerForFaults)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.UseSerializerForFaults, null);
 
-                parent.importXmlTypes = arguments.ContainsArgument(Options.Cmd.ImportXmlTypes);
-                if (parent.importXmlTypes)
+                _parent._importXmlTypes = _arguments.ContainsArgument(Options.Cmd.ImportXmlTypes);
+                if (_parent._importXmlTypes)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.ImportXmlTypes, null);
 
-                parent.noConfig = arguments.ContainsArgument(Options.Cmd.NoConfig);
-                if (parent.noConfig)
+                _parent._noConfig = _arguments.ContainsArgument(Options.Cmd.NoConfig);
+                if (_parent._noConfig)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration, Options.Cmd.NoConfig, null);
 
-                parent.internalTypes = arguments.ContainsArgument(Options.Cmd.Internal);
-                if (parent.internalTypes)
+                _parent._internalTypes = _arguments.ContainsArgument(Options.Cmd.Internal);
+                if (_parent._internalTypes)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.Internal, null);
 
-                parent.serializableAttribute = arguments.ContainsArgument(Options.Cmd.Serializable);
-                if (parent.serializableAttribute)
+                _parent._serializableAttribute = _arguments.ContainsArgument(Options.Cmd.Serializable);
+                if (_parent._serializableAttribute)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.Serializable, null);
 
-                parent.typedMessages = arguments.ContainsArgument(Options.Cmd.MessageContract);
-                if (parent.typedMessages)
+                _parent._typedMessages = _arguments.ContainsArgument(Options.Cmd.MessageContract);
+                if (_parent._typedMessages)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.ServiceContractGeneration, Options.Cmd.MessageContract, null);
 
-                parent.enableDataBinding = arguments.ContainsArgument(Options.Cmd.EnableDataBinding);
-                if (parent.enableDataBinding)
+                _parent._enableDataBinding = _arguments.ContainsArgument(Options.Cmd.EnableDataBinding);
+                if (_parent._enableDataBinding)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.EnableDataBinding, null);
 
-                parent.asyncMethods = arguments.ContainsArgument(Options.Cmd.Async);
-                if (parent.asyncMethods)
+                _parent._asyncMethods = _arguments.ContainsArgument(Options.Cmd.Async);
+                if (_parent._asyncMethods)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.ServiceContractGeneration, Options.Cmd.Async, null);
 
-                parent.syncMethodOnly = arguments.ContainsArgument(Options.Cmd.SyncOnly);
-                if (parent.syncMethodOnly)
+                _parent._syncMethodOnly = _arguments.ContainsArgument(Options.Cmd.SyncOnly);
+                if (_parent._syncMethodOnly)
                 {
-                    if (parent.asyncMethods)
+                    if (_parent._asyncMethods)
                     {
                         throw new ToolOptionException(SR.Format(SR.ErrExclusiveOptionsSpecified, Options.Cmd.SyncOnly, Options.Cmd.Async));
                     }
@@ -438,90 +437,89 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
             private void ParseDCOnly()
             {
-                parent.dataContractOnly = arguments.ContainsArgument(Options.Cmd.DataContractOnly);
+                _parent._dataContractOnly = _arguments.ContainsArgument(Options.Cmd.DataContractOnly);
 
-                if (parent.dataContractOnly)
+                if (_parent._dataContractOnly)
                     SetAllowedModesFromOption(ToolMode.DataContractImport, ToolMode.DataContractImport | ToolMode.DataContractExport, Options.Cmd.DataContractOnly, null);
-
             }
 
-            void ParseSerializerOption()
+            private void ParseSerializerOption()
             {
-                if (arguments.ContainsArgument(Options.Cmd.Serializer))
+                if (_arguments.ContainsArgument(Options.Cmd.Serializer))
                 {
-                    string serializerValue = arguments.GetArgument(Options.Cmd.Serializer);
+                    string serializerValue = _arguments.GetArgument(Options.Cmd.Serializer);
                     try
                     {
-                        parent.serializer = (SerializerMode)Enum.Parse(typeof(SerializerMode), serializerValue, true);
+                        _parent._serializer = (SerializerMode)Enum.Parse(typeof(SerializerMode), serializerValue, true);
                     }
                     catch (ArgumentException)
                     {
-                        throw new ToolOptionException(SR.Format(SR.ErrInvalidSerializer, Options.Cmd.Serializer, serializerValue, Options.SupportedSerializers));
+                        throw new ToolOptionException(SR.Format(SR.ErrInvalidSerializer, Options.Cmd.Serializer, serializerValue, Options.s_supportedSerializers));
                     }
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.Serializer, null);
                 }
                 else
                 {
-                    parent.serializer = SerializerMode.Default;
+                    _parent._serializer = SerializerMode.Default;
                 }
             }
 
-            void ParseTargetClientVersionOption()
+            private void ParseTargetClientVersionOption()
             {
-                if (arguments.ContainsArgument(Options.Cmd.TargetClientVersion))
+                if (_arguments.ContainsArgument(Options.Cmd.TargetClientVersion))
                 {
-                    string targetClientVersionValue = arguments.GetArgument(Options.Cmd.TargetClientVersion);
+                    string targetClientVersionValue = _arguments.GetArgument(Options.Cmd.TargetClientVersion);
                     try
                     {
-                        parent.targetClientVersion = (TargetClientVersionMode)Enum.Parse(typeof(TargetClientVersionMode), targetClientVersionValue, true);
+                        _parent._targetClientVersion = (TargetClientVersionMode)Enum.Parse(typeof(TargetClientVersionMode), targetClientVersionValue, true);
                     }
                     catch (ArgumentException)
                     {
-                        throw new ToolOptionException(SR.Format(SR.ErrInvalidTargetClientVersion, Options.Cmd.TargetClientVersion, targetClientVersionValue, Options.SupportedTargetClientVersions));
+                        throw new ToolOptionException(SR.Format(SR.ErrInvalidTargetClientVersion, Options.Cmd.TargetClientVersion, targetClientVersionValue, Options.s_supportedTargetClientVersions));
                     }
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.ServiceContractGeneration, Options.Cmd.TargetClientVersion, null);
                 }
                 else
                 {
-                    parent.targetClientVersion = TargetClientVersionMode.Version30;
+                    _parent._targetClientVersion = TargetClientVersionMode.Version30;
                 }
             }
 
-            void ParseConfigOption()
+            private void ParseConfigOption()
             {
                 // Parse config
                 //-----------------------------------------------------------------------------------------------------
-                if (arguments.ContainsArgument(Options.Cmd.Config))
+                if (_arguments.ContainsArgument(Options.Cmd.Config))
                 {
-                    if (parent.noConfig)
+                    if (_parent._noConfig)
                         throw new ToolOptionException(SR.Format(SR.ErrExclusiveOptionsSpecified, Options.Cmd.NoConfig, Options.Cmd.Config));
 
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.ProxyGeneration, Options.Cmd.Config, null);
 
-                    parent.configFileArg = arguments.GetArgument(Options.Cmd.Config);
+                    _parent._configFileArg = _arguments.GetArgument(Options.Cmd.Config);
 
-                    if (arguments.ContainsArgument(Options.Cmd.MergeConfig))
-                        parent.mergeConfig = true;
+                    if (_arguments.ContainsArgument(Options.Cmd.MergeConfig))
+                        _parent._mergeConfig = true;
                     else
-                        parent.mergeConfig = false;
+                        _parent._mergeConfig = false;
 
-                    if (parent.configFileArg != null)
-                        ValidatePath(Options.Cmd.Config, parent.configFileArg);
+                    if (_parent._configFileArg != null)
+                        ValidatePath(Options.Cmd.Config, _parent._configFileArg);
                 }
                 else
                 {
-                    if (arguments.ContainsArgument(Options.Cmd.MergeConfig))
+                    if (_arguments.ContainsArgument(Options.Cmd.MergeConfig))
                         throw new ToolOptionException(SR.Format(SR.ErrMergeConfigUsedWithoutConfig, Options.Cmd.MergeConfig, Options.Cmd.Config));
 
-                    parent.configFileArg = null;
-                    parent.mergeConfig = false;
+                    _parent._configFileArg = null;
+                    _parent._mergeConfig = false;
                 }
             }
 
-            void ParseNamespaceMappings()
+            private void ParseNamespaceMappings()
             {
-                IList<string> namespaceMappingsArgs = arguments.GetArguments(Options.Cmd.Namespace);
-                parent.namespaceMappings = new Dictionary<string, string>(namespaceMappingsArgs.Count);
+                IList<string> namespaceMappingsArgs = _arguments.GetArguments(Options.Cmd.Namespace);
+                _parent._namespaceMappings = new Dictionary<string, string>(namespaceMappingsArgs.Count);
 
                 foreach (string namespaceMapping in namespaceMappingsArgs)
                 {
@@ -533,85 +531,81 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     string targetNamespace = parts[0].Trim();
                     string clrNamespace = parts[1].Trim();
 
-                    if (parent.namespaceMappings.ContainsKey(targetNamespace))
+                    if (_parent._namespaceMappings.ContainsKey(targetNamespace))
                     {
-                        string prevClrNamespace = parent.namespaceMappings[targetNamespace];
+                        string prevClrNamespace = _parent._namespaceMappings[targetNamespace];
                         if (prevClrNamespace != clrNamespace)
                             throw new ToolOptionException(SR.Format(SR.ErrCannotSpecifyMultipleMappingsForNamespace,
                                 Options.Cmd.Namespace, targetNamespace, prevClrNamespace, clrNamespace));
                     }
                     else
                     {
-                        parent.namespaceMappings.Add(targetNamespace, clrNamespace);
+                        _parent._namespaceMappings.Add(targetNamespace, clrNamespace);
                     }
-
                 }
-
             }
 
-            void ParseReferenceAssemblies()
+            private void ParseReferenceAssemblies()
             {
-                IList<string> referencedAssembliesArgs = arguments.GetArguments(Options.Cmd.Reference);
-                IList<string> excludeTypesArgs = arguments.GetArguments(Options.Cmd.ExcludeType);
-                IList<string> referencedCollectionTypesArgs = arguments.GetArguments(Options.Cmd.CollectionType);
-                bool nostdlib = arguments.ContainsArgument(Options.Cmd.Nostdlib);
+                IList<string> referencedAssembliesArgs = _arguments.GetArguments(Options.Cmd.Reference);
+                IList<string> excludeTypesArgs = _arguments.GetArguments(Options.Cmd.ExcludeType);
+                IList<string> referencedCollectionTypesArgs = _arguments.GetArguments(Options.Cmd.CollectionType);
+                bool nostdlib = _arguments.ContainsArgument(Options.Cmd.Nostdlib);
 
                 if (excludeTypesArgs != null && excludeTypesArgs.Count > 0)
                     SetAllowedModesFromOption(ToolMode.ProxyGeneration, ToolMode.MetadataFromAssembly | ToolMode.ProxyGeneration | ToolMode.DataContractImport | ToolMode.XmlSerializerGeneration | ToolMode.ServiceContractGeneration, Options.Cmd.ExcludeType, null);
 
                 AddReferencedTypes(referencedAssembliesArgs, excludeTypesArgs, referencedCollectionTypesArgs, nostdlib);
-                parent.typeResolver = CreateTypeResolver(parent);
+                _parent._typeResolver = CreateTypeResolver(_parent);
             }
 
-            void SetAllowedModesFromOption(ToolMode newDefaultMode, ToolMode allowedModes, string option, string value)
+            private void SetAllowedModesFromOption(ToolMode newDefaultMode, ToolMode allowedModes, string option, string value)
             {
                 try
                 {
-                    parent.SetAllowedModes(newDefaultMode, allowedModes, option, value);
+                    _parent.SetAllowedModes(newDefaultMode, allowedModes, option, value);
                 }
                 catch (InvalidToolModeException)
                 {
-                    string optionStr = parent.GetCommandLineString(option, value);
-                    if (parent.modeSettingOption != null)
+                    string optionStr = _parent.GetCommandLineString(option, value);
+                    if (_parent._modeSettingOption != null)
                     {
-                        if (parent.modeSettingOption == Options.Cmd.Target)
+                        if (_parent._modeSettingOption == Options.Cmd.Target)
                         {
-                            throw new ToolOptionException(SR.Format(SR.ErrOptionConflictsWithTarget, Options.Cmd.Target, parent.ModeSettingValue, optionStr));
+                            throw new ToolOptionException(SR.Format(SR.ErrOptionConflictsWithTarget, Options.Cmd.Target, _parent.ModeSettingValue, optionStr));
                         }
                         else
                         {
-                            string modeSettingStr = parent.GetCommandLineString(parent.modeSettingOption, parent.modeSettingValue);
+                            string modeSettingStr = _parent.GetCommandLineString(_parent._modeSettingOption, _parent._modeSettingValue);
                             throw new ToolOptionException(SR.Format(SR.ErrOptionModeConflict, optionStr, modeSettingStr));
                         }
                     }
                     else
                     {
-
                         throw new ToolOptionException(SR.Format(SR.ErrAmbiguousOptionModeConflict, optionStr));
                     }
                 }
-
             }
 
-            void AddReferencedTypes(IList<string> referenceArgs, IList<string> excludedTypeArgs, IList<string> collectionTypesArgs, bool nostdlib)
+            private void AddReferencedTypes(IList<string> referenceArgs, IList<string> excludedTypeArgs, IList<string> collectionTypesArgs, bool nostdlib)
             {
-                parent.referencedTypes = new List<Type>();
-                parent.referencedAssemblies = new List<Assembly>(referenceArgs.Count);
-                parent.referencedCollectionTypes = new List<Type>();
-                parent.nostdlib = nostdlib;
-                parent.excludedTypes = AddSpecifiedTypesToDictionary(excludedTypeArgs, Options.Cmd.ExcludeType);
+                _parent._referencedTypes = new List<Type>();
+                _parent._referencedAssemblies = new List<Assembly>(referenceArgs.Count);
+                _parent._referencedCollectionTypes = new List<Type>();
+                _parent._nostdlib = nostdlib;
+                _parent._excludedTypes = AddSpecifiedTypesToDictionary(excludedTypeArgs, Options.Cmd.ExcludeType);
 
                 //Add the DateTimeOffset type to excluded types if the target client version is 3.0.
                 //Ensures that the DateTimeOffset type is not referenced even if mscorlib is referenced from a non-3.0 machine.
 
-                switch (parent.targetClientVersion)
+                switch (_parent._targetClientVersion)
                 {
                     case TargetClientVersionMode.Version35:
                         break;
                     default:
-                        if (!parent.IsTypeExcluded(typeOfDateTimeOffset))
+                        if (!_parent.IsTypeExcluded(s_typeOfDateTimeOffset))
                         {
-                            parent.excludedTypes.Add(typeOfDateTimeOffset.FullName, typeOfDateTimeOffset);
+                            _parent._excludedTypes.Add(s_typeOfDateTimeOffset.FullName, s_typeOfDateTimeOffset);
                         }
                         break;
                 }
@@ -621,7 +615,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
                 LoadReferencedAssemblies(referenceArgs);
 
-                foreach (Assembly assembly in parent.referencedAssemblies)
+                foreach (Assembly assembly in _parent._referencedAssemblies)
                 {
                     AddReferencedTypesFromAssembly(assembly, foundCollectionTypes);
                 }
@@ -634,7 +628,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 AddReferencedCollectionTypes(collectionTypesArgs, foundCollectionTypes);
             }
 
-            void LoadReferencedAssemblies(IList<string> referenceArgs)
+            private void LoadReferencedAssemblies(IList<string> referenceArgs)
             {
                 foreach (string path in referenceArgs)
                 {
@@ -642,9 +636,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     try
                     {
                         assembly = InputModule.LoadAssembly(path);
-                        if (!parent.referencedAssemblies.Contains(assembly))
+                        if (!_parent._referencedAssemblies.Contains(assembly))
                         {
-                            parent.referencedAssemblies.Add(assembly);
+                            _parent._referencedAssemblies.Add(assembly);
                         }
                         else
                         {
@@ -662,7 +656,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
             }
 
-            Dictionary<string, Type> AddSpecifiedTypesToDictionary(IList<string> typeArgs, string cmd)
+            private Dictionary<string, Type> AddSpecifiedTypesToDictionary(IList<string> typeArgs, string cmd)
             {
                 Dictionary<string, Type> specifiedTypes = new Dictionary<string, Type>(typeArgs.Count);
                 foreach (string typeArg in typeArgs)
@@ -674,34 +668,33 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 return specifiedTypes;
             }
 
-            void AddReferencedTypesFromAssembly(Assembly assembly, Dictionary<string, Type> foundCollectionTypes)
+            private void AddReferencedTypesFromAssembly(Assembly assembly, Dictionary<string, Type> foundCollectionTypes)
             {
                 foreach (Type type in InputModule.LoadTypes(assembly))
                 {
                     if (type.IsPublic || type.IsNestedPublic)
                     {
-                        if (!parent.IsTypeExcluded(type))
-                            parent.referencedTypes.Add(type);
+                        if (!_parent.IsTypeExcluded(type))
+                            _parent._referencedTypes.Add(type);
                         else if (IsTypeSpecified(type, foundCollectionTypes, Options.Cmd.CollectionType))
-                            parent.referencedCollectionTypes.Add(type);
+                            _parent._referencedCollectionTypes.Add(type);
                     }
                 }
-
             }
 
-            void AddMscorlib(Dictionary<string, Type> foundCollectionTypes)
+            private void AddMscorlib(Dictionary<string, Type> foundCollectionTypes)
             {
                 Assembly mscorlib = typeof(int).Assembly;
-                if (!parent.referencedAssemblies.Contains(mscorlib))
+                if (!_parent._referencedAssemblies.Contains(mscorlib))
                 {
                     AddReferencedTypesFromAssembly(mscorlib, foundCollectionTypes);
                 }
             }
 
-            void AddServiceModelLib(Dictionary<string, Type> foundCollectionTypes)
+            private void AddServiceModelLib(Dictionary<string, Type> foundCollectionTypes)
             {
                 Assembly serviceModelLib = typeof(ChannelFactory).Assembly;
-                if (!parent.referencedAssemblies.Contains(serviceModelLib))
+                if (!_parent._referencedAssemblies.Contains(serviceModelLib))
                 {
                     AddReferencedTypesFromAssembly(serviceModelLib, foundCollectionTypes);
                 }
@@ -739,7 +732,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 return false;
             }
 
-            void AddReferencedCollectionTypes(IList<string> collectionTypesArgs, Dictionary<string, Type> foundCollectionTypes)
+            private void AddReferencedCollectionTypes(IList<string> collectionTypesArgs, Dictionary<string, Type> foundCollectionTypes)
             {
                 // Instantiated generics specified via /rct can only be added via assembly.GetType or Type.GetType
                 foreach (string collectionType in collectionTypesArgs)
@@ -747,7 +740,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     if (foundCollectionTypes[collectionType] == null)
                     {
                         Type foundType = null;
-                        foreach (Assembly assembly in parent.referencedAssemblies)
+                        foreach (Assembly assembly in _parent._referencedAssemblies)
                         {
                             foundType = assembly.GetType(collectionType);
                             if (foundType != null)
@@ -758,12 +751,12 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                             throw new ToolOptionException(SR.Format(SR.ErrCannotLoadSpecifiedType, Options.Cmd.CollectionType,
                                 collectionType, Options.Cmd.Reference));
                         else
-                            parent.referencedCollectionTypes.Add(foundType);
+                            _parent._referencedCollectionTypes.Add(foundType);
                     }
                 }
             }
 
-            static TypeResolver CreateTypeResolver(Options options)
+            private static TypeResolver CreateTypeResolver(Options options)
             {
                 TypeResolver typeResolver = new TypeResolver(options);
                 AppDomain.CurrentDomain.TypeResolve += new ResolveEventHandler(typeResolver.ResolveType);
@@ -771,9 +764,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
                 return typeResolver;
             }
-
         }
-
     }
-
 }

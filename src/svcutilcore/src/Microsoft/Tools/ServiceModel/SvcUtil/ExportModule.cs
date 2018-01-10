@@ -1,6 +1,7 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
@@ -15,14 +16,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
     using System.Collections.ObjectModel;
     using DcNS = System.Runtime.Serialization;
 
-    class ExportModule
+    internal class ExportModule
     {
-        readonly DcNS.XsdDataContractExporter dcExporter;
-        readonly bool dcOnlyMode;
-        readonly string serviceName;
-        readonly IsTypeExcludedDelegate isTypeExcluded;
-        readonly TypeResolver typeResolver;
-        
+        private readonly DcNS.XsdDataContractExporter _dcExporter;
+        private readonly bool _dcOnlyMode;
+        private readonly string _serviceName;
+        private readonly IsTypeExcludedDelegate _isTypeExcluded;
+        private readonly TypeResolver _typeResolver;
+
         internal delegate bool IsTypeExcludedDelegate(Type t);
         internal delegate void TypeLoadErrorEventHandler(Type type, string errorMessage);
         internal delegate void ServiceResolutionErrorEventHandler(string configName, string errorMessage);
@@ -30,28 +31,28 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
         internal class ContractLoader
         {
-            readonly List<Type> types = new List<Type>();
-            readonly IsTypeExcludedDelegate isTypeExcluded;
-            TypeLoadErrorEventHandler contractLoadErrorCallback;
+            private readonly List<Type> _types = new List<Type>();
+            private readonly IsTypeExcludedDelegate _isTypeExcluded;
+            private TypeLoadErrorEventHandler _contractLoadErrorCallback;
 
             internal ContractLoader(IEnumerable<Assembly> assemblies, IsTypeExcludedDelegate isTypeExcluded)
             {
-                this.isTypeExcluded = isTypeExcluded;
+                _isTypeExcluded = isTypeExcluded;
                 foreach (Assembly assembly in assemblies)
-                    types.AddRange(InputModule.LoadTypes(assembly));
+                    _types.AddRange(InputModule.LoadTypes(assembly));
             }
 
             internal TypeLoadErrorEventHandler ContractLoadErrorCallback
             {
-                get { return contractLoadErrorCallback; }
-                set { contractLoadErrorCallback = value; }
+                get { return _contractLoadErrorCallback; }
+                set { _contractLoadErrorCallback = value; }
             }
 
             internal IEnumerable<ContractDescription> GetContracts()
             {
-                foreach (Type type in this.types)
+                foreach (Type type in _types)
                 {
-                    if (!isTypeExcluded(type) && IsContractType(type))
+                    if (!_isTypeExcluded(type) && IsContractType(type))
                     {
                         ContractDescription contract = LoadContract(type);
                         if (contract != null)
@@ -60,7 +61,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
             }
 
-            ContractDescription LoadContract(Type type)
+            private ContractDescription LoadContract(Type type)
             {
                 try
                 {
@@ -73,14 +74,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     if (Tool.IsFatal(e))
                         throw;
 
-                    if (this.contractLoadErrorCallback != null)
-                        this.contractLoadErrorCallback(type, e.Message);
+                    if (_contractLoadErrorCallback != null)
+                        _contractLoadErrorCallback(type, e.Message);
 
                     return null;
                 }
             }
 
-            static bool IsContractType(Type type)
+            private static bool IsContractType(Type type)
             {
                 return (type.IsInterface || type.IsClass) && (type.IsDefined(typeof(ServiceContractAttribute), false));
             }
