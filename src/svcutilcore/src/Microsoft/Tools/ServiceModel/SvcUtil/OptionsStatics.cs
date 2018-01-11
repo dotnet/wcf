@@ -1,9 +1,10 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
-    partial class Options
+    internal partial class Options
     {
         internal static class Cmd
         {
@@ -73,8 +74,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             public const string Metadata = "metadata";
             public const string Code = "code";
             public const string XmlSerializer = "xmlSerializer";
-            static readonly string[] targets = new string[] { Metadata, Code, XmlSerializer };
-            public static readonly string SupportedTargets = string.Join(", ", targets);
+            private static readonly string[] s_targets = new string[] { Metadata, Code, XmlSerializer };
+            public static readonly string SupportedTargets = string.Join(", ", s_targets);
         }
 
         internal static class Switches
@@ -113,22 +114,21 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             public static readonly CommandSwitch ServiceContract = new CommandSwitch(Options.Cmd.ServiceContract, Abbr.ServiceContract, SwitchType.Flag);
             public static readonly CommandSwitch SyncOnly = new CommandSwitch(Options.Cmd.SyncOnly, Options.Cmd.SyncOnly, SwitchType.Flag);
 
-            public static readonly CommandSwitch[] All = new CommandSwitch[] { Async, Directory, Target, Help, NoLogo, NoConfig, MergeConfig, Out, Language, Config, 
-                                                                        ToolConfig, Reference, ServiceName, Nostdlib, ExcludeType, CollectionType, Serializable, 
+            public static readonly CommandSwitch[] All = new CommandSwitch[] { Async, Directory, Target, Help, NoLogo, NoConfig, MergeConfig, Out, Language, Config,
+                                                                        ToolConfig, Reference, ServiceName, Nostdlib, ExcludeType, CollectionType, Serializable,
                                                                         Serializer, Namespace, Internal, MessageContract, ImportXmlTypes, Validate, 
 #if DEBUG
                                                                         Debug,
 #endif
-                                                                        EnableDataBinding, DataContractOnly, TargetClientVersion, UseSerializerForFaults, Wrapped, 
+                                                                        EnableDataBinding, DataContractOnly, TargetClientVersion, UseSerializerForFaults, Wrapped,
                                                                         ServiceContract, SyncOnly };
-
         }
 
-        static readonly string SupportedSerializers = string.Join(", ", System.Enum.GetNames(typeof(SerializerMode)));
-        static readonly string SupportedTargetClientVersions = string.Join(", ", System.Enum.GetNames(typeof(TargetClientVersionMode)));
+        private static readonly string s_supportedSerializers = string.Join(", ", System.Enum.GetNames(typeof(SerializerMode)));
+        private static readonly string s_supportedTargetClientVersions = string.Join(", ", System.Enum.GetNames(typeof(TargetClientVersionMode)));
     }
 
-    enum SerializerMode
+    internal enum SerializerMode
     {
         Default,
         Auto,
@@ -136,7 +136,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         XmlSerializer
     }
 
-    enum TargetClientVersionMode
+    internal enum TargetClientVersionMode
     {
         Version30,
         Version35

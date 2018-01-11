@@ -1,6 +1,7 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
@@ -13,10 +14,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
     public static class Tool
     {
-
         public static int Main(string[] args)
         {
-            
             try
             {
                 // ValidateUICulture() makes sure that this command-line tool can run on RightToLeft systems.
@@ -93,7 +92,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         // There are some console fallback cultures that still use code pages incompatible with
         // the console.  Catch those cases and fall back to English because ASCII is widely
         // accepted in OEM code pages.
-        static void ValidateUICulture()
+        private static void ValidateUICulture()
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture.GetConsoleFallbackUICulture();
 

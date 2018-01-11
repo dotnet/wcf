@@ -1,45 +1,43 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 // DevNote: See how there are no using statements needed here? 
 //          That's part of the plan. Let's keep it that way.
 
-using System;
-
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
-    class ToolRuntime
+    internal class ToolRuntime
     {
-        Options options;
+        private Options _options;
 
         internal ToolRuntime(Options options)
         {
-            this.options = options;
+            _options = options;
         }
 
         internal ToolExitCodes Run()
         {
-            if (!options.NoLogo)
+            if (!_options.NoLogo)
                 ToolConsole.WriteHeader();
 
-            if (options.GetToolMode() == ToolMode.DisplayHelp)
+            if (_options.GetToolMode() == ToolMode.DisplayHelp)
             {
                 ToolConsole.WriteHelpText();
                 return ToolExitCodes.Success;
             }
             else
             {
-                InputModule inputModule = InputModule.LoadInputs(options);
+                InputModule inputModule = InputModule.LoadInputs(_options);
 
-                Tool.Assert(options.GetToolMode().HasValue, SR.Format(SR.AmbiguousToolUseage, Options.Cmd.Target, Options.Cmd.Validate));
-                ToolMode toolMode = options.GetToolMode().Value;
+                Tool.Assert(_options.GetToolMode().HasValue, System.SR.Format(System.SR.AmbiguousToolUseage, Options.Cmd.Target, Options.Cmd.Validate));
+                ToolMode toolMode = _options.GetToolMode().Value;
 
                 return ExecuteToolMode(toolMode, inputModule);
             }
         }
 
-        ToolExitCodes ExecuteToolMode(ToolMode toolMode, InputModule inputModule)
+        private ToolExitCodes ExecuteToolMode(ToolMode toolMode, InputModule inputModule)
         {
             switch (toolMode)
             {
@@ -53,16 +51,16 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 case ToolMode.Validate:
                 case ToolMode.MetadataFromAssembly:
                 case ToolMode.WSMetadataExchange:
-                    throw new ArgumentException(SR.ErrInvalidTarget);
+                    throw new System.ArgumentException(System.SR.ErrInvalidTarget);
             }
 
             return ToolExitCodes.Success;
         }
 
-        ToolExitCodes GenerateSerializer(InputModule inputModule)
+        private ToolExitCodes GenerateSerializer(InputModule inputModule)
         {
-            ToolConsole.WriteLine(SR.Format(SR.GeneratingSerializer));
-            XmlSerializerGenerator generator = new XmlSerializerGenerator(options);
+            ToolConsole.WriteLine(System.SR.Format(System.SR.GeneratingSerializer));
+            XmlSerializerGenerator generator = new XmlSerializerGenerator(_options);
             generator.GenerateCode(inputModule.Assemblies);
             return ToolExitCodes.Success;
         }

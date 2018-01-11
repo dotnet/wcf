@@ -1,20 +1,12 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     internal static class XmlStrings
     {
-        //public static class WSDL
-        //{
-        //    public const string Prefix = "wsdl";
-        //    public const string NamespaceUri = System.Web.Services.Description.ServiceDescription.Namespace;
-        //    public static class Elements
-        //    {
-        //        public const string Root = "definitions";
-        //    }
-        //}
-
         public static class XmlSchema
         {
             public const string Prefix = "xsd";
@@ -91,6 +83,5 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 public const string Policy = "Policy";
             }
         }
-
     }
 }

@@ -13,12 +13,12 @@ using System.Xml.Serialization;
 public static partial class XmlSerializerFormatTests
 {
 #if SVCUTILTESTS
-    private static readonly string SerializationModeSetterName = "set_Mode";
+    private static readonly string s_serializationModeSetterName = "set_Mode";
 
     static XmlSerializerFormatTests()
     {
-        MethodInfo method = typeof(XmlSerializer).GetMethod(SerializationModeSetterName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-        Assert.True(method != null, $"No method named {SerializationModeSetterName}");
+        MethodInfo method = typeof(XmlSerializer).GetMethod(s_serializationModeSetterName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.True(method != null, $"No method named {s_serializationModeSetterName}");
         method.Invoke(null, new object[] { 3 });
     }
 #endif
@@ -171,7 +171,7 @@ public static partial class XmlSerializerFormatTests
             if (isMultiNs)
             {
                 Guid guid2 = Guid.NewGuid();
-                serviceProxy2.AddString(guid2, testStr);                
+                serviceProxy2.AddString(guid2, testStr);
                 Assert.Equal(testStr, serviceProxy2.GetAndRemoveString(guid2));
             }
         }
@@ -187,6 +187,6 @@ public static partial class XmlSerializerFormatTests
             {
                 ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy2);
             }
-        }        
-    } 
+        }
+    }
 }

@@ -1,6 +1,7 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
@@ -18,29 +19,29 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
     internal class CommandSwitch
     {
-        readonly string name;
-        readonly string abbreviation;
-        readonly SwitchType switchType;
+        private readonly string _name;
+        private readonly string _abbreviation;
+        private readonly SwitchType _switchType;
 
         internal CommandSwitch(string name, string abbreviation, SwitchType switchType)
         {
             //ensure that either name doesn't start with '/' or '-'
             //also convert to lower-case
             if ((name[0] == '/') || (name[0] == '-'))
-                this.name = (name.Substring(1)).ToLower(CultureInfo.InvariantCulture);
+                _name = (name.Substring(1)).ToLower(CultureInfo.InvariantCulture);
             else
-                this.name = name.ToLower(CultureInfo.InvariantCulture);
+                _name = name.ToLower(CultureInfo.InvariantCulture);
             if ((abbreviation[0] == '/') || (abbreviation[0] == '-'))
-                this.abbreviation = (abbreviation.Substring(1)).ToLower(CultureInfo.InvariantCulture);
+                _abbreviation = (abbreviation.Substring(1)).ToLower(CultureInfo.InvariantCulture);
             else
-                this.abbreviation = abbreviation.ToLower(CultureInfo.InvariantCulture);
+                _abbreviation = abbreviation.ToLower(CultureInfo.InvariantCulture);
 
-            this.switchType = switchType;
+            _switchType = switchType;
         }
 
         internal string Name
         {
-            get { return name; }
+            get { return _name; }
         }
 
 #if NotUsed
@@ -52,7 +53,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
         internal SwitchType SwitchType
         {
-            get { return switchType; }
+            get { return _switchType; }
         }
 
         internal bool Equals(string other)
@@ -67,10 +68,10 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 temp = other.ToLower(CultureInfo.InvariantCulture);
 
             //if equal to name, then return the OK
-            if (name.Equals(temp))
+            if (_name.Equals(temp))
                 return true;
             //now check abbreviation
-            return abbreviation.Equals(temp);
+            return _abbreviation.Equals(temp);
         }
 
         internal static CommandSwitch FindSwitch(string name, CommandSwitch[] switches)
@@ -85,11 +86,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
     internal class ArgumentDictionary
     {
-        Dictionary<string, IList<string>> contents;
+        private Dictionary<string, IList<string>> _contents;
 
         internal ArgumentDictionary(int capacity)
         {
-            contents = new Dictionary<string, IList<string>>(capacity);
+            _contents = new Dictionary<string, IList<string>>(capacity);
         }
 
         internal void Add(string key, string value)
@@ -109,7 +110,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         internal string GetArgument(string key)
         {
             IList<string> values;
-            if (contents.TryGetValue(key.ToLower(CultureInfo.InvariantCulture), out values))
+            if (_contents.TryGetValue(key.ToLower(CultureInfo.InvariantCulture), out values))
             {
 #if SM_TOOL
                 Tool.Assert((values.Count == 1), "contains more than one argument please call GetArguments");
@@ -126,32 +127,29 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         internal IList<string> GetArguments(string key)
         {
             IList<string> result;
-            if (!contents.TryGetValue(key.ToLower(CultureInfo.InvariantCulture), out result))
+            if (!_contents.TryGetValue(key.ToLower(CultureInfo.InvariantCulture), out result))
                 result = new List<string>();
             return result;
         }
 
         internal bool ContainsArgument(string key)
         {
-            return contents.ContainsKey(key.ToLower(CultureInfo.InvariantCulture));
+            return _contents.ContainsKey(key.ToLower(CultureInfo.InvariantCulture));
         }
 
         internal void Add(string key, IList<string> values)
         {
-            contents.Add(key.ToLower(CultureInfo.InvariantCulture), values);
+            _contents.Add(key.ToLower(CultureInfo.InvariantCulture), values);
         }
 
         internal int Count
         {
-            get { return contents.Count; }
+            get { return _contents.Count; }
         }
-
     }
 
     internal static class CommandParser
     {
-
-
         internal static ArgumentDictionary ParseCommand(string[] cmd, CommandSwitch[] switches)
         {
             ArgumentDictionary arguments;   //switches/values from cmd line
@@ -242,7 +240,5 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
             return arguments;
         }
-
     }
-
 }

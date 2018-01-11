@@ -1,14 +1,14 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
     using System.Runtime.Serialization;
-    
-    [Serializable] 
-    class ToolRuntimeException : ApplicationException 
+
+    [Serializable]
+    internal class ToolRuntimeException : ApplicationException
     {
         internal virtual ToolExitCodes ExitCode
         {
@@ -26,7 +26,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         {
         }
 
-        internal ToolRuntimeException(String message, Exception innerException) : base (message, innerException) 
+        internal ToolRuntimeException(String message, Exception innerException) : base(message, innerException)
         {
         }
 
@@ -34,8 +34,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             : base(info, context)
         {
         }
-
     }
-
 }
 

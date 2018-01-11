@@ -1,6 +1,7 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
@@ -15,26 +16,26 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
     using System.CodeDom.Compiler;
     using System.ServiceModel;
 
-    class XmlSerializerGenerator : OutputModule
+    internal class XmlSerializerGenerator : OutputModule
     {
-        const string sourceExtension = ".cs";
-        readonly ExportModule.IsTypeExcludedDelegate isTypeExcluded;
+        private const string sourceExtension = ".cs";
+        private readonly ExportModule.IsTypeExcludedDelegate _isTypeExcluded;
 
-        string outFile;
+        private string _outFile;
 
         internal XmlSerializerGenerator(Options options)
             : base(options)
         {
-            this.isTypeExcluded = options.IsTypeExcluded;
-            outFile = options.OutputFileArg;
+            _isTypeExcluded = options.IsTypeExcluded;
+            _outFile = options.OutputFileArg;
         }
 
         internal void GenerateCode(List<Assembly> assemblies)
         {
-            if (!string.IsNullOrEmpty(outFile) && assemblies.Count > 1)
+            if (!string.IsNullOrEmpty(_outFile) && assemblies.Count > 1)
             {
                 ToolConsole.WriteWarning(SR.Format(SR.WrnOptionConflictsWithInput, Options.Cmd.Out));
-                outFile = null;
+                _outFile = null;
             }
 
             foreach (Assembly assembly in assemblies)
@@ -43,7 +44,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             }
         }
 
-        void GenerateCode(Assembly assembly)
+        private void GenerateCode(Assembly assembly)
         {
             List<XmlMapping> mappings = new List<XmlMapping>();
             List<Type> types = CollectXmlSerializerTypes(assembly, mappings);
@@ -100,8 +101,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 File.Delete(sgenSource);
 
             string sourceName;
-            if (outFile != null)
-                sourceName = FilenameHelper.UniquifyFileName(outFile, sourceExtension);
+            if (_outFile != null)
+                sourceName = FilenameHelper.UniquifyFileName(_outFile, sourceExtension);
             else
                 sourceName = FilenameHelper.UniquifyFileName(sgenSource, sourceExtension);
 
@@ -113,12 +114,12 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             return;
         }
 
-        List<Type> CollectXmlSerializerTypes(Assembly assembly, List<XmlMapping> mappings)
+        private List<Type> CollectXmlSerializerTypes(Assembly assembly, List<XmlMapping> mappings)
         {
             List<Type> types = new List<Type>();
 
-            ExportModule.ContractLoader contractLoader = new ExportModule.ContractLoader(new Assembly[] { assembly }, this.isTypeExcluded);
-            contractLoader.ContractLoadErrorCallback = delegate(Type contractType, string errorMessage)
+            ExportModule.ContractLoader contractLoader = new ExportModule.ContractLoader(new Assembly[] { assembly }, _isTypeExcluded);
+            contractLoader.ContractLoadErrorCallback = delegate (Type contractType, string errorMessage)
                     {
                         ToolConsole.WriteWarning(SR.Format(SR.WrnUnableToLoadContractForSGen, contractType, errorMessage));
                     };

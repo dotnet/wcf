@@ -1,6 +1,8 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+
 namespace Microsoft.Tools.ServiceModel.SvcUtil
 {
     using System;
@@ -10,21 +12,21 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
     using System.Text;
 
 
-    abstract class OutputModule
+    internal abstract class OutputModule
     {
         protected const string defaultFilename = "output";
         protected const string configFileExtension = ".config";
 
-        readonly string directoryPath;
+        private readonly string _directoryPath;
 
         protected OutputModule(Options options)
         {
-            directoryPath = PathHelper.TryGetDirectoryPath(options.DirectoryArg);
+            _directoryPath = PathHelper.TryGetDirectoryPath(options.DirectoryArg);
         }
 
         protected string BuildFilePath(string filepath, string extension, string option)
         {
-            return PathHelper.BuildFilePath(this.directoryPath, filepath, extension, option);
+            return PathHelper.BuildFilePath(_directoryPath, filepath, extension, option);
         }
 
         protected static class PathHelper
@@ -57,7 +59,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
             internal static string TryGetDirectoryPath(string directory)
             {
-
                 if (directory == null || directory.Length == 0)
                     return ".\\";
                 else
@@ -69,7 +70,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
             }
 
-            static string TryGetFullPath(string path, string option)
+            private static string TryGetFullPath(string path, string option)
             {
                 try
                 {
@@ -117,17 +118,17 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
 
         internal static class FilenameHelper
         {
-            const string DataContractXsdBaseNamespace = "http://schemas.datacontract.org/2004/07/";
-            static int DataContractXsdBaseNamespaceLength = DataContractXsdBaseNamespace.Length;
+            private const string DataContractXsdBaseNamespace = "http://schemas.datacontract.org/2004/07/";
+            private static int s_dataContractXsdBaseNamespaceLength = DataContractXsdBaseNamespace.Length;
 
-            static readonly List<string> existingFileNames = new List<string>();
+            private static readonly List<string> s_existingFileNames = new List<string>();
 
             internal static string UniquifyFileName(string filename, string extension)
             {
                 string fileNameWithExtension = PathHelper.GetFilepathWithExtension(filename, extension);
                 if (!UniquifyFileName_NameExists(fileNameWithExtension))
                 {
-                    existingFileNames.Add(fileNameWithExtension);
+                    s_existingFileNames.Add(fileNameWithExtension);
                     return filename;
                 }
 
@@ -137,19 +138,18 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     string uniqueFileNameWithExtension = PathHelper.GetFilepathWithExtension(uniqueFileName, extension);
                     if (!UniquifyFileName_NameExists(uniqueFileNameWithExtension))
                     {
-                        existingFileNames.Add(uniqueFileNameWithExtension);
+                        s_existingFileNames.Add(uniqueFileNameWithExtension);
                         return uniqueFileName;
                     }
                 }
                 throw new ToolRuntimeException(SR.Format(SR.ErrUnableToUniquifyFilename, fileNameWithExtension), null);
-
             }
 
-            static bool UniquifyFileName_NameExists(string fileName)
+            private static bool UniquifyFileName_NameExists(string fileName)
             {
-                for (int i = 0; i < existingFileNames.Count; i++)
+                for (int i = 0; i < s_existingFileNames.Count; i++)
                 {
-                    if (String.Compare(fileName, existingFileNames[i], StringComparison.OrdinalIgnoreCase) == 0)
+                    if (String.Compare(fileName, s_existingFileNames[i], StringComparison.OrdinalIgnoreCase) == 0)
                         return true;
                 }
                 return false;
@@ -166,20 +166,18 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     Uri nsUri = null;
                     if (Uri.TryCreate(ns, UriKind.RelativeOrAbsolute, out nsUri))
                     {
-
                         if (nsUri.IsAbsoluteUri)
                         {
-
                             string absoluteUriString = nsUri.AbsoluteUri;
                             if (absoluteUriString.StartsWith(DataContractXsdBaseNamespace, StringComparison.Ordinal))
                             {
-                                int length = absoluteUriString.Length - DataContractXsdBaseNamespaceLength;
+                                int length = absoluteUriString.Length - s_dataContractXsdBaseNamespaceLength;
                                 if (absoluteUriString.EndsWith("/", StringComparison.Ordinal))
                                     length--;
                                 if (length > 0)
                                 {
                                     FilenameFromUri_Add(fileNameBuilder,
-                                        absoluteUriString.Substring(DataContractXsdBaseNamespaceLength, length).Replace('/', '.'));
+                                        absoluteUriString.Substring(s_dataContractXsdBaseNamespaceLength, length).Replace('/', '.'));
                                 }
                                 else
                                 {
@@ -194,7 +192,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                                     absolutePath = absolutePath.Substring(0, absolutePath.Length - 1);
                                 FilenameFromUri_Add(fileNameBuilder, absolutePath.Replace('/', '.'));
                             }
-
                         }
                         else
                         {
@@ -207,7 +204,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 return filename;
             }
 
-            static void FilenameFromUri_Add(StringBuilder path, string segment)
+            private static void FilenameFromUri_Add(StringBuilder path, string segment)
             {
                 if (segment != null)
                 {
@@ -220,8 +217,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                     }
                 }
             }
-
         }
     }
-
 }
