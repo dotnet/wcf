@@ -49,6 +49,8 @@ namespace System.ServiceModel.Channels
             _maxBufferSize = TransportDefaults.MaxBufferSize;
             _maxPendingAccepts = HttpTransportDefaults.DefaultMaxPendingAccepts;
             _method = string.Empty;
+            _proxyAuthenticationScheme = HttpTransportDefaults.ProxyAuthenticationScheme;
+            _proxyAddress = HttpTransportDefaults.ProxyAddress;
             _realm = HttpTransportDefaults.Realm;
             _requestInitializationTimeout = HttpTransportDefaults.RequestInitializationTimeout;
             _transferMode = HttpTransportDefaults.TransferMode;
@@ -71,6 +73,8 @@ namespace System.ServiceModel.Channels
             _maxBufferSizeInitialized = elementToBeCloned._maxBufferSizeInitialized;
             _maxPendingAccepts = elementToBeCloned._maxPendingAccepts;
             _method = elementToBeCloned._method;
+            _proxyAddress = elementToBeCloned._proxyAddress;
+            _proxyAuthenticationScheme = elementToBeCloned._proxyAuthenticationScheme;
             _realm = elementToBeCloned._realm;
             _requestInitializationTimeout = elementToBeCloned._requestInitializationTimeout;
             _transferMode = elementToBeCloned._transferMode;
@@ -78,7 +82,7 @@ namespace System.ServiceModel.Channels
             _useDefaultWebProxy = elementToBeCloned._useDefaultWebProxy;
             _webSocketSettings = elementToBeCloned._webSocketSettings.Clone();
             _extendedProtectionPolicy = elementToBeCloned.ExtendedProtectionPolicy;
-            this.MessageHandlerFactory = elementToBeCloned.MessageHandlerFactory;
+            MessageHandlerFactory = elementToBeCloned.MessageHandlerFactory;
         }
 
         [DefaultValue(HttpTransportDefaults.AllowCookies)]
