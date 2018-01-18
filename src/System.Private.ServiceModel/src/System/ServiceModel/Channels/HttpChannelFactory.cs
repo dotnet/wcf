@@ -47,7 +47,6 @@ namespace System.ServiceModel.Channels
         private TransferMode _transferMode;
         private ISecurityCapabilities _securityCapabilities;
         private WebSocketTransportSettings _webSocketSettings;
-        private bool _useDefaultWebProxy;
         private Lazy<string> _webSocketSoapContentType;
         private SHA512 _hashAlgorithm;
         private bool _keepAliveEnabled;
@@ -299,14 +298,19 @@ namespace System.ServiceModel.Channels
                 var clientHandler = GetHttpClientHandler(to, clientCertificateToken);
                 clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
 
-                if (_proxy != null)
+                if (clientHandler.SupportsProxy)
                 {
-                    clientHandler.Proxy = _proxy;
-                }
-                else if (_proxyFactory != null)
-                {
-                    clientHandler.Proxy = await _proxyFactory.CreateWebProxyAsync(authenticationLevelWrapper.Value,
-                        impersonationLevelWrapper.Value, proxyTokenProvider, cancellationToken);
+                    if (_proxy != null)
+                    {
+                        clientHandler.Proxy = _proxy;
+                        clientHandler.UseProxy = true;
+                    }
+                    else if (_proxyFactory != null)
+                    {
+                        clientHandler.Proxy = await _proxyFactory.CreateWebProxyAsync(authenticationLevelWrapper.Value,
+                            impersonationLevelWrapper.Value, proxyTokenProvider, cancellationToken);
+                        clientHandler.UseProxy = true;
+                    }
                 }
 
                 clientHandler.UseCookies = _allowCookies;
@@ -316,10 +320,6 @@ namespace System.ServiceModel.Channels
                 }
 
                 clientHandler.PreAuthenticate = true;
-                if (clientHandler.SupportsProxy)
-                {
-                    clientHandler.UseProxy = _useDefaultWebProxy;
-                }
 
                 clientHandler.UseDefaultCredentials = false;
                 if (credential == CredentialCache.DefaultCredentials)
