@@ -9,31 +9,31 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>45d075f60f80600fb1a49944239c95bc839eeab4</CoreFxCurrentRef>
-    <WCFCurrentRef>9d3d323be92e0066aa455156e82bcc6abce3ac81</WCFCurrentRef>
-    <StandardCurrentRef>c13ee6211bf8bd136e8ac23ab9b88d8a08d3adfb</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>6861e496702080833b96533abac01c53f6d68b4d</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>6861e496702080833b96533abac01c53f6d68b4d</ProjectNTfsTestILCCurrentRef>
-    <BuildToolsCurrentRef>45d075f60f80600fb1a49944239c95bc839eeab4</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>c13ee6211bf8bd136e8ac23ab9b88d8a08d3adfb</CoreClrCurrentRef>
+    <CoreFxCurrentRef>65f2e19b242b2d5ba1a3b058d01130cef8e8c045</CoreFxCurrentRef>
+    <WCFCurrentRef>65f2e19b242b2d5ba1a3b058d01130cef8e8c045</WCFCurrentRef>
+    <StandardCurrentRef>65f2e19b242b2d5ba1a3b058d01130cef8e8c045</StandardCurrentRef>
+    <ProjectNTfsCurrentRef>65f2e19b242b2d5ba1a3b058d01130cef8e8c045</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>65f2e19b242b2d5ba1a3b058d01130cef8e8c045</ProjectNTfsTestILCCurrentRef>
+    <BuildToolsCurrentRef>65f2e19b242b2d5ba1a3b058d01130cef8e8c045</BuildToolsCurrentRef>
+    <CoreClrCurrentRef>65f2e19b242b2d5ba1a3b058d01130cef8e8c045</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26116-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview1-26117-03</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-26118-01</NETStandardPackageVersion>
+    <WCFExpectedPrerelease>preview2-26123-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-26123-01</CoreFxExpectedPrerelease>
+    <NETStandardPackageVersion>2.1.0-preview1-26123-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-26117-03</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
-    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-preview1-26117-03</MicrosoftPrivateCoreFxUAPPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-26123-01</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-preview2-26123-01</MicrosoftPrivateCoreFxUAPPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>beta-26118-00</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>beta-26118-00</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26118-00</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>beta-26123-01</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>beta-26123-01</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26123-01</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
@@ -43,7 +43,7 @@
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-prerelease-02312-02</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-preview1-26118-03</CoreClrPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview2-26123-05</CoreClrPackageVersion>
     <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
@@ -53,7 +53,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.1.0-prerelease-02417-06</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-prerelease-02423-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
