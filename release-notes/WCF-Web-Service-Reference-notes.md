@@ -1,8 +1,13 @@
 # WCF Web Service Reference Provider - Release Notes
 
-WCF Web Service Reference connected services provider is now part of Visual Studio 2017. Instructions can be found in the [usage guide](/Documentation/WCF-Web-Service-Reference-guide.md) document. Please [let us know](https://github.com/dotnet/wcf/issues/new) if you run into any issues or have any feedback.
+WCF Web Service Reference connected services provider is now part of Visual Studio 2017. Instructions can be found in the [usage guide](https://go.microsoft.com/fwlink/?linkid=858814) document. Please [let us know](https://github.com/dotnet/wcf/issues/new) if you run into any issues or have any feedback.
 
 ## Release History
+
+### 1/25/2018 - Visual Studio 2017 v15.6 Preview 3.0 [27323.2.d15.6]
+* Building the user’s project is no longer required as part of the client code generation process ([#2384](https://github.com/dotnet/wcf/issues/2384)).
+* Bug fixes ([#2461](https://github.com/dotnet/wcf/issues/2461), [#2197](https://github.com/dotnet/wcf/issues/2197), [#2410](https://github.com/dotnet/wcf/issues/2410))
+
 
 ### 12/7/2017 - Visual Studio 2017 v15.6 Preview 1.0 [27205.0.d15.6]
 
