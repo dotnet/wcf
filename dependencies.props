@@ -14,7 +14,7 @@
     <StandardCurrentRef>9a7b364b261add4b1e7793c596f8fcd89484c68b</StandardCurrentRef>
     <ProjectNTfsCurrentRef>9a7b364b261add4b1e7793c596f8fcd89484c68b</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>9a7b364b261add4b1e7793c596f8fcd89484c68b</ProjectNTfsTestILCCurrentRef>
-    <BuildToolsCurrentRef>9a7b364b261add4b1e7793c596f8fcd89484c68b</BuildToolsCurrentRef>
+    <BuildToolsCurrentRef>b59e9333b8a600304b8a457443331a90cf4e5c16</BuildToolsCurrentRef>
     <CoreClrCurrentRef>9a7b364b261add4b1e7793c596f8fcd89484c68b</CoreClrCurrentRef>
   </PropertyGroup>
 
@@ -53,7 +53,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.2.0-prerelease-02430-05</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-prerelease-02427-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
