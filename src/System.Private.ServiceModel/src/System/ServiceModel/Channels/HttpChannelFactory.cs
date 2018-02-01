@@ -46,6 +46,7 @@ namespace System.ServiceModel.Channels
         private SecurityTokenManager _securityTokenManager;
         private TransferMode _transferMode;
         private ISecurityCapabilities _securityCapabilities;
+        private Func<HttpClientHandler, HttpMessageHandler> _httpMessageHandlerFactory;
         private WebSocketTransportSettings _webSocketSettings;
         private Lazy<string> _webSocketSoapContentType;
         private SHA512 _hashAlgorithm;
@@ -130,6 +131,7 @@ namespace System.ServiceModel.Channels
 
             _channelCredentials = context.BindingParameters.Find<SecurityCredentialsManager>();
             _securityCapabilities = bindingElement.GetProperty<ISecurityCapabilities>(context);
+            _httpMessageHandlerFactory = context.BindingParameters.Find<Func<HttpClientHandler, HttpMessageHandler>>();
 
             _webSocketSettings = WebSocketHelper.GetRuntimeWebSocketSettings(bindingElement.WebSocketSettings);
             _clientWebSocketFactory = ClientWebSocketFactory.GetFactory();
@@ -331,7 +333,13 @@ namespace System.ServiceModel.Channels
                     clientHandler.Credentials = credential;
                 }
 
-                httpClient = new HttpClient(clientHandler);
+                HttpMessageHandler handler = clientHandler;
+                if(_httpMessageHandlerFactory!= null)
+                {
+                    handler = _httpMessageHandlerFactory(clientHandler);
+                }
+
+                httpClient = new HttpClient(handler);
 
                 if(!_keepAliveEnabled)
                    httpClient.DefaultRequestHeaders.ConnectionClose = true;
