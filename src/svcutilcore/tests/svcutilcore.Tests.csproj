@@ -82,7 +82,7 @@
     </PropertyGroup>
     <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutilcore.dll /t:xmlserializer $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
-    <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true' AND '$(MSBuildRuntimeType)' != 'core'" 
+    <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true'" 
          OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll" 
          References="@(ReferencePath);@(IntermediateAssembly)" 
          EmitDebugInformation="$(DebugSymbols)"  
@@ -91,19 +91,6 @@
          TargetType="Library" 
          ToolExe="$(CscToolExe)" 
          ToolPath="$(CscToolPath)" 
-         DisabledWarnings="$(NoWarn), 219" 
-         UseSharedCompilation="true" />
-    <!-- when building on core CSC requires the OverrideToolHost parameter, but this is not supported by desktop csc -->
-    <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true' AND '$(MSBuildRuntimeType)' == 'core'" 
-         OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll" 
-         References="@(ReferencePath);@(IntermediateAssembly)" 
-         EmitDebugInformation="$(DebugSymbols)"  
-         DebugType="$(DebugType)" 
-         Sources="$(CorrectedOutputPath)$(SerializerName).cs" 
-         TargetType="Library" 
-         ToolExe="$(CscToolExe)" 
-         ToolPath="$(CscToolPath)" 
-         OverrideToolHost="$(OverrideToolHost)" 
          DisabledWarnings="$(NoWarn), 219" 
          UseSharedCompilation="true" />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).dll') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).dll"/>
