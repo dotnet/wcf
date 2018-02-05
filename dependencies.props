@@ -10,17 +10,17 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</CoreFxCurrentRef>
-    <WCFCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</WCFCurrentRef>
+    <WCFCurrentRef>4b356cae3dd448bfdff1a14426db08c148f8fdda</WCFCurrentRef>
     <StandardCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</StandardCurrentRef>
     <ProjectNTfsCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</ProjectNTfsTestILCCurrentRef>
     <BuildToolsCurrentRef>eaf435760069c169cfbf6ed1c65b44f47bc3e4ca</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</CoreClrCurrentRef>
+    <CoreClrCurrentRef>4b356cae3dd448bfdff1a14426db08c148f8fdda</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26202-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview2-26205-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview2-26202-05</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-26202-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
@@ -43,7 +43,7 @@
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-prerelease-02312-02</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-preview2-26202-06</CoreClrPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview2-26205-01</CoreClrPackageVersion>
     <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
