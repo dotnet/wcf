@@ -10,19 +10,19 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</CoreFxCurrentRef>
-    <WCFCurrentRef>4b356cae3dd448bfdff1a14426db08c148f8fdda</WCFCurrentRef>
-    <StandardCurrentRef>6baeb0e5c8ed334db44cb88e0d50a83a92af380b</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>6baeb0e5c8ed334db44cb88e0d50a83a92af380b</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>6baeb0e5c8ed334db44cb88e0d50a83a92af380b</ProjectNTfsTestILCCurrentRef>
-    <BuildToolsCurrentRef>eaf435760069c169cfbf6ed1c65b44f47bc3e4ca</BuildToolsCurrentRef>
+    <WCFCurrentRef>738604f6623377659e95ddddca9f1a4a99ea02f2</WCFCurrentRef>
+    <StandardCurrentRef>738604f6623377659e95ddddca9f1a4a99ea02f2</StandardCurrentRef>
+    <ProjectNTfsCurrentRef>738604f6623377659e95ddddca9f1a4a99ea02f2</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>738604f6623377659e95ddddca9f1a4a99ea02f2</ProjectNTfsTestILCCurrentRef>
+    <BuildToolsCurrentRef>738604f6623377659e95ddddca9f1a4a99ea02f2</BuildToolsCurrentRef>
     <CoreClrCurrentRef>6baeb0e5c8ed334db44cb88e0d50a83a92af380b</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26205-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview2-26207-02</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview2-26202-05</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-26205-01</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.1.0-preview1-26206-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
@@ -31,9 +31,9 @@
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-26202-05</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
     <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-preview2-26202-05</MicrosoftPrivateCoreFxUAPPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>beta-26206-00</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>beta-26206-00</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26206-00</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>beta-26207-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>beta-26207-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26207-00</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
@@ -53,7 +53,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.1.0-preview2-02502-01</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-preview2-02507-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
