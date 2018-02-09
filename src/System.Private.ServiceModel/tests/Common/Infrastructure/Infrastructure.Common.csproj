@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="$(WcfPrimitivesRefProj)" />
     <ReferenceFromRuntime Include="xunit.execution.dotnet" />
+    <ReferenceFromRuntime Include="Microsoft.DotNet.PlatformAbstractions" />
   </ItemGroup>
   <ItemGroup>
     <None Include="testproperties.props" />

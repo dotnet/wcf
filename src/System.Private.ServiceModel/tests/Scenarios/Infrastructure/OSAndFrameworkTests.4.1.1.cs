@@ -18,16 +18,14 @@ public class OSAndFrameworkTests
                                    RuntimeInformation.FrameworkDescription));
     }
 
-    [Issue(2024)]
     [WcfFact]
     [OuterLoop]
     public static void OSID_Was_Detected()
     {
         Assert.True(OSHelper.Current != OSID.None,
-                    String.Format("OSID was not properly detected from:{0}  TestProperties[TestNugetRuntimeId] = \"{1}\"{0}  RuntimeInformation.OSDescription = \'{2}\"",
-                                   Environment.NewLine,
-                                   TestProperties.GetProperty(TestProperties.TestNugetRuntimeId_PropertyName),
-                                   RuntimeInformation.OSDescription));
+                String.Format("OSID was not properly detected:{0}  The RuntimeInformation.OSDescription is = \'{1}\"",
+                               Environment.NewLine,
+                               RuntimeInformation.OSDescription));
     }
 
     [WcfFact]
@@ -51,5 +49,20 @@ public class OSAndFrameworkTests
         Assert.True(formatted.Contains("Windows_7") && formatted.Contains("Ubuntu_14_04"),
                     String.Format("FrameworkID.Name should have contained Windows_7 and Ubuntu_14_04, but actual was \"{0}\"", formatted));
     }
-}
 
+    // Enable this test to get the RID string of lab machines.
+    // New RIDs should be added to Infrastructure.Common OSHelper and OSID classes.
+    [Issue(0000)]
+    [WcfFact]
+    [OuterLoop]
+    public static void ListAllOSRIDs()
+    {
+        string testRuntime = OSHelper.GetRuntimeIdentifier();
+        OSID id = OSHelper.OSIDfromRuntimeEnvironment();
+        string runtimeOSDescription = RuntimeInformation.OSDescription;
+
+        Assert.True(false, string.Format("Detected the current Runtime Identifier as: '{0}'\n" + 
+                                         "Which maps to OSID: '{1}'\n" +
+                                           "Detected the current runtimeOSDescription as: '{2}'", testRuntime, id.Name(), runtimeOSDescription));
+    }
+}
