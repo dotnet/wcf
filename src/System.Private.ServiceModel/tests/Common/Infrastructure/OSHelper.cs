@@ -142,27 +142,6 @@ namespace Infrastructure.Common
             return osid;
         }
 
-        // The $(TestNugetRuntimeId) property was deprecated in build tools v2.
-        // No longer calling this method.
-        private static OSID OSIDfromTestRuntime()
-        {
-            string testRuntime = TestProperties.GetProperty(TestProperties.TestNugetRuntimeId_PropertyName);
-            if (string.IsNullOrEmpty(testRuntime))
-            {
-                return OSID.None;
-            }
-
-            foreach (var pair in _runtimeToOSID)
-            {
-                string runtime = pair.Item1;
-                if (testRuntime.IndexOf(runtime, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return pair.Item2;
-                }
-            }
-            return OSID.None;
-        }
-
         // Detects the OSID based on the current OS description.
         // Currently this is used only for Windows because the non-Windows
         // descriptions vary widely in format.
