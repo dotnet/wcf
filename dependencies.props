@@ -9,31 +9,31 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>25626ea3b911715d06275163cfc1143ce589d35e</CoreFxCurrentRef>
-    <WCFCurrentRef>1037b7bddcffb56b72480e719db95c49447e1cec</WCFCurrentRef>
-    <StandardCurrentRef>738604f6623377659e95ddddca9f1a4a99ea02f2</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>c8f7fcf6340f8ff1d2accef4b3aa549f16b6e2f5</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>c8f7fcf6340f8ff1d2accef4b3aa549f16b6e2f5</ProjectNTfsTestILCCurrentRef>
-    <BuildToolsCurrentRef>5d4cf734fb6385bdc0c96e51248ae37b7545eb47</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>1037b7bddcffb56b72480e719db95c49447e1cec</CoreClrCurrentRef>
+    <CoreFxCurrentRef>2ed83aee4d64fcf9a954294bdbae31aed09e0d3a</CoreFxCurrentRef>
+    <WCFCurrentRef>2ed83aee4d64fcf9a954294bdbae31aed09e0d3a</WCFCurrentRef>
+    <StandardCurrentRef>2ed83aee4d64fcf9a954294bdbae31aed09e0d3a</StandardCurrentRef>
+    <ProjectNTfsCurrentRef>2ed83aee4d64fcf9a954294bdbae31aed09e0d3a</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>2ed83aee4d64fcf9a954294bdbae31aed09e0d3a</ProjectNTfsTestILCCurrentRef>
+    <BuildToolsCurrentRef>2ed83aee4d64fcf9a954294bdbae31aed09e0d3a</BuildToolsCurrentRef>
+    <CoreClrCurrentRef>2ed83aee4d64fcf9a954294bdbae31aed09e0d3a</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26209-05</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview2-26202-05</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-26206-01</NETStandardPackageVersion>
+    <WCFExpectedPrerelease>preview2-26209-09</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-26210-01</CoreFxExpectedPrerelease>
+    <NETStandardPackageVersion>2.1.0-preview1-26209-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-26202-05</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-26210-01</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
     <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-preview2-26202-05</MicrosoftPrivateCoreFxUAPPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>beta-26208-00</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>beta-26208-00</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26208-00</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>beta-26209-02</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>beta-26209-02</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26209-02</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
@@ -43,7 +43,7 @@
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-prerelease-02312-02</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-preview2-26208-05</CoreClrPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview2-26209-08</CoreClrPackageVersion>
     <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
@@ -53,7 +53,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.1.0-preview2-02507-02</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-preview2-02509-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
