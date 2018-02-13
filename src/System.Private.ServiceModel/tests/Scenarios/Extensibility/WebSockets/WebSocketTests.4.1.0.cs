@@ -268,6 +268,7 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextStreamed()
     {
