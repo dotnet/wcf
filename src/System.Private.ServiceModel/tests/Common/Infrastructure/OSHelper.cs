@@ -22,30 +22,31 @@ namespace Infrastructure.Common
         private static OSID _currentOSID = 0;
         private static string _currentOSDescription;
 
-        // Test runtimes are specified via the $(TestNugetRuntimeId) property.
         // This list associates names with their corresponding OSID.
         // It falls back to "any" for partial matches so that future versions
         // choose at least the correct OS category.
 
         private static List<Tuple<string, OSID>> _runtimeToOSID = new List<Tuple<string, OSID>>
         {
-            new Tuple<string, OSID>("centos.7.1", OSID.CentOS_7_1),
             new Tuple<string, OSID>("centos.7", OSID.CentOS_7),
             new Tuple<string, OSID>("centos.", OSID.AnyCentOS),
 
-            new Tuple<string, OSID>("debian.8.2", OSID.Debian_8_2),
+            new Tuple<string, OSID>("debian.9", OSID.Debian_9),
             new Tuple<string, OSID>("debian.8", OSID.Debian_8),
             new Tuple<string, OSID>("debian", OSID.AnyDebian),
 
-            new Tuple<string, OSID>("fedora_23", OSID.Fedora_23),
+            new Tuple<string, OSID>("fedora.26", OSID.Fedora_26),
+            new Tuple<string, OSID>("fedora.27", OSID.Fedora_27),
             new Tuple<string, OSID>("fedora", OSID.AnyFedora),
 
+            new Tuple<string, OSID>("sles.12", OSID.SLES_12),
+            new Tuple<string, OSID>("opensuse.42.3", OSID.OpenSUSE_42_3),
             new Tuple<string, OSID>("opensuse.13.2", OSID.OpenSUSE_13_2),
             new Tuple<string, OSID>("opensuse", OSID.AnyOpenSUSE),
 
-            new Tuple<string, OSID>("osx.10.10", OSID.OSX_10_10),
             new Tuple<string, OSID>("osx.10.11", OSID.OSX_10_11),
             new Tuple<string, OSID>("osx.10.12", OSID.OSX_10_12),
+            new Tuple<string, OSID>("osx.10.13", OSID.OSX_10_13),
             new Tuple<string, OSID>("osx", OSID.AnyOSX),
 
             new Tuple<string, OSID>("rhel.7", OSID.RHEL_7),
@@ -53,16 +54,16 @@ namespace Infrastructure.Common
 
             new Tuple<string, OSID>("ubuntu.14.04", OSID.Ubuntu_14_04),
             new Tuple<string, OSID>("ubuntu.16.04", OSID.Ubuntu_16_04),
+            new Tuple<string, OSID>("ubuntu.17.10", OSID.Ubuntu_17_10),
             new Tuple<string, OSID>("ubuntu", OSID.AnyUbuntu),
 
-            // Currently, win7 is used for the windows runtime, regardless
-            // which version of Windows is actually used to run the test.
-            // So we can't determine the OS from the runtime in this list.
+            // Currently, the same RID and OS Description is used for Win10 Core, Nano and Normal
+            // So can't differentiate between those three flavors of Win10
+            new Tuple<string, OSID>("win81", OSID.Windows_8_1 | OSID.Windows_Server_2012_R2),
+            new Tuple<string, OSID>("win7", OSID.Windows_7 | OSID.Windows_Server_2008_R2),
         };
 
-        // All Windows version currently use the runtime "win7" so cannot be distinguished by that.
-        // However the windows major and minor versions are known and can be used.  Some versions are
-        // shared by different OSes, so at this level we can only say it is all of them.
+        // Some versions are shared by different OSes, so at this level we can only say it is all of them.
         // Applications that have not been manifested for Win 8.1 or Win 10 will return Win 8.
         // This lookup table assumes the test running application has been manifested.
         // This mapping is described at https://msdn.microsoft.com/en-us/library/windows/desktop/ms724832(v=vs.85).aspx
@@ -75,14 +76,9 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("Microsoft Windows 10.", OSID.Windows_10 | OSID.Windows_Server_2016),
             new Tuple<string, OSID>(MicrosoftWindowsPhoneName, OSID.WindowsPhone),
             new Tuple<string, OSID>(MicrosoftWindowsName, OSID.AnyWindows),  // reserved for "Don't know which version"
-            new Tuple<string, OSID>("Darwin 14", OSID.OSX_10_10),
             new Tuple<string, OSID>("Darwin 15", OSID.OSX_10_11),
             new Tuple<string, OSID>("Darwin 16", OSID.OSX_10_12),
             new Tuple<string, OSID>("Darwin", OSID.AnyOSX),
-            new Tuple<string, OSID>("Debian", OSID.AnyDebian),
-            new Tuple<string, OSID>("generic", OSID.AnyUbuntu),
-            new Tuple<string, OSID>("3.10.0-229.11.1.el7.x86_64", OSID.CentOS_7_1),
-            new Tuple<string, OSID>("3.10.0-327.el7.x86_64", OSID.RHEL_7),
         };
 
         private static string CurrentOSDescription
@@ -108,9 +104,8 @@ namespace Infrastructure.Common
                     _detectedOSID = true;
 
                     // Log this to the console so that lab run artifacts will show what we detected.
-                    Console.WriteLine(String.Format("Detected current OSID as \"{0}\" from test runtime \"{1}\" and description \"{2}\"",
+                    Console.WriteLine(String.Format("Detected current OSID as \"{0}\" from RuntimeEnvironment and description \"{1}\"",
                                                      _currentOSID.Name(), 
-                                                     TestProperties.GetProperty(TestProperties.TestNugetRuntimeId_PropertyName),
                                                      CurrentOSDescription));
                 }
 
@@ -136,7 +131,7 @@ namespace Infrastructure.Common
         {
             // First attempt to map from the test runtime.
             // All the non-Windows OSes are mapped this way.
-            OSID osid = OSIDfromTestRuntime();
+            OSID osid = OSIDfromRuntimeEnvironment();
             if (osid == OSID.None)
             {
                 // The Windows OSes are mapped based on description
@@ -145,27 +140,6 @@ namespace Infrastructure.Common
             }
 
             return osid;
-        }
-
-        // Maps from the $(TestNugetRuntimeId) property to corresponding OSID.
-        // Returns OSID.None if cannot determine the OSID.
-        private static OSID OSIDfromTestRuntime()
-        {
-            string testRuntime = TestProperties.GetProperty(TestProperties.TestNugetRuntimeId_PropertyName);
-            if (string.IsNullOrEmpty(testRuntime))
-            {
-                return OSID.None;
-            }
-
-            foreach (var pair in _runtimeToOSID)
-            {
-                string runtime = pair.Item1;
-                if (testRuntime.IndexOf(runtime, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    return pair.Item2;
-                }
-            }
-            return OSID.None;
         }
 
         // Detects the OSID based on the current OS description.
@@ -225,6 +199,33 @@ namespace Infrastructure.Common
             }
 
             return OSID.None;
+        }
+
+        public static OSID OSIDfromRuntimeEnvironment()
+        {
+            var testRuntime = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+            if (string.IsNullOrEmpty(testRuntime))
+            {
+                return OSID.None;
+            }
+
+            foreach (var pair in _runtimeToOSID)
+            {
+                string runtime = pair.Item1;
+                if (testRuntime.IndexOf(runtime, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return pair.Item2;
+                }
+            }
+            return OSID.None;
+        }
+
+        // Needed when enabling test case OSAndFrameworkTests.ListAllOSRIDs
+        // For the purpose of determining the actual RID string being returned by lab machine
+        // Useful when new OSes are added to the lab runs
+        public static string GetRuntimeIdentifier()
+        {
+            return Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
         }
     }
 }
