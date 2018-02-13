@@ -841,6 +841,13 @@ namespace System.ServiceModel.Channels
         protected override void RemoveItem(int index) { }
         protected override void SetItem(int index, object item) { }
     }
+    public partial class ChannelTerminatedException : System.ServiceModel.CommunicationException
+    {
+        public ChannelTerminatedException() { }
+        public ChannelTerminatedException(string message) { }
+        public ChannelTerminatedException(string message, System.Exception innerException) { }
+        protected ChannelTerminatedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
     public abstract partial class CommunicationObject : System.ServiceModel.ICommunicationObject
     {
         protected CommunicationObject() { }
