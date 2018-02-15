@@ -31,9 +31,15 @@ namespace System.ServiceModel
             get { return _mode; }
             set
             {
+                if (value == BasicHttpSecurityMode.Message ||
+                    value == BasicHttpSecurityMode.TransportWithMessageCredential)
+                {
+                    throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.UnsupportedSecuritySetting, nameof(value), value));
+                }
+
                 if (!BasicHttpSecurityModeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
                 _mode = value;
             }
