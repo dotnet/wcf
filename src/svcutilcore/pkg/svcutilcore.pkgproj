@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <PropertyGroup>
+    <ServiceModelFacade>$(BaseIntermediateOutputPath)shims/netcoreapp/facades/System.ServiceModel.dll</ServiceModelFacade>
+    <!-- Skip package validation since this package will now contain the shims and this is not allowed by validation -->
+    <SkipValidatePackage>true</SkipValidatePackage>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\svcutilcore.csproj">
+      <SupportedFramework>net461;netcoreapp2.0;$(AllXamarinFrameworks)</SupportedFramework>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+     <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    <HarvestStablePackage>false</HarvestStablePackage>
+    <EnsureCoreFxBaseLine>true</EnsureCoreFxBaseLine>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageFile Include=".\build\prefercliruntime"/>
+    <PackageFile Include=".\build\dotnet-svcutilcore.runtimeconfig.json">
+      <TargetPath>\lib\netstandard2.0\</TargetPath>
+    </PackageFile>
+    <PackageFile Include=".\build\svcutilcore.targets">
+      <TargetPath>build\</TargetPath>
+    </PackageFile>
+  </ItemGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <Import Project=".\GenerateNupkgProps.targets" />
+</Project>

@@ -71,5 +71,10 @@
             "System.ServiceModel.UpnEndpointIdentity",
             "System.ServiceModel.SpnEndpointIdentity"
         ]
+    },
+    {
+        "Name": "svcutilcore",
+        "Description": "Generates data types that use the XmlSerializer for serialization and deserialization",
+        "CommonTypes": []
     }
 ]
