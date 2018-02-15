@@ -133,6 +133,7 @@ namespace System.ServiceModel
         event System.EventHandler System.ServiceModel.ICommunicationObject.Opened { add { } remove { } }
         event System.EventHandler System.ServiceModel.ICommunicationObject.Opening { add { } remove { } }
         public void Abort() { }
+        public void Close() { }
         protected virtual TChannel CreateChannel() { return default(TChannel); }
         protected T GetDefaultValueForInitialization<T>() { return default(T); }
         protected void InvokeAsync(System.ServiceModel.ClientBase<TChannel>.BeginOperationDelegate beginOperationDelegate, object[] inValues, System.ServiceModel.ClientBase<TChannel>.EndOperationDelegate endOperationDelegate, System.Threading.SendOrPostCallback operationCompletedCallback, object userState) { }
