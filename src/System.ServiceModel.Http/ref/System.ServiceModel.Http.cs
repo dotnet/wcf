@@ -22,7 +22,7 @@ namespace System.ServiceModel
     }
     public sealed partial class BasicHttpSecurity
     {
-        internal BasicHttpSecurity() { }
+        public BasicHttpSecurity() { }
         public System.ServiceModel.BasicHttpSecurityMode Mode { get { return default(System.ServiceModel.BasicHttpSecurityMode); } set { } }
         public System.ServiceModel.HttpTransportSecurity Transport { get { return default(System.ServiceModel.HttpTransportSecurity); } set { } }
     }
