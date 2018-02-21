@@ -2,7 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
-    <ServiceModelFacade>$(BaseIntermediateOutputPath)shims/netcoreapp/facades/System.ServiceModel.dll</ServiceModelFacade>
     <!-- Skip package validation since this package will now contain the shims and this is not allowed by validation -->
     <SkipValidatePackage>true</SkipValidatePackage>
   </PropertyGroup>
@@ -12,7 +11,7 @@
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
-     <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    <SkipPackageFileCheck>true</SkipPackageFileCheck>
     <HarvestStablePackage>false</HarvestStablePackage>
     <EnsureCoreFxBaseLine>true</EnsureCoreFxBaseLine>
   </PropertyGroup>
