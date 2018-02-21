@@ -74,7 +74,7 @@
     },
     {
         "Name": "svcutilcore",
-        "Description": "Generates Serialization code for all data types used in service contracts in the compiled assembly that can be serialized using the XmlSerializer",
+        "Description": "Generate XML serializers for types used by Service Contracts in an assembly",
         "CommonTypes": []
     }
 ]
