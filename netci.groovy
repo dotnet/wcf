@@ -61,8 +61,12 @@ class WcfUtilities
         if (branch.toLowerCase() == "release/1.0.0") {
             currentWcfPRService = wcfPRServiceCount + 100
         } else if (branch.toLowerCase() == "release/1.1.0") {
-            currentWcfPRService = wcfPRServiceCount + 200
+            currentWcfPRService = wcfPRServiceCount + 150
         } else if (branch.toLowerCase() == "release/2.1.0") {
+            currentWcfPRService = wcfPRServiceCount + 200
+        } else if (branch.toLowerCase() == "release/uwp6.0") {
+            currentWcfPRService = wcfPRServiceCount + 250
+        } else if (branch.toLowerCase() == "release/uwp6.1") {
             currentWcfPRService = wcfPRServiceCount + 300
         }
 
