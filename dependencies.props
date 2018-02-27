@@ -79,14 +79,14 @@
       <BuildInfoPath>$(BaseDotNetBuildInfo)standard/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(StandardCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="ProjectNTfs">
+    <!--<RemoteDependencyBuildInfo Include="ProjectNTfs">
       <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(ProjectNTfsCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="ProjectNTfsTestILC">
       <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs-testilc/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(ProjectNTfsTestILCCurrentRef)</CurrentRef>
-    </RemoteDependencyBuildInfo>
+    </RemoteDependencyBuildInfo>-->
     <RemoteDependencyBuildInfo Include="BuildTools">
       <BuildInfoPath>$(BaseDotNetBuildInfo)buildtools/$(DependencyBranch)</BuildInfoPath>
       <CurrentRef>$(BuildToolsCurrentRef)</CurrentRef>
@@ -125,7 +125,7 @@
       <ElementName>NETStandardPackageVersion</ElementName>
       <PackageId>$(NETStandardPackageId)</PackageId>
     </XmlUpdateStep>
-    <XmlUpdateStep Include="ProjectNTfs">
+    <!--<XmlUpdateStep Include="ProjectNTfs">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>ProjectNTfsExpectedPrerelease</ElementName>
       <BuildInfoName>ProjectNTfs</BuildInfoName>
@@ -134,7 +134,7 @@
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>ProjectNTfsTestILCExpectedPrerelease</ElementName>
       <BuildInfoName>ProjectNTfsTestILC</BuildInfoName>
-    </XmlUpdateStep>
+    </XmlUpdateStep>-->
     <XmlUpdateStep Include="ProjectNTfsTestILC">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>ProjectNTfsTestILCPackageVersion</ElementName>
