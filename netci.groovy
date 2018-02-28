@@ -58,12 +58,20 @@ class WcfUtilities
 
         // workaround after branchifying - each branch independently runs this file hence our serial
         // numbers will overlap on different branches
+        // Strictly speaking this file only needs to specify the starting point for the serial numbers of the branch it is in
+        // We are showing the starting points of other branches for the sake of clarity
         if (branch.toLowerCase() == "release/1.0.0") {
             currentWcfPRService = wcfPRServiceCount + 100
         } else if (branch.toLowerCase() == "release/1.1.0") {
+            currentWcfPRService = wcfPRServiceCount + 150
+        } else if (branch.toLowerCase() == "release/2.0.0") {
             currentWcfPRService = wcfPRServiceCount + 200
-        } else if (branch.toLowerCase() == "ws-trust") {
+        } else if (branch.toLowerCase() == "release/2.1.0") {
+            currentWcfPRService = wcfPRServiceCount + 250
+        } else if (branch.toLowerCase() == "release/uwp6.0") {
             currentWcfPRService = wcfPRServiceCount + 300
+        } else if (branch.toLowerCase() == "release/uwp6.1") {
+            currentWcfPRService = wcfPRServiceCount + 350
         }
 
         job.with { 
