@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <Target Name="SvcUtilGenerateSerializationAssembly" AfterTargets="Build">
-	  <Message Text="Path3 = $(IntermediateOutputPath)" Importance="high" />
     <Delete Condition="Exists('$(_SerializerDllIntermediateFolder)') == 'true'" Files="$(_SerializerDllIntermediateFolder)" ContinueOnError="true" />
     <Delete Condition="Exists('$(_SerializerPdbIntermediateFolder)') == 'true'" Files="$(_SerializerPdbIntermediateFolder)" ContinueOnError="true" />
     <Delete Condition="Exists('$(_SerializerCsIntermediateFolder)') == 'true'" Files="$(_SerializerCsIntermediateFolder)" ContinueOnError="true" />
@@ -23,7 +22,7 @@
   </Target>
   
   <Target Name="SvcUtilCleanSerializationAssembly" AfterTargets="CoreClean">
-    <Message Text="Cleaning serialization files..." Importance="normal" />
+    <Message Text="Cleaning up serialization assemblies..." Importance="normal" />
     <Delete Condition="Exists('$(OutputPath)\$(_SerializationAssemblyName).dll') == 'true'" Files="$(OutputPath)\$(_SerializationAssemblyName).dll" />
   </Target>
 </Project>
