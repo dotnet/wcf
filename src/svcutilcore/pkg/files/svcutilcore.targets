@@ -1,0 +1,28 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ <PropertyGroup>
+   <MyProperty>$(IntermediateOutputPath)</MyProperty>
+    <_SerializationAssemblyName>$(AssemblyName).XmlSerializers</_SerializationAssemblyName>
+    <_SerializerDllIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).dll</_SerializerDllIntermediateFolder>
+    <_SerializerPdbIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).pdb</_SerializerPdbIntermediateFolder>
+    <_SerializerCsIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).cs</_SerializerCsIntermediateFolder>
+    <_SvcUtilWarningText>Warning : Fail to generate the serializer for $(AssemblyName)$(TargetExt).</_SvcUtilWarningText>
+    <_SerializationAssemblyDisabledWarnings>$(NoWarn);219;162;$(SerializationAssemblyDisabledWarnings)</_SerializationAssemblyDisabledWarnings>
+  </PropertyGroup>
+
+  <Target Name="SvcUtilGenerateSerializationAssembly" AfterTargets="Build">
+    <Delete Condition="Exists('$(_SerializerDllIntermediateFolder)') == 'true'" Files="$(_SerializerDllIntermediateFolder)" ContinueOnError="true" />
+    <Delete Condition="Exists('$(_SerializerPdbIntermediateFolder)') == 'true'" Files="$(_SerializerPdbIntermediateFolder)" ContinueOnError="true" />
+    <Delete Condition="Exists('$(_SerializerCsIntermediateFolder)') == 'true'" Files="$(_SerializerCsIntermediateFolder)" ContinueOnError="true" />
+    <Message Text="Running SvcUtil Serialization Tool" Importance="normal" />
+    <Exec Command="dotnet svcutilcore /t:xmlserializer $(IntermediateOutputPath)$(AssemblyName)$(TargetExt) /out:$(IntermediateOutputPath)$(_SerializationAssemblyName)" ContinueOnError="true" />
+    <Warning Condition="Exists('$(_SerializerCsIntermediateFolder)') != 'true'" Text="$(_SvcUtilWarningText)" />
+    <Csc Condition="Exists('$(_SerializerCsIntermediateFolder)') == 'true'" ContinueOnError="true" OutputAssembly="$(_SerializerDllIntermediateFolder)" References="@(ReferencePath);@(IntermediateAssembly)" EmitDebugInformation="$(DebugSymbols)" Sources="$(_SerializerCsIntermediateFolder)" TargetType="Library" ToolExe="$(CscToolExe)" ToolPath="$(CscToolPath)" DisabledWarnings="$(_SerializationAssemblyDisabledWarnings)" />
+    <Warning Condition="Exists('$(_SerializerDllIntermediateFolder)') != 'true' And Exists('$(_SerializerCsIntermediateFolder)') == 'true'" Text="$(_SvcUtilWarningText)" />
+    <Copy Condition="Exists('$(_SerializerDllIntermediateFolder)') == 'true'" SourceFiles="$(_SerializerDllIntermediateFolder)" DestinationFolder="$(OutputPath)" />
+  </Target>
+  
+  <Target Name="SvcUtilCleanSerializationAssembly" AfterTargets="CoreClean">
+    <Message Text="Cleaning up serialization assemblies..." Importance="normal" />
+    <Delete Condition="Exists('$(OutputPath)\$(_SerializationAssemblyName).dll') == 'true'" Files="$(OutputPath)\$(_SerializationAssemblyName).dll" />
+  </Target>
+</Project>
