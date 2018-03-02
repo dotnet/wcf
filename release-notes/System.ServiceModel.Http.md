@@ -11,7 +11,7 @@
 ### 4.5.0-preview1-26228-01
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.5.0-preview1-26228-01)
-* [Release tag](https://github.com/dotnet/wcf/releases/tag/v2.0.5)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v2.1.0-preview1)
 
 ### 4.4.1
 
