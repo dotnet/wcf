@@ -9,27 +9,27 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>0167b3a44f6dda941b2a3a07b77934a58347f7de</CoreFxCurrentRef>
+    <CoreFxCurrentRef>0dcaa67a086a4e0b505b25d86e92dc0423d220a2</CoreFxCurrentRef>
     <WCFCurrentRef>15279cd0026b9e52f8ec1ebfd0d8c6e8945bfc4d</WCFCurrentRef>
     <StandardCurrentRef>15279cd0026b9e52f8ec1ebfd0d8c6e8945bfc4d</StandardCurrentRef>
     <ProjectNTfsCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsTestILCCurrentRef>
     <BuildToolsCurrentRef>0167b3a44f6dda941b2a3a07b77934a58347f7de</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>15279cd0026b9e52f8ec1ebfd0d8c6e8945bfc4d</CoreClrCurrentRef>
+    <CoreClrCurrentRef>0dcaa67a086a4e0b505b25d86e92dc0423d220a2</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <WCFExpectedPrerelease>preview2-26306-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview2-26306-04</CoreFxExpectedPrerelease>
+    <CoreFxExpectedPrerelease>preview2-26307-06</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-26228-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-26306-04</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
-    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-preview2-26306-04</MicrosoftPrivateCoreFxUAPPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview2-26307-06</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-preview2-26307-06</MicrosoftPrivateCoreFxUAPPackageVersion>
 
     <ProjectNTfsExpectedPrerelease>beta-26226-00</ProjectNTfsExpectedPrerelease>
     <ProjectNTfsTestILCExpectedPrerelease>beta-26226-00</ProjectNTfsTestILCExpectedPrerelease>
@@ -43,7 +43,7 @@
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-prerelease-02312-02</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-preview2-26306-01</CoreClrPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview2-26307-01</CoreClrPackageVersion>
     <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
