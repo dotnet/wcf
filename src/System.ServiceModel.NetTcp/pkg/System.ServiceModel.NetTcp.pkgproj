@@ -26,6 +26,11 @@
       <!-- Supported inbox by all ns1.0-1.2 frameworks -->
       <Value>.NETStandard,Version=v1.1;.NETStandard,Version=v1.2</Value>
     </ValidatePackageSuppression>
+    <!-- Implementation shipped inbox on UAP but we want to keep it as out of box so that we can keep
+    making API changes -->
+    <ValidatePackageSuppression Include="TreatAsOutOfBox">
+      <Value>UAP</Value>
+    </ValidatePackageSuppression>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
