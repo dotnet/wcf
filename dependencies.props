@@ -11,18 +11,18 @@
   <PropertyGroup>
     <CoreFxCurrentRef>dbaa89cdc2f5a6482e72cd03590711df0af06921</CoreFxCurrentRef>
     <WCFCurrentRef>a5209eb63d04799bf6d772c46f19d2e22906825e</WCFCurrentRef>
-    <StandardCurrentRef>d65aa3ed53359bf140b3624612fbf432e4e79981</StandardCurrentRef>
+    <StandardCurrentRef>0ddd7269f0329a787b2e655b25cb9e3b64402c98</StandardCurrentRef>
     <ProjectNTfsCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsTestILCCurrentRef>
-    <BuildToolsCurrentRef>d65aa3ed53359bf140b3624612fbf432e4e79981</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>a5209eb63d04799bf6d772c46f19d2e22906825e</CoreClrCurrentRef>
+    <BuildToolsCurrentRef>0ddd7269f0329a787b2e655b25cb9e3b64402c98</BuildToolsCurrentRef>
+    <CoreClrCurrentRef>0ddd7269f0329a787b2e655b25cb9e3b64402c98</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <WCFExpectedPrerelease>preview2-26309-02</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview2-26308-09</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-26308-01</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.1.0-preview1-26309-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
@@ -43,7 +43,7 @@
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0007</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-prerelease-02312-02</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-preview2-26308-11</CoreClrPackageVersion>
+    <CoreClrPackageVersion>2.1.0-preview2-26309-06</CoreClrPackageVersion>
     <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
@@ -53,7 +53,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.1.0-preview2-02607-03</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-preview2-02609-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
