@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Net.Sockets;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Security.Authentication;
 using System.Security.Principal;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
@@ -132,6 +133,24 @@ namespace System.ServiceModel.Channels
             Contract.Assert(exception.InnerException != null, "InnerException must be set to be able to convert");
 
             uint hresult = (uint)exception.InnerException.HResult;
+            var innerSocketException = exception.InnerException as SocketException;
+            if (innerSocketException != null)
+            {
+                var socketErrorCode = innerSocketException.SocketErrorCode;
+                switch (socketErrorCode)
+                {
+                    case SocketError.HostNotFound:
+                        return new EndpointNotFoundException(SR.Format(SR.EndpointNotFound, request.RequestUri.AbsoluteUri), exception);
+                    default:
+                        break;
+                }
+            }
+
+            if (exception.InnerException is AuthenticationException)
+            {
+                return new SecurityNegotiationException(SR.Format(SR.TrustFailure, request.RequestUri.Authority), exception);
+            }
+
             switch (hresult)
             {
                 // .Net Native HttpClientHandler sometimes reports an incorrect handle state when a connection is aborted, so we treat it as a connection reset error
