@@ -145,7 +145,7 @@ namespace WcfService
                 _password = null;
                 _authorized = new bool?();
                 _authorizationHeader = GetAuthorizationHeader(operationContext, out _method);
-                if (_authorizationHeader.Length < DigestAuthenticationMechanismLength)
+                if (_authorizationHeader.Length < DigestAuthenticationMechanismLength || !_authorizationHeader.StartsWith(DigestAuthenticationMechanism))
                 {
                     _authorized = false;
                     _nonceString = string.Empty;
