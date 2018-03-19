@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 
 namespace System.ServiceModel.Channels
 {
@@ -18,6 +19,12 @@ namespace System.ServiceModel.Channels
         public ServiceModelHttpMessageHandler()
         {
             _innerHandler = new WinHttpHandler();
+            // WCF doesn't care about the granular WinHttpHandler timeout properties and the default value is 30 seconds
+            // so we need to set them to infinite and allow the HttpClient.Timeout property to have precedence.
+            _innerHandler.ReceiveHeadersTimeout = Timeout.InfiniteTimeSpan;
+            _innerHandler.ReceiveDataTimeout = Timeout.InfiniteTimeSpan;
+            _innerHandler.SendTimeout = Timeout.InfiniteTimeSpan;
+
             InnerHandler = _innerHandler;
         }
 
