@@ -180,6 +180,12 @@ namespace Infrastructure.Common
             return !String.IsNullOrWhiteSpace(GetUPN());
         }
 
+        // Returns false to provide default to non-detectable test condition
+        public static bool DontRunDefault()
+        {
+            return false;
+        }
+
         // Returns the explicit user name if available
         internal static string GetExplicitUserName()
         {
