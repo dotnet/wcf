@@ -4,6 +4,8 @@ WCF Web Service Reference connected services provider is now part of Visual Stud
 
 ## Release History
 
+### 3/21/2018 - Visual Studio 2017 v15.7 Preview 2.0 [27520.0.d15.7]
+* Improved support for future framework versions and bug fixes ([#2510](https://github.com/dotnet/wcf/issues/2510), [#2569](https://github.com/dotnet/wcf/issues/2569))
 
 ### 3/13/2018 - Visual Studio 2017 v15.7 Preview 1.0 [27512.0.d15.7]
 * UI improvements and bug fixes ([#2104](https://github.com/dotnet/wcf/issues/2104))
