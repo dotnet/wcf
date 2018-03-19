@@ -305,6 +305,13 @@ namespace Infrastructure.Common
                                      ConditionalTestDetectors.IsWindows);
         }
 
+        // Returns 'true' is Long Running tests are enabled
+        public static bool Long_Running()
+        {
+            return GetConditionValue(nameof(Long_Running),
+                                     ConditionalTestDetectors.DontRunDefault);
+        }
+
         // Returns the Domain if available.
         // TestProperties takes precedence, but if it has not been specified
         // and this is a Windows client, we infer it.

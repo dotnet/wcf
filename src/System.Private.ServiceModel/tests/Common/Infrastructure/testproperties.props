@@ -131,6 +131,10 @@
       <SSL_Available></SSL_Available>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Long_Running)' == ''">
+      <Long_Running></Long_Running>
+    </PropertyGroup>
+
     <!-- The default value of $(IncludeTestsWithIssues) is blank, which is equivalent fo 'false'.
          The check of $(WithCategories) preserves the convention used by other repo's where the
          keyword 'failing' inside $(WithCategories) asks that tests with [ActiveIssue] be run.
