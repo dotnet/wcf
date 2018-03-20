@@ -2,7 +2,7 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
-    <PackageVersion>4.4.1</PackageVersion>
+    <PackageVersion>4.4.2</PackageVersion>
     <!-- workaround for https://github.com/dotnet/buildtools/issues/1529 -->
     <HarvestVersion>4.3.1</HarvestVersion>
   </PropertyGroup>
