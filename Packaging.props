@@ -20,7 +20,7 @@
     <PlatformPackageVersion Condition="'$(PlatformPackageVersion)' == ''">1.2.0</PlatformPackageVersion>
 
     <!-- by default all packages will use the same version which revs with respect to product version -->
-    <PackageVersion Condition="'$(PackageVersion)' == ''">4.4.2</PackageVersion>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">4.4.3</PackageVersion>
     <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
     <LicenseUrl>https://github.com/dotnet/wcf/blob/master/LICENSE.TXT</LicenseUrl>    
   </PropertyGroup>
