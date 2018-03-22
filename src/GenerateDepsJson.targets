@@ -19,6 +19,7 @@
     </PropertyGroup>
 
     <GenerateDepsJson DepsJsonPath="$(_OriginalDepsJsonPath)"
+                      GenerateNewDepsJson="true"
                       RuntimeDirectory="$(NETCoreAppTestSharedFrameworkPath)"
                       DepsExceptions="@(ExceptionForDepsJson)"
                       OutputPath="$(_OutputTestSharedFrameworkDepsPath)"/>
