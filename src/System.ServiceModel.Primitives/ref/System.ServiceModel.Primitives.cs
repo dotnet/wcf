@@ -107,6 +107,13 @@ namespace System.ServiceModel
         public virtual TChannel CreateChannel(System.ServiceModel.EndpointAddress address, System.Uri via) { return default(TChannel); }
         protected override System.ServiceModel.Description.ServiceEndpoint CreateDescription() { return default(System.ServiceModel.Description.ServiceEndpoint); }
     }
+    public partial class ChannelTerminatedException : System.ServiceModel.CommunicationException
+    {
+        public ChannelTerminatedException() { }
+        public ChannelTerminatedException(string message) { }
+        public ChannelTerminatedException(string message, System.Exception innerException) { }
+        protected ChannelTerminatedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
     public abstract partial class ClientBase<TChannel> : System.IDisposable, System.ServiceModel.ICommunicationObject where TChannel : class
     {
         protected ClientBase() { }
@@ -126,6 +133,7 @@ namespace System.ServiceModel
         event System.EventHandler System.ServiceModel.ICommunicationObject.Opened { add { } remove { } }
         event System.EventHandler System.ServiceModel.ICommunicationObject.Opening { add { } remove { } }
         public void Abort() { }
+        public void Close() { }
         protected virtual TChannel CreateChannel() { return default(TChannel); }
         protected T GetDefaultValueForInitialization<T>() { return default(T); }
         protected void InvokeAsync(System.ServiceModel.ClientBase<TChannel>.BeginOperationDelegate beginOperationDelegate, object[] inValues, System.ServiceModel.ClientBase<TChannel>.EndOperationDelegate endOperationDelegate, System.Threading.SendOrPostCallback operationCompletedCallback, object userState) { }

@@ -71,5 +71,10 @@
             "System.ServiceModel.UpnEndpointIdentity",
             "System.ServiceModel.SpnEndpointIdentity"
         ]
+    },
+    {
+        "Name": "svcutilcore",
+        "Description": "Generate XML serializers for types used by Service Contracts in an assembly",
+        "CommonTypes": []
     }
 ]

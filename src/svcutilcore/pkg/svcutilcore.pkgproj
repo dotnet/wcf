@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <PropertyGroup>
+    <!-- Skip package validation since the build will fail due to missing entry for package svcutilcore in PackageIndex.json -->
+    <SkipValidatePackage>true</SkipValidatePackage>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\svcutilcore.csproj">
+      <SupportedFramework>net461;netcoreapp2.0;$(AllXamarinFrameworks)</SupportedFramework>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <SkipPackageFileCheck>true</SkipPackageFileCheck>
+    <HarvestStablePackage>false</HarvestStablePackage>
+    <EnsureCoreFxBaseLine>true</EnsureCoreFxBaseLine>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageFile Include=".\files\prefercliruntime"/>
+    <PackageFile Include=".\files\dotnet-svcutilcore.runtimeconfig.json">
+      <TargetPath>\lib\netstandard2.0\</TargetPath>
+    </PackageFile>
+    <PackageFile Include=".\files\svcutilcore.targets">
+      <TargetPath>build\</TargetPath>
+    </PackageFile>
+  </ItemGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <Import Project=".\GenerateNupkgProps.targets" />
+</Project>

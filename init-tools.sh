@@ -23,7 +23,7 @@ OSName=$(uname -s)
     case $OSName in
         Darwin)
             OS=OSX
-            __DOTNET_PKG=dotnet-dev-osx-x64
+            __DOTNET_PKG=dotnet-sdk-${__DOTNET_TOOLS_VERSION}-osx-x64
             ulimit -n 2048
             # Format x.y.z as single integer with three digits for each part
             VERSION=`sw_vers -productVersion| sed -e 's/\./ /g' | xargs printf "%03d%03d%03d"`
@@ -34,14 +34,14 @@ OSName=$(uname -s)
             ;;
 
         Linux)
-            __DOTNET_PKG=dotnet-dev-linux-x64
+            __DOTNET_PKG=dotnet-sdk-${__DOTNET_TOOLS_VERSION}-linux-x64
             OS=Linux
             ;;
 
         *)
             echo "Unsupported OS '$OSName' detected. Downloading linux-x64 tools."
             OS=Linux
-            __DOTNET_PKG=dotnet-dev-linux-x64
+            __DOTNET_PKG=dotnet-sdk-${__DOTNET_TOOLS_VERSION}-linux-x64
             ;;
   esac
 fi
@@ -64,7 +64,7 @@ if [ ! -e $__INIT_TOOLS_DONE_MARKER ]; then
             cp -r $DOTNET_TOOL_DIR/* $__DOTNET_PATH
         else
             echo "Installing dotnet cli..."
-            __DOTNET_LOCATION="https://dotnetcli.azureedge.net/dotnet/Sdk/${__DOTNET_TOOLS_VERSION}/${__DOTNET_PKG}.${__DOTNET_TOOLS_VERSION}.tar.gz"
+            __DOTNET_LOCATION="https://dotnetcli.azureedge.net/dotnet/Sdk/${__DOTNET_TOOLS_VERSION}/${__DOTNET_PKG}.tar.gz"
             # curl has HTTPS CA trust-issues less often than wget, so lets try that first.
             echo "Installing '${__DOTNET_LOCATION}' to '$__DOTNET_PATH/dotnet.tar'" >> $__init_tools_log
             which curl > /dev/null 2> /dev/null
@@ -98,11 +98,11 @@ if [ ! -e $__INIT_TOOLS_DONE_MARKER ]; then
         fi
 
         echo "Initializing BuildTools..."
-        echo "Running: $__BUILD_TOOLS_PATH/init-tools.sh $__scriptpath $__DOTNET_CMD $__TOOLRUNTIME_DIR" >> $__init_tools_log
+        echo "Running: $__BUILD_TOOLS_PATH/init-tools.sh $__scriptpath $__DOTNET_CMD $__TOOLRUNTIME_DIR $__PACKAGES_DIR" >> $__init_tools_log
 
         # Executables restored with .NET Core 2.0 do not have executable permission flags. https://github.com/NuGet/Home/issues/4424
         chmod +x $__BUILD_TOOLS_PATH/init-tools.sh
-        $__BUILD_TOOLS_PATH/init-tools.sh $__scriptpath $__DOTNET_CMD $__TOOLRUNTIME_DIR >> $__init_tools_log
+        $__BUILD_TOOLS_PATH/init-tools.sh $__scriptpath $__DOTNET_CMD $__TOOLRUNTIME_DIR $__PACKAGES_DIR >> $__init_tools_log
         if [ "$?" != "0" ]; then
             echo "ERROR: An error occured when trying to initialize the tools. Please check '$__init_tools_log' for more details."1>&2
             exit 1

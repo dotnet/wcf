@@ -1,8 +1,23 @@
-# WCF Web Service Reference Provider - Release Notes
+﻿# WCF Web Service Reference Provider - Release Notes
 
-WCF Web Service Reference connected services provider is now part of Visual Studio 2017. Instructions can be found in the [usage guide](/Documentation/WCF-Web-Service-Reference-guide.md) document. Please [let us know](https://github.com/dotnet/wcf/issues/new) if you run into any issues or have any feedback.
+WCF Web Service Reference connected services provider is now part of Visual Studio 2017. Instructions can be found in the [usage guide](https://go.microsoft.com/fwlink/?linkid=858814) document. Please [let us know](https://github.com/dotnet/wcf/issues/new) if you run into any issues or have any feedback.
 
 ## Release History
+
+### 3/21/2018 - Visual Studio 2017 v15.7 Preview 2.0 [27520.0.d15.7]
+* Improved support for future framework versions and bug fixes ([#2510](https://github.com/dotnet/wcf/issues/2510), [#2569](https://github.com/dotnet/wcf/issues/2569))
+
+### 3/13/2018 - Visual Studio 2017 v15.7 Preview 1.0 [27512.0.d15.7]
+* UI improvements and bug fixes ([#2104](https://github.com/dotnet/wcf/issues/2104))
+
+### 2/7/2018 - Visual Studio 2017 v15.6 Preview 4.0 [27406.0.d15.6]
+* Improved metadata processing. 
+* Bug fixes ([#2269](https://github.com/dotnet/wcf/issues/2269), [#2465](https://github.com/dotnet/wcf/issues/2465))
+
+### 1/25/2018 - Visual Studio 2017 v15.6 Preview 3.0 [27323.2.d15.6]
+* Building the user’s project is no longer required as part of the client code generation process ([#2384](https://github.com/dotnet/wcf/issues/2384)).
+* Bug fixes ([#2461](https://github.com/dotnet/wcf/issues/2461), [#2197](https://github.com/dotnet/wcf/issues/2197), [#2410](https://github.com/dotnet/wcf/issues/2410))
+
 
 ### 12/7/2017 - Visual Studio 2017 v15.6 Preview 1.0 [27205.0.d15.6]
 
