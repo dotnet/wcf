@@ -79,14 +79,6 @@
       <BuildInfoPath>$(BaseDotNetBuildInfo)standard/release/2.0.0</BuildInfoPath>
       <CurrentRef>$(StandardCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
-    <!--<RemoteDependencyBuildInfo Include="ProjectNTfs">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(ProjectNTfsCurrentRef)</CurrentRef>
-    </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="ProjectNTfsTestILC">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs-testilc/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(ProjectNTfsTestILCCurrentRef)</CurrentRef>
-    </RemoteDependencyBuildInfo>-->
     <RemoteDependencyBuildInfo Include="BuildTools">
       <BuildInfoPath>$(BaseDotNetBuildInfo)buildtools/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(BuildToolsCurrentRef)</CurrentRef>
@@ -125,21 +117,6 @@
       <ElementName>NETStandardPackageVersion</ElementName>
       <PackageId>$(NETStandardPackageId)</PackageId>
     </XmlUpdateStep>
-    <!--<XmlUpdateStep Include="ProjectNTfs">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>ProjectNTfsExpectedPrerelease</ElementName>
-      <BuildInfoName>ProjectNTfs</BuildInfoName>
-    </XmlUpdateStep>
-    <XmlUpdateStep Include="ProjectNTfsTestILC">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>ProjectNTfsTestILCExpectedPrerelease</ElementName>
-      <BuildInfoName>ProjectNTfsTestILC</BuildInfoName>
-    </XmlUpdateStep>
-    <XmlUpdateStep Include="ProjectNTfsTestILC">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>ProjectNTfsTestILCPackageVersion</ElementName>
-      <PackageId>TestILC.amd64ret</PackageId>
-    </XmlUpdateStep>-->
     <UpdateStep Include="BuildTools">
       <UpdaterType>File</UpdaterType>
       <Path>$(MSBuildThisFileDirectory)BuildToolsVersion.txt</Path>
