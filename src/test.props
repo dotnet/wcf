@@ -31,4 +31,11 @@
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) AND $(TestCategories.Contains('OuterLoop'))">
     <XunitOptions>-parallel none</XunitOptions>
   </PropertyGroup>
+  <ItemGroup>
+    <!-- Set env vars to use the new SocketsHttpHandler from .NET CoreFX 2.1 --> 
+    <TestCommandLines  Condition="'$(TargetOS)'=='Windows_NT'" Include="set DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=true" />
+    <TestCommandLines  Condition="'$(TargetOS)'=='Windows_NT'" Include="set COMPlus_UseManagedHttpClientHandler=true" />
+    <TestCommandLines  Condition="'$(TargetOS)'!='Windows_NT'" Include="export DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=true" />
+    <TestCommandLines  Condition="'$(TargetOS)'!='Windows_NT'" Include="export COMPlus_UseManagedHttpClientHandler=true" />
+  </ItemGroup>
 </Project>
