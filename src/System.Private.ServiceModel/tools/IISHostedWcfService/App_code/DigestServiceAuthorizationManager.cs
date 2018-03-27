@@ -58,9 +58,14 @@ namespace WcfService
             }
              
             var digestState = new DigestAuthenticationState(operationContext, GetRealm(ref message));
-            if (!digestState.IsRequestDigestAuth)
+            if (string.IsNullOrEmpty(digestState.AuthMechanism)) // No authentication requested
             {
                 return UnauthorizedResponse(digestState);
+            }
+
+            if (!digestState.IsRequestDigestAuth) // Authentication requested but not Digest
+            {
+                return BadAuthenticationResponse(digestState, operationContext);
             }
 
             string password;
@@ -89,6 +94,21 @@ namespace WcfService
         }
 
         public abstract bool GetPassword(ref Message message, string username, out string password);
+
+        private bool BadAuthenticationResponse(DigestAuthenticationState digestState, OperationContext operationContext)
+        {
+            object responsePropertyObject;
+            if (!operationContext.OutgoingMessageProperties.TryGetValue(HttpResponseMessageProperty.Name, out responsePropertyObject))
+            {
+                responsePropertyObject = new HttpResponseMessageProperty();
+                operationContext.OutgoingMessageProperties[HttpResponseMessageProperty.Name] = responsePropertyObject;
+            }
+
+            var responseMessageProperty = (HttpResponseMessageProperty)responsePropertyObject;
+            responseMessageProperty.StatusCode = HttpStatusCode.Forbidden;
+            responseMessageProperty.StatusDescription = "Authentication should use Digest auth, received " + digestState.AuthMechanism + " auth instead";
+            return false;
+        }
 
         private bool UnauthorizedResponse(DigestAuthenticationState digestState)
         {
@@ -120,7 +140,7 @@ namespace WcfService
 
         private struct DigestAuthenticationState
         {
-            private const string DigestAuthenticationMechanism = "Digest ";
+            private const string DigestAuthenticationMechanism = "Digest";
             private const int DigestAuthenticationMechanismLength = 7; // DigestAuthenticationMechanism.Length;
             private const string UriAuthenticationParameter = "uri";
             private const string UsernameAuthenticationParameter = "username";
@@ -145,7 +165,7 @@ namespace WcfService
                 _password = null;
                 _authorized = new bool?();
                 _authorizationHeader = GetAuthorizationHeader(operationContext, out _method);
-                if (_authorizationHeader.Length < DigestAuthenticationMechanismLength)
+                if (!_authorizationHeader.StartsWith(DigestAuthenticationMechanism))
                 {
                     _authorized = false;
                     _nonceString = string.Empty;
@@ -179,7 +199,27 @@ namespace WcfService
                 }
             }
 
-            public bool IsRequestDigestAuth { get { return _authorizationHeader.StartsWith(DigestAuthenticationMechanism); } }
+            public bool IsRequestDigestAuth 
+            {
+                get
+                {
+                    return AuthMechanism.Equals(DigestAuthenticationMechanism);
+                }
+            }
+
+            public string AuthMechanism
+            {
+                get
+                {
+                    string[] authMechAndData = _authorizationHeader.Split(' ');
+                    if (authMechAndData.Length >= 2)
+                    {
+                        return authMechAndData[0];
+                    }
+
+                    return string.Empty;
+                }
+            }
 
             public string Nonce { get { return _nonceString; } }
 
@@ -267,7 +307,7 @@ namespace WcfService
 
             public void SetChallengeResponse(HttpStatusCode statusCode, string statusDescription)
             {
-                StringBuilder authChallenge = new StringBuilder(DigestAuthenticationMechanism);
+                StringBuilder authChallenge = new StringBuilder(DigestAuthenticationMechanism).Append(' ');
                 authChallenge.AppendFormat(RealmAuthenticationParameter + "=\"{0}\", ", _realm);
                 authChallenge.AppendFormat(NonceAuthenticationParameter + "=\"{0}\", ", Nonce);
                 authChallenge.Append("opaque=\"0000000000000000\", ");

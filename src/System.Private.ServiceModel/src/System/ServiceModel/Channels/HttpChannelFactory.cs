@@ -37,8 +37,12 @@ namespace System.ServiceModel.Channels
         private bool _allowCookies;
         private AuthenticationSchemes _authenticationScheme;
         private HttpCookieContainerManager _httpCookieContainerManager;
+
+        // Double-checked locking pattern requires volatile for read/write synchronization
+        private volatile MruCache<Uri, Uri> _credentialCacheUriPrefixCache;
         private volatile MruCache<string, string> _credentialHashCache;
         private volatile MruCache<string, HttpClient> _httpClientCache;
+
         private int _maxBufferSize;
         private IWebProxy _proxy;
         private WebProxyFactory _proxyFactory;
@@ -255,7 +259,34 @@ namespace System.ServiceModel.Channels
             return _httpCookieContainerManager;
         }
 
-        internal async Task<HttpClient> GetHttpClientAsync(EndpointAddress to,
+        private Uri GetCredentialCacheUriPrefix(Uri via)
+        {
+            Uri result;
+
+            if (_credentialCacheUriPrefixCache == null)
+            {
+                lock (ThisLock)
+                {
+                    if (_credentialCacheUriPrefixCache == null)
+                    {
+                        _credentialCacheUriPrefixCache = new MruCache<Uri, Uri>(10);
+                    }
+                }
+            }
+
+            lock (_credentialCacheUriPrefixCache)
+            {
+                if (!_credentialCacheUriPrefixCache.TryGetValue(via, out result))
+                {
+                    result = new UriBuilder(via.Scheme, via.Host, via.Port).Uri;
+                    _credentialCacheUriPrefixCache.Add(via, result);
+                }
+            }
+
+            return result;
+        }
+
+        internal async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via,
             SecurityTokenProviderContainer tokenProvider, SecurityTokenProviderContainer proxyTokenProvider,
             SecurityTokenContainer clientCertificateToken, CancellationToken cancellationToken)
         {
@@ -324,13 +355,16 @@ namespace System.ServiceModel.Channels
                 clientHandler.PreAuthenticate = true;
 
                 clientHandler.UseDefaultCredentials = false;
-                if (credential == CredentialCache.DefaultCredentials)
+                if (credential == CredentialCache.DefaultCredentials || credential == null)
                 {
                     clientHandler.UseDefaultCredentials = true;
                 }
                 else
                 {
-                    clientHandler.Credentials = credential;
+                    CredentialCache credentials = new CredentialCache();
+                    credentials.Add(GetCredentialCacheUriPrefix(via),
+                        AuthenticationSchemesHelper.ToString(_authenticationScheme), credential);
+                    clientHandler.Credentials = credentials;
                 }
 
                 HttpMessageHandler handler = clientHandler;
@@ -914,7 +948,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    return await Factory.GetHttpClientAsync(to, requestTokenProvider, requestProxyTokenProvider, clientCertificateToken, await timeoutHelper.GetCancellationTokenAsync());
+                    return await Factory.GetHttpClientAsync(to, via, requestTokenProvider, requestProxyTokenProvider, clientCertificateToken, await timeoutHelper.GetCancellationTokenAsync());
                 }
                 finally
                 {
