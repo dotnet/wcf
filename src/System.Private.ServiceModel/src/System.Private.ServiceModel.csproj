@@ -20,16 +20,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Windows_NT-Release|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Windows_NT-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Windows_NT-Release|AnyCPU'" />
-  <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap10.0.16299-Windows_NT-Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap10.0.16299-Windows_NT-Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'uap10.0.16299'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetGroup)' != 'uap'">
+  <PropertyGroup Condition="'$(TargetGroup)' != 'uap' OR '$(TargetGroup)' != 'uap10.0.16299'">
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetsWindows)'=='true'">
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetGroup)' != 'uap' AND '$(TargetsWindows)'=='true'">
+  <ItemGroup Condition="'$(TargetGroup)' != 'uap' AND '$(TargetGroup)' != 'uap10.0.16299' AND '$(TargetsWindows)'=='true'">
     <Reference Include="System.Net.Http.WinHttpHandler" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +150,7 @@
     <Reference Include="System.Xml.XmlDocument" />
     <Reference Include="System.Xml.XmlSerializer" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'uap10.0.16299'">
     <Reference Include="System.Net.WebProxy" />
     <Reference Include="Windows" />
     <Reference Include="System.Runtime.WindowsRuntime" />
@@ -162,7 +164,7 @@
     </Compile>
     <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'uap10.0.16299'">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
     <TargetingPackReference Include="Windows" />
   </ItemGroup>

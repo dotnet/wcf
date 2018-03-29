@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
-  <ItemGroup>
-    <ProjectReference Include="..\ref\System.ServiceModel.Duplex.csproj">
-      <SupportedFramework>netcoreapp2.0;net461;$(UAPvNextTFM);$(AllXamarinFrameworks)</SupportedFramework>
-    </ProjectReference>
-    <ProjectReference Include="..\src\System.ServiceModel.Duplex.csproj" />
-    <HarvestIncludePaths Include="ref/netcore50;lib/netcore50" />
-    <HarvestIncludePaths Include="ref/netstandard1.1" />
-    <HarvestIncludePaths Include="lib/netstandard1.3" />
-    <InboxOnTargetFramework Include="net45">
-      <FrameworkReference>System.ServiceModel</FrameworkReference>
-    </InboxOnTargetFramework>
-    <InboxOnTargetFramework Include="MonoAndroid10" />
-    <InboxOnTargetFramework Include="MonoTouch10" />
-    <InboxOnTargetFramework Include="win8" />
-    <InboxOnTargetFramework Include="portable-net45+win8" />
-    <InboxOnTargetFramework Include="xamarinios10" />
-    <InboxOnTargetFramework Include="xamarinmac20" />
-    <InboxOnTargetFramework Include="xamarintvos10" />
-    <InboxOnTargetFramework Include="xamarinwatchos10" />
-    <ValidatePackageSuppression Include="PermitInboxRevsion" />
-    <ValidatePackageSuppression Include="PermitMissingImplementation">
-      <!-- Supported inbox by all ns1.0-1.2 frameworks -->
-      <Value>.NETStandard,Version=v1.1;.NETStandard,Version=v1.2</Value>
-    </ValidatePackageSuppression>
-  </ItemGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+    <ItemGroup>
+        <ProjectReference Include="..\ref\System.ServiceModel.Duplex.csproj">
+            <SupportedFramework>netcoreapp2.0;net461;uap10.0.16299;$(AllXamarinFrameworks)</SupportedFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\src\System.ServiceModel.Duplex.csproj" />
+        <HarvestIncludePaths Include="ref/netcore50;lib/netcore50" />
+        <HarvestIncludePaths Include="ref/netstandard1.1" />
+        <HarvestIncludePaths Include="lib/netstandard1.3" />
+        <InboxOnTargetFramework Include="net45">
+            <FrameworkReference>System.ServiceModel</FrameworkReference>
+        </InboxOnTargetFramework>
+        <InboxOnTargetFramework Include="MonoAndroid10" />
+        <InboxOnTargetFramework Include="MonoTouch10" />
+        <InboxOnTargetFramework Include="win8" />
+        <InboxOnTargetFramework Include="portable-net45+win8" />
+        <InboxOnTargetFramework Include="xamarinios10" />
+        <InboxOnTargetFramework Include="xamarinmac20" />
+        <InboxOnTargetFramework Include="xamarintvos10" />
+        <InboxOnTargetFramework Include="xamarinwatchos10" />
+        <ValidatePackageSuppression Include="PermitInboxRevsion" />
+        <ValidatePackageSuppression Include="PermitMissingImplementation">
+            <!-- Supported inbox by all ns1.0-1.2 frameworks -->
+            <Value>.NETStandard,Version=v1.1;.NETStandard,Version=v1.2</Value>
+        </ValidatePackageSuppression>
+        <!-- Implementation shipped inbox on UAP but we want to keep it as out of box so that we can keep
+    making API changes -->
+        <ValidatePackageSuppression Include="TreatAsOutOfBox">
+            <Value>UAP</Value>
+        </ValidatePackageSuppression>
+    </ItemGroup>
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

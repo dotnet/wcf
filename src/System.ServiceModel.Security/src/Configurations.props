@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageConfigurations>
       netstandard;
+      uap10.0.16299-Windows_NT;
     </PackageConfigurations>
     <BuildConfigurations>
       $(PackageConfigurations);

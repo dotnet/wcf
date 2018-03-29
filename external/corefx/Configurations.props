@@ -7,6 +7,7 @@
       netstandard;
       uap-Windows_NT;
       uapaot-Windows_NT;
+      uap10.0.16299;
     </BuildConfigurations>
   </PropertyGroup>
 </Project>

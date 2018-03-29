@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageConfigurations>
       uap-Windows_NT;
+      uap10.0.16299-Windows_NT;
       netstandard-Windows_NT;
       netstandard-Unix;
     </PackageConfigurations>
