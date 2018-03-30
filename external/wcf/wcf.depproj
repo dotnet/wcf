@@ -5,13 +5,13 @@
     <!-- support cross-targeting by choosing a RID to restore when running on a different machine that what we're build for -->
     <NugetRuntimeIdentifier Condition="'$(OSGroup)' == 'Windows_NT' AND '$(RunningOnUnix)' == 'true'">win7-x64</NugetRuntimeIdentifier>
     <NugetRuntimeIdentifier Condition="'$(OSGroup)' == 'Unix' AND '$(RunningOnUnix)' != 'true'">ubuntu.14.04-x64</NugetRuntimeIdentifier>
-    <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uap'">win10-$(ArchGroup)</NugetRuntimeIdentifier>
+    <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'uap10.0.16299'">win10-$(ArchGroup)</NugetRuntimeIdentifier>
     <NugetRuntimeIdentifier Condition="'$(TargetGroup)' == 'uapaot'">win10-$(ArchGroup)-aot</NugetRuntimeIdentifier>
     <RidSpecificAssets>true</RidSpecificAssets>
     <WcfPackageVersion Condition="'$(WcfPackageVersion)' == ''">$(PackageVersion)-$(PreReleaseLabel)-$(BuildNumberMajor)-$(BuildNumberMinor)</WcfPackageVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetGroup)' == 'uap' or '$(TargetGroup)' == 'uapaot'">
+  <PropertyGroup Condition="'$(TargetGroup)' == 'uap' OR '$(TargetGroup)' == 'uapaot' OR '$(TargetGroup)' == 'uap10.0.16299'">
     <!-- Temporarily Override restore moniker since corefx's targeting pack still uses uap10.1 moniker -->
     <NuGetTargetMoniker>UAP,Version=v10.1</NuGetTargetMoniker>
     <NuGetTargetMonikerShort>uap10.1</NuGetTargetMonikerShort>

@@ -4,7 +4,6 @@
     <BuildConfigurations>
       netfx;
       netstandard;
-      uap;
     </BuildConfigurations>
   </PropertyGroup>
 </Project>
