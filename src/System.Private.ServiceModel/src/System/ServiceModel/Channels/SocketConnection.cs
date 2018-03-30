@@ -511,26 +511,26 @@ namespace System.ServiceModel.Channels
         private Exception ConvertSendException(SocketException socketException, TimeSpan remainingTime)
         {
             return ConvertTransferException(socketException, _sendTimeout, socketException,
-                TransferOperation.Write, _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
+                _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
         }
 
         private Exception ConvertReceiveException(SocketException socketException, TimeSpan remainingTime)
         {
             return ConvertTransferException(socketException, _receiveTimeout, socketException,
-                TransferOperation.Read, _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
+                _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
         }
 
         internal static Exception ConvertTransferException(SocketException socketException, TimeSpan timeout, Exception originalException)
         {
             return ConvertTransferException(socketException, timeout, originalException,
-                TransferOperation.Undefined, false, null, TransferOperation.Undefined, null, TimeSpan.MaxValue);
+                false, null, TransferOperation.Undefined, null, TimeSpan.MaxValue);
         }
 
         private Exception ConvertObjectDisposedException(ObjectDisposedException originalException, TransferOperation transferOperation)
         {
             if (_timeoutErrorString != null)
             {
-                return ConvertTimeoutErrorException(originalException, transferOperation, _timeoutErrorString, _timeoutErrorTransferOperation);
+                return ConvertTimeoutErrorException(originalException, _timeoutErrorString, _timeoutErrorTransferOperation);
             }
             else if (_aborted)
             {
@@ -543,7 +543,7 @@ namespace System.ServiceModel.Channels
         }
 
         private static Exception ConvertTransferException(SocketException socketException, TimeSpan timeout, Exception originalException,
-            TransferOperation transferOperation, bool aborted, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation,
+            bool aborted, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation,
             SocketConnection socketConnection, TimeSpan remainingTime)
         {
             if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.ERROR_INVALID_HANDLE)
@@ -553,7 +553,7 @@ namespace System.ServiceModel.Channels
 
             if (timeoutErrorString != null)
             {
-                return ConvertTimeoutErrorException(originalException, transferOperation, timeoutErrorString, timeoutErrorTransferOperation);
+                return ConvertTimeoutErrorException(originalException, timeoutErrorString, timeoutErrorTransferOperation);
             }
 
             // 10053 can occur due to our timeout sockopt firing, so map to TimeoutException in that case
@@ -597,12 +597,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private static Exception ConvertTimeoutErrorException(Exception originalException,
-            TransferOperation transferOperation, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation)
+        private static Exception ConvertTimeoutErrorException(Exception originalException, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation)
         {
             Contract.Assert(timeoutErrorString != null, "Argument timeoutErrorString must not be null.");
 
-            if (transferOperation == timeoutErrorTransferOperation)
+            if (timeoutErrorTransferOperation != TransferOperation.Undefined)
             {
                 return new TimeoutException(timeoutErrorString, originalException);
             }
