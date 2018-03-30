@@ -8,6 +8,7 @@
     <NuGetDeploySourceItem>Reference</NuGetDeploySourceItem>
     <UAPPackageVersion>6.0.7</UAPPackageVersion>
     <TargetFramework>uap10.0.16299</TargetFramework>
+    <NugetRuntimeIdentifier>None</NugetRuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>

@@ -52,6 +52,12 @@
     <IncludeDesignerMarker Condition="'$(IncludeDesignerMarker)' == ''">false</IncludeDesignerMarker>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- UAP10vNext is not yet mapped to netstandard2.0 due to buildtools using an old nuget.frameworks.dll
+         manually suppress this error until we get a new buildtools with the nuget update -->
+    <SuppressPackageTargetFrameworkCompatibility Condition="'$(TargetGroup)' == 'netstandard'" Include="uap10.0.16299" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.pkgproj'">
     <!-- Add required legal files to packages -->
     <File Condition="Exists('$(PackageLicenseFile)')"
@@ -74,5 +80,10 @@
           Include="$(ProjectDir)pkg/useSharedDesignerContext.txt">
         <SkipPackageFileCheck>true</SkipPackageFileCheck>
     </File>
+
+    <!-- can be removed once we have a new buildtools that adds this to the validation framework list -->
+    <DefaultValidateFramework Include="uap10.0.16299">
+      <RuntimeIDs>win10-x86;win10-x86-aot;win10-x64;win10-x64-aot;win10-arm;win10-arm-aot</RuntimeIDs>
+    </DefaultValidateFramework>
   </ItemGroup>
 </Project>
