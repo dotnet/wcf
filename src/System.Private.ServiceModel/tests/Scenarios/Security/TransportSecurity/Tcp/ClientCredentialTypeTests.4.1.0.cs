@@ -12,6 +12,7 @@ using Xunit;
 
 public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
 {
+    // See dotnet/wcf#2738 if failing with: System.InvalidOperationException : The client certificate could not be installed
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
@@ -60,6 +61,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
         }
     }
 
+    // See dotnet/wcf#2738 if failing with: System.InvalidOperationException : The client certificate could not be installed
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
