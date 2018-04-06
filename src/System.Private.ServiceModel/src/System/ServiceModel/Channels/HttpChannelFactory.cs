@@ -1012,11 +1012,11 @@ namespace System.ServiceModel.Channels
                     _timeoutHelper = timeoutHelper;
                     _factory.ApplyManualAddressing(ref _to, ref _via, message);
                     _httpClient = await _channel.GetHttpClientAsync(_to, _via, _timeoutHelper);
-                    _httpRequestMessage = _channel.GetHttpRequestMessage(_via);
 
                     // The _httpRequestMessage field will be set to null by Cleanup() due to faulting
                     // or aborting, so use a local copy for exception handling within this method.
-                    HttpRequestMessage httpRequestMessage = _httpRequestMessage;
+                    HttpRequestMessage httpRequestMessage = _channel.GetHttpRequestMessage(_via);
+                    _httpRequestMessage = httpRequestMessage;
                     Message request = message;
 
                     try
@@ -1033,7 +1033,7 @@ namespace System.ServiceModel.Channels
 
                         if (!suppressEntityBody)
                         {
-                            _httpRequestMessage.Content = MessageContent.Create(_factory, request, _timeoutHelper);
+                            httpRequestMessage.Content = MessageContent.Create(_factory, request, _timeoutHelper);
                         }
 
                         try
@@ -1052,13 +1052,13 @@ namespace System.ServiceModel.Channels
                         {
                             using (timeoutToken.Register(s_cancelCts, _httpSendCts))
                             { 
-                                _httpResponseMessage = await _httpClient.SendAsync(_httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
+                                _httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
                             }
 
                             // As we have the response message and no exceptions have been thrown, the request message has completed it's job.
                             // Calling Dispose() on the request message to free up resources in HttpContent, but keeping the object around
                             // as we can still query properties once dispose'd.
-                            _httpRequestMessage.Dispose();
+                            httpRequestMessage.Dispose();
                             success = true;
                         }
                         catch (HttpRequestException requestException)
