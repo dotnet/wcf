@@ -10,8 +10,8 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>2820041450bb8b7bbbbd85668b1c7d161cf4516e</CoreFxCurrentRef>
-    <WCFCurrentRef>2820041450bb8b7bbbbd85668b1c7d161cf4516e</WCFCurrentRef>
-    <StandardCurrentRef>6298244e25cf84d91e3cda9627315f2425274624</StandardCurrentRef>
+    <WCFCurrentRef>c2ce03671f69e8fb5e95f60ec477abc7b5d7c4c3</WCFCurrentRef>
+    <StandardCurrentRef>c2ce03671f69e8fb5e95f60ec477abc7b5d7c4c3</StandardCurrentRef>
     <BuildToolsCurrentRef>b00fcd5465aea9a6cbf0762aa0f34f33cd7a208a</BuildToolsCurrentRef>
     <CoreClrCurrentRef>2820041450bb8b7bbbbd85668b1c7d161cf4516e</CoreClrCurrentRef>
     <CoreSetupCurrentRef>2820041450bb8b7bbbbd85668b1c7d161cf4516e</CoreSetupCurrentRef>
@@ -19,9 +19,9 @@
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26406-02</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview2-26406-03</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview2-26403-05</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.0.1</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.0.2</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
