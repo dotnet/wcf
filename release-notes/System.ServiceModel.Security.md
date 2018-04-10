@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 4.5.0-preview2-26410-01
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Security/4.5.0-preview2-26410-01)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v2.1.0-preview2)
+
 ### 4.5.0-preview1-26228-01
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Security/4.5.0-preview1-26228-01)
