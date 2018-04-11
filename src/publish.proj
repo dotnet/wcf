@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <Import Project="..\dir.targets" />
   <Import Project="$(ToolsDir)PublishContent.targets" />
   <Import Project="$(ToolsDir)versioning.targets" />
   <Import Project="$(PackagesDir)/$(FeedTasksPackage.ToLower())/$(FeedTasksPackageVersion)/build/$(FeedTasksPackage).targets" />
@@ -32,6 +33,20 @@
     <FinalPublishPrivatePattern>$(PackageDownloadDirectory)\**\*Private*.nupkg</FinalPublishPrivatePattern>
     <FinalSymbolsPackagesPattern>$(PackageDownloadDirectory)\**\*.symbols.nupkg</FinalSymbolsPackagesPattern>
   </PropertyGroup>
+
+  <Target Name="GetPackagesToSign">
+    <ItemGroup>
+      <FilesToSign Include="$(FinalPublishPattern)" Exclude="$(FinalPublishPrivatePattern);$(FinalSymbolsPackagesPattern)">
+        <Authenticode>NuGet</Authenticode>
+      </FilesToSign>
+    </ItemGroup>
+    <Message Importance="High" Text="Attempting to sign package '%(FilesToSign.Identity)'" />
+  </Target>
+
+  <Target Name="SignPackages"
+          Condition="'$(SkipSigning)' != 'true' and '$(SignType)' != 'public'"
+          DependsOnTargets="GetPackagesToSign;SignFiles">
+  </Target>
 
   <Target Name="PublishToAzureBlobFeed">
     <ItemGroup>
