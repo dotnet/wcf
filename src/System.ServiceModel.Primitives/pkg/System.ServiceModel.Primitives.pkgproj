@@ -35,7 +35,7 @@
     </ValidatePackageSuppression>
     <!-- Impl shim of System.ServiceModel.dll for UAP -->
     <File Include="$(ServiceModelFacade)">
-      <TargetPath Condition="'$(_targetRuntime)' == ''">lib/$(UAPvNextTFM)</TargetPath>
+      <TargetPath Condition="'$(_targetRuntime)' == ''">lib/uap10.0.16299</TargetPath>
     </File>
     <!-- Impl shim of System.ServiceModel.dll for netstandard2.0 -->
     <File Include="$(ServiceModelFacade)">
@@ -43,7 +43,7 @@
     </File>
     <!-- Ref shim of System.ServiceModel.dll for UAP -->
     <File Include="$(ServiceModelFacade)">
-      <TargetPath Condition="'$(_targetRuntime)' == ''">ref/$(UAPvNextTFM)</TargetPath>
+      <TargetPath Condition="'$(_targetRuntime)' == ''">ref/uap10.0.16299</TargetPath>
     </File>
     <!-- Ref shim of System.ServiceModel.dll for netstandard2.0 -->
     <File Include="$(ServiceModelFacade)">
