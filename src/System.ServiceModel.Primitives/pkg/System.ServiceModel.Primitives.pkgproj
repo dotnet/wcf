@@ -41,14 +41,6 @@
     <File Include="$(ServiceModelFacade)">
       <TargetPath Condition="'$(_targetRuntime)' == ''">lib/netstandard2.0</TargetPath>
     </File>
-    <!-- Ref shim of System.ServiceModel.dll for UAP -->
-    <File Include="$(ServiceModelFacade)">
-      <TargetPath Condition="'$(_targetRuntime)' == ''">ref/$(UAPvNextTFM)</TargetPath>
-    </File>
-    <!-- Ref shim of System.ServiceModel.dll for netstandard2.0 -->
-    <File Include="$(ServiceModelFacade)">
-      <TargetPath Condition="'$(_targetRuntime)' == ''">ref/netstandard2.0</TargetPath>
-    </File>
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
