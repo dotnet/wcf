@@ -3,7 +3,6 @@
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <Import Project="..\dir.targets" />
   <Import Project="$(ToolsDir)PublishContent.targets" />
-  <Import Project="$(ToolsDir)versioning.targets" />
   <Import Project="$(PackagesDir)/$(FeedTasksPackage.ToLower())/$(FeedTasksPackageVersion)/build/$(FeedTasksPackage).targets" />
 
   <PropertyGroup>
@@ -32,6 +31,8 @@
     <FinalPublishPattern>$(PackageDownloadDirectory)\**\*.nupkg</FinalPublishPattern>
     <FinalPublishPrivatePattern>$(PackageDownloadDirectory)\**\*Private*.nupkg</FinalPublishPrivatePattern>
     <FinalSymbolsPackagesPattern>$(PackageDownloadDirectory)\**\*.symbols.nupkg</FinalSymbolsPackagesPattern>
+    <!-- The SignFiles target needs OutDir to be defined -->
+    <OutDir>$(PackageDownloadDirectory)</OutDir>
   </PropertyGroup>
 
   <Target Name="GetPackagesToSign">
