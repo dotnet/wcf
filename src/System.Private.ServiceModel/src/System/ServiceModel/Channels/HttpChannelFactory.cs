@@ -1036,6 +1036,7 @@ namespace System.ServiceModel.Channels
                             httpRequestMessage.Content = MessageContent.Create(_factory, request, _timeoutHelper);
                         }
 
+#if FEATURE_NETNATIVE // UAP doesn't support Expect Continue so we do a HEAD request to get authentication done before sending the real request
                         try
                         {
                             // There is a possibility that a HEAD pre-auth request might fail when the actual request
@@ -1044,6 +1045,7 @@ namespace System.ServiceModel.Channels
                             await SendPreauthenticationHeadRequestIfNeeded();
                         }
                         catch { /* ignored */ }
+#endif
 
                         bool success = false;
                         var timeoutToken = await _timeoutHelper.GetCancellationTokenAsync();
@@ -1293,6 +1295,13 @@ namespace System.ServiceModel.Channels
                             }
                         }
                     }
+
+#if !FEATURE_NETNATIVE // Expect continue not correctly supported on UAP
+                    if (AuthenticationSchemeMayRequireResend())
+                    {
+                        _httpRequestMessage.Headers.ExpectContinue = true;
+                    }
+#endif
 
                     if (action != null)
                     {
