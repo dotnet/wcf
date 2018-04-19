@@ -136,9 +136,12 @@ namespace System.ServiceModel.Channels
             var innerSocketException = exception.InnerException as SocketException;
             if (innerSocketException != null)
             {
-                var socketErrorCode = innerSocketException.SocketErrorCode;
+                SocketError socketErrorCode = innerSocketException.SocketErrorCode;
                 switch (socketErrorCode)
                 {
+                    case SocketError.TryAgain:
+                    case SocketError.NoRecovery:
+                    case SocketError.NoData:
                     case SocketError.HostNotFound:
                         return new EndpointNotFoundException(SR.Format(SR.EndpointNotFound, request.RequestUri.AbsoluteUri), exception);
                     default:
