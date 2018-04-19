@@ -10,16 +10,16 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>a98bd7c542a5f0d0f446047251f3be0b07ceb596</CoreFxCurrentRef>
-    <WCFCurrentRef>a98bd7c542a5f0d0f446047251f3be0b07ceb596</WCFCurrentRef>
+    <WCFCurrentRef>66951dc79df6b6c5b1044099be8fdf707bd15c08</WCFCurrentRef>
     <StandardCurrentRef>c2ce03671f69e8fb5e95f60ec477abc7b5d7c4c3</StandardCurrentRef>
-    <BuildToolsCurrentRef>b00fcd5465aea9a6cbf0762aa0f34f33cd7a208a</BuildToolsCurrentRef>
+    <BuildToolsCurrentRef>66951dc79df6b6c5b1044099be8fdf707bd15c08</BuildToolsCurrentRef>
     <CoreClrCurrentRef>a98bd7c542a5f0d0f446047251f3be0b07ceb596</CoreClrCurrentRef>
     <CoreSetupCurrentRef>a98bd7c542a5f0d0f446047251f3be0b07ceb596</CoreSetupCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview2-26409-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview2-26418-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview2-26406-04</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.0.2</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
@@ -40,7 +40,7 @@
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
     <CoreFxBaseLinePackageVersion>2.2.0-preview2-26406-04</CoreFxBaseLinePackageVersion>
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0018</XunitPerfAnalysisPackageVersion>
-    <XunitNetcoreExtensionsVersion>2.1.0-preview2-02629-01</XunitNetcoreExtensionsVersion>
+    <XunitNetcoreExtensionsVersion>2.1.0-rc1-02719-01</XunitNetcoreExtensionsVersion>
 
     <CoreClrPackageVersion>2.1.0-preview2-26406-07</CoreClrPackageVersion>
     <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0-preview2-26406-04</MicrosoftNETCoreDotNetHostPackageVersion>
@@ -53,7 +53,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.1.0-preview2-02629-01</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-rc1-02719-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
