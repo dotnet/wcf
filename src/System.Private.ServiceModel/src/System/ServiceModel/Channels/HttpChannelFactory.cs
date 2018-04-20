@@ -240,6 +240,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        private bool AuthenticationSchemeMayRequireResend()
+        {
+            return AuthenticationScheme != AuthenticationSchemes.Anonymous;
+        }
+
         public override T GetProperty<T>()
         {
             if (typeof(T) == typeof(ISecurityCapabilities))
@@ -378,6 +383,13 @@ namespace System.ServiceModel.Channels
                 if(!_keepAliveEnabled)
                    httpClient.DefaultRequestHeaders.ConnectionClose = true;
 
+#if !FEATURE_NETNATIVE // Expect continue not correctly supported on UAP
+                if (IsExpectContinueHeaderRequired)
+                {
+                    httpClient.DefaultRequestHeaders.ExpectContinue = true;
+                }
+#endif
+
                 // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1 
                 // prevents a call to CancellationToken.CancelAfter that HttpClient does internally which
                 // causes TimerQueue contention at high load.
@@ -400,6 +412,8 @@ namespace System.ServiceModel.Channels
 
             return httpClient;
         }
+
+        internal virtual bool IsExpectContinueHeaderRequired => AuthenticationSchemeMayRequireResend();
 
         internal virtual HttpClientHandler GetHttpClientHandler(EndpointAddress to, SecurityTokenContainer clientCertificateToken)
         {
@@ -1296,13 +1310,6 @@ namespace System.ServiceModel.Channels
                         }
                     }
 
-#if !FEATURE_NETNATIVE // Expect continue not correctly supported on UAP
-                    if (AuthenticationSchemeMayRequireResend())
-                    {
-                        _httpRequestMessage.Headers.ExpectContinue = true;
-                    }
-#endif
-
                     if (action != null)
                     {
                         if (message.Version.Envelope == EnvelopeVersion.Soap11)
@@ -1351,7 +1358,7 @@ namespace System.ServiceModel.Channels
 
                 private async Task SendPreauthenticationHeadRequestIfNeeded()
                 {
-                    if (!AuthenticationSchemeMayRequireResend())
+                    if (!_factory.AuthenticationSchemeMayRequireResend())
                     {
                         return;
                     }
@@ -1368,11 +1375,6 @@ namespace System.ServiceModel.Channels
 
                     var cancelToken = await _timeoutHelper.GetCancellationTokenAsync();
                     await _httpClient.SendAsync(headHttpRequestMessage, cancelToken);
-                }
-
-                private bool AuthenticationSchemeMayRequireResend()
-                {
-                    return _factory.AuthenticationScheme != AuthenticationSchemes.Anonymous;
                 }
             }
         }
