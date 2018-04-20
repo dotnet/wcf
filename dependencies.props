@@ -10,7 +10,7 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>807c5b1aab825f6c4fde32b333bbe7d6ab59678e</CoreFxCurrentRef>
-    <WCFCurrentRef>807c5b1aab825f6c4fde32b333bbe7d6ab59678e</WCFCurrentRef>
+    <WCFCurrentRef>baa4261a2258e0bea9d2a7229b23e4782f9e2e06</WCFCurrentRef>
     <StandardCurrentRef>807c5b1aab825f6c4fde32b333bbe7d6ab59678e</StandardCurrentRef>
     <ProjectNTfsCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsTestILCCurrentRef>
@@ -20,7 +20,7 @@
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview3-26418-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview3-26420-04</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview3-26420-06</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-26420-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
