@@ -158,5 +158,8 @@ namespace WcfService
 
         [OperationContract]
         bool IsHttpKeepAliveDisabled();
+
+        [OperationContract]
+        Dictionary<string,string> GetRequestHttpHeaders();
     }
 }
