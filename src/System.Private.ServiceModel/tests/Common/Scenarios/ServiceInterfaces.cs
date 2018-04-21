@@ -86,6 +86,9 @@ public interface IWcfService
 
     [OperationContract]
     bool IsHttpKeepAliveDisabled();
+
+    [OperationContract]
+    Dictionary<string, string> GetRequestHttpHeaders();
 }
 
 [ServiceContract]

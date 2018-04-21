@@ -433,6 +433,23 @@ namespace WcfService
             return connectionValue.Equals("Close", StringComparison.OrdinalIgnoreCase);
         }
 
+        public Dictionary<string, string> GetRequestHttpHeaders()
+        {
+            var headers = new Dictionary<string, string>();
+            object httpReqMessagePropObj;
+            if (OperationContext.Current.IncomingMessageProperties.TryGetValue(HttpRequestMessageProperty.Name,
+                out httpReqMessagePropObj))
+            {
+                var httpRequestMessageProperty = (HttpRequestMessageProperty)httpReqMessagePropObj;
+                foreach (var headerName in httpRequestMessageProperty.Headers.AllKeys)
+                {
+                    headers.Add(headerName, httpRequestMessageProperty.Headers[headerName]);
+                }
+            }
+
+            return headers;
+        }
+
         private static string StreamToString(Stream stream)
         {
             var reader = new StreamReader(stream, Encoding.UTF8);

@@ -4,6 +4,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -253,6 +254,56 @@ public partial class HttpsTests : ConditionalWcfTest
 
             // *** VALIDATE *** \\
             Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Condition(nameof(Root_Certificate_Installed),
+           nameof(Client_Certificate_Installed),
+           nameof(Server_Accepts_Certificates),
+           nameof(SSL_Available))]
+    [OuterLoop]
+    public static void HttpExpect100Continue_ClientCertificate_True()
+    {
+        string clientCertThumb = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            BasicHttpsBinding basicHttpsBinding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+            basicHttpsBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
+
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_ClientCertificateAuth_Address));
+            clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
+
+            factory = new ChannelFactory<IWcfService>(basicHttpsBinding, endpointAddress);
+            factory.Credentials.ClientCertificate.SetCertificate(
+                StoreLocation.CurrentUser,
+                StoreName.My,
+                X509FindType.FindByThumbprint,
+                clientCertThumb);
+
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Dictionary<string, string> requestHeaders = serviceProxy.GetRequestHttpHeaders();
+
+            // *** VALIDATE *** \\
+            bool expectHeaderSent = requestHeaders.TryGetValue("Expect", out var expectHeader);
+            Assert.True(expectHeaderSent, "Expect header should have been sent but wasn't");
+            Assert.Equal("100-Continue", expectHeader, StringComparer.OrdinalIgnoreCase);
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();

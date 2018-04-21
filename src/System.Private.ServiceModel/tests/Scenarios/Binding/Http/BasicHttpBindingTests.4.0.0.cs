@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -166,6 +167,41 @@ public static class Binding_Http_BasicHttpBindingTests
 
             // *** VALIDATE *** \\
             Assert.True(result == substituteString, String.Format("Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void HttpExpect100Continue_AnonymousAuth_False()
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        BasicHttpBinding binding = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Dictionary<string, string> requestHeaders = serviceProxy.GetRequestHttpHeaders();
+
+            // *** VALIDATE *** \\
+            string expectHeader = null;
+            bool expectHeaderSent = requestHeaders.TryGetValue("Expect", out expectHeader);
+            Assert.False(expectHeaderSent, "Expect header should not have been sent. Header value:" + expectHeader);
 
             // *** CLEANUP *** \\
             factory.Close();
