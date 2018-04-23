@@ -10,17 +10,17 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>f18c7b47a973cbe9fb04f6c3ec99c7ce01484aa4</CoreFxCurrentRef>
-    <WCFCurrentRef>f18c7b47a973cbe9fb04f6c3ec99c7ce01484aa4</WCFCurrentRef>
+    <WCFCurrentRef>5f20315615b0d356e91302ae2084936ed3928472</WCFCurrentRef>
     <StandardCurrentRef>807c5b1aab825f6c4fde32b333bbe7d6ab59678e</StandardCurrentRef>
     <ProjectNTfsCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsCurrentRef>
     <ProjectNTfsTestILCCurrentRef>6228d26347a4a79652347621b1d2a493f3ed9065</ProjectNTfsTestILCCurrentRef>
-    <BuildToolsCurrentRef>807c5b1aab825f6c4fde32b333bbe7d6ab59678e</BuildToolsCurrentRef>
+    <BuildToolsCurrentRef>5f20315615b0d356e91302ae2084936ed3928472</BuildToolsCurrentRef>
     <CoreClrCurrentRef>f18c7b47a973cbe9fb04f6c3ec99c7ce01484aa4</CoreClrCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview3-26423-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview3-26423-02</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview3-26423-04</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-26420-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
@@ -53,7 +53,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.2.0-preview1-02719-03</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.2.0-preview1-02723-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
