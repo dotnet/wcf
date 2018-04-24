@@ -227,6 +227,8 @@ namespace System.ServiceModel.Channels
             return handler;
         }
 
+        internal override bool IsExpectContinueHeaderRequired => RequireClientCertificate || base.IsExpectContinueHeaderRequired;
+
         private static void SetCertificate(HttpClientHandler handler, SecurityTokenContainer clientCertificateToken)
         {
             if (clientCertificateToken != null)
