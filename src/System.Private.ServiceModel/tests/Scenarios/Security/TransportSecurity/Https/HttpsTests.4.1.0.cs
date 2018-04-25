@@ -21,6 +21,7 @@ public partial class HttpsTests : ConditionalWcfTest
     [OuterLoop]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     public static void CrossBinding_Soap11_EchoString()
     {
         string variationDetails = "Client:: CustomBinding/MessageVersion=Soap11\nServer:: BasicHttpsBinding/DefaultValues";
@@ -58,6 +59,7 @@ public partial class HttpsTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void SameBinding_DefaultSettings_EchoString()
     {
@@ -96,6 +98,7 @@ public partial class HttpsTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void SameBinding_Soap11_EchoString()
     {
@@ -134,6 +137,7 @@ public partial class HttpsTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void SameBinding_Soap12_EchoString()
     {
@@ -271,6 +275,7 @@ public partial class HttpsTests : ConditionalWcfTest
            nameof(Client_Certificate_Installed),
            nameof(Server_Accepts_Certificates),
            nameof(SSL_Available))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void HttpExpect100Continue_ClientCertificate_True()
     {
