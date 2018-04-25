@@ -15,6 +15,7 @@ public partial class CustomBindingTests : ConditionalWcfTest
     // Tcp: Client and Server bindings setup exactly the same using default settings.
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void DefaultSettings_Tcp_Binary_Echo_RoundTrips_String()
     {
@@ -56,6 +57,7 @@ public partial class CustomBindingTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void DefaultSettings_Https_Text_Echo_RoundTrips_String()
     {
