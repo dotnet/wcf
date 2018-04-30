@@ -15,6 +15,7 @@ public partial class IdentityTests : ConditionalWcfTest
 {
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
+    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation
     public static void ServiceIdentityNotMatch_Throw_MessageSecurityException()
