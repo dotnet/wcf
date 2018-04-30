@@ -47,7 +47,6 @@ public static class Binding_Http_BasicHttpBindingTests
 
     [WcfFact]
     [OuterLoop]
-    [Issue(2624, OS = OSID.OSX_10_13 | OSID.Debian_9 | OSID.AnyFedora)]
     public static void HttpKeepAliveDisabled_Echo_RoundTrips_True()
     {
         ChannelFactory<IWcfService> factory = null;
