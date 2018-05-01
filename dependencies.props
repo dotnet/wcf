@@ -20,14 +20,14 @@
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <WCFExpectedPrerelease>rc1-26426-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>rc1-26423-06</CoreFxExpectedPrerelease>
+    <CoreFxExpectedPrerelease>rc1</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rc1-26423-06</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rc1</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
     <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-rc1-26423-06</MicrosoftPrivateCoreFxUAPPackageVersion>
 
     <ProjectNTfsExpectedPrerelease>beta-26123-01</ProjectNTfsExpectedPrerelease>
@@ -38,16 +38,16 @@
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
-    <CoreFxBaseLinePackageVersion>2.2.0-rc1-26423-06</CoreFxBaseLinePackageVersion>
+    <CoreFxBaseLinePackageVersion>2.2.0-rc1</CoreFxBaseLinePackageVersion>
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0018</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-rc1-02726-01</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-rc1-26423-02</CoreClrPackageVersion>
-    <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0-rc1-26423-06</MicrosoftNETCoreDotNetHostPackageVersion>
-    <MicrosoftNETCoreDotNetHostPolicyPackageVersion>2.1.0-rc1-26423-06</MicrosoftNETCoreDotNetHostPolicyPackageVersion>
+    <CoreClrPackageVersion>2.1.0-rc1</CoreClrPackageVersion>
+    <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0-rc1</MicrosoftNETCoreDotNetHostPackageVersion>
+    <MicrosoftNETCoreDotNetHostPolicyPackageVersion>2.1.0-rc1</MicrosoftNETCoreDotNetHostPolicyPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
-    <PlatformPackageVersion>2.1.0-rc1-26423-06</PlatformPackageVersion>
+    <PlatformPackageVersion>2.1.0-rc1</PlatformPackageVersion>
   </PropertyGroup>
 
   <!-- Package versions used as toolsets -->
