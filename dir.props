@@ -80,7 +80,7 @@
     <Platform>AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <!-- Default any assembly not specifying a key to use the Open Key -->
-    <AssemblyKey>Open</AssemblyKey>
+    <AssemblyKey>MSFT</AssemblyKey>
     <!--<RunApiCompat>true</RunApiCompat>-->
     <!-- Build as portable by default -->
     <PortableBuild Condition="'$(PortableBuild)' == ''">true</PortableBuild>
