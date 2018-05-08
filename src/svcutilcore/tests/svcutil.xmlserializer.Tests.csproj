@@ -6,8 +6,8 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.Tests</RootNamespace>
-    <AssemblyName>Microsoft.Tools.ServiceModel.SvcUtil.Tests</AssemblyName>
+    <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests</RootNamespace>
+    <AssemblyName>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests</AssemblyName>
     <SignAssembly>false</SignAssembly>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProjectGuid>{E0A4893E-975E-415A-90B6-57871EB864E6}</ProjectGuid>
@@ -30,14 +30,14 @@
   <PropertyGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
     <!-- We're building netcoreap, run on the test CLI
          Reuse the same runtimeconfig that the tests use. -->
-     <GeneratorRuntimeConfig>$(ToolsDir)xunit.console.netcore.runtimeconfig.json</GeneratorRuntimeConfig>
-     <GeneratorCliPath>$(TestHostRootPath)</GeneratorCliPath>
+    <GeneratorRuntimeConfig>$(ToolsDir)xunit.console.netcore.runtimeconfig.json</GeneratorRuntimeConfig>
+    <GeneratorCliPath>$(TestHostRootPath)</GeneratorCliPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetGroup)' != 'netcoreapp'">
     <!-- We're building some non-netcoreapp target, run on the Tools CLI.
          Reuse the same runtimeconfig used by CSC. -->
-     <GeneratorRuntimeConfig>$(ToolsDir)csc.runtimeconfig.json</GeneratorRuntimeConfig>
-     <GeneratorCliPath>$(ToolsDir)dotnetcli/</GeneratorCliPath>
+    <GeneratorRuntimeConfig>$(ToolsDir)csc.runtimeconfig.json</GeneratorRuntimeConfig>
+    <GeneratorCliPath>$(ToolsDir)dotnetcli/</GeneratorCliPath>
   </PropertyGroup>
   <ItemGroup Condition=" '$(SkipTestsOnPlatform)' != 'true' ">
     <Compile Include="**\*.cs" />
@@ -49,7 +49,7 @@
   <ItemGroup>
     <Content Include="$(GeneratorRuntimeConfig)">
       <!-- Rename it to match the Generator application name -->
-      <Link>dotnet-svcutilcore.runtimeconfig.json</Link>
+      <Link>dotnet-svcutil.xmlserializer.runtimeconfig.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -58,7 +58,7 @@
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
   <ItemGroup>
-    <ReferenceFromRuntime Include="dotnet-svcutilcore">
+    <ReferenceFromRuntime Include="dotnet-svcutil.xmlserializer">
       <Private>true</Private>
     </ReferenceFromRuntime>
     <ReferenceFromRuntime Include="xunit.execution.dotnet" />
@@ -80,18 +80,18 @@
     <PropertyGroup>
       <CorrectedOutputPath>$(OutputPath.Replace('/', '\'))</CorrectedOutputPath>
     </PropertyGroup>
-    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutilcore.dll /t:xmlserializer $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
+    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll /t:xmlserializer $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
-    <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true'" 
-         OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll" 
-         References="@(ReferencePath);@(IntermediateAssembly)" 
-         EmitDebugInformation="$(DebugSymbols)"  
-         DebugType="$(DebugType)" 
-         Sources="$(CorrectedOutputPath)$(SerializerName).cs" 
-         TargetType="Library" 
-         ToolExe="$(CscToolExe)" 
-         ToolPath="$(CscToolPath)" 
-         DisabledWarnings="$(NoWarn), 219" 
+    <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true'"
+         OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll"
+         References="@(ReferencePath);@(IntermediateAssembly)"
+         EmitDebugInformation="$(DebugSymbols)"
+         DebugType="$(DebugType)"
+         Sources="$(CorrectedOutputPath)$(SerializerName).cs"
+         TargetType="Library"
+         ToolExe="$(CscToolExe)"
+         ToolPath="$(CscToolPath)"
+         DisabledWarnings="$(NoWarn), 219"
          UseSharedCompilation="true" />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).dll') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).dll"/>
 

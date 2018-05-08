@@ -9,7 +9,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil.Tests
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
 {
     [ServiceContract(ConfigurationName = "ISimpleSvcutilService")]
     public interface ISimpleSvcutilService

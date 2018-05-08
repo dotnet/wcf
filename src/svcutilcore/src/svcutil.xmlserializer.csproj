@@ -2,8 +2,8 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
-    <AssemblyName>dotnet-svcutilcore</AssemblyName>
-    <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil</RootNamespace>
+    <AssemblyName>dotnet-svcutil.xmlserializer</AssemblyName>
+    <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer</RootNamespace>
     <OutputType>Exe</OutputType>
     <TargetExt>.dll</TargetExt>
     <NoWarn>$(NoWarn);1634;1691;649;168;169</NoWarn>

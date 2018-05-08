@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
     using System.Runtime.Serialization;
