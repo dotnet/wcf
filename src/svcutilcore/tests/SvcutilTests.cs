@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil.Tests
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
 {
     public static class SvcutilTests
     {

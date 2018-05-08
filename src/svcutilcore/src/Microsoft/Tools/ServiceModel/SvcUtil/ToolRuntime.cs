@@ -5,7 +5,7 @@
 // DevNote: See how there are no using statements needed here? 
 //          That's part of the plan. Let's keep it that way.
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     internal class ToolRuntime
     {
