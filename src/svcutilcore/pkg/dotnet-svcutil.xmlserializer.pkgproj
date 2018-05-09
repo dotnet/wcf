@@ -2,11 +2,11 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
-    <!-- Skip package validation since the build will fail due to missing entry for package svcutil.xmlserializer in PackageIndex.json -->
+    <!-- Skip package validation since the build will fail due to missing entry for package dotnet-svcutil.xmlserializer in PackageIndex.json -->
     <SkipValidatePackage>true</SkipValidatePackage>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\svcutil.xmlserializer.csproj">
+    <ProjectReference Include="..\src\dotnet-svcutil.xmlserializer.csproj">
       <SupportedFramework>net461;netcoreapp2.0;$(AllXamarinFrameworks)</SupportedFramework>
     </ProjectReference>
   </ItemGroup>
@@ -20,7 +20,7 @@
     <PackageFile Include=".\files\dotnet-svcutil.xmlserializer.runtimeconfig.json">
       <TargetPath>\lib\netstandard2.0\</TargetPath>
     </PackageFile>
-    <PackageFile Include=".\files\svcutil.xmlserializer.targets">
+    <PackageFile Include=".\files\dotnet-svcutil.xmlserializer.targets">
       <TargetPath>build\</TargetPath>
     </PackageFile>
   </ItemGroup>
