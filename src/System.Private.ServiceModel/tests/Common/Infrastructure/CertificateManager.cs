@@ -54,6 +54,12 @@ namespace Infrastructure.Common
                         // Linux
                         s_PlatformSpecificRootStoreLocation = StoreLocation.CurrentUser; 
                     }
+                    catch(CryptographicException)
+                    {
+                        // Linux
+                        s_PlatformSpecificRootStoreLocation = StoreLocation.CurrentUser;
+                    }
+
                     s_PlatformSpecificStoreLocationIsSet = true;
                 }
                 return s_PlatformSpecificRootStoreLocation;
