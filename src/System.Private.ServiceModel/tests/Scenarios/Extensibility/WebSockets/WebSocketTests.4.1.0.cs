@@ -172,7 +172,6 @@ public class WebSocketTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryStreamed()
     {
@@ -269,7 +268,6 @@ public class WebSocketTests : ConditionalWcfTest
     [WcfFact]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextStreamed()
     {
@@ -646,7 +644,6 @@ public class WebSocketTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
     {
@@ -700,7 +697,6 @@ public class WebSocketTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
     {
@@ -756,7 +752,6 @@ public class WebSocketTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryBuffered()
     {
@@ -825,7 +820,6 @@ public class WebSocketTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(526, Framework = FrameworkID.NetNative)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
     {
