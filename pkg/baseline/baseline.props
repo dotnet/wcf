@@ -32,7 +32,6 @@
   <!-- Get the package version if it isn't marked as block stable -->
   <Target Name="GetPackageIdentityIfStable"
           Returns="@(_StablePackageIdentity)">
-    <Message Importance="high" Text="GetPackageIdentityIfStable Id is: '$(Id)' and Package Version is: '$(PackageVersion)'" />
 
     <ItemGroup Condition="'$(BlockStable)' != 'true'">
       <_StablePackageIdentity Include="$(Id)">
