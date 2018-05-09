@@ -18,7 +18,6 @@ public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void IRequestChannel_Https_NetHttpsBinding()
     {

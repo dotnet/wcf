@@ -125,7 +125,6 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
@@ -173,7 +172,6 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     // Asking for ChainTrust only should succeed if the certificate is
     // chain-trusted.
@@ -221,7 +219,6 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     // Asking for ChainTrust only should succeed if the certificate is
     // chain-trusted.

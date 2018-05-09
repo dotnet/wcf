@@ -17,7 +17,6 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(1438, OS = OSID.Windows_7)]
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void IDuplexSessionChannel_Https_NetHttpsBinding()
     {
