@@ -173,7 +173,6 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Fqdn_Address_EchoString()
     {
