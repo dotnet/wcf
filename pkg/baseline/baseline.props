@@ -19,4 +19,24 @@
     <Error Condition="!Exists('$(CoreFxBaseLinePackageProps)')" 
            Text="Error '$(CoreFxBaseLinePackageProps)' does not exist, ensure you have restored packages before building this project" />
   </Target>
+
+  <!--
+    Below targets should moved to packaging.targets in BuildTools but keeping in corefx for convenience right now - (ported from CoreFx to WCF)
+  -->
+
+  <Target Name="BlockStable" Condition="'$(BlockStable)' == 'true'" AfterTargets="CalculatePackageVersion">
+    <!-- DO NOT ship this packages as stable -->
+    <Error Condition="!$(PackageVersion.Contains('-'))" Text="Package $(Id) should not be built stable" />
+  </Target>
+
+  <!-- Get the package version if it isn't marked as block stable -->
+  <Target Name="GetPackageIdentityIfStable"
+          Returns="@(_StablePackageIdentity)">
+
+    <ItemGroup Condition="'$(BlockStable)' != 'true'">
+      <_StablePackageIdentity Include="$(Id)">
+        <Version>$(PackageVersion)</Version>
+      </_StablePackageIdentity>
+    </ItemGroup>
+  </Target>
 </Project>
