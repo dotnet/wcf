@@ -83,6 +83,13 @@
     <IsRestoreRequired ProjectJsons="@(ProjectJsonFiles)" PackagesFolder="$(PackagesDir)">
       <Output TaskParameter="RestoreRequired" PropertyName="RestoreRequired" />
     </IsRestoreRequired>
+
+    <!-- This is to restore the test-runtime project.json up front which contains the latest packages to be tested to avoid download contention within nuget. -->
+    <Exec Command="$(DnuRestoreCommand) @(TestProjectJsons->'&quot;%(Identity)&quot;', ' ')"
+          Condition="'$(RestoreRequired)' == 'true'"
+          StandardOutputImportance="Low"
+          CustomErrorRegularExpression="(^Unable to locate .*)|(^Updating the invalid lock file with .*)"
+          ContinueOnError="ErrorAndContinue" />
     
     <Exec Command="$(DnuRestoreCommand) @(DnuRestoreDir->'&quot;%(Identity)&quot;', ' ')"
           Condition="'$(RestoreRequired)' == 'true'"
