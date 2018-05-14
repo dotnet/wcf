@@ -172,7 +172,6 @@ public partial class HttpsTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(1295, OS = OSID.AnyCentOS | OSID.AnyFedora | OSID.AnyOpenSUSE | OSID.AnyOSX | OSID.AnyRHEL)] // A libcurl built with OpenSSL is required
     [OuterLoop]
     public static void ServerCertificateValidation_EchoString()
     {
@@ -221,7 +220,6 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Server_Accepts_Certificates),
                nameof(SSL_Available))]
-    [Issue(1295, OS = OSID.AnyCentOS | OSID.AnyFedora | OSID.AnyOpenSUSE | OSID.AnyOSX | OSID.AnyRHEL)] // A libcurl built with OpenSSL is required
     [OuterLoop]
     public static void ClientCertificate_EchoString()
     {
