@@ -9,26 +9,26 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>c070e598cc3fc5fc6d8649d60ddf98f9f91b754a</CoreFxCurrentRef>
-    <WCFCurrentRef>c070e598cc3fc5fc6d8649d60ddf98f9f91b754a</WCFCurrentRef>
+    <CoreFxCurrentRef>9f8dfcd5e5193818acd05bdca82d4b044fd767ae</CoreFxCurrentRef>
+    <WCFCurrentRef>9f8dfcd5e5193818acd05bdca82d4b044fd767ae</WCFCurrentRef>
     <StandardCurrentRef>8521bbf3c33ab7e91a7136ac0f687bfd300ad84c</StandardCurrentRef>
     <BuildToolsCurrentRef>ed8ea9cfbe31692bdacc2d110508367da56bbba2</BuildToolsCurrentRef>
-    <CoreClrCurrentRef>c070e598cc3fc5fc6d8649d60ddf98f9f91b754a</CoreClrCurrentRef>
-    <CoreSetupCurrentRef>c070e598cc3fc5fc6d8649d60ddf98f9f91b754a</CoreSetupCurrentRef>
+    <CoreClrCurrentRef>9f8dfcd5e5193818acd05bdca82d4b044fd767ae</CoreClrCurrentRef>
+    <CoreSetupCurrentRef>9f8dfcd5e5193818acd05bdca82d4b044fd767ae</CoreSetupCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>rtm-26510-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>rtm-26508-03</CoreFxExpectedPrerelease>
+    <WCFExpectedPrerelease>rtm-26514-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>rtm-26514-02</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm-26508-03</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
-    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-rtm-26508-03</MicrosoftPrivateCoreFxUAPPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm-26514-02</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-rtm-26514-02</MicrosoftPrivateCoreFxUAPPackageVersion>
 
     <ProjectNTfsExpectedPrerelease>beta-26123-01</ProjectNTfsExpectedPrerelease>
     <ProjectNTfsTestILCExpectedPrerelease>beta-26123-01</ProjectNTfsTestILCExpectedPrerelease>
@@ -38,16 +38,16 @@
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
-    <CoreFxBaseLinePackageVersion>2.2.0-rtm-26508-03</CoreFxBaseLinePackageVersion>
+    <CoreFxBaseLinePackageVersion>2.2.0-rtm-26514-02</CoreFxBaseLinePackageVersion>
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0018</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-rc1-02804-05</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.1.0-rtm-26508-04</CoreClrPackageVersion>
-    <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0-rtm-26508-02</MicrosoftNETCoreDotNetHostPackageVersion>
-    <MicrosoftNETCoreDotNetHostPolicyPackageVersion>2.1.0-rtm-26508-02</MicrosoftNETCoreDotNetHostPolicyPackageVersion>
+    <CoreClrPackageVersion>2.1.0-rtm-26514-02</CoreClrPackageVersion>
+    <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0-rtm-26514-02</MicrosoftNETCoreDotNetHostPackageVersion>
+    <MicrosoftNETCoreDotNetHostPolicyPackageVersion>2.1.0-rtm-26514-02</MicrosoftNETCoreDotNetHostPolicyPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
-    <PlatformPackageVersion>2.1.0-rtm-26508-03</PlatformPackageVersion>
+    <PlatformPackageVersion>2.1.0-rtm-26514-02</PlatformPackageVersion>
   </PropertyGroup>
 
   <!-- Package versions used as toolsets -->
