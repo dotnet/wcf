@@ -56,7 +56,7 @@ namespace WcfService
                // support for MEX 
                return true; 
             }
-             
+
             var digestState = new DigestAuthenticationState(operationContext, GetRealm(ref message));
             if (string.IsNullOrEmpty(digestState.AuthMechanism)) // No authentication requested
             {
@@ -154,12 +154,14 @@ namespace WcfService
             private readonly Dictionary<string, string> _authorizationParameters;
             private readonly string _method;
             private readonly string _realm;
+            private readonly bool _useStrictUsername;
             private string _nonceString;
             private string _password;
             private bool? _authorized;
 
             public DigestAuthenticationState(OperationContext operationContext, string realm)
             {
+                _useStrictUsername = true;
                 _operationContext = operationContext;
                 _realm = realm;
                 _password = null;
@@ -273,16 +275,20 @@ namespace WcfService
             {
                 get
                 {
-                    // On some platforms, the username is sent as realm\\username or realm\username. This should only happen when
-                    // the user account is in a different realm/domain than the server but some implementations of HttpClient
-                    // always send the username prefixed with the realm.
-
                     var username = Parameters[UsernameAuthenticationParameter];
-                    username = username.Replace(@"\\", @"\");
-                    var realmPrefix = _realm + @"\";
-                    if (username.StartsWith(realmPrefix))
+
+                    if (!_useStrictUsername)
                     {
-                        username = username.Substring(realmPrefix.Length);
+                        // On some platforms, the username is sent as realm\\username or realm\username. This should only happen when
+                        // the user account is in a different realm/domain than the server but some implementations of HttpClient
+                        // always send the username prefixed with the realm.
+
+                        username = username.Replace(@"\\", @"\");
+                        var realmPrefix = _realm + @"\";
+                        if (username.StartsWith(realmPrefix))
+                        {
+                            username = username.Substring(realmPrefix.Length);
+                        }
                     }
 
                     return username;
