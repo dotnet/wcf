@@ -212,4 +212,92 @@ public static class Binding_Http_BasicHttpBindingTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void MultiValue_UserAgent_Success()
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        BasicHttpBinding binding = null;
+        string userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; .Net Core WCF Scenario Test Client 1.2.3.4)";
+        string userAgentHeaderName = "User-Agent";
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Dictionary<string, string> requestHeaders;
+            using (new OperationContextScope((IContextChannel)serviceProxy))
+            {
+                HttpRequestMessageProperty httpReqMsgProp = new HttpRequestMessageProperty();
+                httpReqMsgProp.Headers[userAgentHeaderName] = userAgent;
+                OperationContext.Current.OutgoingMessageProperties.Add(HttpRequestMessageProperty.Name, httpReqMsgProp);
+                requestHeaders = serviceProxy.GetRequestHttpHeaders();
+            }
+
+            // *** VALIDATE *** \\
+            bool userAgentHeaderSent = requestHeaders.TryGetValue(userAgentHeaderName, out string userAgentHeader);
+            Assert.True(userAgentHeaderSent, "User-Agent header should have been sent.");
+            Assert.Equal(userAgent, userAgentHeader);
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void Invalid_UserAgent_Failure()
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        BasicHttpBinding binding = null;
+        string userAgent = "(";
+        string userAgentHeaderName = "User-Agent";
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Dictionary<string, string> requestHeaders;
+            using (new OperationContextScope((IContextChannel)serviceProxy))
+            {
+                HttpRequestMessageProperty httpReqMsgProp = new HttpRequestMessageProperty();
+                httpReqMsgProp.Headers[userAgentHeaderName] = userAgent;
+                OperationContext.Current.OutgoingMessageProperties.Add(HttpRequestMessageProperty.Name, httpReqMsgProp);
+                Assert.Throws<FormatException>(() =>
+                {
+                    requestHeaders = serviceProxy.GetRequestHttpHeaders();
+                });
+            }
+
+            // *** VALIDATE *** \\
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }

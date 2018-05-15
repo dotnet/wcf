@@ -1264,7 +1264,7 @@ namespace System.ServiceModel.Channels
                             }
                             else if (string.Compare(name, "user-agent", StringComparison.OrdinalIgnoreCase) == 0)
                             {
-                                _httpRequestMessage.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse(value));
+                                _httpRequestMessage.Headers.Add(name, value);
                             }
                             else if (string.Compare(name, "if-modified-since", StringComparison.OrdinalIgnoreCase) == 0)
                             {
