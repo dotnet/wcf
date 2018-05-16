@@ -40,6 +40,8 @@ install_root_cert()
         "darwin")
             # OS X SecureTransport does a direct install into the cert store without requiring copying into a location
             $__update_os_certbundle_exec -v add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ${__cafile} 
+            # The Helix test environment on OS X auto-locks the user keychain which breaks installing the client cert so we unlock the keychain
+            $__update_os_certbundle_exec unlock-keychain -p ""
             ;;
         "centos" | "rhel" | "fedora")
             cp -f "${__cafile}" /etc/pki/ca-trust/source/anchors

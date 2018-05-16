@@ -36,6 +36,13 @@ namespace Infrastructure.Common
         // 
         // In other words, on Windows, we can bypass the modal dialog box, but only if we install to StoreName.Root : StoreLocation.LocalMachine
         // To do this though means that we must run certificate-based tests elevated
+        //
+        // For OSX:
+        // The users certificate store must be unlocked to save the root certificate in StoreLocation.CurrentUser. On our automated
+        // test runs, this isn't the case. We have a pre-test execution installation script which downloads and installs the root
+        // certificate into the machine certificate store. Forcing the root store location to StoreLocation.LocalMachine will mean
+        // the certificate installation code will open the store ReadOnly and discover the root certificate is already installed
+        // so will become a no-op.
         internal static StoreLocation PlatformSpecificRootStoreLocation
         {
             get
@@ -58,6 +65,11 @@ namespace Infrastructure.Common
                     {
                         // Linux
                         s_PlatformSpecificRootStoreLocation = StoreLocation.CurrentUser;
+                    }
+
+                    if (OSID.AnyOSX.MatchesCurrent())
+                    {
+                        s_PlatformSpecificRootStoreLocation = StoreLocation.LocalMachine;
                     }
 
                     s_PlatformSpecificStoreLocationIsSet = true;
