@@ -80,65 +80,23 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
         internal static class Switches
         {
-            public static readonly CommandSwitch Async = new CommandSwitch(Options.Cmd.Async, Abbr.Async, SwitchType.Flag);
             public static readonly CommandSwitch Directory = new CommandSwitch(Options.Cmd.Directory, Abbr.Directory, SwitchType.SingletonValue);
-            public static readonly CommandSwitch Target = new CommandSwitch(Options.Cmd.Target, Abbr.Target, SwitchType.SingletonValue);
             public static readonly CommandSwitch Help = new CommandSwitch(Options.Cmd.Help, Abbr.Help, SwitchType.Flag);
             public static readonly CommandSwitch NoLogo = new CommandSwitch(Options.Cmd.NoLogo, Options.Cmd.NoLogo, SwitchType.Flag);
-            public static readonly CommandSwitch NoConfig = new CommandSwitch(Options.Cmd.NoConfig, Options.Cmd.NoConfig, SwitchType.Flag);
-            public static readonly CommandSwitch MergeConfig = new CommandSwitch(Options.Cmd.MergeConfig, Options.Cmd.MergeConfig, SwitchType.Flag);
             public static readonly CommandSwitch Out = new CommandSwitch(Options.Cmd.Out, Abbr.Out, SwitchType.SingletonValue);
-            public static readonly CommandSwitch Language = new CommandSwitch(Options.Cmd.Language, Abbr.Language, SwitchType.SingletonValue);
-            public static readonly CommandSwitch Config = new CommandSwitch(Options.Cmd.Config, Options.Cmd.Config, SwitchType.SingletonValue);
-            public static readonly CommandSwitch ToolConfig = new CommandSwitch(Options.Cmd.ToolConfig, Options.Cmd.ToolConfig, SwitchType.SingletonValue);
             public static readonly CommandSwitch Reference = new CommandSwitch(Options.Cmd.Reference, Abbr.Reference, SwitchType.ValueList);
-            public static readonly CommandSwitch ServiceName = new CommandSwitch(Options.Cmd.ServiceName, Cmd.ServiceName, SwitchType.SingletonValue);
             public static readonly CommandSwitch Nostdlib = new CommandSwitch(Options.Cmd.Nostdlib, Options.Cmd.Nostdlib, SwitchType.Flag);
             public static readonly CommandSwitch ExcludeType = new CommandSwitch(Options.Cmd.ExcludeType, Abbr.ExcludeType, SwitchType.ValueList);
-            public static readonly CommandSwitch CollectionType = new CommandSwitch(Options.Cmd.CollectionType, Abbr.CollectionType, SwitchType.ValueList);
-            public static readonly CommandSwitch Serializable = new CommandSwitch(Options.Cmd.Serializable, Abbr.Serializable, SwitchType.Flag);
-            public static readonly CommandSwitch Serializer = new CommandSwitch(Options.Cmd.Serializer, Abbr.Serializer, SwitchType.SingletonValue);
-            public static readonly CommandSwitch Namespace = new CommandSwitch(Options.Cmd.Namespace, Abbr.Namespace, SwitchType.ValueList);
-            public static readonly CommandSwitch Internal = new CommandSwitch(Options.Cmd.Internal, Abbr.Internal, SwitchType.Flag);
-            public static readonly CommandSwitch MessageContract = new CommandSwitch(Options.Cmd.MessageContract, Abbr.MessageContract, SwitchType.Flag);
-            public static readonly CommandSwitch ImportXmlTypes = new CommandSwitch(Options.Cmd.ImportXmlTypes, Abbr.ImportXmlTypes, SwitchType.Flag);
-            public static readonly CommandSwitch Validate = new CommandSwitch(Options.Cmd.Validate, Abbr.Validate, SwitchType.Flag);
 #if DEBUG
             public static readonly CommandSwitch Debug = new CommandSwitch(Options.Cmd.Debug, Options.Cmd.Debug, SwitchType.Flag);
 #endif
-            public static readonly CommandSwitch EnableDataBinding = new CommandSwitch(Options.Cmd.EnableDataBinding, Abbr.EnableDataBinding, SwitchType.Flag);
-            public static readonly CommandSwitch DataContractOnly = new CommandSwitch(Options.Cmd.DataContractOnly, Abbr.DataContractOnly, SwitchType.Flag);
-            public static readonly CommandSwitch TargetClientVersion = new CommandSwitch(Options.Cmd.TargetClientVersion, Abbr.TargetClientVersion, SwitchType.SingletonValue);
-            public static readonly CommandSwitch UseSerializerForFaults = new CommandSwitch(Options.Cmd.UseSerializerForFaults, Abbr.UseSerializerForFaults, SwitchType.Flag);
-            public static readonly CommandSwitch Wrapped = new CommandSwitch(Options.Cmd.Wrapped, Abbr.Wrapped, SwitchType.Flag);
-            public static readonly CommandSwitch ServiceContract = new CommandSwitch(Options.Cmd.ServiceContract, Abbr.ServiceContract, SwitchType.Flag);
-            public static readonly CommandSwitch SyncOnly = new CommandSwitch(Options.Cmd.SyncOnly, Options.Cmd.SyncOnly, SwitchType.Flag);
-
-            public static readonly CommandSwitch[] All = new CommandSwitch[] { Async, Directory, Target, Help, NoLogo, NoConfig, MergeConfig, Out, Language, Config,
-                                                                        ToolConfig, Reference, ServiceName, Nostdlib, ExcludeType, CollectionType, Serializable,
-                                                                        Serializer, Namespace, Internal, MessageContract, ImportXmlTypes, Validate, 
+            public static readonly CommandSwitch[] All = new CommandSwitch[] { Directory, Help, NoLogo, Out,
+                                                                        Nostdlib, ExcludeType,
 #if DEBUG
                                                                         Debug,
 #endif
-                                                                        EnableDataBinding, DataContractOnly, TargetClientVersion, UseSerializerForFaults, Wrapped,
-                                                                        ServiceContract, SyncOnly };
+                                                                        };
         }
 
-        private static readonly string s_supportedSerializers = string.Join(", ", System.Enum.GetNames(typeof(SerializerMode)));
-        private static readonly string s_supportedTargetClientVersions = string.Join(", ", System.Enum.GetNames(typeof(TargetClientVersionMode)));
-    }
-
-    internal enum SerializerMode
-    {
-        Default,
-        Auto,
-        DataContractSerializer,
-        XmlSerializer
-    }
-
-    internal enum TargetClientVersionMode
-    {
-        Version30,
-        Version35
     }
 }
