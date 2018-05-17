@@ -29,7 +29,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            binding.SendTimeout = TimeSpan.FromMilliseconds(20000);
+            binding.SendTimeout = TimeSpan.FromMilliseconds(40000);
             endpointAddress = new EndpointAddress(nonExistentHost);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
