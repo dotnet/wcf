@@ -132,9 +132,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             HelpGenerator.WriteCommonOptionsHelp();
             ToolConsole.WriteLine();
             ToolConsole.WriteLine();
-            HelpGenerator.WriteCodeGenerationHelp();
-            ToolConsole.WriteLine();
-            ToolConsole.WriteLine();
             HelpGenerator.WriteXmlSerializerTypeGenerationHelp();
             ToolConsole.WriteLine();
             ToolConsole.WriteLine();
@@ -160,7 +157,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpXmlSerializerTypeGenerationCategory));
 
                 helpCategory.Description = SR.Format(SR.HelpXmlSerializerTypeGenerationDescription, ThisAssembly.Title);
-                helpCategory.Syntax = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntax, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.XmlSerializer, SR.Format(SR.HelpInputAssemblyPath));
+                helpCategory.Syntax = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntax, ThisAssembly.Title, SR.Format(SR.HelpInputAssemblyPath));
 
                 helpCategory.Inputs = new ArgumentInfo[1];
 
@@ -186,9 +183,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpCommonOptionsCategory));
                 var options = new List<ArgumentInfo>();
                 ArgumentInfo option;
-                option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Target, SR.Format(SR.ParametersOutputType));
-                option.HelpText = SR.Format(SR.HelpTargetOutputType, Options.Targets.Code, Options.Targets.Metadata, Options.Targets.XmlSerializer);
-                options.Add(option);
+                //option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Target, SR.Format(SR.ParametersOutputType));
+                //option.HelpText = SR.Format(SR.HelpTargetOutputType, Options.Targets.Code, Options.Targets.Metadata, Options.Targets.XmlSerializer);
+                //options.Add(option);
 
                 option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Directory, SR.Format(SR.ParametersDirectory));
                 option.HelpText = SR.Format(SR.HelpDirectory, Options.Abbr.Directory);
@@ -254,7 +251,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpExamples));
                 helpCategory.WriteHelp();
 
-                WriteExample(SR.Format(SR.HelpExamples18), SR.Format(SR.HelpExamples19));
+                WriteExample(SR.Format(SR.HelpExamples1), SR.Format(SR.HelpExamples2));
             }
 
             private static void WriteExample(string syntax, string explanation)

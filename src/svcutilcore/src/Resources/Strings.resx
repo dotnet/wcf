@@ -141,58 +141,10 @@
   <data name="HelpExamples" xml:space="preserve">
     <value>-= EXAMPLES =-</value>
   </data>
+  <data name="HelpExamples1" xml:space="preserve">
+    <value>svcutil myContractLibrary.exe</value>
+  </data>
   <data name="HelpExamples2" xml:space="preserve">
-    <value>svcutil http://service/metadataEndpoint</value>
-  </data>
-  <data name="HelpExamples3" xml:space="preserve">
-    <value>- Generate client code from a running service or online metadata documents.</value>
-  </data>
-  <data name="HelpExamples4" xml:space="preserve">
-    <value>svcutil *.wsdl *.xsd /language:C#</value>
-  </data>
-  <data name="HelpExamples5" xml:space="preserve">
-    <value>- Generate client code from local metadata documents.</value>
-  </data>
-  <data name="HelpExamples6" xml:space="preserve">
-    <value>svcutil /dconly *.xsd /language:VB</value>
-  </data>
-  <data name="HelpExamples7" xml:space="preserve">
-    <value>- Generate Data Contract types in VisualBasic from local schema documents.</value>
-  </data>
-  <data name="HelpExamples8" xml:space="preserve">
-    <value>svcutil /t:metadata http://service/metadataEndpoint</value>
-  </data>
-  <data name="HelpExamples9" xml:space="preserve">
-    <value>- Download metadata documents from running services</value>
-  </data>
-  <data name="HelpExamples10" xml:space="preserve">
-    <value>svcutil myAssembly.dll</value>
-  </data>
-  <data name="HelpExamples11" xml:space="preserve">
-    <value>- Generate metadata documents for Service Contracts and associated types in an assembly</value>
-  </data>
-  <data name="HelpExamples12" xml:space="preserve">
-    <value>svcutil myServiceHost.exe /serviceName:myServiceName </value>
-  </data>
-  <data name="HelpExamples13" xml:space="preserve">
-    <value>- Generate metadata documents for a service, and all associated Service Contracts and data types in an assembly</value>
-  </data>
-  <data name="HelpExamples14" xml:space="preserve">
-    <value>svcutil myServiceHost.exe /dconly </value>
-  </data>
-  <data name="HelpExamples15" xml:space="preserve">
-    <value>- Generate metadata documents for data types in an assembly</value>
-  </data>
-  <data name="HelpExamples16" xml:space="preserve">
-    <value>svcutil /validate /serviceName:myServiceName myServiceHost.exe</value>
-  </data>
-  <data name="HelpExamples17" xml:space="preserve">
-    <value>- Verify service hosting</value>
-  </data>
-  <data name="HelpExamples18" xml:space="preserve">
-    <value>svcutil /t:xmlserializer myContractLibrary.exe</value>
-  </data>
-  <data name="HelpExamples19" xml:space="preserve">
     <value>- Generate serialization types for XmlSerializer types used by any Service Contracts in the assembly</value>
   </data>
   <data name="HelpCommonOptionsCategory" xml:space="preserve">
@@ -250,7 +202,7 @@
     <value>Description: {0} can pre-generate C# serialization code that is required for types that can be serialized using the XmlSerializer. {0} will only generate code for types used by Service Contracts found in the input assemblies.</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntax" xml:space="preserve">
-    <value>Syntax: {0} /{1}:{2}  {3}*</value>
+    <value>Syntax: {0} {1}*</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput1" xml:space="preserve">
     <value>The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</value>
@@ -259,7 +211,7 @@
     <value>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: /{0})</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput3" xml:space="preserve">
-    <value>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: /{1})</value>
+    <value>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: /{0})</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput4" xml:space="preserve">
     <value>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: /{0})</value>
