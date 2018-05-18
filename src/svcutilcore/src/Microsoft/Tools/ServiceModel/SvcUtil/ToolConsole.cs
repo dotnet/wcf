@@ -158,6 +158,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             HelpGenerator.WriteCommonOptionsHelp();
             ToolConsole.WriteLine();
             ToolConsole.WriteLine();
+            HelpGenerator.WriteCodeGenerationHelp();
+            ToolConsole.WriteLine();
+            ToolConsole.WriteLine();
             HelpGenerator.WriteXmlSerializerTypeGenerationHelp();
             ToolConsole.WriteLine();
             ToolConsole.WriteLine();
@@ -226,6 +229,96 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 options.Add(option);
 
                 helpCategory.Options = options.ToArray();
+                helpCategory.WriteHelp();
+            }
+
+            internal static void WriteCodeGenerationHelp()
+            {
+                HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpCodeGenerationCategory));
+
+                helpCategory.Description = SR.Format(SR.HelpCodeGenerationDescription, ThisAssembly.Title);
+                helpCategory.Syntax = SR.Format(SR.HelpCodeGenerationSyntax, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.Code,
+                    SR.Format(SR.HelpInputMetadataDocumentPath), SR.Format(SR.HelpInputUrl), SR.Format(SR.HelpInputEpr));
+
+                helpCategory.Inputs = new ArgumentInfo[3];
+
+                helpCategory.Inputs[0] = ArgumentInfo.CreateInputHelpInfo(SR.Format(SR.HelpInputMetadataDocumentPath));
+                helpCategory.Inputs[0].HelpText = SR.Format(SR.HelpCodeGenerationSyntaxInput1);
+
+                helpCategory.Inputs[1] = ArgumentInfo.CreateInputHelpInfo(SR.Format(SR.HelpInputUrl));
+                helpCategory.Inputs[1].HelpText = SR.Format(SR.HelpCodeGenerationSyntaxInput2);
+
+                helpCategory.Inputs[2] = ArgumentInfo.CreateInputHelpInfo(SR.Format(SR.HelpInputEpr));
+                helpCategory.Inputs[2].HelpText = SR.Format(SR.HelpCodeGenerationSyntaxInput3);
+
+                helpCategory.Options = new ArgumentInfo[26];
+
+                helpCategory.Options[0] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Out, SR.Format(SR.ParametersOut));
+                helpCategory.Options[0].HelpText = SR.Format(SR.HelpOut, Options.Abbr.Out);
+
+                helpCategory.Options[1] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Config, SR.Format(SR.ParametersConfig));
+                helpCategory.Options[1].HelpText = SR.Format(SR.HelpConfig);
+
+                helpCategory.Options[2] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.MergeConfig);
+                helpCategory.Options[2].HelpText = SR.Format(SR.HelpMergeConfig);
+
+                helpCategory.Options[3] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.NoConfig);
+                helpCategory.Options[3].HelpText = SR.Format(SR.HelpNoconfig);
+
+                helpCategory.Options[4] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.DataContractOnly);
+                helpCategory.Options[4].HelpText = SR.Format(SR.HelpCodeGenerationDataContractOnly, Options.Abbr.DataContractOnly);
+
+                helpCategory.Options[5] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Language, SR.Format(SR.ParametersLanguage));
+                helpCategory.Options[5].BeginGroup = true;
+                helpCategory.Options[5].HelpText = SR.Format(SR.HelpLanguage, Options.Abbr.Language);
+
+                helpCategory.Options[6] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Namespace, SR.Format(SR.ParametersNamespace));
+                helpCategory.Options[6].HelpText = SR.Format(SR.HelpNamespace, Options.Abbr.Namespace);
+
+                helpCategory.Options[7] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.MessageContract);
+                helpCategory.Options[7].BeginGroup = true;
+                helpCategory.Options[7].HelpText = SR.Format(SR.HelpMessageContract, Options.Abbr.MessageContract);
+
+                helpCategory.Options[8] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.EnableDataBinding);
+                helpCategory.Options[8].HelpText = SR.Format(SR.HelpEnableDataBinding, Options.Abbr.EnableDataBinding);
+
+                helpCategory.Options[9] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Serializable);
+                helpCategory.Options[9].HelpText = SR.Format(SR.HelpSerializable, Options.Abbr.Serializable);
+
+                helpCategory.Options[10] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Async);
+                helpCategory.Options[10].HelpText = SR.Format(SR.HelpAsync, Options.Abbr.Async);
+
+                helpCategory.Options[11] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Internal);
+                helpCategory.Options[11].HelpText = SR.Format(SR.HelpInternal, Options.Abbr.Internal);
+
+                helpCategory.Options[12] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Reference, SR.Format(SR.ParametersReference));
+                helpCategory.Options[12].BeginGroup = true;
+                helpCategory.Options[12].HelpText = SR.Format(SR.HelpReferenceCodeGeneration, Options.Abbr.Reference);
+
+                helpCategory.Options[13] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.CollectionType, SR.Format(SR.ParametersCollectionType));
+                helpCategory.Options[13].HelpText = SR.Format(SR.HelpCollectionType, Options.Abbr.CollectionType);
+
+                helpCategory.Options[14] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ExcludeType, SR.Format(SR.ParametersExcludeType));
+                helpCategory.Options[14].HelpText = SR.Format(SR.HelpExcludeTypeCodeGeneration, Options.Abbr.ExcludeType);
+
+                helpCategory.Options[15] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Nostdlib);
+                helpCategory.Options[15].HelpText = SR.Format(SR.HelpNostdlib);
+
+                helpCategory.Options[19] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.ImportXmlTypes);
+                helpCategory.Options[19].HelpText = SR.Format(SR.HelpImportXmlType, Options.Abbr.ImportXmlTypes);
+
+                helpCategory.Options[20] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.UseSerializerForFaults);
+                helpCategory.Options[20].HelpText = SR.Format(SR.HelpUseSerializerForFaults, Options.Abbr.UseSerializerForFaults);
+
+                helpCategory.Options[23] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Wrapped);
+                helpCategory.Options[23].HelpText = SR.Format(SR.HelpWrapped);
+
+                helpCategory.Options[24] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.ServiceContract);
+                helpCategory.Options[24].HelpText = SR.Format(SR.HelpCodeGenerationServiceContract, Options.Abbr.ServiceContract);
+
+                helpCategory.Options[25] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.SyncOnly);
+                helpCategory.Options[25].HelpText = SR.Format(SR.HelpSyncOnly);
+
                 helpCategory.WriteHelp();
             }
 

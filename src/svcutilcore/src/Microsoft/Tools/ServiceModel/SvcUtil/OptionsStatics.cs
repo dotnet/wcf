@@ -87,11 +87,12 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             public static readonly CommandSwitch Reference = new CommandSwitch(Options.Cmd.Reference, Abbr.Reference, SwitchType.ValueList);
             public static readonly CommandSwitch Nostdlib = new CommandSwitch(Options.Cmd.Nostdlib, Options.Cmd.Nostdlib, SwitchType.Flag);
             public static readonly CommandSwitch ExcludeType = new CommandSwitch(Options.Cmd.ExcludeType, Abbr.ExcludeType, SwitchType.ValueList);
+            public static readonly CommandSwitch Namespace = new CommandSwitch(Options.Cmd.Namespace, Abbr.Namespace, SwitchType.ValueList);
 #if DEBUG
             public static readonly CommandSwitch Debug = new CommandSwitch(Options.Cmd.Debug, Options.Cmd.Debug, SwitchType.Flag);
 #endif
             public static readonly CommandSwitch[] All = new CommandSwitch[] { Directory, Help, NoLogo, Out,
-                                                                        Nostdlib, ExcludeType,
+                                                                        Nostdlib, ExcludeType, Namespace,
 #if DEBUG
                                                                         Debug,
 #endif

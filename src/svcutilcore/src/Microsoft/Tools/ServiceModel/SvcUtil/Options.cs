@@ -32,6 +32,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         private List<Assembly> _referencedAssemblies;
         private Dictionary<string, Type> _excludedTypes;
         private bool _nostdlib;
+        private Dictionary<string, string> _namespaceMappings;
 
         internal string OutputFileArg { get { return _outputFileArg; } }
         internal string DirectoryArg { get { return _directoryArg; } }
@@ -41,6 +42,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         internal List<Type> ReferencedTypes { get { return _referencedTypes; } }
         internal List<Assembly> ReferencedAssemblies { get { return _referencedAssemblies; } }
         internal bool Nostdlib { get { return _nostdlib; } }
+        internal Dictionary<string, string> NamespaceMappings { get { return _namespaceMappings; } }
 
         internal string ModeSettingOption { get { return _modeSettingOption; } }
         internal string ModeSettingValue { get { return _modeSettingValue; } }
@@ -144,6 +146,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 ProcessDirectoryOption();
                 ProcessOutputOption();
                 ReadInputArguments();
+                ParseNamespaceMappings();
                 ParseReferenceAssemblies();
             }
 
@@ -242,6 +245,35 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             private void ReadInputArguments()
             {
                 _parent._inputParameters = new List<string>(_arguments.GetArguments(String.Empty));
+            }
+
+            private void ParseNamespaceMappings()
+            {
+                IList<string> namespaceMappingsArgs = _arguments.GetArguments(Options.Cmd.Namespace);
+                _parent._namespaceMappings = new Dictionary<string, string>(namespaceMappingsArgs.Count);
+
+                foreach (string namespaceMapping in namespaceMappingsArgs)
+                {
+                    string[] parts = namespaceMapping.Split(',');
+
+                    if (parts == null || parts.Length != 2)
+                        throw new ToolOptionException(SR.Format(SR.ErrInvalidNamespaceArgument, Options.Cmd.Namespace, namespaceMapping));
+
+                    string targetNamespace = parts[0].Trim();
+                    string clrNamespace = parts[1].Trim();
+
+                    if (_parent._namespaceMappings.ContainsKey(targetNamespace))
+                    {
+                        string prevClrNamespace = _parent._namespaceMappings[targetNamespace];
+                        if (prevClrNamespace != clrNamespace)
+                            throw new ToolOptionException(SR.Format(SR.ErrCannotSpecifyMultipleMappingsForNamespace,
+                                Options.Cmd.Namespace, targetNamespace, prevClrNamespace, clrNamespace));
+                    }
+                    else
+                    {
+                        _parent._namespaceMappings.Add(targetNamespace, clrNamespace);
+                    }
+                }
             }
 
             private void ParseReferenceAssemblies()
