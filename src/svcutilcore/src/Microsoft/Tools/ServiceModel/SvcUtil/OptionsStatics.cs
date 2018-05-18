@@ -8,36 +8,17 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
     {
         internal static class Cmd
         {
-            internal const string Async = "async";
             internal const string Target = "target";
             internal const string Help = "help";
             internal const string NoLogo = "noLogo";
             internal const string Out = "out";
             internal const string Directory = "directory";
             internal const string Language = "language";
-            internal const string Config = "config";
-            internal const string NoConfig = "noConfig";
-            internal const string MergeConfig = "mergeConfig";
-            internal const string ToolConfig = "svcutilConfig";
             internal const string Reference = "reference";
-            internal const string ServiceName = "serviceName";
             internal const string Nostdlib = "noStdLib";
             internal const string ExcludeType = "excludeType";
             internal const string CollectionType = "collectionType";
-            internal const string Serializable = "serializable";
-            internal const string Serializer = "serializer";
             internal const string Namespace = "namespace";
-            internal const string Internal = "internal";
-            internal const string MessageContract = "messageContract";
-            internal const string ImportXmlTypes = "importXmlTypes";
-            internal const string Validate = "validate";
-            internal const string EnableDataBinding = "enableDataBinding";
-            internal const string DataContractOnly = "dataContractOnly";
-            internal const string TargetClientVersion = "targetClientVersion";
-            internal const string UseSerializerForFaults = "useSerializerForFaults";
-            internal const string Wrapped = "wrapped";
-            internal const string ServiceContract = "serviceContract";
-            internal const string SyncOnly = "syncOnly";
 #if DEBUG
             internal const string Debug = "debug";
 #endif
@@ -45,28 +26,15 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
         internal static class Abbr
         {
-            internal const string Async = "a";
             internal const string Target = "t";
             internal const string Help = "?";
             internal const string Out = "o";
             internal const string Directory = "d";
-            internal const string Language = "l";
             internal const string Reference = "r";
             internal const string ExcludeType = "et";
             internal const string CollectionType = "ct";
-            internal const string Serializable = "s";
-            internal const string Serializer = "ser";
-            internal const string Internal = "i";
-            internal const string MessageContract = "mc";
             internal const string Namespace = "n";
-            internal const string ImportXmlTypes = "ixt";
             internal const string Validate = "v";
-            internal const string EnableDataBinding = "edb";
-            internal const string DataContractOnly = "dconly";
-            internal const string TargetClientVersion = "tcv";
-            internal const string UseSerializerForFaults = "fault";
-            internal const string Wrapped = "wr";
-            internal const string ServiceContract = "sc";
         }
 
         internal static class Targets

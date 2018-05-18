@@ -30,7 +30,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             {
                 InputModule inputModule = InputModule.LoadInputs(_options);
 
-                Tool.Assert(_options.GetToolMode().HasValue, System.SR.Format(System.SR.AmbiguousToolUseage, Options.Cmd.Target, Options.Cmd.Validate));
+                Tool.Assert(_options.GetToolMode().HasValue, System.SR.Format(System.SR.AmbiguousToolUseage));
                 return ExecuteToolMode(inputModule);
             }
         }

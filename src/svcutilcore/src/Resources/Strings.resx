@@ -259,7 +259,7 @@
     <value>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: /{0})</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput3" xml:space="preserve">
-    <value>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the /{0} option. (Short Form: /{1})</value>
+    <value>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: /{1})</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput4" xml:space="preserve">
     <value>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: /{0})</value>
@@ -294,12 +294,6 @@
   <data name="ParametersOut" xml:space="preserve">
     <value>&lt;file&gt;</value>
   </data>
-  <data name="ParametersToolConfig" xml:space="preserve">
-    <value>&lt;configFile&gt;</value>
-  </data>
-  <data name="ParametersConfig" xml:space="preserve">
-    <value>&lt;configFile&gt;</value>
-  </data>
   <data name="ParametersNamespace" xml:space="preserve">
     <value>&lt;string,string&gt;</value>
   </data>
@@ -314,9 +308,6 @@
   </data>
   <data name="ParametersExcludeType" xml:space="preserve">
     <value>&lt;type&gt;</value>
-  </data>
-  <data name="ParametersServiceName" xml:space="preserve">
-    <value>&lt;serviceConfigName&gt;</value>
   </data>
   <data name="ParametersCollectionType" xml:space="preserve">
     <value>&lt;type&gt;</value>
@@ -335,36 +326,6 @@
   </data>
   <data name="HelpOut" xml:space="preserve">
     <value> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpConfig" xml:space="preserve">
-    <value>The filename for the generated config file. Default: output.config</value>
-  </data>
-  <data name="HelpMergeConfig" xml:space="preserve">
-    <value>Merge the generated config into an existing file instead of overwriting the existing file.   </value>
-  </data>
-  <data name="HelpNoconfig" xml:space="preserve">
-    <value>Do not generate config</value>
-  </data>
-  <data name="HelpToolConfig" xml:space="preserve">
-    <value>Custom configuration file to use in place of the app config file. This can be used to register system.serviceModel extensions without altering the tool's config file.</value>
-  </data>
-  <data name="HelpValidate" xml:space="preserve">
-    <value>Validate a service implementation. To validate a service, you must use the /{0} option to indicate the service you would like to validate. If this option is used, an executable assembly with an associated config file must be passed as input. (Short Form: /{1})</value>
-  </data>
-  <data name="HelpServiceNameExport" xml:space="preserve">
-    <value>The config name of a service to export. If this option is used, an executable assembly with an associated config file must be passed as input. Svcutil will search through all associated config files for the service configuration. If the config files contain any extension types, the assemblies containing these types must either be in the GAC or explicitly provided using the /{0} option.</value>
-  </data>
-  <data name="HelpServiceNameValidate" xml:space="preserve">
-    <value>The config name of a service to validate. To validate a service this option must be provided. Svcutil will search through the associated config files of all input assemblies for the service configuration. If the associated configuration file contain any extension types, the assemblies containing these types must either be in the GAC or explicitly provided using the /{0} option.</value>
-  </data>
-  <data name="HelpInternal" xml:space="preserve">
-    <value>Generate classes that are marked as internal. Default: generate public classes. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpAsync" xml:space="preserve">
-    <value>Generate both synchronous and begin/end asynchronous method signatures. Default: generate synchronous and task-based asynchronous method signatures. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpSyncOnly" xml:space="preserve">
-    <value>Generate only synchronous method signature. Default: generate synchronous and task-based asynchronous method signatures.</value>
   </data>
   <data name="HelpReferenceCodeGeneration" xml:space="preserve">
     <value>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: /{0})</value>
@@ -387,47 +348,11 @@
   <data name="HelpCollectionType" xml:space="preserve">
     <value>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: /{0})</value>
   </data>
-  <data name="HelpSerializer" xml:space="preserve">
-    <value>This option specifies which serializer to use when generating types for operations. This option cannot be used in conjunction with the /{1} option. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpAutoSerializer" xml:space="preserve">
-    <value>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpXmlSerializer" xml:space="preserve">
-    <value>Generate data types that use the XmlSerializer for serialization and deserialization</value>
-  </data>
-  <data name="HelpDataContractSerializer" xml:space="preserve">
-    <value>Generate data types that use the Data Contract Serializer for serialization and deserialization</value>
-  </data>
-  <data name="HelpImportXmlType" xml:space="preserve">
-    <value>Configure the Data Contract serializer to import non-Data Contract types as IXmlSerializable types.</value>
-  </data>
-  <data name="HelpUseSerializerForFaults" xml:space="preserve">
-    <value>This option specifies whether the serializer specified in the 'serializer' switch is used for fault contract types. DataContractSerializer is used for faults if this switch is not specified. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpSerializable" xml:space="preserve">
-    <value>Generate classes marked with the Serializable Attribute. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpMessageContract" xml:space="preserve">
-    <value>Generate Message Contract types. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpEnableDataBinding" xml:space="preserve">
-    <value>Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: /{0})</value>
-  </data>
   <data name="HelpTargetOutputType" xml:space="preserve">
     <value>The target output for the tool: {0}, {1} or {2}.</value>
   </data>
-  <data name="HelpLanguage" xml:space="preserve">
-    <value>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: /{0})</value>
-  </data>
   <data name="HelpNamespace" xml:space="preserve">
     <value>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpDataContractOnly" xml:space="preserve">
-    <value>Operate on Data Contract types only. Service Contracts will not be processed. (Short Form: /{0})</value>
-  </data>
-  <data name="HelpCodeGenerationDataContractOnly" xml:space="preserve">
-    <value>Generate code for Data Contract types only. Service Contract types will not be generated. (Short Form: /{0})</value>
   </data>
   <data name="HelpHelp" xml:space="preserve">
     <value>Display command syntax and options for the tool. (Short Form: /{0})</value>
@@ -478,7 +403,7 @@
     <value>An error occurred in the tool.</value>
   </data>
   <data name="AmbiguousToolUseage" xml:space="preserve">
-    <value>The intended output for the tool could not be inferred from the inputs and the options. Please use the /{0} or /{1} option to clarify.</value>
+    <value>The intended output for the tool could not be inferred from the inputs and the options.</value>
   </data>
   <data name="ErrOptionModeConflict" xml:space="preserve">
     <value>The /{1} option cannot be used with the /{0} option because they imply different output types.</value>
@@ -597,18 +522,6 @@
   <data name="ErrNoFilesFound" xml:space="preserve">
     <value>The input path '{0}' doesn't appear to refer to any existing files</value>
   </data>
-  <data name="ErrInputSchemaParseError" xml:space="preserve">
-    <value>XML Schema Parsing Error while reading: '{0}' verify that the XML is both well-formed and valid.</value>
-  </data>
-  <data name="ErrInputWsdlParseError" xml:space="preserve">
-    <value>WSDL Parsing Error while reading: '{0}' verify that the XML is both well-formed and valid.</value>
-  </data>
-  <data name="ErrInputPolicyParseError" xml:space="preserve">
-    <value>WS-Policy Parsing Error while reading: '{0}' verify that the XML is both well-formed and valid.</value>
-  </data>
-  <data name="ErrInputEPRFileParseError" xml:space="preserve">
-    <value>Cannot read Endpoint Reference from: '{0}' verify that the XML is both well-formed and valid.</value>
-  </data>
   <data name="ErrInputConflictsWithOption" xml:space="preserve">
     <value>The input read from '{1}' cannot be used with the /{0} option because they imply different modes of tool operation.</value>
   </data>
@@ -621,95 +534,14 @@
   <data name="ErrConflictingInputs" xml:space="preserve">
     <value>The '{0}' input argument conflicts with '{1}' because they imply different modes of tool operation</value>
   </data>
-  <data name="WrnWSMExFailed" xml:space="preserve">
-    <value>WS-Metadata Exchange Error\r\n    URI: {0}</value>
-  </data>
-  <data name="WrnHttpGetFailed" xml:space="preserve">
-    <value>HTTP GET Error\r\n    URI: {0}</value>
-  </data>
-  <data name="ErrUnableToConnectToUri" xml:space="preserve">
-    <value>Cannot obtain Metadata from the URI: {0} \r\n Check the URI and try again.{1}</value>
-  </data>
-  <data name="ErrUnableToRetrieveMetadataFromUri" xml:space="preserve">
-    <value>Cannot obtain Metadata from {0} \r\n\r\n{1}</value>
-  </data>
-  <data name="EnableMetadataHelpMessage" xml:space="preserve">
-    <value>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</value>
-  </data>
-  <data name="ErrCannotCreateAMetadataExchangeClient" xml:space="preserve">
-    <value>Cannot obtain Metadata from {0}.  The URI scheme is not supported by default.  Add a client endpoint in config with name="{1}" and contract="IMetadataExchange" and an appropriate binding to obtain Metadata from this URI.</value>
-  </data>
-  <data name="WrnAmbiguousServiceConfig" xml:space="preserve">
-    <value>Multiple service configurations were found with the config name '{0}'.\r\n    Assembly 1:{1}\r\n    Assembly 2:{2}</value>
-  </data>
-  <data name="WrnAmbiguousServiceTypes" xml:space="preserve">
-    <value>Multiple service types were found with the config name '{0}' Use the /{3} option to exclude one of theses types.\r\n    Type 1:{1}\r\n    Type 2:{2}</value>
-  </data>
-  <data name="WrnNoConfigForServices" xml:space="preserve">
-    <value>Either none of the assemblies passed were executables with configuration files or none of the configuration files contained services with the config name '{0}'.</value>
-  </data>
-  <data name="WrnNoTypeForServices" xml:space="preserve">
-    <value>None of the assemblies passed contained service types with the config name '{0}'.</value>
-  </data>
-  <data name="WrnUnableToLoadContractForExport" xml:space="preserve">
-    <value>There was an error loading a contract type. This type will not be exported.\r\n    Type: {0}\r\n    Details:{1}</value>
-  </data>
-  <data name="WrnCannotResolveServiceForExport" xml:space="preserve">
-    <value>Unable to load a service with configName '{0}'. To export a service provide both the assembly containing the service type and an executable with configuration for this service.\r\n    Details:{1}</value>
-  </data>
-  <data name="WrnCannotLoadServiceForExport" xml:space="preserve">
-    <value>There was an error loading the service type to be exported: {0}.\r\n    Details:{1}</value>
-  </data>
-  <data name="WrnCannotLoadConfigFileForExport" xml:space="preserve">
-    <value>There was an error processing a config file. Services defined in this configuration file cannot be loaded.\r\n    Details:{0}</value>
-  </data>
-  <data name="WrnUnableToLoadContractForValidation" xml:space="preserve">
-    <value>There was an error loading a contract type.\r\n    Type: {0}\r\n    Details:{1}</value>
-  </data>
-  <data name="WrnCannotResolveServiceForValidation" xml:space="preserve">
-    <value>Unable to load a service with configName '{0}'. To validate a service provide both the assembly containing the service type and an executable with configuration for this service.\r\n    Details:{1}</value>
-  </data>
-  <data name="WrnCannotLoadServiceForValidation" xml:space="preserve">
-    <value>There was an error loading the service to be validated.\r\n    Type: {0}.\r\n    Details:{1}</value>
-  </data>
-  <data name="WrnCannotLoadConfigFileForValidation" xml:space="preserve">
-    <value>There was an error processing a config file. Services defined in this configuration file cannot be validated.\r\n    Details:{0}</value>
-  </data>
-  <data name="ErrUnableToExportContract" xml:space="preserve">
-    <value>There was an error exporting the contract loaded from the type: {0}</value>
-  </data>
-  <data name="ErrUnableToExportEndpoint" xml:space="preserve">
-    <value>There was an error exporting a service endpoint name='{0}' namespace={1}' in the service type='{2}' found in the configuration file loaded for the assembly: {3}.</value>
-  </data>
-  <data name="ErrUnableToExportEndpoints" xml:space="preserve">
-    <value>There was an error exporting the service type: {0}.</value>
-  </data>
-  <data name="ErrGeneralSchemaValidation" xml:space="preserve">
-    <value>There was an error verifying some XML Schemas generated during export:\r\n{0}</value>
-  </data>
   <data name="ErrSchemaValidationForExport" xml:space="preserve">
     <value>There was a validation error on a schema generated during export:\r\n    Source: {0}\r\n    Line: {1} Column: {2}\r\n   Validation Error: {3}</value>
-  </data>
-  <data name="ErrUnableToImportMetadata" xml:space="preserve">
-    <value>A critical error occurred while attempting to import metadata.</value>
-  </data>
-  <data name="ErrUnableToLoadInputs" xml:space="preserve">
-    <value>There was an error reading the loaded metadata.</value>
   </data>
   <data name="ErrUnableToLoadExtensions" xml:space="preserve">
     <value>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the /{0} option.</value>
   </data>
   <data name="ErrUnableToLoadReferenceType" xml:space="preserve">
     <value>There was an error loading a referenced contract type. This type will be ignored.\r\n    Type: {0}</value>
-  </data>
-  <data name="ErrUnableToLoadMetadataDocument" xml:space="preserve">
-    <value>There was an error reading the metadata from one of the loaded documents.\r\nDocument Identifier: {0}</value>
-  </data>
-  <data name="ErrCodegenError" xml:space="preserve">
-    <value>There was an error trying to generate code in the specified language.\r\nThis could be because the language does not support all the code elements being generated. Consider using another language.</value>
-  </data>
-  <data name="ErrSchemaValidationForCodeGen" xml:space="preserve">
-    <value>There was a validation error in the schemas provided for code generation:\r\n    Source: {0}\r\n    Line: {1} Column: {2}\r\n   Validation Error: {3}</value>
   </data>
   <data name="ErrUnableToUniquifyFilename" xml:space="preserve">
     <value>Cannot create output filename. Too many files are being created with the prefix '{0}'.</value>
@@ -732,9 +564,6 @@
   <data name="ErrCannotWriteFile" xml:space="preserve">
     <value>Cannot write to output file</value>
   </data>
-  <data name="WrnUnknownMetadataFound" xml:space="preserve">
-    <value>Cannot save unrecognized metadata document of type:{0}</value>
-  </data>
   <data name="WrnUnableToLoadContractForSGen" xml:space="preserve">
     <value>There was an error loading a contract type. Cannot generate XmlSerializer types for this contract.\r\n    Type: {0}\r\n    Details:{1}</value>
   </data>
@@ -747,18 +576,6 @@
   <data name="WrnOptionConflictsWithInput" xml:space="preserve">
     <value>Option /{0} cannot be used with multiple input assemblies. Ignoring {0} option. </value>
   </data>
-  <data name="RetreivingMetadataWithMexOnly" xml:space="preserve">
-    <value>Attempting to download metadata from '{0}' using WS-Metadata Exchange. This URL does not support DISCO.</value>
-  </data>
-  <data name="RetreivingMetadataWithMexAndDisco" xml:space="preserve">
-    <value>Attempting to download metadata from '{0}' using WS-Metadata Exchange or DISCO.</value>
-  </data>
-  <data name="SavingDownloadedMetadata" xml:space="preserve">
-    <value>Saving downloaded metadata files...</value>
-  </data>
-  <data name="GeneratingMetadata" xml:space="preserve">
-    <value>Generating metadata files...</value>
-  </data>
   <data name="GeneratingFiles" xml:space="preserve">
     <value>Generating files...</value>
   </data>
@@ -767,12 +584,6 @@
   </data>
   <data name="NoCodeWasGenerated" xml:space="preserve">
     <value>No code was generated.\r\nIf you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services\r\nor because all contracts/services were discovered to exist in /reference assemblies. Verify that you passed all the metadata documents to the tool.</value>
-  </data>
-  <data name="NoCodeWasGeneratedSuggestDCOnly" xml:space="preserve">
-    <value>If you would like to generate data contracts from schemas make sure to use the /{0} option.</value>
-  </data>
-  <data name="NoMetadataWasGenerated" xml:space="preserve">
-    <value>No metadata files were generated. No service contracts were exported.\r\n To export a service, use the /{0} option. To export data contracts, specify the /{1} option. This can sometimes occur in certain security contexts, such as when the assembly is loaded over a UNC network file share. If this is the case, try copying the assembly into a trusted environment and running it.</value>
   </data>
   <data name="ValidationWasSuccessful" xml:space="preserve">
     <value>The Service '{0}' was validated with no errors</value>
