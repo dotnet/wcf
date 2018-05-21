@@ -248,7 +248,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpExamples));
                 helpCategory.WriteHelp();
 
-                WriteExample(SR.Format(SR.HelpExamples1), SR.Format(SR.HelpExamples2));
+                WriteExample(SR.HelpExamples1, SR.HelpExamples2);
             }
 
             private static void WriteExample(string syntax, string explanation)

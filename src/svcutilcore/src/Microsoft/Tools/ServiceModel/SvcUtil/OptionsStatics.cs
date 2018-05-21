@@ -13,7 +13,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             internal const string NoLogo = "noLogo";
             internal const string Out = "out";
             internal const string Directory = "directory";
-            internal const string Language = "language";
             internal const string Reference = "reference";
             internal const string Nostdlib = "noStdLib";
             internal const string ExcludeType = "excludeType";

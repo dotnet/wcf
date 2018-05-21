@@ -43,6 +43,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         internal List<Assembly> ReferencedAssemblies { get { return _referencedAssemblies; } }
         internal bool Nostdlib { get { return _nostdlib; } }
         internal Dictionary<string, string> NamespaceMappings { get { return _namespaceMappings; } }
+        private TypeResolver _typeResolver;
 
         internal string ModeSettingOption { get { return _modeSettingOption; } }
         internal string ModeSettingValue { get { return _modeSettingValue; } }
@@ -287,6 +288,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     SetAllowedModesFromOption(ToolMode.XmlSerializerGeneration, ToolMode.XmlSerializerGeneration, Options.Cmd.ExcludeType, null);
 
                 AddReferencedTypes(referencedAssembliesArgs, excludeTypesArgs, referencedCollectionTypesArgs, nostdlib);
+                _parent._typeResolver = CreateTypeResolver(_parent);
             }
 
             private void SetAllowedModesFromOption(ToolMode newDefaultMode, ToolMode allowedModes, string option, string value)
@@ -441,6 +443,15 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 }
 
                 return false;
+            }
+
+            static TypeResolver CreateTypeResolver(Options options)
+            {
+                TypeResolver typeResolver = new TypeResolver(options);
+                AppDomain.CurrentDomain.TypeResolve += new ResolveEventHandler(typeResolver.ResolveType);
+                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(typeResolver.ResolveAssembly);
+
+                return typeResolver;
             }
         }
     }
