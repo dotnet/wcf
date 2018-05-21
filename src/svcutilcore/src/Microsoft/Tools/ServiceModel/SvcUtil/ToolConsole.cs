@@ -183,9 +183,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpCommonOptionsCategory));
                 var options = new List<ArgumentInfo>();
                 ArgumentInfo option;
-                //option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Target, SR.Format(SR.ParametersOutputType));
-                //option.HelpText = SR.Format(SR.HelpTargetOutputType, Options.Targets.Code, Options.Targets.Metadata, Options.Targets.XmlSerializer);
-                //options.Add(option);
 
                 option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Directory, SR.Format(SR.ParametersDirectory));
                 option.HelpText = SR.Format(SR.HelpDirectory, Options.Abbr.Directory);
