@@ -26,4 +26,8 @@
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
   <Import Project=".\GenerateNupkgProps.targets" />
+  <Target Name="ModifyPackage" AfterTargets="CreatePackage">
+      <Message Text="Call $(WcfRootFolder)src\svcutilcore\tools\scripts\UpdateSvcutilDotXmlSerializerPackage.ps1 to modify the svcutil.xmlserializer.nuspec" />
+      <Exec Command="powershell -ExecutionPolicy UnRestricted -File $(WcfRootFolder)src\svcutilcore\tools\scripts\UpdateSvcutilDotXmlSerializerPackage.ps1 $(OutputPath)"/>
+  </Target>
 </Project>
