@@ -36,11 +36,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 ToolConsole.WriteToolError(re);
                 return (int)re.ExitCode;
             }
-            catch (DcNS.InvalidDataContractException dce)
-            {
-                ToolConsole.WriteInvalidDataContractError(dce);
-                return (int)ToolExitCodes.RuntimeError;
-            }
 #pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {

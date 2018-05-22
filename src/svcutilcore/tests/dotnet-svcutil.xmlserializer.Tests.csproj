@@ -80,7 +80,7 @@
     <PropertyGroup>
       <CorrectedOutputPath>$(OutputPath.Replace('/', '\'))</CorrectedOutputPath>
     </PropertyGroup>
-    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll /t:xmlserializer $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
+    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
     <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true'"
          OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll"
