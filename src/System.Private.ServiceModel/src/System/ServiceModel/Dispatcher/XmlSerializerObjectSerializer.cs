@@ -65,11 +65,8 @@ namespace System.ServiceModel.Dispatcher
             //try to get rootName and rootNamespace from type since root name not set explicitly
             if (_rootName == null)
             {
-#if NETStandard13
-                XmlTypeMapping mapping = new XmlReflectionImporter(null).ImportTypeMapping(_rootType);
-#else
                 XmlTypeMapping mapping = new XmlReflectionImporter().ImportTypeMapping(_rootType);
-#endif
+
                 _rootName = mapping.ElementName;
                 _rootNamespace = mapping.Namespace;
             }
