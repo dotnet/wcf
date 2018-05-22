@@ -3,6 +3,8 @@
   <Import Project="..\dir.props" />
   <PropertyGroup>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <PackageVersion>1.0.0</PackageVersion>
+    <AssemblyFileVersion>$(AssemblyVersion)</AssemblyFileVersion>
     <AssemblyKey>Open</AssemblyKey>
     <IsNETCoreApp>true</IsNETCoreApp>
     <IsNETCoreAppRef>false</IsNETCoreAppRef>
