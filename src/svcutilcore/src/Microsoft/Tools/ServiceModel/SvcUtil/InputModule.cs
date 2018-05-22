@@ -150,15 +150,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
                 _newInputModule.Assemblies.Add(assembly);
 
-                try
-                {
-                    _options.SetAllowedModes(ToolMode.MetadataFromAssembly, ToolMode.MetadataFromAssembly | ToolMode.DataContractExport | ToolMode.Validate | ToolMode.XmlSerializerGeneration, null, fileInfo.FullName);
-                }
-                catch (InvalidToolModeException)
-                {
-                    throw CreateInputException(fileInfo.FullName);
-                }
-
                 return true;
             }
 
