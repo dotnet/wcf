@@ -14,6 +14,8 @@
     <SkipPackageFileCheck>true</SkipPackageFileCheck>
     <HarvestStablePackage>false</HarvestStablePackage>
     <EnsureCoreFxBaseLine>true</EnsureCoreFxBaseLine>
+    <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=874570</ReleaseNotes>
+    <ProjectUrl>https://go.microsoft.com/fwlink/?linkid=874572</ProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageFile Include=".\files\prefercliruntime"/>
