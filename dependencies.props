@@ -10,8 +10,8 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>23689adf4032d0278baeaa8d61140d26ab256491</CoreFxCurrentRef>
-    <WCFCurrentRef>23689adf4032d0278baeaa8d61140d26ab256491</WCFCurrentRef>
-    <StandardCurrentRef>8521bbf3c33ab7e91a7136ac0f687bfd300ad84c</StandardCurrentRef>
+    <WCFCurrentRef>fba36b56ad15b7f7c9b9e3dea41c8276926df27e</WCFCurrentRef>
+    <StandardCurrentRef>fba36b56ad15b7f7c9b9e3dea41c8276926df27e</StandardCurrentRef>
     <BuildToolsCurrentRef>ed8ea9cfbe31692bdacc2d110508367da56bbba2</BuildToolsCurrentRef>
     <CoreClrCurrentRef>23689adf4032d0278baeaa8d61140d26ab256491</CoreClrCurrentRef>
     <CoreSetupCurrentRef>23689adf4032d0278baeaa8d61140d26ab256491</CoreSetupCurrentRef>
@@ -19,9 +19,9 @@
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>rtm-26516-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>rtm-26523-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>rtm-26515-03</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.0.4-servicing-26522-02</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
