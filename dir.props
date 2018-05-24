@@ -62,6 +62,12 @@
   <!-- Provides package dependency version properties and verification/auto-upgrade configuration -->
   <Import Project="$(MSBuildThisFileDirectory)dependencies.props" />
 
+  <!-- Adds an orchestration feed for when packages haven't been published to MyGet -->
+  <PropertyGroup>
+    <OrchestrationFeed>"https://dotnetfeed.blob.core.windows.net/orchestrated-release-2-1/20180515-07/final/index.json"</OrchestrationFeed>
+    <ProdConPackageFeedUrl Condition="'$(ProdConPackageFeedUrl)'==''">$(OrchestrationFeed)</ProdConPackageFeedUrl>
+  </PropertyGroup>
+
   <!-- list of nuget package sources passed to nuget restore -->
   <ItemGroup Condition="'$(ExcludeInternetFeeds)' != 'true'">
     <!-- Need to escape double forward slash (%2F) or MSBuild will normalize to one slash on Unix. -->
@@ -69,6 +75,7 @@
     <DotnetSourceList Include="https:%2F%2Fdotnet.myget.org/F/dotnet-buildtools/api/v3/index.json" />
     <DotnetSourceList Include="https:%2F%2Fdotnet.myget.org/F/dotnet-core/api/v3/index.json" />
     <DotnetSourceList Include="https:%2F%2Fapi.nuget.org/v3/index.json" />
+    <DotnetSourceList Include="$(ProdConPackageFeedUrl)" />
     <!-- Example to consume local CoreCLR package:
          /p:OverridePackageSource=C:\coreclr\bin\Product\Windows_NT.x64.Debug\.nuget\pkg
     -->
