@@ -4,7 +4,6 @@
   <PropertyGroup>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <PackageVersion>1.0.0</PackageVersion>
-    <PreReleaseLabel>preview</PreReleaseLabel>
     <AssemblyFileVersion>$(AssemblyVersion)</AssemblyFileVersion>
     <AssemblyKey>Open</AssemblyKey>
     <IsNETCoreApp>true</IsNETCoreApp>
