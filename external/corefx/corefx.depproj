@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Security.AccessControl">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+      <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
@@ -27,7 +27,7 @@
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="System.ComponentModel.Composition">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+      <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
@@ -41,16 +41,16 @@
   <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp' or
                         '$(TargetGroup)' == 'netstandard'">
     <PackageReference Include="System.Reflection.DispatchProxy">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+      <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
     <PackageReference Include="System.Security.Principal.Windows">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+      <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
 
     <PackageReference Include="System.Net.Http.WinHttpHandler"
                       Condition="'$(TargetsWindows)' == 'true' or
                                  '$(TargetGroup)' == 'netstandard'">
-      <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
+      <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
