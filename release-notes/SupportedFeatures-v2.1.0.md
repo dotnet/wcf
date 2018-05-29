@@ -58,6 +58,6 @@ Supported features
 
 
 #### More Information
-&ensp;&ensp;For more details about what UWP is please see this [dotnet Glossary doc](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/glossary.md).
+&ensp;&ensp;For UWP supported features, please see the [UWP supported features list](https://github.com/dotnet/wcf/blob/master/release-notes/UWPSupportedFeatures-v6.1.md).
 
 &ensp;&ensp;For supported platforms please see the [.NET Core 2.1 - Supported OS versions](https://github.com/dotnet/core/blob/master/release-notes/2.1/2.1-supported-os.md).
