@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 4.5.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/4.5.0)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v2.1.0)
+
 ### 4.5.0-rc1-26502-06
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.NetTcp/4.5.0-rc1-26502-06)
