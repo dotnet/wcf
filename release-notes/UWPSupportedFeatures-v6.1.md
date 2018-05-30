@@ -1,6 +1,6 @@
 WCF Features in UWP 6.1
 ======================================================
-*UWP 6.1 features are based on .NET Core 2.0. This is part of [WCF release notes](https://github.com/dotnet/wcf/releases/tag/v2.0.0) for .NET Core 2.0. Please see the release notes for what's new since 1.1.0.*
+*WCF UWP 6.1 is part of .NET native tools 2.1 (UWP6.1). Please see release notes [here](https://github.com/Microsoft/dotnet/blob/master/releases/UWP/net-native2.1/README.md). 
 
 Supported features
 ------------
@@ -57,4 +57,4 @@ Supported features
 
 
 #### More Information
-&ensp;&ensp;For more details about what UWP is, please see this [dotnet Glossary doc](https://github.com/dotnet/corefx/blob/master/Documentation/project-docs/glossary.md).
+&ensp;&ensp;For features supported on Windows, Linux OSes and macOS, please see [feature list](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v2.1.0.md).
