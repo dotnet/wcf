@@ -2,7 +2,7 @@
   <PropertyGroup>
     <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">false</StabilizePackageVersion>
     <PreReleaseLabel Condition="'$(PackageVersionStamp)' != ''">$(PackageVersionStamp)</PreReleaseLabel>
-    <PreReleaseLabel Condition="'$(PreReleaseLabel)' == ''">rtm</PreReleaseLabel>
+    <PreReleaseLabel Condition="'$(PreReleaseLabel)' == ''">servicing</PreReleaseLabel>
     <IncludePreReleaseLabelInPackageVersion Condition="'$(StabilizePackageVersion)' != 'true' or '$(PackageVersionStamp)' != ''">true</IncludePreReleaseLabelInPackageVersion>
     <IncludeBuildNumberInPackageVersion Condition="'$(StabilizePackageVersion)' == 'true'">false</IncludeBuildNumberInPackageVersion>
     <IncludeBuildNumberInPackageVersion Condition="'$(StabilizePackageVersion)' != 'true'">true</IncludeBuildNumberInPackageVersion>
@@ -34,7 +34,7 @@
     <SkipBaseLineCheck>true</SkipBaseLineCheck>
 
     <!-- by default all packages will use the same version which revs with respect to product version -->
-    <PackageVersion Condition="'$(PackageVersion)' == ''">4.5.0</PackageVersion>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">4.5.1</PackageVersion>
     <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
     <SkipGenerationCheck>true</SkipGenerationCheck>
   </PropertyGroup>
