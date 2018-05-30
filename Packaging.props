@@ -13,8 +13,10 @@
     <!--<RuntimeIdGraphDefinitionFile>$(ProjectDir)pkg/Microsoft.NETCore.Platforms/runtime.json</RuntimeIdGraphDefinitionFile>--> <!--Not needed for WCF-->
     <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</ReleaseNotes>
     <ProjectUrl>https://dot.net</ProjectUrl>
-    <!-- Add a condition for this when we are able to run on .NET Core -->
-    <PackagingTaskDir>$(ToolsDir)net46/</PackagingTaskDir>
+
+    <PackagingTaskDir Condition="'$(MSBuildRuntimeType)' != 'Core'">$(ToolsDir)net46/</PackagingTaskDir>
+    <PackagingTaskDir Condition="'$(MSBuildRuntimeType)' == 'Core'">$(ToolsDir)</PackagingTaskDir>
+
     <LicenseUrl>https://github.com/dotnet/corefx/blob/master/LICENSE.TXT</LicenseUrl>
     <!-- defined in buildtools packaging.targets, but we need this before targets are imported -->
     <PackagePlatform Condition="'$(PackagePlatform)' == ''">$(Platform)</PackagePlatform>
