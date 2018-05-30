@@ -57,4 +57,4 @@ Supported features
 
 
 #### More Information
-&ensp;&ensp;For features supported on Windows, Linux OSes and macOS, please see [feature list](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v2.1.0.md).
+&ensp;&ensp;For features supported on Windows, Linux OSs and macOS, please see [feature list](https://github.com/dotnet/wcf/blob/master/release-notes/SupportedFeatures-v2.1.0.md).
