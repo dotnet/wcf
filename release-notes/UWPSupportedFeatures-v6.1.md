@@ -1,6 +1,6 @@
 WCF Features in UWP 6.1
 ======================================================
-*UWP 6.1 features are based on .NET Core 2.0. This is part of [WCF release notes](https://github.com/dotnet/wcf/releases/tag/v2.0.0) for .NET Core 2.0. Please check out release notes for what's new since 1.1.0.*
+*UWP 6.1 features are based on .NET Core 2.0. This is part of [WCF release notes](https://github.com/dotnet/wcf/releases/tag/v2.0.0) for .NET Core 2.0. Please see the release notes for what's new since 1.1.0.*
 
 Supported features
 ------------

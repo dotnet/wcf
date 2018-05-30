@@ -1,6 +1,6 @@
 WCF Features in .Net Core 2.1
 ======================================================
-*This is part of [WCF release notes](https://github.com/dotnet/wcf/releases/tag/v2.1.0) for .NET Core 2.1. Please check out release notes for what's new since 1.1.0.*
+*This is part of [WCF release notes](https://github.com/dotnet/wcf/releases/tag/v2.1.0) for .NET Core 2.1. Please see the release notes for what's new since 2.0.0.*
 
 Supported features
 ------------
