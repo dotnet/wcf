@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
     using System.ServiceModel.Channels;
@@ -149,15 +149,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 }
 
                 _newInputModule.Assemblies.Add(assembly);
-
-                try
-                {
-                    _options.SetAllowedModes(ToolMode.MetadataFromAssembly, ToolMode.MetadataFromAssembly | ToolMode.DataContractExport | ToolMode.Validate | ToolMode.XmlSerializerGeneration, null, fileInfo.FullName);
-                }
-                catch (InvalidToolModeException)
-                {
-                    throw CreateInputException(fileInfo.FullName);
-                }
 
                 return true;
             }

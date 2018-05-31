@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
     using System.ServiceModel.Channels;
@@ -62,15 +62,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             WriteError(e);
         }
 
-        internal static void WriteInvalidDataContractError(InvalidDataContractException e)
-        {
-            WriteError(e);
-
-            ToolConsole.WriteLine();
-            ToolConsole.WriteLine(SR.Format(SR.HintConsiderUseXmlSerializer, Options.Cmd.DataContractOnly,
-                Options.Cmd.ImportXmlTypes));
-        }
-
         internal static void WriteUnexpectedError(string errMsg)
         {
             WriteError(SR.Format(SR.ErrUnexpectedError));
@@ -81,23 +72,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
         internal static void WriteToolError(ToolArgumentException ae)
         {
             WriteError(ae);
-
-            ToolMexException me = ae as ToolMexException;
-            if (me != null)
-            {
-                string serviceUri = me.ServiceUri.AbsoluteUri;
-
-                ToolConsole.WriteLine();
-                ToolConsole.WriteError(SR.Format(SR.WrnWSMExFailed, serviceUri), string.Empty);
-                ToolConsole.WriteError(me.WSMexException, "    ");
-
-                if (me.HttpGetException != null)
-                {
-                    ToolConsole.WriteLine();
-                    ToolConsole.WriteError(SR.Format(SR.WrnHttpGetFailed, serviceUri), string.Empty);
-                    ToolConsole.WriteError(me.HttpGetException, "    ");
-                }
-            }
 
             ToolConsole.WriteLine(SR.Format(SR.MoreHelp, Options.Abbr.Help));
         }
@@ -183,7 +157,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpXmlSerializerTypeGenerationCategory));
 
                 helpCategory.Description = SR.Format(SR.HelpXmlSerializerTypeGenerationDescription, ThisAssembly.Title);
-                helpCategory.Syntax = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntax, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.XmlSerializer, SR.Format(SR.HelpInputAssemblyPath));
+                helpCategory.Syntax = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntax, ThisAssembly.Title, SR.Format(SR.HelpInputAssemblyPath));
 
                 helpCategory.Inputs = new ArgumentInfo[1];
 
@@ -196,91 +170,10 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 helpCategory.Options[0].HelpText = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntaxInput2, Options.Abbr.Reference);
 
                 helpCategory.Options[1] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ExcludeType, SR.Format(SR.ParametersExcludeType));
-                helpCategory.Options[1].HelpText = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntaxInput3, Options.Cmd.DataContractOnly, Options.Abbr.ExcludeType);
+                helpCategory.Options[1].HelpText = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntaxInput3, Options.Abbr.ExcludeType);
 
                 helpCategory.Options[2] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Out, SR.Format(SR.ParametersOut));
                 helpCategory.Options[2].HelpText = SR.Format(SR.HelpXmlSerializerTypeGenerationSyntaxInput4, Options.Abbr.Out);
-
-                helpCategory.WriteHelp();
-            }
-
-            internal static void WriteMetadataDownloadHelp()
-            {
-                HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpMetadataDownloadCategory));
-
-                helpCategory.Description = SR.Format(SR.HelpMetadataDownloadDescription, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.Metadata, Options.Cmd.ToolConfig);
-                helpCategory.Syntax = SR.Format(SR.HelpMetadataDownloadSyntax, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.Metadata, SR.Format(SR.HelpInputUrl), SR.Format(SR.HelpInputEpr));
-
-                helpCategory.Inputs = new ArgumentInfo[2];
-
-                helpCategory.Inputs[0] = ArgumentInfo.CreateInputHelpInfo(SR.Format(SR.HelpInputUrl));
-                helpCategory.Inputs[0].HelpText = SR.Format(SR.HelpMetadataDownloadSyntaxInput1);
-
-                helpCategory.Inputs[1] = ArgumentInfo.CreateInputHelpInfo(SR.Format(SR.HelpInputEpr));
-                helpCategory.Inputs[1].HelpText = SR.Format(SR.HelpMetadataDownloadSyntaxInput2);
-
-                helpCategory.WriteHelp();
-            }
-
-            internal static void WriteMetadataExportHelp()
-            {
-                HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpMetadataExportCategory));
-
-                helpCategory.Description = SR.Format(SR.HelpMetadataExportDescription, ThisAssembly.Title, Options.Cmd.ServiceName, Options.Cmd.DataContractOnly);
-                helpCategory.Syntax = SR.Format(SR.HelpMetadataExportSyntax, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.Metadata,
-                    Options.Cmd.ServiceName, SR.Format(SR.ParametersServiceName), Options.Cmd.DataContractOnly, SR.Format(SR.HelpInputAssemblyPath));
-
-                helpCategory.Inputs = new ArgumentInfo[1];
-
-                helpCategory.Inputs[0] = ArgumentInfo.CreateInputHelpInfo(SR.Format(SR.HelpInputAssemblyPath));
-                helpCategory.Inputs[0].HelpText = SR.Format(SR.HelpMetadataExportSyntaxInput1);
-
-                helpCategory.Options = new ArgumentInfo[4];
-
-                helpCategory.Options[0] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ServiceName, SR.Format(SR.ParametersServiceName));
-                helpCategory.Options[0].HelpText = SR.Format(SR.HelpServiceNameExport, Options.Abbr.Reference);
-
-                helpCategory.Options[1] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Reference, SR.Format(SR.ParametersReference));
-                helpCategory.Options[1].HelpText = SR.Format(SR.HelpReferenceOther, Options.Abbr.Reference);
-
-                helpCategory.Options[2] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.DataContractOnly);
-                helpCategory.Options[2].HelpText = SR.Format(SR.HelpDataContractOnly, Options.Abbr.DataContractOnly);
-
-                helpCategory.Options[3] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ExcludeType, SR.Format(SR.ParametersExcludeType));
-                helpCategory.Options[3].HelpText = SR.Format(SR.HelpExcludeTypeExport, Options.Abbr.ExcludeType, Options.Abbr.DataContractOnly);
-
-                helpCategory.WriteHelp();
-            }
-
-            internal static void WriteValidationHelp()
-            {
-                HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpValidationCategory));
-
-                helpCategory.Description = SR.Format(SR.HelpValidationDescription, Options.Cmd.ServiceName);
-                helpCategory.Syntax = SR.Format(SR.HelpValidationSyntax, ThisAssembly.Title, Options.Cmd.Validate,
-                    Options.Cmd.ServiceName, SR.Format(SR.ParametersServiceName), SR.Format(SR.HelpInputAssemblyPath));
-
-                helpCategory.Inputs = new ArgumentInfo[1];
-
-                helpCategory.Inputs[0] = ArgumentInfo.CreateInputHelpInfo(SR.Format(SR.HelpInputAssemblyPath));
-                helpCategory.Inputs[0].HelpText = SR.Format(SR.HelpValidationSyntaxInput1);
-
-                helpCategory.Options = new ArgumentInfo[5];
-
-                helpCategory.Options[0] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Validate);
-                helpCategory.Options[0].HelpText = SR.Format(SR.HelpValidate, Options.Cmd.ServiceName, Options.Abbr.Validate);
-
-                helpCategory.Options[1] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ServiceName, SR.Format(SR.ParametersServiceName));
-                helpCategory.Options[1].HelpText = SR.Format(SR.HelpServiceNameValidate, Options.Abbr.Reference);
-
-                helpCategory.Options[2] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Reference, SR.Format(SR.ParametersReference));
-                helpCategory.Options[2].HelpText = SR.Format(SR.HelpReferenceOther, Options.Abbr.Reference);
-
-                helpCategory.Options[3] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.DataContractOnly);
-                helpCategory.Options[3].HelpText = SR.Format(SR.HelpDataContractOnly, Options.Abbr.DataContractOnly);
-
-                helpCategory.Options[4] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ExcludeType, SR.Format(SR.ParametersExcludeType));
-                helpCategory.Options[4].HelpText = SR.Format(SR.HelpValidationExcludeTypeExport, Options.Abbr.ExcludeType, Options.Abbr.DataContractOnly);
 
                 helpCategory.WriteHelp();
             }
@@ -290,9 +183,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpCommonOptionsCategory));
                 var options = new List<ArgumentInfo>();
                 ArgumentInfo option;
-                option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Target, SR.Format(SR.ParametersOutputType));
-                option.HelpText = SR.Format(SR.HelpTargetOutputType, Options.Targets.Code, Options.Targets.Metadata, Options.Targets.XmlSerializer);
-                options.Add(option);
 
                 option = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Directory, SR.Format(SR.ParametersDirectory));
                 option.HelpText = SR.Format(SR.HelpDirectory, Options.Abbr.Directory);
@@ -334,85 +224,21 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 helpCategory.Options[0] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Out, SR.Format(SR.ParametersOut));
                 helpCategory.Options[0].HelpText = SR.Format(SR.HelpOut, Options.Abbr.Out);
 
-                helpCategory.Options[1] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Config, SR.Format(SR.ParametersConfig));
-                helpCategory.Options[1].HelpText = SR.Format(SR.HelpConfig);
+                helpCategory.Options[1] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Namespace, SR.Format(SR.ParametersNamespace));
+                helpCategory.Options[1].HelpText = SR.Format(SR.HelpNamespace, Options.Abbr.Namespace);
 
-                helpCategory.Options[2] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.MergeConfig);
-                helpCategory.Options[2].HelpText = SR.Format(SR.HelpMergeConfig);
+                helpCategory.Options[2] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Reference, SR.Format(SR.ParametersReference));
+                helpCategory.Options[2].BeginGroup = true;
+                helpCategory.Options[2].HelpText = SR.Format(SR.HelpReferenceCodeGeneration, Options.Abbr.Reference);
 
-                helpCategory.Options[3] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.NoConfig);
-                helpCategory.Options[3].HelpText = SR.Format(SR.HelpNoconfig);
+                helpCategory.Options[3] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.CollectionType, SR.Format(SR.ParametersCollectionType));
+                helpCategory.Options[3].HelpText = SR.Format(SR.HelpCollectionType, Options.Abbr.CollectionType);
 
-                helpCategory.Options[4] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.DataContractOnly);
-                helpCategory.Options[4].HelpText = SR.Format(SR.HelpCodeGenerationDataContractOnly, Options.Abbr.DataContractOnly);
+                helpCategory.Options[4] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ExcludeType, SR.Format(SR.ParametersExcludeType));
+                helpCategory.Options[4].HelpText = SR.Format(SR.HelpExcludeTypeCodeGeneration, Options.Abbr.ExcludeType);
 
-                helpCategory.Options[5] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Language, SR.Format(SR.ParametersLanguage));
-                helpCategory.Options[5].BeginGroup = true;
-                helpCategory.Options[5].HelpText = SR.Format(SR.HelpLanguage, Options.Abbr.Language);
-
-                helpCategory.Options[6] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Namespace, SR.Format(SR.ParametersNamespace));
-                helpCategory.Options[6].HelpText = SR.Format(SR.HelpNamespace, Options.Abbr.Namespace);
-
-                helpCategory.Options[7] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.MessageContract);
-                helpCategory.Options[7].BeginGroup = true;
-                helpCategory.Options[7].HelpText = SR.Format(SR.HelpMessageContract, Options.Abbr.MessageContract);
-
-                helpCategory.Options[8] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.EnableDataBinding);
-                helpCategory.Options[8].HelpText = SR.Format(SR.HelpEnableDataBinding, Options.Abbr.EnableDataBinding);
-
-                helpCategory.Options[9] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Serializable);
-                helpCategory.Options[9].HelpText = SR.Format(SR.HelpSerializable, Options.Abbr.Serializable);
-
-                helpCategory.Options[10] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Async);
-                helpCategory.Options[10].HelpText = SR.Format(SR.HelpAsync, Options.Abbr.Async);
-
-                helpCategory.Options[11] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Internal);
-                helpCategory.Options[11].HelpText = SR.Format(SR.HelpInternal, Options.Abbr.Internal);
-
-                helpCategory.Options[12] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Reference, SR.Format(SR.ParametersReference));
-                helpCategory.Options[12].BeginGroup = true;
-                helpCategory.Options[12].HelpText = SR.Format(SR.HelpReferenceCodeGeneration, Options.Abbr.Reference);
-
-                helpCategory.Options[13] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.CollectionType, SR.Format(SR.ParametersCollectionType));
-                helpCategory.Options[13].HelpText = SR.Format(SR.HelpCollectionType, Options.Abbr.CollectionType);
-
-                helpCategory.Options[14] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.ExcludeType, SR.Format(SR.ParametersExcludeType));
-                helpCategory.Options[14].HelpText = SR.Format(SR.HelpExcludeTypeCodeGeneration, Options.Abbr.ExcludeType);
-
-                helpCategory.Options[15] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Nostdlib);
-                helpCategory.Options[15].HelpText = SR.Format(SR.HelpNostdlib);
-
-                helpCategory.Options[16] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Serializer, SerializerMode.Auto.ToString());
-                helpCategory.Options[16].BeginGroup = true;
-                helpCategory.Options[16].HelpText = SR.Format(SR.HelpAutoSerializer, Options.Abbr.Serializer);
-
-                helpCategory.Options[17] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Serializer, SerializerMode.DataContractSerializer.ToString());
-                helpCategory.Options[17].HelpText = SR.Format(SR.HelpDataContractSerializer);
-
-                helpCategory.Options[18] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.Serializer, SerializerMode.XmlSerializer.ToString());
-                helpCategory.Options[18].HelpText = SR.Format(SR.HelpXmlSerializer);
-
-                helpCategory.Options[19] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.ImportXmlTypes);
-                helpCategory.Options[19].HelpText = SR.Format(SR.HelpImportXmlType, Options.Abbr.ImportXmlTypes);
-
-                helpCategory.Options[20] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.UseSerializerForFaults);
-                helpCategory.Options[20].HelpText = SR.Format(SR.HelpUseSerializerForFaults, Options.Abbr.UseSerializerForFaults);
-
-                helpCategory.Options[21] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.TargetClientVersion, TargetClientVersionMode.Version30.ToString());
-                helpCategory.Options[21].BeginGroup = true;
-                helpCategory.Options[21].HelpText = SR.Format(SR.HelpVersion30TargetClientVersion, Options.Abbr.TargetClientVersion);
-
-                helpCategory.Options[22] = ArgumentInfo.CreateParameterHelpInfo(Options.Cmd.TargetClientVersion, TargetClientVersionMode.Version35.ToString());
-                helpCategory.Options[22].HelpText = SR.Format(SR.HelpVersion35TargetClientVersion, Options.Abbr.TargetClientVersion);
-
-                helpCategory.Options[23] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Wrapped);
-                helpCategory.Options[23].HelpText = SR.Format(SR.HelpWrapped);
-
-                helpCategory.Options[24] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.ServiceContract);
-                helpCategory.Options[24].HelpText = SR.Format(SR.HelpCodeGenerationServiceContract, Options.Abbr.ServiceContract);
-
-                helpCategory.Options[25] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.SyncOnly);
-                helpCategory.Options[25].HelpText = SR.Format(SR.HelpSyncOnly);
+                helpCategory.Options[5] = ArgumentInfo.CreateFlagHelpInfo(Options.Cmd.Nostdlib);
+                helpCategory.Options[5].HelpText = SR.Format(SR.HelpNostdlib);
 
                 helpCategory.WriteHelp();
             }
@@ -422,7 +248,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpExamples));
                 helpCategory.WriteHelp();
 
-                WriteExample(SR.Format(SR.HelpExamples18), SR.Format(SR.HelpExamples19));
+                WriteExample(SR.HelpExamples1, SR.HelpExamples2);
             }
 
             private static void WriteExample(string syntax, string explanation)

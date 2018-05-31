@@ -5,7 +5,7 @@
 // DevNote: See how there are no using statements needed here? 
 //          That's part of the plan. Let's keep it that way.
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     internal class ToolRuntime
     {
@@ -30,30 +30,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             {
                 InputModule inputModule = InputModule.LoadInputs(_options);
 
-                Tool.Assert(_options.GetToolMode().HasValue, System.SR.Format(System.SR.AmbiguousToolUseage, Options.Cmd.Target, Options.Cmd.Validate));
-                ToolMode toolMode = _options.GetToolMode().Value;
-
-                return ExecuteToolMode(toolMode, inputModule);
+                Tool.Assert(_options.GetToolMode().HasValue, System.SR.Format(System.SR.AmbiguousToolUseage));
+                return ExecuteToolMode(inputModule);
             }
         }
 
-        private ToolExitCodes ExecuteToolMode(ToolMode toolMode, InputModule inputModule)
+        private ToolExitCodes ExecuteToolMode(InputModule inputModule)
         {
-            switch (toolMode)
-            {
-                case ToolMode.XmlSerializerGeneration:
-                    GenerateSerializer(inputModule);
-                    break;
-                case ToolMode.DataContractImport:
-                case ToolMode.ProxyGeneration:
-                case ToolMode.ServiceContractGeneration:
-                case ToolMode.DataContractExport:
-                case ToolMode.Validate:
-                case ToolMode.MetadataFromAssembly:
-                case ToolMode.WSMetadataExchange:
-                    throw new System.ArgumentException(System.SR.ErrInvalidTarget);
-            }
-
+            GenerateSerializer(inputModule);
             return ToolExitCodes.Success;
         }
 

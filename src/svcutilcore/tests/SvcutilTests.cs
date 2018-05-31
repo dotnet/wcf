@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil.Tests
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
 {
     public static class SvcutilTests
     {
@@ -20,10 +20,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.Tests
         {
             string outputFile = Path.GetTempFileName() + ".cs";
             Assert.False(File.Exists(outputFile));
-
-            Tool.Main(new string[] { "/t:xmlserializer", Assembly.GetExecutingAssembly().Location, $"/out:{outputFile}" });
+            Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"/out:{outputFile}" });
             Assert.True(File.Exists(outputFile));
-
             File.Delete(outputFile);
         }
     }

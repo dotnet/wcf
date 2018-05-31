@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
     using System.Text;
@@ -35,11 +35,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil
             {
                 ToolConsole.WriteToolError(re);
                 return (int)re.ExitCode;
-            }
-            catch (DcNS.InvalidDataContractException dce)
-            {
-                ToolConsole.WriteInvalidDataContractError(dce);
-                return (int)ToolExitCodes.RuntimeError;
             }
 #pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
