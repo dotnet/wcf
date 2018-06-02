@@ -1,6 +1,6 @@
 ﻿# dotnet-svcutil - Release Notes
 
-Getting Started instructions can be found in the [usage guide](https://go.microsoft.com/fwlink/?linkid=874329) document. Please [let us know](https://github.com/dotnet/wcf/issues/new) if you run into any issues or have any feedback.
+Getting Started instructions can be found in the [usage guide](https://go.microsoft.com/fwlink/?linkid=874971) document. Please [let us know](https://github.com/dotnet/wcf/issues/new) if you run into any issues or have any feedback.
 
 ### Information
 * [NuGet Package](https://nuget.org/packages/dotnet-svcutil)
