@@ -88,7 +88,7 @@ Try
 
     $newXmlElement = $doc.CreateElement('dependency')
     $newXMlElement.SetAttribute('id','Microsoft.NETCore.App')
-    $newXMlElement.SetAttribute('version','2.0.0')
+    $newXMlElement.SetAttribute('version','2.1.0')
     $newXMlElement.SetAttribute('exclude','Build,Analyzers')
     $doc.package.metadata.dependencies.group.InsertAfter($newXMlElement, $doc.configuration.runtime.legacyUnhandledExceptionPolicy)
     $doc = [xml] $doc.OuterXml.Replace(" xmlns=`"`"", "")
