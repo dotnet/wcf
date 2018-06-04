@@ -171,6 +171,7 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(2870, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
