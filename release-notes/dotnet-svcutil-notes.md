@@ -10,5 +10,5 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 ### 1.0.0 (06/04/2018)
 * First stable release
 
-### 1.0.0-preview-20522-1161 (05/22/2018)
+### 1.0.0-preview-20522-1161 (05/23/2018)
 * Initial release
