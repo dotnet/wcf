@@ -121,7 +121,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         internal static void WriteHeader()
         {
             // Using CommonResStrings.WcfTrademarkForCmdLine for the trademark: the proper resource for command line tools.
-            ToolConsole.WriteLine(SR.Format(SR.Logo, SR.WcfTrademarkForCmdLine, ThisAssembly.InformationalVersion, SR.CopyrightForCmdLine));
+            ToolConsole.WriteLine(SR.Format(SR.Logo, ThisAssembly.InformationalVersion, SR.WcfTrademarkForCmdLine, SR.CopyrightForCmdLine));
         }
 
         internal static void WriteHelpText()
