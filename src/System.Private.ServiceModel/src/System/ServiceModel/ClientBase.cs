@@ -570,6 +570,25 @@ namespace System.ServiceModel
                 return ret;
             }
 
+            protected object Invoke(string methodName, object[] args)
+            {
+                MethodCall methodCall = new MethodCall(args);
+                ProxyOperationRuntime op = GetOperationByName(methodName);
+
+                object[] outs;
+                object[] ins = op.MapSyncInputs(methodCall, out outs);
+                object ret = _channel.Call(op.Action, op.IsOneWay, op, ins, outs);
+                
+                object[] retArgs = op.MapSyncOutputs(methodCall, outs, ref ret);
+                if (retArgs != null)
+                {
+                    Fx.Assert(retArgs.Length == inArgs.Length, "retArgs.Length should be equal to inArgs.Length");
+                    Array.Copy(retArgs, args, args.Length);
+                }
+
+                return ret;
+            }
+
             private System.ServiceModel.Dispatcher.ProxyOperationRuntime GetOperationByName(string methodName)
             {
                 ProxyOperationRuntime op = _runtime.GetOperationByName(methodName);
