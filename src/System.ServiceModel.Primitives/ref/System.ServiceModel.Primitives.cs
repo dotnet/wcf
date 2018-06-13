@@ -175,6 +175,8 @@ namespace System.ServiceModel
             event System.EventHandler System.ServiceModel.ICommunicationObject.Opened { add { } remove { } }
             event System.EventHandler System.ServiceModel.ICommunicationObject.Opening { add { } remove { } }
             [System.Security.SecuritySafeCriticalAttribute]
+            protected object Invoke(string methodName, object[] args) { return default(object); }
+            [System.Security.SecuritySafeCriticalAttribute] 
             protected System.IAsyncResult BeginInvoke(string methodName, object[] args, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
             [System.Security.SecuritySafeCriticalAttribute]
             protected object EndInvoke(string methodName, object[] args, System.IAsyncResult result) { return default(object); }
