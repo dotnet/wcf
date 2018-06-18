@@ -35,6 +35,10 @@
 
     <!-- by default all packages will use the same version which revs with respect to product version -->
     <PackageVersion Condition="'$(PackageVersion)' == ''">4.6.0</PackageVersion>
+    <!-- used to determine which package to use for harvesting purposes -->
+    <!-- by default will use last stable version listed in the packageIndex.json -->
+    <HarvestVersion>4.3.1</HarvestVersion>
+    
     <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
     <SkipGenerationCheck>true</SkipGenerationCheck>
   </PropertyGroup>
