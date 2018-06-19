@@ -4,17 +4,16 @@
 
   <PropertyGroup>
     <PackageReportDir Condition="'$(PackageReportDir)' == ''">$(BinDir)pkg/reports/</PackageReportDir>
-    <BuildAllPackages>true</BuildAllPackages>
-    <BuildWcfPackages>true</BuildWcfPackages>
+    
+    <!-- 'StabilizePackageVersion' is used in conjunction with 'PackageVersionStamp' to determine whether or not a label and build number should be appended to a package name. -->
+    <!-- Default behavior when not building stable packages is to build both ServiceModel and SvcUtil packages. -->
+    <!-- 'StabilizePackageVersion' is a flag set manually when stable packages are needed. -->
+    <!-- 'BuildServiceModelPackages' and 'BuildSvcUtilPackage' should also be explicitly set when stable packages are desired, otherwise no packages will be built. -->
+    <BuildServiceModelPackages Condition="'$(StabilizePackageVersion)' != 'true' AND '$(BuildServiceModelPackages)' == ''">true</BuildServiceModelPackages>
+    <BuildSvcUtilPackage Condition="'$(StabilizePackageVersion)' != 'true' AND '$(BuildSvcUtilPackage)' == ''">true</BuildSvcUtilPackage>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(BuildAllPackages)' == 'true' AND '$(SkipManagedPackageBuild)' != 'true'" >
-    <Project Include="$(MSBuildThisFileDirectory)..\pkg\*\*.builds" >
-      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
-    </Project>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(BuildAllPackages)' == 'false' AND '$(BuildWcfPackages)' == 'true'" >
+  <ItemGroup Condition="'$(BuildServiceModelPackages)' == 'true'" >
     <Project Include="$(MSBuildThisFileDirectory)\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
       <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
     </Project>
@@ -35,7 +34,7 @@
     </Project>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(BuildAllPackages)' == 'false' AND '$(BuildWcfPackages)' == false" >
+  <ItemGroup Condition="'$(BuildSvcUtilPackage)' == 'true'" >
     <Project Include="$(MSBuildThisFileDirectory)\svcutilcore\pkg\dotnet-svcutil.xmlserializer.pkgproj">
       <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
     </Project>
