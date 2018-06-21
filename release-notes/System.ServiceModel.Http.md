@@ -7,6 +7,10 @@
 * [Source](https://github.com/dotnet/wcf/tree/master/src)
 
 ## Version History
+### 4.5.1
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.5.1)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v2.1.1)
 
 ### 4.5.0
 
