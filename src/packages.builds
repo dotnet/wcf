@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="BuildAndTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<!-- Properties listed as TreatAsLocalProperty are so that they can be modified when set globaly via command prompt or VSTS. -->
+<Project TreatAsLocalProperty="BuildServiceModelPackages;BuildSvcUtilPackage" ToolsVersion="14.0" DefaultTargets="BuildAndTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
 
   <PropertyGroup>
     <PackageReportDir Condition="'$(PackageReportDir)' == ''">$(BinDir)pkg/reports/</PackageReportDir>
+    
+    <!-- 'StabilizePackageVersion' is used in conjunction with 'PackageVersionStamp' to determine whether or not a label and build number should be appended to a package name. -->
+    <!-- Default behavior when not building stable packages is to build both ServiceModel and SvcUtil packages. -->
+    <!-- 'StabilizePackageVersion' is a flag set manually when stable packages are needed. -->
+    <!-- 'BuildServiceModelPackages' and 'BuildSvcUtilPackage' should also be explicitly set when stable packages are desired, otherwise no packages will be built. -->
+    <BuildServiceModelPackages Condition="'$(StabilizePackageVersion)' != 'true' AND '$(BuildServiceModelPackages)' == ''">true</BuildServiceModelPackages>
+    <BuildSvcUtilPackage Condition="'$(StabilizePackageVersion)' != 'true' AND '$(BuildSvcUtilPackage)' == ''">true</BuildSvcUtilPackage>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Project Include="$(MSBuildThisFileDirectory)..\pkg\*\*.builds" Condition="'$(SkipManagedPackageBuild)' != 'true'">
+  <ItemGroup Condition="'$(BuildServiceModelPackages)' == 'true'" >
+    <Project Include="$(MSBuildThisFileDirectory)\System.Private.ServiceModel\pkg\System.Private.ServiceModel.pkgproj">
       <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
     </Project>
-    <Project Include="*\pkg\**\*.pkgproj" Condition="'$(SkipManagedPackageBuild)' != 'true' AND '$(BuildAllConfigurations)' == 'true'">
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Duplex\pkg\System.ServiceModel.Duplex.pkgproj">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Http\pkg\System.ServiceModel.Http.pkgproj">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.NetTcp\pkg\System.ServiceModel.NetTcp.pkgproj">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Primitives\pkg\System.ServiceModel.Primitives.pkgproj">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+    <Project Include="$(MSBuildThisFileDirectory)\System.ServiceModel.Security\pkg\System.ServiceModel.Security.pkgproj">
+      <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
+    </Project>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(BuildSvcUtilPackage)' == 'true'" >
+    <Project Include="$(MSBuildThisFileDirectory)\svcutilcore\pkg\dotnet-svcutil.xmlserializer.pkgproj">
       <AdditionalProperties>$(AdditionalProperties)</AdditionalProperties>
     </Project>
   </ItemGroup>
