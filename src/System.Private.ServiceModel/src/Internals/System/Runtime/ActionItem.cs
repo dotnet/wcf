@@ -46,7 +46,7 @@ namespace System.Runtime
         [Fx.Tag.SecurityNote(Critical = "Access critical field context and critical property " +
             "CallbackHelper.InvokeWithContextCallback, calls into critical method " +
             "PartialTrustHelpers.CaptureSecurityContextNoIdentityFlow, calls into critical method ScheduleCallback; " +
-            "since the invoked method and the capturing of the security contex are de-coupled, can't " +
+            "since the invoked method and the capturing of the security context are de-coupled, can't " +
             "be treated as safe")]
         [SecurityCritical]
         protected void Schedule()
