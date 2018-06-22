@@ -28,7 +28,7 @@ public interface IMockCommunicationObject : ICommunicationObject
     Action OnClosedOverride { get; set; }
     Action OnFaultedOverride { get; set; }
 
-    // Default bahaviors tests can call
+    // Default behaviors tests can call
     void DefaultOnAbort();
     void DefaultOnOpening();
     void DefaultOnOpen(TimeSpan timeout);
