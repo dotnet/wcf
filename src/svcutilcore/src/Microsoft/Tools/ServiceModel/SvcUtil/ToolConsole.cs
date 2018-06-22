@@ -323,9 +323,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
                 public static void WriteArguments(ArgumentInfo[] arguments)
                 {
-                    int maxArgumentnLength = CalculateMaxNameLength(arguments);
-                    int helpTextIndent = argHelpPrefix.Length + maxArgumentnLength + argHelpSeperator.Length;
-                    string helpPattern = argHelpPrefix + "{0, -" + maxArgumentnLength + "}" + argHelpSeperator + "{1}";
+                    int maxArgumentLength = CalculateMaxNameLength(arguments);
+                    int helpTextIndent = argHelpPrefix.Length + maxArgumentLength + argHelpSeperator.Length;
+                    string helpPattern = argHelpPrefix + "{0, -" + maxArgumentLength + "}" + argHelpSeperator + "{1}";
 
                     ToolStringBuilder builder = new ToolStringBuilder(helpTextIndent);
 
