@@ -143,7 +143,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         private static class HelpGenerator
         {
             private static ToolStringBuilder s_exampleBuilder = new ToolStringBuilder(4);
-            static HelpGenerator() { } // beforefeildInit
+            static HelpGenerator() { } // beforefieldInit
 
             internal static void WriteUsage()
             {
