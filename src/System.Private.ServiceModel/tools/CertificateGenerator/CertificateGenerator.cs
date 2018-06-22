@@ -45,7 +45,7 @@ namespace WcfTestCommon
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
         private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
-        private const string _signatureAlthorithm = "SHA1WithRSAEncryption";
+        private const string _signatureAlgorithm = "SHA1WithRSAEncryption";
         private const string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
         private const int _keyLengthInBits = 2048;
 
@@ -387,7 +387,7 @@ namespace WcfTestCommon
                 s_certGenerator.AddExtension(X509Extensions.CrlDistributionPoints, false, revocationListExtension);
             }
 
-            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlthorithm, _authorityKeyPair.Private, _random);
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlgorithm, _authorityKeyPair.Private, _random);
             X509Certificate cert = s_certGenerator.Generate(signatureFactory);
 
             switch (certificateCreationSettings.ValidityType)
@@ -487,7 +487,7 @@ namespace WcfTestCommon
                 s_crlGenerator.AddCrlEntry(new BigInteger(kvp.Key, 16), kvp.Value, CrlReason.CessationOfOperation);
             }
 
-            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlthorithm, _authorityKeyPair.Private, _random);
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(_signatureAlgorithm, _authorityKeyPair.Private, _random);
             X509Crl crl = s_crlGenerator.Generate(signatureFactory);
             crl.Verify(_authorityKeyPair.Public);
 
