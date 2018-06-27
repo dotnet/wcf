@@ -36,7 +36,7 @@
     <PackageVersion Condition="'$(PackageVersion)' == ''">4.5.2</PackageVersion>
     <!-- used to determine which package to use for harvesting purposes -->
     <!-- by default will use last stable version listed in the packageIndex.json -->
-    <HarvestVersion>4.3.1</HarvestVersion>
+    <HarvestVersion>4.3.2</HarvestVersion>
     
     <SkipValidatePackageTargetFramework>true</SkipValidatePackageTargetFramework>
     <SkipGenerationCheck>true</SkipGenerationCheck>
