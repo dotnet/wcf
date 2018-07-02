@@ -7,6 +7,9 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 
 ## Version History
 
+### 1.0.1 (07/02/2018)
+* Added support for loading web service metadata from multiple WSDL/XML Schema files ([#2920](https://github.com/dotnet/wcf/issues/2920), [#2958](https://github.com/dotnet/wcf/issues/2958))
+
 ### 1.0.0 (06/04/2018)
 * First stable release
 
