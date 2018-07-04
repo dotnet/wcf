@@ -14,7 +14,7 @@ namespace System.ServiceModel.Channels
     {
         private CookieContainer _cookieContainer;
 
-        // We need this flag to avoid overriding the CookieConatiner if the user has already initialized it.
+        // We need this flag to avoid overriding the CookieContainer if the user has already initialized it.
         public bool IsInitialized { get; private set; }
 
         public CookieContainer CookieContainer

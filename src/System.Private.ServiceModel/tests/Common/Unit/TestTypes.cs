@@ -242,7 +242,7 @@ namespace TestTypes
         DcFileBroken = 8,
         DcMonthlyFileBroken = 3,
         DcMonthlyFileNotAvailable = 2,
-        DcUserMonthlyFileIsNotAvaliable = 9,
+        DcUserMonthlyFileIsNotAvailable = 9,
         DcXboxTokeNull = 1,
         DeserializeError = 12,
         GamePlayIsNotValid = 0xc9,

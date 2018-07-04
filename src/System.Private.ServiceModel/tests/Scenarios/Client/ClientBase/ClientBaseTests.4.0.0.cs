@@ -136,7 +136,7 @@ public static partial class ClientBaseTests
         }
         finally
         {
-            // normally we'd also check for if (client != null && client.State != CommuncationState.Closed), 
+            // normally we'd also check for if (client != null && client.State != CommunicationState.Closed), 
             // but this is a test and it'd be good to have the Abort happen and the channel is still Closed
             if (client != null)
             {

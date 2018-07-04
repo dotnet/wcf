@@ -11,7 +11,7 @@ namespace System.ServiceModel.Description
         {
             /*
              * This file has a counterpart XmlStrings.cs in the svcutil codebase. 
-             * When making chnages here, please consider whether they should be made there as well
+             * When making changes here, please consider whether they should be made there as well
              */
             public const string Prefix = "wsx";
             public const string Name = "WS-MetadataExchange";

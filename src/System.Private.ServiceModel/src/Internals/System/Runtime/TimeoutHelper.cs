@@ -323,7 +323,7 @@ namespace System.Runtime
                     if (!s_tokenCache.TryGetValue(targetTime, out tokenTask))
                     {
                         // In unlikely scenario the token was already cancelled and timed out, we would not find it in cache.
-                        // In this case we would simply create a non-coalsed token
+                        // In this case we would simply create a non-coalesced token
                         tokenTask = Task.FromResult(new CancellationTokenSource(millisecondsTimeout).Token);
                     }
                 }
