@@ -183,6 +183,7 @@ namespace System.IdentityModel.Selectors
 
                 if (_chainPolicy != null)
                 {
+                    _chainPolicy.VerificationTime = DateTime.Now;
                     chain.ChainPolicy = _chainPolicy;
                 }
 
