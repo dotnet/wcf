@@ -361,7 +361,7 @@
     <value>The /{1} option cannot be used with the /{0} option because they imply different output types.</value>
   </data>
   <data name="ErrAmbiguousOptionModeConflict" xml:space="preserve">
-    <value>The /{0} option conflicts with other options. Review your use of the tool.</value>
+    <value>The /{0} option conflicts with other options. Review your use of the tool..</value>
   </data>
   <data name="ErrOptionConflictsWithTarget" xml:space="preserve">
     <value> The use of the /{2} option is not supported with the /{0} option set to '{1}'.</value>
@@ -547,7 +547,7 @@
     <value>When using the '/{0}:{1}' argument, only one namespace mapping is supported. Use '/{2}:*,&lt;string&gt;' to set the namespace.</value>
   </data>
   <data name="CopyrightForCmdLine" xml:space="preserve">
-    <value>Copyright (c) Microsoft Corporation.  All rights reserved.</value>
+    <value>Copyright (c) Microsoft Corporation.  All rights reserved......</value>
   </data>
   <data name="WcfTrademarkForCmdLine" xml:space="preserve">
     <value>Microsoft (R) Windows (R) Communication Foundation</value>
