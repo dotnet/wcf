@@ -8,7 +8,7 @@
         "4.3.1",
         "4.3.2"
       ],
-      "BaselineVersion": "4.3.2"
+      "BaselineVersion": "4.3.3"
     },
     "System.ServiceModel.Duplex": {
       "StableVersions": [
@@ -18,12 +18,13 @@
         "4.3.1",
         "4.3.2"
       ],
-      "BaselineVersion": "4.3.2",
+      "BaselineVersion": "4.3.3",
       "AssemblyVersionInPackageVersion": {
         "4.0.0.0": "4.0.0",
         "4.0.1.0": "4.0.1",
         "4.0.2.0": "4.3.1",
-        "4.0.2.1": "4.3.2"
+        "4.0.2.1": "4.3.2",
+        "4.0.2.2": "4.3.3"
       }
     },
     "System.ServiceModel.Http": {
@@ -36,14 +37,15 @@
         "4.3.1",
         "4.3.2"
       ],
-      "BaselineVersion": "4.3.2",
+      "BaselineVersion": "4.3.3",
       "AssemblyVersionInPackageVersion": {
         "3.9.0.0": "3.9.0",
         "4.0.0.0": "4.0.0",
         "4.0.10.0": "4.0.10",
         "4.1.0.0": "4.1.0",
         "4.1.1.0": "4.3.1",
-        "4.1.1.1": "4.3.2"
+        "4.1.1.1": "4.3.2",
+        "4.1.1.2": "4.3.3"
       }
     },
     "System.ServiceModel.NetTcp": {
@@ -54,12 +56,13 @@
         "4.3.1",
         "4.3.2"
       ],
-      "BaselineVersion": "4.3.2",
+      "BaselineVersion": "4.3.3",
       "AssemblyVersionInPackageVersion": {
         "4.0.0.0": "4.0.0",
         "4.1.0.0": "4.1.0",
         "4.1.1.0": "4.3.1",
-        "4.1.1.1": "4.3.2"
+        "4.1.1.1": "4.3.2",
+        "4.1.1.2": "4.3.3"
       }
     },
     "System.ServiceModel.Primitives": {
@@ -71,13 +74,14 @@
         "4.3.1",
         "4.3.2"
       ],
-      "BaselineVersion": "4.3.2",
+      "BaselineVersion": "4.3.3",
       "AssemblyVersionInPackageVersion": {
         "3.9.0.0": "3.9.0",
         "4.0.0.0": "4.0.0",
         "4.1.0.0": "4.1.0",
         "4.1.1.0": "4.3.0",
-        "4.1.1.1": "4.3.2"
+        "4.1.1.1": "4.3.2",
+        "4.1.1.2": "4.3.3"
       }
     },
     "System.ServiceModel.Security": {
@@ -89,13 +93,14 @@
         "4.3.1",
         "4.3.2"
       ],
-      "BaselineVersion": "4.3.2",
+      "BaselineVersion": "4.3.3",
       "AssemblyVersionInPackageVersion": {
         "3.9.0.0": "3.9.0",
         "4.0.0.0": "4.0.0",
         "4.0.1.0": "4.0.1",
         "4.0.2.0": "4.3.1",
-        "4.0.2.1": "4.3.2"
+        "4.0.2.1": "4.3.2",
+        "4.0.2.2": "4.3.3"
       }
     }
   },
