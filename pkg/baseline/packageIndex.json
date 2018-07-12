@@ -1,7 +1,17 @@
 {
   "Packages": {
     "_Comments": {
-      "InboxOn": {}
+        "_StableVersions": [
+            "Released versions."
+        ],
+        "_BaselineVersion": [
+            "Used to determine the minimum version used for all packages in the repo."
+        ],
+        "_AssemblyVersionInPackageVersion": [
+            "Used to understand what version of a package to reference.",
+            "Then raise the package version of the reference so that its at least the baseline version.",
+            "In cases where the assembly version did not rev but the package did, use the first package version."
+        ]
     },
     "dotnet-svcutil.xmlserializer": {
       "StableVersions": [
@@ -24,7 +34,7 @@
         "4.5.1",
         "4.5.2"
       ],
-      "BaselineVersion": "4.5.2",
+      "BaselineVersion": "4.5.3",
       "InboxOn": {},
       "AssemblyVersionInPackageVersion": {
         "4.0.0.0": "4.0.0",
@@ -36,7 +46,8 @@
         "4.1.2.0": "4.4.0",
         "4.5.0.0": "4.5.0",
         "4.5.0.1": "4.5.1",
-        "4.5.0.2": "4.5.2"
+        "4.5.0.2": "4.5.2",
+        "4.5.0.3": "4.5.3"
       }
     },
     "System.ServiceModel.Duplex": {
@@ -54,7 +65,7 @@
         "4.5.1",
         "4.5.2"
       ],
-      "BaselineVersion": "4.5.2",
+      "BaselineVersion": "4.5.3",
       "InboxOn": {
         "uap10.0.16299": "4.1.1.0"
       },
@@ -67,7 +78,8 @@
         "4.1.0.1": "4.4.2",
         "4.5.0.0": "4.5.0",
         "4.5.0.1": "4.5.1",
-        "4.5.0.2": "4.5.2"
+        "4.5.0.2": "4.5.2",
+        "4.5.0.3": "4.5.3"
       }
     },
     "System.ServiceModel.Http": {
@@ -87,7 +99,7 @@
         "4.5.1",
         "4.5.2"
       ],
-      "BaselineVersion": "4.5.2",
+      "BaselineVersion": "4.5.3",
       "InboxOn": {
         "uap10.0.16299": "4.1.3.0"
       },
@@ -102,7 +114,8 @@
         "4.1.2.1": "4.4.2",
         "4.5.0.0": "4.5.0",
         "4.5.0.1": "4.5.1",
-        "4.5.0.2": "4.5.2"
+        "4.5.0.2": "4.5.2",
+        "4.5.0.3": "4.5.3"
       }
     },
     "System.ServiceModel.NetTcp": {
@@ -120,7 +133,7 @@
         "4.5.1",
         "4.5.2"
       ],
-      "BaselineVersion": "4.5.2",
+      "BaselineVersion": "4.5.3",
       "InboxOn": {
         "uap10.0.16299": "4.1.3.0"
       },
@@ -133,7 +146,8 @@
         "4.1.2.1": "4.4.2",
         "4.5.0.0": "4.5.0",
         "4.5.0.1": "4.5.1",
-        "4.5.0.2": "4.5.2"
+        "4.5.0.2": "4.5.2",
+        "4.5.0.3": "4.5.3"
       }
     },
     "System.ServiceModel.Primitives": {
@@ -152,7 +166,7 @@
         "4.5.1",
         "4.5.2"
       ],
-      "BaselineVersion": "4.5.2",
+      "BaselineVersion": "4.5.3",
       "InboxOn": {
         "uap10.0.16299": "4.2.1.0"
       },
@@ -166,7 +180,8 @@
         "4.2.0.1": "4.4.2",
         "4.5.0.0": "4.5.0",
         "4.5.0.1": "4.5.1",
-        "4.5.0.2": "4.5.2"
+        "4.5.0.2": "4.5.2",
+        "4.5.0.3": "4.5.3"
       }
     },
     "System.ServiceModel.Security": {
@@ -185,7 +200,7 @@
         "4.5.1",
         "4.5.2"
       ],
-      "BaselineVersion": "4.5.2",
+      "BaselineVersion": "4.5.3",
       "InboxOn": {
         "uap10.0.16299": "4.0.4.0"
       },
@@ -199,7 +214,8 @@
         "4.0.3.1": "4.4.2",
         "4.5.0.0": "4.5.0",
         "4.5.0.1": "4.5.1",
-        "4.5.0.2": "4.5.2"
+        "4.5.0.2": "4.5.2",
+        "4.5.0.3": "4.5.3"
       }
     }
   },
