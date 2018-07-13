@@ -13,12 +13,6 @@
             "In cases where the assembly version did not rev but the package did, use the first package version."
         ]
     },
-    "dotnet-svcutil.xmlserializer": {
-      "StableVersions": [
-        "1.0.0"
-      ],
-      "InboxOn": {}
-    },
     "System.Private.ServiceModel": {
       "StableVersions": [
         "4.0.0",
