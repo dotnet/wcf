@@ -1,103 +1,136 @@
 {
-  "Packages": {
-    "System.Private.ServiceModel": {
-      "StableVersions": [
-        "4.0.0",
-        "4.1.0",
-        "4.3.0",
-        "4.3.1",
-        "4.3.2"
-      ],
-      "BaselineVersion": "4.3.2"
+    "Packages": {
+        "_Comments": {
+            "_StableVersions": [
+                "Released versions."
+            ],
+            "_BaselineVersion": [
+                "Used to determine the minimum version used for all packages in the repo."
+            ],
+            "_AssemblyVersionInPackageVersion": [
+                "Used to understand what version of a package to reference.",
+                "Then raise the package version of the reference so that its at least the baseline version.",
+                "In cases where the assembly version did not rev but the package did, use the first package version."
+            ]
+        },
+        "System.Private.ServiceModel": {
+            "StableVersions": [
+                "4.0.0",
+                "4.1.0",
+                "4.1.1",
+                "4.3.0",
+                "4.3.1",
+                "4.3.2"
+            ],
+            "BaselineVersion": "4.3.3"
+        },
+        "System.ServiceModel.Duplex": {
+            "StableVersions": [
+                "4.0.0",
+                "4.0.1",
+                "4.0.2",
+                "4.3.0",
+                "4.3.1",
+                "4.3.2"
+            ],
+            "BaselineVersion": "4.3.3",
+            "AssemblyVersionInPackageVersion": {
+                "4.0.0.0": "4.0.0",
+                "4.0.1.0": "4.0.1",
+                //"4.0.1.0": "4.0.2",
+                "4.0.2.0": "4.3.0",
+                //"4.0.2.0": "4.3.1",
+                "4.0.2.1": "4.3.2",
+                "4.0.2.2": "4.3.3"
+            }
+        },
+        "System.ServiceModel.Http": {
+            "StableVersions": [
+                "3.9.0",
+                "4.0.0",
+                "4.0.10",
+                "4.1.0",
+                "4.1.1",
+                "4.3.0",
+                "4.3.1",
+                "4.3.2"
+            ],
+            "BaselineVersion": "4.3.3",
+            "AssemblyVersionInPackageVersion": {
+                "3.9.0.0": "3.9.0",
+                "4.0.0.0": "4.0.0",
+                "4.0.10.0": "4.0.10",
+                "4.1.0.0": "4.1.0",
+                //"4.1.0.0": "4.1.1",
+                "4.1.1.0": "4.3.0",
+                //"4.1.1.0": "4.3.1",
+                "4.1.1.1": "4.3.2",
+                "4.1.1.2": "4.3.3"
+            }
+        },
+        "System.ServiceModel.NetTcp": {
+            "StableVersions": [
+                "4.0.0",
+                "4.1.0",
+                "4.1.1",
+                "4.3.0",
+                "4.3.1",
+                "4.3.2"
+            ],
+            "BaselineVersion": "4.3.3",
+            "AssemblyVersionInPackageVersion": {
+                "4.0.0.0": "4.0.0",
+                "4.1.0.0": "4.1.0",
+                //"4.1.0.0": "4.1.1",
+                "4.1.1.0": "4.3.1",
+                "4.1.1.1": "4.3.2",
+                "4.1.1.2": "4.3.3"
+            }
+        },
+        "System.ServiceModel.Primitives": {
+            "StableVersions": [
+                "3.9.0",
+                "4.0.0",
+                "4.1.0",
+                "4.1.1",
+                "4.3.0",
+                "4.3.1",
+                "4.3.2"
+            ],
+            "BaselineVersion": "4.3.3",
+            "AssemblyVersionInPackageVersion": {
+                "3.9.0.0": "3.9.0",
+                "4.0.0.0": "4.0.0",
+                "4.1.0.0": "4.1.0",
+                //"4.1.0.0": "4.1.1",
+                "4.1.1.0": "4.3.0",
+                //"4.1.1.0": "4.3.1",
+                "4.1.1.1": "4.3.2",
+                "4.1.1.2": "4.3.3"
+            }
+        },
+        "System.ServiceModel.Security": {
+            "StableVersions": [
+                "3.9.0",
+                "4.0.0",
+                "4.0.1",
+                "4.0.2",
+                "4.3.0",
+                "4.3.1",
+                "4.3.2"
+            ],
+            "BaselineVersion": "4.3.3",
+            "AssemblyVersionInPackageVersion": {
+                "3.9.0.0": "3.9.0",
+                "4.0.0.0": "4.0.0",
+                "4.0.1.0": "4.0.1",
+                //"4.0.1.0": "4.0.2",
+                "4.0.2.0": "4.3.0",
+                //"4.0.2.0": "4.3.1",
+                "4.0.2.1": "4.3.2",
+                "4.0.2.2": "4.3.3"
+            }
+        }
     },
-    "System.ServiceModel.Duplex": {
-      "StableVersions": [
-        "4.0.0",
-        "4.0.1",
-        "4.3.0",
-        "4.3.1",
-        "4.3.2"
-      ],
-      "BaselineVersion": "4.3.2",
-      "AssemblyVersionInPackageVersion": {
-        "4.0.0.0": "4.0.0",
-        "4.0.1.0": "4.0.1",
-        "4.0.2.0": "4.3.1",
-        "4.0.2.1": "4.3.2"
-      }
-    },
-    "System.ServiceModel.Http": {
-      "StableVersions": [
-        "3.9.0",
-        "4.0.0",
-        "4.0.10",
-        "4.1.0",
-        "4.3.0",
-        "4.3.1",
-        "4.3.2"
-      ],
-      "BaselineVersion": "4.3.2",
-      "AssemblyVersionInPackageVersion": {
-        "3.9.0.0": "3.9.0",
-        "4.0.0.0": "4.0.0",
-        "4.0.10.0": "4.0.10",
-        "4.1.0.0": "4.1.0",
-        "4.1.1.0": "4.3.1",
-        "4.1.1.1": "4.3.2"
-      }
-    },
-    "System.ServiceModel.NetTcp": {
-      "StableVersions": [
-        "4.0.0",
-        "4.1.0",
-        "4.3.0",
-        "4.3.1",
-        "4.3.2"
-      ],
-      "BaselineVersion": "4.3.2",
-      "AssemblyVersionInPackageVersion": {
-        "4.0.0.0": "4.0.0",
-        "4.1.0.0": "4.1.0",
-        "4.1.1.0": "4.3.1",
-        "4.1.1.1": "4.3.2"
-      }
-    },
-    "System.ServiceModel.Primitives": {
-      "StableVersions": [
-        "3.9.0",
-        "4.0.0",
-        "4.1.0",
-        "4.3.0",
-        "4.3.1",
-        "4.3.2"
-      ],
-      "BaselineVersion": "4.3.2",
-      "AssemblyVersionInPackageVersion": {
-        "3.9.0.0": "3.9.0",
-        "4.0.0.0": "4.0.0",
-        "4.1.0.0": "4.1.0",
-        "4.1.1.0": "4.3.0",
-        "4.1.1.1": "4.3.2"
-      }
-    },
-    "System.ServiceModel.Security": {
-      "StableVersions": [
-        "3.9.0",
-        "4.0.0",
-        "4.0.1",
-        "4.3.0",
-        "4.3.1",
-        "4.3.2"
-      ],
-      "BaselineVersion": "4.3.2",
-      "AssemblyVersionInPackageVersion": {
-        "3.9.0.0": "3.9.0",
-        "4.0.0.0": "4.0.0",
-        "4.0.1.0": "4.0.1",
-        "4.0.2.0": "4.3.1",
-        "4.0.2.1": "4.3.2"
-      }
-    }
-  },
-  "ModulesToPackages": {}
+    "ModulesToPackages": {}
 }
