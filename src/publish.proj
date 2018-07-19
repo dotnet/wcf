@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
+  <Import Project="..\dir.targets" />
   <Import Project="$(ToolsDir)PublishContent.targets" />
   <Import Project="$(ToolsDir)versioning.targets" />
 
@@ -11,7 +12,6 @@
   <PropertyGroup>
     <PackageDownloadDirectory Condition="'$(DownloadDirectory)' == ''">$(PackagesDir)AzureTransfer\$(ConfigurationGroup)</PackageDownloadDirectory>
     <FinalPublishPattern>$(PackageDownloadDirectory)\**\*.nupkg</FinalPublishPattern>
-    <FinalPublishPrivatePattern>$(PackageDownloadDirectory)\**\*Private*.nupkg</FinalPublishPrivatePattern>
     <FinalSymbolsPackagesPattern>$(PackageDownloadDirectory)\**\*.symbols.nupkg</FinalSymbolsPackagesPattern>
     <!-- The SignFiles target needs OutDir to be defined -->
     <OutDir>$(PackageDownloadDirectory)</OutDir>
@@ -19,7 +19,7 @@
 
   <Target Name="GetPackagesToSign">
     <ItemGroup>
-      <FilesToSign Include="$(FinalPublishPattern)" Exclude="$(FinalPublishPrivatePattern);$(FinalSymbolsPackagesPattern)">
+      <FilesToSign Include="$(FinalPublishPattern)" Exclude="$(FinalSymbolsPackagesPattern)">
         <Authenticode>NuGet</Authenticode>
       </FilesToSign>
     </ItemGroup>
