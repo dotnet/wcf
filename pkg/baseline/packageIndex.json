@@ -20,7 +20,8 @@
                 "4.1.1",
                 "4.3.0",
                 "4.3.1",
-                "4.3.2"
+                "4.3.2",
+                "4.3.3"
             ],
             "BaselineVersion": "4.3.3"
         },
@@ -31,7 +32,8 @@
                 "4.0.2",
                 "4.3.0",
                 "4.3.1",
-                "4.3.2"
+                "4.3.2",
+                "4.3.3"
             ],
             "BaselineVersion": "4.3.3",
             "AssemblyVersionInPackageVersion": {
@@ -53,7 +55,8 @@
                 "4.1.1",
                 "4.3.0",
                 "4.3.1",
-                "4.3.2"
+                "4.3.2",
+                "4.3.3"
             ],
             "BaselineVersion": "4.3.3",
             "AssemblyVersionInPackageVersion": {
@@ -75,7 +78,8 @@
                 "4.1.1",
                 "4.3.0",
                 "4.3.1",
-                "4.3.2"
+                "4.3.2",
+                "4.3.3"
             ],
             "BaselineVersion": "4.3.3",
             "AssemblyVersionInPackageVersion": {
@@ -95,7 +99,8 @@
                 "4.1.1",
                 "4.3.0",
                 "4.3.1",
-                "4.3.2"
+                "4.3.2",
+                "4.3.3"
             ],
             "BaselineVersion": "4.3.3",
             "AssemblyVersionInPackageVersion": {
@@ -117,7 +122,8 @@
                 "4.0.2",
                 "4.3.0",
                 "4.3.1",
-                "4.3.2"
+                "4.3.2",
+                "4.3.3"
             ],
             "BaselineVersion": "4.3.3",
             "AssemblyVersionInPackageVersion": {
