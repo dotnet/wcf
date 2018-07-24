@@ -4,7 +4,7 @@
   <PropertyGroup>
     <PreventImplementationReference>true</PreventImplementationReference>
     <!-- workaround for https://github.com/dotnet/buildtools/issues/1529 -->
-    <HarvestVersion>4.3.3</HarvestVersion>
+    <HarvestVersion>4.3.4</HarvestVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\System.Private.ServiceModel.builds" />
