@@ -10,15 +10,15 @@
   -->
   <PropertyGroup>
     <CoreFxCurrentRef>40697681be31dff83b6c3b75a6de0d3adbc790a7</CoreFxCurrentRef>
-    <WCFCurrentRef>62d4b199afb4bd64d302e5b50551be218860809a</WCFCurrentRef>
+    <WCFCurrentRef>1878bf9ac5ea90b75a75bc961cee5b18269f279a</WCFCurrentRef>
     <StandardCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>6861e496702080833b96533abac01c53f6d68b4d</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>6861e496702080833b96533abac01c53f6d68b4d</ProjectNTfsTestILCCurrentRef>
+    <ProjectNTfsCurrentRef>1878bf9ac5ea90b75a75bc961cee5b18269f279a</ProjectNTfsCurrentRef>
+    <ProjectNTfsTestILCCurrentRef>1878bf9ac5ea90b75a75bc961cee5b18269f279a</ProjectNTfsTestILCCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview1-26203-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>uwp60-26725-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview1-25801-01</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.1.0-preview1-25518-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
@@ -28,9 +28,9 @@
     -->
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview1-25531-01</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
 
-    <ProjectNTfsExpectedPrerelease>rel-26118-01</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>rel-26118-01</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-26118-01</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>rel-26323-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>rel-26312-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-rel-26312-00</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
