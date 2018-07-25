@@ -166,7 +166,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 // Figure out the directory part
                 string dirPath = Path.GetDirectoryName(path);
                 if (string.IsNullOrEmpty(dirPath))
-                    dirPath = string.Concat(@".", Path.DirectorySeparatorChar);
+                    dirPath = "." + Path.DirectorySeparatorChar;
                 DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
 
                 // Verify that the directory exists
