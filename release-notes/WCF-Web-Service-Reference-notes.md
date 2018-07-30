@@ -4,7 +4,14 @@ WCF Web Service Reference connected services provider is now part of Visual Stud
 
 ## Release History
 
-### 4/18/2018 - Visual Studio 2017 v15.7 Preview 4.0 [27617.01.d15.7]
+### 7/26/2018 - Visual Studio 2017 v15.8 Preview 5.0 [27926.0.d15.8]
+* Updated to use [dotnet-svcutil 1.0.1](https://www.nuget.org/packages/dotnet-svcutil/1.0.1)
+* Bug fixes ([#2852](https://github.com/dotnet/wcf/issues/2852))
+
+### 5/31/2018 - Visual Studio 2017 v15.8 Preview 2.0 [27729.1.d15.8]
+* Bug fixes ([#2719](https://github.com/dotnet/wcf/issues/2719), [#2994](https://github.com/dotnet/wcf/issues/2994))
+
+### 4/18/2018 - Visual Studio 2017 v15.7 Preview 4.0 [27617.1.d15.7]
 * Bug fixes ([#2635](https://github.com/dotnet/wcf/issues/2635))
 
 ### 4/9/2018 - Visual Studio 2017 v15.7 Preview 3.0 [27603.0.d15.7]
@@ -36,7 +43,7 @@ WCF Web Service Reference connected services provider is now part of Visual Stud
 * All features and bug fixes included in v15.5 preview releases are now in the v15.5 final release.
 * Preview releases of this tool (if installed) can be uninstalled through *Tools -> Extensions and Updates* menu in VS ([#2429](https://github.com/dotnet/wcf/issues/2429)) 
 
-### 10/23/2017 - Visual Studio 2017 v15.5 Preview 2.0 [27019.01.d15rel]
+### 10/23/2017 - Visual Studio 2017 v15.5 Preview 2.0 [27019.1.d15rel]
 
 * User interface improvements, for example, added UI to display operations of selected service to help selecting the right service when multiple similar services are available.
 * Fixed an issue with error message "It was not possible to find any compatible framework version..." which can happen when .NET Core 1.0 SDK is not installed ([#2340](https://github.com/dotnet/wcf/issues/2340)).
