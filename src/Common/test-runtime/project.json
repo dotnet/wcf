@@ -13,11 +13,11 @@
         "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
         "System.Reflection.DispatchProxy": "4.4.0",
         "System.Net.Http.WinHttpHandler": "4.4.0",
-        "System.ServiceModel.Duplex": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.Http": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.NetTcp": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.Primitives": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.Security": "4.4.0-preview2-25413-01"
+        "System.ServiceModel.Duplex": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.Http": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.NetTcp": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.Primitives": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.Security": "4.4.5-servicing-26801-02"
       }
     },
     "netcoreapp2.0": {
@@ -26,16 +26,16 @@
         "OpenCover": "4.6.519",
         "ReportGenerator": "2.4.3",
         "Microsoft.NETCore.TestHost": "2.0.0-preview2-25304-01",
-        "Microsoft.NETCore.App": "2.0.0-preview2-25407-01",
+        "Microsoft.NETCore.App": "2.0.9",
         "Microsoft.DotNet.BuildTools.TestSuite": "1.0.1-prerelease-01001-04",
         "xunit.console.netcore": "1.0.3-prerelease-00925-01",
         "Microsoft.xunit.netcore.extensions": "1.0.1-prerelease-01001-04",
         "System.Net.Http.WinHttpHandler": "4.4.0",
-        "System.ServiceModel.Duplex": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.Http": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.NetTcp": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.Primitives": "4.4.0-preview2-25413-01",
-        "System.ServiceModel.Security": "4.4.0-preview2-25413-01",
+        "System.ServiceModel.Duplex": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.Http": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.NetTcp": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.Primitives": "4.4.5-servicing-26801-02",
+        "System.ServiceModel.Security": "4.4.5-servicing-26801-02",
         "Microsoft.CSharp": {
           "version": "4.3.0",
           "exclude": "all"
