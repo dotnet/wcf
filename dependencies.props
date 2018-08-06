@@ -9,18 +9,15 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <CoreFxCurrentRef>40697681be31dff83b6c3b75a6de0d3adbc790a7</CoreFxCurrentRef>
     <WCFCurrentRef>62d4b199afb4bd64d302e5b50551be218860809a</WCFCurrentRef>
-    <StandardCurrentRef>401c80913afdea5399e0f39376db88e465ae62c9</StandardCurrentRef>
-    <ProjectNTfsCurrentRef>6861e496702080833b96533abac01c53f6d68b4d</ProjectNTfsCurrentRef>
-    <ProjectNTfsTestILCCurrentRef>6861e496702080833b96533abac01c53f6d68b4d</ProjectNTfsTestILCCurrentRef>
+    <StandardCurrentRef>8a65f50bd6ed692c34b154c89b7cbb29799976f8</StandardCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <WCFExpectedPrerelease>preview1-26203-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview1-25801-01</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-25518-01</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.1.0-preview1-25631-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
@@ -50,28 +47,19 @@
   <!-- Package dependency verification/auto-upgrade configuration. -->
   <PropertyGroup>
     <BaseDotNetBuildInfo>build-info/dotnet/</BaseDotNetBuildInfo>
-    <DependencyBranch>release/uwp6.0</DependencyBranch>
+    <DependencyBranch>master</DependencyBranch>
+    <Uwp6ReleaseDependencyBranch>release/uwp6.0</Uwp6ReleaseDependencyBranch>
     <CurrentRefXmlPath>$(MSBuildThisFileFullPath)</CurrentRefXmlPath>
   </PropertyGroup>
 
   <ItemGroup>
     <RemoteDependencyBuildInfo Include="WCF">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(DependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(Uwp6ReleaseDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="CoreFx">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
-      <!-- manually pick up a new baseline in order to get package dependencies updated -->
-      <DisabledPackages>Microsoft.Private.PackageBaseline;NETStandard.Library</DisabledPackages>
-    </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="ProjectNTfs">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(ProjectNTfsCurrentRef)</CurrentRef>
-    </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="ProjectNTfsTestILC">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)projectn-tfs-testilc/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(ProjectNTfsTestILCCurrentRef)</CurrentRef>
+    <RemoteDependencyBuildInfo Include="Standard">
+      <BuildInfoPath>$(BaseDotNetBuildInfo)standard/$(DependencyBranch)</BuildInfoPath>
+      <CurrentRef>$(StandardCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
@@ -83,35 +71,10 @@
       <ElementName>WCFExpectedPrerelease</ElementName>
       <BuildInfoName>WCF</BuildInfoName>
     </XmlUpdateStep>
-    <XmlUpdateStep Include="CoreFx">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>CoreFxExpectedPrerelease</ElementName>
-      <BuildInfoName>CoreFx</BuildInfoName>
-    </XmlUpdateStep>
-    <XmlUpdateStep Include="CoreFx">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>MicrosoftPrivateCoreFxNETCoreAppPackageVersion</ElementName>
-      <PackageId>Microsoft.Private.CoreFx.NETCoreApp</PackageId>
-    </XmlUpdateStep>
-    <!--<XmlUpdateStep Include="Standard">
+    <XmlUpdateStep Include="Standard">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>NETStandardPackageVersion</ElementName>
       <PackageId>$(NETStandardPackageId)</PackageId>
-    </XmlUpdateStep>-->
-    <XmlUpdateStep Include="ProjectNTfs">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>ProjectNTfsExpectedPrerelease</ElementName>
-      <BuildInfoName>ProjectNTfs</BuildInfoName>
-    </XmlUpdateStep>
-    <XmlUpdateStep Include="ProjectNTfsTestILC">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>ProjectNTfsTestILCExpectedPrerelease</ElementName>
-      <BuildInfoName>ProjectNTfsTestILC</BuildInfoName>
-    </XmlUpdateStep>
-    <XmlUpdateStep Include="ProjectNTfsTestILC">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>ProjectNTfsTestILCPackageVersion</ElementName>
-      <PackageId>TestILC.amd64ret</PackageId>
     </XmlUpdateStep>
   </ItemGroup>
 
