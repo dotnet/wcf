@@ -7,6 +7,10 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 
 ## Version History
 
+### 1.0.2 (08/06/2018)
+* Added debug verbosity option (--verbosity debug).
+* Bug fixes ([#2848](https://github.com/dotnet/wcf/issues/2848), [#2591](https://github.com/dotnet/wcf/issues/2591), [#2765](https://github.com/dotnet/wcf/issues/2765))
+
 ### 1.0.1 (07/02/2018)
 * Added support for loading web service metadata from multiple WSDL/XML Schema files ([#2920](https://github.com/dotnet/wcf/issues/2920), [#2958](https://github.com/dotnet/wcf/issues/2958))
 
