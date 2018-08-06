@@ -1,10 +1,8 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
-    <CoreFxCurrentRef>23359c17ebe3ba84865dda6b81792d27b160b0d6</CoreFxCurrentRef>
     <WCFCurrentRef>a2ba4d6141ef25bdb4c2d2c014b9e1f305a0ea90</WCFCurrentRef>
     <StandardCurrentRef>23359c17ebe3ba84865dda6b81792d27b160b0d6</StandardCurrentRef>
-    <CoreSetupCurrentRef>c2c072242cb0bdea99efb7349d69492f83200a7d</CoreSetupCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
@@ -33,30 +31,15 @@
       <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="CoreFx">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)corefx/$(CoreDependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(CoreFxCurrentRef)</CurrentRef>
-       <!--manually pick up a new baseline in order to get package dependencies updated--> 
-      <DisabledPackages>Microsoft.Private.PackageBaseline</DisabledPackages>
-    </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="Standard">
       <BuildInfoPath>$(BaseDotNetBuildInfo)standard/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(StandardCurrentRef)</CurrentRef>
-    </RemoteDependencyBuildInfo>
-    <RemoteDependencyBuildInfo Include="CoreSetup">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)core-setup/$(CoreDependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(CoreSetupCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
 
     <DependencyBuildInfo Include="@(RemoteDependencyBuildInfo)">
       <RawVersionsBaseUrl>https://raw.githubusercontent.com/dotnet/versions</RawVersionsBaseUrl>
     </DependencyBuildInfo>
 
-    <XmlUpdateStep Include="CoreFx">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>CoreFxExpectedPrerelease</ElementName>
-      <BuildInfoName>CoreFx</BuildInfoName>
-    </XmlUpdateStep>
     <XmlUpdateStep Include="WCF">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>WcfExpectedPrerelease</ElementName>
@@ -66,11 +49,6 @@
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>NETStandardPackageVersion</ElementName>
       <PackageId>$(NETStandardPackageId)</PackageId>
-    </XmlUpdateStep>
-    <XmlUpdateStep Include="CoreSetup">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>MicrosoftNETCoreAppPackageVersion</ElementName>
-      <PackageId>Microsoft.NETCore.App</PackageId>
     </XmlUpdateStep>
   </ItemGroup>
 
