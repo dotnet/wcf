@@ -9,14 +9,14 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <WCFCurrentRef>0c5568605f69a69600bdbb54e5d627a1931b99be</WCFCurrentRef>
+    <WCFCurrentRef>acb32eca6a4c5bd62522493f84be00ad932bf99c</WCFCurrentRef>
     <StandardCurrentRef>fba36b56ad15b7f7c9b9e3dea41c8276926df27e</StandardCurrentRef>
-    <BuildToolsCurrentRef>ed8ea9cfbe31692bdacc2d110508367da56bbba2</BuildToolsCurrentRef>
+    <BuildToolsCurrentRef>acb32eca6a4c5bd62522493f84be00ad932bf99c</BuildToolsCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>stable</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>servicing-26811-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>rtm-26515-03</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
@@ -38,7 +38,7 @@
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
     <CoreFxBaseLinePackageVersion>2.2.0-rtm</CoreFxBaseLinePackageVersion>
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0018</XunitPerfAnalysisPackageVersion>
-    <XunitNetcoreExtensionsVersion>2.1.0-rc1-02804-05</XunitNetcoreExtensionsVersion>
+    <XunitNetcoreExtensionsVersion>2.1.0-rc1-03006-01</XunitNetcoreExtensionsVersion>
 
     <CoreClrPackageVersion>2.1.0-rtm-26515-07</CoreClrPackageVersion>
     <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0</MicrosoftNETCoreDotNetHostPackageVersion>
@@ -51,7 +51,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.1.0-rc1-02804-05</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-rc1-03006-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
