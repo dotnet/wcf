@@ -9,15 +9,15 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <WCFCurrentRef>62d4b199afb4bd64d302e5b50551be218860809a</WCFCurrentRef>
-    <StandardCurrentRef>8a65f50bd6ed692c34b154c89b7cbb29799976f8</StandardCurrentRef>
+    <WCFCurrentRef>715a68e7a8ebeacafb5d0760bf13864ff8565fa5</WCFCurrentRef>
+    <StandardCurrentRef>715a68e7a8ebeacafb5d0760bf13864ff8565fa5</StandardCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview1-26203-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>uwp60-26811-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview1-25801-01</CoreFxExpectedPrerelease>
-    <NETStandardPackageVersion>2.1.0-preview1-25631-01</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.1.0-preview1-26810-01</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
