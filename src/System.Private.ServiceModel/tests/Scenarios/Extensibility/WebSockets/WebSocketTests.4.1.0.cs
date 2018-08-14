@@ -14,6 +14,7 @@ using Infrastructure.Common;
 public class WebSocketTests : ConditionalWcfTest
 {
     [WcfFact]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_BinaryStreamed()
@@ -77,7 +78,7 @@ public class WebSocketTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     public static void WebSocket_Http_Duplex_BinaryStreamed()
     {
@@ -170,7 +171,7 @@ public class WebSocketTests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryStreamed()
@@ -266,7 +267,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextStreamed()
@@ -362,7 +363,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_Duplex_TextStreamed()
@@ -455,6 +456,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_TextStreamed()
@@ -642,7 +644,7 @@ public class WebSocketTests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_BinaryBuffered()
@@ -695,7 +697,7 @@ public class WebSocketTests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_TextBuffered_KeepAlive()
@@ -750,7 +752,7 @@ public class WebSocketTests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_BinaryBuffered()
@@ -818,7 +820,7 @@ public class WebSocketTests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_TextBuffered_KeepAlive()
@@ -885,7 +887,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_TextBuffered()
@@ -935,7 +937,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_RequestReply_BinaryBuffered_KeepAlive()
@@ -986,7 +988,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_Duplex_TextBuffered_KeepAlive()
@@ -1050,7 +1052,7 @@ public class WebSocketTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_Duplex_BinaryBuffered()
@@ -1116,7 +1118,7 @@ public class WebSocketTests : ConditionalWcfTest
     // When not using a callback you can still force WCF to use WebSockets.
     // This test verifies that it actually uses WebSockets when not using a callback.
     [WcfFact]
-    [Issue(526, Framework = FrameworkID.NetNative)]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/526")]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Http_VerifyWebSocketsUsed()

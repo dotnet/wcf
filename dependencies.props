@@ -28,17 +28,17 @@
     <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-rtm-26515-03</MicrosoftPrivateCoreFxUAPPackageVersion>
     <CoreFxPkgStableVersion>4.5.0</CoreFxPkgStableVersion>
 
-    <ProjectNTfsExpectedPrerelease>beta-26123-01</ProjectNTfsExpectedPrerelease>
-    <ProjectNTfsTestILCExpectedPrerelease>beta-26123-01</ProjectNTfsTestILCExpectedPrerelease>
-    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26123-01</ProjectNTfsTestILCPackageVersion>
+    <ProjectNTfsExpectedPrerelease>beta-26413-00</ProjectNTfsExpectedPrerelease>
+    <ProjectNTfsTestILCExpectedPrerelease>beta-26413-00</ProjectNTfsTestILCExpectedPrerelease>
+    <ProjectNTfsTestILCPackageVersion>1.0.0-beta-26413-00</ProjectNTfsTestILCPackageVersion>
   </PropertyGroup>
 
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
     <CoreFxBaseLinePackageVersion>2.2.0-rtm</CoreFxBaseLinePackageVersion>
-    <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0018</XunitPerfAnalysisPackageVersion>
-    <XunitNetcoreExtensionsVersion>2.1.0-rc1-02804-05</XunitNetcoreExtensionsVersion>
+    <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0019</XunitPerfAnalysisPackageVersion>
+    <XunitNetcoreExtensionsVersion>2.1.0-rc1-03006-01</XunitNetcoreExtensionsVersion>
 
     <CoreClrPackageVersion>2.1.0-rtm-26515-07</CoreClrPackageVersion>
     <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0</MicrosoftNETCoreDotNetHostPackageVersion>
