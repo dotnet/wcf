@@ -366,10 +366,14 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
+#if !FEATURE_NETNATIVE // HttpClientHandler for uap does not support a non-NetworkCredential type.
                     CredentialCache credentials = new CredentialCache();
                     credentials.Add(GetCredentialCacheUriPrefix(via),
                         AuthenticationSchemesHelper.ToString(_authenticationScheme), credential);
                     clientHandler.Credentials = credentials;
+#else
+                    clientHandler.Credentials = credential;
+#endif
                 }
 
                 HttpMessageHandler handler = clientHandler;
