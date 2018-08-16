@@ -7,7 +7,7 @@
   <PropertyGroup>
     <MajorVersion>4</MajorVersion>
     <MinorVersion>6</MinorVersion>
-    <AssemblyVersion>4.5.4.0</AssemblyVersion>
+    <AssemblyVersion>4.5.0.4</AssemblyVersion>
   </PropertyGroup>
 
   <!-- Define vNext UAP Moniker -->
