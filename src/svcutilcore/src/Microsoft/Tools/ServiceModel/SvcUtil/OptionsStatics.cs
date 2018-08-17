@@ -14,6 +14,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             internal const string Out = "out";
             internal const string Directory = "directory";
             internal const string Reference = "reference";
+            internal const string SMReference = "smreference";
             internal const string Nostdlib = "noStdLib";
             internal const string ExcludeType = "excludeType";
             internal const string CollectionType = "collectionType";
@@ -30,6 +31,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             internal const string Out = "o";
             internal const string Directory = "d";
             internal const string Reference = "r";
+            internal const string SMReference = "sr";
             internal const string ExcludeType = "et";
             internal const string CollectionType = "ct";
             internal const string Namespace = "n";
@@ -52,6 +54,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             public static readonly CommandSwitch NoLogo = new CommandSwitch(Options.Cmd.NoLogo, Options.Cmd.NoLogo, SwitchType.Flag);
             public static readonly CommandSwitch Out = new CommandSwitch(Options.Cmd.Out, Abbr.Out, SwitchType.SingletonValue);
             public static readonly CommandSwitch Reference = new CommandSwitch(Options.Cmd.Reference, Abbr.Reference, SwitchType.ValueList);
+            public static readonly CommandSwitch SMReference = new CommandSwitch(Options.Cmd.SMReference, Abbr.SMReference, SwitchType.ValueList);
             public static readonly CommandSwitch Nostdlib = new CommandSwitch(Options.Cmd.Nostdlib, Options.Cmd.Nostdlib, SwitchType.Flag);
             public static readonly CommandSwitch ExcludeType = new CommandSwitch(Options.Cmd.ExcludeType, Abbr.ExcludeType, SwitchType.ValueList);
             public static readonly CommandSwitch Namespace = new CommandSwitch(Options.Cmd.Namespace, Abbr.Namespace, SwitchType.ValueList);
@@ -59,7 +62,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             public static readonly CommandSwitch Debug = new CommandSwitch(Options.Cmd.Debug, Options.Cmd.Debug, SwitchType.Flag);
 #endif
             public static readonly CommandSwitch[] All = new CommandSwitch[] { Directory, Help, NoLogo, Out,
-                                                                        Nostdlib, ExcludeType, Namespace,
+                                                                        Nostdlib, ExcludeType, Namespace, Reference, SMReference,
 #if DEBUG
                                                                         Debug,
 #endif

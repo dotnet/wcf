@@ -149,6 +149,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 ReadInputArguments();
                 ParseNamespaceMappings();
                 ParseReferenceAssemblies();
+                ParseSMReferenceAssembly();
             }
 
             private bool CheckForHelpOption()
@@ -291,6 +292,26 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 _parent._typeResolver = CreateTypeResolver(_parent);
             }
 
+            private void ParseSMReferenceAssembly()
+            {
+                IList<string> referencedAssembliesArgs = _arguments.GetArguments(Options.Cmd.SMReference);
+                if(referencedAssembliesArgs!= null && referencedAssembliesArgs.Count >= 0)
+                {
+                    var smassembly = referencedAssembliesArgs[0];
+                    try
+                    {
+                        InputModule.LoadAssembly(smassembly);
+                    }
+                    catch(Exception e)
+                    {
+                        if (Tool.IsFatal(e))
+                            throw;
+                    }
+                }
+                
+                
+            }
+
             private void SetAllowedModesFromOption(ToolMode newDefaultMode, ToolMode allowedModes, string option, string value)
             {
                 try
@@ -365,8 +386,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     {
                         if (Tool.IsFatal(e))
                             throw;
-
-                        throw new ToolOptionException(SR.Format(SR.ErrCouldNotLoadReferenceAssemblyAt, path), e);
                     }
                 }
             }
