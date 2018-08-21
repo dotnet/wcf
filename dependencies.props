@@ -9,14 +9,14 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <WCFCurrentRef>bc189e7681f4e64bb2ba779eefb40b9e4542c683</WCFCurrentRef>
+    <WCFCurrentRef>731f939b6653b980132ba52a600d5bb688d579a0</WCFCurrentRef>
     <StandardCurrentRef>c520a2569b40fc53cf51e4f6970c3e7411adc173</StandardCurrentRef>
     <BuildToolsCurrentRef>8fc22d261883eb7a1f8765bfe716d806303d0318</BuildToolsCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview3-26429-01</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>preview1-26821-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>preview3-26430-04</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
