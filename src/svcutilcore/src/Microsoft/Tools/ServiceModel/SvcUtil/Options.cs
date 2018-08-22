@@ -295,7 +295,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             private void ParseSMReferenceAssembly()
             {
                 IList<string> referencedAssembliesArgs = _arguments.GetArguments(Options.Cmd.SMReference);
-                if(referencedAssembliesArgs!= null && referencedAssembliesArgs.Count >= 0)
+                if(referencedAssembliesArgs!= null && referencedAssembliesArgs.Count > 0)
                 {
                     var smassembly = referencedAssembliesArgs[0];
                     try
