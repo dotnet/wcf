@@ -9,14 +9,14 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <WCFCurrentRef>0c5568605f69a69600bdbb54e5d627a1931b99be</WCFCurrentRef>
+    <WCFCurrentRef>97e12b6c3db77604d6af25a13680f1bc9ecae0d1</WCFCurrentRef>
     <StandardCurrentRef>fba36b56ad15b7f7c9b9e3dea41c8276926df27e</StandardCurrentRef>
-    <BuildToolsCurrentRef>ed8ea9cfbe31692bdacc2d110508367da56bbba2</BuildToolsCurrentRef>
+    <BuildToolsCurrentRef>97e12b6c3db77604d6af25a13680f1bc9ecae0d1</BuildToolsCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>stable</WCFExpectedPrerelease>
+    <WCFExpectedPrerelease>servicing-26818-01</WCFExpectedPrerelease>
     <CoreFxExpectedPrerelease>rtm-26515-03</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
@@ -51,7 +51,7 @@
   <!-- Package versions used as toolsets -->
   <PropertyGroup>
     <FeedTasksPackage>Microsoft.DotNet.Build.Tasks.Feed</FeedTasksPackage>
-    <FeedTasksPackageVersion>2.1.0-rc1-02804-05</FeedTasksPackageVersion>
+    <FeedTasksPackageVersion>2.1.0-rc1-03006-01</FeedTasksPackageVersion>
   </PropertyGroup>
 
   <!-- Package dependency verification/auto-upgrade configuration. -->
