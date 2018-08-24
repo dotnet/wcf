@@ -53,8 +53,13 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("HttpSoap11.svc//http-soap11"); }
     }
-	
-	public static string HttpSoap11WSA2004_Address
+
+    public static string HttpSoap11WSA10_Address
+    {
+        get { return GetEndpointAddress("HttpSoap11WSA10.svc//http-Soap11WSA10"); }
+    }
+
+    public static string HttpSoap11WSA2004_Address
 	{
 		get { return GetEndpointAddress("HttpSoap11WSA2004.svc//http-Soap11WSA2004"); }
 	}
@@ -64,7 +69,12 @@ public static partial class Endpoints
         get { return GetEndpointAddress("HttpSoap12.svc//http-soap12"); }
     }
 
-	public static string HttpSoap12WSA2004_Address
+    public static string HttpSoap12WSANone_Address
+    {
+        get { return GetEndpointAddress("HttpSoap12WSANone.svc//http-Soap12WSANone"); }
+    }
+
+    public static string HttpSoap12WSA2004_Address
 	{
 		get { return GetEndpointAddress("HttpSoap12WSA2004.svc//http-Soap12WSA2004"); }
 	}
@@ -621,6 +631,16 @@ public static partial class Endpoints
         {
             return GetEndpointAddress("SessionTestsDuplexService.svc", protocol: "net.tcp");
         }
+    }
+
+    public static string TcpSoap12WSANone_Address
+    {
+        get { return GetEndpointAddress("TcpSoap12WSANone.svc/tcp-Soap12WSANone", protocol: "net.tcp"); }
+    }
+
+    public static string TcpSoap11WSA10_Address
+    {
+        get { return GetEndpointAddress("TcpSoap11WSA10.svc/tcp-Soap11WSA10", protocol: "net.tcp"); }
     }
 
     #endregion net.tcp Addresses
