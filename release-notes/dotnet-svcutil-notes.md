@@ -7,6 +7,9 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 
 ## Version History
 
+### 1.0.3 (08/29/2018)
+* Bug fixes ([#3081](https://github.com/dotnet/wcf/issues/3081), [#3103](https://github.com/dotnet/wcf/issues/3103))
+
 ### 1.0.2 (08/06/2018)
 * Added debug verbosity option (--verbosity debug).
 * Bug fixes ([#2848](https://github.com/dotnet/wcf/issues/2848), [#2591](https://github.com/dotnet/wcf/issues/2591), [#2765](https://github.com/dotnet/wcf/issues/2765))
