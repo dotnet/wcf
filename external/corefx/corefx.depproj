@@ -16,18 +16,9 @@
     <NuGetTargetMonikerShort>uap10.1</NuGetTargetMonikerShort>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Security.AccessControl">
-      <Version>$(CoreFxPkgStableVersion)</Version>
-    </PackageReference>
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
     <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp">
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
-    </PackageReference>
-    <PackageReference Include="System.ComponentModel.Composition">
-      <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
@@ -44,12 +35,6 @@
       <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
     <PackageReference Include="System.Security.Principal.Windows">
-      <Version>$(CoreFxPkgStableVersion)</Version>
-    </PackageReference>
-
-    <PackageReference Include="System.Net.Http.WinHttpHandler"
-                      Condition="'$(TargetsWindows)' == 'true' or
-                                 '$(TargetGroup)' == 'netstandard'">
       <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
   </ItemGroup>
