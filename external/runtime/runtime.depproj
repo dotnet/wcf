@@ -43,10 +43,10 @@
       <Version>$(MicrosoftPrivateCoreFxNETCoreAppPackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.DotNetHost">
-      <Version>$(DotNetHostPackageVersion)</Version>
+      <Version>$(MicrosoftNETCoreDotNetHostPackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy">
-      <Version>$(DotNetHostPackageVersion)</Version>
+      <Version>$(MicrosoftNETCoreDotNetHostPolicyPackageVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
