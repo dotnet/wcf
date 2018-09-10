@@ -9,23 +9,24 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <WCFCurrentRef>bc189e7681f4e64bb2ba779eefb40b9e4542c683</WCFCurrentRef>
-    <StandardCurrentRef>c520a2569b40fc53cf51e4f6970c3e7411adc173</StandardCurrentRef>
-    <BuildToolsCurrentRef>8fc22d261883eb7a1f8765bfe716d806303d0318</BuildToolsCurrentRef>
+    <WCFCurrentRef>97e12b6c3db77604d6af25a13680f1bc9ecae0d1</WCFCurrentRef>
+    <StandardCurrentRef>fba36b56ad15b7f7c9b9e3dea41c8276926df27e</StandardCurrentRef>
+    <BuildToolsCurrentRef>97e12b6c3db77604d6af25a13680f1bc9ecae0d1</BuildToolsCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview3-26429-01</WCFExpectedPrerelease>
-    <CoreFxExpectedPrerelease>preview3-26430-04</CoreFxExpectedPrerelease>
+    <WCFExpectedPrerelease>servicing-26818-01</WCFExpectedPrerelease>
+    <CoreFxExpectedPrerelease>rtm-26515-03</CoreFxExpectedPrerelease>
     <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <!--
       This property is used for many CoreFX packages, because they have the same
       versions. Make more properties for CoreFX if split versions are required.
     -->
-    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-preview3-26430-04</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
-    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-preview3-26430-04</MicrosoftPrivateCoreFxUAPPackageVersion>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-rtm-26515-03</MicrosoftPrivateCoreFxUAPPackageVersion>
+    <CoreFxPkgStableVersion>4.5.0</CoreFxPkgStableVersion>
 
     <ProjectNTfsExpectedPrerelease>beta-26413-00</ProjectNTfsExpectedPrerelease>
     <ProjectNTfsTestILCExpectedPrerelease>beta-26413-00</ProjectNTfsTestILCExpectedPrerelease>
@@ -35,15 +36,16 @@
   <!-- Full package version strings that are used in other parts of the build. -->
   <PropertyGroup>
     <AppXRunnerVersion>1.0.3-prerelease-00921-01</AppXRunnerVersion>
-    <CoreFxBaseLinePackageVersion>2.2.0-preview1-26020-03</CoreFxBaseLinePackageVersion>
+    <CoreFxBaseLinePackageVersion>2.2.0-rtm</CoreFxBaseLinePackageVersion>
     <XunitPerfAnalysisPackageVersion>1.0.0-beta-build0019</XunitPerfAnalysisPackageVersion>
     <XunitNetcoreExtensionsVersion>2.1.0-rc1-03006-01</XunitNetcoreExtensionsVersion>
 
-    <CoreClrPackageVersion>2.2.0-preview1-26430-05</CoreClrPackageVersion>
-    <DotNetHostPackageVersion>2.0.0-preview2-25310-02</DotNetHostPackageVersion>
+    <CoreClrPackageVersion>2.1.0-rtm-26515-07</CoreClrPackageVersion>
+    <MicrosoftNETCoreDotNetHostPackageVersion>2.1.0</MicrosoftNETCoreDotNetHostPackageVersion>
+    <MicrosoftNETCoreDotNetHostPolicyPackageVersion>2.1.0</MicrosoftNETCoreDotNetHostPolicyPackageVersion>
 
     <!-- Microsoft.NETCore.Platforms is part of CoreFX, but allow separate upgrade. -->
-    <PlatformPackageVersion>2.1.0-preview1-25324-02</PlatformPackageVersion>
+    <PlatformPackageVersion>2.1.0</PlatformPackageVersion>
   </PropertyGroup>
 
   <!-- Package versions used as toolsets -->
@@ -55,9 +57,8 @@
   <!-- Package dependency verification/auto-upgrade configuration. -->
   <PropertyGroup>
     <BaseDotNetBuildInfo>build-info/dotnet/</BaseDotNetBuildInfo>
-    <DependencyBranch>master</DependencyBranch>
-    <CoreDependencyBranch>release/2.0.0</CoreDependencyBranch>
-    <BuildToolsDependencyBranch>release/2.1</BuildToolsDependencyBranch>
+    <DependencyBranch>release/2.1.0</DependencyBranch>
+    <CoreDependencyBranch>release/2.1</CoreDependencyBranch>
     <CurrentRefXmlPath>$(MSBuildThisFileFullPath)</CurrentRefXmlPath>
   </PropertyGroup>
 
@@ -67,11 +68,11 @@
       <CurrentRef>$(WCFCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="Standard">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)standard/$(CoreDependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)standard/release/2.0.0</BuildInfoPath>
       <CurrentRef>$(StandardCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="BuildTools">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)buildtools/$(BuildToolsDependencyBranch)</BuildInfoPath>
+      <BuildInfoPath>$(BaseDotNetBuildInfo)buildtools/$(CoreDependencyBranch)</BuildInfoPath>
       <CurrentRef>$(BuildToolsCurrentRef)</CurrentRef>
     </RemoteDependencyBuildInfo>
 
@@ -96,6 +97,11 @@
     </UpdateStep>
     <XmlUpdateStep Include="BuildTools">
       <Path>$(MSBuildThisFileFullPath)</Path>
+      <ElementName>XunitNetcoreExtensionsVersion</ElementName>
+      <PackageId>Microsoft.xunit.netcore.extensions</PackageId>
+    </XmlUpdateStep>
+    <XmlUpdateStep Include="BuildTools">
+      <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>FeedTasksPackageVersion</ElementName>
       <PackageId>$(FeedTasksPackage)</PackageId>
     </XmlUpdateStep>
@@ -118,7 +124,7 @@
     </StaticDependency>
 
     <StaticDependency Include="Microsoft.TargetingPack.Private.WinRT">
-      <Version>1.0.3</Version>
+      <Version>1.0.5</Version>
     </StaticDependency>
 
     <XUnitDependency Include="xunit"/>
