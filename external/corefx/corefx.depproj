@@ -46,12 +46,6 @@
     <PackageReference Include="System.Security.Principal.Windows">
       <Version>$(CoreFxPkgStableVersion)</Version>
     </PackageReference>
-
-    <PackageReference Include="System.Net.Http.WinHttpHandler"
-                      Condition="'$(TargetsWindows)' == 'true' or
-                                 '$(TargetGroup)' == 'netstandard'">
-      <Version>$(CoreFxPkgStableVersion)</Version>
-    </PackageReference>
   </ItemGroup>
 
   <!-- The depproj deploys runtime assets. This target also deploys reference assets. -->
