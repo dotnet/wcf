@@ -148,8 +148,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 ProcessOutputOption();
                 ReadInputArguments();
                 ParseNamespaceMappings();
-                ParseReferenceAssemblies();
                 ParseSMReferenceAssembly();
+                ParseReferenceAssemblies();
             }
 
             private bool CheckForHelpOption()
