@@ -9,22 +9,20 @@
        These ref versions are pulled from https://github.com/dotnet/versions.
   -->
   <PropertyGroup>
-    <WCFCurrentRef>bc189e7681f4e64bb2ba779eefb40b9e4542c683</WCFCurrentRef>
     <StandardCurrentRef>c520a2569b40fc53cf51e4f6970c3e7411adc173</StandardCurrentRef>
     <BuildToolsCurrentRef>97e12b6c3db77604d6af25a13680f1bc9ecae0d1</BuildToolsCurrentRef>
   </PropertyGroup>
 
   <!-- Product dependency versions. -->
   <PropertyGroup>
-    <CoreFxPkgStableVersion>4.5.0</CoreFxPkgStableVersion>
+    <SystemReflectionDispatchProxyPackageVersion>4.5.0</SystemReflectionDispatchProxyPackageVersion>
+    <SystemSecurityPrincipalWindowsPackageVersion>4.5.0</SystemSecurityPrincipalWindowsPackageVersion>
     <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
   </PropertyGroup>
 
   <!-- Tests/infrastructure dependency versions. -->
   <PropertyGroup>
-    <WCFExpectedPrerelease>preview3-26429-01</WCFExpectedPrerelease>
-
     <!--
     Microsoft.NETCore.Platforms is part of CoreFX, Do not auto-update.
     WCF servicing releases will keep dependencies set to RTM versions.
@@ -60,10 +58,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <RemoteDependencyBuildInfo Include="WCF">
-      <BuildInfoPath>$(BaseDotNetBuildInfo)wcf/$(DependencyBranch)</BuildInfoPath>
-      <CurrentRef>$(WCFCurrentRef)</CurrentRef>
-    </RemoteDependencyBuildInfo>
     <RemoteDependencyBuildInfo Include="Standard">
       <BuildInfoPath>$(BaseDotNetBuildInfo)standard/release/2.0.0</BuildInfoPath>
       <CurrentRef>$(StandardCurrentRef)</CurrentRef>
@@ -77,11 +71,6 @@
       <RawVersionsBaseUrl>https://raw.githubusercontent.com/dotnet/versions</RawVersionsBaseUrl>
     </DependencyBuildInfo>
 
-    <XmlUpdateStep Include="WCF">
-      <Path>$(MSBuildThisFileFullPath)</Path>
-      <ElementName>WCFExpectedPrerelease</ElementName>
-      <BuildInfoName>WCF</BuildInfoName>
-    </XmlUpdateStep>
     <XmlUpdateStep Include="Standard">
       <Path>$(MSBuildThisFileFullPath)</Path>
       <ElementName>NETStandardPackageVersion</ElementName>

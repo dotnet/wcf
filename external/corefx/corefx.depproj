@@ -32,10 +32,10 @@
   <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp' or
                         '$(TargetGroup)' == 'netstandard'">
     <PackageReference Include="System.Reflection.DispatchProxy">
-      <Version>$(CoreFxPkgStableVersion)</Version>
+      <Version>$(SystemReflectionDispatchProxyPackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="System.Security.Principal.Windows">
-      <Version>$(CoreFxPkgStableVersion)</Version>
+      <Version>$(SystemSecurityPrincipalWindowsPackageVersion)</Version>
     </PackageReference>
   </ItemGroup>
 
