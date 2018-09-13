@@ -36,9 +36,6 @@
     <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR">
       <Version>$(MicrosoftNETCoreRuntimeCoreCLRPackageVersion)</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.TestHost">
-      <Version>$(MicrosoftNETCoreRuntimeCoreCLRPackageVersion)</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.DotNetHost">
       <Version>$(MicrosoftNETCoreDotNetHostPackageVersion)</Version>
     </PackageReference>
