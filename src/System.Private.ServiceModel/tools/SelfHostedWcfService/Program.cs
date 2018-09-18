@@ -59,10 +59,12 @@ namespace SelfHostedWCFService
             CreateHost<HttpsDigestTestServiceHost, WcfService.WcfService>("DigestAuthentication/HttpsDigest.svc", httpsBaseAddress);
             CreateHost<HttpsNtlmTestServiceHost, WcfService.WcfService>("WindowAuthenticationNtlm/HttpsNtlm.svc", httpsBaseAddress);
             CreateHost<HttpSoap11TestServiceHost, WcfService.WcfService>("HttpSoap11.svc", httpBaseAddress);
+            CreateHost<HttpSoap11WSA10TestServiceHost, WcfService.WcfService>("HttpSoap11WSA10.svc", httpBaseAddress);
             CreateHost<HttpsSoap11TestServiceHost, WcfService.WcfService>("HttpsSoap11.svc", httpsBaseAddress);
             CreateHost<HttpSoap11WSA2004TestServiceHost, WcfService.WcfService>("HttpSoap11WSA2004.svc", httpBaseAddress);
             CreateHost<HttpsSoap12TestServiceHost, WcfService.WcfService>("HttpsSoap12.svc", httpsBaseAddress);
             CreateHost<HttpSoap12TestServiceHost, WcfService.WcfService>("HttpSoap12.svc", httpBaseAddress);
+            CreateHost<HttpSoap12WSANoneTestServiceHost, WcfService.WcfService>("HttpSoap12WSANone.svc", httpBaseAddress);
             CreateHost<HttpSoap12WSA2004TestServiceHost, WcfService.WcfService>("HttpSoap12WSA2004.svc", httpBaseAddress);
             CreateHost<HttpsWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpsWindows.svc", httpsBaseAddress);
             CreateHost<HttpWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpWindows.svc", httpBaseAddress);
@@ -98,6 +100,8 @@ namespace SelfHostedWCFService
             CreateHost<TcpSessionTestServiceHost, WcfService.SessionTestsDefaultService>("SessionTestsDefaultService.svc", tcpBaseAddress);
             CreateHost<TcpSessionShortTimeoutTestServiceHost, WcfService.SessionTestsShortTimeoutService>("SessionTestsShortTimeoutService.svc", tcpBaseAddress);
             CreateHost<TcpSessionDuplexTestServiceHost, WcfService.SessionTestsDuplexService>("SessionTestsDuplexService.svc", tcpBaseAddress);
+            CreateHost<TcpSoap12WSANoneTestServiceHost, WcfService.WcfService>("TcpSoap12WSANone.svc", tcpBaseAddress);
+            CreateHost<TcpSoap11WSA10TestServiceHost, WcfService.WcfService>("TcpSoap11WSA10.svc", tcpBaseAddress);
             CreateHost<DuplexWebSocketTestServiceHost, WcfWebSocketService>("DuplexWebSocket.svc", websocketBaseAddress);
             CreateHost<WebSocketTransportTestServiceHost, WcfWebSocketTransportUsageAlwaysService>("WebSocketTransport.svc", websocketBaseAddress);
             CreateHost<WebSocketHttpDuplexBinaryStreamedTestServiceHost, WSDuplexService>("WebSocketHttpDuplexBinaryStreamed.svc", websocketBaseAddress);

@@ -84,4 +84,150 @@ public static partial class MessageVersionTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    [Issue(2864)]
+    public static void SameBinding_Soap12_EchoString_Http()
+    {
+        CustomBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
+        string testString = "Hello";
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.CreateVersion(EnvelopeVersion.Soap12, AddressingVersion.None), Encoding.UTF8), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpSoap12WSANone_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    [Issue(2864)]
+    public static void SameBinding_Soap12_EchoString_Tcp()
+    {
+        CustomBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
+        string testString = "Hello";
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.CreateVersion(EnvelopeVersion.Soap12, AddressingVersion.None), Encoding.UTF8), new TcpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.TcpSoap12WSANone_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void SameBinding_Soap11WSA10_EchoString_Http()
+    {
+        CustomBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
+        string testString = "Hello";
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.CreateVersion(EnvelopeVersion.Soap11, AddressingVersion.WSAddressing10), Encoding.UTF8), new HttpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.HttpSoap11WSA10_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void SameBinding_Soap11WSA10_EchoString_Tcp()
+    {
+        CustomBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string result = null;
+        string testString = "Hello";
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.CreateVersion(EnvelopeVersion.Soap11, AddressingVersion.WSAddressing10), Encoding.UTF8), new TcpTransportBindingElement());
+            endpointAddress = new EndpointAddress(Endpoints.TcpSoap11WSA10_Address);
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(String.Equals(result, testString), String.Format("    Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }
