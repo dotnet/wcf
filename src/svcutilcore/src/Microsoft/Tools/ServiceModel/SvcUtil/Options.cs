@@ -295,7 +295,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             private void ParseSMReferenceAssembly()
             {
                 IList<string> referencedAssembliesArgs = _arguments.GetArguments(Options.Cmd.SMReference);
-                if(referencedAssembliesArgs!= null && referencedAssembliesArgs.Count > 0)
+                if(referencedAssembliesArgs != null && referencedAssembliesArgs.Count > 0)
                 {
                     var smassembly = referencedAssembliesArgs[0];
                     try
@@ -304,6 +304,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     }
                     catch(Exception e)
                     {
+                        ToolConsole.WriteWarning(string.Format("Fail to load the reference assembly {0} with the error {2}", smassembly, e.Message));
                         if (Tool.IsFatal(e))
                             throw;
                     }
