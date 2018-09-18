@@ -87,6 +87,7 @@ public static partial class MessageVersionTests
 
     [WcfFact]
     [OuterLoop]
+    [Issue(2864)]
     public static void SameBinding_Soap12_EchoString_Http()
     {
         CustomBinding binding = null;
@@ -123,6 +124,7 @@ public static partial class MessageVersionTests
 
     [WcfFact]
     [OuterLoop]
+    [Issue(2864)]
     public static void SameBinding_Soap12_EchoString_Tcp()
     {
         CustomBinding binding = null;
