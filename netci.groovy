@@ -115,13 +115,12 @@ wcfUtilities = new WcfUtilities()
     wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branch, isPR)
     
     newJob.with {
+    label('Windows.10.Amd64.Client-RS4.DevEx.15.8.Open')
         steps {
             batchFile("build.cmd -coverage -outerloop -${configurationGroup} -- /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=%WcfServiceUri%")
         }
     }
 
-    // Set affinity for elevated machines
-    Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
     // Set up standard options.
     Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
     // Add code coverage report
@@ -159,14 +158,12 @@ wcfUtilities = new WcfUtilities()
         def targetGroup = "netcoreapp"
         
         newJob.with {
+        label('Windows.10.Amd64.Client-RS4.DevEx.15.8.Open')
             steps {
                 batchFile("build.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]}")
                 batchFile("build-tests.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]} -outerloop -- /p:IsCIBuild=true")
             }
         }
-
-        // Set affinity for elevated machines
-        Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
 
         // Set up standard options.
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
@@ -202,6 +199,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
+                label('Windows.10.Amd64.Client-RS4.DevEx.15.8.Open')
                     steps {
                         batchFile("build.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]}")
                         batchFile("build-tests.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]} -outerloop -- /p:ServiceUri=%WcfServiceUri% /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true /p:IsCIBuild=true")
@@ -220,10 +218,12 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             }
 
             // Set the affinity.  OS name matches the machine affinity.
-            if (os == 'Windows_NT' || os == 'OSX10.12') {
-                // Set affinity for elevated machines on Windows
-                Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
+            if (os == 'Windows_NT') {
+                // Do not set affinity as it would override the label set above
             } 
+            else if (os == 'OSX10.12') {
+                Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
+            }
             else if (osGroupMap[os] == 'Linux') {
                 Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
             } 
@@ -283,6 +283,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             if (osGroupMap[os] == 'Windows_NT')
             {
                 newJob.with {
+                label('Windows.10.Amd64.Client-RS4.DevEx.15.8.Open')
                     steps {
                         batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup}")
                         batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build-tests.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup} -- /p:IsCIBuild=true")
@@ -301,7 +302,12 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             }
             
             // Set the affinity  
-            Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
+            if (os == 'Windows_NT') {
+                // Do not set affinity as it would override the label set above
+            } 
+            else {
+                Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
+            }
             // Set up standard options
             Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
             // Add the unit test results
