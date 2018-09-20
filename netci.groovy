@@ -115,6 +115,7 @@ wcfUtilities = new WcfUtilities()
     wcfUtilities.addWcfOuterloopTestServiceSync(newJob, os, branch, isPR)
     
     newJob.with {
+    label('windows.10.amd64.clientrs4.devex.15.8.open')
         steps {
             batchFile("build.cmd -coverage -outerloop -${configurationGroup} -- /p:ShouldGenerateNuSpec=false /p:OSGroup=${osGroupMap[os]} /p:ServiceUri=%WcfServiceUri%")
         }
@@ -159,6 +160,7 @@ wcfUtilities = new WcfUtilities()
         def targetGroup = "netcoreapp"
         
         newJob.with {
+        label('windows.10.amd64.clientrs4.devex.15.8.open')
             steps {
                 batchFile("build.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]}")
                 batchFile("build-tests.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]} -outerloop -- /p:IsCIBuild=true")
@@ -202,6 +204,7 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             
             if (osGroupMap[os] == 'Windows_NT') {
                 newJob.with {
+                label('windows.10.amd64.clientrs4.devex.15.8.open')
                     steps {
                         batchFile("build.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]}")
                         batchFile("build-tests.cmd -framework:${targetGroup} -${configurationGroup} -os:${osGroupMap[os]} -outerloop -- /p:ServiceUri=%WcfServiceUri% /p:SSL_Available=true /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:Peer_Certificate_Installed=true /p:IsCIBuild=true")
@@ -283,6 +286,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             if (osGroupMap[os] == 'Windows_NT')
             {
                 newJob.with {
+                label('windows.10.amd64.clientrs4.devex.15.8.open')
                     steps {
                         batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup}")
                         batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build-tests.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup} -- /p:IsCIBuild=true")
