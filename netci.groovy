@@ -218,16 +218,13 @@ def supportedFullCycleOuterloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             }
 
             // Set the affinity.  OS name matches the machine affinity.
-            if (os == 'Windows_NT') {
-                // Do not set affinity as it would override the label set above
-            } 
-            else if (os == 'OSX10.12') {
+            if (os == 'OSX10.12') {
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto-elevated')
             }
             else if (osGroupMap[os] == 'Linux') {
                 Utilities.setMachineAffinity(newJob, os, "outer-latest-or-auto")
             } 
-            else {
+            else if (os != 'Windows_NT') {
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             }
 
@@ -302,10 +299,7 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
             }
             
             // Set the affinity  
-            if (os == 'Windows_NT') {
-                // Do not set affinity as it would override the label set above
-            } 
-            else {
+            if (os != 'Windows_NT') {
                 Utilities.setMachineAffinity(newJob, os, 'latest-or-auto')
             }
             // Set up standard options
