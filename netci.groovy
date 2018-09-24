@@ -288,8 +288,8 @@ def supportedFullCycleInnerloopPlatforms = ['Windows_NT', 'Ubuntu14.04', 'Ubuntu
                 newJob.with {
                 label('windows.10.amd64.clientrs4.devex.15.8.open')
                     steps {
-                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup}")
-                        batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build-tests.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup} -- /p:IsCIBuild=true")
+                        batchFile("build.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup}")
+                        batchFile("build-tests.cmd -${configurationGroup} -os:${osGroupMap[os]} -framework:${targetGroup} -- /p:IsCIBuild=true")
                         batchFile("C:\\Packer\\Packer.exe .\\bin\\build.pack .\\bin")
                     }
                 }
