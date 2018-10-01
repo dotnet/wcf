@@ -1,0 +1,39 @@
+variables:
+  Build.Repository.Clean: true
+  targetFramework: netcoreapp2.0
+  _HelixType: build/product
+  _HelixSource: pr/StephenBonikowsky/wcf/$(Build.SourceBranch)
+
+trigger:
+- master
+
+# To be added in the future when VSTS supports this feature
+# pr:
+# - master
+
+# Three phases for each of the three OSes we want to run on
+phases:
+- template: /eng/common/templates/phases/base.yml
+  parameters:
+    agentOs: Windows_NT
+    name: Windows_NT
+    enableTelemetry: true
+    queue:
+      name: Helix
+      parallel: 99
+      matrix:
+        debug_configuration:
+          _BuildConfig: Debug
+        release_configuration:
+          _BuildConfig: Release
+    steps:
+    - script: build.cmd
+        -framework:netcoreapp
+        -os:Windows_NT
+        -configuration $(_BuildConfig)
+        -prepareMachine
+      name: Build
+      displayName: Build
+      condition: succeeded()
+    variables:
+      _HelixBuildConfig: $(_BuildConfig)
