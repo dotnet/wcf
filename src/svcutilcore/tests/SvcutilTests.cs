@@ -22,9 +22,12 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
             Assert.False(File.Exists(outputFile));
             string testassemblypath = Assembly.GetExecutingAssembly().Location.ToLower();
             string smassemblypath = testassemblypath.Replace("dotnet-svcutil.xmlserializer.tests", "system.servicemodel.primitives").Replace("microsoft.tools.servicemodel.svcutil.xmlserializer.tests", "system.servicemodel.primitives").Replace("netcoreapp", "netstandard");
-            Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"/out:{outputFile}", $"/smreference:{smassemblypath}" });
-            Assert.True(File.Exists(outputFile));
-            File.Delete(outputFile);
+            if (File.Exists(smassemblypath))
+            {
+                Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"/out:{outputFile}", $"/smreference:{smassemblypath}" });
+                Assert.True(File.Exists(outputFile));
+                File.Delete(outputFile);
+            }
         }
     }
 }

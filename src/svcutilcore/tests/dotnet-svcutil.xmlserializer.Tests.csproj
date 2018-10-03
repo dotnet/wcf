@@ -79,7 +79,8 @@
     <Message Text="Running Serialization Tool" Importance="normal" />
     <PropertyGroup>
       <CorrectedOutputPath>$(OutputPath.Replace('/', '\'))</CorrectedOutputPath>
-      <SMOutputPath>$(CorrectedOutputPath.ToLower().Replace('dotnet-svcutil.xmlserializer.tests', 'system.servicemodel.primitives').Replace('netcoreapp', 'netstandard'))</SMOutputPath>
+      <!--<SMOutputPath>$(CorrectedOutputPath.ToLower().Replace('dotnet-svcutil.xmlserializer.tests', 'system.servicemodel.primitives').Replace('netcoreapp', 'netstandard'))</SMOutputPath>-->
+      <SMOutputPath>$(RuntimePath)</SMOutputPath>
     </PropertyGroup>
 
     <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)system.servicemodel.primitives.dll"  />
