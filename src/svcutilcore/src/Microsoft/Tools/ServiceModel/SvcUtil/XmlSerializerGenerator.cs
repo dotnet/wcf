@@ -5,7 +5,6 @@
 namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
-    using System.ServiceModel.Description;
     using System.Reflection;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -14,7 +13,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
     using System.Text;
     using System.Xml.Serialization;
     using System.CodeDom.Compiler;
-    using System.ServiceModel;
 
     internal class XmlSerializerGenerator : OutputModule
     {
@@ -124,17 +122,34 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         ToolConsole.WriteWarning(SR.Format(SR.WrnUnableToLoadContractForSGen, contractType, errorMessage));
                     };
 
-            foreach (ContractDescription contract in contractLoader.GetContracts())
+            Type contractDescriptionType = Tool.SMAssembly.GetType("System.ServiceModel.Description.ContractDescription");
+            foreach (object contract in contractLoader.GetContracts())
             {
-                types.Add(contract.ContractType);
-                foreach (OperationDescription operation in contract.Operations)
+                types.Add((Type)contractDescriptionType.GetProperty("ContractType").GetValue(contract));
+                var operations = contractDescriptionType.GetProperty("Operations").GetValue(contract);
+                Type operationsType = operations.GetType();
+                MethodInfo getCount = operationsType.GetMethod("get_Count");
+                int count = (int)getCount.Invoke(operations, new object[] { });
+                for (int i = 0; i < count; ++i)
                 {
-                    XmlSerializerOperationBehavior behavior = operation.Behaviors.Find<XmlSerializerOperationBehavior>();
+                    MethodInfo getItem = operationsType.GetMethod("get_Item");
+                    var operation = getItem.Invoke(operations, new object[] { i });
+                    var getBehaviors = operation.GetType().GetMethod("get_Behaviors");
+                    var behaviors = getBehaviors.Invoke(operation, new object[] { });
+                    var find = behaviors.GetType().GetMethod("Find");
+                    Type XmlSerializerOperationBehaviorType = Tool.SMAssembly.GetType("System.ServiceModel.Description.XmlSerializerOperationBehavior");
+                    MethodInfo FindXmlSerializerOperationBehavior = find.MakeGenericMethod(new Type[] { XmlSerializerOperationBehaviorType });
+                    var behavior = FindXmlSerializerOperationBehavior.Invoke(behaviors, new object[] { });
                     if (behavior != null)
                     {
-                        foreach (XmlMapping map in behavior.GetXmlMappings())
+                        MethodInfo getXmlMappings = behavior.GetType().GetMethod("GetXmlMappings");
+                        var xmlMappings = (Collection<XmlMapping>)getXmlMappings.Invoke(behavior, new object[] { });
+                        if (xmlMappings != null)
                         {
-                            mappings.Add(map);
+                            foreach (XmlMapping map in xmlMappings)
+                            {
+                                mappings.Add(map);
+                            }
                         }
                     }
                 }

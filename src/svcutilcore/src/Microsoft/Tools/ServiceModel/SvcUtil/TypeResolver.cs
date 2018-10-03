@@ -7,7 +7,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.ServiceModel;
 
     internal class TypeResolver
     {

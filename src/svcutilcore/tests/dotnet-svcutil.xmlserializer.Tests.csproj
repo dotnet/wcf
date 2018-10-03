@@ -79,8 +79,10 @@
     <Message Text="Running Serialization Tool" Importance="normal" />
     <PropertyGroup>
       <CorrectedOutputPath>$(OutputPath.Replace('/', '\'))</CorrectedOutputPath>
+      <SMOutputPath>$(CorrectedOutputPath.ToLower().Replace('dotnet-svcutil.xmlserializer.tests', 'system.servicemodel.primitives').Replace('netcoreapp', 'netstandard'))</SMOutputPath>
     </PropertyGroup>
-    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs"  />
+
+    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)system.servicemodel.primitives.dll"  />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
     <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true'"
          OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll"
@@ -96,7 +98,7 @@
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).dll') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).dll"/>
 
     <ItemGroup>
-      <!-- Include the Serializer in ReferenceCopyLocalPaths so that it will be binplaced -->
+       <!-- Include the Serializer in ReferenceCopyLocalPaths so that it will be binplaced --> 
       <ReferenceCopyLocalPaths Include="$(CorrectedOutputPath)$(SerializerName).dll" />
     </ItemGroup>
   </Target>

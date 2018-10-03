@@ -18,7 +18,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netstandard-Release|AnyCPU'" />
   <ItemGroup>
     <Reference Include="netstandard" />
-    <Reference Include="System.ServiceModel.Primitives" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.XmlSerializer" />
@@ -40,6 +39,7 @@
     <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.Extensions" />
     <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Threading" />
     <Reference Include="System.Console" />
     <Reference Include="System.Threading" />

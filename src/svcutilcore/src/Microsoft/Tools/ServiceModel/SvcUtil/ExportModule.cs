@@ -5,12 +5,9 @@
 namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Reflection;
-    using System.ServiceModel;
     using System.Xml;
     using System.Xml.Schema;
     using System.Collections.ObjectModel;
@@ -48,24 +45,26 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 set { _contractLoadErrorCallback = value; }
             }
 
-            internal IEnumerable<ContractDescription> GetContracts()
+            internal IEnumerable<Object> GetContracts()
             {
                 foreach (Type type in _types)
                 {
                     if (!_isTypeExcluded(type) && IsContractType(type))
                     {
-                        ContractDescription contract = LoadContract(type);
+                        var contract = LoadContract(type);
                         if (contract != null)
                             yield return contract;
                     }
                 }
             }
 
-            private ContractDescription LoadContract(Type type)
+            private object LoadContract(Type type)
             {
                 try
                 {
-                    ContractDescription description = ContractDescription.GetContract(type);
+                    Type contractDescription = Tool.SMAssembly.GetType("System.ServiceModel.Description.ContractDescription");
+                    MethodInfo GetContract = contractDescription.GetMethod("GetContract", new Type[] { typeof(Type) });
+                    object description = GetContract.Invoke(null, new object[] { type });
                     return description;
                 }
 #pragma warning suppress 56500 // covered by FxCOP
@@ -83,7 +82,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
             private static bool IsContractType(Type type)
             {
-                return (type.IsInterface || type.IsClass) && (type.IsDefined(typeof(ServiceContractAttribute), false));
+                Type serviceContractAttributeType = Tool.SMAssembly.GetType("System.ServiceModel.ServiceContractAttribute");
+                return (type.IsInterface || type.IsClass) && (type.IsDefined(serviceContractAttributeType, false));
             }
         }
     }
