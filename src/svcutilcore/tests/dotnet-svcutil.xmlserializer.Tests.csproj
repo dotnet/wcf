@@ -83,8 +83,8 @@
       <SMOutputPath>$(RuntimePath)</SMOutputPath>
     </PropertyGroup>
     <Message Text="Run XmlSerializer: $(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)system.servicemodel.primitives.dll" Importance="high" />
-    <Message Text="system.servicemodel.primitives.dll exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)system.servicemodel.primitives.dll') == 'true'" Importance="high" />"
-    <Message Text="system.servicemodel.primitives.dll not exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)system.servicemodel.primitives.dll') != 'true'" Importance="high" />"
+    <Message Text="system.servicemodel.primitives.dll exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)system.servicemodel.primitives.dll') == 'true'" Importance="high" />
+    <Message Text="system.servicemodel.primitives.dll not exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)system.servicemodel.primitives.dll') != 'true'" Importance="high" />
     <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)system.servicemodel.primitives.dll"  />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
     <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true'"
