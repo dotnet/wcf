@@ -82,10 +82,10 @@
       <!--<SMOutputPath>$(CorrectedOutputPath.ToLower().Replace('dotnet-svcutil.xmlserializer.tests', 'system.servicemodel.primitives').Replace('netcoreapp', 'netstandard'))</SMOutputPath>-->
       <SMOutputPath>$(RuntimePath)</SMOutputPath>
     </PropertyGroup>
-    <Message Text="Run XmlSerializer: $(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)system.servicemodel.primitives.dll" Importance="high" />
-    <Message Text="system.servicemodel.primitives.dll exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)system.servicemodel.primitives.dll') == 'true'" Importance="high" />
-    <Message Text="system.servicemodel.primitives.dll not exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)system.servicemodel.primitives.dll') != 'true'" Importance="high" />
-    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)system.servicemodel.primitives.dll"  />
+    <Message Text="Run XmlSerializer: $(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)System.ServiceModel.Primitives.dll" Importance="high" />
+    <Message Text="System.ServiceModel.Primitives.dll exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)System.ServiceModel.Primitives.dll') == 'true'" Importance="high" />
+    <Message Text="System.ServiceModel.Primitives.dll not exists in $(SMOutputPath)" Condition="Exists('$(SMOutputPath)System.ServiceModel.Primitives.dll') != 'true'" Importance="high" />
+    <Exec Command="$(GeneratorCliPath)dotnet $(CorrectedOutputPath)dotnet-svcutil.xmlserializer.dll $(CorrectedOutputPath)$(InputAssembly).dll /out:$(CorrectedOutputPath)$(SerializerName).cs /smreference:$(SMOutputPath)System.ServiceModel.Primitives.dll"  />
     <Warning Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') != 'true'" Text="Fail to generate $(CorrectedOutputPath)$(SerializerName).cs"/>
     <Csc Condition="Exists('$(CorrectedOutputPath)$(SerializerName).cs') == 'true'"
          OutputAssembly="$(CorrectedOutputPath)$(SerializerName).dll"
