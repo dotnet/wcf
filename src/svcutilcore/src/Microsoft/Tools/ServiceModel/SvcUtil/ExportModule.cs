@@ -83,6 +83,12 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             private static bool IsContractType(Type type)
             {
                 Type serviceContractAttributeType = Tool.SMAssembly.GetType("System.ServiceModel.ServiceContractAttribute");
+                if(serviceContractAttributeType == null)
+                {
+                    ToolConsole.WriteError($"Not found type System.ServiceModel.ServiceContractAttribute in {Tool.SMAssembly.FullName}");
+                    throw new ToolRuntimeException();
+                }
+
                 return (type.IsInterface || type.IsClass) && (type.IsDefined(serviceContractAttributeType, false));
             }
         }

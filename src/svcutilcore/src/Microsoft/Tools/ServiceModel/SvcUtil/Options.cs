@@ -365,7 +365,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         if (Tool.IsFatal(e))
                             throw;
 
-                        throw new ToolOptionException(SR.Format(SR.ErrCouldNotLoadReferenceAssemblyAt, path), e);
+                        ToolConsole.WriteWarning(SR.Format(SR.ErrCouldNotLoadReferenceAssemblyAt, path));
                     }
                 }
             }
@@ -415,7 +415,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         throw new ArgumentException("Invalid smreference value");
                     }
 
-                    string smpassembly = smassembly.Replace("System.ServiceModel.Primitives", "System.Private.ServiceModel");
+                    string smpassembly = smassembly.Replace("System.ServiceModel.Primitives.dll", "System.Private.ServiceModel.dll");
+                    smpassembly = smpassembly.Replace("system.servicemodel.primitives", "system.private.servicemodel");
 
                     int refplace = smassembly.LastIndexOf("ref");
                     if(refplace > 0 )
@@ -439,6 +440,15 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         ToolConsole.WriteLine("Load Assembly From " + smpassembly);
                         InputModule.LoadAssembly(smpassembly);
                         ToolConsole.WriteLine($"Successfully Load {smpassembly}");
+                    }
+                    catch (Exception e)
+                    {
+                        ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smpassembly, e.Message));
+                        throw;
+                    }
+
+                    try
+                    {
                         ToolConsole.WriteLine("Load Assembly From " + smassembly);
                         Tool.SMAssembly = InputModule.LoadAssembly(smassembly);
                         ToolConsole.WriteLine($"Successfully Load {smassembly}");
