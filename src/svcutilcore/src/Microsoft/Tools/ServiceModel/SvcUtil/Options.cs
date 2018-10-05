@@ -415,8 +415,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         throw new ArgumentException("Invalid smreference value");
                     }
 
-                    //smassembly = smassembly.ToLower();
-                    string smpassembly = smassembly.Replace("System.Servicemodel.Primitives", "System.Private.ServiceModel");
+                    string smpassembly = smassembly.Replace("System.ServiceModel.Primitives", "System.Private.ServiceModel");
 
                     int refplace = smassembly.LastIndexOf("ref");
                     if(refplace > 0 )
