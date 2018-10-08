@@ -1,0 +1,48 @@
+variables:
+  Build.Repository.Clean: true
+  _TargetFramework: netcoreapp2.0
+  _HelixType: build/product
+  _HelixSource: pr/StephenBonikowsky/wcf/$(Build.SourceBranch)
+  _CurrentWcfPRService: $[counter('serviceCounter', 0)]
+  _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService$(_CurrentWcfPRService)
+  _UpdateService: false
+  Operation: ''
+  System.Debug: true
+
+trigger:
+- master
+
+# To be added in the future when VSTS supports this feature
+# pr:
+# - master
+
+# Three phases for each of the three OSes we want to run on
+phases:
+- template: /eng/common/templates/phases/base.yml
+  parameters:
+    agentOs: Windows_NT
+    name: Windows_NT
+    enableTelemetry: true
+    queue:
+      name: Hosted VS2017
+      parallel: 99
+      matrix:
+        debug_selfhosted:
+          _args: -buildArch=x64 -Debug
+          _testargs: -outerloop
+          _UpdateService: false
+        release_iishosted:
+          _args: -buildArch=x64 -Release 
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)
+          Operation: pr
+          _UpdateService: true
+    steps:
+    - template: /eng/common/templates/steps/UpdatePRService.yml
+      parameters:
+        wcfPRServiceId: $(_CurrentWcfPRService)
+    - script: build.cmd $(_args)
+      displayName: Build
+      condition: succeeded()
+    - script: build-tests.cmd $(_args) $(_testargs)
+      displayName: Build_Test
+      condition: succeeded()

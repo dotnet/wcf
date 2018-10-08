@@ -1,0 +1,56 @@
+parameters:
+  ghprbPullId: ''
+  branchName: ''
+  Operation: ''
+  wcfPRServiceUri: "http://wcfcoresrv2.cloudapp.net/PRServiceMaster/pr.ashx"
+  wcfPRServiceId: ''
+  sourceBranch: $(Build.SourceBranch)
+
+steps:
+    # Get the PR number on Windows
+  - script: |
+      echo The operation variable is set to: %OPERATION%
+      if '%OPERATION%'=="pr" (
+      echo Parse the PR ID from environment variable 'Build.SourceBranch': %SOURCEBRANCH%
+      set GHPRBPULLID=%SOURCEBRANCH:refs/pull/=%
+      set GHPRBPULLID=%GHPRBPULLID:/merge=%
+      echo The PR ID is: %GHPRBPULLID%
+      ) else if '%OPERATION%'=="branch" (
+      set BRANCHNAME=%BUILD_SOURCEBRANCHNAME%
+      echo The branch name is: %BRANCHNAME%
+      ) else (
+        echo The Operation variable was set to neither 'pr' or 'branch'.
+        echo The Operation variable must be set to one or the other.
+        exit /b -1
+      )
+
+    displayName: Set_Operation_PR_or_Branch_Windows
+    env:
+      GHPRBPULLID: ${{ parameters.ghprbPullId }}
+      SOURCEBRANCH: ${{ parameters.sourceBranch }}
+      OPERATION: ${{ parameters.Operation }}
+      BRANCHNAME: ${{ parameters.branchName }}
+    condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
+    # Get the PR number on Unix
+  - bash: |
+      split("refs/pull/123/merge", a, "/", seps)
+      $GHPRBPULLID=$a[3]
+
+    displayName: Set_GitHub_Pull_Id_Unix
+    env:
+      GHPRBPULLID: ${{ parameters.ghprbPullId }}
+    condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
+    # Sync the Service to the PR on Windows.
+  - powershell: |
+      Write-Host "The WCF Root dir is: $env:Build_SourcesDirectory"
+      Write-Host "Variable wcfPRServiceId is set to: $env:WCFPRSERVICEID"
+      Write-Host "Variable Operation is set to: $env:OPERATION"
+      Write-Host "Variable wcfPRServiceUri is set to: $env:WCFPRSERVICEURI"
+      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:OPERATION $env:WCFPRSERVICEURI"" }
+
+    displayName: Sync_PRService
+    env:
+      OPERATION: ${{ parameters.Operation }}
+      WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
+      WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
+    condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
