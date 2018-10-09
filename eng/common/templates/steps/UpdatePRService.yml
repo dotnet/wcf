@@ -1,6 +1,5 @@
 parameters:
   ghprbPullId: ''
-  branchName: ''
   Operation: ''
   wcfPRServiceUri: "http://wcfcoresrv2.cloudapp.net/PRServiceMaster/pr.ashx"
   wcfPRServiceId: ''
@@ -32,8 +31,7 @@ steps:
 
       :branch
       echo Set the repo branch.
-      set BRANCHNAME=%BUILD_SOURCEBRANCHNAME%
-      echo The branch name is: %BRANCHNAME%
+      echo '##vso[task.setvariable variable=branchName]%BUILD_SOURCEBRANCHNAME%'
       goto done
 
       :done
@@ -44,7 +42,6 @@ steps:
       GHPRBPULLID: ${{ parameters.ghprbPullId }}
       SOURCEBRANCH: ${{ parameters.sourceBranch }}
       OPERATION: ${{ parameters.Operation }}
-      BRANCHNAME: ${{ parameters.branchName }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
     # Get the PR number on Unix
   - bash: |
@@ -61,8 +58,8 @@ steps:
       Write-Host "Variable wcfPRServiceId is set to: $env:WCFPRSERVICEID"
       Write-Host "Variable Operation is set to: $env:OPERATION"
       Write-Host "Variable wcfPRServiceUri is set to: $env:WCFPRSERVICEURI"
-      Write-Host "Variable branchName is set to: $env:BRANCHNAME"
-      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:OPERATION $env:WCFPRSERVICEURI $env:BRANCHNAME"" }
+      Write-Host "Variable branchName is set to: $env:branchName"
+      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:OPERATION $env:WCFPRSERVICEURI $env:branchName"" }
       $LASTEXITCODE
 
     displayName: Sync_PRService
@@ -70,5 +67,4 @@ steps:
       OPERATION: ${{ parameters.Operation }}
       WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
-      BRANCHNAME: ${{ parameters.branchName }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
