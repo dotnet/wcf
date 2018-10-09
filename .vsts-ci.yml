@@ -34,7 +34,7 @@ phases:
         release_iishosted:
           _args: -buildArch=x64 -Release 
           _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)
-          Operation: pr
+          Operation: $(Operation)
           _UpdateService: true
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
