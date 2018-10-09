@@ -9,21 +9,36 @@ parameters:
 steps:
     # Get the PR number on Windows
   - script: |
-      echo The operation variable is set to: %OPERATION%
-      if '%OPERATION%'=="pr" (
+      if not "%OPERATION%"=="branch" if not "%OPERATION%"=="pr" (
+        echo Invalid operation mode specified.
+        set _EXITCODE=1
+        goto done
+      )
+      if '%OPERATION%'=='pr' (
+        echo Operation is set to: %OPERATION%
+        goto pr
+      )
+      if '%OPERATION%'=='branch' (
+        echo Operation is set to: %OPERATION%
+        goto branch
+      )
+
+      :pr
       echo Parse the PR ID from environment variable 'Build.SourceBranch': %SOURCEBRANCH%
       set GHPRBPULLID=%SOURCEBRANCH:refs/pull/=%
       set GHPRBPULLID=%GHPRBPULLID:/merge=%
       echo The PR ID is: %GHPRBPULLID%
-      ) else if '%OPERATION%'=="branch" (
+      goto done
+
+      :branch
+      echo Set the repo branch.
       set BRANCHNAME=%BUILD_SOURCEBRANCHNAME%
       echo The branch name is: %BRANCHNAME%
-      ) else (
-        echo The Operation variable was set to neither 'pr' or 'branch'.
-        echo The Operation variable must be set to one or the other.
-        exit /b -1
-      )
+      goto done
 
+      :done
+      exit /b %_EXITCODE%
+      
     displayName: Set_Operation_PR_or_Branch_Windows
     env:
       GHPRBPULLID: ${{ parameters.ghprbPullId }}
