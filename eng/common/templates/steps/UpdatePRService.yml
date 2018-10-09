@@ -6,7 +6,7 @@ parameters:
   sourceBranch: $(Build.SourceBranch)
 
 steps:
-    # Get the PR ID or Branch name, the Service will sync to whichever is provided.
+    # Get the PR ID or Branch name, the Service will sync to whichever is provided. - Windows
   - script: |
       if not "%Operation%"=="branch" if not "%Operation%"=="pr" (
         echo Operation mode was set to: %Operation%
@@ -14,7 +14,7 @@ steps:
         set _EXITCODE=1
         goto done
       )
-      if '%OPERATOperationION%'=='pr' (
+      if '%Operation%'=='pr' (
         echo Operation is set to: %Operation%
         goto pr
       )
@@ -44,14 +44,32 @@ steps:
       GHPRBPULLID: ${{ parameters.ghprbPullId }}
       SOURCEBRANCH: ${{ parameters.sourceBranch }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
-    # Get the PR number on Unix
+    # Get the PR ID or Branch name, the Service will sync to whichever is provided. - Unix
   - bash: |
-      split("refs/pull/123/merge", a, "/", seps)
-      $GHPRBPULLID=$a[3]
+      if [ $Operation -ne "branch" ] || [ $Operation -ne "pr" ]; then
+        echo "Operation mode was set to: $Operation"
+        echo "Invalid operation mode specified."
+        exit -1
+      fi
 
-    displayName: Set_GitHub_Pull_Id_Unix
+      if [ $Operation -eq "pr" ]; then
+        echo "Operation is set to: $Operation"
+        echo "Parse the PR ID from environment variable 'Build.SourceBranch': $SOURCEBRANCH"
+        split($SOURCEBRANCH, a, "/", seps)
+        $GHPRBPULLID=$a[3]
+        echo "The PR ID is: $GHPRBPULLID"
+      fi
+
+      if [ $Operation -eq "branch" ]; then
+        echo "Operation is set to: $Operation"
+        echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
+        echo "##vso[task.setvariable variable=branchName]%BUILD_SOURCEBRANCHNAME%"
+      fi
+
+    displayName: Set_Operation_PR_or_Branch_Unix
     env:
       GHPRBPULLID: ${{ parameters.ghprbPullId }}
+      SOURCEBRANCH: ${{ parameters.sourceBranch }}
     condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
     # Sync the Service to the PR on Windows.
   - powershell: |

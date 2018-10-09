@@ -6,13 +6,10 @@ variables:
   _CurrentWcfPRService: $[counter('serviceCounter', 0)]
   _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService$(_CurrentWcfPRService)
   _UpdateService: false
+  _enableTelemetry: true
 
 trigger:
 - master
-
-# To be added in the future when VSTS supports this feature
-# pr:
-# - master
 
 # Three phases for each of the three OSes we want to run on
 phases:
@@ -20,7 +17,7 @@ phases:
   parameters:
     agentOs: Windows_NT
     name: Windows_NT
-    enableTelemetry: true
+    enableTelemetry: $(_enableTelemetry)
     queue:
       name: Hosted VS2017
       parallel: 99
@@ -38,6 +35,33 @@ phases:
       parameters:
         wcfPRServiceId: $(_CurrentWcfPRService)
     - script: build.cmd $(_args)
+      displayName: Build
+      condition: succeeded()
+    - script: build-tests.cmd $(_args) $(_testargs)
+      displayName: Build_Test
+      condition: succeeded()
+- template: /eng/common/templates/phases/base.yml
+  parameters:
+    agentOs: OSX
+    name: OSX
+    enableTelemetry: $(_enableTelemetry)
+    queue:
+      name: Hosted macOS
+      parallel: 99
+      matrix:
+        debug_selfhosted:
+          _args: -debug
+          _testargs: -outerloop -testWithLocalLibraries
+          _UpdateService: false
+        release_iishosted:
+          _args: -release 
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri) /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: true
+    steps:
+    - template: /eng/common/templates/steps/UpdatePRService.yml
+      parameters:
+        wcfPRServiceId: $(_CurrentWcfPRService)
+    - script: build.sh $(_args)
       displayName: Build
       condition: succeeded()
     - script: build-tests.cmd $(_args) $(_testargs)
