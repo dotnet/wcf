@@ -6,7 +6,7 @@ variables:
   _CurrentWcfPRService: $[counter('serviceCounter', 0)]
   _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService$(_CurrentWcfPRService)
   _UpdateService: false
-  Operation: ''
+  Operation: branch
   System.Debug: true
 
 trigger:
