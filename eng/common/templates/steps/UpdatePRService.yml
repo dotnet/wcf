@@ -7,7 +7,7 @@ parameters:
   sourceBranch: $(Build.SourceBranch)
 
 steps:
-    # Get the PR number on Windows
+    # Get the PR ID or Branch name, the Service will sync to whichever is provided.
   - script: |
       if not "%OPERATION%"=="branch" if not "%OPERATION%"=="pr" (
         echo Invalid operation mode specified.
@@ -38,7 +38,7 @@ steps:
 
       :done
       exit /b %_EXITCODE%
-      
+
     displayName: Set_Operation_PR_or_Branch_Windows
     env:
       GHPRBPULLID: ${{ parameters.ghprbPullId }}
@@ -61,11 +61,14 @@ steps:
       Write-Host "Variable wcfPRServiceId is set to: $env:WCFPRSERVICEID"
       Write-Host "Variable Operation is set to: $env:OPERATION"
       Write-Host "Variable wcfPRServiceUri is set to: $env:WCFPRSERVICEURI"
-      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:OPERATION $env:WCFPRSERVICEURI"" }
+      Write-Host "Variable branchName is set to: $env:BRANCHNAME"
+      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:OPERATION $env:WCFPRSERVICEURI $env:BRANCHNAME"" }
+      $LASTEXITCODE
 
     displayName: Sync_PRService
     env:
       OPERATION: ${{ parameters.Operation }}
       WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
+      BRANCHNAME: ${{ parameters.branchName }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
