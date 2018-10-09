@@ -8,17 +8,18 @@ parameters:
 steps:
     # Get the PR ID or Branch name, the Service will sync to whichever is provided.
   - script: |
-      if not "%OPERATION%"=="branch" if not "%OPERATION%"=="pr" (
+      if not "%Operation%"=="branch" if not "%Operation%"=="pr" (
+        echo Operation mode was set to: %Operation%
         echo Invalid operation mode specified.
         set _EXITCODE=1
         goto done
       )
-      if '%OPERATION%'=='pr' (
-        echo Operation is set to: %OPERATION%
+      if '%OPERATOperationION%'=='pr' (
+        echo Operation is set to: %Operation%
         goto pr
       )
-      if '%OPERATION%'=='branch' (
-        echo Operation is set to: %OPERATION%
+      if '%Operation%'=='branch' (
+        echo Operation is set to: %Operation%
         goto branch
       )
 
@@ -42,7 +43,6 @@ steps:
     env:
       GHPRBPULLID: ${{ parameters.ghprbPullId }}
       SOURCEBRANCH: ${{ parameters.sourceBranch }}
-      OPERATION: ${{ parameters.Operation }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
     # Get the PR number on Unix
   - bash: |
@@ -57,15 +57,14 @@ steps:
   - powershell: |
       Write-Host "The WCF Root dir is: $env:Build_SourcesDirectory"
       Write-Host "Variable wcfPRServiceId is set to: $env:WCFPRSERVICEID"
-      Write-Host "Variable Operation is set to: $env:OPERATION"
+      Write-Host "Variable Operation is set to: $env:Operation"
       Write-Host "Variable wcfPRServiceUri is set to: $env:WCFPRSERVICEURI"
       Write-Host "Variable branchName is set to: $env:branchName"
-      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:OPERATION $env:WCFPRSERVICEURI $env:branchName"" }
+      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:Operation $env:WCFPRSERVICEURI $env:branchName"" }
       $LASTEXITCODE
 
     displayName: Sync_PRService
     env:
-      OPERATION: ${{ parameters.Operation }}
       WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
