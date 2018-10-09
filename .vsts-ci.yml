@@ -33,7 +33,7 @@ phases:
           _UpdateService: false
         release_iishosted:
           _args: -buildArch=x64 -Release 
-          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri) /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml

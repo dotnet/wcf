@@ -30,9 +30,9 @@ steps:
       goto done
 
       :branch
-      echo Set the repo branch.
+      echo Set the repo branch to be what build.SourceBranchName is: %BUILD_SOURCEBRANCHNAME%
+      # The following vso call sets a variable that is accessible further down in the PowerShell script to Sync the PR Service.
       echo ##vso[task.setvariable variable=branchName]%BUILD_SOURCEBRANCHNAME%
-      echo Branch name is set to: %branchName%
       goto done
 
       :done
