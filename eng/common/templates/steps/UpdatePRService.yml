@@ -47,7 +47,7 @@ steps:
 
     # Get the PR ID or Branch name, the Service will sync to whichever is provided. - Unix
   - bash: |
-      if [[ $OPERATION != branch || $OPERATION != pr ]]; then
+      if [[ $OPERATION != branch && $OPERATION != pr ]]; then
         echo "Operation mode was set to: $OPERATION"
         echo "Invalid operation mode specified."
         exit -1
