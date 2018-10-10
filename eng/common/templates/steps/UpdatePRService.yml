@@ -47,13 +47,13 @@ steps:
 
     # Get the PR ID or Branch name, the Service will sync to whichever is provided. - Unix
   - bash: |
-      if [[ "$OPERATION" != "branch" || "$OPERATION" != "pr" ]]; then
+      if [[ $OPERATION != branch || $OPERATION != pr ]]; then
         echo "Operation mode was set to: $OPERATION"
         echo "Invalid operation mode specified."
         exit -1
       fi
 
-      if [[ "$OPERATION" = "pr" ]]; then
+      if [[ $OPERATION = pr ]]; then
         echo "Operation is set to: $OPERATION"
         echo "Parse the PR ID from environment variable 'Build.SourceBranch': $SOURCEBRANCH"
         $GETPRID=$(echo $SOURCEBRANCH| cut -d'/' -f 3)
@@ -61,7 +61,7 @@ steps:
         echo "The PR ID is: $GHPRBPULLID"
       fi
 
-      if [[ "$OPERATION" = "branch" ]]; then
+      if [[ $OPERATION = branch ]]; then
         echo "Operation is set to: $OPERATION"
         echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
         echo "##vso[task.setvariable variable=branchName]%BUILD_SOURCEBRANCHNAME%"
