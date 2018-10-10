@@ -50,8 +50,8 @@ phases:
       parallel: 99
       matrix:
         debug_selfhosted:
-          _args: -debug
-          _testargs: -outerloop -testWithLocalLibraries
+          _args: -buildArch=x64 -debug
+          _testargs: -outerloop -- /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: false
         release_iishosted:
           _args: -release 
