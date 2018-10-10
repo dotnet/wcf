@@ -76,6 +76,7 @@ public class PullRequestHandler : IHttpHandler
         if (string.IsNullOrWhiteSpace(repoIdString) || !uint.TryParse(repoIdString, out repoId))
         {
             context.Response.StatusCode = 400;
+            context.Response.StatusDescription = string.Format("The client ID specified, '{0}', is invalid. Please specify a valid 'id' in the request query string.", repoIdString ?? "unspecified");
             context.Response.Write(string.Format("The client ID specified, '{0}', is invalid. Please specify a valid 'id' in the request query string <br/>", repoIdString ?? "unspecified"));
             return;
         }
@@ -83,6 +84,7 @@ public class PullRequestHandler : IHttpHandler
         if (string.IsNullOrWhiteSpace(prString) && string.IsNullOrWhiteSpace(branchString))
         {
             context.Response.StatusCode = 400;
+            context.Response.StatusDescription = "No PR or branch specified. Specify either a 'pr' or 'branch' in the request query string.";
             context.Response.Write("No PR or branch specified. Specify either a 'pr' or 'branch' in the request query string <br/>");
             return;
         }
@@ -90,6 +92,7 @@ public class PullRequestHandler : IHttpHandler
         if (!string.IsNullOrWhiteSpace(prString) && !string.IsNullOrWhiteSpace(branchString))
         {
             context.Response.StatusCode = 400;
+            context.Response.StatusDescription = "Both 'pr' and 'branch' specified; please specify only one of them to sync to.";
             context.Response.Write("Both 'pr' and 'branch' specified; please specify only one of them to sync to <br/>");
             return;
         }
@@ -160,6 +163,7 @@ public class PullRequestHandler : IHttpHandler
             // it's most likely that the client supplied a bad PR ID, but there could potentially 
             // be other errors in SyncToPr or SyncToBranch. For now, return 400 in this path
             context.Response.StatusCode = 400;
+            context.Response.StatusDescription = string.Format("Invalid 'pr', '{0}' or 'branch', '{1}' specified. Please specify a valid 'pr' or 'branch'", prString, branchString);
             context.Response.Write(string.Format("Invalid 'pr', '{0}' or 'branch', '{1}' specified. Please specify a valid 'pr' or 'branch' <br/>", HttpUtility.HtmlEncode(prString), HttpUtility.HtmlEncode(branchString)));
         }
 
@@ -223,6 +227,7 @@ public class PullRequestHandler : IHttpHandler
     {
         string[] gitCommands = new string[]
         {
+            "fetch origin --all --prune",
             string.Format("checkout -f {0}", branch)
         };
 
