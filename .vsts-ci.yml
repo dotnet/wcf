@@ -61,9 +61,9 @@ phases:
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
         wcfPRServiceId: $(_CurrentWcfPRService)
-    - script: build.sh $(_args)
+    - script: ./build.sh $(_args)
       displayName: Build
       condition: succeeded()
-    - script: build-tests.cmd $(_args) $(_testargs)
+    - script: ./build-tests.sh $(_args) $(_testargs)
       displayName: Build_Test
       condition: succeeded()
