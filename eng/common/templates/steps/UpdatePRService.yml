@@ -47,22 +47,22 @@ steps:
 
     # Get the PR ID or Branch name, the Service will sync to whichever is provided. - Unix
   - bash: |
-      if [[ "$Operation" != "branch" || "$Operation" != "pr" ]]; then
-        echo "Operation mode was set to: $Operation"
+      if [[ "$OPERATION" != "branch" || "$OPERATION" != "pr" ]]; then
+        echo "Operation mode was set to: $OPERATION"
         echo "Invalid operation mode specified."
         exit -1
       fi
 
-      if [[ "$Operation" = "pr" ]]; then
-        echo "Operation is set to: $Operation"
+      if [[ "$OPERATION" = "pr" ]]; then
+        echo "Operation is set to: $OPERATION"
         echo "Parse the PR ID from environment variable 'Build.SourceBranch': $SOURCEBRANCH"
         $GETPRID=$(echo $SOURCEBRANCH| cut -d'/' -f 3)
         $GHPRBPULLID=$GETPRID
         echo "The PR ID is: $GHPRBPULLID"
       fi
 
-      if [[ "$Operation" = "branch" ]]; then
-        echo "Operation is set to: $Operation"
+      if [[ "$OPERATION" = "branch" ]]; then
+        echo "Operation is set to: $OPERATION"
         echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
         echo "##vso[task.setvariable variable=branchName]%BUILD_SOURCEBRANCHNAME%"
       fi
@@ -93,10 +93,10 @@ steps:
   - bash: |
       echo "The WCF Root dir is: $BUILD_SOURCESDIRECTORY"
       echo "Variable wcfPRServiceId is set to: $WCFPRSERVICEID"
-      echo "Variable Operation is set to: $Operation"
+      echo "Variable Operation is set to: $OPERATION"
       echo "Variable wcfPRServiceUri is set to: $WCFPRSERVICEURI"
-      echo "Variable branchName is set to: $branchName"
-      ".$BUILD_SOURCESDIRECTORY/src/System.Private.ServiceModel/tools/scripts/sync-pr.sh" $WCFPRSERVICEID $Operation $WCFPRSERVICEURI $branchName
+      echo "Variable branchName is set to: $BRANCHNAME"
+      ".$BUILD_SOURCESDIRECTORY/src/System.Private.ServiceModel/tools/scripts/sync-pr.sh" $WCFPRSERVICEID $OPERATION $WCFPRSERVICEURI $BRANCHNAME
 
     displayName: Sync_PRService_Unix
     env:
