@@ -227,7 +227,6 @@ public class PullRequestHandler : IHttpHandler
     {
         string[] gitCommands = new string[]
         {
-            "fetch origin --all --prune",
             string.Format("checkout -f {0}", branch)
         };
 

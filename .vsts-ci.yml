@@ -60,7 +60,7 @@ phases:
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
-        wcfPRServiceId: 2
+        wcfPRServiceId: 3
     - script: ./build.sh $(_args)
       displayName: Build
       condition: succeeded()
