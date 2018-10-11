@@ -31,6 +31,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             private readonly List<Type> _types = new List<Type>();
             private readonly IsTypeExcludedDelegate _isTypeExcluded;
             private TypeLoadErrorEventHandler _contractLoadErrorCallback;
+            private static Type serviceContractAttributeType = Tool.SMAssembly.GetType("System.ServiceModel.ServiceContractAttribute");
 
             internal ContractLoader(IEnumerable<Assembly> assemblies, IsTypeExcludedDelegate isTypeExcluded)
             {
@@ -63,7 +64,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 try
                 {
                     Type contractDescription = Tool.SMAssembly.GetType("System.ServiceModel.Description.ContractDescription");
-                    MethodInfo GetContract = contractDescription.GetMethod("GetContract", new Type[] { typeof(Type) });
+                    MethodInfo GetContract = contractDescription.GetMethod("GetContract", BindingFlags.Public| BindingFlags.Static, null, new Type[] { typeof(Type) }, null);
                     object description = GetContract.Invoke(null, new object[] { type });
                     return description;
                 }
@@ -82,11 +83,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
             private static bool IsContractType(Type type)
             {
-                Type serviceContractAttributeType = Tool.SMAssembly.GetType("System.ServiceModel.ServiceContractAttribute");
                 if(serviceContractAttributeType == null)
                 {
-                    ToolConsole.WriteError($"Not found type System.ServiceModel.ServiceContractAttribute in {Tool.SMAssembly.FullName}");
-                    throw new ToolRuntimeException();
+                    string error = $"Type System.ServiceModel.ServiceContractAttribute not found type System.ServiceModel.ServiceContractAttribute in {Tool.SMAssembly.FullName}";
+                    ToolConsole.WriteError(error);
+                    throw new ToolRuntimeException(error);
                 }
 
                 return (type.IsInterface || type.IsClass) && (type.IsDefined(serviceContractAttributeType, false));
