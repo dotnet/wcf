@@ -150,9 +150,34 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 throw new ToolRuntimeException();
             }
 
+            Type operationType = Tool.SMAssembly.GetType("System.ServiceModel.Description.OperationDescription");
+            if (operationType == null)
+            {
+                ToolConsole.WriteError($"Not found type System.ServiceModel.Description.OperationDescription in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
             PropertyInfo getCount = operationsType.GetProperty("Count");
+            if (getCount == null)
+            {
+                ToolConsole.WriteError($"Not found property Count in type {operationsType}");
+                throw new ToolRuntimeException();
+            }
+
             PropertyInfo getItem = operationsType.GetProperty("Item");
-            PropertyInfo getBehaviors = operationsType.GetProperty("Behaviors");
+            if (getItem == null)
+            {
+                ToolConsole.WriteError($"Not found property Item in type {operationsType}");
+                throw new ToolRuntimeException();
+            }
+
+            PropertyInfo getBehaviors = operationType.GetProperty("Behaviors");
+            if (getBehaviors == null)
+            {
+                ToolConsole.WriteError($"Not found method get_Behaviors in type {operationType}");
+                throw new ToolRuntimeException();
+            }
+
             MethodInfo getXmlMappings = xmlSerializerOperationBehaviorType.GetMethod("GetXmlMappings");
             if (getXmlMappings == null)
             {
@@ -160,18 +185,18 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 throw new ToolRuntimeException();
             }
 
+            PropertyInfo operationsProperty = contractDescriptionType.GetProperty("Operations");
+            if (operationsProperty == null)
+            {
+                ToolConsole.WriteError($"Not found property Operations in type {contractDescriptionType}");
+                throw new ToolRuntimeException();
+            }
+
             foreach (object contract in contractLoader.GetContracts())
             {
                 types.Add((Type)contractTypeProperty.GetValue(contract));
-                PropertyInfo operationsProperty = contractDescriptionType.GetProperty("Operations");
-                if (operationsProperty == null)
-                {
-                    ToolConsole.WriteError($"Not found property Operations in type {contractDescriptionType}");
-                    throw new ToolRuntimeException();
-                }
 
                 var operations = operationsProperty.GetValue(contract);
-
                 int count = (int)getCount.GetValue(operations);
                 for (int i = 0; i < count; ++i)
                 {
@@ -179,12 +204,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     if(operation == null)
                     {
                         throw new ToolRuntimeException("operation is null");
-                    }
-
-                    if (getBehaviors == null)
-                    {
-                        ToolConsole.WriteError($"Not found method get_Behaviors in type {operation.GetType()}");
-                        throw new ToolRuntimeException();
                     }
 
                     var behaviors = getBehaviors.GetValue(operation, new object[] { });
