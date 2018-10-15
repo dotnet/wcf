@@ -178,6 +178,41 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 throw new ToolRuntimeException();
             }
 
+            Type KeyedByTypeCollection = Tool.SMAssembly.GetType("System.Collections.Generic.KeyedByTypeCollection`1");
+            if (KeyedByTypeCollection == null)
+            {
+                ToolConsole.WriteError($"Not found type System.Collections.Generic.KeyedByTypeCollection`1 in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            Type IOperationBehavior = Tool.SMAssembly.GetType("System.ServiceModel.Description.IOperationBehavior");
+            if (IOperationBehavior == null)
+            {
+                ToolConsole.WriteError($"Not found type System.ServiceModel.Description.IOperationBehavior in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            KeyedByTypeCollection = KeyedByTypeCollection.MakeGenericType(new Type[] { IOperationBehavior });
+            if (KeyedByTypeCollection == null)
+            {
+                ToolConsole.WriteError($"Cannot make Generic Type System.Collections.Generic.KeyedByTypeCollection<IOperationBehavior> in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            MethodInfo find = KeyedByTypeCollection.GetMethod("Find");
+            if(find == null)
+            {
+                ToolConsole.WriteError($"Not found method find in type {KeyedByTypeCollection}");
+                throw new ToolRuntimeException();
+            }
+
+            MethodInfo findXmlSerializerOperationBehavior = find.MakeGenericMethod(new Type[] { xmlSerializerOperationBehaviorType });
+            if (findXmlSerializerOperationBehavior == null)
+            {
+                ToolConsole.WriteError($"Not found method Find<XmlSerializerOperationBehavior> in operation.Behaviors");
+                throw new ToolRuntimeException();
+            }
+
             MethodInfo getXmlMappings = xmlSerializerOperationBehaviorType.GetMethod("GetXmlMappings");
             if (getXmlMappings == null)
             {
@@ -207,20 +242,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     }
 
                     var behaviors = getBehaviors.GetValue(operation, new object[] { });
-                    var find = behaviors.GetType().GetMethod("Find");
-                    if (find == null)
-                    {
-                        ToolConsole.WriteError($"Not found method Find in type {behaviors.GetType()}");
-                        throw new ToolRuntimeException();
-                    }
-
-                    MethodInfo findXmlSerializerOperationBehavior = find.MakeGenericMethod(new Type[] { xmlSerializerOperationBehaviorType });
-                    if(findXmlSerializerOperationBehavior == null)
-                    {
-                        ToolConsole.WriteError($"Not found method Find<XmlSerializerOperationBehavior> in operation.Behaviors");
-                        throw new ToolRuntimeException();
-                    }
-
                     var behavior = findXmlSerializerOperationBehavior.Invoke(behaviors, new object[] { });
                     if (behavior != null)
                     {
