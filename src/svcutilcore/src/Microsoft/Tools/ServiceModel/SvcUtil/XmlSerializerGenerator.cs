@@ -157,20 +157,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 throw new ToolRuntimeException();
             }
 
-            PropertyInfo getCount = operationsType.GetProperty("Count");
-            if (getCount == null)
-            {
-                ToolConsole.WriteError($"Not found property Count in type {operationsType}");
-                throw new ToolRuntimeException();
-            }
-
-            PropertyInfo getItem = operationsType.GetProperty("Item");
-            if (getItem == null)
-            {
-                ToolConsole.WriteError($"Not found property Item in type {operationsType}");
-                throw new ToolRuntimeException();
-            }
-
             PropertyInfo getBehaviors = operationType.GetProperty("Behaviors");
             if (getBehaviors == null)
             {
@@ -227,21 +213,36 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 throw new ToolRuntimeException();
             }
 
+            //Use reflection to replace the following code
+            //foreach (ContractDescription contract in contractLoader.GetContracts())
+            //{
+            //    types.Add(contract.ContractType);
+            //    foreach (OperationDescription operation in contract.Operations)
+            //    {
+            //        XmlSerializerOperationBehavior behavior = operation.Behaviors.Find<XmlSerializerOperationBehavior>();
+            //        if (behavior != null)
+            //        {
+            //            foreach (XmlMapping map in behavior.GetXmlMappings())
+            //            {
+            //                mappings.Add(map);
+            //            }
+            //        }
+            //    }
+            //}
+
             foreach (object contract in contractLoader.GetContracts())
             {
                 types.Add((Type)contractTypeProperty.GetValue(contract));
 
-                var operations = operationsProperty.GetValue(contract);
-                int count = (int)getCount.GetValue(operations);
-                for (int i = 0; i < count; ++i)
+                System.Collections.IEnumerable operations = (System.Collections.IEnumerable)operationsProperty.GetValue(contract);
+                foreach(var operation in operations)
                 {
-                    var operation = getItem.GetValue(operations, new object[] { i });
                     if(operation == null)
                     {
                         throw new ToolRuntimeException("operation is null");
                     }
 
-                    var behaviors = getBehaviors.GetValue(operation, new object[] { });
+                    var behaviors = getBehaviors.GetValue(operation);
                     var behavior = findXmlSerializerOperationBehavior.Invoke(behaviors, new object[] { });
                     if (behavior != null)
                     {
