@@ -136,13 +136,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 throw new ToolRuntimeException();
             }
 
-            Type operationsType = Tool.SMAssembly.GetType("System.ServiceModel.Description.OperationDescriptionCollection");
-            if (operationsType == null)
-            {
-                ToolConsole.WriteError($"Not found type System.ServiceModel.Description.OperationDescriptionCollection in {Tool.SMAssembly.FullName}");
-                throw new ToolRuntimeException();
-            }
-
             Type xmlSerializerOperationBehaviorType = Tool.SMAssembly.GetType("System.ServiceModel.Description.XmlSerializerOperationBehavior");
             if (xmlSerializerOperationBehaviorType == null)
             {
@@ -157,50 +150,50 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 throw new ToolRuntimeException();
             }
 
-            PropertyInfo getBehaviors = operationType.GetProperty("Behaviors");
-            if (getBehaviors == null)
+            PropertyInfo getBehaviorsProperty = operationType.GetProperty("Behaviors");
+            if (getBehaviorsProperty == null)
             {
                 ToolConsole.WriteError($"Not found method get_Behaviors in type {operationType}");
                 throw new ToolRuntimeException();
             }
 
-            Type KeyedByTypeCollection = Tool.SMAssembly.GetType("System.Collections.Generic.KeyedByTypeCollection`1");
-            if (KeyedByTypeCollection == null)
+            Type keyedByTypeCollectionType = Tool.SMAssembly.GetType("System.Collections.Generic.KeyedByTypeCollection`1");
+            if (keyedByTypeCollectionType == null)
             {
                 ToolConsole.WriteError($"Not found type System.Collections.Generic.KeyedByTypeCollection`1 in {Tool.SMAssembly.FullName}");
                 throw new ToolRuntimeException();
             }
 
-            Type IOperationBehavior = Tool.SMAssembly.GetType("System.ServiceModel.Description.IOperationBehavior");
-            if (IOperationBehavior == null)
+            Type iOperationBehaviorType = Tool.SMAssembly.GetType("System.ServiceModel.Description.IOperationBehavior");
+            if (iOperationBehaviorType == null)
             {
                 ToolConsole.WriteError($"Not found type System.ServiceModel.Description.IOperationBehavior in {Tool.SMAssembly.FullName}");
                 throw new ToolRuntimeException();
             }
 
-            KeyedByTypeCollection = KeyedByTypeCollection.MakeGenericType(new Type[] { IOperationBehavior });
-            if (KeyedByTypeCollection == null)
+            keyedByTypeCollectionType = keyedByTypeCollectionType.MakeGenericType(new Type[] { iOperationBehaviorType });
+            if (keyedByTypeCollectionType == null)
             {
                 ToolConsole.WriteError($"Cannot make Generic Type System.Collections.Generic.KeyedByTypeCollection<IOperationBehavior> in {Tool.SMAssembly.FullName}");
                 throw new ToolRuntimeException();
             }
 
-            MethodInfo find = KeyedByTypeCollection.GetMethod("Find");
-            if(find == null)
+            MethodInfo findMethod = keyedByTypeCollectionType.GetMethod("Find");
+            if(findMethod == null)
             {
-                ToolConsole.WriteError($"Not found method find in type {KeyedByTypeCollection}");
+                ToolConsole.WriteError($"Not found method find in type {keyedByTypeCollectionType}");
                 throw new ToolRuntimeException();
             }
 
-            MethodInfo findXmlSerializerOperationBehavior = find.MakeGenericMethod(new Type[] { xmlSerializerOperationBehaviorType });
-            if (findXmlSerializerOperationBehavior == null)
+            findMethod = findMethod.MakeGenericMethod(new Type[] { xmlSerializerOperationBehaviorType });
+            if (findMethod == null)
             {
                 ToolConsole.WriteError($"Not found method Find<XmlSerializerOperationBehavior> in operation.Behaviors");
                 throw new ToolRuntimeException();
             }
 
-            MethodInfo getXmlMappings = xmlSerializerOperationBehaviorType.GetMethod("GetXmlMappings");
-            if (getXmlMappings == null)
+            MethodInfo getXmlMappingsMethod = xmlSerializerOperationBehaviorType.GetMethod("GetXmlMappings");
+            if (getXmlMappingsMethod == null)
             {
                 ToolConsole.WriteError($"Not found method getXmlMappings in XmlSerializerOperationBehavior");
                 throw new ToolRuntimeException();
@@ -242,11 +235,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         throw new ToolRuntimeException("operation is null");
                     }
 
-                    var behaviors = getBehaviors.GetValue(operation);
-                    var behavior = findXmlSerializerOperationBehavior.Invoke(behaviors, new object[] { });
+                    var behaviors = getBehaviorsProperty.GetValue(operation);
+                    var behavior = findMethod.Invoke(behaviors, new object[] { });
                     if (behavior != null)
                     {
-                        var xmlMappings = (Collection<XmlMapping>)getXmlMappings.Invoke(behavior, new object[] { });
+                        var xmlMappings = (Collection<XmlMapping>)getXmlMappingsMethod.Invoke(behavior, new object[] { });
                         if (xmlMappings != null)
                         {
                             foreach (XmlMapping map in xmlMappings)
