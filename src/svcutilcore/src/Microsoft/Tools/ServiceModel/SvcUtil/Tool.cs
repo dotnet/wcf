@@ -11,9 +11,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
     using DcNS = System.Runtime.Serialization;
     using System.Threading;
     using System.Runtime.ConstrainedExecution;
+    using System.Reflection;
 
     public static class Tool
     {
+        internal static Assembly SMAssembly;
         public static int Main(string[] args)
         {
             try

@@ -5,7 +5,6 @@
 namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
-    using System.ServiceModel.Description;
     using System.Reflection;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -14,7 +13,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
     using System.Text;
     using System.Xml.Serialization;
     using System.CodeDom.Compiler;
-    using System.ServiceModel;
 
     internal class XmlSerializerGenerator : OutputModule
     {
@@ -124,21 +122,135 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         ToolConsole.WriteWarning(SR.Format(SR.WrnUnableToLoadContractForSGen, contractType, errorMessage));
                     };
 
-            foreach (ContractDescription contract in contractLoader.GetContracts())
+            Type contractDescriptionType = Tool.SMAssembly.GetType("System.ServiceModel.Description.ContractDescription");
+            if (contractDescriptionType == null)
             {
-                types.Add(contract.ContractType);
-                foreach (OperationDescription operation in contract.Operations)
+                ToolConsole.WriteError($"Not found type System.ServiceModel.Description.ContractDescription in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            PropertyInfo contractTypeProperty = contractDescriptionType.GetProperty("ContractType");
+            if (contractTypeProperty == null)
+            {
+                ToolConsole.WriteError($"Not found property ContractType in type {contractDescriptionType}");
+                throw new ToolRuntimeException();
+            }
+
+            Type xmlSerializerOperationBehaviorType = Tool.SMAssembly.GetType("System.ServiceModel.Description.XmlSerializerOperationBehavior");
+            if (xmlSerializerOperationBehaviorType == null)
+            {
+                ToolConsole.WriteError($"Not found type System.ServiceModel.Description.XmlSerializerOperationBehaviorType in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            Type operationType = Tool.SMAssembly.GetType("System.ServiceModel.Description.OperationDescription");
+            if (operationType == null)
+            {
+                ToolConsole.WriteError($"Not found type System.ServiceModel.Description.OperationDescription in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            PropertyInfo getBehaviorsProperty = operationType.GetProperty("Behaviors");
+            if (getBehaviorsProperty == null)
+            {
+                ToolConsole.WriteError($"Not found method get_Behaviors in type {operationType}");
+                throw new ToolRuntimeException();
+            }
+
+            Type keyedByTypeCollectionType = Tool.SMAssembly.GetType("System.Collections.Generic.KeyedByTypeCollection`1");
+            if (keyedByTypeCollectionType == null)
+            {
+                ToolConsole.WriteError($"Not found type System.Collections.Generic.KeyedByTypeCollection`1 in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            Type iOperationBehaviorType = Tool.SMAssembly.GetType("System.ServiceModel.Description.IOperationBehavior");
+            if (iOperationBehaviorType == null)
+            {
+                ToolConsole.WriteError($"Not found type System.ServiceModel.Description.IOperationBehavior in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            keyedByTypeCollectionType = keyedByTypeCollectionType.MakeGenericType(new Type[] { iOperationBehaviorType });
+            if (keyedByTypeCollectionType == null)
+            {
+                ToolConsole.WriteError($"Cannot make Generic Type System.Collections.Generic.KeyedByTypeCollection<IOperationBehavior> in {Tool.SMAssembly.FullName}");
+                throw new ToolRuntimeException();
+            }
+
+            MethodInfo findMethod = keyedByTypeCollectionType.GetMethod("Find");
+            if(findMethod == null)
+            {
+                ToolConsole.WriteError($"Not found method find in type {keyedByTypeCollectionType}");
+                throw new ToolRuntimeException();
+            }
+
+            findMethod = findMethod.MakeGenericMethod(new Type[] { xmlSerializerOperationBehaviorType });
+            if (findMethod == null)
+            {
+                ToolConsole.WriteError($"Not found method Find<XmlSerializerOperationBehavior> in operation.Behaviors");
+                throw new ToolRuntimeException();
+            }
+
+            MethodInfo getXmlMappingsMethod = xmlSerializerOperationBehaviorType.GetMethod("GetXmlMappings");
+            if (getXmlMappingsMethod == null)
+            {
+                ToolConsole.WriteError($"Not found method getXmlMappings in XmlSerializerOperationBehavior");
+                throw new ToolRuntimeException();
+            }
+
+            PropertyInfo operationsProperty = contractDescriptionType.GetProperty("Operations");
+            if (operationsProperty == null)
+            {
+                ToolConsole.WriteError($"Not found property Operations in type {contractDescriptionType}");
+                throw new ToolRuntimeException();
+            }
+
+            //Use reflection to replace the following code
+            //foreach (ContractDescription contract in contractLoader.GetContracts())
+            //{
+            //    types.Add(contract.ContractType);
+            //    foreach (OperationDescription operation in contract.Operations)
+            //    {
+            //        XmlSerializerOperationBehavior behavior = operation.Behaviors.Find<XmlSerializerOperationBehavior>();
+            //        if (behavior != null)
+            //        {
+            //            foreach (XmlMapping map in behavior.GetXmlMappings())
+            //            {
+            //                mappings.Add(map);
+            //            }
+            //        }
+            //    }
+            //}
+
+            foreach (object contract in contractLoader.GetContracts())
+            {
+                types.Add((Type)contractTypeProperty.GetValue(contract));
+
+                System.Collections.IEnumerable operations = (System.Collections.IEnumerable)operationsProperty.GetValue(contract);
+                foreach(var operation in operations)
                 {
-                    XmlSerializerOperationBehavior behavior = operation.Behaviors.Find<XmlSerializerOperationBehavior>();
+                    if(operation == null)
+                    {
+                        throw new ToolRuntimeException("operation is null");
+                    }
+
+                    var behaviors = getBehaviorsProperty.GetValue(operation);
+                    var behavior = findMethod.Invoke(behaviors, new object[] { });
                     if (behavior != null)
                     {
-                        foreach (XmlMapping map in behavior.GetXmlMappings())
+                        var xmlMappings = (Collection<XmlMapping>)getXmlMappingsMethod.Invoke(behavior, new object[] { });
+                        if (xmlMappings != null)
                         {
-                            mappings.Add(map);
+                            foreach (XmlMapping map in xmlMappings)
+                            {
+                                mappings.Add(map);
+                            }
                         }
                     }
                 }
             }
+
             return types;
         }
     }

@@ -5,13 +5,10 @@
 namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Description;
     using System.IO;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.CodeDom.Compiler;
-    using System.ServiceModel;
     using System.Runtime.Serialization;
     using System.Text;
     using System.Reflection;

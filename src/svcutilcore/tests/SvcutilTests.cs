@@ -20,9 +20,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
         {
             string outputFile = Path.GetTempFileName() + ".cs";
             Assert.False(File.Exists(outputFile));
-            Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"/out:{outputFile}" });
-            Assert.True(File.Exists(outputFile));
-            File.Delete(outputFile);
+            string testassemblypath = Assembly.GetExecutingAssembly().Location;
+            string smassemblypath = testassemblypath.Replace("dotnet-svcutil.xmlserializer.Tests", "System.ServiceModel.Primitives").Replace("Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests.dll", "System.ServiceModel.Primitives.dll").Replace("netcoreapp", "netstandard");
+            if (File.Exists(smassemblypath))
+            {
+                Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"/out:{outputFile}", $"/smreference:{smassemblypath}" });
+                Assert.True(File.Exists(outputFile));
+                File.Delete(outputFile);
+            }
         }
     }
 }

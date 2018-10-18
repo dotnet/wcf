@@ -5,12 +5,11 @@
 namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 {
     using System;
-    using System.ServiceModel.Channels;
     using System.Configuration;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
-    using System.ServiceModel;
+    using System.Runtime.InteropServices;
 
 
     internal partial class Options
@@ -144,6 +143,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 if (CheckForHelpOption())
                     return;
 
+                LoadSMReferenceAssembly();
                 ProcessDirectoryOption();
                 ProcessOutputOption();
                 ReadInputArguments();
@@ -339,7 +339,6 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 if (!nostdlib)
                 {
                     AddMscorlib(foundCollectionTypes);
-                    AddServiceModelLib(foundCollectionTypes);
                 }
             }
 
@@ -366,7 +365,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                         if (Tool.IsFatal(e))
                             throw;
 
-                        throw new ToolOptionException(SR.Format(SR.ErrCouldNotLoadReferenceAssemblyAt, path), e);
+                        ToolConsole.WriteWarning(SR.Format(SR.ErrCouldNotLoadReferenceAssemblyAt, path));
                     }
                 }
             }
@@ -404,12 +403,67 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 }
             }
 
-            private void AddServiceModelLib(Dictionary<string, Type> foundCollectionTypes)
+            private void LoadSMReferenceAssembly()
             {
-                Assembly serviceModelLib = typeof(ChannelFactory).Assembly;
-                if (!_parent._referencedAssemblies.Contains(serviceModelLib))
+                IList<string> referencedAssembliesArgs = _arguments.GetArguments(Options.Cmd.SMReference);
+                if (referencedAssembliesArgs != null && referencedAssembliesArgs.Count > 0)
                 {
-                    AddReferencedTypesFromAssembly(serviceModelLib, foundCollectionTypes);
+                    string smassembly = referencedAssembliesArgs[0];
+                    if(smassembly.LastIndexOf("System.ServiceModel.Primitives") == -1)
+                    {
+                        ToolConsole.WriteError("Need pass the right path of System.ServiceModel.Primitives for smreference parameter");
+                        throw new ArgumentException("Invalid smreference value");
+                    }
+
+                    string smpassembly = smassembly.Replace("System.ServiceModel.Primitives", "System.Private.ServiceModel");
+                    //for some lowercase path
+                    smpassembly = smpassembly.Replace("system.servicemodel.primitives", "system.private.servicemodel");
+
+                    int refplace = smassembly.LastIndexOf("ref");
+                    if(refplace > 0 )
+                    {
+                        smassembly = smassembly.Remove(refplace, 3).Insert(refplace, "lib");
+                        refplace = smpassembly.LastIndexOf("ref");
+                        smpassembly = smpassembly.Remove(refplace, 3).Insert(refplace, "lib");
+                        int libplace = smpassembly.LastIndexOf("lib");
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            smpassembly = smpassembly.Remove(libplace, 3).Insert(libplace, @"runtimes\win\lib");
+                        }
+                        else
+                        {
+                            smpassembly = smpassembly.Remove(libplace, 3).Insert(libplace, @"runtimes/unix/lib");
+                        }
+                    }
+
+                    try
+                    {
+                        ToolConsole.WriteLine("Load Assembly From " + smpassembly);
+                        InputModule.LoadAssembly(smpassembly);
+                        ToolConsole.WriteLine($"Successfully Load {smpassembly}");
+                    }
+                    catch (Exception e)
+                    {
+                        ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smpassembly, e.Message));
+                        throw;
+                    }
+
+                    try
+                    {
+                        ToolConsole.WriteLine("Load Assembly From " + smassembly);
+                        Tool.SMAssembly = InputModule.LoadAssembly(smassembly);
+                        ToolConsole.WriteLine($"Successfully Load {smassembly}");
+                    }
+                    catch (Exception e)
+                    {
+                        ToolConsole.WriteError(string.Format("Fail to load the assembly {0} with the error {1}", smassembly, e.Message));
+                        throw;
+                    }
+                }
+                else
+                {
+                    ToolConsole.WriteError("Need pass the System.ServiceModel.Primitive.dll through SM parameter");
+                    throw new ArgumentException("Need pass the System.ServiceModel.Primitive.dll through SM parameter");
                 }
             }
 
