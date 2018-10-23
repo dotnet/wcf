@@ -37,14 +37,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         {
             get
             {
-                if (string.IsNullOrEmpty(PreReleaseLabel))
-                {
-                    return PackageVersion%3B
-                }
-                else
-                {
-                    return $"{PackageVersion}-{PreReleaseLabel}"%3B
-                }
+                return PackageVersion%3B
             }
             
             internal set {}
