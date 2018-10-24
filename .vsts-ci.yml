@@ -3,7 +3,6 @@ variables:
   _TargetFramework: netcoreapp2.0
   _HelixType: build/product
   _HelixSource: pr/StephenBonikowsky/wcf/$(Build.SourceBranch)
-  _CurrentWcfPRService: $[counter('serviceCounter', 0)]
   _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService$(_CurrentWcfPRService)
   _UpdateService: false
   _enableTelemetry: true
@@ -33,7 +32,7 @@ phases:
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
-        wcfPRServiceId: $(_CurrentWcfPRService)
+        wcfPRServiceId: 1
     - script: build.cmd $(_args)
       displayName: Build
       condition: succeeded()
@@ -60,7 +59,7 @@ phases:
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
-        wcfPRServiceId: 3
+        wcfPRServiceId: 2
     - script: ./build.sh $(_args)
       displayName: Build
       condition: succeeded()
