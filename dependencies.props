@@ -2,14 +2,14 @@
   <!-- Source of truth for dependency tooling: the commit hash of the dotnet/versions master branch as of the last auto-upgrade. -->
   <PropertyGroup>
     <WCFCurrentRef>9fa7e0441f89434851c946c49f45da97bfcfc4c2</WCFCurrentRef>
-    <StandardCurrentRef>9fa7e0441f89434851c946c49f45da97bfcfc4c2</StandardCurrentRef>
+    <StandardCurrentRef>23359c17ebe3ba84865dda6b81792d27b160b0d6</StandardCurrentRef>
   </PropertyGroup>
 
   <!-- Auto-upgraded properties for each build info dependency. -->
   <PropertyGroup>
     <CoreFxExpectedPrerelease>preview3-25519-03</CoreFxExpectedPrerelease>
     <WcfExpectedPrerelease>servicing-26818-01</WcfExpectedPrerelease>
-    <NETStandardPackageVersion>2.0.3</NETStandardPackageVersion>
+    <NETStandardPackageVersion>2.0.0</NETStandardPackageVersion>
     <NETStandardPackageId>NETStandard.Library</NETStandardPackageId>
     <MicrosoftNETCoreAppPackageVersion>2.0.0-preview2-25407-01</MicrosoftNETCoreAppPackageVersion>
   </PropertyGroup>
