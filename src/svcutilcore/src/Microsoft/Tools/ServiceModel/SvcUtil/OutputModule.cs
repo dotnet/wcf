@@ -60,7 +60,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             internal static string TryGetDirectoryPath(string directory)
             {
                 if (directory == null || directory.Length == 0)
-                    return ".\\";
+                    return "." + Path.DirectorySeparatorChar;
                 else
                 {
                     if (!directory.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))

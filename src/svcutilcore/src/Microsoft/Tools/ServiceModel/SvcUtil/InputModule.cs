@@ -163,7 +163,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 // Figure out the directory part
                 string dirPath = Path.GetDirectoryName(path);
                 if (string.IsNullOrEmpty(dirPath))
-                    dirPath = @".\";
+                    dirPath = "." + Path.DirectorySeparatorChar;
                 DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
 
                 // Verify that the directory exists
