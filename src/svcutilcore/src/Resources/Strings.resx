@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Logo" xml:space="preserve">
-    <value>Microsoft (R) Service Model Metadata Tool\r\n[{0}, Version {1}]\r\n{2}\r\n</value>
+    <value>Microsoft (R) dotnet-svcutil.xmlserializer tool, Version {0}.&#13;&#10;[{1}]&#13;&#10;{2}&#13;&#10;</value>
   </data>
   <data name="HelpUsage1" xml:space="preserve">
     <value>USES:</value>
