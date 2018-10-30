@@ -8,7 +8,7 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 ## Version History
 
 ### 1.0.4 (10/30/2018)
-* Added anonymous telemetry information collection (set DOTNET_SVCUTIL_TELEMETRY_OPTOUT=1 to opt out).
+* Added anonymous telemetry information collection (set environment variable DOTNET_SVCUTIL_TELEMETRY_OPTOUT=1 to opt out).
 * Bug fixes ([#3149](https://github.com/dotnet/wcf/issues/3149), [#2715](https://github.com/dotnet/wcf/issues/2715))
 
 ### 1.0.3 (08/29/2018)
