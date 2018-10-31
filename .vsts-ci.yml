@@ -26,7 +26,7 @@ phases:
           _testargs: -outerloop
           _UpdateService: false
         release_iishosted:
-          _args: -buildArch=x64 -Release 
+          _args: -buildArch=x64 -Release
           _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)1 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
@@ -49,12 +49,12 @@ phases:
       parallel: 99
       matrix:
         debug_selfhosted:
-          _args: -buildArch=x64 -debug
-          _testargs: -outerloop -- /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _args: -buildArch=x64 -debug -SkipTests
+          _testargs: -outerloop -- /p:ArchiveTests=true /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: false
         release_iishosted:
-          _args: -release 
-          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _args: -release -SkipTests
+          _testargs: -outerloop -- /p:ArchiveTests=true /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
