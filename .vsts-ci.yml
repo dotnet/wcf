@@ -3,7 +3,7 @@ variables:
   _TargetFramework: netcoreapp2.0
   _HelixType: build/product
   _HelixSource: pr/StephenBonikowsky/wcf/$(Build.SourceBranch)
-  _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService$(_CurrentWcfPRService)
+  _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService
   _UpdateService: false
   _enableTelemetry: true
 
@@ -27,7 +27,7 @@ phases:
           _UpdateService: false
         release_iishosted:
           _args: -buildArch=x64 -Release 
-          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri) /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)1 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
@@ -54,7 +54,7 @@ phases:
           _UpdateService: false
         release_iishosted:
           _args: -release 
-          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri) /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
