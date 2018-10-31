@@ -49,14 +49,17 @@ phases:
       parallel: 99
       matrix:
         debug_selfhosted:
-          _args: -buildArch=x64 -debug -SkipTests
-          _testargs: -outerloop -- /p:ArchiveTests=true /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _args: -buildArch=x64 -debug
+          _testargs: -outerloop -- /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: false
         release_iishosted:
-          _args: -release -SkipTests
-          _testargs: -outerloop -- /p:ArchiveTests=true /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _args: -release
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
+    - task: DotNetCoreInstaller@0
+      inputs:
+        version: 2.1.403
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
         wcfPRServiceId: 2
