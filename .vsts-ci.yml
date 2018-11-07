@@ -63,9 +63,12 @@ phases:
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
         wcfPRServiceId: 2
+    - script: ./sync.sh -p -- /p:ArchGroup=x64
+      displayName: Sync.sh
+      condition: succeeded()
     - script: ./build.sh $(_args)
-      displayName: Build
+      displayName: Build.sh
       condition: succeeded()
     - script: ./build-tests.sh $(_args) $(_testargs)
-      displayName: Build_Test
+      displayName: Build_Test.sh
       condition: succeeded()
