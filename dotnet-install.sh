@@ -686,9 +686,9 @@ downloadcurl() {
 
     local failed=false
     if [ -z "$out_path" ]; then
-        curl --retry 10 -sSL -f --create-dirs "$remote_path" || failed=true
+        curl --http1.1 --retry 10 -sSL -f --create-dirs "$remote_path" || failed=true
     else
-        curl --retry 10 -sSL -f --create-dirs -o "$out_path" "$remote_path" || failed=true
+        curl --http1.1 --retry 10 -sSL -f --create-dirs -o "$out_path" "$remote_path" || failed=true
     fi
     if [ "$failed" = true ]; then
         say_verbose "Curl download failed"
