@@ -66,8 +66,11 @@ phases:
     - script: ./sync.sh -p -- /p:ArchGroup=x64
       displayName: Sync.sh
       condition: succeeded()
-    - script: ./dotnet-install.sh --channel LTS
+    - script: ./eng/dotnet-install.sh --channel LTS
       displayName: dotnet-install.sh
+      condition: succeeded()
+    - script: ./eng/install-native-dependencies.sh OSX
+      displayName: Install native dependencies
       condition: succeeded()
     - script: ./build.sh $(_args)
       displayName: Build.sh
