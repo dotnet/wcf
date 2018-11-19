@@ -41,7 +41,7 @@ phases:
       condition: succeeded()
 - template: /eng/common/templates/phases/base.yml
   parameters:
-    agentOs: OSX
+    agentOs: MacOS
     name: OSX
     enableTelemetry: $(_enableTelemetry)
     queue:
@@ -70,6 +70,45 @@ phases:
       displayName: dotnet-install.sh
       condition: succeeded()
     - script: ./eng/install-native-dependencies.sh OSX
+      displayName: Install native dependencies
+      condition: succeeded()
+    - script: ./build.sh $(_args)
+      displayName: Build.sh
+      condition: succeeded()
+    - script: ./build-tests.sh $(_args) $(_testargs)
+      displayName: Build_Test.sh
+      condition: succeeded()
+- template: /eng/common/templates/phases/base.yml
+  parameters:
+    agentOs: Ubuntu
+    name: Linux
+    enableTelemetry: $(_enableTelemetry)
+    queue:
+      name: Hosted Ubuntu 1604
+      parallel: 99
+      matrix:
+        debug_selfhosted:
+          _args: -buildArch=x64 -debug
+          _testargs: -outerloop -- /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: false
+        release_iishosted:
+          _args: -release
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: true
+    steps:
+    - task: DotNetCoreInstaller@0
+      inputs:
+        version: 2.1.403
+    - template: /eng/common/templates/steps/UpdatePRService.yml
+      parameters:
+        wcfPRServiceId: 2
+    - script: ./sync.sh -p -- /p:ArchGroup=x64
+      displayName: Sync.sh
+      condition: succeeded()
+    - script: ./eng/dotnet-install.sh --channel LTS
+      displayName: dotnet-install.sh
+      condition: succeeded()
+    - script: ./eng/install-native-dependencies.sh Linux
       displayName: Install native dependencies
       condition: succeeded()
     - script: ./build.sh $(_args)
