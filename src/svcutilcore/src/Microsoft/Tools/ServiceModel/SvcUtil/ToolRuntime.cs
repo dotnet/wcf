@@ -26,6 +26,11 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 ToolConsole.WriteHelpText();
                 return ToolExitCodes.Success;
             }
+            else if(!_options.Quiet)
+            {
+                ToolConsole.WriteWarning(System.SR.WrnToolIsUsedDirectly);
+                return ToolExitCodes.InputError;
+            }
             else
             {
                 InputModule inputModule = InputModule.LoadInputs(_options);

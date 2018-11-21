@@ -528,6 +528,9 @@
   <data name="WrnOptionConflictsWithInput" xml:space="preserve">
     <value>Option /{0} cannot be used with multiple input assemblies. Ignoring {0} option. </value>
   </data>
+  <data name="WrnToolIsUsedDirectly" xml:space="preserve">
+    <value>This tool is not intended to be used directly. </value>
+  </data>
   <data name="GeneratingFiles" xml:space="preserve">
     <value>Generating files...</value>
   </data>

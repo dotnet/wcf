@@ -26,6 +26,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         private string _configFileArg;
 
         private bool _noLogo;
+        private bool _quiet;
         private List<string> _inputParameters;
         private List<Type> _referencedTypes;
         private List<Assembly> _referencedAssemblies;
@@ -36,6 +37,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         internal string OutputFileArg { get { return _outputFileArg; } }
         internal string DirectoryArg { get { return _directoryArg; } }
         internal bool NoLogo { get { return _noLogo; } }
+        internal bool Quiet { get { return _quiet; } }
 
         internal List<string> InputParameters { get { return _inputParameters; } }
         internal List<Type> ReferencedTypes { get { return _referencedTypes; } }
@@ -140,7 +142,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             {
                 CheckForBasicOptions();
 
-                if (CheckForHelpOption())
+                if (CheckForHelpOption() || !CheckForQuietOption())
                     return;
 
                 LoadSMReferenceAssembly();
@@ -159,6 +161,12 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     return true;
                 }
                 return false;
+            }
+
+            private bool CheckForQuietOption()
+            {
+                _parent._quiet = _arguments.ContainsArgument(Options.Cmd.Quiet);
+                return _parent._quiet;
             }
 
             private void CheckForBasicOptions()
