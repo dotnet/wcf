@@ -270,14 +270,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 internal static ArgumentInfo CreateFlagHelpInfo(string option)
                 {
                     ArgumentInfo argInfo = new ArgumentInfo();
-                    argInfo._name = String.Format(CultureInfo.InvariantCulture, "/{0}", option);
+                    argInfo._name = String.Format(CultureInfo.InvariantCulture, "--{0}", option);
                     return argInfo;
                 }
 
                 internal static ArgumentInfo CreateParameterHelpInfo(string option, string optionUse)
                 {
                     ArgumentInfo argInfo = new ArgumentInfo();
-                    argInfo._name = String.Format(CultureInfo.InvariantCulture, "/{0}:{1}", option, optionUse);
+                    argInfo._name = String.Format(CultureInfo.InvariantCulture, "--{0}:{1}", option, optionUse);
                     return argInfo;
                 }
 

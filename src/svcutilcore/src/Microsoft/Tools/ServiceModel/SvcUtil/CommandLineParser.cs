@@ -25,13 +25,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
         internal CommandSwitch(string name, string abbreviation, SwitchType switchType)
         {
-            //ensure that either name doesn't start with '/' or '-'
+            //ensure that either name doesn't start with '--' or '-'
             //also convert to lower-case
-            if ((name[0] == '/') || (name[0] == '-'))
-                _name = (name.Substring(1)).ToLower(CultureInfo.InvariantCulture);
+            if (name.Length > 1 && name[0] == '-' && name[1] == '-')
+                _name = (name.Substring(2)).ToLower(CultureInfo.InvariantCulture);
             else
                 _name = name.ToLower(CultureInfo.InvariantCulture);
-            if ((abbreviation[0] == '/') || (abbreviation[0] == '-'))
+
+            if (abbreviation[0] == '-')
                 _abbreviation = (abbreviation.Substring(1)).ToLower(CultureInfo.InvariantCulture);
             else
                 _abbreviation = abbreviation.ToLower(CultureInfo.InvariantCulture);
@@ -60,12 +61,17 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         {
             string temp;
 
-            //ensure that compare doesn't start with '/' or '-'
+            //ensure that compare doesn't start with '--' or '-'
             //also convert to lower-case
-            if ((other[0] == '/') || (other[0] == '-'))
-                temp = (other.Substring(1)).ToLower(CultureInfo.InvariantCulture);
-            else
-                temp = other.ToLower(CultureInfo.InvariantCulture);
+            if (other[0] == '-')
+            {
+                if (other.Length > 1 && other[1] == '-')
+                    other = other.Substring(2);
+                else
+                    other = other.Substring(1);
+            }
+            temp = other.ToLower(CultureInfo.InvariantCulture);
+
 
             //if equal to name, then return the OK
             if (_name.Equals(temp))
@@ -166,18 +172,21 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 bool argIsFlag = true;
 
                 //if argument does not start with switch indicator, place into "default" arguments
-                if ((arg[0] != '/') && (arg[0] != '-'))
+                if (arg[0] != '-')
                 {
                     arguments.Add(String.Empty, arg);
                     continue;
                 }
 
                 //if we have something which begins with '/' or '-', throw if nothing after it
-                if (arg.Length == 1)
+                if (arg.Length == 1 || (arg.Length ==2 && arg[1] == '-'))
                     throw new ArgumentException(SR.Format(SR.ErrSwitchMissing, arg));
 
-                //yank switch indicator ('/' or '-') off of command argument
-                arg = arg.Substring(1);
+                //yank switch indicator ('--' or '-') off of command argument
+                if (arg[1] != '-')
+                    arg = arg.Substring(1);
+                else
+                    arg = arg.Substring(2);
 
                 //check to make sure delimiter does not start off switch
                 delim = arg.IndexOfAny(new char[] { ':', '=' });

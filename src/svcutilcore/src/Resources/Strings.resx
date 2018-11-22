@@ -169,7 +169,7 @@
     <value>Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</value>
   </data>
   <data name="HelpCodeGenerationSyntax" xml:space="preserve">
-    <value>Syntax: {0} [/{1}:{2}]  {3}* | {4}* | {5}</value>
+    <value>Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</value>
   </data>
   <data name="HelpCodeGenerationSyntaxInput1" xml:space="preserve">
     <value>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</value>
@@ -208,13 +208,13 @@
     <value>The path to an assembly containing Service Contract types. Serialization types will be generated for all Xml Serializable types in each contract</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput2" xml:space="preserve">
-    <value>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: /{0})</value>
+    <value>Add the specified assembly to the set of assemblies used for resolving type references. (Short Form: -{0})</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput3" xml:space="preserve">
-    <value>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: /{0})</value>
+    <value>Fully-qualified or assembly-qualified type name to exclude from export or validation. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. (Short Form: -{0})</value>
   </data>
   <data name="HelpXmlSerializerTypeGenerationSyntaxInput4" xml:space="preserve">
-    <value>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: /{0})</value>
+    <value>Filename for the generated code. This option will be ignored when multiple assemblies are passed as input to the tool. Default: derived from the assembly name. (Short Form: -{0})</value>
   </data>
   <data name="HelpValidationCategory" xml:space="preserve">
     <value>-= SERVICE VALIDATION =-</value>
@@ -274,55 +274,55 @@
     <value>Suppress the copyright and banner message.</value>
   </data>
   <data name="HelpDirectory" xml:space="preserve">
-    <value>Directory to create files in (default: current directory) (Short Form: /{0})</value>
+    <value>Directory to create files in (default: current directory) (Short Form: -{0})</value>
   </data>
   <data name="HelpOut" xml:space="preserve">
-    <value> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: /{0})</value>
+    <value> The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</value>
   </data>
   <data name="HelpReferenceCodeGeneration" xml:space="preserve">
-    <value>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: /{0})</value>
+    <value>Reference types in the specified assembly. When generating clients, use this option to specify assemblies that might contain types representing the metadata being imported.  (Short Form: -{0})</value>
   </data>
   <data name="HelpReferenceOther" xml:space="preserve">
-    <value>Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: /{0})</value>
+    <value>Add the specified assembly to the set of assemblies used for resolving type references. If you are exporting or validating a service that uses 3rd-party extensions (Behaviors, Bindings and BindingElements) registered in config use this option to locate extension assemblies that are not in the GAC.  (Short Form: -{0})</value>
   </data>
   <data name="HelpNostdlib" xml:space="preserve">
     <value>Do not reference standard libraries. By default mscorlib.dll and system.servicemodel.dll are referenced.</value>
   </data>
   <data name="HelpExcludeTypeCodeGeneration" xml:space="preserve">
-    <value>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: /{0})</value>
+    <value>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</value>
   </data>
   <data name="HelpExcludeTypeExport" xml:space="preserve">
-    <value>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the /{1} option. (Short Form: /{0})</value>
+    <value>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the /{1} option. (Short Form: -{0})</value>
   </data>
   <data name="HelpValidationExcludeTypeExport" xml:space="preserve">
-    <value>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: /{0})</value>
+    <value>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</value>
   </data>
   <data name="HelpCollectionType" xml:space="preserve">
-    <value>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: /{0})</value>
+    <value>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</value>
   </data>
   <data name="HelpTargetOutputType" xml:space="preserve">
     <value>The target output for the tool: {0}, {1} or {2}.</value>
   </data>
   <data name="HelpNamespace" xml:space="preserve">
-    <value>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: /{0})</value>
+    <value>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</value>
   </data>
   <data name="HelpHelp" xml:space="preserve">
-    <value>Display command syntax and options for the tool. (Short Form: /{0})</value>
+    <value>Display command syntax and options for the tool. (Short Form: -{0})</value>
   </data>
   <data name="HelpVersion30TargetClientVersion" xml:space="preserve">
-    <value>Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: /{0})</value>
+    <value>Generate code that references functionality in .NET Framework assemblies 3.0 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.0.(Short Form: -{0})</value>
   </data>
   <data name="HelpVersion35TargetClientVersion" xml:space="preserve">
-    <value>Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: /{0})</value>
+    <value>Generate code that references functionality in .NET Framework assemblies 3.5 and before. Use this switch if you are generating code for clients that use .NET Framework version 3.5.(Short Form: -{0})</value>
   </data>
   <data name="HelpWrapped" xml:space="preserve">
     <value>Generated code will not unwrap "parameters" member of document-wrapped-literal messages.</value>
   </data>
   <data name="HelpCodeGenerationServiceContract" xml:space="preserve">
-    <value>Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: /{0})</value>
+    <value>Generate code for Service Contracts. Client class and configuration will not be generated. (Short Form: -{0})</value>
   </data>
   <data name="MoreHelp" xml:space="preserve">
-    <value>If you would like more help, type "svcutil /{0}"</value>
+    <value>If you would like more help, type "svcutil -{0}"</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error: </value>
