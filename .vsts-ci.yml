@@ -57,9 +57,9 @@ phases:
           _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
-    - task: DotNetCoreInstaller@0
-      inputs:
-        version: 2.1.403
+    #- task: DotNetCoreInstaller@0
+    #  inputs:
+    #    version: 2.1.403
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
         wcfPRServiceId: 2
@@ -96,9 +96,9 @@ phases:
           _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
-    - task: DotNetCoreInstaller@0
-      inputs:
-        version: 2.1.403
+    #- task: DotNetCoreInstaller@0
+    #  inputs:
+    #    version: 2.1.403
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
         wcfPRServiceId: 2
