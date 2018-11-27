@@ -1,9 +1,7 @@
 parameters:
-  #ghprbPullId: ''
   Operation: ''
   wcfPRServiceUri: "http://wcfcoresrv2.cloudapp.net/PRServiceMaster/pr.ashx"
   wcfPRServiceId: ''
-  #sourceBranch: $(Build.SourceBranch)
 
 ##   Description of 'Set_Operation_PR_or_Branch' steps for Windows or Unix   ##
 ##   'Operation' is set to "pr" by default. It is setable at build def queue time.   ##
