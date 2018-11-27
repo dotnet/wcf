@@ -47,9 +47,6 @@ steps:
       exit /b %_EXITCODE%
 
     displayName: Set_Operation_PR_or_Branch_Windows
-    env:
-      #GHPRBPULLID: ${{ parameters.ghprbPullId }}
-      #SOURCEBRANCH: ${{ parameters.sourceBranch }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
 
     ##   Platform: Unix   ##
@@ -76,9 +73,6 @@ steps:
       fi
 
     displayName: Set_Operation_PR_or_Branch_Unix
-    env:
-      #GHPRBPULLID: ${{ parameters.ghprbPullId }}
-      #SOURCEBRANCH: ${{ parameters.sourceBranch }}
     condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
 
     ##   Platform: Windows   ##
