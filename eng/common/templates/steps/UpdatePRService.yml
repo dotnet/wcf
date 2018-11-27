@@ -1,12 +1,19 @@
 parameters:
-  ghprbPullId: ''
+  #ghprbPullId: ''
   Operation: ''
   wcfPRServiceUri: "http://wcfcoresrv2.cloudapp.net/PRServiceMaster/pr.ashx"
   wcfPRServiceId: ''
-  sourceBranch: $(Build.SourceBranch)
+  #sourceBranch: $(Build.SourceBranch)
 
+##   Description of 'Set_Operation_PR_or_Branch' steps for Windows or Unix   ##
+##   'Operation' is set to "pr" by default. It is setable at build def queue time.   ##
+##   If 'Operation' is set to "pr" the inline script will set the environment variable 'ghprbPullId' to the id of the executing PR.   ##
+##   The variable 'ghprbPullId' is then used by the 'sync-pr' script.
+##   If 'Operation' is set to 'branch' it will determine the branch being used and set the environment variable 'branchName' to it.
+##   The variable 'branchName' is then passed to the 'sync-pr' script.
 steps:
-    # Get the PR ID or Branch name, the Service will sync to whichever is provided. - Windows
+    ##   Platform: Windows   ##
+    ##   Task: Get the PR ID or Branch name.   ##
   - script: |
       if not "%Operation%"=="branch" if not "%Operation%"=="pr" (
         echo Operation mode was set to: %Operation%
@@ -24,8 +31,8 @@ steps:
       )
 
       :pr
-      echo Parse the PR ID from environment variable 'Build.SourceBranch': %SOURCEBRANCH%
-      set GHPRBPULLID=%SOURCEBRANCH:refs/pull/=%
+      echo Parse the PR ID from environment variable 'Build.SourceBranch': %BUILD_SOURCEBRANCH%
+      set GHPRBPULLID=%BUILD_SOURCEBRANCH:refs/pull/=%
       set GHPRBPULLID=%GHPRBPULLID:/merge=%
       echo The PR ID is: %GHPRBPULLID%
       goto done
@@ -41,11 +48,12 @@ steps:
 
     displayName: Set_Operation_PR_or_Branch_Windows
     env:
-      GHPRBPULLID: ${{ parameters.ghprbPullId }}
-      SOURCEBRANCH: ${{ parameters.sourceBranch }}
+      #GHPRBPULLID: ${{ parameters.ghprbPullId }}
+      #SOURCEBRANCH: ${{ parameters.sourceBranch }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
 
-    # Get the PR ID or Branch name, the Service will sync to whichever is provided. - Unix
+    ##   Platform: Unix   ##
+    ##   Task: Get the PR ID or Branch name.   ##
   - bash: |
       if [[ $OPERATION != branch && $OPERATION != pr ]]; then
         echo "Operation mode was set to: $OPERATION"
@@ -55,8 +63,8 @@ steps:
 
       if [[ $OPERATION = pr ]]; then
         echo "Operation is set to: $OPERATION"
-        echo "Parse the PR ID from environment variable 'Build.SourceBranch': $SOURCEBRANCH"
-        $GETPRID=$(echo $SOURCEBRANCH| cut -d'/' -f 3)
+        echo "Parse the PR ID from environment variable 'Build.SourceBranch': $BUILD_SOURCEBRANCH"
+        $GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
         $GHPRBPULLID=$GETPRID
         echo "The PR ID is: $GHPRBPULLID"
       fi
@@ -69,11 +77,12 @@ steps:
 
     displayName: Set_Operation_PR_or_Branch_Unix
     env:
-      GHPRBPULLID: ${{ parameters.ghprbPullId }}
-      SOURCEBRANCH: ${{ parameters.sourceBranch }}
+      #GHPRBPULLID: ${{ parameters.ghprbPullId }}
+      #SOURCEBRANCH: ${{ parameters.sourceBranch }}
     condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
 
-    # Sync the Service to the PR on Windows.
+    ##   Platform: Windows   ##
+    ##   Task: Sync the Service to the PR.   ##
   - powershell: |
       Write-Host "The WCF Root dir is: $env:Build_SourcesDirectory"
       Write-Host "Variable wcfPRServiceId is set to: $env:WCFPRSERVICEID"
@@ -89,7 +98,8 @@ steps:
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
     condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
 
-    # Sync the Service to the PR on Unix.
+    ##   Platform: Unix   ##
+    ##   Task: Sync the Service to the PR.   ##
   - bash: |
       echo "The WCF Root dir is: $BUILD_SOURCESDIRECTORY"
       echo "Variable wcfPRServiceId is set to: $WCFPRSERVICEID"
