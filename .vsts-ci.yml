@@ -1,11 +1,10 @@
 variables:
   Build.Repository.Clean: true
-  #_TargetFramework: netcoreapp2.0
-  _HelixType: build/product## Telemetry Property ##
-  _HelixSource: pr/StephenBonikowsky/wcf/$(Build.SourceBranch)## Telemtry Property ##
+  _HelixType: build/product# Telemetry Property #
+  _HelixSource: pr/StephenBonikowsky/wcf/$(Build.SourceBranch)# Telemetry Property #
   _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService
   _UpdateService: false
-  _enableTelemetry: true## This is for reporting run result data to Helix? #
+  _enableTelemetry: true# This is for reporting run result data to Helix? #
 
 trigger:
 - master
@@ -103,7 +102,7 @@ phases:
     steps:
     - template: /eng/common/templates/steps/UpdatePRService.yml
       parameters:
-        wcfPRServiceId: 2
+        wcfPRServiceId: 3
     - script: ./sync.sh -p -- /p:ArchGroup=x64
       displayName: Sync.sh
       condition: succeeded()
