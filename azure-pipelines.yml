@@ -31,7 +31,7 @@ phases:
           _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)1 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
-    - template: /eng/common/templates/steps/UpdatePRService.yml
+    - template: /eng/UpdatePRService.yml
       parameters:
         wcfPRServiceId: 1
     - script: build.cmd $(_args)
@@ -58,7 +58,7 @@ phases:
           _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
-    - template: /eng/common/templates/steps/UpdatePRService.yml
+    - template: /eng/UpdatePRService.yml
       parameters:
         wcfPRServiceId: 2
     - script: ./sync.sh -p -- /p:ArchGroup=x64
@@ -88,7 +88,7 @@ phases:
           _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
           _UpdateService: true
     steps:
-    - template: /eng/common/templates/steps/UpdatePRService.yml
+    - template: /eng/UpdatePRService.yml
       parameters:
         wcfPRServiceId: 3
     - script: ./sync.sh -p -- /p:ArchGroup=x64
