@@ -154,10 +154,10 @@
     <value>-= METADATA EXPORT =-</value>
   </data>
   <data name="HelpMetadataExportDescription" xml:space="preserve">
-    <value>Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the /{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the /{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</value>
+    <value>Description: {0} can export metadata for services, contracts and data types in compiled assemblies. To export metadata for a service, you must use the --{1} option to indicate the service you would like to export. To export all Data Contract types within an assembly use the --{2} option. By default metadata is exported for all Service Contracts in the input assemblies.</value>
   </data>
   <data name="HelpMetadataExportSyntax" xml:space="preserve">
-    <value>Syntax: {0} [/{1}:{2}] [/{3}:{4}] [/{5}] {6}*</value>
+    <value>Syntax: {0} [--{1}:{2}] [--{3}:{4}] [--{5}] {6}*</value>
   </data>
   <data name="HelpMetadataExportSyntaxInput1" xml:space="preserve">
     <value>The path to an assembly that contains services, contracts or Data Contract types to be exported. Standard command-line wildcards can be used to provide multiple files as input.</value>
@@ -168,7 +168,7 @@
   <data name="HelpCodeGenerationDescription" xml:space="preserve">
     <value>Description: {0} can generate code for service contracts, clients and data types from metadata documents. These metadata documents can be on disk or retrieved online. Online retrieval follows either the WS-Metadata Exchange protocol or the DISCO protocol.</value>
   </data>
-  <data name="HelpCodeGenerationSyntax" xml:space="preserve">
+  <data name="HelpCodeGenerationAbbreviationSyntax" xml:space="preserve">
     <value>Syntax: {0} [-{1}:{2}]  {3}* | {4}* | {5}</value>
   </data>
   <data name="HelpCodeGenerationSyntaxInput1" xml:space="preserve">
@@ -184,10 +184,10 @@
     <value>-= METADATA DOWNLOAD =-</value>
   </data>
   <data name="HelpMetadataDownloadDescription" xml:space="preserve">
-    <value>Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the /{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the /{3} option.</value>
+    <value>Description: {0} can be used to download metadata from running services and save the metadata to local files. To download metadata, you must explicitly specify the --{1}:{2} option. Otherwise, client code will be generated. For http and https URL schemes svcutil.exe will try to retrieve metadata using WS-Metadata Exchange and DISCO. For all other URL schemes {0} will only try WS-Metadata Exchange. By default, {0} uses the bindings defined in the System.ServiceModel.Description.MetadataExchangeBindings class. To configure the binding used for WS-Metadata Exchange you must define a client endpoint in config that uses the IMetadataExchange contract. This can be defined either in {0}'s config file or in another config file specified using the --{3} option.</value>
   </data>
   <data name="HelpMetadataDownloadSyntax" xml:space="preserve">
-    <value>Syntax: {0} /{1}:{2}  {3}* | {4}</value>
+    <value>Syntax: {0} --{1}:{2}  {3}* | {4}</value>
   </data>
   <data name="HelpMetadataDownloadSyntaxInput1" xml:space="preserve">
     <value>The URL to a service endpoint that provides metadata or an URL that points to a metadata document hosted online. </value>
@@ -220,10 +220,10 @@
     <value>-= SERVICE VALIDATION =-</value>
   </data>
   <data name="HelpValidationDescription" xml:space="preserve">
-    <value>Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the /{0} option to indicate the service you would like to validate.</value>
+    <value>Description: Validation is useful to detect errors in service implementations without hosting the service. You must use the --{0} option to indicate the service you would like to validate.</value>
   </data>
   <data name="HelpValidationSyntax" xml:space="preserve">
-    <value>Syntax: {0} /{1} /{2}:{3}  {4}*</value>
+    <value>Syntax: {0} --{1} --{2}:{3}  {4}*</value>
   </data>
   <data name="HelpValidationSyntaxInput1" xml:space="preserve">
     <value>The path to an assembly containing service types to be validated. The assembly must have an associated config file to provide service configuration. Standard command-line wildcards can be used to provide multiple assemblies.</value>
@@ -292,7 +292,7 @@
     <value>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</value>
   </data>
   <data name="HelpExcludeTypeExport" xml:space="preserve">
-    <value>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the /{1} option. (Short Form: -{0})</value>
+    <value>The fully-qualified or assembly-qualified name of a type to exclude from export. This option can be used when exporting metadata for a service or a set of service contracts to exclude types from being exported. This option cannot be used with the --{1} option. (Short Form: -{0})</value>
   </data>
   <data name="HelpValidationExcludeTypeExport" xml:space="preserve">
     <value>The fully-qualified or assembly-qualified name of a service type to exclude from validation. (Short Form: -{0})</value>
@@ -358,58 +358,58 @@
     <value>The intended output for the tool could not be inferred from the inputs and the options.</value>
   </data>
   <data name="ErrOptionModeConflict" xml:space="preserve">
-    <value>The /{1} option cannot be used with the /{0} option because they imply different output types.</value>
+    <value>The --{1} option cannot be used with the --{0} option because they imply different output types.</value>
   </data>
   <data name="ErrAmbiguousOptionModeConflict" xml:space="preserve">
-    <value>The /{0} option conflicts with other options. Review your use of the tool.</value>
+    <value>The --{0} option conflicts with other options. Review your use of the tool.</value>
   </data>
   <data name="ErrOptionConflictsWithTarget" xml:space="preserve">
-    <value> The use of the /{2} option is not supported with the /{0} option set to '{1}'.</value>
+    <value> The use of the --{2} option is not supported with the --{0} option set to '{1}'.</value>
   </data>
   <data name="ErrExclusiveOptionsSpecified" xml:space="preserve">
-    <value>The /{0} option cannot be used when the /{1} option has been specified.</value>
+    <value>The --{0} option cannot be used when the --{1} option has been specified.</value>
   </data>
   <data name="ErrDirectoryPointsToAFile" xml:space="preserve">
-    <value>Invalid value '{1}' passed to the /{0} option. '{1}' is a path to a file.</value>
+    <value>Invalid value '{1}' passed to the --{0} option. '{1}' is a path to a file.</value>
   </data>
   <data name="ErrDirectoryContainsInvalidCharacters" xml:space="preserve">
-    <value>Invalid value '{1}' passed to the /{0} option. The {2} character is not permitted in a path</value>
+    <value>Invalid value '{1}' passed to the --{0} option. The {2} character is not permitted in a path</value>
   </data>
   <data name="ErrInvalidTarget" xml:space="preserve">
-    <value>Invalid target '{1}' specified via the /{0} option. The supported Targets are: {2}</value>
+    <value>Invalid target '{1}' specified via the --{0} option. The supported Targets are: {2}</value>
   </data>
   <data name="ErrValidateInvalidUse" xml:space="preserve">
     <value>The {0} option cannot be used with the {1} option.</value>
   </data>
   <data name="ErrValidateRequiresServiceName" xml:space="preserve">
-    <value>To validate a service, the /{0} option must be used to specify the service to validate.</value>
+    <value>To validate a service, the --{0} option must be used to specify the service to validate.</value>
   </data>
   <data name="ErrInvalidSerializer" xml:space="preserve">
-    <value>Invalid serializer value passed to the /{0} option. The supported serializers are: {2}</value>
+    <value>Invalid serializer value passed to the --{0} option. The supported serializers are: {2}</value>
   </data>
   <data name="ErrInvalidTargetClientVersion" xml:space="preserve">
-    <value>Invalid targetClientVersion value passed to the /{0} option. The supported targetClientVersions are: {2}</value>
+    <value>Invalid targetClientVersion value passed to the --{0} option. The supported targetClientVersions are: {2}</value>
   </data>
   <data name="HintConsiderUseXmlSerializer" xml:space="preserve">
-    <value>If you are using the /{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the /{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</value>
+    <value>If you are using the --{0} option to import data contract types and are getting this error message, consider using xsd.exe instead. Types generated by xsd.exe may be used in the Windows Communication Foundation after applying the XmlSerializerFormatAttribute attribute on your service contract. Alternatively, consider using the --{1} option to import these types as XML types to use with DataContractFormatAttribute attribute on your service contract.</value>
   </data>
   <data name="ErrCouldNotCreateCodeProvider" xml:space="preserve">
-    <value>A code provider could not be created for the value: '{0}' passed to the /{1} argument. Verify that the code provider is properly installed and configured.</value>
+    <value>A code provider could not be created for the value: '{0}' passed to the --{1} argument. Verify that the code provider is properly installed and configured.</value>
   </data>
   <data name="ErrNotLanguageOrCodeDomType" xml:space="preserve">
-    <value>The value '{0}' passed to the /{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</value>
+    <value>The value '{0}' passed to the --{1} argument does not represent a defined language and it could not be loaded as a fully qualified CLR type.</value>
   </data>
   <data name="ErrNotCodeDomType" xml:space="preserve">
-    <value>The type '{0}' passed to the /{1} argument is not a subclass of {2}.</value>
+    <value>The type '{0}' passed to the --{1} argument is not a subclass of {2}.</value>
   </data>
   <data name="ErrCouldNotCreateInstance" xml:space="preserve">
-    <value>Could not create instance of the type '{0}' passed to the /{1} argument.</value>
+    <value>Could not create instance of the type '{0}' passed to the --{1} argument.</value>
   </data>
   <data name="ErrToolConfigDoesNotExist" xml:space="preserve">
-    <value>The config File {0} specified for the /{1} option does not exist.</value>
+    <value>The config File {0} specified for the --{1} option does not exist.</value>
   </data>
   <data name="ErrMergeConfigUsedWithoutConfig" xml:space="preserve">
-    <value>Cannot use the /{0} option without specifying the /{1} option.</value>
+    <value>Cannot use the --{0} option without specifying the --{1} option.</value>
   </data>
   <data name="ErrMergeConfigUsedWhenConfigDoesNotExist" xml:space="preserve">
     <value>Cannot merge config file. The file '{1}' does not exist.</value>
@@ -418,28 +418,28 @@
     <value>Cannot load the config file {0}</value>
   </data>
   <data name="ErrCannotDeleteExistingConfig" xml:space="preserve">
-    <value>There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the /{0} option.</value>
+    <value>There is an existing config file that cannot be overwritten. Either fix the problem or provide a different config file name using the --{0} option.</value>
   </data>
   <data name="ErrInvalidNamespaceArgument" xml:space="preserve">
-    <value> Invalid value {1} passed to the /{0} option. Specify a comma-separated target namespace and CLR namespace pair.</value>
+    <value> Invalid value {1} passed to the --{0} option. Specify a comma-separated target namespace and CLR namespace pair.</value>
   </data>
   <data name="ErrCannotSpecifyMultipleMappingsForNamespace" xml:space="preserve">
-    <value>Invalid value passed to the /{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</value>
+    <value>Invalid value passed to the --{0} option. Target namespace '{1}' cannot be mapped to multiple CLR namespaces '{2}' and '{3}'</value>
   </data>
   <data name="ErrCouldNotLoadReferenceAssemblyAt" xml:space="preserve">
     <value>Cannot load reference assembly '{0}'</value>
   </data>
   <data name="ErrDuplicateReferenceValues" xml:space="preserve">
-    <value>The assembly {1} was loaded twice through the /{0} option. You may reference each assembly only once.</value>
+    <value>The assembly {1} was loaded twice through the --{0} option. You may reference each assembly only once.</value>
   </data>
   <data name="ErrDuplicateValuePassedToTypeArg" xml:space="preserve">
-    <value>The value {1} was passed to the /{0} option multiple times. Each type may be specified only once.</value>
+    <value>The value {1} was passed to the --{0} option multiple times. Each type may be specified only once.</value>
   </data>
   <data name="ErrCannotDisambiguateSpecifiedTypes" xml:space="preserve">
-    <value>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the /{0} types '{1}' and '{2}'</value>
+    <value>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</value>
   </data>
   <data name="ErrCannotLoadSpecifiedType" xml:space="preserve">
-    <value>No type could be loaded for the value {1} passed to the /{0} option. Ensure that the assembly this type belongs to is specified via the /{2} option.</value>
+    <value>No type could be loaded for the value {1} passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</value>
   </data>
   <data name="ErrAssemblyLoadFailed" xml:space="preserve">
     <value>Cannot load file {0} as an Assembly. Check the FusionLogs for more Information.</value>
@@ -475,10 +475,10 @@
     <value>The input path '{0}' doesn't appear to refer to any existing files</value>
   </data>
   <data name="ErrInputConflictsWithOption" xml:space="preserve">
-    <value>The input read from '{1}' cannot be used with the /{0} option because they imply different modes of tool operation.</value>
+    <value>The input read from '{1}' cannot be used with the --{0} option because they imply different modes of tool operation.</value>
   </data>
   <data name="ErrInputConflictsWithTarget" xml:space="preserve">
-    <value>The type of input read from '{2}' is not supported with the /{0} option set to '{1}'.</value>
+    <value>The type of input read from '{2}' is not supported with the --{0} option set to '{1}'.</value>
   </data>
   <data name="ErrInputConflictsWithMode" xml:space="preserve">
     <value>The input read from '{0}' is inconsistent with other options.</value>
@@ -490,7 +490,7 @@
     <value>There was a validation error on a schema generated during export:\r\n    Source: {0}\r\n    Line: {1} Column: {2}\r\n   Validation Error: {3}</value>
   </data>
   <data name="ErrUnableToLoadExtensions" xml:space="preserve">
-    <value>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the /{0} option.</value>
+    <value>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</value>
   </data>
   <data name="ErrUnableToLoadReferenceType" xml:space="preserve">
     <value>There was an error loading a referenced contract type. This type will be ignored.\r\n    Type: {0}</value>
@@ -499,13 +499,13 @@
     <value>Cannot create output filename. Too many files are being created with the prefix '{0}'.</value>
   </data>
   <data name="ErrInvalidPath" xml:space="preserve">
-    <value>Invalid path {0}. Check the /{1} argument</value>
+    <value>Invalid path {0}. Check the --{1} argument</value>
   </data>
   <data name="ErrPathTooLongDirOnly" xml:space="preserve">
-    <value>The resultant path '{0}' is too long. Review the /{1} argument</value>
+    <value>The resultant path '{0}' is too long. Review the --{1} argument</value>
   </data>
   <data name="ErrPathTooLong" xml:space="preserve">
-    <value>The resultant path '{0}' is too long. Review the /{1} and /{2} arguments</value>
+    <value>The resultant path '{0}' is too long. Review the --{1} and --{2} arguments</value>
   </data>
   <data name="ErrCannotCreateDirectory" xml:space="preserve">
     <value>Cannot create directory: {0}</value>
@@ -526,7 +526,7 @@
     <value>Cannot generate XmlSerializer for assembly: {0}. No service contract in the assembly has an operation with XmlSerializerOperationBehavior.</value>
   </data>
   <data name="WrnOptionConflictsWithInput" xml:space="preserve">
-    <value>Option /{0} cannot be used with multiple input assemblies. Ignoring {0} option. </value>
+    <value>Option --{0} cannot be used with multiple input assemblies. Ignoring {0} option. </value>
   </data>
   <data name="GeneratingFiles" xml:space="preserve">
     <value>Generating files...</value>
@@ -544,7 +544,7 @@
     <value>Could not load assembly '{0}'. 2  reference assemblies ('{1}' and '{2}') were found that match the string '{0}'. This is usually caused by an insufficient type reference in a config file. Resolve this issue by passing only the reference assembly needed or by adding more information like a version number or a public key to the reference.</value>
   </data>
   <data name="WrnVJSharpNamespace" xml:space="preserve">
-    <value>When using the '/{0}:{1}' argument, only one namespace mapping is supported. Use '/{2}:*,&lt;string&gt;' to set the namespace.</value>
+    <value>When using the '--{0}:{1}' argument, only one namespace mapping is supported. Use '--{2}:*,&lt;string&gt;' to set the namespace.</value>
   </data>
   <data name="CopyrightForCmdLine" xml:space="preserve">
     <value>Copyright (c) Microsoft Corporation.  All rights reserved.</value>

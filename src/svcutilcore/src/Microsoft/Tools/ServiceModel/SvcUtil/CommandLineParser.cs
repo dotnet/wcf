@@ -25,17 +25,17 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
         internal CommandSwitch(string name, string abbreviation, SwitchType switchType)
         {
-            //ensure that either name doesn't start with '--' or '-'
+            //ensure name doesn't start with '--' and abbreviation doesn't start with '-'
             //also convert to lower-case
-            if (name.Length > 1 && name[0] == '-' && name[1] == '-')
-                _name = (name.Substring(2)).ToLower(CultureInfo.InvariantCulture);
-            else
-                _name = name.ToLower(CultureInfo.InvariantCulture);
+            if (name.StartsWith("--"))
+                name = name.Substring(2);
+          
+            _name = name.ToLower(CultureInfo.InvariantCulture);
 
-            if (abbreviation[0] == '-')
-                _abbreviation = (abbreviation.Substring(1)).ToLower(CultureInfo.InvariantCulture);
-            else
-                _abbreviation = abbreviation.ToLower(CultureInfo.InvariantCulture);
+            if (abbreviation.StartsWith("-"))
+                abbreviation = abbreviation.Substring(1);
+
+            _abbreviation = abbreviation.ToLower(CultureInfo.InvariantCulture);
 
             _switchType = switchType;
         }
@@ -58,26 +58,19 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         }
 
         internal bool Equals(string other)
-        {
-            string temp;
-
+        { 
             //ensure that compare doesn't start with '--' or '-'
             //also convert to lower-case
-            if (other[0] == '-')
-            {
-                if (other.Length > 1 && other[1] == '-')
-                    other = other.Substring(2);
-                else
-                    other = other.Substring(1);
-            }
-            temp = other.ToLower(CultureInfo.InvariantCulture);
-
-
+            if(other.StartsWith("--"))
+                other = other.Substring(2);
+            else if(other.StartsWith("-"))
+                other = other.Substring(1);
+            
             //if equal to name, then return the OK
-            if (_name.Equals(temp))
+            if (_name.Equals(other, StringComparison.InvariantCultureIgnoreCase))
                 return true;
             //now check abbreviation
-            return _abbreviation.Equals(temp);
+            return _abbreviation.Equals(other, StringComparison.InvariantCultureIgnoreCase);
         }
 
         internal static CommandSwitch FindSwitch(string name, CommandSwitch[] switches)
@@ -178,8 +171,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     continue;
                 }
 
-                //if we have something which begins with '/' or '-', throw if nothing after it
-                if (arg.Length == 1 || (arg.Length ==2 && arg[1] == '-'))
+                //if we have something which begins with '--' or '-', throw if nothing after it
+                if (arg == "-" || arg == "--")
                     throw new ArgumentException(SR.Format(SR.ErrSwitchMissing, arg));
 
                 //yank switch indicator ('--' or '-') off of command argument
