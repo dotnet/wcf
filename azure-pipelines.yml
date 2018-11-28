@@ -1,7 +1,7 @@
 variables:
   Build.Repository.Clean: true
   _HelixType: build/product/
-  _HelixSource: pr/StephenBonikowsky/wcf/$(Build.SourceBranch)
+  _HelixSource: pr/dotnet/wcf/$(Build.SourceBranch)
   _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService
   _UpdateService: false
   _enableTelemetry: true
