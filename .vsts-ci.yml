@@ -1,0 +1,102 @@
+variables:
+  Build.Repository.Clean: true
+  _HelixType: build/product/
+  _HelixSource: pr/dotnet/wcf/$(Build.SourceBranch)
+  _WcfServiceUri: wcfcoresrv2.cloudapp.net/WcfService
+  _UpdateService: false
+  _enableTelemetry: true
+
+trigger:
+- master
+
+pr:
+- master
+
+phases:
+## Build & Run on Windows ##
+- template: /eng/common/templates/phases/base.yml
+  parameters:
+    name: Windows_NT
+    enableTelemetry: $(_enableTelemetry)
+    queue:
+      name: Hosted VS2017
+      parallel: 99
+      matrix:
+        debug_selfhosted:
+          _args: -buildArch=x64 -Debug
+          _testargs: -outerloop
+          _UpdateService: false
+        release_iishosted:
+          _args: -buildArch=x64 -Release
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)1 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: true
+    steps:
+    - template: /eng/common/templates/steps/UpdatePRService.yml
+      parameters:
+        wcfPRServiceId: 1
+    - script: build.cmd $(_args)
+      displayName: Build
+      condition: succeeded()
+    - script: build-tests.cmd $(_args) $(_testargs)
+      displayName: Build_Test
+      condition: succeeded()
+## Build & Run on OSX ##
+- template: /eng/common/templates/phases/base.yml
+  parameters:
+    name: OSX
+    enableTelemetry: $(_enableTelemetry)
+    queue:
+      name: Hosted macOS
+      parallel: 99
+      matrix:
+        debug_selfhosted:
+          _args: -buildArch=x64 -debug
+          _testargs: -outerloop -- /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: false
+        release_iishosted:
+          _args: -release
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: true
+    steps:
+    - template: /eng/common/templates/steps/UpdatePRService.yml
+      parameters:
+        wcfPRServiceId: 2
+    - script: ./sync.sh -p -- /p:ArchGroup=x64
+      displayName: Sync.sh
+      condition: succeeded()
+    - script: ./build.sh $(_args)
+      displayName: Build.sh
+      condition: succeeded()
+    - script: ./build-tests.sh $(_args) $(_testargs)
+      displayName: Build_Test.sh
+      condition: succeeded()
+## Build & Run on Ubuntu ##
+- template: /eng/common/templates/phases/base.yml
+  parameters:
+    name: Linux
+    enableTelemetry: $(_enableTelemetry)
+    queue:
+      name: Hosted Ubuntu 1604
+      parallel: 99
+      matrix:
+        debug_selfhosted:
+          _args: -buildArch=x64 -debug
+          _testargs: -outerloop -- /p:ServiceUri=wcfcoresrv5.cloudapp.net /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: false
+        release_iishosted:
+          _args: -release
+          _testargs: -outerloop -- /p:ServiceUri=$(_WcfServiceUri)2 /p:SSL_Available=true /p:Client_Certificate_Installed=true /p:Root_Certificate_Installed=true
+          _UpdateService: true
+    steps:
+    - template: /eng/common/templates/steps/UpdatePRService.yml
+      parameters:
+        wcfPRServiceId: 3
+    - script: ./sync.sh -p -- /p:ArchGroup=x64
+      displayName: Sync.sh
+      condition: succeeded()
+    - script: ./build.sh $(_args)
+      displayName: Build.sh
+      condition: succeeded()
+    - script: ./build-tests.sh $(_args) $(_testargs)
+      displayName: Build_Test.sh
+      condition: succeeded()
