@@ -61,9 +61,9 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
         { 
             //ensure that compare doesn't start with '--' or '-'
             //also convert to lower-case
-            if(other.StartsWith("--"))
+            if (other.StartsWith("--"))
                 other = other.Substring(2);
-            else if(other.StartsWith("-"))
+            else if (other.StartsWith("-"))
                 other = other.Substring(1);
             
             //if equal to name, then return the OK
