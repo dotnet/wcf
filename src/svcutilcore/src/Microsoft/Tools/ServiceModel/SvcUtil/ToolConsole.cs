@@ -202,7 +202,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 HelpCategory helpCategory = new HelpCategory(SR.Format(SR.HelpCodeGenerationCategory));
 
                 helpCategory.Description = SR.Format(SR.HelpCodeGenerationDescription, ThisAssembly.Title);
-                helpCategory.Syntax = SR.Format(SR.HelpCodeGenerationSyntax, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.Code,
+                helpCategory.Syntax = SR.Format(SR.HelpCodeGenerationAbbreviationSyntax, ThisAssembly.Title, Options.Abbr.Target, Options.Targets.Code,
                     SR.Format(SR.HelpInputMetadataDocumentPath), SR.Format(SR.HelpInputUrl), SR.Format(SR.HelpInputEpr));
 
                 helpCategory.Inputs = new ArgumentInfo[3];
@@ -270,14 +270,14 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 internal static ArgumentInfo CreateFlagHelpInfo(string option)
                 {
                     ArgumentInfo argInfo = new ArgumentInfo();
-                    argInfo._name = String.Format(CultureInfo.InvariantCulture, "/{0}", option);
+                    argInfo._name = $"--{option}";
                     return argInfo;
                 }
 
                 internal static ArgumentInfo CreateParameterHelpInfo(string option, string optionUse)
                 {
                     ArgumentInfo argInfo = new ArgumentInfo();
-                    argInfo._name = String.Format(CultureInfo.InvariantCulture, "/{0}:{1}", option, optionUse);
+                    argInfo._name = $"--{option}:{optionUse}";
                     return argInfo;
                 }
 
