@@ -67,6 +67,7 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(Peer_Certificate_Installed),
                nameof(SSL_Available))]
     [Issue(1945, OS = OSID.AnyOSX)] // OSX doesn't support the TrustedPeople certificate store
+    [Issue(3112, Framework = FrameworkID.NetNative)]
     [OuterLoop]
     // Asking for PeerTrust alone should throw SecurityNegotiationException
     // if the certificate is not in the TrustedPeople store.  For this test
