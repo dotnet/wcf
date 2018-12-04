@@ -412,7 +412,7 @@
     <value>The fault reason does not contain any text translations.</value>
   </data>
   <data name="CannotDetermineSPNBasedOnAddress" xml:space="preserve">
-    <value>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\\alice) or SPN identity (like host/bobs-machine).</value>
+    <value>Client cannot determine the Service Principal Name based on the identity in the target address '{0}' for the purpose of SspiNegotiation/Kerberos. The target address identity must be a UPN identity (like acmedomain\alice) or SPN identity (like host/bobs-machine).</value>
   </data>
   <data name="XmlLangAttributeMissing" xml:space="preserve">
     <value>Required xml:lang attribute value is missing.</value>
@@ -859,7 +859,7 @@
     <value>The server at {0} rejected the session-establishment request.</value>
   </data>
   <data name="UnableToResolveHost" xml:space="preserve">
-    <value>Cannot resolve the host name of URI \"{0}\" using DNS.</value>
+    <value>Cannot resolve the host name of URI "{0}" using DNS.</value>
   </data>
   <data name="HttpRequiresSingleAuthScheme" xml:space="preserve">
     <value>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</value>
@@ -955,7 +955,7 @@
     <value>The StreamUpgradeProvider {0} does not support the specified ChannelBindingKind ({1}). </value>
   </data>
   <data name="ExtendedProtectionNotSupported" xml:space="preserve">
-    <value>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of \"Never\" or \"WhenSupported\".</value>
+    <value>Extended protection is not supported on this platform.  Please install the appropriate patch or change the ExtendedProtectionPolicy on the Binding or BindingElement to a value with a PolicyEnforcement value of "Never" or "WhenSupported".</value>
   </data>
   <data name="HttpClientCredentialTypeInvalid" xml:space="preserve">
     <value>ClientCredentialType '{0}' can only be used on the server side, not the client side. Please use one of the following values instead 'None, Basic, Client, Digest, Ntlm, Windows'.</value>
@@ -1324,7 +1324,7 @@
     <value>Method {0} in type {1} has more than one header part of type array of XmlElement.</value>
   </data>
   <data name="SFxMultipleContractStarOperations0" xml:space="preserve">
-    <value>A ServiceContract has more the one operation with an Action of \"*\".  A ServiceContract can have at most one operation an Action = \"*\".</value>
+    <value>A ServiceContract has more the one operation with an Action of "*".  A ServiceContract can have at most one operation an Action = "*".</value>
   </data>
   <data name="SFxNameCannotBeEmpty" xml:space="preserve">
     <value>The Name property must be a non-empty string.</value>
@@ -1399,7 +1399,7 @@
     <value>The request message has FaultTo='{0}' but IContextChannel.LocalAddress is '{1}'.  When ManualAddressing is false, these values must be the same, null, or EndpointAddress.AnonymousAddress.  Enable ManualAddressing or avoid setting FaultTo on the message.</value>
   </data>
   <data name="SFxRequestReplyNone" xml:space="preserve">
-    <value>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the \"None\" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of \"None.\"</value>
+    <value>A message was received with a WS-Addressing ReplyTo or FaultTo header targeted at the "None" address.  These values are not valid for request-reply operations.  Please consider using a one-way operation or enabling ManualAddressing if you need to support ReplyTo or FaultTo values of "None."</value>
   </data>
   <data name="SFxRequestTimedOut1" xml:space="preserve">
     <value>This request operation did not receive a reply within the configured timeout ({0}).  The time allotted to this operation may have been a portion of a longer timeout.  This may be because the service is still processing the operation or because the service was unable to send a reply message.  Please consider increasing the operation timeout (by casting the channel/proxy to IContextChannel and setting the OperationTimeout property) and ensure that the service is able to connect to the client.</value>
@@ -1441,7 +1441,7 @@
     <value>Internal Error: The instance of the MessageContract cannot be null in {0}.</value>
   </data>
   <data name="SFxTypedMessageCannotBeRpcLiteral" xml:space="preserve">
-    <value>The operation '{0}' could not be loaded because it specifies \"rpc-style\" in \"literal\" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</value>
+    <value>The operation '{0}' could not be loaded because it specifies "rpc-style" in "literal" mode, but uses message contract types or the System.ServiceModel.Channels.Message. This combination is disallowed -- specify a different value for style or use parameters other than message contract types or System.ServiceModel.Channels.Message.</value>
   </data>
   <data name="SFxTypedOrUntypedMessageCannotBeMixedWithParameters" xml:space="preserve">
     <value>The operation '{0}' could not be loaded because it has a parameter or return type of type System.ServiceModel.Channels.Message or a type that has MessageContractAttribute and other parameters of different types. When using System.ServiceModel.Channels.Message or types with MessageContractAttribute, the method must not use any other types of parameters.</value>
@@ -1804,7 +1804,7 @@
     <value>The value specified ('{0}') contains more than one subprotocol which is not supported.</value>
   </data>
   <data name="WebSocketInvalidProtocolEmptySubprotocolString" xml:space="preserve">
-    <value>Empty string is not a valid subprotocol value. Please use \"null\" to specify no value.</value>
+    <value>Empty string is not a valid subprotocol value. Please use "null" to specify no value.</value>
   </data>
   <data name="WebSocketUnexpectedCloseMessageError" xml:space="preserve">
     <value>Unexpected WebSocket close message received when receiving a message.</value>
