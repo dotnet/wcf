@@ -59,8 +59,8 @@ steps:
       if [[ $OPERATION = pr ]]; then
         echo "Operation is set to: $OPERATION"
         echo "Parse the PR ID from environment variable 'Build.SourceBranch': $BUILD_SOURCEBRANCH"
-        $GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
-        $GHPRBPULLID=$GETPRID
+        GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
+        GHPRBPULLID=$GETPRID
         echo "The PR ID is: $GHPRBPULLID"
       fi
 
