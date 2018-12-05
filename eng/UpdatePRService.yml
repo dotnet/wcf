@@ -5,8 +5,10 @@ parameters:
 
 ##   Description of 'Set_Operation_PR_or_Branch' steps for Windows or Unix   ##
 ##   'Operation' is set to "pr" by default. It is setable at build def queue time.   ##
-##   If 'Operation' is set to "pr" the inline script will set the environment variable 'ghprbPullId' to the id of the executing PR.   ##
-##   The variable 'ghprbPullId' is then used by the 'sync-pr' script.
+##   (Windows)If 'Operation' is set to "pr" the inline script will set the environment variable 'ghprbPullId' to the id of the executing PR.   ##
+##   (Windows)The variable 'ghprbPullId' is then used by the 'sync-pr' script.
+##   (Unix)If 'Operation' is set to "pr" the inline script will set the environment variable 'branchNameorPrId' to the id of the executing PR.   ##
+##   (Unix)The variable 'branchNameorPrId' is then passed to the 'sync-pr' script.
 ##   If 'Operation' is set to 'branch' it will determine the branch being used and set the environment variable 'branchName' to it.
 ##   The variable 'branchName' is then passed to the 'sync-pr' script.
 steps:
@@ -60,9 +62,8 @@ steps:
         echo "Operation is set to: $OPERATION"
         echo "Parse the PR ID from environment variable 'Build.SourceBranch': $BUILD_SOURCEBRANCH"
         GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
-        ghprbPullId=$GETPRID
-        echo "The PR ID is: $ghprbPullId"
-        echo "##vso[task.setvariable variable=branchNameorPrId]origin/$GETPRID"
+        echo "The PR ID is: $GETPRID"
+        echo "##vso[task.setvariable variable=branchNameorPrId]$GETPRID"
       fi
 
       if [[ $OPERATION = branch ]]; then
