@@ -60,8 +60,8 @@ steps:
         echo "Operation is set to: $OPERATION"
         echo "Parse the PR ID from environment variable 'Build.SourceBranch': $BUILD_SOURCEBRANCH"
         GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
-        GHPRBPULLID=$GETPRID
-        echo "The PR ID is: $GHPRBPULLID"
+        ghprbPullId=$GETPRID
+        echo "The PR ID is: $ghprbPullId"
       fi
 
       if [[ $OPERATION = branch ]]; then
