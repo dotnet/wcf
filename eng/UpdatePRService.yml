@@ -62,12 +62,13 @@ steps:
         GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
         ghprbPullId=$GETPRID
         echo "The PR ID is: $ghprbPullId"
+        echo "##vso[task.setvariable variable=branchNameorPrId]origin/$GETPRID"
       fi
 
       if [[ $OPERATION = branch ]]; then
         echo "Operation is set to: $OPERATION"
         echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
-        echo "##vso[task.setvariable variable=branchName]origin/$BUILD_SOURCEBRANCHNAME"
+        echo "##vso[task.setvariable variable=branchNameorPrId]origin/$BUILD_SOURCEBRANCHNAME"
       fi
 
     displayName: Set_Operation_PR_or_Branch_Unix
@@ -97,8 +98,8 @@ steps:
       echo "Variable wcfPRServiceId is set to: $WCFPRSERVICEID"
       echo "Variable Operation is set to: $OPERATION"
       echo "Variable wcfPRServiceUri is set to: $WCFPRSERVICEURI"
-      echo "Variable branchName is set to: $BRANCHNAME"
-      "$BUILD_SOURCESDIRECTORY/src/System.Private.ServiceModel/tools/scripts/sync-pr.sh" $WCFPRSERVICEID $OPERATION $WCFPRSERVICEURI $BRANCHNAME
+      echo "Variable branchNameorPrId is set to: $BRANCHNAMEORPRID"
+      "$BUILD_SOURCESDIRECTORY/src/System.Private.ServiceModel/tools/scripts/sync-pr.sh" $WCFPRSERVICEID $OPERATION $WCFPRSERVICEURI $BRANCHNAMEORPRID
 
     displayName: Sync_PRService_Unix
     env:
