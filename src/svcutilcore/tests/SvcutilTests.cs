@@ -24,7 +24,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
             string smassemblypath = testassemblypath.Replace("dotnet-svcutil.xmlserializer.Tests", "System.ServiceModel.Primitives").Replace("Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests.dll", "System.ServiceModel.Primitives.dll").Replace("netcoreapp", "netstandard");
             if (File.Exists(smassemblypath))
             {
-                Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"/out:{outputFile}", $"/smreference:{smassemblypath}", $"/quiet"});
+                Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"--out:{outputFile}", $"--smreference:{smassemblypath}", $"--quiet"});
                 Assert.True(File.Exists(outputFile));
                 File.Delete(outputFile);
             }

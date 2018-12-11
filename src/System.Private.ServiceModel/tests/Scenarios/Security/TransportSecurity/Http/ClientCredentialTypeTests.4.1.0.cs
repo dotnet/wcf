@@ -79,6 +79,7 @@ public static class Http_ClientCredentialTypeTests
 
     [WcfFact]
     [OuterLoop]
+    [Issue(0000, Framework = FrameworkID.NetNative)] // Expect100Continue header is not supported in UWP.
     public static void HttpExpect100Continue_DigestAuthentication_True()
     {
         ChannelFactory<IWcfService> factory = null;
