@@ -35,6 +35,14 @@ namespace System.ServiceModel
 }
 namespace System.ServiceModel.Channels
 {
+    public partial interface ISecurityCapabilities
+    {
+        System.Net.Security.ProtectionLevel SupportedRequestProtectionLevel { get; }
+        System.Net.Security.ProtectionLevel SupportedResponseProtectionLevel { get; }
+        bool SupportsClientAuthentication { get; }
+        bool SupportsClientWindowsIdentity { get; }
+        bool SupportsServerAuthentication { get; }
+    }
     public sealed partial class LocalClientSecuritySettings
     {
         public LocalClientSecuritySettings() { }
