@@ -6,6 +6,7 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Net.Security;
 using Infrastructure.Common;
 using Xunit;
 
@@ -16,11 +17,11 @@ public static class ISecurityCapabilitiesTest
     {
         ISecurityCapabilities capability = CreateISecurityCapabilities(new HttpsTransportBindingElement());
 
-        Assert.Equal("EncryptAndSign", capability.SupportedRequestProtectionLevel.ToString());
-        Assert.Equal("EncryptAndSign", capability.SupportedResponseProtectionLevel.ToString());
-        Assert.Equal("False", capability.SupportsClientAuthentication.ToString());
-        Assert.Equal("False", capability.SupportsClientWindowsIdentity.ToString());
-        Assert.Equal("True", capability.SupportsServerAuthentication.ToString());
+        Assert.Equal(ProtectionLevel.EncryptAndSign, capability.SupportedRequestProtectionLevel);
+        Assert.Equal(ProtectionLevel.EncryptAndSign, capability.SupportedResponseProtectionLevel);
+        Assert.False(capability.SupportsClientAuthentication);
+        Assert.False(capability.SupportsClientWindowsIdentity);
+        Assert.True(capability.SupportsServerAuthentication);
     }
 
     [WcfFact]
@@ -28,11 +29,11 @@ public static class ISecurityCapabilitiesTest
     {
         ISecurityCapabilities capability = CreateISecurityCapabilities(new HttpTransportBindingElement());
 
-        Assert.Equal("None", capability.SupportedRequestProtectionLevel.ToString());
-        Assert.Equal("None", capability.SupportedResponseProtectionLevel.ToString());
-        Assert.Equal("False", capability.SupportsClientAuthentication.ToString());
-        Assert.Equal("False", capability.SupportsClientWindowsIdentity.ToString());
-        Assert.Equal("False", capability.SupportsServerAuthentication.ToString());
+        Assert.Equal(ProtectionLevel.None, capability.SupportedRequestProtectionLevel);
+        Assert.Equal(ProtectionLevel.None, capability.SupportedResponseProtectionLevel);
+        Assert.False(capability.SupportsClientAuthentication);
+        Assert.False(capability.SupportsClientWindowsIdentity);
+        Assert.False(capability.SupportsServerAuthentication);
     }
 
     [WcfFact]
@@ -40,11 +41,11 @@ public static class ISecurityCapabilitiesTest
     {
         ISecurityCapabilities capability = CreateISecurityCapabilities(new TransportSecurityBindingElement());
 
-        Assert.Equal("None", capability.SupportedRequestProtectionLevel.ToString());
-        Assert.Equal("None", capability.SupportedResponseProtectionLevel.ToString());
-        Assert.Equal("False", capability.SupportsClientAuthentication.ToString());
-        Assert.Equal("False", capability.SupportsClientWindowsIdentity.ToString());
-        Assert.Equal("False", capability.SupportsServerAuthentication.ToString());
+        Assert.Equal(ProtectionLevel.None, capability.SupportedRequestProtectionLevel);
+        Assert.Equal(ProtectionLevel.None, capability.SupportedResponseProtectionLevel);
+        Assert.False(capability.SupportsClientAuthentication);
+        Assert.False(capability.SupportsClientWindowsIdentity);
+        Assert.False(capability.SupportsServerAuthentication);
     }
 
     [WcfFact]
@@ -52,11 +53,11 @@ public static class ISecurityCapabilitiesTest
     {
         ISecurityCapabilities capability = CreateISecurityCapabilities(new SslStreamSecurityBindingElement());
 
-        Assert.Equal("EncryptAndSign", capability.SupportedRequestProtectionLevel.ToString());
-        Assert.Equal("EncryptAndSign", capability.SupportedResponseProtectionLevel.ToString());
-        Assert.Equal("False", capability.SupportsClientAuthentication.ToString());
-        Assert.Equal("False", capability.SupportsClientWindowsIdentity.ToString());
-        Assert.Equal("True", capability.SupportsServerAuthentication.ToString());
+        Assert.Equal(ProtectionLevel.EncryptAndSign, capability.SupportedRequestProtectionLevel);
+        Assert.Equal(ProtectionLevel.EncryptAndSign, capability.SupportedResponseProtectionLevel);
+        Assert.False(capability.SupportsClientAuthentication);
+        Assert.False(capability.SupportsClientWindowsIdentity);
+        Assert.True(capability.SupportsServerAuthentication);
     }
 
     [WcfFact]
@@ -64,11 +65,11 @@ public static class ISecurityCapabilitiesTest
     {
         ISecurityCapabilities capability = CreateISecurityCapabilities(new WindowsStreamSecurityBindingElement());
 
-        Assert.Equal("EncryptAndSign", capability.SupportedRequestProtectionLevel.ToString());
-        Assert.Equal("EncryptAndSign", capability.SupportedResponseProtectionLevel.ToString());
-        Assert.Equal("True", capability.SupportsClientAuthentication.ToString());
-        Assert.Equal("True", capability.SupportsClientWindowsIdentity.ToString());
-        Assert.Equal("True", capability.SupportsServerAuthentication.ToString());
+        Assert.Equal(ProtectionLevel.EncryptAndSign, capability.SupportedRequestProtectionLevel);
+        Assert.Equal(ProtectionLevel.EncryptAndSign, capability.SupportedResponseProtectionLevel);
+        Assert.True(capability.SupportsClientAuthentication);
+        Assert.True(capability.SupportsClientWindowsIdentity);
+        Assert.True(capability.SupportsServerAuthentication);
     }
 
     public static ISecurityCapabilities CreateISecurityCapabilities(BindingElement bindingElement)
