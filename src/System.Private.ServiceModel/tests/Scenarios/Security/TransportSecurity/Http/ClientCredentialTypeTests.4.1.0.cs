@@ -17,6 +17,7 @@ public static class Http_ClientCredentialTypeTests
 {
     [WcfFact]
     [OuterLoop]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/3333")]
     public static void DigestAuthentication_Echo_RoundTrips_String_No_Domain()
     {
         ChannelFactory<IWcfService> factory = null;
