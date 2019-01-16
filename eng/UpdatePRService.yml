@@ -22,13 +22,15 @@ steps:
       set TEMP=%BUILD_SOURCEBRANCH:refs/pull/*/=%
       IF '%TEMP%'=='merge' (
           echo Build.SourceBranch does end with the word "merge", therefore it is a PR build.
-          set OPERATION=pr
-          echo Operation mode has been set to: !OPERATION!
+          set _OPERATION=pr
+          echo Operation mode has been set to: !_OPERATION!
+          echo ##vso[task.setvariable variable=operation]!_OPERATION!
           goto pr
       ) ELSE (
           echo Build.SourceBranch does NOT end with the word "merge", therefore this is a CI build.
-          set OPERATION=branch
-          echo Operation mode has been set to: !OPERATION!
+          set _OPERATION=branch
+          echo Operation mode has been set to: !_OPERATION!
+          echo ##vso[task.setvariable variable=operation]!_OPERATION!
           goto branch
       )
 
@@ -61,16 +63,18 @@ steps:
 
       if [[ $DETERMINE_OPERATION = merge ]]; then
         echo Build.SourceBranch does end with the word "merge", therefore it is a PR build.
-        OPERATION=pr
-        echo "Operation is set to: $OPERATION"
+        _OPERATION=pr
+        echo "Operation is set to: $_OPERATION"
+        echo "##vso[task.setvariable variable=operation]$_OPERATION"
         echo "Parse the PR ID from environment variable 'Build.SourceBranch': $BUILD_SOURCEBRANCH"
         GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
         echo "The PR ID is: $GETPRID"
         echo "##vso[task.setvariable variable=branchNameorPrId]$GETPRID"
       else
         echo Build.SourceBranch does NOT end with the word "merge", therefore this is a CI build.
-        OPERATION=branch
-        echo "Operation is set to: $OPERATION"
+        _OPERATION=branch
+        echo "Operation is set to: $_OPERATION"
+        echo "##vso[task.setvariable variable=operation]$_OPERATION"
         echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
         echo "##vso[task.setvariable variable=branchNameorPrId]origin/$BUILD_SOURCEBRANCHNAME"
       fi
@@ -83,10 +87,10 @@ steps:
   - powershell: |
       Write-Host "The WCF Root dir is: $env:Build_SourcesDirectory"
       Write-Host "Variable wcfPRServiceId is set to: $env:WCFPRSERVICEID"
-      Write-Host "Variable Operation is set to: $env:Operation"
+      Write-Host "Variable Operation is set to: $env:operation"
       Write-Host "Variable wcfPRServiceUri is set to: $env:WCFPRSERVICEURI"
       Write-Host "Variable branchName is set to: $env:branchName"
-      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:Operation $env:WCFPRSERVICEURI $env:branchName"" }
+      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:operation $env:WCFPRSERVICEURI $env:branchName"" }
       $LASTEXITCODE
 
     displayName: Sync_PRService_Windows
