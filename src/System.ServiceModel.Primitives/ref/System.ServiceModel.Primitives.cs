@@ -99,6 +99,7 @@ namespace System.ServiceModel
     public partial class ChannelFactory<TChannel> : System.ServiceModel.ChannelFactory, System.ServiceModel.Channels.IChannelFactory, System.ServiceModel.Channels.IChannelFactory<TChannel>, System.ServiceModel.ICommunicationObject
     {
         public ChannelFactory(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
+        public ChannelFactory(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
         public ChannelFactory(string endpointConfigurationName) { }
         public ChannelFactory(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) { }
         protected ChannelFactory(System.Type channelType) { }
@@ -118,6 +119,7 @@ namespace System.ServiceModel
     {
         protected ClientBase() { }
         protected ClientBase(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
+        protected ClientBase(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
         protected ClientBase(string endpointConfigurationName) { }
         protected ClientBase(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) { }
         protected ClientBase(string endpointConfigurationName, string remoteAddress) { }
