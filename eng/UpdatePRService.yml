@@ -17,18 +17,16 @@ steps:
   - script: |
       SETLOCAL EnableDelayedExpansion
       echo Determine if this is a PR or CI triggered build.
-      echo Build.SourceBranch is set to: %BUILD_SOURCEBRANCH%
-      echo If Build.SourceBranch ends with the word "merge" then it is a PR build.
-      set TEMP=%BUILD_SOURCEBRANCH:refs/pull/*/=%
-      echo Determined that the last word is: %TEMP%
-      IF '%TEMP%'=='merge' (
-          echo Build.SourceBranch does end with the word "merge", therefore it is a PR build.
+      echo If Build.Reason is 'PullRequest' then set 'operation to "pr".
+      echo If Build.Reason is NOT 'PullRequest' then set 'operation' to "branch".
+      echo Build.Reason is: %Build.Reason%
+
+      IF '%Build.Reason%'=='PullRequest' (
           set _OPERATION=pr
           echo Operation mode has been set to: !_OPERATION!
           echo ##vso[task.setvariable variable=operation]!_OPERATION!
           goto pr
       ) ELSE (
-          echo Build.SourceBranch does NOT end with the word "merge", therefore this is a CI build.
           set _OPERATION=branch
           echo Operation mode has been set to: !_OPERATION!
           echo ##vso[task.setvariable variable=operation]!_OPERATION!
@@ -58,23 +56,21 @@ steps:
     ##   Task: Get the PR ID or Branch name.   ##
   - bash: |
       echo Determine if this is a PR or CI triggered build.
-      echo If Build.SourceBranch ends with the word "merge" then it is a PR build.
-      echo Build.SourceBranch is set to: $BUILD_SOURCEBRANCH
-      DETERMINE_OPERATION=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 4)
+      echo If Build.Reason is 'PullRequest' then set 'operation to "pr".
+      echo If Build.Reason is NOT 'PullRequest' then set 'operation' to "branch".
+      echo Build.Reason is: $BUILD_REASON
 
-      if [[ $DETERMINE_OPERATION = merge ]]; then
-        echo Build.SourceBranch does end with the word "merge", therefore it is a PR build.
+      if [[ $BUILD_REASON = PullRequest ]]; then
         _OPERATION=pr
-        echo "Operation is set to: $_OPERATION"
+        echo "Operation mode has been set to: $_OPERATION"
         echo "##vso[task.setvariable variable=operation]$_OPERATION"
         echo "Parse the PR ID from environment variable 'Build.SourceBranch': $BUILD_SOURCEBRANCH"
         GETPRID=$(echo $BUILD_SOURCEBRANCH| cut -d'/' -f 3)
         echo "The PR ID is: $GETPRID"
         echo "##vso[task.setvariable variable=branchNameorPrId]$GETPRID"
       else
-        echo Build.SourceBranch does NOT end with the word "merge", therefore this is a CI build.
         _OPERATION=branch
-        echo "Operation is set to: $_OPERATION"
+        echo "Operation mode has been set to: $_OPERATION"
         echo "##vso[task.setvariable variable=operation]$_OPERATION"
         echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
         echo "##vso[task.setvariable variable=branchNameorPrId]origin/$BUILD_SOURCEBRANCHNAME"
