@@ -19,9 +19,9 @@ steps:
       echo Determine if this is a PR or CI triggered build.
       echo If Build.Reason is 'PullRequest' then set 'operation to "pr".
       echo If Build.Reason is NOT 'PullRequest' then set 'operation' to "branch".
-      echo Build.Reason is: %Build.Reason%
+      echo Build.Reason is: %BUILD_REASON%
 
-      IF '%Build.Reason%'=='PullRequest' (
+      IF '%BUILD_REASON%'=='PullRequest' (
           set _OPERATION=pr
           echo Operation mode has been set to: !_OPERATION!
           echo ##vso[task.setvariable variable=operation]!_OPERATION!
@@ -55,10 +55,10 @@ steps:
     ##   Platform: Unix   ##
     ##   Task: Get the PR ID or Branch name.   ##
   - bash: |
-      echo Determine if this is a PR or CI triggered build.
-      echo If Build.Reason is 'PullRequest' then set 'operation to "pr".
-      echo If Build.Reason is NOT 'PullRequest' then set 'operation' to "branch".
-      echo Build.Reason is: $BUILD_REASON
+      echo "Determine if this is a PR or CI triggered build."
+      echo "If 'Build.Reason' is set to 'PullRequest' then set operation mode to 'pr'."
+      echo "If 'Build.Reason' is NOT 'PullRequest' then set operation mode to 'branch'."
+      echo "Build.Reason is: $BUILD_REASON"
 
       if [[ $BUILD_REASON = PullRequest ]]; then
         _OPERATION=pr
