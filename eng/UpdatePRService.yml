@@ -17,9 +17,10 @@ steps:
   - script: |
       SETLOCAL EnableDelayedExpansion
       echo Determine if this is a PR or CI triggered build.
-      echo If Build.SourceBranch ends with the word "merge" then it is a PR build.
       echo Build.SourceBranch is set to: %BUILD_SOURCEBRANCH%
+      echo If Build.SourceBranch ends with the word "merge" then it is a PR build.
       set TEMP=%BUILD_SOURCEBRANCH:refs/pull/*/=%
+      echo Determined that the last word is: %TEMP%
       IF '%TEMP%'=='merge' (
           echo Build.SourceBranch does end with the word "merge", therefore it is a PR build.
           set _OPERATION=pr
