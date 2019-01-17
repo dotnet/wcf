@@ -50,5 +50,85 @@ public static partial class ClientBaseTests_4_4_0
             ScenarioTestHelpers.CloseCommunicationObjects(client);
         }
     }
-}
 
+    [WcfFact]
+    [OuterLoop]
+    public static void ClientBaseOfT_ServiceEndpointCtor_NewCntrctDscrip()
+    {
+        MyClientBase client = null;
+        ClientCredentials clientCredentials = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
+
+            string endpoint = Endpoints.HttpSoap12_Address;
+            ContractDescription description = new ContractDescription("MyContract");
+            ServiceEndpoint serviceEndpoint = new ServiceEndpoint(description, customBinding, new EndpointAddress(endpoint));
+
+            client = new MyClientBase(serviceEndpoint);
+
+            // *** EXECUTE *** \\
+            clientCredentials = client.ClientCredentials;
+
+            // *** VALIDATE *** \\
+            Assert.True(clientCredentials != null, "ClientCredentials should not be null");
+            Assert.True(clientCredentials.ClientCertificate != null, "ClientCredentials.ClientCertificate should not be null");
+            Assert.True(clientCredentials.ServiceCertificate != null, "ClientCredentials.ServiceCertificate should not be null");
+            Assert.True(clientCredentials.HttpDigest != null, "ClientCredentials.HttpDigest should not be null");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects(client);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void ClientBaseOfT_ServiceEndpointCtor_ExtractedCntrctDscrip()
+    {
+        MyClientBase client = null;
+        ClientCredentials clientCredentials = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
+
+            string endpoint = Endpoints.HttpSoap12_Address;
+            client = new MyClientBase(customBinding, new EndpointAddress(endpoint));
+            // Extract the ContractDescription from the channel factory.
+            ContractDescription cd = client.ChannelFactory.Endpoint.Contract;
+            // Use the ContractDescription to create a new ServiceEndpoint
+            ServiceEndpoint serviceEndpoint = new ServiceEndpoint(cd, customBinding, new EndpointAddress(endpoint));
+
+            client = new MyClientBase(serviceEndpoint);
+
+            // *** EXECUTE *** \\
+            clientCredentials = client.ClientCredentials;
+
+            // *** VALIDATE *** \\
+            Assert.True(clientCredentials != null, "ClientCredentials should not be null");
+            Assert.True(clientCredentials.ClientCertificate != null, "ClientCredentials.ClientCertificate should not be null");
+            Assert.True(clientCredentials.ServiceCertificate != null, "ClientCredentials.ServiceCertificate should not be null");
+            Assert.True(clientCredentials.HttpDigest != null, "ClientCredentials.HttpDigest should not be null");
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects(client);
+        }
+    }
+}

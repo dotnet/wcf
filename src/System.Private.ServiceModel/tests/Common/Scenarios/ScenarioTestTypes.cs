@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -744,6 +745,11 @@ public class MyClientBase : ClientBase<IWcfServiceGenerated>
 {
     public MyClientBase(Binding binding, EndpointAddress endpointAddress)
         : base(binding, endpointAddress)
+    {
+    }
+
+    public MyClientBase(ServiceEndpoint serviceEndpoint)
+        : base(serviceEndpoint)
     {
     }
 
