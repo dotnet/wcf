@@ -54,6 +54,15 @@ namespace System.ServiceModel
             _channelFactory.TraceOpenAndClose = false;
         }
 
+        protected ClientBase(ServiceEndpoint endpoint)
+        {
+            if (endpoint == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("endpoint");
+
+            _channelFactory = new ChannelFactory<TChannel>(endpoint);
+            _channelFactory.TraceOpenAndClose = false;
+        }
+
         protected ClientBase(InstanceContext callbackInstance, Binding binding, EndpointAddress remoteAddress)
         {
             if (callbackInstance == null)

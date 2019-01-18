@@ -51,4 +51,3 @@ public static partial class ClientBaseTests_4_4_0
         }
     }
 }
-

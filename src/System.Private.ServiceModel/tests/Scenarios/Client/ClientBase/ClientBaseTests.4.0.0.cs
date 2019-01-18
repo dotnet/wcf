@@ -55,6 +55,53 @@ public static partial class ClientBaseTests
 
     [WcfFact]
     [OuterLoop]
+    public static void ClientBaseOfT_ServiceEndpointCtor_ExtractedCntrctDscrip()
+    {
+        MyClientBase<IWcfService> client = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding customBinding = new CustomBinding();
+            customBinding.Elements.Add(new TextMessageEncodingBindingElement());
+            customBinding.Elements.Add(new HttpTransportBindingElement());
+
+            string endpoint = Endpoints.DefaultCustomHttp_Address;
+            client = new MyClientBase<IWcfService>(customBinding, new EndpointAddress(endpoint));
+            // Extract the ContractDescription from the channel factory.
+            ContractDescription cd = client.ChannelFactory.Endpoint.Contract;
+            // Use the ContractDescription to create a new ServiceEndpoint
+            ServiceEndpoint serviceEndpoint = new ServiceEndpoint(cd, customBinding, new EndpointAddress(endpoint));
+
+            client = new MyClientBase<IWcfService>(serviceEndpoint);
+            client.Endpoint.EndpointBehaviors.Add(new ClientMessagePropertyBehavior());
+            serviceProxy = client.ChannelFactory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            TestHttpRequestMessageProperty property = serviceProxy.EchoHttpRequestMessageProperty();
+
+            // *** VALIDATE *** \\
+            Assert.NotNull(property);
+            Assert.True(property.SuppressEntityBody == false, "Expected SuppressEntityBody to be 'false'");
+            Assert.Equal("POST", property.Method);
+            Assert.Equal("My%20address", property.QueryString);
+            Assert.True(property.Headers.Count > 0, "TestHttpRequestMessageProperty.Headers should not have empty headers");
+            Assert.Equal("my value", property.Headers["customer"]);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)client).Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, (ICommunicationObject)client);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
     public static void ClientMessageInspector_Verify_Invoke()
     {
         // This test verifies ClientMessageInspector can be added to the client endpoint behaviors
