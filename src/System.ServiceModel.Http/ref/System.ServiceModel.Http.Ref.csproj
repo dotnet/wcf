@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>4.6.0.0</AssemblyVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>System.ServiceModel.Http</AssemblyName>
+    <RootNamespace>System.ServiceModel</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
+</Project>

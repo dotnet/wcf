@@ -4,6 +4,7 @@ syntax: glob
 
 # Tool Runtime Dir
 /[Tt]ools/
+.dotnet/
 
 # User-specific files
 *.suo
@@ -12,6 +13,7 @@ syntax: glob
 *.sln.docstates
 
 # Build results
+artifacts/
 .idea/
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -23,6 +25,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+msbuild.binlog
 msbuild.log
 msbuild.err
 msbuild.wrn
@@ -154,6 +157,7 @@ publish/
 *.nuget.targets
 *.nupkg
 **/packages/*
+.packages/
 
 # NuGet package restore lockfiles
 project.lock.json

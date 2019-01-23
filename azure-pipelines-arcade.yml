@@ -1,0 +1,31 @@
+variables:
+
+  # clean the local repo on the build agents
+  Build.Repository.Clean: true
+
+# trigger ci builds for merged PRs into listed branches
+# Setting batch to true, triggers one build at a time.
+# if there is a push while a build in progress, it will wait,
+# until the running build finishes, and produce a build with all the changes
+trigger:
+  batch: true
+  branches:
+    include:
+    - AdoptArcade
+
+# trigger ci builds for pull requests into listed branches
+pr:
+- AdoptArcade
+
+jobs:
+  # Windows legs
+  - template: /eng/pipelines/windows.yml
+    ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
+      parameters:
+        isOfficialBuild: true
+
+  # Linux legs
+  - template: /eng/pipelines/linux.yml
+    ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
+      parameters:
+        isOfficialBuild: true

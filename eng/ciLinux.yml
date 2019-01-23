@@ -1,0 +1,149 @@
+parameters:
+  # This section is required because agent pool can't 
+  # be read from a user-defined variable (Azure DevOps limitation)
+  agentPool: dotnet-external-temp-vs2019
+  runAsPublic: true
+  repoName: dotnet/wcf
+
+jobs:
+- template: /eng/common/templates/jobs/jobs.yml
+  parameters:
+    runAsPublic: ${{ parameters.runAsPublic }}
+    enableMicrobuild: false
+    enablePublishBuildArtifacts: true
+    enablePublishTestResults: true
+    enablePublishBuildAssets: false
+    enableTelemetry: true
+    helixRepo: $(repoName)
+
+    jobs:
+    - job: Linux
+      pool:
+          name: Hosted Ubuntu 1604
+
+      variables:
+
+        # needed for signing
+        - _TeamName: DotNetCore
+        - _SignType: test
+        - _SignArgs: ''
+        - _Sign: true
+
+        # needed for darc (dependency flow) publishing
+        - _PublishType: none
+        - _DotNetPublishToBlobFeed: false
+        - _PublishArgs: ''
+        - _OfficialBuildIdArgs: ''
+
+        # needed for helix jobs
+        - _UnitTestHelixAgentPool: 'Windows.10.Amd64.Open'
+        - _HelixSource: ${{ parameters.repoName }}/$(Build.SourceBranch)
+        - _HelixToken: ''
+        - _HelixCreator: ${{ parameters.repoName }}
+        - _HelixType: build/product
+        - _HelixTestType: test/product/
+        - _XUnitPublishTargetFramework: netcoreapp3.0
+        - _XUnitRuntimeTargetFramework: netcoreapp2.0
+        - _XUnitRunnerVersion: 2.4.1
+        - _DotNetCliPackageType: sdk
+        - _DotNetCliVersion: 3.0.100-preview-010024 #must be same version as tools dotnet version in the global.json
+        - _HelixAccessToken: ''
+        - _XUnitWorkItemTimeout: 400
+        - _XunitUnitTestProjects: $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Http\tests\System.ServiceModel.Http.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.NetTcp\tests\System.ServiceModel.NetTcp.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Primitives\tests\System.ServiceModel.Primitives.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Security\tests\System.ServiceModel.Security.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Custom\Binding.Custom.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Http\Binding.Http.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Tcp\Binding.Tcp.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ChannelLayer\Client.ChannelLayer.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ClientBase\Client.ClientBase.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ExpectedExceptions\Client.ExpectedExceptions.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\TypedClient\Client.TypedClient.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Contract\Data\Contract.Data.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Contract\Fault\Contract.Fault.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Contract\Message\Contract.Message.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Contract\Service\Contract.Service.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Contract\XmlSerializer\Contract.XmlSerializer.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Encoding\Encoders\Encoding.Encoders.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Encoding\MessageVersion\Encoding.MessageVersion.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Extensibility\MessageEncoder\Extensibility.MessageEncoder.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Extensibility\MessageInterceptor\Extensibility.MessageInterceptor.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Extensibility\WebSockets\Extensibility.WebSockets.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Infrastructure\Infrastructure.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Security\TransportSecurity\Security.TransportSecurity.IntegrationTests.csproj;
+
+        # Override some values if we're building internally (not public)
+        - ${{ if eq(parameters.runAsPublic, 'false') }}:
+
+          # note: You have to use list syntax here (-name: value) or
+          # you will get errors about declaring the same variable multiple times
+          - name: _PublishType
+            value: blob
+          - name: _SignType
+            value: real
+          - name: _DotNetPublishToBlobFeed
+            value: true
+          - group: DotNet-Blob-Feed
+          - group: DotNet-Symbol-Server-Pats
+          # DotNet-HelixApi-Access provides: HelixApiAccessToken
+          - group: DotNet-HelixApi-Access
+          - name: _PublishBlobFeedUrl
+            value: https://dotnetfeed.blob.core.windows.net/dotnet-windowsdesktop/index.json
+
+          # note: Even though they are referenced here, user defined variables (like $(_SignType))
+          # are not resolved until the agent is running on the machine. They can be overridden any
+          # time before they are resolved, like in the job matrix below (see Build_Debug)
+          - name: _SignArgs
+            value: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName) /p:Sign=$(_Sign)
+          - name: _PublishArgs
+            value: /p:DotNetPublishBlobFeedKey=$(dotnetfeed-storage-access-key-1)
+              /p:DotNetPublishBlobFeedUrl=$(_PublishBlobFeedUrl)
+              /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
+              /p:DotNetSymbolServerTokenMsdl=$(microsoft-symbol-server-pat)
+              /p:DotNetSymbolServerTokenSymWeb=$(symweb-symbol-server-pat)
+          - name: _OfficialBuildIdArgs
+            value: /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+
+          - name: _HelixSource
+            value: official/${{ parameters.repoName }}/$(Build.SourceBranch)
+          - name: _HelixToken
+            value: '$(HelixApiAccessToken)' # from DotNet-HelixApi-Access group
+          #- name: _HelixCreator
+          #  value: '' #if _HelixToken is set, Creator must be empty -- got error in ADO: "error : Creator is required when using anonymous access."
+
+      strategy:
+        matrix:
+          Build_Release:
+            _BuildArgs: --configuration Release --prepareMachine /p:Sign=False /p:Test=False /p:IntegrationTest=False /p:Pack=false /p:Publish=false
+            _TestArgs: /p:ServiceUri=wcfcoresrv5.cloudapp.net/wcftestservice1 /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true /m:1
+            _BuildConfig: Release
+
+      steps:
+      - checkout: self
+        clean: true
+
+      # Build and Send Tests To Helix
+      - script: eng/common/cibuild.sh $(_BuildArgs) $(_OfficialBuildIdArgs) $(_TestArgs)
+        displayName: Build All Projects
+        condition: succeeded()
+
+      - template: /eng/common/templates/steps/send-to-helix.yml
+        parameters:
+          HelixSource: $(_HelixSource)
+          HelixType: $(_HelixTestType)
+          HelixTargetQueues: Ubuntu.1810.Amd64
+          XUnitProjects: $(_XunitUnitTestProjects)
+          XUnitPublishTargetFramework: $(_XUnitPublishTargetFramework)
+          XUnitRuntimeTargetFramework: $(_XUnitRuntimeTargetFramework)
+          XUnitRunnerVersion: $(_XUnitRunnerVersion)
+          IncludeDotNetCli: true
+          DotNetCliPackageType: $(_DotNetCliPackageType)
+          DotNetCliVersion: $(_DotNetCliVersion)
+          EnableXUnitReporter: true
+          WaitForWorkItemCompletion: true
+          Creator: $(_HelixCreator)
+          HelixAccessToken: $(_HelixAccessToken)
+          XUnitWorkItemTimeout: $(_XUnitWorkItemTimeout)
+          condition: eq(variables['_BuildConfig'], 'Release')

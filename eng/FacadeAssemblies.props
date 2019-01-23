@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <IsFacadeAssembly Condition="'$(IsFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsFacadeAssembly>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(IsFacadeAssembly)'=='true'">
+    <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
+    <GenFacadesIgnoreMissingTypes>true</GenFacadesIgnoreMissingTypes>
+    <!--Don't produce or publish symbols for Facade assemblies.-->
+    <PublishWindowsPdb>false</PublishWindowsPdb>
+    <IsPackable>true</IsPackable>
+    <!-- GenFacades requires a PDB -->
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
+    <PackageReference Include="Microsoft.DotNet.GenFacades" Version="$(MicrosoftDotNetGenFacadesPackageVersion)" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!--This is where we tell GenFacades what Ref assembly to look for.-->
+  <Target Condition="'$(IsPartialFacadeAssembly)'=='true'" Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild">
+    <ItemGroup>
+      <ProjectReference Include="..\ref\$(AssemblyName).Ref.csproj">
+        <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+        <OutputItemType>ResolvedMatchingContract</OutputItemType>
+      </ProjectReference>
+    </ItemGroup>
+  </Target>
+  
+  <PropertyGroup>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Target Condition="'$(IsPartialFacadeAssembly)'=='true'" Name="AddReferenceAssemblyToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(ResolvedMatchingContract)" PackagePath="ref/$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
+</Project>

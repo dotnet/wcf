@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+  <Import Project="eng\harvest.targets" Condition="'$(HarvestFromPackage)' == 'true'" />
+  <Import Project="eng\uwp.targets" />
+</Project>
