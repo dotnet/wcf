@@ -17,7 +17,7 @@ jobs:
     enableTelemetry: true
     enablePublishBuildArtifacts: true
     pool:
-      name: NetCorePublic-Int-Pool
+      name: dotnet-internal-temp
       queue: Windows.10.Amd64.Open
     steps:
     - script: eng\common\cibuild.cmd
