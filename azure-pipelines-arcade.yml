@@ -23,7 +23,7 @@ jobs:
     - script: eng\common\cibuild.cmd
         -configuration Release
         -prepareMachine
-        -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj"
+        -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj
       name: Build
       displayName: Build
       condition: succeeded()
