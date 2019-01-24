@@ -1,0 +1,37 @@
+variables:
+  - name: Build.Repository.Clean
+    value: true
+  - name: _DotNetCliPackageType
+    value: sdk
+  - name: _DotNetCliVersion
+    value: 2.1.403
+
+# CI and PR triggers
+pr:
+- master
+
+jobs:
+- template: /eng/common/templates/job/job.yml
+  parameters:
+    name: Windows_NT
+    enableTelemetry: true
+    enablePublishBuildArtifacts: true
+    pool:
+      name: NetCorePublic-Int-Pool
+      queue: Windows.10.Amd64.Open
+    steps:
+    - script: eng\common\cibuild.cmd
+        -configuration Release
+        -prepareMachine
+        -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj"
+      name: Build
+      displayName: Build
+      condition: succeeded()
+    - task: PublishBuildArtifacts@1
+      displayName: Publish Logs to VSTS
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)'
+        PublishLocation: Container
+        ArtifactName: $(Agent.Os)_$(Agent.JobName)
+      continueOnError: true
+      condition: always()
