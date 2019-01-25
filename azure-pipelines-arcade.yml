@@ -22,8 +22,7 @@ jobs:
     - script: eng\common\cibuild.cmd
         -configuration Release
         -prepareMachine
-        -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj
-        -- /p:targetgroup=netcoreapp /p:targetswindows=true /p:targetframework=netcoreapp2.0
+        -projects $(Build.SourcesDirectory)/HelloWorld/HelloWorld.csproj"
       name: Build
       displayName: Build
       condition: succeeded()
