@@ -22,7 +22,6 @@
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="netstandard" />
     <PackageReference Include="System.Reflection.DispatchProxy"
                       Version="$(SystemReflectionDispatchProxyPackageVersion)" />
     <PackageReference Include="System.Security.Principal.Windows"
