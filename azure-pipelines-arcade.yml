@@ -23,8 +23,7 @@ jobs:
         -configuration Release
         -prepareMachine
         -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj
-        -targetgroup netcoreapp
-        -targetswindows true
+        -- /p:targetgroup=netcoreapp /p:targetswindows=true
       name: Build
       displayName: Build
       condition: succeeded()
