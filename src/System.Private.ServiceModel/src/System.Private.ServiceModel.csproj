@@ -13,13 +13,6 @@
     <ProjectGuid>{9E50E7BF-CD6E-4269-A6DD-59FD0BD6C0FD}</ProjectGuid>
     <CommonPath Condition="'$(CommonPath)' == ''">..\..\Common\src</CommonPath>
   </PropertyGroup>
-  <!-- Default configurations to help VS understand the options -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netstandard-Unix-Debug|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netstandard-Unix-Release|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netstandard-Windows_NT-Debug|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netstandard-Windows_NT-Release|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Windows_NT-Debug|AnyCPU'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'uap-Windows_NT-Release|AnyCPU'" />
   <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
@@ -30,11 +23,11 @@
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="netstandard" />
+    <!--<Reference Include="netstandard" />-->
     <Reference Include="System.Reflection.DispatchProxy" />
     <Reference Include="System.Security.Principal.Windows" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+  <!--<ItemGroup Condition="'$(TargetGroup)' == 'uap'">
     <Reference Include="mscorlib" />
     <Reference Include="Microsoft.Win32.Primitives" />
     <Reference Include="System.Collections" />
@@ -83,7 +76,7 @@
     <Reference Include="System.Xml.ReaderWriter" />
     <Reference Include="System.Xml.XmlSerializer" />
     <Reference Include="Windows" />
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <Compile Include="$(CommonPath)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
