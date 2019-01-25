@@ -8,7 +8,7 @@
     <!-- Arcade dependencies -->
     <!-- CoreFx dependencies -->
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
-    <System.Reflection.DispatchProxy>4.5.0</System.Reflection.DispatchProxy>
-    <System.Security.Principal.Windows>4.5.0</System.Security.Principal.Windows>
+    <SystemReflectionDispatchProxyPackageVersion>4.5.0</SystemReflectionDispatchProxyPackageVersion>
+    <SystemSecurityPrincipalWindowsPackageVersion>4.5.0</SystemSecurityPrincipalWindowsPackageVersion>
   </PropertyGroup>
 </Project>
