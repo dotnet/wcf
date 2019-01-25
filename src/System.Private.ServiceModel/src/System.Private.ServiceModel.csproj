@@ -23,8 +23,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
-    <PackageReference Include="NETStandard.Library"
-                      Version="NETStandardLibraryPackageVersion" />
     <PackageReference Include="System.Reflection.DispatchProxy"
                       Version="$(SystemReflectionDispatchProxyPackageVersion)" />
     <PackageReference Include="System.Security.Principal.Windows"
