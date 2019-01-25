@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>System.Private.ServiceModel</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <OutputType>Library</OutputType>
@@ -23,7 +22,9 @@
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <!--<Reference Include="netstandard" />-->
+    <Reference Include="netstandard" />
+    <PackageReference Include="NETStandard.Library"
+                      Version="NETStandardLibraryPackageVersion" />
     <PackageReference Include="System.Reflection.DispatchProxy"
                       Version="$(SystemReflectionDispatchProxyPackageVersion)" />
     <PackageReference Include="System.Security.Principal.Windows"
