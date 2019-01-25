@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
   <PropertyGroup>
     <AssemblyName>System.Private.ServiceModel</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
@@ -93,15 +92,14 @@
     </Compile>
     <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+  <!--<ItemGroup Condition="'$(TargetGroup)' == 'uap'">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
     <TargetingPackReference Include="Windows" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
-    <!-- Copy ref to output to enable APICompat for the facades that directly reference this project -->
+  </ItemGroup>-->
+  <!--<ItemGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
+    --><!-- Copy ref to output to enable APICompat for the facades that directly reference this project --><!--
     <Content Include="$(PackagesDir)NETStandard.Library\2.0.0-$(StandardExpectedPrerelease)\build\netstandard2.0\ref\netstandard.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  </ItemGroup>-->
 </Project>
