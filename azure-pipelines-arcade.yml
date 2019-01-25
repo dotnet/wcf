@@ -22,7 +22,7 @@ jobs:
     - script: eng\common\cibuild.cmd
         -configuration Release
         -prepareMachine
-        -projects $(Build.SourcesDirectory)/HelloWorld/HelloWorld.csproj"
+        -projects $(Build.SourcesDirectory)/HelloWorld/HelloWorld.csproj
       name: Build
       displayName: Build
       condition: succeeded()
