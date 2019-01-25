@@ -14,7 +14,6 @@ jobs:
 - template: /eng/common/templates/job/job.yml
   parameters:
     name: Windows_NT
-    enableTelemetry: true
     enablePublishBuildArtifacts: true
     pool:
       name: dotnet-internal-temp
@@ -24,6 +23,8 @@ jobs:
         -configuration Release
         -prepareMachine
         -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj
+        -targetgroup netcoreapp
+        -targetswindows true
       name: Build
       displayName: Build
       condition: succeeded()

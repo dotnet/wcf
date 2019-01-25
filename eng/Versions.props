@@ -4,4 +4,11 @@
     <VersionPrefix>1.0.0</VersionPrefix>
     <PreReleaseVersionLabel>prerelease</PreReleaseVersionLabel>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Arcade dependencies -->
+    <!-- CoreFx dependencies -->
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <System.Reflection.DispatchProxy>4.5.0</System.Reflection.DispatchProxy>
+    <System.Security.Principal.Windows>4.5.0</System.Security.Principal.Windows>
+  </PropertyGroup>
 </Project>
