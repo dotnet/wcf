@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ItemDefinitionGroup>
+    <EmbeddedResource>
+      <GenerateSource>true</GenerateSource>
+      <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
+      <GenerateResourcesCodeAsConstants>true</GenerateResourcesCodeAsConstants>
+      <ClassName>System.SR</ClassName>
+    </EmbeddedResource>
+  </ItemDefinitionGroup>
+</Project>
