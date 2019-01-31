@@ -9,20 +9,6 @@ namespace System
 {
     internal partial class SR
     {
-        private static ResourceManager s_resourceManager;
-
-        private static ResourceManager ResourceManager
-        {
-            get
-            {
-                if (s_resourceManager == null)
-                {
-                    s_resourceManager = new ResourceManager(SR.ResourceType);
-                }
-                return s_resourceManager;
-            }
-        }
-
         // This method is used to decide if we need to append the exception message parameters to the message when calling SR.Format. 
         // by default it returns false.
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -31,8 +17,11 @@ namespace System
             return false;
         }
 
-        internal static string GetResourceString(string resourceKey, string defaultString)
+        internal static string GetResourceString(string resourceKey, string defaultString = null)
         {
+            if (UsingResourceKeys())
+                return defaultString ?? resourceKey;
+
             string resourceString = null;
             try { resourceString = ResourceManager.GetString(resourceKey); }
             catch (MissingManifestResourceException) { }

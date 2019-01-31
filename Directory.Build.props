@@ -7,7 +7,7 @@
     <EnableXlfLocalization>false</EnableXlfLocalization>
   </PropertyGroup>
 
-  <Import Project="$(MsBuildThisFileDirectory)SystemResources.props"/>
+  <Import Project="SystemResources.props"/>
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
   <PropertyGroup>

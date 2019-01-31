@@ -4,7 +4,7 @@
     <EmbeddedResource>
       <GenerateSource>true</GenerateSource>
       <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
-      <GenerateResourcesCodeAsConstants>true</GenerateResourcesCodeAsConstants>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>System.SR</ClassName>
     </EmbeddedResource>
   </ItemDefinitionGroup>

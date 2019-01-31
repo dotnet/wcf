@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>System.Private.ServiceModel</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
+    <TargetFrameworks>netstandard20</TargetFrameworks>
     <OutputType>Library</OutputType>
     <NoWarn>$(NoWarn);1634;1691;649</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -20,9 +21,6 @@
     <PackageReference Include="System.Security.Principal.Windows"
                       Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
-  <PropertyGroup>
-    <EnableDefaultItems>false</EnableDefaultItems>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(WcfCommonDir)\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
@@ -33,7 +31,6 @@
     <Compile Include="$(WcfCommonDir)\System\SR.cs">
       <Link>Common\System\SR.cs</Link>
     </Compile>
-    <Compile Include="$(MsBuildThisFileDirectory)\**\*.cs" />
   </ItemGroup>
   <!--<ItemGroup Condition="'$(TargetGroup)' == 'uap'">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
