@@ -3,8 +3,6 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
   <PropertyGroup>
     <WcfCommonDir Condition="'$(WcfCommonDir)' == ''">..\..\Common\src</WcfCommonDir>
-    <!-- We define our own implementation of GetResourceString -->
-    <GenerateResxSourceOmitGetResourceString>true</GenerateResxSourceOmitGetResourceString>
     <!-- For debug builds we include the full value string so that we get actual resources, even in the case the toolchain strips the resources file -->
     <GenerateResxSourceIncludeDefaultValues Condition="'$(ConfigurationGroup)' == 'Debug'">true</GenerateResxSourceIncludeDefaultValues>
   </PropertyGroup>
