@@ -23,6 +23,7 @@ jobs:
         -configuration Release
         -prepareMachine
         -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj
+        -- /p:Sign=False
       name: Build
       displayName: Build
       condition: succeeded()
