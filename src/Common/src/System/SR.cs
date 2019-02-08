@@ -17,23 +17,6 @@ namespace System
             return false;
         }
 
-        internal static string GetResourceString(string resourceKey, string defaultString = null)
-        {
-            if (UsingResourceKeys())
-                return defaultString ?? resourceKey;
-
-            string resourceString = null;
-            try { resourceString = ResourceManager.GetString(resourceKey); }
-            catch (MissingManifestResourceException) { }
-
-            if (defaultString != null && resourceKey.Equals(resourceString, StringComparison.Ordinal))
-            {
-                return defaultString;
-            }
-
-            return resourceString;
-        }
-
         internal static string Format(string resourceFormat, params object[] args)
         {
             if (args != null)
