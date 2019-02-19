@@ -12,6 +12,7 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 * Added new options to support the tool being run from a outside a project context. These are normally inferred based on the project the tool is run on. Since it can now be run with no project context these options allow you to control these settings manually. New options include: --outputDir, --outputFile, --projectFile,  --runtimeIdentifier, and --targetFramework. See `dotnet-svcutil --help` for usage.
 * Added automatic reference reuse. Similar to the "Reuse types in all referenced assemblies" option in the WCF Web Service Reference Provider, dotnet-svcutil will by default try to reuse all types in the project's references. This can be disabled with the --noTypeReuse option, or by passing the specific references to reuse with the --reference option.
 * Added an update option (--update) which allows updating a service reference. This is only supported if the service reference was added using dotnet-svcutil 2.0.0 or later.
+* Bug fixes ([#3253](https://github.com/dotnet/wcf/issues/3253))
 
 ### 1.0.4 (10/30/2018)
 * Added anonymous telemetry information collection (set environment variable DOTNET_SVCUTIL_TELEMETRY_OPTOUT=1 to opt out).
