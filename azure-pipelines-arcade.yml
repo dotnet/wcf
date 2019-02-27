@@ -1,37 +1,49 @@
+# This is a simple wrapper for eng/ci.yml to get around the limitation of
+# user-defined variables not being available in yaml template expressions.
+
+# Parameters ARE available in template expressions, and parameters can have default values,
+# so they can be used to control yaml flow.
+
 variables:
   - name: Build.Repository.Clean
     value: true
-  - name: _DotNetCliPackageType
-    value: sdk
-  - name: _DotNetCliVersion
-    value: 2.1.403
 
-# CI and PR triggers
-pr:
-- master
+# CI triggers
+trigger:
+- AdoptArcade
 
+# PR triggers
+# pr:
+# - master
+
+# Call the ci.yml template, which does the real work
 jobs:
-- template: /eng/common/templates/job/job.yml
+- template: /eng/ci.yml
   parameters:
-    name: Windows_NT
-    enablePublishBuildArtifacts: true
-    pool:
-      name: dotnet-internal-temp
-      queue: Windows.10.Amd64.Open
-    steps:
-    - script: eng\common\cibuild.cmd
-        -configuration Release
-        -prepareMachine
-        -projects $(Build.SourcesDirectory)/src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj
-        -- /p:Sign=False
-      name: Build
-      displayName: Build
-      condition: succeeded()
-    - task: PublishBuildArtifacts@1
-      displayName: Publish Logs to VSTS
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)'
-        PublishLocation: Container
-        ArtifactName: $(Agent.Os)_$(Agent.JobName)
-      continueOnError: true
-      condition: always()
+      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+      # agent pool can't be read from a user-defined variable (Azure DevOps limitation)
+      agentPool: dotnet-internal-temp-vs2019
+      # runAsPublic is used in expressions, which can't read from user-defined variables
+      runAsPublic: false
+
+ #   name: Windows_NT
+ #   enablePublishBuildArtifacts: true
+ #   pool:
+ #     name: dotnet-internal-temp
+ #     queue: Windows.10.Amd64.Open
+ #   steps:
+ #   - script: eng\common\cibuild.cmd
+ #       -configuration Release
+ #       -prepareMachine
+ #       -- /p:Sign=False /p:Test=False /p:Pack=False /p:Publish=False
+ #     name: Build
+ #     displayName: Build
+ #     condition: succeeded()
+ #   - task: PublishBuildArtifacts@1
+ #     displayName: Publish Logs to VSTS
+ #     inputs:
+ #       PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)'
+ #       PublishLocation: Container
+ #       ArtifactName: $(Agent.Os)_$(Agent.JobName)
+ #     continueOnError: true
+ #     condition: always()
