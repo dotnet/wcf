@@ -633,11 +633,6 @@ public static partial class Endpoints
         }
     }
 
-    public static string TcpSoap12WSANone_Address
-    {
-        get { return GetEndpointAddress("TcpSoap12WSANone.svc/tcp-Soap12WSANone", protocol: "net.tcp"); }
-    }
-
     public static string TcpSoap11WSA10_Address
     {
         get { return GetEndpointAddress("TcpSoap11WSA10.svc/tcp-Soap11WSA10", protocol: "net.tcp"); }

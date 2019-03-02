@@ -51,6 +51,12 @@ namespace System.ServiceModel.Channels
                 action = string.Format(CultureInfo.InvariantCulture, "\"{0}\"", UrlUtility.UrlPathEncode(action));
             }
 
+            if (_message.Version.Addressing == AddressingVersion.None)
+            {
+                _message.Headers.Action = null;
+                _message.Headers.To = null;
+            }
+
             object property;
             if (_message.Properties.TryGetValue(HttpRequestMessageProperty.Name, out property))
             {
