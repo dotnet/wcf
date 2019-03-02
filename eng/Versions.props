@@ -4,13 +4,18 @@
     <VersionPrefix>4.6.0</VersionPrefix>
     <PreReleaseVersionLabel>prerelease</PreReleaseVersionLabel>
   </PropertyGroup>
+  <!-- Arcade dependencies -->
   <PropertyGroup>
-    <!-- Arcade dependencies -->
-    <!-- CoreFx dependencies -->
+    <MicrosoftDotNetGenFacadesPackageVersion>1.0.0-beta.19151.1</MicrosoftDotNetGenFacadesPackageVersion>
+  </PropertyGroup>
+  <!-- CoreFx dependencies -->
+  <PropertyGroup>
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
     <SystemReflectionDispatchProxyPackageVersion>4.5.0</SystemReflectionDispatchProxyPackageVersion>
     <SystemSecurityPrincipalWindowsPackageVersion>4.5.0</SystemSecurityPrincipalWindowsPackageVersion>
-    <MicrosoftDotNetGenFacadesPackageVersion>1.0.0-beta.18570.9</MicrosoftDotNetGenFacadesPackageVersion>
+  </PropertyGroup>
+  <!-- Additional dependencies -->
+  <PropertyGroup>
     <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
   </PropertyGroup>
 </Project>

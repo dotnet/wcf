@@ -1,9 +1,12 @@
 {
-  "tools": {
-    "dotnet": "2.1.403"
-  },
+    "tools": {
+        "dotnet": "3.0.100-preview-010024"
+    },
+    "sdk": {
+        "version": "3.0.100-preview-010024"
+    },
   "msbuild-sdks": {
-    "Microsoft.DotNet.Arcade.Sdk": "1.0.0-beta.19128.3",
-    "Microsoft.DotNet.Helix.Sdk": "2.0.0-beta.19128.3"
+    "Microsoft.DotNet.Arcade.Sdk": "1.0.0-beta.19151.1",
+    "Microsoft.DotNet.Helix.Sdk": "2.0.0-beta.19151.1"
   }
 }
