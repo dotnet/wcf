@@ -1175,12 +1175,6 @@ namespace System.ServiceModel.Channels
                         action = string.Format(CultureInfo.InvariantCulture, "\"{0}\"", UrlUtility.UrlPathEncode(action));
                     }
 
-                    if (message.Version.Addressing == AddressingVersion.None)
-                    {
-                        message.Headers.Action = null;
-                        message.Headers.To = null;
-                    }
-
                     bool suppressEntityBody = message is NullMessage;
 
                     object property;
