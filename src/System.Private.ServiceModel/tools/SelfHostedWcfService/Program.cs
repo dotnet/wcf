@@ -123,12 +123,12 @@ namespace SelfHostedWCFService
             CreateHost<DataContractResolverTestServiceHost, WcfService.DataContractResolverService>("DataContractResolver.svc", httpBaseAddress);
             CreateHost<UnderstoodHeadersServiceHost, WcfService.UnderstoodHeaders>("UnderstoodHeaders.svc", httpBaseAddress);
             CreateHost<XmlSFAttributeTestServiceHost, WcfService.XmlSFAttribute>("XmlSFAttribute.svc", httpBaseAddress);
-            CreateHost<XmlSerializerICalculatorServiceHost, RpcEncSingleNsService>("BasicHttpRpcEncSingleNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerICalculatorServiceHost, RpcLitSingleNsService>("BasicHttpRpcLitSingleNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerICalculatorServiceHost, DocLitSingleNsService>("BasicHttpDocLitSingleNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerDualContractServiceHost, RpcEncDualNsService>("BasicHttpRpcEncDualNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerDualContractServiceHost, RpcLitDualNsService>("BasicHttpRpcLitDualNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerDualContractServiceHost, DocLitDualNsService>("BasicHttpDocLitDualNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorRpcEncServiceHost, RpcEncSingleNsService>("BasicHttpRpcEncSingleNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorRpcLitServiceHost, RpcLitSingleNsService>("BasicHttpRpcLitSingleNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerICalculatorDocLitServiceHost, DocLitSingleNsService>("BasicHttpDocLitSingleNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerDualContractRpcEncServiceHost, RpcEncDualNsService>("BasicHttpRpcEncDualNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerDualContractRpcLitServiceHost, RpcLitDualNsService>("BasicHttpRpcLitDualNs.svc", httpBaseAddress);
+            CreateHost<XmlSerializerDualContractDocLitServiceHost, DocLitDualNsService>("BasicHttpDocLitDualNs.svc", httpBaseAddress);
 
             //Start the crlUrl service last as the client use it to ensure all services have been started
             Uri testHostUrl = new Uri(string.Format("http://localhost/TestHost.svc", s_httpPort));
