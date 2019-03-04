@@ -11,6 +11,26 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+
+  <!--[TODO ARCADE] Added this because our released S.P.SM package includes the "_BlockReflectionAttribute" but it is included not only in the UAP* assembly but also the other shipped assembly, should this only be in the binary built for uap? -->
+  <!--
+      Defining __BlockReflectionAttribute indicates that the .NET Native toolchain should remove the metadata for all non-public APIs.
+      This reduces size and disables private reflection on those APIs.
+      The attribute can also be applied to individual public APIs to similarly block them.
+   -->
+  <PropertyGroup>
+    <!--[TODO ARCADE] Decide how to condition this property. -->
+    <BlockReflectionAttribute>true</BlockReflectionAttribute>
+    <!--
+    <BlockReflectionAttribute Condition="'$(BlockReflectionAttribute)' == '' and '$(UWPCompatible)' == 'true' and '$(IsTestProject)' != 'true'">true</BlockReflectionAttribute>
+    <BlockReflectionAttribute Condition="'$(MSBuildProjectExtension)' != '.csproj'">false</BlockReflectionAttribute>
+    -->
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(BlockReflectionAttribute)'=='true'">
+    <Compile Include="..\..\..\eng\BlockReflectionAttribute.cs" />
+  </ItemGroup>
+  
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
