@@ -3,6 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace System.ServiceModel.Security
 {
     internal interface ISecurityCommunicationObject
@@ -10,15 +13,11 @@ namespace System.ServiceModel.Security
         TimeSpan DefaultOpenTimeout { get; }
         TimeSpan DefaultCloseTimeout { get; }
         void OnAbort();
-        IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state);
-        IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state);
-        void OnClose(TimeSpan timeout);
+        Task OnCloseAsync(TimeSpan timeout);
         void OnClosed();
         void OnClosing();
-        void OnEndClose(IAsyncResult result);
-        void OnEndOpen(IAsyncResult result);
         void OnFaulted();
-        void OnOpen(TimeSpan timeout);
+        Task OnOpenAsync(TimeSpan timeout);
         void OnOpened();
         void OnOpening();
     }

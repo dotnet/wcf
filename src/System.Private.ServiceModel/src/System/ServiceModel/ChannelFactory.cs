@@ -553,6 +553,18 @@ namespace System.ServiceModel
             return CreateChannel(this.CreateEndpointAddress(this.Endpoint), null);
         }
 
+        internal UChannel CreateChannel<UChannel>(EndpointAddress address, Uri via)
+        {
+            EnsureOpened();
+            return this.ServiceChannelFactory.CreateChannel<UChannel>(address, via);
+        }
+
+        internal UChannel CreateChannel<UChannel>(EndpointAddress address)
+        {
+            EnsureOpened();
+            return ServiceChannelFactory.CreateChannel<UChannel>(address);
+        }
+
         protected override ServiceEndpoint CreateDescription()
         {
             ContractDescription contractDescription = this.TypeLoader.LoadContractDescription(_channelType);

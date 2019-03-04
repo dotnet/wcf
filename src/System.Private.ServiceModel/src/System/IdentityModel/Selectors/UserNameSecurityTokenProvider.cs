@@ -24,7 +24,7 @@ namespace System.IdentityModel.Selectors
             _userNameToken = new UserNameSecurityToken(userName, password);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             return Task.FromResult((SecurityToken)_userNameToken);
         }

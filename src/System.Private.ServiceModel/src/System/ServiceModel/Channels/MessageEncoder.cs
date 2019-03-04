@@ -115,8 +115,7 @@ namespace System.ServiceModel.Channels
 
         public ArraySegment<byte> WriteMessage(Message message, int maxMessageSize, BufferManager bufferManager)
         {
-            ArraySegment<byte> arraySegment = WriteMessage(message, maxMessageSize, bufferManager, 0);
-            return arraySegment;
+            return WriteMessage(message, maxMessageSize, bufferManager, 0);
         }
 
         public abstract ArraySegment<byte> WriteMessage(Message message, int maxMessageSize,

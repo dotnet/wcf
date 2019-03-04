@@ -11,6 +11,8 @@ using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 
 using System.Xml;
+using System.Collections.ObjectModel;
+using System.IdentityModel.Policy;
 
 namespace System.ServiceModel.Security
 {
@@ -126,7 +128,9 @@ namespace System.ServiceModel.Security
         // RSTR specific method
         public abstract SecurityToken GetEntropy(RequestSecurityTokenResponse rstr, SecurityTokenResolver resolver);
 
-        public abstract void OnRSTRorRSTRCMissingException();
+        // RSTR specific method
+        public abstract GenericXmlSecurityToken GetIssuedToken(RequestSecurityTokenResponse rstr, SecurityTokenResolver resolver, IList<SecurityTokenAuthenticator> allowedAuthenticators, SecurityKeyEntropyMode keyEntropyMode, byte[] requestorEntropy,
+            string expectedTokenType, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, int defaultKeySize, bool isBearerKeyType);
 
         // RST specific method
         public abstract void WriteRequestSecurityToken(RequestSecurityToken rst, XmlWriter w);

@@ -16,7 +16,7 @@ namespace System.ServiceModel.Channels
         {
             if (channelManager == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channelManager");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelManager));
             }
 
             _channelManager = channelManager;

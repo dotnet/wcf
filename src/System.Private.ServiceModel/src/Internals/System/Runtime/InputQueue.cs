@@ -5,10 +5,10 @@
 
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.Runtime
 {
-    [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.PrivatePrimitive, SupportsAsync = true, ReleaseMethod = "Dispatch")]
     internal sealed class InputQueue<T> : IDisposable where T : class
     {
         private static Action<object> s_completeOutstandingReadersCallback;
@@ -18,13 +18,8 @@ namespace System.Runtime
         private static Action<object> s_onInvokeDequeuedCallback;
 
         private QueueState _queueState;
-        [Fx.Tag.SynchronizationObject(Blocking = false, Kind = Fx.Tag.SynchronizationKind.LockStatement)]
-
         private ItemQueue _itemQueue;
-        [Fx.Tag.SynchronizationObject]
-
         private Queue<IQueueReader> _readerQueue;
-        [Fx.Tag.SynchronizationObject]
 
         private List<IQueueWaiter> _waiterList;
 
@@ -143,7 +138,6 @@ namespace System.Runtime
             Dispose();
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close")]
         public T Dequeue(TimeSpan timeout)
         {
             T value;
@@ -156,7 +150,70 @@ namespace System.Runtime
             return value;
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close")]
+        public async Task<T> DequeueAsync(TimeSpan timeout)
+        {
+            (bool success, T value) = await this.TryDequeueAsync(timeout);
+
+            if (!success)
+            {
+                throw Fx.Exception.AsError(new TimeoutException(InternalSR.TimeoutInputQueueDequeue(timeout)));
+            }
+
+            return value;
+        }
+
+        public async Task<(bool, T)> TryDequeueAsync(TimeSpan timeout)
+        {
+            TaskQueueReader reader = null;
+            Item item = new Item();
+
+            lock (ThisLock)
+            {
+                if (_queueState == QueueState.Open)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        item = _itemQueue.DequeueAvailableItem();
+                    }
+                    else
+                    {
+                        reader = new TaskQueueReader(this);
+                        _readerQueue.Enqueue(reader);
+                    }
+                }
+                else if (_queueState == QueueState.Shutdown)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        item = _itemQueue.DequeueAvailableItem();
+                    }
+                    else if (_itemQueue.HasAnyItem)
+                    {
+                        reader = new TaskQueueReader(this);
+                        _readerQueue.Enqueue(reader);
+                    }
+                    else
+                    {
+                        return (true, default(T));
+                    }
+                }
+                else // queueState == QueueState.Closed
+                {
+                    return (true, default(T));
+                }
+            }
+
+            if (reader != null)
+            {
+                return await reader.WaitAsync(timeout);
+            }
+            else
+            {
+                InvokeDequeuedCallback(item.DequeuedCallback);
+                return (true, item.GetValue());
+            }
+        }
+
         public bool Dequeue(TimeSpan timeout, out T value)
         {
             WaitQueueReader reader = null;
@@ -268,7 +325,6 @@ namespace System.Runtime
             }
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close", Conditional = "!result.IsCompleted")]
         public bool EndDequeue(IAsyncResult result, out T value)
         {
             CompletedAsyncResult<T> typedResult = result as CompletedAsyncResult<T>;
@@ -282,7 +338,6 @@ namespace System.Runtime
             return AsyncQueueReader.End(result, out value);
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close", Conditional = "!result.IsCompleted")]
         public T EndDequeue(IAsyncResult result)
         {
             T value;
@@ -295,7 +350,6 @@ namespace System.Runtime
             return value;
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Dispatch", Conditional = "!result.IsCompleted")]
         public bool EndWaitForItem(IAsyncResult result)
         {
             CompletedAsyncResult<bool> typedResult = result as CompletedAsyncResult<bool>;
@@ -389,7 +443,6 @@ namespace System.Runtime
             }
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Dispatch")]
         public bool WaitForItem(TimeSpan timeout)
         {
             WaitQueueWaiter waiter = null;
@@ -438,6 +491,57 @@ namespace System.Runtime
             else
             {
                 return itemAvailable;
+            }
+        }
+
+        public Task<bool> WaitForItemAsync(TimeSpan timeout)
+        {
+            TaskQueueWaiter waiter = null;
+            bool itemAvailable = false;
+
+            lock (ThisLock)
+            {
+                if (_queueState == QueueState.Open)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        itemAvailable = true;
+                    }
+                    else
+                    {
+                        waiter = new TaskQueueWaiter();
+                        _waiterList.Add(waiter);
+                    }
+                }
+                else if (_queueState == QueueState.Shutdown)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        itemAvailable = true;
+                    }
+                    else if (_itemQueue.HasAnyItem)
+                    {
+                        waiter = new TaskQueueWaiter();
+                        _waiterList.Add(waiter);
+                    }
+                    else
+                    {
+                        return Task.FromResult(true);
+                    }
+                }
+                else // queueState == QueueState.Closed
+                {
+                    return Task.FromResult(true);
+                }
+            }
+
+            if (waiter != null)
+            {
+                return waiter.WaitAsync(timeout);
+            }
+            else
+            {
+                return Task.FromResult(itemAvailable);
             }
         }
 
@@ -791,7 +895,6 @@ namespace System.Runtime
                 return _value;
             }
         }
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.AsyncResult, SupportsAsync = true, ReleaseMethod = "Set")]
 
         internal class AsyncQueueReader : AsyncResult, IQueueReader
         {
@@ -816,7 +919,6 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.Blocking(Conditional = "!result.IsCompleted", CancelMethod = "Set")]
             public static bool End(IAsyncResult result, out T value)
             {
                 AsyncQueueReader readerResult = AsyncResult.End<AsyncQueueReader>(result);
@@ -853,13 +955,11 @@ namespace System.Runtime
                 }
             }
         }
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.AsyncResult, SupportsAsync = true, ReleaseMethod = "Set")]
 
         internal class AsyncQueueWaiter : AsyncResult, IQueueWaiter
         {
             private static Action<object> s_timerCallback = new Action<object>(AsyncQueueWaiter.TimerCallback);
             private bool _itemAvailable;
-            [Fx.Tag.SynchronizationObject(Blocking = false)]
 
             private object _thisLock = new object();
 
@@ -881,7 +981,6 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.Blocking(Conditional = "!result.IsCompleted", CancelMethod = "Set")]
             public static bool End(IAsyncResult result)
             {
                 AsyncQueueWaiter waiterResult = AsyncResult.End<AsyncQueueWaiter>(result);
@@ -997,16 +1096,12 @@ namespace System.Runtime
                 _totalCount++;
             }
         }
-        [Fx.Tag.SynchronizationObject(Blocking = false)]
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.ManualResetEvent, ReleaseMethod = "Set")]
 
         internal class WaitQueueReader : IQueueReader
         {
             private Exception _exception;
             private InputQueue<T> _inputQueue;
             private T _item;
-            [Fx.Tag.SynchronizationObject]
-
             private ManualResetEvent _waitEvent;
 
             public WaitQueueReader(InputQueue<T> inputQueue)
@@ -1028,7 +1123,6 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.Blocking(CancelMethod = "Set")]
             public bool Wait(TimeSpan timeout, out T value)
             {
                 bool isSafeToClose = false;
@@ -1067,12 +1161,50 @@ namespace System.Runtime
                 return true;
             }
         }
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.ManualResetEvent, ReleaseMethod = "Set")]
+
+        internal class TaskQueueReader : IQueueReader
+        {
+            private TaskCompletionSource<T> _tcs = new TaskCompletionSource<T>();
+            private InputQueue<T> _inputQueue;
+
+            public TaskQueueReader(InputQueue<T> inputQueue)
+            {
+                _inputQueue = inputQueue;
+            }
+
+            public void Set(Item item)
+            {
+                if (item.Exception != null)
+                {
+                    _tcs.TrySetException(item.Exception);
+                }
+                else
+                {
+                    _tcs.TrySetResult(item.Value);
+                }
+            }
+
+            public async Task<(bool, T)> WaitAsync(TimeSpan timeout)
+            {
+                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                {
+                    if (_inputQueue.RemoveReader(this))
+                    {
+                        return (false, default(T));
+                    }
+                    else
+                    {
+                        await _tcs.Task;
+                    }
+                }
+
+                return (true, await _tcs.Task);
+            }
+        }
 
         internal class WaitQueueWaiter : IQueueWaiter
         {
             private bool _itemAvailable;
-            [Fx.Tag.SynchronizationObject]
 
             private ManualResetEvent _waitEvent;
 
@@ -1090,7 +1222,6 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.Blocking(CancelMethod = "Set")]
             public bool Wait(TimeSpan timeout)
             {
                 if (!TimeoutHelper.WaitOne(_waitEvent, timeout))
@@ -1099,6 +1230,34 @@ namespace System.Runtime
                 }
 
                 return _itemAvailable;
+            }
+        }
+
+        internal class TaskQueueWaiter : IQueueWaiter
+        {
+            private TaskCompletionSource<bool> _tcs;
+
+            public TaskQueueWaiter()
+            {
+                _tcs = new TaskCompletionSource<bool>();
+            }
+
+            public void Set(bool itemAvailable)
+            {
+                lock (this)
+                {
+                    _tcs.TrySetResult(itemAvailable);
+                }
+            }
+
+            public async Task<bool> WaitAsync(TimeSpan timeout)
+            {
+                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                {
+                    return false;
+                }
+
+                return await _tcs.Task;
             }
         }
     }

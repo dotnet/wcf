@@ -14,7 +14,7 @@ namespace System.IdentityModel.Tokens
     {
         private string _id;
         private X509Certificate2 _certificate;
-        // private ReadOnlyCollection<SecurityKey> _securityKeys;
+        private ReadOnlyCollection<SecurityKey> _securityKeys;
         private DateTime _effectiveTime = SecurityUtils.MaxUtcDateTime;
         private DateTime _expirationTime = SecurityUtils.MinUtcDateTime;
         private bool _disposed = false;
@@ -70,14 +70,13 @@ namespace System.IdentityModel.Tokens
             get
             {
                 ThrowIfDisposed();
-                throw ExceptionHelper.PlatformNotSupported("X509SecurityToken.SecurityKeys");
-                //if (_securityKeys == null)
-                //{
-                //    List<SecurityKey> temp = new List<SecurityKey>(1);
-                //    temp.Add(new X509AsymmetricSecurityKey(_certificate));
-                //    _securityKeys = temp.AsReadOnly();
-                //}
-                //return _securityKeys;
+                if (_securityKeys == null)
+                {
+                    List<SecurityKey> temp = new List<SecurityKey>(1);
+                    temp.Add(new X509AsymmetricSecurityKey(_certificate));
+                    _securityKeys = temp.AsReadOnly();
+                }
+                return _securityKeys;
             }
         }
 

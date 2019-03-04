@@ -32,7 +32,7 @@ namespace System.ServiceModel.Security
             _token = new SspiSecurityToken(credential, extractGroupsForWindowsAccounts, allowUnauthenticatedCallers);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             return Task.FromResult<SecurityToken>(_token);
         }

@@ -4,6 +4,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <IsPartialFacadeAssembly Condition="'$(TargetGroup)' == 'netfx'">true</IsPartialFacadeAssembly>
+    <ProjectGuid>{B193C7BB-D1AC-4D2E-A328-035F49865B31}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Debug|AnyCPU'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'netcoreapp-Release|AnyCPU'" />
@@ -29,11 +30,13 @@
     <Reference Include="System.ComponentModel.TypeConverter" />
     <Reference Include="System.Net.Primitives" />
     <Reference Include="System.Net.WebHeaderCollection" />
+    <Reference Include="System.Net.Security" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.Serialization.Xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SourceDir)System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="$(SourceDir)System.ServiceModel.Security\ref\System.ServiceModel.Security.csproj" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

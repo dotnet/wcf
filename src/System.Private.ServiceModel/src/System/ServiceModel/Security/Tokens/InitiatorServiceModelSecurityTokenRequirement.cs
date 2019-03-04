@@ -3,14 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace System.ServiceModel.Security.Tokens
 {
     public sealed class InitiatorServiceModelSecurityTokenRequirement : ServiceModelSecurityTokenRequirement
     {
-        private HttpHeaders _httpHeaders;
-
         public InitiatorServiceModelSecurityTokenRequirement()
             : base()
         {
@@ -65,17 +64,7 @@ namespace System.ServiceModel.Security.Tokens
             }
         }
 
-        internal HttpHeaders HttpHeaders
-        {
-            get
-            {
-                return _httpHeaders;
-            }
-            set
-            {
-                _httpHeaders = value;
-            }
-        }
+        internal WebHeaderCollection WebHeaders { get; set; }
 
         public override string ToString()
         {

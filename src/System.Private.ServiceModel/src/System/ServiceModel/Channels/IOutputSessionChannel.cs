@@ -11,4 +11,9 @@ namespace System.ServiceModel.Channels
         : IOutputChannel, ISessionChannel<IOutputSession>
     {
     }
+
+    public interface IAsyncOutputSessionChannel
+    : IOutputSessionChannel, IAsyncOutputChannel
+    {
+    }
 }

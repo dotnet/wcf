@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,6 +14,7 @@ using System.Net;
 using System.Net.Security;
 using System.Runtime;
 using System.Security.Authentication;
+using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
@@ -22,6 +22,7 @@ using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
 {
@@ -77,6 +78,7 @@ namespace System.ServiceModel.Security
                         return 4;
                 }
             }
+
             return 1;
         }
     }
@@ -90,6 +92,7 @@ namespace System.ServiceModel.Security
             {
                 allValues |= (SslProtocols)protocol;
             }
+
             return (value & allValues) == value;
         }
 
@@ -134,29 +137,22 @@ namespace System.ServiceModel.Security
 
         internal static string ToString(TokenImpersonationLevel impersonationLevel)
         {
-            if (impersonationLevel == TokenImpersonationLevel.Identification)
+            switch (impersonationLevel)
             {
-                return "identification";
-            }
-            if (impersonationLevel == TokenImpersonationLevel.None)
-            {
-                return "none";
-            }
-            if (impersonationLevel == TokenImpersonationLevel.Anonymous)
-            {
-                return "anonymous";
-            }
-            if (impersonationLevel == TokenImpersonationLevel.Impersonation)
-            {
-                return "impersonation";
-            }
-            if (impersonationLevel == TokenImpersonationLevel.Delegation)
-            {
-                return "delegation";
+                case TokenImpersonationLevel.Identification:
+                    return "identification";
+                case TokenImpersonationLevel.None:
+                    return "none";
+                case TokenImpersonationLevel.Anonymous:
+                    return "anonymous";
+                case TokenImpersonationLevel.Impersonation:
+                    return "impersonation";
+                case TokenImpersonationLevel.Delegation:
+                    return "delegation";
             }
 
             Fx.Assert("unknown token impersonation level");
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidEnumArgumentException("impersonationLevel", (int)impersonationLevel,
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidEnumArgumentException(nameof(impersonationLevel), (int)impersonationLevel,
             typeof(TokenImpersonationLevel)));
         }
 
@@ -219,12 +215,47 @@ namespace System.ServiceModel.Security
         }
     }
 
+    internal class ServiceModelDictionaryManager
+    {
+        private static IdentityModel.DictionaryManager s_dictionaryManager;
+
+        public static IdentityModel.DictionaryManager Instance
+        {
+            get
+            {
+                if (s_dictionaryManager == null)
+                    s_dictionaryManager = new IdentityModel.DictionaryManager(BinaryMessageEncoderFactory.XmlDictionary);
+
+                return s_dictionaryManager;
+            }
+        }
+    }
+
     internal static class SecurityUtils
     {
         public const string Principal = "Principal";
         public const string Identities = "Identities";
         private static IIdentity s_anonymousIdentity;
         private static X509SecurityTokenAuthenticator s_nonValidatingX509Authenticator;
+
+        public static ChannelBinding GetChannelBindingFromMessage(Message message)
+        {
+            if (message == null)
+            {
+                return null;
+            }
+
+            ChannelBindingMessageProperty channelBindingMessageProperty = null;
+            ChannelBindingMessageProperty.TryGet(message, out channelBindingMessageProperty);
+            ChannelBinding channelBinding = null;
+
+            if (channelBindingMessageProperty != null)
+            {
+                channelBinding = channelBindingMessageProperty.ChannelBinding;
+            }
+
+            return channelBinding;
+        }
 
         internal static X509SecurityTokenAuthenticator NonValidatingX509Authenticator
         {
@@ -234,6 +265,7 @@ namespace System.ServiceModel.Security
                 {
                     s_nonValidatingX509Authenticator = new X509SecurityTokenAuthenticator(X509CertificateValidator.None);
                 }
+
                 return s_nonValidatingX509Authenticator;
             }
         }
@@ -246,6 +278,7 @@ namespace System.ServiceModel.Security
                 {
                     s_anonymousIdentity = CreateIdentity(string.Empty);
                 }
+
                 return s_anonymousIdentity;
             }
         }
@@ -291,8 +324,10 @@ namespace System.ServiceModel.Security
                 {
                     upn = serverCredential.UserName;
                 }
+
                 return EndpointIdentity.CreateUpnIdentity(upn);
             }
+
             return CreateWindowsIdentity();
         }
 
@@ -303,6 +338,7 @@ namespace System.ServiceModel.Security
             {
                 return false;
             }
+
             // S-1-5-82 is the prefix for the sid that represents the identity that IIS 7.5 Apppool thread runs under.
             return (sid.IsWellKnown(WellKnownSidType.LocalSystemSid)
                     || sid.IsWellKnown(WellKnownSidType.NetworkServiceSid)
@@ -345,6 +381,7 @@ namespace System.ServiceModel.Security
                     return UnsafeCreateWindowsIdentityFromToken(token, authType);
                 }
             }
+
             return wid;
         }
 
@@ -358,6 +395,44 @@ namespace System.ServiceModel.Security
             if (authType != null)
                 return new WindowsIdentity(token, authType);
             return new WindowsIdentity(token);
+        }
+
+        internal static T GetSecurityKey<T>(SecurityToken token)
+            where T : SecurityKey
+        {
+            T result = null;
+            if (token.SecurityKeys != null)
+            {
+                for (int i = 0; i < token.SecurityKeys.Count; ++i)
+                {
+                    T temp = (token.SecurityKeys[i] as T);
+                    if (temp != null)
+                    {
+                        if (result != null)
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.Format(SR.MultipleMatchingCryptosFound, typeof(T).ToString())));
+                        }
+                        else
+                        {
+                            result = temp;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        internal static byte[] GenerateDerivedKey(SecurityToken tokenToDerive, string derivationAlgorithm, byte[] label, byte[] nonce,
+            int keySize, int offset)
+        {
+            SymmetricSecurityKey symmetricSecurityKey = SecurityUtils.GetSecurityKey<SymmetricSecurityKey>(tokenToDerive);
+            if (symmetricSecurityKey == null || !symmetricSecurityKey.IsSupportedAlgorithm(derivationAlgorithm))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.Format(SR.CannotFindMatchingCrypto, derivationAlgorithm)));
+            }
+
+            return symmetricSecurityKey.GenerateDerivedKey(derivationAlgorithm, label, nonce, keySize, offset);
         }
 
         internal static string GetSpnFromIdentity(EndpointIdentity identity, EndpointAddress target)
@@ -382,10 +457,12 @@ namespace System.ServiceModel.Security
                     foundSpn = true;
                 }
             }
+
             if (!foundSpn)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.CannotDetermineSPNBasedOnAddress, target)));
             }
+
             return spn;
         }
 
@@ -399,12 +476,33 @@ namespace System.ServiceModel.Security
             return string.Format(CultureInfo.InvariantCulture, "host/{0}", target.Uri.DnsSafeHost);
         }
 
+
+        // Originally S.SM.Security.CryptoHelper.IsEqual
+        internal static bool IsEqual(byte[] a, byte[] b)
+        {
+            if (a == null || b == null || a.Length != b.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         internal static bool IsSupportedAlgorithm(string algorithm, SecurityToken token)
         {
             if (token.SecurityKeys == null)
             {
                 return false;
             }
+
             for (int i = 0; i < token.SecurityKeys.Count; ++i)
             {
                 if (token.SecurityKeys[i].IsSupportedAlgorithm(algorithm))
@@ -412,6 +510,7 @@ namespace System.ServiceModel.Security
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -433,6 +532,7 @@ namespace System.ServiceModel.Security
                     }
                 }
             }
+
             return null;
         }
 
@@ -524,6 +624,7 @@ namespace System.ServiceModel.Security
                     }
                 }
             }
+
             return str.Length <= 0 ? String.Empty : str.ToString();
         }
 
@@ -589,6 +690,78 @@ namespace System.ServiceModel.Security
             }
         }
 
+        internal static bool IsChannelBindingDisabled
+        {
+            get
+            {
+                // This used to check registry key HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa value name SuppressChannelBindingInfo
+                return false;
+            }
+        }
+
+        internal static bool IsSecurityBindingSuitableForChannelBinding(TransportSecurityBindingElement securityBindingElement)
+        {
+            if (securityBindingElement == null)
+            {
+                return false;
+            }
+
+            // channel binding of OperationSupportingTokenParameters, OptionalEndpointSupportingTokenParameters, or OptionalOperationSupportingTokenParameters
+            // is not supported in Win7
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.Endorsing))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.Signed))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted))
+            {
+                return true;
+            }
+
+            if (AreSecurityTokenParametersSuitableForChannelBinding(securityBindingElement.EndpointSupportingTokenParameters.SignedEndorsing))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool AreSecurityTokenParametersSuitableForChannelBinding(Collection<SecurityTokenParameters> tokenParameters)
+        {
+            if (tokenParameters == null)
+            {
+                return false;
+            }
+
+            foreach (SecurityTokenParameters stp in tokenParameters)
+            {
+                SecureConversationSecurityTokenParameters scstp = stp as SecureConversationSecurityTokenParameters;
+                if (scstp != null)
+                {
+                    return IsSecurityBindingSuitableForChannelBinding(scstp.BootstrapSecurityBindingElement as TransportSecurityBindingElement);
+                }
+            }
+
+            return false;
+        }
+
+        internal static Task OpenTokenProviderIfRequiredAsync(SecurityTokenProvider tokenProvider, TimeSpan timeout)
+        {
+            var aco = tokenProvider as IAsyncCommunicationObject;
+            if (aco != null)
+            {
+                return OpenCommunicationObjectAsync(aco, timeout);
+            }
+
+            OpenCommunicationObject(tokenProvider as ICommunicationObject, timeout);
+            return Task.CompletedTask;
+        }
+
         internal static void OpenTokenProviderIfRequired(SecurityTokenProvider tokenProvider, TimeSpan timeout)
         {
             OpenCommunicationObject(tokenProvider as ICommunicationObject, timeout);
@@ -597,6 +770,18 @@ namespace System.ServiceModel.Security
         internal static void CloseTokenProviderIfRequired(SecurityTokenProvider tokenProvider, TimeSpan timeout)
         {
             CloseCommunicationObject(tokenProvider, false, timeout);
+        }
+
+        internal static Task CloseTokenProviderIfRequiredAsync(SecurityTokenProvider tokenProvider, TimeSpan timeout)
+        {
+            var aco = tokenProvider as IAsyncCommunicationObject;
+            if (aco != null)
+            {
+                return CloseCommunicationObjectAsync(aco, false, timeout);
+            }
+
+            CloseCommunicationObject(tokenProvider, false, timeout);
+            return Task.CompletedTask;
         }
 
         internal static void AbortTokenProviderIfRequired(SecurityTokenProvider tokenProvider)
@@ -624,10 +809,40 @@ namespace System.ServiceModel.Security
             CloseCommunicationObject(tokenAuthenticator, true, TimeSpan.Zero);
         }
 
+        private static Task OpenCommunicationObjectAsync(IAsyncCommunicationObject obj, TimeSpan timeout)
+        {
+            if (obj != null)
+                return obj.OpenAsync(timeout);
+            return Task.CompletedTask;
+        }
+
         private static void OpenCommunicationObject(ICommunicationObject obj, TimeSpan timeout)
         {
             if (obj != null)
                 obj.Open(timeout);
+        }
+
+        private static Task CloseCommunicationObjectAsync(IAsyncCommunicationObject obj, bool aborted, TimeSpan timeout)
+        {
+            if (obj != null)
+            {
+                if (aborted)
+                {
+                    try
+                    {
+                        obj.Abort();
+                    }
+                    catch (CommunicationException)
+                    {
+                    }
+                }
+                else
+                {
+                    return obj.CloseAsync(timeout);
+                }
+            }
+
+            return Task.CompletedTask;
         }
 
         private static void CloseCommunicationObject(Object obj, bool aborted, TimeSpan timeout)
@@ -689,10 +904,12 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("securityVersion"));
             }
+
             if (securityTokenSerializer == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("securityTokenSerializer");
             }
+
             return new SecurityStandardsManager(securityVersion, securityTokenSerializer);
         }
 
@@ -707,6 +924,7 @@ namespace System.ServiceModel.Security
             {
                 result = networkCredential;
             }
+
             return result;
         }
 
@@ -722,6 +940,36 @@ namespace System.ServiceModel.Security
             return credential;
         }
 
+        public static bool TryCreateKeyFromIntrinsicKeyClause(SecurityKeyIdentifierClause keyIdentifierClause, SecurityTokenResolver resolver, out SecurityKey key)
+        {
+            key = null;
+            if (keyIdentifierClause.CanCreateKey)
+            {
+                key = keyIdentifierClause.CreateKey();
+                return true;
+            }
+
+            if (keyIdentifierClause is EncryptedKeyIdentifierClause)
+            {
+                var keyClause = (EncryptedKeyIdentifierClause)keyIdentifierClause;
+                // PreSharp Bug: Parameter 'keyClause' to this public method must be validated: A null-dereference can occur here.
+                for (int i = 0; i < keyClause.EncryptingKeyIdentifier.Count; i++)
+                {
+                    SecurityKey unwrappingSecurityKey = null;
+                    if (resolver.TryResolveSecurityKey(keyClause.EncryptingKeyIdentifier[i], out unwrappingSecurityKey))
+                    {
+                        byte[] wrappedKey = keyClause.GetEncryptedKey();
+                        string wrappingAlgorithm = keyClause.EncryptionMethod;
+                        byte[] unwrappedKey = unwrappingSecurityKey.DecryptKey(wrappingAlgorithm, wrappedKey);
+                        key = new InMemorySymmetricSecurityKey(unwrappedKey, false);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         internal static string AppendWindowsAuthenticationInfo(string inputString, NetworkCredential credential,
             AuthenticationLevel authenticationLevel, TokenImpersonationLevel impersonationLevel)
         {
@@ -735,12 +983,18 @@ namespace System.ServiceModel.Security
                     AuthenticationLevelHelper.ToString(authenticationLevel), delimiter,
                     TokenImpersonationLevelHelper.ToString(impersonationLevel));
             }
+
             return string.Concat(inputString, delimiter,
                 credential.Domain, delimiter,
                 credential.UserName, delimiter,
                 credential.Password, delimiter,
                 AuthenticationLevelHelper.ToString(authenticationLevel), delimiter,
                 TokenImpersonationLevelHelper.ToString(impersonationLevel));
+        }
+
+        internal static SecurityToken CreateTokenFromEncryptedKeyClause(EncryptedKeyIdentifierClause keyClause, SecurityToken unwrappingToken)
+        {
+            throw new NotImplementedException();
         }
 
         internal static class NetworkCredentialHelper
@@ -788,12 +1042,21 @@ namespace System.ServiceModel.Security
                 return s_currentUser;
             }
         }
+
         internal static byte[] CloneBuffer(byte[] buffer)
         {
             byte[] copy = Fx.AllocateByteArray(buffer.Length);
             Buffer.BlockCopy(buffer, 0, copy, 0, buffer.Length);
             return copy;
         }
+
+        internal static ReadOnlyCollection<SecurityKey> CreateSymmetricSecurityKeys(byte[] key)
+        {
+            List<SecurityKey> temp = new List<SecurityKey>(1);
+            temp.Add(new InMemorySymmetricSecurityKey(key));
+            return temp.AsReadOnly();
+        }
+
         internal static string GetKeyDerivationAlgorithm(SecureConversationVersion version)
         {
             string derivationAlgorithm = null;
@@ -884,12 +1147,31 @@ namespace System.ServiceModel.Security
             return new InvalidOperationException(SR.Format(SR.FoundMultipleCertsForTarget, storeName, storeLocation, findType, findValue, target));
         }
 
+        public static SecurityBindingElement GetIssuerSecurityBindingElement(ServiceModelSecurityTokenRequirement requirement)
+        {
+            SecurityBindingElement bindingElement = requirement.SecureConversationSecurityBindingElement;
+            if (bindingElement != null)
+            {
+                return bindingElement;
+            }
+
+            Binding binding = requirement.IssuerBinding;
+            if (binding == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.IssuerBindingNotPresentInTokenRequirement, requirement));
+            }
+
+            BindingElementCollection bindingElements = binding.CreateBindingElements();
+            return bindingElements.Find<SecurityBindingElement>();
+        }
+
         internal static void FixNetworkCredential(ref NetworkCredential credential)
         {
             if (credential == null)
             {
                 return;
             }
+
             string username = credential.UserName;
             string domain = credential.Domain;
             if (!string.IsNullOrEmpty(username) && string.IsNullOrEmpty(domain))
@@ -914,6 +1196,52 @@ namespace System.ServiceModel.Security
             }
         }
 
+        internal static void ThrowIfNegotiationFault(Message message, EndpointAddress target)
+        {
+            if (message.IsFault)
+            {
+                MessageFault fault = MessageFault.CreateFault(message, TransportDefaults.MaxSecurityFaultSize);
+                Exception faultException = new FaultException(fault, message.Headers.Action);
+                if (fault.Code != null && fault.Code.IsReceiverFault && fault.Code.SubCode != null)
+                {
+                    FaultCode subCode = fault.Code.SubCode;
+                    if (subCode.Name == DotNetSecurityStrings.SecurityServerTooBusyFault && subCode.Namespace == DotNetSecurityStrings.Namespace)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ServerTooBusyException(SR.Format(SR.SecurityServerTooBusy, target), faultException));
+                    }
+                    else if (subCode.Name == AddressingStrings.EndpointUnavailable && subCode.Namespace == message.Version.Addressing.Namespace)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new EndpointNotFoundException(SR.Format(SR.SecurityEndpointNotFound, target), faultException));
+                    }
+                }
+
+                throw TraceUtility.ThrowHelperError(faultException, message);
+            }
+        }
+
+        internal static bool IsSecurityFault(MessageFault fault, SecurityStandardsManager standardsManager)
+        {
+            if (fault.Code.IsSenderFault)
+            {
+                FaultCode subCode = fault.Code.SubCode;
+                if (subCode != null)
+                {
+                    return (subCode.Namespace == standardsManager.SecurityVersion.HeaderNamespace.Value
+                        || subCode.Namespace == standardsManager.SecureConversationDriver.Namespace.Value
+                        || subCode.Namespace == standardsManager.TrustDriver.Namespace.Value
+                        || subCode.Namespace == DotNetSecurityStrings.Namespace);
+                }
+            }
+
+            return false;
+        }
+
+        internal static Exception CreateSecurityFaultException(MessageFault fault)
+        {
+            FaultException faultException = FaultException.CreateFault(fault, typeof(string), typeof(object));
+            return new MessageSecurityException(SR.UnsecuredMessageFaultReceived, faultException);
+        }
+
         public static void ValidateAnonymityConstraint(WindowsIdentity identity, bool allowUnauthenticatedCallers)
         {
             if (!allowUnauthenticatedCallers && identity.User.IsWellKnown(WellKnownSidType.AnonymousSid))
@@ -921,6 +1249,12 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(
                     new SecurityTokenValidationException(SR.Format(SR.AnonymousLogonsAreNotAllowed)));
             }
+        }
+
+        public static bool TryCreateX509CertificateFromRawData(byte[] rawData, out X509Certificate2 certificate)
+        {
+            certificate = (rawData == null || rawData.Length == 0) ? null : new X509Certificate2(rawData);
+            return certificate != null && certificate.Handle != IntPtr.Zero;
         }
 
         // This is the workaround, Since store.Certificates returns a full collection
@@ -1021,6 +1355,7 @@ namespace System.ServiceModel.Security
 
                 completionException = e;
             }
+
             thisResult.Complete(false, completionException);
         }
 

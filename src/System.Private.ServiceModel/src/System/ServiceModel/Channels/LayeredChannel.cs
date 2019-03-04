@@ -4,6 +4,7 @@
 
 
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -21,6 +22,7 @@ namespace System.ServiceModel.Channels
             _innerChannel = innerChannel;
             _onInnerChannelFaulted = new EventHandler(OnInnerChannelFaulted);
             _innerChannel.Faulted += _onInnerChannelFaulted;
+            base.SupportsAsyncOpenClose = true;
         }
 
         protected TInnerChannel InnerChannel
@@ -50,35 +52,27 @@ namespace System.ServiceModel.Channels
             _innerChannel.Abort();
         }
 
-        protected override void OnClose(TimeSpan timeout)
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            _innerChannel.Close(timeout);
+            return _innerChannel.CloseHelperAsync(timeout);
         }
 
-        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
+        protected override void OnClose(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected override void OnEndClose(IAsyncResult result) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            return _innerChannel.BeginClose(timeout, callback, state);
+            return _innerChannel.OpenHelperAsync(timeout);
         }
 
-        protected override void OnEndClose(IAsyncResult result)
-        {
-            _innerChannel.EndClose(result);
-        }
+        protected override void OnOpen(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();
 
-        protected override void OnOpen(TimeSpan timeout)
-        {
-            _innerChannel.Open(timeout);
-        }
+        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state) => throw ExceptionHelper.PlatformNotSupported();
 
-        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return _innerChannel.BeginOpen(timeout, callback, state);
-        }
-
-        protected override void OnEndOpen(IAsyncResult result)
-        {
-            _innerChannel.EndOpen(result);
-        }
+        protected override void OnEndOpen(IAsyncResult result) => throw ExceptionHelper.PlatformNotSupported();
 
         private void OnInnerChannelFaulted(object sender, EventArgs e)
         {

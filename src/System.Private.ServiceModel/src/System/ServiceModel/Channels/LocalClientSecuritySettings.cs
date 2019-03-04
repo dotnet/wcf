@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Runtime;
 using System.ServiceModel.Security;
 
@@ -286,6 +285,14 @@ namespace System.ServiceModel.Channels
             this.ReplayWindow = SecurityProtocolFactory.defaultReplayWindow;
             this.MaxClockSkew = SecurityProtocolFactory.defaultMaxClockSkew;
             this.TimestampValidityDuration = SecurityProtocolFactory.defaultTimestampValidityDuration;
+            this.CacheCookies = IssuanceTokenProviderBase<IssuanceTokenProviderState>.defaultClientCacheTokens;
+            this.MaxCookieCachingTime = IssuanceTokenProviderBase<IssuanceTokenProviderState>.DefaultClientMaxTokenCachingTime;
+            this.SessionKeyRenewalInterval = SecuritySessionClientSettings.defaultKeyRenewalInterval;
+            this.SessionKeyRolloverInterval = SecuritySessionClientSettings.defaultKeyRolloverInterval;
+            this.ReconnectTransportOnFailure = SecuritySessionClientSettings.defaultTolerateTransportFailures;
+            this.CookieRenewalThresholdPercentage = AcceleratedTokenProvider.defaultServiceTokenValidityThresholdPercentage;
+            this.IdentityVerifier = IdentityVerifier.CreateDefault();
+            _nonceCache = null;
         }
 
         public LocalClientSecuritySettings Clone()

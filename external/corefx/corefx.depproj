@@ -37,7 +37,10 @@
     <PackageReference Include="System.Security.Principal.Windows">
       <Version>$(SystemSecurityPrincipalWindowsPackageVersion)</Version>
     </PackageReference>
-  </ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.Xml">
+      <Version>$(SystemSecurityCryptographyXmlPackageVersion)</Version>
+    </PackageReference>
+    </ItemGroup>
 
   <!-- The depproj deploys runtime assets. This target also deploys reference assets. -->
   <Target Name="CopyRefAssets" BeforeTargets="CoreCompile">

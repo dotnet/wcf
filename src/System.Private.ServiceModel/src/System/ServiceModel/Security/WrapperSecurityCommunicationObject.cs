@@ -8,6 +8,8 @@ using System.ServiceModel.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.Runtime.Diagnostics;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Runtime;
 
 namespace System.ServiceModel.Security
 {
@@ -18,11 +20,8 @@ namespace System.ServiceModel.Security
         public WrapperSecurityCommunicationObject(ISecurityCommunicationObject innerCommunicationObject)
             : base()
         {
-            if (innerCommunicationObject == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("innerCommunicationObject");
-            }
-            _innerCommunicationObject = innerCommunicationObject;
+            _innerCommunicationObject = innerCommunicationObject ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(innerCommunicationObject));
+            SupportsAsyncOpenClose = true;
         }
 
         protected override Type GetCommunicationObjectType()
@@ -47,17 +46,17 @@ namespace System.ServiceModel.Security
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerCommunicationObject.OnBeginClose(timeout, callback, state);
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerCommunicationObject.OnBeginOpen(timeout, callback, state);
+            return OnOpenAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnClose(TimeSpan timeout)
         {
-            _innerCommunicationObject.OnClose(timeout);
+            _innerCommunicationObject.OnCloseAsync(timeout).GetAwaiter().GetResult();
         }
 
         protected override void OnClosed()
@@ -74,12 +73,12 @@ namespace System.ServiceModel.Security
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            _innerCommunicationObject.OnEndClose(result);
+            result.ToApmEnd();
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            _innerCommunicationObject.OnEndOpen(result);
+            result.ToApmEnd();
         }
 
         protected override void OnFaulted()
@@ -90,7 +89,7 @@ namespace System.ServiceModel.Security
 
         protected override void OnOpen(TimeSpan timeout)
         {
-            _innerCommunicationObject.OnOpen(timeout);
+            _innerCommunicationObject.OnOpenAsync(timeout).GetAwaiter().GetResult();
         }
 
         protected override void OnOpened()
@@ -110,41 +109,24 @@ namespace System.ServiceModel.Security
             base.ThrowIfDisposedOrImmutable();
         }
 
-        protected internal override async Task OnCloseAsync(TimeSpan timeout)
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            var asyncInnerCommunicationObject = _innerCommunicationObject as IAsyncCommunicationObject;
-            if (asyncInnerCommunicationObject != null)
-            {
-                await asyncInnerCommunicationObject.CloseAsync(timeout);
-            }
-            else
-            {
-                this.OnClose(timeout);
-            }
+            return _innerCommunicationObject.OnCloseAsync(timeout);
         }
 
-        protected internal override async Task OnOpenAsync(TimeSpan timeout)
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            var asyncInnerCommunicationObject = _innerCommunicationObject as IAsyncCommunicationObject;
-            if (asyncInnerCommunicationObject != null)
-            {
-                await asyncInnerCommunicationObject.OpenAsync(timeout);
-            }
-            else
-            {
-                this.OnOpen(timeout);
-            }
+            return _innerCommunicationObject.OnOpenAsync(timeout);
         }
     }
 
-    internal abstract class CommunicationObjectSecurityTokenProvider : SecurityTokenProvider, ICommunicationObject, ISecurityCommunicationObject
+    internal abstract class CommunicationObjectSecurityTokenProvider : SecurityTokenProvider, IAsyncCommunicationObject, ISecurityCommunicationObject
     {
         private EventTraceActivity _eventTraceActivity;
-        private WrapperSecurityCommunicationObject _communicationObject;
 
         protected CommunicationObjectSecurityTokenProvider()
         {
-            _communicationObject = new WrapperSecurityCommunicationObject(this);
+            CommunicationObject = new WrapperSecurityCommunicationObject(this);
         }
 
         internal EventTraceActivity EventTraceActivity
@@ -159,44 +141,41 @@ namespace System.ServiceModel.Security
             }
         }
 
-        protected WrapperSecurityCommunicationObject CommunicationObject
-        {
-            get { return _communicationObject; }
-        }
+        protected WrapperSecurityCommunicationObject CommunicationObject { get; }
 
         public event EventHandler Closed
         {
-            add { _communicationObject.Closed += value; }
-            remove { _communicationObject.Closed -= value; }
+            add { CommunicationObject.Closed += value; }
+            remove { CommunicationObject.Closed -= value; }
         }
 
         public event EventHandler Closing
         {
-            add { _communicationObject.Closing += value; }
-            remove { _communicationObject.Closing -= value; }
+            add { CommunicationObject.Closing += value; }
+            remove { CommunicationObject.Closing -= value; }
         }
 
         public event EventHandler Faulted
         {
-            add { _communicationObject.Faulted += value; }
-            remove { _communicationObject.Faulted -= value; }
+            add { CommunicationObject.Faulted += value; }
+            remove { CommunicationObject.Faulted -= value; }
         }
 
         public event EventHandler Opened
         {
-            add { _communicationObject.Opened += value; }
-            remove { _communicationObject.Opened -= value; }
+            add { CommunicationObject.Opened += value; }
+            remove { CommunicationObject.Opened -= value; }
         }
 
         public event EventHandler Opening
         {
-            add { _communicationObject.Opening += value; }
-            remove { _communicationObject.Opening -= value; }
+            add { CommunicationObject.Opening += value; }
+            remove { CommunicationObject.Opening -= value; }
         }
 
         public CommunicationState State
         {
-            get { return _communicationObject.State; }
+            get { return CommunicationObject.State; }
         }
 
         public virtual TimeSpan DefaultOpenTimeout
@@ -212,62 +191,72 @@ namespace System.ServiceModel.Security
         // communication object
         public void Abort()
         {
-            _communicationObject.Abort();
+            CommunicationObject.Abort();
         }
 
         public void Close()
         {
-            _communicationObject.Close();
+            CommunicationObject.Close();
+        }
+
+        public Task CloseAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)CommunicationObject).CloseAsync(timeout);
         }
 
         public void Close(TimeSpan timeout)
         {
-            _communicationObject.Close(timeout);
+            CommunicationObject.Close(timeout);
         }
 
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(callback, state);
+            return CommunicationObject.BeginClose(callback, state);
         }
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(timeout, callback, state);
+            return CommunicationObject.BeginClose(timeout, callback, state);
         }
 
         public void EndClose(IAsyncResult result)
         {
-            _communicationObject.EndClose(result);
+            CommunicationObject.EndClose(result);
         }
 
         public void Open()
         {
-            _communicationObject.Open();
+            CommunicationObject.Open();
+        }
+
+        public Task OpenAsync(TimeSpan timeout)
+        {
+            return ((IAsyncCommunicationObject)CommunicationObject).OpenAsync(timeout);
         }
 
         public void Open(TimeSpan timeout)
         {
-            _communicationObject.Open(timeout);
+            CommunicationObject.Open(timeout);
         }
 
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(callback, state);
+            return CommunicationObject.BeginOpen(callback, state);
         }
 
         public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(timeout, callback, state);
+            return CommunicationObject.BeginOpen(timeout, callback, state);
         }
 
         public void EndOpen(IAsyncResult result)
         {
-            _communicationObject.EndOpen(result);
+            CommunicationObject.EndOpen(result);
         }
 
         public void Dispose()
         {
-            this.Close();
+            Close();
         }
 
         // ISecurityCommunicationObject methods
@@ -275,18 +264,9 @@ namespace System.ServiceModel.Security
         {
         }
 
-        public IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
+        public virtual Task OnCloseAsync(TimeSpan timeout)
         {
-            return new OperationWithTimeoutAsyncResult(this.OnClose, timeout, callback, state);
-        }
-
-        public IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return new OperationWithTimeoutAsyncResult(this.OnOpen, timeout, callback, state);
-        }
-
-        public virtual void OnClose(TimeSpan timeout)
-        {
+            return Task.CompletedTask;
         }
 
         public virtual void OnClosed()
@@ -297,23 +277,14 @@ namespace System.ServiceModel.Security
         {
         }
 
-        public void OnEndClose(IAsyncResult result)
-        {
-            OperationWithTimeoutAsyncResult.End(result);
-        }
-
-        public void OnEndOpen(IAsyncResult result)
-        {
-            OperationWithTimeoutAsyncResult.End(result);
-        }
-
         public virtual void OnFaulted()
         {
-            this.OnAbort();
+            OnAbort();
         }
 
-        public virtual void OnOpen(TimeSpan timeout)
+        public virtual Task OnOpenAsync(TimeSpan timeout)
         {
+            return Task.CompletedTask;
         }
 
         public virtual void OnOpened()
@@ -327,51 +298,46 @@ namespace System.ServiceModel.Security
 
     internal abstract class CommunicationObjectSecurityTokenAuthenticator : SecurityTokenAuthenticator, ICommunicationObject, ISecurityCommunicationObject
     {
-        private WrapperSecurityCommunicationObject _communicationObject;
-
         protected CommunicationObjectSecurityTokenAuthenticator()
         {
-            _communicationObject = new WrapperSecurityCommunicationObject(this);
+            CommunicationObject = new WrapperSecurityCommunicationObject(this);
         }
 
-        protected WrapperSecurityCommunicationObject CommunicationObject
-        {
-            get { return _communicationObject; }
-        }
+        protected WrapperSecurityCommunicationObject CommunicationObject { get; }
 
         public event EventHandler Closed
         {
-            add { _communicationObject.Closed += value; }
-            remove { _communicationObject.Closed -= value; }
+            add { CommunicationObject.Closed += value; }
+            remove { CommunicationObject.Closed -= value; }
         }
 
         public event EventHandler Closing
         {
-            add { _communicationObject.Closing += value; }
-            remove { _communicationObject.Closing -= value; }
+            add { CommunicationObject.Closing += value; }
+            remove { CommunicationObject.Closing -= value; }
         }
 
         public event EventHandler Faulted
         {
-            add { _communicationObject.Faulted += value; }
-            remove { _communicationObject.Faulted -= value; }
+            add { CommunicationObject.Faulted += value; }
+            remove { CommunicationObject.Faulted -= value; }
         }
 
         public event EventHandler Opened
         {
-            add { _communicationObject.Opened += value; }
-            remove { _communicationObject.Opened -= value; }
+            add { CommunicationObject.Opened += value; }
+            remove { CommunicationObject.Opened -= value; }
         }
 
         public event EventHandler Opening
         {
-            add { _communicationObject.Opening += value; }
-            remove { _communicationObject.Opening -= value; }
+            add { CommunicationObject.Opening += value; }
+            remove { CommunicationObject.Opening -= value; }
         }
 
         public CommunicationState State
         {
-            get { return _communicationObject.State; }
+            get { return CommunicationObject.State; }
         }
 
         public virtual TimeSpan DefaultOpenTimeout
@@ -387,62 +353,62 @@ namespace System.ServiceModel.Security
         // communication object
         public void Abort()
         {
-            _communicationObject.Abort();
+            CommunicationObject.Abort();
         }
 
         public void Close()
         {
-            _communicationObject.Close();
+            CommunicationObject.Close();
         }
 
         public void Close(TimeSpan timeout)
         {
-            _communicationObject.Close(timeout);
+            CommunicationObject.Close(timeout);
         }
 
         public IAsyncResult BeginClose(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(callback, state);
+            return CommunicationObject.BeginClose(callback, state);
         }
 
         public IAsyncResult BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginClose(timeout, callback, state);
+            return CommunicationObject.BeginClose(timeout, callback, state);
         }
 
         public void EndClose(IAsyncResult result)
         {
-            _communicationObject.EndClose(result);
+            CommunicationObject.EndClose(result);
         }
 
         public void Open()
         {
-            _communicationObject.Open();
+            CommunicationObject.Open();
         }
 
         public void Open(TimeSpan timeout)
         {
-            _communicationObject.Open(timeout);
+            CommunicationObject.Open(timeout);
         }
 
         public IAsyncResult BeginOpen(AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(callback, state);
+            return CommunicationObject.BeginOpen(callback, state);
         }
 
         public IAsyncResult BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _communicationObject.BeginOpen(timeout, callback, state);
+            return CommunicationObject.BeginOpen(timeout, callback, state);
         }
 
         public void EndOpen(IAsyncResult result)
         {
-            _communicationObject.EndOpen(result);
+            CommunicationObject.EndOpen(result);
         }
 
         public void Dispose()
         {
-            this.Close();
+            Close();
         }
 
         // ISecurityCommunicationObject methods
@@ -452,16 +418,21 @@ namespace System.ServiceModel.Security
 
         public IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new OperationWithTimeoutAsyncResult(this.OnClose, timeout, callback, state);
+            return new OperationWithTimeoutAsyncResult(OnClose, timeout, callback, state);
         }
 
         public IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new OperationWithTimeoutAsyncResult(this.OnOpen, timeout, callback, state);
+            return new OperationWithTimeoutAsyncResult(OnOpen, timeout, callback, state);
         }
 
         public virtual void OnClose(TimeSpan timeout)
         {
+        }
+
+        public Task OnCloseAsync(TimeSpan timeout)
+        {
+            return Task.CompletedTask;
         }
 
         public virtual void OnClosed()
@@ -484,11 +455,16 @@ namespace System.ServiceModel.Security
 
         public virtual void OnFaulted()
         {
-            this.OnAbort();
+            OnAbort();
         }
 
         public virtual void OnOpen(TimeSpan timeout)
         {
+        }
+
+        public Task OnOpenAsync(TimeSpan timeout)
+        {
+            return Task.CompletedTask;
         }
 
         public virtual void OnOpened()

@@ -59,16 +59,16 @@ namespace System.IdentityModel.Selectors
             get { return _networkCredential; }
         }
 
-        internal SecurityToken GetToken(CancellationToken cancellationToken, ChannelBinding channelbinding)
+        internal SecurityToken GetToken(TimeSpan timeout, ChannelBinding channelbinding)
         {
             return new KerberosRequestorSecurityToken(ServicePrincipalName,
                 TokenImpersonationLevel, NetworkCredential,
                 SecurityUniqueId.Create().Value);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
-            return Task.FromResult(GetToken(cancellationToken, null));
+            return Task.FromResult(GetToken(timeout, null));
         }
     }
 }

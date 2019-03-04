@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.ServiceModel.Channels;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Selectors;
@@ -22,6 +21,7 @@ namespace System.ServiceModel.Security
         private string _context;
         private string _tokenType;
         private string _requestType;
+        private SecurityToken _entropyToken;
         private BinaryNegotiation _negotiationData;
         private XmlElement _rstXml;
         private IList<XmlElement> _requestProperties;
@@ -31,7 +31,6 @@ namespace System.ServiceModel.Security
         private Message _message;
         private SecurityKeyIdentifierClause _renewTarget;
         private SecurityKeyIdentifierClause _closeTarget;
-        private OnGetBinaryNegotiationCallback _onGetBinaryNegotiation;
         private SecurityStandardsManager _standardsManager;
         private bool _isReceiver;
         private bool _isReadOnly;
@@ -219,23 +218,6 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public delegate void OnGetBinaryNegotiationCallback(ChannelBinding channelBinding);
-        public OnGetBinaryNegotiationCallback OnGetBinaryNegotiation
-        {
-            get
-            {
-                return _onGetBinaryNegotiation;
-            }
-            set
-            {
-                if (this.IsReadOnly)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
-                }
-                _onGetBinaryNegotiation = value;
-            }
-        }
-
         public IEnumerable<XmlElement> RequestProperties
         {
             get
@@ -326,24 +308,6 @@ namespace System.ServiceModel.Security
             }
         }
 
-        internal SecurityStandardsManager StandardsManager
-        {
-            get
-            {
-                return _standardsManager;
-            }
-            set
-            {
-                if (this.IsReadOnly)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
-                }
-                _standardsManager = value;
-            }
-        }
-
         internal bool IsReceiver
         {
             get
@@ -358,7 +322,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ItemNotAvailableInDeserializedRST, "AppliesTo")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ItemNotAvailableInDeserializedRST, nameof(AppliesTo))));
                 }
                 return _appliesTo;
             }
@@ -370,7 +334,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ItemNotAvailableInDeserializedRST, "AppliesToSerializer")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ItemNotAvailableInDeserializedRST, nameof(AppliesToSerializer))));
                 }
                 return _appliesToSerializer;
             }
@@ -382,27 +346,10 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ItemNotAvailableInDeserializedRST, "AppliesToType")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ItemNotAvailableInDeserializedRST, nameof(AppliesToType))));
                 }
                 return _appliesToType;
             }
-        }
-
-        protected Object ThisLock
-        {
-            get
-            {
-                return _thisLock;
-            }
-        }
-
-        internal void SetBinaryNegotiation(BinaryNegotiation negotiation)
-        {
-            if (negotiation == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("negotiation");
-            if (this.IsReadOnly)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
-            _negotiationData = negotiation;
         }
 
         internal BinaryNegotiation GetBinaryNegotiation()
@@ -411,10 +358,7 @@ namespace System.ServiceModel.Security
             {
                 return _standardsManager.TrustDriver.GetBinaryNegotiation(this);
             }
-            else if (_negotiationData == null && _onGetBinaryNegotiation != null)
-            {
-                _onGetBinaryNegotiation(this.GetChannelBinding());
-            }
+
             return _negotiationData;
         }
 
@@ -430,32 +374,14 @@ namespace System.ServiceModel.Security
                 return _standardsManager.TrustDriver.GetEntropy(this, resolver);
             }
             else
-                return null;
+                return _entropyToken;
         }
 
-        public void SetAppliesTo<T>(T appliesTo, DataContractSerializer serializer)
+        public void SetRequestorEntropy(byte[] entropy)
         {
             if (this.IsReadOnly)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
-            if (appliesTo != null && serializer == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("serializer");
-            }
-            _appliesTo = appliesTo;
-            _appliesToSerializer = serializer;
-            _appliesToType = typeof(T);
-        }
-
-        public void GetAppliesToQName(out string localName, out string namespaceUri)
-        {
-            if (!_isReceiver)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ItemAvailableInDeserializedRSTOnly, "MatchesAppliesTo")));
-            _standardsManager.TrustDriver.GetAppliesToQName(this, out localName, out namespaceUri);
-        }
-
-        public T GetAppliesTo<T>()
-        {
-            return this.GetAppliesTo<T>(DataContractSerializerDefaults.CreateSerializer(typeof(T), DataContractSerializerDefaults.MaxItemsInObjectGraph));
+            _entropyToken = (entropy != null) ? new NonceToken(entropy) : null;
         }
 
         public T GetAppliesTo<T>(XmlObjectSerializer serializer)
@@ -517,16 +443,6 @@ namespace System.ServiceModel.Security
             }
             else
                 this.OnWriteTo(writer);
-        }
-
-        public static RequestSecurityToken CreateFrom(XmlReader reader)
-        {
-            return CreateFrom(SecurityStandardsManager.DefaultInstance, reader);
-        }
-
-        public static RequestSecurityToken CreateFrom(XmlReader reader, MessageSecurityVersion messageSecurityVersion, SecurityTokenSerializer securityTokenSerializer)
-        {
-            return CreateFrom(SecurityUtils.CreateSecurityStandardsManager(messageSecurityVersion, securityTokenSerializer), reader);
         }
 
         internal static RequestSecurityToken CreateFrom(SecurityStandardsManager standardsManager, XmlReader reader)

@@ -12,6 +12,17 @@ namespace System.ServiceModel.Channels
 {
     internal static class ChannelBindingUtility
     {
+        private static readonly ExtendedProtectionPolicy s_disabledPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
+        private static readonly ExtendedProtectionPolicy s_defaultPolicy = s_disabledPolicy;
+
+        public static ExtendedProtectionPolicy DefaultPolicy
+        {
+            get
+            {
+                return s_defaultPolicy;
+            }
+        }
+
         public static ChannelBinding GetToken(SslStream stream)
         {
             return GetToken(stream.TransportContext);

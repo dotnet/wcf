@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net;
@@ -164,6 +163,10 @@ namespace System.ServiceModel
 #pragma warning restore 618
                     }
                 }
+                else if (tokenType == ServiceModelSecurityTokenTypes.SecureConversation)
+                {
+                    result = CreateSecureConversationSecurityTokenProvider(initiatorRequirement);
+                }
             }
 
             if ((result == null) && !tokenRequirement.IsOptionalToken)
@@ -176,8 +179,85 @@ namespace System.ServiceModel
 
         public override SecurityTokenSerializer CreateSecurityTokenSerializer(SecurityTokenVersion version)
         {
-            // not referenced anywhere in current code, but must implement abstract. 
-            throw ExceptionHelper.PlatformNotSupported("CreateSecurityTokenSerializer(SecurityTokenVersion version) not supported");
+            if (version == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(version));
+            }
+
+            MessageSecurityTokenVersion wsVersion = version as MessageSecurityTokenVersion;
+            if (wsVersion != null)
+            {
+                return new WSSecurityTokenSerializer(wsVersion.SecurityVersion, wsVersion.TrustVersion, wsVersion.SecureConversationVersion, wsVersion.EmitBspRequiredAttributes, null, null, null);
+            }
+            else
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.SecurityTokenManagerCannotCreateSerializerForVersion, version)));
+            }
+        }
+
+        private SecurityTokenProvider CreateSecureConversationSecurityTokenProvider(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
+        {
+            EndpointAddress targetAddress = initiatorRequirement.TargetAddress;
+            if (targetAddress == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.TokenRequirementDoesNotSpecifyTargetAddress, initiatorRequirement));
+            }
+            SecurityBindingElement securityBindingElement = initiatorRequirement.SecurityBindingElement;
+            if (securityBindingElement == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.TokenProviderRequiresSecurityBindingElement, initiatorRequirement));
+            }
+            LocalClientSecuritySettings localClientSettings = securityBindingElement.LocalClientSettings;
+            BindingContext issuerBindingContext = initiatorRequirement.GetProperty<BindingContext>(ServiceModelSecurityTokenRequirement.IssuerBindingContextProperty);
+            ChannelParameterCollection channelParameters = initiatorRequirement.GetPropertyOrDefault<ChannelParameterCollection>(ServiceModelSecurityTokenRequirement.ChannelParametersCollectionProperty, null);
+            bool isSessionMode = initiatorRequirement.SupportSecurityContextCancellation;
+            if (isSessionMode)
+            {
+                SecuritySessionSecurityTokenProvider sessionTokenProvider = new SecuritySessionSecurityTokenProvider();
+                sessionTokenProvider.BootstrapSecurityBindingElement = SecurityUtils.GetIssuerSecurityBindingElement(initiatorRequirement);
+                sessionTokenProvider.IssuedSecurityTokenParameters = initiatorRequirement.GetProperty<SecurityTokenParameters>(ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty);
+                sessionTokenProvider.IssuerBindingContext = issuerBindingContext;
+                sessionTokenProvider.KeyEntropyMode = securityBindingElement.KeyEntropyMode;
+                sessionTokenProvider.SecurityAlgorithmSuite = initiatorRequirement.SecurityAlgorithmSuite;
+                sessionTokenProvider.StandardsManager = SecurityUtils.CreateSecurityStandardsManager(initiatorRequirement, this);
+                sessionTokenProvider.TargetAddress = targetAddress;
+                sessionTokenProvider.Via = initiatorRequirement.GetPropertyOrDefault<Uri>(InitiatorServiceModelSecurityTokenRequirement.ViaProperty, null);
+                Uri privacyNoticeUri;
+                if (initiatorRequirement.TryGetProperty(ServiceModelSecurityTokenRequirement.PrivacyNoticeUriProperty, out privacyNoticeUri))
+                {
+                    sessionTokenProvider.PrivacyNoticeUri = privacyNoticeUri;
+                }
+                int privacyNoticeVersion;
+                if (initiatorRequirement.TryGetProperty(ServiceModelSecurityTokenRequirement.PrivacyNoticeVersionProperty, out privacyNoticeVersion))
+                {
+                    sessionTokenProvider.PrivacyNoticeVersion = privacyNoticeVersion;
+                }
+                EndpointAddress localAddress;
+                if (initiatorRequirement.TryGetProperty(ServiceModelSecurityTokenRequirement.DuplexClientLocalAddressProperty, out localAddress))
+                {
+                    sessionTokenProvider.LocalAddress = localAddress;
+                }
+                sessionTokenProvider.ChannelParameters = channelParameters;
+                sessionTokenProvider.WebHeaders = initiatorRequirement.WebHeaders;
+
+                return sessionTokenProvider;
+            }
+            else
+            {
+                AcceleratedTokenProvider acceleratedTokenProvider = new AcceleratedTokenProvider();
+                acceleratedTokenProvider.IssuerAddress = initiatorRequirement.IssuerAddress;
+                acceleratedTokenProvider.BootstrapSecurityBindingElement = SecurityUtils.GetIssuerSecurityBindingElement(initiatorRequirement);
+                acceleratedTokenProvider.CacheServiceTokens = localClientSettings.CacheCookies;
+                acceleratedTokenProvider.IssuerBindingContext = issuerBindingContext;
+                acceleratedTokenProvider.KeyEntropyMode = securityBindingElement.KeyEntropyMode;
+                acceleratedTokenProvider.MaxServiceTokenCachingTime = localClientSettings.MaxCookieCachingTime;
+                acceleratedTokenProvider.SecurityAlgorithmSuite = initiatorRequirement.SecurityAlgorithmSuite;
+                acceleratedTokenProvider.ServiceTokenValidityThresholdPercentage = localClientSettings.CookieRenewalThresholdPercentage;
+                acceleratedTokenProvider.StandardsManager = SecurityUtils.CreateSecurityStandardsManager(initiatorRequirement, this);
+                acceleratedTokenProvider.TargetAddress = targetAddress;
+                acceleratedTokenProvider.Via = initiatorRequirement.GetPropertyOrDefault<Uri>(InitiatorServiceModelSecurityTokenRequirement.ViaProperty, null);
+                return acceleratedTokenProvider;
+            }
         }
 
         private X509SecurityTokenAuthenticator CreateServerX509TokenAuthenticator()
@@ -270,16 +350,15 @@ namespace System.ServiceModel
             _innerProvider = innerProvider;
         }
 
-        internal Task<SecurityToken> GetTokenAsync(CancellationToken cancellationToken, ChannelBinding channelbinding)
+        internal Task<SecurityToken> GetTokenAsync(TimeSpan timeout, ChannelBinding channelbinding)
         {
             return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
                 _innerProvider.TokenImpersonationLevel, _innerProvider.NetworkCredential,
                 SecurityUniqueId.Create().Value));
         }
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
-            return GetTokenAsync(cancellationToken, null);
+            return GetTokenAsync(timeout, null);
         }
     }
 }
-

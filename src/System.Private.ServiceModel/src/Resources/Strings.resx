@@ -1977,4 +1977,523 @@
   <data name="SFxRequestHasInvalidFromOnClient" xml:space="preserve">
     <value>The request message has From='{0}' but IContextChannel.LocalAddress is '{1}'.  When ManualAddressing is false, these values must be the same, null, or EndpointAddress.AnonymousAddress.  Enable ManualAddressing or avoid setting From on the message.</value>
   </data>
+  <data name="ClientCredentialTypeMustBeSpecifiedForMixedMode" xml:space="preserve">
+    <value>ClientCredentialType.None is not valid for the TransportWithMessageCredential security mode. Specify a message credential type or use a different security mode.</value>
+  </data>
+  <data name="SecureConversationSecurityTokenParametersRequireBootstrapBinding" xml:space="preserve">
+    <value>Security channel or listener factory creation failed. Secure conversation security token parameters do not specify the bootstrap security binding element.</value>
+  </data>
+  <data name="ProtocolMustBeInitiator" xml:space="preserve">
+    <value>'{0}' protocol can only be used by the Initiator.</value>
+  </data>
+  <data name="SecurityProtocolFactoryShouldBeSetBeforeThisOperation" xml:space="preserve">
+    <value>The security protocol factory must be set before this operation is performed.</value>
+  </data>
+  <data name="IssuedSecurityTokenParametersNotSet" xml:space="preserve">
+    <value>The security token parameters to use for the issued token are not set on '{0}'.</value>
+  </data>
+  <data name="KeyRolloverGreaterThanKeyRenewal" xml:space="preserve">
+    <value>The key rollover interval cannot be greater than the key renewal interval.</value>
+  </data>
+  <data name="SecuritySessionProtocolFactoryShouldBeSetBeforeThisOperation" xml:space="preserve">
+    <value>Security session protocol factory must be set before this operation is performed.</value>
+  </data>
+  <data name="SecurityStandardsManagerNotSet" xml:space="preserve">
+    <value>The security standards manager was not specified on  '{0}'.</value>
+  </data>
+  <data name="ActivitySecurityClose" xml:space="preserve">
+    <value>Close Security Session.</value>
+  </data>
+  <data name="ClientSecurityCloseTimeout" xml:space="preserve">
+    <value>The client's security session did not receive a 'close response' message from the service within the configured timeout ({0}).</value>
+  </data>
+  <data name="ClientSecurityOutputSessionCloseTimeout" xml:space="preserve">
+    <value>The client's security session was not able to close its output session within the configured timeout ({0}).</value>
+  </data>
+  <data name="DelayedSecurityApplicationAlreadyCompleted" xml:space="preserve">
+    <value>Delayed security application has already been completed.</value>
+  </data>
+  <data name="MessageBodyOperationNotValidInBodyState" xml:space="preserve">
+    <value>Operation '{0}' is not valid in message body state '{1}'.</value>
+  </data>
+  <data name="MessageSecurityVerificationFailed" xml:space="preserve">
+    <value>Message security verification failed.</value>
+  </data>
+  <data name="OutputNotExpected" xml:space="preserve">
+    <value>Send cannot be called when the session does not expect output.</value>
+  </data>
+  <data name="PrimarySignatureMustBeComputedBeforeSupportingTokenSignatures" xml:space="preserve">
+    <value>Primary signature must be computed before supporting token signatures.</value>
+  </data>
+  <data name="ProtocolMisMatch" xml:space="preserve">
+    <value>Security protocol must be '{0}', type is: '{1}'.;</value>
+  </data>
+  <data name="SenderSideSupportingTokensMustSpecifySecurityTokenParameters" xml:space="preserve">
+    <value>Security token parameters must be specified with supporting tokens for each message.</value>
+  </data>
+  <data name="SigningWithoutPrimarySignatureRequiresTimestamp" xml:space="preserve">
+    <value>Signing without primary signature requires timestamp.</value>
+  </data>
+  <data name="SupportingTokenSignaturesNotExpected" xml:space="preserve">
+    <value>Supporting token signatures not expected.</value>
+  </data>
+  <data name="TimestampAlreadySetForSecurityHeader" xml:space="preserve">
+    <value>TimestampAlreadySetForSecurityHeader</value>
+  </data>
+  <data name="TokenDoesNotSupportKeyIdentifierClauseCreation" xml:space="preserve">
+    <value>'{0}' does not support '{1}' creation.</value>
+  </data>
+  <data name="TokenManagerCannotCreateTokenReference" xml:space="preserve">
+    <value>The supplied token manager cannot create a token reference.</value>
+  </data>
+  <data name="TokenMustBeNullWhenTokenParametersAre" xml:space="preserve">
+    <value>The SecurityTokenParameters and SecurityToken tuple specified for use in the security header must both be null or must both be non-null.</value>
+  </data>
+  <data name="TokenProviderCannotGetTokensForTarget" xml:space="preserve">
+    <value>The token provider cannot get tokens for target '{0}'.</value>
+  </data>
+  <data name="UnableToCreateTokenReference" xml:space="preserve">
+    <value>Unable to create token reference.</value>
+  </data>
+  <data name="UnableToFindSecurityHeaderInMessage" xml:space="preserve">
+    <value>Security processor was unable to find a security header with actor '{0}' in the message. This might be because the message is an unsecured fault or because there is a binding mismatch between the communicating parties.  This can occur if the service is configured for security and the client is not using security.</value>
+  </data>
+  <data name="UnableToFindSecurityHeaderInMessageNoActor" xml:space="preserve">
+    <value>Security processor was unable to find a security header in the message. This might be because the message is an unsecured fault or because there is a binding mismatch between the communicating parties.   This can occur if the service is configured for security and the client is not using security.</value>
+  </data>
+  <data name="UnknownTokenAttachmentMode" xml:space="preserve">
+    <value>Unknown token attachment mode: {0}.</value>
+  </data>
+  <data name="UnsupportedTokenInclusionMode" xml:space="preserve">
+    <value>Token inclusion mode '{0}' is not supported.</value>
+  </data>
+  <data name="MismatchInSecurityOperationToken" xml:space="preserve">
+    <value>The incoming message was signed with a token which was different from what used to encrypt the body.  This was not expected.</value>
+  </data>
+  <data name="ResolvingExternalTokensRequireSecurityTokenParameters" xml:space="preserve">
+    <value>Resolving an External reference token requires appropriate SecurityTokenParameters to be specified.</value>
+  </data>
+  <data name="SecurityHeaderIsEmpty" xml:space="preserve">
+    <value>Security header is empty.</value>
+  </data>
+  <data name="AlgorithmAndPrivateKeyMisMatch" xml:space="preserve">
+    <value>The algorithm specified and the private key do not match.</value>
+  </data>
+  <data name="DuplicateTimestampInSecurityHeader" xml:space="preserve">
+    <value>More than one Timestamp element was present in security header.</value>
+  </data>
+  <data name="EmptyOrNullArgumentString" xml:space="preserve">
+    <value>The argument '{0}' is null or empty string.</value>
+  </data>
+  <data name="ErrorDeserializingKeyIdentifierClause" xml:space="preserve">
+    <value>There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</value>
+  </data>
+  <data name="InvalidX509RawData" xml:space="preserve">
+    <value>Invalid binary representation of an X.509 certificate.</value>
+  </data>
+  <data name="MissingPrivateKey" xml:space="preserve">
+    <value>The private key is not present in the X.509 certificate.</value>
+  </data>
+  <data name="NoKeyInfoClausesToWrite" xml:space="preserve">
+    <value>The SecurityKeyIdentifier has no key identifier clauses to write.</value>
+  </data>
+  <data name="PrivateKeyNotSupported" xml:space="preserve">
+    <value>The key algorithm for this private key is not supported.</value>
+  </data>
+  <data name="UnableToResolveKeyReference" xml:space="preserve">
+    <value>The token resolver is unable to resolve the security key reference '{0}'.</value>
+  </data>
+  <data name="UnableToResolveTokenReference" xml:space="preserve">
+    <value>The token resolver is unable to resolve the token reference '{0}'.</value>
+  </data>
+  <data name="UnsupportedCryptoAlgorithm" xml:space="preserve">
+    <value>Crypto algorithm '{0}' not supported in this context.</value>
+  </data>
+  <data name="AlgorithmAndPublicKeyMisMatch" xml:space="preserve">
+    <value>The algorithm specified and the public key do not match.</value>
+  </data>
+  <data name="PublicKeyNotSupported" xml:space="preserve">
+    <value>The key algorithm for this public key is not supported.</value>
+  </data>
+  <data name="AtMostOneReferenceListIsSupportedWithDefaultPolicyCheck" xml:space="preserve">
+    <value>At most one reference list is supported with default policy check.</value>
+  </data>
+  <data name="CustomCryptoAlgorithmIsNotValidHashAlgorithm" xml:space="preserve">
+    <value>The custom crypto algorithm '{0}' obtained using CryptoConfig is not a valid or supported hash algorithm.</value>
+  </data>
+  <data name="DuplicateIdInMessageToBeVerified" xml:space="preserve">
+    <value>The '{0}' id occurred twice in the message that is supplied for verification.</value>
+  </data>
+  <data name="ID6002" xml:space="preserve">
+    <value>ID6002: The given key size in bits is '{0}' which is not a multiple of 8.</value>
+  </data>
+  <data name="ID6033" xml:space="preserve">
+    <value>ID6033: The specified key size '{0}' is not supported.</value>
+  </data>
+  <data name="MessageProtectionOrderMismatch" xml:space="preserve">
+    <value>The received message does not meet the required message protection order '{0}'.</value>
+  </data>
+  <data name="PrimarySignatureWasNotSignedByDerivedKey" xml:space="preserve">
+    <value>The primary signature is not signed with a derived key. The binding's primary token parameter '{0}' requires key derivation.</value>
+  </data>
+  <data name="PrimarySignatureWasNotSignedByDerivedWrappedKey" xml:space="preserve">
+    <value>The primary signature is not signed with a key derived from the encrypted key. The binding's token parameter '{0}' requires key derivation.</value>
+  </data>
+  <data name="RequiredSecurityHeaderElementNotSigned" xml:space="preserve">
+    <value>The security header element '{0}' with the '{1}' id must be signed.</value>
+  </data>
+  <data name="RequiredSecurityTokenNotEncrypted" xml:space="preserve">
+    <value>The '{0}' security token with the '{1}' attachment mode must be encrypted.</value>
+  </data>
+  <data name="RequiredSecurityTokenNotSigned" xml:space="preserve">
+    <value>The '{0}' security token with the '{1}' attachment mode must be signed.</value>
+  </data>
+  <data name="BadCloseTarget" xml:space="preserve">
+    <value>The CloseTarget specified '{0}' does not identify the security token that signed the message.</value>
+  </data>
+  <data name="ChannelMustBeOpenedToGetSessionId" xml:space="preserve">
+    <value>The session channel must be opened before the session ID can be accessed.</value>
+  </data>
+  <data name="CommunicationObjectCloseInterrupted1" xml:space="preserve">
+    <value>The communication object, {0}, cannot be used due to an error that occurred during close.</value>
+  </data>
+  <data name="ElementToSignMustHaveId" xml:space="preserve">
+    <value>Element to sign must have id.</value>
+  </data>
+  <data name="InvalidCloseResponseAction" xml:space="preserve">
+    <value>A security session close response was received with an invalid action '{0}'.</value>
+  </data>
+  <data name="InvalidRstRequestType" xml:space="preserve">
+    <value>The RequestSecurityToken has an invalid or unspecified RequestType '{0}'.</value>
+  </data>
+  <data name="MoreThanOneRSTRInRSTRC" xml:space="preserve">
+    <value>The RequestSecurityTokenResponseCollection received has more than one RequestSecurityTokenResponse element. Only one RequestSecurityTokenResponse element was expected.</value>
+  </data>
+  <data name="NoCloseTargetSpecified" xml:space="preserve">
+    <value>The RequestSecurityToken must specify a CloseTarget.</value>
+  </data>
+  <data name="NoPartsOfMessageMatchedPartsToSign" xml:space="preserve">
+    <value>No signature was created because not part of the message matched the supplied message part specification.</value>
+  </data>
+  <data name="SecuritySessionFaultReplyWasSent" xml:space="preserve">
+    <value>The receiver sent back a security session fault message. Retry the request.</value>
+  </data>
+  <data name="SessionKeyRenewalNotSupported" xml:space="preserve">
+    <value>Cannot renew the security session key. Session Key Renewal is not supported.</value>
+  </data>
+  <data name="SessionTokenIsNotGenericXmlToken" xml:space="preserve">
+    <value>The session security token provider returned a token of type '{0}'. The token type expected is '{1}'.</value>
+  </data>
+  <data name="SessionTokenWasNotClosed" xml:space="preserve">
+    <value>The session token was not closed by the server.</value>
+  </data>
+  <data name="TimeoutOnOperation" xml:space="preserve">
+    <value>The operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
+  </data>
+  <data name="TimestampToSignHasNoId" xml:space="preserve">
+    <value>The timestamp element added to security header to sign has no id.</value>
+  </data>
+  <data name="TransportSecuredMessageHasMoreThanOneToHeader" xml:space="preserve">
+    <value>More than one 'To' header specified in a message secured by Transport Security.</value>
+  </data>
+  <data name="TransportSecurityRequireToHeader" xml:space="preserve">
+    <value>Transport secured messages should have the 'To' header specified.</value>
+  </data>
+  <data name="UnableToCreateHashAlgorithmFromAsymmetricCrypto" xml:space="preserve">
+    <value>Unable to create a HashAlgorithm for the '{0}' algorithm from the '{1}' asymmetric crypto.</value>
+  </data>
+  <data name="UnableToCreateKeyedHashAlgorithm" xml:space="preserve">
+    <value>Unable to create a KeyedHashAlgorithm from '{0}' for the signature algorithm '{1}'.</value>
+  </data>
+  <data name="UnableToRenewSessionKey" xml:space="preserve">
+    <value>Cannot renew the security session key.</value>
+  </data>
+  <data name="UnexpectedSecuritySessionClose" xml:space="preserve">
+    <value>The security session received an unexpected close from the other party.</value>
+  </data>
+  <data name="UnexpectedSecuritySessionCloseResponse" xml:space="preserve">
+    <value>The security session received an unexpected close response from the other party.</value>
+  </data>
+  <data name="UnknownICryptoType" xml:space="preserve">
+    <value>The ICrypto implementation '{0}' is not supported.</value>
+  </data>
+  <data name="UnsecuredMessageFaultReceived" xml:space="preserve">
+    <value>An unsecured or incorrectly secured fault was received from the other party. See the inner FaultException for the fault code and detail.</value>
+  </data>
+  <data name="UnsupportedCanonicalizationAlgorithm" xml:space="preserve">
+    <value>Canonicalization algorithm '{0}' is not supported.</value>
+  </data>
+  <data name="ChannelNotOpen" xml:space="preserve">
+    <value>The channel is not open.</value>
+  </data>
+  <data name="ReceiveTimedOut" xml:space="preserve">
+    <value>Receive on local address {0} timed out after {1}. The time allotted to this operation may have been a portion of a longer timeout.</value>
+  </data>
+  <data name="ReceiveTimedOutNoLocalAddress" xml:space="preserve">
+    <value>Receive timed out after {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
+  </data>
+  <data name="TimeoutOnSend" xml:space="preserve">
+    <value>The send operation did not complete within the allotted timeout of {0}. The time allotted to this operation may have been a portion of a longer timeout.</value>
+  </data>
+  <data name="CannotReadKeyIdentifierClause" xml:space="preserve">
+    <value>Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</value>
+  </data>
+  <data name="ErrorSerializingKeyIdentifier" xml:space="preserve">
+    <value>There was an error serializing the security key identifier. Please see the inner exception for more details.</value>
+  </data>
+  <data name="ErrorSerializingKeyIdentifierClause" xml:space="preserve">
+    <value>There was an error serializing the security key identifier clause. Please see the inner exception for more details.</value>
+  </data>
+  <data name="MessageSecurityVersionOutOfRange" xml:space="preserve">
+    <value>SecurityVersion must be WsSecurity10 or WsSecurity11.</value>
+  </data>
+  <data name="PrivateKeyNotDSA" xml:space="preserve">
+    <value>The private key is not a DSA key.</value>
+  </data>
+  <data name="PrivateKeyNotRSA" xml:space="preserve">
+    <value>The private key is not a RSA key.</value>
+  </data>
+  <data name="PublicKeyNotDSA" xml:space="preserve">
+    <value>The public key is not a DSA key.</value>
+  </data>
+  <data name="PublicKeyNotRSA" xml:space="preserve">
+    <value>The public key is not an RSA key.</value>
+  </data>
+  <data name="StandardsManagerCannotWriteObject" xml:space="preserve">
+    <value>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</value>
+  </data>
+  <data name="UnsupportedAlgorithmForCryptoOperation" xml:space="preserve">
+    <value>The algorithm {0} is not supported for operation {1}.</value>
+  </data>
+  <data name="DerivedKeyLengthSpecifiedInImplicitDerivedKeyClauseTooLong" xml:space="preserve">
+    <value>The Implicit derived key clause '{0}' specifies a derivation key length ({1}) which exceeds the allowed maximum length ({2}).</value>
+  </data>
+  <data name="MultipleMatchingCryptosFound" xml:space="preserve">
+    <value>The token's crypto collection has multiple objects of type '{0}'.</value>
+  </data>
+  <data name="UnableToDeriveKeyFromKeyInfoClause" xml:space="preserve">
+    <value>KeyInfo clause '{0}' resolved to token '{1}', which does not contain a Symmetric key that can be used for derivation.</value>
+  </data>
+  <data name="CannotFindMatchingCrypto" xml:space="preserve">
+    <value>The token's crypto collection does not support algorithm '{0}'.</value>
+  </data>
+  <data name="DerivedKeyCannotDeriveFromSecret" xml:space="preserve">
+    <value>Derived Key Token cannot derive key from the secret.</value>
+  </data>
+  <data name="DerivedKeyLengthTooLong" xml:space="preserve">
+    <value>DerivedKey length ({0}) exceeds the allowed settings ({1}).</value>
+  </data>
+  <data name="DerivedKeyLimitExceeded" xml:space="preserve">
+    <value>The number of derived keys in the message has exceeded the maximum allowed number '{0}'.</value>
+  </data>
+  <data name="DerivedKeyPosAndGenBothSpecified" xml:space="preserve">
+    <value>Both offset and generation cannot be specified for Derived Key Token.</value>
+  </data>
+  <data name="DerivedKeyPosAndGenNotSpecified" xml:space="preserve">
+    <value>Either offset or generation must be specified for Derived Key Token.</value>
+  </data>
+  <data name="ExtendedProtectionPolicyCustomChannelBindingNotSupported" xml:space="preserve">
+    <value>CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</value>
+  </data>
+  <data name="CantInferReferenceForToken" xml:space="preserve">
+    <value>Can't infer an external reference for '{0}' token type.</value>
+  </data>
+  <data name="Remoting_SOAPInteropxsdInvalid" xml:space="preserve">
+    <value>Soap Parse error, xsd:type '{0}' invalid {1}</value>
+  </data>
+  <data name="SecurityTokenManagerCannotCreateSerializerForVersion" xml:space="preserve">
+    <value>The security token manager cannot create a token serializer for security token version '{0}'.</value>
+  </data>
+  <data name="TransportBindingElementNotFound" xml:space="preserve">
+    <value>The binding does not contain a TransportBindingElement.</value>
+  </data>
+  <data name="UnknownEncodingInBinarySecurityToken" xml:space="preserve">
+    <value>Unrecognized encoding occurred while reading the binary security token.</value>
+  </data>
+  <data name="UnsupportedPasswordType" xml:space="preserve">
+    <value>The '{0}' username token has an unsupported password type.</value>
+  </data>
+  <data name="BootstrapSecurityBindingElementNotSet" xml:space="preserve">
+    <value>The security binding element for bootstrap security was not specified on '{0}'.</value>
+  </data>
+  <data name="IssuerBuildContextNotSet" xml:space="preserve">
+    <value>The context for building the issuer channel was  not specified on '{0}'.</value>
+  </data>
+  <data name="SecurityAlgorithmSuiteNotSet" xml:space="preserve">
+    <value>The security algorithm suite was not specified on '{0}'.</value>
+  </data>
+  <data name="TargetAddressIsNotSet" xml:space="preserve">
+    <value>The target service address was not specified on '{0}'.</value>
+  </data>
+  <data name="TokenProviderRequiresSecurityBindingElement" xml:space="preserve">
+    <value>The security token manager requires the security binding element to be specified in order to create a token provider for requirement '{0}'.</value>
+  </data>
+  <data name="BadSecurityNegotiationContext" xml:space="preserve">
+    <value>Security negotiation failure because an incorrect Context attribute specified in RequestSecurityToken/RequestSecurityTokenResponse from the other party.</value>
+  </data>
+  <data name="CannotObtainIssuedTokenKeySize" xml:space="preserve">
+    <value>Cannot determine the key size of the issued token.</value>
+  </data>
+  <data name="ClientSecurityNegotiationTimeout" xml:space="preserve">
+    <value>Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</value>
+  </data>
+  <data name="ClientSecuritySessionRequestTimeout" xml:space="preserve">
+    <value>Client is unable to request the security session within the configured timeout ({0}).</value>
+  </data>
+  <data name="FailToRecieveReplyFromNegotiation" xml:space="preserve">
+    <value>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</value>
+  </data>
+  <data name="InvalidActionForNegotiationMessage" xml:space="preserve">
+    <value>Security negotiation message has incorrect action '{0}'.</value>
+  </data>
+  <data name="InvalidIssuedTokenKeySize" xml:space="preserve">
+    <value>The issued token has an invalid key size '{0}'.</value>
+  </data>
+  <data name="InvalidRenewResponseAction" xml:space="preserve">
+    <value>A security session renew response was received with an invalid action '{0}'.</value>
+  </data>
+  <data name="IssuerBindingNotPresentInTokenRequirement" xml:space="preserve">
+    <value>The key length '{0}' is not a multiple of 8 for symmetric keys.</value>
+  </data>
+  <data name="KeyLengthMustBeMultipleOfEight" xml:space="preserve">
+    <value>Key length '{0}' is not a multiple of 8 for symmetric keys.</value>
+  </data>
+  <data name="NegotiationIsCompleted" xml:space="preserve">
+    <value>The negotiation has already completed.</value>
+  </data>
+  <data name="NegotiationIsNotCompleted" xml:space="preserve">
+    <value>The negotiation has not yet completed.</value>
+  </data>
+  <data name="NoNegotiationMessageToSend" xml:space="preserve">
+    <value>There is no negotiation message to send.</value>
+  </data>
+  <data name="SecurityEndpointNotFound" xml:space="preserve">
+    <value>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</value>
+  </data>
+  <data name="SecurityNegotiationCannotProtectConfidentialEndpointHeader" xml:space="preserve">
+    <value>The security negotiation with '{0}' cannot be initiated because the confidential endpoint address header ('{1}', '{2}') cannot be encrypted during the course of the negotiation.</value>
+  </data>
+  <data name="SecurityServerTooBusy" xml:space="preserve">
+    <value>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</value>
+  </data>
+  <data name="SoapSecurityNegotiationFailed" xml:space="preserve">
+    <value>SOAP security negotiation failed. See inner exception for more details.</value>
+  </data>
+  <data name="SoapSecurityNegotiationFailedForIssuerAndTarget" xml:space="preserve">
+    <value>SOAP security negotiation with '{0}' for target '{1}' failed. See inner exception for more details.</value>
+  </data>
+  <data name="BadIssuedTokenType" xml:space="preserve">
+    <value>The issued token is of unexpected type '{0}'. Expected token type '{1}'.</value>
+  </data>
+  <data name="BearerKeyTypeCannotHaveProofKey" xml:space="preserve">
+    <value>A Proof Token was found in the response that was returned by the Security Token Service for a Bearer Key Type token request. Note that Proof Tokens should not be generated when a Bearer Key Type request is made.</value>
+  </data>
+  <data name="DerivedKeyInvalidGenerationSpecified" xml:space="preserve">
+    <value>The received derived key token has a invalid generation value specified. Value: {0}. The value should be greater than or equal to zero.</value>
+  </data>
+  <data name="DerivedKeyInvalidOffsetSpecified" xml:space="preserve">
+    <value>The received derived key token has a invalid offset value specified. Value: {0}. The value should be greater than or equal to zero.</value>
+  </data>
+  <data name="DerivedKeyTokenLabelTooLong" xml:space="preserve">
+    <value>The length ('{0}' bytes) of the derived key's Label exceeds the maximum length ('{1}' bytes) allowed.</value>
+  </data>
+  <data name="DerivedKeyTokenNonceTooLong" xml:space="preserve">
+    <value>The length ('{0}' bytes) of the derived key's Nonce exceeds the maximum length ('{1}' bytes) allowed.</value>
+  </data>
+  <data name="DerivedKeyTokenRequiresTokenReference" xml:space="preserve">
+    <value>DerivedKeyToken requires a reference to a token.</value>
+  </data>
+  <data name="EntropyModeCannotHaveComputedKey" xml:space="preserve">
+    <value>The issuer cannot provide a computed key in key entropy mode '{0}'.</value>
+  </data>
+  <data name="EntropyModeCannotHaveProofTokenOrIssuerEntropy" xml:space="preserve">
+    <value>The issuer cannot provide key entropy or a proof token in key entropy mode '{0}'.</value>
+  </data>
+  <data name="EntropyModeCannotHaveRequestorEntropy" xml:space="preserve">
+    <value>The client cannot provide key entropy in key entropy mode '{0}'.</value>
+  </data>
+  <data name="EntropyModeRequiresComputedKey" xml:space="preserve">
+    <value>The issuer must provide a computed key in key entropy mode '{0}'.</value>
+  </data>
+  <data name="EntropyModeRequiresIssuerEntropy" xml:space="preserve">
+    <value>The issuer must provide key entropy in key entropy mode '{0}'.</value>
+  </data>
+  <data name="EntropyModeRequiresProofToken" xml:space="preserve">
+    <value>The issuer must provide a proof token in key entropy mode '{0}'.</value>
+  </data>
+  <data name="EntropyModeRequiresRequestorEntropy" xml:space="preserve">
+    <value>The client must provide key entropy in key entropy mode '{0}'.</value>
+  </data>
+  <data name="ErrorSerializingSecurityToken" xml:space="preserve">
+    <value>There was an error serializing the security token. Please see the inner exception for more details.</value>
+  </data>
+  <data name="InvalidKeyLengthRequested" xml:space="preserve">
+    <value>The key length '{0}' requested is invalid.</value>
+  </data>
+  <data name="InvalidKeySizeSpecifiedInNegotiation" xml:space="preserve">
+    <value>The specified key size {0} is invalid. The key size must be between {1} and {2}.</value>
+  </data>
+  <data name="NoLicenseXml" xml:space="preserve">
+    <value>RequestedSecurityToken not specified in RequestSecurityTokenResponse.</value>
+  </data>
+  <data name="NoRequestSecurityTokenResponseElements" xml:space="preserve">
+    <value>No RequestSecurityTokenResponse elements were found.</value>
+  </data>
+  <data name="RstrHasMultipleIssuedTokens" xml:space="preserve">
+    <value>The RequestSecurityTokenResponse has multiple RequestedSecurityToken elements.</value>
+  </data>
+  <data name="RstrHasMultipleProofTokens" xml:space="preserve">
+    <value>The RequestSecurityTokenResponse has multiple RequestedProofToken elements.</value>
+  </data>
+  <data name="RstrKeySizeNotProvided" xml:space="preserve">
+    <value>KeySize element not present in RequestSecurityTokenResponse.</value>
+  </data>
+  <data name="TokenCannotCreateSymmetricCrypto" xml:space="preserve">
+    <value>A symmetric crypto could not be created from token '{0}'.</value>
+  </data>
+  <data name="TrustDriverIsUnableToCreatedNecessaryAttachedOrUnattachedReferences" xml:space="preserve">
+    <value>Unable to create Attached or Unattached reference for '{0}'.</value>
+  </data>
+  <data name="UnexpectedBinarySecretType" xml:space="preserve">
+    <value>Expected binary secret of type {0} but got secret of type {1}.</value>
+  </data>
+  <data name="UnknownComputedKeyAlgorithm" xml:space="preserve">
+    <value>The computed key algorithm '{0}' is not supported.</value>
+  </data>
+  <data name="UnknownEncodingInKeyIdentifier" xml:space="preserve">
+    <value>Unrecognized encoding while reading key identifier.</value>
+  </data>
+  <data name="UnsupportedBinaryEncoding" xml:space="preserve">
+    <value>Binary encoding {0} is not supported.</value>
+  </data>
+  <data name="UnsupportedIssuerEntropyType" xml:space="preserve">
+    <value>Issuer entropy is not BinarySecretSecurityToken or WrappedKeySecurityToken.</value>
+  </data>
+  <data name="UnsupportedKeyDerivationAlgorithm" xml:space="preserve">
+    <value>Key derivation algorithm '{0}' is not supported.</value>
+  </data>
+  <data name="BasicTokenNotExpected" xml:space="preserve">
+    <value>A basic token is not expected in the security header in this context.</value>
+  </data>
+  <data name="CustomCryptoAlgorithmIsNotValidKeyedHashAlgorithm" xml:space="preserve">
+    <value>The custom crypto algorithm '{0}'obtained using CryptoConfig is not a valid or supported keyed hash algorithm.</value>
+  </data>
+  <data name="SignedSupportingTokenNotExpected" xml:space="preserve">
+    <value>A signed supporting token is not expected in the security header in this context.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Crypto algorithm '{0}' not supported in this context.</value>
+  </data>
+  <data name="TokenManagerCouldNotReadToken" xml:space="preserve">
+    <value>Security token manager could not parse token with name '{0}', namespace '{1}', valueType '{2}'.</value>
+  </data>
+  <data name="UnableToFindTokenAuthenticator" xml:space="preserve">
+    <value>Cannot find a token authenticator for the '{0}' token type. Tokens of that type cannot be accepted according to current security settings.</value>
+  </data>
+  <data name="UnableToResolveKeyInfoClauseInDerivedKeyToken" xml:space="preserve">
+    <value>Cannot resolve KeyInfo in derived key token for resolving source token: KeyInfoClause '{0}'.</value>
+  </data>
+  <data name="UnknownTokenAuthenticatorUsedInTokenProcessing" xml:space="preserve">
+    <value>An unrecognized token authenticator '{0}' was used for token processing.</value>
+  </data>
 </root>

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Channels;
 using System.Net;
@@ -18,6 +17,7 @@ namespace System.ServiceModel
         private HttpClientCredentialType _clientCredentialType;
         private HttpProxyCredentialType _proxyCredentialType;
         private string _realm;
+        private ExtendedProtectionPolicy _extendedProtectionPolicy;
 
 
         public HttpTransportSecurity()
@@ -25,6 +25,7 @@ namespace System.ServiceModel
             _clientCredentialType = DefaultClientCredentialType;
             _proxyCredentialType = DefaultProxyCredentialType;
             _realm = DefaultRealm;
+            _extendedProtectionPolicy = ChannelBindingUtility.DefaultPolicy;
         }
 
         public HttpClientCredentialType ClientCredentialType
@@ -61,6 +62,29 @@ namespace System.ServiceModel
             set { _realm = value; }
         }
 
+        public ExtendedProtectionPolicy ExtendedProtectionPolicy
+        {
+            get
+            {
+                return _extendedProtectionPolicy;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
+                if (value.PolicyEnforcement == PolicyEnforcement.Always &&
+                    !System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.OSSupportsExtendedProtection)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                        new PlatformNotSupportedException(SR.ExtendedProtectionNotSupported));
+                }
+
+                _extendedProtectionPolicy = value;
+            }
+        }
 
         internal void ConfigureTransportProtectionOnly(HttpsTransportBindingElement https)
         {
@@ -77,7 +101,9 @@ namespace System.ServiceModel
         private static void ConfigureAuthentication(HttpTransportBindingElement http, HttpTransportSecurity transportSecurity)
         {
             transportSecurity._clientCredentialType = HttpClientCredentialTypeHelper.MapToClientCredentialType(http.AuthenticationScheme);
+            transportSecurity._proxyCredentialType = HttpProxyCredentialTypeHelper.MapToProxyCredentialType(http.ProxyAuthenticationScheme);
             transportSecurity.Realm = http.Realm;
+            transportSecurity._extendedProtectionPolicy = http.ExtendedProtectionPolicy;
         }
 
         private void DisableAuthentication(HttpTransportBindingElement http)
@@ -100,7 +126,7 @@ namespace System.ServiceModel
             https.RequireClientCertificate = (_clientCredentialType == HttpClientCredentialType.Certificate);
         }
 
-        internal static void ConfigureTransportProtectionAndAuthentication(HttpsTransportBindingElement https, HttpTransportSecurity transportSecurity)
+        public static void ConfigureTransportProtectionAndAuthentication(HttpsTransportBindingElement https, HttpTransportSecurity transportSecurity)
         {
             ConfigureAuthentication(https, transportSecurity);
             if (https.RequireClientCertificate)

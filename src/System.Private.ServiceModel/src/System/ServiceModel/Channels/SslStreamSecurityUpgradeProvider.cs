@@ -254,19 +254,16 @@ namespace System.ServiceModel.Channels
 
         protected override void OnOpen(TimeSpan timeout)
         {
-            using (CancellationTokenSource cts = new CancellationTokenSource(timeout))
-            {
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                SecurityUtils.OpenTokenAuthenticatorIfRequired(ClientCertificateAuthenticator, timeoutHelper.RemainingTime());
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            SecurityUtils.OpenTokenAuthenticatorIfRequired(ClientCertificateAuthenticator, timeoutHelper.RemainingTime());
 
-                if (_serverTokenProvider != null)
-                {
-                    SecurityUtils.OpenTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
-                    SecurityToken token = _serverTokenProvider.GetTokenAsync(cts.Token).GetAwaiter().GetResult();
-                    SetupServerCertificate(token);
-                    SecurityUtils.CloseTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
-                    _serverTokenProvider = null;
-                }
+            if (_serverTokenProvider != null)
+            {
+                SecurityUtils.OpenTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
+                SecurityToken token = _serverTokenProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                SetupServerCertificate(token);
+                SecurityUtils.CloseTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
+                _serverTokenProvider = null;
             }
         }
 
@@ -369,10 +366,7 @@ namespace System.ServiceModel.Channels
             if (_clientCertificateProvider != null)
             {
                 SecurityUtils.OpenTokenProviderIfRequired(_clientCertificateProvider, timeoutHelper.RemainingTime());
-                using (CancellationTokenSource cts = new CancellationTokenSource(timeoutHelper.RemainingTime()))
-                {
-                    _clientToken = (X509SecurityToken)_clientCertificateProvider.GetTokenAsync(cts.Token).GetAwaiter().GetResult();
-                }
+                _clientToken = (X509SecurityToken)_clientCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
             }
         }
 
@@ -383,10 +377,7 @@ namespace System.ServiceModel.Channels
             if (_clientCertificateProvider != null)
             {
                 SecurityUtils.OpenTokenProviderIfRequired(_clientCertificateProvider, timeoutHelper.RemainingTime());
-                using (CancellationTokenSource cts = new CancellationTokenSource(timeoutHelper.RemainingTime()))
-                {
-                    _clientToken = (X509SecurityToken)(await _clientCertificateProvider.GetTokenAsync(cts.Token));
-                }
+                _clientToken = (X509SecurityToken)await _clientCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime());
             }
         }
 

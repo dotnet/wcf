@@ -11,4 +11,8 @@ namespace System.ServiceModel.Channels
         : IRequestChannel, ISessionChannel<IOutputSession>
     {
     }
+
+    internal interface IAsyncRequestSessionChannel : IRequestSessionChannel, IAsyncRequestChannel
+    {
+    }
 }

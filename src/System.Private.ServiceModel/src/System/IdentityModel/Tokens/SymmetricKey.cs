@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using System.IdentityModel.Selectors;
 using System.Security.Cryptography;
 using System.ServiceModel;
 
@@ -23,7 +21,7 @@ namespace System.IdentityModel.Tokens
         {
             if (symmetricKey == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("symmetricKey"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(symmetricKey)));
             }
 
             if (symmetricKey.Length == 0)
@@ -63,7 +61,6 @@ namespace System.IdentityModel.Tokens
             return CryptoHelper.GenerateDerivedKey(_symmetricKey, algorithm, label, nonce, derivedKeyLength, offset);
         }
 
-#pragma warning disable 0436 // ICryptoTransform conflicts with imported types 
         public override ICryptoTransform GetDecryptionTransform(string algorithm, byte[] iv)
         {
             return CryptoHelper.CreateDecryptor(_symmetricKey, iv, algorithm);
@@ -73,14 +70,12 @@ namespace System.IdentityModel.Tokens
         {
             return CryptoHelper.CreateEncryptor(_symmetricKey, iv, algorithm);
         }
-#pragma warning restore 0436 
 
         public override int GetIVSize(string algorithm)
         {
             return CryptoHelper.GetIVSize(algorithm);
         }
 
-#pragma warning disable 0436 // KeyedHashAlgorithm, SymmetricAlgorithm conflict with imported types 
         public override KeyedHashAlgorithm GetKeyedHashAlgorithm(string algorithm)
         {
             return CryptoHelper.CreateKeyedHashAlgorithm(_symmetricKey, algorithm);
@@ -90,7 +85,6 @@ namespace System.IdentityModel.Tokens
         {
             return CryptoHelper.GetSymmetricAlgorithm(_symmetricKey, algorithm);
         }
-#pragma warning restore 0436
 
         public override byte[] GetSymmetricKey()
         {

@@ -36,7 +36,7 @@ namespace System.IdentityModel.Selectors
             }
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             return Task.FromResult<SecurityToken>(new X509SecurityToken(certificate: _certificate, clone: _clone, disposable: _clone));
         }

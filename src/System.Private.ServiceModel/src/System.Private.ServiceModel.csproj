@@ -33,6 +33,7 @@
     <Reference Include="netstandard" />
     <Reference Include="System.Reflection.DispatchProxy" />
     <Reference Include="System.Security.Principal.Windows" />
+    <Reference Include="System.Security.Cryptography.Xml" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
     <Reference Include="mscorlib" />
@@ -103,5 +104,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

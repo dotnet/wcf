@@ -293,12 +293,12 @@ namespace System.ServiceModel.Channels
 
         internal async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via,
             SecurityTokenProviderContainer tokenProvider, SecurityTokenProviderContainer proxyTokenProvider,
-            SecurityTokenContainer clientCertificateToken, CancellationToken cancellationToken)
+            SecurityTokenContainer clientCertificateToken, TimeSpan timeout)
         {
             var impersonationLevelWrapper = new OutWrapper<TokenImpersonationLevel>();
             var authenticationLevelWrapper = new OutWrapper<AuthenticationLevel>();
             NetworkCredential credential = await HttpChannelUtilities.GetCredentialAsync(_authenticationScheme,
-                tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+                tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, timeout);
 
             if (_httpClientCache == null)
             {
@@ -346,7 +346,7 @@ namespace System.ServiceModel.Channels
                     else if (_proxyFactory != null)
                     {
                         clientHandler.Proxy = await _proxyFactory.CreateWebProxyAsync(authenticationLevelWrapper.Value,
-                            impersonationLevelWrapper.Value, proxyTokenProvider, cancellationToken);
+                            impersonationLevelWrapper.Value, proxyTokenProvider, timeout);
                         clientHandler.UseProxy = true;
                     }
                 }
@@ -967,7 +967,7 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    return await Factory.GetHttpClientAsync(to, via, requestTokenProvider, requestProxyTokenProvider, clientCertificateToken, await timeoutHelper.GetCancellationTokenAsync());
+                    return await Factory.GetHttpClientAsync(to, via, requestTokenProvider, requestProxyTokenProvider, clientCertificateToken, timeoutHelper.RemainingTime());
                 }
                 finally
                 {
@@ -1407,7 +1407,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            public async Task<IWebProxy> CreateWebProxyAsync(AuthenticationLevel requestAuthenticationLevel, TokenImpersonationLevel requestImpersonationLevel, SecurityTokenProviderContainer tokenProvider, CancellationToken token)
+            public async Task<IWebProxy> CreateWebProxyAsync(AuthenticationLevel requestAuthenticationLevel, TokenImpersonationLevel requestImpersonationLevel, SecurityTokenProviderContainer tokenProvider, TimeSpan timeout)
             {
                 WebProxy result = new WebProxy(_address, _bypassOnLocal);
 
@@ -1416,7 +1416,7 @@ namespace System.ServiceModel.Channels
                     var impersonationLevelWrapper = new OutWrapper<TokenImpersonationLevel>();
                     var authenticationLevelWrapper = new OutWrapper<AuthenticationLevel>();
                     NetworkCredential credential = await HttpChannelUtilities.GetCredentialAsync(_authenticationScheme,
-                        tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, token);
+                        tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, timeout);
 
                     // The impersonation level for target auth is also used for proxy auth (by System.Net).  Therefore,
                     // fail if the level stipulated for proxy auth is more restrictive than that for target auth.

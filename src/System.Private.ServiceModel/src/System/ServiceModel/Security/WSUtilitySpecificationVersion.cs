@@ -67,17 +67,12 @@ namespace System.ServiceModel.Security
 
         private sealed class WSUtilitySpecificationVersionOneDotZero : WSUtilitySpecificationVersion
         {
-            private static readonly WSUtilitySpecificationVersionOneDotZero s_instance = new WSUtilitySpecificationVersionOneDotZero();
-
             private WSUtilitySpecificationVersionOneDotZero()
                 : base(XD.UtilityDictionary.Namespace)
             {
             }
 
-            public static WSUtilitySpecificationVersionOneDotZero Instance
-            {
-                get { return s_instance; }
-            }
+            public static WSUtilitySpecificationVersionOneDotZero Instance { get; } = new WSUtilitySpecificationVersionOneDotZero();
 
             internal override bool IsReaderAtTimestamp(XmlDictionaryReader reader)
             {
@@ -86,7 +81,47 @@ namespace System.ServiceModel.Security
 
             internal override SecurityTimestamp ReadTimestamp(XmlDictionaryReader reader, string digestAlgorithm, SignatureResourcePool resourcePool)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                bool canonicalize = digestAlgorithm != null && reader.CanCanonicalize;
+                HashStream hashStream = null;
+
+                reader.MoveToStartElement(XD.UtilityDictionary.Timestamp, XD.UtilityDictionary.Namespace);
+                if (canonicalize)
+                {
+                    hashStream = resourcePool.TakeHashStream(digestAlgorithm);
+                    reader.StartCanonicalization(hashStream, false, null);
+                }
+                string id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+                reader.ReadStartElement();
+
+                reader.ReadStartElement(XD.UtilityDictionary.CreatedElement, XD.UtilityDictionary.Namespace);
+                DateTime creationTimeUtc = reader.ReadContentAsDateTime().ToUniversalTime();
+                reader.ReadEndElement();
+
+                DateTime expiryTimeUtc;
+                if (reader.IsStartElement(XD.UtilityDictionary.ExpiresElement, XD.UtilityDictionary.Namespace))
+                {
+                    reader.ReadStartElement();
+                    expiryTimeUtc = reader.ReadContentAsDateTime().ToUniversalTime();
+                    reader.ReadEndElement();
+                }
+                else
+                {
+                    expiryTimeUtc = SecurityUtils.MaxUtcDateTime;
+                }
+
+                reader.ReadEndElement();
+
+                byte[] digest;
+                if (canonicalize)
+                {
+                    reader.EndCanonicalization();
+                    digest = hashStream.FlushHashAndGetValue();
+                }
+                else
+                {
+                    digest = null;
+                }
+                return new SecurityTimestamp(creationTimeUtc, expiryTimeUtc, id, digestAlgorithm, digest);
             }
 
             internal override void WriteTimestamp(XmlDictionaryWriter writer, SecurityTimestamp timestamp)

@@ -6,6 +6,7 @@
 using System;
 using System.ServiceModel;
 using System.Collections;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -26,5 +27,13 @@ namespace System.ServiceModel.Channels
         bool WaitForMessage(TimeSpan timeout);
         IAsyncResult BeginWaitForMessage(TimeSpan timeout, AsyncCallback callback, object state);
         bool EndWaitForMessage(IAsyncResult result);
+    }
+
+    public interface IAsyncInputChannel : IInputChannel, IAsyncCommunicationObject
+    {
+        Task<Message> ReceiveAsync();
+        Task<Message> ReceiveAsync(TimeSpan timeout);
+        Task<(bool, Message)> TryReceiveAsync(TimeSpan timeout);
+        Task<bool> WaitForMessageAsync(TimeSpan timeout);
     }
 }

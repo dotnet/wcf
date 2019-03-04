@@ -10,4 +10,8 @@ namespace System.ServiceModel.Channels
     public interface IDuplexChannel : IInputChannel, IOutputChannel
     {
     }
+
+    internal interface IAsyncDuplexChannel : IDuplexChannel, IAsyncInputChannel, IAsyncOutputChannel
+    {
+    }
 }

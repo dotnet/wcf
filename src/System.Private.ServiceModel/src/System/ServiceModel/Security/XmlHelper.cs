@@ -263,6 +263,20 @@ namespace System.ServiceModel.Security
             return value;
         }
 
+        internal static string ReadTextElementAsTrimmedString(XmlElement element)
+        {
+            if (element == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(element));
+            }
+
+            using (XmlReader reader = new XmlNodeReader(element))
+            {
+                reader.MoveToContent();
+                return XmlUtil.Trim(reader.ReadElementContentAsString());
+            }
+        }
+
         internal static void SplitIntoPrefixAndName(string qName, out string prefix, out string name)
         {
             string[] parts = qName.Split(':');

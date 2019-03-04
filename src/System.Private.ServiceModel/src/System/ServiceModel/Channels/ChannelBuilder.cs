@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Runtime;
 
 namespace System.ServiceModel.Channels
@@ -18,7 +17,7 @@ namespace System.ServiceModel.Channels
             _context = context;
             if (addChannelDemuxerIfRequired)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                this.AddDemuxerBindingElement(context.RemainingBindingElements);
             }
             _binding = new CustomBinding(context.Binding, context.RemainingBindingElements);
             _bindingParameters = context.BindingParameters;
@@ -52,6 +51,21 @@ namespace System.ServiceModel.Channels
             set { _bindingParameters = value; }
         }
 
+        private void AddDemuxerBindingElement(BindingElementCollection elements)
+        {
+            if (elements.Find<ChannelDemuxerBindingElement>() == null)
+            {
+                // add the channel demuxer binding element right above the transport
+                TransportBindingElement transport = elements.Find<TransportBindingElement>();
+                if (transport == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.TransportBindingElementNotFound));
+                }
+                // cache the context state in the demuxer so that the same context state can be provided to the transport
+                // when building auxilliary channels and listeners (for ex, for security negotiation)
+                elements.Insert(elements.IndexOf(transport), new ChannelDemuxerBindingElement(true));
+            }
+        }
 
         public IChannelFactory<TChannel> BuildChannelFactory<TChannel>()
         {

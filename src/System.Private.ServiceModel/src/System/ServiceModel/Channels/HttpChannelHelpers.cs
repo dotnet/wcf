@@ -55,7 +55,7 @@ namespace System.ServiceModel.Channels
 
         public static Task<NetworkCredential> GetCredentialAsync(AuthenticationSchemes authenticationScheme, SecurityTokenProviderContainer credentialProvider,
             OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper,
-            CancellationToken cancellationToken)
+            TimeSpan timeout)
         {
             impersonationLevelWrapper.Value = TokenImpersonationLevel.None;
             authenticationLevelWrapper.Value = AuthenticationLevel.None;
@@ -66,13 +66,13 @@ namespace System.ServiceModel.Channels
             }
 
             return GetCredentialCoreAsync(authenticationScheme, credentialProvider, impersonationLevelWrapper,
-                    authenticationLevelWrapper, cancellationToken);
+                    authenticationLevelWrapper, timeout);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static async Task<NetworkCredential> GetCredentialCoreAsync(AuthenticationSchemes authenticationScheme,
             SecurityTokenProviderContainer credentialProvider, OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper,
-            OutWrapper<AuthenticationLevel> authenticationLevelWrapper, CancellationToken cancellationToken)
+            OutWrapper<AuthenticationLevel> authenticationLevelWrapper, TimeSpan timeout)
         {
             impersonationLevelWrapper.Value = TokenImpersonationLevel.None;
             authenticationLevelWrapper.Value = AuthenticationLevel.None;
@@ -82,23 +82,23 @@ namespace System.ServiceModel.Channels
             switch (authenticationScheme)
             {
                 case AuthenticationSchemes.Basic:
-                    result = await TransportSecurityHelpers.GetUserNameCredentialAsync(credentialProvider, cancellationToken);
+                    result = await TransportSecurityHelpers.GetUserNameCredentialAsync(credentialProvider, timeout);
                     impersonationLevelWrapper.Value = TokenImpersonationLevel.Delegation;
                     break;
 
                 case AuthenticationSchemes.Digest:
                     result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
-                        impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+                        impersonationLevelWrapper, authenticationLevelWrapper, timeout);
                     break;
 
                 case AuthenticationSchemes.Negotiate:
                     result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
-                        impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+                        impersonationLevelWrapper, authenticationLevelWrapper, timeout);
                     break;
 
                 case AuthenticationSchemes.Ntlm:
                     result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
-                        impersonationLevelWrapper, authenticationLevelWrapper, cancellationToken);
+                        impersonationLevelWrapper, authenticationLevelWrapper, timeout);
                     if (authenticationLevelWrapper.Value == AuthenticationLevel.MutualAuthRequired)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(

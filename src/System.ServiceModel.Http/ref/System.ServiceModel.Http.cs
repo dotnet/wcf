@@ -101,6 +101,7 @@ namespace System.ServiceModel
         public HttpTransportSecurity() { }
         public System.ServiceModel.HttpClientCredentialType ClientCredentialType { get { return default(System.ServiceModel.HttpClientCredentialType); } set { } }
         public System.ServiceModel.HttpProxyCredentialType ProxyCredentialType { get { return default(System.ServiceModel.HttpProxyCredentialType); } set { } }
+        public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get { return default(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy); } set { } }
     }
     public partial class NetHttpBinding : System.ServiceModel.HttpBindingBase
     {
@@ -131,6 +132,65 @@ namespace System.ServiceModel
         Text = 1,
         Mtom = 2,
     }
+    public abstract partial class WSHttpBindingBase : System.ServiceModel.Channels.Binding
+    {
+        protected WSHttpBindingBase() { }
+        protected WSHttpBindingBase(bool reliableSessionEnabled) { }
+        public bool BypassProxyOnLocal { get { return default(bool); } set { } }
+        public bool TransactionFlow { get { return default(bool); } set { } }
+        //public System.ServiceModel.HostNameComparisonMode HostNameComparisonMode { get { return default(System.ServiceModel.HostNameComparisonMode); } set { } }
+        public long MaxBufferPoolSize { get { return default(long); } set { } }
+        public long MaxReceivedMessageSize { get { return default(long); } set { } }
+        //public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default(System.ServiceModel.WSMessageEncoding); } set { } }
+        public Uri ProxyAddress { get { return default(Uri); } set { } }
+        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default(System.Xml.XmlDictionaryReaderQuotas); } set { } }
+        //public System.ServiceModel.OptionalReliableSession ReliableSession { get { return default(System.ServiceModel.OptionalReliableSession); } set { } }
+        public override string Scheme { get { return default(string); } }
+        public System.ServiceModel.EnvelopeVersion EnvelopeVersion { get { return default(System.ServiceModel.EnvelopeVersion); } set { } }
+        public System.Text.Encoding TextEncoding { get { return default(System.Text.Encoding); } set { } }
+        public bool UseDefaultWebProxy { get { return default(bool); } set { } }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+        protected abstract System.ServiceModel.Channels.TransportBindingElement GetTransport();
+        protected abstract System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity();
+    }
+    public partial class WSHttpBinding : System.ServiceModel.WSHttpBindingBase
+    {
+        public WSHttpBinding() { }
+        public WSHttpBinding(System.ServiceModel.SecurityMode securityMode) { }
+        public WSHttpBinding(System.ServiceModel.SecurityMode securityMode, bool reliableSessionEnabled) { }
+        public bool AllowCookies { get { return default(bool); } set { } }
+        public System.ServiceModel.WSHttpSecurity Security { get { return default(System.ServiceModel.WSHttpSecurity); } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+        protected override System.ServiceModel.Channels.TransportBindingElement GetTransport() { return default(System.ServiceModel.Channels.TransportBindingElement); }
+        protected override System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity() { return default(System.ServiceModel.Channels.SecurityBindingElement); }
+    }
+    public sealed partial class WSHttpSecurity
+    {
+        public WSHttpSecurity() { }
+        public System.ServiceModel.SecurityMode Mode { get { return default(System.ServiceModel.SecurityMode); } set { } }
+        public System.ServiceModel.HttpTransportSecurity Transport { get { return default(System.ServiceModel.HttpTransportSecurity); } set { } }
+        public System.ServiceModel.NonDualMessageSecurityOverHttp Message { get { return default(System.ServiceModel.NonDualMessageSecurityOverHttp); } set { } }
+    }
+    public sealed class NonDualMessageSecurityOverHttp : System.ServiceModel.MessageSecurityOverHttp
+    {
+        public NonDualMessageSecurityOverHttp() { }
+        public bool EstablishSecurityContext { get { return default(bool); } set { } }
+        protected override bool IsSecureConversationEnabled() { return default(bool); }
+    }
+    public class MessageSecurityOverHttp
+    {
+        public MessageSecurityOverHttp() { }
+        public System.ServiceModel.MessageCredentialType ClientCredentialType { get { return default(System.ServiceModel.MessageCredentialType); } set { } }
+        public bool NegotiateServiceCredential { get { return default(bool); } set { } }
+        public System.ServiceModel.Security.SecurityAlgorithmSuite AlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
+        protected virtual bool IsSecureConversationEnabled() { return default(bool); }
+    }
+    //public enum WSMessageEncoding
+    //{
+    //    Text = 0,
+    //    Mtom,
+    //}
 }
 namespace System.ServiceModel.Channels
 {
@@ -173,6 +233,7 @@ namespace System.ServiceModel.Channels
         public System.Net.AuthenticationSchemes AuthenticationScheme { get { return default(System.Net.AuthenticationSchemes); } set { } }
         [System.ComponentModel.DefaultValue(false)]
         public bool BypassProxyOnLocal { get { return default(bool); } set { } }
+        public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get; set; }
         [System.ComponentModel.DefaultValueAttribute(65536)]
         public int MaxBufferSize { get { return default(int); } set { } }
         [System.ComponentModel.DefaultValue(null)]

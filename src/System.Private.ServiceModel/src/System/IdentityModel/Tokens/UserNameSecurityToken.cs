@@ -23,10 +23,13 @@ namespace System.IdentityModel.Tokens
         public UserNameSecurityToken(string userName, string password, string id)
         {
             if (userName == null)
-                throw Fx.Exception.ArgumentNull("userName");
+            {
+                throw Fx.Exception.ArgumentNull(nameof(userName));
+            }
+
             if (userName == string.Empty)
             {
-                throw Fx.Exception.Argument("userName", SR.UserNameCannotBeEmpty);
+                throw Fx.Exception.Argument(nameof(userName), SR.UserNameCannotBeEmpty);
             }
 
             _userName = userName;

@@ -216,7 +216,7 @@ namespace System.ServiceModel.Channels
                     _clientTokenProvider,
                     impersonationLevelWrapper,
                     allowNtlmWrapper,
-                    timeoutHelper.GetCancellationToken());
+                    timeoutHelper.RemainingTime());
 
                 _impersonationLevel = impersonationLevelWrapper.Value;
                 _allowNtlm = allowNtlmWrapper;

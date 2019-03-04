@@ -301,6 +301,12 @@ namespace System.IdentityModel
             str.Append(certificate.Thumbprint);
         }
 
+        internal static bool TryCreateX509CertificateFromRawData(byte[] rawData, out X509Certificate2 certificate)
+        {
+            certificate = (rawData == null || rawData.Length == 0) ? null : new X509Certificate2(rawData);
+            return certificate != null && certificate.Handle != IntPtr.Zero;
+        }
+
         internal static ReadOnlyCollection<IAuthorizationPolicy> CloneAuthorizationPoliciesIfNecessary(ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
             if (authorizationPolicies != null && authorizationPolicies.Count > 0)

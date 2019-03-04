@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
 using System.Xml;
 
@@ -61,6 +62,35 @@ namespace System.ServiceModel.Security
         public virtual bool IsSignatureKeyDerivationAlgorithmSupported(string algorithm) { return (algorithm == SecurityAlgorithms.Psha1KeyDerivation) || (algorithm == SecurityAlgorithms.Psha1KeyDerivationDec2005); }
         public abstract bool IsSymmetricKeyLengthSupported(int length);
         public abstract bool IsAsymmetricKeyLengthSupported(int length);
+
+        internal void GetSignatureAlgorithmAndKey(SecurityToken token, out string signatureAlgorithm, out SecurityKey key, out XmlDictionaryString signatureAlgorithmDictionaryString)
+        {
+            ReadOnlyCollection<SecurityKey> keys = token.SecurityKeys;
+            if (keys == null || keys.Count == 0)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SigningTokenHasNoKeys, token)));
+            }
+
+            for (int i = 0; i < keys.Count; i++)
+            {
+                if (keys[i].IsSupportedAlgorithm(this.DefaultSymmetricSignatureAlgorithm))
+                {
+                    signatureAlgorithm = this.DefaultSymmetricSignatureAlgorithm;
+                    signatureAlgorithmDictionaryString = this.DefaultSymmetricSignatureAlgorithmDictionaryString;
+                    key = keys[i];
+                    return;
+                }
+                else if (keys[i].IsSupportedAlgorithm(this.DefaultAsymmetricSignatureAlgorithm))
+                {
+                    signatureAlgorithm = this.DefaultAsymmetricSignatureAlgorithm;
+                    signatureAlgorithmDictionaryString = this.DefaultAsymmetricSignatureAlgorithmDictionaryString;
+                    key = keys[i];
+                    return;
+                }
+            }
+
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SigningTokenHasNoKeysSupportingTheAlgorithmSuite, token, this)));
+        }
     }
 
     public class Basic256SecurityAlgorithmSuite : SecurityAlgorithmSuite

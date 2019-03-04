@@ -17,7 +17,7 @@ using System.Collections.Generic;
 
 namespace System.ServiceModel.Diagnostics
 {
-    public static class TraceUtility
+    internal static class TraceUtility
     {
         private const string ActivityIdKey = "ActivityId";
         private const string AsyncOperationActivityKey = "AsyncOperationActivity";
@@ -26,6 +26,7 @@ namespace System.ServiceModel.Diagnostics
 
         public const string E2EActivityId = "E2EActivityId";
         public const string TraceApplicationReference = "TraceApplicationReference";
+        public static Func<Action<AsyncCallback, IAsyncResult>> asyncCallbackGenerator;
 
         static internal void AddActivityHeader(Message message)
         {
@@ -605,6 +606,44 @@ namespace System.ServiceModel.Diagnostics
             {
                 get { return _eventTraceActivity; }
             }
+        }
+
+        public static InputQueue<T> CreateInputQueue<T>() where T : class
+        {
+            if (asyncCallbackGenerator == null)
+            {
+                asyncCallbackGenerator = new Func<Action<AsyncCallback, IAsyncResult>>(CallbackGenerator);
+            }
+
+            return new InputQueue<T>(asyncCallbackGenerator)
+            {
+                DisposeItemCallback = value =>
+                {
+                    if (value is ICommunicationObject)
+                    {
+                        ((ICommunicationObject)value).Abort();
+                    }
+                }
+            };
+        }
+
+        internal static Action<AsyncCallback, IAsyncResult> CallbackGenerator()
+        {
+            if (DiagnosticUtility.ShouldUseActivity)
+            {
+                ServiceModelActivity callbackActivity = ServiceModelActivity.Current;
+                if (callbackActivity != null)
+                {
+                    return delegate (AsyncCallback callback, IAsyncResult result)
+                    {
+                        using (ServiceModelActivity.BoundOperation(callbackActivity))
+                        {
+                            callback(result);
+                        }
+                    };
+                }
+            }
+            return null;
         }
     }
 }

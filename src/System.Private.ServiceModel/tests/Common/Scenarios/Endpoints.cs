@@ -357,6 +357,22 @@ public static partial class Endpoints
         }
     }
 
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeCert
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsCert.svc//https-message-credentials-cert", protocol: "https");
+        }
+    }
+
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeUserName
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsUserName.svc//https-message-credentials-username", protocol: "https");
+        }
+    }
+
     #region Secure WebSocket Addresses
     public static string WebSocketHttpsDuplexBinaryStreamed_Address
     {
