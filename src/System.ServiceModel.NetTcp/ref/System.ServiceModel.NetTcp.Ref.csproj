@@ -3,10 +3,14 @@
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+    <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <CLSCompliant>true</CLSCompliant>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Collections" Version="4.3.0" />
