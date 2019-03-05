@@ -8,41 +8,123 @@ using System.ServiceModel;
 
 namespace WcfService
 {
-    [ServiceContract(Namespace = "http://contoso.com/calc"), XmlSerializerFormat]
-    public interface ICalculator
+    [ServiceContract(Namespace = "http://contoso.com/calc")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+    public interface ICalculatorRpcEnc
     {
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         int Sum2(int i, int j);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         int Sum(IntParams par);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         float Divide(FloatParams par);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         string Concatenate(IntParams par);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         void AddIntParams(Guid guid, IntParams par);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         IntParams GetAndRemoveIntParams(Guid guid);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         DateTime ReturnInputDateTime(DateTime dt);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
         byte[] CreateSet(ByteParams par);
     }
 
-    [ServiceContract, XmlSerializerFormat]
-    public interface IHelloWorld
+    [ServiceContract(Namespace = "http://contoso.com/calc")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
+    public interface ICalculatorRpcLit
     {
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
+        int Sum2(int i, int j);
+
+        [OperationContract]
+        int Sum(IntParams par);
+
+        [OperationContract]
+        float Divide(FloatParams par);
+
+        [OperationContract]
+        string Concatenate(IntParams par);
+
+        [OperationContract]
+        void AddIntParams(Guid guid, IntParams par);
+
+        [OperationContract]
+        IntParams GetAndRemoveIntParams(Guid guid);
+
+        [OperationContract]
+        DateTime ReturnInputDateTime(DateTime dt);
+
+        [OperationContract]
+        byte[] CreateSet(ByteParams par);
+    }
+
+    [ServiceContract(Namespace = "http://contoso.com/calc")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
+    public interface ICalculatorDocLit
+    {
+        [OperationContract]
+        int Sum2(int i, int j);
+
+        [OperationContract]
+        int Sum(IntParams par);
+
+        [OperationContract]
+        float Divide(FloatParams par);
+
+        [OperationContract]
+        string Concatenate(IntParams par);
+
+        [OperationContract]
+        void AddIntParams(Guid guid, IntParams par);
+
+        [OperationContract]
+        IntParams GetAndRemoveIntParams(Guid guid);
+
+        [OperationContract]
+        DateTime ReturnInputDateTime(DateTime dt);
+
+        [OperationContract]
+        byte[] CreateSet(ByteParams par);
+    }
+
+    [ServiceContract]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+    public interface IHelloWorldRpcEnc
+    {
+        [OperationContract]
         void AddString(Guid guid, string testString);
 
-        [OperationContract, XmlSerializerFormat]
+        [OperationContract]
+        string GetAndRemoveString(Guid guid);
+    }
+
+    [ServiceContract]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Literal)]
+    public interface IHelloWorldRpcLit
+    {
+        [OperationContract]
+        void AddString(Guid guid, string testString);
+
+        [OperationContract]
+        string GetAndRemoveString(Guid guid);
+    }
+
+    [ServiceContract]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
+    public interface IHelloWorldDocLit
+    {
+        [OperationContract]
+        void AddString(Guid guid, string testString);
+
+        [OperationContract]
         string GetAndRemoveString(Guid guid);
     }
 

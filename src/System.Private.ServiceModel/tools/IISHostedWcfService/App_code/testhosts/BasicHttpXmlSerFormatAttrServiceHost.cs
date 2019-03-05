@@ -9,16 +9,16 @@ using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class XmlSerializerICalculatorServiceHostFactory : ServiceHostFactory
+    public class XmlSerializerICalculatorRpcEncServiceHostFactory : ServiceHostFactory
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            var serviceHost = new XmlSerializerICalculatorServiceHost(serviceType, baseAddresses);
+            var serviceHost = new XmlSerializerICalculatorRpcEncServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
 
-    public class XmlSerializerICalculatorServiceHost : TestServiceHostBase<ICalculator>
+    public class XmlSerializerICalculatorRpcEncServiceHost : TestServiceHostBase<ICalculatorRpcEnc>
     {
         protected override string Address { get { return "Basic"; } }
 
@@ -27,32 +27,130 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public XmlSerializerICalculatorServiceHost(Type serviceType, params Uri[] baseAddresses)
+        public XmlSerializerICalculatorRpcEncServiceHost(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
         }
     }
 
-    public class XmlSerializerDualContractServiceHostFactory : ServiceHostFactory
+    public class XmlSerializerICalculatorRpcLitServiceHostFactory : ServiceHostFactory
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            var serviceHost = new XmlSerializerDualContractServiceHost(serviceType, baseAddresses);
+            var serviceHost = new XmlSerializerICalculatorRpcLitServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
 
-    public class XmlSerializerDualContractServiceHost : TestServiceHostBase<ICalculator, IHelloWorld>
+    public class XmlSerializerICalculatorRpcLitServiceHost : TestServiceHostBase<ICalculatorRpcLit>
     {
-        protected static Binding binding;
         protected override string Address { get { return "Basic"; } }
 
         protected override Binding GetBinding()
         {
-            return binding = binding == null ? new BasicHttpBinding() : binding;
+            return new BasicHttpBinding();
         }
 
-        public XmlSerializerDualContractServiceHost(Type serviceType, params Uri[] baseAddresses)
+        public XmlSerializerICalculatorRpcLitServiceHost(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+        }
+    }
+
+    public class XmlSerializerICalculatorDocLitServiceHostFactory : ServiceHostFactory
+    {
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            var serviceHost = new XmlSerializerICalculatorDocLitServiceHost(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+
+    public class XmlSerializerICalculatorDocLitServiceHost : TestServiceHostBase<ICalculatorDocLit>
+    {
+        protected override string Address { get { return "Basic"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new BasicHttpBinding();
+        }
+
+        public XmlSerializerICalculatorDocLitServiceHost(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+        }
+    }
+
+    public class XmlSerializerDualContractRpcEncServiceHostFactory : ServiceHostFactory
+    {
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            var serviceHost = new XmlSerializerDualContractRpcEncServiceHost(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+
+    public class XmlSerializerDualContractRpcEncServiceHost : TestServiceHostBase<ICalculatorRpcEnc, IHelloWorldRpcEnc>
+    {
+        protected static Binding s_binding;
+        protected override string Address { get { return "Basic"; } }
+
+        protected override Binding GetBinding()
+        {
+            return s_binding = s_binding == null ? new BasicHttpBinding() : s_binding;
+        }
+
+        public XmlSerializerDualContractRpcEncServiceHost(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+        }
+    }
+
+    public class XmlSerializerDualContractRpcLitServiceHostFactory : ServiceHostFactory
+    {
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            var serviceHost = new XmlSerializerDualContractRpcLitServiceHost(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+
+    public class XmlSerializerDualContractRpcLitServiceHost : TestServiceHostBase<ICalculatorRpcLit, IHelloWorldRpcLit>
+    {
+        protected static Binding s_binding;
+        protected override string Address { get { return "Basic"; } }
+
+        protected override Binding GetBinding()
+        {
+            return s_binding = s_binding == null ? new BasicHttpBinding() : s_binding;
+        }
+
+        public XmlSerializerDualContractRpcLitServiceHost(Type serviceType, params Uri[] baseAddresses)
+            : base(serviceType, baseAddresses)
+        {
+        }
+    }
+
+    public class XmlSerializerDualContractDocLitServiceHostFactory : ServiceHostFactory
+    {
+        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
+        {
+            var serviceHost = new XmlSerializerDualContractDocLitServiceHost(serviceType, baseAddresses);
+            return serviceHost;
+        }
+    }
+
+    public class XmlSerializerDualContractDocLitServiceHost : TestServiceHostBase<ICalculatorDocLit, IHelloWorldDocLit>
+    {
+        protected static Binding s_binding;
+        protected override string Address { get { return "Basic"; } }
+
+        protected override Binding GetBinding()
+        {
+            return s_binding = s_binding == null ? new BasicHttpBinding() : s_binding;
+        }
+
+        public XmlSerializerDualContractDocLitServiceHost(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
         }
