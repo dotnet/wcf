@@ -4,6 +4,7 @@
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+    <CLSCompliant>true</CLSCompliant>
   </PropertyGroup>
 
   <ItemGroup>
