@@ -8,21 +8,17 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- wcf has never generated these attributes so don't let the SDK generate them -->
+    <!-- Disable some standard properties for building our projects -->
+    <!-- [todo:arcade] Disabling these because our shipped assemblies didn't include these attributes, not sure if we care or not. -->
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <!-- [todo:arcade] This attribute exists in our previously shipped S.P.SM assembly but not in all the Facade assemblies. For now removing accross all assemblies. -->
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
-
-    <!-- wcf has always added a description set to assembly name so include that here -->
-    <Description Condition="'$(Description)' == ''">$(AssemblyName)</Description>
-
-    <!-- Use the .NET Core product branding version for informational version description -->
-    <InformationalVersion>$(ProductVersion)</InformationalVersion>
-    <InformationalVersion Condition="'$(VersionSuffix)' != ''">$(InformationalVersion)-$(VersionSuffix)</InformationalVersion>
   </PropertyGroup>
 
   <!-- Assembly metadata indicating that an assembly is a framework (as opposed to user) assembly:
        Test projects need to not have this because of the way "IsFrameworkAssembly" APIs work to check this. -->
-  <!--TODO:ARCADE Make sure all test projects set IsTestProject to true-->
+  <!-- [todo:arcade] Make sure all test projects set IsTestProject to true -->
   <ItemGroup Condition="'$(IsTestProject)' != 'true'" >
     <AssemblyMetadata Include=".NETFrameworkAssembly">
       <Value></Value>
@@ -37,6 +33,20 @@
   <!--TODO ARCADE in the CoreFx version there is a depends on, investigate if this is necessary.-->
   <Target Name="_ComputeAssemblyInfoAttributes"
           BeforeTargets="GetAssemblyAttributes">
+    <PropertyGroup>
+      <!-- wcf has always added a description set to assembly name so include that here -->
+      <Description Condition="'$(Description)' == ''">$(AssemblyName)</Description>
+
+      <!-- SDK sets product to assembly but we want it to be our product name -->
+      <!-- [todo:arcade] In our previous shipped WCF pkgs (4.5.0) this value is Microsoft .NET Framework on all the assemblies regardless of whether they are for desktop, uap or unix. -->
+      <Product>Microsoft%AE .NET Core</Product>
+
+      <!-- Use the .NET Core product branding version for informational version description -->
+      <!-- [todo:arcade] Currently in local builds this is producing a weird version "3.0.0-ci.19157.1" need to verify what this looks like in an official build. -->
+      <InformationalVersion>$(ProductVersion)</InformationalVersion>
+      <InformationalVersion Condition="'$(VersionSuffix)' != ''">$(InformationalVersion)-$(VersionSuffix)</InformationalVersion>
+    </PropertyGroup>
+    
     <ItemGroup>
       <AssemblyAttribute Include="System.Reflection.AssemblyDefaultAliasAttribute">
         <_Parameter1>$(AssemblyName)</_Parameter1>
