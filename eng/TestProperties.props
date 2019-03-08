@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <WcfPrivateServiceModelProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfPrivateServiceModelProj>
+
+    <WcfDuplexRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.Duplex\ref\System.ServiceModel.Duplex.Ref.csproj'))</WcfDuplexRefProj>
+    <WcfHttpRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj'))</WcfHttpRefProj>
+    <WcfPrimitivesRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj'))</WcfPrimitivesRefProj>
+    <WcfNetTcpRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj'))</WcfNetTcpRefProj>
+    <WcfSecurityRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj'))</WcfSecurityRefProj>
+    
+    <WcfUnitTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj'))</WcfUnitTestCommonProj>
+    <WcfScenarioTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.csproj'))</WcfScenarioTestCommonProj>
+    <WcfInfrastructureCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj'))</WcfInfrastructureCommonProj>
+  </PropertyGroup>
+</Project>

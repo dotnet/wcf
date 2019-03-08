@@ -12,6 +12,7 @@
   <Import Project="eng\ReferenceAssemblies.props" />
   <Import Project="eng\FacadeAssemblies.props" />
   <Import Project="eng\Versioning.props"/>
+  <Import Project="eng\TestProperties.props"/>
 
   <!-- Make sure the pdb is a separate file, and not embedded inside the dll (which is the ArcadeSDK default behavior) -->
   <!-- Note that this MUST COME AFTER the import of Sdk.props -->

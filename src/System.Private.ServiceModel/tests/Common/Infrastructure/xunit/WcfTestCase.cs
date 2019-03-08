@@ -49,6 +49,10 @@ namespace Infrastructure.Common
 
         public string UniqueID { get { return _testCase.UniqueID; } }
 
+        public Exception InitializationException { get { return null; } }
+
+        public int Timeout { get { return 0; } }
+
         public void Deserialize(IXunitSerializationInfo info) { _testCase.Deserialize(info); }
 
         public async Task<RunSummary> RunAsync(

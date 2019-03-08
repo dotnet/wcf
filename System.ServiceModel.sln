@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Securit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Security.Ref", "src\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj", "{05AEC4D5-7B54-494C-BB47-85647DF5ADCC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Primitives.Tests", "src\System.ServiceModel.Primitives\tests\System.ServiceModel.Primitives.Tests.csproj", "{E0DFE94B-4697-43A4-8F07-380C2AEADE09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{05AEC4D5-7B54-494C-BB47-85647DF5ADCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05AEC4D5-7B54-494C-BB47-85647DF5ADCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05AEC4D5-7B54-494C-BB47-85647DF5ADCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0DFE94B-4697-43A4-8F07-380C2AEADE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0DFE94B-4697-43A4-8F07-380C2AEADE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0DFE94B-4697-43A4-8F07-380C2AEADE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0DFE94B-4697-43A4-8F07-380C2AEADE09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
