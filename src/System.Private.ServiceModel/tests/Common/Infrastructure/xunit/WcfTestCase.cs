@@ -10,13 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace Infrastructure.Common
 {
     /// <summary>Provides for custom IXunitTestCase.</summary>
-    internal class WcfTestCase : IXunitTestCase
+    internal class WcfTestCase : LongLivedMarshalByRefObject, IXunitTestCase
     {
         private readonly IXunitTestCase _testCase;
         private readonly string _skippedReason;
@@ -24,6 +25,10 @@ namespace Infrastructure.Common
         private readonly IMessageSink _diagnosticMessageSink;
 
         static TestEventListener s_testListener = new TestEventListener(new List<string>() { "Microsoft-Windows-Application Server-Applications" }, EventLevel.Verbose);
+
+        public WcfTestCase()
+        {
+        }
 
         internal WcfTestCase(IXunitTestCase testCase, string skippedReason = null, bool isTheory = false, IMessageSink diagnosticMessageSink = null)
         {
