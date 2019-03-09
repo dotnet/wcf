@@ -113,7 +113,7 @@ namespace Infrastructure.Common
       properties in TestProperties.Properties should use these generated
       names rather than separate string literals.
   -->
-  <Target Name="CreateTestProperties" DependsOnTargets="CreateTestPropertiesFile">
+  <Target Name="CreateTestProperties" BeforeTargets="BeforeCompile" DependsOnTargets="CreateTestPropertiesFile">
     
     <Message Text="CreateTestProperties is using the generated test property file at $(GeneratedTestPropertiesFileName)" />
     

@@ -12,7 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(WcfPrimitivesRefProj)" />
+    <!-- [todo:arcade] Is it ok to directly reference the implementation project and not the ref assemblies? -->
+    <ProjectReference Include="..\..\..\src\System.Private.ServiceModel.csproj" />
     <PackageReference Include="xunit.stafact" Version="$(XUnitStaFactPackageVersion)" />
     <PackageReference Include="Microsoft.DotNet.XUnitExtensions" Version="$(MicrosoftDotNetXUnitExtensionsPackageVersion)" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="$(MicrosoftDotNetPlatformAbstractionsVersion)" />
