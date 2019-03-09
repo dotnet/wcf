@@ -1,17 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <!--[todo:arcade] Should we be using "TargetGroup" instead?-->
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>
+    <!--[todo:arcade] Re-enable these warnings and fix them.-->
+    <!-- https://xunit.github.io/xunit.analyzers/rules/ -->
+    <NoWarn>$(NoWarn);xUnit1013;xUnit2010;xUnit2006;xUnit1014;xUnit1003;xUnit2000;xUnit2009;xUnit1006</NoWarn>
   </PropertyGroup>
   
   <ItemGroup>
-    <!-- Some internal types are needed, so we reference the implementation assembly, rather than the reference assembly. -->
-    <!--<ReferenceFromRuntime Include="System.Private.ServiceModel" />
-    <ReferenceFromRuntime Include="System.ServiceModel.Primitives" />
-    <ReferenceFromRuntime Include="System.ServiceModel.Duplex" />-->
-    <ProjectReference Include="..\src\System.ServiceModel.Primitives.Facade.csproj" />
+    <!-- [todo:arcade] Is it ok to directly reference the implementation project and not the ref assemblies? -->
+    <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
     <ProjectReference Include="$(WcfUnitTestCommonProj)" />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>

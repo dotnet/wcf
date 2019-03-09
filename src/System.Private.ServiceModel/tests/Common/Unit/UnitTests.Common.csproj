@@ -8,9 +8,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="$(WcfDuplexRefProj)" />
-    <ProjectReference Include="$(WcfHttpRefProj)" />
-    <ProjectReference Include="$(WcfPrimitivesRefProj)" />
+    <!-- [todo:arcade] Is it ok to directly reference the implementation project and not the ref assemblies? -->
+    <ProjectReference Include="..\..\..\src\System.Private.ServiceModel.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UnitTests.Common.rd.xml">
