@@ -35,7 +35,7 @@ REM we need the direcotry to save the test.crl file. We are investigate a way to
 md c:\wcftest
 REM Certificate configuration errors are all non fatal currently because we non cert tests will still pass
 echo Generating certificates ...
-%~dp0..\..\..\..\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe >>%_setuplog%
+%~dp0..\..\..\..\artifacts\obj\CertificateGenerator\Debug\CertificateGenerator.exe >>%_setuplog%
 if NOT [%ERRORLEVEL%]==[0] (
     echo Warning: An error occurred while running certificate generator. >>%_setuplog%
   )
