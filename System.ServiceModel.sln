@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScenarioTests.Common", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.Custom.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\Custom\Binding.Custom.IntegrationTests.csproj", "{498CE9FB-2634-459D-A936-45421D92AE90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificateGenerator", "src\System.Private.ServiceModel\tools\CertificateGenerator\CertificateGenerator.csproj", "{FA6A706C-9872-4D43-BB4B-098722AE3406}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{498CE9FB-2634-459D-A936-45421D92AE90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{498CE9FB-2634-459D-A936-45421D92AE90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{498CE9FB-2634-459D-A936-45421D92AE90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA6A706C-9872-4D43-BB4B-098722AE3406}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6A706C-9872-4D43-BB4B-098722AE3406}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{FA6A706C-9872-4D43-BB4B-098722AE3406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6A706C-9872-4D43-BB4B-098722AE3406}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

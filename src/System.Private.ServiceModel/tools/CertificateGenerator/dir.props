@@ -1,8 +1,0 @@
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.proj))</BuildRoot>
-    <RestorePackages>true</RestorePackages>
-    <PackageOutputDir>$(BuildRoot)\packages</PackageOutputDir>
-    <NuGetToolPath>$(PackageOutputDir)\NuGet.exe</NuGetToolPath>
-  </PropertyGroup>
-</Project>

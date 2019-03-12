@@ -1,22 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificateGenerator", "CertificateGenerator.csproj", "{FF58DB92-9982-44D0-86EE-D2EF61129E91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificateGenerator", "CertificateGenerator.csproj", "{99C31CA4-03FF-4378-93E3-85389341C6C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FF58DB92-9982-44D0-86EE-D2EF61129E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF58DB92-9982-44D0-86EE-D2EF61129E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF58DB92-9982-44D0-86EE-D2EF61129E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF58DB92-9982-44D0-86EE-D2EF61129E91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C31CA4-03FF-4378-93E3-85389341C6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C31CA4-03FF-4378-93E3-85389341C6C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F6B453F0-0829-4C2F-BBB6-9B22EE6A1E58}
 	EndGlobalSection
 EndGlobal
