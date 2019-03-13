@@ -9,10 +9,10 @@ jobs:
 - template: /eng/common/templates/jobs/jobs.yml
   parameters:
     runAsPublic: ${{ parameters.runAsPublic }}
-    enableMicrobuild: true
+    enableMicrobuild: false
     enablePublishBuildArtifacts: true
     enablePublishTestResults: true
-    enablePublishBuildAssets: true
+    enablePublishBuildAssets: false
     enableTelemetry: true
     helixRepo: $(repoName)
 
