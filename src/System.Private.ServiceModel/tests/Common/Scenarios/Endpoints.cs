@@ -94,7 +94,7 @@ public static partial class Endpoints
         get { return GetEndpointAddress("XmlSFAttribute.svc//XmlSFAttribute"); }
     }
 
-    public static string BasciHttpRpcEncSingleNs_Address
+    public static string BasicHttpRpcEncSingleNs_Address
     {
         get { return GetEndpointAddress("BasicHttpRpcEncSingleNs.svc//Basic"); }
     }
