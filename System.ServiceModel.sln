@@ -39,8 +39,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScenarioTests.Common", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.Custom.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\Custom\Binding.Custom.IntegrationTests.csproj", "{498CE9FB-2634-459D-A936-45421D92AE90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificateGenerator", "src\System.Private.ServiceModel\tools\CertificateGenerator\CertificateGenerator.csproj", "{76348F9E-302E-43C2-9325-7C563B1CBD24}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.Http.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\Http\Binding.Http.IntegrationTests.csproj", "{4FBFC47A-0FFC-4A9D-857D-52B932CD1014}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.Tcp.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\Tcp\Binding.Tcp.IntegrationTests.csproj", "{AFB21B2B-93FF-4B4A-81F6-CDBCB583D6C2}"
@@ -155,10 +153,6 @@ Global
 		{498CE9FB-2634-459D-A936-45421D92AE90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{498CE9FB-2634-459D-A936-45421D92AE90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{498CE9FB-2634-459D-A936-45421D92AE90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76348F9E-302E-43C2-9325-7C563B1CBD24}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{76348F9E-302E-43C2-9325-7C563B1CBD24}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{76348F9E-302E-43C2-9325-7C563B1CBD24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76348F9E-302E-43C2-9325-7C563B1CBD24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FBFC47A-0FFC-4A9D-857D-52B932CD1014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4FBFC47A-0FFC-4A9D-857D-52B932CD1014}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FBFC47A-0FFC-4A9D-857D-52B932CD1014}.Release|Any CPU.ActiveCfg = Release|Any CPU
