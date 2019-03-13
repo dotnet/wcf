@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
+  <PropertyGroup>
+    <!--[todo:arcade] Should we be using "TargetGroup" instead?-->
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <!--[todo:arcade] Re-enable these warnings and fix them.-->
+    <!-- https://xunit.github.io/xunit.analyzers/rules/ -->
+    <NoWarn>$(NoWarn);xUnit1013;xUnit2010;xUnit2006;xUnit1014;xUnit1003;xUnit2000;xUnit2009;xUnit1006</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- [todo:arcade] Is it ok to directly reference the implementation project and not the ref assemblies? -->
+    <ProjectReference Include="..\..\..\..\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+</Project>
