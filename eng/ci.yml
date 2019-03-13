@@ -9,10 +9,10 @@ jobs:
 - template: /eng/common/templates/jobs/jobs.yml
   parameters:
     runAsPublic: ${{ parameters.runAsPublic }}
-    enableMicrobuild: true
+    enableMicrobuild: false
     enablePublishBuildArtifacts: true
     enablePublishTestResults: true
-    enablePublishBuildAssets: true
+    enablePublishBuildAssets: false
     enableTelemetry: true
     helixRepo: $(repoName)
 
@@ -127,7 +127,7 @@ jobs:
         clean: true
 
       # Build and rename binlog
-      - script: eng\cibuild.cmd
+      - script: eng\common\cibuild.cmd
           -prepareMachine
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
@@ -136,7 +136,7 @@ jobs:
         displayName: Build
 
       # Run unit tests and rename binlog
-      - script: eng\cibuild.cmd
+      - script: eng\common\cibuild.cmd
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
           -test
