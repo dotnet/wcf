@@ -21,30 +21,8 @@ trigger:
 jobs:
 - template: /eng/ci.yml
   parameters:
-      ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+    ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       # agent pool can't be read from a user-defined variable (Azure DevOps limitation)
       agentPool: dotnet-internal-temp-vs2019
       # runAsPublic is used in expressions, which can't read from user-defined variables
       runAsPublic: false
-
- #   name: Windows_NT
- #   enablePublishBuildArtifacts: true
- #   pool:
- #     name: dotnet-internal-temp
- #     queue: Windows.10.Amd64.Open
- #   steps:
- #   - script: eng\common\cibuild.cmd
- #       -configuration Release
- #       -prepareMachine
- #       -- /p:Sign=False /p:Test=False /p:Pack=False /p:Publish=False
- #     name: Build
- #     displayName: Build
- #     condition: succeeded()
- #   - task: PublishBuildArtifacts@1
- #     displayName: Publish Logs to VSTS
- #     inputs:
- #       PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)'
- #       PublishLocation: Container
- #       ArtifactName: $(Agent.Os)_$(Agent.JobName)
- #     continueOnError: true
- #     condition: always()
