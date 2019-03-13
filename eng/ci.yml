@@ -131,7 +131,6 @@ jobs:
           -prepareMachine
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
-          -build
           /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Build.binlog
         displayName: Build
 
