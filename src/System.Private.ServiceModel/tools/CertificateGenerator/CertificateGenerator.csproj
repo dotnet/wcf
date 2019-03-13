@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BouncyCastle.Crypto.dll" Version="1.8.1" />
+    <PackageReference Include="BouncyCastle.Crypto.dll" Version="1.8.1" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0 ">
-      <HintPath>"$(RepoRoot).packages\bouncycastle.crypto.dll\1.8.1\lib\BouncyCastle.Crypto.dll"</HintPath>
+      <HintPath>$(PkgBouncyCastle_Crypto_dll)\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
