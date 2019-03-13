@@ -1,10 +1,9 @@
 parameters:
-
-  # Needed because agent pool can't be read from a user-defined variable (Azure DevOps limitation)
+  # This section is required because agent pool can't 
+  # be read from a user-defined variable (Azure DevOps limitation)
   agentPool: dotnet-external-temp-vs2019
-
-  # Needed because runAsPublic is used in template expressions, which can't read from user-defined variables
   runAsPublic: true
+  repoName: dotnet/wcf
 
 jobs:
 - template: /eng/common/templates/jobs/jobs.yml
@@ -15,7 +14,7 @@ jobs:
     enablePublishTestResults: true
     enablePublishBuildAssets: true
     enableTelemetry: true
-    helixRepo: dotnet/wcf
+    helixRepo: $(repoName)
 
     jobs:
     - job: Windows_NT
@@ -44,19 +43,40 @@ jobs:
           value: ''
 
         # needed for helix jobs
-        - name: _HelixAgentPool
+        - name: _UnitTestHelixAgentPool
           value: 'Windows.10.Amd64.Open'
-        - name: _WinformsControlsTestBinDir
-          value: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\WinformsControlsTest\$(_BuildConfig)\netcoreapp3.0
-        - name: _WinformsFuncTestBinDir
-          value: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\System.Windows.Forms.Func.Tests\$(_BuildConfig)\netcoreapp3.0
+        - name: _WcfTestBinDir
+          value: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\WcfTest\$(_BuildConfig)\netcoreapp3.0
+        - name: _WcfFuncTestBinDir
+          value: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\Wcf.Func.Tests\$(_BuildConfig)\netcoreapp3.0
         - name: _HelixStagingDir
           value: $(BUILD.STAGINGDIRECTORY)\helix\functests
+        - name: _HelixSource
+          value: ${{ parameters.repoName }}/$(Build.SourceBranch)
+        - name: _HelixToken
+          value: ''
+        - name: _HelixCreator
+          value: ${{ parameters.repoName }}
+        - name: _HelixType
+          value: build/product
+        - name: _HelixTestType
+          value: test/product/
+        - name: _XUnitTargetFramework
+          value: netcoreapp2.0
+        - name: _XUnitRunnerVersion
+          value: 2.4.1
+        - name: _DotNetCliPackageType
+          value: sdk
+        - name: _DotNetCliVersion
+          value: 2.1.403
+        - name: _HelixAccessToken
+          value: ''
 
-        # Override some values if we're building internally
+        # Override some values if we're building internally (not public)
         - ${{ if eq(parameters.runAsPublic, 'false') }}:
 
-          # note: You have to use list syntax here (-name: value) or you will get errors about declaring the same variable multiple times
+          # note: You have to use list syntax here (-name: value) or
+          # you will get errors about declaring the same variable multiple times
           - name: _PublishType
             value: blob
           - name: _SignType
@@ -65,12 +85,14 @@ jobs:
             value: true
           - group: DotNet-Blob-Feed
           - group: DotNet-Symbol-Server-Pats
+          # DotNet-HelixApi-Access provides: HelixApiAccessToken
+          - group: DotNet-HelixApi-Access
           - name: _PublishBlobFeedUrl
             value: https://dotnetfeed.blob.core.windows.net/dotnet-windowsdesktop/index.json
 
-          # note: Even though they are referenced here, user defined variables (like $(_SignType)) are not resolved 
-          # until the agent is running on the machine. They can be overridden any time before they are resolved,
-          # like in the job matrix below (see Build_Debug)
+          # note: Even though they are referenced here, user defined variables (like $(_SignType))
+          #are not resolved until the agent is running on the machine. They can be overridden any
+          # time before they are resolved, like in the job matrix below (see Build_Debug)
           - name: _SignArgs
             value: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName) /p:Sign=$(_Sign)
           - name: _PublishArgs
@@ -82,8 +104,12 @@ jobs:
           - name: _OfficialBuildIdArgs
             value: /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
 
-          - name: _HelixAgentPool
-            value: 'Windows.10.Amd64'
+          - name: _HelixSource
+            value: official/${{ parameters.repoName }}/$(Build.SourceBranch)
+          - name: _HelixToken
+            value: '$(HelixApiAccessToken)' # from DotNet-HelixApi-Access group
+          - name: _HelixCreator
+            value: '' #if _HelixToken is set, Creator must be empty
 
       strategy:
         matrix:
@@ -106,7 +132,7 @@ jobs:
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
           -build
-          /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Build.binlog          
+          /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Build.binlog
         displayName: Build
 
       # Run unit tests and rename binlog
@@ -115,39 +141,23 @@ jobs:
           $(_OfficialBuildIdArgs)
           -test
           /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Test.binlog
-        displayName: Run Unit Tests     
+        displayName: Run Unit Tests
+        condition: succeeded()
 
-      # Run integration tests and rename binlog
-      - script: eng\cibuild.cmd
-          -configuration $(_BuildConfig)
-          $(_OfficialBuildIdArgs)
-          -integrationTest
-          /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\IntegrationTest.binlog
-        displayName: Run Integration Tests
-
-      # Create Nuget package, sign, and publish; and rename binlog
-      - script: eng\cibuild.cmd
-          -configuration $(_BuildConfig)
-          $(_OfficialBuildIdArgs)
-          -pack
-          -sign $(_SignArgs)
-          -publish $(_PublishArgs)
-          /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\PackSignPublish.binlog
-        displayName: Pack, Sign, and Publish
-
-      # Perform some internal-build-only tasks
-      - ${{ if eq(parameters.runAsPublic, 'false') }}:
-
-        # Publish the nuget package as a build artifact (only for release, ensuring package contents are real-signed)
-        - task: PublishPipelineArtifact@0
-          inputs:
-            artifactName: 'Package'
-            targetPath: '$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/Shipping'
-          displayName: Publish package to build artifacts
-          continueOnError: true
-          condition: and(succeeded(), eq(variables['_BuildConfig'], 'Release'))
-
-        # Run component governance detection (only for release; only for internal)
-        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-          displayName: Component Governance Detection
-          condition: and(succeeded(), eq(variables['_BuildConfig'], 'Release'))
+      - template: /eng/common/templates/steps/send-to-helix.yml
+        parameters:
+          HelixSource: $(_HelixSource)
+          HelixType: $(_HelixTestType)
+          HelixTargetQueues: Windows.10.Amd64.Open;Windows.81.Amd64.Open;Windows.7.Amd64.Open
+          XUnitProjects: '..\src\**\*.Tests.csproj'
+          XUnitPublishTargetFramework: $(_XUnitTargetFramework)
+          XUnitRuntimeTargetFramework: $(_XUnitTargetFramework)
+          XUnitRunnerVersion: $(_XUnitRunnerVersion)
+          IncludeDotNetCli: true
+          DotNetCliPackageType: $(_DotNetCliPackageType)
+          DotNetCliVersion: $(_DotNetCliVersion)
+          EnableXUnitReporter: true
+          WaitForWorkItemCompletion: true
+          Creator: $(_HelixCreator)
+          HelixAccessToken: $(_HelixAccessToken)
+          condition: eq(variables['_BuildConfig'], 'Debug')
