@@ -127,16 +127,15 @@ jobs:
         clean: true
 
       # Build and rename binlog
-      - script: eng\cibuild.cmd
+      - script: eng\common\cibuild.cmd
           -prepareMachine
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
-          -build
           /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Build.binlog
         displayName: Build
 
       # Run unit tests and rename binlog
-      - script: eng\cibuild.cmd
+      - script: eng\common\cibuild.cmd
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
           -test
