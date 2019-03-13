@@ -5,14 +5,15 @@
 # so they can be used to control yaml flow.
 
 variables:
-  - name: Build.Repository.Clean
-    value: true
 
-# CI triggers
+  # clean the local repo on the build agents
+  Build.Repository.Clean: true
+
+# trigger ci builds for merged PRs into listed branches
 trigger:
 - AdoptArcade
 
-# PR triggers
+# trigger ci builds for pull requests into listed branches
 # pr:
 # - master
 
