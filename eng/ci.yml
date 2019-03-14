@@ -44,7 +44,8 @@ jobs:
         - _HelixCreator: ${{ parameters.repoName }}
         - _HelixType: build/product
         - _HelixTestType: test/product/
-        - _XUnitTargetFramework: netcoreapp3.0
+        - _XUnitPublishTargetFramework: netcoreapp2.1
+        - _XUnitRuntimeTargetFramework: netcoreapp3.0
         - _XUnitRunnerVersion: 2.4.1
         - _DotNetCliPackageType: sdk
         - _DotNetCliVersion: 2.1.403
@@ -140,8 +141,8 @@ jobs:
           HelixType: $(_HelixTestType)
           HelixTargetQueues: Windows.10.Amd64.Open;Windows.81.Amd64.Open;Windows.7.Amd64.Open
           XUnitProjects: $(_XunitUnitTestProjects)
-          XUnitPublishTargetFramework: $(_XUnitTargetFramework)
-          XUnitRuntimeTargetFramework: $(_XUnitTargetFramework)
+          XUnitPublishTargetFramework: $(_XUnitPublishTargetFramework)
+          XUnitRuntimeTargetFramework: $(_XUnitRuntimeTargetFramework)
           XUnitRunnerVersion: $(_XUnitRunnerVersion)
           IncludeDotNetCli: true
           DotNetCliPackageType: $(_DotNetCliPackageType)
