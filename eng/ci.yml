@@ -142,7 +142,6 @@ jobs:
       # Run unit tests and rename binlog
       - script: eng\common\cibuild.cmd
           -configuration $(_BuildConfig)
-          -test
           $(_OfficialBuildIdArgs)
           /p:Sign=False
           /p:IntegrationTest=False
@@ -157,7 +156,7 @@ jobs:
           HelixSource: $(_HelixSource)
           HelixType: $(_HelixTestType)
           HelixTargetQueues: Windows.10.Amd64.Open;Windows.81.Amd64.Open;Windows.7.Amd64.Open
-          XUnitProjects: '..\src\**\*.Tests.csproj'
+          XUnitProjects: $(BUILD.SOURCESDIRECTORY)\src\**\*.Tests.csproj
           XUnitPublishTargetFramework: $(_XUnitTargetFramework)
           XUnitRuntimeTargetFramework: $(_XUnitTargetFramework)
           XUnitRunnerVersion: $(_XUnitRunnerVersion)
