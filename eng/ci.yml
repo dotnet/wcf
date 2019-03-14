@@ -62,7 +62,7 @@ jobs:
         - name: _HelixTestType
           value: test/product/
         - name: _XUnitTargetFramework
-          value: netcoreapp2.0
+          value: netcoreapp3.0
         - name: _XUnitRunnerVersion
           value: 2.4.1
         - name: _DotNetCliPackageType

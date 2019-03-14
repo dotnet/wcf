@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!--[todo:arcade] Should we be using "TargetGroup" instead?-->
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>
     <!--[todo:arcade] Re-enable these warnings and fix them.-->
