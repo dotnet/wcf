@@ -23,56 +23,33 @@ jobs:
       variables:
 
         # needed for signing
-        - name: _TeamName
-          value: DotNetCore
-        - name: _SignType
-          value: test
-        - name: _SignArgs
-          value: ''
-        - name: _Sign
-          value: true
+        - _TeamName: DotNetCore
+        - _SignType: test
+        - _SignArgs: ''
+        - _Sign: true
 
         # needed for darc (dependency flow) publishing
-        - name: _PublishType
-          value: none
-        - name: _DotNetPublishToBlobFeed
-          value: false
-        - name: _PublishArgs
-          value: ''
-        - name: _OfficialBuildIdArgs
-          value: ''
+        - _PublishType: none
+        - _DotNetPublishToBlobFeed: false
+        - _PublishArgs: ''
+        - _OfficialBuildIdArgs: ''
 
         # needed for helix jobs
-        - name: _UnitTestHelixAgentPool
-          value: 'Windows.10.Amd64.Open'
-        - name: _WcfTestBinDir
-          value: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\WcfTest\$(_BuildConfig)\netcoreapp3.0
-        - name: _WcfFuncTestBinDir
-          value: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\Wcf.Func.Tests\$(_BuildConfig)\netcoreapp3.0
-        - name: _HelixStagingDir
-          value: $(BUILD.STAGINGDIRECTORY)\helix\functests
-        - name: _HelixSource
-          value: ${{ parameters.repoName }}/$(Build.SourceBranch)
-        - name: _HelixToken
-          value: ''
-        - name: _HelixCreator
-          value: ${{ parameters.repoName }}
-        - name: _HelixType
-          value: build/product
-        - name: _HelixTestType
-          value: test/product/
-        - name: _XUnitTargetFramework
-          value: netcoreapp3.0
-        - name: _XUnitRunnerVersion
-          value: 2.4.1
-        - name: _DotNetCliPackageType
-          value: sdk
-        - name: _DotNetCliVersion
-          value: 2.1.403
-        - name: _HelixAccessToken
-          value: ''
-        - name: _XunitUnitTestProjects
-          value: $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
+        - _UnitTestHelixAgentPool: 'Windows.10.Amd64.Open'
+        - _WcfTestBinDir: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\WcfTest\$(_BuildConfig)\netcoreapp3.0
+        - _WcfFuncTestBinDir: $(BUILD.SOURCESDIRECTORY)\artifacts\bin\Wcf.Func.Tests\$(_BuildConfig)\netcoreapp3.0
+        - _HelixStagingDir: $(BUILD.STAGINGDIRECTORY)\helix\functests
+        - _HelixSource: ${{ parameters.repoName }}/$(Build.SourceBranch)
+        - _HelixToken: ''
+        - _HelixCreator: ${{ parameters.repoName }}
+        - _HelixType: build/product
+        - _HelixTestType: test/product/
+        - _XUnitTargetFramework: netcoreapp3.0
+        - _XUnitRunnerVersion: 2.4.1
+        - _DotNetCliPackageType: sdk
+        - _DotNetCliVersion: 2.1.403
+        - _HelixAccessToken: ''
+        - _XunitUnitTestProjects: $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Http\tests\System.ServiceModel.Http.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.NetTcp\tests\System.ServiceModel.NetTcp.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Primitives\tests\System.ServiceModel.Primitives.Tests.csproj;
