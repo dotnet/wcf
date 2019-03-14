@@ -62,7 +62,7 @@ jobs:
         - name: _HelixTestType
           value: test/product/
         - name: _XUnitTargetFramework
-          value: netcoreapp2.0
+          value: netcoreapp3.0
         - name: _XUnitRunnerVersion
           value: 2.4.1
         - name: _DotNetCliPackageType
@@ -97,7 +97,7 @@ jobs:
             value: https://dotnetfeed.blob.core.windows.net/dotnet-windowsdesktop/index.json
 
           # note: Even though they are referenced here, user defined variables (like $(_SignType))
-          #are not resolved until the agent is running on the machine. They can be overridden any
+          # are not resolved until the agent is running on the machine. They can be overridden any
           # time before they are resolved, like in the job matrix below (see Build_Debug)
           - name: _SignArgs
             value: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName) /p:Sign=$(_Sign)
@@ -114,8 +114,8 @@ jobs:
             value: official/${{ parameters.repoName }}/$(Build.SourceBranch)
           - name: _HelixToken
             value: '$(HelixApiAccessToken)' # from DotNet-HelixApi-Access group
-          - name: _HelixCreator
-            value: '' #if _HelixToken is set, Creator must be empty
+          #- name: _HelixCreator
+          #  value: '' #if _HelixToken is set, Creator must be empty -- got error in ADO: "error : Creator is required when using anonymous access."
 
       strategy:
         matrix:
