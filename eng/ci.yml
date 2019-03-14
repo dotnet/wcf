@@ -71,6 +71,12 @@ jobs:
           value: 2.1.403
         - name: _HelixAccessToken
           value: ''
+        - name: _XunitUnitTestProjects
+          value: $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Http\tests\System.ServiceModel.Http.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.NetTcp\tests\System.ServiceModel.NetTcp.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Primitives\tests\System.ServiceModel.Primitives.Tests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Security\tests\System.ServiceModel.Security.Tests.csproj;
 
         # Override some values if we're building internally (not public)
         - ${{ if eq(parameters.runAsPublic, 'false') }}:
@@ -156,7 +162,7 @@ jobs:
           HelixSource: $(_HelixSource)
           HelixType: $(_HelixTestType)
           HelixTargetQueues: Windows.10.Amd64.Open;Windows.81.Amd64.Open;Windows.7.Amd64.Open
-          XUnitProjects: '..\src\**\*.Tests.csproj'
+          XUnitProjects: $(BUILD.SOURCESDIRECTORY)\src\**\*.Tests.csproj
           XUnitPublishTargetFramework: $(_XUnitTargetFramework)
           XUnitRuntimeTargetFramework: $(_XUnitTargetFramework)
           XUnitRunnerVersion: $(_XUnitRunnerVersion)
