@@ -131,6 +131,11 @@ jobs:
           -prepareMachine
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
+          /p:Sign=False
+          /p:Test=False
+          /p:IntegrationTest=False
+          /p:Pack=false
+          /p:Publish=false
           /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Build.binlog
         displayName: Build
 
@@ -138,7 +143,10 @@ jobs:
       - script: eng\common\cibuild.cmd
           -configuration $(_BuildConfig)
           $(_OfficialBuildIdArgs)
-          -test
+          /p:Sign=False
+          /p:IntegrationTest=False
+          /p:Pack=false
+          /p:Publish=false
           /bl:$(BUILD.SOURCESDIRECTORY)\artifacts\log\$(_BuildConfig)\Test.binlog
         displayName: Run Unit Tests
         condition: succeeded()
