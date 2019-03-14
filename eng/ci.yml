@@ -156,7 +156,7 @@ jobs:
           HelixSource: $(_HelixSource)
           HelixType: $(_HelixTestType)
           HelixTargetQueues: Windows.10.Amd64.Open;Windows.81.Amd64.Open;Windows.7.Amd64.Open
-          XUnitProjects: '..\src\**\*.Tests.csproj'
+          XUnitProjects: $(BUILD.SOURCESDIRECTORY)\src\**\*.Tests.csproj
           XUnitPublishTargetFramework: $(_XUnitTargetFramework)
           XUnitRuntimeTargetFramework: $(_XUnitTargetFramework)
           XUnitRunnerVersion: $(_XUnitRunnerVersion)
