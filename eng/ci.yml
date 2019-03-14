@@ -48,7 +48,7 @@ jobs:
         - _XUnitRuntimeTargetFramework: netcoreapp2.0
         - _XUnitRunnerVersion: 2.4.1
         - _DotNetCliPackageType: sdk
-        - _DotNetCliVersion: 2.1.403
+        - _DotNetCliVersion: 3.0.100-preview-010024
         - _HelixAccessToken: ''
         - _XunitUnitTestProjects: $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Http\tests\System.ServiceModel.Http.Tests.csproj;
