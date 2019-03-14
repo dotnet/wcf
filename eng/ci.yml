@@ -44,8 +44,8 @@ jobs:
         - _HelixCreator: ${{ parameters.repoName }}
         - _HelixType: build/product
         - _HelixTestType: test/product/
-        - _XUnitPublishTargetFramework: netcoreapp2.1
-        - _XUnitRuntimeTargetFramework: netcoreapp3.0
+        - _XUnitPublishTargetFramework: netcoreapp3.0
+        - _XUnitRuntimeTargetFramework: netcoreapp2.0
         - _XUnitRunnerVersion: 2.4.1
         - _DotNetCliPackageType: sdk
         - _DotNetCliVersion: 2.1.403
