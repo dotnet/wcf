@@ -10,8 +10,8 @@ variables:
   Build.Repository.Clean: true
 
 # trigger ci builds for merged PRs into listed branches
-trigger:
-- AdoptArcade
+# trigger:
+# - AdoptArcade
 
 # trigger ci builds for pull requests into listed branches
 # pr:
