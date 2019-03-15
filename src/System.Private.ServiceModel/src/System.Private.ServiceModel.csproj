@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
+
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
     <AssemblyName>System.Private.ServiceModel</AssemblyName>
@@ -12,6 +12,7 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CLSCompliant>true</CLSCompliant>
+    <RuntimeIdentifier>$(TargetGroup)</RuntimeIdentifier>
   </PropertyGroup>
 
   <!-- [todo:arcade] Added this because our released S.P.SM package includes the "_BlockReflectionAttribute" but it is included not only in the UAP* assembly but also the other shipped assembly, should this only be in the binary built for uap? -->
@@ -34,17 +35,84 @@
   <ItemGroup Condition="'$(BlockReflectionAttribute)'=='true'">
     <Compile Include="..\..\..\eng\BlockReflectionAttribute.cs" />
   </ItemGroup>
-  
-  <PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
+    <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
+
+    <!-- Temporarily Override restore moniker since corefx's targeting pack still uses uap10.1 moniker -->
+    <!--<NuGetTargetMoniker>UAP,Version=v10.1</NuGetTargetMoniker>
+    <NuGetTargetMonikerShort>uap10.1</NuGetTargetMonikerShort>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetGroup)' != 'uap'">
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
+  </PropertyGroup>
+
+  <!--This constant does not appear to be getting used anywhere.-->
+  <PropertyGroup Condition="'$(TargetsWindows)'=='true'">
     <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Reflection.DispatchProxy"
                       Version="$(SystemReflectionDispatchProxyPackageVersion)" />
     <PackageReference Include="System.Security.Principal.Windows"
                       Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+    <PackageReference Include="Microsoft.Private.CoreFx.UAP"
+                      Version="$(MicrosoftPrivateCoreFxUAPPackageVersion)" />
+    <!--<Reference Include="mscorlib" />
+    <Reference Include="Microsoft.Win32.Primitives" />
+    <Reference Include="System.Collections" />
+    <Reference Include="System.Collections.Concurrent" />
+    <Reference Include="System.Collections.NonGeneric" />
+    <Reference Include="System.Collections.Specialized" />
+    <Reference Include="System.ComponentModel.EventBasedAsync" />
+    <Reference Include="System.ComponentModel.Primitives" />
+    <Reference Include="System.ComponentModel.TypeConverter" />
+    <Reference Include="System.Diagnostics.Contracts" />
+    <Reference Include="System.Diagnostics.Debug" />
+    <Reference Include="System.Diagnostics.Tools" />
+    <Reference Include="System.Diagnostics.Tracing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Linq" />
+    <Reference Include="System.Linq.Expressions" />
+    <Reference Include="System.Linq.Queryable" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.NameResolution" />
+    <Reference Include="System.Net.Primitives" />
+    <Reference Include="System.Net.Security" />
+    <Reference Include="System.Net.Sockets" />
+    <Reference Include="System.Net.WebHeaderCollection" />
+    <Reference Include="System.Net.WebProxy" />
+    <Reference Include="System.Net.WebSockets" />
+    <Reference Include="System.Net.WebSockets.Client" />
+    <Reference Include="System.ObjectModel" />
+    <Reference Include="System.Resources.ResourceManager" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.Extensions" />
+    <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
+    <Reference Include="System.Runtime.Serialization.Primitives" />
+    <Reference Include="System.Runtime.Serialization.Xml" />
+    <Reference Include="System.Runtime.WindowsRuntime" />
+    <Reference Include="System.Security.Claims" />
+    <Reference Include="System.Security.Cryptography.Algorithms" />
+    <Reference Include="System.Security.Cryptography.Encoding" />
+    <Reference Include="System.Security.Cryptography.Primitives" />
+    <Reference Include="System.Security.Cryptography.X509Certificates" />
+    <Reference Include="System.Security.Principal" />
+    <Reference Include="System.Text.Encoding.Extensions" />
+    <Reference Include="System.Threading" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Threading.Timer" />
+    <Reference Include="System.Xml.ReaderWriter" />
+    <Reference Include="System.Xml.XmlSerializer" />
+    <Reference Include="Windows" />-->
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\..\Common\src\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
@@ -56,10 +124,12 @@
       <Link>Common\System\SR.cs</Link>
     </Compile>
   </ItemGroup>
-  <!--<ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+
+  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" />
     <TargetingPackReference Include="Windows" />
-  </ItemGroup>-->
+  </ItemGroup>
+  
   <!--<ItemGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
     -->
   <!-- Copy ref to output to enable APICompat for the facades that directly reference this project -->
