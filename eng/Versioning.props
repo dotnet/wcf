@@ -80,4 +80,9 @@
       <FileWrites Include="$(AssemblyInfoFile)" />
     </ItemGroup>
   </Target>
+
+  <!--'TargetGroup' is used to set the RID and determine the build flavor of S.Private.SM-->
+  <PropertyGroup>
+    <TargetGroup Condition="'$(TargetGroup)'==''">win</TargetGroup>
+  </PropertyGroup>
 </Project>
