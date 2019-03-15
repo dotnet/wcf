@@ -48,11 +48,6 @@
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
   </PropertyGroup>
 
-  <!--This constant does not appear to be getting used anywhere.-->
-  <PropertyGroup Condition="'$(TargetsWindows)'=='true'">
-    <DefineConstants>$(DefineConstants);TARGETS_WINDOWS</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="System.Reflection.DispatchProxy"
                       Version="$(SystemReflectionDispatchProxyPackageVersion)" />
