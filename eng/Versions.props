@@ -40,7 +40,7 @@
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
     <SystemReflectionDispatchProxyPackageVersion>4.5.0</SystemReflectionDispatchProxyPackageVersion>
     <SystemSecurityPrincipalWindowsPackageVersion>4.5.0</SystemSecurityPrincipalWindowsPackageVersion>
-    <MicrosoftPrivateCoreFxUAPPackageVersion>4.6.0-rtm</MicrosoftPrivateCoreFxUAPPackageVersion>
+    <MicrosoftPrivateCoreFxUAPPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxUAPPackageVersion>
   </PropertyGroup>
   
   <!-- Additional dependencies -->
