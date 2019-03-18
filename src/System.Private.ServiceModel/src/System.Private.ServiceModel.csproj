@@ -5,9 +5,7 @@
     <AssemblyName>System.Private.ServiceModel</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <!-- https://docs.microsoft.com/en-us/nuget/reference/target-frameworks -->
-    <TargetFrameworks>netstandard2.0;uap10.0</TargetFrameworks>
-    <!--<TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>10.0.16300</TargetFrameworkVersion>-->
+    <TargetFrameworks>netstandard2.0;uap10.0.16299</TargetFrameworks>
     <OutputType>Library</OutputType>
     <NoWarn>$(NoWarn);1634;1691;649</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -41,6 +39,8 @@
 
   <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
+    <TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(TargetGroup)' != 'uap'">
@@ -55,11 +55,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
-    <PackageReference Include="Microsoft.Private.CoreFx.UAP"
-                      Version="4.6.0-dev-di-25909-02" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform"
+                      Version="$(UwpPackageVersion)" />
     <!-- [todo:arcade] Understand why we need this private package only available in MyGet. -->
-    <PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
-                      Version="1.0.3" />
+    <!--<PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
+                      Version="1.0.3" />-->
   </ItemGroup>
 
   <ItemGroup>
