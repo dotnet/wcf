@@ -17,7 +17,6 @@
   <ItemGroup>
     <!-- [todo:arcade] Is it ok to directly reference the implementation project and not the ref assemblies? -->
     <ProjectReference Include="..\..\..\..\src\System.Private.ServiceModel.csproj" />
-    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
 </Project>

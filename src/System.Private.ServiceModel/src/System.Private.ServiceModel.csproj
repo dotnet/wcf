@@ -56,7 +56,7 @@
 
   <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
     <PackageReference Include="Microsoft.Private.CoreFx.UAP"
-                      Version="$(MicrosoftPrivateCoreFxUAPPackageVersion)" />
+                      Version="4.6.0-dev-di-25909-02" />
     <!-- [todo:arcade] Understand why we need this private package only available in MyGet. -->
     <PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
                       Version="1.0.3" />
