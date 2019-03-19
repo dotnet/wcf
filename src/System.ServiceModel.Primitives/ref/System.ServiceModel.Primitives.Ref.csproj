@@ -7,23 +7,13 @@
     <RootNamespace>System.ServiceModel</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
+  <!--<PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
-  <ItemGroup>
-    <PackageReference Include="System.Collections" Version="4.3.0" />
-    <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
-    <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.ObjectModel" Version="4.3.0" />
-    <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />
-    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
-    <PackageReference Include="System.Security.Principal" Version="4.3.0" />
-    <PackageReference Include="System.Threading" Version="4.3.0" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.1" />
-    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
-  </ItemGroup>
+  <!--<ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform"
+                      Version="$(UwpPackageVersion)" />
+  </ItemGroup>-->
 </Project>

@@ -1,0 +1,24 @@
+<Project>
+  
+  <PropertyGroup>
+    <_targetFrameworkIdentifier>$(TargetFramework.TrimEnd('.0123456789'))</_targetFrameworkIdentifier>
+    <_targetFrameworkVersion>$(TargetFramework.Substring($(_targetFrameworkIdentifier.Length)))</_targetFrameworkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_targetFrameworkIdentifier)' == 'uap'">
+    <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+
+    <!-- derive platform settings from TFM -->
+    <TargetPlatformVersion Condition="'$(TargetPlatformVersion)' == '' AND '$(_targetFrameworkVersion)' == '10.0'">10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition="'$(TargetPlatformVersion)' == ''">$([System.Version]::Parse('$(_targetFrameworkVersion)')).0</TargetPlatformVersion>
+    <TargetPlatformMinVersion Condition="'$(TargetPlatformMinVersion)' == '' AND '$(_targetFrameworkVersion)' == '10.0'">10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion Condition="'$(TargetPlatformMinVersion)' == ''">$([System.Version]::Parse('$(_targetFrameworkVersion)')).0</TargetPlatformMinVersion>
+
+    <NoStdLib>true</NoStdLib>
+    <TargetsUAP>true</TargetsUAP>
+    <UwpPackageVersion>6.2.8</UwpPackageVersion>
+  </PropertyGroup>
+
+</Project>

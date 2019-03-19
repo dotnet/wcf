@@ -87,7 +87,7 @@
   </PropertyGroup>
 
   <!--When building uap the reference to the uwp meta package causes a circular dependency, remove the references to ServiceModel assemblies.-->
-  <Target Condition="$(TargetFramework.StartsWith('uap'))"
+  <!--<Target Condition="$(TargetFramework.StartsWith('uap'))"
           Name="RemoveDuplicateReferences"
           AfterTargets="ResolvePackageDependenciesForBuild">
     <ItemGroup>
@@ -96,8 +96,6 @@
       <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.NetTcp'" />
       <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.Primitives'" />
       <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.Security'" />
-      <!--<Reference Remove="System.ServiceModel.Primitives" Version="4.2.1.1" />
-      <Reference Remove="System.ServiceModel.Http" Version="4.1.3.1" />-->
     </ItemGroup>
-  </Target>
+  </Target>-->
 </Project>
