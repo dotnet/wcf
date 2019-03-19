@@ -7,7 +7,7 @@
     <CLSCompliant>true</CLSCompliant>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>
   </PropertyGroup>

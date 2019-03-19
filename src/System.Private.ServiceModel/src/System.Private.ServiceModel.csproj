@@ -13,7 +13,8 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CLSCompliant>true</CLSCompliant>
-    <RuntimeIdentifier>$(TargetGroup)</RuntimeIdentifier>
+    <IsImplementationAssembly>true</IsImplementationAssembly>
+    <!--<RuntimeIdentifier>$(TargetGroup)</RuntimeIdentifier>-->
   </PropertyGroup>
 
   <!-- [todo:arcade] Added this because our released S.P.SM package includes the "_BlockReflectionAttribute" but it is included not only in the UAP* assembly but also the other shipped assembly, should this only be in the binary built for uap? -->
@@ -37,13 +38,13 @@
     <Compile Include="..\..\..\eng\BlockReflectionAttribute.cs" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetGroup)' == 'uap'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
     <TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(TargetGroup)' != 'uap'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
   </PropertyGroup>
 
@@ -54,12 +55,12 @@
                       Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform"
                       Version="$(UwpPackageVersion)" />
     <!-- [todo:arcade] Understand why we need this private package only available in MyGet. -->
-    <!--<PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
-                      Version="1.0.3" />-->
+    <PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
+                      Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,7 +75,7 @@
     </Compile>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetGroup)' == 'uap'">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" >
         <GenerateSource>False</GenerateSource>
         <ManifestResourceName>$(AssemblyName).rd.xml</ManifestResourceName>
