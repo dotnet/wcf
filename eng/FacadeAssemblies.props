@@ -18,7 +18,7 @@
 
   <ItemGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
     <!-- Not supported in .NET Core 3.0; don't flow package references to callers -->
-    <!--This will be neede when we create the desktop shim-->
+    <!--This will be needed when we create the desktop shim-->
     <!--<PackageReference Include="$(MicrosoftTargetingPackNETFrameworkv472Package)" Version="$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)" PrivateAssets="All" />-->
     <PackageReference Include="Microsoft.DotNet.GenFacades" Version="$(MicrosoftDotNetGenFacadesPackageVersion)" PrivateAssets="All" />
   </ItemGroup>
@@ -35,5 +35,4 @@
 
   <!-- https://github.com/dotnet/arcade/issues/1374 -->
   <Target Condition="'$(IsFacadeAssembly)'=='true'" Name="EnsureBuildToolsRuntime" />
-
 </Project>
