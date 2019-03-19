@@ -24,7 +24,6 @@
       The attribute can also be applied to individual public APIs to similarly block them.
    -->
   <PropertyGroup>
-    <!-- [todo:arcade] Decide how to condition this property. -->
     <BlockReflectionAttribute>true</BlockReflectionAttribute>
     <!--
     <BlockReflectionAttribute Condition="'$(BlockReflectionAttribute)' == '' and '$(UWPCompatible)' == 'true' and '$(IsTestProject)' != 'true'">true</BlockReflectionAttribute>
@@ -40,8 +39,8 @@
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
-    <TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>
+    <!--<TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>-->
   </PropertyGroup>
   
   <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
@@ -56,11 +55,15 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform"
-                      Version="$(UwpPackageVersion)" />
-    <!-- [todo:arcade] Understand why we need this private package only available in MyGet. -->
+    <!--<PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform"
+                      Version="$(UwpPackageVersion)" />-->
+    <!-- [todo:arcade] This package contains Windows.winmd, is there a better way to get it? -->
     <PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
                       Version="1.0.3" />
+    <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" >
+        <GenerateSource>False</GenerateSource>
+        <ManifestResourceName>$(AssemblyName).rd.xml</ManifestResourceName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -73,14 +76,6 @@
     <Compile Include="..\..\Common\src\System\SR.cs">
       <Link>Common\System\SR.cs</Link>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
-    <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" >
-        <GenerateSource>False</GenerateSource>
-        <ManifestResourceName>$(AssemblyName).rd.xml</ManifestResourceName>
-    </EmbeddedResource>
-    <TargetingPackReference Include="Windows" />
   </ItemGroup>
 
   <!--<ItemGroup Condition="'$(TargetGroup)' == 'netstandard2.0'">
