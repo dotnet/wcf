@@ -14,7 +14,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CLSCompliant>true</CLSCompliant>
     <IsImplementationAssembly>true</IsImplementationAssembly>
-    <!--<RuntimeIdentifier>$(TargetGroup)</RuntimeIdentifier>-->
   </PropertyGroup>
 
   <!-- [todo:arcade] Added this because our released S.P.SM package includes the "_BlockReflectionAttribute" but it is included not only in the UAP* assembly but also the other shipped assembly, should this only be in the binary built for uap? -->
@@ -39,8 +38,6 @@
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
-    <!--<TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>-->
   </PropertyGroup>
   
   <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
@@ -55,11 +52,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
-    <!--<PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform"
-                      Version="$(UwpPackageVersion)" />-->
-    <!-- [todo:arcade] This package contains Windows.winmd, is there a better way to get it? -->
+    <!-- [todo:arcade] This package contains Windows.winmd, this is the easiest way to get it. -->
     <PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
                       Version="1.0.3" />
+    <!--[todo:arcade] The Arcade SDK assumes resources being embedded are '.resx' files and generates sources and changes the name.-->
+    <!--Override this behavior by setting 'GenerateSource' and 'ManifestResourceName'.-->
     <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" >
         <GenerateSource>False</GenerateSource>
         <ManifestResourceName>$(AssemblyName).rd.xml</ManifestResourceName>

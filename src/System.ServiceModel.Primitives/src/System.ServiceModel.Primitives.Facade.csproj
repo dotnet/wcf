@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
     <TargetFrameworks>netstandard2.0;uap10.0.16299</TargetFrameworks>
@@ -7,13 +6,7 @@
     <CLSCompliant>true</CLSCompliant>
   </PropertyGroup>
 
-  <!--<PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
-    <TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>
-  </PropertyGroup>-->
-
   <ItemGroup>
     <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
   </ItemGroup>
-  
 </Project>
