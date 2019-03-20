@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;uap10.0.16299</TargetFrameworks>
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
