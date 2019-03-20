@@ -7,7 +7,6 @@
     <EnableXlfLocalization>false</EnableXlfLocalization>
   </PropertyGroup>
 
-  <Import Project="SystemResources.props"/>
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
   <Import Project="eng\ReferenceAssemblies.props" />
   <Import Project="eng\FacadeAssemblies.props" />

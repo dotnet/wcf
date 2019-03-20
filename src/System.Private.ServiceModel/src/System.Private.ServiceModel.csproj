@@ -63,6 +63,16 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <GenerateSource>true</GenerateSource>
+      <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>System.SR</ClassName>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\..\Common\src\System\NotImplemented.cs">
       <Link>Common\System\NotImplemented.cs</Link>
