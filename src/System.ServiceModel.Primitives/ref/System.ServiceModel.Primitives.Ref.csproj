@@ -1,19 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
     <TargetFrameworks>netstandard2.0;uap10.0.16299</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
   </PropertyGroup>
-
-  <!--<PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
-    <TargetFrameworkIdentifier>uap</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>10.0.16299</TargetFrameworkVersion>
-  </PropertyGroup>-->
-
-  <!--<ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform"
-                      Version="$(UwpPackageVersion)" />
-  </ItemGroup>-->
 </Project>

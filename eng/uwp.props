@@ -1,5 +1,7 @@
 <Project>
-  
+  <!-- The 'Microsoft.NET.Sdk' does not currently support UAP, therefore we have to manually replicate what a UWP project does. -->
+  <!-- In VS this is done via the 'ImplicitlyExpandTargetPlatform' target... -->
+  <!-- https://devdiv.visualstudio.com/DevDiv/_git/VS?path=%2Fsrc%2Fvsproject%2FXamlCompiler%2FTargets%2FMicrosoft.Windows.UI.Xaml.Common.targets&version=GBmaster -->
   <PropertyGroup>
     <_targetFrameworkIdentifier>$(TargetFramework.TrimEnd('.0123456789'))</_targetFrameworkIdentifier>
     <_targetFrameworkVersion>$(TargetFramework.Substring($(_targetFrameworkIdentifier.Length)))</_targetFrameworkVersion>
