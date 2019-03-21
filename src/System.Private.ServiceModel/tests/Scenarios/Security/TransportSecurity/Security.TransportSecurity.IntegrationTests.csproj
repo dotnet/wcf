@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
 </Project>

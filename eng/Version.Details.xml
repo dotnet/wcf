@@ -2,19 +2,21 @@
 <Dependencies>
   <ProductDependencies></ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="1.0.0-beta.19151.1">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="1.0.0-beta.19170.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>0951c0fd4c38a6d01affe53b042111f8f7b91e28</Sha>
+      <Sha>f70fa34786cff993625a4548ae0125335eabe82e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="2.0.0-beta.19151.1">
+    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="2.0.0-beta.19170.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>0951c0fd4c38a6d01affe53b042111f8f7b91e28</Sha>
+      <Sha>f70fa34786cff993625a4548ae0125335eabe82e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.GenFacades" Version="1.0.0-beta.19151.1">
+    <Dependency Name="Microsoft.DotNet.GenFacades" Version="1.0.0-beta.19170.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>0951c0fd4c38a6d01affe53b042111f8f7b91e28</Sha>
+      <Sha>f70fa34786cff993625a4548ae0125335eabe82e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="2.4.0-beta.19156.20">
+    <!--[todo: arcade] Updating XUnitExtensions to a newer version causes compile errors
+    related to the use of "Assert" an xunit type in our Scenario test common project.-->
+    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="2.4.0-beta.19170.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
       <Sha>1d2edb248bc2dc37fa0669053b0c88f3bffffb26</Sha>
     </Dependency>
