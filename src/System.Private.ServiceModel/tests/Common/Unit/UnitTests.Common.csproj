@@ -5,6 +5,7 @@
     <OutputType>Library</OutputType>
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   
   <ItemGroup>

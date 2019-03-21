@@ -9,7 +9,7 @@
     <WcfSecurityRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj'))</WcfSecurityRefProj>
     
     <WcfUnitTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj'))</WcfUnitTestCommonProj>
-    <WcfScenarioTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.csproj'))</WcfScenarioTestCommonProj>
+    <WcfScenarioTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.Tests.csproj'))</WcfScenarioTestCommonProj>
     <WcfInfrastructureCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj'))</WcfInfrastructureCommonProj>
   </PropertyGroup>
 </Project>
