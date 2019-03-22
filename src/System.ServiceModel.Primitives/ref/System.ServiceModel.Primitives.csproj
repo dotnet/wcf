@@ -13,6 +13,9 @@
     <Compile Include="System.ServiceModel.Primitives.cs" />
     <Compile Include="System.ServiceModel.Primitives.Manual.cs" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetsNETCoreApp)' == 'true'">
+    <Compile Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetGroup)' == 'netfx'">
     <Reference Include="mscorlib" />
     <Reference Include="System" />

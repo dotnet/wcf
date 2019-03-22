@@ -21,6 +21,7 @@ namespace System.ServiceModel.Description
         private bool _ignoreExtensionDataObjectSetExplicit;
         internal int maxItemsInObjectGraph = DataContractSerializerDefaults.MaxItemsInObjectGraph;
         private bool _maxItemsInObjectGraphSetExplicit;
+        private ISerializationSurrogateProvider _serializationSurrogateProvider;
         private DataContractResolver _dataContractResolver;
 
         public DataContractFormatAttribute DataContractFormatAttribute
@@ -83,6 +84,11 @@ namespace System.ServiceModel.Description
             set { _ignoreExtensionDataObjectSetExplicit = value; }
         }
 
+        public ISerializationSurrogateProvider SerializationSurrogateProvider
+        {
+            get { return _serializationSurrogateProvider; }
+            set { _serializationSurrogateProvider = value; }
+        }
 
         public DataContractResolver DataContractResolver
         {
@@ -99,7 +105,9 @@ namespace System.ServiceModel.Description
             settings.KnownTypes = knownTypes;
             settings.MaxItemsInObjectGraph = MaxItemsInObjectGraph;
             settings.DataContractResolver = DataContractResolver;
-            return new DataContractSerializer(type, settings);
+            DataContractSerializer dcs = new DataContractSerializer(type, settings);
+            dcs.SetSerializationSurrogateProvider(SerializationSurrogateProvider);
+            return dcs;
         }
 
         public virtual XmlObjectSerializer CreateSerializer(Type type, XmlDictionaryString name, XmlDictionaryString ns, IList<Type> knownTypes)
@@ -110,7 +118,9 @@ namespace System.ServiceModel.Description
             settings.KnownTypes = knownTypes;
             settings.MaxItemsInObjectGraph = MaxItemsInObjectGraph;
             settings.DataContractResolver = DataContractResolver;
-            return new DataContractSerializer(type, settings);
+            DataContractSerializer dcs = new DataContractSerializer(type, settings);
+            dcs.SetSerializationSurrogateProvider(SerializationSurrogateProvider);
+            return dcs;
         }
 
         internal object GetFormatter(OperationDescription operation, out bool formatRequest, out bool formatReply, bool isProxy)
