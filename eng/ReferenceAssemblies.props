@@ -8,6 +8,9 @@
   <PropertyGroup Condition="'$(IsReferenceAssembly)'=='true'">
     <!-- disable warnings about unused fields -->
     <NoWarn>$(NoWarn);0169</NoWarn>
+    <!--Don't produce or publish symbols for Ref assemblies.-->
+    <PublishWindowsPdb>false</PublishWindowsPdb>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsReferenceAssembly)'=='true'">

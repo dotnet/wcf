@@ -80,22 +80,4 @@
       <FileWrites Include="$(AssemblyInfoFile)" />
     </ItemGroup>
   </Target>
-
-  <!--'TargetGroup' is used to set the RID and determine the build flavor of S.Private.SM-->
-  <PropertyGroup>
-    <TargetGroup Condition="'$(TargetGroup)'==''">win</TargetGroup>
-  </PropertyGroup>
-
-  <!--When building uap the reference to the uwp meta package causes a circular dependency, remove the references to ServiceModel assemblies.-->
-  <!--<Target Condition="$(TargetFramework.StartsWith('uap'))"
-          Name="RemoveDuplicateReferences"
-          AfterTargets="ResolvePackageDependenciesForBuild">
-    <ItemGroup>
-      <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.Duplex'" />
-      <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.Http'" />
-      <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.NetTcp'" />
-      <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.Primitives'" />
-      <Reference Remove="@(Reference)"  Condition="'%(FileName)' == 'System.ServiceModel.Security'" />
-    </ItemGroup>
-  </Target>-->
 </Project>
