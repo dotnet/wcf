@@ -47,6 +47,7 @@ jobs:
         - _DotNetCliPackageType: sdk
         - _DotNetCliVersion: 3.0.100-preview-010024 #must be same version as tools dotnet version in the global.json
         - _HelixAccessToken: ''
+        - _XUnitWorkItemTimeout: 400
         - _XunitUnitTestProjects: $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Http\tests\System.ServiceModel.Http.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.NetTcp\tests\System.ServiceModel.NetTcp.Tests.csproj;
@@ -127,7 +128,7 @@ jobs:
       - checkout: self
         clean: true
 
-      # Build and rename binlog
+      # Build and Send Tests To Helix
       - script: eng\common\cibuild.cmd
           -prepareMachine
           -configuration $(_BuildConfig)
@@ -158,3 +159,4 @@ jobs:
           Creator: $(_HelixCreator)
           HelixAccessToken: $(_HelixAccessToken)
           condition: eq(variables['_BuildConfig'], 'Debug')
+          XUnitWorkItemTimeout: $(_XUnitWorkItemTimeout)
