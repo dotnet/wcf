@@ -14,9 +14,15 @@
   <Import Project="eng\TestProperties.props"/>
   <Import Project="eng\uwp.props" />
 
-  <!-- Make sure the pdb is a separate file, and not embedded inside the dll (which is the ArcadeSDK default behavior) -->
-  <!-- Note that this MUST COME AFTER the import of Sdk.props -->
-  <PropertyGroup>
-    <DebugType>full</DebugType>
+  <!-- Packaging props -->
+  <PropertyGroup Condition="'$(CopyrightNetFoundation)' != ''">
+    <Copyright>$(CopyrightNetFoundation)</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include license and third party files to packages -->
+    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
+    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>

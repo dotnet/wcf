@@ -8,6 +8,9 @@
   <PropertyGroup Condition="'$(IsFacadeAssembly)'=='true'">
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
     <GenFacadesIgnoreMissingTypes>true</GenFacadesIgnoreMissingTypes>
+    <!--Don't produce or publish symbols for Facade assemblies.-->
+    <PublishWindowsPdb>false</PublishWindowsPdb>
+    <IsPackable>true</IsPackable>
 
     <!--allow desktop references-->
     <!--This will be neede when we create the desktop shim-->
