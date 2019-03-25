@@ -112,6 +112,8 @@ public static class OperationBehaviorTest
             ms.Position = 0;
             var deserialized = (SurrogateTestType)dcs.ReadObject(ms);
 
+            Assert.True(((MySerializationSurrogateProvider)behavior.SerializationSurrogateProvider).mySurrogateProviderIsUsed);
+
             for (int i = 0; i < 2; i++)
             {
                 Assert.StrictEqual(obj.Members[i].Name, deserialized.Members[i].Name);
@@ -144,8 +146,11 @@ public static class OperationBehaviorTest
 
     public class MySerializationSurrogateProvider : ISerializationSurrogateProvider
     {
+        public bool mySurrogateProviderIsUsed = false;
+
         public object GetDeserializedObject(object obj, Type targetType)
         {
+            mySurrogateProviderIsUsed = true;
             if (obj is NonSerializableTypeSurrogate)
             {
                 NonSerializableTypeSurrogate surrogate = (NonSerializableTypeSurrogate)obj;
@@ -157,6 +162,7 @@ public static class OperationBehaviorTest
 
         public object GetObjectToSerialize(object obj, Type targetType)
         {
+            mySurrogateProviderIsUsed = true;
             if (obj is NonSerializableType)
             {
                 NonSerializableType i = (NonSerializableType)obj;
@@ -174,6 +180,7 @@ public static class OperationBehaviorTest
 
         public Type GetSurrogateType(Type type)
         {
+            mySurrogateProviderIsUsed = true;
             if (type == typeof(NonSerializableType))
             {
                 return typeof(NonSerializableTypeSurrogate);
