@@ -3,7 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.Text;
 
 public class TestTypeConstants_4_4_0
 {
@@ -122,4 +124,29 @@ public class ReplyBankingData_4_4_0
     public string[] testValuesArray;
 }
 
+public class NonSerializableType
+{
+    public string Name { get; private set; }
+    public int Index { get; private set; }
+
+    public NonSerializableType(string name, int index)
+    {
+        this.Name = name;
+        this.Index = index;
+    }
+}
+
+[DataContract]
+public class NonSerializableTypeSurrogate
+{
+    [DataMember]
+    public string Name { get; set; }
+    [DataMember]
+    public int Index { get; set; }
+}
+
+public class SurrogateTestType
+{
+    public NonSerializableType[] Members { get; set; }
+}
 

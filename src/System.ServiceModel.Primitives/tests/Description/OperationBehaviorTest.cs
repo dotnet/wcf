@@ -3,9 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
@@ -87,6 +90,39 @@ public static class OperationBehaviorTest
         }
     }
 
+    [WcfFact]
+    public static void DataContractSerializationSurrogateTest()
+    {
+        OperationDescription od = null;
+        DataContractSerializerOperationBehavior behavior = new DataContractSerializerOperationBehavior(od);
+
+        behavior.SerializationSurrogateProvider = new MySerializationSurrogateProvider();
+
+        DataContractSerializer dcs = (DataContractSerializer)behavior.CreateSerializer(typeof(SurrogateTestType), nameof(SurrogateTestType), "ns", new List<Type>());
+
+        var members = new NonSerializableType[2];
+        members[0] = new NonSerializableType("name1", 1);
+        members[1] = new NonSerializableType("name2", 2);
+
+        using (MemoryStream ms = new MemoryStream())
+        {
+            SurrogateTestType obj = new SurrogateTestType { Members = members };
+
+            dcs.WriteObject(ms, obj);
+            ms.Position = 0;
+            var deserialized = (SurrogateTestType)dcs.ReadObject(ms);
+
+            Assert.True(((MySerializationSurrogateProvider)behavior.SerializationSurrogateProvider).mySurrogateProviderIsUsed);
+
+            for (int i = 0; i < 2; i++)
+            {
+                Assert.StrictEqual(obj.Members[i].Name, deserialized.Members[i].Name);
+                Assert.StrictEqual(obj.Members[i].Index, deserialized.Members[i].Index);
+            }
+        }
+
+    }
+
     [ServiceContract]
     public interface IXmlTestingType
     {
@@ -106,5 +142,51 @@ public static class OperationBehaviorTest
         [OperationContract]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document)]
         void XmlSerializerFormatAttribute_Set_StyleSetTo_Document();
+    }
+
+    public class MySerializationSurrogateProvider : ISerializationSurrogateProvider
+    {
+        public bool mySurrogateProviderIsUsed = false;
+
+        public object GetDeserializedObject(object obj, Type targetType)
+        {
+            mySurrogateProviderIsUsed = true;
+            if (obj is NonSerializableTypeSurrogate)
+            {
+                NonSerializableTypeSurrogate surrogate = (NonSerializableTypeSurrogate)obj;
+                return new NonSerializableType(surrogate.Name, surrogate.Index);
+            }
+
+            return obj;
+        }
+
+        public object GetObjectToSerialize(object obj, Type targetType)
+        {
+            mySurrogateProviderIsUsed = true;
+            if (obj is NonSerializableType)
+            {
+                NonSerializableType i = (NonSerializableType)obj;
+                NonSerializableTypeSurrogate surrogate = new NonSerializableTypeSurrogate
+                {
+                    Name = i.Name,
+                    Index = i.Index,
+                };
+
+                return surrogate;
+            }
+
+            return obj;
+        }
+
+        public Type GetSurrogateType(Type type)
+        {
+            mySurrogateProviderIsUsed = true;
+            if (type == typeof(NonSerializableType))
+            {
+                return typeof(NonSerializableTypeSurrogate);
+            }
+
+            return type;
+        }
     }
 }
