@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <TargetFrameworks>netstandard2.0;uap10.0.16299</TargetFrameworks>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>System.ServiceModel</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
@@ -9,6 +9,9 @@
     <!--Don't produce or publish symbols for Facade assemblies.-->
     <PublishWindowsPdb>false</PublishWindowsPdb>
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
+
+    <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
+    <StrongNameKeyId>ECMA</StrongNameKeyId>
 
     <!--allow desktop references-->
     <AssetTargetFallback>net472</AssetTargetFallback>
@@ -24,15 +27,21 @@
   <Target Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild">
     <ItemGroup>
       <_desktopReference Include="@(Reference)" Condition="'%(Reference.NuGetPackageId)' == '$(MicrosoftTargetingPackNETFrameworkv472Package)'" />
+      <!-- Remove all the references in the framework targeting pack from the Reference list because... -->
+      <!-- References used for compilation are automatically included as seed assemblies which we don't want. -->
       <Reference Remove="@(_desktopReference)" />
+      
+      <!-- System.ServiceModel.dll is the contract assembly that needs to be resolved. -->
       <ResolvedMatchingContract Include="@(_desktopReference)" Condition="'%(FileName)%(Extension)' == '$(AssemblyName).dll'" />
-
-      <!-- in case we're regenerating a facade that is already referenced -->
-      <Reference Remove="@(Reference)"  Condition="'%(FileName)%(Extension)' == '$(AssemblyName).dll'" />
     </ItemGroup>
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.Duplex\src\System.ServiceModel.Duplex.Facade.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.Http\src\System.ServiceModel.Http.Facade.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.NetTcp\src\System.ServiceModel.NetTcp.Facade.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.Facade.csproj" />
+    <ProjectReference Include="..\System.ServiceModel.Security\src\System.ServiceModel.Security.Facade.csproj" />
+    <Reference Include="$(MSBuildThisFileDirectory)..\ExternalApis\System.ServiceModel.Syndication.dll" />
   </ItemGroup>
 </Project>
