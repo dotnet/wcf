@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
-    <TargetFrameworks>netstandard2.0;uap10.0.16299</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
