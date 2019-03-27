@@ -124,7 +124,7 @@ jobs:
         clean: true
 
       # Build and Send Tests To Helix
-      - script: eng\common\cibuild.sh $(_BuildArgs) $(_OfficialBuildIdArgs) $(_TestArgs)
+      - script: eng/common/cibuild.sh $(_BuildArgs) $(_OfficialBuildIdArgs) $(_TestArgs)
         displayName: Build All Projects
         condition: succeeded()
 
