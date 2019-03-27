@@ -18,9 +18,8 @@ jobs:
 
     jobs:
     - job: Linux
-      queue:
-        ${{ if eq(parameters.runAsPublic, 'false') }}:
-          name: dnceng-linux-internal-temp
+      pool:
+          name: Hosted Ubuntu 1604
 
       variables:
 
