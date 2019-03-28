@@ -118,6 +118,7 @@ jobs:
           Build_Release:
             _BuildArgs: --configuration Release --prepareMachine /p:Sign=False /p:Test=False /p:IntegrationTest=False /p:Pack=false /p:Publish=false
             _TestArgs: /p:ServiceUri=wcfcoresrv5.cloudapp.net/wcftestservice1 /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true /m:1
+            _BuildConfig: Release
 
       steps:
       - checkout: self
@@ -144,5 +145,5 @@ jobs:
           WaitForWorkItemCompletion: true
           Creator: $(_HelixCreator)
           HelixAccessToken: $(_HelixAccessToken)
-          condition: eq(variables['_BuildConfig'], 'Release')
           XUnitWorkItemTimeout: $(_XUnitWorkItemTimeout)
+          condition: eq(variables['_BuildConfig'], 'Release')
