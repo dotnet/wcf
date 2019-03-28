@@ -12,7 +12,7 @@
   <Import Project="eng\FacadeAssemblies.props" />
   <Import Project="eng\Versioning.props"/>
   <Import Project="eng\TestProperties.props"/>
-  <Import Project="eng\targetFramework.props" />
+  <Import Project="eng\TargetFramework.props" />
 
   <!-- Packaging props -->
   <PropertyGroup Condition="'$(CopyrightNetFoundation)' != ''">
