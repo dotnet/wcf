@@ -11,6 +11,8 @@
     <!--Don't produce or publish symbols for Facade assemblies.-->
     <PublishWindowsPdb>false</PublishWindowsPdb>
     <IsPackable>true</IsPackable>
+    <!-- GenFacades requires a PDB -->
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
@@ -26,7 +28,14 @@
       </ProjectReference>
     </ItemGroup>
   </Target>
+  
+  <PropertyGroup>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
 
-  <!-- https://github.com/dotnet/arcade/issues/1374 -->
-  <Target Condition="'$(IsFacadeAssembly)'=='true'" Name="EnsureBuildToolsRuntime" />
+  <Target Condition="'$(IsPartialFacadeAssembly)'=='true'" Name="AddReferenceAssemblyToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(ResolvedMatchingContract)" PackagePath="ref/$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
 </Project>
