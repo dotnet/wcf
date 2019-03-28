@@ -13,7 +13,7 @@
     <Compile Include="System.ServiceModel.Primitives.cs" />
     <Compile Include="System.ServiceModel.Primitives.Manual.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetsNETCoreApp)' == 'true'">
+  <ItemGroup Condition="'$(TargetGroup)' == 'netcoreapp'">
     <Compile Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetGroup)' == 'netfx'">
