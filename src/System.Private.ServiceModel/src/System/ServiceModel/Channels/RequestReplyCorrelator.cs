@@ -195,7 +195,7 @@ namespace System.ServiceModel.Channels
                 {
                     _from = message.Headers.From;
                 }
-                else 
+                else
                 {
                     _from = null;
                 }

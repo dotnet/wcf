@@ -110,7 +110,7 @@ namespace System.ServiceModel.Channels
             }
 
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            for (;;)
+            for (; ; )
             {
                 if (_isAtEOF)
                 {
@@ -168,7 +168,7 @@ namespace System.ServiceModel.Channels
             }
 
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            for (;;)
+            for (; ; )
             {
                 if (_isAtEOF)
                 {

@@ -195,7 +195,7 @@ namespace System.Runtime
         {
             if (!task.IsCompleted)
             {
-                ((IAsyncResult) task).AsyncWaitHandle.WaitOne();
+                ((IAsyncResult)task).AsyncWaitHandle.WaitOne();
             }
 
             // Call GetResult() to get any exceptions that were thrown
@@ -236,7 +236,7 @@ namespace System.Runtime
                 // Throw any exceptions if there are any
                 task.GetAwaiter().GetResult();
             }
-            
+
             return completed;
         }
 

@@ -370,7 +370,7 @@ namespace System.ServiceModel.Channels
             {
                 List<TItem> itemsToClose = new List<TItem>();
                 bool dummy;
-                for (;;)
+                for (; ; )
                 {
                     TItem item = IdleConnections.Take(out dummy);
                     if (item == null)

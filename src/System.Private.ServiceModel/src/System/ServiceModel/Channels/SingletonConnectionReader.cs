@@ -160,7 +160,7 @@ namespace System.ServiceModel.Channels
                 Buffer.BlockCopy(_connection.AsyncReadBuffer, _offset, buffer, _offset, _size);
             }
 
-            for (;;)
+            for (; ; )
             {
                 if (DecodeBytes(buffer, ref _offset, ref _size, ref _isAtEof))
                 {

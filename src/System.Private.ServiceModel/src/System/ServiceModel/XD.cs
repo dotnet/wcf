@@ -278,7 +278,7 @@ namespace System.ServiceModel
         public XmlDictionaryString Namespace;
         public XmlDictionaryString Anonymous;
         public XmlDictionaryString FaultAction;
- 
+
         public Addressing200408Dictionary(ServiceModelDictionary dictionary)
         {
             this.Namespace = dictionary.CreateString(ServiceModelStringsVersion1.String105, 105);
