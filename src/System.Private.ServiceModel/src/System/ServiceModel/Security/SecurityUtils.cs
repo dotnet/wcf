@@ -745,8 +745,8 @@ namespace System.ServiceModel.Security
 
         internal static class NetworkCredentialHelper
         {
-            static string s_currentUser = string.Empty;
-            const string DefaultCurrentUser = "____CURRENTUSER_NOT_AVAILABLE____";
+            private static string s_currentUser = string.Empty;
+            private const string DefaultCurrentUser = "____CURRENTUSER_NOT_AVAILABLE____";
             static internal bool IsNullOrEmpty(NetworkCredential credential)
             {
                 return credential == null ||

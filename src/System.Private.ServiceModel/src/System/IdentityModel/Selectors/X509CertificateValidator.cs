@@ -83,7 +83,7 @@ namespace System.IdentityModel.Selectors
             }
         }
 
-        class PeerTrustValidator : X509CertificateValidator
+        private class PeerTrustValidator : X509CertificateValidator
         {
             public override void Validate(X509Certificate2 certificate)
             {
@@ -95,7 +95,7 @@ namespace System.IdentityModel.Selectors
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
             }
 
-            static bool StoreContainsCertificate(StoreName storeName, X509Certificate2 certificate)
+            private static bool StoreContainsCertificate(StoreName storeName, X509Certificate2 certificate)
             {
                 X509Store store = new X509Store(storeName, StoreLocation.CurrentUser);
                 X509Certificate2Collection certificates = null;
@@ -211,10 +211,10 @@ namespace System.IdentityModel.Selectors
         }
 
 
-        class PeerOrChainTrustValidator : X509CertificateValidator
+        private class PeerOrChainTrustValidator : X509CertificateValidator
         {
-            X509CertificateValidator _chain;
-            PeerTrustValidator _peer;
+            private X509CertificateValidator _chain;
+            private PeerTrustValidator _peer;
 
             public PeerOrChainTrustValidator()
             {

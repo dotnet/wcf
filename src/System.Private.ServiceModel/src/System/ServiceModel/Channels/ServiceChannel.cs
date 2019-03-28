@@ -610,8 +610,8 @@ namespace System.ServiceModel.Channels
                         Exception error = new InvalidOperationException(text);
                         throw TraceUtility.ThrowHelperError(error, rpc.Request);
                     }
- 
-                    if (this._messageVersion.Addressing == AddressingVersion.WSAddressingAugust2004)
+
+                    if (_messageVersion.Addressing == AddressingVersion.WSAddressingAugust2004)
                     {
                         EndpointAddress from = headers.From;
                         if ((from != null) && !from.IsAnonymous && (localUri != from.Uri))

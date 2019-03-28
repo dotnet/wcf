@@ -584,7 +584,7 @@ namespace System.ServiceModel
             else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
             {
                 isAnonymous = ReadContentsFrom200408(reader, out uri, out headers, out identity, out buffer, out metadataSection, out extensionSection, out pspSection);
-            } 
+            }
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
@@ -662,7 +662,7 @@ namespace System.ServiceModel
             extensionSection = -1;
             metadataSection = -1;
             pspSection = -1;
- 
+
             // Cache address string
             reader.MoveToContent();
             if (!reader.IsStartElement(XD.AddressingDictionary.Address, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -670,14 +670,14 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SR.Format(SR.UnexpectedElementExpectingElement, reader.LocalName, reader.NamespaceURI, XD.AddressingDictionary.Address.Value, XD.Addressing200408Dictionary.Namespace.Value)));
             }
             string address = reader.ReadElementContentAsString();
- 
+
             // ReferenceProperites
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.ReferenceProperties, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
             {
                 headers = AddressHeaderCollection.ReadServiceParameters(reader, true);
             }
- 
+
             // ReferenceParameters
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.ReferenceParameters, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -701,9 +701,9 @@ namespace System.ServiceModel
                     headers = AddressHeaderCollection.ReadServiceParameters(reader);
                 }
             }
- 
+
             XmlDictionaryWriter bufferWriter = null;
- 
+
             // PortType
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.PortType, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -717,7 +717,7 @@ namespace System.ServiceModel
                 }
                 bufferWriter.WriteNode(reader, true);
             }
- 
+
             // ServiceName
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.ServiceName, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -731,7 +731,7 @@ namespace System.ServiceModel
                 }
                 bufferWriter.WriteNode(reader, true);
             }
- 
+
             // Policy
             reader.MoveToContent();
             while (reader.IsNamespaceUri(PolicyStrings.Namespace))
@@ -746,7 +746,7 @@ namespace System.ServiceModel
                 bufferWriter.WriteNode(reader, true);
                 reader.MoveToContent();
             }
- 
+
             // Finish PSP
             if (bufferWriter != null)
             {
@@ -759,8 +759,8 @@ namespace System.ServiceModel
             {
                 pspSection = -1;
             }
- 
- 
+
+
             // Metadata
             if (reader.IsStartElement(System.ServiceModel.Description.MetadataStrings.MetadataExchangeStrings.Metadata,
                                       System.ServiceModel.Description.MetadataStrings.MetadataExchangeStrings.Namespace))
@@ -774,7 +774,7 @@ namespace System.ServiceModel
                 }
                 bufferWriter.WriteNode(reader, true);
             }
- 
+
             // Finish metadata
             if (bufferWriter != null)
             {
@@ -787,15 +787,15 @@ namespace System.ServiceModel
             {
                 metadataSection = -1;
             }
- 
+
             // Extensions
             reader.MoveToContent();
             buffer = ReadExtensions(reader, AddressingVersion.WSAddressingAugust2004, buffer, out identity, out extensionSection);
- 
+
             // Finished reading
             if (buffer != null)
                 buffer.Close();
- 
+
             // Process Address
             if (address == Addressing200408Strings.Anonymous)
             {
@@ -965,7 +965,7 @@ namespace System.ServiceModel
                 writer.WriteString(this.Uri.AbsoluteUri);
             }
             writer.WriteEndElement();
- 
+
             // ReferenceProperties
             if (_headers != null && _headers.HasReferenceProperties)
             {
@@ -973,7 +973,7 @@ namespace System.ServiceModel
                 _headers.WriteReferencePropertyContentsTo(writer);
                 writer.WriteEndElement();
             }
- 
+
             // ReferenceParameters
             if (_headers != null && _headers.HasNonReferenceProperties)
             {
@@ -981,7 +981,7 @@ namespace System.ServiceModel
                 _headers.WriteNonReferencePropertyContentsTo(writer);
                 writer.WriteEndElement();
             }
- 
+
             // PSP (PortType, ServiceName, Policy)
             XmlDictionaryReader reader = null;
             if (_pspSection >= 0)
@@ -989,7 +989,7 @@ namespace System.ServiceModel
                 reader = GetReaderAtSection(_buffer, _pspSection);
                 Copy(writer, reader);
             }
- 
+
             // Metadata
             reader = null;
             if (_metadataSection >= 0)
@@ -997,13 +997,13 @@ namespace System.ServiceModel
                 reader = GetReaderAtSection(_buffer, _metadataSection);
                 Copy(writer, reader);
             }
- 
+
             // EndpointIdentity
             if (this.Identity != null)
             {
                 this.Identity.WriteTo(writer);
             }
- 
+
             // Extensions
             if (_extensionSection >= 0)
             {
@@ -1014,7 +1014,7 @@ namespace System.ServiceModel
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SR.Format(SR.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
                     }
- 
+
                     writer.WriteNode(reader, true);
                 }
             }

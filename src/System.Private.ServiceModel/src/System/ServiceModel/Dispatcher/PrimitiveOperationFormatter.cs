@@ -110,7 +110,7 @@ namespace System.ServiceModel.Dispatcher
                 return _actionHeader10;
             }
         }
- 
+
         private ActionHeader ActionHeaderAugust2004
         {
             get
@@ -120,7 +120,7 @@ namespace System.ServiceModel.Dispatcher
                     _actionHeaderAugust2004 =
                         ActionHeader.Create(_action, AddressingVersion.WSAddressingAugust2004);
                 }
- 
+
                 return _actionHeaderAugust2004;
             }
         }
@@ -163,7 +163,7 @@ namespace System.ServiceModel.Dispatcher
                     _replyActionHeaderAugust2004 =
                         ActionHeader.Create(_replyAction, AddressingVersion.WSAddressingAugust2004);
                 }
- 
+
                 return _replyActionHeaderAugust2004;
             }
         }

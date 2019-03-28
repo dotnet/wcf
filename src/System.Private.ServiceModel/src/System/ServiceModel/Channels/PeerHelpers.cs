@@ -4,7 +4,7 @@
 
 namespace System.ServiceModel.Channels
 {
-    static class PeerStrings
+    internal static class PeerStrings
     {
         // Namespace for infrastructure messages
         public const string Namespace = "http://schemas.microsoft.com/net/2006/05/peer";

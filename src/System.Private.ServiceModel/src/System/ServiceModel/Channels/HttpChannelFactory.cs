@@ -377,15 +377,15 @@ namespace System.ServiceModel.Channels
                 }
 
                 HttpMessageHandler handler = clientHandler;
-                if(_httpMessageHandlerFactory!= null)
+                if (_httpMessageHandlerFactory != null)
                 {
                     handler = _httpMessageHandlerFactory(clientHandler);
                 }
 
                 httpClient = new HttpClient(handler);
 
-                if(!_keepAliveEnabled)
-                   httpClient.DefaultRequestHeaders.ConnectionClose = true;
+                if (!_keepAliveEnabled)
+                    httpClient.DefaultRequestHeaders.ConnectionClose = true;
 
 #if !FEATURE_NETNATIVE // Expect continue not correctly supported on UAP
                 if (IsExpectContinueHeaderRequired)
@@ -1071,7 +1071,7 @@ namespace System.ServiceModel.Channels
                         try
                         {
                             using (timeoutToken.Register(s_cancelCts, _httpSendCts))
-                            { 
+                            {
                                 _httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, _httpSendCts.Token);
                             }
 
@@ -1377,11 +1377,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        class WebProxyFactory
+        private class WebProxyFactory
         {
-            Uri _address;
-            bool _bypassOnLocal;
-            AuthenticationSchemes _authenticationScheme;
+            private Uri _address;
+            private bool _bypassOnLocal;
+            private AuthenticationSchemes _authenticationScheme;
 
             public WebProxyFactory(Uri address, bool bypassOnLocal, AuthenticationSchemes authenticationScheme)
             {
@@ -1442,6 +1442,5 @@ namespace System.ServiceModel.Channels
                 return result;
             }
         }
-
     }
 }

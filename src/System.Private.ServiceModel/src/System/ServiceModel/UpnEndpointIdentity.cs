@@ -70,15 +70,15 @@ namespace System.ServiceModel
             }
         }
 
-        string GetUpnFromWindowsIdentity(WindowsIdentity windowsIdentity)
+        private string GetUpnFromWindowsIdentity(WindowsIdentity windowsIdentity)
         {
             string downlevelName = null;
             string upnName = null;
- 
+
             try
             {
                 downlevelName = windowsIdentity.Name;
- 
+
                 if (IsMachineJoinedToDomain())
                 {
                     upnName = GetUpnFromDownlevelName(downlevelName);
@@ -90,19 +90,19 @@ namespace System.ServiceModel
                 {
                     throw;
                 }
-             }
- 
+            }
+
             // if the AD cannot be queried for the fully qualified domain name,
             // fall back to the downlevel UPN name
             return upnName ?? downlevelName;
         }
 
-        bool IsMachineJoinedToDomain()
+        private bool IsMachineJoinedToDomain()
         {
             throw ExceptionHelper.PlatformNotSupported();
         }
 
-        string GetUpnFromDownlevelName(string downlevelName)
+        private string GetUpnFromDownlevelName(string downlevelName)
         {
             throw ExceptionHelper.PlatformNotSupported();
         }

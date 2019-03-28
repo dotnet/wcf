@@ -387,7 +387,6 @@ namespace System.ServiceModel.Channels
 
                 bytesFromBuffer = ReadFromBuffer(array, offset, count);
                 return bytesAlreadySatisfied + bytesFromBuffer;
-
             }
             finally
             {

@@ -126,7 +126,7 @@ namespace System.ServiceModel.Dispatcher
         {
             IChannelListener listener = _listenerBinder.Listener;
 
-            for (;;)
+            for (; ; )
             {
                 if (_acceptedNull || (listener.State == CommunicationState.Faulted))
                 {
