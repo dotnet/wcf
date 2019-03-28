@@ -1,14 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>System.ServiceModel</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
-    <IsPackable>true</IsPackable>
     <GenFacadesIgnoreMissingTypes>true</GenFacadesIgnoreMissingTypes>
     <!--Don't produce or publish symbols for Facade assemblies.-->
     <PublishWindowsPdb>false</PublishWindowsPdb>
     <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
+    <!-- GenFacades requires a PDB -->
+    <DebugType>portable</DebugType>
 
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
     <StrongNameKeyId>ECMA</StrongNameKeyId>
@@ -42,6 +43,6 @@
     <ProjectReference Include="..\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj" />
     <ProjectReference Include="..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
     <ProjectReference Include="..\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj" />
-    <Reference Include="$(MSBuildThisFileDirectory)..\ExternalApis\System.ServiceModel.Syndication.dll" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0" />
   </ItemGroup>
 </Project>
