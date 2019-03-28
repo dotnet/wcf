@@ -321,7 +321,7 @@ namespace System.ServiceModel.Channels
                         contentStream = bufferedStream;
                     }
                 }
-                else if(TransferModeHelper.IsResponseStreamed(_factory.TransferMode))
+                else if (TransferModeHelper.IsResponseStreamed(_factory.TransferMode))
                 {
                     // If _contentLength > 0, then the message was sent buffered but we might still
                     // be receiving it streamed. In which case we need a buffered reading stream.

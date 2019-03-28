@@ -31,7 +31,7 @@ namespace System.ServiceModel
                 _isStyleSet = true;
             }
         }
-        
+
         public OperationFormatUse Use
         {
             get { return _use; }
@@ -45,7 +45,7 @@ namespace System.ServiceModel
                 }
             }
         }
-        
+
         internal bool IsEncoded
         {
             get { return _use == OperationFormatUse.Encoded; }
@@ -59,7 +59,7 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
             }
         }
-        
+
         internal static void ValidateOperationFormatUse(OperationFormatUse value)
         {
             if (!OperationFormatUseHelper.IsDefined(value))

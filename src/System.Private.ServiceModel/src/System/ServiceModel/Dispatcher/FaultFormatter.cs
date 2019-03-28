@@ -11,9 +11,9 @@ using System.Runtime;
 
 namespace System.ServiceModel.Dispatcher
 {
-     /*
-      This class is not exposed on the contract as we only need it public for reflection purpose on .Net Native.
-      */
+    /*
+     This class is not exposed on the contract as we only need it public for reflection purpose on .Net Native.
+     */
     public class FaultFormatter : IClientFaultFormatter, IDispatchFaultFormatter
     {
         private FaultContractInfo[] _faultContractInfos;
