@@ -13,9 +13,6 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Threading.Tasks;
-#if FEATURE_NETNATIVE
-using Windows.Security.Cryptography.Certificates;
-#endif
 
 namespace System.ServiceModel.Channels
 {
@@ -242,19 +239,17 @@ namespace System.ServiceModel.Channels
 
         private static void ValidateClientCertificate(X509Certificate2 certificate)
         {
-#if FEATURE_NETNATIVE
-            var query = new CertificateQuery
+            if (Fx.IsUap)
             {
-                Thumbprint = certificate.GetCertHash(),
-                IncludeDuplicates = false,
-                StoreName = "MY"
-            };
-
-            if (CertificateStores.FindAllAsync(query).AsTask().GetAwaiter().GetResult().Count == 0)
-            {
-                throw ExceptionHelper.PlatformNotSupported("Certificate could not be found in the MY store.");
-            };
-#endif // FEATURE_NETNATIVE
+                using (var store = new X509Store(StoreName.My, StoreLocation.CurrentUser))
+                {
+                    store.Open(OpenFlags.ReadOnly);
+                    if (store.Certificates.Find(X509FindType.FindByThumbprint, certificate.GetCertHashString(), true).Count == 0)
+                    {
+                        throw ExceptionHelper.PlatformNotSupported("Certificate could not be found in the MY store.");
+                    }
+                }
+            }
         }
 
         protected class HttpsClientRequestChannel : HttpClientRequestChannel
