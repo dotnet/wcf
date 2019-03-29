@@ -129,38 +129,6 @@ namespace System.ServiceModel
 
         private void CheckSettings()
         {
-#if FEATURE_NETNATIVE // In .NET Native, some settings for the binding security are not supported; this check is not necessary for CoreCLR
-                      
-            NetTcpSecurity security = this.Security;
-            if (security == null)
-            {
-                return;
-            }
-
-            SecurityMode mode = security.Mode;
-            if (mode == SecurityMode.None)
-            {
-                return;
-            }
-            else if (mode == SecurityMode.Message)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Mode", mode)));
-            }
-
-            // Message.ClientCredentialType = Certificate, IssuedToken or Windows are not supported.
-            if (mode == SecurityMode.TransportWithMessageCredential)
-            {
-                MessageSecurityOverTcp message = security.Message;
-                if (message != null)
-                {
-                    MessageCredentialType mct = message.ClientCredentialType;
-                    if ((mct == MessageCredentialType.Certificate) || (mct == MessageCredentialType.IssuedToken) || (mct == MessageCredentialType.Windows))
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Message.ClientCredentialType", mct)));
-                    }
-                }
-            }
-#endif // FEATURE_NETNATIVE
         }
 
         public override BindingElementCollection CreateBindingElements()
