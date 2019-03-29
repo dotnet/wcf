@@ -33,10 +33,10 @@
   <Target Name="AddHarvestedFilesToPackage"
           DependsOnTargets="_GetPathToHarvest">
     <ItemGroup>
-      <_HarvestedItems Include="$(_pathToHarvest)\lib\$(TargetFramework)\*.*" PackagePath="lib\$(TargetFramework)" />
-      <_HarvestedItems Include="$(_pathToHarvest)\ref\$(TargetFramework)\*.*" PackagePath="ref\$(TargetFramework)" />
-      <TfmSpecificPackageFile Include="@(_HarvestedItems)" />
+      <_harvestedItems Include="$(_pathToHarvest)\lib\$(TargetFramework)\*.*" PackagePath="lib\$(TargetFramework)" />
+      <_harvestedItems Include="$(_pathToHarvest)\ref\$(TargetFramework)\*.*" PackagePath="ref\$(TargetFramework)" />
+      <TfmSpecificPackageFile Include="@(_harvestedItems)" />
     </ItemGroup>
-    <Error Condition="'@(_HarvestedItems)' == ''" Text="Could not harvest any files from $(_pathToHarvest)\%(HarvestIncludePaths.Identity) "/>
+    <Error Condition="'@(_harvestedItems)' == ''" Text="Could not harvest any files from $(_pathToHarvest)\%(HarvestIncludePaths.Identity) "/>
   </Target>
 </Project>

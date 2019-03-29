@@ -1,13 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>MonoAndroid10;MonoTouch10;net45;net461;netcore50;netstandard1.1;netstandard1.3;netstandard2.0;portable-net45+win8;win8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Duplex</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
+
+  <!-- non-building TargetFrameworks copy from old package -->
+  <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
+    <HarvestFromPackage>true</HarvestFromPackage>
+  </PropertyGroup>
+
+  <!-- the following represent dependencies copied from the old package -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcore50'">
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+    <PackageReference Include="System.Private.ServiceModel" Version="4.5.3" ExcludeAssets="Compile" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="System.Private.ServiceModel" version="4.5.3" ExcludeAssets="Compile" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
   </ItemGroup>
 </Project>
