@@ -90,6 +90,18 @@ jobs:
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
             - _commonArguments: $(_args) -stripSymbols
 
+        # Send to Helix variables
+        - ${{ if eq(job.submitToHelix, 'true') }}:
+          - _helixSource: ${{ parameters.repoName }}/$(Build.SourceBranch)
+          - _helixType: build/product
+          - _xUnitPublishTargetFramework: netcoreapp3.0
+          - _xUnitRuntimeTargetFramework: netcoreapp2.0
+          - _xUnitRunnerVersion: 2.4.1
+          - _dotNetCliPackageType: sdk
+          - _dotNetCliVersion: 3.0.100-preview-010024 #must be same version as tools dotnet version in the global.json
+          - _helixAccessToken: ''
+          - _xUnitWorkItemTimeout: 400
+
         # pass along job properties
         ${{ each property in job }}:
           ${{ if and(ne(property.key, 'job'), ne(property.key, 'variables')) }}:
@@ -108,17 +120,6 @@ jobs:
 
         ${{ if eq(job.timeoutInMinutes, '') }}:
           timeoutInMinutes: 150
-
-        - ${{ if eq(job.submitToHelix, 'true') }}:
-          - _helixSource: ${{ parameters.repoName }}/$(Build.SourceBranch)
-          - _helixType: build/product
-          - _xUnitPublishTargetFramework: netcoreapp3.0
-          - _xUnitRuntimeTargetFramework: netcoreapp2.0
-          - _xUnitRunnerVersion: 2.4.1
-          - _dotNetCliPackageType: sdk
-          - _dotNetCliVersion: 3.0.100-preview-010024 #must be same version as tools dotnet version in the global.json
-          - _helixAccessToken: ''
-          - _xUnitWorkItemTimeout: 400
 
         steps:
           - ${{ if ne(job.preBuildSteps[0], '') }}:
