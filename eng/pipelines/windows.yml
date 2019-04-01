@@ -28,6 +28,7 @@ jobs:
               _pack: false
               _publish: false
               _helixQueues: $(netcoreappWindowsQueues)
+              _useIISHostedTestArgs: true
 
             x86_Release:
               _BuildConfig: Release
@@ -38,6 +39,7 @@ jobs:
               _pack: false
               _publish: false
               _helixQueues: $(netcoreappWindowsQueues)
+              _useIISHostedTestArgs: true
           
           # Official build LEGS with HELIX Testing
           ${{ if eq(parameters.isOfficialBuild, 'true') }}:
@@ -50,6 +52,7 @@ jobs:
               _pack: true
               _publish: true
               _helixQueues: $(netcoreappWindowsQueues)
+              _useIISHostedTestArgs: true
 
             x86_Release:
               _BuildConfig: Release
@@ -60,6 +63,7 @@ jobs:
               _pack: true
               _publish: true
               _helixQueues: $(netcoreappWindowsQueues)
+              _useIISHostedTestArgs: true
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:
