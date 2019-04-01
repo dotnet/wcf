@@ -99,7 +99,6 @@ jobs:
           - _xUnitRunnerVersion: 2.4.1
           - _dotNetCliPackageType: sdk
           - _dotNetCliVersion: 3.0.100-preview-010024 #must be same version as tools dotnet version in the global.json
-          - _helixAccessToken: ''
           - _xUnitWorkItemTimeout: 400
 
         # pass along job properties
@@ -152,13 +151,13 @@ jobs:
                   DotNetCliPackageType: $(_dotNetCliPackageType)
                   DotNetCliVersion: $(_dotNetCliVersion)
                   EnableXUnitReporter: true
-                  HelixAccessToken: $(_helixAccessToken)
                   XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
 
                   ${{ if eq(parameters.isOfficialBuild, 'true') }}:
                     WaitForWorkItemCompletion: false
-                    Creator: dotnet-bot
+                    HelixAccessToken: $(HelixApiAccessToken)
 
                   ${{ if eq(parameters.isOfficialBuild, 'false') }}:
                     WaitForWorkItemCompletion: true
+                    HelixAccessToken: ''
                     Creator: dotnet-wcf
