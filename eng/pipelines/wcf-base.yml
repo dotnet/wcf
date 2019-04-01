@@ -165,4 +165,3 @@ jobs:
                   ${{ if eq(parameters.isOfficialBuild, 'false') }}:
                     WaitForWorkItemCompletion: true
                     Creator: dotnet-wcf
-              condition: succeeded()
