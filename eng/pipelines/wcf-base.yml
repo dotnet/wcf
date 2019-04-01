@@ -142,7 +142,7 @@ jobs:
 
           - ${{ if eq(job.submitToHelix, 'true') }}:
             - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-              - template: ../common/templates/steps/send-to-helix.yml
+              - template: ../steps/send-to-helix.yml
                 parameters:
                   HelixSource: $(_helixSource)
                   HelixType: $(_helixType)
