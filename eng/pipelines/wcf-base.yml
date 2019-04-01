@@ -165,13 +165,3 @@ jobs:
                   ${{ if eq(parameters.isOfficialBuild, 'false') }}:
                     WaitForWorkItemCompletion: true
                     Creator: dotnet-wcf
-              condition: succeeded()
-
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Logs to VSTS
-            inputs:
-              PathToPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)'
-              PublishLocation: Container
-              ArtifactName: $(Agent.Os)_$(Agent.JobName)
-            continueOnError: true
-            condition: always()
