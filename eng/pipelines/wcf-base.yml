@@ -142,31 +142,31 @@ jobs:
 
           - ${{ if eq(job.submitToHelix, 'true') }}:
             - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            - template: ../common/templates/steps/send-to-helix.yml
-              parameters:
-                HelixSource: $(_helixSource)
-                HelixType: $(_helixType)
-                HelixTargetQueues: $(helixQueues)
-                XUnitProjects: $(_xUnitAllTestProjects)
-                XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
-                XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
-                XUnitRunnerVersion: $(_xUnitRunnerVersion)
-                IncludeDotNetCli: true
-                DotNetCliPackageType: $(_dotNetCliPackageType)
-                DotNetCliVersion: $(_dotNetCliVersion)
-                EnableXUnitReporter: true
-                HelixAccessToken: $(_helixAccessToken)
-                XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+              - template: ../common/templates/steps/send-to-helix.yml
+                parameters:
+                  HelixSource: $(_helixSource)
+                  HelixType: $(_helixType)
+                  HelixTargetQueues: $(helixQueues)
+                  XUnitProjects: $(_xUnitAllTestProjects)
+                  XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
+                  XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
+                  XUnitRunnerVersion: $(_xUnitRunnerVersion)
+                  IncludeDotNetCli: true
+                  DotNetCliPackageType: $(_dotNetCliPackageType)
+                  DotNetCliVersion: $(_dotNetCliVersion)
+                  EnableXUnitReporter: true
+                  HelixAccessToken: $(_helixAccessToken)
+                  XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
 
-                ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-                  WaitForWorkItemCompletion: false
-                  Creator: dotnet-bot
+                  ${{ if eq(parameters.isOfficialBuild, 'true') }}:
+                    WaitForWorkItemCompletion: false
+                    Creator: dotnet-bot
 
-                ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-                  WaitForWorkItemCompletion: true
-                  Creator: dotnet-wcf
+                  ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+                    WaitForWorkItemCompletion: true
+                    Creator: dotnet-wcf
+            condition: succeeded()
 
-                condition: succeeded()
             - task: PublishBuildArtifacts@1
               displayName: Publish Logs to VSTS
               inputs:
