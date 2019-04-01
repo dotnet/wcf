@@ -17,8 +17,6 @@ namespace System.ServiceModel
         where TChannel : class
     {
         private TChannel _channel;
-        private ChannelFactory<TChannel> _channelFactory;
-
         private object _syncRoot = new object();
 
         private static AsyncCallback s_onAsyncCallCompleted = Fx.ThunkCallback(new AsyncCallback(OnAsyncCallCompleted));
@@ -46,34 +44,49 @@ namespace System.ServiceModel
         protected ClientBase(Binding binding, EndpointAddress remoteAddress)
         {
             if (binding == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("binding");
-            if (remoteAddress == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("remoteAddress");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(binding));
+            }
 
-            _channelFactory = new ChannelFactory<TChannel>(binding, remoteAddress);
-            _channelFactory.TraceOpenAndClose = false;
+            if (remoteAddress == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(remoteAddress));
+            }
+
+            ChannelFactory = new ChannelFactory<TChannel>(binding, remoteAddress);
+            ChannelFactory.TraceOpenAndClose = false;
         }
 
         protected ClientBase(ServiceEndpoint endpoint)
         {
             if (endpoint == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("endpoint");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpoint));
+            }
 
-            _channelFactory = new ChannelFactory<TChannel>(endpoint);
-            _channelFactory.TraceOpenAndClose = false;
+            ChannelFactory = new ChannelFactory<TChannel>(endpoint);
+            ChannelFactory.TraceOpenAndClose = false;
         }
 
         protected ClientBase(InstanceContext callbackInstance, Binding binding, EndpointAddress remoteAddress)
         {
             if (callbackInstance == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("callbackInstance");
-            if (binding == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("binding");
-            if (remoteAddress == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("remoteAddress");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(callbackInstance));
+            }
 
-            _channelFactory = new DuplexChannelFactory<TChannel>(callbackInstance, binding, remoteAddress);
-            _channelFactory.TraceOpenAndClose = false;
+            if (binding == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(binding));
+            }
+
+            if (remoteAddress == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(remoteAddress));
+            }
+
+            ChannelFactory = new DuplexChannelFactory<TChannel>(callbackInstance, binding, remoteAddress);
+            ChannelFactory.TraceOpenAndClose = false;
         }
 
         protected T GetDefaultValueForInitialization<T>()
@@ -116,19 +129,13 @@ namespace System.ServiceModel
             }
         }
 
-        public ChannelFactory<TChannel> ChannelFactory
-        {
-            get
-            {
-                return _channelFactory;
-            }
-        }
+        public ChannelFactory<TChannel> ChannelFactory { get; }
 
         public ClientCredentials ClientCredentials
         {
             get
             {
-                return _channelFactory.Credentials;
+                return ChannelFactory.Credentials;
             }
         }
 
@@ -144,7 +151,7 @@ namespace System.ServiceModel
                 else
                 {
                     // we may have failed to create the channel under open, in which case we our factory wouldn't be open
-                    return _channelFactory.State;
+                    return ChannelFactory.State;
                 }
             }
         }
@@ -161,13 +168,13 @@ namespace System.ServiceModel
         {
             get
             {
-                return _channelFactory.Endpoint;
+                return ChannelFactory.Endpoint;
             }
         }
 
         public void Open()
         {
-            ((ICommunicationObject)this).Open(_channelFactory.InternalOpenTimeout);
+            ((ICommunicationObject)this).Open(ChannelFactory.InternalOpenTimeout);
         }
 
         public void Abort()
@@ -177,12 +184,12 @@ namespace System.ServiceModel
             {
                 channel.Abort();
             }
-            _channelFactory.Abort();
+            ChannelFactory.Abort();
         }
 
         public void Close()
         {
-            ((ICommunicationObject)this).Close(_channelFactory.InternalCloseTimeout);
+            ((ICommunicationObject)this).Close(ChannelFactory.InternalCloseTimeout);
         }
 
         private void CreateChannelInternal()
@@ -192,7 +199,7 @@ namespace System.ServiceModel
 
         protected virtual TChannel CreateChannel()
         {
-            return _channelFactory.CreateChannel();
+            return ChannelFactory.CreateChannel();
         }
 
         void IDisposable.Dispose()
@@ -203,7 +210,7 @@ namespace System.ServiceModel
         void ICommunicationObject.Open(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            _channelFactory.Open(timeoutHelper.RemainingTime());
+            ChannelFactory.Open(timeoutHelper.RemainingTime());
             InnerChannel.Open(timeoutHelper.RemainingTime());
         }
 
@@ -222,7 +229,7 @@ namespace System.ServiceModel
                     InnerChannel.Close(timeoutHelper.RemainingTime());
                 }
 
-                _channelFactory.Close(timeoutHelper.RemainingTime());
+                ChannelFactory.Close(timeoutHelper.RemainingTime());
             }
         }
 
@@ -288,7 +295,7 @@ namespace System.ServiceModel
 
         IAsyncResult ICommunicationObject.BeginClose(AsyncCallback callback, object state)
         {
-            return ((ICommunicationObject)this).BeginClose(_channelFactory.InternalCloseTimeout, callback, state);
+            return ((ICommunicationObject)this).BeginClose(ChannelFactory.InternalCloseTimeout, callback, state);
         }
 
         IAsyncResult ICommunicationObject.BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -303,7 +310,7 @@ namespace System.ServiceModel
 
         IAsyncResult ICommunicationObject.BeginOpen(AsyncCallback callback, object state)
         {
-            return ((ICommunicationObject)this).BeginOpen(_channelFactory.InternalOpenTimeout, callback, state);
+            return ((ICommunicationObject)this).BeginOpen(ChannelFactory.InternalOpenTimeout, callback, state);
         }
 
         IAsyncResult ICommunicationObject.BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -320,12 +327,12 @@ namespace System.ServiceModel
 
         internal IAsyncResult BeginFactoryOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _channelFactory.BeginOpen(timeout, callback, state);
+            return ChannelFactory.BeginOpen(timeout, callback, state);
         }
 
         internal void EndFactoryOpen(IAsyncResult result)
         {
-            _channelFactory.EndOpen(result);
+            ChannelFactory.EndOpen(result);
         }
 
         internal IAsyncResult BeginChannelOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -340,7 +347,7 @@ namespace System.ServiceModel
 
         internal IAsyncResult BeginFactoryClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _channelFactory.BeginClose(timeout, callback, state);
+            return ChannelFactory.BeginClose(timeout, callback, state);
         }
 
         internal void EndFactoryClose(IAsyncResult result)
@@ -351,7 +358,7 @@ namespace System.ServiceModel
             }
             else
             {
-                _channelFactory.EndClose(result);
+                ChannelFactory.EndClose(result);
             }
         }
 
@@ -388,21 +395,13 @@ namespace System.ServiceModel
         // ClientClassGenerator.cs as well, otherwise the ClientClassGenerator would generate wrong code.
         protected class InvokeAsyncCompletedEventArgs : AsyncCompletedEventArgs
         {
-            private object[] _results;
-
             internal InvokeAsyncCompletedEventArgs(object[] results, Exception error, bool cancelled, object userState)
                 : base(error, cancelled, userState)
             {
-                _results = results;
+                Results = results;
             }
 
-            public object[] Results
-            {
-                get
-                {
-                    return _results;
-                }
-            }
+            public object[] Results { get; }
         }
 
         // WARNING: Any changes in the signature/name of the following method ctor must be applied to the 
@@ -412,11 +411,11 @@ namespace System.ServiceModel
         {
             if (beginOperationDelegate == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("beginOperationDelegate");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(beginOperationDelegate));
             }
             if (endOperationDelegate == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("endOperationDelegate");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endOperationDelegate));
             }
 
             AsyncOperation asyncOperation = AsyncOperationManager.CreateOperation(userState);
@@ -490,32 +489,18 @@ namespace System.ServiceModel
 
         protected class AsyncOperationContext
         {
-            private AsyncOperation _asyncOperation;
-            private EndOperationDelegate _endDelegate;
             private SendOrPostCallback _completionCallback;
 
             internal AsyncOperationContext(AsyncOperation asyncOperation, EndOperationDelegate endDelegate, SendOrPostCallback completionCallback)
             {
-                _asyncOperation = asyncOperation;
-                _endDelegate = endDelegate;
+                AsyncOperation = asyncOperation;
+                EndDelegate = endDelegate;
                 _completionCallback = completionCallback;
             }
 
-            internal AsyncOperation AsyncOperation
-            {
-                get
-                {
-                    return _asyncOperation;
-                }
-            }
+            internal AsyncOperation AsyncOperation { get; }
 
-            internal EndOperationDelegate EndDelegate
-            {
-                get
-                {
-                    return _endDelegate;
-                }
-            }
+            internal EndOperationDelegate EndDelegate { get; }
 
             internal SendOrPostCallback CompletionCallback
             {
@@ -530,7 +515,7 @@ namespace System.ServiceModel
             where T : class
         {
             private ServiceChannel _channel;
-            private System.ServiceModel.Dispatcher.ImmutableClientRuntime _runtime;
+            private ImmutableClientRuntime _runtime;
 
             protected ChannelBase(ClientBase<T> client)
             {
@@ -539,7 +524,7 @@ namespace System.ServiceModel
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxChannelFactoryEndpointAddressUri));
                 }
 
-                ChannelFactory<T> cf = client._channelFactory;
+                ChannelFactory<T> cf = client.ChannelFactory;
                 cf.EnsureOpened();  // to prevent the NullReferenceException that is thrown if the ChannelFactory is not open when cf.ServiceChannelFactory is accessed.
                 _channel = cf.ServiceChannelFactory.CreateServiceChannel(client.Endpoint.Address, client.Endpoint.Address.Uri);
                 _channel.InstanceContext = cf.CallbackInstance;
@@ -579,7 +564,7 @@ namespace System.ServiceModel
                 return ret;
             }
 
-            private System.ServiceModel.Dispatcher.ProxyOperationRuntime GetOperationByName(string methodName)
+            private ProxyOperationRuntime GetOperationByName(string methodName)
             {
                 ProxyOperationRuntime op = _runtime.GetOperationByName(methodName);
                 if (op == null)

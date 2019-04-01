@@ -18,8 +18,6 @@ namespace System.ServiceModel.Channels
         private byte[] _buffer;
         private int _offset;
         private int _size;
-        private byte[] _envelopeBuffer;
-        private int _envelopeOffset;
         private int _envelopeSize;
         private bool _readIntoEnvelopeBuffer;
         private Message _pendingMessage;
@@ -51,24 +49,16 @@ namespace System.ServiceModel.Channels
             else
             {
                 // decode from the envelope buffer
-                int dummyOffset = _envelopeOffset;
-                return DecodeMessage(_envelopeBuffer, ref dummyOffset, ref _size, ref _isAtEOF, timeout);
+                int dummyOffset = EnvelopeOffset;
+                return DecodeMessage(EnvelopeBuffer, ref dummyOffset, ref _size, ref _isAtEOF, timeout);
             }
         }
 
         protected abstract Message DecodeMessage(byte[] buffer, ref int offset, ref int size, ref bool isAtEof, TimeSpan timeout);
 
-        protected byte[] EnvelopeBuffer
-        {
-            get { return _envelopeBuffer; }
-            set { _envelopeBuffer = value; }
-        }
+        protected byte[] EnvelopeBuffer { get; set; }
 
-        protected int EnvelopeOffset
-        {
-            get { return _envelopeOffset; }
-            set { _envelopeOffset = value; }
-        }
+        protected int EnvelopeOffset { get; set; }
 
         protected int EnvelopeSize
         {
@@ -350,7 +340,10 @@ namespace System.ServiceModel.Channels
                     if (EnvelopeBuffer != null)
                     {
                         if (!object.ReferenceEquals(buffer, EnvelopeBuffer))
+                        {
                             System.Buffer.BlockCopy(buffer, offset, EnvelopeBuffer, EnvelopeOffset, bytesRead);
+                        }
+
                         EnvelopeOffset += bytesRead;
                     }
 

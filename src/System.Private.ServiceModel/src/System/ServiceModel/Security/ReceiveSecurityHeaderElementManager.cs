@@ -14,9 +14,7 @@ namespace System.ServiceModel.Security
         private const int InitialCapacity = 8;
         private readonly ReceiveSecurityHeader _securityHeader;
         private ReceiveSecurityHeaderEntry[] _elements;
-        private int _count;
         private readonly string[] _headerIds;
-        private bool _isPrimaryTokenSigned = false;
 
         public ReceiveSecurityHeaderElementManager(ReceiveSecurityHeader securityHeader)
         {
@@ -28,16 +26,9 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public int Count
-        {
-            get { return _count; }
-        }
+        public int Count { get; private set; }
 
-        public bool IsPrimaryTokenSigned
-        {
-            get { return _isPrimaryTokenSigned; }
-            set { _isPrimaryTokenSigned = value; }
-        }
+        public bool IsPrimaryTokenSigned { get; set; } = false;
 
         public void AppendElement(
             ReceiveSecurityHeaderElementCategory elementCategory, object element,
@@ -48,7 +39,7 @@ namespace System.ServiceModel.Security
                 VerifyIdUniquenessInSecurityHeader(id);
             }
             EnsureCapacityToAdd();
-            _elements[_count++].SetElement(elementCategory, element, bindingMode, id, false, null, supportingTokenTracker);
+            _elements[Count++].SetElement(elementCategory, element, bindingMode, id, false, null, supportingTokenTracker);
         }
 
         public void AppendTimestamp(SecurityTimestamp timestamp)
@@ -65,35 +56,35 @@ namespace System.ServiceModel.Security
 
         private void EnsureCapacityToAdd()
         {
-            if (_count == _elements.Length)
+            if (Count == _elements.Length)
             {
                 ReceiveSecurityHeaderEntry[] newElements = new ReceiveSecurityHeaderEntry[_elements.Length * 2];
-                Array.Copy(_elements, 0, newElements, 0, _count);
+                Array.Copy(_elements, 0, newElements, 0, Count);
                 _elements = newElements;
             }
         }
 
         public object GetElement(int index)
         {
-            Fx.Assert(0 <= index && index < _count, "");
-            return _elements[index].element;
+            Fx.Assert(0 <= index && index < Count, "");
+            return _elements[index]._element;
         }
 
         public void GetElementEntry(int index, out ReceiveSecurityHeaderEntry element)
         {
-            Fx.Assert(0 <= index && index < _count, "index out of range");
+            Fx.Assert(0 <= index && index < Count, "index out of range");
             element = _elements[index];
         }
 
         public ReceiveSecurityHeaderElementCategory GetElementCategory(int index)
         {
-            Fx.Assert(0 <= index && index < _count, "index out of range");
-            return _elements[index].elementCategory;
+            Fx.Assert(0 <= index && index < Count, "index out of range");
+            return _elements[index]._elementCategory;
         }
 
         internal XmlDictionaryReader GetReader(int index, bool requiresEncryptedFormReader)
         {
-            Fx.Assert(0 <= index && index < _count, "index out of range");
+            Fx.Assert(0 <= index && index < Count, "index out of range");
             if (!requiresEncryptedFormReader)
             {
                 throw ExceptionHelper.PlatformNotSupported();
@@ -120,8 +111,8 @@ namespace System.ServiceModel.Security
 
         public void SetBindingMode(int index, ReceiveSecurityHeaderBindingModes bindingMode)
         {
-            Fx.Assert(0 <= index && index < _count, "index out of range");
-            _elements[index].bindingMode = bindingMode;
+            Fx.Assert(0 <= index && index < Count, "index out of range");
+            _elements[index]._bindingMode = bindingMode;
         }
 
         public void SetElementAfterDecryption(
@@ -129,8 +120,8 @@ namespace System.ServiceModel.Security
             ReceiveSecurityHeaderElementCategory elementCategory, object element,
             ReceiveSecurityHeaderBindingModes bindingMode, string id, byte[] decryptedBuffer, TokenTracker supportingTokenTracker)
         {
-            Fx.Assert(0 <= index && index < _count, "index out of range");
-            Fx.Assert(_elements[index].elementCategory == ReceiveSecurityHeaderElementCategory.EncryptedData, "Replaced item must be EncryptedData");
+            Fx.Assert(0 <= index && index < Count, "index out of range");
+            Fx.Assert(_elements[index]._elementCategory == ReceiveSecurityHeaderElementCategory.EncryptedData, "Replaced item must be EncryptedData");
             if (id != null)
             {
                 VerifyIdUniquenessInSecurityHeader(id);
@@ -147,9 +138,9 @@ namespace System.ServiceModel.Security
         private void VerifyIdUniquenessInSecurityHeader(string id)
         {
             Fx.Assert(id != null, "Uniqueness should only be tested for non-empty ids");
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < Count; i++)
             {
-                if (_elements[i].id == id || _elements[i].encryptedFormId == id)
+                if (_elements[i]._id == id || _elements[i]._encryptedFormId == id)
                 {
                     OnDuplicateId(id);
                 }

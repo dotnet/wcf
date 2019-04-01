@@ -4,8 +4,6 @@
 
 using System.Collections.Generic;
 using System.Runtime;
-using System.ServiceModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -31,11 +29,7 @@ namespace System.ServiceModel.Channels
     {
         private bool _aborted = false;
         private TimeSpan _defaultCloseTimeout;
-        private MaskingMode _defaultMaskingMode;
-        private TimeSpan _defaultSendTimeout;
         private AsyncCallback _onCloseChannelComplete;
-        private CommunicationState _state = CommunicationState.Created;
-        private ChannelSynchronizer _synchronizer;
         private object _thisLock = new object();
 
         protected ReliableChannelBinder(TChannel channel, MaskingMode maskingMode,
@@ -47,11 +41,11 @@ namespace System.ServiceModel.Channels
                 throw Fx.AssertAndThrow("ReliableChannelBinder was implemented with only 2 default masking modes, None and All.");
             }
 
-            _defaultMaskingMode = maskingMode;
+            DefaultMaskingMode = maskingMode;
             _defaultCloseTimeout = defaultCloseTimeout;
-            _defaultSendTimeout = defaultSendTimeout;
+            DefaultSendTimeout = defaultSendTimeout;
 
-            _synchronizer = new ChannelSynchronizer(this, channel, faultMode);
+            Synchronizer = new ChannelSynchronizer(this, channel, faultMode);
         }
 
         protected abstract bool CanGetChannelForReceive
@@ -73,7 +67,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return _synchronizer.CurrentChannel;
+                return Synchronizer.CurrentChannel;
             }
         }
 
@@ -81,25 +75,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return _synchronizer.Connected;
+                return Synchronizer.Connected;
             }
         }
 
-        public MaskingMode DefaultMaskingMode
-        {
-            get
-            {
-                return _defaultMaskingMode;
-            }
-        }
+        public MaskingMode DefaultMaskingMode { get; }
 
-        public TimeSpan DefaultSendTimeout
-        {
-            get
-            {
-                return _defaultSendTimeout;
-            }
-        }
+        public TimeSpan DefaultSendTimeout { get; }
 
         public abstract bool HasSession
         {
@@ -126,21 +108,9 @@ namespace System.ServiceModel.Channels
             get;
         }
 
-        public CommunicationState State
-        {
-            get
-            {
-                return _state;
-            }
-        }
+        public CommunicationState State { get; private set; } = CommunicationState.Created;
 
-        protected ChannelSynchronizer Synchronizer
-        {
-            get
-            {
-                return _synchronizer;
-            }
-        }
+        protected ChannelSynchronizer Synchronizer { get; }
 
         protected object ThisLock
         {
@@ -154,7 +124,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return _synchronizer.TolerateFaults;
+                return Synchronizer.TolerateFaults;
             }
         }
 
@@ -170,30 +140,30 @@ namespace System.ServiceModel.Channels
             {
                 _aborted = true;
 
-                if (_state == CommunicationState.Closed)
+                if (State == CommunicationState.Closed)
                 {
                     return;
                 }
 
-                _state = CommunicationState.Closing;
-                channel = _synchronizer.StopSynchronizing(true);
+                State = CommunicationState.Closing;
+                channel = Synchronizer.StopSynchronizing(true);
 
-                if (!this.MustCloseChannel)
+                if (!MustCloseChannel)
                 {
                     channel = null;
                 }
             }
 
-            _synchronizer.UnblockWaiters();
-            this.OnShutdown();
-            this.OnAbort();
+            Synchronizer.UnblockWaiters();
+            OnShutdown();
+            OnAbort();
 
             if (channel != null)
             {
                 channel.Abort();
             }
 
-            this.TransitionToClosed();
+            TransitionToClosed();
         }
 
         protected virtual void AddOutputHeaders(Message message)
@@ -208,19 +178,19 @@ namespace System.ServiceModel.Channels
 
             lock (ThisLock)
             {
-                if ((_state == CommunicationState.Closing)
-                    || (_state == CommunicationState.Closed))
+                if ((State == CommunicationState.Closing)
+                    || (State == CommunicationState.Closed))
                 {
                     return true;
                 }
 
-                if (_state == CommunicationState.Opened)
+                if (State == CommunicationState.Opened)
                 {
-                    _state = CommunicationState.Closing;
-                    channel = _synchronizer.StopSynchronizing(true);
+                    State = CommunicationState.Closing;
+                    channel = Synchronizer.StopSynchronizing(true);
                     abort = false;
 
-                    if (!this.MustCloseChannel)
+                    if (!MustCloseChannel)
                     {
                         channel = null;
                     }
@@ -244,11 +214,11 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            _synchronizer.UnblockWaiters();
+            Synchronizer.UnblockWaiters();
 
             if (abort)
             {
-                this.Abort();
+                Abort();
                 return true;
             }
             else
@@ -265,12 +235,12 @@ namespace System.ServiceModel.Channels
 
         public Task CloseAsync(TimeSpan timeout)
         {
-            return this.CloseAsync(timeout, _defaultMaskingMode);
+            return CloseAsync(timeout, DefaultMaskingMode);
         }
 
         public async Task CloseAsync(TimeSpan timeout, MaskingMode maskingMode)
         {
-            this.ThrowIfTimeoutNegative(timeout);
+            ThrowIfTimeoutNegative(timeout);
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             TChannel channel;
 
@@ -281,15 +251,15 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                this.OnShutdown();
-                await this.OnCloseAsync(timeoutHelper.RemainingTime());
+                OnShutdown();
+                await OnCloseAsync(timeoutHelper.RemainingTime());
 
                 if (channel != null)
                 {
-                    await this.CloseChannelAsync(channel, timeoutHelper.RemainingTime());
+                    await CloseChannelAsync(channel, timeoutHelper.RemainingTime());
                 }
 
-                this.TransitionToClosed();
+                TransitionToClosed();
             }
             catch (Exception e)
             {
@@ -298,9 +268,9 @@ namespace System.ServiceModel.Channels
                     throw;
                 }
 
-                this.Abort();
+                Abort();
 
-                if (!this.HandleException(e, maskingMode))
+                if (!HandleException(e, maskingMode))
                 {
                     throw;
                 }
@@ -311,14 +281,14 @@ namespace System.ServiceModel.Channels
         // block.
         private void CloseChannel(TChannel channel)
         {
-            if (!this.MustCloseChannel)
+            if (!MustCloseChannel)
             {
                 throw Fx.AssertAndThrow("MustCloseChannel is false when there is no receive loop and this method is called when there is a receive loop.");
             }
 
             if (_onCloseChannelComplete == null)
             {
-                _onCloseChannelComplete = Fx.ThunkCallback(new AsyncCallback(this.OnCloseChannelComplete));
+                _onCloseChannelComplete = Fx.ThunkCallback(new AsyncCallback(OnCloseChannelComplete));
             }
 
             try
@@ -330,7 +300,6 @@ namespace System.ServiceModel.Channels
                     channel.EndClose(result);
                 }
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -338,7 +307,7 @@ namespace System.ServiceModel.Channels
                     throw;
                 }
 
-                this.HandleException(e, MaskingMode.All);
+                HandleException(e, MaskingMode.All);
             }
         }
 
@@ -351,24 +320,24 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (_state == CommunicationState.Created)
+                if (State == CommunicationState.Created)
                 {
                     throw Fx.AssertAndThrow("The binder should not detect the inner channel's faults until after the binder is opened.");
                 }
 
-                if ((_state == CommunicationState.Faulted)
-                    || (_state == CommunicationState.Closed))
+                if ((State == CommunicationState.Faulted)
+                    || (State == CommunicationState.Closed))
                 {
                     return;
                 }
 
-                _state = CommunicationState.Faulted;
-                _synchronizer.StopSynchronizing(false);
+                State = CommunicationState.Faulted;
+                Synchronizer.StopSynchronizing(false);
             }
 
-            _synchronizer.UnblockWaiters();
+            Synchronizer.UnblockWaiters();
 
-            BinderExceptionHandler handler = this.Faulted;
+            BinderExceptionHandler handler = Faulted;
 
             if (handler != null)
             {
@@ -386,25 +355,25 @@ namespace System.ServiceModel.Channels
             else if (_aborted)
             {
                 return new CommunicationObjectAbortedException(SR.Format(
-                    SR.CommunicationObjectAborted1, this.GetType().ToString()));
+                    SR.CommunicationObjectAborted1, GetType().ToString()));
             }
             else
             {
-                return new ObjectDisposedException(this.GetType().ToString());
+                return new ObjectDisposedException(GetType().ToString());
             }
         }
 
         // Must be called within lock(ThisLock)
         private Exception GetClosedOrFaultedException(MaskingMode maskingMode)
         {
-            if (_state == CommunicationState.Faulted)
+            if (State == CommunicationState.Faulted)
             {
-                return this.GetFaultedException(maskingMode);
+                return GetFaultedException(maskingMode);
             }
-            else if ((_state == CommunicationState.Closing)
-               || (_state == CommunicationState.Closed))
+            else if ((State == CommunicationState.Closing)
+               || (State == CommunicationState.Closed))
             {
-                return this.GetClosedException(maskingMode);
+                return GetClosedException(maskingMode);
             }
             else
             {
@@ -422,7 +391,7 @@ namespace System.ServiceModel.Channels
             else
             {
                 return new CommunicationObjectFaultedException(SR.Format(
-                    SR.CommunicationObjectFaulted1, this.GetType().ToString()));
+                    SR.CommunicationObjectFaulted1, GetType().ToString()));
             }
         }
 
@@ -430,17 +399,17 @@ namespace System.ServiceModel.Channels
 
         public void HandleException(Exception e)
         {
-            this.HandleException(e, MaskingMode.All);
+            HandleException(e, MaskingMode.All);
         }
 
         protected bool HandleException(Exception e, MaskingMode maskingMode)
         {
-            if (this.TolerateFaults && (e is CommunicationObjectFaultedException))
+            if (TolerateFaults && (e is CommunicationObjectFaultedException))
             {
                 return true;
             }
 
-            if (this.IsHandleable(e))
+            if (IsHandleable(e))
             {
                 return ReliableChannelBinderHelper.MaskHandled(maskingMode);
             }
@@ -449,7 +418,7 @@ namespace System.ServiceModel.Channels
 
             if (maskUnhandled)
             {
-                this.RaiseOnException(e);
+                RaiseOnException(e);
             }
 
             return maskUnhandled;
@@ -457,12 +426,12 @@ namespace System.ServiceModel.Channels
 
         protected bool HandleException(Exception e, MaskingMode maskingMode, bool autoAborted)
         {
-            if (this.TolerateFaults && autoAborted && e is CommunicationObjectAbortedException)
+            if (TolerateFaults && autoAborted && e is CommunicationObjectAbortedException)
             {
                 return true;
             }
 
-            return this.HandleException(e, maskingMode);
+            return HandleException(e, maskingMode);
         }
 
         // ChannelSynchronizer helper, cannot take a lock.
@@ -503,19 +472,23 @@ namespace System.ServiceModel.Channels
                     throw;
                 }
 
-                this.HandleException(e, MaskingMode.All);
+                HandleException(e, MaskingMode.All);
             }
         }
 
         private void OnInnerChannelFaulted()
         {
-            if (!this.TolerateFaults)
+            if (!TolerateFaults)
+            {
                 return;
+            }
 
-            EventHandler handler = this.ConnectionLost;
+            EventHandler handler = ConnectionLost;
 
             if (handler != null)
+            {
                 handler(this, EventArgs.Empty);
+            }
         }
 
         protected abstract Task OnOpenAsync(TimeSpan timeout);
@@ -524,9 +497,9 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (_state == CommunicationState.Opening)
+                if (State == CommunicationState.Opening)
                 {
-                    _state = CommunicationState.Opened;
+                    State = CommunicationState.Opened;
                 }
             }
         }
@@ -535,23 +508,23 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (_state != CommunicationState.Created)
+                if (State != CommunicationState.Created)
                 {
                     Exception e = null;
 
-                    if ((_state == CommunicationState.Opening)
-                        || (_state == CommunicationState.Opened))
+                    if ((State == CommunicationState.Opening)
+                        || (State == CommunicationState.Opened))
                     {
                         if (!ReliableChannelBinderHelper.MaskUnhandled(maskingMode))
                         {
                             e = new InvalidOperationException(SR.Format(
                                 SR.CommunicationObjectCannotBeModifiedInState,
-                                this.GetType().ToString(), _state.ToString()));
+                                GetType().ToString(), State.ToString()));
                         }
                     }
                     else
                     {
-                        e = this.GetClosedOrFaultedException(maskingMode);
+                        e = GetClosedOrFaultedException(maskingMode);
                     }
 
                     if (e != null)
@@ -563,7 +536,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    _state = CommunicationState.Opening;
+                    State = CommunicationState.Opening;
                     return true;
                 }
             }
@@ -585,16 +558,16 @@ namespace System.ServiceModel.Channels
 
         public async Task OpenAsync(TimeSpan timeout)
         {
-            this.ThrowIfTimeoutNegative(timeout);
+            ThrowIfTimeoutNegative(timeout);
 
-            if (!this.OnOpening(_defaultMaskingMode))
+            if (!OnOpening(DefaultMaskingMode))
             {
                 return;
             }
 
             try
             {
-                await this.OnOpenAsync(timeout);
+                await OnOpenAsync(timeout);
             }
             catch (Exception e)
             {
@@ -603,26 +576,26 @@ namespace System.ServiceModel.Channels
                     throw;
                 }
 
-                this.Fault(null);
+                Fault(null);
 
-                if (_defaultMaskingMode == MaskingMode.None)
+                if (DefaultMaskingMode == MaskingMode.None)
                 {
                     throw;
                 }
                 else
                 {
-                    this.RaiseOnException(e);
+                    RaiseOnException(e);
                     return;
                 }
             }
 
-            await _synchronizer.StartSynchronizingAsync();
-            this.OnOpened();
+            await Synchronizer.StartSynchronizingAsync();
+            OnOpened();
         }
 
         private void RaiseOnException(Exception e)
         {
-            BinderExceptionHandler handler = this.OnException;
+            BinderExceptionHandler handler = OnException;
 
             if (handler != null)
             {
@@ -632,12 +605,12 @@ namespace System.ServiceModel.Channels
 
         public Task SendAsync(Message message, TimeSpan timeout)
         {
-            return this.SendAsync(message, timeout, _defaultMaskingMode);
+            return SendAsync(message, timeout, DefaultMaskingMode);
         }
 
         public async Task SendAsync(Message message, TimeSpan timeout, MaskingMode maskingMode)
         {
-            if (!this.ValidateOutputOperation(message, timeout, maskingMode))
+            if (!ValidateOutputOperation(message, timeout, maskingMode))
             {
                 return;
             }
@@ -647,7 +620,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                (bool success, TChannel channel) = await _synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode);
+                (bool success, TChannel channel) = await Synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode);
                 if (!success)
                 {
                     if (!ReliableChannelBinderHelper.MaskHandled(maskingMode))
@@ -664,16 +637,16 @@ namespace System.ServiceModel.Channels
                     return;
                 }
 
-                this.AddOutputHeaders(message);
+                AddOutputHeaders(message);
 
                 try
                 {
-                    await this.OnSendAsync(channel, message, timeoutHelper.RemainingTime());
+                    await OnSendAsync(channel, message, timeoutHelper.RemainingTime());
                 }
                 finally
                 {
-                    autoAborted = this.Synchronizer.Aborting;
-                    _synchronizer.ReturnChannel();
+                    autoAborted = Synchronizer.Aborting;
+                    Synchronizer.ReturnChannel();
                 }
             }
             catch (Exception e)
@@ -683,7 +656,7 @@ namespace System.ServiceModel.Channels
                     throw;
                 }
 
-                if (!this.HandleException(e, maskingMode, autoAborted))
+                if (!HandleException(e, maskingMode, autoAborted))
                 {
                     throw;
                 }
@@ -702,17 +675,17 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (this.State == CommunicationState.Created)
+                if (State == CommunicationState.Created)
                 {
                     throw Fx.AssertAndThrow("Messaging operations cannot be called when the binder is in the Created state.");
                 }
 
-                if (this.State == CommunicationState.Opening)
+                if (State == CommunicationState.Opening)
                 {
                     throw Fx.AssertAndThrow("Messaging operations cannot be called when the binder is in the Opening state.");
                 }
 
-                if (this.State == CommunicationState.Opened)
+                if (State == CommunicationState.Opened)
                 {
                     return true;
                 }
@@ -720,7 +693,7 @@ namespace System.ServiceModel.Channels
                 // state is Faulted, Closing, or Closed
                 if (throwDisposed)
                 {
-                    Exception e = this.GetClosedOrFaultedException(maskingMode);
+                    Exception e = GetClosedOrFaultedException(maskingMode);
 
                     if (e != null)
                     {
@@ -737,7 +710,7 @@ namespace System.ServiceModel.Channels
             if (timeout < TimeSpan.Zero)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("timeout", timeout, SR.SFxTimeoutOutOfRange0));
+                    new ArgumentOutOfRangeException(nameof(timeout), timeout, SR.SFxTimeoutOutOfRange0));
             }
         }
 
@@ -745,14 +718,14 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if ((_state != CommunicationState.Closing)
-                    && (_state != CommunicationState.Closed)
-                    && (_state != CommunicationState.Faulted))
+                if ((State != CommunicationState.Closing)
+                    && (State != CommunicationState.Closed)
+                    && (State != CommunicationState.Faulted))
                 {
                     throw Fx.AssertAndThrow("Caller cannot transition to the Closed state from a non-terminal state.");
                 }
 
-                _state = CommunicationState.Closed;
+                State = CommunicationState.Closed;
             }
         }
 
@@ -761,7 +734,7 @@ namespace System.ServiceModel.Channels
 
         public virtual Task<(bool, RequestContext)> TryReceiveAsync(TimeSpan timeout)
         {
-            return this.TryReceiveAsync(timeout, _defaultMaskingMode);
+            return TryReceiveAsync(timeout, DefaultMaskingMode);
         }
 
         public virtual async Task<(bool, RequestContext)> TryReceiveAsync(TimeSpan timeout, MaskingMode maskingMode)
@@ -771,7 +744,7 @@ namespace System.ServiceModel.Channels
                 throw Fx.AssertAndThrow("This method was implemented only for the case where we do not mask exceptions.");
             }
 
-            if (!this.ValidateInputOperation(timeout))
+            if (!ValidateInputOperation(timeout))
             {
                 return (true, null);
             }
@@ -784,8 +757,8 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    (bool success, TChannel channel) = await _synchronizer.TryGetChannelForInputAsync(
-                        this.CanGetChannelForReceive, timeoutHelper.RemainingTime());
+                    (bool success, TChannel channel) = await Synchronizer.TryGetChannelForInputAsync(
+                        CanGetChannelForReceive, timeoutHelper.RemainingTime());
                     success = !success;
                     if (channel == null)
                     {
@@ -795,7 +768,7 @@ namespace System.ServiceModel.Channels
                     try
                     {
                         RequestContext requestContext;
-                        (success, requestContext) = await this.OnTryReceiveAsync(channel, timeoutHelper.RemainingTime());
+                        (success, requestContext) = await OnTryReceiveAsync(channel, timeoutHelper.RemainingTime());
 
                         // timed out || got message, return immediately
                         if (!success || (requestContext != null))
@@ -804,12 +777,12 @@ namespace System.ServiceModel.Channels
                         }
 
                         // the underlying channel closed or faulted, retry
-                        _synchronizer.OnReadEof();
+                        Synchronizer.OnReadEof();
                     }
                     finally
                     {
-                        autoAborted = this.Synchronizer.Aborting;
-                        _synchronizer.ReturnChannel();
+                        autoAborted = Synchronizer.Aborting;
+                        Synchronizer.ReturnChannel();
                     }
                 }
                 catch (Exception e)
@@ -819,7 +792,7 @@ namespace System.ServiceModel.Channels
                         throw;
                     }
 
-                    if (!this.HandleException(e, maskingMode, autoAborted))
+                    if (!HandleException(e, maskingMode, autoAborted))
                     {
                         throw;
                     }
@@ -831,11 +804,11 @@ namespace System.ServiceModel.Channels
         {
             if (timeout < TimeSpan.Zero)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("timeout", timeout,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(timeout), timeout,
                     SR.SFxTimeoutOutOfRange0));
             }
 
-            return this.ThrowIfNotOpenedAndNotMasking(MaskingMode.All, false);
+            return ThrowIfNotOpenedAndNotMasking(MaskingMode.All, false);
         }
 
         protected bool ValidateOutputOperation(Message message, TimeSpan timeout, MaskingMode maskingMode)
@@ -851,12 +824,12 @@ namespace System.ServiceModel.Channels
                     SR.SFxTimeoutOutOfRange0));
             }
 
-            return this.ThrowIfNotOpenedAndNotMasking(maskingMode, true);
+            return ThrowIfNotOpenedAndNotMasking(maskingMode, true);
         }
 
         internal Task WaitForPendingOperationsAsync(TimeSpan timeout)
         {
-            return _synchronizer.WaitForPendingOperationsAsync(timeout);
+            return Synchronizer.WaitForPendingOperationsAsync(timeout);
         }
 
         protected RequestContext WrapMessage(Message message)
@@ -876,7 +849,7 @@ namespace System.ServiceModel.Channels
                 return null;
             }
 
-            if (!this.TolerateFaults && _defaultMaskingMode == MaskingMode.None)
+            if (!TolerateFaults && DefaultMaskingMode == MaskingMode.None)
             {
                 return context;
             }
@@ -886,28 +859,21 @@ namespace System.ServiceModel.Channels
 
         private abstract class BinderRequestContext : RequestContextBase
         {
-            private ReliableChannelBinder<TChannel> _binder;
             private MaskingMode _maskingMode;
 
             public BinderRequestContext(ReliableChannelBinder<TChannel> binder, Message message)
-                : base(message, binder._defaultCloseTimeout, binder._defaultSendTimeout)
+                : base(message, binder._defaultCloseTimeout, binder.DefaultSendTimeout)
             {
                 if (binder == null)
                 {
                     Fx.Assert("Argument binder cannot be null.");
                 }
 
-                _binder = binder;
-                _maskingMode = binder._defaultMaskingMode;
+                Binder = binder;
+                _maskingMode = binder.DefaultMaskingMode;
             }
 
-            protected ReliableChannelBinder<TChannel> Binder
-            {
-                get
-                {
-                    return _binder;
-                }
-            }
+            protected ReliableChannelBinder<TChannel> Binder { get; }
 
             protected MaskingMode MaskingMode
             {
@@ -919,7 +885,7 @@ namespace System.ServiceModel.Channels
 
             public void SetMaskingMode(MaskingMode maskingMode)
             {
-                if (_binder._defaultMaskingMode != MaskingMode.All)
+                if (Binder.DefaultMaskingMode != MaskingMode.All)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
                 }
@@ -930,35 +896,25 @@ namespace System.ServiceModel.Channels
 
         protected class ChannelSynchronizer
         {
-            private bool _aborting; // Indicates the current channel is being aborted, not the synchronizer.
             private ReliableChannelBinder<TChannel> _binder;
             private int _count = 0;
-            private TChannel _currentChannel;
             private InterruptibleWaitObject _drainEvent;
             private TolerateFaultsMode _faultMode;
             private Queue<IWaiter> _getChannelQueue;
             private bool _innerChannelFaulted;
             private EventHandler _onChannelFaulted;
             private State _state = State.Created;
-            private bool _tolerateFaults = true;
-            private AsyncLock _thisLock = new AsyncLock();
             private Queue<IWaiter> _waitQueue;
 
             public ChannelSynchronizer(ReliableChannelBinder<TChannel> binder, TChannel channel,
                 TolerateFaultsMode faultMode)
             {
                 _binder = binder;
-                _currentChannel = channel;
+                CurrentChannel = channel;
                 _faultMode = faultMode;
             }
 
-            public bool Aborting
-            {
-                get
-                {
-                    return _aborting;
-                }
-            }
+            public bool Aborting { get; private set; }
 
             public bool Connected
             {
@@ -969,43 +925,25 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            public TChannel CurrentChannel
-            {
-                get
-                {
-                    return _currentChannel;
-                }
-            }
+            public TChannel CurrentChannel { get; private set; }
 
-            private AsyncLock ThisLock
-            {
-                get
-                {
-                    return _thisLock;
-                }
-            }
+            private AsyncLock ThisLock { get; } = new AsyncLock();
 
-            public bool TolerateFaults
-            {
-                get
-                {
-                    return _tolerateFaults;
-                }
-            }
+            public bool TolerateFaults { get; private set; } = true;
 
             // Server only API.
             public TChannel AbortCurentChannel()
             {
                 using (ThisLock.TakeLock())
                 {
-                    if (!_tolerateFaults)
+                    if (!TolerateFaults)
                     {
                         throw Fx.AssertAndThrow("It is only valid to abort the current channel when masking faults");
                     }
 
                     if (_state == State.ChannelOpening)
                     {
-                        _aborting = true;
+                        Aborting = true;
                     }
                     else if (_state == State.ChannelOpened)
                     {
@@ -1015,7 +953,7 @@ namespace System.ServiceModel.Channels
                         }
                         else
                         {
-                            _aborting = true;
+                            Aborting = true;
                             _state = State.ChannelClosing;
                         }
                     }
@@ -1024,7 +962,7 @@ namespace System.ServiceModel.Channels
                         return null;
                     }
 
-                    return _currentChannel;
+                    return CurrentChannel;
                 }
             }
 
@@ -1039,9 +977,9 @@ namespace System.ServiceModel.Channels
 
                 using (ThisLock.TakeLock())
                 {
-                    if (this.ValidateOpened())
+                    if (ValidateOpened())
                     {
-                        channel = _currentChannel;
+                        channel = CurrentChannel;
                         return true;
                     }
                     else
@@ -1070,7 +1008,7 @@ namespace System.ServiceModel.Channels
 
                 using (await ThisLock.TakeLockAsync())
                 {
-                    if (this.ValidateOpened())
+                    if (ValidateOpened())
                     {
                         // This is called only during the RM CS phase. In this phase, there are 2
                         // valid states between Request calls, ChannelOpened and NoChannel.
@@ -1084,20 +1022,20 @@ namespace System.ServiceModel.Channels
                             throw Fx.AssertAndThrow("The caller may only invoke this EnsureChannel during the CreateSequence negotiation. ChannelOpening and ChannelClosing are invalid states during this phase of the negotiation.");
                         }
 
-                        if (!_tolerateFaults)
+                        if (!TolerateFaults)
                         {
                             fault = true;
                         }
                         else
                         {
-                            if (this.GetCurrentChannelIfCreated() != null)
+                            if (GetCurrentChannelIfCreated() != null)
                             {
                                 return true;
                             }
 
                             if (await _binder.TryGetChannelAsync(TimeSpan.Zero))
                             {
-                                if (_currentChannel == null)
+                                if (CurrentChannel == null)
                                 {
                                     return false;
                                 }
@@ -1134,10 +1072,10 @@ namespace System.ServiceModel.Channels
                     throw Fx.AssertAndThrow("This method may only be called in the NoChannel state.");
                 }
 
-                if ((_currentChannel != null)
-                    && (_currentChannel.State == CommunicationState.Created))
+                if ((CurrentChannel != null)
+                    && (CurrentChannel.State == CommunicationState.Created))
                 {
-                    return _currentChannel;
+                    return CurrentChannel;
                 }
                 else
                 {
@@ -1175,13 +1113,13 @@ namespace System.ServiceModel.Channels
 
                 using (ThisLock.TakeLock())
                 {
-                    if (_currentChannel != faultedChannel)
+                    if (CurrentChannel != faultedChannel)
                     {
                         return;
                     }
 
                     // The synchronizer is already closed or aborted.
-                    if (!this.ValidateOpened())
+                    if (!ValidateOpened())
                     {
                         return;
                     }
@@ -1193,14 +1131,14 @@ namespace System.ServiceModel.Channels
                             faultedChannel.Faulted -= _onChannelFaulted;
                         }
 
-                        faultBinder = !_tolerateFaults;
+                        faultBinder = !TolerateFaults;
                         _state = State.ChannelClosing;
                         _innerChannelFaulted = true;
 
                         if (!faultBinder && _count == 0)
                         {
                             _state = State.NoChannel;
-                            _aborting = false;
+                            Aborting = false;
                             raiseInnerChannelFaulted = true;
                             _innerChannelFaulted = false;
                         }
@@ -1236,12 +1174,12 @@ namespace System.ServiceModel.Channels
 
                 using (ThisLock.TakeLock())
                 {
-                    if (_currentChannel == null)
+                    if (CurrentChannel == null)
                     {
                         throw Fx.AssertAndThrow("Caller must ensure that field currentChannel is set before opening the channel.");
                     }
 
-                    if (this.ValidateOpened())
+                    if (ValidateOpened())
                     {
                         if (_state != State.ChannelOpening)
                         {
@@ -1249,7 +1187,7 @@ namespace System.ServiceModel.Channels
                         }
 
                         _state = State.ChannelOpened;
-                        this.SetTolerateFaults();
+                        SetTolerateFaults();
 
                         _count += 1;
                         _count += (_getChannelQueue == null) ? 0 : _getChannelQueue.Count;
@@ -1257,7 +1195,7 @@ namespace System.ServiceModel.Channels
 
                         temp1 = _getChannelQueue;
                         temp2 = _waitQueue;
-                        channel = _currentChannel;
+                        channel = CurrentChannel;
 
                         _getChannelQueue = null;
                         _waitQueue = null;
@@ -1280,8 +1218,8 @@ namespace System.ServiceModel.Channels
                     return false;
                 }
 
-                this.SetWaiters(temp1, channel);
-                this.SetWaiters(temp2, channel);
+                SetWaiters(temp1, channel);
+                SetWaiters(temp2, channel);
                 return true;
             }
 
@@ -1291,7 +1229,7 @@ namespace System.ServiceModel.Channels
 
                 using (ThisLock.TakeLock())
                 {
-                    if (!this.ValidateOpened())
+                    if (!ValidateOpened())
                     {
                         return;
                     }
@@ -1301,7 +1239,7 @@ namespace System.ServiceModel.Channels
                         throw Fx.AssertAndThrow("The state must be set to ChannelOpening before the caller attempts to open the channel.");
                     }
 
-                    waiter = this.GetChannelWaiter();
+                    waiter = GetChannelWaiter();
 
                     if (waiter == null)
                     {
@@ -1322,14 +1260,14 @@ namespace System.ServiceModel.Channels
                         throw Fx.AssertAndThrow("Caller must ensure that OnReadEof is called before ReturnChannel.");
                     }
 
-                    if (this.ValidateOpened())
+                    if (ValidateOpened())
                     {
                         if ((_state != State.ChannelOpened) && (_state != State.ChannelClosing))
                         {
                             throw Fx.AssertAndThrow("Since count is positive, the only valid states are ChannelOpened and ChannelClosing.");
                         }
 
-                        if (_currentChannel.State != CommunicationState.Faulted)
+                        if (CurrentChannel.State != CommunicationState.Faulted)
                         {
                             _state = State.ChannelClosing;
                         }
@@ -1350,7 +1288,7 @@ namespace System.ServiceModel.Channels
 
                 using (ThisLock.TakeLock())
                 {
-                    if (!this.ValidateOpened())
+                    if (!ValidateOpened())
                     {
                         return false;
                     }
@@ -1391,30 +1329,30 @@ namespace System.ServiceModel.Channels
                     _count--;
                     drained = (_count == 0) && (_drainEvent != null);
 
-                    if (this.ValidateOpened())
+                    if (ValidateOpened())
                     {
                         if ((_state != State.ChannelOpened) && (_state != State.ChannelClosing))
                         {
                             throw Fx.AssertAndThrow("ChannelOpened and ChannelClosing are the only 2 valid states when count is positive.");
                         }
 
-                        if (_currentChannel.State == CommunicationState.Faulted)
+                        if (CurrentChannel.State == CommunicationState.Faulted)
                         {
-                            faultBinder = !_tolerateFaults;
+                            faultBinder = !TolerateFaults;
                             _innerChannelFaulted = true;
                             _state = State.ChannelClosing;
                         }
 
                         if (!faultBinder && (_state == State.ChannelClosing) && (_count == 0))
                         {
-                            channel = _currentChannel;
+                            channel = CurrentChannel;
                             raiseInnerChannelFaulted = _innerChannelFaulted;
                             _innerChannelFaulted = false;
 
                             _state = State.NoChannel;
-                            _aborting = false;
+                            Aborting = false;
 
-                            waiter = this.GetChannelWaiter();
+                            waiter = GetChannelWaiter();
 
                             if (waiter != null)
                             {
@@ -1468,14 +1406,14 @@ namespace System.ServiceModel.Channels
                         throw Fx.AssertAndThrow("SetChannel is only valid in the NoChannel and ChannelOpening states");
                     }
 
-                    if (!_tolerateFaults)
+                    if (!TolerateFaults)
                     {
                         throw Fx.AssertAndThrow("SetChannel is only valid when masking faults");
                     }
 
-                    if (this.ValidateOpened())
+                    if (ValidateOpened())
                     {
-                        _currentChannel = channel;
+                        CurrentChannel = channel;
                         return true;
                     }
                     else
@@ -1489,19 +1427,19 @@ namespace System.ServiceModel.Channels
             {
                 if (_faultMode == TolerateFaultsMode.Never)
                 {
-                    _tolerateFaults = false;
+                    TolerateFaults = false;
                 }
                 else if (_faultMode == TolerateFaultsMode.IfNotSecuritySession)
                 {
-                    _tolerateFaults = !_binder.HasSecuritySession(_currentChannel);
+                    TolerateFaults = !_binder.HasSecuritySession(CurrentChannel);
                 }
 
                 if (_onChannelFaulted == null)
                 {
-                    _onChannelFaulted = new EventHandler(this.OnChannelFaulted);
+                    _onChannelFaulted = new EventHandler(OnChannelFaulted);
                 }
 
-                _currentChannel.Faulted += _onChannelFaulted;
+                CurrentChannel.Faulted += _onChannelFaulted;
             }
 
             private void SetWaiters(Queue<IWaiter> waiters, TChannel channel)
@@ -1533,7 +1471,7 @@ namespace System.ServiceModel.Channels
                         return;
                     }
 
-                    if (_currentChannel == null)
+                    if (CurrentChannel == null)
                     {
                         if (!await _binder.TryGetChannelAsync(TimeSpan.Zero))
                         {
@@ -1541,7 +1479,7 @@ namespace System.ServiceModel.Channels
                         }
                     }
 
-                    if (_currentChannel == null)
+                    if (CurrentChannel == null)
                     {
                         return;
                     }
@@ -1550,7 +1488,7 @@ namespace System.ServiceModel.Channels
                     {
                         // Channel is already opened.
                         _state = State.ChannelOpened;
-                        this.SetTolerateFaults();
+                        SetTolerateFaults();
                     }
                 }
             }
@@ -1563,20 +1501,20 @@ namespace System.ServiceModel.Channels
                     {
                         _state = close ? State.Closed : State.Faulted;
 
-                        if ((_currentChannel != null) && (_onChannelFaulted != null))
+                        if ((CurrentChannel != null) && (_onChannelFaulted != null))
                         {
-                            _currentChannel.Faulted -= _onChannelFaulted;
+                            CurrentChannel.Faulted -= _onChannelFaulted;
                         }
                     }
 
-                    return _currentChannel;
+                    return CurrentChannel;
                 }
             }
 
             // Must be called under a lock.
             private bool ThrowIfNecessary(MaskingMode maskingMode)
             {
-                if (this.ValidateOpened())
+                if (ValidateOpened())
                 {
                     return true;
                 }
@@ -1603,12 +1541,12 @@ namespace System.ServiceModel.Channels
 
             public Task<(bool success, TChannel channel)> TryGetChannelForInputAsync(bool canGetChannel, TimeSpan timeout)
             {
-                return this.TryGetChannelAsync(canGetChannel, false, timeout, MaskingMode.All);
+                return TryGetChannelAsync(canGetChannel, false, timeout, MaskingMode.All);
             }
 
             public Task<(bool success, TChannel channel)> TryGetChannelForOutputAsync(TimeSpan timeout, MaskingMode maskingMode)
             {
-                return this.TryGetChannelAsync(true, true, timeout, maskingMode);
+                return TryGetChannelAsync(true, true, timeout, maskingMode);
             }
 
             private Task<(bool success, TChannel channel)> TryGetChannelAsync(bool canGetChannel, bool canCauseFault, TimeSpan timeout,
@@ -1620,23 +1558,23 @@ namespace System.ServiceModel.Channels
 
                 lock (ThisLock)
                 {
-                    if (!this.ThrowIfNecessary(maskingMode))
+                    if (!ThrowIfNecessary(maskingMode))
                     {
                         return Task.FromResult((true, (TChannel)null));
                     }
 
                     if (_state == State.ChannelOpened)
                     {
-                        if (_currentChannel == null)
+                        if (CurrentChannel == null)
                         {
                             throw Fx.AssertAndThrow("Field currentChannel cannot be null in the ChannelOpened state.");
                         }
 
                         _count++;
-                        return Task.FromResult((true, _currentChannel));
+                        return Task.FromResult((true, CurrentChannel));
                     }
 
-                    if (!_tolerateFaults
+                    if (!TolerateFaults
                         && ((_state == State.ChannelClosing)
                         || (_state == State.NoChannel)))
                     {
@@ -1652,7 +1590,7 @@ namespace System.ServiceModel.Channels
                         || (_state == State.ChannelClosing))
                     {
                         waiter = new TaskWaiter(this, canGetChannel, null, timeout, maskingMode, _binder.ChannelParameters);
-                        this.GetQueue(canGetChannel).Enqueue(waiter);
+                        GetQueue(canGetChannel).Enqueue(waiter);
                     }
                     else
                     {
@@ -1662,7 +1600,7 @@ namespace System.ServiceModel.Channels
                         }
 
                         waiter = new TaskWaiter(this, canGetChannel,
-                            this.GetCurrentChannelIfCreated(), timeout, maskingMode,
+                            GetCurrentChannelIfCreated(), timeout, maskingMode,
                             _binder.ChannelParameters);
 
                         _state = State.ChannelOpening;
@@ -1699,8 +1637,8 @@ namespace System.ServiceModel.Channels
                 }
 
                 bool close = _state == State.Closed;
-                this.UnblockWaiters(temp1, close);
-                this.UnblockWaiters(temp2, close);
+                UnblockWaiters(temp1, close);
+                UnblockWaiters(temp2, close);
             }
 
             private void UnblockWaiters(Queue<IWaiter> waiters, bool close)
@@ -1779,7 +1717,6 @@ namespace System.ServiceModel.Channels
 
             private sealed class TaskWaiter : IWaiter
             {
-                private bool _canGetChannel;
                 private TChannel _channel;
                 private ChannelParameterCollection _channelParameters;
                 private bool _getChannel = false;
@@ -1801,7 +1738,7 @@ namespace System.ServiceModel.Channels
                     }
 
                     _synchronizer = synchronizer;
-                    _canGetChannel = canGetChannel;
+                    CanGetChannel = canGetChannel;
                     _channel = channel;
                     _timeoutHelper = new TimeoutHelper(timeout);
                     _maskingMode = maskingMode;
@@ -1809,13 +1746,7 @@ namespace System.ServiceModel.Channels
                     _tcs = new TaskCompletionSource<object>();
                 }
 
-                public bool CanGetChannel
-                {
-                    get
-                    {
-                        return _canGetChannel;
-                    }
-                }
+                public bool CanGetChannel { get; }
 
                 public void Close()
                 {
@@ -1831,7 +1762,7 @@ namespace System.ServiceModel.Channels
 
                 public void GetChannel(bool onUserThread)
                 {
-                    if (!this.CanGetChannel)
+                    if (!CanGetChannel)
                     {
                         throw Fx.AssertAndThrow("This waiter must wait for a channel thus the caller cannot attempt to get a channel.");
                     }
@@ -1842,12 +1773,7 @@ namespace System.ServiceModel.Channels
 
                 public void Set(TChannel channel)
                 {
-                    if (channel == null)
-                    {
-                        throw Fx.AssertAndThrow("Argument channel cannot be null. Caller must call Fault or Close instead.");
-                    }
-
-                    _channel = channel;
+                    _channel = channel ?? throw Fx.AssertAndThrow("Argument channel cannot be null. Caller must call Fault or Close instead.");
                     _tcs.TrySetResult(null);
                 }
 
@@ -1899,7 +1825,7 @@ namespace System.ServiceModel.Channels
 
                     if (_synchronizer.OnChannelOpened(this))
                     {
-                        this.Set(channel);
+                        Set(channel);
                     }
 
                     return true;
@@ -1907,11 +1833,11 @@ namespace System.ServiceModel.Channels
 
                 public async Task<(bool success, TChannel channel)> TryWaitAsync()
                 {
-                    if (!await this.WaitAsync())
+                    if (!await WaitAsync())
                     {
                         return (false, null);
                     }
-                    else if (_getChannel && !await this.TryGetChannelAsync())
+                    else if (_getChannel && !await TryGetChannelAsync())
                     {
                         return (false, null);
                     }
@@ -1981,7 +1907,7 @@ namespace System.ServiceModel.Channels
             {
                 if (message != null)
                 {
-                    this.Binder.SendAsync(message, timeout, this.MaskingMode).GetAwaiter().GetResult();
+                    Binder.SendAsync(message, timeout, MaskingMode).GetAwaiter().GetResult();
                 }
             }
         }
@@ -1994,17 +1920,12 @@ namespace System.ServiceModel.Channels
                 RequestContext innerContext, Message message)
                 : base(binder, message)
             {
-                if ((binder._defaultMaskingMode != MaskingMode.All) && !binder.TolerateFaults)
+                if ((binder.DefaultMaskingMode != MaskingMode.All) && !binder.TolerateFaults)
                 {
                     throw Fx.AssertAndThrow("This request context is designed to catch exceptions. Thus it cannot be used if the caller expects no exception handling.");
                 }
 
-                if (innerContext == null)
-                {
-                    throw Fx.AssertAndThrow("Argument innerContext cannot be null.");
-                }
-
-                _innerContext = innerContext;
+                _innerContext = innerContext ?? throw Fx.AssertAndThrow("Argument innerContext cannot be null.");
             }
 
             protected override void OnAbort()
@@ -2032,7 +1953,7 @@ namespace System.ServiceModel.Channels
                         throw;
                     }
 
-                    if (!this.Binder.HandleException(e, this.MaskingMode))
+                    if (!Binder.HandleException(e, MaskingMode))
                     {
                         throw;
                     }
@@ -2051,7 +1972,10 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     if (message != null)
-                        this.Binder.AddOutputHeaders(message);
+                    {
+                        Binder.AddOutputHeaders(message);
+                    }
+
                     await Task.Factory.FromAsync(_innerContext.BeginReply, _innerContext.EndReply, message, timeout, null);
                 }
                 catch (ObjectDisposedException) { }
@@ -2062,7 +1986,7 @@ namespace System.ServiceModel.Channels
                         throw;
                     }
 
-                    if (!this.Binder.HandleException(e, this.MaskingMode))
+                    if (!Binder.HandleException(e, MaskingMode))
                     {
                         throw;
                     }
@@ -2118,12 +2042,16 @@ namespace System.ServiceModel.Channels
                 catch (Exception e)
                 {
                     if (Fx.IsFatal(e))
+                    {
                         throw;
+                    }
 
                     if (receiveThrowing)
                     {
                         if (!MaskHandled(binder.DefaultMaskingMode) || !binder.IsHandleable(e))
+                        {
                             throw;
+                        }
 
                         receiveThrowing = false;
                     }
@@ -2135,14 +2063,20 @@ namespace System.ServiceModel.Channels
                 finally
                 {
                     if (message != null)
+                    {
                         message.Close();
+                    }
 
                     if (receiveThrowing)
+                    {
                         channel.Abort();
+                    }
                 }
 
                 if (lastIteration || channel.State != CommunicationState.Opened)
+                {
                     break;
+                }
 
                 iterationTimeout = timeoutHelper.RemainingTime();
                 lastIteration = (iterationTimeout == TimeSpan.Zero);
@@ -2182,12 +2116,16 @@ namespace System.ServiceModel.Channels
                 catch (Exception e)
                 {
                     if (Fx.IsFatal(e))
+                    {
                         throw;
+                    }
 
                     if (receiveThrowing)
                     {
                         if (!MaskHandled(binder.DefaultMaskingMode) || !binder.IsHandleable(e))
+                        {
                             throw;
+                        }
 
                         receiveThrowing = false;
                     }
@@ -2205,11 +2143,15 @@ namespace System.ServiceModel.Channels
                     }
 
                     if (receiveThrowing)
+                    {
                         channel.Abort();
+                    }
                 }
 
                 if (lastIteration || channel.State != CommunicationState.Opened)
+                {
                     break;
+                }
 
                 iterationTimeout = timeoutHelper.RemainingTime();
                 lastIteration = (iterationTimeout == TimeSpan.Zero);

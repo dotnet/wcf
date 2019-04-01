@@ -2,12 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.ObjectModel;
-using System.IdentityModel;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
-using System.Runtime.CompilerServices;
 using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
@@ -26,7 +23,7 @@ namespace System.ServiceModel.Security.Tokens
             )
             : base(tokenXml, proofToken, effectiveTime, expirationTime, internalTokenReference, externalTokenReference, authorizationPolicies)
         {
-            this.TokenXmlBuffer = tokenXmlBuffer;
+            TokenXmlBuffer = tokenXmlBuffer;
         }
 
         public XmlBuffer TokenXmlBuffer { get; }

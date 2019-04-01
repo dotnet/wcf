@@ -34,14 +34,14 @@ namespace System.IdentityModel.Tokens
             }
 
             _id = GetId(tokenXml);
-            this.TokenXml = tokenXml;
-            this.ProofToken = proofToken;
+            TokenXml = tokenXml;
+            ProofToken = proofToken;
             _effectiveTime = effectiveTime.ToUniversalTime();
             _expirationTime = expirationTime.ToUniversalTime();
 
-            this.InternalTokenReference = internalTokenReference;
-            this.ExternalTokenReference = externalTokenReference;
-            this.AuthorizationPolicies = authorizationPolicies ?? EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance;
+            InternalTokenReference = internalTokenReference;
+            ExternalTokenReference = externalTokenReference;
+            AuthorizationPolicies = authorizationPolicies ?? EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance;
         }
 
         public override string Id
@@ -74,9 +74,13 @@ namespace System.IdentityModel.Tokens
             get
             {
                 if (ProofToken != null)
+                {
                     return ProofToken.SecurityKeys;
+                }
                 else
+                {
                     return EmptyReadOnlyCollection<SecurityKey>.Instance;
+                }
             }
         }
 
@@ -87,9 +91,15 @@ namespace System.IdentityModel.Tokens
             writer.WriteLine("   validFrom: {0}", ValidFrom);
             writer.WriteLine("   validTo: {0}", ValidTo);
             if (InternalTokenReference != null)
+            {
                 writer.WriteLine("   InternalTokenReference: {0}", InternalTokenReference);
+            }
+
             if (ExternalTokenReference != null)
+            {
                 writer.WriteLine("   ExternalTokenReference: {0}", ExternalTokenReference);
+            }
+
             writer.WriteLine("   Token Element: ({0}, {1})", TokenXml.LocalName, TokenXml.NamespaceURI);
             return writer.ToString();
         }
@@ -130,10 +140,14 @@ namespace System.IdentityModel.Tokens
         public override bool CanCreateKeyIdentifierClause<T>()
         {
             if (InternalTokenReference != null && typeof(T) == InternalTokenReference.GetType())
+            {
                 return true;
+            }
 
             if (ExternalTokenReference != null && typeof(T) == ExternalTokenReference.GetType())
+            {
                 return true;
+            }
 
             return false;
         }
@@ -141,10 +155,14 @@ namespace System.IdentityModel.Tokens
         public override T CreateKeyIdentifierClause<T>()
         {
             if (InternalTokenReference != null && typeof(T) == InternalTokenReference.GetType())
+            {
                 return (T)InternalTokenReference;
+            }
 
             if (ExternalTokenReference != null && typeof(T) == ExternalTokenReference.GetType())
+            {
                 return (T)ExternalTokenReference;
+            }
 
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.UnableToCreateTokenReference));
         }

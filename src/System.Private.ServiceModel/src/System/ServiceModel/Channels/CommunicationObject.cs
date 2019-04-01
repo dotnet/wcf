@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Reflection;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.ServiceModel.Diagnostics;
@@ -14,10 +12,8 @@ namespace System.ServiceModel.Channels
 {
     public abstract class CommunicationObject : ICommunicationObject, IAsyncCommunicationObject
     {
-        private bool _aborted;
         private bool _closeCalled;
         private ExceptionQueue _exceptionQueue;
-        private object _mutex;
         private bool _onClosingCalled;
         private bool _onClosedCalled;
         private bool _onOpeningCalled;
@@ -26,7 +22,6 @@ namespace System.ServiceModel.Channels
         private bool _raisedClosing;
         private bool _raisedFaulted;
         private bool _traceOpenAndClose;
-        private object _eventSender;
         private CommunicationState _state;
         internal bool _isSynchronousOpen;
         internal bool _isSynchronousClose;
@@ -40,8 +35,8 @@ namespace System.ServiceModel.Channels
 
         protected CommunicationObject(object mutex)
         {
-            _mutex = mutex;
-            _eventSender = this;
+            ThisLock = mutex;
+            EventSender = this;
             _state = CommunicationState.Created;
         }
 
@@ -94,16 +89,9 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        internal bool Aborted
-        {
-            get { return _aborted; }
-        }
+        internal bool Aborted { get; private set; }
 
-        internal object EventSender
-        {
-            get { return _eventSender; }
-            set { _eventSender = value; }
-        }
+        internal object EventSender { get; set; }
 
         protected bool IsDisposed
         {
@@ -115,10 +103,7 @@ namespace System.ServiceModel.Channels
             get { return _state; }
         }
 
-        protected object ThisLock
-        {
-            get { return _mutex; }
-        }
+        protected object ThisLock { get; }
 
         protected abstract TimeSpan DefaultCloseTimeout { get; }
         protected abstract TimeSpan DefaultOpenTimeout { get; }
@@ -143,9 +128,12 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (_aborted || _state == CommunicationState.Closed)
+                if (Aborted || _state == CommunicationState.Closed)
+                {
                     return;
-                _aborted = true;
+                }
+
+                Aborted = true;
 
                 _state = CommunicationState.Closing;
             }
@@ -156,13 +144,17 @@ namespace System.ServiceModel.Channels
             {
                 OnClosing();
                 if (!_onClosingCalled)
+                {
                     throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnClosing"), Guid.Empty, this);
+                }
 
                 OnAbort();
 
                 OnClosed();
                 if (!_onClosedCalled)
+                {
                     throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnClosed"), Guid.Empty, this);
+                }
             }
             finally
             {
@@ -209,16 +201,19 @@ namespace System.ServiceModel.Channels
         async Task IAsyncCommunicationObject.CloseAsync(TimeSpan timeout)
         {
             if (timeout < TimeSpan.Zero)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("timeout", SR.SFxTimeoutOutOfRange0));
-
+                    new ArgumentOutOfRangeException(nameof(timeout), SR.SFxTimeoutOutOfRange0));
+            }
 
             CommunicationState originalState;
             lock (ThisLock)
             {
                 originalState = _state;
                 if (originalState != CommunicationState.Closed)
+                {
                     _state = CommunicationState.Closing;
+                }
 
                 _closeCalled = true;
             }
@@ -244,13 +239,17 @@ namespace System.ServiceModel.Channels
 
                             OnClosing();
                             if (!_onClosingCalled)
+                            {
                                 throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnClosing"), Guid.Empty, this);
+                            }
 
                             await OnCloseAsyncInternal(actualTimeout.RemainingTime());
 
                             OnClosed();
                             if (!_onClosedCalled)
+                            {
                                 throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnClosed"), Guid.Empty, this);
+                            }
 
                             throwing = false;
                         }
@@ -291,7 +290,7 @@ namespace System.ServiceModel.Channels
                 // If this is a synchronous close, invoke the synchronous OnClose)
                 if (_isSynchronousClose)
                 {
-                    await TaskHelpers.CallActionAsync<TimeSpan>(OnClose, timeout);
+                    await TaskHelpers.CallActionAsync(OnClose, timeout);
                 }
                 else
                 {
@@ -384,10 +383,15 @@ namespace System.ServiceModel.Channels
             lock (ThisLock)
             {
                 if (_state == CommunicationState.Closed || _state == CommunicationState.Closing)
+                {
                     return;
+                }
 
                 if (_state == CommunicationState.Faulted)
+                {
                     return;
+                }
+
                 _state = CommunicationState.Faulted;
             }
 
@@ -399,7 +403,9 @@ namespace System.ServiceModel.Channels
             lock (ThisLock)
             {
                 if (_exceptionQueue == null)
+                {
                     _exceptionQueue = new ExceptionQueue(ThisLock);
+                }
             }
 
             _exceptionQueue.AddException(exception);
@@ -468,8 +474,10 @@ namespace System.ServiceModel.Channels
         async Task IAsyncCommunicationObject.OpenAsync(TimeSpan timeout)
         {
             if (timeout < TimeSpan.Zero)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("timeout", SR.SFxTimeoutOutOfRange0));
+                    new ArgumentOutOfRangeException(nameof(timeout), SR.SFxTimeoutOutOfRange0));
+            }
 
             lock (ThisLock)
             {
@@ -484,13 +492,17 @@ namespace System.ServiceModel.Channels
 
                 OnOpening();
                 if (!_onOpeningCalled)
+                {
                     throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnOpening"), Guid.Empty, this);
+                }
 
                 await OnOpenAsyncInternal(actualTimeout.RemainingTime());
 
                 OnOpened();
                 if (!_onOpenedCalled)
+                {
                     throw TraceUtility.ThrowHelperError(CreateBaseClassMethodNotCalledException("OnOpened"), Guid.Empty, this);
+                }
 
                 throwing = false;
             }
@@ -521,7 +533,7 @@ namespace System.ServiceModel.Channels
                 // If this is a synchronous open, invoke the synchronous OnOpen)
                 if (_isSynchronousOpen)
                 {
-                    await TaskHelpers.CallActionAsync<TimeSpan>(OnOpen, timeout);
+                    await TaskHelpers.CallActionAsync(OnOpen, timeout);
                 }
                 else
                 {
@@ -538,7 +550,10 @@ namespace System.ServiceModel.Channels
             lock (ThisLock)
             {
                 if (_raisedClosed)
+                {
                     return;
+                }
+
                 _raisedClosed = true;
                 _state = CommunicationState.Closed;
             }
@@ -549,12 +564,14 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    handler(_eventSender, EventArgs.Empty);
+                    handler(EventSender, EventArgs.Empty);
                 }
                 catch (Exception exception)
                 {
                     if (Fx.IsFatal(exception))
+                    {
                         throw;
+                    }
 
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(exception);
                 }
@@ -568,7 +585,10 @@ namespace System.ServiceModel.Channels
             lock (ThisLock)
             {
                 if (_raisedClosing)
+                {
                     return;
+                }
+
                 _raisedClosing = true;
             }
 
@@ -578,12 +598,14 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    handler(_eventSender, EventArgs.Empty);
+                    handler(EventSender, EventArgs.Empty);
                 }
                 catch (Exception exception)
                 {
                     if (Fx.IsFatal(exception))
+                    {
                         throw;
+                    }
 
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(exception);
                 }
@@ -595,7 +617,10 @@ namespace System.ServiceModel.Channels
             lock (ThisLock)
             {
                 if (_raisedFaulted)
+                {
                     return;
+                }
+
                 _raisedFaulted = true;
             }
 
@@ -604,12 +629,14 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    handler(_eventSender, EventArgs.Empty);
+                    handler(EventSender, EventArgs.Empty);
                 }
                 catch (Exception exception)
                 {
                     if (Fx.IsFatal(exception))
+                    {
                         throw;
+                    }
 
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(exception);
                 }
@@ -622,8 +649,11 @@ namespace System.ServiceModel.Channels
 
             lock (ThisLock)
             {
-                if (_aborted || _state != CommunicationState.Opening)
+                if (Aborted || _state != CommunicationState.Opening)
+                {
                     return;
+                }
+
                 _state = CommunicationState.Opened;
             }
 
@@ -633,12 +663,14 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    handler(_eventSender, EventArgs.Empty);
+                    handler(EventSender, EventArgs.Empty);
                 }
                 catch (Exception exception)
                 {
                     if (Fx.IsFatal(exception))
+                    {
                         throw;
+                    }
 
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(exception);
                 }
@@ -655,12 +687,14 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    handler(_eventSender, EventArgs.Empty);
+                    handler(EventSender, EventArgs.Empty);
                 }
                 catch (Exception exception)
                 {
                     if (Fx.IsFatal(exception))
+                    {
                         throw;
+                    }
 
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(exception);
                 }
@@ -698,7 +732,7 @@ namespace System.ServiceModel.Channels
 
         internal void ThrowIfAborted()
         {
-            if (_aborted && !_closeCalled)
+            if (Aborted && !_closeCalled)
             {
                 throw TraceUtility.ThrowHelperError(CreateAbortedException(), Guid.Empty, this);
             }
@@ -869,7 +903,9 @@ namespace System.ServiceModel.Channels
         internal void ThrowIfNotOpened()
         {
             if (_state == CommunicationState.Created || _state == CommunicationState.Opening)
+            {
                 throw TraceUtility.ThrowHelperError(CreateNotOpenException(), Guid.Empty, this);
+            }
         }
 
         internal void ThrowIfClosedOrNotOpen()
@@ -949,7 +985,7 @@ namespace System.ServiceModel.Channels
             // open path for the other object.
             if (_isSynchronousOpen)
             {
-                await TaskHelpers.CallActionAsync<TimeSpan>(other.Open, timeout);
+                await TaskHelpers.CallActionAsync(other.Open, timeout);
             }
             else
             {
@@ -965,7 +1001,7 @@ namespace System.ServiceModel.Channels
             // close path for the other object.
             if (_isSynchronousClose)
             {
-                await TaskHelpers.CallActionAsync<TimeSpan>(other.Close, timeout);
+                await TaskHelpers.CallActionAsync(other.Close, timeout);
             }
             else
             {

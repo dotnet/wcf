@@ -101,7 +101,7 @@ namespace System.IdentityModel.Tokens
 
         public override bool IsSupportedAlgorithm(string algorithm)
         {
-            return (CryptoHelper.IsSymmetricSupportedAlgorithm(algorithm, this.KeySize));
+            return (CryptoHelper.IsSymmetricSupportedAlgorithm(algorithm, KeySize));
         }
 
         public override bool IsSymmetricAlgorithm(string algorithm)

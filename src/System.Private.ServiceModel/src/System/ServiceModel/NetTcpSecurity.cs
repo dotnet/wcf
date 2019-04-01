@@ -5,7 +5,6 @@
 
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
-using System.Runtime;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
@@ -15,7 +14,6 @@ namespace System.ServiceModel
         internal const SecurityMode DefaultMode = SecurityMode.Transport;
 
         private SecurityMode _mode;
-        private TcpTransportSecurity _transportSecurity;
         private MessageSecurityOverTcp _messageSecurity;
 
         public NetTcpSecurity()
@@ -33,7 +31,7 @@ namespace System.ServiceModel
                                             SecurityMode.Transport.ToString()));
 
             _mode = mode;
-            _transportSecurity = transportSecurity == null ? new TcpTransportSecurity() : transportSecurity;
+            Transport = transportSecurity == null ? new TcpTransportSecurity() : transportSecurity;
             _messageSecurity = messageSecurity == null ? new MessageSecurityOverTcp() : messageSecurity;
         }
 
@@ -45,17 +43,13 @@ namespace System.ServiceModel
             {
                 if (!SecurityModeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
                 _mode = value;
             }
         }
 
-        public TcpTransportSecurity Transport
-        {
-            get { return _transportSecurity; }
-            set { _transportSecurity = value; }
-        }
+        public TcpTransportSecurity Transport { get; set; }
 
         public MessageSecurityOverTcp Message
         {
@@ -68,11 +62,11 @@ namespace System.ServiceModel
         {
             if (_mode == SecurityMode.TransportWithMessageCredential)
             {
-                return _transportSecurity.CreateTransportProtectionOnly();
+                return Transport.CreateTransportProtectionOnly();
             }
             else if (_mode == SecurityMode.Transport)
             {
-                return _transportSecurity.CreateTransportProtectionAndAuthentication();
+                return Transport.CreateTransportProtectionAndAuthentication();
             }
             else
             {

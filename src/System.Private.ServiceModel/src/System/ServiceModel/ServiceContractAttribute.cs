@@ -12,13 +12,11 @@ namespace System.ServiceModel
     [AttributeUsage(ServiceModelAttributeTargets.ServiceContract, Inherited = false, AllowMultiple = false)]
     public sealed class ServiceContractAttribute : Attribute
     {
-        private Type _callbackContract = null;
         private string _configurationName;
         private string _name;
         private string _ns;
         private SessionMode _sessionMode;
         private ProtectionLevel _protectionLevel = ProtectionLevel.None;
-        private bool _hasProtectionLevel = false;
 
         public string ConfigurationName
         {
@@ -27,11 +25,11 @@ namespace System.ServiceModel
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
                 if (value == string.Empty)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value",
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value),
                         SR.SFxConfigurationNameCannotBeEmpty));
                 }
                 _configurationName = value;
@@ -45,11 +43,11 @@ namespace System.ServiceModel
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
                 if (value == string.Empty)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value",
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value),
                         SR.SFxNameCannotBeEmpty));
                 }
                 _name = value;
@@ -62,7 +60,10 @@ namespace System.ServiceModel
             set
             {
                 if (!string.IsNullOrEmpty(value))
+                {
                     NamingHelper.CheckUriProperty(value, "Namespace");
+                }
+
                 _ns = value;
             }
         }
@@ -76,16 +77,16 @@ namespace System.ServiceModel
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; } = false;
 
         public SessionMode SessionMode
         {
@@ -94,17 +95,13 @@ namespace System.ServiceModel
             {
                 if (!SessionModeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
                 _sessionMode = value;
             }
         }
 
-        public Type CallbackContract
-        {
-            get { return _callbackContract; }
-            set { _callbackContract = value; }
-        }
+        public Type CallbackContract { get; set; } = null;
     }
 }

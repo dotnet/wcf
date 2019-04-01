@@ -24,7 +24,7 @@ namespace System.ServiceModel.Channels
         {
             if (typeof(T) == typeof(FaultConverter))
             {
-                return (T)(object)FaultConverter.GetDefaultFaultConverter(this.MessageVersion);
+                return (T)(object)FaultConverter.GetDefaultFaultConverter(MessageVersion);
             }
 
             return null;
@@ -105,7 +105,7 @@ namespace System.ServiceModel.Channels
 
         public virtual IAsyncResult BeginWriteMessage(Message message, Stream stream, AsyncCallback callback, object state)
         {
-            return this.WriteMessageAsync(message, stream).ToApm(callback, state);
+            return WriteMessageAsync(message, stream).ToApm(callback, state);
         }
 
         public virtual void EndWriteMessage(IAsyncResult result)
@@ -136,20 +136,26 @@ namespace System.ServiceModel.Channels
         public virtual bool IsContentTypeSupported(string contentType)
         {
             if (contentType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("contentType"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(contentType)));
+            }
 
-            return IsContentTypeSupported(contentType, this.ContentType, this.MediaType);
+            return IsContentTypeSupported(contentType, ContentType, MediaType);
         }
 
         internal bool IsContentTypeSupported(string contentType, string supportedContentType, string supportedMediaType)
         {
             if (supportedContentType == contentType)
+            {
                 return true;
+            }
 
             if (contentType.Length > supportedContentType.Length &&
                 contentType.StartsWith(supportedContentType, StringComparison.Ordinal) &&
                 contentType[supportedContentType.Length] == ';')
+            {
                 return true;
+            }
 
             // now check case-insensitively
             if (contentType.StartsWith(supportedContentType, StringComparison.OrdinalIgnoreCase))
@@ -185,12 +191,17 @@ namespace System.ServiceModel.Channels
                         {
                             ch = contentType[i];
                             if (ch != ' ' && ch != '\t')
+                            {
                                 break;
+                            }
+
                             ++i;
                         }
                     }
                     if (ch == ';' || i == contentType.Length)
+                    {
                         return true;
+                    }
                 }
             }
 
@@ -201,10 +212,14 @@ namespace System.ServiceModel.Channels
                 MediaTypeHeaderValue parsedContentType = MediaTypeHeaderValue.Parse(contentType);
 
                 if (supportedMediaType.Length > 0 && !supportedMediaType.Equals(parsedContentType.MediaType, StringComparison.OrdinalIgnoreCase))
+                {
                     return false;
+                }
 
                 if (!IsCharSetSupported(parsedContentType.CharSet))
+                {
                     return false;
+                }
             }
             catch (FormatException)
             {

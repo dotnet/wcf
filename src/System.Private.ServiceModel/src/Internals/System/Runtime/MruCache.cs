@@ -17,7 +17,6 @@ namespace System.Runtime
         private readonly int _lowWatermark;
         private readonly int _highWatermark;
         private CacheEntry _mruEntry;
-        private bool _disposed;
 
         public MruCache(int watermark)
             : this(watermark * 4 / 5, watermark)
@@ -60,7 +59,7 @@ namespace System.Runtime
             }
         }
 
-        public bool IsDisposed => _disposed;
+        public bool IsDisposed { get; private set; }
 
         public void Add(TKey key, TValue value)
         {
@@ -99,7 +98,7 @@ namespace System.Runtime
             {
                 if (!success)
                 {
-                    this.Clear();
+                    Clear();
                 }
             }
         }
@@ -212,7 +211,7 @@ namespace System.Runtime
             {
                 if (!IsDisposed)
                 {
-                    _disposed = true;
+                    IsDisposed = true;
                     Clear(true);
                 }
             }
@@ -222,7 +221,7 @@ namespace System.Runtime
         {
             if (IsDisposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
 

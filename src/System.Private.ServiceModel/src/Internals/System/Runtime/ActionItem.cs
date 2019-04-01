@@ -14,23 +14,12 @@ namespace System.Runtime
     internal abstract class ActionItem
     {
         private bool _isScheduled;
-        private bool _lowPriority;
 
         protected ActionItem()
         {
         }
 
-        public bool LowPriority
-        {
-            get
-            {
-                return _lowPriority;
-            }
-            protected set
-            {
-                _lowPriority = value;
-            }
-        }
+        public bool LowPriority { get; protected set; }
 
         public static void Schedule(Action<object> callback, object state)
         {

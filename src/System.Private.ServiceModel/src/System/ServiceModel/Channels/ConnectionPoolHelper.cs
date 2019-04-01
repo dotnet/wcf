@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Runtime;
-using System.Runtime.Diagnostics;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -61,7 +59,7 @@ namespace System.ServiceModel.Channels
             // first try and use a connection from our pool (and use it if we successfully receive an ACK)
             while (localIsConnectionFromPool)
             {
-                localRawConnection = this.TakeConnection(timeoutHelper.RemainingTime());
+                localRawConnection = TakeConnection(timeoutHelper.RemainingTime());
                 if (localRawConnection == null)
                 {
                     localIsConnectionFromPool = false;
@@ -143,7 +141,7 @@ namespace System.ServiceModel.Channels
             // first try and use a connection from our pool (and use it if we successfully receive an ACK)
             while (localIsConnectionFromPool)
             {
-                localRawConnection = this.TakeConnection(timeoutHelper.RemainingTime());
+                localRawConnection = TakeConnection(timeoutHelper.RemainingTime());
                 if (localRawConnection == null)
                 {
                     localIsConnectionFromPool = false;

@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.ServiceModel.Diagnostics;
 using System.Threading.Tasks;
@@ -18,7 +16,6 @@ namespace System.ServiceModel.Channels
         private ChannelParameterCollection _channelParameters;
         private IChannelFactory<TChannel> _factory;
         private EndpointAddress _to;
-        private Uri _via;
 
         protected ClientReliableChannelBinder(EndpointAddress to, Uri via, IChannelFactory<TChannel> factory,
             MaskingMode maskingMode, TolerateFaultsMode faultMode, ChannelParameterCollection channelParameters,
@@ -26,15 +23,10 @@ namespace System.ServiceModel.Channels
             : base(factory.CreateChannel(to, via), maskingMode, faultMode,
             defaultCloseTimeout, defaultSendTimeout)
         {
-            if (channelParameters == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channelParameters");
-            }
-
             _to = to;
-            _via = via;
+            Via = via;
             _factory = factory;
-            _channelParameters = channelParameters;
+            _channelParameters = channelParameters ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelParameters));
         }
 
         // The server side must get a message to determine where the channel should go, thus it is
@@ -81,13 +73,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public Uri Via
-        {
-            get
-            {
-                return _via;
-            }
-        }
+        public Uri Via { get; }
 
         public static IClientReliableChannelBinder CreateBinder(EndpointAddress to, Uri via,
             IChannelFactory<TChannel> factory, MaskingMode maskingMode, TolerateFaultsMode faultMode,
@@ -124,7 +110,7 @@ namespace System.ServiceModel.Channels
 
         public Task<bool> EnsureChannelForRequestAsync()
         {
-            return this.Synchronizer.EnsureChannelAsync();
+            return Synchronizer.EnsureChannelAsync();
         }
 
         protected override void OnAbort()
@@ -149,12 +135,12 @@ namespace System.ServiceModel.Channels
 
         public Task<Message> RequestAsync(Message message, TimeSpan timeout)
         {
-            return this.RequestAsync(message, timeout, this.DefaultMaskingMode);
+            return RequestAsync(message, timeout, DefaultMaskingMode);
         }
 
         public async Task<Message> RequestAsync(Message message, TimeSpan timeout, MaskingMode maskingMode)
         {
-            if (!this.ValidateOutputOperation(message, timeout, maskingMode))
+            if (!ValidateOutputOperation(message, timeout, maskingMode))
             {
                 return null;
             }
@@ -164,7 +150,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                (bool success, TChannel channel) = await this.Synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode);
+                (bool success, TChannel channel) = await Synchronizer.TryGetChannelForOutputAsync(timeoutHelper.RemainingTime(), maskingMode);
 
                 if (!success)
                 {
@@ -184,21 +170,23 @@ namespace System.ServiceModel.Channels
 
                 try
                 {
-                    return await this.OnRequestAsync(channel, message, timeoutHelper.RemainingTime(),
+                    return await OnRequestAsync(channel, message, timeoutHelper.RemainingTime(),
                         maskingMode);
                 }
                 finally
                 {
-                    autoAborted = this.Synchronizer.Aborting;
-                    this.Synchronizer.ReturnChannel();
+                    autoAborted = Synchronizer.Aborting;
+                    Synchronizer.ReturnChannel();
                 }
             }
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
+                {
                     throw;
+                }
 
-                if (!this.HandleException(e, maskingMode, autoAborted))
+                if (!HandleException(e, maskingMode, autoAborted))
                 {
                     throw;
                 }
@@ -211,15 +199,15 @@ namespace System.ServiceModel.Channels
 
         protected override Task<bool> TryGetChannelAsync(TimeSpan timeout)
         {
-            CommunicationState currentState = this.State;
+            CommunicationState currentState = State;
             TChannel channel = null;
 
             if ((currentState == CommunicationState.Created)
                || (currentState == CommunicationState.Opening)
                || (currentState == CommunicationState.Opened))
             {
-                channel = _factory.CreateChannel(_to, _via);
-                if (!this.Synchronizer.SetChannel(channel))
+                channel = _factory.CreateChannel(_to, Via);
+                if (!Synchronizer.SetChannel(channel))
                 {
                     channel.Abort();
                 }
@@ -249,11 +237,15 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    IDuplexChannel channel = this.Synchronizer.CurrentChannel;
+                    IDuplexChannel channel = Synchronizer.CurrentChannel;
                     if (channel == null)
+                    {
                         return null;
+                    }
                     else
+                    {
                         return channel.LocalAddress;
+                    }
                 }
             }
 
@@ -261,11 +253,15 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    IDuplexChannel channel = this.Synchronizer.CurrentChannel;
+                    IDuplexChannel channel = Synchronizer.CurrentChannel;
                     if (channel == null)
+                    {
                         return null;
+                    }
                     else
+                    {
                         return channel.RemoteAddress;
+                    }
                 }
             }
 
@@ -301,10 +297,10 @@ namespace System.ServiceModel.Channels
 
                 if (success && message == null)
                 {
-                    this.OnReadNullMessage();
+                    OnReadNullMessage();
                 }
 
-                RequestContext requestContext = this.WrapMessage(message);
+                RequestContext requestContext = WrapMessage(message);
                 return (success, requestContext);
             }
         }
@@ -362,7 +358,7 @@ namespace System.ServiceModel.Channels
 
             public override ISession GetInnerSession()
             {
-                return ((ISessionChannel<IAsyncDuplexSession>)this.Synchronizer.CurrentChannel).Session;
+                return ((ISessionChannel<IAsyncDuplexSession>)Synchronizer.CurrentChannel).Session;
             }
 
             protected override Task CloseChannelAsync(IDuplexSessionChannel channel, TimeSpan timeout)
@@ -377,7 +373,7 @@ namespace System.ServiceModel.Channels
 
             protected override void OnReadNullMessage()
             {
-                this.Synchronizer.OnReadEof();
+                Synchronizer.OnReadEof();
             }
         }
 
@@ -399,20 +395,20 @@ namespace System.ServiceModel.Channels
             {
                 if (message != null)
                 {
-                    this.GetInputMessages().EnqueueAndDispatch(message);
+                    GetInputMessages().EnqueueAndDispatch(message);
                 }
             }
 
             private InputQueue<Message> GetInputMessages()
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    if (this.State == CommunicationState.Created)
+                    if (State == CommunicationState.Created)
                     {
                         throw Fx.AssertAndThrow("The method GetInputMessages() cannot be called when the binder is in the Created state.");
                     }
 
-                    if (this.State == CommunicationState.Opening)
+                    if (State == CommunicationState.Opening)
                     {
                         throw Fx.AssertAndThrow("The method GetInputMessages() cannot be called when the binder is in the Opening state.");
                     }
@@ -438,11 +434,15 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    IRequestChannel channel = this.Synchronizer.CurrentChannel;
+                    IRequestChannel channel = Synchronizer.CurrentChannel;
                     if (channel == null)
+                    {
                         return null;
+                    }
                     else
+                    {
                         return channel.RemoteAddress;
+                    }
                 }
             }
 
@@ -462,8 +462,8 @@ namespace System.ServiceModel.Channels
             protected override async Task OnSendAsync(TRequestChannel channel, Message message,
                 TimeSpan timeout)
             {
-                message = await OnRequestAsync(channel, message, timeout, this.DefaultMaskingMode);
-                this.EnqueueMessageIfNotNull(message);
+                message = await OnRequestAsync(channel, message, timeout, DefaultMaskingMode);
+                EnqueueMessageIfNotNull(message);
             }
 
             protected override void OnShutdown()
@@ -476,8 +476,8 @@ namespace System.ServiceModel.Channels
 
             public override async Task<(bool, RequestContext)> TryReceiveAsync(TimeSpan timeout)
             {
-                (bool success, Message message) = await this.GetInputMessages().TryDequeueAsync(timeout);
-                RequestContext requestContext = this.WrapMessage(message);
+                (bool success, Message message) = await GetInputMessages().TryDequeueAsync(timeout);
+                RequestContext requestContext = WrapMessage(message);
                 return (success, requestContext);
             }
         }
@@ -535,7 +535,7 @@ namespace System.ServiceModel.Channels
 
             public override ISession GetInnerSession()
             {
-                return this.Synchronizer.CurrentChannel.Session;
+                return Synchronizer.CurrentChannel.Session;
             }
 
             protected override bool HasSecuritySession(IRequestSessionChannel channel)

@@ -2,21 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.ServiceModel.Security.Tokens;
 using System.Xml;
 
 namespace System.ServiceModel.Security
 {
     internal sealed class StrictModeSecurityHeaderElementInferenceEngine : SecurityHeaderElementInferenceEngine
     {
-        private static StrictModeSecurityHeaderElementInferenceEngine s_instance = new StrictModeSecurityHeaderElementInferenceEngine();
-
         private StrictModeSecurityHeaderElementInferenceEngine() { }
 
-        internal static StrictModeSecurityHeaderElementInferenceEngine Instance
-        {
-            get { return s_instance; }
-        }
+        internal static StrictModeSecurityHeaderElementInferenceEngine Instance { get; } = new StrictModeSecurityHeaderElementInferenceEngine();
 
         public override void ExecuteProcessingPasses(ReceiveSecurityHeader securityHeader, XmlDictionaryReader reader)
         {
@@ -30,7 +24,7 @@ namespace System.ServiceModel.Security
             {
                 ReceiveSecurityHeaderEntry entry;
                 elementManager.GetElementEntry(position, out entry);
-                if (entry.elementCategory == ReceiveSecurityHeaderElementCategory.Signature)
+                if (entry._elementCategory == ReceiveSecurityHeaderElementCategory.Signature)
                 {
                     if (!messageSecurityMode || primarySignatureFound)
                     {

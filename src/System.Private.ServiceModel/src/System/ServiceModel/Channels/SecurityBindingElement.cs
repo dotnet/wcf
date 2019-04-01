@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.Net.Security;
@@ -50,7 +49,10 @@ namespace System.ServiceModel.Channels
             : base(elementToBeCloned)
         {
             if (elementToBeCloned == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(elementToBeCloned));
+            }
+
             _defaultAlgorithmSuite = elementToBeCloned._defaultAlgorithmSuite;
             IncludeTimestamp = elementToBeCloned.IncludeTimestamp;
             _keyEntropyMode = elementToBeCloned._keyEntropyMode;
@@ -90,7 +92,9 @@ namespace System.ServiceModel.Channels
             set
             {
                 if (!SecurityHeaderLayoutHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
 
                 _securityHeaderLayout = value;
             }
@@ -104,9 +108,7 @@ namespace System.ServiceModel.Channels
             }
             set
             {
-                if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
-                _messageSecurityVersion = value;
+                _messageSecurityVersion = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -122,9 +124,7 @@ namespace System.ServiceModel.Channels
             }
             set
             {
-                if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                _defaultAlgorithmSuite = value;
+                _defaultAlgorithmSuite = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -173,9 +173,14 @@ namespace System.ServiceModel.Channels
             foreach (SecurityTokenParameters p in parameters)
             {
                 if (p.SupportsClientAuthentication)
+                {
                     supportsClientAuth = true;
+                }
+
                 if (p.SupportsClientWindowsIdentity)
+                {
                     supportsWindowsIdentity = true;
+                }
             }
         }
 
@@ -267,9 +272,14 @@ namespace System.ServiceModel.Channels
         internal void ConfigureProtocolFactory(SecurityProtocolFactory factory, SecurityCredentialsManager credentialsManager, bool isForService, BindingContext issuerBindingContext, Binding binding)
         {
             if (factory == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(factory)));
+            }
+
             if (credentialsManager == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(credentialsManager)));
+            }
 
             factory.AddTimestamp = IncludeTimestamp;
             factory.IncomingAlgorithmSuite = DefaultAlgorithmSuite;
@@ -311,7 +321,9 @@ namespace System.ServiceModel.Channels
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
 
             if (!CanBuildChannelFactory<TChannel>(context))
             {
@@ -327,10 +339,14 @@ namespace System.ServiceModel.Channels
             TransportBindingElement transportBindingElement = null;
 
             if (context.RemainingBindingElements != null)
+            {
                 transportBindingElement = context.RemainingBindingElements.Find<TransportBindingElement>();
+            }
 
             if (transportBindingElement != null)
+            {
                 MaxReceivedMessageSize = transportBindingElement.MaxReceivedMessageSize;
+            }
 
             IChannelFactory<TChannel> result = BuildChannelFactoryCore<TChannel>(context);
 
@@ -342,7 +358,9 @@ namespace System.ServiceModel.Channels
         public override bool CanBuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
 
             if (SessionMode)
             {
@@ -391,7 +409,9 @@ namespace System.ServiceModel.Channels
         internal virtual bool IsSetKeyDerivation(bool requireDerivedKeys)
         {
             if (!EndpointSupportingTokenParameters.IsSetKeyDerivation(requireDerivedKeys))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -400,7 +420,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
             if (typeof(T) == typeof(ISecurityCapabilities))
             {
@@ -468,7 +488,7 @@ namespace System.ServiceModel.Channels
         {
             if (version == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("version");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(version));
             }
 
             throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement.CreateMutualCertificateBindingElement is not supported.");
@@ -552,7 +572,9 @@ namespace System.ServiceModel.Channels
         static public SecurityBindingElement CreateSecureConversationBindingElement(SecurityBindingElement bootstrapSecurity, bool requireCancellation, ChannelProtectionRequirements bootstrapProtectionRequirements)
         {
             if (bootstrapSecurity == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bootstrapSecurity));
+            }
 
             SecurityBindingElement result;
 

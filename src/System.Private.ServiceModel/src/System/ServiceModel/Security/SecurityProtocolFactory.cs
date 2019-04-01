@@ -5,17 +5,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Selectors;
-using System.IdentityModel.Tokens;
 using System.Runtime;
 using System.Security.Authentication.ExtendedProtection;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security.Tokens;
 using System.Globalization;
 using System.Threading.Tasks;
-using System.Threading;
 
 namespace System.ServiceModel.Security
 {
@@ -71,8 +66,6 @@ namespace System.ServiceModel.Security
         internal const SecurityHeaderLayout defaultSecurityHeaderLayout = SecurityHeaderLayout.Strict;
 
         private static ReadOnlyCollection<SupportingTokenAuthenticatorSpecification> s_emptyTokenAuthenticators;
-
-        private bool _actAsInitiator;
         private bool _addTimestamp = defaultAddTimestamp;
         private bool _detectReplays = defaultDetectReplays;
         private bool _expectIncomingMessages;
@@ -96,25 +89,23 @@ namespace System.ServiceModel.Security
         private bool _expectChannelBasicTokens;
         private bool _expectChannelSignedTokens;
         private bool _expectChannelEndorsingTokens;
-        private MessageSecurityVersion _messageSecurityVersion;
-        private WrapperSecurityCommunicationObject _communicationObject;
         private BufferManager _streamBufferManager = null;
 
         protected SecurityProtocolFactory()
         {
             _channelSupportingTokenAuthenticatorSpecification = new Collection<SupportingTokenAuthenticatorSpecification>();
             //scopedSupportingTokenAuthenticatorSpecification = new Dictionary<string, ICollection<SupportingTokenAuthenticatorSpecification>>();
-            _communicationObject = new WrapperSecurityCommunicationObject(this);
+            CommunicationObject = new WrapperSecurityCommunicationObject(this);
         }
 
         internal SecurityProtocolFactory(SecurityProtocolFactory factory) : this()
         {
             if (factory == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("factory");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(factory));
             }
 
-            _actAsInitiator = factory._actAsInitiator;
+            ActAsInitiator = factory.ActAsInitiator;
             _addTimestamp = factory._addTimestamp;
             _detectReplays = factory._detectReplays;
             _incomingAlgorithmSuite = factory._incomingAlgorithmSuite;
@@ -130,23 +121,14 @@ namespace System.ServiceModel.Security
             _nonceCache = factory._nonceCache;
         }
 
-        protected WrapperSecurityCommunicationObject CommunicationObject
-        {
-            get { return _communicationObject; }
-        }
+        protected WrapperSecurityCommunicationObject CommunicationObject { get; }
 
         // The ActAsInitiator value is set automatically on Open and
         // remains unchanged thereafter.  ActAsInitiator is true for
         // the initiator of the message exchange, such as the sender
         // of a datagram, sender of a request and sender of either leg
         // of a duplex exchange.
-        public bool ActAsInitiator
-        {
-            get
-            {
-                return _actAsInitiator;
-            }
-        }
+        public bool ActAsInitiator { get; private set; }
 
         public BufferManager StreamBufferManager
         {
@@ -218,11 +200,7 @@ namespace System.ServiceModel.Security
             set
             {
                 ThrowIfImmutable();
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-                _incomingAlgorithmSuite = value;
+                _incomingAlgorithmSuite = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -254,7 +232,7 @@ namespace System.ServiceModel.Security
                 ThrowIfImmutable();
                 if (value < TimeSpan.Zero)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
                 _maxClockSkew = value;
             }
@@ -282,11 +260,7 @@ namespace System.ServiceModel.Security
             set
             {
                 ThrowIfImmutable();
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-                _outgoingAlgorithmSuite = value;
+                _outgoingAlgorithmSuite = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -377,11 +351,7 @@ namespace System.ServiceModel.Security
             set
             {
                 ThrowIfImmutable();
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
-                }
-                _standardsManager = value;
+                _standardsManager = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -402,10 +372,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        internal MessageSecurityVersion MessageSecurityVersion
-        {
-            get { return _messageSecurityVersion; }
-        }
+        internal MessageSecurityVersion MessageSecurityVersion { get; private set; }
 
         // ISecurityCommunicationObject members
         public TimeSpan DefaultOpenTimeout => ServiceDefaults.OpenTimeout;
@@ -434,7 +401,7 @@ namespace System.ServiceModel.Security
 
         public virtual void OnAbort()
         {
-            if (!_actAsInitiator)
+            if (!ActAsInitiator)
             {
                 throw ExceptionHelper.PlatformNotSupported();
             }
@@ -442,7 +409,7 @@ namespace System.ServiceModel.Security
 
         public virtual Task OnCloseAsync(TimeSpan timeout)
         {
-            if (!_actAsInitiator)
+            if (!ActAsInitiator)
             {
                 throw ExceptionHelper.PlatformNotSupported();
             }
@@ -507,11 +474,11 @@ namespace System.ServiceModel.Security
                 OnPropertySettingsError(nameof(SecurityTokenManager), true);
             }
 
-            _messageSecurityVersion = _standardsManager.MessageSecurityVersion;
+            MessageSecurityVersion = _standardsManager.MessageSecurityVersion;
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             _expectOutgoingMessages = ActAsInitiator || SupportsRequestReply;
             _expectIncomingMessages = !ActAsInitiator || SupportsRequestReply;
-            if (!_actAsInitiator)
+            if (!ActAsInitiator)
             {
                 throw ExceptionHelper.PlatformNotSupported();
             }
@@ -541,7 +508,7 @@ namespace System.ServiceModel.Security
 
         public Task OpenAsync(bool actAsInitiator, TimeSpan timeout)
         {
-            _actAsInitiator = actAsInitiator;
+            ActAsInitiator = actAsInitiator;
             return ((IAsyncCommunicationObject)CommunicationObject).OpenAsync(timeout);
         }
 
@@ -574,12 +541,12 @@ namespace System.ServiceModel.Security
 
         internal void ThrowIfImmutable()
         {
-            _communicationObject.ThrowIfDisposedOrImmutable();
+            CommunicationObject.ThrowIfDisposedOrImmutable();
         }
 
         private void ThrowIfNotOpen()
         {
-            _communicationObject.ThrowIfNotOpened();
+            CommunicationObject.ThrowIfNotOpened();
         }
     }
 }

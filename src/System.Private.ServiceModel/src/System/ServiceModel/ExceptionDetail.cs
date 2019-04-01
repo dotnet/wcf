@@ -12,57 +12,37 @@ namespace System.ServiceModel
     [DataContract]
     public class ExceptionDetail
     {
-        private string _helpLink;
-        private ExceptionDetail _innerException;
-        private string _message;
-        private string _stackTrace;
         private string _type;
 
         public ExceptionDetail(Exception exception)
         {
             if (exception == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("exception");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(exception));
             }
 
-            _helpLink = exception.HelpLink;
-            _message = exception.Message;
-            _stackTrace = exception.StackTrace;
+            HelpLink = exception.HelpLink;
+            Message = exception.Message;
+            StackTrace = exception.StackTrace;
             _type = exception.GetType().ToString();
 
             if (exception.InnerException != null)
             {
-                _innerException = new ExceptionDetail(exception.InnerException);
+                InnerException = new ExceptionDetail(exception.InnerException);
             }
         }
 
         [DataMember]
-        public string HelpLink
-        {
-            get { return _helpLink; }
-            set { _helpLink = value; }
-        }
+        public string HelpLink { get; set; }
 
         [DataMember]
-        public ExceptionDetail InnerException
-        {
-            get { return _innerException; }
-            set { _innerException = value; }
-        }
+        public ExceptionDetail InnerException { get; set; }
 
         [DataMember]
-        public string Message
-        {
-            get { return _message; }
-            set { _message = value; }
-        }
+        public string Message { get; set; }
 
         [DataMember]
-        public string StackTrace
-        {
-            get { return _stackTrace; }
-            set { _stackTrace = value; }
-        }
+        public string StackTrace { get; set; }
 
         [DataMember]
         public string Type
@@ -73,22 +53,22 @@ namespace System.ServiceModel
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0}\n{1}", SR.SFxExceptionDetailFormat, this.ToStringHelper(false));
+            return string.Format(CultureInfo.InvariantCulture, "{0}\n{1}", SR.SFxExceptionDetailFormat, ToStringHelper(false));
         }
 
         private string ToStringHelper(bool isInner)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0}: {1}", this.Type, this.Message);
-            if (this.InnerException != null)
+            sb.AppendFormat("{0}: {1}", Type, Message);
+            if (InnerException != null)
             {
-                sb.AppendFormat(" ----> {0}", this.InnerException.ToStringHelper(true));
+                sb.AppendFormat(" ----> {0}", InnerException.ToStringHelper(true));
             }
             else
             {
                 sb.Append("\n");
             }
-            sb.Append(this.StackTrace);
+            sb.Append(StackTrace);
             if (isInner)
             {
                 sb.AppendFormat("\n   {0}\n", SR.SFxExceptionDetailEndOfInner);

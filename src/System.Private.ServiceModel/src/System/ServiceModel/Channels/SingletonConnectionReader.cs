@@ -17,13 +17,11 @@ namespace System.ServiceModel.Channels
 {
     internal abstract class SingletonConnectionReader
     {
-        private IConnection _connection;
         private bool _doneReceiving;
         private bool _doneSending;
         private bool _isAtEof;
         private bool _isClosed;
         private SecurityMessageProperty _security;
-        private object _thisLock = new object();
         private int _offset;
         private int _size;
         private IConnectionOrientedTransportFactorySettings _transportSettings;
@@ -35,7 +33,7 @@ namespace System.ServiceModel.Channels
         {
             Contract.Assert(connection != null);
 
-            _connection = connection;
+            Connection = connection;
             _offset = offset;
             _size = size;
             _security = security;
@@ -43,21 +41,9 @@ namespace System.ServiceModel.Channels
             _via = via;
         }
 
-        protected IConnection Connection
-        {
-            get
-            {
-                return _connection;
-            }
-        }
+        protected IConnection Connection { get; }
 
-        protected object ThisLock
-        {
-            get
-            {
-                return _thisLock;
-            }
-        }
+        protected object ThisLock { get; } = new object();
 
         protected virtual string ContentType
         {
@@ -68,7 +54,7 @@ namespace System.ServiceModel.Channels
 
         public void Abort()
         {
-            _connection.Abort();
+            Connection.Abort();
         }
 
         public void DoneReceiving(bool atEof)
@@ -85,7 +71,7 @@ namespace System.ServiceModel.Channels
 
                 if (_doneSending)
                 {
-                    this.Close(timeout);
+                    Close(timeout);
                 }
             }
         }
@@ -127,7 +113,7 @@ namespace System.ServiceModel.Channels
             {
                 if (!success)
                 {
-                    this.Abort();
+                    Abort();
                 }
             }
         }
@@ -139,7 +125,7 @@ namespace System.ServiceModel.Channels
             _doneSending = true;
             if (_doneReceiving)
             {
-                this.Close(timeout);
+                Close(timeout);
             }
         }
 
@@ -153,11 +139,11 @@ namespace System.ServiceModel.Channels
 
         public async Task<Message> ReceiveAsync(TimeoutHelper timeoutHelper)
         {
-            byte[] buffer = Fx.AllocateByteArray(_connection.AsyncReadBufferSize);
+            byte[] buffer = Fx.AllocateByteArray(Connection.AsyncReadBufferSize);
 
             if (_size > 0)
             {
-                Buffer.BlockCopy(_connection.AsyncReadBuffer, _offset, buffer, _offset, _size);
+                Buffer.BlockCopy(Connection.AsyncReadBuffer, _offset, buffer, _offset, _size);
             }
 
             for (; ; )
@@ -176,7 +162,7 @@ namespace System.ServiceModel.Channels
                 if (_size == 0)
                 {
                     _offset = 0;
-                    _size = await _connection.ReadAsync(buffer, 0, buffer.Length, timeoutHelper.RemainingTime());
+                    _size = await Connection.ReadAsync(buffer, 0, buffer.Length, timeoutHelper.RemainingTime());
                     if (_size == 0)
                     {
                         DoneReceiving(true, timeoutHelper.RemainingTime());
@@ -186,7 +172,7 @@ namespace System.ServiceModel.Channels
             }
 
             // we're ready to read a message
-            IConnection singletonConnection = _connection;
+            IConnection singletonConnection = Connection;
             if (_size > 0)
             {
                 byte[] initialData = Fx.AllocateByteArray(_size);
@@ -207,7 +193,7 @@ namespace System.ServiceModel.Channels
                 try
                 {
                     message = await _transportSettings.MessageEncoderFactory.Encoder.ReadMessageAsync(
-                        _inputStream, _transportSettings.MaxBufferSize, this.ContentType);
+                        _inputStream, _transportSettings.MaxBufferSize, ContentType);
                 }
                 catch (XmlException xmlException)
                 {
@@ -564,7 +550,7 @@ namespace System.ServiceModel.Channels
                 if (size > 0)
                 {
                     int bytesEncoded = IntEncoder.Encode(size, _encodedSize, 0);
-                    base.Connection.Write(_encodedSize, 0, bytesEncoded, false, TimeSpan.FromMilliseconds(this.WriteTimeout));
+                    base.Connection.Write(_encodedSize, 0, bytesEncoded, false, TimeSpan.FromMilliseconds(WriteTimeout));
                 }
             }
 
@@ -573,7 +559,7 @@ namespace System.ServiceModel.Channels
                 if (size > 0)
                 {
                     int bytesEncoded = IntEncoder.Encode(size, _encodedSize, 0);
-                    return base.Connection.WriteAsync(_encodedSize, 0, bytesEncoded, false, TimeSpan.FromMilliseconds(this.WriteTimeout));
+                    return base.Connection.WriteAsync(_encodedSize, 0, bytesEncoded, false, TimeSpan.FromMilliseconds(WriteTimeout));
                 }
                 else
                 {

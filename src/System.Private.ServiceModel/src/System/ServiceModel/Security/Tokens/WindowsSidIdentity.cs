@@ -9,42 +9,24 @@ namespace System.ServiceModel.Security.Tokens
 {
     internal class WindowsSidIdentity : IIdentity
     {
-        private SecurityIdentifier _sid;
         private string _name;
-        private string _authenticationType;
 
         public WindowsSidIdentity(SecurityIdentifier sid)
         {
-            if (sid == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("sid");
-
-            _sid = sid;
-            _authenticationType = String.Empty;
+            SecurityIdentifier = sid ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(sid));
+            AuthenticationType = String.Empty;
         }
 
         public WindowsSidIdentity(SecurityIdentifier sid, string name, string authenticationType)
         {
-            if (sid == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("sid");
-            if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name");
-            if (authenticationType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authenticationType");
-
-            _sid = sid;
-            _name = name;
-            _authenticationType = authenticationType;
+            SecurityIdentifier = sid ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(sid));
+            _name = name ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(name));
+            AuthenticationType = authenticationType ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(authenticationType));
         }
 
-        public SecurityIdentifier SecurityIdentifier
-        {
-            get { return _sid; }
-        }
+        public SecurityIdentifier SecurityIdentifier { get; }
 
-        public string AuthenticationType
-        {
-            get { return _authenticationType; }
-        }
+        public string AuthenticationType { get; }
 
         public bool IsAuthenticated
         {
@@ -56,7 +38,10 @@ namespace System.ServiceModel.Security.Tokens
             get
             {
                 if (_name == null)
-                    _name = ((NTAccount)_sid.Translate(typeof(NTAccount))).Value;
+                {
+                    _name = ((NTAccount)SecurityIdentifier.Translate(typeof(NTAccount))).Value;
+                }
+
                 return _name;
             }
         }
@@ -64,18 +49,22 @@ namespace System.ServiceModel.Security.Tokens
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))
+            {
                 return true;
+            }
 
             WindowsSidIdentity sidIdentity = obj as WindowsSidIdentity;
             if (sidIdentity == null)
+            {
                 return false;
+            }
 
-            return _sid == sidIdentity.SecurityIdentifier;
+            return SecurityIdentifier == sidIdentity.SecurityIdentifier;
         }
 
         public override int GetHashCode()
         {
-            return _sid.GetHashCode();
+            return SecurityIdentifier.GetHashCode();
         }
     }
 }

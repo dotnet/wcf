@@ -12,8 +12,6 @@ namespace System.ServiceModel.Channels
 {
     public sealed class AddressHeaderCollection : ReadOnlyCollection<AddressHeader>
     {
-        private static AddressHeaderCollection s_emptyHeaderCollection = new AddressHeaderCollection();
-
         public AddressHeaderCollection()
             : base(new List<AddressHeader>())
         {
@@ -29,7 +27,9 @@ namespace System.ServiceModel.Channels
                 for (int i = 0; i < collection.Count; i++)
                 {
                     if (collection[i] == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.MessageHeaderIsNull0));
+                    }
                 }
             }
             else
@@ -37,22 +37,24 @@ namespace System.ServiceModel.Channels
                 foreach (AddressHeader addressHeader in addressHeaders)
                 {
                     if (addressHeaders == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.MessageHeaderIsNull0));
+                    }
                 }
             }
         }
 
-        internal static AddressHeaderCollection EmptyHeaderCollection
-        {
-            get { return s_emptyHeaderCollection; }
-        }
+        internal static AddressHeaderCollection EmptyHeaderCollection { get; } = new AddressHeaderCollection();
 
         private int InternalCount
         {
             get
             {
-                if (this == (object)s_emptyHeaderCollection)
+                if (this == (object)EmptyHeaderCollection)
+                {
                     return 0;
+                }
+
                 return Count;
             }
         }
@@ -60,7 +62,9 @@ namespace System.ServiceModel.Channels
         public void AddHeadersTo(Message message)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
+            }
 
             for (int i = 0; i < InternalCount; i++)
             {
@@ -71,9 +75,14 @@ namespace System.ServiceModel.Channels
         public AddressHeader[] FindAll(string name, string ns)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
+
             if (ns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("ns"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(ns)));
+            }
 
             List<AddressHeader> results = new List<AddressHeader>();
             for (int i = 0; i < Count; i++)
@@ -91,9 +100,14 @@ namespace System.ServiceModel.Channels
         public AddressHeader FindHeader(string name, string ns)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
+
             if (ns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("ns"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(ns)));
+            }
 
             AddressHeader matchingHeader = null;
 
@@ -103,7 +117,10 @@ namespace System.ServiceModel.Channels
                 if (header.Name == name && header.Namespace == ns)
                 {
                     if (matchingHeader != null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MultipleMessageHeaders, name, ns)));
+                    }
+
                     matchingHeader = header;
                 }
             }
@@ -114,7 +131,9 @@ namespace System.ServiceModel.Channels
         internal bool IsEquivalent(AddressHeaderCollection col)
         {
             if (InternalCount != col.InternalCount)
+            {
                 return false;
+            }
 
             StringBuilder builder = new StringBuilder();
             Dictionary<string, int> myHeaders = new Dictionary<string, int>();
@@ -124,7 +143,9 @@ namespace System.ServiceModel.Channels
             col.PopulateHeaderDictionary(builder, otherHeaders);
 
             if (myHeaders.Count != otherHeaders.Count)
+            {
                 return false;
+            }
 
             foreach (KeyValuePair<string, int> pair in myHeaders)
             {
@@ -132,7 +153,9 @@ namespace System.ServiceModel.Channels
                 if (otherHeaders.TryGetValue(pair.Key, out count))
                 {
                     if (count != pair.Value)
+                    {
                         return false;
+                    }
                 }
                 else
                 {
@@ -192,8 +215,13 @@ namespace System.ServiceModel.Channels
             get
             {
                 for (int i = 0; i < InternalCount; i++)
+                {
                     if (this[i].IsReferenceProperty)
+                    {
                         return true;
+                    }
+                }
+
                 return false;
             }
         }
@@ -203,8 +231,13 @@ namespace System.ServiceModel.Channels
             get
             {
                 for (int i = 0; i < InternalCount; i++)
+                {
                     if (!this[i].IsReferenceProperty)
+                    {
                         return true;
+                    }
+                }
+
                 return false;
             }
         }
@@ -212,21 +245,31 @@ namespace System.ServiceModel.Channels
         internal void WriteReferencePropertyContentsTo(XmlDictionaryWriter writer)
         {
             for (int i = 0; i < InternalCount; i++)
+            {
                 if (this[i].IsReferenceProperty)
+                {
                     this[i].WriteAddressHeader(writer);
+                }
+            }
         }
 
         internal void WriteNonReferencePropertyContentsTo(XmlDictionaryWriter writer)
         {
             for (int i = 0; i < InternalCount; i++)
+            {
                 if (!this[i].IsReferenceProperty)
+                {
                     this[i].WriteAddressHeader(writer);
+                }
+            }
         }
 
         internal void WriteContentsTo(XmlDictionaryWriter writer)
         {
             for (int i = 0; i < InternalCount; i++)
+            {
                 this[i].WriteAddressHeader(writer);
+            }
         }
     }
 }

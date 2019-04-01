@@ -3,26 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.Collections.Generic;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Diagnostics;
 
 namespace System.ServiceModel.Dispatcher
 {
     public class EndpointDispatcher
     {
-        private ChannelDispatcher _channelDispatcher;
-        private ServiceChannel _datagramChannel;
-        private int _filterPriority;
         private Uri _listenUri;
         private EndpointAddress _originalAddress = null;
 
-        public ChannelDispatcher ChannelDispatcher
-        {
-            get { return _channelDispatcher; }
-        }
+        public ChannelDispatcher ChannelDispatcher { get; private set; }
 
         public string ContractName
         {
@@ -34,11 +24,7 @@ namespace System.ServiceModel.Dispatcher
             get { return String.Empty; }
         }
 
-        internal ServiceChannel DatagramChannel
-        {
-            get { return _datagramChannel; }
-            set { _datagramChannel = value; }
-        }
+        internal ServiceChannel DatagramChannel { get; set; }
 
         public DispatchRuntime DispatchRuntime
         {
@@ -49,7 +35,7 @@ namespace System.ServiceModel.Dispatcher
         {
             get
             {
-                if (_channelDispatcher == null)
+                if (ChannelDispatcher == null)
                 {
                     return _originalAddress;
                 }
@@ -59,7 +45,7 @@ namespace System.ServiceModel.Dispatcher
                     return _originalAddress;
                 }
 
-                IChannelListener listener = _channelDispatcher.Listener;
+                IChannelListener listener = ChannelDispatcher.Listener;
                 EndpointIdentity identity = listener.GetProperty<EndpointIdentity>();
                 if ((_originalAddress != null) && (identity == null))
                 {
@@ -81,26 +67,17 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        public int FilterPriority
-        {
-            get { return _filterPriority; }
-            set { _filterPriority = value; }
-        }
+        public int FilterPriority { get; set; }
 
         internal void Attach(ChannelDispatcher channelDispatcher)
         {
-            if (channelDispatcher == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channelDispatcher");
-            }
-
-            if (_channelDispatcher != null)
+            if (ChannelDispatcher != null)
             {
                 Exception error = new InvalidOperationException(SR.SFxEndpointDispatcherMultipleChannelDispatcher0);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
             }
 
-            _channelDispatcher = channelDispatcher;
+            ChannelDispatcher = channelDispatcher ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelDispatcher));
             _listenUri = channelDispatcher.Listener.Uri;
         }
 
@@ -108,16 +85,16 @@ namespace System.ServiceModel.Dispatcher
         {
             if (channelDispatcher == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channelDispatcher");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelDispatcher));
             }
 
-            if (_channelDispatcher != channelDispatcher)
+            if (ChannelDispatcher != channelDispatcher)
             {
                 Exception error = new InvalidOperationException(SR.SFxEndpointDispatcherDifferentChannelDispatcher0);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
             }
 
-            _channelDispatcher = null;
+            ChannelDispatcher = null;
         }
     }
 }

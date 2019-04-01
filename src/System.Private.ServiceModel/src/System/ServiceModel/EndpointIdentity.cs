@@ -20,17 +20,16 @@ namespace System.ServiceModel
         protected void Initialize(Claim identityClaim)
         {
             if (identityClaim == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identityClaim");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(identityClaim));
+            }
 
             Initialize(identityClaim, null);
         }
 
         protected void Initialize(Claim identityClaim, IEqualityComparer<Claim> claimComparer)
         {
-            if (identityClaim == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identityClaim");
-
-            _identityClaim = identityClaim;
+            _identityClaim = identityClaim ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(identityClaim));
             _claimComparer = claimComparer;
         }
 
@@ -49,7 +48,9 @@ namespace System.ServiceModel
         public static EndpointIdentity CreateIdentity(Claim identity)
         {
             if (identity == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identity");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(identity));
+            }
 
             throw ExceptionHelper.PlatformNotSupported("EndpointIdentity.CreateIdentity is not supported.");
         }
@@ -75,27 +76,33 @@ namespace System.ServiceModel
         public override bool Equals(object obj)
         {
             if (obj == (object)this)
+            {
                 return true;
+            }
 
             // as handles null do we need the double null check?
             if (obj == null)
+            {
                 return false;
+            }
 
             EndpointIdentity otherIdentity = obj as EndpointIdentity;
             if (otherIdentity == null)
+            {
                 return false;
+            }
 
             return Matches(otherIdentity.IdentityClaim);
         }
 
         public override int GetHashCode()
         {
-            return GetClaimComparer().GetHashCode(this.IdentityClaim);
+            return GetClaimComparer().GetHashCode(IdentityClaim);
         }
 
         internal bool Matches(Claim claim)
         {
-            return GetClaimComparer().Equals(this.IdentityClaim, claim);
+            return GetClaimComparer().Equals(IdentityClaim, claim);
         }
 
         private IEqualityComparer<Claim> GetClaimComparer()
@@ -112,13 +119,17 @@ namespace System.ServiceModel
         internal static EndpointIdentity ReadIdentity(XmlDictionaryReader reader)
         {
             if (reader == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
+            }
 
             EndpointIdentity readIdentity = null;
 
             reader.MoveToContent();
             if (reader.IsEmptyElement)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.Identity.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
+            }
 
             reader.ReadStartElement(XD.AddressingDictionary.Identity, XD.AddressingDictionary.IdentityExtensionNamespace);
 
@@ -174,7 +185,9 @@ namespace System.ServiceModel
         internal void WriteTo(XmlDictionaryWriter writer)
         {
             if (writer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
+            }
 
             writer.WriteStartElement(XD.AddressingDictionary.Identity, XD.AddressingDictionary.IdentityExtensionNamespace);
 
@@ -185,7 +198,7 @@ namespace System.ServiceModel
 
         internal virtual void WriteContentsTo(XmlDictionaryWriter writer)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.UnrecognizedIdentityPropertyType, this.IdentityClaim.GetType().ToString())));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.UnrecognizedIdentityPropertyType, IdentityClaim.GetType().ToString())));
         }
     }
 }

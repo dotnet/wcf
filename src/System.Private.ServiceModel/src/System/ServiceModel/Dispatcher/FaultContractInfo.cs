@@ -11,11 +11,7 @@ namespace System.ServiceModel.Dispatcher
 {
     public class FaultContractInfo
     {
-        private string _action;
-        private Type _detail;
-        private string _elementName;
         private string _ns;
-        private IList<Type> _knownTypes;
         private DataContractSerializer _serializer;
 
         public FaultContractInfo(string action, Type detail)
@@ -24,32 +20,26 @@ namespace System.ServiceModel.Dispatcher
         }
         internal FaultContractInfo(string action, Type detail, XmlName elementName, string ns, IList<Type> knownTypes)
         {
-            if (action == null)
+            Action = action ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(action));
+            Detail = detail ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(detail));
+            if (elementName != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("action");
-            }
-            if (detail == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("detail");
+                ElementName = elementName.EncodedName;
             }
 
-            _action = action;
-            _detail = detail;
-            if (elementName != null)
-                _elementName = elementName.EncodedName;
             _ns = ns;
-            _knownTypes = knownTypes;
+            KnownTypes = knownTypes;
         }
 
-        public string Action { get { return _action; } }
+        public string Action { get; }
 
-        public Type Detail { get { return _detail; } }
+        public Type Detail { get; }
 
-        internal string ElementName { get { return _elementName; } }
+        internal string ElementName { get; }
 
         internal string ElementNamespace { get { return _ns; } }
 
-        internal IList<Type> KnownTypes { get { return _knownTypes; } }
+        internal IList<Type> KnownTypes { get; }
 
         internal DataContractSerializer Serializer
         {
@@ -57,13 +47,13 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_serializer == null)
                 {
-                    if (_elementName == null)
+                    if (ElementName == null)
                     {
-                        _serializer = DataContractSerializerDefaults.CreateSerializer(_detail, _knownTypes, int.MaxValue /* maxItemsInObjectGraph */);
+                        _serializer = DataContractSerializerDefaults.CreateSerializer(Detail, KnownTypes, int.MaxValue /* maxItemsInObjectGraph */);
                     }
                     else
                     {
-                        _serializer = DataContractSerializerDefaults.CreateSerializer(_detail, _knownTypes, _elementName, _ns == null ? string.Empty : _ns, int.MaxValue /* maxItemsInObjectGraph */);
+                        _serializer = DataContractSerializerDefaults.CreateSerializer(Detail, KnownTypes, ElementName, _ns == null ? string.Empty : _ns, int.MaxValue /* maxItemsInObjectGraph */);
                     }
                 }
                 return _serializer;

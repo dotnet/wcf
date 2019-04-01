@@ -28,7 +28,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("context"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(context)));
             }
 
             context.BindingParameters.Add(this);
@@ -39,7 +39,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("context"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(context)));
             }
 
             context.BindingParameters.Add(this);
@@ -52,11 +52,11 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
             if (typeof(T) == typeof(MessageVersion))
             {
-                return (T)(object)this.MessageVersion;
+                return (T)(object)MessageVersion;
             }
             else
             {
@@ -72,11 +72,15 @@ namespace System.ServiceModel.Channels
         internal override bool IsMatch(BindingElement b)
         {
             if (b == null)
+            {
                 return false;
+            }
 
             MessageEncodingBindingElement encoding = b as MessageEncodingBindingElement;
             if (encoding == null)
+            {
                 return false;
+            }
 
             return true;
         }

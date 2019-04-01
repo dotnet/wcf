@@ -505,7 +505,7 @@ namespace System.ServiceModel
         {
             get
             {
-                Contract.Assert(index >= 0 && index < this.Count, "check index");
+                Contract.Assert(index >= 0 && index < Count, "check index");
                 switch (index)
                 {
                     case 0: return String0;

@@ -114,7 +114,9 @@ namespace System.IdentityModel
                 KeyedHashAlgorithm keyedHashAlgorithm = algorithmObject as KeyedHashAlgorithm;
 
                 if (symmetricAlgorithm != null || keyedHashAlgorithm != null)
+                {
                     found = true;
+                }
                 // The reason we do not return here even when the user has provided a custom algorithm to CryptoConfig 
                 // is because we need to check if the user has overwritten an existing standard URI.
             }
@@ -146,7 +148,10 @@ namespace System.IdentityModel
                     return keySize == 128 || keySize == 192;
                 default:
                     if (found)
+                    {
                         return true;
+                    }
+
                     return false;
                     // We do not expect the user to map the uri of an existing standrad algorithm with say key size 128 bit 
                     // to a custom algorithm with keySize 192 bits. If he does that, we anyways make sure that we return false.
@@ -238,7 +243,7 @@ namespace System.IdentityModel
         {
             if (string.IsNullOrEmpty(algorithm))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("algorithm"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(algorithm)));
             }
 
             switch (algorithm)
@@ -298,7 +303,7 @@ namespace System.IdentityModel
         {
             if (string.IsNullOrEmpty(algorithm))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("algorithm"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(algorithm)));
             }
 
             object algorithmObject = null;
@@ -335,8 +340,8 @@ namespace System.IdentityModel
                             {
                                 // Create a factory delegate which returns new instances of the algorithm type for later calls.
                                 Type algorithmType = algorithmObject.GetType();
-                                System.Linq.Expressions.NewExpression algorithmCreationExpression = Linq.Expressions.Expression.New(algorithmType);
-                                System.Linq.Expressions.LambdaExpression creationFunction = Linq.Expressions.Expression.Lambda<Func<object>>(algorithmCreationExpression);
+                                Linq.Expressions.NewExpression algorithmCreationExpression = Linq.Expressions.Expression.New(algorithmType);
+                                Linq.Expressions.LambdaExpression creationFunction = Linq.Expressions.Expression.Lambda<Func<object>>(algorithmCreationExpression);
                                 delegateFunction = creationFunction.Compile() as Func<object>;
 
                                 if (delegateFunction != null)

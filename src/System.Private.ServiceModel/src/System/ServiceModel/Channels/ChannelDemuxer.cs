@@ -2,16 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime;
-using System.ServiceModel;
-using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Dispatcher;
-using System.Threading;
-using System.Xml;
-using System.Diagnostics.CodeAnalysis;
 
 namespace System.ServiceModel.Channels
 {
@@ -19,38 +9,15 @@ namespace System.ServiceModel.Channels
     {
         public readonly static TimeSpan UseDefaultReceiveTimeout = TimeSpan.MinValue;
 
-        private TimeSpan _peekTimeout;
-        private int _maxPendingSessions;
-
         public ChannelDemuxer()
         {
-            _peekTimeout = ChannelDemuxer.UseDefaultReceiveTimeout; //use the default receive timeout (original behavior)
-            _maxPendingSessions = 10;
+            PeekTimeout = ChannelDemuxer.UseDefaultReceiveTimeout; //use the default receive timeout (original behavior)
+            MaxPendingSessions = 10;
         }
 
-        public TimeSpan PeekTimeout
-        {
-            get
-            {
-                return _peekTimeout;
-            }
-            set
-            {
-                _peekTimeout = value;
-            }
-        }
+        public TimeSpan PeekTimeout { get; set; }
 
-        public int MaxPendingSessions
-        {
-            get
-            {
-                return _maxPendingSessions;
-            }
-            set
-            {
-                _maxPendingSessions = value;
-            }
-        }
+        public int MaxPendingSessions { get; set; }
     }
 
     //
@@ -90,7 +57,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero && value != ChannelDemuxer.UseDefaultReceiveTimeout)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
                 _demuxer.PeekTimeout = value;
@@ -141,7 +108,9 @@ namespace System.ServiceModel.Channels
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
 
             SubstituteCachedBindingContextParametersIfNeeded(context);
             return context.BuildInnerChannelFactory<TChannel>();
@@ -150,7 +119,9 @@ namespace System.ServiceModel.Channels
         public override bool CanBuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
 
             return context.CanBuildInnerChannelFactory<TChannel>();
         }

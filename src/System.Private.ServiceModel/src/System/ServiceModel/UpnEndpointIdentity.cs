@@ -2,24 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.ComponentModel;
 using System.Security.Principal;
 using System.IdentityModel.Claims;
 using System.Runtime;
-using System.Runtime.InteropServices;
 using System.ServiceModel.Diagnostics;
-using System.Text;
 using System.Xml;
 
 namespace System.ServiceModel
 {
     public class UpnEndpointIdentity : EndpointIdentity
     {
-#pragma warning disable 0414 // We don't use this yet in the initial stubbing - remove this once we have references again. 
         private SecurityIdentifier _upnSid;
         private bool _hasUpnSidBeenComputed;
         private WindowsIdentity _windowsIdentity;
-#pragma warning restore 0414
 
         private object _thisLock = new object();
 
@@ -36,20 +31,21 @@ namespace System.ServiceModel
         public UpnEndpointIdentity(Claim identity)
         {
             if (identity == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(identity));
+            }
 
             if (!identity.ClaimType.Equals(ClaimTypes.Upn))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.UnrecognizedClaimTypeForIdentity, identity.ClaimType, ClaimTypes.Upn));
+            }
 
             Initialize(identity);
         }
 
         internal UpnEndpointIdentity(WindowsIdentity windowsIdentity)
         {
-            if (windowsIdentity == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("windowsIdentity");
-
-            _windowsIdentity = windowsIdentity;
+            _windowsIdentity = windowsIdentity ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(windowsIdentity));
             _upnSid = windowsIdentity.User;
             _hasUpnSidBeenComputed = true;
         }
@@ -110,19 +106,21 @@ namespace System.ServiceModel
         internal override void WriteContentsTo(XmlDictionaryWriter writer)
         {
             if (writer == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
+            }
 
-            writer.WriteElementString(XD.AddressingDictionary.Upn, XD.AddressingDictionary.IdentityExtensionNamespace, (string)this.IdentityClaim.Resource);
+            writer.WriteElementString(XD.AddressingDictionary.Upn, XD.AddressingDictionary.IdentityExtensionNamespace, (string)IdentityClaim.Resource);
         }
 
         internal SecurityIdentifier GetUpnSid()
         {
-            Fx.Assert(ClaimTypes.Upn.Equals(this.IdentityClaim.ClaimType), "");
+            Fx.Assert(ClaimTypes.Upn.Equals(IdentityClaim.ClaimType), "");
             if (!_hasUpnSidBeenComputed)
             {
                 lock (_thisLock)
                 {
-                    string upn = (string)this.IdentityClaim.Resource;
+                    string upn = (string)IdentityClaim.Resource;
                     if (!_hasUpnSidBeenComputed)
                     {
                         try

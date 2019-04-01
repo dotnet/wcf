@@ -61,7 +61,7 @@ namespace System.ServiceModel.Security
             return IsStronger(v1, v2) ? v1 : v2;
         }
 
-        public static int GetOrdinal(Nullable<ProtectionLevel> p)
+        public static int GetOrdinal(ProtectionLevel? p)
         {
             if (p.HasValue)
             {
@@ -162,16 +162,23 @@ namespace System.ServiceModel.Security
             Validate(y);
 
             if (x == y)
+            {
                 return true;
+            }
 
             int px = 0;
             int py = 0;
             for (int i = 0; i < s_TokenImpersonationLevelOrder.Length; i++)
             {
                 if (x == s_TokenImpersonationLevelOrder[i])
+                {
                     px = i;
+                }
+
                 if (y == s_TokenImpersonationLevelOrder[i])
+                {
                     py = i;
+                }
             }
 
             return (px > py);
@@ -224,7 +231,9 @@ namespace System.ServiceModel.Security
             get
             {
                 if (s_dictionaryManager == null)
+                {
                     s_dictionaryManager = new IdentityModel.DictionaryManager(BinaryMessageEncoderFactory.XmlDictionary);
+                }
 
                 return s_dictionaryManager;
             }
@@ -393,7 +402,10 @@ namespace System.ServiceModel.Security
         private static WindowsIdentity UnsafeCreateWindowsIdentityFromToken(IntPtr token, string authType)
         {
             if (authType != null)
+            {
                 return new WindowsIdentity(token, authType);
+            }
+
             return new WindowsIdentity(token);
         }
 
@@ -544,7 +556,9 @@ namespace System.ServiceModel.Security
         internal static ReadOnlyCollection<IAuthorizationPolicy> CreatePrincipalNameAuthorizationPolicies(string principalName)
         {
             if (principalName == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("principalName");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(principalName));
+            }
 
             Claim identityClaim;
             Claim primaryPrincipal;
@@ -571,7 +585,9 @@ namespace System.ServiceModel.Security
         internal static string GetIdentityNamesFromContext(AuthorizationContext authContext)
         {
             if (authContext == null)
+            {
                 return String.Empty;
+            }
 
             StringBuilder str = new StringBuilder(256);
             for (int i = 0; i < authContext.ClaimSets.Count; ++i)
@@ -583,7 +599,9 @@ namespace System.ServiceModel.Security
                 if (windows != null)
                 {
                     if (str.Length > 0)
+                    {
                         str.Append(", ");
+                    }
 
                     AppendIdentityName(str, windows.WindowsIdentity);
                 }
@@ -594,7 +612,9 @@ namespace System.ServiceModel.Security
                     if (x509 != null)
                     {
                         if (str.Length > 0)
+                        {
                             str.Append(", ");
+                        }
 
                         AppendCertificateIdentityName(str, x509.X509Certificate);
                     }
@@ -617,7 +637,9 @@ namespace System.ServiceModel.Security
                         if (identity != null)
                         {
                             if (str.Length > 0)
+                            {
                                 str.Append(", ");
+                            }
 
                             AppendIdentityName(str, identity);
                         }
@@ -812,14 +834,19 @@ namespace System.ServiceModel.Security
         private static Task OpenCommunicationObjectAsync(IAsyncCommunicationObject obj, TimeSpan timeout)
         {
             if (obj != null)
+            {
                 return obj.OpenAsync(timeout);
+            }
+
             return Task.CompletedTask;
         }
 
         private static void OpenCommunicationObject(ICommunicationObject obj, TimeSpan timeout)
         {
             if (obj != null)
+            {
                 obj.Open(timeout);
+            }
         }
 
         private static Task CloseCommunicationObjectAsync(IAsyncCommunicationObject obj, bool aborted, TimeSpan timeout)
@@ -884,17 +911,35 @@ namespace System.ServiceModel.Security
         {
             MessageSecurityTokenVersion securityVersion = (MessageSecurityTokenVersion)requirement.GetProperty<MessageSecurityTokenVersion>(ServiceModelSecurityTokenRequirement.MessageSecurityVersionProperty);
             if (securityVersion == MessageSecurityTokenVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005BasicSecurityProfile10)
+            {
                 return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, tokenManager);
+            }
+
             if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005)
+            {
                 return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11, tokenManager);
+            }
+
             if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005BasicSecurityProfile10)
+            {
                 return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, tokenManager);
+            }
+
             if (securityVersion == MessageSecurityTokenVersion.WSSecurity10WSTrust13WSSecureConversation13BasicSecurityProfile10)
+            {
                 return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity10WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, tokenManager);
+            }
+
             if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrust13WSSecureConversation13)
+            {
                 return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12, tokenManager);
+            }
+
             if (securityVersion == MessageSecurityTokenVersion.WSSecurity11WSTrust13WSSecureConversation13BasicSecurityProfile10)
+            {
                 return CreateSecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, tokenManager);
+            }
+
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
         }
 
@@ -902,12 +947,12 @@ namespace System.ServiceModel.Security
         {
             if (securityVersion == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("securityVersion"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(securityVersion)));
             }
 
             if (securityTokenSerializer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("securityTokenSerializer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(securityTokenSerializer));
             }
 
             return new SecurityStandardsManager(securityVersion, securityTokenSerializer);
@@ -1081,7 +1126,9 @@ namespace System.ServiceModel.Security
         {
             X509Certificate2 certificate = GetCertificateFromStoreCore(storeName, storeLocation, findType, findValue, target, true);
             if (certificate == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.CannotFindCert, storeName, storeLocation, findType, findValue)));
+            }
 
             return certificate;
         }
@@ -1308,7 +1355,9 @@ namespace System.ServiceModel.Security
             get
             {
                 if (_val == null)
+                {
                     _val = _prefix + _id.ToString(CultureInfo.InvariantCulture);
+                }
 
                 return _val;
             }
@@ -1345,7 +1394,6 @@ namespace System.ServiceModel.Security
                     thisResult._operationWithTimeout(thisResult._timeoutHelper.RemainingTime());
                 }
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))

@@ -9,10 +9,7 @@ namespace System.ServiceModel.Description
 {
     public class MessageHeaderDescription : MessagePartDescription
     {
-        private bool _mustUnderstand;
         private bool _relay;
-        private string _actor;
-        private bool _typedHeader;
         private bool _isUnknownHeader;
 
         public MessageHeaderDescription(string name, string ns)
@@ -23,11 +20,11 @@ namespace System.ServiceModel.Description
         internal MessageHeaderDescription(MessageHeaderDescription other)
             : base(other)
         {
-            this.MustUnderstand = other.MustUnderstand;
-            this.Relay = other.Relay;
-            this.Actor = other.Actor;
-            this.TypedHeader = other.TypedHeader;
-            this.IsUnknownHeaderCollection = other.IsUnknownHeaderCollection;
+            MustUnderstand = other.MustUnderstand;
+            Relay = other.Relay;
+            Actor = other.Actor;
+            TypedHeader = other.TypedHeader;
+            IsUnknownHeaderCollection = other.IsUnknownHeaderCollection;
         }
 
         internal override MessagePartDescription Clone()
@@ -36,18 +33,10 @@ namespace System.ServiceModel.Description
         }
 
         [DefaultValue(null)]
-        public string Actor
-        {
-            get { return _actor; }
-            set { _actor = value; }
-        }
+        public string Actor { get; set; }
 
         [DefaultValue(false)]
-        public bool MustUnderstand
-        {
-            get { return _mustUnderstand; }
-            set { _mustUnderstand = value; }
-        }
+        public bool MustUnderstand { get; set; }
 
         [DefaultValue(false)]
         public bool Relay
@@ -57,11 +46,7 @@ namespace System.ServiceModel.Description
         }
 
         [DefaultValue(false)]
-        public bool TypedHeader
-        {
-            get { return _typedHeader; }
-            set { _typedHeader = value; }
-        }
+        public bool TypedHeader { get; set; }
 
         internal bool IsUnknownHeaderCollection
         {

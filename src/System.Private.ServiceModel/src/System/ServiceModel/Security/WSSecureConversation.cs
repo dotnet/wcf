@@ -13,16 +13,11 @@ namespace System.ServiceModel.Security
 {
     internal abstract class WSSecureConversation : WSSecurityTokenSerializer.SerializerEntries
     {
-        private WSSecurityTokenSerializer _tokenSerializer;
         private DerivedKeyTokenEntry _derivedKeyEntry;
 
         protected WSSecureConversation(WSSecurityTokenSerializer tokenSerializer, int maxKeyDerivationOffset, int maxKeyDerivationLabelLength, int maxKeyDerivationNonceLength)
         {
-            if (tokenSerializer == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenSerializer");
-            }
-            _tokenSerializer = tokenSerializer;
+            WSSecurityTokenSerializer = tokenSerializer ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenSerializer));
             _derivedKeyEntry = new DerivedKeyTokenEntry(this, maxKeyDerivationOffset, maxKeyDerivationLabelLength, maxKeyDerivationNonceLength);
         }
 
@@ -31,16 +26,13 @@ namespace System.ServiceModel.Security
             get;
         }
 
-        public WSSecurityTokenSerializer WSSecurityTokenSerializer
-        {
-            get { return _tokenSerializer; }
-        }
+        public WSSecurityTokenSerializer WSSecurityTokenSerializer { get; }
 
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
         {
             if (tokenEntryList == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenEntryList");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenEntryList));
             }
             tokenEntryList.Add(_derivedKeyEntry);
         }
@@ -67,7 +59,7 @@ namespace System.ServiceModel.Security
             get { return SecurityAlgorithms.Psha1KeyDerivation; }
         }
 
-        protected class DerivedKeyTokenEntry : WSSecurityTokenSerializer.TokenEntry
+        protected class DerivedKeyTokenEntry : TokenEntry
         {
             public const string DefaultLabel = "WS-SecureConversation";
 
@@ -78,11 +70,7 @@ namespace System.ServiceModel.Security
 
             public DerivedKeyTokenEntry(WSSecureConversation parent, int maxKeyDerivationOffset, int maxKeyDerivationLabelLength, int maxKeyDerivationNonceLength)
             {
-                if (parent == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
-                }
-                _parent = parent;
+                _parent = parent ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
                 _maxKeyDerivationOffset = maxKeyDerivationOffset;
                 _maxKeyDerivationLabelLength = maxKeyDerivationLabelLength;
                 _maxKeyDerivationNonceLength = maxKeyDerivationNonceLength;
@@ -162,7 +150,9 @@ namespace System.ServiceModel.Security
                     generation = reader.ReadContentAsInt();
                     reader.ReadEndElement();
                     if (generation < 0)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.DerivedKeyInvalidGenerationSpecified, generation)));
+                    }
                 }
 
                 offset = -1;
@@ -172,7 +162,9 @@ namespace System.ServiceModel.Security
                     offset = reader.ReadContentAsInt();
                     reader.ReadEndElement();
                     if (offset < 0)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.DerivedKeyInvalidOffsetSpecified, offset)));
+                    }
                 }
 
                 length = DerivedKeySecurityToken.DefaultDerivedKeyLength;
@@ -184,7 +176,9 @@ namespace System.ServiceModel.Security
                 }
 
                 if ((offset == -1) && (generation == -1))
+                {
                     offset = 0;
+                }
 
                 // verify that the offset is not larger than the max allowed
                 DerivedKeySecurityToken.EnsureAcceptableOffset(offset, generation, length, _maxKeyDerivationOffset);
@@ -239,7 +233,7 @@ namespace System.ServiceModel.Security
                 int generation;
                 SecurityKeyIdentifierClause tokenToDeriveIdentifier;
                 SecurityToken tokenToDerive;
-                this.ReadDerivedKeyTokenParameters(reader, tokenResolver, out id, out derivationAlgorithm, out label, out length,
+                ReadDerivedKeyTokenParameters(reader, tokenResolver, out id, out derivationAlgorithm, out label, out length,
                     out nonce, out offset, out generation, out tokenToDeriveIdentifier, out tokenToDerive);
 
                 return CreateDerivedKeyToken(id, derivationAlgorithm, label, length, nonce, offset, generation,
@@ -346,7 +340,9 @@ namespace System.ServiceModel.Security
             public override UniqueId GetSecurityContextTokenId(XmlDictionaryReader reader)
             {
                 if (reader == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
+                }
 
                 reader.ReadStartElement(DriverDictionary.SecurityContextToken, DriverDictionary.Namespace);
                 UniqueId contextId = XmlHelper.ReadElementStringAsUniqueId(reader, DriverDictionary.Identifier, DriverDictionary.Namespace);
@@ -361,7 +357,9 @@ namespace System.ServiceModel.Security
             public override bool IsAtSecurityContextToken(XmlDictionaryReader reader)
             {
                 if (reader == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
+                }
 
                 return reader.IsStartElement(DriverDictionary.SecurityContextToken, DriverDictionary.Namespace);
             }

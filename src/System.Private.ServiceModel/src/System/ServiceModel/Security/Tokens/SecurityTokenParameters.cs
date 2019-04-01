@@ -15,14 +15,15 @@ namespace System.ServiceModel.Security.Tokens
         internal const bool defaultRequireDerivedKeys = true;
 
         private SecurityTokenInclusionMode _inclusionMode = defaultInclusionMode;
-        private bool _requireDerivedKeys = defaultRequireDerivedKeys;
 
         protected SecurityTokenParameters(SecurityTokenParameters other)
         {
             if (other == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("other");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(other));
+            }
 
-            _requireDerivedKeys = other._requireDerivedKeys;
+            RequireDerivedKeys = other.RequireDerivedKeys;
         }
 
         protected SecurityTokenParameters()
@@ -45,17 +46,7 @@ namespace System.ServiceModel.Security.Tokens
             }
         }
 
-        public bool RequireDerivedKeys
-        {
-            get
-            {
-                return _requireDerivedKeys;
-            }
-            set
-            {
-                _requireDerivedKeys = value;
-            }
-        }
+        public bool RequireDerivedKeys { get; set; } = defaultRequireDerivedKeys;
 
         internal protected abstract bool SupportsClientAuthentication { get; }
         internal protected abstract bool SupportsServerAuthentication { get; }
@@ -66,7 +57,9 @@ namespace System.ServiceModel.Security.Tokens
             SecurityTokenParameters result = CloneCore();
 
             if (result == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecurityTokenParametersCloneInvalidResult, GetType().ToString())));
+            }
 
             return result;
         }
@@ -80,7 +73,9 @@ namespace System.ServiceModel.Security.Tokens
             where TInternalClause : SecurityKeyIdentifierClause
         {
             if (token == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
 
             SecurityKeyIdentifierClause result;
 
@@ -106,10 +101,14 @@ namespace System.ServiceModel.Security.Tokens
             if (xmlToken != null)
             {
                 if (referenceStyle == SecurityTokenReferenceStyle.Internal && xmlToken.InternalTokenReference != null)
+                {
                     return xmlToken.InternalTokenReference;
+                }
 
                 if (referenceStyle == SecurityTokenReferenceStyle.External && xmlToken.ExternalTokenReference != null)
+                {
                     return xmlToken.ExternalTokenReference;
+                }
             }
 
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.UnableToCreateTokenReference));
@@ -118,7 +117,9 @@ namespace System.ServiceModel.Security.Tokens
         internal protected virtual bool MatchesKeyIdentifierClause(SecurityToken token, SecurityKeyIdentifierClause keyIdentifierClause, SecurityTokenReferenceStyle referenceStyle)
         {
             if (token == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
 
             if (token is GenericXmlSecurityToken)
             {
@@ -134,9 +135,14 @@ namespace System.ServiceModel.Security.Tokens
                         SR.Format(SR.TokenDoesNotSupportKeyIdentifierClauseCreation, token.GetType().Name, referenceStyle)));
                 case SecurityTokenReferenceStyle.External:
                     if (keyIdentifierClause is LocalIdKeyIdentifierClause)
+                    {
                         result = false;
+                    }
                     else
+                    {
                         result = token.MatchesKeyIdentifierClause(keyIdentifierClause);
+                    }
+
                     break;
                 case SecurityTokenReferenceStyle.Internal:
                     result = token.MatchesKeyIdentifierClause(keyIdentifierClause);
@@ -151,20 +157,30 @@ namespace System.ServiceModel.Security.Tokens
         internal bool MatchesGenericXmlTokenKeyIdentifierClause(SecurityToken token, SecurityKeyIdentifierClause keyIdentifierClause, SecurityTokenReferenceStyle referenceStyle)
         {
             if (token == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
 
             bool result;
 
             GenericXmlSecurityToken xmlToken = token as GenericXmlSecurityToken;
 
             if (xmlToken == null)
+            {
                 result = false;
+            }
             else if (referenceStyle == SecurityTokenReferenceStyle.External && xmlToken.ExternalTokenReference != null)
+            {
                 result = xmlToken.ExternalTokenReference.Matches(keyIdentifierClause);
+            }
             else if (referenceStyle == SecurityTokenReferenceStyle.Internal)
+            {
                 result = xmlToken.MatchesKeyIdentifierClause(keyIdentifierClause);
+            }
             else
+            {
                 result = false;
+            }
 
             return result;
         }
@@ -174,7 +190,7 @@ namespace System.ServiceModel.Security.Tokens
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "{0}:", GetType().ToString()));
-            sb.Append(String.Format(CultureInfo.InvariantCulture, "RequireDerivedKeys: {0}", _requireDerivedKeys.ToString()));
+            sb.Append(String.Format(CultureInfo.InvariantCulture, "RequireDerivedKeys: {0}", RequireDerivedKeys.ToString()));
 
             return sb.ToString();
         }

@@ -12,7 +12,6 @@ namespace System.ServiceModel.Security
 {
     internal sealed class RequestSecurityTokenResponseCollection : BodyWriter
     {
-        private IEnumerable<RequestSecurityTokenResponse> _rstrCollection;
         private SecurityStandardsManager _standardsManager;
 
         public RequestSecurityTokenResponseCollection(IEnumerable<RequestSecurityTokenResponse> rstrCollection)
@@ -23,29 +22,25 @@ namespace System.ServiceModel.Security
             : base(true)
         {
             if (rstrCollection == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rstrCollection");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(rstrCollection));
+            }
+
             int index = 0;
             foreach (RequestSecurityTokenResponse rstr in rstrCollection)
             {
                 if (rstr == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(String.Format(CultureInfo.InvariantCulture, "rstrCollection[{0}]", index));
+                }
+
                 ++index;
             }
-            _rstrCollection = rstrCollection;
-            if (standardsManager == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("standardsManager"));
-            }
-            _standardsManager = standardsManager;
+            RstrCollection = rstrCollection;
+            _standardsManager = standardsManager ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(standardsManager)));
         }
 
-        public IEnumerable<RequestSecurityTokenResponse> RstrCollection
-        {
-            get
-            {
-                return _rstrCollection;
-            }
-        }
+        public IEnumerable<RequestSecurityTokenResponse> RstrCollection { get; }
 
         public void WriteTo(XmlWriter writer)
         {

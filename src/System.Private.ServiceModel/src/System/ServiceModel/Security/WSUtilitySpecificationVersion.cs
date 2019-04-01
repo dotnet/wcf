@@ -5,21 +5,14 @@
 
 namespace System.ServiceModel.Security
 {
-    using System.Collections.Generic;
     using System.ServiceModel;
     using System.IO;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.ServiceModel.Security.Tokens;
-    using System.Threading;
-    using System.Globalization;
-    using System.ServiceModel.Diagnostics;
     using System.Text;
     using System.Xml;
 
-    using CanonicalFormWriter = System.IdentityModel.CanonicalFormWriter;
-    using SignatureResourcePool = System.IdentityModel.SignatureResourcePool;
-    using HashStream = System.IdentityModel.HashStream;
+    using CanonicalFormWriter = IdentityModel.CanonicalFormWriter;
+    using SignatureResourcePool = IdentityModel.SignatureResourcePool;
+    using HashStream = IdentityModel.HashStream;
 
     internal abstract class WSUtilitySpecificationVersion
     {
@@ -35,11 +28,9 @@ namespace System.ServiceModel.Security
             "yyyy-MM-ddTHH:mm:ssZ"
         };
 
-        private readonly XmlDictionaryString _namespaceUri;
-
         internal WSUtilitySpecificationVersion(XmlDictionaryString namespaceUri)
         {
-            _namespaceUri = namespaceUri;
+            NamespaceUri = namespaceUri;
         }
 
         public static WSUtilitySpecificationVersion Default
@@ -47,10 +38,7 @@ namespace System.ServiceModel.Security
             get { return OneDotZero; }
         }
 
-        internal XmlDictionaryString NamespaceUri
-        {
-            get { return _namespaceUri; }
-        }
+        internal XmlDictionaryString NamespaceUri { get; }
 
         public static WSUtilitySpecificationVersion OneDotZero
         {
@@ -169,8 +157,6 @@ namespace System.ServiceModel.Security
             private readonly byte[] _fragment3;
             private readonly byte[] _fragment4;
 
-            private static readonly TimestampCanonicalFormWriter s_instance = new TimestampCanonicalFormWriter();
-
             private TimestampCanonicalFormWriter()
             {
                 Encoding encoding = CanonicalFormWriter.Utf8WithoutPreamble;
@@ -180,10 +166,7 @@ namespace System.ServiceModel.Security
                 _fragment4 = encoding.GetBytes(xml4);
             }
 
-            public static TimestampCanonicalFormWriter Instance
-            {
-                get { return s_instance; }
-            }
+            public static TimestampCanonicalFormWriter Instance { get; } = new TimestampCanonicalFormWriter();
 
             public void WriteCanonicalForm(Stream stream, string id, char[] created, char[] expires, byte[] workBuffer)
             {

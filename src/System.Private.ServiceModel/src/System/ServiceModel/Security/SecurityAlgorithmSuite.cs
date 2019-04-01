@@ -25,7 +25,10 @@ namespace System.ServiceModel.Security
             get
             {
                 if (s_basic256 == null)
+                {
                     s_basic256 = new Basic256SecurityAlgorithmSuite();
+                }
+
                 return s_basic256;
             }
         }
@@ -73,17 +76,17 @@ namespace System.ServiceModel.Security
 
             for (int i = 0; i < keys.Count; i++)
             {
-                if (keys[i].IsSupportedAlgorithm(this.DefaultSymmetricSignatureAlgorithm))
+                if (keys[i].IsSupportedAlgorithm(DefaultSymmetricSignatureAlgorithm))
                 {
-                    signatureAlgorithm = this.DefaultSymmetricSignatureAlgorithm;
-                    signatureAlgorithmDictionaryString = this.DefaultSymmetricSignatureAlgorithmDictionaryString;
+                    signatureAlgorithm = DefaultSymmetricSignatureAlgorithm;
+                    signatureAlgorithmDictionaryString = DefaultSymmetricSignatureAlgorithmDictionaryString;
                     key = keys[i];
                     return;
                 }
-                else if (keys[i].IsSupportedAlgorithm(this.DefaultAsymmetricSignatureAlgorithm))
+                else if (keys[i].IsSupportedAlgorithm(DefaultAsymmetricSignatureAlgorithm))
                 {
-                    signatureAlgorithm = this.DefaultAsymmetricSignatureAlgorithm;
-                    signatureAlgorithmDictionaryString = this.DefaultAsymmetricSignatureAlgorithmDictionaryString;
+                    signatureAlgorithm = DefaultAsymmetricSignatureAlgorithm;
+                    signatureAlgorithmDictionaryString = DefaultAsymmetricSignatureAlgorithmDictionaryString;
                     key = keys[i];
                     return;
                 }

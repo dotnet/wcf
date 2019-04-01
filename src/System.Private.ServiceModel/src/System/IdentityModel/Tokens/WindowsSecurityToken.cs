@@ -10,7 +10,6 @@ namespace System.IdentityModel.Tokens
 {
     public class WindowsSecurityToken : SecurityToken, IDisposable
     {
-        private string _authenticationType;
         private string _id;
         private DateTime _effectiveTime;
         private DateTime _expirationTime;
@@ -45,13 +44,12 @@ namespace System.IdentityModel.Tokens
         protected void Initialize(string id, string authenticationType, DateTime effectiveTime, DateTime expirationTime, WindowsIdentity windowsIdentity, bool clone)
         {
             if (windowsIdentity == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("windowsIdentity");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(windowsIdentity));
+            }
 
-            if (id == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("id");
-
-            _id = id;
-            _authenticationType = authenticationType;
+            _id = id ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(id));
+            AuthenticationType = authenticationType;
             _effectiveTime = effectiveTime;
             _expirationTime = expirationTime;
             _windowsIdentity = clone ? SecurityUtils.CloneWindowsIdentityIfNecessary(windowsIdentity, authenticationType) : windowsIdentity;
@@ -62,10 +60,7 @@ namespace System.IdentityModel.Tokens
             get { return _id; }
         }
 
-        public string AuthenticationType
-        {
-            get { return _authenticationType; }
-        }
+        public string AuthenticationType { get; private set; }
 
         public override DateTime ValidFrom
         {
@@ -108,7 +103,7 @@ namespace System.IdentityModel.Tokens
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
     }

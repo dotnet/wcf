@@ -10,7 +10,6 @@ namespace System.ServiceModel.Security
 {
     public sealed class X509CertificateRecipientClientCredential
     {
-        private X509ServiceCertificateAuthentication _authentication;
         private X509ServiceCertificateAuthentication _sslCertificateAuthentication;
 
         internal const StoreLocation DefaultStoreLocation = StoreLocation.CurrentUser;
@@ -18,28 +17,27 @@ namespace System.ServiceModel.Security
         internal const X509FindType DefaultFindType = X509FindType.FindBySubjectDistinguishedName;
 
         private X509Certificate2 _defaultCertificate;
-        private Dictionary<Uri, X509Certificate2> _scopedCertificates;
         private bool _isReadOnly;
 
         internal X509CertificateRecipientClientCredential()
         {
-            _authentication = new X509ServiceCertificateAuthentication();
-            _scopedCertificates = new Dictionary<Uri, X509Certificate2>();
+            Authentication = new X509ServiceCertificateAuthentication();
+            ScopedCertificates = new Dictionary<Uri, X509Certificate2>();
         }
 
         internal X509CertificateRecipientClientCredential(X509CertificateRecipientClientCredential other)
         {
-            _authentication = new X509ServiceCertificateAuthentication(other._authentication);
+            Authentication = new X509ServiceCertificateAuthentication(other.Authentication);
             if (other._sslCertificateAuthentication != null)
             {
                 _sslCertificateAuthentication = new X509ServiceCertificateAuthentication(other._sslCertificateAuthentication);
             }
 
             _defaultCertificate = other._defaultCertificate;
-            _scopedCertificates = new Dictionary<Uri, X509Certificate2>();
+            ScopedCertificates = new Dictionary<Uri, X509Certificate2>();
             foreach (Uri uri in other.ScopedCertificates.Keys)
             {
-                _scopedCertificates.Add(uri, other.ScopedCertificates[uri]);
+                ScopedCertificates.Add(uri, other.ScopedCertificates[uri]);
             }
             _isReadOnly = other._isReadOnly;
         }
@@ -57,21 +55,9 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public Dictionary<Uri, X509Certificate2> ScopedCertificates
-        {
-            get
-            {
-                return _scopedCertificates;
-            }
-        }
+        public Dictionary<Uri, X509Certificate2> ScopedCertificates { get; }
 
-        public X509ServiceCertificateAuthentication Authentication
-        {
-            get
-            {
-                return _authentication;
-            }
-        }
+        public X509ServiceCertificateAuthentication Authentication { get; }
 
         public X509ServiceCertificateAuthentication SslCertificateAuthentication
         {
@@ -90,7 +76,7 @@ namespace System.ServiceModel.Security
         {
             if (subjectName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("subjectName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(subjectName));
             }
             SetDefaultCertificate(storeLocation, storeName, DefaultFindType, subjectName);
         }
@@ -99,7 +85,7 @@ namespace System.ServiceModel.Security
         {
             if (findValue == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("findValue");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(findValue));
             }
             ThrowIfImmutable();
             _defaultCertificate = SecurityUtils.GetCertificateFromStore(storeName, storeLocation, findType, findValue, null);
@@ -109,7 +95,7 @@ namespace System.ServiceModel.Security
         {
             if (subjectName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("subjectName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(subjectName));
             }
             SetScopedCertificate(DefaultStoreLocation, DefaultStoreName, DefaultFindType, subjectName, targetService);
         }
@@ -118,11 +104,11 @@ namespace System.ServiceModel.Security
         {
             if (findValue == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("findValue");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(findValue));
             }
             if (targetService == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("targetService");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(targetService));
             }
             ThrowIfImmutable();
             X509Certificate2 certificate = SecurityUtils.GetCertificateFromStore(storeName, storeLocation, findType, findValue, null);
@@ -132,7 +118,7 @@ namespace System.ServiceModel.Security
         internal void MakeReadOnly()
         {
             _isReadOnly = true;
-            this.Authentication.MakeReadOnly();
+            Authentication.MakeReadOnly();
             if (_sslCertificateAuthentication != null)
             {
                 _sslCertificateAuthentication.MakeReadOnly();

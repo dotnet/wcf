@@ -5,7 +5,6 @@
 
 using System.IdentityModel.Tokens;
 using System.Runtime;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.IdentityModel.Selectors
@@ -26,7 +25,7 @@ namespace System.IdentityModel.Selectors
 
         public async Task<SecurityToken> GetTokenAsync(TimeSpan timeout)
         {
-            SecurityToken token = await this.GetTokenCoreAsync(timeout);
+            SecurityToken token = await GetTokenCoreAsync(timeout);
             if (token == null)
             {
                 throw Fx.Exception.AsError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
@@ -42,7 +41,7 @@ namespace System.IdentityModel.Selectors
                 throw Fx.Exception.ArgumentNull(nameof(tokenToBeRenewed));
             }
 
-            SecurityToken token = await this.RenewTokenCoreAsync(timeout, tokenToBeRenewed);
+            SecurityToken token = await RenewTokenCoreAsync(timeout, tokenToBeRenewed);
             if (token == null)
             {
                 throw Fx.Exception.AsError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToRenewToken, this)));
@@ -58,7 +57,7 @@ namespace System.IdentityModel.Selectors
                 throw Fx.Exception.ArgumentNull(nameof(token));
             }
 
-            await this.CancelTokenCoreAsync(timeout, token);
+            await CancelTokenCoreAsync(timeout, token);
         }
 
         // protected methods

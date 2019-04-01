@@ -3,82 +3,67 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
-using System.ServiceModel.Diagnostics;
 
 namespace System.ServiceModel.Channels
 {
     public abstract class ChannelBase : CommunicationObject, IChannel, IDefaultCommunicationTimeouts
     {
-        private ChannelManagerBase _channelManager;
-
         protected ChannelBase(ChannelManagerBase channelManager)
         {
-            if (channelManager == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelManager));
-            }
-
-            _channelManager = channelManager;
+            Manager = channelManager ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelManager));
         }
 
         TimeSpan IDefaultCommunicationTimeouts.CloseTimeout
         {
-            get { return this.DefaultCloseTimeout; }
+            get { return DefaultCloseTimeout; }
         }
 
         TimeSpan IDefaultCommunicationTimeouts.OpenTimeout
         {
-            get { return this.DefaultOpenTimeout; }
+            get { return DefaultOpenTimeout; }
         }
 
         TimeSpan IDefaultCommunicationTimeouts.ReceiveTimeout
         {
-            get { return this.DefaultReceiveTimeout; }
+            get { return DefaultReceiveTimeout; }
         }
 
         TimeSpan IDefaultCommunicationTimeouts.SendTimeout
         {
-            get { return this.DefaultSendTimeout; }
+            get { return DefaultSendTimeout; }
         }
 
         protected override TimeSpan DefaultCloseTimeout
         {
-            get { return ((IDefaultCommunicationTimeouts)_channelManager).CloseTimeout; }
+            get { return ((IDefaultCommunicationTimeouts)Manager).CloseTimeout; }
         }
 
         protected override TimeSpan DefaultOpenTimeout
         {
-            get { return ((IDefaultCommunicationTimeouts)_channelManager).OpenTimeout; }
+            get { return ((IDefaultCommunicationTimeouts)Manager).OpenTimeout; }
         }
 
         protected TimeSpan DefaultReceiveTimeout
         {
-            get { return ((IDefaultCommunicationTimeouts)_channelManager).ReceiveTimeout; }
+            get { return ((IDefaultCommunicationTimeouts)Manager).ReceiveTimeout; }
         }
 
         protected TimeSpan DefaultSendTimeout
         {
-            get { return ((IDefaultCommunicationTimeouts)_channelManager).SendTimeout; }
+            get { return ((IDefaultCommunicationTimeouts)Manager).SendTimeout; }
         }
 
-        protected ChannelManagerBase Manager
-        {
-            get
-            {
-                return _channelManager;
-            }
-        }
+        protected ChannelManagerBase Manager { get; }
 
         public virtual T GetProperty<T>() where T : class
         {
-            IChannelFactory factory = _channelManager as IChannelFactory;
+            IChannelFactory factory = Manager as IChannelFactory;
             if (factory != null)
             {
                 return factory.GetProperty<T>();
             }
 
-            IChannelListener listener = _channelManager as IChannelListener;
+            IChannelListener listener = Manager as IChannelListener;
             if (listener != null)
             {
                 return listener.GetProperty<T>();

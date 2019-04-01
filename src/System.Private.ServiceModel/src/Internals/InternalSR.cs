@@ -9,18 +9,18 @@ namespace System.Runtime
 {
     internal class InternalSR
     {
-        internal static string ActionItemIsAlreadyScheduled = "ActionItemIsAlreadyScheduled";
-        internal static string AsyncCallbackThrewException = "AsyncCallbackThrewException";
-        internal static string AsyncResultAlreadyEnded = "AsyncResultAlreadyEnded";
-        internal static string BufferIsNotRightSizeForBufferManager = "BufferIsNotRightSizeForBufferManager";
-        internal static string InvalidAsyncResult = "InvalidAsyncResult";
-        internal static string InvalidAsyncResultImplementationGeneric = "InvalidAsyncResultImplementationGeneric";
-        internal static string InvalidNullAsyncResult = "InvalidNullAsyncResult";
-        internal static string InvalidSemaphoreExit = "InvalidSemaphoreExit";
-        internal static string ReadNotSupported = "ReadNotSupported";
-        internal static string SeekNotSupported = "SeekNotSupported";
-        internal static string ValueMustBeNonNegative = "ValueMustBeNonNegative";
-        internal static string AsyncResultCompletedTwice = "AsyncResultCompletedTwice";
+        internal static readonly string ActionItemIsAlreadyScheduled = "ActionItemIsAlreadyScheduled";
+        internal static readonly string AsyncCallbackThrewException = "AsyncCallbackThrewException";
+        internal static readonly string AsyncResultAlreadyEnded = "AsyncResultAlreadyEnded";
+        internal static readonly string BufferIsNotRightSizeForBufferManager = "BufferIsNotRightSizeForBufferManager";
+        internal static readonly string InvalidAsyncResult = "InvalidAsyncResult";
+        internal static readonly string InvalidAsyncResultImplementationGeneric = "InvalidAsyncResultImplementationGeneric";
+        internal static readonly string InvalidNullAsyncResult = "InvalidNullAsyncResult";
+        internal static readonly string InvalidSemaphoreExit = "InvalidSemaphoreExit";
+        internal static readonly string ReadNotSupported = "ReadNotSupported";
+        internal static readonly string SeekNotSupported = "SeekNotSupported";
+        internal static readonly string ValueMustBeNonNegative = "ValueMustBeNonNegative";
+        internal static readonly string AsyncResultCompletedTwice = "AsyncResultCompletedTwice";
 
         internal static string ArgumentNullOrEmpty(object param0) { throw ExceptionHelper.PlatformNotSupported(); }
         internal static string BufferedOutputStreamQuotaExceeded(object param0) { throw ExceptionHelper.PlatformNotSupported(); }

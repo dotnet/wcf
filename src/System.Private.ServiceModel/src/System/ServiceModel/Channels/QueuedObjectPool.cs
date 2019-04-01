@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Runtime;
 
 namespace System.ServiceModel.Channels
 {
@@ -38,7 +37,7 @@ namespace System.ServiceModel.Channels
         {
             if (batchAllocCount <= 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("batchAllocCount"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(batchAllocCount)));
             }
 
             Contract.Assert(batchAllocCount <= maxFreeCount, "batchAllocCount cannot be greater than maxFreeCount");
@@ -92,7 +91,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (item != null)
                     {
-                        this.CleanupItem(item);
+                        CleanupItem(item);
                     }
                 }
 

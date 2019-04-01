@@ -5,7 +5,6 @@
 using System.Collections.ObjectModel;
 using System.IdentityModel;
 using System.IdentityModel.Tokens;
-using System.Runtime.CompilerServices;
 
 namespace System.ServiceModel.Security.Tokens
 {
@@ -56,7 +55,9 @@ namespace System.ServiceModel.Security.Tokens
         protected BinarySecretSecurityToken(string id, byte[] key, bool allowCrypto)
         {
             if (key == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(key));
+            }
 
             _id = id;
             _effectiveTime = DateTime.UtcNow;

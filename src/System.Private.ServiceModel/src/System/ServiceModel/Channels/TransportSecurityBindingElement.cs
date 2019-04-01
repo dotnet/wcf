@@ -39,11 +39,18 @@ namespace System.ServiceModel.Channels
             {
                 SecureConversationSecurityTokenParameters scParameters = null;
                 if (EndpointSupportingTokenParameters.Endorsing.Count > 0)
+                {
                     scParameters = EndpointSupportingTokenParameters.Endorsing[0] as SecureConversationSecurityTokenParameters;
+                }
+
                 if (scParameters != null)
+                {
                     return scParameters.RequireCancellation;
+                }
                 else
+                {
                     return false;
+                }
             }
         }
 
@@ -60,9 +67,14 @@ namespace System.ServiceModel.Channels
         internal override SecurityProtocolFactory CreateSecurityProtocolFactory<TChannel>(BindingContext context, SecurityCredentialsManager credentialsManager, bool isForService, BindingContext issuerBindingContext)
         {
             if (context == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
+
             if (credentialsManager == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(credentialsManager));
+            }
 
             TransportSecurityProtocolFactory protocolFactory = new TransportSecurityProtocolFactory();
             base.ConfigureProtocolFactory(protocolFactory, credentialsManager, isForService, issuerBindingContext, context.Binding);
@@ -101,7 +113,9 @@ namespace System.ServiceModel.Channels
             if (scParameters != null)
             {
                 if (scParameters.BootstrapSecurityBindingElement == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SecureConversationSecurityTokenParametersRequireBootstrapBinding));
+                }
 
                 scParameters.IssuerBindingContext = issuerBindingContext;
                 if (scParameters.RequireCancellation)
@@ -152,7 +166,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                SecurityProtocolFactory protocolFactory = this.CreateSecurityProtocolFactory<TChannel>(
+                SecurityProtocolFactory protocolFactory = CreateSecurityProtocolFactory<TChannel>(
                     context, credentialsManager, false, issuerBindingContext);
                 channelFactory = new SecurityChannelFactory<TChannel>(securityCapabilities, context, channelBuilder, protocolFactory);
             }
@@ -163,7 +177,9 @@ namespace System.ServiceModel.Channels
         public override T GetProperty<T>(BindingContext context)
         {
             if (context == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
 
             if (typeof(T) == typeof(ChannelProtectionRequirements))
             {

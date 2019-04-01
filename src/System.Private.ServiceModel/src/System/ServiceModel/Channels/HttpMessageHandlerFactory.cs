@@ -16,7 +16,7 @@ namespace System.ServiceModel.Channels
     /// Default HTTP message handler factory used by <see cref="HttpChannelListener"/> upon creation of an <see cref="HttpMessageHandler"/> 
     /// for instantiating a set of HTTP message handler types using their default constructors.
     /// For more complex initialization scenarios, derive from <see cref="HttpMessageHandlerFactory"/>
-    /// and override the <see cref="HttpMessageHandlerFactory.OnCreate"/> method.
+    /// and override the <see cref="OnCreate"/> method.
     /// </summary>
     public class HttpMessageHandlerFactory
     {
@@ -68,14 +68,10 @@ namespace System.ServiceModel.Channels
                 }
 
                 ConstructorInfo ctorInfo = handler.GetConstructor(Array.Empty<Type>());
-                if (ctorInfo == null)
-                {
-                    throw FxTrace.Exception.Argument(
+
+                _handlerCtors[cnt] = ctorInfo ?? throw FxTrace.Exception.Argument(
                         string.Format(CultureInfo.InvariantCulture, "handlers[<<{0}>>]", cnt),
                         SR.Format(SR.HttpMessageHandlerTypeNotSupported, handler.Name, s_delegatingHandlerType.Name));
-                }
-
-                _handlerCtors[cnt] = ctorInfo;
             }
 
             _httpMessageHandlers = handlers;
@@ -92,12 +88,7 @@ namespace System.ServiceModel.Channels
         [MethodImpl(MethodImplOptions.NoInlining)]
         public HttpMessageHandlerFactory(Func<IEnumerable<DelegatingHandler>> handlers)
         {
-            if (handlers == null)
-            {
-                throw FxTrace.Exception.ArgumentNull("handlers");
-            }
-
-            _handlerFunc = handlers;
+            _handlerFunc = handlers ?? throw FxTrace.Exception.ArgumentNull("handlers");
         }
 
         /// <summary>
@@ -122,7 +113,7 @@ namespace System.ServiceModel.Channels
                 throw FxTrace.Exception.ArgumentNull("innerChannel");
             }
 
-            return this.OnCreate(innerChannel);
+            return OnCreate(innerChannel);
         }
 
 

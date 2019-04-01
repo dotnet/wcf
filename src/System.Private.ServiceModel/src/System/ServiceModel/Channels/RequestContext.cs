@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 
 namespace System.ServiceModel.Channels
 {
@@ -24,7 +23,7 @@ namespace System.ServiceModel.Channels
 
         void IDisposable.Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
         }
 
         protected virtual void Dispose(bool disposing)

@@ -142,7 +142,7 @@ namespace System.Runtime
         {
             T value;
 
-            if (!this.Dequeue(timeout, out value))
+            if (!Dequeue(timeout, out value))
             {
                 throw Fx.Exception.AsError(new TimeoutException(InternalSR.TimeoutInputQueueDequeue(timeout)));
             }
@@ -152,7 +152,7 @@ namespace System.Runtime
 
         public async Task<T> DequeueAsync(TimeSpan timeout)
         {
-            (bool success, T value) = await this.TryDequeueAsync(timeout);
+            (bool success, T value) = await TryDequeueAsync(timeout);
 
             if (!success)
             {
@@ -280,7 +280,7 @@ namespace System.Runtime
             lock (ThisLock)
             {
                 itemAvailable = !((_queueState == QueueState.Closed) || (_queueState == QueueState.Shutdown));
-                this.GetWaiters(out waiters);
+                GetWaiters(out waiters);
 
                 if (_queueState != QueueState.Closed)
                 {
@@ -342,7 +342,7 @@ namespace System.Runtime
         {
             T value;
 
-            if (!this.EndDequeue(result, out value))
+            if (!EndDequeue(result, out value))
             {
                 throw Fx.Exception.AsError(new TimeoutException());
             }
@@ -403,7 +403,7 @@ namespace System.Runtime
 
         public void Shutdown()
         {
-            this.Shutdown(null);
+            Shutdown(null);
         }
 
         // Don't let any more items in. Differs from Close in that we keep around
@@ -586,7 +586,7 @@ namespace System.Runtime
                 }
                 else
                 {
-                    Action<T> disposeItemCallback = this.DisposeItemCallback;
+                    Action<T> disposeItemCallback = DisposeItemCallback;
                     if (disposeItemCallback != null)
                     {
                         disposeItemCallback(value);
@@ -690,7 +690,7 @@ namespace System.Runtime
             lock (ThisLock)
             {
                 itemAvailable = !((_queueState == QueueState.Closed) || (_queueState == QueueState.Shutdown));
-                this.GetWaiters(out waiters);
+                GetWaiters(out waiters);
 
                 if (_queueState == QueueState.Open)
                 {
@@ -849,8 +849,6 @@ namespace System.Runtime
 
         internal struct Item
         {
-            private Action _dequeuedCallback;
-            private Exception _exception;
             private T _value;
 
             public Item(T value, Action dequeuedCallback)
@@ -866,19 +864,13 @@ namespace System.Runtime
             private Item(T value, Exception exception, Action dequeuedCallback)
             {
                 _value = value;
-                _exception = exception;
-                _dequeuedCallback = dequeuedCallback;
+                Exception = exception;
+                DequeuedCallback = dequeuedCallback;
             }
 
-            public Action DequeuedCallback
-            {
-                get { return _dequeuedCallback; }
-            }
+            public Action DequeuedCallback { get; }
 
-            public Exception Exception
-            {
-                get { return _exception; }
-            }
+            public Exception Exception { get; }
 
             public T Value
             {
@@ -887,9 +879,9 @@ namespace System.Runtime
 
             public T GetValue()
             {
-                if (_exception != null)
+                if (Exception != null)
                 {
-                    throw Fx.Exception.AsError(_exception);
+                    throw Fx.Exception.AsError(Exception);
                 }
 
                 return _value;
@@ -960,9 +952,6 @@ namespace System.Runtime
         {
             private static Action<object> s_timerCallback = new Action<object>(AsyncQueueWaiter.TimerCallback);
             private bool _itemAvailable;
-
-            private object _thisLock = new object();
-
             private Timer _timer;
 
             public AsyncQueueWaiter(TimeSpan timeout, AsyncCallback callback, object state) : base(callback, state)
@@ -973,13 +962,7 @@ namespace System.Runtime
                 }
             }
 
-            private object ThisLock
-            {
-                get
-                {
-                    return _thisLock;
-                }
-            }
+            private object ThisLock { get; } = new object();
 
             public static bool End(IAsyncResult result)
             {
@@ -1015,7 +998,6 @@ namespace System.Runtime
             private int _head;
             private Item[] _items;
             private int _pendingCount;
-            private int _totalCount;
 
             public ItemQueue()
             {
@@ -1024,22 +1006,19 @@ namespace System.Runtime
 
             public bool HasAnyItem
             {
-                get { return _totalCount > 0; }
+                get { return ItemCount > 0; }
             }
 
             public bool HasAvailableItem
             {
-                get { return _totalCount > _pendingCount; }
+                get { return ItemCount > _pendingCount; }
             }
 
-            public int ItemCount
-            {
-                get { return _totalCount; }
-            }
+            public int ItemCount { get; private set; }
 
             public Item DequeueAnyItem()
             {
-                if (_pendingCount == _totalCount)
+                if (_pendingCount == ItemCount)
                 {
                     _pendingCount--;
                 }
@@ -1048,7 +1027,7 @@ namespace System.Runtime
 
             public Item DequeueAvailableItem()
             {
-                Fx.AssertAndThrow(_totalCount != _pendingCount, "ItemQueue does not contain any available items");
+                Fx.AssertAndThrow(ItemCount != _pendingCount, "ItemQueue does not contain any available items");
                 return DequeueItemCore();
             }
 
@@ -1071,29 +1050,29 @@ namespace System.Runtime
 
             private Item DequeueItemCore()
             {
-                Fx.AssertAndThrow(_totalCount != 0, "ItemQueue does not contain any items");
+                Fx.AssertAndThrow(ItemCount != 0, "ItemQueue does not contain any items");
                 Item item = _items[_head];
                 _items[_head] = new Item();
-                _totalCount--;
+                ItemCount--;
                 _head = (_head + 1) % _items.Length;
                 return item;
             }
 
             private void EnqueueItemCore(Item item)
             {
-                if (_totalCount == _items.Length)
+                if (ItemCount == _items.Length)
                 {
                     Item[] newItems = new Item[_items.Length * 2];
-                    for (int i = 0; i < _totalCount; i++)
+                    for (int i = 0; i < ItemCount; i++)
                     {
                         newItems[i] = _items[(_head + i) % _items.Length];
                     }
                     _head = 0;
                     _items = newItems;
                 }
-                int tail = (_head + _totalCount) % _items.Length;
+                int tail = (_head + ItemCount) % _items.Length;
                 _items[tail] = item;
-                _totalCount++;
+                ItemCount++;
             }
         }
 

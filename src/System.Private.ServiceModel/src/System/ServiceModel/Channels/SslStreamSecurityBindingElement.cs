@@ -13,12 +13,11 @@ namespace System.ServiceModel.Channels
     public class SslStreamSecurityBindingElement : StreamUpgradeBindingElement
     {
         private IdentityVerifier _identityVerifier;
-        private bool _requireClientCertificate;
         private SslProtocols _sslProtocols;
 
         public SslStreamSecurityBindingElement()
         {
-            _requireClientCertificate = TransportDefaults.RequireClientCertificate;
+            RequireClientCertificate = TransportDefaults.RequireClientCertificate;
             _sslProtocols = TransportDefaults.SslProtocols;
         }
 
@@ -26,7 +25,7 @@ namespace System.ServiceModel.Channels
             : base(elementToBeCloned)
         {
             _identityVerifier = elementToBeCloned._identityVerifier;
-            _requireClientCertificate = elementToBeCloned._requireClientCertificate;
+            RequireClientCertificate = elementToBeCloned.RequireClientCertificate;
             _sslProtocols = elementToBeCloned._sslProtocols;
         }
 
@@ -43,27 +42,12 @@ namespace System.ServiceModel.Channels
             }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-
-                _identityVerifier = value;
+                _identityVerifier = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
         [DefaultValue(TransportDefaults.RequireClientCertificate)]
-        internal bool RequireClientCertificate
-        {
-            get
-            {
-                return _requireClientCertificate;
-            }
-            set
-            {
-                _requireClientCertificate = value;
-            }
-        }
+        internal bool RequireClientCertificate { get; set; }
 
         [DefaultValue(TransportDefaults.SslProtocols)]
         public SslProtocols SslProtocols
@@ -84,7 +68,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
             context.BindingParameters.Add(this);
@@ -95,7 +79,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
             context.BindingParameters.Add(this);
@@ -111,16 +95,16 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
             if (typeof(T) == typeof(ISecurityCapabilities))
             {
-                return (T)(object)new SecurityCapabilities(this.RequireClientCertificate, true, this.RequireClientCertificate,
+                return (T)(object)new SecurityCapabilities(RequireClientCertificate, true, RequireClientCertificate,
                     ProtectionLevel.EncryptAndSign, ProtectionLevel.EncryptAndSign);
             }
             else if (typeof(T) == typeof(IdentityVerifier))
             {
-                return (T)(object)this.IdentityVerifier;
+                return (T)(object)IdentityVerifier;
             }
 
             else
@@ -146,7 +130,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            return _requireClientCertificate == ssl._requireClientCertificate && _sslProtocols == ssl._sslProtocols;
+            return RequireClientCertificate == ssl.RequireClientCertificate && _sslProtocols == ssl._sslProtocols;
         }
     }
 }

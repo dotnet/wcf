@@ -29,7 +29,10 @@ namespace System.Runtime.Remoting.Metadata.W3cXsd2001
             {
                 string s = Value[i].ToString("X", CultureInfo.InvariantCulture);
                 if (s.Length == 1)
+                {
                     _sb.Append('0');
+                }
+
                 _sb.Append(s);
             }
             return _sb.ToString();
@@ -79,7 +82,9 @@ namespace System.Runtime.Remoting.Metadata.W3cXsd2001
             for (int i = 0; i < value.Length; i++)
             {
                 if (!(value[i] == ' ' || value[i] == '\n' || value[i] == '\r'))
+                {
                     sb.Append(value[i]);
+                }
             }
             return sb.ToString();
         }

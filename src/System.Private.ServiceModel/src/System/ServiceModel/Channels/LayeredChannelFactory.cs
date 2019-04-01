@@ -10,18 +10,13 @@ namespace System.ServiceModel.Channels
 {
     internal abstract class LayeredChannelFactory<TChannel> : ChannelFactoryBase<TChannel>
     {
-        private IChannelFactory _innerChannelFactory;
-
         public LayeredChannelFactory(IDefaultCommunicationTimeouts timeouts, IChannelFactory innerChannelFactory)
             : base(timeouts)
         {
-            _innerChannelFactory = innerChannelFactory;
+            InnerChannelFactory = innerChannelFactory;
         }
 
-        protected IChannelFactory InnerChannelFactory
-        {
-            get { return _innerChannelFactory; }
-        }
+        protected IChannelFactory InnerChannelFactory { get; }
 
         public override T GetProperty<T>()
         {
@@ -36,22 +31,22 @@ namespace System.ServiceModel.Channels
                 return baseProperty;
             }
 
-            return _innerChannelFactory.GetProperty<T>();
+            return InnerChannelFactory.GetProperty<T>();
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerChannelFactory.BeginOpen(timeout, callback, state);
+            return InnerChannelFactory.BeginOpen(timeout, callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            _innerChannelFactory.EndOpen(result);
+            InnerChannelFactory.EndOpen(result);
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerChannelFactory);
+            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, InnerChannelFactory);
         }
 
         protected override void OnEndClose(IAsyncResult result)
@@ -63,30 +58,30 @@ namespace System.ServiceModel.Channels
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             await base.OnCloseAsync(timeoutHelper.RemainingTime());
-            await _innerChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime());
+            await InnerChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime());
         }
 
         protected override void OnClose(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             base.OnClose(timeoutHelper.RemainingTime());
-            _innerChannelFactory.Close(timeoutHelper.RemainingTime());
+            InnerChannelFactory.Close(timeoutHelper.RemainingTime());
         }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            return _innerChannelFactory.OpenHelperAsync(timeout);
+            return InnerChannelFactory.OpenHelperAsync(timeout);
         }
 
         protected override void OnOpen(TimeSpan timeout)
         {
-            _innerChannelFactory.Open(timeout);
+            InnerChannelFactory.Open(timeout);
         }
 
         protected override void OnAbort()
         {
             base.OnAbort();
-            _innerChannelFactory.Abort();
+            InnerChannelFactory.Abort();
         }
     }
 
@@ -134,7 +129,7 @@ namespace System.ServiceModel.Channels
                 message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, timeout, null);
             }
 
-            await this.InternalOnReceiveAsync(message);
+            await InternalOnReceiveAsync(message);
             return message;
         }
 
@@ -150,7 +145,7 @@ namespace System.ServiceModel.Channels
                 message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, null);
             }
 
-            await this.InternalOnReceiveAsync(message);
+            await InternalOnReceiveAsync(message);
             return message;
         }
 
@@ -199,7 +194,7 @@ namespace System.ServiceModel.Channels
                 (retVal, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(InnerChannel.BeginTryReceive, InnerChannel.EndTryReceive, timeout, null);
             }
 
-            await this.InternalOnReceiveAsync(message);
+            await InternalOnReceiveAsync(message);
             return (retVal, message);
         }
 
@@ -313,7 +308,7 @@ namespace System.ServiceModel.Channels
 
         public Task SendAsync(Message message)
         {
-            return this.SendAsync(message, this.DefaultSendTimeout);
+            return SendAsync(message, DefaultSendTimeout);
         }
 
         public Task SendAsync(Message message, TimeSpan timeout)
@@ -330,7 +325,7 @@ namespace System.ServiceModel.Channels
 
         public void Send(Message message)
         {
-            this.Send(message, this.DefaultSendTimeout);
+            Send(message, DefaultSendTimeout);
         }
 
         public void Send(Message message, TimeSpan timeout)
@@ -340,7 +335,7 @@ namespace System.ServiceModel.Channels
 
         public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state)
         {
-            return this.BeginSend(message, this.DefaultSendTimeout, callback, state);
+            return BeginSend(message, DefaultSendTimeout, callback, state);
         }
 
         public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
@@ -355,7 +350,7 @@ namespace System.ServiceModel.Channels
 
         private void OnInnerOutputChannelFaulted(object sender, EventArgs e)
         {
-            this.Fault();
+            Fault();
         }
     }
 }

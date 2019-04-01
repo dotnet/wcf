@@ -11,7 +11,6 @@ namespace System.ServiceModel.Channels
     internal abstract class LayeredChannel<TInnerChannel> : ChannelBase
         where TInnerChannel : class, IChannel
     {
-        private TInnerChannel _innerChannel;
         private EventHandler _onInnerChannelFaulted;
 
         protected LayeredChannel(ChannelManagerBase channelManager, TInnerChannel innerChannel)
@@ -19,16 +18,13 @@ namespace System.ServiceModel.Channels
         {
             Fx.Assert(innerChannel != null, "innerChannel cannot be null");
 
-            _innerChannel = innerChannel;
+            InnerChannel = innerChannel;
             _onInnerChannelFaulted = new EventHandler(OnInnerChannelFaulted);
-            _innerChannel.Faulted += _onInnerChannelFaulted;
+            InnerChannel.Faulted += _onInnerChannelFaulted;
             base.SupportsAsyncOpenClose = true;
         }
 
-        protected TInnerChannel InnerChannel
-        {
-            get { return _innerChannel; }
-        }
+        protected TInnerChannel InnerChannel { get; }
 
         public override T GetProperty<T>()
         {
@@ -38,23 +34,23 @@ namespace System.ServiceModel.Channels
                 return baseProperty;
             }
 
-            return this.InnerChannel.GetProperty<T>();
+            return InnerChannel.GetProperty<T>();
         }
 
         protected override void OnClosing()
         {
-            _innerChannel.Faulted -= _onInnerChannelFaulted;
+            InnerChannel.Faulted -= _onInnerChannelFaulted;
             base.OnClosing();
         }
 
         protected override void OnAbort()
         {
-            _innerChannel.Abort();
+            InnerChannel.Abort();
         }
 
         protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            return _innerChannel.CloseHelperAsync(timeout);
+            return InnerChannel.CloseHelperAsync(timeout);
         }
 
         protected override void OnClose(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();
@@ -65,7 +61,7 @@ namespace System.ServiceModel.Channels
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            return _innerChannel.OpenHelperAsync(timeout);
+            return InnerChannel.OpenHelperAsync(timeout);
         }
 
         protected override void OnOpen(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();

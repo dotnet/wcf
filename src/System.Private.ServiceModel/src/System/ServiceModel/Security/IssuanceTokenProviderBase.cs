@@ -159,7 +159,10 @@ namespace System.ServiceModel.Security
             get
             {
                 if (_standardsManager == null)
+                {
                     return SecurityStandardsManager.DefaultInstance;
+                }
+
                 return _standardsManager;
             }
             set
@@ -606,7 +609,7 @@ namespace System.ServiceModel.Security
 
         private static bool ShouldWrapException(Exception e)
         {
-            return (e is System.ComponentModel.Win32Exception
+            return (e is ComponentModel.Win32Exception
                 || e is XmlException
                 || e is InvalidOperationException
                 || e is ArgumentException

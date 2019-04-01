@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -13,7 +12,6 @@ using System.ServiceModel.Dispatcher;
 using System.Threading;
 using System.Security;
 using System.Globalization;
-using System.Collections.Generic;
 
 namespace System.ServiceModel.Diagnostics
 {
@@ -35,7 +33,6 @@ namespace System.ServiceModel.Diagnostics
                 ActivityIdHeader activityIdHeader = new ActivityIdHeader(TraceUtility.ExtractActivityId(message));
                 activityIdHeader.AddTo(message);
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -52,7 +49,6 @@ namespace System.ServiceModel.Diagnostics
                 ActivityIdHeader activityIdHeader = new ActivityIdHeader(DiagnosticTraceBase.ActivityId);
                 activityIdHeader.AddTo(message);
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -522,7 +518,7 @@ namespace System.ServiceModel.Diagnostics
             EventTraceActivityTimeProperty data = null;
             eventTraceActivity = null;
             startTime = 0;
-            if (OperationContext.Current != null && OperationContext.Current.OutgoingMessageProperties.TryGetValue<EventTraceActivityTimeProperty>(TraceUtility.AsyncOperationStartTimeKey, out data))
+            if (OperationContext.Current != null && OperationContext.Current.OutgoingMessageProperties.TryGetValue(TraceUtility.AsyncOperationStartTimeKey, out data))
             {
                 OperationContext.Current.OutgoingMessageProperties.Remove(TraceUtility.AsyncOperationStartTimeKey);
                 eventTraceActivity = data.EventTraceActivity;
@@ -532,19 +528,15 @@ namespace System.ServiceModel.Diagnostics
 
         internal class TracingAsyncCallbackState
         {
-            private object _innerState;
             private Guid _activityId;
 
             internal TracingAsyncCallbackState(object innerState)
             {
-                _innerState = innerState;
+                InnerState = innerState;
                 _activityId = DiagnosticTraceBase.ActivityId;
             }
 
-            internal object InnerState
-            {
-                get { return _innerState; }
-            }
+            internal object InnerState { get; }
 
             internal Guid ActivityId
             {
@@ -572,7 +564,7 @@ namespace System.ServiceModel.Diagnostics
             {
                 get
                 {
-                    return Fx.ThunkCallback(new AsyncCallback(this.ExecuteUserCode));
+                    return Fx.ThunkCallback(new AsyncCallback(ExecuteUserCode));
                 }
             }
 
@@ -589,19 +581,15 @@ namespace System.ServiceModel.Diagnostics
 
         internal class EventTraceActivityTimeProperty
         {
-            private long _startTime;
             private EventTraceActivity _eventTraceActivity;
 
             public EventTraceActivityTimeProperty(EventTraceActivity eventTraceActivity, long startTime)
             {
                 _eventTraceActivity = eventTraceActivity;
-                _startTime = startTime;
+                StartTime = startTime;
             }
 
-            internal long StartTime
-            {
-                get { return _startTime; }
-            }
+            internal long StartTime { get; }
             internal EventTraceActivity EventTraceActivity
             {
                 get { return _eventTraceActivity; }

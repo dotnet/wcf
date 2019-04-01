@@ -2,10 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Diagnostics;
 using System.IO;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 using System.Xml;
@@ -27,27 +25,26 @@ namespace System.ServiceModel.Security
         private bool _isDecryptedBodyFault;
         private bool _isDecryptedBodyEmpty;
         private XmlDictionaryReader _cachedReaderAtSecurityHeader;
-        private readonly ReceiveSecurityHeader _securityHeader;
         private XmlBuffer _messageBuffer;
         private bool _canDelegateCreateBufferedCopyToInnerMessage;
 
         public SecurityVerifiedMessage(Message messageToProcess, ReceiveSecurityHeader securityHeader)
             : base(messageToProcess)
         {
-            _securityHeader = securityHeader;
+            ReceivedSecurityHeader = securityHeader;
             if (securityHeader.RequireMessageProtection)
             {
                 XmlDictionaryReader messageReader;
-                BufferedMessage bufferedMessage = this.InnerMessage as BufferedMessage;
-                if (bufferedMessage != null && this.Headers.ContainsOnlyBufferedMessageHeaders)
+                BufferedMessage bufferedMessage = InnerMessage as BufferedMessage;
+                if (bufferedMessage != null && Headers.ContainsOnlyBufferedMessageHeaders)
                 {
                     messageReader = bufferedMessage.GetMessageReader();
                 }
                 else
                 {
                     _messageBuffer = new XmlBuffer(int.MaxValue);
-                    XmlDictionaryWriter writer = _messageBuffer.OpenSection(_securityHeader.ReaderQuotas);
-                    this.InnerMessage.WriteMessage(writer);
+                    XmlDictionaryWriter writer = _messageBuffer.OpenSection(ReceivedSecurityHeader.ReaderQuotas);
+                    InnerMessage.WriteMessage(writer);
                     _messageBuffer.CloseSection();
                     _messageBuffer.Close();
                     messageReader = _messageBuffer.GetReader(0);
@@ -69,13 +66,13 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                if (this.IsDisposed)
+                if (IsDisposed)
                 {
                     throw TraceUtility.ThrowHelperError(CreateMessageDisposedException(), this);
                 }
                 if (!_bodyDecrypted)
                 {
-                    return this.InnerMessage.IsEmpty;
+                    return InnerMessage.IsEmpty;
                 }
 
                 EnsureDecryptedBodyStatusDetermined();
@@ -88,13 +85,13 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                if (this.IsDisposed)
+                if (IsDisposed)
                 {
                     throw TraceUtility.ThrowHelperError(CreateMessageDisposedException(), this);
                 }
                 if (!_bodyDecrypted)
                 {
-                    return this.InnerMessage.IsFault;
+                    return InnerMessage.IsFault;
                 }
 
                 EnsureDecryptedBodyStatusDetermined();
@@ -105,13 +102,10 @@ namespace System.ServiceModel.Security
 
         internal byte[] PrimarySignatureValue
         {
-            get { return _securityHeader.PrimarySignatureValue; }
+            get { return ReceivedSecurityHeader.PrimarySignatureValue; }
         }
 
-        internal ReceiveSecurityHeader ReceivedSecurityHeader
-        {
-            get { return _securityHeader; }
-        }
+        internal ReceiveSecurityHeader ReceivedSecurityHeader { get; }
 
         private Exception CreateBadStateException(string operation)
         {
@@ -142,13 +136,13 @@ namespace System.ServiceModel.Security
             }
             else
             {
-                return ((BufferedMessage)this.InnerMessage).GetBufferedReaderAtBody();
+                return ((BufferedMessage)InnerMessage).GetBufferedReaderAtBody();
             }
         }
 
         private XmlDictionaryReader CreateFullBodyReaderFromDecryptedState()
         {
-            XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(_decryptedBuffer, 0, _decryptedBuffer.Length, _securityHeader.ReaderQuotas);
+            XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(_decryptedBuffer, 0, _decryptedBuffer.Length, ReceivedSecurityHeader.ReaderQuotas);
             MoveToBody(reader);
             return reader;
         }
@@ -158,7 +152,7 @@ namespace System.ServiceModel.Security
             if (!_isDecryptedBodyStatusDetermined)
             {
                 XmlDictionaryReader reader = CreateFullBodyReader();
-                if (Message.ReadStartBody(reader, this.InnerMessage.Version.Envelope, out _isDecryptedBodyFault, out _isDecryptedBodyEmpty))
+                if (Message.ReadStartBody(reader, InnerMessage.Version.Envelope, out _isDecryptedBodyFault, out _isDecryptedBodyEmpty))
                 {
                     _cachedDecryptedBodyContentReader = reader;
                 }
@@ -188,7 +182,7 @@ namespace System.ServiceModel.Security
             }
             else
             {
-                return ((BufferedMessage)this.InnerMessage).GetMessageReader();
+                return ((BufferedMessage)InnerMessage).GetMessageReader();
             }
         }
 
@@ -208,7 +202,7 @@ namespace System.ServiceModel.Security
                 _cachedReaderAtSecurityHeader = null;
                 return result;
             }
-            return this.Headers.GetReaderAtHeader(_securityHeader.HeaderIndex);
+            return Headers.GetReaderAtHeader(ReceivedSecurityHeader.HeaderIndex);
         }
 
         private void MoveToBody(XmlDictionaryReader reader)
@@ -218,7 +212,7 @@ namespace System.ServiceModel.Security
                 reader.MoveToContent();
             }
             reader.ReadStartElement();
-            if (reader.IsStartElement(XD.MessageDictionary.Header, this.Version.Envelope.DictionaryNamespace))
+            if (reader.IsStartElement(XD.MessageDictionary.Header, Version.Envelope.DictionaryNamespace))
             {
                 reader.Skip();
             }
@@ -240,7 +234,7 @@ namespace System.ServiceModel.Security
                 _envelopeAttributes = XmlAttributeHolder.ReadAttributes(reader);
             }
             reader.ReadStartElement();
-            reader.MoveToStartElement(XD.MessageDictionary.Header, this.Version.Envelope.DictionaryNamespace);
+            reader.MoveToStartElement(XD.MessageDictionary.Header, Version.Envelope.DictionaryNamespace);
             if (captureAttributes)
             {
                 _headerAttributes = XmlAttributeHolder.ReadAttributes(reader);
@@ -286,7 +280,7 @@ namespace System.ServiceModel.Security
                 {
                     _cachedDecryptedBodyContentReader.Close();
                 }
-                catch (System.IO.IOException)
+                catch (IOException)
                 {
                 }
                 finally
@@ -301,7 +295,7 @@ namespace System.ServiceModel.Security
                 {
                     _cachedReaderAtSecurityHeader.Close();
                 }
-                catch (System.IO.IOException)
+                catch (IOException)
                 {
                 }
                 finally
@@ -313,14 +307,14 @@ namespace System.ServiceModel.Security
             _messageBuffer = null;
             _decryptedBuffer = null;
             _state = BodyState.Disposed;
-            this.InnerMessage.Close();
+            InnerMessage.Close();
         }
 
         protected override XmlDictionaryReader OnGetReaderAtBodyContents()
         {
             if (_state == BodyState.Created)
             {
-                return this.InnerMessage.GetReaderAtBodyContents();
+                return InnerMessage.GetReaderAtBodyContents();
             }
             if (_bodyDecrypted)
             {
@@ -343,9 +337,9 @@ namespace System.ServiceModel.Security
 
         protected override MessageBuffer OnCreateBufferedCopy(int maxBufferSize)
         {
-            if (_canDelegateCreateBufferedCopyToInnerMessage && this.InnerMessage is BufferedMessage)
+            if (_canDelegateCreateBufferedCopyToInnerMessage && InnerMessage is BufferedMessage)
             {
-                return this.InnerMessage.CreateBufferedCopy(maxBufferSize);
+                return InnerMessage.CreateBufferedCopy(maxBufferSize);
             }
             else
             {
@@ -362,7 +356,7 @@ namespace System.ServiceModel.Security
         {
             if (_state == BodyState.Created)
             {
-                this.InnerMessage.WriteStartBody(writer);
+                InnerMessage.WriteStartBody(writer);
                 return;
             }
 
@@ -377,14 +371,17 @@ namespace System.ServiceModel.Security
         {
             if (_state == BodyState.Created)
             {
-                this.InnerMessage.WriteBodyContents(writer);
+                InnerMessage.WriteBodyContents(writer);
                 return;
             }
 
             XmlDictionaryReader reader = CreateFullBodyReader();
             reader.ReadStartElement();
             while (reader.NodeType != XmlNodeType.EndElement)
+            {
                 writer.WriteNode(reader, false);
+            }
+
             reader.ReadEndElement();
             reader.Close();
         }
@@ -405,10 +402,10 @@ namespace System.ServiceModel.Security
             MemoryStream stream = new MemoryStream();
             XmlDictionaryWriter writer = XmlDictionaryWriter.CreateTextWriter(stream);
 
-            writer.WriteStartElement(_envelopePrefix, XD.MessageDictionary.Envelope, this.Version.Envelope.DictionaryNamespace);
+            writer.WriteStartElement(_envelopePrefix, XD.MessageDictionary.Envelope, Version.Envelope.DictionaryNamespace);
             XmlAttributeHolder.WriteAttributes(_envelopeAttributes, writer);
 
-            writer.WriteStartElement(_bodyPrefix, XD.MessageDictionary.Body, this.Version.Envelope.DictionaryNamespace);
+            writer.WriteStartElement(_bodyPrefix, XD.MessageDictionary.Body, Version.Envelope.DictionaryNamespace);
             XmlAttributeHolder.WriteAttributes(_bodyAttributes, writer);
             writer.WriteString(" "); // ensure non-empty element
             writer.WriteEndElement();

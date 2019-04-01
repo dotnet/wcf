@@ -16,7 +16,6 @@ namespace System.ServiceModel
 
         private HttpClientCredentialType _clientCredentialType;
         private HttpProxyCredentialType _proxyCredentialType;
-        private string _realm;
         private ExtendedProtectionPolicy _extendedProtectionPolicy;
 
 
@@ -24,7 +23,7 @@ namespace System.ServiceModel
         {
             _clientCredentialType = DefaultClientCredentialType;
             _proxyCredentialType = DefaultProxyCredentialType;
-            _realm = DefaultRealm;
+            Realm = DefaultRealm;
             _extendedProtectionPolicy = ChannelBindingUtility.DefaultPolicy;
         }
 
@@ -35,7 +34,7 @@ namespace System.ServiceModel
             {
                 if (!HttpClientCredentialTypeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
                 _clientCredentialType = value;
@@ -49,18 +48,14 @@ namespace System.ServiceModel
             {
                 if (!HttpProxyCredentialTypeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
                 _proxyCredentialType = value;
             }
         }
 
-        public string Realm
-        {
-            get { return _realm; }
-            set { _realm = value; }
-        }
+        public string Realm { get; set; }
 
         public ExtendedProtectionPolicy ExtendedProtectionPolicy
         {
@@ -95,7 +90,7 @@ namespace System.ServiceModel
         private void ConfigureAuthentication(HttpTransportBindingElement http)
         {
             http.AuthenticationScheme = HttpClientCredentialTypeHelper.MapToAuthenticationScheme(_clientCredentialType);
-            http.Realm = this.Realm;
+            http.Realm = Realm;
         }
 
         private static void ConfigureAuthentication(HttpTransportBindingElement http, HttpTransportSecurity transportSecurity)
@@ -130,7 +125,9 @@ namespace System.ServiceModel
         {
             ConfigureAuthentication(https, transportSecurity);
             if (https.RequireClientCertificate)
+            {
                 transportSecurity.ClientCredentialType = HttpClientCredentialType.Certificate;
+            }
         }
 
         internal void ConfigureTransportAuthentication(HttpTransportBindingElement http)
@@ -145,7 +142,10 @@ namespace System.ServiceModel
         internal static bool IsConfiguredTransportAuthentication(HttpTransportBindingElement http, HttpTransportSecurity transportSecurity)
         {
             if (HttpClientCredentialTypeHelper.MapToClientCredentialType(http.AuthenticationScheme) == HttpClientCredentialType.Certificate)
+            {
                 return false;
+            }
+
             ConfigureAuthentication(http, transportSecurity);
             return true;
         }

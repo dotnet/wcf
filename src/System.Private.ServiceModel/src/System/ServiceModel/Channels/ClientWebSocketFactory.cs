@@ -3,12 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.IO;
 using System.Net;
 using System.Net.WebSockets;
 using System.Runtime;
-using System.ServiceModel;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels

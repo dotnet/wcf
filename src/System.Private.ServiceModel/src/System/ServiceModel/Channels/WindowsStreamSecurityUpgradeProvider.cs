@@ -7,17 +7,14 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
-using System.IdentityModel.Tokens;
 using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Runtime;
 using System.Security.Authentication;
 using System.Security.Principal;
-using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
-using System.ServiceModel.Security.Tokens;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -26,11 +23,7 @@ namespace System.ServiceModel.Channels
     {
         private bool _extractGroupsForWindowsAccounts;
         private EndpointIdentity _identity;
-        private IdentityVerifier _identityVerifier;
-        private ProtectionLevel _protectionLevel;
         private SecurityTokenManager _securityTokenManager;
-        private NetworkCredential _serverCredential;
-        private string _scheme;
         private bool _isClient;
         private Uri _listenUri;
 
@@ -41,8 +34,8 @@ namespace System.ServiceModel.Channels
             Contract.Assert(isClient, ".NET Core and .NET Native does not support server side");
 
             _extractGroupsForWindowsAccounts = TransportDefaults.ExtractGroupsForWindowsAccounts;
-            _protectionLevel = bindingElement.ProtectionLevel;
-            _scheme = context.Binding.Scheme;
+            ProtectionLevel = bindingElement.ProtectionLevel;
+            Scheme = context.Binding.Scheme;
             _isClient = isClient;
             _listenUri = TransportSecurityHelpers.GetListenUri(context.ListenUriBaseAddress, context.ListenUriRelativeAddress);
 
@@ -55,10 +48,7 @@ namespace System.ServiceModel.Channels
             _securityTokenManager = credentialProvider.CreateSecurityTokenManager();
         }
 
-        public string Scheme
-        {
-            get { return _scheme; }
-        }
+        public string Scheme { get; }
 
         internal bool ExtractGroupsForWindowsAccounts
         {
@@ -73,7 +63,7 @@ namespace System.ServiceModel.Channels
             get
             {
                 // If the server credential is null, then we have not been opened yet and have no identity to expose.
-                if (_serverCredential != null)
+                if (ServerCredential != null)
                 {
                     if (_identity == null)
                     {
@@ -81,7 +71,7 @@ namespace System.ServiceModel.Channels
                         {
                             if (_identity == null)
                             {
-                                _identity = SecurityUtils.CreateWindowsIdentity(_serverCredential);
+                                _identity = SecurityUtils.CreateWindowsIdentity(ServerCredential);
                             }
                         }
                     }
@@ -90,29 +80,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        internal IdentityVerifier IdentityVerifier
-        {
-            get
-            {
-                return _identityVerifier;
-            }
-        }
+        internal IdentityVerifier IdentityVerifier { get; private set; }
 
-        public ProtectionLevel ProtectionLevel
-        {
-            get
-            {
-                return _protectionLevel;
-            }
-        }
+        public ProtectionLevel ProtectionLevel { get; }
 
-        private NetworkCredential ServerCredential
-        {
-            get
-            {
-                return _serverCredential;
-            }
-        }
+        private NetworkCredential ServerCredential { get; set; }
 
         public override StreamUpgradeInitiator CreateUpgradeInitiator(EndpointAddress remoteAddress, Uri via)
         {
@@ -148,7 +120,7 @@ namespace System.ServiceModel.Channels
             if (!_isClient)
             {
                 SecurityTokenRequirement sspiTokenRequirement = TransportSecurityHelpers.CreateSspiTokenRequirement(Scheme, _listenUri);
-                _serverCredential =
+                ServerCredential =
                     TransportSecurityHelpers.GetSspiCredential(_securityTokenManager, sspiTokenRequirement, timeout,
                     out _extractGroupsForWindowsAccounts);
             }
@@ -174,14 +146,14 @@ namespace System.ServiceModel.Channels
         {
             base.OnOpened();
 
-            if (_identityVerifier == null)
+            if (IdentityVerifier == null)
             {
-                _identityVerifier = IdentityVerifier.CreateDefault();
+                IdentityVerifier = IdentityVerifier.CreateDefault();
             }
 
-            if (_serverCredential == null)
+            if (ServerCredential == null)
             {
-                _serverCredential = CredentialCache.DefaultNetworkCredentials;
+                ServerCredential = CredentialCache.DefaultNetworkCredentials;
             }
         }
 

@@ -16,9 +16,7 @@ namespace System.ServiceModel.Security
 
         internal class BasicSecurityProfile10BasicSecurityProfileVersion : BasicSecurityProfileVersion
         {
-            private static BasicSecurityProfile10BasicSecurityProfileVersion s_instance = new BasicSecurityProfile10BasicSecurityProfileVersion();
-
-            public static BasicSecurityProfile10BasicSecurityProfileVersion Instance { get { return s_instance; } }
+            public static BasicSecurityProfile10BasicSecurityProfileVersion Instance { get; } = new BasicSecurityProfile10BasicSecurityProfileVersion();
 
             public override string ToString()
             {

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 #if DEBUG
@@ -44,7 +43,9 @@ namespace System.Runtime
         public async Task<IDisposable> TakeLockAsync()
         {
             if (_lockTaken.Value)
+            {
                 return null;
+            }
 
             await _semaphore.WaitAsync();
             _lockTaken.Value = true;
@@ -58,7 +59,9 @@ namespace System.Runtime
         public async Task<IDisposable> TakeLockAsync(CancellationToken token)
         {
             if (_lockTaken.Value)
+            {
                 return null;
+            }
 
             await _semaphore.WaitAsync(token);
             _lockTaken.Value = true;
@@ -72,7 +75,9 @@ namespace System.Runtime
         public IDisposable TakeLock()
         {
             if (_lockTaken.Value)
+            {
                 return null;
+            }
 
             _semaphore.Wait();
             _lockTaken.Value = true;
@@ -86,7 +91,9 @@ namespace System.Runtime
         public IDisposable TakeLock(TimeSpan timeout)
         {
             if (_lockTaken.Value)
+            {
                 return null;
+            }
 
             _semaphore.Wait(timeout);
             _lockTaken.Value = true;
@@ -100,7 +107,9 @@ namespace System.Runtime
         public IDisposable TakeLock(int timeout)
         {
             if (_lockTaken.Value)
+            {
                 return null;
+            }
 
             _semaphore.Wait(timeout);
             _lockTaken.Value = true;

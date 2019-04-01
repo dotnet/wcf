@@ -3,32 +3,22 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
 {
     internal class ImmutableDispatchRuntime
     {
-        readonly private int _correlationCount;
         readonly private ConcurrencyBehavior _concurrency;
         readonly private IDemuxer _demuxer;
         readonly private ErrorBehavior _error;
-        private readonly bool _enableFaults;
         private InstanceBehavior _instance;
-        private readonly bool _manualAddressing;
         private readonly TerminatingOperationBehavior _terminate;
         private readonly ThreadBehavior _thread;
-        private readonly bool _validateMustUnderstand;
         private readonly bool _sendAsynchronously;
 
         private readonly MessageRpcProcessor _processMessage1;
@@ -52,13 +42,13 @@ namespace System.ServiceModel.Dispatcher
         {
             _concurrency = new ConcurrencyBehavior(dispatch);
             _error = new ErrorBehavior(dispatch.ChannelDispatcher);
-            _enableFaults = dispatch.EnableFaults;
+            EnableFaults = dispatch.EnableFaults;
             _instance = new InstanceBehavior(dispatch, this);
-            _manualAddressing = dispatch.ManualAddressing;
+            ManualAddressing = dispatch.ManualAddressing;
             _terminate = TerminatingOperationBehavior.CreateIfNecessary(dispatch);
             _thread = new ThreadBehavior(dispatch);
             _sendAsynchronously = dispatch.ChannelDispatcher.SendAsynchronously;
-            _correlationCount = dispatch.MaxParameterInspectors;
+            CorrelationCount = dispatch.MaxParameterInspectors;
 
             DispatchOperationRuntime unhandled = new DispatchOperationRuntime(dispatch.UnhandledDispatchOperation, this);
 
@@ -89,25 +79,13 @@ namespace System.ServiceModel.Dispatcher
             _processMessageCleanupError = ProcessMessageCleanupError;
         }
 
-        internal int CorrelationCount
-        {
-            get { return _correlationCount; }
-        }
+        internal int CorrelationCount { get; }
 
-        internal bool EnableFaults
-        {
-            get { return _enableFaults; }
-        }
+        internal bool EnableFaults { get; }
 
-        internal bool ManualAddressing
-        {
-            get { return _manualAddressing; }
-        }
+        internal bool ManualAddressing { get; }
 
-        internal bool ValidateMustUnderstand
-        {
-            get { return _validateMustUnderstand; }
-        }
+        internal bool ValidateMustUnderstand { get; }
 
         internal void AfterReceiveRequest(ref MessageRpc rpc)
         {
@@ -366,7 +344,7 @@ namespace System.ServiceModel.Dispatcher
         {
             bool canSendReply = true;
 
-            if (!_manualAddressing)
+            if (!ManualAddressing)
             {
                 if (!object.ReferenceEquals(rpc.RequestID, null))
                 {
@@ -432,7 +410,7 @@ namespace System.ServiceModel.Dispatcher
                     throw TraceUtility.ThrowHelperError(error, rpc.Request);
                 }
 
-                if (!_manualAddressing)
+                if (!ManualAddressing)
                 {
                     EndpointAddress replyTo = rpc.ReplyToInfo.ReplyTo;
                     if (replyTo != null && replyTo.IsNone && rpc.Channel.IsReplyChannel)
@@ -450,11 +428,11 @@ namespace System.ServiceModel.Dispatcher
             }
 
             _instance.EnsureInstanceContext(ref rpc);
-            this.TransferChannelFromPendingList(ref rpc);
+            TransferChannelFromPendingList(ref rpc);
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage2(ref rpc);
+                ProcessMessage2(ref rpc);
             }
         }
 
@@ -463,13 +441,13 @@ namespace System.ServiceModel.Dispatcher
             // Run dispatch message inspectors
             rpc.NextProcessor = _processMessage3;
 
-            this.AfterReceiveRequest(ref rpc);
+            AfterReceiveRequest(ref rpc);
 
             _concurrency.LockInstance(ref rpc);
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage3(ref rpc);
+                ProcessMessage3(ref rpc);
             }
         }
 
@@ -484,7 +462,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage31(ref rpc);
+                ProcessMessage31(ref rpc);
             }
         }
 
@@ -495,7 +473,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage4(ref rpc);
+                ProcessMessage4(ref rpc);
             }
         }
 
@@ -520,7 +498,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage41(ref rpc);
+                ProcessMessage41(ref rpc);
             }
         }
 
@@ -545,7 +523,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage5(ref rpc);
+                ProcessMessage5(ref rpc);
             }
         }
 
@@ -597,7 +575,7 @@ namespace System.ServiceModel.Dispatcher
             // Proceed if rpc is unpaused and invoke begin was successful.
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage6(ref rpc);
+                ProcessMessage6(ref rpc);
             }
         }
 
@@ -620,7 +598,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage7(ref rpc);
+                ProcessMessage7(ref rpc);
             }
         }
 
@@ -631,7 +609,7 @@ namespace System.ServiceModel.Dispatcher
             rpc.Operation.InvokeEnd(ref rpc);
 
             // this never pauses
-            this.ProcessMessage8(ref rpc);
+            ProcessMessage8(ref rpc);
         }
 
         private void ProcessMessage8(ref MessageRpc rpc)
@@ -652,7 +630,7 @@ namespace System.ServiceModel.Dispatcher
                 _error.HandleError(e);
             }
 
-            this.PrepareReply(ref rpc);
+            PrepareReply(ref rpc);
 
             if (rpc.CanSendReply)
             {
@@ -661,7 +639,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessage9(ref rpc);
+                ProcessMessage9(ref rpc);
             }
         }
 
@@ -678,17 +656,17 @@ namespace System.ServiceModel.Dispatcher
 
                 if (_sendAsynchronously)
                 {
-                    this.BeginReply(ref rpc);
+                    BeginReply(ref rpc);
                 }
                 else
                 {
-                    this.Reply(ref rpc);
+                    Reply(ref rpc);
                 }
             }
 
             if (!rpc.IsPaused)
             {
-                this.ProcessMessageCleanup(ref rpc);
+                ProcessMessageCleanup(ref rpc);
             }
         }
 
@@ -705,7 +683,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_sendAsynchronously)
                 {
-                    replyWasSent = this.EndReply(ref rpc);
+                    replyWasSent = EndReply(ref rpc);
                 }
                 else
                 {

@@ -15,7 +15,6 @@ using System.Security.Principal;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -178,7 +177,9 @@ namespace System.ServiceModel.Channels
         {
             string statusDescription = response.ReasonPhrase;
             if (string.IsNullOrEmpty(statusDescription))
+            {
                 statusDescription = response.StatusCode.ToString();
+            }
 
             return TraceResponseException(
                 new ProtocolException(SR.Format(SR.UnexpectedHttpResponseCode,

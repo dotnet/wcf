@@ -50,7 +50,9 @@ namespace System.IdentityModel.Tokens
         private static byte[] GetRawData(X509Certificate certificate)
         {
             if (certificate == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+            }
 
             return certificate.GetRawCertData();
         }
@@ -63,7 +65,9 @@ namespace System.IdentityModel.Tokens
         public bool Matches(X509Certificate2 certificate)
         {
             if (certificate == null)
+            {
                 return false;
+            }
 
             return Matches(GetRawData(certificate));
         }

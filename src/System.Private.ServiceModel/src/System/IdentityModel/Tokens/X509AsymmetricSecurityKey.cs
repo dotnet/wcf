@@ -17,8 +17,6 @@ namespace System.IdentityModel.Tokens
         private AsymmetricAlgorithm _publicKey;
         private bool _publicKeyAvailabilityDetermined;
 
-        private object _thisLock = new Object();
-
         public X509AsymmetricSecurityKey(X509Certificate2 certificate)
         {
             _certificate = certificate ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
@@ -26,7 +24,7 @@ namespace System.IdentityModel.Tokens
 
         public override int KeySize
         {
-            get { return this.PublicKey.KeySize; }
+            get { return PublicKey.KeySize; }
         }
 
         private AsymmetricAlgorithm PrivateKey
@@ -49,7 +47,9 @@ namespace System.IdentityModel.Tokens
                                 csp.KeyContainerName = rsaCsp.CspKeyContainerInfo.KeyContainerName;
                                 csp.KeyNumber = (int)rsaCsp.CspKeyContainerInfo.KeyNumber;
                                 if (rsaCsp.CspKeyContainerInfo.MachineKeyStore)
+                                {
                                     csp.Flags = CspProviderFlags.UseMachineKeyStore;
+                                }
 
                                 csp.Flags |= CspProviderFlags.UseExistingKey;
                                 _privateKey = new RSACryptoServiceProvider(csp);
@@ -63,7 +63,10 @@ namespace System.IdentityModel.Tokens
                         }
 
                         if (_certificate.HasPrivateKey && _privateKey == null)
+                        {
                             DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.PrivateKeyNotSupported));
+                        }
+
                         _privateKeyAvailabilityDetermined = true;
                     }
                 }
@@ -97,13 +100,7 @@ namespace System.IdentityModel.Tokens
             }
         }
 
-        private Object ThisLock
-        {
-            get
-            {
-                return _thisLock;
-            }
-        }
+        private Object ThisLock { get; } = new Object();
 
         public override byte[] DecryptKey(string algorithm, byte[] keyData)
         {
@@ -119,7 +116,7 @@ namespace System.IdentityModel.Tokens
         {
             if (privateKey)
             {
-                if (this.PrivateKey == null)
+                if (PrivateKey == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.MissingPrivateKey));
                 }
@@ -132,9 +129,9 @@ namespace System.IdentityModel.Tokens
                 switch (algorithm)
                 {
                     case SignedXml.XmlDsigDSAUrl:
-                        if ((this.PrivateKey as DSA) != null)
+                        if ((PrivateKey as DSA) != null)
                         {
-                            return (this.PrivateKey as DSA);
+                            return (PrivateKey as DSA);
                         }
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.AlgorithmAndPrivateKeyMisMatch));
 
@@ -142,16 +139,20 @@ namespace System.IdentityModel.Tokens
                     case SecurityAlgorithms.RsaSha256Signature:
                     case EncryptedXml.XmlEncRSA15Url:
                     case EncryptedXml.XmlEncRSAOAEPUrl:
-                        if ((this.PrivateKey as RSA) != null)
+                        if ((PrivateKey as RSA) != null)
                         {
-                            return (this.PrivateKey as RSA);
+                            return (PrivateKey as RSA);
                         }
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.AlgorithmAndPrivateKeyMisMatch));
                     default:
                         if (IsSupportedAlgorithm(algorithm))
-                            return this.PrivateKey;
+                        {
+                            return PrivateKey;
+                        }
                         else
+                        {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedCryptoAlgorithm, algorithm)));
+                        }
                 }
             }
             else
@@ -159,18 +160,18 @@ namespace System.IdentityModel.Tokens
                 switch (algorithm)
                 {
                     case SignedXml.XmlDsigDSAUrl:
-                        if ((this.PublicKey as DSA) != null)
+                        if ((PublicKey as DSA) != null)
                         {
-                            return (this.PublicKey as DSA);
+                            return (PublicKey as DSA);
                         }
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.AlgorithmAndPublicKeyMisMatch));
                     case SignedXml.XmlDsigRSASHA1Url:
                     case SecurityAlgorithms.RsaSha256Signature:
                     case EncryptedXml.XmlEncRSA15Url:
                     case EncryptedXml.XmlEncRSAOAEPUrl:
-                        if ((this.PublicKey as RSA) != null)
+                        if ((PublicKey as RSA) != null)
                         {
-                            return (this.PublicKey as RSA);
+                            return (PublicKey as RSA);
                         }
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.AlgorithmAndPublicKeyMisMatch));
                     default:
@@ -193,11 +194,15 @@ namespace System.IdentityModel.Tokens
             {
                 SignatureDescription description = algorithmObject as SignatureDescription;
                 if (description != null)
+                {
                     return description.CreateDigest();
+                }
 
                 HashAlgorithm hashAlgorithm = algorithmObject as HashAlgorithm;
                 if (hashAlgorithm != null)
+                {
                     return hashAlgorithm;
+                }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CryptographicException(SR.Format(SR.UnsupportedAlgorithmForCryptoOperation,
                         algorithm, "CreateDigest")));
@@ -231,14 +236,16 @@ namespace System.IdentityModel.Tokens
             {
                 SignatureDescription description = algorithmObject as SignatureDescription;
                 if (description != null)
-                    return description.CreateDeformatter(this.PublicKey);
+                {
+                    return description.CreateDeformatter(PublicKey);
+                }
 
                 try
                 {
                     AsymmetricSignatureDeformatter asymmetricSignatureDeformatter = algorithmObject as AsymmetricSignatureDeformatter;
                     if (asymmetricSignatureDeformatter != null)
                     {
-                        asymmetricSignatureDeformatter.SetKey(this.PublicKey);
+                        asymmetricSignatureDeformatter.SetKey(PublicKey);
                         return asymmetricSignatureDeformatter;
                     }
                 }
@@ -256,17 +263,23 @@ namespace System.IdentityModel.Tokens
                 case SignedXml.XmlDsigDSAUrl:
 
                     // Ensure that we have a DSA algorithm object.
-                    DSA dsa = (this.PublicKey as DSA);
+                    DSA dsa = (PublicKey as DSA);
                     if (dsa == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.PublicKeyNotDSA));
+                    }
+
                     return new DSASignatureDeformatter(dsa);
 
                 case SignedXml.XmlDsigRSASHA1Url:
                 case SecurityAlgorithms.RsaSha256Signature:
                     // Ensure that we have an RSA algorithm object.
-                    RSA rsa = (this.PublicKey as RSA);
+                    RSA rsa = (PublicKey as RSA);
                     if (rsa == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.PublicKeyNotRSA));
+                    }
+
                     return new RSAPKCS1SignatureDeformatter(rsa);
 
                 default:
@@ -277,28 +290,30 @@ namespace System.IdentityModel.Tokens
         public override AsymmetricSignatureFormatter GetSignatureFormatter(string algorithm)
         {
             // One can sign only if the private key is present.
-            if (this.PrivateKey == null)
+            if (PrivateKey == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.MissingPrivateKey));
             }
 
             if (string.IsNullOrEmpty(algorithm))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(algorithm, SR.Format(SR.EmptyOrNullArgumentString, "algorithm"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(algorithm, SR.Format(SR.EmptyOrNullArgumentString, nameof(algorithm)));
             }
 
             // We support:
             //     XmlDsigDSAUrl = "http://www.w3.org/2000/09/xmldsig#dsa-sha1";
             //     XmlDsigRSASHA1Url = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
             //     RsaSha256Signature = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
-            AsymmetricAlgorithm privateKey = LevelUpRsa(this.PrivateKey, algorithm);
+            AsymmetricAlgorithm privateKey = LevelUpRsa(PrivateKey, algorithm);
 
             object algorithmObject = CryptoHelper.GetAlgorithmFromConfig(algorithm);
             if (algorithmObject != null)
             {
                 SignatureDescription description = algorithmObject as SignatureDescription;
                 if (description != null)
+                {
                     return description.CreateFormatter(privateKey);
+                }
 
                 try
                 {
@@ -323,25 +338,33 @@ namespace System.IdentityModel.Tokens
                 case SignedXml.XmlDsigDSAUrl:
 
                     // Ensure that we have a DSA algorithm object.
-                    DSA dsa = (this.PrivateKey as DSA);
+                    DSA dsa = (PrivateKey as DSA);
                     if (dsa == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.PrivateKeyNotDSA));
+                    }
 #pragma warning disable CA5351 // Do Not Use Broken Cryptographic Algorithms
                     return new DSASignatureFormatter(dsa);
 #pragma warning restore CA5351 // Do Not Use Broken Cryptographic Algorithms
 
                 case SignedXml.XmlDsigRSASHA1Url:
                     // Ensure that we have an RSA algorithm object.
-                    RSA rsa = (this.PrivateKey as RSA);
+                    RSA rsa = (PrivateKey as RSA);
                     if (rsa == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.PrivateKeyNotRSA));
+                    }
+
                     return new RSAPKCS1SignatureFormatter(rsa);
 
                 case SecurityAlgorithms.RsaSha256Signature:
                     // Ensure that we have an RSA algorithm object.
                     RSA rsaSha256 = (privateKey as RSA);
                     if (rsaSha256 == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.PrivateKeyNotRSA));
+                    }
+
                     return new RSAPKCS1SignatureFormatter(rsaSha256);
 
                 default:
@@ -352,18 +375,26 @@ namespace System.IdentityModel.Tokens
         private static AsymmetricAlgorithm LevelUpRsa(AsymmetricAlgorithm asymmetricAlgorithm, string algorithm)
         {
             if (asymmetricAlgorithm == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(asymmetricAlgorithm)));
+            }
 
             if (string.IsNullOrEmpty(algorithm))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(algorithm, SR.Format(SR.EmptyOrNullArgumentString, nameof(algorithm)));
+            }
 
             // only level up if alg is sha256
             if (!string.Equals(algorithm, SecurityAlgorithms.RsaSha256Signature))
+            {
                 return asymmetricAlgorithm;
+            }
 
             RSACryptoServiceProvider rsaCsp = asymmetricAlgorithm as RSACryptoServiceProvider;
             if (rsaCsp == null)
+            {
                 return asymmetricAlgorithm;
+            }
 
             // ProviderType == 1(PROV_RSA_FULL) and providerType == 12(PROV_RSA_SCHANNEL) are provider types that only support SHA1. Change them to PROV_RSA_AES=24 that supports SHA2 also.
             // Only levels up if the associated key is not a hardware key.
@@ -375,7 +406,9 @@ namespace System.IdentityModel.Tokens
                 csp.KeyContainerName = rsaCsp.CspKeyContainerInfo.KeyContainerName;
                 csp.KeyNumber = (int)rsaCsp.CspKeyContainerInfo.KeyNumber;
                 if (rsaCsp.CspKeyContainerInfo.MachineKeyStore)
+                {
                     csp.Flags = CspProviderFlags.UseMachineKeyStore;
+                }
 
                 csp.Flags |= CspProviderFlags.UseExistingKey;
                 return new RSACryptoServiceProvider(csp);
@@ -386,14 +419,14 @@ namespace System.IdentityModel.Tokens
 
         public override bool HasPrivateKey()
         {
-            return (this.PrivateKey != null);
+            return (PrivateKey != null);
         }
 
         public override bool IsAsymmetricAlgorithm(string algorithm)
         {
             if (string.IsNullOrEmpty(algorithm))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(algorithm, SR.Format(SR.EmptyOrNullArgumentString, "algorithm"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(algorithm, SR.Format(SR.EmptyOrNullArgumentString, nameof(algorithm)));
             }
 
             return (CryptoHelper.IsAsymmetricAlgorithm(algorithm));
@@ -403,7 +436,7 @@ namespace System.IdentityModel.Tokens
         {
             if (string.IsNullOrEmpty(algorithm))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(algorithm, SR.Format(SR.EmptyOrNullArgumentString, "algorithm"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(algorithm, SR.Format(SR.EmptyOrNullArgumentString, nameof(algorithm)));
             }
 
             object algorithmObject = null;
@@ -420,23 +453,29 @@ namespace System.IdentityModel.Tokens
             {
                 SignatureDescription signatureDescription = algorithmObject as SignatureDescription;
                 if (signatureDescription != null)
+                {
                     return true;
+                }
+
                 AsymmetricAlgorithm asymmetricAlgorithm = algorithmObject as AsymmetricAlgorithm;
                 if (asymmetricAlgorithm != null)
+                {
                     return true;
+                }
+
                 return false;
             }
 
             switch (algorithm)
             {
                 case SignedXml.XmlDsigDSAUrl:
-                    return (this.PublicKey is DSA);
+                    return (PublicKey is DSA);
 
                 case SignedXml.XmlDsigRSASHA1Url:
                 case SecurityAlgorithms.RsaSha256Signature:
                 case EncryptedXml.XmlEncRSA15Url:
                 case EncryptedXml.XmlEncRSAOAEPUrl:
-                    return (this.PublicKey is RSA);
+                    return (PublicKey is RSA);
                 default:
                     return false;
             }

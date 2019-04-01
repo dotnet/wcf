@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
 using System.Runtime;
-using System.Runtime.CompilerServices;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using SessionIdleManager = System.ServiceModel.Channels.ServiceChannel.SessionIdleManager;
@@ -16,13 +14,9 @@ namespace System.ServiceModel.Dispatcher
     {
         private static Action<object> s_initiateChannelPump = new Action<object>(ListenerHandler.InitiateChannelPump);
         private static AsyncCallback s_waitCallback = Fx.ThunkCallback(new AsyncCallback(ListenerHandler.WaitCallback));
-
-        private readonly ChannelDispatcher _channelDispatcher;
-        private ListenerChannel _channel;
         private SessionIdleManager _idleManager;
         private bool _acceptedNull;
         private bool _doneAccepting;
-        private EndpointDispatcherTable _endpoints;
         private readonly IListenerBinder _listenerBinder;
         private IDefaultCommunicationTimeouts _timeouts;
 
@@ -32,30 +26,24 @@ namespace System.ServiceModel.Dispatcher
             if (!((_listenerBinder != null)))
             {
                 Fx.Assert("ListenerHandler.ctor: (this.listenerBinder != null)");
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("listenerBinder");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(listenerBinder));
             }
 
-            _channelDispatcher = channelDispatcher;
-            if (!((_channelDispatcher != null)))
+            ChannelDispatcher = channelDispatcher;
+            if (!((ChannelDispatcher != null)))
             {
                 Fx.Assert("ListenerHandler.ctor: (this.channelDispatcher != null)");
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channelDispatcher");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelDispatcher));
             }
 
             _timeouts = timeouts;
 
-            _endpoints = channelDispatcher.EndpointDispatcherTable;
+            Endpoints = channelDispatcher.EndpointDispatcherTable;
         }
 
-        internal ChannelDispatcher ChannelDispatcher
-        {
-            get { return _channelDispatcher; }
-        }
+        internal ChannelDispatcher ChannelDispatcher { get; }
 
-        internal ListenerChannel Channel
-        {
-            get { return _channel; }
-        }
+        internal ListenerChannel Channel { get; private set; }
 
         protected override TimeSpan DefaultCloseTimeout
         {
@@ -67,11 +55,7 @@ namespace System.ServiceModel.Dispatcher
             get { return ServiceDefaults.OpenTimeout; }
         }
 
-        internal EndpointDispatcherTable Endpoints
-        {
-            get { return _endpoints; }
-            set { _endpoints = value; }
-        }
+        internal EndpointDispatcherTable Endpoints { get; set; }
 
         new internal object ThisLock
         {
@@ -80,13 +64,13 @@ namespace System.ServiceModel.Dispatcher
 
         protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            this.OnClose(timeout);
+            OnClose(timeout);
             return TaskHelpers.CompletedTask();
         }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            this.OnOpen(timeout);
+            OnOpen(timeout);
             return TaskHelpers.CompletedTask();
         }
 
@@ -107,7 +91,7 @@ namespace System.ServiceModel.Dispatcher
         protected override void OnOpened()
         {
             base.OnOpened();
-            _channelDispatcher.Channels.IncrementActivityCount();
+            ChannelDispatcher.Channels.IncrementActivityCount();
             NewChannelPump();
         }
 
@@ -130,11 +114,11 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_acceptedNull || (listener.State == CommunicationState.Faulted))
                 {
-                    this.DoneAccepting();
+                    DoneAccepting();
                     break;
                 }
 
-                this.Dispatch();
+                Dispatch();
             }
         }
 
@@ -152,7 +136,7 @@ namespace System.ServiceModel.Dispatcher
 
         private void AbortChannels()
         {
-            IChannel[] channels = _channelDispatcher.Channels.ToArray();
+            IChannel[] channels = ChannelDispatcher.Channels.ToArray();
             for (int index = 0; index < channels.Length; index++)
             {
                 channels[index].Abort();
@@ -171,13 +155,17 @@ namespace System.ServiceModel.Dispatcher
                         IDuplexSession duplexSession = ((ISessionChannel<IDuplexSession>)channel).Session;
                         IAsyncResult result = duplexSession.BeginCloseOutputSession(timeout, Fx.ThunkCallback(new AsyncCallback(CloseOutputSessionCallback)), state);
                         if (result.CompletedSynchronously)
+                        {
                             duplexSession.EndCloseOutputSession(result);
+                        }
                     }
                     else
                     {
                         IAsyncResult result = channel.BeginClose(timeout, Fx.ThunkCallback(new AsyncCallback(CloseChannelCallback)), state);
                         if (result.CompletedSynchronously)
+                        {
                             channel.EndClose(result);
+                        }
                     }
                 }
             }
@@ -187,7 +175,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     throw;
                 }
-                this.HandleError(e);
+                HandleError(e);
 
                 if (channel is ISessionChannel<IDuplexSession>)
                 {
@@ -222,11 +210,11 @@ namespace System.ServiceModel.Dispatcher
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             // Close all datagram channels
-            IChannel[] channels = _channelDispatcher.Channels.ToArray();
+            IChannel[] channels = ChannelDispatcher.Channels.ToArray();
             for (int index = 0; index < channels.Length; index++)
             {
                 IChannel channel = channels[index];
-                if (!this.IsSessionChannel(channel))
+                if (!IsSessionChannel(channel))
                 {
                     try
                     {
@@ -238,7 +226,7 @@ namespace System.ServiceModel.Dispatcher
                         {
                             throw;
                         }
-                        this.HandleError(e);
+                        HandleError(e);
                     }
                 }
             }
@@ -270,16 +258,18 @@ namespace System.ServiceModel.Dispatcher
         private void CloseChannels(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            IChannel[] channels = _channelDispatcher.Channels.ToArray();
+            IChannel[] channels = ChannelDispatcher.Channels.ToArray();
             for (int index = 0; index < channels.Length; index++)
+            {
                 CloseChannel(channels[index], timeoutHelper.RemainingTime());
+            }
         }
 
         private void Dispatch()
         {
-            ListenerChannel channel = _channel;
+            ListenerChannel channel = Channel;
             SessionIdleManager idleManager = _idleManager;
-            _channel = null;
+            Channel = null;
             _idleManager = null;
 
             try
@@ -290,19 +280,23 @@ namespace System.ServiceModel.Dispatcher
 
                     if (!channel.Binder.HasSession)
                     {
-                        _channelDispatcher.Channels.Add(channel.Binder.Channel);
+                        ChannelDispatcher.Channels.Add(channel.Binder.Channel);
                     }
 
                     if (channel.Binder is DuplexChannelBinder)
                     {
                         DuplexChannelBinder duplexChannelBinder = channel.Binder as DuplexChannelBinder;
                         duplexChannelBinder.ChannelHandler = handler;
-                        duplexChannelBinder.DefaultCloseTimeout = this.DefaultCloseTimeout;
+                        duplexChannelBinder.DefaultCloseTimeout = DefaultCloseTimeout;
 
                         if (_timeouts == null)
+                        {
                             duplexChannelBinder.DefaultSendTimeout = ServiceDefaults.SendTimeout;
+                        }
                         else
+                        {
                             duplexChannelBinder.DefaultSendTimeout = _timeouts.SendTimeout;
+                        }
                     }
 
                     ChannelHandler.Register(handler);
@@ -316,7 +310,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     throw;
                 }
-                this.HandleError(e);
+                HandleError(e);
             }
             finally
             {
@@ -338,12 +332,12 @@ namespace System.ServiceModel.Dispatcher
 
         private void DoneAccepting()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (!_doneAccepting)
                 {
                     _doneAccepting = true;
-                    _channelDispatcher.Channels.DecrementActivityCount();
+                    ChannelDispatcher.Channels.DecrementActivityCount();
                 }
             }
         }
@@ -370,13 +364,13 @@ namespace System.ServiceModel.Dispatcher
             CancelPendingIdleManager();
 
             // Start aborting incoming channels
-            _channelDispatcher.Channels.CloseInput();
+            ChannelDispatcher.Channels.CloseInput();
 
             // Abort existing channels
-            this.AbortChannels();
+            AbortChannels();
 
             // Wait for channels to finish aborting
-            _channelDispatcher.Channels.Abort();
+            ChannelDispatcher.Channels.Abort();
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -387,13 +381,13 @@ namespace System.ServiceModel.Dispatcher
             CancelPendingIdleManager();
 
             // Start aborting incoming channels
-            _channelDispatcher.Channels.CloseInput();
+            ChannelDispatcher.Channels.CloseInput();
 
             // Start closing existing channels
-            this.CloseChannels(timeoutHelper.RemainingTime());
+            CloseChannels(timeoutHelper.RemainingTime());
 
             // Wait for channels to finish closing
-            return _channelDispatcher.Channels.BeginClose(timeoutHelper.RemainingTime(), callback, state);
+            return ChannelDispatcher.Channels.BeginClose(timeoutHelper.RemainingTime(), callback, state);
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -404,40 +398,36 @@ namespace System.ServiceModel.Dispatcher
             CancelPendingIdleManager();
 
             // Start aborting incoming channels
-            _channelDispatcher.Channels.CloseInput();
+            ChannelDispatcher.Channels.CloseInput();
 
             // Start closing existing channels
-            this.CloseChannels(timeoutHelper.RemainingTime());
+            CloseChannels(timeoutHelper.RemainingTime());
 
             // Wait for channels to finish closing
-            _channelDispatcher.Channels.Close(timeoutHelper.RemainingTime());
+            ChannelDispatcher.Channels.Close(timeoutHelper.RemainingTime());
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            _channelDispatcher.Channels.EndClose(result);
+            ChannelDispatcher.Channels.EndClose(result);
         }
 
         private bool HandleError(Exception e)
         {
-            return _channelDispatcher.HandleError(e);
+            return ChannelDispatcher.HandleError(e);
         }
 
         internal class CloseChannelState
         {
-            private ListenerHandler _listenerHandler;
             private IChannel _channel;
 
             internal CloseChannelState(ListenerHandler listenerHandler, IChannel channel)
             {
-                _listenerHandler = listenerHandler;
+                ListenerHandler = listenerHandler;
                 _channel = channel;
             }
 
-            internal ListenerHandler ListenerHandler
-            {
-                get { return _listenerHandler; }
-            }
+            internal ListenerHandler ListenerHandler { get; }
 
             internal IChannel Channel
             {
@@ -448,16 +438,11 @@ namespace System.ServiceModel.Dispatcher
 
     internal class ListenerChannel
     {
-        private IChannelBinder _binder;
-
         public ListenerChannel(IChannelBinder binder)
         {
-            _binder = binder;
+            Binder = binder;
         }
 
-        public IChannelBinder Binder
-        {
-            get { return _binder; }
-        }
+        public IChannelBinder Binder { get; }
     }
 }

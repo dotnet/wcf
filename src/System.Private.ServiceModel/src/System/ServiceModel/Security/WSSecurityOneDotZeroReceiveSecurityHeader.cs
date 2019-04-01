@@ -44,7 +44,9 @@ namespace System.ServiceModel.Security
             bool encrypted = reader.IsStartElement(System.IdentityModel.XD.XmlEncryptionDictionary.EncryptedData, System.IdentityModel.XD.XmlEncryptionDictionary.Namespace);
 
             if (encrypted == true)
+            {
                 throw ExceptionHelper.PlatformNotSupported();
+            }
 
             return encrypted;
         }

@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 
@@ -14,17 +12,16 @@ namespace System.ServiceModel.Dispatcher
     internal class ReplyChannelBinder : IChannelBinder
     {
         private IReplyChannel _channel;
-        private Uri _listenUri;
 
         internal ReplyChannelBinder(IReplyChannel channel, Uri listenUri)
         {
             if (channel == null)
             {
                 Fx.Assert("ReplyChannelBinder.ReplyChannelBinder: (channel != null)");
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channel");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channel));
             }
             _channel = channel;
-            _listenUri = listenUri;
+            ListenUri = listenUri;
         }
 
         public IChannel Channel
@@ -37,10 +34,7 @@ namespace System.ServiceModel.Dispatcher
             get { return _channel is ISessionChannel<IInputSession>; }
         }
 
-        public Uri ListenUri
-        {
-            get { return _listenUri; }
-        }
+        public Uri ListenUri { get; }
 
         public EndpointAddress LocalAddress
         {

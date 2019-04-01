@@ -4,9 +4,7 @@
 
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime;
-using System.Runtime.CompilerServices;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
@@ -67,10 +65,12 @@ namespace System.ServiceModel
             {
                 if (_concurrency == null)
                 {
-                    lock (this.ThisLock)
+                    lock (ThisLock)
                     {
                         if (_concurrency == null)
+                        {
                             _concurrency = new ConcurrencyInstanceContextFacet();
+                        }
                     }
                 }
 
@@ -98,11 +98,14 @@ namespace System.ServiceModel
         {
             get
             {
-                this.ThrowIfClosed();
-                lock (this.ThisLock)
+                ThrowIfClosed();
+                lock (ThisLock)
                 {
                     if (_extensions == null)
-                        _extensions = new ExtensionCollection<InstanceContext>(this, this.ThisLock);
+                    {
+                        _extensions = new ExtensionCollection<InstanceContext>(this, ThisLock);
+                    }
+
                     return _extensions;
                 }
             }
@@ -112,7 +115,7 @@ namespace System.ServiceModel
         {
             get
             {
-                this.ThrowIfClosed();
+                ThrowIfClosed();
                 return _channels.IncomingChannels;
             }
         }
@@ -121,7 +124,7 @@ namespace System.ServiceModel
         {
             get
             {
-                this.ThrowIfClosed();
+                ThrowIfClosed();
                 return _channels.OutgoingChannels;
             }
         }
@@ -131,7 +134,7 @@ namespace System.ServiceModel
             get { return _synchronizationContext; }
             set
             {
-                this.ThrowIfClosedOrOpened();
+                ThrowIfClosedOrOpened();
                 _synchronizationContext = value;
             }
         }
@@ -152,7 +155,7 @@ namespace System.ServiceModel
             {
                 if (_wmiChannels == null)
                 {
-                    lock (this.ThisLock)
+                    lock (ThisLock)
                     {
                         if (_wmiChannels == null)
                         {
@@ -171,21 +174,21 @@ namespace System.ServiceModel
 
         internal void BindRpc(ref MessageRpc rpc)
         {
-            this.ThrowIfClosed();
+            ThrowIfClosed();
             _channels.IncrementActivityCount();
             rpc.SuccessfullyBoundInstance = true;
         }
 
         internal void FaultInternal()
         {
-            this.Fault();
+            Fault();
         }
 
         public object GetServiceInstance(Message message)
         {
             lock (_serviceInstanceLock)
             {
-                this.ThrowIfClosedOrNotOpen();
+                ThrowIfClosedOrNotOpen();
 
                 object current = _userObject;
 
@@ -268,7 +271,7 @@ namespace System.ServiceModel
 
         protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            this.OnClose(timeout);
+            OnClose(timeout);
             return TaskHelpers.CompletedTask();
         }
 

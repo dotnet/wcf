@@ -16,15 +16,14 @@ namespace System.ServiceModel
         // private BindingElements
         private HttpTransportBindingElement _httpTransport;
         private HttpsTransportBindingElement _httpsTransport;
-        private TextMessageEncodingBindingElement _textEncoding;
 
         internal HttpBindingBase()
         {
             _httpTransport = new HttpTransportBindingElement();
             _httpsTransport = new HttpsTransportBindingElement();
 
-            _textEncoding = new TextMessageEncodingBindingElement();
-            _textEncoding.MessageVersion = MessageVersion.Soap11;
+            TextMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
+            TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap11;
             _httpsTransport.WebSocketSettings = _httpTransport.WebSocketSettings;
         }
 
@@ -138,7 +137,7 @@ namespace System.ServiceModel
         {
             get
             {
-                return _textEncoding.ReaderQuotas;
+                return TextMessageEncodingBindingElement.ReaderQuotas;
             }
 
             set
@@ -148,7 +147,7 @@ namespace System.ServiceModel
                     throw FxTrace.Exception.ArgumentNull("value");
                 }
 
-                value.CopyTo(_textEncoding.ReaderQuotas);
+                value.CopyTo(TextMessageEncodingBindingElement.ReaderQuotas);
                 SetReaderQuotas(value);
             }
         }
@@ -170,12 +169,12 @@ namespace System.ServiceModel
         {
             get
             {
-                return _textEncoding.WriteEncoding;
+                return TextMessageEncodingBindingElement.WriteEncoding;
             }
 
             set
             {
-                _textEncoding.WriteEncoding = value;
+                TextMessageEncodingBindingElement.WriteEncoding = value;
             }
         }
 
@@ -214,13 +213,7 @@ namespace System.ServiceModel
             get { return false; }
         }
 
-        internal TextMessageEncodingBindingElement TextMessageEncodingBindingElement
-        {
-            get
-            {
-                return _textEncoding;
-            }
-        }
+        internal TextMessageEncodingBindingElement TextMessageEncodingBindingElement { get; }
 
         internal abstract BasicHttpSecurity BasicHttpSecurity
         {

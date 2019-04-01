@@ -45,7 +45,10 @@ namespace System.Runtime
             TimeSpan diff = requestedDueDateTime.Subtract(_dueDateTime);
             double millisecondsDiff = diff.TotalMilliseconds;
             if (millisecondsDiff < 0)
+            {
                 millisecondsDiff = 0 - millisecondsDiff;
+            }
+
             if (millisecondsDiff > MaxSkew)
             {
                 _timer.Change(delay, TimeSpan.FromMilliseconds(-1));
@@ -58,7 +61,9 @@ namespace System.Runtime
         private void OnTimer(object state)
         {
             if (_enabled)
+            {
                 _callback(_state);
+            }
         }
 
         public void Dispose()

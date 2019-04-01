@@ -28,7 +28,7 @@ namespace System.IdentityModel.Tokens
         {
             if (tokenResolvers == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenResolvers");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenResolvers));
             }
 
             AddNonEmptyResolvers(tokenResolvers);
@@ -57,7 +57,7 @@ namespace System.IdentityModel.Tokens
         {
             if (keyIdentifierClause == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifierClause");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifierClause));
             }
 
             key = null;
@@ -84,7 +84,7 @@ namespace System.IdentityModel.Tokens
         {
             if (keyIdentifier == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifier));
             }
 
             token = null;
@@ -111,7 +111,7 @@ namespace System.IdentityModel.Tokens
         {
             if (keyIdentifierClause == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifierClause");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifierClause));
             }
 
             token = null;

@@ -3,11 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections;
-using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Runtime;
-using System.Runtime.Diagnostics;
 using System.Xml;
 
 namespace System.ServiceModel.Diagnostics
@@ -16,10 +13,8 @@ namespace System.ServiceModel.Diagnostics
     {
         private const string ExceptionStackAsStringKey = "System.ServiceModel.Diagnostics.ExceptionUtility.ExceptionStackAsString";
 
-#pragma warning disable 649
         // This field should be only used for debug build.
         internal static ExceptionUtility mainInstance;
-#pragma warning restore 649
 
         private ExceptionTrace _exceptionTrace;
         private string _name;
@@ -28,7 +23,6 @@ namespace System.ServiceModel.Diagnostics
         [ThreadStatic]
         private static Guid s_activityId;
 
-        [Obsolete("For SMDiagnostics.dll use only. Call DiagnosticUtility.ExceptionUtility instead")]
         internal ExceptionUtility(string name, string eventSourceName, object exceptionTrace)
         {
             _exceptionTrace = (ExceptionTrace)exceptionTrace;
@@ -39,32 +33,32 @@ namespace System.ServiceModel.Diagnostics
 
         public ArgumentException ThrowHelperArgument(string message)
         {
-            return (ArgumentException)this.ThrowHelperError(new ArgumentException(message));
+            return (ArgumentException)ThrowHelperError(new ArgumentException(message));
         }
 
         public ArgumentException ThrowHelperArgument(string paramName, string message)
         {
-            return (ArgumentException)this.ThrowHelperError(new ArgumentException(message, paramName));
+            return (ArgumentException)ThrowHelperError(new ArgumentException(message, paramName));
         }
 
         public ArgumentNullException ThrowHelperArgumentNull(string paramName)
         {
-            return (ArgumentNullException)this.ThrowHelperError(new ArgumentNullException(paramName));
+            return (ArgumentNullException)ThrowHelperError(new ArgumentNullException(paramName));
         }
 
         public ArgumentNullException ThrowHelperArgumentNull(string paramName, string message)
         {
-            return (ArgumentNullException)this.ThrowHelperError(new ArgumentNullException(paramName, message));
+            return (ArgumentNullException)ThrowHelperError(new ArgumentNullException(paramName, message));
         }
 
         public ArgumentException ThrowHelperArgumentNullOrEmptyString(string arg)
         {
-            return (ArgumentException)this.ThrowHelperError(new ArgumentException(SR.StringNullOrEmpty, arg));
+            return (ArgumentException)ThrowHelperError(new ArgumentException(SR.StringNullOrEmpty, arg));
         }
 
         public Exception ThrowHelperFatal(string message, Exception innerException)
         {
-            return this.ThrowHelperError(new FatalException(message, innerException));
+            return ThrowHelperError(new FatalException(message, innerException));
         }
 
         public Exception ThrowHelperInternal(bool fatal)
@@ -79,12 +73,12 @@ namespace System.ServiceModel.Diagnostics
 
         public Exception ThrowHelperCallback(string message, Exception innerException)
         {
-            return this.ThrowHelperCritical(new CallbackException(message, innerException));
+            return ThrowHelperCritical(new CallbackException(message, innerException));
         }
 
         public Exception ThrowHelperCallback(Exception innerException)
         {
-            return this.ThrowHelperCallback(SR.GenericCallbackException, innerException);
+            return ThrowHelperCallback(SR.GenericCallbackException, innerException);
         }
 
         public Exception ThrowHelperCritical(Exception exception)
@@ -111,13 +105,13 @@ namespace System.ServiceModel.Diagnostics
 
         internal Exception ThrowHelperXml(XmlReader reader, string message)
         {
-            return this.ThrowHelperXml(reader, message, null);
+            return ThrowHelperXml(reader, message, null);
         }
 
         internal Exception ThrowHelperXml(XmlReader reader, string message, Exception inner)
         {
             IXmlLineInfo lineInfo = reader as IXmlLineInfo;
-            return this.ThrowHelperError(new XmlException(
+            return ThrowHelperError(new XmlException(
                 message,
                 inner,
                 (null != lineInfo) ? lineInfo.LineNumber : 0,

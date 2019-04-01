@@ -2,13 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using System.ServiceModel.Channels;
-using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security.Tokens;
-using System.Collections.ObjectModel;
-using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Xml;
@@ -19,12 +15,6 @@ namespace System.ServiceModel.Security
     internal class SecurityStandardsManager
     {
         private static SecurityStandardsManager s_instance;
-
-        private readonly SecureConversationDriver _secureConversationDriver;
-        private readonly TrustDriver _trustDriver;
-        private readonly SignatureTargetIdManager _idManager;
-        private readonly MessageSecurityVersion _messageSecurityVersion;
-        private readonly WSUtilitySpecificationVersion _wsUtilitySpecificationVersion;
         private readonly SecurityTokenSerializer _tokenSerializer;
         private WSSecurityTokenSerializer _wsSecurityTokenSerializer;
 
@@ -41,7 +31,7 @@ namespace System.ServiceModel.Security
 
         public SecurityStandardsManager(MessageSecurityVersion messageSecurityVersion, SecurityTokenSerializer tokenSerializer)
         {
-            _messageSecurityVersion = messageSecurityVersion ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(messageSecurityVersion)));
+            MessageSecurityVersion = messageSecurityVersion ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(messageSecurityVersion)));
             _tokenSerializer = tokenSerializer ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenSerializer));
             if (messageSecurityVersion.SecureConversationVersion == SecureConversationVersion.WSSecureConversation13)
             {
@@ -49,27 +39,27 @@ namespace System.ServiceModel.Security
             }
             else
             {
-                _secureConversationDriver = new WSSecureConversationFeb2005.DriverFeb2005();
+                SecureConversationDriver = new WSSecureConversationFeb2005.DriverFeb2005();
             }
 
-            if (this.SecurityVersion == SecurityVersion.WSSecurity10 || this.SecurityVersion == SecurityVersion.WSSecurity11)
+            if (SecurityVersion == SecurityVersion.WSSecurity10 || SecurityVersion == SecurityVersion.WSSecurity11)
             {
-                _idManager = WSSecurityJan2004.IdManager.Instance;
+                IdManager = WSSecurityJan2004.IdManager.Instance;
             }
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(messageSecurityVersion), SR.MessageSecurityVersionOutOfRange));
             }
 
-            _wsUtilitySpecificationVersion = WSUtilitySpecificationVersion.Default;
-            _trustDriver = null;
+            WSUtilitySpecificationVersion = WSUtilitySpecificationVersion.Default;
+            TrustDriver = null;
             if (messageSecurityVersion.MessageSecurityTokenVersion.TrustVersion == TrustVersion.WSTrust13)
             {
                 throw ExceptionHelper.PlatformNotSupported();
             }
             else
             {
-                _trustDriver = new WSTrustFeb2005.DriverFeb2005(this);
+                TrustDriver = new WSTrustFeb2005.DriverFeb2005(this);
             }
         }
 
@@ -78,45 +68,33 @@ namespace System.ServiceModel.Security
             get
             {
                 if (s_instance == null)
+                {
                     s_instance = new SecurityStandardsManager();
+                }
+
                 return s_instance;
             }
         }
 
         public SecurityVersion SecurityVersion
         {
-            get { return _messageSecurityVersion == null ? null : _messageSecurityVersion.SecurityVersion; }
+            get { return MessageSecurityVersion == null ? null : MessageSecurityVersion.SecurityVersion; }
         }
 
-        public MessageSecurityVersion MessageSecurityVersion
-        {
-            get { return _messageSecurityVersion; }
-        }
+        public MessageSecurityVersion MessageSecurityVersion { get; }
 
         internal SecurityTokenSerializer SecurityTokenSerializer
         {
             get { return _tokenSerializer; }
         }
 
-        internal WSUtilitySpecificationVersion WSUtilitySpecificationVersion
-        {
-            get { return _wsUtilitySpecificationVersion; }
-        }
+        internal WSUtilitySpecificationVersion WSUtilitySpecificationVersion { get; }
 
-        internal SignatureTargetIdManager IdManager
-        {
-            get { return _idManager; }
-        }
+        internal SignatureTargetIdManager IdManager { get; }
 
-        internal SecureConversationDriver SecureConversationDriver
-        {
-            get { return _secureConversationDriver; }
-        }
+        internal SecureConversationDriver SecureConversationDriver { get; }
 
-        internal TrustDriver TrustDriver
-        {
-            get { return _trustDriver; }
-        }
+        internal TrustDriver TrustDriver { get; }
 
         private WSSecurityTokenSerializer WSSecurityTokenSerializer
         {
@@ -127,7 +105,7 @@ namespace System.ServiceModel.Security
                     WSSecurityTokenSerializer wsSecurityTokenSerializer = _tokenSerializer as WSSecurityTokenSerializer;
                     if (wsSecurityTokenSerializer == null)
                     {
-                        wsSecurityTokenSerializer = new WSSecurityTokenSerializer(this.SecurityVersion);
+                        wsSecurityTokenSerializer = new WSSecurityTokenSerializer(SecurityVersion);
                     }
 
                     _wsSecurityTokenSerializer = wsSecurityTokenSerializer;
@@ -139,13 +117,13 @@ namespace System.ServiceModel.Security
 
         internal bool TryCreateKeyIdentifierClauseFromTokenXml(XmlElement element, SecurityTokenReferenceStyle tokenReferenceStyle, out SecurityKeyIdentifierClause securityKeyIdentifierClause)
         {
-            return this.WSSecurityTokenSerializer.TryCreateKeyIdentifierClauseFromTokenXml(element, tokenReferenceStyle, out securityKeyIdentifierClause);
+            return WSSecurityTokenSerializer.TryCreateKeyIdentifierClauseFromTokenXml(element, tokenReferenceStyle, out securityKeyIdentifierClause);
         }
 
 
         internal SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXml(XmlElement element, SecurityTokenReferenceStyle tokenReferenceStyle)
         {
-            return this.WSSecurityTokenSerializer.CreateKeyIdentifierClauseFromTokenXml(element, tokenReferenceStyle);
+            return WSSecurityTokenSerializer.CreateKeyIdentifierClauseFromTokenXml(element, tokenReferenceStyle);
         }
 
         internal SendSecurityHeader CreateSendSecurityHeader(Message message,
@@ -164,7 +142,7 @@ namespace System.ServiceModel.Security
 
         internal bool DoesMessageContainSecurityHeader(Message message)
         {
-            return this.SecurityVersion.DoesMessageContainSecurityHeader(message);
+            return SecurityVersion.DoesMessageContainSecurityHeader(message);
         }
     }
 }

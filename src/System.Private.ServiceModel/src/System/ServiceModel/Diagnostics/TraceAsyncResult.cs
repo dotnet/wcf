@@ -4,7 +4,6 @@
 
 
 using System.Runtime;
-using System.Diagnostics;
 
 namespace System.ServiceModel.Diagnostics
 {
@@ -21,8 +20,8 @@ namespace System.ServiceModel.Diagnostics
             }
             else if (DiagnosticUtility.ShouldUseActivity)
             {
-                this.CallbackActivity = ServiceModelActivity.Current;
-                if (this.CallbackActivity != null)
+                CallbackActivity = ServiceModelActivity.Current;
+                if (CallbackActivity != null)
                 {
                     base.VirtualCallback = s_waitResultCallback;
                 }

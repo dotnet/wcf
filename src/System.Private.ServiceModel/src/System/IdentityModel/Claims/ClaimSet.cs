@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.ServiceModel;
-using System.Text;
 
 namespace System.IdentityModel.Claims
 {
@@ -56,7 +55,9 @@ namespace System.IdentityModel.Claims
             get
             {
                 if (s_anonymous == null)
+                {
                     s_anonymous = new DefaultClaimSet();
+                }
 
                 return s_anonymous;
             }
@@ -73,9 +74,14 @@ namespace System.IdentityModel.Claims
         public virtual bool ContainsClaim(Claim claim, IEqualityComparer<Claim> comparer)
         {
             if (claim == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claim");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claim));
+            }
+
             if (comparer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("comparer");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(comparer));
+            }
 
             IEnumerable<Claim> claims = FindClaims(null, null);
             if (claims != null)
@@ -83,7 +89,9 @@ namespace System.IdentityModel.Claims
                 foreach (Claim matchingClaim in claims)
                 {
                     if (comparer.Equals(claim, matchingClaim))
+                    {
                         return true;
+                    }
                 }
             }
             return false;
@@ -92,7 +100,9 @@ namespace System.IdentityModel.Claims
         public virtual bool ContainsClaim(Claim claim)
         {
             if (claim == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claim");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claim));
+            }
 
             IEnumerable<Claim> claims = FindClaims(claim.ClaimType, claim.Right);
             if (claims != null)
@@ -100,7 +110,9 @@ namespace System.IdentityModel.Claims
                 foreach (Claim matchingClaim in claims)
                 {
                     if (claim.Equals(matchingClaim))
+                    {
                         return true;
+                    }
                 }
             }
             return false;
@@ -112,6 +124,6 @@ namespace System.IdentityModel.Claims
         // Note: null string represents any.
         public abstract IEnumerable<Claim> FindClaims(string claimType, string right);
         public abstract IEnumerator<Claim> GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
+        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
     }
 }

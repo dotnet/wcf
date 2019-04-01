@@ -43,12 +43,7 @@ namespace System.ServiceModel
             get { return _security; }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-
-                _security = value;
+                _security = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 

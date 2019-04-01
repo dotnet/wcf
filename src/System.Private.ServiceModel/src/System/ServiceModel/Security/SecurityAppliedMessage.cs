@@ -4,21 +4,15 @@
 
 using System.IO;
 using System.Runtime;
-using System.Security.Cryptography;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Security.Tokens;
 using System.Xml;
-using System.IdentityModel.Tokens;
-using System.Collections.Generic;
 
 using IPrefixGenerator = System.IdentityModel.IPrefixGenerator;
-using ISecurityElement = System.IdentityModel.ISecurityElement;
 
 namespace System.ServiceModel.Security
 {
     internal sealed class SecurityAppliedMessage : DelegatingMessage
     {
-        private string _bodyId;
         private bool _bodyIdInserted;
         private string _bodyPrefix = MessageStrings.Prefix;
         private XmlBuffer _fullBodyBuffer;
@@ -39,10 +33,7 @@ namespace System.ServiceModel.Security
             BodyProtectionMode = MessagePartProtectionModeHelper.GetProtectionMode(signBody, encryptBody, securityHeader.SignThenEncrypt);
         }
 
-        public string BodyId
-        {
-            get { return _bodyId; }
-        }
+        public string BodyId { get; private set; }
 
         public MessagePartProtectionMode BodyProtectionMode { get; }
 
@@ -132,7 +123,10 @@ namespace System.ServiceModel.Security
                     XmlDictionaryReader reader = _fullBodyBuffer.GetReader(0);
                     reader.ReadStartElement();
                     while (reader.NodeType != XmlNodeType.EndElement)
+                    {
                         writer.WriteNode(reader, false);
+                    }
+
                     reader.ReadEndElement();
                     reader.Close();
                     return;
@@ -210,12 +204,12 @@ namespace System.ServiceModel.Security
 
         private void SetBodyId()
         {
-            _bodyId = InnerMessage.GetBodyAttribute(
+            BodyId = InnerMessage.GetBodyAttribute(
                 UtilityStrings.IdAttribute,
                 _securityHeader.StandardsManager.IdManager.DefaultIdNamespaceUri);
-            if (_bodyId == null)
+            if (BodyId == null)
             {
-                _bodyId = _securityHeader.GenerateId();
+                BodyId = _securityHeader.GenerateId();
                 _bodyIdInserted = true;
             }
         }
@@ -267,7 +261,7 @@ namespace System.ServiceModel.Security
             InnerMessage.WriteStartBody(writer);
             if (_bodyIdInserted)
             {
-                _securityHeader.StandardsManager.IdManager.WriteIdAttribute(writer, _bodyId);
+                _securityHeader.StandardsManager.IdManager.WriteIdAttribute(writer, BodyId);
             }
         }
 

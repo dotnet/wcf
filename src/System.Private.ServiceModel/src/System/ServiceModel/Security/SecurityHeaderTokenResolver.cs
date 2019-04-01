@@ -2,23 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.IdentityModel.Tokens;
+using System.ServiceModel;
+using System.IdentityModel.Selectors;
+using System.ServiceModel.Security.Tokens;
+using System.IO;
+using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
+
 namespace System.ServiceModel.Security
 {
-    using System.IdentityModel.Tokens;
-    using System.ServiceModel;
-    using System.IdentityModel.Selectors;
-    using System.ServiceModel.Security.Tokens;
-    using System.IO;
-    using System.Globalization;
-    using System.Security.Cryptography.X509Certificates;
-
-    internal sealed class SecurityHeaderTokenResolver : SecurityTokenResolver, System.IdentityModel.IWrappedTokenKeyResolver
+    internal sealed class SecurityHeaderTokenResolver : SecurityTokenResolver, IdentityModel.IWrappedTokenKeyResolver
     {
         private const int InitialTokenArraySize = 10;
         private int _tokenCount;
         private SecurityTokenEntry[] _tokens;
-        private SecurityToken _expectedWrapper;
-        private SecurityTokenParameters _expectedWrapperTokenParameters;
         private ReceiveSecurityHeader _securityHeader;
 
         public SecurityHeaderTokenResolver()
@@ -32,17 +30,9 @@ namespace System.ServiceModel.Security
             _securityHeader = securityHeader;
         }
 
-        public SecurityToken ExpectedWrapper
-        {
-            get { return _expectedWrapper; }
-            set { _expectedWrapper = value; }
-        }
+        public SecurityToken ExpectedWrapper { get; set; }
 
-        public SecurityTokenParameters ExpectedWrapperTokenParameters
-        {
-            get { return _expectedWrapperTokenParameters; }
-            set { _expectedWrapperTokenParameters = value; }
-        }
+        public SecurityTokenParameters ExpectedWrapperTokenParameters { get; set; }
 
         public void Add(SecurityToken token)
         {
@@ -53,7 +43,7 @@ namespace System.ServiceModel.Security
         {
             if (token == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
             }
 
             if ((allowedReferenceStyle == SecurityTokenReferenceStyle.External) && (tokenParameters == null))
@@ -77,14 +67,14 @@ namespace System.ServiceModel.Security
 
         public bool CheckExternalWrapperMatch(SecurityKeyIdentifier keyIdentifier)
         {
-            if (_expectedWrapper == null || _expectedWrapperTokenParameters == null)
+            if (ExpectedWrapper == null || ExpectedWrapperTokenParameters == null)
             {
                 return false;
             }
 
             for (int i = 0; i < keyIdentifier.Count; i++)
             {
-                if (_expectedWrapperTokenParameters.MatchesKeyIdentifierClause(_expectedWrapper, keyIdentifier[i], SecurityTokenReferenceStyle.External))
+                if (ExpectedWrapperTokenParameters.MatchesKeyIdentifierClause(ExpectedWrapper, keyIdentifier[i], SecurityTokenReferenceStyle.External))
                 {
                     return true;
                 }
@@ -141,7 +131,10 @@ namespace System.ServiceModel.Security
         {
             LocalIdKeyIdentifierClause localClause = keyClause as LocalIdKeyIdentifierClause;
             if (localClause == null)
+            {
                 return false;
+            }
+
             return token.MatchesKeyIdentifierClause(localClause);
         }
 
@@ -195,7 +188,10 @@ namespace System.ServiceModel.Security
 
                 int derivationLength = (keyIdentifierClause.DerivationLength == 0) ? DerivedKeySecurityToken.DefaultDerivedKeyLength : keyIdentifierClause.DerivationLength;
                 if (derivationLength > _securityHeader.MaxDerivedKeyLength)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.DerivedKeyLengthSpecifiedInImplicitDerivedKeyClauseTooLong, keyIdentifierClause.ToString(), derivationLength, _securityHeader.MaxDerivedKeyLength)));
+                }
+
                 bool alreadyDerived = false;
                 for (int i = 0; i < _tokenCount; ++i)
                 {
@@ -273,9 +269,9 @@ namespace System.ServiceModel.Security
         {
             if (keyIdentifierClause == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifierClause");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifierClause));
             }
-            key = this.ResolveSecurityKeyCore(keyIdentifierClause, createIntrinsicKeys);
+            key = ResolveSecurityKeyCore(keyIdentifierClause, createIntrinsicKeys);
             return key != null;
         }
 
@@ -287,26 +283,18 @@ namespace System.ServiceModel.Security
 
         private struct SecurityTokenEntry
         {
-            private SecurityTokenParameters _tokenParameters;
-            private SecurityToken _token;
             private SecurityTokenReferenceStyle _allowedReferenceStyle;
 
             public SecurityTokenEntry(SecurityToken token, SecurityTokenParameters tokenParameters, SecurityTokenReferenceStyle allowedReferenceStyle)
             {
-                _token = token;
-                _tokenParameters = tokenParameters;
+                Token = token;
+                TokenParameters = tokenParameters;
                 _allowedReferenceStyle = allowedReferenceStyle;
             }
 
-            public SecurityToken Token
-            {
-                get { return _token; }
-            }
+            public SecurityToken Token { get; }
 
-            public SecurityTokenParameters TokenParameters
-            {
-                get { return _tokenParameters; }
-            }
+            public SecurityTokenParameters TokenParameters { get; }
 
             public SecurityTokenReferenceStyle AllowedReferenceStyle
             {

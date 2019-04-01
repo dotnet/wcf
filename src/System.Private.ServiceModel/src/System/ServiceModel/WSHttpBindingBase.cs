@@ -95,7 +95,10 @@ namespace System.ServiceModel
             set
             {
                 if (value == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
                 value.CopyTo(_textEncoding.ReaderQuotas);
             }
         }
@@ -107,7 +110,7 @@ namespace System.ServiceModel
             get { return EnvelopeVersion.Soap12; }
         }
 
-        public System.Text.Encoding TextEncoding
+        public Text.Encoding TextEncoding
         {
             get { return _textEncoding.WriteEncoding; }
             set

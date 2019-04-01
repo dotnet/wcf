@@ -32,7 +32,7 @@ namespace System.ServiceModel.Security
 
         private SessionSymmetricTransportSecurityProtocolFactory Factory
         {
-            get { return (SessionSymmetricTransportSecurityProtocolFactory)this.SecurityProtocolFactory; }
+            get { return (SessionSymmetricTransportSecurityProtocolFactory)SecurityProtocolFactory; }
         }
 
         private object ThisLock { get; } = new object();
@@ -106,13 +106,13 @@ namespace System.ServiceModel.Security
                     sourceToken = null;
                 }
             }
-            tokenParameters = this.Factory.GetTokenParameters();
+            tokenParameters = Factory.GetTokenParameters();
         }
 
         internal void SetupDelayedSecurityExecution(string actor, ref Message message, SecurityToken signingToken, SecurityToken sourceToken, SecurityTokenParameters tokenParameters,
             IList<SupportingTokenSpecification> supportingTokens)
         {
-            SendSecurityHeader securityHeader = CreateSendSecurityHeaderForTransportProtocol(message, actor, this.Factory);
+            SendSecurityHeader securityHeader = CreateSendSecurityHeaderForTransportProtocol(message, actor, Factory);
             securityHeader.RequireMessageProtection = false;
             if (sourceToken != null)
             {
@@ -129,9 +129,9 @@ namespace System.ServiceModel.Security
             SecurityToken signingToken;
             SecurityToken sourceToken;
             SecurityTokenParameters tokenParameters;
-            this.GetTokensForOutgoingMessages(out signingToken, out sourceToken, out tokenParameters);
+            GetTokensForOutgoingMessages(out signingToken, out sourceToken, out tokenParameters);
             IList<SupportingTokenSpecification> supportingTokens;
-            supportingTokens = await this.TryGetSupportingTokensAsync(this.SecurityProtocolFactory, this.Target, this.Via, message, timeout);
+            supportingTokens = await TryGetSupportingTokensAsync(SecurityProtocolFactory, Target, Via, message, timeout);
             SetupDelayedSecurityExecution(actor, ref message, signingToken, sourceToken, tokenParameters, supportingTokens);
             return message;
         }

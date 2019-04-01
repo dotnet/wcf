@@ -6,31 +6,31 @@ namespace System.ServiceModel.Security
 {
     internal struct ReceiveSecurityHeaderEntry
     {
-        internal ReceiveSecurityHeaderElementCategory elementCategory;
-        internal object element;
-        internal ReceiveSecurityHeaderBindingModes bindingMode;
-        internal string id;
-        internal string encryptedFormId;
-        internal bool encrypted;
-        internal byte[] decryptedBuffer;
-        internal TokenTracker supportingTokenTracker;
+        internal ReceiveSecurityHeaderElementCategory _elementCategory;
+        internal object _element;
+        internal ReceiveSecurityHeaderBindingModes _bindingMode;
+        internal string _id;
+        internal string _encryptedFormId;
+        internal bool _encrypted;
+        internal byte[] _decryptedBuffer;
+        internal TokenTracker _supportingTokenTracker;
 
         public void PreserveIdBeforeDecryption()
         {
-            this.encryptedFormId = this.id;
+            _encryptedFormId = _id;
         }
 
         public void SetElement(
             ReceiveSecurityHeaderElementCategory elementCategory, object element,
             ReceiveSecurityHeaderBindingModes bindingMode, string id, bool encrypted, byte[] decryptedBuffer, TokenTracker supportingTokenTracker)
         {
-            this.elementCategory = elementCategory;
-            this.element = element;
-            this.bindingMode = bindingMode;
-            this.encrypted = encrypted;
-            this.decryptedBuffer = decryptedBuffer;
-            this.supportingTokenTracker = supportingTokenTracker;
-            this.id = id;
+            _elementCategory = elementCategory;
+            _element = element;
+            _bindingMode = bindingMode;
+            _encrypted = encrypted;
+            _decryptedBuffer = decryptedBuffer;
+            _supportingTokenTracker = supportingTokenTracker;
+            _id = id;
         }
     }
 }

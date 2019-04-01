@@ -55,7 +55,9 @@ namespace System.IdentityModel.Claims
         public override bool ContainsClaim(Claim claim)
         {
             if (claim == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claim");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claim));
+            }
 
             for (int i = 0; i < _claims.Count; ++i)
             {
@@ -91,13 +93,8 @@ namespace System.IdentityModel.Claims
 
         protected void Initialize(ClaimSet issuer, IList<Claim> claims)
         {
-            if (issuer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("issuer");
-            if (claims == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claims");
-
-            _issuer = issuer;
-            _claims = claims;
+            _issuer = issuer ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(issuer));
+            _claims = claims ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claims));
         }
 
         public override string ToString()

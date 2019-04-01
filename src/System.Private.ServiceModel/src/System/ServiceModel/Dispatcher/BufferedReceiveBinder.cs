@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.Collections.Generic;
-using System.ServiceModel.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.Threading;
@@ -264,7 +261,7 @@ namespace System.ServiceModel.Dispatcher
         {
             public RequestContextWrapper(RequestContext requestContext)
             {
-                this.RequestContext = requestContext;
+                RequestContext = requestContext;
             }
 
             public RequestContext RequestContext

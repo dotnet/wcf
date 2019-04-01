@@ -64,7 +64,7 @@ namespace System.ServiceModel.Channels
                 int valueInt = (int)value;
                 if (valueInt < 100 || valueInt > 599)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.Format(SR.ValueMustBeInRange, 100, 599)));
                 }
 
@@ -232,7 +232,7 @@ namespace System.ServiceModel.Channels
             public TraditionalHttpResponseMessageProperty()
             {
                 _statusCode = DefaultStatusCode;
-                this.StatusDescription = DefaultStatusDescription;
+                StatusDescription = DefaultStatusDescription;
             }
 
             private WebHeaderCollection _headers;
@@ -274,7 +274,7 @@ namespace System.ServiceModel.Channels
                 set
                 {
                     _statusCode = value;
-                    this.HasStatusCodeBeenSet = true;
+                    HasStatusCodeBeenSet = true;
                 }
             }
 
@@ -293,7 +293,7 @@ namespace System.ServiceModel.Channels
             {
                 Contract.Assert(httpResponseMessage != null, "The 'httpResponseMessage' property should never be null.");
 
-                this.HttpResponseMessage = httpResponseMessage;
+                HttpResponseMessage = httpResponseMessage;
             }
 
             public HttpResponseMessage HttpResponseMessage { get; private set; }
@@ -306,7 +306,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (_headers == null)
                     {
-                        _headers = this.HttpResponseMessage.ToWebHeaderCollection();
+                        _headers = HttpResponseMessage.ToWebHeaderCollection();
                     }
 
                     return _headers;
@@ -317,12 +317,12 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    return this.HttpResponseMessage.StatusCode;
+                    return HttpResponseMessage.StatusCode;
                 }
 
                 set
                 {
-                    this.HttpResponseMessage.StatusCode = value;
+                    HttpResponseMessage.StatusCode = value;
                 }
             }
 
@@ -330,12 +330,12 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    return this.HttpResponseMessage.ReasonPhrase;
+                    return HttpResponseMessage.ReasonPhrase;
                 }
 
                 set
                 {
-                    this.HttpResponseMessage.ReasonPhrase = value;
+                    HttpResponseMessage.ReasonPhrase = value;
                 }
             }
 
@@ -343,7 +343,7 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    HttpContent content = this.HttpResponseMessage.Content;
+                    HttpContent content = HttpResponseMessage.Content;
                     if (content != null)
                     {
                         long? contentLength = content.Headers.ContentLength;
@@ -360,7 +360,7 @@ namespace System.ServiceModel.Channels
 
                 set
                 {
-                    HttpContent content = this.HttpResponseMessage.Content;
+                    HttpContent content = HttpResponseMessage.Content;
                     if (value && content != null &&
                         (!content.Headers.ContentLength.HasValue ||
                         content.Headers.ContentLength.Value > 0))
@@ -371,12 +371,12 @@ namespace System.ServiceModel.Channels
                             newContent.Headers.AddHeaderWithoutValidation(header);
                         }
 
-                        this.HttpResponseMessage.Content = newContent;
+                        HttpResponseMessage.Content = newContent;
                         content.Dispose();
                     }
                     else if (!value && content == null)
                     {
-                        this.HttpResponseMessage.Content = new ByteArrayContent(Array.Empty<byte>());
+                        HttpResponseMessage.Content = new ByteArrayContent(Array.Empty<byte>());
                     }
                 }
             }
@@ -385,18 +385,18 @@ namespace System.ServiceModel.Channels
             {
                 HttpResponseMessageProperty copiedProperty = new HttpResponseMessageProperty();
 
-                foreach (var headerKey in this.Headers.AllKeys)
+                foreach (var headerKey in Headers.AllKeys)
                 {
-                    copiedProperty.Headers[headerKey] = this.Headers[headerKey];
+                    copiedProperty.Headers[headerKey] = Headers[headerKey];
                 }
 
-                if (this.StatusCode != TraditionalHttpResponseMessageProperty.DefaultStatusCode)
+                if (StatusCode != TraditionalHttpResponseMessageProperty.DefaultStatusCode)
                 {
-                    copiedProperty.StatusCode = this.StatusCode;
+                    copiedProperty.StatusCode = StatusCode;
                 }
 
-                copiedProperty.StatusDescription = this.StatusDescription;
-                copiedProperty.SuppressEntityBody = this.SuppressEntityBody;
+                copiedProperty.StatusDescription = StatusDescription;
+                copiedProperty.SuppressEntityBody = SuppressEntityBody;
 
                 return copiedProperty;
             }
@@ -405,16 +405,16 @@ namespace System.ServiceModel.Channels
             {
                 if (propertyToMerge.HasStatusCodeBeenSet)
                 {
-                    this.StatusCode = propertyToMerge.StatusCode;
+                    StatusCode = propertyToMerge.StatusCode;
                 }
 
                 if (propertyToMerge.StatusDescription != TraditionalHttpResponseMessageProperty.DefaultStatusDescription)
                 {
-                    this.StatusDescription = propertyToMerge.StatusDescription;
+                    StatusDescription = propertyToMerge.StatusDescription;
                 }
 
-                this.SuppressEntityBody = propertyToMerge.SuppressEntityBody;
-                this.HttpResponseMessage.MergeWebHeaderCollection(propertyToMerge.Headers);
+                SuppressEntityBody = propertyToMerge.SuppressEntityBody;
+                HttpResponseMessage.MergeWebHeaderCollection(propertyToMerge.Headers);
             }
         }
     }

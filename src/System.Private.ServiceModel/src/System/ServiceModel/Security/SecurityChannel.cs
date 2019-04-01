@@ -30,7 +30,7 @@ namespace System.ServiceModel.Security
         {
             if (typeof(T) == typeof(FaultConverter))
             {
-                return new SecurityChannelFaultConverter(this.InnerChannel) as T;
+                return new SecurityChannelFaultConverter(InnerChannel) as T;
             }
 
             return base.GetProperty<T>();
@@ -44,11 +44,7 @@ namespace System.ServiceModel.Security
             }
             protected set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-                _securityProtocol = value;
+                _securityProtocol = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 

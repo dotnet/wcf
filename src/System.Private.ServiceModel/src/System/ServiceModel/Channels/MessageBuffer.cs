@@ -23,7 +23,10 @@ namespace System.ServiceModel.Channels
         public virtual void WriteMessage(Stream stream)
         {
             if (stream == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("stream"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(stream)));
+            }
+
             Message message = CreateMessage();
             using (message)
             {
@@ -69,7 +72,9 @@ namespace System.ServiceModel.Channels
             ((ICollection<KeyValuePair<string, object>>)message.Properties).CopyTo(_properties, 0);
             _understoodHeaders = new bool[message.Headers.Count];
             for (int i = 0; i < _understoodHeaders.Length; ++i)
+            {
                 _understoodHeaders[i] = message.Headers.IsUnderstood(i);
+            }
 
             if (_version == MessageVersion.None)
             {
@@ -93,14 +98,18 @@ namespace System.ServiceModel.Channels
             lock (ThisLock)
             {
                 if (_closed)
+                {
                     return;
+                }
 
                 _closed = true;
                 for (int i = 0; i < _properties.Length; i++)
                 {
                     IDisposable disposable = _properties[i].Value as IDisposable;
                     if (disposable != null)
+                    {
                         disposable.Dispose();
+                    }
                 }
             }
         }
@@ -108,7 +117,9 @@ namespace System.ServiceModel.Channels
         public override Message CreateMessage()
         {
             if (_closed)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBufferDisposedException());
+            }
 
             Message msg;
             if (_isNullMessage)
@@ -128,7 +139,9 @@ namespace System.ServiceModel.Channels
             for (int i = 0; i < _understoodHeaders.Length; ++i)
             {
                 if (_understoodHeaders[i])
+                {
                     msg.Headers.AddUnderstood(i);
+                }
             }
 
             if (_to != null)
@@ -150,7 +163,6 @@ namespace System.ServiceModel.Channels
         private IBufferedMessageData _messageData;
         private KeyValuePair<string, object>[] _properties;
         private bool _closed;
-        private object _thisLock = new object();
         private bool[] _understoodHeaders;
         private bool _understoodHeadersModified;
 
@@ -171,7 +183,10 @@ namespace System.ServiceModel.Channels
                 lock (ThisLock)
                 {
                     if (_closed)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBufferDisposedException());
+                    }
+
                     return _messageData.Buffer.Count;
                 }
             }
@@ -180,11 +195,17 @@ namespace System.ServiceModel.Channels
         public override void WriteMessage(Stream stream)
         {
             if (stream == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("stream"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(stream)));
+            }
+
             lock (ThisLock)
             {
                 if (_closed)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBufferDisposedException());
+                }
+
                 ArraySegment<byte> buffer = _messageData.Buffer;
                 stream.Write(buffer.Array, buffer.Offset, buffer.Count);
             }
@@ -197,16 +218,16 @@ namespace System.ServiceModel.Channels
                 lock (ThisLock)
                 {
                     if (_closed)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBufferDisposedException());
+                    }
+
                     return _messageData.MessageEncoder.ContentType;
                 }
             }
         }
 
-        private object ThisLock
-        {
-            get { return _thisLock; }
-        }
+        private object ThisLock { get; } = new object();
 
         public override void Close()
         {
@@ -226,10 +247,16 @@ namespace System.ServiceModel.Channels
             lock (ThisLock)
             {
                 if (_closed)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBufferDisposedException());
+                }
+
                 RecycledMessageState recycledMessageState = _messageData.TakeMessageState();
                 if (recycledMessageState == null)
+                {
                     recycledMessageState = new RecycledMessageState();
+                }
+
                 BufferedMessage bufferedMessage = new BufferedMessage(_messageData, recycledMessageState, _understoodHeaders, _understoodHeadersModified);
                 bufferedMessage.Properties.CopyProperties(_properties);
                 _messageData.Open();
@@ -240,18 +267,14 @@ namespace System.ServiceModel.Channels
 
     internal class BodyWriterMessageBuffer : MessageBuffer
     {
-        private BodyWriter _bodyWriter;
-        private KeyValuePair<string, object>[] _properties;
-        private MessageHeaders _headers;
-        private bool _closed;
         private object _thisLock = new object();
 
         public BodyWriterMessageBuffer(MessageHeaders headers,
             KeyValuePair<string, object>[] properties, BodyWriter bodyWriter)
         {
-            _bodyWriter = bodyWriter;
-            _headers = new MessageHeaders(headers);
-            _properties = properties;
+            BodyWriter = bodyWriter;
+            Headers = new MessageHeaders(headers);
+            Properties = properties;
         }
 
         protected object ThisLock
@@ -268,12 +291,12 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (!_closed)
+                if (!Closed)
                 {
-                    _closed = true;
-                    _bodyWriter = null;
-                    _headers = null;
-                    _properties = null;
+                    Closed = true;
+                    BodyWriter = null;
+                    Headers = null;
+                    Properties = null;
                 }
             }
         }
@@ -282,30 +305,21 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (_closed)
+                if (Closed)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBufferDisposedException());
-                return new BodyWriterMessage(_headers, _properties, _bodyWriter);
+                }
+
+                return new BodyWriterMessage(Headers, Properties, BodyWriter);
             }
         }
 
-        protected BodyWriter BodyWriter
-        {
-            get { return _bodyWriter; }
-        }
+        protected BodyWriter BodyWriter { get; private set; }
 
-        protected MessageHeaders Headers
-        {
-            get { return _headers; }
-        }
+        protected MessageHeaders Headers { get; private set; }
 
-        protected KeyValuePair<string, object>[] Properties
-        {
-            get { return _properties; }
-        }
+        protected KeyValuePair<string, object>[] Properties { get; private set; }
 
-        protected bool Closed
-        {
-            get { return _closed; }
-        }
+        protected bool Closed { get; private set; }
     }
 }

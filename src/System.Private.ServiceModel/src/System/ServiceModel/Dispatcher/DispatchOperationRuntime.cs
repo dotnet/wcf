@@ -3,133 +3,84 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime;
-using System.Security.Principal;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
 {
     internal class DispatchOperationRuntime
     {
         private static AsyncCallback s_invokeCallback = Fx.ThunkCallback(DispatchOperationRuntime.InvokeCallback);
-        private readonly string _action;
-        private IDispatchFaultFormatter _faultFormatter;
-        private readonly IDispatchMessageFormatter _formatter;
-        private IParameterInspector[] _inspectors;
-        private readonly IOperationInvoker _invoker;
-        private readonly bool _isTerminating;
         private readonly bool _isSessionOpenNotificationEnabled;
-        private readonly string _name;
-        private readonly ImmutableDispatchRuntime _parent;
-        private readonly string _replyAction;
         private readonly bool _deserializeRequest;
         private readonly bool _serializeReply;
-        private readonly bool _isOneWay;
         private readonly bool _disposeParameters;
 
         internal DispatchOperationRuntime(DispatchOperation operation, ImmutableDispatchRuntime parent)
         {
             if (operation == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("operation");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(operation));
             }
-            if (parent == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
-            }
+
             if (operation.Invoker == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.RuntimeRequiresInvoker0));
             }
 
             _disposeParameters = ((operation.AutoDisposeParameters) && (!operation.HasNoDisposableParameters));
-            _parent = parent;
-            _inspectors = EmptyArray<IParameterInspector>.ToArray(operation.ParameterInspectors);
-            _faultFormatter = operation.FaultFormatter;
+            Parent = parent ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
+            ParameterInspectors = EmptyArray<IParameterInspector>.ToArray(operation.ParameterInspectors);
+            FaultFormatter = operation.FaultFormatter;
             _deserializeRequest = operation.DeserializeRequest;
             _serializeReply = operation.SerializeReply;
-            _formatter = operation.Formatter;
-            _invoker = operation.Invoker;
-            _isTerminating = operation.IsTerminating;
+            Formatter = operation.Formatter;
+            Invoker = operation.Invoker;
+            IsTerminating = operation.IsTerminating;
             _isSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
-            _action = operation.Action;
-            _name = operation.Name;
-            _replyAction = operation.ReplyAction;
-            _isOneWay = operation.IsOneWay;
+            Action = operation.Action;
+            Name = operation.Name;
+            ReplyAction = operation.ReplyAction;
+            IsOneWay = operation.IsOneWay;
 
-            if (_formatter == null && (_deserializeRequest || _serializeReply))
+            if (Formatter == null && (_deserializeRequest || _serializeReply))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.DispatchRuntimeRequiresFormatter0, _name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.DispatchRuntimeRequiresFormatter0, Name)));
             }
         }
 
-        internal string Action
-        {
-            get { return _action; }
-        }
+        internal string Action { get; }
 
         internal bool DisposeParameters
         {
             get { return _disposeParameters; }
         }
 
-        internal IDispatchFaultFormatter FaultFormatter
-        {
-            get { return _faultFormatter; }
-        }
+        internal IDispatchFaultFormatter FaultFormatter { get; }
 
-        internal IDispatchMessageFormatter Formatter
-        {
-            get { return _formatter; }
-        }
+        internal IDispatchMessageFormatter Formatter { get; }
 
-        internal IOperationInvoker Invoker
-        {
-            get { return _invoker; }
-        }
+        internal IOperationInvoker Invoker { get; }
 
-        internal bool IsOneWay
-        {
-            get { return _isOneWay; }
-        }
+        internal bool IsOneWay { get; }
 
-        internal bool IsTerminating
-        {
-            get { return _isTerminating; }
-        }
+        internal bool IsTerminating { get; }
 
-        internal string Name
-        {
-            get { return _name; }
-        }
+        internal string Name { get; }
 
-        internal IParameterInspector[] ParameterInspectors
-        {
-            get { return _inspectors; }
-        }
+        internal IParameterInspector[] ParameterInspectors { get; }
 
-        internal ImmutableDispatchRuntime Parent
-        {
-            get { return _parent; }
-        }
+        internal ImmutableDispatchRuntime Parent { get; }
 
-        internal string ReplyAction
-        {
-            get { return _replyAction; }
-        }
+        internal string ReplyAction { get; }
 
         private void DeserializeInputs(ref MessageRpc rpc)
         {
             bool success = false;
             try
             {
-                rpc.InputParameters = this.Invoker.AllocateInputs();
+                rpc.InputParameters = Invoker.AllocateInputs();
                 // If the field is true, then this operation is to be invoked at the time the service 
                 // channel is opened. The incoming message is created at ChannelHandler level with no 
                 // content, so we don't need to deserialize the message.
@@ -142,7 +93,7 @@ namespace System.ServiceModel.Dispatcher
                             WcfEventSource.Instance.DispatchFormatterDeserializeRequestStart(rpc.EventTraceActivity);
                         }
 
-                        this.Formatter.DeserializeRequest(rpc.Request, rpc.InputParameters);
+                        Formatter.DeserializeRequest(rpc.Request, rpc.InputParameters);
 
                         if (WcfEventSource.Instance.DispatchFormatterDeserializeRequestStopIsEnabled())
                         {
@@ -170,7 +121,7 @@ namespace System.ServiceModel.Dispatcher
 
         private void InspectInputs(ref MessageRpc rpc)
         {
-            if (this.ParameterInspectors.Length > 0)
+            if (ParameterInspectors.Length > 0)
             {
                 InspectInputsCore(ref rpc);
             }
@@ -178,20 +129,20 @@ namespace System.ServiceModel.Dispatcher
 
         private void InspectInputsCore(ref MessageRpc rpc)
         {
-            for (int i = 0; i < this.ParameterInspectors.Length; i++)
+            for (int i = 0; i < ParameterInspectors.Length; i++)
             {
-                IParameterInspector inspector = this.ParameterInspectors[i];
-                rpc.Correlation[i] = inspector.BeforeCall(this.Name, rpc.InputParameters);
+                IParameterInspector inspector = ParameterInspectors[i];
+                rpc.Correlation[i] = inspector.BeforeCall(Name, rpc.InputParameters);
                 if (WcfEventSource.Instance.ParameterInspectorBeforeCallInvokedIsEnabled())
                 {
-                    WcfEventSource.Instance.ParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, this.ParameterInspectors[i].GetType().FullName);
+                    WcfEventSource.Instance.ParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, ParameterInspectors[i].GetType().FullName);
                 }
             }
         }
 
         private void InspectOutputs(ref MessageRpc rpc)
         {
-            if (this.ParameterInspectors.Length > 0)
+            if (ParameterInspectors.Length > 0)
             {
                 InspectOutputsCore(ref rpc);
             }
@@ -199,13 +150,13 @@ namespace System.ServiceModel.Dispatcher
 
         private void InspectOutputsCore(ref MessageRpc rpc)
         {
-            for (int i = this.ParameterInspectors.Length - 1; i >= 0; i--)
+            for (int i = ParameterInspectors.Length - 1; i >= 0; i--)
             {
-                IParameterInspector inspector = this.ParameterInspectors[i];
-                inspector.AfterCall(this.Name, rpc.OutputParameters, rpc.ReturnParameter, rpc.Correlation[i]);
+                IParameterInspector inspector = ParameterInspectors[i];
+                inspector.AfterCall(Name, rpc.OutputParameters, rpc.ReturnParameter, rpc.Correlation[i]);
                 if (WcfEventSource.Instance.ParameterInspectorAfterCallInvokedIsEnabled())
                 {
-                    WcfEventSource.Instance.ParameterInspectorAfterCallInvoked(rpc.EventTraceActivity, this.ParameterInspectors[i].GetType().FullName);
+                    WcfEventSource.Instance.ParameterInspectorAfterCallInvoked(rpc.EventTraceActivity, ParameterInspectors[i].GetType().FullName);
                 }
             }
         }
@@ -215,8 +166,8 @@ namespace System.ServiceModel.Dispatcher
             if (rpc.Error == null)
             {
                 object target = rpc.Instance;
-                this.DeserializeInputs(ref rpc);
-                this.InspectInputs(ref rpc);
+                DeserializeInputs(ref rpc);
+                InspectInputs(ref rpc);
 
                 ValidateMustUnderstand(ref rpc);
 
@@ -275,17 +226,17 @@ namespace System.ServiceModel.Dispatcher
         {
             if ((rpc.Error == null))
             {
-                rpc.ReturnParameter = this.Invoker.InvokeEnd(rpc.Instance, out rpc.OutputParameters, rpc.AsyncResult);
+                rpc.ReturnParameter = Invoker.InvokeEnd(rpc.Instance, out rpc.OutputParameters, rpc.AsyncResult);
 
-                this.InspectOutputs(ref rpc);
+                InspectOutputs(ref rpc);
 
-                this.SerializeOutputs(ref rpc);
+                SerializeOutputs(ref rpc);
             }
         }
 
         private void SerializeOutputs(ref MessageRpc rpc)
         {
-            if (!this.IsOneWay && _parent.EnableFaults)
+            if (!IsOneWay && Parent.EnableFaults)
             {
                 Message reply;
                 if (_serializeReply)
@@ -295,7 +246,7 @@ namespace System.ServiceModel.Dispatcher
                         WcfEventSource.Instance.DispatchFormatterSerializeReplyStart(rpc.EventTraceActivity);
                     }
 
-                    reply = this.Formatter.SerializeReply(rpc.RequestVersion, rpc.OutputParameters, rpc.ReturnParameter);
+                    reply = Formatter.SerializeReply(rpc.RequestVersion, rpc.OutputParameters, rpc.ReturnParameter);
 
                     if (WcfEventSource.Instance.DispatchFormatterSerializeReplyStopIsEnabled())
                     {
@@ -304,7 +255,7 @@ namespace System.ServiceModel.Dispatcher
 
                     if (reply == null)
                     {
-                        string message = SR.Format(SR.SFxNullReplyFromFormatter2, this.Formatter.GetType().ToString(), (_name ?? ""));
+                        string message = SR.Format(SR.SFxNullReplyFromFormatter2, Formatter.GetType().ToString(), (Name ?? ""));
                         ErrorBehavior.ThrowAndCatch(new InvalidOperationException(message));
                     }
                 }
@@ -312,15 +263,15 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if ((rpc.ReturnParameter == null) && (rpc.OperationContext.RequestContext != null))
                     {
-                        string message = SR.Format(SR.SFxDispatchRuntimeMessageCannotBeNull, _name);
+                        string message = SR.Format(SR.SFxDispatchRuntimeMessageCannotBeNull, Name);
                         ErrorBehavior.ThrowAndCatch(new InvalidOperationException(message));
                     }
 
                     reply = (Message)rpc.ReturnParameter;
 
-                    if ((reply != null) && (!ProxyOperationRuntime.IsValidAction(reply, this.ReplyAction)))
+                    if ((reply != null) && (!ProxyOperationRuntime.IsValidAction(reply, ReplyAction)))
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidReplyAction, this.Name, reply.Headers.Action ?? "{NULL}", this.ReplyAction)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidReplyAction, Name, reply.Headers.Action ?? "{NULL}", ReplyAction)));
                     }
                 }
 
@@ -366,7 +317,7 @@ namespace System.ServiceModel.Dispatcher
 
         private void ValidateMustUnderstand(ref MessageRpc rpc)
         {
-            if (_parent.ValidateMustUnderstand)
+            if (Parent.ValidateMustUnderstand)
             {
                 rpc.NotUnderstoodHeaders = rpc.Request.Headers.GetHeadersNotUnderstood();
                 if (rpc.NotUnderstoodHeaders != null)

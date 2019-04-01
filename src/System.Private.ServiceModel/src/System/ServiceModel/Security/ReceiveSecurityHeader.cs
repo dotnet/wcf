@@ -52,37 +52,26 @@ namespace System.ServiceModel.Security
         private List<SecurityTokenAuthenticator> _allowedAuthenticators;
 
         private SecurityTokenAuthenticator _pendingSupportingTokenAuthenticator;
-
-        private Collection<SecurityToken> _basicTokens;
-        private Collection<SecurityToken> _signedTokens;
-        private Collection<SecurityToken> _endorsingTokens;
         private Collection<SecurityToken> _signedEndorsingTokens;
         private Dictionary<SecurityToken, ReadOnlyCollection<IAuthorizationPolicy>> _tokenPoliciesMapping;
         private SecurityTimestamp _timestamp;
         private SecurityHeaderTokenResolver _universalTokenResolver;
         private SecurityHeaderTokenResolver _primaryTokenResolver;
         private ReadOnlyCollection<SecurityTokenResolver> _outOfBandTokenResolver;
-        private SecurityTokenResolver _combinedUniversalTokenResolver;
         private SecurityTokenResolver _combinedPrimaryTokenResolver;
 
         private XmlAttributeHolder[] _securityElementAttributes;
         private OrderTracker _orderTracker = new OrderTracker();
         private OperationTracker _signatureTracker = new OperationTracker();
         private OperationTracker _encryptionTracker = new OperationTracker();
-
-        private ReceiveSecurityHeaderElementManager _elementManager;
-
         private int _maxDerivedKeys;
         private int _numDerivedKeys;
-        private int _maxDerivedKeyLength;
         private bool _enforceDerivedKeyRequirement = true;
 
         private NonceCache _nonceCache;
         private TimeSpan _replayWindow;
         private TimeSpan _clockSkew;
-        private byte[] _primarySignatureValue;
         private TimeoutHelper _timeoutHelper;
-        private SecurityVerifiedMessage _securityVerifiedMessage;
         private long _maxReceivedMessageSize = TransportDefaults.MaxReceivedMessageSize;
         private XmlDictionaryReaderQuotas _readerQuotas;
         private MessageProtectionOrder _protectionOrder;
@@ -100,32 +89,14 @@ namespace System.ServiceModel.Security
             : base(message, actor, mustUnderstand, relay, standardsManager, algorithmSuite, direction)
         {
             HeaderIndex = headerIndex;
-            _elementManager = new ReceiveSecurityHeaderElementManager(this);
+            ElementManager = new ReceiveSecurityHeaderElementManager(this);
         }
 
-        public Collection<SecurityToken> BasicSupportingTokens
-        {
-            get
-            {
-                return _basicTokens;
-            }
-        }
+        public Collection<SecurityToken> BasicSupportingTokens { get; }
 
-        public Collection<SecurityToken> SignedSupportingTokens
-        {
-            get
-            {
-                return _signedTokens;
-            }
-        }
+        public Collection<SecurityToken> SignedSupportingTokens { get; }
 
-        public Collection<SecurityToken> EndorsingSupportingTokens
-        {
-            get
-            {
-                return _endorsingTokens;
-            }
-        }
+        public Collection<SecurityToken> EndorsingSupportingTokens { get; }
 
         public Collection<SecurityToken> SignedEndorsingSupportingTokens
         {
@@ -148,10 +119,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public byte[] PrimarySignatureValue
-        {
-            get { return _primarySignatureValue; }
-        }
+        public byte[] PrimarySignatureValue { get; }
 
         public SecurityToken EncryptionToken
         {
@@ -168,13 +136,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public ReceiveSecurityHeaderElementManager ElementManager
-        {
-            get
-            {
-                return _elementManager;
-            }
-        }
+        public ReceiveSecurityHeaderElementManager ElementManager { get; }
 
         public SecurityTokenAuthenticator DerivedTokenAuthenticator
         {
@@ -229,10 +191,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public SecurityTokenResolver CombinedUniversalTokenResolver
-        {
-            get { return _combinedUniversalTokenResolver; }
-        }
+        public SecurityTokenResolver CombinedUniversalTokenResolver { get; private set; }
 
         internal int HeaderIndex { get; }
 
@@ -256,10 +215,7 @@ namespace System.ServiceModel.Security
             {
                 ThrowIfProcessingStarted();
 
-                if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-
-                _readerQuotas = value;
+                _readerQuotas = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -290,13 +246,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        internal SecurityVerifiedMessage SecurityVerifiedMessage
-        {
-            get
-            {
-                return _securityVerifiedMessage;
-            }
-        }
+        internal SecurityVerifiedMessage SecurityVerifiedMessage { get; private set; }
 
         public SecurityToken SignatureToken
         {
@@ -315,17 +265,11 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public int MaxDerivedKeyLength
-        {
-            get
-            {
-                return _maxDerivedKeyLength;
-            }
-        }
+        public int MaxDerivedKeyLength { get; private set; }
 
         internal XmlDictionaryReader CreateSecurityHeaderReader()
         {
-            return _securityVerifiedMessage.GetReaderAtSecurityHeader();
+            return SecurityVerifiedMessage.GetReaderAtSecurityHeader();
         }
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
@@ -337,7 +281,7 @@ namespace System.ServiceModel.Security
                 ReceiveSecurityHeaderEntry entry;
                 ElementManager.GetElementEntry(i, out entry);
                 XmlDictionaryReader reader = null;
-                if (entry.encrypted)
+                if (entry._encrypted)
                 {
                     reader = ElementManager.GetReader(i, false);
                     writer.WriteNode(reader, false);
@@ -387,7 +331,7 @@ namespace System.ServiceModel.Security
 
             SetProcessingStarted();
             _timeoutHelper = new TimeoutHelper(timeout);
-            Message = _securityVerifiedMessage = new SecurityVerifiedMessage(Message, this);
+            Message = SecurityVerifiedMessage = new SecurityVerifiedMessage(Message, this);
             XmlDictionaryReader reader = CreateSecurityHeaderReader();
             reader.MoveToStartElement();
             if (reader.IsEmptyElement)
@@ -435,12 +379,12 @@ namespace System.ServiceModel.Security
 
             if (_outOfBandTokenResolver == null)
             {
-                _combinedUniversalTokenResolver = _universalTokenResolver;
+                CombinedUniversalTokenResolver = _universalTokenResolver;
                 _combinedPrimaryTokenResolver = _primaryTokenResolver;
             }
             else
             {
-                _combinedUniversalTokenResolver = new AggregateSecurityHeaderTokenResolver(_universalTokenResolver, _outOfBandTokenResolver);
+                CombinedUniversalTokenResolver = new AggregateSecurityHeaderTokenResolver(_universalTokenResolver, _outOfBandTokenResolver);
                 _combinedPrimaryTokenResolver = new AggregateSecurityHeaderTokenResolver(_primaryTokenResolver, _outOfBandTokenResolver);
             }
 
@@ -497,7 +441,7 @@ namespace System.ServiceModel.Security
                 // we expect key derivation. Compute quotas for derived keys
                 int maxKeyDerivationLengthInBits = AlgorithmSuite.DefaultEncryptionKeyDerivationLength >= AlgorithmSuite.DefaultSignatureKeyDerivationLength ?
                     AlgorithmSuite.DefaultEncryptionKeyDerivationLength : AlgorithmSuite.DefaultSignatureKeyDerivationLength;
-                _maxDerivedKeyLength = maxKeyDerivationLengthInBits / 8;
+                MaxDerivedKeyLength = maxKeyDerivationLengthInBits / 8;
                 // the upper bound of derived keys is (1 for primary signature + 1 for encryption + supporting token signatures requiring derivation)*2
                 // the multiplication by 2 is to take care of interop scenarios that may arise that require more derived keys than the lower bound.
                 _maxDerivedKeys = (1 + 1 + numSupportingTokensRequiringDerivation) * 2;
@@ -575,7 +519,7 @@ namespace System.ServiceModel.Security
 
         internal void ExecuteFullPass(XmlDictionaryReader reader)
         {
-            bool primarySignatureFound = !this.RequireMessageProtection;
+            bool primarySignatureFound = !RequireMessageProtection;
             int position = 0;
             while (reader.IsStartElement())
             {
@@ -587,7 +531,7 @@ namespace System.ServiceModel.Security
                 {
                     throw ExceptionHelper.PlatformNotSupported();
                 }
-                else if (this.StandardsManager.WSUtilitySpecificationVersion.IsReaderAtTimestamp(reader))
+                else if (StandardsManager.WSUtilitySpecificationVersion.IsReaderAtTimestamp(reader))
                 {
                     ReadTimestamp(reader);
                 }
@@ -599,7 +543,7 @@ namespace System.ServiceModel.Security
                 {
                     throw ExceptionHelper.PlatformNotSupported();
                 }
-                else if (this.StandardsManager.SecurityVersion.IsReaderAtSignatureConfirmation(reader))
+                else if (StandardsManager.SecurityVersion.IsReaderAtSignatureConfirmation(reader))
                 {
                     throw ExceptionHelper.PlatformNotSupported();
                 }
@@ -631,7 +575,10 @@ namespace System.ServiceModel.Security
         {
             spec = null;
             if (_supportingTokenAuthenticators == null)
+            {
                 return null;
+            }
+
             for (int i = 0; i < _supportingTokenAuthenticators.Count; ++i)
             {
                 if (_supportingTokenAuthenticators[i].TokenAuthenticator == tokenAuthenticator)
@@ -651,16 +598,16 @@ namespace System.ServiceModel.Security
             }
             bool expectTimestampToBeSigned = RequireMessageProtection || _hasEndorsingOrSignedEndorsingSupportingTokens;
             string expectedDigestAlgorithm = expectTimestampToBeSigned ? AlgorithmSuite.DefaultDigestAlgorithm : null;
-            System.IdentityModel.SignatureResourcePool resourcePool = expectTimestampToBeSigned ? ResourcePool : null;
+            SignatureResourcePool resourcePool = expectTimestampToBeSigned ? ResourcePool : null;
             _timestamp = StandardsManager.WSUtilitySpecificationVersion.ReadTimestamp(reader, expectedDigestAlgorithm, resourcePool);
             _timestamp.ValidateRangeAndFreshness(_replayWindow, _clockSkew);
-            _elementManager.AppendTimestamp(_timestamp);
+            ElementManager.AppendTimestamp(_timestamp);
         }
 
         private bool IsPrimaryToken(SecurityToken token)
         {
             bool result = (token == _outOfBandPrimaryToken
-                || (_primaryTokenTracker != null && token == _primaryTokenTracker.token));
+                || (_primaryTokenTracker != null && token == _primaryTokenTracker.Token));
             if (!result && _outOfBandPrimaryTokenCollection != null)
             {
                 for (int i = 0; i < _outOfBandPrimaryTokenCollection.Count; ++i)
@@ -685,17 +632,17 @@ namespace System.ServiceModel.Security
             string valueType = reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null);
 
             SecurityTokenAuthenticator usedTokenAuthenticator;
-            SecurityToken token = ReadToken(reader, this.CombinedUniversalTokenResolver, _allowedAuthenticators, out usedTokenAuthenticator);
+            SecurityToken token = ReadToken(reader, CombinedUniversalTokenResolver, _allowedAuthenticators, out usedTokenAuthenticator);
             if (token == null)
             {
-                throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCouldNotReadToken, localName, namespaceUri, valueType)), this.Message);
+                throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.TokenManagerCouldNotReadToken, localName, namespaceUri, valueType)), Message);
             }
 
             DerivedKeySecurityToken derivedKeyToken = token as DerivedKeySecurityToken;
             if (derivedKeyToken != null)
             {
                 EnsureDerivedKeyLimitNotReached();
-                derivedKeyToken.InitializeDerivedKey(_maxDerivedKeyLength);
+                derivedKeyToken.InitializeDerivedKey(MaxDerivedKeyLength);
             }
 
             if (usedTokenAuthenticator == _primaryTokenAuthenticator)
@@ -719,15 +666,15 @@ namespace System.ServiceModel.Security
                 _primaryTokenTracker.RecordToken(token);
                 mode = ReceiveSecurityHeaderBindingModes.Primary;
             }
-            else if (usedTokenAuthenticator == this.DerivedTokenAuthenticator)
+            else if (usedTokenAuthenticator == DerivedTokenAuthenticator)
             {
                 if (token is DerivedKeySecurityTokenStub)
                 {
-                    if (this.Layout == SecurityHeaderLayout.Strict)
+                    if (Layout == SecurityHeaderLayout.Strict)
                     {
                         DerivedKeySecurityTokenStub tmpToken = (DerivedKeySecurityTokenStub)token;
                         throw TraceUtility.ThrowHelperError(new MessageSecurityException(
-                            SR.Format(SR.UnableToResolveKeyInfoClauseInDerivedKeyToken, tmpToken.TokenToDeriveIdentifier)), this.Message);
+                            SR.Format(SR.UnableToResolveKeyInfoClauseInDerivedKeyToken, tmpToken.TokenToDeriveIdentifier)), Message);
                     }
                 }
                 else
@@ -746,7 +693,7 @@ namespace System.ServiceModel.Security
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.Format(SR.UnknownTokenAuthenticatorUsedInTokenProcessing, usedTokenAuthenticator)));
                 }
 
-                if (supportingTokenTracker.token != null)
+                if (supportingTokenTracker.Token != null)
                 {
                     supportingTokenTracker = new TokenTracker(supportingTokenSpec);
                     _supportingTokenTrackers.Add(supportingTokenTracker);
@@ -763,19 +710,19 @@ namespace System.ServiceModel.Security
                 SecurityTokenAttachmentModeHelper.Categorize(supportingTokenSpec.SecurityTokenAttachmentMode, out isBasic, out isSignedButNotBasic, out mode);
                 if (isBasic)
                 {
-                    if (!this.ExpectBasicTokens)
+                    if (!ExpectBasicTokens)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.BasicTokenNotExpected));
                     }
 
                     // only basic tokens have to be part of the reference list. Encrypted Saml tokens dont for example
-                    if (this.RequireMessageProtection && encryptionToken != null)
+                    if (RequireMessageProtection && encryptionToken != null)
                     {
                         throw ExceptionHelper.PlatformNotSupported();
                     }
                 }
 
-                if (isSignedButNotBasic && !this.ExpectSignedTokens)
+                if (isSignedButNotBasic && !ExpectSignedTokens)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.SignedSupportingTokenNotExpected));
                 }
@@ -785,11 +732,11 @@ namespace System.ServiceModel.Security
 
             if (position == AppendPosition)
             {
-                _elementManager.AppendToken(token, mode, supportingTokenTracker);
+                ElementManager.AppendToken(token, mode, supportingTokenTracker);
             }
             else
             {
-                _elementManager.SetTokenAfterDecryption(position, token, mode, decryptedBuffer, supportingTokenTracker);
+                ElementManager.SetTokenAfterDecryption(position, token, mode, decryptedBuffer, supportingTokenTracker);
             }
         }
 
@@ -807,10 +754,10 @@ namespace System.ServiceModel.Security
 
         private SecurityToken ReadToken(XmlReader reader, SecurityTokenResolver tokenResolver, IList<SecurityTokenAuthenticator> allowedTokenAuthenticators, out SecurityTokenAuthenticator usedTokenAuthenticator)
         {
-            SecurityToken token = this.StandardsManager.SecurityTokenSerializer.ReadToken(reader, tokenResolver);
+            SecurityToken token = StandardsManager.SecurityTokenSerializer.ReadToken(reader, tokenResolver);
             if (token is DerivedKeySecurityTokenStub)
             {
-                if (this.DerivedTokenAuthenticator == null)
+                if (DerivedTokenAuthenticator == null)
                 {
                     // No Authenticator registered for DerivedKeySecurityToken
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(
@@ -819,7 +766,7 @@ namespace System.ServiceModel.Security
 
                 // This is just the stub. Nothing to Validate. Set the usedTokenAuthenticator to 
                 // DerivedKeySecurityTokenAuthenticator.
-                usedTokenAuthenticator = this.DerivedTokenAuthenticator;
+                usedTokenAuthenticator = DerivedTokenAuthenticator;
                 return token;
             }
 
@@ -969,20 +916,11 @@ namespace System.ServiceModel.Security
 
         private struct OperationTracker
         {
-            private MessagePartSpecification _parts;
-            private SecurityToken _token;
             private bool _isDerivedToken;
 
-            public MessagePartSpecification Parts
-            {
-                get { return _parts; }
-                set { _parts = value; }
-            }
+            public MessagePartSpecification Parts { get; set; }
 
-            public SecurityToken Token
-            {
-                get { return _token; }
-            }
+            public SecurityToken Token { get; private set; }
 
             public bool IsDerivedToken
             {
@@ -991,11 +929,11 @@ namespace System.ServiceModel.Security
 
             public void RecordToken(SecurityToken token)
             {
-                if (_token == null)
+                if (Token == null)
                 {
-                    _token = token;
+                    Token = token;
                 }
-                else if (!ReferenceEquals(_token, token))
+                else if (!ReferenceEquals(Token, token))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.MismatchInSecurityOperationToken));
                 }
@@ -1003,10 +941,10 @@ namespace System.ServiceModel.Security
 
             public void SetDerivationSourceIfRequired()
             {
-                DerivedKeySecurityToken derivedKeyToken = _token as DerivedKeySecurityToken;
+                DerivedKeySecurityToken derivedKeyToken = Token as DerivedKeySecurityToken;
                 if (derivedKeyToken != null)
                 {
-                    _token = derivedKeyToken.TokenToDerive;
+                    Token = derivedKeyToken.TokenToDerive;
                     _isDerivedToken = true;
                 }
             }
@@ -1015,14 +953,15 @@ namespace System.ServiceModel.Security
 
     internal class TokenTracker
     {
-        public SecurityToken token;
-        public bool IsDerivedFrom;
-        public bool IsSigned;
-        public bool IsEncrypted;
-        public bool IsEndorsing;
-        public bool AlreadyReadEndorsingSignature;
         private bool _allowFirstTokenMismatch;
         public SupportingTokenAuthenticatorSpecification spec;
+
+        public SecurityToken Token { get; set; }
+        public bool IsDerivedFrom { get; set; }
+        public bool IsSigned { get; set; }
+        public bool IsEncrypted { get; set; }
+        public bool IsEndorsing { get; set; }
+        public bool AlreadyReadEndorsingSignature { get; set; }
 
         public TokenTracker(SupportingTokenAuthenticatorSpecification spec)
             : this(spec, null, false)
@@ -1032,26 +971,26 @@ namespace System.ServiceModel.Security
         public TokenTracker(SupportingTokenAuthenticatorSpecification spec, SecurityToken token, bool allowFirstTokenMismatch)
         {
             this.spec = spec;
-            this.token = token;
+            Token = token;
             _allowFirstTokenMismatch = allowFirstTokenMismatch;
         }
 
         public void RecordToken(SecurityToken token)
         {
-            if (this.token == null)
+            if (Token == null)
             {
-                this.token = token;
+                Token = token;
             }
             else if (_allowFirstTokenMismatch)
             {
-                if (!AreTokensEqual(this.token, token))
+                if (!AreTokensEqual(Token, token))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.MismatchInSecurityOperationToken));
                 }
-                this.token = token;
+                Token = token;
                 _allowFirstTokenMismatch = false;
             }
-            else if (!object.ReferenceEquals(this.token, token))
+            else if (!object.ReferenceEquals(Token, token))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.MismatchInSecurityOperationToken));
             }
@@ -1074,17 +1013,14 @@ namespace System.ServiceModel.Security
         }
     }
 
-    internal class AggregateSecurityHeaderTokenResolver : System.IdentityModel.Tokens.AggregateTokenResolver
+    internal class AggregateSecurityHeaderTokenResolver : AggregateTokenResolver
     {
         private SecurityHeaderTokenResolver _tokenResolver;
 
         public AggregateSecurityHeaderTokenResolver(SecurityHeaderTokenResolver tokenResolver, ReadOnlyCollection<SecurityTokenResolver> outOfBandTokenResolvers) :
             base(outOfBandTokenResolvers)
         {
-            if (tokenResolver == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenResolver));
-
-            _tokenResolver = tokenResolver;
+            _tokenResolver = tokenResolver ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenResolver));
         }
 
         protected override bool TryResolveSecurityKeyCore(SecurityKeyIdentifierClause keyIdentifierClause, out SecurityKey key)

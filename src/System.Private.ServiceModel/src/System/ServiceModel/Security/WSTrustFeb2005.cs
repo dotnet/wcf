@@ -67,7 +67,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this.DriverDictionary.IssuedTokensHeader.Value;
+                    return DriverDictionary.IssuedTokensHeader.Value;
                 }
             }
 
@@ -75,7 +75,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this.DriverDictionary.Namespace.Value;
+                    return DriverDictionary.Namespace.Value;
                 }
             }
 
@@ -83,7 +83,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this.DriverDictionary.RequestTypeRenew.Value;
+                    return DriverDictionary.RequestTypeRenew.Value;
                 }
             }
 
@@ -91,7 +91,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this.DriverDictionary.RequestTypeClose.Value;
+                    return DriverDictionary.RequestTypeClose.Value;
                 }
             }
 
@@ -106,15 +106,15 @@ namespace System.ServiceModel.Security
                     XmlElement child = rstrXml.ChildNodes[i] as XmlElement;
                     if (child != null)
                     {
-                        if (child.LocalName == this.DriverDictionary.RequestedSecurityToken.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+                        if (child.LocalName == DriverDictionary.RequestedSecurityToken.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
                         {
                             issuedTokenXml = XmlHelper.GetChildElement(child);
                         }
-                        else if (child.LocalName == this.DriverDictionary.RequestedAttachedReference.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+                        else if (child.LocalName == DriverDictionary.RequestedAttachedReference.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
                         {
                             requestedAttachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
                         }
-                        else if (child.LocalName == this.DriverDictionary.RequestedUnattachedReference.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+                        else if (child.LocalName == DriverDictionary.RequestedUnattachedReference.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
                         {
                             requestedUnattachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
                         }
@@ -127,11 +127,11 @@ namespace System.ServiceModel.Security
                     {
                         if (requestedAttachedReference == null)
                         {
-                            this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal, out requestedAttachedReference);
+                            StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal, out requestedAttachedReference);
                         }
                         if (requestedUnattachedReference == null)
                         {
-                            this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External, out requestedUnattachedReference);
+                            StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External, out requestedUnattachedReference);
                         }
                     }
                 }
@@ -148,7 +148,7 @@ namespace System.ServiceModel.Security
                     XmlElement child = (rstrXml.ChildNodes[i] as XmlElement);
                     if (child != null)
                     {
-                        if (child.LocalName == this.DriverDictionary.RequestedTokenClosed.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+                        if (child.LocalName == DriverDictionary.RequestedTokenClosed.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
                         {
                             return true;
                         }
@@ -167,10 +167,14 @@ namespace System.ServiceModel.Security
                     XmlElement child = (rstXml.ChildNodes[i] as XmlElement);
                     if (child != null)
                     {
-                        if (child.LocalName == this.DriverDictionary.RenewTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
-                            renewTarget = this.StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
-                        else if (child.LocalName == this.DriverDictionary.CloseTarget.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
-                            closeTarget = this.StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
+                        if (child.LocalName == DriverDictionary.RenewTarget.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+                        {
+                            renewTarget = StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
+                        }
+                        else if (child.LocalName == DriverDictionary.CloseTarget.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+                        {
+                            closeTarget = StandardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(new XmlNodeReader(child.FirstChild));
+                        }
                     }
                 }
             }
@@ -179,15 +183,15 @@ namespace System.ServiceModel.Security
             {
                 if (rstr.RequestedAttachedReference != null)
                 {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RequestedAttachedReference, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedAttachedReference);
+                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedAttachedReference, DriverDictionary.Namespace);
+                    StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedAttachedReference);
                     writer.WriteEndElement();
                 }
 
                 if (rstr.RequestedUnattachedReference != null)
                 {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RequestedUnattachedReference, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedUnattachedReference);
+                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedUnattachedReference, DriverDictionary.Namespace);
+                    StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedUnattachedReference);
                     writer.WriteEndElement();
                 }
             }
@@ -196,7 +200,7 @@ namespace System.ServiceModel.Security
             {
                 if (rstr.IsRequestedTokenClosed)
                 {
-                    writer.WriteElementString(this.DriverDictionary.RequestedTokenClosed, this.DriverDictionary.Namespace, String.Empty);
+                    writer.WriteElementString(DriverDictionary.RequestedTokenClosed, DriverDictionary.Namespace, String.Empty);
                 }
             }
 
@@ -204,15 +208,15 @@ namespace System.ServiceModel.Security
             {
                 if (rst.RenewTarget != null)
                 {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.RenewTarget, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.RenewTarget);
+                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RenewTarget, DriverDictionary.Namespace);
+                    StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.RenewTarget);
                     writer.WriteEndElement();
                 }
 
                 if (rst.CloseTarget != null)
                 {
-                    writer.WriteStartElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.CloseTarget, this.DriverDictionary.Namespace);
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.CloseTarget);
+                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.CloseTarget, DriverDictionary.Namespace);
+                    StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.CloseTarget);
                     writer.WriteEndElement();
                 }
             }
@@ -221,7 +225,9 @@ namespace System.ServiceModel.Security
             public override IChannelFactory<IRequestChannel> CreateFederationProxy(EndpointAddress address, Binding binding, KeyedByTypeCollection<IEndpointBehavior> channelBehaviors)
             {
                 if (channelBehaviors == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channelBehaviors");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelBehaviors));
+                }
 
                 ChannelFactory<IWsTrustFeb2005SecurityTokenService> result = new ChannelFactory<IWsTrustFeb2005SecurityTokenService>(binding, address);
                 SetProtectionLevelForFederation(result.Endpoint.Contract.Operations);

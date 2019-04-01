@@ -2,25 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Collections.ObjectModel;
+using System.IdentityModel.Policy;
+using System.IdentityModel.Tokens;
+using System.Runtime;
+using System.Runtime.Diagnostics;
+using System.Security.Authentication.ExtendedProtection;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Diagnostics;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Security.Tokens;
+using System.Net;
+using System.Xml;
+using System.Threading.Tasks;
+
 namespace System.ServiceModel.Security
 {
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.IdentityModel.Policy;
-    using System.IdentityModel.Tokens;
-    using System.Runtime;
-    using System.Runtime.Diagnostics;
-    using System.Security.Authentication.ExtendedProtection;
-    using System.ServiceModel;
-    using System.ServiceModel.Channels;
-    using System.ServiceModel.Diagnostics;
-    using System.ServiceModel.Description;
-    using System.ServiceModel.Dispatcher;
-    using System.ServiceModel.Security.Tokens;
-    using System.Net;
-    using System.Xml;
-    using System.Threading.Tasks;
-
     internal class SecuritySessionSecurityTokenProvider : CommunicationObjectSecurityTokenProvider
     {
         private static readonly MessageOperationFormatter s_operationFormatter = new MessageOperationFormatter();
@@ -39,7 +37,6 @@ namespace System.ServiceModel.Security
         private string _sctUri;
         private Uri _privacyNoticeUri;
         private int _privacyNoticeVersion;
-        private MessageVersion _messageVersion;
         private EndpointAddress _localAddress;
         private ChannelParameterCollection _channelParameters;
         private WebHeaderCollection _webHeaderCollection;
@@ -59,7 +56,7 @@ namespace System.ServiceModel.Security
             }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _webHeaderCollection = value;
             }
         }
@@ -72,7 +69,7 @@ namespace System.ServiceModel.Security
             }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _securityAlgorithmSuite = value;
             }
         }
@@ -85,26 +82,20 @@ namespace System.ServiceModel.Security
             }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 SecurityKeyEntropyModeHelper.Validate(value);
                 _keyEntropyMode = value;
             }
         }
 
-        private MessageVersion MessageVersion
-        {
-            get
-            {
-                return _messageVersion;
-            }
-        }
+        private MessageVersion MessageVersion { get; set; }
 
         public EndpointAddress TargetAddress
         {
             get { return _targetAddress; }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _targetAddress = value;
             }
         }
@@ -114,7 +105,7 @@ namespace System.ServiceModel.Security
             get { return _localAddress; }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _localAddress = value;
             }
         }
@@ -124,7 +115,7 @@ namespace System.ServiceModel.Security
             get { return _via; }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _via = value;
             }
         }
@@ -137,10 +128,10 @@ namespace System.ServiceModel.Security
             }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
                 _issuerBindingContext = value.Clone();
             }
@@ -151,10 +142,10 @@ namespace System.ServiceModel.Security
             get { return _bootstrapSecurityBindingElement; }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
                 _bootstrapSecurityBindingElement = (SecurityBindingElement)value.Clone();
             }
@@ -168,7 +159,7 @@ namespace System.ServiceModel.Security
             }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 if (value == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
@@ -193,7 +184,7 @@ namespace System.ServiceModel.Security
             }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _issuedTokenParameters = value;
             }
         }
@@ -203,7 +194,7 @@ namespace System.ServiceModel.Security
             get { return _privacyNoticeUri; }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _privacyNoticeUri = value;
             }
         }
@@ -213,7 +204,7 @@ namespace System.ServiceModel.Security
             get { return _channelParameters; }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _channelParameters = value;
             }
         }
@@ -223,7 +214,7 @@ namespace System.ServiceModel.Security
             get { return _privacyNoticeVersion; }
             set
             {
-                this.CommunicationObject.ThrowIfDisposedOrImmutable();
+                CommunicationObject.ThrowIfDisposedOrImmutable();
                 _privacyNoticeVersion = value;
             }
         }
@@ -292,39 +283,39 @@ namespace System.ServiceModel.Security
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             if (_targetAddress == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.TargetAddressIsNotSet, this.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.TargetAddressIsNotSet, GetType())));
             }
-            if (this.IssuerBindingContext == null)
+            if (IssuerBindingContext == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuerBuildContextNotSet, this.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuerBuildContextNotSet, GetType())));
             }
-            if (this.IssuedSecurityTokenParameters == null)
+            if (IssuedSecurityTokenParameters == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuedSecurityTokenParametersNotSet, this.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuedSecurityTokenParametersNotSet, GetType())));
             }
-            if (this.BootstrapSecurityBindingElement == null)
+            if (BootstrapSecurityBindingElement == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BootstrapSecurityBindingElementNotSet, this.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BootstrapSecurityBindingElementNotSet, GetType())));
             }
-            if (this.SecurityAlgorithmSuite == null)
+            if (SecurityAlgorithmSuite == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecurityAlgorithmSuiteNotSet, this.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SecurityAlgorithmSuiteNotSet, GetType())));
             }
             InitializeFactories();
             await _rstChannelFactory.OpenHelperAsync(timeoutHelper.RemainingTime());
-            _sctUri = this.StandardsManager.SecureConversationDriver.TokenTypeUri;
+            _sctUri = StandardsManager.SecureConversationDriver.TokenTypeUri;
         }
 
         public override void OnOpening()
         {
             base.OnOpening();
-            if (this.IssuerBindingContext == null)
+            if (IssuerBindingContext == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuerBuildContextNotSet, this.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.IssuerBuildContextNotSet, GetType())));
             }
-            if (this.BootstrapSecurityBindingElement == null)
+            if (BootstrapSecurityBindingElement == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BootstrapSecurityBindingElementNotSet, this.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BootstrapSecurityBindingElementNotSet, GetType())));
             }
         }
 
@@ -345,14 +336,14 @@ namespace System.ServiceModel.Security
 
         private void InitializeFactories()
         {
-            ISecurityCapabilities securityCapabilities = this.BootstrapSecurityBindingElement.GetProperty<ISecurityCapabilities>(this.IssuerBindingContext);
-            SecurityCredentialsManager securityCredentials = this.IssuerBindingContext.BindingParameters.Find<SecurityCredentialsManager>();
+            ISecurityCapabilities securityCapabilities = BootstrapSecurityBindingElement.GetProperty<ISecurityCapabilities>(IssuerBindingContext);
+            SecurityCredentialsManager securityCredentials = IssuerBindingContext.BindingParameters.Find<SecurityCredentialsManager>();
             if (securityCredentials == null)
             {
                 securityCredentials = ClientCredentials.CreateDefaultCredentials();
             }
 
-            BindingContext context = this.IssuerBindingContext;
+            BindingContext context = IssuerBindingContext;
             _bootstrapSecurityBindingElement.ReaderQuotas = context.GetInnerProperty<XmlDictionaryReaderQuotas>();
             if (_bootstrapSecurityBindingElement.ReaderQuotas == null)
             {
@@ -365,11 +356,11 @@ namespace System.ServiceModel.Security
                 _bootstrapSecurityBindingElement.MaxReceivedMessageSize = transportBindingElement.MaxReceivedMessageSize;
             }
 
-            SecurityProtocolFactory securityProtocolFactory = this.BootstrapSecurityBindingElement.CreateSecurityProtocolFactory<IRequestChannel>(this.IssuerBindingContext.Clone(), securityCredentials, false, this.IssuerBindingContext.Clone());
+            SecurityProtocolFactory securityProtocolFactory = BootstrapSecurityBindingElement.CreateSecurityProtocolFactory<IRequestChannel>(IssuerBindingContext.Clone(), securityCredentials, false, IssuerBindingContext.Clone());
 
             if (_localAddress != null)
             {
-                MessageFilter issueAndRenewFilter = new SessionActionFilter(_standardsManager, this.IssueResponseAction.Value, this.RenewResponseAction.Value);
+                MessageFilter issueAndRenewFilter = new SessionActionFilter(_standardsManager, IssueResponseAction.Value, RenewResponseAction.Value);
                 context.BindingParameters.Add(new LocalAddressProvider(_localAddress, issueAndRenewFilter));
             }
 
@@ -402,7 +393,7 @@ namespace System.ServiceModel.Security
             }
 
             SecurityChannelFactory<IAsyncRequestChannel> securityChannelFactory = new SecurityChannelFactory<IAsyncRequestChannel>(
-                securityCapabilities, this.IssuerBindingContext, channelBuilder, securityProtocolFactory, innerChannelFactory);
+                securityCapabilities, IssuerBindingContext, channelBuilder, securityProtocolFactory, innerChannelFactory);
 
             // attach the ExtendedProtectionPolicy to the securityProtcolFactory so it will be 
             // available when building the channel.
@@ -415,20 +406,20 @@ namespace System.ServiceModel.Security
             }
 
             _rstChannelFactory = securityChannelFactory;
-            _messageVersion = securityChannelFactory.MessageVersion;
+            MessageVersion = securityChannelFactory.MessageVersion;
         }
 
         // token provider methods
         protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
-            this.CommunicationObject.ThrowIfClosedOrNotOpen();
-            return this.DoOperationAsync(SecuritySessionOperation.Issue, _targetAddress, _via, null, timeout);
+            CommunicationObject.ThrowIfClosedOrNotOpen();
+            return DoOperationAsync(SecuritySessionOperation.Issue, _targetAddress, _via, null, timeout);
         }
 
         protected override Task<SecurityToken> RenewTokenCoreAsync(TimeSpan timeout, SecurityToken tokenToBeRenewed)
         {
-            this.CommunicationObject.ThrowIfClosedOrNotOpen();
-            return this.DoOperationAsync(SecuritySessionOperation.Renew, _targetAddress, _via, tokenToBeRenewed, timeout);
+            CommunicationObject.ThrowIfClosedOrNotOpen();
+            return DoOperationAsync(SecuritySessionOperation.Renew, _targetAddress, _via, tokenToBeRenewed, timeout);
         }
 
         private IAsyncRequestChannel CreateChannel(SecuritySessionOperation operation, EndpointAddress target, Uri via)
@@ -465,11 +456,11 @@ namespace System.ServiceModel.Security
         {
             if (operation == SecuritySessionOperation.Issue)
             {
-                return this.CreateIssueRequest(target, out requestState);
+                return CreateIssueRequest(target, out requestState);
             }
             else if (operation == SecuritySessionOperation.Renew)
             {
-                return this.CreateRenewRequest(target, currentToken, out requestState);
+                return CreateRenewRequest(target, currentToken, out requestState);
             }
             else
             {
@@ -483,11 +474,11 @@ namespace System.ServiceModel.Security
             GenericXmlSecurityToken issuedToken = null;
             if (operation == SecuritySessionOperation.Issue)
             {
-                issuedToken = this.ProcessIssueResponse(reply, requestState);
+                issuedToken = ProcessIssueResponse(reply, requestState);
             }
             else if (operation == SecuritySessionOperation.Renew)
             {
-                issuedToken = this.ProcessRenewResponse(reply, requestState);
+                issuedToken = ProcessRenewResponse(reply, requestState);
             }
 
             return issuedToken;
@@ -509,25 +500,25 @@ namespace System.ServiceModel.Security
         {
             if (target == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("target");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(target));
             }
 
             if (operation == SecuritySessionOperation.Renew && currentToken == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("currentToken");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(currentToken));
             }
 
             IAsyncRequestChannel channel = null;
             try
             {
-                channel = this.CreateChannel(operation, target, via);
+                channel = CreateChannel(operation, target, via);
 
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 await channel.OpenAsync(timeoutHelper.RemainingTime());
                 object requestState;
                 GenericXmlSecurityToken issuedToken;
 
-                using (Message requestMessage = this.CreateRequest(operation, target, currentToken, out requestState))
+                using (Message requestMessage = CreateRequest(operation, target, currentToken, out requestState))
                 {
                     EventTraceActivity eventTraceActivity = null;
 
@@ -547,13 +538,15 @@ namespace System.ServiceModel.Security
                     }
                 }
                 await channel.CloseAsync(timeoutHelper.RemainingTime());
-                this.OnOperationSuccess(operation, target, issuedToken, currentToken);
+                OnOperationSuccess(operation, target, issuedToken, currentToken);
                 return issuedToken;
             }
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
+                {
                     throw;
+                }
 
                 if (e is TimeoutException)
                 {
@@ -575,9 +568,9 @@ namespace System.ServiceModel.Security
         private RequestSecurityToken CreateRst(EndpointAddress target, out object requestState)
         {
             RequestSecurityToken rst = new RequestSecurityToken(_standardsManager);
-            rst.KeySize = this.SecurityAlgorithmSuite.DefaultSymmetricKeyLength;
+            rst.KeySize = SecurityAlgorithmSuite.DefaultSymmetricKeyLength;
             rst.TokenType = _sctUri;
-            if (this.KeyEntropyMode == SecurityKeyEntropyMode.ClientEntropy || this.KeyEntropyMode == SecurityKeyEntropyMode.CombinedEntropy)
+            if (KeyEntropyMode == SecurityKeyEntropyMode.ClientEntropy || KeyEntropyMode == SecurityKeyEntropyMode.CombinedEntropy)
             {
                 byte[] entropy = GenerateEntropy(rst.KeySize);
                 rst.SetRequestorEntropy(entropy);
@@ -598,7 +591,7 @@ namespace System.ServiceModel.Security
             {
                 if (_localAddress != null)
                 {
-                    message.Headers.ReplyTo = this.LocalAddress;
+                    message.Headers.ReplyTo = LocalAddress;
                 }
                 else
                 {
@@ -629,11 +622,11 @@ namespace System.ServiceModel.Security
 
         protected virtual Message CreateIssueRequest(EndpointAddress target, out object requestState)
         {
-            this.CommunicationObject.ThrowIfClosedOrNotOpen();
+            CommunicationObject.ThrowIfClosedOrNotOpen();
             RequestSecurityToken rst = CreateRst(target, out requestState);
-            rst.RequestType = this.StandardsManager.TrustDriver.RequestTypeIssue;
+            rst.RequestType = StandardsManager.TrustDriver.RequestTypeIssue;
             rst.MakeReadOnly();
-            Message result = Message.CreateMessage(this.MessageVersion, ActionHeader.Create(this.IssueAction, this.MessageVersion.Addressing), rst);
+            Message result = Message.CreateMessage(MessageVersion, ActionHeader.Create(IssueAction, MessageVersion.Addressing), rst);
             PrepareRequest(result);
             return result;
         }
@@ -656,15 +649,19 @@ namespace System.ServiceModel.Security
             XmlDictionaryReader bodyReader = response.GetReaderAtBodyContents();
             using (bodyReader)
             {
-                if (this.StandardsManager.MessageSecurityVersion.TrustVersion == TrustVersion.WSTrustFeb2005)
-                    rstr = this.StandardsManager.TrustDriver.CreateRequestSecurityTokenResponse(bodyReader);
-                else if (this.StandardsManager.MessageSecurityVersion.TrustVersion == TrustVersion.WSTrust13)
+                if (StandardsManager.MessageSecurityVersion.TrustVersion == TrustVersion.WSTrustFeb2005)
                 {
-                    RequestSecurityTokenResponseCollection rstrc = this.StandardsManager.TrustDriver.CreateRequestSecurityTokenResponseCollection(bodyReader);
+                    rstr = StandardsManager.TrustDriver.CreateRequestSecurityTokenResponse(bodyReader);
+                }
+                else if (StandardsManager.MessageSecurityVersion.TrustVersion == TrustVersion.WSTrust13)
+                {
+                    RequestSecurityTokenResponseCollection rstrc = StandardsManager.TrustDriver.CreateRequestSecurityTokenResponseCollection(bodyReader);
                     foreach (RequestSecurityTokenResponse rstrItem in rstrc.RstrCollection)
                     {
                         if (rstr != null)
+                        {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.MoreThanOneRSTRInRSTRC));
+                        }
 
                         rstr = rstrItem;
                     }
@@ -687,26 +684,26 @@ namespace System.ServiceModel.Security
                 requestorEntropy = null;
             }
 
-            GenericXmlSecurityToken issuedToken = rstr.GetIssuedToken(null, null, this.KeyEntropyMode, requestorEntropy, _sctUri, authorizationPolicies, this.SecurityAlgorithmSuite.DefaultSymmetricKeyLength, false);
+            GenericXmlSecurityToken issuedToken = rstr.GetIssuedToken(null, null, KeyEntropyMode, requestorEntropy, _sctUri, authorizationPolicies, SecurityAlgorithmSuite.DefaultSymmetricKeyLength, false);
             return issuedToken;
         }
 
         protected virtual GenericXmlSecurityToken ProcessIssueResponse(Message response, object requestState)
         {
-            this.CommunicationObject.ThrowIfClosedOrNotOpen();
+            CommunicationObject.ThrowIfClosedOrNotOpen();
             return ExtractToken(response, requestState);
         }
 
         protected virtual Message CreateRenewRequest(EndpointAddress target, SecurityToken currentSessionToken, out object requestState)
         {
-            this.CommunicationObject.ThrowIfClosedOrNotOpen();
+            CommunicationObject.ThrowIfClosedOrNotOpen();
             RequestSecurityToken rst = CreateRst(target, out requestState);
-            rst.RequestType = this.StandardsManager.TrustDriver.RequestTypeRenew;
-            rst.RenewTarget = this.IssuedSecurityTokenParameters.CreateKeyIdentifierClause(currentSessionToken, SecurityTokenReferenceStyle.External);
+            rst.RequestType = StandardsManager.TrustDriver.RequestTypeRenew;
+            rst.RenewTarget = IssuedSecurityTokenParameters.CreateKeyIdentifierClause(currentSessionToken, SecurityTokenReferenceStyle.External);
             rst.MakeReadOnly();
-            Message result = Message.CreateMessage(this.MessageVersion, ActionHeader.Create(this.RenewAction, this.MessageVersion.Addressing), rst);
+            Message result = Message.CreateMessage(MessageVersion, ActionHeader.Create(RenewAction, MessageVersion.Addressing), rst);
             SecurityMessageProperty supportingTokenProperty = new SecurityMessageProperty();
-            supportingTokenProperty.OutgoingSupportingTokens.Add(new SupportingTokenSpecification(currentSessionToken, EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance, SecurityTokenAttachmentMode.Endorsing, this.IssuedSecurityTokenParameters));
+            supportingTokenProperty.OutgoingSupportingTokens.Add(new SupportingTokenSpecification(currentSessionToken, EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance, SecurityTokenAttachmentMode.Endorsing, IssuedSecurityTokenParameters));
             result.Properties.Security = supportingTokenProperty;
             PrepareRequest(result);
             return result;
@@ -714,8 +711,8 @@ namespace System.ServiceModel.Security
 
         protected virtual GenericXmlSecurityToken ProcessRenewResponse(Message response, object requestState)
         {
-            this.CommunicationObject.ThrowIfClosedOrNotOpen();
-            if (response.Headers.Action != this.RenewResponseAction.Value)
+            CommunicationObject.ThrowIfClosedOrNotOpen();
+            if (response.Headers.Action != RenewResponseAction.Value)
             {
                 throw TraceUtility.ThrowHelperError(new SecurityNegotiationException(SR.Format(SR.InvalidRenewResponseAction, response.Headers.Action)), response);
             }
@@ -730,14 +727,14 @@ namespace System.ServiceModel.Security
 
         protected void ValidateKeySize(GenericXmlSecurityToken issuedToken)
         {
-            this.CommunicationObject.ThrowIfClosedOrNotOpen();
+            CommunicationObject.ThrowIfClosedOrNotOpen();
             ReadOnlyCollection<SecurityKey> issuedKeys = issuedToken.SecurityKeys;
             if (issuedKeys != null && issuedKeys.Count == 1)
             {
                 SymmetricSecurityKey symmetricKey = issuedKeys[0] as SymmetricSecurityKey;
                 if (symmetricKey != null)
                 {
-                    if (this.SecurityAlgorithmSuite.IsSymmetricKeyLengthSupported(symmetricKey.KeySize))
+                    if (SecurityAlgorithmSuite.IsSymmetricKeyLengthSupported(symmetricKey.KeySize))
                     {
                         return;
                     }

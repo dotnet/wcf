@@ -5,10 +5,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Policy;
-using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Threading.Tasks;
@@ -70,7 +68,7 @@ namespace System.ServiceModel.Security
         {
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
             CommunicationObject.ThrowIfClosedOrNotOpen();
             try
@@ -85,7 +83,10 @@ namespace System.ServiceModel.Security
             catch (Exception e)
             {
                 // Always immediately rethrow fatal exceptions.
-                if (Fx.IsFatal(e)) throw;
+                if (Fx.IsFatal(e))
+                {
+                    throw;
+                }
 
                 base.OnVerifyIncomingMessageFailure(message, e);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.MessageSecurityVerificationFailed, e));
@@ -123,11 +124,15 @@ namespace System.ServiceModel.Security
                 else
                 {
                     if (String.IsNullOrEmpty(actor))
+                    {
                         throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
                             SR.UnableToFindSecurityHeaderInMessageNoActor), message);
+                    }
                     else
+                    {
                         throw System.ServiceModel.Diagnostics.TraceUtility.ThrowHelperError(new MessageSecurityException(
                             SR.Format(SR.UnableToFindSecurityHeaderInMessage, actor)), message);
+                    }
                 }
             }
 

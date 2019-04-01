@@ -3,11 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.ComponentModel;
-using System.Runtime;
 using System.ServiceModel.Channels;
-using System.Text;
 using System.Xml;
 
 namespace System.ServiceModel
@@ -15,7 +12,6 @@ namespace System.ServiceModel
     public class NetHttpBinding : HttpBindingBase
     {
         private BinaryMessageEncodingBindingElement _binaryMessageEncodingBindingElement;
-        private NetHttpMessageEncoding _messageEncoding;
         private BasicHttpSecurity _basicHttpSecurity;
 
         public NetHttpBinding()
@@ -26,7 +22,7 @@ namespace System.ServiceModel
         public NetHttpBinding(BasicHttpSecurityMode securityMode)
             : base()
         {
-            this.Initialize();
+            Initialize();
             _basicHttpSecurity.Mode = securityMode;
         }
 
@@ -34,22 +30,18 @@ namespace System.ServiceModel
         public NetHttpBinding(string configurationName)
             : base()
         {
-            this.Initialize();
+            Initialize();
         }
 
         private NetHttpBinding(BasicHttpSecurity security)
             : base()
         {
-            this.Initialize();
+            Initialize();
             _basicHttpSecurity = security;
         }
 
         [DefaultValue(NetHttpMessageEncoding.Binary)]
-        public NetHttpMessageEncoding MessageEncoding
-        {
-            get { return _messageEncoding; }
-            set { _messageEncoding = value; }
-        }
+        public NetHttpMessageEncoding MessageEncoding { get; set; }
 
         public BasicHttpSecurity Security
         {
@@ -60,12 +52,7 @@ namespace System.ServiceModel
 
             set
             {
-                if (value == null)
-                {
-                    throw FxTrace.Exception.ArgumentNull("value");
-                }
-
-                _basicHttpSecurity = value;
+                _basicHttpSecurity = value ?? throw FxTrace.Exception.ArgumentNull("value");
             }
         }
 
@@ -74,7 +61,7 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.InternalWebSocketSettings;
+                return InternalWebSocketSettings;
             }
         }
 
@@ -88,11 +75,11 @@ namespace System.ServiceModel
 
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingParameterCollection parameters)
         {
-            if ((this.BasicHttpSecurity.Mode == BasicHttpSecurityMode.Transport ||
-                this.BasicHttpSecurity.Mode == BasicHttpSecurityMode.TransportCredentialOnly) &&
-                this.BasicHttpSecurity.Transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)
+            if ((BasicHttpSecurity.Mode == BasicHttpSecurityMode.Transport ||
+                BasicHttpSecurity.Mode == BasicHttpSecurityMode.TransportCredentialOnly) &&
+                BasicHttpSecurity.Transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)
             {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.HttpClientCredentialTypeInvalid, this.BasicHttpSecurity.Transport.ClientCredentialType)));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.HttpClientCredentialTypeInvalid, BasicHttpSecurity.Transport.ClientCredentialType)));
             }
 
             return base.BuildChannelFactory<TChannel>(parameters);
@@ -100,7 +87,7 @@ namespace System.ServiceModel
 
         public override BindingElementCollection CreateBindingElements()
         {
-            this.CheckSettings();
+            CheckSettings();
 
             // return collection of BindingElements
             BindingElementCollection bindingElements = new BindingElementCollection();
@@ -108,17 +95,17 @@ namespace System.ServiceModel
             // order of BindingElements is important
 
             // add security (*optional)
-            SecurityBindingElement messageSecurity = this.BasicHttpSecurity.CreateMessageSecurity();
+            SecurityBindingElement messageSecurity = BasicHttpSecurity.CreateMessageSecurity();
             if (messageSecurity != null)
             {
                 bindingElements.Add(messageSecurity);
             }
 
             // add encoding
-            switch (this.MessageEncoding)
+            switch (MessageEncoding)
             {
                 case NetHttpMessageEncoding.Text:
-                    bindingElements.Add(this.TextMessageEncodingBindingElement);
+                    bindingElements.Add(TextMessageEncodingBindingElement);
                     break;
                 case NetHttpMessageEncoding.Mtom:
                     throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.UnsupportedBindingProperty, "MessageEncoding", MessageEncoding));
@@ -128,7 +115,7 @@ namespace System.ServiceModel
             }
 
             // add transport (http or https)
-            bindingElements.Add(this.GetTransport());
+            bindingElements.Add(GetTransport());
 
             return bindingElements.Clone();
         }
@@ -148,19 +135,19 @@ namespace System.ServiceModel
             base.CheckSettings();
 
             // Mtom is not supported.
-            if (this.MessageEncoding == NetHttpMessageEncoding.Mtom)
+            if (MessageEncoding == NetHttpMessageEncoding.Mtom)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedBindingProperty, "MessageEncoding", this.MessageEncoding)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedBindingProperty, "MessageEncoding", MessageEncoding)));
             }
         }
 
         private void Initialize()
         {
-            _messageEncoding = NetHttpBindingDefaults.MessageEncoding;
+            MessageEncoding = NetHttpBindingDefaults.MessageEncoding;
             _binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement() { MessageVersion = MessageVersion.Soap12WSAddressing10 };
-            this.TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap12WSAddressing10;
-            this.WebSocketSettings.TransportUsage = NetHttpBindingDefaults.TransportUsage;
-            this.WebSocketSettings.SubProtocol = WebSocketTransportSettings.SoapSubProtocol;
+            TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap12WSAddressing10;
+            WebSocketSettings.TransportUsage = NetHttpBindingDefaults.TransportUsage;
+            WebSocketSettings.SubProtocol = WebSocketTransportSettings.SoapSubProtocol;
             _basicHttpSecurity = new BasicHttpSecurity();
         }
     }

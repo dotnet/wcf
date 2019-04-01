@@ -23,10 +23,14 @@ namespace System.ServiceModel.Security.Tokens
             RequireCancellation = other.RequireCancellation;
             CanRenewSession = other.CanRenewSession;
             if (other.BootstrapSecurityBindingElement != null)
+            {
                 BootstrapSecurityBindingElement = (SecurityBindingElement)other.BootstrapSecurityBindingElement.Clone();
+            }
 
             if (other._issuerBindingContext != null)
+            {
                 _issuerBindingContext = other._issuerBindingContext.Clone();
+            }
         }
 
         public SecureConversationSecurityTokenParameters()
@@ -50,7 +54,9 @@ namespace System.ServiceModel.Security.Tokens
             BootstrapSecurityBindingElement = bootstrapSecurityBindingElement;
             CanRenewSession = canRenewSession;
             if (bootstrapProtectionRequirements != null)
+            {
                 _bootstrapProtectionRequirements = new ChannelProtectionRequirements(bootstrapProtectionRequirements);
+            }
             else
             {
                 _bootstrapProtectionRequirements = new ChannelProtectionRequirements();
@@ -126,9 +132,13 @@ namespace System.ServiceModel.Security.Tokens
         internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
         {
             if (token is GenericXmlSecurityToken)
+            {
                 return base.CreateGenericXmlTokenKeyIdentifierClause(token, referenceStyle);
+            }
             else
-                return this.CreateKeyIdentifierClause<SecurityContextKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+            {
+                return CreateKeyIdentifierClause<SecurityContextKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+            }
         }
 
         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
@@ -136,10 +146,10 @@ namespace System.ServiceModel.Security.Tokens
             requirement.TokenType = ServiceModelSecurityTokenTypes.SecureConversation;
             requirement.KeyType = SecurityKeyType.SymmetricKey;
             requirement.RequireCryptographicToken = true;
-            requirement.Properties[ServiceModelSecurityTokenRequirement.SupportSecurityContextCancellationProperty] = this.RequireCancellation;
-            requirement.Properties[ServiceModelSecurityTokenRequirement.SecureConversationSecurityBindingElementProperty] = this.BootstrapSecurityBindingElement;
-            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuerBindingContextProperty] = this.IssuerBindingContext.Clone();
-            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty] = this.Clone();
+            requirement.Properties[ServiceModelSecurityTokenRequirement.SupportSecurityContextCancellationProperty] = RequireCancellation;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.SecureConversationSecurityBindingElementProperty] = BootstrapSecurityBindingElement;
+            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuerBindingContextProperty] = IssuerBindingContext.Clone();
+            requirement.Properties[ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty] = Clone();
         }
 
         public override string ToString()

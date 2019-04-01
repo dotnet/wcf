@@ -16,42 +16,30 @@ namespace System.ServiceModel.Description
     [DebuggerDisplay("Name={_name}")]
     public class ServiceEndpoint
     {
-        private EndpointAddress _address;
-        private Binding _binding;
         private ContractDescription _contract;
         private Uri _listenUri;
         private ListenUriMode _listenUriMode = ListenUriMode.Explicit;
         private KeyedByTypeCollection<IEndpointBehavior> _behaviors;
         private string _id;
         private XmlName _name;
-        private bool _isEndpointFullyConfigured = false;
 
         public ServiceEndpoint(ContractDescription contract)
         {
-            if (contract == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contract");
-            _contract = contract;
+            _contract = contract ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contract));
         }
 
         public ServiceEndpoint(ContractDescription contract, Binding binding, EndpointAddress address)
         {
-            if (contract == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contract");
-
-            _contract = contract;
-            _binding = binding;
-            _address = address;
+            _contract = contract ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contract));
+            Binding = binding;
+            Address = address;
         }
 
-        public EndpointAddress Address
-        {
-            get { return _address; }
-            set { _address = value; }
-        }
+        public EndpointAddress Address { get; set; }
 
         public KeyedCollection<Type, IEndpointBehavior> EndpointBehaviors
         {
-            get { return this.Behaviors; }
+            get { return Behaviors; }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -68,22 +56,14 @@ namespace System.ServiceModel.Description
             }
         }
 
-        public Binding Binding
-        {
-            get { return _binding; }
-            set { _binding = value; }
-        }
+        public Binding Binding { get; set; }
 
         public ContractDescription Contract
         {
             get { return _contract; }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-                _contract = value;
+                _contract = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -101,7 +81,7 @@ namespace System.ServiceModel.Description
                 {
                     return _name.EncodedName;
                 }
-                else if (_binding != null)
+                else if (Binding != null)
                 {
                     return String.Format(CultureInfo.InvariantCulture, "{0}_{1}", new XmlName(Binding.Name).EncodedName, Contract.Name);
                 }
@@ -122,13 +102,13 @@ namespace System.ServiceModel.Description
             {
                 if (_listenUri == null)
                 {
-                    if (_address == null)
+                    if (Address == null)
                     {
                         return null;
                     }
                     else
                     {
-                        return _address.Uri;
+                        return Address.Uri;
                     }
                 }
                 else
@@ -153,7 +133,7 @@ namespace System.ServiceModel.Description
             {
                 if (!ListenUriModeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
                 _listenUriMode = value;
             }
@@ -164,7 +144,10 @@ namespace System.ServiceModel.Description
             get
             {
                 if (_id == null)
+                {
                     _id = Guid.NewGuid().ToString();
+                }
+
                 return _id;
             }
         }
@@ -193,8 +176,8 @@ namespace System.ServiceModel.Description
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.AChannelServiceEndpointSContractIsNull0));
             }
-            this.Contract.EnsureInvariants();
-            this.Binding.EnsureInvariants(this.Contract.Name);
+            Contract.EnsureInvariants();
+            Binding.EnsureInvariants(Contract.Name);
         }
 
         internal void ValidateForClient()
@@ -207,18 +190,14 @@ namespace System.ServiceModel.Description
             Validate(runOperationValidators, true);
         }
 
-        internal bool IsFullyConfigured
-        {
-            get { return _isEndpointFullyConfigured; }
-            set { _isEndpointFullyConfigured = value; }
-        }
+        internal bool IsFullyConfigured { get; set; } = false;
 
         // This method runs validators (both builtin and ones in description).  
         // Precondition: EnsureInvariants() should already have been called.
         private void Validate(bool runOperationValidators, bool isForService)
         {
             // contract behaviors
-            ContractDescription contract = this.Contract;
+            ContractDescription contract = Contract;
             for (int j = 0; j < contract.Behaviors.Count; j++)
             {
                 IContractBehavior iContractBehavior = contract.Behaviors[j];
@@ -228,9 +207,9 @@ namespace System.ServiceModel.Description
             if (!isForService)
             {
             }
-            for (int j = 0; j < this.Behaviors.Count; j++)
+            for (int j = 0; j < Behaviors.Count; j++)
             {
-                IEndpointBehavior ieb = this.Behaviors[j];
+                IEndpointBehavior ieb = Behaviors[j];
                 ieb.Validate(this);
             }
             // operation behaviors

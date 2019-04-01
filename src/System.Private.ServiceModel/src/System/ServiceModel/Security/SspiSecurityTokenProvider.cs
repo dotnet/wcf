@@ -8,7 +8,6 @@ using System.IdentityModel.Tokens;
 using System.ServiceModel.Security.Tokens;
 using System.Net;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security

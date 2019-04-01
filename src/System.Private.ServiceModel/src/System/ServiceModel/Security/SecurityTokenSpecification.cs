@@ -11,23 +11,15 @@ namespace System.ServiceModel.Security
 {
     public class SecurityTokenSpecification
     {
-        private SecurityToken _token;
         private ReadOnlyCollection<IAuthorizationPolicy> _tokenPolicies;
 
         public SecurityTokenSpecification(SecurityToken token, ReadOnlyCollection<IAuthorizationPolicy> tokenPolicies)
         {
-            _token = token;
-            if (tokenPolicies == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenPolicies");
-            }
-            _tokenPolicies = tokenPolicies;
+            SecurityToken = token;
+            _tokenPolicies = tokenPolicies ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenPolicies));
         }
 
-        public SecurityToken SecurityToken
-        {
-            get { return _token; }
-        }
+        public SecurityToken SecurityToken { get; }
 
         public ReadOnlyCollection<IAuthorizationPolicy> SecurityTokenPolicies
         {

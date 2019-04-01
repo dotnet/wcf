@@ -51,11 +51,7 @@ namespace System.ServiceModel
             get { return _transportSecurity; }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-                _transportSecurity = value;
+                _transportSecurity = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -64,11 +60,7 @@ namespace System.ServiceModel
             get { return _messageSecurity; }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
-                }
-                _messageSecurity = value;
+                _messageSecurity = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 

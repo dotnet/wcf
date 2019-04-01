@@ -48,11 +48,11 @@ namespace System.IdentityModel.Tokens
         internal X509SecurityToken(X509Certificate2 certificate, string id, bool clone, bool disposable)
         {
             if (certificate == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
-            if (id == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("id");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+            }
 
-            _id = id;
+            _id = id ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(id));
 
             _certificate = clone ? new X509Certificate2(certificate) : certificate;
 
@@ -86,7 +86,10 @@ namespace System.IdentityModel.Tokens
             {
                 ThrowIfDisposed();
                 if (_effectiveTime == SecurityUtils.MaxUtcDateTime)
+                {
                     _effectiveTime = _certificate.NotBefore.ToUniversalTime();
+                }
+
                 return _effectiveTime;
             }
         }
@@ -97,7 +100,10 @@ namespace System.IdentityModel.Tokens
             {
                 ThrowIfDisposed();
                 if (_expirationTime == SecurityUtils.MinUtcDateTime)
+                {
                     _expirationTime = _certificate.NotAfter.ToUniversalTime();
+                }
+
                 return _expirationTime;
             }
         }
@@ -126,7 +132,7 @@ namespace System.IdentityModel.Tokens
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
     }

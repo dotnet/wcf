@@ -14,7 +14,6 @@ namespace System.ServiceModel
 
     internal class ServiceChannelManager : LifetimeManager
     {
-        private int _activityCount;
         private ICommunicationWaiter _activityWaiter;
         private int _activityWaiterCount;
         private InstanceContextEmptyCallback _emptyCallback;
@@ -35,16 +34,13 @@ namespace System.ServiceModel
             _emptyCallback = emptyCallback;
         }
 
-        public int ActivityCount
-        {
-            get { return _activityCount; }
-        }
+        public int ActivityCount { get; private set; }
 
         public ICollection<IChannel> IncomingChannels
         {
             get
             {
-                this.EnsureIncomingChannelCollection();
+                EnsureIncomingChannelCollection();
                 return (ICollection<IChannel>)_incomingChannels;
             }
         }
@@ -55,10 +51,12 @@ namespace System.ServiceModel
             {
                 if (_outgoingChannels == null)
                 {
-                    lock (this.ThisLock)
+                    lock (ThisLock)
                     {
                         if (_outgoingChannels == null)
-                            _outgoingChannels = new ChannelCollection(this, this.ThisLock);
+                        {
+                            _outgoingChannels = new ChannelCollection(this, ThisLock);
+                        }
                     }
                 }
                 return _outgoingChannels;
@@ -69,15 +67,21 @@ namespace System.ServiceModel
         {
             get
             {
-                if (this.ActivityCount > 0)
+                if (ActivityCount > 0)
+                {
                     return true;
+                }
 
                 if (base.BusyCount > 0)
+                {
                     return true;
+                }
 
                 ICollection<IChannel> outgoing = _outgoingChannels;
                 if ((outgoing != null) && (outgoing.Count > 0))
+                {
                     return true;
+                }
 
                 return false;
             }
@@ -87,29 +91,35 @@ namespace System.ServiceModel
         {
             bool added = false;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                if (this.State == LifetimeState.Opened)
+                if (State == LifetimeState.Opened)
                 {
                     if (_firstIncomingChannel == null)
                     {
                         if (_incomingChannels == null)
                         {
                             _firstIncomingChannel = channel;
-                            this.ChannelAdded(channel);
+                            ChannelAdded(channel);
                         }
                         else
                         {
                             if (_incomingChannels.Contains(channel))
+                            {
                                 return;
+                            }
+
                             _incomingChannels.Add(channel);
                         }
                     }
                     else
                     {
-                        this.EnsureIncomingChannelCollection();
+                        EnsureIncomingChannelCollection();
                         if (_incomingChannels.Contains(channel))
+                        {
                             return;
+                        }
+
                         _incomingChannels.Add(channel);
                     }
                     added = true;
@@ -119,7 +129,7 @@ namespace System.ServiceModel
             if (!added)
             {
                 channel.Abort();
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().ToString()));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
             }
         }
 
@@ -127,11 +137,11 @@ namespace System.ServiceModel
         {
             CloseCommunicationAsyncResult closeResult = null;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                if (_activityCount > 0)
+                if (ActivityCount > 0)
                 {
-                    closeResult = new CloseCommunicationAsyncResult(timeout, callback, state, this.ThisLock);
+                    closeResult = new CloseCommunicationAsyncResult(timeout, callback, state, ThisLock);
 
                     if (!(_activityWaiter == null))
                     {
@@ -143,20 +153,24 @@ namespace System.ServiceModel
             }
 
             if (closeResult != null)
+            {
                 return closeResult;
+            }
             else
+            {
                 return new CompletedAsyncResult(callback, state);
+            }
         }
 
         private void ChannelAdded(IChannel channel)
         {
             base.IncrementBusyCount();
-            channel.Closed += this.OnChannelClosed;
+            channel.Closed += OnChannelClosed;
         }
 
         private void ChannelRemoved(IChannel channel)
         {
-            channel.Closed -= this.OnChannelClosed;
+            channel.Closed -= OnChannelClosed;
             base.DecrementBusyCount();
         }
 
@@ -165,11 +179,11 @@ namespace System.ServiceModel
         {
             SyncCommunicationWaiter activityWaiter = null;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                if (_activityCount > 0)
+                if (ActivityCount > 0)
                 {
-                    activityWaiter = new SyncCommunicationWaiter(this.ThisLock);
+                    activityWaiter = new SyncCommunicationWaiter(ThisLock);
                     if (!(_activityWaiter == null))
                     {
                         Fx.Assert("ServiceChannelManager.CloseInput: (this.activityWaiter == null)");
@@ -193,7 +207,7 @@ namespace System.ServiceModel
                     case CommunicationWaitResult.Expired:
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.SfxCloseTimedOutWaitingForDispatchToComplete));
                     case CommunicationWaitResult.Aborted:
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().ToString()));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
                 }
             }
         }
@@ -203,21 +217,23 @@ namespace System.ServiceModel
             ICommunicationWaiter activityWaiter = null;
             bool empty = false;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                if (!(_activityCount > 0))
+                if (!(ActivityCount > 0))
                 {
                     Fx.Assert("ServiceChannelManager.DecrementActivityCount: (this.activityCount > 0)");
                 }
-                if (--_activityCount == 0)
+                if (--ActivityCount == 0)
                 {
                     if (_activityWaiter != null)
                     {
                         activityWaiter = _activityWaiter;
                         Interlocked.Increment(ref _activityWaiterCount);
                     }
-                    if (this.BusyCount == 0)
+                    if (BusyCount == 0)
+                    {
                         empty = true;
+                    }
                 }
             }
 
@@ -231,8 +247,10 @@ namespace System.ServiceModel
                 }
             }
 
-            if (empty && this.State == LifetimeState.Opened)
+            if (empty && State == LifetimeState.Opened)
+            {
                 OnEmpty();
+            }
         }
 
         public void EndCloseInput(IAsyncResult result)
@@ -247,20 +265,22 @@ namespace System.ServiceModel
                 }
             }
             else
+            {
                 CompletedAsyncResult.End(result);
+            }
         }
 
         private void EnsureIncomingChannelCollection()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (_incomingChannels == null)
                 {
-                    _incomingChannels = new ChannelCollection(this, this.ThisLock);
+                    _incomingChannels = new ChannelCollection(this, ThisLock);
                     if (_firstIncomingChannel != null)
                     {
                         _incomingChannels.Add(_firstIncomingChannel);
-                        this.ChannelRemoved(_firstIncomingChannel); // Adding to collection called ChannelAdded, so call ChannelRemoved to balance
+                        ChannelRemoved(_firstIncomingChannel); // Adding to collection called ChannelAdded, so call ChannelRemoved to balance
                         _firstIncomingChannel = null;
                     }
                 }
@@ -269,11 +289,14 @@ namespace System.ServiceModel
 
         public void IncrementActivityCount()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                if (this.State == LifetimeState.Closed)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().ToString()));
-                _activityCount++;
+                if (State == LifetimeState.Closed)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
+                }
+
+                ActivityCount++;
             }
         }
 
@@ -284,13 +307,15 @@ namespace System.ServiceModel
 
         protected override void OnAbort()
         {
-            IChannel[] channels = this.SnapshotChannels();
+            IChannel[] channels = SnapshotChannels();
             for (int index = 0; index < channels.Length; index++)
+            {
                 channels[index].Abort();
+            }
 
             ICommunicationWaiter activityWaiter = null;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (_activityWaiter != null)
                 {
@@ -327,7 +352,7 @@ namespace System.ServiceModel
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
-            this.CloseInput(timeoutHelper.RemainingTime());
+            CloseInput(timeoutHelper.RemainingTime());
 
             base.OnClose(timeoutHelper.RemainingTime());
         }
@@ -345,22 +370,24 @@ namespace System.ServiceModel
         protected override void OnEmpty()
         {
             if (_emptyCallback != null)
+            {
                 _emptyCallback(_instanceContext);
+            }
         }
 
         private void OnChannelClosed(object sender, EventArgs args)
         {
-            this.RemoveChannel((IChannel)sender);
+            RemoveChannel((IChannel)sender);
         }
 
         public bool RemoveChannel(IChannel channel)
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (_firstIncomingChannel == channel)
                 {
                     _firstIncomingChannel = null;
-                    this.ChannelRemoved(channel);
+                    ChannelRemoved(channel);
                     return true;
                 }
                 else if (_incomingChannels != null && _incomingChannels.Contains(channel))
@@ -380,7 +407,7 @@ namespace System.ServiceModel
 
         public IChannel[] SnapshotChannels()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 int outgoingCount = (_outgoingChannels != null ? _outgoingChannels.Count : 0);
 
@@ -389,7 +416,10 @@ namespace System.ServiceModel
                     IChannel[] channels = new IChannel[1 + outgoingCount];
                     channels[0] = _firstIncomingChannel;
                     if (outgoingCount > 0)
+                    {
                         _outgoingChannels.CopyTo(channels, 1);
+                    }
+
                     return channels;
                 }
 
@@ -398,7 +428,10 @@ namespace System.ServiceModel
                     IChannel[] channels = new IChannel[_incomingChannels.Count + outgoingCount];
                     _incomingChannels.CopyTo(channels, 0);
                     if (outgoingCount > 0)
+                    {
                         _outgoingChannels.CopyTo(channels, _incomingChannels.Count);
+                    }
+
                     return channels;
                 }
 
@@ -436,11 +469,8 @@ namespace System.ServiceModel
 
             public ChannelCollection(ServiceChannelManager channelManager, object syncRoot)
             {
-                if (syncRoot == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
-
                 _channelManager = channelManager;
-                _syncRoot = syncRoot;
+                _syncRoot = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
             }
 
             public void Add(IChannel channel)
@@ -459,7 +489,10 @@ namespace System.ServiceModel
                 lock (_syncRoot)
                 {
                     foreach (IChannel channel in _hashSet)
+                    {
                         _channelManager.ChannelRemoved(channel);
+                    }
+
                     _hashSet.Clear();
                 }
             }
@@ -501,7 +534,7 @@ namespace System.ServiceModel
                 }
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            Collections.IEnumerator Collections.IEnumerable.GetEnumerator()
             {
                 lock (_syncRoot)
                 {

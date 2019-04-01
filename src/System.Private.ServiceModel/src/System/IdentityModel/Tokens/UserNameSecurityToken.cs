@@ -11,7 +11,6 @@ namespace System.IdentityModel.Tokens
     public class UserNameSecurityToken : SecurityToken
     {
         private string _id;
-        private string _password;
         private string _userName;
         private DateTime _effectiveTime;
 
@@ -33,7 +32,7 @@ namespace System.IdentityModel.Tokens
             }
 
             _userName = userName;
-            _password = password;
+            Password = password;
             _id = id;
             _effectiveTime = DateTime.UtcNow;
         }
@@ -64,9 +63,6 @@ namespace System.IdentityModel.Tokens
             get { return _userName; }
         }
 
-        public string Password
-        {
-            get { return _password; }
-        }
+        public string Password { get; }
     }
 }

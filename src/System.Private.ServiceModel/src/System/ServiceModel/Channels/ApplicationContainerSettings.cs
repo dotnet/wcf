@@ -15,13 +15,13 @@ namespace System.ServiceModel.Channels
 
         internal ApplicationContainerSettings()
         {
-            this.PackageFullName = ApplicationContainerSettingsDefaults.PackageFullNameDefaultString;
+            PackageFullName = ApplicationContainerSettingsDefaults.PackageFullNameDefaultString;
             _sessionId = ApplicationContainerSettingsDefaults.CurrentSession;
         }
 
         private ApplicationContainerSettings(ApplicationContainerSettings source)
         {
-            this.PackageFullName = source.PackageFullName;
+            PackageFullName = source.PackageFullName;
             _sessionId = source._sessionId;
         }
 
@@ -55,7 +55,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return !string.IsNullOrEmpty(this.PackageFullName);
+                return !string.IsNullOrEmpty(PackageFullName);
             }
         }
 
@@ -71,7 +71,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (this.PackageFullName != applicationContainerSettings.PackageFullName)
+            if (PackageFullName != applicationContainerSettings.PackageFullName)
             {
                 return false;
             }

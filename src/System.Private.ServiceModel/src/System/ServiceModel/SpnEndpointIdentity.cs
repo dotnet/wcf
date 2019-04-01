@@ -4,8 +4,6 @@
 
 
 using System.IdentityModel.Claims;
-using System.Runtime;
-using System.Security.Principal;
 
 namespace System.ServiceModel
 {
@@ -16,7 +14,9 @@ namespace System.ServiceModel
         public SpnEndpointIdentity(string spnName)
         {
             if (spnName == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("spnName");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(spnName));
+            }
 
             base.Initialize(Claim.CreateSpnClaim(spnName));
         }
@@ -24,10 +24,14 @@ namespace System.ServiceModel
         public SpnEndpointIdentity(Claim identity)
         {
             if (identity == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identity");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(identity));
+            }
 
             if (!identity.ClaimType.Equals(ClaimTypes.Spn))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.UnrecognizedClaimTypeForIdentity, identity.ClaimType, ClaimTypes.Spn));
+            }
 
             base.Initialize(identity);
         }
@@ -43,7 +47,7 @@ namespace System.ServiceModel
                 if (value.Ticks < 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new ArgumentOutOfRangeException("value", value.Ticks, SR.Format(SR.ValueMustBeNonNegative)));
+                        new ArgumentOutOfRangeException(nameof(value), value.Ticks, SR.Format(SR.ValueMustBeNonNegative)));
                 }
                 s_spnLookupTime = value;
             }

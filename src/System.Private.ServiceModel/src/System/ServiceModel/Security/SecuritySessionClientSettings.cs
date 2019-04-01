@@ -3,17 +3,14 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security.Tokens;
 using System.Net;
-using System.Threading;
 using System.Xml;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -40,14 +37,10 @@ namespace System.ServiceModel.Security
         private TimeSpan _keyRenewalInterval;
         private TimeSpan _keyRolloverInterval;
         private bool _tolerateTransportFailures;
-        private SecurityChannelFactory<TChannel> _securityChannelFactory;
-        private IChannelFactory _innerChannelFactory;
-        private ChannelBuilder _channelBuilder;
         private WrapperSecurityCommunicationObject _communicationObject;
         private SecurityStandardsManager _standardsManager;
         private SecurityTokenParameters _issuedTokenParameters;
         private int _issuedTokenRenewalThreshold;
-        private bool _canRenewSession = true;
         private object _thisLock = new object();
 
         public SecuritySessionClientSettings()
@@ -58,33 +51,11 @@ namespace System.ServiceModel.Security
             _communicationObject = new WrapperSecurityCommunicationObject(this);
         }
 
-        private IChannelFactory InnerChannelFactory
-        {
-            get
-            {
-                return _innerChannelFactory;
-            }
-        }
+        private IChannelFactory InnerChannelFactory { get; set; }
 
-        internal ChannelBuilder ChannelBuilder
-        {
-            get
-            {
-                return _channelBuilder;
-            }
-            set
-            {
-                _channelBuilder = value;
-            }
-        }
+        internal ChannelBuilder ChannelBuilder { get; set; }
 
-        private SecurityChannelFactory<TChannel> SecurityChannelFactory
-        {
-            get
-            {
-                return _securityChannelFactory;
-            }
-        }
+        private SecurityChannelFactory<TChannel> SecurityChannelFactory { get; set; }
 
         public SecurityProtocolFactory SessionProtocolFactory
         {
@@ -146,17 +117,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public bool CanRenewSession
-        {
-            get
-            {
-                return _canRenewSession;
-            }
-            set
-            {
-                _canRenewSession = value;
-            }
-        }
+        public bool CanRenewSession { get; set; } = true;
 
         public SecurityTokenParameters IssuedSecurityTokenParameters
         {
@@ -290,9 +251,9 @@ namespace System.ServiceModel.Security
         internal Task OpenAsync(SecurityChannelFactory<TChannel> securityChannelFactory,
             IChannelFactory innerChannelFactory, ChannelBuilder channelBuilder, TimeSpan timeout)
         {
-            _securityChannelFactory = securityChannelFactory;
-            _innerChannelFactory = innerChannelFactory;
-            _channelBuilder = channelBuilder;
+            SecurityChannelFactory = securityChannelFactory;
+            InnerChannelFactory = innerChannelFactory;
+            ChannelBuilder = channelBuilder;
             return ((IAsyncCommunicationObject)_communicationObject).OpenAsync(timeout);
         }
 
@@ -328,16 +289,12 @@ namespace System.ServiceModel.Security
 
         private abstract class ClientSecuritySessionChannel : ChannelBase
         {
-            private EndpointAddress _to;
-            private Uri _via;
-            private IClientReliableChannelBinder _channelBinder;
             private ChannelParameterCollection _channelParameters;
             private SecurityToken _currentSessionToken;
             private SecurityToken _previousSessionToken;
             private DateTime _keyRenewalTime;
             private DateTime _keyRolloverTime;
             private SecurityProtocol _securityProtocol;
-            private SecuritySessionClientSettings<TChannel> _settings;
             private SecurityTokenProvider _sessionTokenProvider;
             private bool _isKeyRenewalOngoing = false;
             private InterruptibleWaitObject _keyRenewalCompletedEvent;
@@ -346,8 +303,6 @@ namespace System.ServiceModel.Security
             private volatile bool _isOutputClosed;
             private volatile bool _isInputClosed;
             private InterruptibleWaitObject _inputSessionClosedHandle = new InterruptibleWaitObject(false);
-            private bool _sendCloseHandshake = false;
-            private MessageVersion _messageVersion;
             private bool _isCompositeDuplexConnection;
             private Message _closeResponse;
             private InterruptibleWaitObject _outputSessionCloseHandle = new InterruptibleWaitObject(true);
@@ -356,63 +311,36 @@ namespace System.ServiceModel.Security
             protected ClientSecuritySessionChannel(SecuritySessionClientSettings<TChannel> settings, EndpointAddress to, Uri via)
                 : base(settings.SecurityChannelFactory)
             {
-                _settings = settings;
-                _to = to;
-                _via = via;
+                Settings = settings;
+                RemoteAddress = to;
+                Via = via;
                 _keyRenewalCompletedEvent = new InterruptibleWaitObject(false);
-                _messageVersion = settings.SecurityChannelFactory.MessageVersion;
+                MessageVersion = settings.SecurityChannelFactory.MessageVersion;
                 _channelParameters = new ChannelParameterCollection(this);
                 InitializeChannelBinder();
                 _webHeaderCollection = new WebHeaderCollection();
                 SupportsAsyncOpenClose = true;
             }
 
-            protected SecuritySessionClientSettings<TChannel> Settings
-            {
-                get
-                {
-                    return _settings;
-                }
-            }
+            protected SecuritySessionClientSettings<TChannel> Settings { get; }
 
-            protected IClientReliableChannelBinder ChannelBinder
-            {
-                get
-                {
-                    return _channelBinder;
-                }
-            }
+            protected IClientReliableChannelBinder ChannelBinder { get; private set; }
 
-            public EndpointAddress RemoteAddress
-            {
-                get
-                {
-                    return _to;
-                }
-            }
+            public EndpointAddress RemoteAddress { get; }
 
-            public Uri Via
-            {
-                get
-                {
-                    return _via;
-                }
-            }
+            public Uri Via { get; }
 
-            protected bool SendCloseHandshake
-            {
-                get
-                {
-                    return _sendCloseHandshake;
-                }
-            }
+            protected bool SendCloseHandshake { get; private set; } = false;
 
             protected EndpointAddress InternalLocalAddress
             {
                 get
                 {
-                    if (_channelBinder != null)
-                        return _channelBinder.LocalAddress;
+                    if (ChannelBinder != null)
+                    {
+                        return ChannelBinder.LocalAddress;
+                    }
+
                     return null;
                 }
             }
@@ -425,10 +353,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            public MessageVersion MessageVersion
-            {
-                get { return _messageVersion; }
-            }
+            public MessageVersion MessageVersion { get; }
 
             protected bool IsInputClosed
             {
@@ -457,9 +382,9 @@ namespace System.ServiceModel.Security
                     return _channelParameters as T;
                 }
 
-                if (typeof(T) == typeof(FaultConverter) && (_channelBinder != null))
+                if (typeof(T) == typeof(FaultConverter) && (ChannelBinder != null))
                 {
-                    return new SecurityChannelFaultConverter(_channelBinder.Channel) as T;
+                    return new SecurityChannelFaultConverter(ChannelBinder.Channel) as T;
                 }
                 else if (typeof(T) == typeof(WebHeaderCollection))
                 {
@@ -468,9 +393,9 @@ namespace System.ServiceModel.Security
 
 
                 T result = base.GetProperty<T>();
-                if ((result == null) && (_channelBinder != null) && (_channelBinder.Channel != null))
+                if ((result == null) && (ChannelBinder != null) && (ChannelBinder.Channel != null))
                 {
-                    result = _channelBinder.Channel.GetProperty<T>();
+                    result = ChannelBinder.Channel.GetProperty<T>();
                 }
 
                 return result;
@@ -503,7 +428,7 @@ namespace System.ServiceModel.Security
                 requirement.SupportSecurityContextCancellation = true;
                 requirement.SecurityAlgorithmSuite = Settings.SessionProtocolFactory.OutgoingAlgorithmSuite;
                 requirement.SecurityBindingElement = Settings.SessionProtocolFactory.SecurityBindingElement;
-                requirement.TargetAddress = _to;
+                requirement.TargetAddress = RemoteAddress;
                 requirement.Via = Via;
                 requirement.MessageSecurityVersion = Settings.SessionProtocolFactory.MessageSecurityVersion.SecurityTokenVersion;
                 requirement.WebHeaders = _webHeaderCollection;
@@ -513,9 +438,9 @@ namespace System.ServiceModel.Security
                     requirement.Properties[ServiceModelSecurityTokenRequirement.ChannelParametersCollectionProperty] = _channelParameters;
                 }
                 //requirement.Properties[ServiceModelSecurityTokenRequirement.PrivacyNoticeVersionProperty] = Settings.SessionProtocolFactory.PrivacyNoticeVersion;
-                if (_channelBinder.LocalAddress != null)
+                if (ChannelBinder.LocalAddress != null)
                 {
-                    requirement.DuplexClientLocalAddress = _channelBinder.LocalAddress;
+                    requirement.DuplexClientLocalAddress = ChannelBinder.LocalAddress;
                 }
                 _sessionTokenProvider = Settings.SessionProtocolFactory.SecurityTokenManager.CreateSecurityTokenProvider(requirement);
             }
@@ -523,14 +448,14 @@ namespace System.ServiceModel.Security
             private async Task OpenCoreAsync(SecurityToken sessionToken, TimeSpan timeout)
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                _securityProtocol = Settings.SessionProtocolFactory.CreateSecurityProtocol(_to, Via, null, true, timeoutHelper.RemainingTime());
+                _securityProtocol = Settings.SessionProtocolFactory.CreateSecurityProtocol(RemoteAddress, Via, null, true, timeoutHelper.RemainingTime());
                 if (!(_securityProtocol is IInitiatorSecuritySessionProtocol))
                 {
                     Fx.Assert("Security protocol must be IInitiatorSecuritySessionProtocol.");
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ProtocolMisMatch, nameof(IInitiatorSecuritySessionProtocol), GetType().ToString())));
                 }
                 await _securityProtocol.OpenAsync(timeoutHelper.RemainingTime());
-                await _channelBinder.OpenAsync(timeoutHelper.RemainingTime());
+                await ChannelBinder.OpenAsync(timeoutHelper.RemainingTime());
                 InitializeSecurityState(sessionToken);
             }
 
@@ -568,7 +493,7 @@ namespace System.ServiceModel.Security
                 {
                     SecurityToken sessionToken = await _sessionTokenProvider.GetTokenAsync(timeoutHelper.RemainingTime());
                     // Token was issued, do send cancel on close;
-                    _sendCloseHandshake = true;
+                    SendCloseHandshake = true;
                     await OpenCoreAsync(sessionToken, timeoutHelper.RemainingTime());
                 }
             }
@@ -579,31 +504,31 @@ namespace System.ServiceModel.Security
                 TolerateFaultsMode faultMode = Settings.TolerateTransportFailures ? TolerateFaultsMode.Always : TolerateFaultsMode.Never;
                 if (channelBuilder.CanBuildChannelFactory<IDuplexSessionChannel>())
                 {
-                    _channelBinder = ClientReliableChannelBinder<IDuplexSessionChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IDuplexSessionChannel>)(object)Settings.InnerChannelFactory,
+                    ChannelBinder = ClientReliableChannelBinder<IDuplexSessionChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IDuplexSessionChannel>)(object)Settings.InnerChannelFactory,
                         MaskingMode.None, faultMode, _channelParameters, DefaultCloseTimeout, DefaultSendTimeout);
                 }
                 else if (channelBuilder.CanBuildChannelFactory<IDuplexChannel>())
                 {
-                    _channelBinder = ClientReliableChannelBinder<IDuplexChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IDuplexChannel>)(object)Settings.InnerChannelFactory,
+                    ChannelBinder = ClientReliableChannelBinder<IDuplexChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IDuplexChannel>)(object)Settings.InnerChannelFactory,
                         MaskingMode.None, faultMode, _channelParameters, DefaultCloseTimeout, DefaultSendTimeout);
                     _isCompositeDuplexConnection = true;
                 }
                 else if (channelBuilder.CanBuildChannelFactory<IRequestChannel>())
                 {
-                    _channelBinder = ClientReliableChannelBinder<IRequestChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IRequestChannel>)(object)Settings.InnerChannelFactory,
+                    ChannelBinder = ClientReliableChannelBinder<IRequestChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IRequestChannel>)(object)Settings.InnerChannelFactory,
                         MaskingMode.None, faultMode, _channelParameters, DefaultCloseTimeout, DefaultSendTimeout);
                 }
                 else if (channelBuilder.CanBuildChannelFactory<IRequestSessionChannel>())
                 {
-                    _channelBinder = ClientReliableChannelBinder<IRequestSessionChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IRequestSessionChannel>)(object)Settings.InnerChannelFactory,
+                    ChannelBinder = ClientReliableChannelBinder<IRequestSessionChannel>.CreateBinder(RemoteAddress, Via, (IChannelFactory<IRequestSessionChannel>)(object)Settings.InnerChannelFactory,
                         MaskingMode.None, faultMode, _channelParameters, DefaultCloseTimeout, DefaultSendTimeout);
                 }
-                _channelBinder.Faulted += this.OnInnerFaulted;
+                ChannelBinder.Faulted += OnInnerFaulted;
             }
 
             private void OnInnerFaulted(IReliableChannelBinder sender, Exception exception)
             {
-                this.Fault(exception);
+                Fault(exception);
             }
 
             protected virtual bool OnCloseResponseReceived()
@@ -621,7 +546,7 @@ namespace System.ServiceModel.Security
                 }
                 if (!isCloseResponseExpected)
                 {
-                    this.Fault(new ProtocolException(SR.UnexpectedSecuritySessionCloseResponse));
+                    Fault(new ProtocolException(SR.UnexpectedSecuritySessionCloseResponse));
                     return false;
                 }
                 if (setInputSessionClosedHandle)
@@ -635,7 +560,7 @@ namespace System.ServiceModel.Security
             {
                 if (!ExpectClose)
                 {
-                    this.Fault(new ProtocolException(SR.UnexpectedSecuritySessionClose));
+                    Fault(new ProtocolException(SR.UnexpectedSecuritySessionClose));
                     return false;
                 }
                 bool setInputSessionClosedHandle = false;
@@ -796,7 +721,7 @@ namespace System.ServiceModel.Security
 
             private void ProcessSessionAbortedFault(MessageFault sessionAbortedFault)
             {
-                this.Fault(new FaultException(sessionAbortedFault));
+                Fault(new FaultException(sessionAbortedFault));
             }
 
             private void ProcessCloseResponse(Message response)
@@ -1016,7 +941,7 @@ namespace System.ServiceModel.Security
                             if (unverifiedMessage.IsFault)
                             {
                                 MessageFault fault = MessageFault.CreateFault(unverifiedMessage, TransportDefaults.MaxSecurityFaultSize);
-                                if (SecurityUtils.IsSecurityFault(fault, _settings._sessionProtocolFactory.StandardsManager))
+                                if (SecurityUtils.IsSecurityFault(fault, Settings._sessionProtocolFactory.StandardsManager))
                                 {
                                     faultException = SecurityUtils.CreateSecurityFaultException(fault);
                                 }
@@ -1029,7 +954,7 @@ namespace System.ServiceModel.Security
                     }
                     if (faultException != null)
                     {
-                        this.Fault(faultException);
+                        Fault(faultException);
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(faultException);
                     }
                     return null;
@@ -1058,9 +983,9 @@ namespace System.ServiceModel.Security
 
             private DateTime GetKeyRenewalTime(SecurityToken token)
             {
-                TimeSpan tokenValidityInterval = TimeSpan.FromTicks((long)(((token.ValidTo.Ticks - token.ValidFrom.Ticks) * _settings._issuedTokenRenewalThreshold) / 100));
+                TimeSpan tokenValidityInterval = TimeSpan.FromTicks((long)(((token.ValidTo.Ticks - token.ValidFrom.Ticks) * Settings._issuedTokenRenewalThreshold) / 100));
                 DateTime keyRenewalTime1 = TimeoutHelper.Add(token.ValidFrom, tokenValidityInterval);
-                DateTime keyRenewalTime2 = TimeoutHelper.Add(token.ValidFrom, _settings._keyRenewalInterval);
+                DateTime keyRenewalTime2 = TimeoutHelper.Add(token.ValidFrom, Settings._keyRenewalInterval);
                 if (keyRenewalTime1 < keyRenewalTime2)
                 {
                     return keyRenewalTime1;
@@ -1102,7 +1027,7 @@ namespace System.ServiceModel.Security
 
             private async Task RenewKeyAsync(TimeSpan timeout)
             {
-                if (!_settings.CanRenewSession)
+                if (!Settings.CanRenewSession)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new SessionKeyExpiredException(SR.SessionKeyRenewalNotSupported));
                 }
@@ -1184,9 +1109,9 @@ namespace System.ServiceModel.Security
 
             protected virtual void AbortCore()
             {
-                if (_channelBinder != null)
+                if (ChannelBinder != null)
                 {
-                    _channelBinder.Abort();
+                    ChannelBinder.Abort();
                 }
                 if (_sessionTokenProvider != null)
                 {
@@ -1200,9 +1125,9 @@ namespace System.ServiceModel.Security
 
                 try
                 {
-                    if (_channelBinder != null)
+                    if (ChannelBinder != null)
                     {
-                        await _channelBinder.CloseAsync(timeoutHelper.RemainingTime());
+                        await ChannelBinder.CloseAsync(timeoutHelper.RemainingTime());
                     }
                     if (_sessionTokenProvider != null)
                     {
@@ -1420,7 +1345,6 @@ namespace System.ServiceModel.Security
             protected class SoapSecurityOutputSession : ISecureConversationSession, IOutputSession
             {
                 private ClientSecuritySessionChannel _channel;
-                private EndpointIdentity _remoteIdentity;
                 private UniqueId _sessionId;
                 private SecurityKeyIdentifierClause _sessionTokenIdentifier;
                 private SecurityStandardsManager _standardsManager;
@@ -1443,7 +1367,7 @@ namespace System.ServiceModel.Security
                     Claim identityClaim = SecurityUtils.GetPrimaryIdentityClaim(((GenericXmlSecurityToken)sessionToken).AuthorizationPolicies);
                     if (identityClaim != null)
                     {
-                        _remoteIdentity = EndpointIdentity.CreateIdentity(identityClaim);
+                        RemoteIdentity = EndpointIdentity.CreateIdentity(identityClaim);
                     }
                     _standardsManager = settings.SessionProtocolFactory.StandardsManager;
                     _sessionId = GetSessionId(sessionToken, _standardsManager);
@@ -1473,13 +1397,7 @@ namespace System.ServiceModel.Security
                     }
                 }
 
-                public EndpointIdentity RemoteIdentity
-                {
-                    get
-                    {
-                        return _remoteIdentity;
-                    }
-                }
+                public EndpointIdentity RemoteIdentity { get; private set; }
 
                 public void WriteSessionTokenIdentifier(XmlDictionaryWriter writer)
                 {
@@ -1736,7 +1654,7 @@ namespace System.ServiceModel.Security
 
             public Task SendAsync(Message message)
             {
-                return this.SendAsync(message, this.DefaultSendTimeout);
+                return SendAsync(message, DefaultSendTimeout);
             }
 
             public void Send(Message message, TimeSpan timeout) => SendAsync(message, timeout).GetAwaiter().GetResult();
@@ -1747,8 +1665,8 @@ namespace System.ServiceModel.Security
                 CheckOutputOpen();
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityProtocolCorrelationState dummy;
-                (dummy, message) = await this.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime());
-                await this.ChannelBinder.SendAsync(message, timeoutHelper.RemainingTime());
+                (dummy, message) = await SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime());
+                await ChannelBinder.SendAsync(message, timeoutHelper.RemainingTime());
             }
 
             public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state) => SendAsync(message).ToApm(callback, state);
@@ -1759,7 +1677,7 @@ namespace System.ServiceModel.Security
 
             protected override void InitializeSession(SecurityToken sessionToken)
             {
-                _session.Initialize(sessionToken, this.Settings);
+                _session.Initialize(sessionToken, Settings);
             }
 
             private async void StartReceiving()
@@ -1767,7 +1685,7 @@ namespace System.ServiceModel.Security
                 while (true)
                 {
                     // no need to receive anymore if in the closed state
-                    if (this.State == CommunicationState.Closed || this.State == CommunicationState.Faulted || this.IsInputClosed)
+                    if (State == CommunicationState.Closed || State == CommunicationState.Faulted || IsInputClosed)
                     {
                         return;
                     }
@@ -1785,7 +1703,9 @@ namespace System.ServiceModel.Security
                                 catch (Exception e)
                                 {
                                     if (Fx.IsFatal(e))
+                                    {
                                         throw;
+                                    }
                                 }
                             }), null);
                         }
@@ -1829,7 +1749,7 @@ namespace System.ServiceModel.Security
 
             protected override void OnFaulted()
             {
-                _queue.Shutdown(() => this.GetPendingException());
+                _queue.Shutdown(() => GetPendingException());
                 base.OnFaulted();
             }
 
@@ -1888,7 +1808,7 @@ namespace System.ServiceModel.Security
 
                 public Task CloseOutputSessionAsync()
                 {
-                    return this.CloseOutputSessionAsync(_channel.DefaultCloseTimeout);
+                    return CloseOutputSessionAsync(_channel.DefaultCloseTimeout);
                 }
 
                 public void CloseOutputSession(TimeSpan timeout) => CloseOutputSessionAsync(timeout).GetAwaiter().GetResult();
@@ -1913,7 +1833,10 @@ namespace System.ServiceModel.Security
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
+                        {
                             throw;
+                        }
+
                         pendingException = e;
                     }
                     if (pendingException != null)

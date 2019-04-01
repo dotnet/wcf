@@ -4,11 +4,9 @@
 
 
 using System.ServiceModel.Channels;
-using System.ServiceModel.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.Runtime.Diagnostics;
 using System.Threading.Tasks;
-using System.Threading;
 using System.Runtime;
 
 namespace System.ServiceModel.Security

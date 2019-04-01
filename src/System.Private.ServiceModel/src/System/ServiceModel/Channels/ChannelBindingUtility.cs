@@ -5,7 +5,6 @@
 
 using System.Net;
 using System.Net.Security;
-using System.Runtime;
 using System.Security.Authentication.ExtendedProtection;
 
 namespace System.ServiceModel.Channels
@@ -13,15 +12,8 @@ namespace System.ServiceModel.Channels
     internal static class ChannelBindingUtility
     {
         private static readonly ExtendedProtectionPolicy s_disabledPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
-        private static readonly ExtendedProtectionPolicy s_defaultPolicy = s_disabledPolicy;
 
-        public static ExtendedProtectionPolicy DefaultPolicy
-        {
-            get
-            {
-                return s_defaultPolicy;
-            }
-        }
+        public static ExtendedProtectionPolicy DefaultPolicy { get; } = s_disabledPolicy;
 
         public static ChannelBinding GetToken(SslStream stream)
         {

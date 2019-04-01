@@ -2,41 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-using System.Runtime;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
-using System.Text;
 using System.Xml;
 using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
-using KeyIdentifierClauseEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
-using StrEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.StrEntry;
 using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
 
 namespace System.ServiceModel.Security
 {
     internal class WSSecurityJan2004 : WSSecurityTokenSerializer.SerializerEntries
     {
-        private WSSecurityTokenSerializer _tokenSerializer;
         private SamlSerializer _samlSerializer;
 
         public WSSecurityJan2004(WSSecurityTokenSerializer tokenSerializer, SamlSerializer samlSerializer)
         {
-            _tokenSerializer = tokenSerializer;
+            WSSecurityTokenSerializer = tokenSerializer;
             _samlSerializer = samlSerializer;
         }
 
-        public WSSecurityTokenSerializer WSSecurityTokenSerializer
-        {
-            get { return _tokenSerializer; }
-        }
+        public WSSecurityTokenSerializer WSSecurityTokenSerializer { get; }
 
         public SamlSerializer SamlSerializer
         {
@@ -46,8 +33,8 @@ namespace System.ServiceModel.Security
         protected void PopulateJan2004TokenEntries(IList<TokenEntry> tokenEntryList)
         {
             tokenEntryList.Add(new GenericXmlTokenEntry());
-            tokenEntryList.Add(new UserNamePasswordTokenEntry(_tokenSerializer));
-            tokenEntryList.Add(new X509TokenEntry(_tokenSerializer));
+            tokenEntryList.Add(new UserNamePasswordTokenEntry(WSSecurityTokenSerializer));
+            tokenEntryList.Add(new X509TokenEntry(WSSecurityTokenSerializer));
         }
 
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
@@ -77,12 +64,16 @@ namespace System.ServiceModel.Security
             protected BinaryTokenEntry(WSSecurityTokenSerializer tokenSerializer, string[] valueTypeUris)
             {
                 if (valueTypeUris == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(valueTypeUris));
+                }
 
                 _tokenSerializer = tokenSerializer;
                 _valueTypeUris = new string[valueTypeUris.GetLength(0)];
                 for (int i = 0; i < _valueTypeUris.GetLength(0); ++i)
+                {
                     _valueTypeUris[i] = valueTypeUris[i];
+                }
             }
 
             protected override XmlDictionaryString LocalName { get { return ElementName; } }
@@ -94,7 +85,9 @@ namespace System.ServiceModel.Security
                 for (int i = 0; i < _valueTypeUris.GetLength(0); ++i)
                 {
                     if (_valueTypeUris[i] == tokenTypeUri)
+                    {
                         return true;
+                    }
                 }
 
                 return false;
@@ -110,7 +103,7 @@ namespace System.ServiceModel.Security
                 switch (tokenReferenceStyle)
                 {
                     case SecurityTokenReferenceStyle.Internal:
-                        return CreateDirectReference(issuedTokenXml, UtilityStrings.IdAttribute, UtilityStrings.Namespace, this.TokenType);
+                        return CreateDirectReference(issuedTokenXml, UtilityStrings.IdAttribute, UtilityStrings.Namespace, TokenType);
                     case SecurityTokenReferenceStyle.External:
                         string encoding = issuedTokenXml.GetAttribute(EncodingTypeAttributeString, null);
                         string encodedData = issuedTokenXml.InnerText;
@@ -285,7 +278,9 @@ namespace System.ServiceModel.Security
                 ParseToken(reader, out id, out userName, out password);
 
                 if (id == null)
+                {
                     id = SecurityUniqueId.Create().Value;
+                }
 
                 return new UserNameSecurityToken(userName, password, id);
             }
@@ -367,7 +362,9 @@ namespace System.ServiceModel.Security
                 reader.ReadEndElement();
 
                 if (userName == null)
+                {
                     XmlHelper.OnRequiredElementMissing(SecurityJan2004Strings.UserNameElement, SecurityJan2004Strings.Namespace);
+                }
             }
         }
 
@@ -433,7 +430,9 @@ namespace System.ServiceModel.Security
             public override string ExtractId(XmlDictionaryReader reader)
             {
                 if (reader == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
+                }
 
                 return reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
             }
@@ -441,7 +440,9 @@ namespace System.ServiceModel.Security
             public override void WriteIdAttribute(XmlDictionaryWriter writer, string id)
             {
                 if (writer == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
+                }
 
                 writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, id);
             }

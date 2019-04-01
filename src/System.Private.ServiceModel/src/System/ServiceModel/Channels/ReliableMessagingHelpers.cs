@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Runtime;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -39,7 +38,9 @@ namespace System.ServiceModel.Channels
             lock (_thisLock)
             {
                 if (_aborted)
+                {
                     return;
+                }
 
                 _communicationObject = communicationObject;
 
@@ -58,7 +59,9 @@ namespace System.ServiceModel.Channels
             lock (_thisLock)
             {
                 if (_aborted)
+                {
                     return;
+                }
 
                 _communicationObject = communicationObject;
 
@@ -86,7 +89,9 @@ namespace System.ServiceModel.Channels
                 _set = true;
 
                 if (_tcs != null)
+                {
                     _tcs.TrySetResult(null);
+                }
             }
         }
 
@@ -122,7 +127,9 @@ namespace System.ServiceModel.Channels
                 if (_set)
                 {
                     if (_communicationObject != null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(GetException());
+                    }
 
                     return true;
                 }
@@ -140,9 +147,13 @@ namespace System.ServiceModel.Channels
                 if (!await _tcs.Task.AwaitWithTimeout(timeout))
                 {
                     if (throwTimeoutException)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SR.Format(SR.TimeoutOnOperation, timeout)));
+                    }
                     else
+                    {
                         return false;
+                    }
                 }
             }
             finally
@@ -159,7 +170,9 @@ namespace System.ServiceModel.Channels
             }
 
             if (_communicationObject != null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(GetException());
+            }
 
             return true;
         }

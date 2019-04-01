@@ -29,9 +29,6 @@ namespace System.ServiceModel
 
         private static void UpdateLevel()
         {
-#pragma warning disable 618
-
-#pragma warning restore 618
         }
 
         public static ExceptionUtility ExceptionUtility
@@ -48,9 +45,7 @@ namespace System.ServiceModel
             {
                 if (DiagnosticUtility.s_exceptionUtility == null)
                 {
-#pragma warning disable 618
                     DiagnosticUtility.s_exceptionUtility = new ExceptionUtility(DiagnosticUtility.TraceSourceName, DiagnosticUtility.EventSourceName, FxTrace.Exception);
-#pragma warning restore 618
                 }
             }
             return DiagnosticUtility.s_exceptionUtility;
@@ -75,10 +70,7 @@ namespace System.ServiceModel
         [Conditional("DEBUG")]
         internal static void DebugAssert(string message)
         {
-#pragma warning disable 618
             Fx.Assert(message);
-#pragma warning restore 618
         }
     }
 }
-#pragma warning restore 1634, 1691

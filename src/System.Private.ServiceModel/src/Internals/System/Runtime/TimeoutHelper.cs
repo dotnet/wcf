@@ -20,14 +20,13 @@ namespace System.Runtime
 
         private CancellationToken _cancellationToken;
         private DateTime _deadline;
-        private TimeSpan _originalTimeout;
 
         public TimeoutHelper(TimeSpan timeout)
         {
             Contract.Assert(timeout >= TimeSpan.Zero, "timeout must be non-negative");
 
             _cancellationTokenInitialized = false;
-            _originalTimeout = timeout;
+            OriginalTimeout = timeout;
             _deadline = DateTime.MaxValue;
             _deadlineSet = (timeout == TimeSpan.MaxValue);
         }
@@ -61,10 +60,7 @@ namespace System.Runtime
         }
 
 
-        public TimeSpan OriginalTimeout
-        {
-            get { return _originalTimeout; }
-        }
+        public TimeSpan OriginalTimeout { get; }
 
         public static bool IsTooLarge(TimeSpan timeout)
         {
@@ -149,8 +145,8 @@ namespace System.Runtime
         {
             if (!_deadlineSet)
             {
-                this.SetDeadline();
-                return _originalTimeout;
+                SetDeadline();
+                return OriginalTimeout;
             }
             else if (_deadline == DateTime.MaxValue)
             {
@@ -172,13 +168,13 @@ namespace System.Runtime
 
         public TimeSpan ElapsedTime()
         {
-            return _originalTimeout - this.RemainingTime();
+            return OriginalTimeout - RemainingTime();
         }
 
         private void SetDeadline()
         {
             Contract.Assert(!_deadlineSet, "TimeoutHelper deadline set twice.");
-            _deadline = DateTime.UtcNow + _originalTimeout;
+            _deadline = DateTime.UtcNow + OriginalTimeout;
             _deadlineSet = true;
         }
 

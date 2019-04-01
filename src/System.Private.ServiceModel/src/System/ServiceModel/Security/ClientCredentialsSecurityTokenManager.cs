@@ -11,28 +11,18 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel
 {
     public class ClientCredentialsSecurityTokenManager : SecurityTokenManager
     {
-        private ClientCredentials _parent;
-
         public ClientCredentialsSecurityTokenManager(ClientCredentials clientCredentials)
         {
-            if (clientCredentials == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("clientCredentials");
-            }
-            _parent = clientCredentials;
+            ClientCredentials = clientCredentials ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(clientCredentials));
         }
 
-        public ClientCredentials ClientCredentials
-        {
-            get { return _parent; }
-        }
+        public ClientCredentials ClientCredentials { get; }
 
         private string GetServicePrincipalName(InitiatorServiceModelSecurityTokenRequirement initiatorRequirement)
         {
@@ -97,18 +87,18 @@ namespace System.ServiceModel
         {
             if (tokenRequirement == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenRequirement");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenRequirement));
             }
 
             SecurityTokenProvider result = null;
             if (tokenRequirement is RecipientServiceModelSecurityTokenRequirement && tokenRequirement.TokenType == SecurityTokenTypes.X509Certificate && tokenRequirement.KeyUsage == SecurityKeyUsage.Exchange)
             {
                 // this is the uncorrelated duplex case
-                if (_parent.ClientCertificate.Certificate == null)
+                if (ClientCredentials.ClientCertificate.Certificate == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientCertificateNotProvidedOnClientCredentials)));
                 }
-                result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate, _parent.ClientCertificate.CloneCertificate);
+                result = new X509SecurityTokenProvider(ClientCredentials.ClientCertificate.Certificate, ClientCredentials.ClientCertificate.CloneCertificate);
             }
             else if (tokenRequirement is InitiatorServiceModelSecurityTokenRequirement)
             {
@@ -126,40 +116,40 @@ namespace System.ServiceModel
                     }
                     else
                     {
-                        if (_parent.ClientCertificate.Certificate == null)
+                        if (ClientCredentials.ClientCertificate.Certificate == null)
                         {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientCertificateNotProvidedOnClientCredentials)));
                         }
-                        result = new X509SecurityTokenProvider(_parent.ClientCertificate.Certificate, _parent.ClientCertificate.CloneCertificate);
+                        result = new X509SecurityTokenProvider(ClientCredentials.ClientCertificate.Certificate, ClientCredentials.ClientCertificate.CloneCertificate);
                     }
                 }
                 else if (tokenType == SecurityTokenTypes.Kerberos)
                 {
                     string spn = GetServicePrincipalName(initiatorRequirement);
                     result = new KerberosSecurityTokenProviderWrapper(
-                        new KerberosSecurityTokenProvider(spn, _parent.Windows.AllowedImpersonationLevel, SecurityUtils.GetNetworkCredentialOrDefault(_parent.Windows.ClientCredential)));
+                        new KerberosSecurityTokenProvider(spn, ClientCredentials.Windows.AllowedImpersonationLevel, SecurityUtils.GetNetworkCredentialOrDefault(ClientCredentials.Windows.ClientCredential)));
                 }
                 else if (tokenType == SecurityTokenTypes.UserName)
                 {
-                    if (_parent.UserName.UserName == null)
+                    if (ClientCredentials.UserName.UserName == null)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.UserNamePasswordNotProvidedOnClientCredentials));
                     }
-                    result = new UserNameSecurityTokenProvider(_parent.UserName.UserName, _parent.UserName.Password);
+                    result = new UserNameSecurityTokenProvider(ClientCredentials.UserName.UserName, ClientCredentials.UserName.Password);
                 }
                 else if (tokenType == ServiceModelSecurityTokenTypes.SspiCredential)
                 {
                     if (IsDigestAuthenticationScheme(initiatorRequirement))
                     {
-                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.HttpDigest.ClientCredential), true, TokenImpersonationLevel.Delegation);
+                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(ClientCredentials.HttpDigest.ClientCredential), true, TokenImpersonationLevel.Delegation);
                     }
                     else
                     {
-#pragma warning disable 618   // to disable AllowNtlm obsolete wanring.      
-                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(_parent.Windows.ClientCredential),
+#pragma warning disable 618   // to disable AllowNtlm obsolete warning.      
+                        result = new SspiSecurityTokenProvider(SecurityUtils.GetNetworkCredentialOrDefault(ClientCredentials.Windows.ClientCredential),
 
-                            _parent.Windows.AllowNtlm,
-                            _parent.Windows.AllowedImpersonationLevel);
+                            ClientCredentials.Windows.AllowNtlm,
+                            ClientCredentials.Windows.AllowedImpersonationLevel);
 #pragma warning restore 618
                     }
                 }
@@ -262,14 +252,14 @@ namespace System.ServiceModel
 
         private X509SecurityTokenAuthenticator CreateServerX509TokenAuthenticator()
         {
-            return new X509SecurityTokenAuthenticator(_parent.ServiceCertificate.Authentication.GetCertificateValidator(), false);
+            return new X509SecurityTokenAuthenticator(ClientCredentials.ServiceCertificate.Authentication.GetCertificateValidator(), false);
         }
 
         private X509SecurityTokenAuthenticator CreateServerSslX509TokenAuthenticator()
         {
-            if (_parent.ServiceCertificate.SslCertificateAuthentication != null)
+            if (ClientCredentials.ServiceCertificate.SslCertificateAuthentication != null)
             {
-                return new X509SecurityTokenAuthenticator(_parent.ServiceCertificate.SslCertificateAuthentication.GetCertificateValidator(), false);
+                return new X509SecurityTokenAuthenticator(ClientCredentials.ServiceCertificate.SslCertificateAuthentication.GetCertificateValidator(), false);
             }
 
             return CreateServerX509TokenAuthenticator();
@@ -279,7 +269,7 @@ namespace System.ServiceModel
         {
             if (tokenRequirement == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenRequirement");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenRequirement));
             }
 
             outOfBandTokenResolver = null;

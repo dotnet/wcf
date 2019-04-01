@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System.ServiceModel.Security.Tokens;
-using System.ServiceModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security

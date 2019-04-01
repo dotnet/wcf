@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.IdentityModel;
 using System.IdentityModel.Tokens;
 
 namespace System.ServiceModel.Security
@@ -39,7 +38,9 @@ namespace System.ServiceModel.Security
         public override SecurityKey CreateKey()
         {
             if (_symmetricKey == null)
+            {
                 _symmetricKey = new InMemorySymmetricSecurityKey(GetBuffer(), false);
+            }
 
             return _symmetricKey;
         }
@@ -47,7 +48,7 @@ namespace System.ServiceModel.Security
         public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause)
         {
             BinarySecretKeyIdentifierClause that = keyIdentifierClause as BinarySecretKeyIdentifierClause;
-            return ReferenceEquals(this, that) || (that != null && that.Matches(this.GetRawBuffer()));
+            return ReferenceEquals(this, that) || (that != null && that.Matches(GetRawBuffer()));
         }
     }
 }

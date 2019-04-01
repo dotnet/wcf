@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 using System.Xml;
-using static System.IdentityModel.Selectors.SecurityTokenSerializer;
 
 namespace System.ServiceModel.Security
 {

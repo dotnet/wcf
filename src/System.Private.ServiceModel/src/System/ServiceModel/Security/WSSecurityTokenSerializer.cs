@@ -7,11 +7,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
-using System.ServiceModel.Diagnostics;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
@@ -23,13 +20,9 @@ namespace System.ServiceModel.Security
         private const int DefaultMaximumKeyDerivationNonceLength = 128; // bytes
 
         private static WSSecurityTokenSerializer s_instance;
-        private readonly bool _emitBspRequiredAttributes;
-        private readonly SecurityVersion _securityVersion;
         private readonly List<SerializerEntries> _serializerEntries;
         private WSSecureConversation _secureConversation;
         private readonly List<TokenEntry> _tokenEntries = new List<TokenEntry>();
-        private int _maximumKeyDerivationOffset;
-        private int _maximumKeyDerivationLabelLength;
         private int _maximumKeyDerivationNonceLength;
 
         private KeyInfoSerializer _keyInfoSerializer;
@@ -78,9 +71,6 @@ namespace System.ServiceModel.Security
         public WSSecurityTokenSerializer(SecurityVersion securityVersion, TrustVersion trustVersion, SecureConversationVersion secureConversationVersion, bool emitBspRequiredAttributes, SamlSerializer samlSerializer, SecurityStateEncoder securityStateEncoder, IEnumerable<Type> knownTypes,
             int maximumKeyDerivationOffset, int maximumKeyDerivationLabelLength, int maximumKeyDerivationNonceLength)
         {
-            if (securityVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(securityVersion)));
-
             if (maximumKeyDerivationOffset < 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(maximumKeyDerivationOffset), SR.ValueMustBeNonNegative));
@@ -94,11 +84,11 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(maximumKeyDerivationNonceLength), SR.ValueMustBeGreaterThanZero));
             }
 
-            _securityVersion = securityVersion;
-            _emitBspRequiredAttributes = emitBspRequiredAttributes;
-            _maximumKeyDerivationOffset = maximumKeyDerivationOffset;
+            SecurityVersion = securityVersion ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(securityVersion)));
+            EmitBspRequiredAttributes = emitBspRequiredAttributes;
+            MaximumKeyDerivationOffset = maximumKeyDerivationOffset;
             _maximumKeyDerivationNonceLength = maximumKeyDerivationNonceLength;
-            _maximumKeyDerivationLabelLength = maximumKeyDerivationLabelLength;
+            MaximumKeyDerivationLabelLength = maximumKeyDerivationLabelLength;
 
             _serializerEntries = new List<SerializerEntries>();
 
@@ -155,7 +145,7 @@ namespace System.ServiceModel.Security
             dictionaryManager.SecureConversationDec2005Dictionary = new IdentityModel.SecureConversationDec2005Dictionary(new CollectionDictionary(DXD.SecureConversationDec2005Dictionary.SecureConversationDictionaryStrings));
             dictionaryManager.SecurityAlgorithmDec2005Dictionary = new IdentityModel.SecurityAlgorithmDec2005Dictionary(new CollectionDictionary(DXD.SecurityAlgorithmDec2005Dictionary.SecurityAlgorithmDictionaryStrings));
 
-            _keyInfoSerializer = new WSKeyInfoSerializer(_emitBspRequiredAttributes, dictionaryManager, trustDictionary, this, securityVersion, secureConversationVersion);
+            _keyInfoSerializer = new WSKeyInfoSerializer(EmitBspRequiredAttributes, dictionaryManager, trustDictionary, this, securityVersion, secureConversationVersion);
         }
 
         public static WSSecurityTokenSerializer DefaultInstance
@@ -163,30 +153,21 @@ namespace System.ServiceModel.Security
             get
             {
                 if (s_instance == null)
+                {
                     s_instance = new WSSecurityTokenSerializer();
+                }
+
                 return s_instance;
             }
         }
 
-        public bool EmitBspRequiredAttributes
-        {
-            get { return _emitBspRequiredAttributes; }
-        }
+        public bool EmitBspRequiredAttributes { get; }
 
-        public SecurityVersion SecurityVersion
-        {
-            get { return _securityVersion; }
-        }
+        public SecurityVersion SecurityVersion { get; }
 
-        public int MaximumKeyDerivationOffset
-        {
-            get { return _maximumKeyDerivationOffset; }
-        }
+        public int MaximumKeyDerivationOffset { get; }
 
-        public int MaximumKeyDerivationLabelLength
-        {
-            get { return _maximumKeyDerivationLabelLength; }
-        }
+        public int MaximumKeyDerivationLabelLength { get; }
 
         public int MaximumKeyDerivationNonceLength
         {
@@ -209,7 +190,9 @@ namespace System.ServiceModel.Security
             {
                 TokenEntry tokenEntry = _tokenEntries[i];
                 if (tokenEntry.CanReadTokenCore(localReader))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -245,7 +228,9 @@ namespace System.ServiceModel.Security
             {
                 TokenEntry tokenEntry = _tokenEntries[i];
                 if (tokenEntry.SupportsCore(token.GetType()))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -277,7 +262,9 @@ namespace System.ServiceModel.Security
             }
 
             if (!wroteToken)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
+            }
 
             localWriter.Flush();
         }
@@ -293,7 +280,7 @@ namespace System.ServiceModel.Security
             {
                 return _keyInfoSerializer.ReadKeyIdentifier(reader);
             }
-            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            catch (IdentityModel.SecurityMessageSerializationException ex)
             {
                 throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
             }
@@ -310,7 +297,7 @@ namespace System.ServiceModel.Security
             {
                 _keyInfoSerializer.WriteKeyIdentifier(writer, keyIdentifier);
             }
-            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            catch (IdentityModel.SecurityMessageSerializationException ex)
             {
                 throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
             }
@@ -327,7 +314,7 @@ namespace System.ServiceModel.Security
             {
                 return _keyInfoSerializer.ReadKeyIdentifierClause(reader);
             }
-            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            catch (IdentityModel.SecurityMessageSerializationException ex)
             {
                 throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
             }
@@ -344,7 +331,7 @@ namespace System.ServiceModel.Security
             {
                 _keyInfoSerializer.WriteKeyIdentifierClause(writer, keyIdentifierClause);
             }
-            catch (System.IdentityModel.SecurityMessageSerializationException ex)
+            catch (IdentityModel.SecurityMessageSerializationException ex)
             {
                 throw FxTrace.Exception.AsError(new MessageSecurityException(ex.Message));
             }
@@ -387,7 +374,9 @@ namespace System.ServiceModel.Security
         public virtual bool TryCreateKeyIdentifierClauseFromTokenXml(XmlElement element, SecurityTokenReferenceStyle tokenReferenceStyle, out SecurityKeyIdentifierClause securityKeyIdentifierClause)
         {
             if (element == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("element");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(element));
+            }
 
             securityKeyIdentifierClause = null;
 
@@ -406,7 +395,9 @@ namespace System.ServiceModel.Security
         public virtual SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXml(XmlElement element, SecurityTokenReferenceStyle tokenReferenceStyle)
         {
             if (element == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("element");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(element));
+            }
 
             for (int i = 0; i < _tokenEntries.Count; i++)
             {
@@ -445,7 +436,10 @@ namespace System.ServiceModel.Security
             public Type[] GetTokenTypes()
             {
                 if (_tokenTypes == null)
+                {
                     _tokenTypes = GetTokenTypesCore();
+                }
+
                 return _tokenTypes;
             }
 
@@ -455,7 +449,9 @@ namespace System.ServiceModel.Security
                 for (int i = 0; i < tokenTypes.Length; ++i)
                 {
                     if (tokenTypes[i].IsAssignableFrom(tokenType))
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -516,16 +512,15 @@ namespace System.ServiceModel.Security
 
             public CollectionDictionary(List<XmlDictionaryString> dictionaryStrings)
             {
-                if (dictionaryStrings == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("dictionaryStrings"));
-
-                _dictionaryStrings = dictionaryStrings;
+                _dictionaryStrings = dictionaryStrings ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(dictionaryStrings)));
             }
 
             public bool TryLookup(string value, out XmlDictionaryString result)
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
+                }
 
                 for (int i = 0; i < _dictionaryStrings.Count; ++i)
                 {
@@ -556,7 +551,9 @@ namespace System.ServiceModel.Security
             public bool TryLookup(XmlDictionaryString value, out XmlDictionaryString result)
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
+                }
 
                 for (int i = 0; i < _dictionaryStrings.Count; ++i)
                 {

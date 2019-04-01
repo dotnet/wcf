@@ -28,7 +28,9 @@ namespace System.IdentityModel.Tokens
         private static byte[] GetHash(X509Certificate2 certificate)
         {
             if (certificate == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+            }
 
             return certificate.GetCertHash();
         }
@@ -41,7 +43,9 @@ namespace System.IdentityModel.Tokens
         public bool Matches(X509Certificate2 certificate)
         {
             if (certificate == null)
+            {
                 return false;
+            }
 
             return Matches(GetHash(certificate));
         }

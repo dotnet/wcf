@@ -34,7 +34,7 @@ namespace System.ServiceModel.Security.Tokens
 
         internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
         {
-            return this.CreateKeyIdentifierClause<SecurityKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+            return CreateKeyIdentifierClause<SecurityKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
         }
 
         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)

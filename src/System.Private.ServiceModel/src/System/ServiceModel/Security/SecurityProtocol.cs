@@ -203,7 +203,7 @@ namespace System.ServiceModel.Security
                     {
                         requirement.IsOptionalToken = true;
                     }
-                    System.IdentityModel.Selectors.SecurityTokenProvider provider = SecurityProtocolFactory.SecurityTokenManager.CreateSecurityTokenProvider(requirement);
+                    SecurityTokenProvider provider = SecurityProtocolFactory.SecurityTokenManager.CreateSecurityTokenProvider(requirement);
                     if (provider == null)
                     {
                         continue;
@@ -229,7 +229,7 @@ namespace System.ServiceModel.Security
                     {
                         requirement.IsOptionalToken = true;
                     }
-                    System.IdentityModel.Selectors.SecurityTokenProvider provider = SecurityProtocolFactory.SecurityTokenManager.CreateSecurityTokenProvider(requirement);
+                    SecurityTokenProvider provider = SecurityProtocolFactory.SecurityTokenManager.CreateSecurityTokenProvider(requirement);
                     if (provider == null)
                     {
                         continue;

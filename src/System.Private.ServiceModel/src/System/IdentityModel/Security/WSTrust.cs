@@ -29,7 +29,7 @@ namespace System.IdentityModel.Security
             tokenEntryList.Add(new BinarySecretTokenEntry(this));
         }
 
-        public override void PopulateKeyIdentifierClauseEntries(IList<SecurityTokenSerializer.KeyIdentifierClauseEntry> keyIdentifierClauseEntries)
+        public override void PopulateKeyIdentifierClauseEntries(IList<KeyIdentifierClauseEntry> keyIdentifierClauseEntries)
         {
             keyIdentifierClauseEntries.Add(new BinarySecretClauseEntry(this));
             keyIdentifierClauseEntries.Add(new GenericXmlSecurityKeyIdentifierClauseEntry(this));
@@ -74,7 +74,9 @@ namespace System.IdentityModel.Security
 
                 // always set it, so we don't have to worry about null
                 if (_otherDictionary == null)
+                {
                     _otherDictionary = _parent.SerializerDictionary;
+                }
             }
 
             protected override XmlDictionaryString LocalName
@@ -158,7 +160,10 @@ namespace System.IdentityModel.Security
         {
             value = null;
             if (element.LocalName != name || element.NamespaceURI != ns)
+            {
                 return false;
+            }
+
             if (element.FirstChild is XmlText)
             {
                 value = ((XmlText)element.FirstChild).Value;

@@ -9,8 +9,6 @@ namespace System.ServiceModel
 {
     public class FaultCode
     {
-        private FaultCode _subCode;
-        private string _name;
         private string _ns;
         private EnvelopeVersion _version;
 
@@ -32,25 +30,40 @@ namespace System.ServiceModel
         public FaultCode(string name, string ns, FaultCode subCode)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
+
             if (name.Length == 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(name)));
+            }
 
             if (!string.IsNullOrEmpty(ns))
+            {
                 NamingHelper.CheckUriParameter(ns, "ns");
+            }
 
-            _name = name;
+            Name = name;
             _ns = ns;
-            _subCode = subCode;
+            SubCode = subCode;
 
             if (ns == Message12Strings.Namespace)
+            {
                 _version = EnvelopeVersion.Soap12;
+            }
             else if (ns == Message11Strings.Namespace)
+            {
                 _version = EnvelopeVersion.Soap11;
+            }
             else if (ns == MessageStrings.Namespace)
+            {
                 _version = EnvelopeVersion.None;
+            }
             else
+            {
                 _version = null;
+            }
         }
 
         public bool IsPredefinedFault
@@ -66,7 +79,9 @@ namespace System.ServiceModel
             get
             {
                 if (IsPredefinedFault)
-                    return _name == (_version ?? EnvelopeVersion.Soap12).SenderFaultName;
+                {
+                    return Name == (_version ?? EnvelopeVersion.Soap12).SenderFaultName;
+                }
 
                 return false;
             }
@@ -77,7 +92,9 @@ namespace System.ServiceModel
             get
             {
                 if (IsPredefinedFault)
-                    return _name == (_version ?? EnvelopeVersion.Soap12).ReceiverFaultName;
+                {
+                    return Name == (_version ?? EnvelopeVersion.Soap12).ReceiverFaultName;
+                }
 
                 return false;
             }
@@ -91,21 +108,9 @@ namespace System.ServiceModel
             }
         }
 
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
+        public string Name { get; }
 
-        public FaultCode SubCode
-        {
-            get
-            {
-                return _subCode;
-            }
-        }
+        public FaultCode SubCode { get; }
 
         public static FaultCode CreateSenderFaultCode(FaultCode subCode)
         {
@@ -120,7 +125,10 @@ namespace System.ServiceModel
         public static FaultCode CreateReceiverFaultCode(FaultCode subCode)
         {
             if (subCode == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("subCode"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(subCode)));
+            }
+
             return new FaultCode("Receiver", subCode);
         }
 

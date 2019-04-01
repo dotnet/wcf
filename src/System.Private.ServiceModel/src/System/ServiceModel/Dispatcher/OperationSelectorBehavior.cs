@@ -23,7 +23,9 @@ namespace System.ServiceModel.Dispatcher
         void IContractBehavior.ApplyDispatchBehavior(ContractDescription description, ServiceEndpoint endpoint, DispatchRuntime dispatch)
         {
             if (dispatch.ClientRuntime != null)
+            {
                 dispatch.ClientRuntime.OperationSelector = new MethodInfoOperationSelector(description, MessageDirection.Output);
+            }
         }
 
         void IContractBehavior.ApplyClientBehavior(ContractDescription description, ServiceEndpoint endpoint, ClientRuntime proxy)
@@ -47,7 +49,9 @@ namespace System.ServiceModel.Dispatcher
                         if (operation.SyncMethod != null)
                         {
                             if (!_operationMap.ContainsKey(operation.SyncMethod))
+                            {
                                 _operationMap.Add(operation.SyncMethod, operation.Name);
+                            }
                         }
 
                         if (operation.BeginMethod != null)
@@ -78,9 +82,13 @@ namespace System.ServiceModel.Dispatcher
             public string SelectOperation(MethodBase method, object[] parameters)
             {
                 if (_operationMap.ContainsKey(method))
+                {
                     return _operationMap[method];
+                }
                 else
+                {
                     return null;
+                }
             }
         }
     }

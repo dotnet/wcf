@@ -33,9 +33,14 @@ namespace System.ServiceModel.Dispatcher
                 string action;
                 MessageFault messageFault = rpc.Operation.FaultFormatter.Serialize(fault, out action);
                 if (action == null)
+                {
                     action = rpc.RequestVersion.Addressing.DefaultFaultAction;
+                }
+
                 if (messageFault != null)
+                {
                     rpc.FaultInfo.Fault = Message.CreateMessage(rpc.RequestVersion, messageFault, action);
+                }
             }
         }
 
@@ -54,11 +59,11 @@ namespace System.ServiceModel.Dispatcher
                 Fx.Assert("System.ServiceModel.Dispatcher.ErrorBehavior.ProvideMessageFaultCore(): (this.messageVersion != rpc.RequestVersion)");
             }
 
-            this.InitializeFault(ref rpc);
+            InitializeFault(ref rpc);
 
-            this.ProvideFault(rpc.Error, rpc.Channel.GetProperty<FaultConverter>(), ref rpc.FaultInfo);
+            ProvideFault(rpc.Error, rpc.Channel.GetProperty<FaultConverter>(), ref rpc.FaultInfo);
 
-            this.ProvideMessageFaultCoreCoda(ref rpc);
+            ProvideMessageFaultCoreCoda(ref rpc);
         }
 
         private void ProvideMessageFaultCoreCoda(ref MessageRpc rpc)
@@ -124,7 +129,7 @@ namespace System.ServiceModel.Dispatcher
                     WcfEventSource.Instance.FaultProviderInvoked(_handlers[i].GetType().FullName, e.Message);
                 }
             }
-            this.ProvideFaultOfLastResort(e, ref faultInfo);
+            ProvideFaultOfLastResort(e, ref faultInfo);
         }
 
         private void ProvideWellKnownFault(Exception e, FaultConverter faultConverter, ref ErrorHandlerFaultInfo faultInfo)

@@ -14,7 +14,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels

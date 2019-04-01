@@ -9,7 +9,6 @@ using System.IdentityModel.Tokens;
 using System.IO;
 using System.Runtime;
 using System.Security.Cryptography;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
@@ -24,7 +23,7 @@ namespace System.ServiceModel.Security
     internal class WSSecurityOneDotZeroSendSecurityHeader : SendSecurityHeader
     {
         private HashStream _hashStream;
-        private System.Security.Cryptography.Xml.SignedXml _signedXml;
+        private SignedXml _signedXml;
 
         private KeyedHashAlgorithm _signingKey;
         private MessagePartSpecification _effectiveSignatureParts;
@@ -44,12 +43,12 @@ namespace System.ServiceModel.Security
 
         protected string EncryptionAlgorithm
         {
-            get { return this.AlgorithmSuite.DefaultEncryptionAlgorithm; }
+            get { return AlgorithmSuite.DefaultEncryptionAlgorithm; }
         }
 
         protected XmlDictionaryString EncryptionAlgorithmDictionaryString
         {
-            get { return this.AlgorithmSuite.DefaultEncryptionAlgorithmDictionaryString; }
+            get { return AlgorithmSuite.DefaultEncryptionAlgorithmDictionaryString; }
         }
 
         private void AddEncryptionReference(MessageHeader header, string headerId, IPrefixGenerator prefixGenerator, bool sign,
@@ -61,7 +60,7 @@ namespace System.ServiceModel.Security
         private void AddSignatureReference(SecurityToken token, int position, SecurityTokenAttachmentMode mode)
         {
             SecurityKeyIdentifierClause keyIdentifierClause = null;
-            bool strTransformEnabled = this.ShouldUseStrTransformForToken(token, position, mode, out keyIdentifierClause);
+            bool strTransformEnabled = ShouldUseStrTransformForToken(token, position, mode, out keyIdentifierClause);
             AddTokenSignatureReference(token, keyIdentifierClause, strTransformEnabled);
         }
 
@@ -92,14 +91,14 @@ namespace System.ServiceModel.Security
                     // note: signedEncryptedTokenElement can also be SignatureConfirmation but we do not care about it here.
                     bool useStrTransform = signedEncryptedTokenElement != null
                                            && SignThenEncrypt
-                                           && this.ShouldUseStrTransformForToken(signedEncryptedTokenElement.Token,
+                                           && ShouldUseStrTransformForToken(signedEncryptedTokenElement.Token,
                                                                                  i,
                                                                                  SecurityTokenAttachmentMode.SignedEncrypted,
                                                                                  out keyIdentifierClause);
 
                     if (!useStrTransform && elements[i].Id == null)
                     {
-                        throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.ElementToSignMustHaveId), this.Message);
+                        throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.ElementToSignMustHaveId), Message);
                     }
 
                     MemoryStream stream = new MemoryStream();
@@ -114,9 +113,9 @@ namespace System.ServiceModel.Security
                     }
                     else
                     {
-                        var reference = new System.Security.Cryptography.Xml.Reference(stream);
+                        var reference = new Reference(stream);
                         reference.Uri = "#" + elements[i].Id;
-                        reference.DigestMethod = this.AlgorithmSuite.DefaultDigestAlgorithm;
+                        reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
                         reference.AddTransform(new XmlDsigExcC14NTransform());
                         _signedXml.AddReference(reference);
                     }
@@ -153,13 +152,13 @@ namespace System.ServiceModel.Security
 
             effectiveWriter.StartCanonicalization(hashStream, false, null);
 
-            header.WriteStartHeader(effectiveWriter, this.Version);
+            header.WriteStartHeader(effectiveWriter, Version);
             if (headerId == null)
             {
                 headerId = GenerateId();
-                this.StandardsManager.IdManager.WriteIdAttribute(effectiveWriter, headerId);
+                StandardsManager.IdManager.WriteIdAttribute(effectiveWriter, headerId);
             }
-            header.WriteHeaderContents(effectiveWriter, this.Version);
+            header.WriteHeaderContents(effectiveWriter, Version);
             effectiveWriter.WriteEndElement();
             effectiveWriter.EndCanonicalization();
             effectiveWriter.Flush();
@@ -197,13 +196,13 @@ namespace System.ServiceModel.Security
 
             effectiveWriter.StartCanonicalization(stream, false, null);
 
-            header.WriteStartHeader(effectiveWriter, this.Version);
+            header.WriteStartHeader(effectiveWriter, Version);
             if (headerId == null)
             {
                 headerId = GenerateId();
-                this.StandardsManager.IdManager.WriteIdAttribute(effectiveWriter, headerId);
+                StandardsManager.IdManager.WriteIdAttribute(effectiveWriter, headerId);
             }
-            header.WriteHeaderContents(effectiveWriter, this.Version);
+            header.WriteHeaderContents(effectiveWriter, Version);
             effectiveWriter.WriteEndElement();
             effectiveWriter.EndCanonicalization();
             effectiveWriter.Flush();
@@ -236,10 +235,10 @@ namespace System.ServiceModel.Security
 
         private void ApplySecurityAndWriteHeader(MessageHeader header, string headerId, XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            if (!this.RequireMessageProtection && this.ShouldSignToHeader)
+            if (!RequireMessageProtection && ShouldSignToHeader)
             {
                 if ((header.Name == XD.AddressingDictionary.To.Value) &&
-                    (header.Namespace == this.Message.Version.Addressing.Namespace))
+                    (header.Namespace == Message.Version.Addressing.Namespace))
                 {
                     if (_toHeaderStream == null)
                     {
@@ -249,8 +248,10 @@ namespace System.ServiceModel.Security
                         _toHeaderId = headerId;
                     }
                     else
+                    {
                         // More than one 'To' header is specified in the message.
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.TransportSecuredMessageHasMoreThanOneToHeader));
+                    }
 
                     return;
                 }
@@ -260,7 +261,7 @@ namespace System.ServiceModel.Security
             switch (protectionMode)
             {
                 case MessagePartProtectionMode.None:
-                    header.WriteHeader(writer, this.Version);
+                    header.WriteHeader(writer, Version);
                     return;
                 case MessagePartProtectionMode.Sign:
                     AddSignatureReference(header, headerId, prefixGenerator, writer);
@@ -278,10 +279,10 @@ namespace System.ServiceModel.Security
         public override void ApplySecurityAndWriteHeaders(MessageHeaders headers, XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
             string[] headerIds;
-            if (this.RequireMessageProtection || this.ShouldSignToHeader)
+            if (RequireMessageProtection || ShouldSignToHeader)
             {
                 headerIds = headers.GetHeaderAttributes(UtilityStrings.IdAttribute,
-                    this.StandardsManager.IdManager.DefaultIdNamespaceUri);
+                    StandardsManager.IdManager.DefaultIdNamespaceUri);
             }
             else
             {
@@ -290,7 +291,7 @@ namespace System.ServiceModel.Security
             for (int i = 0; i < headers.Count; i++)
             {
                 MessageHeader header = headers.GetMessageHeader(i);
-                if (this.Version.Addressing == AddressingVersion.None && header.Namespace == AddressingVersion.None.Namespace)
+                if (Version.Addressing == AddressingVersion.None && header.Namespace == AddressingVersion.None.Namespace)
                 {
                     continue;
                 }
@@ -314,7 +315,7 @@ namespace System.ServiceModel.Security
 
         public override void ApplyBodySecurity(XmlDictionaryWriter writer, IPrefixGenerator prefixGenerator)
         {
-            SecurityAppliedMessage message = this.SecurityAppliedMessage;
+            SecurityAppliedMessage message = SecurityAppliedMessage;
             switch (message.BodyProtectionMode)
             {
                 case MessagePartProtectionMode.None:
@@ -331,9 +332,9 @@ namespace System.ServiceModel.Security
                     }
 
                     ms.Position = 0;
-                    var reference = new System.Security.Cryptography.Xml.Reference(ms);
+                    var reference = new Reference(ms);
                     reference.Uri = "#" + message.BodyId;
-                    reference.DigestMethod = this.AlgorithmSuite.DefaultDigestAlgorithm;
+                    reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
                     reference.AddTransform(new XmlDsigExcC14NTransform());
                     _signedXml.AddReference(reference);
                     return;
@@ -360,7 +361,7 @@ namespace System.ServiceModel.Security
                 return null;
             }
 
-            SecurityTimestamp timestamp = this.Timestamp;
+            SecurityTimestamp timestamp = Timestamp;
             if (timestamp != null)
             {
                 if (timestamp.Id == null)
@@ -370,44 +371,46 @@ namespace System.ServiceModel.Security
 
                 var buffer = new byte[64];
                 var ms = new MemoryStream();
-                this.StandardsManager.WSUtilitySpecificationVersion.WriteTimestampCanonicalForm(
+                StandardsManager.WSUtilitySpecificationVersion.WriteTimestampCanonicalForm(
                     ms, timestamp, buffer);
                 ms.Position = 0;
-                var reference = new System.Security.Cryptography.Xml.Reference(ms);
+                var reference = new Reference(ms);
                 reference.Uri = "#" + timestamp.Id;
-                reference.DigestMethod = this.AlgorithmSuite.DefaultDigestAlgorithm;
+                reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
                 reference.AddTransform(new XmlDsigExcC14NTransform());
                 _signedXml.AddReference(reference);
             }
 
-            if ((this.ShouldSignToHeader) && (_signingKey != null || _signedXml.SigningKey != null) && (this.Version.Addressing != AddressingVersion.None))
+            if ((ShouldSignToHeader) && (_signingKey != null || _signedXml.SigningKey != null) && (Version.Addressing != AddressingVersion.None))
             {
                 if (_toHeaderStream != null)
                 {
-                    var reference = new System.Security.Cryptography.Xml.Reference(_toHeaderStream);
+                    var reference = new Reference(_toHeaderStream);
                     reference.Uri = "#" + _toHeaderId;
-                    reference.DigestMethod = this.AlgorithmSuite.DefaultDigestAlgorithm;
+                    reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
                     reference.AddTransform(new XmlDsigExcC14NTransform());
                     _signedXml.AddReference(reference);
                 }
                 else
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.TransportSecurityRequireToHeader));
+                }
             }
 
             AddSignatureReference(signatureConfirmations);
-            if (isPrimarySignature && this.ShouldProtectTokens)
+            if (isPrimarySignature && ShouldProtectTokens)
             {
-                AddPrimaryTokenSignatureReference(this.ElementContainer.SourceSigningToken, this.SigningTokenParameters);
+                AddPrimaryTokenSignatureReference(ElementContainer.SourceSigningToken, SigningTokenParameters);
             }
 
-            if (this.RequireMessageProtection)
+            if (RequireMessageProtection)
             {
                 throw new PlatformNotSupportedException(nameof(RequireMessageProtection));
             }
 
             if (_signedXml.SignedInfo.References.Count == 0)
             {
-                throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.NoPartsOfMessageMatchedPartsToSign), this.Message);
+                throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.NoPartsOfMessageMatchedPartsToSign), Message);
             }
             try
             {
@@ -433,9 +436,9 @@ namespace System.ServiceModel.Security
 
         internal class SignatureValue : ISignatureValueSecurityElement
         {
-            private System.Security.Cryptography.Xml.Signature _signature;
+            private Signature _signature;
 
-            public SignatureValue(System.Security.Cryptography.Xml.Signature signature)
+            public SignatureValue(Signature signature)
             {
                 _signature = signature;
             }
@@ -466,7 +469,7 @@ namespace System.ServiceModel.Security
             HashStream hashStream = null;
             if (_hashStream == null)
             {
-                _hashStream = hashStream = new HashStream(CryptoHelper.CreateHashAlgorithm(this.AlgorithmSuite.DefaultDigestAlgorithm));
+                _hashStream = hashStream = new HashStream(CryptoHelper.CreateHashAlgorithm(AlgorithmSuite.DefaultDigestAlgorithm));
             }
             else
             {
@@ -484,13 +487,13 @@ namespace System.ServiceModel.Security
 
         private MessagePartProtectionMode GetProtectionMode(MessageHeader header)
         {
-            if (!this.RequireMessageProtection)
+            if (!RequireMessageProtection)
             {
                 return MessagePartProtectionMode.None;
             }
             bool sign = _signedXml != null && _effectiveSignatureParts.IsHeaderIncluded(header);
             bool encrypt = false;
-            return MessagePartProtectionModeHelper.GetProtectionMode(sign, encrypt, this.SignThenEncrypt);
+            return MessagePartProtectionModeHelper.GetProtectionMode(sign, encrypt, SignThenEncrypt);
         }
 
         protected override void StartPrimarySignatureCore(SecurityToken token,
@@ -498,7 +501,7 @@ namespace System.ServiceModel.Security
             MessagePartSpecification signatureParts,
             bool generateTargettableSignature)
         {
-            SecurityAlgorithmSuite suite = this.AlgorithmSuite;
+            SecurityAlgorithmSuite suite = AlgorithmSuite;
             string canonicalizationAlgorithm = suite.DefaultCanonicalizationAlgorithm;
             if (canonicalizationAlgorithm != SecurityAlgorithms.ExclusiveC14n)
             {
@@ -512,7 +515,7 @@ namespace System.ServiceModel.Security
             AsymmetricAlgorithm asymmetricAlgorithm = null;
             GetSigningAlgorithm(signatureKey, signatureAlgorithm, out _signingKey, out asymmetricAlgorithm);
 
-            _signedXml = new System.Security.Cryptography.Xml.SignedXml();
+            _signedXml = new SignedXml();
             _signedXml.SignedInfo.CanonicalizationMethod = canonicalizationAlgorithm;
             _signedXml.SignedInfo.SignatureMethod = signatureAlgorithm;
             _signedXml.SigningKey = asymmetricAlgorithm;
@@ -521,13 +524,13 @@ namespace System.ServiceModel.Security
                 var stream = new MemoryStream();
                 using (var xmlWriter = XmlDictionaryWriter.CreateTextWriter(stream, Encoding.UTF8, false))
                 {
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifier(xmlWriter, keyIdentifier);
+                    StandardsManager.SecurityTokenSerializer.WriteKeyIdentifier(xmlWriter, keyIdentifier);
                 }
 
                 stream.Position = 0;
                 XmlDocument doc = new XmlDocument();
                 doc.Load(stream);
-                var keyInfo = new System.Security.Cryptography.Xml.KeyInfo();
+                var keyInfo = new KeyInfo();
                 keyInfo.LoadXml(doc.DocumentElement);
                 _signedXml.KeyInfo = keyInfo;
             }
@@ -585,8 +588,8 @@ namespace System.ServiceModel.Security
             SecurityKey signatureKey;
             AlgorithmSuite.GetSignatureAlgorithmAndKey(token, out signatureAlgorithm, out signatureKey, out signatureAlgorithmDictionaryString);
 
-            System.Security.Cryptography.Xml.SignedXml signedXml = new SignedXml();
-            System.Security.Cryptography.Xml.SignedInfo signedInfo = signedXml.SignedInfo;
+            SignedXml signedXml = new SignedXml();
+            SignedInfo signedInfo = signedXml.SignedInfo;
             signedInfo.CanonicalizationMethod = AlgorithmSuite.DefaultCanonicalizationAlgorithm;
             signedInfo.SignatureMethod = signatureAlgorithm;
 
@@ -601,9 +604,9 @@ namespace System.ServiceModel.Security
             elementToSign.WriteTo(utf8Writer, ServiceModelDictionaryManager.Instance);
             utf8Writer.EndCanonicalization();
             stream.Position = 0;
-            var reference = new System.Security.Cryptography.Xml.Reference(stream);
+            var reference = new Reference(stream);
             reference.Uri = "#" + elementToSign.Id;
-            reference.DigestMethod = this.AlgorithmSuite.DefaultDigestAlgorithm;
+            reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
             reference.AddTransform(new XmlDsigExcC14NTransform());
             _signedXml.AddReference(reference);
 
@@ -631,7 +634,7 @@ namespace System.ServiceModel.Security
                 var stream = new MemoryStream();
                 using (var xmlWriter = XmlDictionaryWriter.CreateTextWriter(stream, Encoding.UTF8, false))
                 {
-                    this.StandardsManager.SecurityTokenSerializer.WriteKeyIdentifier(xmlWriter, identifier);
+                    StandardsManager.SecurityTokenSerializer.WriteKeyIdentifier(xmlWriter, identifier);
                 }
 
                 stream.Position = 0;

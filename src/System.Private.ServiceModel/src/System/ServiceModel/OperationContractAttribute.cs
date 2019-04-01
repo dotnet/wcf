@@ -16,12 +16,8 @@ namespace System.ServiceModel
         private string _name = null;
         private string _action = null;
         private string _replyAction = null;
-        private bool _asyncPattern = false;
-        private bool _isInitiating = true;
-        private bool _isTerminating = false;
         private bool _isOneWay = false;
         private ProtectionLevel _protectionLevel = ProtectionLevel.None;
-        private bool _hasProtectionLevel = false;
 
         public string Name
         {
@@ -30,11 +26,11 @@ namespace System.ServiceModel
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
                 if (value == "")
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value",
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value),
                         SR.SFxNameCannotBeEmpty));
                 }
 
@@ -48,12 +44,7 @@ namespace System.ServiceModel
             get { return _action; }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-
-                _action = value;
+                _action = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -67,16 +58,16 @@ namespace System.ServiceModel
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; } = false;
 
         internal const string ReplyActionPropertyName = "ReplyAction";
         public string ReplyAction
@@ -84,20 +75,11 @@ namespace System.ServiceModel
             get { return _replyAction; }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-
-                _replyAction = value;
+                _replyAction = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
-        public bool AsyncPattern
-        {
-            get { return _asyncPattern; }
-            set { _asyncPattern = value; }
-        }
+        public bool AsyncPattern { get; set; } = false;
 
         public bool IsOneWay
         {
@@ -105,32 +87,24 @@ namespace System.ServiceModel
             set { _isOneWay = value; }
         }
 
-        public bool IsInitiating
-        {
-            get { return _isInitiating; }
-            set { _isInitiating = value; }
-        }
+        public bool IsInitiating { get; set; } = true;
 
-        public bool IsTerminating
-        {
-            get { return _isTerminating; }
-            set { _isTerminating = value; }
-        }
+        public bool IsTerminating { get; set; } = false;
 
         internal bool IsSessionOpenNotificationEnabled
         {
             get
             {
-                return this.Action == OperationDescription.SessionOpenedAction;
+                return Action == OperationDescription.SessionOpenedAction;
             }
         }
 
         internal void EnsureInvariants(MethodInfo methodInfo, string operationName)
         {
-            if (this.IsSessionOpenNotificationEnabled)
+            if (IsSessionOpenNotificationEnabled)
             {
-                if (!this.IsOneWay
-                 || !this.IsInitiating
+                if (!IsOneWay
+                 || !IsInitiating
                  || methodInfo.GetParameters().Length > 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(

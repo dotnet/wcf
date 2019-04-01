@@ -10,13 +10,12 @@ namespace System.ServiceModel
 {
     internal class ActionMismatchAddressingException : ProtocolException
     {
-        private string _httpActionHeader;
         private string _soapActionHeader;
 
         public ActionMismatchAddressingException(string message, string soapActionHeader, string httpActionHeader)
             : base(message)
         {
-            _httpActionHeader = httpActionHeader;
+            HttpActionHeader = httpActionHeader;
             _soapActionHeader = soapActionHeader;
         }
 
@@ -26,13 +25,7 @@ namespace System.ServiceModel
             throw new PlatformNotSupportedException();
         }
 
-        public string HttpActionHeader
-        {
-            get
-            {
-                return _httpActionHeader;
-            }
-        }
+        public string HttpActionHeader { get; }
 
         public string SoapActionHeader
         {

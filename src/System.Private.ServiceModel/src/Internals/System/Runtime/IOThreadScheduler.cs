@@ -158,7 +158,7 @@ namespace System.Runtime
                 // Wrapped around the circular buffer.  Create a new, bigger IOThreadScheduler.
                 IOThreadScheduler next =
                     new IOThreadScheduler(Math.Min(_slots.Length * 2, MaximumCapacity));
-                Interlocked.CompareExchange<IOThreadScheduler>(ref s_current, next, this);
+                Interlocked.CompareExchange(ref s_current, next, this);
             }
 
             if (wasIdle)

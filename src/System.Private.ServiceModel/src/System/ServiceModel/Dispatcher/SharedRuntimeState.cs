@@ -8,32 +8,18 @@ namespace System.ServiceModel.Dispatcher
     internal class SharedRuntimeState
     {
         private bool _isImmutable;
-        private bool _enableFaults = true;
-        private bool _isOnServer;
-        private bool _manualAddressing;
         private bool _validateMustUnderstand = true;
 
         internal SharedRuntimeState(bool isOnServer)
         {
-            _isOnServer = isOnServer;
+            IsOnServer = isOnServer;
         }
 
-        internal bool EnableFaults
-        {
-            get { return _enableFaults; }
-            set { _enableFaults = value; }
-        }
+        internal bool EnableFaults { get; set; } = true;
 
-        internal bool IsOnServer
-        {
-            get { return _isOnServer; }
-        }
+        internal bool IsOnServer { get; }
 
-        internal bool ManualAddressing
-        {
-            get { return _manualAddressing; }
-            set { _manualAddressing = value; }
-        }
+        internal bool ManualAddressing { get; set; }
 
         internal bool ValidateMustUnderstand
         {
@@ -50,7 +36,7 @@ namespace System.ServiceModel.Dispatcher
         {
             if (_isImmutable)
             {
-                if (this.IsOnServer)
+                if (IsOnServer)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxImmutableServiceHostBehavior0));
                 }

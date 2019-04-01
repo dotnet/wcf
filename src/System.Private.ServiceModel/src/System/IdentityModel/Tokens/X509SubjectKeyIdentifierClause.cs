@@ -26,7 +26,9 @@ namespace System.IdentityModel.Tokens
         private static byte[] GetSkiRawData(X509Certificate2 certificate)
         {
             if (certificate == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+            }
 
             X509SubjectKeyIdentifierExtension skiExtension =
                 certificate.Extensions[SubjectKeyIdentifierOid] as X509SubjectKeyIdentifierExtension;
@@ -48,7 +50,9 @@ namespace System.IdentityModel.Tokens
         public bool Matches(X509Certificate2 certificate)
         {
             if (certificate == null)
+            {
                 return false;
+            }
 
             byte[] data = GetSkiRawData(certificate);
             return data != null && Matches(data, SkiDataOffset);

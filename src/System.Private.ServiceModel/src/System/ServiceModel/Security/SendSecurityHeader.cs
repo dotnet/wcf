@@ -24,7 +24,6 @@ namespace System.ServiceModel.Security
         private int _idCounter;
         private string _idPrefix;
         private MessagePartSpecification _signatureParts;
-        private SecurityTokenParameters _signingTokenParameters;
         private List<SecurityTokenParameters> _basicSupportingTokenParameters = null;
         private List<SecurityTokenParameters> _endorsingTokenParameters = null;
         private List<SecurityTokenParameters> _signedEndorsingTokenParameters = null;
@@ -32,9 +31,6 @@ namespace System.ServiceModel.Security
         private byte[] _primarySignatureValue = null;
         private bool _shouldProtectTokens;
         private BufferManager _bufferManager;
-
-        private bool _shouldSignToHeader = false;
-
         private SecurityProtocolCorrelationState _correlationState;
         private bool _signThenEncrypt = true;
         private static readonly string[] s_ids = new string[] { "_0", "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8", "_9" };
@@ -114,21 +110,33 @@ namespace System.ServiceModel.Security
         public void AddEndorsingSupportingToken(SecurityToken token, SecurityTokenParameters parameters)
         {
             if (token == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
+
             if (parameters == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parameters));
+            }
+
             ThrowIfProcessingStarted();
             ElementContainer.AddEndorsingSupportingToken(token);
-            _shouldSignToHeader |= (!RequireMessageProtection) && (SecurityUtils.GetSecurityKey<AsymmetricSecurityKey>(token) != null);
+            ShouldSignToHeader |= (!RequireMessageProtection) && (SecurityUtils.GetSecurityKey<AsymmetricSecurityKey>(token) != null);
             AddParameters(ref _endorsingTokenParameters, parameters);
         }
 
         public void AddSignedEndorsingSupportingToken(SecurityToken token, SecurityTokenParameters parameters)
         {
             if (token == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
+
             if (parameters == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parameters));
+            }
+
             ThrowIfProcessingStarted();
             ElementContainer.AddSignedEndorsingSupportingToken(token);
             AddParameters(ref _signedEndorsingTokenParameters, parameters);
@@ -137,9 +145,15 @@ namespace System.ServiceModel.Security
         public void AddSignedSupportingToken(SecurityToken token, SecurityTokenParameters parameters)
         {
             if (token == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
+
             if (parameters == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parameters));
+            }
+
             ThrowIfProcessingStarted();
             ElementContainer.AddSignedSupportingToken(token);
             AddParameters(ref _signedTokenParameters, parameters);
@@ -151,7 +165,11 @@ namespace System.ServiceModel.Security
             set
             {
                 ThrowIfProcessingStarted();
-                if (value) throw ExceptionHelper.PlatformNotSupported();
+                if (value)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();
+                }
+
                 _encryptSignature = value;
             }
         }
@@ -182,15 +200,9 @@ namespace System.ServiceModel.Security
             }
         }
 
-        protected internal SecurityTokenParameters SigningTokenParameters
-        {
-            get { return _signingTokenParameters; }
-        }
+        protected internal SecurityTokenParameters SigningTokenParameters { get; }
 
-        protected bool ShouldSignToHeader
-        {
-            get { return _shouldSignToHeader; }
-        }
+        protected bool ShouldSignToHeader { get; private set; } = false;
 
         public override string Name
         {
@@ -222,25 +234,25 @@ namespace System.ServiceModel.Security
 
         protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            this.StandardsManager.SecurityVersion.WriteStartHeader(writer);
+            StandardsManager.SecurityVersion.WriteStartHeader(writer);
             WriteHeaderAttributes(writer, messageVersion);
         }
 
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            if (this.ElementContainer.Timestamp != null && this.Layout != SecurityHeaderLayout.LaxTimestampLast)
+            if (ElementContainer.Timestamp != null && Layout != SecurityHeaderLayout.LaxTimestampLast)
             {
-                this.StandardsManager.WSUtilitySpecificationVersion.WriteTimestamp(writer, this.ElementContainer.Timestamp);
+                StandardsManager.WSUtilitySpecificationVersion.WriteTimestamp(writer, ElementContainer.Timestamp);
             }
             if (ElementContainer.PrerequisiteToken != null)
             {
-                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.PrerequisiteToken);
+                StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.PrerequisiteToken);
             }
             if (ElementContainer.SourceSigningToken != null)
             {
-                if (ShouldSerializeToken(_signingTokenParameters, this.MessageDirection))
+                if (ShouldSerializeToken(SigningTokenParameters, MessageDirection))
                 {
-                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.SourceSigningToken);
+                    StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.SourceSigningToken);
 
                     // Implement Protect token 
                     // NOTE: The spec says sign the primary token if it is not included in the message. But we currently are not supporting it
@@ -249,28 +261,28 @@ namespace System.ServiceModel.Security
                     // 1. allowSerializedSigningTokenOnReply is false.
                     // 2. SymmetricSecurityBindingElement with IssuedTokens binding where the issued token has a symmetric key.
 
-                    if (this.ShouldProtectTokens)
+                    if (ShouldProtectTokens)
                     {
-                        this.WriteSecurityTokenReferencyEntry(writer, ElementContainer.SourceSigningToken, _signingTokenParameters);
+                        WriteSecurityTokenReferencyEntry(writer, ElementContainer.SourceSigningToken, SigningTokenParameters);
                     }
                 }
             }
             if (ElementContainer.DerivedSigningToken != null)
             {
-                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.DerivedSigningToken);
+                StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.DerivedSigningToken);
             }
 
             if (ElementContainer.WrappedEncryptionToken != null)
             {
-                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.WrappedEncryptionToken);
+                StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.WrappedEncryptionToken);
             }
 
             if (ElementContainer.DerivedEncryptionToken != null)
             {
-                this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.DerivedEncryptionToken);
+                StandardsManager.SecurityTokenSerializer.WriteToken(writer, ElementContainer.DerivedEncryptionToken);
             }
 
-            if (this.SignThenEncrypt)
+            if (SignThenEncrypt)
             {
                 if (ElementContainer.ReferenceList != null)
                 {
@@ -283,8 +295,8 @@ namespace System.ServiceModel.Security
             {
                 for (int i = 0; i < signedTokens.Length; ++i)
                 {
-                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedTokens[i]);
-                    this.WriteSecurityTokenReferencyEntry(writer, signedTokens[i], _signedTokenParameters[i]);
+                    StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedTokens[i]);
+                    WriteSecurityTokenReferencyEntry(writer, signedTokens[i], _signedTokenParameters[i]);
                 }
             }
             SendSecurityHeaderElement[] basicTokensXml = ElementContainer.GetBasicSupportingTokens();
@@ -304,9 +316,9 @@ namespace System.ServiceModel.Security
             {
                 for (int i = 0; i < endorsingTokens.Length; ++i)
                 {
-                    if (ShouldSerializeToken(_endorsingTokenParameters[i], this.MessageDirection))
+                    if (ShouldSerializeToken(_endorsingTokenParameters[i], MessageDirection))
                     {
-                        this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, endorsingTokens[i]);
+                        StandardsManager.SecurityTokenSerializer.WriteToken(writer, endorsingTokens[i]);
                     }
                 }
             }
@@ -315,7 +327,7 @@ namespace System.ServiceModel.Security
             {
                 for (int i = 0; i < endorsingDerivedTokens.Length; ++i)
                 {
-                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, endorsingDerivedTokens[i]);
+                    StandardsManager.SecurityTokenSerializer.WriteToken(writer, endorsingDerivedTokens[i]);
                 }
             }
             SecurityToken[] signedEndorsingTokens = ElementContainer.GetSignedEndorsingSupportingTokens();
@@ -323,8 +335,8 @@ namespace System.ServiceModel.Security
             {
                 for (int i = 0; i < signedEndorsingTokens.Length; ++i)
                 {
-                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedEndorsingTokens[i]);
-                    this.WriteSecurityTokenReferencyEntry(writer, signedEndorsingTokens[i], _signedEndorsingTokenParameters[i]);
+                    StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedEndorsingTokens[i]);
+                    WriteSecurityTokenReferencyEntry(writer, signedEndorsingTokens[i], _signedEndorsingTokenParameters[i]);
                 }
             }
             SecurityToken[] signedEndorsingDerivedTokens = ElementContainer.GetSignedEndorsingDerivedSupportingTokens();
@@ -332,7 +344,7 @@ namespace System.ServiceModel.Security
             {
                 for (int i = 0; i < signedEndorsingDerivedTokens.Length; ++i)
                 {
-                    this.StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedEndorsingDerivedTokens[i]);
+                    StandardsManager.SecurityTokenSerializer.WriteToken(writer, signedEndorsingDerivedTokens[i]);
                 }
             }
             SendSecurityHeaderElement[] signatureConfirmations = ElementContainer.GetSignatureConfirmations();
@@ -355,16 +367,16 @@ namespace System.ServiceModel.Security
                     endorsingSignatures[i].Item.WriteTo(writer, ServiceModelDictionaryManager.Instance);
                 }
             }
-            if (!this.SignThenEncrypt)
+            if (!SignThenEncrypt)
             {
                 if (ElementContainer.ReferenceList != null)
                 {
                     ElementContainer.ReferenceList.WriteTo(writer, ServiceModelDictionaryManager.Instance);
                 }
             }
-            if (this.ElementContainer.Timestamp != null && this.Layout == SecurityHeaderLayout.LaxTimestampLast)
+            if (ElementContainer.Timestamp != null && Layout == SecurityHeaderLayout.LaxTimestampLast)
             {
-                this.StandardsManager.WSUtilitySpecificationVersion.WriteTimestamp(writer, this.ElementContainer.Timestamp);
+                StandardsManager.WSUtilitySpecificationVersion.WriteTimestamp(writer, ElementContainer.Timestamp);
             }
         }
 
@@ -521,8 +533,8 @@ namespace System.ServiceModel.Security
             }
 
             // determine the key identifier clause to use for the source
-            SecurityTokenReferenceStyle sourceSigningKeyReferenceStyle = GetTokenReferenceStyle(_signingTokenParameters);
-            SecurityKeyIdentifierClause sourceSigningKeyIdentifierClause = _signingTokenParameters.CreateKeyIdentifierClause(ElementContainer.SourceSigningToken, sourceSigningKeyReferenceStyle);
+            SecurityTokenReferenceStyle sourceSigningKeyReferenceStyle = GetTokenReferenceStyle(SigningTokenParameters);
+            SecurityKeyIdentifierClause sourceSigningKeyIdentifierClause = SigningTokenParameters.CreateKeyIdentifierClause(ElementContainer.SourceSigningToken, sourceSigningKeyReferenceStyle);
             if (sourceSigningKeyIdentifierClause == null)
             {
                 throw TraceUtility.ThrowHelperError(new MessageSecurityException(SR.TokenManagerCannotCreateTokenReference), Message);
@@ -532,7 +544,7 @@ namespace System.ServiceModel.Security
             SecurityKeyIdentifierClause signingKeyIdentifierClause;
 
             // determine if a token needs to be derived
-            if (_signingTokenParameters.RequireDerivedKeys && !_signingTokenParameters.HasAsymmetricKey)
+            if (SigningTokenParameters.RequireDerivedKeys && !SigningTokenParameters.HasAsymmetricKey)
             {
                 // Derived keys not required for initial implementation
                 throw ExceptionHelper.PlatformNotSupported();
@@ -688,7 +700,6 @@ namespace System.ServiceModel.Security
                         signingKeyClause = sourceKeyClause;
                     }
                     SignWithSupportingToken(signingToken, signingKeyClause);
-
                 }
             }
         }
@@ -711,23 +722,22 @@ namespace System.ServiceModel.Security
     internal class TokenElement : ISecurityElement
     {
         private SecurityStandardsManager _standardsManager;
-        private SecurityToken _token;
 
         public TokenElement(SecurityToken token, SecurityStandardsManager standardsManager)
         {
-            _token = token;
+            Token = token;
             _standardsManager = standardsManager;
         }
 
         public override bool Equals(object item)
         {
             TokenElement element = item as TokenElement;
-            return (element != null && _token == element._token && _standardsManager == element._standardsManager);
+            return (element != null && Token == element.Token && _standardsManager == element._standardsManager);
         }
 
         public override int GetHashCode()
         {
-            return _token.GetHashCode() ^ _standardsManager.GetHashCode();
+            return Token.GetHashCode() ^ _standardsManager.GetHashCode();
         }
 
         public bool HasId
@@ -737,17 +747,14 @@ namespace System.ServiceModel.Security
 
         public string Id
         {
-            get { return _token.Id; }
+            get { return Token.Id; }
         }
 
-        public SecurityToken Token
-        {
-            get { return _token; }
-        }
+        public SecurityToken Token { get; }
 
         public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
         {
-            _standardsManager.SecurityTokenSerializer.WriteToken(writer, _token);
+            _standardsManager.SecurityTokenSerializer.WriteToken(writer, Token);
         }
     }
 }

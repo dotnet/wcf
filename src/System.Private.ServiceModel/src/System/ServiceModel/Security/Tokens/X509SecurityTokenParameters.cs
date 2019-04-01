@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.IdentityModel.Tokens;
-using System.ServiceModel;
 using System.IdentityModel.Selectors;
-using System.ServiceModel.Security;
 using System.Text;
 using System.Globalization;
 
@@ -94,22 +92,27 @@ namespace System.ServiceModel.Security.Tokens
                         }
 
                         if (result == null)
+                        {
                             throw new PlatformNotSupportedException();
+                        }
                     }
                     else
+                    {
                         result = token.CreateKeyIdentifierClause<LocalIdKeyIdentifierClause>();
+                    }
+
                     break;
                 case X509KeyIdentifierClauseType.Thumbprint:
-                    result = this.CreateKeyIdentifierClause<X509ThumbprintKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+                    result = CreateKeyIdentifierClause<X509ThumbprintKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
                     break;
                 case X509KeyIdentifierClauseType.SubjectKeyIdentifier:
-                    result = this.CreateKeyIdentifierClause<X509SubjectKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+                    result = CreateKeyIdentifierClause<X509SubjectKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
                     break;
                 case X509KeyIdentifierClauseType.IssuerSerial:
-                    result = this.CreateKeyIdentifierClause<X509IssuerSerialKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+                    result = CreateKeyIdentifierClause<X509IssuerSerialKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
                     break;
                 case X509KeyIdentifierClauseType.RawDataKeyIdentifier:
-                    result = this.CreateKeyIdentifierClause<X509RawDataKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+                    result = CreateKeyIdentifierClause<X509RawDataKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
                     break;
             }
 

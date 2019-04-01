@@ -13,21 +13,12 @@ namespace System.ServiceModel.Description
 {
     public class DataContractSerializerOperationBehavior : IOperationBehavior
     {
-        private readonly bool _builtInOperationBehavior;
-
         private OperationDescription _operation;
-        private DataContractFormatAttribute _dataContractFormatAttribute;
         internal bool ignoreExtensionDataObject = DataContractSerializerDefaults.IgnoreExtensionDataObject;
-        private bool _ignoreExtensionDataObjectSetExplicit;
         internal int maxItemsInObjectGraph = DataContractSerializerDefaults.MaxItemsInObjectGraph;
-        private bool _maxItemsInObjectGraphSetExplicit;
-        private ISerializationSurrogateProvider _serializationSurrogateProvider;
         private DataContractResolver _dataContractResolver;
 
-        public DataContractFormatAttribute DataContractFormatAttribute
-        {
-            get { return _dataContractFormatAttribute; }
-        }
+        public DataContractFormatAttribute DataContractFormatAttribute { get; }
 
         public DataContractSerializerOperationBehavior(OperationDescription operation)
             : this(operation, null)
@@ -36,7 +27,7 @@ namespace System.ServiceModel.Description
 
         public DataContractSerializerOperationBehavior(OperationDescription operation, DataContractFormatAttribute dataContractFormatAttribute)
         {
-            _dataContractFormatAttribute = dataContractFormatAttribute ?? new DataContractFormatAttribute();
+            DataContractFormatAttribute = dataContractFormatAttribute ?? new DataContractFormatAttribute();
             _operation = operation;
         }
 
@@ -44,13 +35,10 @@ namespace System.ServiceModel.Description
             DataContractFormatAttribute dataContractFormatAttribute, bool builtInOperationBehavior)
             : this(operation, dataContractFormatAttribute)
         {
-            _builtInOperationBehavior = builtInOperationBehavior;
+            IsBuiltInOperationBehavior = builtInOperationBehavior;
         }
 
-        internal bool IsBuiltInOperationBehavior
-        {
-            get { return _builtInOperationBehavior; }
-        }
+        internal bool IsBuiltInOperationBehavior { get; }
 
         public int MaxItemsInObjectGraph
         {
@@ -58,15 +46,11 @@ namespace System.ServiceModel.Description
             set
             {
                 maxItemsInObjectGraph = value;
-                _maxItemsInObjectGraphSetExplicit = true;
+                MaxItemsInObjectGraphSetExplicit = true;
             }
         }
 
-        internal bool MaxItemsInObjectGraphSetExplicit
-        {
-            get { return _maxItemsInObjectGraphSetExplicit; }
-            set { _maxItemsInObjectGraphSetExplicit = value; }
-        }
+        internal bool MaxItemsInObjectGraphSetExplicit { get; set; }
 
         public bool IgnoreExtensionDataObject
         {
@@ -74,21 +58,13 @@ namespace System.ServiceModel.Description
             set
             {
                 ignoreExtensionDataObject = value;
-                _ignoreExtensionDataObjectSetExplicit = true;
+                IgnoreExtensionDataObjectSetExplicit = true;
             }
         }
 
-        internal bool IgnoreExtensionDataObjectSetExplicit
-        {
-            get { return _ignoreExtensionDataObjectSetExplicit; }
-            set { _ignoreExtensionDataObjectSetExplicit = value; }
-        }
+        internal bool IgnoreExtensionDataObjectSetExplicit { get; set; }
 
-        public ISerializationSurrogateProvider SerializationSurrogateProvider
-        {
-            get { return _serializationSurrogateProvider; }
-            set { _serializationSurrogateProvider = value; }
-        }
+        public ISerializationSurrogateProvider SerializationSurrogateProvider { get; set; }
 
         public DataContractResolver DataContractResolver
         {
@@ -128,7 +104,9 @@ namespace System.ServiceModel.Description
             MessageDescription request = operation.Messages[0];
             MessageDescription response = null;
             if (operation.Messages.Count == 2)
+            {
                 response = operation.Messages[1];
+            }
 
             formatRequest = (request != null) && !request.IsUntypedMessage;
             formatReply = (response != null) && !response.IsUntypedMessage;
@@ -136,9 +114,13 @@ namespace System.ServiceModel.Description
             if (formatRequest || formatReply)
             {
                 if (PrimitiveOperationFormatter.IsContractSupported(operation))
-                    return new PrimitiveOperationFormatter(operation, _dataContractFormatAttribute.Style == OperationFormatStyle.Rpc);
+                {
+                    return new PrimitiveOperationFormatter(operation, DataContractFormatAttribute.Style == OperationFormatStyle.Rpc);
+                }
                 else
-                    return new DataContractSerializerOperationFormatter(operation, _dataContractFormatAttribute, this);
+                {
+                    return new DataContractSerializerOperationFormatter(operation, DataContractFormatAttribute, this);
+                }
             }
 
             return null;
@@ -156,13 +138,19 @@ namespace System.ServiceModel.Description
         void IOperationBehavior.ApplyDispatchBehavior(OperationDescription description, DispatchOperation dispatch)
         {
             if (description == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("description");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(description));
+            }
 
             if (dispatch == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("dispatch");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(dispatch));
+            }
 
             if (dispatch.Formatter != null)
+            {
                 return;
+            }
 
             bool formatRequest;
             bool formatReply;
@@ -174,13 +162,19 @@ namespace System.ServiceModel.Description
         void IOperationBehavior.ApplyClientBehavior(OperationDescription description, ClientOperation proxy)
         {
             if (description == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("description");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(description));
+            }
 
             if (proxy == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("proxy");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(proxy));
+            }
 
             if (proxy.Formatter != null)
+            {
                 return;
+            }
 
             bool formatRequest;
             bool formatReply;

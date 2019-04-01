@@ -4,7 +4,6 @@
 
 
 using System.Net;
-using System.Net.Http.Headers;
 
 namespace System.ServiceModel.Security.Tokens
 {
@@ -24,7 +23,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[TargetAddressProperty] = value;
+                Properties[TargetAddressProperty] = value;
             }
         }
 
@@ -36,7 +35,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[ViaProperty] = value;
+                Properties[ViaProperty] = value;
             }
         }
 
@@ -44,11 +43,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return GetPropertyOrDefault<bool>(IsOutOfBandTokenProperty, false);
+                return GetPropertyOrDefault(IsOutOfBandTokenProperty, false);
             }
             set
             {
-                this.Properties[IsOutOfBandTokenProperty] = value;
+                Properties[IsOutOfBandTokenProperty] = value;
             }
         }
 
@@ -56,11 +55,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return GetPropertyOrDefault<bool>(PreferSslCertificateAuthenticatorProperty, false);
+                return GetPropertyOrDefault(PreferSslCertificateAuthenticatorProperty, false);
             }
             set
             {
-                this.Properties[PreferSslCertificateAuthenticatorProperty] = value;
+                Properties[PreferSslCertificateAuthenticatorProperty] = value;
             }
         }
 

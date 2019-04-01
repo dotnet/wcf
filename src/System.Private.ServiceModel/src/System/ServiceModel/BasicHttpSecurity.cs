@@ -22,7 +22,7 @@ namespace System.ServiceModel
         private BasicHttpSecurity(BasicHttpSecurityMode mode, HttpTransportSecurity transportSecurity)
         {
             Fx.Assert(BasicHttpSecurityModeHelper.IsDefined(mode), string.Format("Invalid BasicHttpSecurityMode value: {0}.", mode.ToString()));
-            this.Mode = mode;
+            Mode = mode;
             _transportSecurity = transportSecurity == null ? new HttpTransportSecurity() : transportSecurity;
         }
 

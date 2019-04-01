@@ -3,13 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Sockets;
 using System.Globalization;
-using System.ServiceModel.Diagnostics;
 
 namespace System.ServiceModel.Channels
 {
@@ -50,7 +44,7 @@ namespace System.ServiceModel.Channels
             {
                 ITcpChannelFactorySettings tcpSettings = (ITcpChannelFactorySettings)settings;
                 return (
-                    (this.LeaseTimeout == tcpSettings.LeaseTimeout) &&
+                    (LeaseTimeout == tcpSettings.LeaseTimeout) &&
                     base.IsCompatible(settings)
                     );
             }

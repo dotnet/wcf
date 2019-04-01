@@ -58,9 +58,18 @@ namespace System.Runtime
                 var tuple = obj as Tuple<TaskCompletionSource<TResult>, AsyncCallback>;
                 var tcsObj = tuple.Item1;
                 var callbackObj = tuple.Item2;
-                if (antecedent.IsFaulted) tcsObj.TrySetException(antecedent.Exception.InnerException);
-                else if (antecedent.IsCanceled) tcsObj.TrySetCanceled();
-                else tcsObj.TrySetResult(antecedent.Result);
+                if (antecedent.IsFaulted)
+                {
+                    tcsObj.TrySetException(antecedent.Exception.InnerException);
+                }
+                else if (antecedent.IsCanceled)
+                {
+                    tcsObj.TrySetCanceled();
+                }
+                else
+                {
+                    tcsObj.TrySetResult(antecedent.Result);
+                }
 
                 if (callbackObj != null)
                 {

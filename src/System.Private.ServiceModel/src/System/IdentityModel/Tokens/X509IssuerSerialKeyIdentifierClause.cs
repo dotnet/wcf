@@ -2,28 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
+
 namespace System.IdentityModel.Tokens
 {
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
-    using System.ServiceModel;
-
     public class X509IssuerSerialKeyIdentifierClause : SecurityKeyIdentifierClause
     {
-        private readonly string _issuerName;
         private readonly string _issuerSerialNumber;
 
         public X509IssuerSerialKeyIdentifierClause(string issuerName, string issuerSerialNumber)
             : base(null)
         {
             if (string.IsNullOrEmpty(issuerName))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(issuerName));
-            if (string.IsNullOrEmpty(issuerSerialNumber))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(issuerSerialNumber));
+            }
 
-            _issuerName = issuerName;
+            if (string.IsNullOrEmpty(issuerSerialNumber))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(issuerSerialNumber));
+            }
+
+            IssuerName = issuerName;
             _issuerSerialNumber = issuerSerialNumber;
         }
 
@@ -31,16 +34,15 @@ namespace System.IdentityModel.Tokens
             : base(null)
         {
             if (certificate == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+            }
 
-            _issuerName = certificate.Issuer;
+            IssuerName = certificate.Issuer;
             _issuerSerialNumber = certificate.GetSerialNumberString();
         }
 
-        public string IssuerName
-        {
-            get { return _issuerName; }
-        }
+        public string IssuerName { get; }
 
         public string IssuerSerialNumber
         {
@@ -50,13 +52,15 @@ namespace System.IdentityModel.Tokens
         public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause)
         {
             X509IssuerSerialKeyIdentifierClause that = keyIdentifierClause as X509IssuerSerialKeyIdentifierClause;
-            return ReferenceEquals(this, that) || (that != null && that.Matches(_issuerName, _issuerSerialNumber));
+            return ReferenceEquals(this, that) || (that != null && that.Matches(IssuerName, _issuerSerialNumber));
         }
 
         public bool Matches(X509Certificate2 certificate)
         {
             if (certificate == null)
+            {
                 return false;
+            }
 
             return Matches(certificate.Issuer, certificate.GetSerialNumberString());
         }
@@ -75,7 +79,7 @@ namespace System.IdentityModel.Tokens
             }
 
             // Serial numbers match. Do a string comparison of issuer names
-            if (_issuerName == issuerName)
+            if (IssuerName == issuerName)
             {
                 return true;
             }
@@ -86,7 +90,7 @@ namespace System.IdentityModel.Tokens
             bool x500IssuerNameMatch = false;
             try
             {
-                if (System.ServiceModel.Security.SecurityUtils.IsEqual(new X500DistinguishedName(_issuerName).RawData,
+                if (System.ServiceModel.Security.SecurityUtils.IsEqual(new X500DistinguishedName(IssuerName).RawData,
                                                                        new X500DistinguishedName(issuerName).RawData))
                 {
                     x500IssuerNameMatch = true;
@@ -102,7 +106,7 @@ namespace System.IdentityModel.Tokens
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "X509IssuerSerialKeyIdentifierClause(Issuer = '{0}', Serial = '{1}')",
-                this.IssuerName, this.IssuerSerialNumber);
+                IssuerName, IssuerSerialNumber);
         }
     }
 }

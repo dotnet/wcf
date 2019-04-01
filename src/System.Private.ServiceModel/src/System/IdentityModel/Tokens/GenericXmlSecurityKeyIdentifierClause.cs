@@ -31,7 +31,9 @@ namespace System.IdentityModel.Tokens
         private bool Matches(XmlElement xmlElement)
         {
             if (xmlElement == null)
+            {
                 return false;
+            }
 
             return CompareNodes(ReferenceXml, xmlElement);
         }
@@ -39,18 +41,26 @@ namespace System.IdentityModel.Tokens
         private bool CompareNodes(XmlNode originalNode, XmlNode newNode)
         {
             if (originalNode.OuterXml == newNode.OuterXml)
+            {
                 return true;
+            }
 
             if (originalNode.LocalName != newNode.LocalName || originalNode.InnerText != newNode.InnerText)
+            {
                 return false;
+            }
 
             if (originalNode.InnerXml == newNode.InnerXml)
+            {
                 return true;
+            }
 
             if (originalNode.HasChildNodes)
             {
                 if (!newNode.HasChildNodes || originalNode.ChildNodes.Count != newNode.ChildNodes.Count)
+                {
                     return false;
+                }
 
                 bool childrenStatus = true;
                 for (int i = 0; i < originalNode.ChildNodes.Count; i++)
@@ -61,7 +71,9 @@ namespace System.IdentityModel.Tokens
                 return childrenStatus;
             }
             else if (newNode.HasChildNodes)
+            {
                 return false;
+            }
 
             return true;
         }

@@ -15,14 +15,10 @@ namespace System.IdentityModel.Tokens
     /// </summary>
     internal class KeyInfoSerializer : SecurityTokenSerializer
     {
-        private readonly List<SecurityTokenSerializer.KeyIdentifierEntry> _keyIdentifierEntries;
-        private readonly List<SecurityTokenSerializer.KeyIdentifierClauseEntry> _keyIdentifierClauseEntries;
-        private readonly List<SecurityTokenSerializer.SerializerEntries> _serializerEntries;
+        private readonly List<KeyIdentifierEntry> _keyIdentifierEntries;
+        private readonly List<KeyIdentifierClauseEntry> _keyIdentifierClauseEntries;
+        private readonly List<SerializerEntries> _serializerEntries;
         private readonly List<TokenEntry> _tokenEntries;
-
-
-        private DictionaryManager _dictionaryManager;
-        private bool _emitBspRequiredAttributes;
         private SecurityTokenSerializer _innerSecurityTokenSerializer;
 
         /// <summary>
@@ -49,14 +45,14 @@ namespace System.IdentityModel.Tokens
             SecurityTokenSerializer innerSecurityTokenSerializer,
             Func<KeyInfoSerializer, IEnumerable<SerializerEntries>> additionalEntries)
         {
-            _dictionaryManager = dictionaryManager;
-            _emitBspRequiredAttributes = emitBspRequiredAttributes;
+            DictionaryManager = dictionaryManager;
+            EmitBspRequiredAttributes = emitBspRequiredAttributes;
             _innerSecurityTokenSerializer = innerSecurityTokenSerializer;
 
-            _serializerEntries = new List<SecurityTokenSerializer.SerializerEntries>();
+            _serializerEntries = new List<SerializerEntries>();
 
             _serializerEntries.Add(new XmlDsigSep2000(this));
-            _serializerEntries.Add(new System.IdentityModel.Security.WSTrust(this, trustDictionary));
+            _serializerEntries.Add(new Security.WSTrust(this, trustDictionary));
             if (additionalEntries != null)
             {
                 foreach (SerializerEntries entries in additionalEntries(this))
@@ -81,33 +77,24 @@ namespace System.IdentityModel.Tokens
             }
 
             _tokenEntries = new List<TokenEntry>();
-            _keyIdentifierEntries = new List<SecurityTokenSerializer.KeyIdentifierEntry>();
-            _keyIdentifierClauseEntries = new List<SecurityTokenSerializer.KeyIdentifierClauseEntry>();
+            _keyIdentifierEntries = new List<KeyIdentifierEntry>();
+            _keyIdentifierClauseEntries = new List<KeyIdentifierClauseEntry>();
 
             for (int i = 0; i < _serializerEntries.Count; ++i)
             {
-                SecurityTokenSerializer.SerializerEntries serializerEntry = _serializerEntries[i];
+                SerializerEntries serializerEntry = _serializerEntries[i];
                 serializerEntry.PopulateTokenEntries(_tokenEntries);
                 serializerEntry.PopulateKeyIdentifierEntries(_keyIdentifierEntries);
                 serializerEntry.PopulateKeyIdentifierClauseEntries(_keyIdentifierClauseEntries);
             }
         }
 
-        public DictionaryManager DictionaryManager
-        {
-            get { return _dictionaryManager; }
-        }
+        public DictionaryManager DictionaryManager { get; }
 
         /// <summary>
         /// Gets or sets a value indicating if BSP required attributes should be written out.
         /// </summary>
-        public bool EmitBspRequiredAttributes
-        {
-            get
-            {
-                return _emitBspRequiredAttributes;
-            }
-        }
+        public bool EmitBspRequiredAttributes { get; }
 
         public SecurityTokenSerializer InnerSecurityTokenSerializer
         {
@@ -149,7 +136,9 @@ namespace System.IdentityModel.Tokens
             {
                 KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.CanReadKeyIdentifierCore(localReader))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -161,7 +150,7 @@ namespace System.IdentityModel.Tokens
             SecurityKeyIdentifier keyIdentifier = new SecurityKeyIdentifier();
             while (localReader.IsStartElement())
             {
-                SecurityKeyIdentifierClause clause = this.InnerSecurityTokenSerializer.ReadKeyIdentifierClause(localReader);
+                SecurityKeyIdentifierClause clause = InnerSecurityTokenSerializer.ReadKeyIdentifierClause(localReader);
                 if (clause == null)
                 {
                     localReader.Skip();
@@ -186,7 +175,9 @@ namespace System.IdentityModel.Tokens
             {
                 KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.SupportsCore(keyIdentifier))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -207,7 +198,9 @@ namespace System.IdentityModel.Tokens
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
+                        {
                             throw;
+                        }
 
                         if (!ShouldWrapException(e))
                         {
@@ -222,7 +215,9 @@ namespace System.IdentityModel.Tokens
             }
 
             if (!wroteKeyIdentifier)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifier.GetType())));
+            }
 
             localWriter.Flush();
         }
@@ -234,7 +229,9 @@ namespace System.IdentityModel.Tokens
             {
                 KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.CanReadKeyIdentifierClauseCore(localReader))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -254,7 +251,9 @@ namespace System.IdentityModel.Tokens
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
+                        {
                             throw;
+                        }
 
                         if (!ShouldWrapException(e))
                         {
@@ -273,7 +272,9 @@ namespace System.IdentityModel.Tokens
             {
                 KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.SupportsCore(keyIdentifierClause))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -294,7 +295,9 @@ namespace System.IdentityModel.Tokens
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
+                        {
                             throw;
+                        }
 
                         if (!ShouldWrapException(e))
                         {
@@ -309,7 +312,9 @@ namespace System.IdentityModel.Tokens
             }
 
             if (!wroteKeyIdentifierClause)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
+            }
 
             localWriter.Flush();
         }
