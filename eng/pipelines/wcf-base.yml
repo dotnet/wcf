@@ -143,7 +143,7 @@ jobs:
                 parameters:
                   HelixSource: $(_helixSource)
                   HelixType: $(_helixType)
-                  HelixTargetQueues: $(helixQueues)
+                  HelixTargetQueues: $(_helixQueues)
                   XUnitProjects: $(_xUnitAllTestProjects)
                   XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
                   XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
