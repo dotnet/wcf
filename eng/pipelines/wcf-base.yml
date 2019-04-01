@@ -65,6 +65,9 @@ jobs:
         - _msbuildCommonParameters: ''
         - _archiveTestsParameter: ''
 
+        - ${{ if eq(job._useIISHostedTestArgs, 'true') }}:
+          - _testArgs: /p:ServiceUri=wcfcoresrv5.cloudapp.net/wcftestservice1 /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
+
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
           - _msbuildCommonParameters: /p:OfficialBuildId=$(Build.BuildNumber)
           - _dotnetFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
@@ -127,11 +130,13 @@ jobs:
                 wcfPRServiceId: 1
             - script: $(_buildScript)
                 $(_commonArguments)
+                $(_testArgs)
 
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_msbuildCommonParameters)
+                $(_testArgs)
 
           - ${{ if ne(job.customBuildSteps[0], '') }}:
             - ${{ job.customBuildSteps }}
