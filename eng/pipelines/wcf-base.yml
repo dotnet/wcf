@@ -64,9 +64,7 @@ jobs:
 
         - _msbuildCommonParameters: ''
         - _archiveTestsParameter: ''
-
-        - ${{ if eq(job._useIISHostedTestArgs, 'true') }}:
-          - _testArgs: /p:ServiceUri=wcfcoresrv5.cloudapp.net/wcftestservice1 /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
+        - _testArgs: /p:ServiceUri=wcfcoresrv5.cloudapp.net/wcftestservice1 /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
 
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
           - _msbuildCommonParameters: /p:OfficialBuildId=$(Build.BuildNumber)
