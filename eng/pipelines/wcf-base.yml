@@ -82,14 +82,11 @@ jobs:
         # Windows variables
         - ${{ if eq(parameters.targetOS, 'Windows_NT') }}:
           - _buildScript: eng\common\cibuild.cmd
-          - _msbuildCommand: powershell -ExecutionPolicy ByPass -NoProfile eng\common\msbuild.ps1 -warnaserror:0 -ci
 
         # Non-Windows variables
         - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
-          - _buildScript: ${{ job.buildScriptPrefix }}./eng/common/build.sh
-          - _msbuildCommand: ${{ job.buildScriptPrefix }}./eng/common/msbuild.sh --warnaserror false --ci
+          - _buildScript: eng\common\cibuild.sh
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            - _commonArguments: $(_args)
 
         # Send to Helix variables
         - ${{ if eq(job.submitToHelix, 'true') }}:

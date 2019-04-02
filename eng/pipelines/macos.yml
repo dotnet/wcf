@@ -67,7 +67,7 @@ jobs:
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          name: Hosted mac Internal
+          name: Hosted Mac Internal
         ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           name: Hosted macOS
 
