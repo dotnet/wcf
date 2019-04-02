@@ -366,14 +366,17 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-#if !FEATURE_NETNATIVE // HttpClientHandler for uap does not support a non-NetworkCredential type.
-                    CredentialCache credentials = new CredentialCache();
-                    credentials.Add(GetCredentialCacheUriPrefix(via),
-                        AuthenticationSchemesHelper.ToString(_authenticationScheme), credential);
-                    clientHandler.Credentials = credentials;
-#else
-                    clientHandler.Credentials = credential;
-#endif
+                    if (Fx.IsUap)
+                    {
+                        clientHandler.Credentials = credential;
+                    }
+                    else
+                    {
+                        CredentialCache credentials = new CredentialCache();
+                        credentials.Add(GetCredentialCacheUriPrefix(via),
+                            AuthenticationSchemesHelper.ToString(_authenticationScheme), credential);
+                        clientHandler.Credentials = credentials;
+                    }
                 }
 
                 HttpMessageHandler handler = clientHandler;
@@ -387,12 +390,10 @@ namespace System.ServiceModel.Channels
                 if (!_keepAliveEnabled)
                     httpClient.DefaultRequestHeaders.ConnectionClose = true;
 
-#if !FEATURE_NETNATIVE // Expect continue not correctly supported on UAP
-                if (IsExpectContinueHeaderRequired)
+                if (IsExpectContinueHeaderRequired && !Fx.IsUap)
                 {
                     httpClient.DefaultRequestHeaders.ExpectContinue = true;
                 }
-#endif
 
                 // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1 
                 // prevents a call to CancellationToken.CancelAfter that HttpClient does internally which
@@ -1054,16 +1055,17 @@ namespace System.ServiceModel.Channels
                             httpRequestMessage.Content = MessageContent.Create(_factory, request, _timeoutHelper);
                         }
 
-#if FEATURE_NETNATIVE // UAP doesn't support Expect Continue so we do a HEAD request to get authentication done before sending the real request
-                        try
+                        if (Fx.IsUap)
                         {
-                            // There is a possibility that a HEAD pre-auth request might fail when the actual request
-                            // will succeed. For example, when the web service refuses HEAD requests. We don't want
-                            // to fail the actual request because of some subtlety which causes the HEAD request.
-                            await SendPreauthenticationHeadRequestIfNeeded();
+                            try
+                            {
+                                // There is a possibility that a HEAD pre-auth request might fail when the actual request
+                                // will succeed. For example, when the web service refuses HEAD requests. We don't want
+                                // to fail the actual request because of some subtlety which causes the HEAD request.
+                                await SendPreauthenticationHeadRequestIfNeeded();
+                            }
+                            catch { /* ignored */ }
                         }
-                        catch { /* ignored */ }
-#endif
 
                         bool success = false;
                         var timeoutToken = await _timeoutHelper.GetCancellationTokenAsync();

@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security;
 using System.ServiceModel;
@@ -32,10 +33,22 @@ namespace System.Runtime
 
         private static ExceptionTrace s_exceptionTrace;
         private static EtwDiagnosticTrace s_diagnosticTrace;
+        private static bool? s_isUap;
 
-        [Fx.Tag.SecurityNote(Critical = "This delegate is called from within a ConstrainedExecutionRegion, must not be settable from PT code")]
-        [SecurityCritical]
         private static ExceptionHandler s_asynchronousThreadExceptionHandler;
+
+        internal static bool IsUap
+        {
+            get
+            {
+                if (!s_isUap.HasValue)
+                {
+                    s_isUap = "Microsoft Windows".Equals(RuntimeInformation.OSDescription, StringComparison.Ordinal);
+                }
+
+                return s_isUap.Value;
+            }
+        }
 
         internal static ExceptionTrace Exception
         {
@@ -63,11 +76,6 @@ namespace System.Runtime
             }
         }
 
-        [Fx.Tag.SecurityNote(Critical = "Accesses SecurityCritical field EtwProvider",
-            Safe = "Doesn't leak info\\resources")]
-        [SecuritySafeCritical]
-        [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.UseNewGuidHelperRule,
-            Justification = "This is a method that creates ETW provider passing Guid Provider ID.")]
         private static EtwDiagnosticTrace InitializeTracing()
         {
             EtwDiagnosticTrace trace = new EtwDiagnosticTrace(defaultEventSource, EtwDiagnosticTrace.DefaultEtwProviderId);
@@ -77,15 +85,10 @@ namespace System.Runtime
 
         public static ExceptionHandler AsynchronousThreadExceptionHandler
         {
-            [Fx.Tag.SecurityNote(Critical = "access critical field", Safe = "ok for get-only access")]
-            [SecuritySafeCritical]
             get
             {
                 return Fx.s_asynchronousThreadExceptionHandler;
             }
-
-            [Fx.Tag.SecurityNote(Critical = "sets a critical field")]
-            [SecurityCritical]
             set
             {
                 Fx.s_asynchronousThreadExceptionHandler = value;

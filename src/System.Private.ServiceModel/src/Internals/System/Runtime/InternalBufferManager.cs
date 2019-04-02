@@ -51,7 +51,7 @@ namespace System.Runtime
             private long _remainingMemory;
             private bool _areQuotasBeingTuned;
             private int _totalMisses;
-#if DEBUG && !FEATURE_NETNATIVE
+#if DEBUG
             private ConcurrentDictionary<int, string> _buffersPooled = new ConcurrentDictionary<int, string>();
 #endif //DEBUG
 
@@ -104,7 +104,7 @@ namespace System.Runtime
 
             public override void Clear()
             {
-#if DEBUG && !FEATURE_NETNATIVE
+#if DEBUG
                 _buffersPooled.Clear();
 #endif //DEBUG
 
@@ -273,7 +273,7 @@ namespace System.Runtime
                     returnValue = Fx.AllocateByteArray(bufferSize);
                 }
 
-#if DEBUG && !FEATURE_NETNATIVE
+#if DEBUG
                 string dummy;
                 _buffersPooled.TryRemove(returnValue.GetHashCode(), out dummy);
 #endif //DEBUG

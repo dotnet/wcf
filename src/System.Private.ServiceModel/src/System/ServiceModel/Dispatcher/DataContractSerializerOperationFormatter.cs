@@ -292,7 +292,6 @@ namespace System.ServiceModel.Dispatcher
                 }
                 else if (messageInfo.UnknownHeaderDescription != null)
                 {
-#if FEATURE_CORECLR
                     MessageHeaderDescription unknownHeaderDescription = messageInfo.UnknownHeaderDescription;
                     XmlDictionaryReader headerReader = headers.GetReaderAtHeader(i);
                     try
@@ -307,9 +306,6 @@ namespace System.ServiceModel.Dispatcher
                     {
                         headerReader.Dispose();
                     }
-#else
-                    throw ExceptionHelper.PlatformNotSupported(); // XmlDocument not available in native
-#endif
                 }
             }
             if (multipleHeaderValues != null)

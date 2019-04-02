@@ -364,10 +364,8 @@ namespace System.ServiceModel.Description
                         _request = CreateMessageInfo(this.Operation.Messages[0], ":Request");
                         // We don't do the following check at Net Native runtime because XmlMapping.XsdElementName 
                         // is not available at that time.
-                        bool skipVerifyXsdElementName = false;
-#if FEATURE_NETNATIVE
-                        skipVerifyXsdElementName = GeneratedXmlSerializers.IsInitialized;
-#endif
+                        bool skipVerifyXsdElementName = Fx.IsUap && GeneratedXmlSerializers.IsInitialized;
+
                         if (_request != null && this.IsRpc && this.Operation.IsValidateRpcWrapperName && !skipVerifyXsdElementName && _request.BodyMapping.XsdElementName != this.Operation.Name)
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxRpcMessageBodyPartNameInvalid, Operation.Name, this.Operation.Messages[0].MessageName, _request.BodyMapping.XsdElementName, this.Operation.Name)));
                         if (!this.IsOneWay)
@@ -707,11 +705,15 @@ namespace System.ServiceModel.Description
                     else
                         mapping = XmlImporter.ImportMembersMapping(mappingName, ns, members, hasWrapperElement, rpc);
 
-#if FEATURE_NETNATIVE
-                    mapping.SetKeyInternal(mappingKey);
-#else
-                    mapping.SetKey(mappingKey);
-#endif
+                    if (Fx.IsUap)
+                    {
+                        mapping.SetKeyInternal(mappingKey);
+                    }
+                    else
+                    {
+                        mapping.SetKey(mappingKey);
+                    }
+
                     XmlMappings.Add(mappingKey, mapping);
                     return mapping;
                 }
@@ -1103,13 +1105,11 @@ namespace System.ServiceModel.Description
 
         public static XmlSerializer[] FromMappings(XmlMapping[] mappings, Type type)
         {
-#if FEATURE_NETNATIVE
-            if (GeneratedXmlSerializers.IsInitialized)
+            if (Fx.IsUap && GeneratedXmlSerializers.IsInitialized)
             {
                 return FromMappingsViaInjection(mappings, type);
             }
 
-#endif
             return FromMappingsViaReflection(mappings, type);
         }
 
@@ -1122,7 +1122,6 @@ namespace System.ServiceModel.Description
 
             return XmlSerializer.FromMappings(mappings, type);
         }
-#if FEATURE_NETNATIVE
 
         private static XmlSerializer[] FromMappingsViaInjection(XmlMapping[] mappings, Type type)
         {
@@ -1149,10 +1148,8 @@ namespace System.ServiceModel.Description
 
             return serializers;
         }
-#endif
     }
 
-#if FEATURE_NETNATIVE
     internal static class XmlMappingExtension
     {
         private static ConcurrentDictionary<XmlMapping, string> s_dictionary = new ConcurrentDictionary<XmlMapping, string>();
@@ -1169,5 +1166,4 @@ namespace System.ServiceModel.Description
             s_dictionary.TryAdd(mapping, key);
         }
     }
-#endif
 }
