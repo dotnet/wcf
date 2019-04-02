@@ -2028,8 +2028,14 @@ namespace System.ServiceModel.Description
                 IBehavior behavior = toAdd[i];
                 if (!descriptionBehaviors.Contains(behavior.GetType()))
                 {
-                    // 
-                    throw ExceptionHelper.PlatformNotSupported();
+                    if (behavior is IOperationBehavior || behavior is IContractBehavior)
+                    { 
+                        descriptionBehaviors.Add(behavior);
+                    }
+                    else
+                    {
+                        throw ExceptionHelper.PlatformNotSupported();
+                    }
                 }
             }
         }
