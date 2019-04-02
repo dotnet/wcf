@@ -78,10 +78,12 @@ jobs:
 
       variables:
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-          - netcoreappWindowsQueues: Windows.7.Amd64.Open+Windows.81.Amd64.Open+Windows.10.Amd64.ClientRS4.ES.Open
+          #- netcoreappWindowsQueues: Windows.7.Amd64.Open+Windows.81.Amd64.Open+Windows.10.Amd64.ClientRS4.ES.Open
+          - netcoreappWindowsQueues: Windows.10.Amd64.ClientRS4.ES.Open
 
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          - netcoreappWindowsQueues: Windows.7.Amd64+Windows.81.Amd64+Windows.10.Amd64.Core+Windows.10.Amd64.ClientRS4
+          #- netcoreappWindowsQueues: Windows.7.Amd64+Windows.81.Amd64+Windows.10.Amd64.Core+Windows.10.Amd64.ClientRS4
+          - netcoreappWindowsQueues: Windows.10.Amd64.ClientRS4.ES.Open
 
         - _xUnitUnitTestProjects:
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
