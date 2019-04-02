@@ -86,7 +86,6 @@ jobs:
         # Non-Windows variables
         - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
           - _buildScript: eng\common\cibuild.sh
-          - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
 
         # Send to Helix variables
         - ${{ if eq(job.submitToHelix, 'true') }}:
