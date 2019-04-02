@@ -89,7 +89,7 @@ jobs:
           - _buildScript: ${{ job.buildScriptPrefix }}./eng/common/build.sh
           - _msbuildCommand: ${{ job.buildScriptPrefix }}./eng/common/msbuild.sh --warnaserror false --ci
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            - _commonArguments: $(_args) -stripSymbols
+            - _commonArguments: $(_args)
 
         # Send to Helix variables
         - ${{ if eq(job.submitToHelix, 'true') }}:
