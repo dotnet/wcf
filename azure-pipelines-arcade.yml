@@ -25,7 +25,7 @@ jobs:
         isOfficialBuild: true
 
   # Linux legs
-  #- template: /eng/pipelines/linux.yml
-  #  ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
-  #    parameters:
-  #      isOfficialBuild: true
+  - template: /eng/pipelines/linux.yml
+    ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
+      parameters:
+        isOfficialBuild: true
