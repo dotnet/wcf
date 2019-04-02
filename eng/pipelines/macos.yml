@@ -9,12 +9,12 @@ jobs:
 - template: wcf-base.yml
   parameters:
     isOfficialBuild: ${{ parameters.isOfficialBuild }}
-    targetOS: Windows_NT
+    targetOS: OSX
     jobs:
 
     # Legs with Helix testing
-    - job: WindowsTest
-      displayName: Windows
+    - job: MacOS
+      displayName: MacOS
       strategy:
         matrix:
           # PR CI build LEGS with HELIX Testing
@@ -27,7 +27,7 @@ jobs:
               _sign: false
               _pack: false
               _publish: false
-              _helixQueues: $(netcoreappWindowsQueues)
+              _helixQueues: $(macOSQueues)
               _useIISHostedTestArgs: true
 
             x86_Release:
@@ -38,7 +38,7 @@ jobs:
               _sign: false
               _pack: false
               _publish: false
-              _helixQueues: $(netcoreappWindowsQueues)
+              _helixQueues: $(macOSQueues)
               _useIISHostedTestArgs: true
           
           # Official build LEGS with HELIX Testing
@@ -51,7 +51,7 @@ jobs:
               _integrationTests: false
               _pack: true
               _publish: true
-              _helixQueues: $(netcoreappWindowsQueues)
+              _helixQueues: $(macOSQueues)
               _useIISHostedTestArgs: true
 
             x86_Release:
@@ -62,28 +62,24 @@ jobs:
               _integrationTests: false
               _pack: true
               _publish: true
-              _helixQueues: $(netcoreappWindowsQueues)
+              _helixQueues: $(macOSQueues)
               _useIISHostedTestArgs: true
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          name: NetCoreInternal-Int-Pool
-          queue: buildpool.windows.10.amd64.vs2017
+          name: Hosted mac Internal
         ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-          name: NetCorePublic-Int-Pool
-          queue: buildpool.windows.10.amd64.vs2017.open
+          name: Hosted macOS
 
       submitToHelix: true
-      buildExtraArguments: /p:RuntimeOS=win10
+      buildExtraArguments: ''
 
       variables:
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-          #- netcoreappWindowsQueues: Windows.7.Amd64.Open+Windows.81.Amd64.Open+Windows.10.Amd64.ClientRS4.ES.Open
-          - netcoreappWindowsQueues: Windows.10.Amd64.ClientRS4.ES.Open
+          - macOSQueues: OSX.1012.Amd64.Open+OSX.1013.Amd64.Open
 
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          #- netcoreappWindowsQueues: Windows.7.Amd64+Windows.81.Amd64+Windows.10.Amd64.Core+Windows.10.Amd64.ClientRS4
-          - netcoreappWindowsQueues: Windows.10.Amd64.ClientRS4
+          - macOSQueues: OSX.1012.Amd64+OSX.1013.Amd64+OSX.1014.Amd64
 
         - _xUnitUnitTestProjects:
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
