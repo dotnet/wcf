@@ -23,17 +23,6 @@ public static class BehaviorExtensionTest
         Message inputMessage = Message.CreateMessage(MessageVersion.Default, action: "Test", body: testMessageBody);
 
         // *** SETUP *** \\
-
-        // Create a mock interactive channel initializer to observe whether
-        // its methods are invoked.
-        bool beginInitializeCalled = false;
-        TestOperationBehaviorAttribute testOperationBehavior = new TestOperationBehaviorAttribute();
-        testOperationBehavior.ApplyClientBehaviorOverride = (description, clientOperation) =>
-        {
-            beginInitializeCalled = true;
-            testOperationBehavior.DefaultApplyClientBehavior(description, clientOperation);
-        };
-
         MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
         CustomBinding binding = new CustomBinding(mockBindingElement);
         EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
@@ -49,16 +38,14 @@ public static class BehaviorExtensionTest
         // The mock's default behavior is just to loopback what we sent.
         var result = outputMessage.GetBody<string>();
 
-        // Explicitly close the channel factory synchronously.
-        // One of the important aspects of this test is that a synchronous
-        // close of the factory also synchronously closes the channel.
+        ((IClientChannel)channel).Close();
         factory.Close();
 
         // *** VALIDATE *** \\
         Assert.True(String.Equals(testMessageBody, result),
                     String.Format("Expected body to be '{0}' but actual was '{1}'", testMessageBody, result));
 
-        Assert.False(beginInitializeCalled, "BeginDisplayInitializationUI should not have been called.");
+        Assert.True(TestOperationBehaviorAttribute.operationBehaviorSet, "TestOperationBehavior attribute on IBehaviorExtensionServerInterface.Process operation should have triggered ApplyClientBehavior() call");
     }
 
     [WcfFact]
@@ -69,20 +56,9 @@ public static class BehaviorExtensionTest
 
         // *** SETUP *** \\
 
-        // Create a mock interactive channel initializer to observe whether
-        // its methods are invoked.
-        bool beginInitializeCalled = false;
-        TestContractBehaviorAttribute testContractBehavior = new TestContractBehaviorAttribute();
-        testContractBehavior.ApplyClientBehaviorOverride = (description, endpoint, clientRuntime) =>
-        {
-            beginInitializeCalled = true;
-            testContractBehavior.DefaultApplyClientBehavior(description, endpoint, clientRuntime);
-        };
-
         MockTransportBindingElement mockBindingElement = new MockTransportBindingElement();
         CustomBinding binding = new CustomBinding(mockBindingElement);
         EndpointAddress address = new EndpointAddress("myprotocol://localhost:5000");
-
         var factory = new ChannelFactory<IBehaviorExtensionServerInterface2>(binding, address);
 
         // We rely on the implicit open of the channel to be synchronous.
@@ -95,16 +71,15 @@ public static class BehaviorExtensionTest
         // The mock's default behavior is just to loopback what we sent.
         var result = outputMessage.GetBody<string>();
 
-        // Explicitly close the channel factory synchronously.
-        // One of the important aspects of this test is that a synchronous
-        // close of the factory also synchronously closes the channel.
+        ((IClientChannel)channel).Close();
         factory.Close();
+
 
         // *** VALIDATE *** \\
         Assert.True(String.Equals(testMessageBody, result),
                     String.Format("Expected body to be '{0}' but actual was '{1}'", testMessageBody, result));
 
-        Assert.False(beginInitializeCalled, "BeginDisplayInitializationUI should not have been called.");
+        Assert.True(TestContractBehaviorAttribute.contractBehaviorSet, "TestContractBehavior attribute on IBehaviorExtensionServerInterface2 constract should have triggered ApplyClientBehavior() call");
 
     }
 
@@ -141,43 +116,26 @@ public static class BehaviorExtensionTest
 
     public class TestOperationBehaviorAttribute: Attribute, IOperationBehavior
     {
-        public TestOperationBehaviorAttribute()
-        {
-            ApplyClientBehaviorOverride = DefaultApplyClientBehavior;
-        }
-        public Action<OperationDescription, ClientOperation> ApplyClientBehaviorOverride { get; set; }
+        public static bool operationBehaviorSet = false;
         public void Validate(OperationDescription description) { }
-  
         public void AddBindingParameters(OperationDescription description, BindingParameterCollection bindingParameters) { }
         public void ApplyDispatchBehavior(OperationDescription description, DispatchOperation dispatchOperationr) { }
-
         public void ApplyClientBehavior(OperationDescription description, ClientOperation clientOperation)
         {
-            ApplyClientBehaviorOverride(description, clientOperation);
+            operationBehaviorSet = true;
         }
-
-        public void DefaultApplyClientBehavior(OperationDescription description, ClientOperation clientOperation) { }
     }
 
     public class TestContractBehaviorAttribute : Attribute, IContractBehavior
     {
-        public TestContractBehaviorAttribute()
-        {
-            ApplyClientBehaviorOverride = DefaultApplyClientBehavior;
-        }
-        public Action<ContractDescription, ServiceEndpoint, ClientRuntime> ApplyClientBehaviorOverride { get; set; }
+        public static bool contractBehaviorSet = false; 
         public void Validate(ContractDescription description, ServiceEndpoint endpoint) { }
-
         public void AddBindingParameters(ContractDescription description, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
-
         public void ApplyDispatchBehavior(ContractDescription description, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime) { }
-
         public void ApplyClientBehavior(ContractDescription description, ServiceEndpoint endpoint, ClientRuntime clientRuntime)
         {
-            ApplyClientBehaviorOverride(description, endpoint, clientRuntime);
+            contractBehaviorSet = true;
         }
-
-        public void DefaultApplyClientBehavior(ContractDescription description, ServiceEndpoint endpoint, ClientRuntime clientRuntime) { }
     }
     #endregion Helpers
 }
