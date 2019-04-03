@@ -22,6 +22,8 @@
     <!-- [todo:arcade] Default Arcade value, imports Localization.targets if true. -->
     <!-- https://github.com/dotnet/arcade/blob/master/src/Microsoft.DotNet.Arcade.Sdk/tools/Imports.targets#L56 -->
     <UsingToolXliff>false</UsingToolXliff>
+    <!-- Adds a pkg ref to netfx references in order to resolve desktop refs in our facade projects. -->
+    <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
