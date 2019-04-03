@@ -111,6 +111,9 @@ jobs:
         workspace:
           clean: all
 
+        # enabling publish build artifacts, will publish all build logs under /artifacts/log/
+        enablePublishBuildArtifacts: true
+
         ${{ if eq(job.timeoutInMinutes, '') }}:
           timeoutInMinutes: 150
 
