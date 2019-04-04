@@ -52,4 +52,13 @@
     <DisableStandardFrameworkResolution>true</DisableStandardFrameworkResolution>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net45' OR
+                            '$(TargetFramework)' == 'net46' OR
+                            '$(TargetFramework)' == 'net461'
+                            ">
+    <!-- [todo:arcade] This is a workaround for the incorrect casing of the reference to System.Xml.dll in package Microsoft.NETFramework.ReferenceAssemblies. -->
+    <!-- Remove it once the ref package is fixed. -->
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+  </PropertyGroup>
+
 </Project>

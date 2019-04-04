@@ -24,9 +24,6 @@
     <UsingToolXliff>false</UsingToolXliff>
     <!-- Adds a pkg ref to netfx references in order to resolve desktop refs in our facade projects. -->
     <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
-    <!-- [todo:arcade] This is a workaround for the incorrect casing of the reference to System.Xml.dll in package Microsoft.NETFramework.ReferenceAssemblies. -->
-    <!-- Remove it once the ref package is fixed. -->
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
