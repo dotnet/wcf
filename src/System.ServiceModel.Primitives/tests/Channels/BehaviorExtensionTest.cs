@@ -114,7 +114,7 @@ public static class BehaviorExtensionTest
 
     }
 
-    public class TestOperationBehaviorAttribute: Attribute, IOperationBehavior
+    public class TestOperationBehaviorAttribute : Attribute, IOperationBehavior
     {
         public static bool operationBehaviorSet = false;
         public void Validate(OperationDescription description) { }
