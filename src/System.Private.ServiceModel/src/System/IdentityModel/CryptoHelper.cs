@@ -202,7 +202,7 @@ namespace System.IdentityModel
             {
                 if (s_random == null)
                 {
-                    s_random = new RNGCryptoServiceProvider();
+                    s_random = RandomNumberGenerator.Create();
                 }
                 return s_random;
             }
@@ -271,17 +271,15 @@ namespace System.IdentityModel
                 case SecurityAlgorithms.Aes128KeyWrap:
                 case SecurityAlgorithms.Aes192KeyWrap:
                 case SecurityAlgorithms.Aes256KeyWrap:
-                    return Rijndael.Create();
+                    return Aes.Create();
                 case SecurityAlgorithms.TripleDesEncryption:
                 case SecurityAlgorithms.TripleDesKeyWrap:
 #pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
                     return TripleDES.Create();
 #pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
                 case SecurityAlgorithms.HmacSha1Signature:
-                    byte[] key = new byte[64];
-                    new RNGCryptoServiceProvider().GetBytes(key);
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    return new HMACSHA1(key);
+                    return new HMACSHA1();
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 case SecurityAlgorithms.HmacSha256Signature:
                     return new HMACSHA256();
@@ -379,7 +377,7 @@ namespace System.IdentityModel
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 case SecurityAlgorithms.HmacSha1Signature:
 #pragma warning disable CA5350 // Do not use insecure cryptographic algorithm SHA1.
-                    return new HMACSHA1(GenerateRandomBytes(64));
+                    return new HMACSHA1();
 #pragma warning restore CA5350 // Do not use insecure cryptographic algorithm SHA1.
                 default:
                     break;

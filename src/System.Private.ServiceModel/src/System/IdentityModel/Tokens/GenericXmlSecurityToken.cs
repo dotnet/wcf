@@ -121,7 +121,7 @@ namespace System.IdentityModel.Tokens
                         id = tokenXml.GetAttribute("Id");
                     }
 
-                    //This fixes the unecnrypted SAML 2.0 case. Eg: <Assertion ID="_05955298-214f-41e7-b4c3-84dbff7f01b9" 
+                    //This fixes the unencrypted SAML 2.0 case. Eg: <Assertion ID="_05955298-214f-41e7-b4c3-84dbff7f01b9" 
                     if (string.IsNullOrEmpty(id))
                     {
                         id = tokenXml.GetAttribute("ID");

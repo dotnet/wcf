@@ -54,6 +54,8 @@ namespace System.IdentityModel.Tokens
                 return false;
             }
 
+            // This would fail if anyone used a Subject Key Identifier in excess of 127 bytes (because then the prefix grows to a 3rd byte, or more).
+            // Large values are not technically illegal, but will probably never happen. If this is ever an issue, then this code will need to be revised.
             byte[] data = GetSkiRawData(certificate);
             return data != null && Matches(data, SkiDataOffset);
         }

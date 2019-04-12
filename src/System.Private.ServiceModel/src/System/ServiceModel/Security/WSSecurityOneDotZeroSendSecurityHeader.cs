@@ -113,11 +113,7 @@ namespace System.ServiceModel.Security
                     }
                     else
                     {
-                        var reference = new Reference(stream);
-                        reference.Uri = "#" + elements[i].Id;
-                        reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
-                        reference.AddTransform(new XmlDsigExcC14NTransform());
-                        _signedXml.AddReference(reference);
+                        AddReference("#" + elements[i].Id, stream);
                     }
                 }
             }
@@ -222,8 +218,18 @@ namespace System.ServiceModel.Security
             return headerId;
         }
 
+        private void AddReference(string id, Stream contents)
+        {
+            var reference = new Reference(contents);
+            reference.Uri = id;
+            reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
+            reference.AddTransform(new XmlDsigExcC14NTransform());
+            _signedXml.AddReference(reference);
+        }
+
         private void AddSignatureReference(MessageHeader header, string headerId, IPrefixGenerator prefixGenerator, XmlDictionaryWriter writer)
         {
+            // No transforms added to Reference as the digest value has already been calculated
             byte[] hashValue;
             headerId = GetSignatureHash(header, headerId, prefixGenerator, writer, out hashValue);
             var reference = new Reference();
@@ -332,11 +338,7 @@ namespace System.ServiceModel.Security
                     }
 
                     ms.Position = 0;
-                    var reference = new Reference(ms);
-                    reference.Uri = "#" + message.BodyId;
-                    reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
-                    reference.AddTransform(new XmlDsigExcC14NTransform());
-                    _signedXml.AddReference(reference);
+                    AddReference("#" + message.BodyId, ms);
                     return;
                 case MessagePartProtectionMode.SignThenEncrypt:
                     throw new PlatformNotSupportedException();
@@ -374,22 +376,15 @@ namespace System.ServiceModel.Security
                 StandardsManager.WSUtilitySpecificationVersion.WriteTimestampCanonicalForm(
                     ms, timestamp, buffer);
                 ms.Position = 0;
+                AddReference("#" + timestamp.Id, ms);
                 var reference = new Reference(ms);
-                reference.Uri = "#" + timestamp.Id;
-                reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
-                reference.AddTransform(new XmlDsigExcC14NTransform());
-                _signedXml.AddReference(reference);
             }
 
             if ((ShouldSignToHeader) && (_signingKey != null || _signedXml.SigningKey != null) && (Version.Addressing != AddressingVersion.None))
             {
                 if (_toHeaderStream != null)
                 {
-                    var reference = new Reference(_toHeaderStream);
-                    reference.Uri = "#" + _toHeaderId;
-                    reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
-                    reference.AddTransform(new XmlDsigExcC14NTransform());
-                    _signedXml.AddReference(reference);
+                    AddReference("#" + _toHeaderId, _toHeaderStream);
                 }
                 else
                 {
@@ -604,11 +599,7 @@ namespace System.ServiceModel.Security
             elementToSign.WriteTo(utf8Writer, ServiceModelDictionaryManager.Instance);
             utf8Writer.EndCanonicalization();
             stream.Position = 0;
-            var reference = new Reference(stream);
-            reference.Uri = "#" + elementToSign.Id;
-            reference.DigestMethod = AlgorithmSuite.DefaultDigestAlgorithm;
-            reference.AddTransform(new XmlDsigExcC14NTransform());
-            _signedXml.AddReference(reference);
+            AddReference("#" + elementToSign.Id, stream);
 
             AsymmetricAlgorithm asymmetricAlgorithm = null;
             KeyedHashAlgorithm keyedHashAlgorithm = null;
