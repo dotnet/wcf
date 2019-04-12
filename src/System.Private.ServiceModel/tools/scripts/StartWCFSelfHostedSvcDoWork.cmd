@@ -35,7 +35,7 @@ REM we need the direcotry to save the test.crl file. We are investigate a way to
 md c:\wcftest
 REM Certificate configuration errors are all non fatal currently because we non cert tests will still pass
 echo Generating certificates ...
-%~dp0..\..\..\..\artifacts\obj\CertificateGenerator\Debug\CertificateGenerator.exe >>%_setuplog%
+%~dp0..\..\..\..\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe >>%_setuplog%
 if NOT [%ERRORLEVEL%]==[0] (
     echo Warning: An error occurred while running certificate generator. >>%_setuplog%
   )
@@ -60,16 +60,16 @@ REM Start the self hosted WCF Test Service
 if [%PSEXEC_PATH%]==[] (
   echo Starting the WCF Self hosted service under the local user account. >>%_setuplog%
   REM This next call blocks until the service is terminated
-  call %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe
+  call %~dp0..\..\..\..\artifacts\bin\SelfHostedWcfService\Release\SelfHostedWcfService.exe
   set __EXITCODE=%ERRORLEVEL%
   goto Cleanup
 )
 
 if exist %PSEXEC_PATH%\psexec.exe (
   echo Starting the WCF Self hosted service under the Local System account using: >>%_setuplog%
-  echo call %PSEXEC_PATH%\psexec.exe -s -h %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe >>%_setuplog%
+  echo call %PSEXEC_PATH%\psexec.exe -s -h %~dp0..\..\..\..\artifacts\bin\SelfHostedWcfService\Release\SelfHostedWcfService.exe >>%_setuplog%
   REM This next call blocks until the service is terminated
-  call %PSEXEC_PATH%\psexec.exe -s -h %~dp0..\..\..\..\bin\Wcf\tools\SelfHostedWcfService\SelfHostedWcfService.exe
+  call %PSEXEC_PATH%\psexec.exe -s -h %~dp0..\..\..\..\artifacts\bin\SelfHostedWcfService\Release\SelfHostedWcfService.exe
   set __EXITCODE=%ERRORLEVEL%
   goto Cleanup
 )
