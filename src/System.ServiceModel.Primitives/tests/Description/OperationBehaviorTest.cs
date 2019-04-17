@@ -90,7 +90,7 @@ public static class OperationBehaviorTest
         }
     }
 
-    [WcfFact]
+    //[WcfFact]
     public static void DataContractSerializationSurrogateTest()
     {
         OperationDescription od = null;
