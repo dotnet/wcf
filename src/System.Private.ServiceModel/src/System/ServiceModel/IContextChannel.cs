@@ -3,12 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
-using System.Net.Security;
-using System.ServiceModel.Security.Tokens;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel

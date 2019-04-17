@@ -5,7 +5,6 @@
 
 using System.IdentityModel.Tokens;
 using System.ServiceModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.IdentityModel.Selectors
@@ -18,13 +17,13 @@ namespace System.IdentityModel.Selectors
         {
             if (userName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("userName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(userName));
             }
 
             _userNameToken = new UserNameSecurityToken(userName, password);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             return Task.FromResult((SecurityToken)_userNameToken);
         }

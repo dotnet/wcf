@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Security;
 using System.Text;
@@ -35,8 +33,8 @@ namespace System.Runtime.Diagnostics
         public DiagnosticTraceBase(string traceSourceName)
         {
             _thisLock = new object();
-            this.TraceSourceName = traceSourceName;
-            this.LastFailure = DateTime.MinValue;
+            TraceSourceName = traceSourceName;
+            LastFailure = DateTime.MinValue;
         }
 
         protected DateTime LastFailure { get; set; }
@@ -227,9 +225,6 @@ namespace System.Runtime.Diagnostics
                 throw ExceptionHelper.PlatformNotSupported();
             }
         }
-
-#pragma warning restore 56500
-
 
         public abstract bool IsEnabled();
     }

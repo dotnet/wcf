@@ -10,9 +10,7 @@ namespace System.IdentityModel.Tokens
 {
     sealed public class EncryptedKeyIdentifierClause : BinaryKeyIdentifierClause
     {
-        private readonly string _carriedKeyName;
         private readonly string _encryptionMethod;
-        private readonly SecurityKeyIdentifier _encryptingKeyIdentifier;
 
         public EncryptedKeyIdentifierClause(byte[] encryptedKey, string encryptionMethod)
             : this(encryptedKey, encryptionMethod, null)
@@ -37,24 +35,14 @@ namespace System.IdentityModel.Tokens
         internal EncryptedKeyIdentifierClause(byte[] encryptedKey, string encryptionMethod, SecurityKeyIdentifier encryptingKeyIdentifier, string carriedKeyName, bool cloneBuffer, byte[] derivationNonce, int derivationLength)
             : base("http://www.w3.org/2001/04/xmlenc#EncryptedKey", encryptedKey, cloneBuffer, derivationNonce, derivationLength)
         {
-            if (encryptionMethod == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("encryptionMethod");
-            }
-            _carriedKeyName = carriedKeyName;
-            _encryptionMethod = encryptionMethod;
-            _encryptingKeyIdentifier = encryptingKeyIdentifier;
+            CarriedKeyName = carriedKeyName;
+            _encryptionMethod = encryptionMethod ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(encryptionMethod));
+            EncryptingKeyIdentifier = encryptingKeyIdentifier;
         }
 
-        public string CarriedKeyName
-        {
-            get { return _carriedKeyName; }
-        }
+        public string CarriedKeyName { get; }
 
-        public SecurityKeyIdentifier EncryptingKeyIdentifier
-        {
-            get { return _encryptingKeyIdentifier; }
-        }
+        public SecurityKeyIdentifier EncryptingKeyIdentifier { get; }
 
         public string EncryptionMethod
         {
@@ -64,12 +52,12 @@ namespace System.IdentityModel.Tokens
         public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause)
         {
             EncryptedKeyIdentifierClause that = keyIdentifierClause as EncryptedKeyIdentifierClause;
-            return ReferenceEquals(this, that) || (that != null && that.Matches(this.GetRawBuffer(), _encryptionMethod, _carriedKeyName));
+            return ReferenceEquals(this, that) || (that != null && that.Matches(GetRawBuffer(), _encryptionMethod, CarriedKeyName));
         }
 
         public bool Matches(byte[] encryptedKey, string encryptionMethod, string carriedKeyName)
         {
-            return Matches(encryptedKey) && _encryptionMethod == encryptionMethod && _carriedKeyName == carriedKeyName;
+            return Matches(encryptedKey) && _encryptionMethod == encryptionMethod && CarriedKeyName == carriedKeyName;
         }
 
         public byte[] GetEncryptedKey()
@@ -80,7 +68,7 @@ namespace System.IdentityModel.Tokens
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "EncryptedKeyIdentifierClause(EncryptedKey = {0}, Method '{1}')",
-                Convert.ToBase64String(GetRawBuffer()), this.EncryptionMethod);
+                Convert.ToBase64String(GetRawBuffer()), EncryptionMethod);
         }
     }
 }

@@ -6,27 +6,17 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Runtime;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
     internal abstract class ConnectionOrientedTransportChannelFactory<TChannel> : TransportChannelFactory<TChannel>, IConnectionOrientedTransportChannelFactorySettings
     {
-        private int _connectionBufferSize;
         private IConnectionInitiator _connectionInitiator;
 
         private ConnectionPool _connectionPool;
-        private string _connectionPoolGroupName;
         private bool _exposeConnectionProperty;
-        private TimeSpan _idleTimeout;
-        private int _maxBufferSize;
         private int _maxOutboundConnectionsPerEndpoint;
-        private TimeSpan _maxOutputDelay;
-        private TransferMode _transferMode;
         private ISecurityCapabilities _securityCapabilities;
         private StreamUpgradeProvider _upgrade;
         private bool _flowIdentity;
@@ -43,14 +33,14 @@ namespace System.ServiceModel.Channels
                     SR.MaxReceivedMessageSizeMustBeInIntegerRange));
             }
 
-            _connectionBufferSize = bindingElement.ConnectionBufferSize;
-            _connectionPoolGroupName = connectionPoolGroupName;
+            ConnectionBufferSize = bindingElement.ConnectionBufferSize;
+            ConnectionPoolGroupName = connectionPoolGroupName;
             _exposeConnectionProperty = bindingElement.ExposeConnectionProperty;
-            _idleTimeout = idleTimeout;
-            _maxBufferSize = bindingElement.MaxBufferSize;
+            IdleTimeout = idleTimeout;
+            MaxBufferSize = bindingElement.MaxBufferSize;
             _maxOutboundConnectionsPerEndpoint = maxOutboundConnectionsPerEndpoint;
-            _maxOutputDelay = bindingElement.MaxOutputDelay;
-            _transferMode = bindingElement.TransferMode;
+            MaxOutputDelay = bindingElement.MaxOutputDelay;
+            TransferMode = bindingElement.TransferMode;
 
             Collection<StreamUpgradeBindingElement> upgradeBindingElements =
                 context.BindingParameters.FindAll<StreamUpgradeBindingElement>();
@@ -59,7 +49,7 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.MultipleStreamUpgradeProvidersInParameters));
             }
-            else if ((upgradeBindingElements.Count == 1) && this.SupportsUpgrade(upgradeBindingElements[0]))
+            else if ((upgradeBindingElements.Count == 1) && SupportsUpgrade(upgradeBindingElements[0]))
             {
                 _upgrade = upgradeBindingElements[0].BuildClientStreamUpgradeProvider(context);
                 context.BindingParameters.Remove<StreamUpgradeBindingElement>();
@@ -77,13 +67,7 @@ namespace System.ServiceModel.Channels
             SupportsAsyncOpenClose = true;
         }
 
-        public int ConnectionBufferSize
-        {
-            get
-            {
-                return _connectionBufferSize;
-            }
-        }
+        public int ConnectionBufferSize { get; }
 
         internal IConnectionInitiator ConnectionInitiator
         {
@@ -104,29 +88,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public string ConnectionPoolGroupName
-        {
-            get
-            {
-                return _connectionPoolGroupName;
-            }
-        }
+        public string ConnectionPoolGroupName { get; }
 
-        public TimeSpan IdleTimeout
-        {
-            get
-            {
-                return _idleTimeout;
-            }
-        }
+        public TimeSpan IdleTimeout { get; }
 
-        public int MaxBufferSize
-        {
-            get
-            {
-                return _maxBufferSize;
-            }
-        }
+        public int MaxBufferSize { get; }
 
         public int MaxOutboundConnectionsPerEndpoint
         {
@@ -136,13 +102,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public TimeSpan MaxOutputDelay
-        {
-            get
-            {
-                return _maxOutputDelay;
-            }
-        }
+        public TimeSpan MaxOutputDelay { get; }
 
         public StreamUpgradeProvider Upgrade
         {
@@ -154,13 +114,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public TransferMode TransferMode
-        {
-            get
-            {
-                return _transferMode;
-            }
-        }
+        public TransferMode TransferMode { get; }
 
         int IConnectionOrientedTransportFactorySettings.MaxBufferSize
         {
@@ -195,7 +149,7 @@ namespace System.ServiceModel.Channels
 
         public override int GetMaxBufferSize()
         {
-            return this.MaxBufferSize;
+            return MaxBufferSize;
         }
 
         internal abstract IConnectionInitiator GetConnectionInitiator();
@@ -301,7 +255,7 @@ namespace System.ServiceModel.Channels
 
         protected override void OnOpen(TimeSpan timeout)
         {
-            StreamUpgradeProvider localUpgrade = this.Upgrade;
+            StreamUpgradeProvider localUpgrade = Upgrade;
             if (localUpgrade != null)
             {
                 localUpgrade.Open(timeout);
@@ -310,7 +264,7 @@ namespace System.ServiceModel.Channels
 
         protected internal override async Task OnOpenAsync(TimeSpan timeout)
         {
-            StreamUpgradeProvider localUpgrade = this.Upgrade;
+            StreamUpgradeProvider localUpgrade = Upgrade;
             if (localUpgrade != null)
             {
                 await ((IAsyncCommunicationObject)localUpgrade).OpenAsync(timeout);
@@ -322,13 +276,13 @@ namespace System.ServiceModel.Channels
             StreamUpgradeProvider localUpgrade;
             ConnectionPool localConnectionPool;
 
-            if (this.GetUpgradeAndConnectionPool(out localUpgrade, out localConnectionPool))
+            if (GetUpgradeAndConnectionPool(out localUpgrade, out localConnectionPool))
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
                 if (localConnectionPool != null)
                 {
-                    this.ReleaseConnectionPool(localConnectionPool, timeoutHelper.RemainingTime());
+                    ReleaseConnectionPool(localConnectionPool, timeoutHelper.RemainingTime());
                 }
 
                 if (localUpgrade != null)

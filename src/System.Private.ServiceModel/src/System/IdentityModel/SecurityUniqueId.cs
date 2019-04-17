@@ -39,7 +39,9 @@ namespace System.IdentityModel
             get
             {
                 if (_val == null)
+                {
                     _val = _prefix + _id.ToString(CultureInfo.InvariantCulture);
+                }
 
                 return _val;
             }

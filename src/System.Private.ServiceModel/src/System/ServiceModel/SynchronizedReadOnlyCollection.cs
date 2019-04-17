@@ -7,90 +7,86 @@ using System.ServiceModel;
 
 namespace System.Collections.Generic
 {
-    [System.Runtime.InteropServices.ComVisible(false)]
+    [Runtime.InteropServices.ComVisible(false)]
     public class SynchronizedReadOnlyCollection<T> : IList<T>, IList
     {
-        private IList<T> _items;
         private object _sync;
 
         public SynchronizedReadOnlyCollection()
         {
-            _items = new List<T>();
+            Items = new List<T>();
             _sync = new Object();
         }
 
         public SynchronizedReadOnlyCollection(object syncRoot)
         {
-            if (syncRoot == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
-
-            _items = new List<T>();
-            _sync = syncRoot;
+            Items = new List<T>();
+            _sync = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
         }
 
         public SynchronizedReadOnlyCollection(object syncRoot, IEnumerable<T> list)
         {
-            if (syncRoot == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
             if (list == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("list"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(list)));
+            }
 
-            _items = new List<T>(list);
-            _sync = syncRoot;
+            Items = new List<T>(list);
+            _sync = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
         }
 
         public SynchronizedReadOnlyCollection(object syncRoot, params T[] list)
         {
-            if (syncRoot == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
             if (list == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("list"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(list)));
+            }
 
-            _items = new List<T>(list.Length);
+            Items = new List<T>(list.Length);
             for (int i = 0; i < list.Length; i++)
-                _items.Add(list[i]);
+            {
+                Items.Add(list[i]);
+            }
 
-            _sync = syncRoot;
+            _sync = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
         }
 
         internal SynchronizedReadOnlyCollection(object syncRoot, List<T> list, bool makeCopy)
         {
-            if (syncRoot == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
             if (list == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("list"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(list)));
+            }
 
             if (makeCopy)
-                _items = new List<T>(list);
+            {
+                Items = new List<T>(list);
+            }
             else
-                _items = list;
+            {
+                Items = list;
+            }
 
-            _sync = syncRoot;
+            _sync = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
         }
 
         public int Count
         {
-            get { lock (_sync) { return _items.Count; } }
+            get { lock (_sync) { return Items.Count; } }
         }
 
-        protected IList<T> Items
-        {
-            get
-            {
-                return _items;
-            }
-        }
+        protected IList<T> Items { get; }
 
         public T this[int index]
         {
-            get { lock (_sync) { return _items[index]; } }
+            get { lock (_sync) { return Items[index]; } }
         }
 
         public bool Contains(T value)
         {
             lock (_sync)
             {
-                return _items.Contains(value);
+                return Items.Contains(value);
             }
         }
 
@@ -98,7 +94,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                _items.CopyTo(array, index);
+                Items.CopyTo(array, index);
             }
         }
 
@@ -106,7 +102,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                return _items.GetEnumerator();
+                return Items.GetEnumerator();
             }
         }
 
@@ -114,7 +110,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                return _items.IndexOf(value);
+                return Items.IndexOf(value);
             }
         }
 
@@ -136,34 +132,34 @@ namespace System.Collections.Generic
             }
             set
             {
-                this.ThrowReadOnly();
+                ThrowReadOnly();
             }
         }
 
         void ICollection<T>.Add(T value)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         void ICollection<T>.Clear()
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         bool ICollection<T>.Remove(T value)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
             return false;
         }
 
         void IList<T>.Insert(int index, T value)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         void IList<T>.RemoveAt(int index)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         bool ICollection.IsSynchronized
@@ -178,9 +174,11 @@ namespace System.Collections.Generic
 
         void ICollection.CopyTo(Array array, int index)
         {
-            ICollection asCollection = _items as ICollection;
+            ICollection asCollection = Items as ICollection;
             if (asCollection == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.SFxCopyToRequiresICollection));
+            }
 
             lock (_sync)
             {
@@ -192,11 +190,15 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                IEnumerable asEnumerable = _items as IEnumerable;
+                IEnumerable asEnumerable = Items as IEnumerable;
                 if (asEnumerable != null)
+                {
                     return asEnumerable.GetEnumerator();
+                }
                 else
-                    return new EnumeratorAdapter(_items);
+                {
+                    return new EnumeratorAdapter(Items);
+                }
             }
         }
 
@@ -218,52 +220,54 @@ namespace System.Collections.Generic
             }
             set
             {
-                this.ThrowReadOnly();
+                ThrowReadOnly();
             }
         }
 
         int IList.Add(object value)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
             return 0;
         }
 
         void IList.Clear()
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         bool IList.Contains(object value)
         {
             VerifyValueType(value);
-            return this.Contains((T)value);
+            return Contains((T)value);
         }
 
         int IList.IndexOf(object value)
         {
             VerifyValueType(value);
-            return this.IndexOf((T)value);
+            return IndexOf((T)value);
         }
 
         void IList.Insert(int index, object value)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         void IList.Remove(object value)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         void IList.RemoveAt(int index)
         {
-            this.ThrowReadOnly();
+            ThrowReadOnly();
         }
 
         private static void VerifyValueType(object value)
         {
             if ((value is T) || (value == null && !typeof(T).IsValueType()))
+            {
                 return;
+            }
 
             Type type = (value == null) ? typeof(Object) : value.GetType();
             string message = SR.Format(SR.SFxCollectionWrongType2, type.ToString(), typeof(T).ToString());

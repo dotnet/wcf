@@ -15,10 +15,12 @@ namespace System.ServiceModel.Description
 
         public OperationDescription Find(string name)
         {
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (this[i].Name == name)
+                {
                     return this[i];
+                }
             }
             return null;
         }
@@ -26,10 +28,12 @@ namespace System.ServiceModel.Description
         public Collection<OperationDescription> FindAll(string name)
         {
             Collection<OperationDescription> results = new Collection<OperationDescription>();
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (this[i].Name == name)
+                {
                     results.Add(this[i]);
+                }
             }
             return results;
         }
@@ -38,7 +42,7 @@ namespace System.ServiceModel.Description
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
             }
             base.InsertItem(index, item);
         }
@@ -47,7 +51,7 @@ namespace System.ServiceModel.Description
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
             }
             base.SetItem(index, item);
         }

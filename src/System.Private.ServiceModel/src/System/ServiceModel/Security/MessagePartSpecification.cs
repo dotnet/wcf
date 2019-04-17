@@ -14,7 +14,6 @@ namespace System.ServiceModel.Security
     {
         private List<XmlQualifiedName> _headerTypes;
         private bool _isBodyIncluded;
-        private bool _isReadOnly;
         private static MessagePartSpecification s_noParts;
 
         public ICollection<XmlQualifiedName> HeaderTypes
@@ -26,7 +25,7 @@ namespace System.ServiceModel.Security
                     _headerTypes = new List<XmlQualifiedName>();
                 }
 
-                if (_isReadOnly)
+                if (IsReadOnly)
                 {
                     return new ReadOnlyCollection<XmlQualifiedName>(_headerTypes);
                 }
@@ -50,20 +49,16 @@ namespace System.ServiceModel.Security
             }
             set
             {
-                if (_isReadOnly)
+                if (IsReadOnly)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
+                }
 
                 _isBodyIncluded = value;
             }
         }
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return _isReadOnly;
-            }
-        }
+        public bool IsReadOnly { get; private set; }
 
         static public MessagePartSpecification NoParts
         {
@@ -81,20 +76,30 @@ namespace System.ServiceModel.Security
 
         public void Clear()
         {
-            if (_isReadOnly)
+            if (IsReadOnly)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
+            }
 
             if (_headerTypes != null)
+            {
                 _headerTypes.Clear();
+            }
+
             _isBodyIncluded = false;
         }
 
         public void Union(MessagePartSpecification specification)
         {
-            if (_isReadOnly)
+            if (IsReadOnly)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
+            }
+
             if (specification == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("specification");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(specification));
+            }
 
             _isBodyIncluded |= specification.IsBodyIncluded;
 
@@ -116,8 +121,10 @@ namespace System.ServiceModel.Security
 
         public void MakeReadOnly()
         {
-            if (_isReadOnly)
+            if (IsReadOnly)
+            {
                 return;
+            }
 
             if (_headerTypes != null)
             {
@@ -140,14 +147,16 @@ namespace System.ServiceModel.Security
                         }
 
                         if (include)
+                        {
                             noDuplicates.Add(qname);
+                        }
                     }
                 }
 
                 _headerTypes = noDuplicates;
             }
 
-            _isReadOnly = true;
+            IsReadOnly = true;
         }
 
         public MessagePartSpecification()
@@ -182,7 +191,9 @@ namespace System.ServiceModel.Security
         internal bool IsHeaderIncluded(MessageHeader header)
         {
             if (header == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("header");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(header));
+            }
 
             return IsHeaderIncluded(header.Name, header.Namespace);
         }
@@ -190,9 +201,14 @@ namespace System.ServiceModel.Security
         internal bool IsHeaderIncluded(string name, string ns)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(name));
+            }
+
             if (ns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("ns");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(ns));
+            }
 
             if (_headerTypes != null)
             {
@@ -223,9 +239,11 @@ namespace System.ServiceModel.Security
         internal bool IsEmpty()
         {
             if (_headerTypes != null && _headerTypes.Count > 0)
+            {
                 return false;
+            }
 
-            return !this.IsBodyIncluded;
+            return !IsBodyIncluded;
         }
     }
 }

@@ -11,24 +11,19 @@ namespace System.ServiceModel.Channels
     public sealed class UnderstoodHeaders : IEnumerable<MessageHeaderInfo>
     {
         private MessageHeaders _messageHeaders;
-        private bool _modified;
 
         internal UnderstoodHeaders(MessageHeaders messageHeaders, bool modified)
         {
             _messageHeaders = messageHeaders;
-            _modified = modified;
+            Modified = modified;
         }
 
-        internal bool Modified
-        {
-            get { return _modified; }
-            set { _modified = value; }
-        }
+        internal bool Modified { get; set; }
 
         public void Add(MessageHeaderInfo headerInfo)
         {
             _messageHeaders.AddUnderstood(headerInfo);
-            _modified = true;
+            Modified = true;
         }
 
         public bool Contains(MessageHeaderInfo headerInfo)
@@ -38,7 +33,7 @@ namespace System.ServiceModel.Channels
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         public IEnumerator<MessageHeaderInfo> GetEnumerator()
@@ -49,7 +44,7 @@ namespace System.ServiceModel.Channels
         public void Remove(MessageHeaderInfo headerInfo)
         {
             _messageHeaders.RemoveUnderstood(headerInfo);
-            _modified = true;
+            Modified = true;
         }
     }
 }

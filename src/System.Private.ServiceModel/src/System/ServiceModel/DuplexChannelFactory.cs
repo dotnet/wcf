@@ -69,11 +69,11 @@ namespace System.ServiceModel
                 }
                 if (callbackObject == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("callbackObject");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(callbackObject));
                 }
 
-                this.CheckAndAssignCallbackInstance(callbackObject);
-                this.InitializeEndpoint((string)null, (EndpointAddress)null);
+                CheckAndAssignCallbackInstance(callbackObject);
+                InitializeEndpoint((string)null, (EndpointAddress)null);
             }
         }
 
@@ -95,16 +95,16 @@ namespace System.ServiceModel
                 }
                 if (callbackObject == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("callbackObject");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(callbackObject));
                 }
 
                 if (endpointConfigurationName == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("endpointConfigurationName");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpointConfigurationName));
                 }
 
-                this.CheckAndAssignCallbackInstance(callbackObject);
-                this.InitializeEndpoint(endpointConfigurationName, remoteAddress);
+                CheckAndAssignCallbackInstance(callbackObject);
+                InitializeEndpoint(endpointConfigurationName, remoteAddress);
             }
         }
 
@@ -131,16 +131,16 @@ namespace System.ServiceModel
                 }
                 if (callbackObject == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("callbackObject");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(callbackObject));
                 }
 
                 if (binding == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("binding");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(binding));
                 }
 
-                this.CheckAndAssignCallbackInstance(callbackObject);
-                this.InitializeEndpoint(binding, remoteAddress);
+                CheckAndAssignCallbackInstance(callbackObject);
+                InitializeEndpoint(binding, remoteAddress);
             }
         }
 
@@ -156,16 +156,16 @@ namespace System.ServiceModel
                 }
                 if (callbackObject == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("callbackObject");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(callbackObject));
                 }
 
                 if (endpoint == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("endpoint");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpoint));
                 }
 
-                this.CheckAndAssignCallbackInstance(callbackObject);
-                this.InitializeEndpoint(endpoint);
+                CheckAndAssignCallbackInstance(callbackObject);
+                InitializeEndpoint(endpoint);
             }
         }
 
@@ -173,28 +173,28 @@ namespace System.ServiceModel
         {
             if (callbackInstance is Type)
             {
-                this.CallbackType = (Type)callbackInstance;
+                CallbackType = (Type)callbackInstance;
             }
             else if (callbackInstance is InstanceContext)
             {
-                this.CallbackInstance = (InstanceContext)callbackInstance;
+                CallbackInstance = (InstanceContext)callbackInstance;
             }
             else
             {
-                this.CallbackInstance = new InstanceContext(callbackInstance);
+                CallbackInstance = new InstanceContext(callbackInstance);
             }
         }
 
         public TChannel CreateChannel(InstanceContext callbackInstance)
         {
-            return CreateChannel(callbackInstance, CreateEndpointAddress(this.Endpoint), null);
+            return CreateChannel(callbackInstance, CreateEndpointAddress(Endpoint), null);
         }
 
         public TChannel CreateChannel(InstanceContext callbackInstance, EndpointAddress address)
         {
             if (address == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("address");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(address));
             }
 
             return CreateChannel(callbackInstance, address, address.Uri);
@@ -202,17 +202,17 @@ namespace System.ServiceModel
 
         public override TChannel CreateChannel(EndpointAddress address, Uri via)
         {
-            return CreateChannel(this.CallbackInstance, address, via);
+            return CreateChannel(CallbackInstance, address, via);
         }
 
         public virtual TChannel CreateChannel(InstanceContext callbackInstance, EndpointAddress address, Uri via)
         {
             if (address == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("address");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(address));
             }
 
-            if (this.CallbackType != null && callbackInstance == null)
+            if (CallbackType != null && callbackInstance == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxCreateDuplexChannelNoCallback1));
             }
@@ -226,13 +226,13 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxCreateDuplexChannelNoCallbackUserObject));
             }
 
-            if (!this.HasDuplexOperations())
+            if (!HasDuplexOperations())
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxCreateDuplexChannel1, this.Endpoint.Contract.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxCreateDuplexChannel1, Endpoint.Contract.Name)));
             }
 
             Type userObjectType = callbackInstance.UserObject.GetType();
-            Type callbackType = this.Endpoint.Contract.CallbackContractType;
+            Type callbackType = Endpoint.Contract.CallbackContractType;
             if (callbackType != null && !callbackType.IsAssignableFrom(userObjectType))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
@@ -240,7 +240,7 @@ namespace System.ServiceModel
             }
 
             EnsureOpened();
-            TChannel result = this.ServiceChannelFactory.CreateChannel<TChannel>(address, via);
+            TChannel result = ServiceChannelFactory.CreateChannel<TChannel>(address, via);
             // Desktop: this.ServiceChannelFactory.CreateChannel(typeof(TChannel), address, via);
 
             IDuplexContextChannel duplexChannel = result as IDuplexContextChannel;

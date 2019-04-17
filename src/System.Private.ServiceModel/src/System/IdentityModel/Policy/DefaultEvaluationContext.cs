@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
@@ -15,7 +14,6 @@ namespace System.IdentityModel.Policy
     {
         private List<ClaimSet> _claimSets;
         private Dictionary<string, object> _properties;
-        private DateTime _expirationTime = SecurityUtils.MaxUtcDateTime;
         private int _generation;
 
         private ReadOnlyCollection<ClaimSet> _readOnlyClaimSets;
@@ -36,10 +34,14 @@ namespace System.IdentityModel.Policy
             get
             {
                 if (_claimSets == null)
+                {
                     return EmptyReadOnlyCollection<ClaimSet>.Instance;
+                }
 
                 if (_readOnlyClaimSets == null)
+                {
                     _readOnlyClaimSets = new ReadOnlyCollection<ClaimSet>(_claimSets);
+                }
 
                 return _readOnlyClaimSets;
             }
@@ -50,18 +52,19 @@ namespace System.IdentityModel.Policy
             get { return _properties; }
         }
 
-        public DateTime ExpirationTime
-        {
-            get { return _expirationTime; }
-        }
+        public DateTime ExpirationTime { get; private set; } = SecurityUtils.MaxUtcDateTime;
 
         public override void AddClaimSet(IAuthorizationPolicy policy, ClaimSet claimSet)
         {
             if (claimSet == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claimSet");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claimSet));
+            }
 
             if (_claimSets == null)
+            {
                 _claimSets = new List<ClaimSet>();
+            }
 
             _claimSets.Add(claimSet);
             ++_generation;
@@ -69,8 +72,10 @@ namespace System.IdentityModel.Policy
 
         public override void RecordExpirationTime(DateTime expirationTime)
         {
-            if (_expirationTime > expirationTime)
-                _expirationTime = expirationTime;
+            if (ExpirationTime > expirationTime)
+            {
+                ExpirationTime = expirationTime;
+            }
         }
     }
 }

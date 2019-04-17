@@ -222,7 +222,9 @@ namespace System.ServiceModel.Channels
             }
 
             if (TryGetEncodingFromCharSet(charSet, out enc))
+            {
                 return enc;
+            }
 
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.Format(SR.EncoderUnrecognizedCharSet, charSet)));
         }
@@ -231,7 +233,9 @@ namespace System.ServiceModel.Channels
         {
             encoding = null;
             if (charSet == null || charSet.Length == 0)
+            {
                 return true;
+            }
 
             return TextEncoderDefaults.TryGetEncoding(charSet, out encoding);
         }
@@ -244,45 +248,41 @@ namespace System.ServiceModel.Channels
 
         internal class TextMessageEncoder : MessageEncoder
         {
-            private int _maxReadPoolSize;
             private int _maxWritePoolSize;
 
             // Double-checked locking pattern requires volatile for read/write synchronization
             private volatile SynchronizedPool<UTF8BufferedMessageData> _bufferedReaderPool;
             private volatile SynchronizedPool<TextBufferedMessageWriter> _bufferedWriterPool;
             private volatile SynchronizedPool<RecycledMessageState> _recycledStatePool;
-
-            private object _thisLock;
             private string _contentType;
             private string _mediaType;
             private Encoding _writeEncoding;
             private MessageVersion _version;
             private bool _optimizeWriteForUTF8;
             private const int maxPooledXmlReadersPerMessage = 2;
-            private XmlDictionaryReaderQuotas _readerQuotas;
             private XmlDictionaryReaderQuotas _bufferedReadReaderQuotas;
             private ContentEncoding[] _contentEncodingMap;
 
             public TextMessageEncoder(MessageVersion version, Encoding writeEncoding, int maxReadPoolSize, int maxWritePoolSize, XmlDictionaryReaderQuotas quotas)
             {
-                if (version == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("version");
                 if (writeEncoding == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writeEncoding");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writeEncoding));
+                }
 
                 TextEncoderDefaults.ValidateEncoding(writeEncoding);
                 _writeEncoding = writeEncoding;
                 _optimizeWriteForUTF8 = IsUTF8Encoding(writeEncoding);
 
-                _thisLock = new object();
+                ThisLock = new object();
 
-                _version = version;
-                _maxReadPoolSize = maxReadPoolSize;
+                _version = version ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(version));
+                MaxReadPoolSize = maxReadPoolSize;
                 _maxWritePoolSize = maxWritePoolSize;
 
-                _readerQuotas = new XmlDictionaryReaderQuotas();
-                quotas.CopyTo(_readerQuotas);
-                _bufferedReadReaderQuotas = EncoderHelpers.GetBufferedReadQuotas(_readerQuotas);
+                ReaderQuotas = new XmlDictionaryReaderQuotas();
+                quotas.CopyTo(ReaderQuotas);
+                _bufferedReadReaderQuotas = EncoderHelpers.GetBufferedReadQuotas(ReaderQuotas);
 
                 _mediaType = TextMessageEncoderFactory.GetMediaType(version);
                 _contentType = TextMessageEncoderFactory.GetContentType(_mediaType, writeEncoding);
@@ -322,18 +322,9 @@ namespace System.ServiceModel.Channels
                 get { return _maxWritePoolSize; }
             }
 
-            public int MaxReadPoolSize
-            {
-                get { return _maxReadPoolSize; }
-            }
+            public int MaxReadPoolSize { get; }
 
-            public XmlDictionaryReaderQuotas ReaderQuotas
-            {
-                get
-                {
-                    return _readerQuotas;
-                }
-            }
+            public XmlDictionaryReaderQuotas ReaderQuotas { get; }
 
             public override string MediaType
             {
@@ -345,10 +336,7 @@ namespace System.ServiceModel.Channels
                 get { return _version; }
             }
 
-            private object ThisLock
-            {
-                get { return _thisLock; }
-            }
+            private object ThisLock { get; }
 
 
             internal override bool IsCharSetSupported(string charSet)
@@ -372,7 +360,7 @@ namespace System.ServiceModel.Channels
             {
                 if (contentType == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contentType");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contentType));
                 }
 
                 if (base.IsContentTypeSupported(contentType))
@@ -413,7 +401,9 @@ namespace System.ServiceModel.Channels
             public override Message ReadMessage(ArraySegment<byte> buffer, BufferManager bufferManager, string contentType)
             {
                 if (bufferManager == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("bufferManager"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(bufferManager)));
+                }
 
                 if (WcfEventSource.Instance.TextMessageDecodingStartIsEnabled())
                 {
@@ -427,7 +417,10 @@ namespace System.ServiceModel.Channels
                 messageData.Open(buffer, bufferManager);
                 RecycledMessageState messageState = messageData.TakeMessageState();
                 if (messageState == null)
+                {
                     messageState = new RecycledMessageState();
+                }
+
                 message = new BufferedMessage(messageData, messageState);
 
                 message.Properties.Encoder = this;
@@ -441,7 +434,9 @@ namespace System.ServiceModel.Channels
                 }
 
                 if (MessageLogger.LogMessagesAtTransportLevel)
+                {
                     MessageLogger.LogMessage(ref message, MessageLoggingSource.TransportReceive);
+                }
 
                 return message;
             }
@@ -449,7 +444,9 @@ namespace System.ServiceModel.Channels
             public override Message ReadMessage(Stream stream, int maxSizeOfHeaders, string contentType)
             {
                 if (stream == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("stream"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(stream)));
+                }
 
                 if (WcfEventSource.Instance.TextMessageDecodingStartIsEnabled())
                 {
@@ -466,7 +463,10 @@ namespace System.ServiceModel.Channels
                 }
 
                 if (MessageLogger.LogMessagesAtTransportLevel)
+                {
                     MessageLogger.LogMessage(ref message, MessageLoggingSource.TransportReceive);
+                }
+
                 return message;
             }
 
@@ -483,15 +483,26 @@ namespace System.ServiceModel.Channels
             public override Task<ArraySegment<byte>> WriteMessageAsync(Message message, int maxMessageSize, BufferManager bufferManager, int messageOffset)
             {
                 if (message == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
+                }
+
                 if (bufferManager == null)
-                    throw TraceUtility.ThrowHelperError(new ArgumentNullException("bufferManager"), message);
+                {
+                    throw TraceUtility.ThrowHelperError(new ArgumentNullException(nameof(bufferManager)), message);
+                }
+
                 if (maxMessageSize < 0)
-                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxMessageSize", maxMessageSize,
+                {
+                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(maxMessageSize), maxMessageSize,
                                                                 SR.ValueMustBeNonNegative), message);
+                }
+
                 if (messageOffset < 0 || messageOffset > maxMessageSize)
-                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("messageOffset", messageOffset,
+                {
+                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(messageOffset), messageOffset,
                                                     SR.Format(SR.ValueMustBeInRange, 0, maxMessageSize)), message);
+                }
 
                 ThrowIfMismatchedMessageVersion(message);
 
@@ -534,9 +545,15 @@ namespace System.ServiceModel.Channels
             public override async Task WriteMessageAsync(Message message, Stream stream)
             {
                 if (message == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
+                }
+
                 if (stream == null)
-                    throw TraceUtility.ThrowHelperError(new ArgumentNullException("stream"), message);
+                {
+                    throw TraceUtility.ThrowHelperError(new ArgumentNullException(nameof(stream)), message);
+                }
+
                 ThrowIfMismatchedMessageVersion(message);
 
                 EventTraceActivity eventTraceActivity = null;
@@ -568,12 +585,14 @@ namespace System.ServiceModel.Channels
                 }
 
                 if (MessageLogger.LogMessagesAtTransportLevel)
+                {
                     MessageLogger.LogMessage(ref message, MessageLoggingSource.TransportSend);
+                }
             }
 
             public override IAsyncResult BeginWriteMessage(Message message, Stream stream, AsyncCallback callback, object state)
             {
-                return this.WriteMessageAsync(message, stream).ToApm(callback, state);
+                return WriteMessageAsync(message, stream).ToApm(callback, state);
             }
 
             public override void EndWriteMessage(IAsyncResult result)
@@ -626,7 +645,7 @@ namespace System.ServiceModel.Channels
 
             private XmlReader TakeStreamedReader(Stream stream, Encoding enc)
             {
-                return XmlDictionaryReader.CreateTextReader(stream, _readerQuotas);
+                return XmlDictionaryReader.CreateTextReader(stream, ReaderQuotas);
             }
 
 
@@ -643,7 +662,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (_bufferedReaderPool == null)
                         {
-                            _bufferedReaderPool = new SynchronizedPool<UTF8BufferedMessageData>(_maxReadPoolSize);
+                            _bufferedReaderPool = new SynchronizedPool<UTF8BufferedMessageData>(MaxReadPoolSize);
                         }
                     }
                 }
@@ -674,7 +693,7 @@ namespace System.ServiceModel.Channels
                         {
                             if (_recycledStatePool == null)
                             {
-                                _recycledStatePool = new SynchronizedPool<RecycledMessageState>(_maxReadPoolSize);
+                                _recycledStatePool = new SynchronizedPool<RecycledMessageState>(MaxReadPoolSize);
                             }
                         }
                     }
@@ -725,8 +744,8 @@ namespace System.ServiceModel.Channels
 
                 protected override XmlDictionaryReader TakeXmlReader()
                 {
-                    ArraySegment<byte> buffer = this.Buffer;
-                    return XmlDictionaryReader.CreateTextReader(buffer.Array, buffer.Offset, buffer.Count, this.Quotas);
+                    ArraySegment<byte> buffer = Buffer;
+                    return XmlDictionaryReader.CreateTextReader(buffer.Array, buffer.Offset, buffer.Count, Quotas);
                 }
 
                 protected override void ReturnXmlReader(XmlDictionaryReader xmlReader)
@@ -748,13 +767,17 @@ namespace System.ServiceModel.Channels
                 protected override void OnWriteStartMessage(XmlDictionaryWriter writer)
                 {
                     if (!_messageEncoder._optimizeWriteForUTF8)
+                    {
                         writer.WriteStartDocument();
+                    }
                 }
 
                 protected override void OnWriteEndMessage(XmlDictionaryWriter writer)
                 {
                     if (!_messageEncoder._optimizeWriteForUTF8)
+                    {
                         writer.WriteEndDocument();
+                    }
                 }
 
                 protected override XmlDictionaryWriter TakeXmlWriter(Stream stream)

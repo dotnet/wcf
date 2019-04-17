@@ -8,5 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj" />
   </ItemGroup>
 </Project>

@@ -8,7 +8,6 @@ using System.IdentityModel.Tokens;
 using System.ServiceModel.Security.Tokens;
 using System.Net;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
@@ -32,7 +31,7 @@ namespace System.ServiceModel.Security
             _token = new SspiSecurityToken(credential, extractGroupsForWindowsAccounts, allowUnauthenticatedCallers);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             return Task.FromResult<SecurityToken>(_token);
         }

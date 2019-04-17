@@ -4,13 +4,13 @@
 
 
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
     internal abstract class LayeredChannel<TInnerChannel> : ChannelBase
         where TInnerChannel : class, IChannel
     {
-        private TInnerChannel _innerChannel;
         private EventHandler _onInnerChannelFaulted;
 
         protected LayeredChannel(ChannelManagerBase channelManager, TInnerChannel innerChannel)
@@ -18,15 +18,13 @@ namespace System.ServiceModel.Channels
         {
             Fx.Assert(innerChannel != null, "innerChannel cannot be null");
 
-            _innerChannel = innerChannel;
+            InnerChannel = innerChannel;
             _onInnerChannelFaulted = new EventHandler(OnInnerChannelFaulted);
-            _innerChannel.Faulted += _onInnerChannelFaulted;
+            InnerChannel.Faulted += _onInnerChannelFaulted;
+            base.SupportsAsyncOpenClose = true;
         }
 
-        protected TInnerChannel InnerChannel
-        {
-            get { return _innerChannel; }
-        }
+        protected TInnerChannel InnerChannel { get; }
 
         public override T GetProperty<T>()
         {
@@ -36,49 +34,41 @@ namespace System.ServiceModel.Channels
                 return baseProperty;
             }
 
-            return this.InnerChannel.GetProperty<T>();
+            return InnerChannel.GetProperty<T>();
         }
 
         protected override void OnClosing()
         {
-            _innerChannel.Faulted -= _onInnerChannelFaulted;
+            InnerChannel.Faulted -= _onInnerChannelFaulted;
             base.OnClosing();
         }
 
         protected override void OnAbort()
         {
-            _innerChannel.Abort();
+            InnerChannel.Abort();
         }
 
-        protected override void OnClose(TimeSpan timeout)
+        protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            _innerChannel.Close(timeout);
+            return InnerChannel.CloseHelperAsync(timeout);
         }
 
-        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
+        protected override void OnClose(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected override void OnEndClose(IAsyncResult result) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            return _innerChannel.BeginClose(timeout, callback, state);
+            return InnerChannel.OpenHelperAsync(timeout);
         }
 
-        protected override void OnEndClose(IAsyncResult result)
-        {
-            _innerChannel.EndClose(result);
-        }
+        protected override void OnOpen(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();
 
-        protected override void OnOpen(TimeSpan timeout)
-        {
-            _innerChannel.Open(timeout);
-        }
+        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state) => throw ExceptionHelper.PlatformNotSupported();
 
-        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return _innerChannel.BeginOpen(timeout, callback, state);
-        }
-
-        protected override void OnEndOpen(IAsyncResult result)
-        {
-            _innerChannel.EndOpen(result);
-        }
+        protected override void OnEndOpen(IAsyncResult result) => throw ExceptionHelper.PlatformNotSupported();
 
         private void OnInnerChannelFaulted(object sender, EventArgs e)
         {

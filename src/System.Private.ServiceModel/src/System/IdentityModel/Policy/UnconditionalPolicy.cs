@@ -19,12 +19,9 @@ namespace System.IdentityModel.Policy
     internal class UnconditionalPolicy : IAuthorizationPolicy, IDisposable
     {
         private SecurityUniqueId _id;
-        private ClaimSet _issuer;
         private ClaimSet _issuance;
         private ReadOnlyCollection<ClaimSet> _issuances;
-        private DateTime _expirationTime;
         private IIdentity _primaryIdentity;
-        private bool _disposable = false;
         private bool _disposed = false;
 
         public UnconditionalPolicy(ClaimSet issuance)
@@ -35,7 +32,9 @@ namespace System.IdentityModel.Policy
         public UnconditionalPolicy(ClaimSet issuance, DateTime expirationTime)
         {
             if (issuance == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("issuance");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(issuance));
+            }
 
             Initialize(ClaimSet.System, issuance, null, expirationTime);
         }
@@ -43,7 +42,9 @@ namespace System.IdentityModel.Policy
         public UnconditionalPolicy(ReadOnlyCollection<ClaimSet> issuances, DateTime expirationTime)
         {
             if (issuances == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("issuances");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(issuances));
+            }
 
             Initialize(ClaimSet.System, null, issuances, expirationTime);
         }
@@ -68,30 +69,30 @@ namespace System.IdentityModel.Policy
 
         private UnconditionalPolicy(UnconditionalPolicy from)
         {
-            _disposable = from._disposable;
-            _primaryIdentity = from._disposable ? SecurityUtils.CloneIdentityIfNecessary(from._primaryIdentity) : from._primaryIdentity;
+            IsDisposable = from.IsDisposable;
+            _primaryIdentity = from.IsDisposable ? SecurityUtils.CloneIdentityIfNecessary(from._primaryIdentity) : from._primaryIdentity;
             if (from._issuance != null)
             {
-                _issuance = from._disposable ? SecurityUtils.CloneClaimSetIfNecessary(from._issuance) : from._issuance;
+                _issuance = from.IsDisposable ? SecurityUtils.CloneClaimSetIfNecessary(from._issuance) : from._issuance;
             }
             else
             {
-                _issuances = from._disposable ? SecurityUtils.CloneClaimSetsIfNecessary(from._issuances) : from._issuances;
+                _issuances = from.IsDisposable ? SecurityUtils.CloneClaimSetsIfNecessary(from._issuances) : from._issuances;
             }
-            _issuer = from._issuer;
-            _expirationTime = from._expirationTime;
+            Issuer = from.Issuer;
+            ExpirationTime = from.ExpirationTime;
         }
 
         private void Initialize(ClaimSet issuer, ClaimSet issuance, ReadOnlyCollection<ClaimSet> issuances, DateTime expirationTime)
         {
-            _issuer = issuer;
+            Issuer = issuer;
             _issuance = issuance;
             _issuances = issuances;
-            _expirationTime = expirationTime;
+            ExpirationTime = expirationTime;
 
             if (issuance != null)
             {
-                _disposable = issuance is WindowsClaimSet;
+                IsDisposable = issuance is WindowsClaimSet;
             }
             else
             {
@@ -99,7 +100,7 @@ namespace System.IdentityModel.Policy
                 {
                     if (issuances[i] is WindowsClaimSet)
                     {
-                        _disposable = true;
+                        IsDisposable = true;
                         break;
                     }
                 }
@@ -111,15 +112,15 @@ namespace System.IdentityModel.Policy
             get
             {
                 if (_id == null)
+                {
                     _id = SecurityUniqueId.Create();
+                }
+
                 return _id.Value;
             }
         }
 
-        public ClaimSet Issuer
-        {
-            get { return _issuer; }
-        }
+        public ClaimSet Issuer { get; private set; }
 
         internal IIdentity PrimaryIdentity
         {
@@ -173,25 +174,19 @@ namespace System.IdentityModel.Policy
             }
         }
 
-        public DateTime ExpirationTime
-        {
-            get { return _expirationTime; }
-        }
+        public DateTime ExpirationTime { get; private set; }
 
-        internal bool IsDisposable
-        {
-            get { return _disposable; }
-        }
+        internal bool IsDisposable { get; private set; } = false;
 
         internal UnconditionalPolicy Clone()
         {
             ThrowIfDisposed();
-            return (_disposable) ? new UnconditionalPolicy(this) : this;
+            return (IsDisposable) ? new UnconditionalPolicy(this) : this;
         }
 
         public virtual void Dispose()
         {
-            if (_disposable && !_disposed)
+            if (IsDisposable && !_disposed)
             {
                 _disposed = true;
                 SecurityUtils.DisposeIfNecessary(_primaryIdentity as IDisposable);
@@ -204,7 +199,7 @@ namespace System.IdentityModel.Policy
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
 
@@ -227,7 +222,7 @@ namespace System.IdentityModel.Policy
             }
 
             // Preferably Non-Anonymous
-            if (this.PrimaryIdentity != null && this.PrimaryIdentity != SecurityUtils.AnonymousIdentity)
+            if (PrimaryIdentity != null && PrimaryIdentity != SecurityUtils.AnonymousIdentity)
             {
                 IList<IIdentity> identities;
                 object obj;
@@ -244,11 +239,11 @@ namespace System.IdentityModel.Policy
 
                 if (identities != null)
                 {
-                    identities.Add(this.PrimaryIdentity);
+                    identities.Add(PrimaryIdentity);
                 }
             }
 
-            evaluationContext.RecordExpirationTime(_expirationTime);
+            evaluationContext.RecordExpirationTime(ExpirationTime);
             return true;
         }
     }

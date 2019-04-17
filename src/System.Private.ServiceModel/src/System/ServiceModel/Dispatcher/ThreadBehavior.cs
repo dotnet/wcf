@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Runtime;
-using System.ServiceModel;
 using System.Threading;
 
 namespace System.ServiceModel.Dispatcher
@@ -28,7 +26,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_threadAffinityStartCallback == null)
                 {
-                    _threadAffinityStartCallback = new SendOrPostCallback(this.SynchronizationContextStartCallback);
+                    _threadAffinityStartCallback = new SendOrPostCallback(SynchronizationContextStartCallback);
                 }
                 return _threadAffinityStartCallback;
             }
@@ -39,7 +37,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_threadAffinityEndCallback == null)
                 {
-                    _threadAffinityEndCallback = new SendOrPostCallback(this.SynchronizationContextEndCallback);
+                    _threadAffinityEndCallback = new SendOrPostCallback(SynchronizationContextEndCallback);
                 }
                 return _threadAffinityEndCallback;
             }
@@ -59,12 +57,12 @@ namespace System.ServiceModel.Dispatcher
 
         internal void BindThread(ref MessageRpc rpc)
         {
-            this.BindCore(ref rpc, true);
+            BindCore(ref rpc, true);
         }
 
         internal void BindEndThread(ref MessageRpc rpc)
         {
-            this.BindCore(ref rpc, false);
+            BindCore(ref rpc, false);
         }
 
         private void BindCore(ref MessageRpc rpc, bool startOperation)
@@ -77,11 +75,11 @@ namespace System.ServiceModel.Dispatcher
                 if (startOperation)
                 {
                     syncContext.OperationStarted();
-                    syncContext.Post(this.ThreadAffinityStartCallbackDelegate, resume);
+                    syncContext.Post(ThreadAffinityStartCallbackDelegate, resume);
                 }
                 else
                 {
-                    syncContext.Post(this.ThreadAffinityEndCallbackDelegate, resume);
+                    syncContext.Post(ThreadAffinityEndCallbackDelegate, resume);
                 }
             }
             else if (rpc.SwitchedThreads)

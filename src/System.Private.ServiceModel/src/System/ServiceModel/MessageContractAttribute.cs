@@ -12,12 +12,9 @@ namespace System.ServiceModel
     [AttributeUsage(ServiceModelAttributeTargets.MessageContract, AllowMultiple = false)]
     public sealed class MessageContractAttribute : Attribute
     {
-        private bool _isWrapped = true;
         private string _wrappedName;
         private string _wrappedNs;
         private ProtectionLevel _protectionLevel = ProtectionLevel.None;
-        private bool _hasProtectionLevel = false;
-
         internal const string ProtectionLevelPropertyName = "ProtectionLevel";
         public ProtectionLevel ProtectionLevel
         {
@@ -28,22 +25,18 @@ namespace System.ServiceModel
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; } = false;
 
-        public bool IsWrapped
-        {
-            get { return _isWrapped; }
-            set { _isWrapped = value; }
-        }
+        public bool IsWrapped { get; set; } = true;
 
         public string WrapperName
         {
@@ -54,10 +47,16 @@ namespace System.ServiceModel
             set
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
                 if (value == string.Empty)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value",
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value),
                         SR.SFxWrapperNameCannotBeEmpty));
+                }
+
                 _wrappedName = value;
             }
         }
@@ -71,7 +70,10 @@ namespace System.ServiceModel
             set
             {
                 if (!string.IsNullOrEmpty(value))
+                {
                     NamingHelper.CheckUriProperty(value, "WrapperNamespace");
+                }
+
                 _wrappedNs = value;
             }
         }

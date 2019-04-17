@@ -45,13 +45,16 @@ namespace System.ServiceModel.Channels
         internal MessageProperties(KeyValuePair<string, object>[] array)
         {
             if (array == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("array"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(array)));
+            }
+
             CopyProperties(array);
         }
 
         private void ThrowDisposed()
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(string.Empty, SR.Format(SR.ObjectDisposed, this.GetType().ToString())));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(string.Empty, SR.Format(SR.ObjectDisposed, GetType().ToString())));
         }
 
         public object this[string name]
@@ -59,7 +62,9 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
 
                 object value;
 
@@ -73,7 +78,10 @@ namespace System.ServiceModel.Channels
             set
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 UpdateProperty(name, value, false);
             }
         }
@@ -91,7 +99,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 return _propertyCount;
             }
         }
@@ -101,13 +112,19 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 return _encoder;
             }
             set
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 AdjustPropertyCount((object)_encoder == null, (object)value == null);
                 _encoder = value;
             }
@@ -118,13 +135,19 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 return (object)_allowOutputBatching == s_trueBool;
             }
             set
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 AdjustPropertyCount((object)_allowOutputBatching == null, false);
 
                 if (value)
@@ -143,7 +166,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 return false;
             }
         }
@@ -153,7 +179,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 return false;
             }
         }
@@ -163,7 +192,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 List<string> keys = new List<string>();
 
                 if ((object)_via != null)
@@ -206,13 +238,19 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 return _security;
             }
             set
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 AdjustPropertyCount((object)_security == null, (object)value == null);
                 _security = value;
             }
@@ -223,7 +261,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 List<object> values = new List<object>();
 
                 if ((object)_via != null)
@@ -267,13 +308,19 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 return _via;
             }
             set
             {
                 if (_disposed)
+                {
                     ThrowDisposed();
+                }
+
                 AdjustPropertyCount((object)_via == null, (object)value == null);
                 _via = value;
             }
@@ -282,10 +329,15 @@ namespace System.ServiceModel.Channels
         public void Add(string name, object property)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (property == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("property"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(property)));
+            }
+
             UpdateProperty(name, property, true);
         }
 
@@ -310,7 +362,9 @@ namespace System.ServiceModel.Channels
         public void Clear()
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (_properties != null)
             {
@@ -340,7 +394,7 @@ namespace System.ServiceModel.Channels
             // should be reflected in MergeProperties as well.
             if (properties == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("properties");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(properties));
             }
 
             if (_disposed)
@@ -364,10 +418,10 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            this.Via = properties.Via;
-            this.AllowOutputBatching = properties.AllowOutputBatching;
-            this.Security = (properties.Security != null) ? (SecurityMessageProperty)properties.Security.CreateCopy() : null;
-            this.Encoder = properties.Encoder;
+            Via = properties.Via;
+            AllowOutputBatching = properties.AllowOutputBatching;
+            Security = (properties.Security != null) ? (SecurityMessageProperty)properties.Security.CreateCopy() : null;
+            Encoder = properties.Encoder;
         }
 
         internal void MergeProperties(MessageProperties properties)
@@ -378,7 +432,7 @@ namespace System.ServiceModel.Channels
             // should be reflected in MergeProperties as well.
             if (properties == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("properties");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(properties));
             }
 
             if (_disposed)
@@ -398,7 +452,7 @@ namespace System.ServiceModel.Channels
                     Property property = properties._properties[i];
 
                     IMergeEnabledMessageProperty currentValue;
-                    if (!this.TryGetValue(property.Name, out currentValue) ||
+                    if (!TryGetValue(property.Name, out currentValue) ||
                         !currentValue.TryMergeWithProperty(property.Value))
                     {
                         // Merge wasn't possible so copy
@@ -408,10 +462,10 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            this.Via = properties.Via;
-            this.AllowOutputBatching = properties.AllowOutputBatching;
-            this.Security = (properties.Security != null) ? (SecurityMessageProperty)properties.Security.CreateCopy() : null;
-            this.Encoder = properties.Encoder;
+            Via = properties.Via;
+            AllowOutputBatching = properties.AllowOutputBatching;
+            Security = (properties.Security != null) ? (SecurityMessageProperty)properties.Security.CreateCopy() : null;
+            Encoder = properties.Encoder;
         }
 
         internal void CopyProperties(KeyValuePair<string, object>[] array)
@@ -433,10 +487,15 @@ namespace System.ServiceModel.Channels
         public bool ContainsKey(string name)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
+
             int index = FindProperty(name);
             switch (index)
             {
@@ -459,17 +518,25 @@ namespace System.ServiceModel.Channels
         {
             IMessageProperty messageProperty = propertyValue as IMessageProperty;
             if (messageProperty == null)
+            {
                 return propertyValue;
+            }
+
             object copy = messageProperty.CreateCopy();
             if (copy == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.MessagePropertyReturnedNullCopy));
+            }
+
             return copy;
         }
 
         public void Dispose()
         {
             if (_disposed)
+            {
                 return;
+            }
 
             _disposed = true;
 
@@ -494,13 +561,21 @@ namespace System.ServiceModel.Channels
         private int FindProperty(string name)
         {
             if (name == ViaKey)
+            {
                 return ViaIndex;
+            }
             else if (name == AllowOutputBatchingKey)
+            {
                 return AllowOutputBatchingIndex;
+            }
             else if (name == EncoderKey)
+            {
                 return EncoderIndex;
+            }
             else if (name == SecurityKey)
+            {
                 return SecurityIndex;
+            }
 
             if (_properties != null)
             {
@@ -532,7 +607,9 @@ namespace System.ServiceModel.Channels
         public bool Remove(string name)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             int originalPropertyCount = _propertyCount;
             UpdateProperty(name, null, false);
@@ -542,10 +619,14 @@ namespace System.ServiceModel.Channels
         public bool TryGetValue(string name, out object value)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
 
             int index = FindProperty(name);
             switch (index)
@@ -576,7 +657,7 @@ namespace System.ServiceModel.Channels
         internal bool TryGetValue<TProperty>(string name, out TProperty property)
         {
             object o;
-            if (this.TryGetValue(name, out o))
+            if (TryGetValue(name, out o))
             {
                 property = (TProperty)o;
                 return true;
@@ -590,13 +671,13 @@ namespace System.ServiceModel.Channels
 
         internal TProperty GetValue<TProperty>(string name) where TProperty : class
         {
-            return this.GetValue<TProperty>(name, false);
+            return GetValue<TProperty>(name, false);
         }
 
         internal TProperty GetValue<TProperty>(string name, bool ensureTypeMatch) where TProperty : class
         {
             object obj;
-            if (!this.TryGetValue(name, out obj))
+            if (!TryGetValue(name, out obj))
             {
                 return null;
             }
@@ -607,7 +688,10 @@ namespace System.ServiceModel.Channels
         private void UpdateProperty(string name, object value, bool mustNotExist)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
+
             int index = FindProperty(name);
             if (index != NotFoundIndex)
             {
@@ -673,7 +757,10 @@ namespace System.ServiceModel.Channels
                             break;
                         case SecurityIndex:
                             if (Security != null)
+                            {
                                 Security.Dispose();
+                            }
+
                             Security = (SecurityMessageProperty)CreateCopyOfPropertyValue(value);
                             break;
                         case EncoderIndex:
@@ -721,27 +808,45 @@ namespace System.ServiceModel.Channels
         void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int index)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (array == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("array"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(array)));
+            }
+
             if (array.Length < _propertyCount)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.MessagePropertiesArraySize0));
+            }
+
             if (index < 0 || index > array.Length - _propertyCount)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(index), index,
                                                     SR.Format(SR.ValueMustBeInRange, 0, array.Length - _propertyCount)));
+            }
 
             if (_via != null)
+            {
                 array[index++] = new KeyValuePair<string, object>(ViaKey, _via);
+            }
 
             if (_allowOutputBatching != null)
+            {
                 array[index++] = new KeyValuePair<string, object>(AllowOutputBatchingKey, _allowOutputBatching);
+            }
 
             if (_security != null)
+            {
                 array[index++] = new KeyValuePair<string, object>(SecurityKey, _security.CreateCopy());
+            }
 
             if (_encoder != null)
+            {
                 array[index++] = new KeyValuePair<string, object>(EncoderKey, _encoder);
+            }
 
             if (_properties != null)
             {
@@ -762,22 +867,35 @@ namespace System.ServiceModel.Channels
         void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> pair)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (pair.Value == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("pair.Value"));
+            }
+
             UpdateProperty(pair.Key, pair.Value, true);
         }
 
         bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> pair)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (pair.Value == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("pair.Value"));
+            }
+
             if (pair.Key == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("pair.Key"));
+            }
+
             object value;
             if (!TryGetValue(pair.Key, out value))
             {
@@ -789,7 +907,9 @@ namespace System.ServiceModel.Channels
         IEnumerator IEnumerable.GetEnumerator()
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             return ((IEnumerable<KeyValuePair<string, object>>)this).GetEnumerator();
         }
@@ -797,21 +917,31 @@ namespace System.ServiceModel.Channels
         IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             List<KeyValuePair<string, object>> pairs = new List<KeyValuePair<string, object>>(_propertyCount);
 
             if (_via != null)
+            {
                 pairs.Add(new KeyValuePair<string, object>(ViaKey, _via));
+            }
 
             if (_allowOutputBatching != null)
+            {
                 pairs.Add(new KeyValuePair<string, object>(AllowOutputBatchingKey, _allowOutputBatching));
+            }
 
             if (_security != null)
+            {
                 pairs.Add(new KeyValuePair<string, object>(SecurityKey, _security));
+            }
 
             if (_encoder != null)
+            {
                 pairs.Add(new KeyValuePair<string, object>(EncoderKey, _encoder));
+            }
 
             if (_properties != null)
             {
@@ -834,12 +964,19 @@ namespace System.ServiceModel.Channels
         bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> pair)
         {
             if (_disposed)
+            {
                 ThrowDisposed();
+            }
 
             if (pair.Value == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("pair.Value"));
+            }
+
             if (pair.Key == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("pair.Key"));
+            }
 
             object value;
             if (!TryGetValue(pair.Key, out value))
@@ -856,19 +993,15 @@ namespace System.ServiceModel.Channels
 
         internal struct Property : IDisposable
         {
-            private string _name;
             private object _value;
 
             public Property(string name, object value)
             {
-                _name = name;
+                Name = name;
                 _value = value;
             }
 
-            public string Name
-            {
-                get { return _name; }
-            }
+            public string Name { get; }
 
             public object Value
             {
@@ -880,7 +1013,9 @@ namespace System.ServiceModel.Channels
             {
                 IDisposable disposable = _value as IDisposable;
                 if (disposable != null)
+                {
                     disposable.Dispose();
+                }
             }
         }
     }

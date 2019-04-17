@@ -13,14 +13,9 @@ namespace System.ServiceModel
     public sealed class CallbackBehaviorAttribute : Attribute, IEndpointBehavior
     {
         private ConcurrencyMode _concurrencyMode = ConcurrencyMode.Single;
-        private bool _automaticSessionShutdown = true;
         private bool _useSynchronizationContext = true;
 
-        public bool AutomaticSessionShutdown
-        {
-            get { return _automaticSessionShutdown; }
-            set { _automaticSessionShutdown = value; }
-        }
+        public bool AutomaticSessionShutdown { get; set; } = true;
 
 
         public bool UseSynchronizationContext
@@ -47,7 +42,7 @@ namespace System.ServiceModel
             DispatchRuntime dispatchRuntime = clientRuntime.DispatchRuntime;
 
             dispatchRuntime.ConcurrencyMode = _concurrencyMode;
-            dispatchRuntime.AutomaticInputSessionShutdown = _automaticSessionShutdown;
+            dispatchRuntime.AutomaticInputSessionShutdown = AutomaticSessionShutdown;
 
             if (!_useSynchronizationContext)
             {

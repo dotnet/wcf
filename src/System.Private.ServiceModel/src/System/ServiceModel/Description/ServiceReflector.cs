@@ -116,7 +116,7 @@ namespace System.ServiceModel.Description
                 return action;
             }
 
-            System.Text.StringBuilder actionBuilder = new System.Text.StringBuilder(64);
+            Text.StringBuilder actionBuilder = new Text.StringBuilder(64);
             if (String.IsNullOrEmpty(contractName.Namespace))
             {
                 actionBuilder.Append("urn:");
@@ -155,25 +155,38 @@ namespace System.ServiceModel.Description
         {
             Uri uri;
             if (!Uri.TryCreate(ns, UriKind.RelativeOrAbsolute, out uri))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.SFXUnvalidNamespaceValue, ns, propName));
+            }
         }
 
         internal static void CheckUriParameter(string ns, string paramName)
         {
             Uri uri;
             if (!Uri.TryCreate(ns, UriKind.RelativeOrAbsolute, out uri))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(paramName, SR.Format(SR.SFXUnvalidNamespaceParam, ns));
+            }
         }
 
         // Converts names that contain characters that are not permitted in XML names to valid names.
         internal static string XmlName(string name)
         {
             if (string.IsNullOrEmpty(name))
+            {
                 return name;
+            }
+
             if (IsAsciiLocalName(name))
+            {
                 return name;
+            }
+
             if (IsValidNCName(name))
+            {
                 return name;
+            }
+
             return XmlConvert.EncodeLocalName(name);
         }
 
@@ -197,12 +210,17 @@ namespace System.ServiceModel.Description
         {
             Fx.Assert(null != localName, "");
             if (!IsAlpha(localName[0]))
+            {
                 return false;
+            }
+
             for (int i = 1; i < localName.Length; i++)
             {
                 char ch = localName[i];
                 if (!IsAlpha(ch) && !IsDigit(ch))
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -249,7 +267,10 @@ namespace System.ServiceModel.Description
             get
             {
                 if (_encoded == null)
+                {
                     _encoded = NamingHelper.XmlName(_decoded);
+                }
+
                 return _encoded;
             }
         }
@@ -259,7 +280,10 @@ namespace System.ServiceModel.Description
             get
             {
                 if (_decoded == null)
+                {
                     _decoded = NamingHelper.CodeName(_encoded);
+                }
+
                 return _decoded;
             }
         }
@@ -267,7 +291,10 @@ namespace System.ServiceModel.Description
         private static void ValidateEncodedName(string name, bool allowNull)
         {
             if (allowNull && name == null)
+            {
                 return;
+            }
+
             try
             {
                 XmlConvert.VerifyNCName(name);
@@ -286,7 +313,7 @@ namespace System.ServiceModel.Description
 
         private bool Matches(XmlName xmlName)
         {
-            return string.Equals(this.EncodedName, xmlName.EncodedName, StringComparison.Ordinal);
+            return string.Equals(EncodedName, xmlName.EncodedName, StringComparison.Ordinal);
         }
 
         public override bool Equals(object obj)
@@ -313,16 +340,25 @@ namespace System.ServiceModel.Description
         public override int GetHashCode()
         {
             if (string.IsNullOrEmpty(EncodedName))
+            {
                 return 0;
+            }
+
             return EncodedName.GetHashCode();
         }
 
         public override string ToString()
         {
             if (_encoded == null && _decoded == null)
+            {
                 return null;
+            }
+
             if (_encoded != null)
+            {
                 return _encoded;
+            }
+
             return _decoded;
         }
 
@@ -910,7 +946,10 @@ namespace System.ServiceModel.Description
         {
             OperationContractAttribute opSettings = GetOperationContractAttribute(method);
             if (opSettings == null)
+            {
                 return false;
+            }
+
             return IsBegin(opSettings, method);
         }
 

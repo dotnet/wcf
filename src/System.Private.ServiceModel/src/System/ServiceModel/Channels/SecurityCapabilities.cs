@@ -9,27 +9,27 @@ namespace System.ServiceModel.Channels
 {
     public class SecurityCapabilities : ISecurityCapabilities
     {
-        internal bool supportsServerAuth;
-        internal bool supportsClientAuth;
-        internal bool supportsClientWindowsIdentity;
-        internal ProtectionLevel requestProtectionLevel;
-        internal ProtectionLevel responseProtectionLevel;
+        internal bool _supportsServerAuth;
+        internal bool _supportsClientAuth;
+        internal bool _supportsClientWindowsIdentity;
+        internal ProtectionLevel _requestProtectionLevel;
+        internal ProtectionLevel _responseProtectionLevel;
 
         public SecurityCapabilities(bool supportsClientAuth, bool supportsServerAuth, bool supportsClientWindowsIdentity,
             ProtectionLevel requestProtectionLevel, ProtectionLevel responseProtectionLevel)
         {
-            this.supportsClientAuth = supportsClientAuth;
-            this.supportsServerAuth = supportsServerAuth;
-            this.supportsClientWindowsIdentity = supportsClientWindowsIdentity;
-            this.requestProtectionLevel = requestProtectionLevel;
-            this.responseProtectionLevel = responseProtectionLevel;
+            _supportsClientAuth = supportsClientAuth;
+            _supportsServerAuth = supportsServerAuth;
+            _supportsClientWindowsIdentity = supportsClientWindowsIdentity;
+            _requestProtectionLevel = requestProtectionLevel;
+            _responseProtectionLevel = responseProtectionLevel;
         }
 
-        public ProtectionLevel SupportedRequestProtectionLevel { get { return requestProtectionLevel; } }
-        public ProtectionLevel SupportedResponseProtectionLevel { get { return responseProtectionLevel; } }
-        public bool SupportsClientAuthentication { get { return supportsClientAuth; } }
-        public bool SupportsClientWindowsIdentity { get { return supportsClientWindowsIdentity; } }
-        public bool SupportsServerAuthentication { get { return supportsServerAuth; } }
+        public ProtectionLevel SupportedRequestProtectionLevel { get { return _requestProtectionLevel; } }
+        public ProtectionLevel SupportedResponseProtectionLevel { get { return _responseProtectionLevel; } }
+        public bool SupportsClientAuthentication { get { return _supportsClientAuth; } }
+        public bool SupportsClientWindowsIdentity { get { return _supportsClientWindowsIdentity; } }
+        public bool SupportsServerAuthentication { get { return _supportsServerAuth; } }
 
         public static SecurityCapabilities None
         {

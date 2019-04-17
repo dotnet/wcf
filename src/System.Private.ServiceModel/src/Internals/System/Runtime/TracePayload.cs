@@ -7,10 +7,6 @@ namespace System.Runtime
 {
     internal struct TracePayload
     {
-        private string _serializedException;
-        private string _eventSource;
-        private string _appDomainFriendlyName;
-        private string _extendedData;
         private string _hostReference;
 
         public TracePayload(string serializedException,
@@ -19,44 +15,20 @@ namespace System.Runtime
             string extendedData,
             string hostReference)
         {
-            _serializedException = serializedException;
-            _eventSource = eventSource;
-            _appDomainFriendlyName = appDomainFriendlyName;
-            _extendedData = extendedData;
+            SerializedException = serializedException;
+            EventSource = eventSource;
+            AppDomainFriendlyName = appDomainFriendlyName;
+            ExtendedData = extendedData;
             _hostReference = hostReference;
         }
 
-        public string SerializedException
-        {
-            get
-            {
-                return _serializedException;
-            }
-        }
+        public string SerializedException { get; }
 
-        public string EventSource
-        {
-            get
-            {
-                return _eventSource;
-            }
-        }
+        public string EventSource { get; }
 
-        public string AppDomainFriendlyName
-        {
-            get
-            {
-                return _appDomainFriendlyName;
-            }
-        }
+        public string AppDomainFriendlyName { get; }
 
-        public string ExtendedData
-        {
-            get
-            {
-                return _extendedData;
-            }
-        }
+        public string ExtendedData { get; }
 
         public string HostReference
         {

@@ -13,7 +13,6 @@ namespace System.ServiceModel.Dispatcher
 {
     public class SyncMethodInvoker : IOperationInvoker
     {
-        private readonly MethodInfo _method;
         private InvokeDelegate _invokeDelegate;
         private int _inputParameterCount;
         private int _outputParameterCount;
@@ -21,28 +20,20 @@ namespace System.ServiceModel.Dispatcher
 
         public SyncMethodInvoker(MethodInfo method)
         {
-            if (method == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("method"));
-            }
-
-            _method = method;
+            Method = method ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(method)));
         }
 
-        public MethodInfo Method
-        {
-            get
-            {
-                return _method;
-            }
-        }
+        public MethodInfo Method { get; }
 
         public string MethodName
         {
             get
             {
                 if (_methodName == null)
-                    _methodName = _method.Name;
+                {
+                    _methodName = Method.Name;
+                }
+
                 return _methodName;
             }
         }
@@ -77,14 +68,21 @@ namespace System.ServiceModel.Dispatcher
             EnsureIsInitialized();
 
             if (instance == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxNoServiceObject));
+            }
+
             if (inputs == null)
             {
                 if (_inputParameterCount > 0)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInputParametersToServiceNull, _inputParameterCount)));
+                }
             }
             else if (inputs.Length != _inputParameterCount)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInputParametersToServiceInvalid, _inputParameterCount, inputs.Length)));
+            }
 
             var outputs = EmptyArray<object>.Allocate(_outputParameterCount);
 
@@ -137,7 +135,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if (DiagnosticUtility.ShouldUseActivity)
                     {
-                        ServiceModelActivity.Start(activity, SR.Format(SR.ActivityExecuteMethod, _method.DeclaringType.FullName, _method.Name), ActivityType.ExecuteUserCode);
+                        ServiceModelActivity.Start(activity, SR.Format(SR.ActivityExecuteMethod, Method.DeclaringType.FullName, Method.Name), ActivityType.ExecuteUserCode);
                     }
                     if (WcfEventSource.Instance.OperationInvokedIsEnabled())
                     {
@@ -147,7 +145,7 @@ namespace System.ServiceModel.Dispatcher
                     callSucceeded = true;
                 }
             }
-            catch (System.ServiceModel.FaultException)
+            catch (FaultException)
             {
                 callFaulted = true;
                 throw;

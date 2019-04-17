@@ -12,9 +12,13 @@ namespace System.ServiceModel
         internal static T[] Allocate(int n)
         {
             if (n == 0)
+            {
                 return Array.Empty<T>();
+            }
             else
+            {
                 return new T[n];
+            }
         }
 
         internal static T[] ToArray(IList<T> collection)

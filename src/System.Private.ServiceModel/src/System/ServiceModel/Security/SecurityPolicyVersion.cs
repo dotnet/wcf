@@ -7,22 +7,15 @@ namespace System.ServiceModel.Security
 {
     public abstract class SecurityPolicyVersion
     {
-        private readonly String _spNamespace;
         private readonly String _prefix;
 
         internal SecurityPolicyVersion(String ns, String prefix)
         {
-            _spNamespace = ns;
+            Namespace = ns;
             _prefix = prefix;
         }
 
-        public String Namespace
-        {
-            get
-            {
-                return _spNamespace;
-            }
-        }
+        public String Namespace { get; }
 
         public String Prefix
         {

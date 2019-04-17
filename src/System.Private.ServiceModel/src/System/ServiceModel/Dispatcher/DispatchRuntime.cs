@@ -4,16 +4,10 @@
 
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IdentityModel.Policy;
 using System.Runtime;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.Threading;
-using System.Runtime.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
@@ -24,11 +18,9 @@ namespace System.ServiceModel.Dispatcher
         private bool _ensureOrderedDispatch;
         private bool _automaticInputSessionShutdown;
         private ChannelDispatcher _channelDispatcher;
-        private EndpointDispatcher _endpointDispatcher = null;
         private IInstanceProvider _instanceProvider;
         private IInstanceContextProvider _instanceContextProvider;
         private OperationCollection _operations;
-        private ClientRuntime _proxyRuntime;
         private ImmutableDispatchRuntime _runtime;
         private SynchronizationContext _synchronizationContext;
         private Type _type;
@@ -38,12 +30,7 @@ namespace System.ServiceModel.Dispatcher
         internal DispatchRuntime(ClientRuntime proxyRuntime, SharedRuntimeState shared)
             : this(shared)
         {
-            if (proxyRuntime == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("proxyRuntime");
-            }
-
-            _proxyRuntime = proxyRuntime;
+            ClientRuntime = proxyRuntime ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(proxyRuntime));
             _instanceProvider = new CallbackInstanceProvider();
             _channelDispatcher = new ChannelDispatcher(shared);
             _instanceContextProvider = InstanceContextProviderBase.GetProviderForMode(InstanceContextMode.PerSession, this);
@@ -74,12 +61,12 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
                 }
 
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _instanceContextProvider = value;
                 }
             }
@@ -93,9 +80,9 @@ namespace System.ServiceModel.Dispatcher
             }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _concurrencyMode = value;
                 }
             }
@@ -110,9 +97,9 @@ namespace System.ServiceModel.Dispatcher
             }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _ensureOrderedDispatch = value;
                 }
             }
@@ -123,9 +110,9 @@ namespace System.ServiceModel.Dispatcher
             get { return _automaticInputSessionShutdown; }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _automaticInputSessionShutdown = value;
                 }
             }
@@ -133,41 +120,38 @@ namespace System.ServiceModel.Dispatcher
 
         public ChannelDispatcher ChannelDispatcher
         {
-            get { return _channelDispatcher ?? _endpointDispatcher.ChannelDispatcher; }
+            get { return _channelDispatcher ?? EndpointDispatcher.ChannelDispatcher; }
         }
 
         public ClientRuntime CallbackClientRuntime
         {
             get
             {
-                if (_proxyRuntime == null)
+                if (ClientRuntime == null)
                 {
-                    lock (this.ThisLock)
+                    lock (ThisLock)
                     {
-                        if (_proxyRuntime == null)
+                        if (ClientRuntime == null)
                         {
-                            _proxyRuntime = new ClientRuntime(this, _shared);
+                            ClientRuntime = new ClientRuntime(this, _shared);
                         }
                     }
                 }
 
-                return _proxyRuntime;
+                return ClientRuntime;
             }
         }
 
-        public EndpointDispatcher EndpointDispatcher
-        {
-            get { return _endpointDispatcher; }
-        }
+        public EndpointDispatcher EndpointDispatcher { get; } = null;
 
         public IInstanceProvider InstanceProvider
         {
             get { return _instanceProvider; }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _instanceProvider = value;
                 }
             }
@@ -183,9 +167,9 @@ namespace System.ServiceModel.Dispatcher
             get { return _synchronizationContext; }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _synchronizationContext = value;
                 }
             }
@@ -196,9 +180,9 @@ namespace System.ServiceModel.Dispatcher
             get { return _type; }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _type = value;
                 }
             }
@@ -211,12 +195,12 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
 
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.InvalidateRuntime();
+                    InvalidateRuntime();
                     _unhandled = value;
                 }
             }
@@ -234,9 +218,9 @@ namespace System.ServiceModel.Dispatcher
         {
             get
             {
-                if (this.IsOnServer)
+                if (IsOnServer)
                 {
-                    ChannelDispatcher channelDispatcher = this.ChannelDispatcher;
+                    ChannelDispatcher channelDispatcher = ChannelDispatcher;
                     return (channelDispatcher != null) && channelDispatcher.EnableFaults;
                 }
                 else
@@ -255,9 +239,9 @@ namespace System.ServiceModel.Dispatcher
         {
             get
             {
-                if (this.IsOnServer)
+                if (IsOnServer)
                 {
-                    ChannelDispatcher channelDispatcher = this.ChannelDispatcher;
+                    ChannelDispatcher channelDispatcher = ChannelDispatcher;
                     return (channelDispatcher != null) && channelDispatcher.ManualAddressing;
                 }
                 else
@@ -271,7 +255,7 @@ namespace System.ServiceModel.Dispatcher
         {
             get
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     int max = 0;
 
@@ -286,10 +270,7 @@ namespace System.ServiceModel.Dispatcher
         }
 
         // Internal access to CallbackClientRuntime, but this one doesn't create on demand
-        internal ClientRuntime ClientRuntime
-        {
-            get { return _proxyRuntime; }
-        }
+        internal ClientRuntime ClientRuntime { get; private set; }
 
         internal object ThisLock
         {
@@ -298,7 +279,7 @@ namespace System.ServiceModel.Dispatcher
 
         internal DispatchOperationRuntime GetOperation(ref Message message)
         {
-            ImmutableDispatchRuntime runtime = this.GetRuntime();
+            ImmutableDispatchRuntime runtime = GetRuntime();
             return runtime.GetOperation(ref message);
         }
 
@@ -317,7 +298,7 @@ namespace System.ServiceModel.Dispatcher
 
         private ImmutableDispatchRuntime GetRuntimeCore()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (_runtime == null)
                 {
@@ -330,7 +311,7 @@ namespace System.ServiceModel.Dispatcher
 
         internal void InvalidateRuntime()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 _shared.ThrowIfImmutable();
                 _runtime = null;
@@ -447,7 +428,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (item == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
                 }
 
                 _outer.InvalidateRuntime();
@@ -464,7 +445,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (item == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
                 }
 
                 _outer.InvalidateRuntime();
@@ -497,7 +478,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (item == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
                 }
                 if (item.Parent != _outer)
                 {
@@ -518,7 +499,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (item == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
                 }
                 if (item.Parent != _outer)
                 {

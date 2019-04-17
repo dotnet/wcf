@@ -10,38 +10,29 @@ namespace System.ServiceModel.Security.Tokens
 {
     internal class SecurityTokenProviderContainer
     {
-        private SecurityTokenProvider _tokenProvider;
-
         public SecurityTokenProviderContainer(SecurityTokenProvider tokenProvider)
         {
-            if (tokenProvider == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenProvider");
-            }
-            _tokenProvider = tokenProvider;
+            TokenProvider = tokenProvider ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenProvider));
         }
 
-        public SecurityTokenProvider TokenProvider
-        {
-            get { return _tokenProvider; }
-        }
+        public SecurityTokenProvider TokenProvider { get; }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void Close(TimeSpan timeout)
         {
-            SecurityUtils.CloseTokenProviderIfRequired(_tokenProvider, timeout);
+            SecurityUtils.CloseTokenProviderIfRequired(TokenProvider, timeout);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void Open(TimeSpan timeout)
         {
-            SecurityUtils.OpenTokenProviderIfRequired(_tokenProvider, timeout);
+            SecurityUtils.OpenTokenProviderIfRequired(TokenProvider, timeout);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void Abort()
         {
-            SecurityUtils.AbortTokenProviderIfRequired(_tokenProvider);
+            SecurityUtils.AbortTokenProviderIfRequired(TokenProvider);
         }
     }
 }

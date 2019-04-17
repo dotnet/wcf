@@ -9,7 +9,6 @@ namespace System.ServiceModel
     public sealed class MessageParameterAttribute : Attribute
     {
         private string _name;
-        private bool _isNameSetExplicit;
         internal const string NamePropertyName = "Name";
         public string Name
         {
@@ -18,20 +17,17 @@ namespace System.ServiceModel
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
                 if (value == string.Empty)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value",
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value),
                         SR.SFxNameCannotBeEmpty));
                 }
-                _name = value; _isNameSetExplicit = true;
+                _name = value; IsNameSetExplicit = true;
             }
         }
 
-        internal bool IsNameSetExplicit
-        {
-            get { return _isNameSetExplicit; }
-        }
+        internal bool IsNameSetExplicit { get; private set; }
     }
 }

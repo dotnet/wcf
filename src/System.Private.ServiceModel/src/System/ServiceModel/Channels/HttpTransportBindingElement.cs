@@ -15,46 +15,39 @@ namespace System.ServiceModel.Channels
     public class HttpTransportBindingElement
         : TransportBindingElement
     {
-        private bool _allowCookies;
-        private AuthenticationSchemes _authenticationScheme;
-        private bool _bypassProxyOnLocal;
         private bool _decompressionEnabled;
         private HostNameComparisonMode _hostNameComparisonMode;
-        private bool _keepAliveEnabled;
         private bool _inheritBaseAddressSettings;
         private int _maxBufferSize;
         private bool _maxBufferSizeInitialized;
         private string _method;
-        private Uri _proxyAddress;
         private AuthenticationSchemes _proxyAuthenticationScheme;
         private string _realm;
         private TimeSpan _requestInitializationTimeout;
         private TransferMode _transferMode;
-        private bool _unsafeConnectionNtlmAuthentication;
         private bool _useDefaultWebProxy;
         private WebSocketTransportSettings _webSocketSettings;
         private ExtendedProtectionPolicy _extendedProtectionPolicy;
-        private HttpMessageHandlerFactory _httpMessageHandlerFactory;
         private int _maxPendingAccepts;
 
         public HttpTransportBindingElement()
             : base()
         {
-            _allowCookies = HttpTransportDefaults.AllowCookies;
-            _authenticationScheme = HttpTransportDefaults.AuthenticationScheme;
-            _bypassProxyOnLocal = HttpTransportDefaults.BypassProxyOnLocal;
+            AllowCookies = HttpTransportDefaults.AllowCookies;
+            AuthenticationScheme = HttpTransportDefaults.AuthenticationScheme;
+            BypassProxyOnLocal = HttpTransportDefaults.BypassProxyOnLocal;
             _decompressionEnabled = HttpTransportDefaults.DecompressionEnabled;
             _hostNameComparisonMode = HttpTransportDefaults.HostNameComparisonMode;
-            _keepAliveEnabled = HttpTransportDefaults.KeepAliveEnabled;
+            KeepAliveEnabled = HttpTransportDefaults.KeepAliveEnabled;
             _maxBufferSize = TransportDefaults.MaxBufferSize;
             _maxPendingAccepts = HttpTransportDefaults.DefaultMaxPendingAccepts;
             _method = string.Empty;
             _proxyAuthenticationScheme = HttpTransportDefaults.ProxyAuthenticationScheme;
-            _proxyAddress = HttpTransportDefaults.ProxyAddress;
+            ProxyAddress = HttpTransportDefaults.ProxyAddress;
             _realm = HttpTransportDefaults.Realm;
             _requestInitializationTimeout = HttpTransportDefaults.RequestInitializationTimeout;
             _transferMode = HttpTransportDefaults.TransferMode;
-            _unsafeConnectionNtlmAuthentication = HttpTransportDefaults.UnsafeConnectionNtlmAuthentication;
+            UnsafeConnectionNtlmAuthentication = HttpTransportDefaults.UnsafeConnectionNtlmAuthentication;
             _useDefaultWebProxy = HttpTransportDefaults.UseDefaultWebProxy;
             _webSocketSettings = HttpTransportDefaults.GetDefaultWebSocketTransportSettings();
         }
@@ -62,23 +55,23 @@ namespace System.ServiceModel.Channels
         protected HttpTransportBindingElement(HttpTransportBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            _allowCookies = elementToBeCloned._allowCookies;
-            _authenticationScheme = elementToBeCloned._authenticationScheme;
-            _bypassProxyOnLocal = elementToBeCloned._bypassProxyOnLocal;
+            AllowCookies = elementToBeCloned.AllowCookies;
+            AuthenticationScheme = elementToBeCloned.AuthenticationScheme;
+            BypassProxyOnLocal = elementToBeCloned.BypassProxyOnLocal;
             _decompressionEnabled = elementToBeCloned._decompressionEnabled;
             _hostNameComparisonMode = elementToBeCloned._hostNameComparisonMode;
             _inheritBaseAddressSettings = elementToBeCloned.InheritBaseAddressSettings;
-            _keepAliveEnabled = elementToBeCloned._keepAliveEnabled;
+            KeepAliveEnabled = elementToBeCloned.KeepAliveEnabled;
             _maxBufferSize = elementToBeCloned._maxBufferSize;
             _maxBufferSizeInitialized = elementToBeCloned._maxBufferSizeInitialized;
             _maxPendingAccepts = elementToBeCloned._maxPendingAccepts;
             _method = elementToBeCloned._method;
-            _proxyAddress = elementToBeCloned._proxyAddress;
+            ProxyAddress = elementToBeCloned.ProxyAddress;
             _proxyAuthenticationScheme = elementToBeCloned._proxyAuthenticationScheme;
             _realm = elementToBeCloned._realm;
             _requestInitializationTimeout = elementToBeCloned._requestInitializationTimeout;
             _transferMode = elementToBeCloned._transferMode;
-            _unsafeConnectionNtlmAuthentication = elementToBeCloned._unsafeConnectionNtlmAuthentication;
+            UnsafeConnectionNtlmAuthentication = elementToBeCloned.UnsafeConnectionNtlmAuthentication;
             _useDefaultWebProxy = elementToBeCloned._useDefaultWebProxy;
             _webSocketSettings = elementToBeCloned._webSocketSettings.Clone();
             _extendedProtectionPolicy = elementToBeCloned.ExtendedProtectionPolicy;
@@ -86,44 +79,13 @@ namespace System.ServiceModel.Channels
         }
 
         [DefaultValue(HttpTransportDefaults.AllowCookies)]
-        public bool AllowCookies
-        {
-            get
-            {
-                return _allowCookies;
-            }
-            set
-            {
-                _allowCookies = value;
-            }
-        }
+        public bool AllowCookies { get; set; }
 
         [DefaultValue(HttpTransportDefaults.AuthenticationScheme)]
-        public AuthenticationSchemes AuthenticationScheme
-        {
-            get
-            {
-                return _authenticationScheme;
-            }
-
-            set
-            {
-                _authenticationScheme = value;
-            }
-        }
+        public AuthenticationSchemes AuthenticationScheme { get; set; }
 
         [DefaultValue(HttpTransportDefaults.BypassProxyOnLocal)]
-        public bool BypassProxyOnLocal
-        {
-            get
-            {
-                return _bypassProxyOnLocal;
-            }
-            set
-            {
-                _bypassProxyOnLocal = value;
-            }
-        }
+        public bool BypassProxyOnLocal { get; set; }
 
         [DefaultValue(HttpTransportDefaults.DecompressionEnabled)]
         public bool DecompressionEnabled
@@ -152,17 +114,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public HttpMessageHandlerFactory MessageHandlerFactory
-        {
-            get
-            {
-                return _httpMessageHandlerFactory;
-            }
-            set
-            {
-                _httpMessageHandlerFactory = value;
-            }
-        }
+        public HttpMessageHandlerFactory MessageHandlerFactory { get; set; }
 
         public ExtendedProtectionPolicy ExtendedProtectionPolicy
         {
@@ -174,7 +126,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
 
                 if (value.PolicyEnforcement == PolicyEnforcement.Always &&
@@ -201,17 +153,7 @@ namespace System.ServiceModel.Channels
         }
 
         [DefaultValue(HttpTransportDefaults.KeepAliveEnabled)]
-        public bool KeepAliveEnabled
-        {
-            get
-            {
-                return _keepAliveEnabled;
-            }
-            set
-            {
-                _keepAliveEnabled = value;
-            }
-        }
+        public bool KeepAliveEnabled { get; set; }
 
         // client
         // server
@@ -221,19 +163,25 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_maxBufferSizeInitialized || TransferMode != TransferMode.Buffered)
+                {
                     return _maxBufferSize;
+                }
 
                 long maxReceivedMessageSize = MaxReceivedMessageSize;
                 if (maxReceivedMessageSize > int.MaxValue)
+                {
                     return int.MaxValue;
+                }
                 else
+                {
                     return (int)maxReceivedMessageSize;
+                }
             }
             set
             {
                 if (value <= 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.ValueMustBePositive));
                 }
 
@@ -254,13 +202,13 @@ namespace System.ServiceModel.Channels
             {
                 if (value < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.ValueMustBeNonNegative));
                 }
 
                 if (value > HttpTransportDefaults.MaxPendingAcceptsUpperLimit)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.Format(SR.HttpMaxPendingAcceptsTooLargeError, HttpTransportDefaults.MaxPendingAcceptsUpperLimit)));
                 }
 
@@ -278,28 +226,13 @@ namespace System.ServiceModel.Channels
 
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-
-                _method = value;
+                _method = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
         [DefaultValue(HttpTransportDefaults.ProxyAddress)]
         [TypeConverter(typeof(UriTypeConverter))]
-        public Uri ProxyAddress
-        {
-            get
-            {
-                return _proxyAddress;
-            }
-            set
-            {
-                _proxyAddress = value;
-            }
-        }
+        public Uri ProxyAddress { get; set; }
 
         [DefaultValue(HttpTransportDefaults.ProxyAuthenticationScheme)]
         public AuthenticationSchemes ProxyAuthenticationScheme
@@ -330,12 +263,7 @@ namespace System.ServiceModel.Channels
             }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-
-                _realm = value;
+                _realm = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -350,11 +278,11 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRange0));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRange0));
                 }
                 if (TimeoutHelper.IsTooLarge(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRangeTooBig));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRangeTooBig));
                 }
 
                 _requestInitializationTimeout = value;
@@ -387,11 +315,7 @@ namespace System.ServiceModel.Channels
             }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-                _webSocketSettings = value;
+                _webSocketSettings = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -408,18 +332,7 @@ namespace System.ServiceModel.Channels
         }
 
         [DefaultValue(HttpTransportDefaults.UnsafeConnectionNtlmAuthentication)]
-        public bool UnsafeConnectionNtlmAuthentication
-        {
-            get
-            {
-                return _unsafeConnectionNtlmAuthentication;
-            }
-
-            set
-            {
-                _unsafeConnectionNtlmAuthentication = value;
-            }
-        }
+        public bool UnsafeConnectionNtlmAuthentication { get; set; }
 
         [DefaultValue(HttpTransportDefaults.UseDefaultWebProxy)]
         public bool UseDefaultWebProxy
@@ -453,16 +366,16 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
             if (typeof(T) == typeof(ISecurityCapabilities))
             {
-                AuthenticationSchemes effectiveAuthenticationSchemes = this.AuthenticationScheme;
+                AuthenticationSchemes effectiveAuthenticationSchemes = AuthenticationScheme;
                 // Desktop: HttpTransportBindingElement.GetEffectiveAuthenticationSchemes(this.AuthenticationScheme, context.BindingParameters);
 
-                return (T)(object)new SecurityCapabilities(this.GetSupportsClientAuthenticationImpl(effectiveAuthenticationSchemes),
+                return (T)(object)new SecurityCapabilities(GetSupportsClientAuthenticationImpl(effectiveAuthenticationSchemes),
                     effectiveAuthenticationSchemes == AuthenticationSchemes.Negotiate,
-                    this.GetSupportsClientWindowsIdentityImpl(effectiveAuthenticationSchemes),
+                    GetSupportsClientWindowsIdentityImpl(effectiveAuthenticationSchemes),
                     ProtectionLevel.None,
                     ProtectionLevel.None);
             }
@@ -472,11 +385,11 @@ namespace System.ServiceModel.Channels
             }
             else if (typeof(T) == typeof(TransferMode))
             {
-                return (T)(object)this.TransferMode;
+                return (T)(object)TransferMode;
             }
             else if (typeof(T) == typeof(ExtendedProtectionPolicy))
             {
-                return (T)(object)this.ExtendedProtectionPolicy;
+                return (T)(object)ExtendedProtectionPolicy;
             }
             else if (typeof(T) == typeof(ITransportCompressionSupport))
             {
@@ -497,11 +410,11 @@ namespace System.ServiceModel.Channels
         {
             if (typeof(TChannel) == typeof(IRequestChannel))
             {
-                return this.WebSocketSettings.TransportUsage != WebSocketTransportUsage.Always;
+                return WebSocketSettings.TransportUsage != WebSocketTransportUsage.Always;
             }
             else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
             {
-                return this.WebSocketSettings.TransportUsage != WebSocketTransportUsage.Never;
+                return WebSocketSettings.TransportUsage != WebSocketTransportUsage.Never;
             }
             return false;
         }
@@ -510,29 +423,29 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
-            if (this.MessageHandlerFactory != null)
+            if (MessageHandlerFactory != null)
             {
                 throw FxTrace.Exception.AsError(new InvalidOperationException(SR.Format(SR.HttpPipelineNotSupportedOnClientSide, "MessageHandlerFactory")));
             }
 
-            if (!this.CanBuildChannelFactory<TChannel>(context))
+            if (!CanBuildChannelFactory<TChannel>(context))
             {
                 Contract.Assert(context.Binding != null);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SR.Format(SR.CouldnTCreateChannelForChannelType2, context.Binding.Name, typeof(TChannel)));
             }
 
-            if (_authenticationScheme == AuthenticationSchemes.None)
+            if (AuthenticationScheme == AuthenticationSchemes.None)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SR.Format(SR.HttpAuthSchemeCannotBeNone,
-                    _authenticationScheme));
+                    AuthenticationScheme));
             }
-            else if (!_authenticationScheme.IsSingleton())
+            else if (!AuthenticationScheme.IsSingleton())
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SR.Format(SR.HttpRequiresSingleAuthScheme,
-                    _authenticationScheme));
+                    AuthenticationScheme));
             }
 
             return (IChannelFactory<TChannel>)(object)new HttpChannelFactory<TChannel>(this, context);
@@ -541,36 +454,80 @@ namespace System.ServiceModel.Channels
         internal override bool IsMatch(BindingElement b)
         {
             if (!base.IsMatch(b))
+            {
                 return false;
+            }
+
             HttpTransportBindingElement http = b as HttpTransportBindingElement;
             if (http == null)
+            {
                 return false;
-            if (_allowCookies != http._allowCookies)
+            }
+
+            if (AllowCookies != http.AllowCookies)
+            {
                 return false;
-            if (_authenticationScheme != http._authenticationScheme)
+            }
+
+            if (AuthenticationScheme != http.AuthenticationScheme)
+            {
                 return false;
+            }
+
             if (_decompressionEnabled != http._decompressionEnabled)
+            {
                 return false;
+            }
+
             if (_hostNameComparisonMode != http._hostNameComparisonMode)
+            {
                 return false;
+            }
+
             if (_inheritBaseAddressSettings != http._inheritBaseAddressSettings)
+            {
                 return false;
-            if (_keepAliveEnabled != http._keepAliveEnabled)
+            }
+
+            if (KeepAliveEnabled != http.KeepAliveEnabled)
+            {
                 return false;
+            }
+
             if (_maxBufferSize != http._maxBufferSize)
+            {
                 return false;
+            }
+
             if (_method != http._method)
+            {
                 return false;
+            }
+
             if (_realm != http._realm)
+            {
                 return false;
+            }
+
             if (_transferMode != http._transferMode)
+            {
                 return false;
-            if (_unsafeConnectionNtlmAuthentication != http._unsafeConnectionNtlmAuthentication)
+            }
+
+            if (UnsafeConnectionNtlmAuthentication != http.UnsafeConnectionNtlmAuthentication)
+            {
                 return false;
+            }
+
             if (_useDefaultWebProxy != http._useDefaultWebProxy)
+            {
                 return false;
-            if (!this.WebSocketSettings.Equals(http.WebSocketSettings))
+            }
+
+            if (!WebSocketSettings.Equals(http.WebSocketSettings))
+            {
                 return false;
+            }
 
             return true;
         }

@@ -36,7 +36,7 @@ namespace System.ServiceModel
             {
                 if (!MessageCredentialTypeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
                 if (value != MessageCredentialType.None)
@@ -52,7 +52,7 @@ namespace System.ServiceModel
 
         internal bool InternalShouldSerialize()
         {
-            return this.ClientCredentialType != NetTcpDefaults.MessageSecurityClientCredentialType;
+            return ClientCredentialType != NetTcpDefaults.MessageSecurityClientCredentialType;
         }
     }
 }

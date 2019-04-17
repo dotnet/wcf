@@ -4,7 +4,6 @@
 
 
 using System.Net;
-using System.Security.Principal;
 
 namespace System.ServiceModel.Security
 {

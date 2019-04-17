@@ -31,7 +31,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     throw;
                 }
-                this.HandleError(e);
+                HandleError(e);
             }
         }
 
@@ -72,13 +72,13 @@ namespace System.ServiceModel.Dispatcher
             }
             catch (CommunicationException e)
             {
-                this.HandleError(e);
+                HandleError(e);
                 requestContext = null;
                 return false;
             }
             catch (TimeoutException e)
             {
-                this.HandleError(e);
+                HandleError(e);
                 requestContext = null;
                 return false;
             }
@@ -88,7 +88,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     throw;
                 }
-                this.HandleErrorOrAbort(e);
+                HandleErrorOrAbort(e);
                 requestContext = null;
                 return false;
             }
@@ -110,12 +110,12 @@ namespace System.ServiceModel.Dispatcher
             }
             catch (CommunicationException e)
             {
-                this.HandleError(e);
+                HandleError(e);
                 return new ErrorHandlingCompletedAsyncResult(false, callback, state);
             }
             catch (TimeoutException e)
             {
-                this.HandleError(e);
+                HandleError(e);
                 return new ErrorHandlingCompletedAsyncResult(false, callback, state);
             }
             catch (Exception e)
@@ -124,7 +124,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     throw;
                 }
-                this.HandleErrorOrAbort(e);
+                HandleErrorOrAbort(e);
                 return new ErrorHandlingCompletedAsyncResult(false, callback, state);
             }
         }
@@ -155,13 +155,13 @@ namespace System.ServiceModel.Dispatcher
                 }
                 catch (CommunicationException e)
                 {
-                    this.HandleError(e);
+                    HandleError(e);
                     requestContext = null;
                     return false;
                 }
                 catch (TimeoutException e)
                 {
-                    this.HandleError(e);
+                    HandleError(e);
                     requestContext = null;
                     return false;
                 }
@@ -171,7 +171,7 @@ namespace System.ServiceModel.Dispatcher
                     {
                         throw;
                     }
-                    this.HandleErrorOrAbort(e);
+                    HandleErrorOrAbort(e);
                     requestContext = null;
                     return false;
                 }

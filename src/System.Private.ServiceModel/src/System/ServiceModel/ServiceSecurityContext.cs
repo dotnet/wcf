@@ -15,7 +15,6 @@ namespace System.ServiceModel
     public class ServiceSecurityContext
     {
         private static ServiceSecurityContext s_anonymous;
-        private ReadOnlyCollection<IAuthorizationPolicy> _authorizationPolicies;
         private AuthorizationContext _authorizationContext;
         private IIdentity _primaryIdentity;
         private Claim _identityClaim;
@@ -23,12 +22,8 @@ namespace System.ServiceModel
         // Perf: delay created authorizationContext using forward chain.
         public ServiceSecurityContext(ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
-            if (authorizationPolicies == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authorizationPolicies");
-            }
             _authorizationContext = null;
-            _authorizationPolicies = authorizationPolicies;
+            AuthorizationPolicies = authorizationPolicies ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(authorizationPolicies));
         }
 
         public ServiceSecurityContext(AuthorizationContext authorizationContext)
@@ -38,16 +33,8 @@ namespace System.ServiceModel
 
         public ServiceSecurityContext(AuthorizationContext authorizationContext, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
-            if (authorizationContext == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authorizationContext");
-            }
-            if (authorizationPolicies == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authorizationPolicies");
-            }
-            _authorizationContext = authorizationContext;
-            _authorizationPolicies = authorizationPolicies;
+            _authorizationContext = authorizationContext ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(authorizationContext));
+            AuthorizationPolicies = authorizationPolicies ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(authorizationPolicies));
         }
 
         public static ServiceSecurityContext Anonymous
@@ -67,7 +54,7 @@ namespace System.ServiceModel
         {
             get
             {
-                return this == Anonymous || this.IdentityClaim == null;
+                return this == Anonymous || IdentityClaim == null;
             }
         }
 
@@ -77,7 +64,7 @@ namespace System.ServiceModel
             {
                 if (_identityClaim == null)
                 {
-                    _identityClaim = SecurityUtils.GetPrimaryIdentityClaim(this.AuthorizationContext);
+                    _identityClaim = SecurityUtils.GetPrimaryIdentityClaim(AuthorizationContext);
                 }
                 return _identityClaim;
             }
@@ -103,17 +90,7 @@ namespace System.ServiceModel
             }
         }
 
-        public ReadOnlyCollection<IAuthorizationPolicy> AuthorizationPolicies
-        {
-            get
-            {
-                return _authorizationPolicies;
-            }
-            set
-            {
-                _authorizationPolicies = value;
-            }
-        }
+        public ReadOnlyCollection<IAuthorizationPolicy> AuthorizationPolicies { get; set; }
 
         public AuthorizationContext AuthorizationContext
         {
@@ -121,7 +98,7 @@ namespace System.ServiceModel
             {
                 if (_authorizationContext == null)
                 {
-                    _authorizationContext = AuthorizationContext.CreateDefaultAuthorizationContext(_authorizationPolicies);
+                    _authorizationContext = AuthorizationContext.CreateDefaultAuthorizationContext(AuthorizationPolicies);
                 }
                 return _authorizationContext;
             }
@@ -130,7 +107,7 @@ namespace System.ServiceModel
         private IList<IIdentity> GetIdentities()
         {
             object identities;
-            AuthorizationContext authContext = this.AuthorizationContext;
+            AuthorizationContext authContext = AuthorizationContext;
             if (authContext != null && authContext.Properties.TryGetValue(SecurityUtils.Identities, out identities))
             {
                 return identities as IList<IIdentity>;

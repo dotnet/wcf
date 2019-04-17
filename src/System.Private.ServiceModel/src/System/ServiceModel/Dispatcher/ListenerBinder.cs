@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Dispatcher
@@ -14,27 +13,39 @@ namespace System.ServiceModel.Dispatcher
         {
             IChannelListener<IInputChannel> input = listener as IChannelListener<IInputChannel>;
             if (input != null)
+            {
                 return new InputListenerBinder(input, messageVersion);
+            }
 
             IChannelListener<IInputSessionChannel> inputSession = listener as IChannelListener<IInputSessionChannel>;
             if (inputSession != null)
+            {
                 return new InputSessionListenerBinder(inputSession, messageVersion);
+            }
 
             IChannelListener<IReplyChannel> reply = listener as IChannelListener<IReplyChannel>;
             if (reply != null)
+            {
                 return new ReplyListenerBinder(reply, messageVersion);
+            }
 
             IChannelListener<IReplySessionChannel> replySession = listener as IChannelListener<IReplySessionChannel>;
             if (replySession != null)
+            {
                 return new ReplySessionListenerBinder(replySession, messageVersion);
+            }
 
             IChannelListener<IDuplexChannel> duplex = listener as IChannelListener<IDuplexChannel>;
             if (duplex != null)
+            {
                 return new DuplexListenerBinder(duplex, messageVersion);
+            }
 
             IChannelListener<IDuplexSessionChannel> duplexSession = listener as IChannelListener<IDuplexSessionChannel>;
             if (duplexSession != null)
+            {
                 return new DuplexSessionListenerBinder(duplexSession, messageVersion);
+            }
 
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.UnknownListenerType1, listener.Uri.AbsoluteUri)));
         }
@@ -46,13 +57,12 @@ namespace System.ServiceModel.Dispatcher
         {
             private IRequestReplyCorrelator _correlator;
             private IChannelListener<IDuplexChannel> _listener;
-            private MessageVersion _messageVersion;
 
             internal DuplexListenerBinder(IChannelListener<IDuplexChannel> listener, MessageVersion messageVersion)
             {
                 _correlator = new RequestReplyCorrelator();
                 _listener = listener;
-                _messageVersion = messageVersion;
+                MessageVersion = messageVersion;
             }
 
             public IChannelListener Listener
@@ -60,16 +70,15 @@ namespace System.ServiceModel.Dispatcher
                 get { return _listener; }
             }
 
-            public MessageVersion MessageVersion
-            {
-                get { return _messageVersion; }
-            }
+            public MessageVersion MessageVersion { get; }
 
             public IChannelBinder Accept(TimeSpan timeout)
             {
                 IDuplexChannel channel = _listener.AcceptChannel(timeout);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new DuplexChannelBinder(channel, _correlator, _listener.Uri);
             }
@@ -83,7 +92,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IDuplexChannel channel = _listener.EndAcceptChannel(result);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new DuplexChannelBinder(channel, _correlator, _listener.Uri);
             }
@@ -93,13 +104,12 @@ namespace System.ServiceModel.Dispatcher
         {
             private IRequestReplyCorrelator _correlator;
             private IChannelListener<IDuplexSessionChannel> _listener;
-            private MessageVersion _messageVersion;
 
             internal DuplexSessionListenerBinder(IChannelListener<IDuplexSessionChannel> listener, MessageVersion messageVersion)
             {
                 _correlator = new RequestReplyCorrelator();
                 _listener = listener;
-                _messageVersion = messageVersion;
+                MessageVersion = messageVersion;
             }
 
             public IChannelListener Listener
@@ -107,16 +117,15 @@ namespace System.ServiceModel.Dispatcher
                 get { return _listener; }
             }
 
-            public MessageVersion MessageVersion
-            {
-                get { return _messageVersion; }
-            }
+            public MessageVersion MessageVersion { get; }
 
             public IChannelBinder Accept(TimeSpan timeout)
             {
                 IDuplexSessionChannel channel = _listener.AcceptChannel(timeout);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new DuplexChannelBinder(channel, _correlator, _listener.Uri);
             }
@@ -130,7 +139,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IDuplexSessionChannel channel = _listener.EndAcceptChannel(result);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new DuplexChannelBinder(channel, _correlator, _listener.Uri);
             }
@@ -139,12 +150,11 @@ namespace System.ServiceModel.Dispatcher
         internal class InputListenerBinder : IListenerBinder
         {
             private IChannelListener<IInputChannel> _listener;
-            private MessageVersion _messageVersion;
 
             internal InputListenerBinder(IChannelListener<IInputChannel> listener, MessageVersion messageVersion)
             {
                 _listener = listener;
-                _messageVersion = messageVersion;
+                MessageVersion = messageVersion;
             }
 
             public IChannelListener Listener
@@ -152,16 +162,15 @@ namespace System.ServiceModel.Dispatcher
                 get { return _listener; }
             }
 
-            public MessageVersion MessageVersion
-            {
-                get { return _messageVersion; }
-            }
+            public MessageVersion MessageVersion { get; }
 
             public IChannelBinder Accept(TimeSpan timeout)
             {
                 IInputChannel channel = _listener.AcceptChannel(timeout);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new InputChannelBinder(channel, _listener.Uri);
             }
@@ -175,7 +184,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IInputChannel channel = _listener.EndAcceptChannel(result);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new InputChannelBinder(channel, _listener.Uri);
             }
@@ -184,12 +195,11 @@ namespace System.ServiceModel.Dispatcher
         internal class InputSessionListenerBinder : IListenerBinder
         {
             private IChannelListener<IInputSessionChannel> _listener;
-            private MessageVersion _messageVersion;
 
             internal InputSessionListenerBinder(IChannelListener<IInputSessionChannel> listener, MessageVersion messageVersion)
             {
                 _listener = listener;
-                _messageVersion = messageVersion;
+                MessageVersion = messageVersion;
             }
 
             public IChannelListener Listener
@@ -197,16 +207,15 @@ namespace System.ServiceModel.Dispatcher
                 get { return _listener; }
             }
 
-            public MessageVersion MessageVersion
-            {
-                get { return _messageVersion; }
-            }
+            public MessageVersion MessageVersion { get; }
 
             public IChannelBinder Accept(TimeSpan timeout)
             {
                 IInputSessionChannel channel = _listener.AcceptChannel(timeout);
                 if (null == channel)
+                {
                     return null;
+                }
 
                 return new InputChannelBinder(channel, _listener.Uri);
             }
@@ -220,7 +229,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IInputSessionChannel channel = _listener.EndAcceptChannel(result);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new InputChannelBinder(channel, _listener.Uri);
             }
@@ -229,12 +240,11 @@ namespace System.ServiceModel.Dispatcher
         internal class ReplyListenerBinder : IListenerBinder
         {
             private IChannelListener<IReplyChannel> _listener;
-            private MessageVersion _messageVersion;
 
             internal ReplyListenerBinder(IChannelListener<IReplyChannel> listener, MessageVersion messageVersion)
             {
                 _listener = listener;
-                _messageVersion = messageVersion;
+                MessageVersion = messageVersion;
             }
 
             public IChannelListener Listener
@@ -242,16 +252,15 @@ namespace System.ServiceModel.Dispatcher
                 get { return _listener; }
             }
 
-            public MessageVersion MessageVersion
-            {
-                get { return _messageVersion; }
-            }
+            public MessageVersion MessageVersion { get; }
 
             public IChannelBinder Accept(TimeSpan timeout)
             {
                 IReplyChannel channel = _listener.AcceptChannel(timeout);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new ReplyChannelBinder(channel, _listener.Uri);
             }
@@ -265,7 +274,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IReplyChannel channel = _listener.EndAcceptChannel(result);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new ReplyChannelBinder(channel, _listener.Uri);
             }
@@ -274,12 +285,11 @@ namespace System.ServiceModel.Dispatcher
         internal class ReplySessionListenerBinder : IListenerBinder
         {
             private IChannelListener<IReplySessionChannel> _listener;
-            private MessageVersion _messageVersion;
 
             internal ReplySessionListenerBinder(IChannelListener<IReplySessionChannel> listener, MessageVersion messageVersion)
             {
                 _listener = listener;
-                _messageVersion = messageVersion;
+                MessageVersion = messageVersion;
             }
 
             public IChannelListener Listener
@@ -287,16 +297,15 @@ namespace System.ServiceModel.Dispatcher
                 get { return _listener; }
             }
 
-            public MessageVersion MessageVersion
-            {
-                get { return _messageVersion; }
-            }
+            public MessageVersion MessageVersion { get; }
 
             public IChannelBinder Accept(TimeSpan timeout)
             {
                 IReplySessionChannel channel = _listener.AcceptChannel(timeout);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new ReplyChannelBinder(channel, _listener.Uri);
             }
@@ -310,7 +319,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 IReplySessionChannel channel = _listener.EndAcceptChannel(result);
                 if (channel == null)
+                {
                     return null;
+                }
 
                 return new ReplyChannelBinder(channel, _listener.Uri);
             }

@@ -18,14 +18,13 @@ namespace System.ServiceModel.Channels
 {
     internal class HttpsChannelFactory<TChannel> : HttpChannelFactory<TChannel>
     {
-        private bool _requireClientCertificate;
         private X509CertificateValidator _sslCertificateValidator;
         private Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> _remoteCertificateValidationCallback;
 
         internal HttpsChannelFactory(HttpsTransportBindingElement httpsBindingElement, BindingContext context)
             : base(httpsBindingElement, context)
         {
-            _requireClientCertificate = httpsBindingElement.RequireClientCertificate;
+            RequireClientCertificate = httpsBindingElement.RequireClientCertificate;
             ClientCredentials credentials = context.BindingParameters.Find<ClientCredentials>();
             if (credentials != null && credentials.ServiceCertificate.SslCertificateAuthentication != null)
             {
@@ -42,13 +41,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public bool RequireClientCertificate
-        {
-            get
-            {
-                return _requireClientCertificate;
-            }
-        }
+        public bool RequireClientCertificate { get; }
 
         public override bool IsChannelBindingSupportEnabled
         {
@@ -94,13 +87,13 @@ namespace System.ServiceModel.Channels
 
         protected override bool IsSecurityTokenManagerRequired()
         {
-            return _requireClientCertificate || base.IsSecurityTokenManagerRequired();
+            return RequireClientCertificate || base.IsSecurityTokenManagerRequired();
         }
 
 
         private void OnOpenCore()
         {
-            if (_requireClientCertificate && SecurityTokenManager == null)
+            if (RequireClientCertificate && SecurityTokenManager == null)
             {
                 throw Fx.AssertAndThrow("HttpsChannelFactory: SecurityTokenManager is null on open.");
             }
@@ -154,7 +147,7 @@ namespace System.ServiceModel.Channels
 
             if (requestCertificateProvider != null)
             {
-                token = requestCertificateProvider.GetTokenAsync(timeoutHelper.GetCancellationToken()).GetAwaiter().GetResult();
+                token = requestCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
             }
 
             if (ManualAddressing && RequireClientCertificate)
@@ -255,18 +248,14 @@ namespace System.ServiceModel.Channels
         protected class HttpsClientRequestChannel : HttpClientRequestChannel
         {
             private SecurityTokenProvider _certificateProvider;
-            private HttpsChannelFactory<IRequestChannel> _factory;
 
             public HttpsClientRequestChannel(HttpsChannelFactory<IRequestChannel> factory, EndpointAddress to, Uri via, bool manualAddressing)
                 : base(factory, to, via, manualAddressing)
             {
-                _factory = factory;
+                Factory = factory;
             }
 
-            public new HttpsChannelFactory<IRequestChannel> Factory
-            {
-                get { return _factory; }
-            }
+            public new HttpsChannelFactory<IRequestChannel> Factory { get; }
 
             private void CreateAndOpenTokenProvider(TimeSpan timeout)
             {
@@ -339,7 +328,7 @@ namespace System.ServiceModel.Channels
 
             internal override async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via, TimeoutHelper timeoutHelper)
             {
-                SecurityTokenContainer clientCertificateToken = Factory.GetCertificateSecurityToken(_certificateProvider, to, via, this.ChannelParameters, ref timeoutHelper);
+                SecurityTokenContainer clientCertificateToken = Factory.GetCertificateSecurityToken(_certificateProvider, to, via, ChannelParameters, ref timeoutHelper);
                 HttpClient httpClient = await base.GetHttpClientAsync(to, via, clientCertificateToken, timeoutHelper);
                 return httpClient;
             }

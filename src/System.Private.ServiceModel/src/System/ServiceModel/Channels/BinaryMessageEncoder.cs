@@ -7,10 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime;
 using System.Runtime.Diagnostics;
-using System.ServiceModel;
 using System.ServiceModel.Diagnostics;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace System.ServiceModel.Channels
@@ -21,19 +19,13 @@ namespace System.ServiceModel.Channels
 
         private BinaryMessageEncoder _messageEncoder;
         private MessageVersion _messageVersion;
-        private int _maxReadPoolSize;
         private int _maxWritePoolSize;
-        private CompressionFormat _compressionFormat;
 
 
         // Double-checked locking pattern requires volatile for read/write synchronization
         private volatile SynchronizedPool<BinaryBufferedMessageData> _bufferedDataPool;
         private volatile SynchronizedPool<BinaryBufferedMessageWriter> _bufferedWriterPool;
         private volatile SynchronizedPool<RecycledMessageState> _recycledStatePool;
-
-        private object _thisLock;
-        private int _maxSessionSize;
-        private XmlDictionaryReaderQuotas _readerQuotas;
         private XmlDictionaryReaderQuotas _bufferedReadReaderQuotas;
         private BinaryVersion _binaryVersion;
 
@@ -41,22 +33,22 @@ namespace System.ServiceModel.Channels
             XmlDictionaryReaderQuotas readerQuotas, long maxReceivedMessageSize, BinaryVersion version, CompressionFormat compressionFormat)
         {
             _messageVersion = messageVersion;
-            _maxReadPoolSize = maxReadPoolSize;
+            MaxReadPoolSize = maxReadPoolSize;
             _maxWritePoolSize = maxWritePoolSize;
-            _maxSessionSize = maxSessionSize;
-            _thisLock = new object();
+            MaxSessionSize = maxSessionSize;
+            ThisLock = new object();
 
-            _readerQuotas = new XmlDictionaryReaderQuotas();
+            ReaderQuotas = new XmlDictionaryReaderQuotas();
             if (readerQuotas != null)
             {
-                readerQuotas.CopyTo(_readerQuotas);
+                readerQuotas.CopyTo(ReaderQuotas);
             }
 
-            _bufferedReadReaderQuotas = EncoderHelpers.GetBufferedReadQuotas(_readerQuotas);
-            this.MaxReceivedMessageSize = maxReceivedMessageSize;
+            _bufferedReadReaderQuotas = EncoderHelpers.GetBufferedReadQuotas(ReaderQuotas);
+            MaxReceivedMessageSize = maxReceivedMessageSize;
 
             _binaryVersion = version;
-            _compressionFormat = compressionFormat;
+            CompressionFormat = compressionFormat;
             _messageEncoder = new BinaryMessageEncoder(this, false, 0);
         }
 
@@ -83,28 +75,13 @@ namespace System.ServiceModel.Channels
             get { return _maxWritePoolSize; }
         }
 
-        public XmlDictionaryReaderQuotas ReaderQuotas
-        {
-            get
-            {
-                return _readerQuotas;
-            }
-        }
+        public XmlDictionaryReaderQuotas ReaderQuotas { get; }
 
-        public int MaxReadPoolSize
-        {
-            get { return _maxReadPoolSize; }
-        }
+        public int MaxReadPoolSize { get; }
 
-        public int MaxSessionSize
-        {
-            get { return _maxSessionSize; }
-        }
+        public int MaxSessionSize { get; }
 
-        public CompressionFormat CompressionFormat
-        {
-            get { return _compressionFormat; }
-        }
+        public CompressionFormat CompressionFormat { get; }
 
         private long MaxReceivedMessageSize
         {
@@ -112,10 +89,7 @@ namespace System.ServiceModel.Channels
             set;
         }
 
-        private object ThisLock
-        {
-            get { return _thisLock; }
-        }
+        private object ThisLock { get; }
 
         private SynchronizedPool<RecycledMessageState> RecycledStatePool
         {
@@ -128,7 +102,7 @@ namespace System.ServiceModel.Channels
                         if (_recycledStatePool == null)
                         {
                             //running = true;
-                            _recycledStatePool = new SynchronizedPool<RecycledMessageState>(_maxReadPoolSize);
+                            _recycledStatePool = new SynchronizedPool<RecycledMessageState>(MaxReadPoolSize);
                         }
                     }
                 }
@@ -138,7 +112,7 @@ namespace System.ServiceModel.Channels
 
         public override MessageEncoder CreateSessionEncoder()
         {
-            return new BinaryMessageEncoder(this, true, _maxSessionSize);
+            return new BinaryMessageEncoder(this, true, MaxSessionSize);
         }
 
         private XmlDictionaryWriter TakeStreamedWriter(Stream stream)
@@ -186,7 +160,7 @@ namespace System.ServiceModel.Channels
         {
             return XmlDictionaryReader.CreateBinaryReader(stream,
                     _binaryVersion.Dictionary,
-                    _readerQuotas,
+                    ReaderQuotas,
                     null);
         }
 
@@ -200,7 +174,7 @@ namespace System.ServiceModel.Channels
                     if (_bufferedDataPool == null)
                     {
                         //running = true;
-                        _bufferedDataPool = new SynchronizedPool<BinaryBufferedMessageData>(_maxReadPoolSize);
+                        _bufferedDataPool = new SynchronizedPool<BinaryBufferedMessageData>(MaxReadPoolSize);
                     }
                 }
             }
@@ -245,7 +219,7 @@ namespace System.ServiceModel.Channels
 
             public override XmlDictionaryReaderQuotas Quotas
             {
-                get { return _factory._readerQuotas; }
+                get { return _factory.ReaderQuotas; }
             }
 
             public void SetMessageEncoder(BinaryMessageEncoder messageEncoder)
@@ -255,7 +229,7 @@ namespace System.ServiceModel.Channels
 
             protected override XmlDictionaryReader TakeXmlReader()
             {
-                ArraySegment<byte> buffer = this.Buffer;
+                ArraySegment<byte> buffer = Buffer;
 
                 return XmlDictionaryReader.CreateBinaryReader(buffer.Array, buffer.Offset, buffer.Count,
                                         _factory._binaryVersion.Dictionary,
@@ -309,7 +283,6 @@ namespace System.ServiceModel.Channels
             private bool _isSession;
             private XmlBinaryWriterSessionWithQuota _writerSession;
             private BinaryBufferedMessageWriter _sessionMessageWriter;
-            private XmlBinaryReaderSession _readerSession;
             private XmlBinaryReaderSession _readerSessionForLogging;
             private bool _readerSessionForLoggingIsInvalid = false;
             private int _writeIdCounter;
@@ -369,10 +342,7 @@ namespace System.ServiceModel.Channels
                 get { return _contentType; }
             }
 
-            public XmlBinaryReaderSession ReaderSession
-            {
-                get { return _readerSession; }
-            }
+            public XmlBinaryReaderSession ReaderSession { get; private set; }
 
             public bool CompressionEnabled
             {
@@ -497,7 +467,7 @@ namespace System.ServiceModel.Channels
                             string value = Encoding.UTF8.GetString(buffer, offset, utf8ValueSize);
                             offset += utf8ValueSize;
                             size -= utf8ValueSize;
-                            _readerSession.Add(_idCounter, value);
+                            ReaderSession.Add(_idCounter, value);
                             _idCounter++;
                         }
                     }
@@ -518,10 +488,10 @@ namespace System.ServiceModel.Channels
             {
                 if (bufferManager == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bufferManager");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bufferManager));
                 }
 
-                CompressionFormat compressionFormat = this.CheckContentType(contentType);
+                CompressionFormat compressionFormat = CheckContentType(contentType);
 
                 if (WcfEventSource.Instance.BinaryMessageDecodingStartIsEnabled())
                 {
@@ -535,10 +505,10 @@ namespace System.ServiceModel.Channels
 
                 if (_isSession)
                 {
-                    if (_readerSession == null)
+                    if (ReaderSession == null)
                     {
-                        _readerSession = new XmlBinaryReaderSession();
-                        _messagePatterns = new MessagePatterns(_factory._binaryVersion.Dictionary, _readerSession, this.MessageVersion);
+                        ReaderSession = new XmlBinaryReaderSession();
+                        _messagePatterns = new MessagePatterns(_factory._binaryVersion.Dictionary, ReaderSession, MessageVersion);
                     }
                     try
                     {
@@ -584,10 +554,10 @@ namespace System.ServiceModel.Channels
             {
                 if (stream == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("stream");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(stream));
                 }
 
-                CompressionFormat compressionFormat = this.CheckContentType(contentType);
+                CompressionFormat compressionFormat = CheckContentType(contentType);
 
                 if (WcfEventSource.Instance.BinaryMessageDecodingStartIsEnabled())
                 {
@@ -621,17 +591,17 @@ namespace System.ServiceModel.Channels
             {
                 if (message == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
                 }
 
                 if (bufferManager == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bufferManager");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bufferManager));
                 }
 
                 if (maxMessageSize < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxMessageSize", maxMessageSize,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(maxMessageSize), maxMessageSize,
                         SR.ValueMustBeNonNegative));
                 }
 
@@ -656,7 +626,7 @@ namespace System.ServiceModel.Channels
 
                 if (messageOffset < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("messageOffset", messageOffset,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(messageOffset), messageOffset,
                         SR.ValueMustBeNonNegative));
                 }
 
@@ -714,7 +684,7 @@ namespace System.ServiceModel.Channels
                     _factory.ReturnMessageWriter(messageWriter);
                 }
 
-                CompressionFormat compressionFormat = this.CheckCompressedWrite(message);
+                CompressionFormat compressionFormat = CheckCompressedWrite(message);
                 if (compressionFormat != CompressionFormat.None)
                 {
                     MessageEncoderCompressionHandler.CompressBuffer(ref messageData, bufferManager, compressionFormat);
@@ -727,11 +697,11 @@ namespace System.ServiceModel.Channels
             {
                 if (message == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
                 }
                 if (stream == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("stream"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(stream)));
                 }
 
                 EventTraceActivity eventTraceActivity = null;
@@ -741,7 +711,7 @@ namespace System.ServiceModel.Channels
                     WcfEventSource.Instance.BinaryMessageEncodingStart(eventTraceActivity);
                 }
 
-                CompressionFormat compressionFormat = this.CheckCompressedWrite(message);
+                CompressionFormat compressionFormat = CheckCompressedWrite(message);
                 if (compressionFormat != CompressionFormat.None)
                 {
                     stream = MessageEncoderCompressionHandler.GetCompressStream(stream, compressionFormat);
@@ -775,7 +745,7 @@ namespace System.ServiceModel.Channels
                 bool supported = true;
                 if (!base.IsContentTypeSupported(contentType))
                 {
-                    if (this.CompressionEnabled)
+                    if (CompressionEnabled)
                     {
                         supported = (_factory.CompressionFormat == CompressionFormat.GZip &&
                             base.IsContentTypeSupported(contentType, _gzipCompressedContentType, _gzipCompressedContentType)) ||
@@ -826,11 +796,11 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    if (!this.CompressionEnabled)
+                    if (!CompressionEnabled)
                     {
-                        if (!ContentTypeEqualsOrStartsWith(contentType, this.ContentType))
+                        if (!ContentTypeEqualsOrStartsWith(contentType, ContentType))
                         {
-                            throw FxTrace.Exception.AsError(new ProtocolException(SR.Format(SR.EncoderUnrecognizedContentType, contentType, this.ContentType)));
+                            throw FxTrace.Exception.AsError(new ProtocolException(SR.Format(SR.EncoderUnrecognizedContentType, contentType, ContentType)));
                         }
                     }
                     else
@@ -849,7 +819,7 @@ namespace System.ServiceModel.Channels
                         }
                         else
                         {
-                            throw FxTrace.Exception.AsError(new ProtocolException(SR.Format(SR.EncoderUnrecognizedContentType, contentType, this.ContentType)));
+                            throw FxTrace.Exception.AsError(new ProtocolException(SR.Format(SR.EncoderUnrecognizedContentType, contentType, ContentType)));
                         }
                     }
                 }
@@ -863,7 +833,7 @@ namespace System.ServiceModel.Channels
                 if (compressionFormat != CompressionFormat.None && !_isSession)
                 {
                     string acceptEncoding;
-                    if (message.Properties.TryGetValue<string>(SupportedCompressionTypesMessageProperty, out acceptEncoding) &&
+                    if (message.Properties.TryGetValue(SupportedCompressionTypesMessageProperty, out acceptEncoding) &&
                         acceptEncoding != null)
                     {
                         acceptEncoding = acceptEncoding.ToLowerInvariant();
@@ -957,90 +927,90 @@ namespace System.ServiceModel.Channels
 
         public void AppendPrefixDictionaryElement(char prefix, int key)
         {
-            this.AppendNode(XmlBinaryNodeType.PrefixDictionaryElementA + GetPrefixOffset(prefix));
-            this.AppendKey(key);
+            AppendNode(XmlBinaryNodeType.PrefixDictionaryElementA + GetPrefixOffset(prefix));
+            AppendKey(key);
         }
 
         public void AppendDictionaryXmlnsAttribute(char prefix, int key)
         {
-            this.AppendNode(XmlBinaryNodeType.DictionaryXmlnsAttribute);
-            this.AppendUtf8(prefix);
-            this.AppendKey(key);
+            AppendNode(XmlBinaryNodeType.DictionaryXmlnsAttribute);
+            AppendUtf8(prefix);
+            AppendKey(key);
         }
 
         public void AppendPrefixDictionaryAttribute(char prefix, int key, char value)
         {
-            this.AppendNode(XmlBinaryNodeType.PrefixDictionaryAttributeA + GetPrefixOffset(prefix));
-            this.AppendKey(key);
+            AppendNode(XmlBinaryNodeType.PrefixDictionaryAttributeA + GetPrefixOffset(prefix));
+            AppendKey(key);
             if (value == '1')
             {
-                this.AppendNode(XmlBinaryNodeType.OneText);
+                AppendNode(XmlBinaryNodeType.OneText);
             }
             else
             {
-                this.AppendNode(XmlBinaryNodeType.Chars8Text);
-                this.AppendUtf8(value);
+                AppendNode(XmlBinaryNodeType.Chars8Text);
+                AppendUtf8(value);
             }
         }
 
         public void AppendDictionaryAttribute(char prefix, int key, char value)
         {
-            this.AppendNode(XmlBinaryNodeType.DictionaryAttribute);
-            this.AppendUtf8(prefix);
-            this.AppendKey(key);
-            this.AppendNode(XmlBinaryNodeType.Chars8Text);
-            this.AppendUtf8(value);
+            AppendNode(XmlBinaryNodeType.DictionaryAttribute);
+            AppendUtf8(prefix);
+            AppendKey(key);
+            AppendNode(XmlBinaryNodeType.Chars8Text);
+            AppendUtf8(value);
         }
 
         public void AppendDictionaryTextWithEndElement(int key)
         {
-            this.AppendNode(XmlBinaryNodeType.DictionaryTextWithEndElement);
-            this.AppendKey(key);
+            AppendNode(XmlBinaryNodeType.DictionaryTextWithEndElement);
+            AppendKey(key);
         }
 
         public void AppendDictionaryTextWithEndElement()
         {
-            this.AppendNode(XmlBinaryNodeType.DictionaryTextWithEndElement);
+            AppendNode(XmlBinaryNodeType.DictionaryTextWithEndElement);
         }
 
         public void AppendUniqueIDWithEndElement()
         {
-            this.AppendNode(XmlBinaryNodeType.UniqueIdTextWithEndElement);
+            AppendNode(XmlBinaryNodeType.UniqueIdTextWithEndElement);
         }
 
         public void AppendEndElement()
         {
-            this.AppendNode(XmlBinaryNodeType.EndElement);
+            AppendNode(XmlBinaryNodeType.EndElement);
         }
 
         private void AppendKey(int key)
         {
             if (key < 0 || key >= 0x4000)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("key", key,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(key), key,
                     SR.Format(SR.ValueMustBeInRange, 0, 0x4000)));
             }
             if (key >= 0x80)
             {
-                this.AppendByte((key & 0x7f) | 0x80);
-                this.AppendByte(key >> 7);
+                AppendByte((key & 0x7f) | 0x80);
+                AppendByte(key >> 7);
             }
             else
             {
-                this.AppendByte(key);
+                AppendByte(key);
             }
         }
 
         private void AppendNode(XmlBinaryNodeType value)
         {
-            this.AppendByte((int)value);
+            AppendByte((int)value);
         }
 
         private void AppendByte(int value)
         {
             if (value < 0 || value > 0xFF)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                     SR.Format(SR.ValueMustBeInRange, 0, 0xFF)));
             }
             _bytes.Add((byte)value);
@@ -1066,7 +1036,7 @@ namespace System.ServiceModel.Channels
         {
             if (prefix < 'a' && prefix > 'z')
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("prefix", prefix,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(prefix), prefix,
                     SR.Format(SR.ValueMustBeInRange, 'a', 'z')));
             }
             return prefix - 'a';
@@ -1110,7 +1080,7 @@ namespace System.ServiceModel.Channels
                 case 4:
                     return (buffer[offset] & 0x7f) + ((buffer[offset + 1] & 0x7f) << 7) + ((buffer[offset + 2] & 0x7f) << 14) + (buffer[offset + 3] << 21);
                 default:
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("size", size,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(size), size,
                         SR.Format(SR.ValueMustBeInRange, 1, 4)));
             }
         }
@@ -1689,7 +1659,7 @@ namespace System.ServiceModel.Channels
                 KeyValuePair<string, object>[] properties = new KeyValuePair<string, object>[Properties.Count];
                 ((ICollection<KeyValuePair<string, object>>)Properties).CopyTo(properties, 0);
                 _messageData.EnableMultipleUsers();
-                return new PatternMessageBuffer(_messageData, this.Version, properties, _headers);
+                return new PatternMessageBuffer(_messageData, Version, properties, _headers);
             }
 
             protected override XmlDictionaryReader OnGetReaderAtBodyContents()
@@ -1712,7 +1682,6 @@ namespace System.ServiceModel.Channels
             private IBufferedMessageData _messageDataAtBody;
             private MessageVersion _messageVersion;
             private KeyValuePair<string, object>[] _properties;
-            private object _thisLock = new object();
             private RecycledMessageState _recycledMessageState;
 
             public PatternMessageBuffer(IBufferedMessageData messageDataAtBody, MessageVersion messageVersion,
@@ -1741,7 +1710,7 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    lock (this.ThisLock)
+                    lock (ThisLock)
                     {
                         if (_closed)
                         {
@@ -1753,17 +1722,11 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            private object ThisLock
-            {
-                get
-                {
-                    return _thisLock;
-                }
-            }
+            private object ThisLock { get; } = new object();
 
             public override void Close()
             {
-                lock (_thisLock)
+                lock (ThisLock)
                 {
                     if (!_closed)
                     {
@@ -1782,7 +1745,7 @@ namespace System.ServiceModel.Channels
 
             public override Message CreateMessage()
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     if (_closed)
                     {

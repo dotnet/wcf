@@ -9,20 +9,11 @@ namespace System.ServiceModel.Security.Tokens
 {
     internal class SecurityTokenContainer
     {
-        private SecurityToken _token;
-
         public SecurityTokenContainer(SecurityToken token)
         {
-            if (token == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
-            }
-            _token = token;
+            Token = token ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
         }
 
-        public SecurityToken Token
-        {
-            get { return _token; }
-        }
+        public SecurityToken Token { get; }
     }
 }

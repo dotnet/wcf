@@ -10,8 +10,6 @@ namespace System.ServiceModel.Channels
 {
     internal abstract class BufferedMessageData : IBufferedMessageData
     {
-        private ArraySegment<byte> _buffer;
-        private BufferManager _bufferManager;
         private int _refCount;
         private int _outstandingReaders;
         private bool _multipleUsers;
@@ -23,15 +21,9 @@ namespace System.ServiceModel.Channels
             _messageStatePool = messageStatePool;
         }
 
-        public ArraySegment<byte> Buffer
-        {
-            get { return _buffer; }
-        }
+        public ArraySegment<byte> Buffer { get; private set; }
 
-        public BufferManager BufferManager
-        {
-            get { return _bufferManager; }
-        }
+        public BufferManager BufferManager { get; private set; }
 
         public virtual XmlDictionaryReaderQuotas Quotas
         {
@@ -70,11 +62,11 @@ namespace System.ServiceModel.Channels
 
         private void DoClose()
         {
-            _bufferManager.ReturnBuffer(_buffer.Array);
+            BufferManager.ReturnBuffer(Buffer.Array);
             if (_outstandingReaders == 0)
             {
-                _bufferManager = null;
-                _buffer = new ArraySegment<byte>();
+                BufferManager = null;
+                Buffer = new ArraySegment<byte>();
                 OnClosed();
             }
         }
@@ -180,8 +172,8 @@ namespace System.ServiceModel.Channels
         public void Open(ArraySegment<byte> buffer, BufferManager bufferManager)
         {
             _refCount = 1;
-            _bufferManager = bufferManager;
-            _buffer = buffer;
+            BufferManager = bufferManager;
+            Buffer = buffer;
             _multipleUsers = false;
         }
 

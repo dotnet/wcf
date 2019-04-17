@@ -18,7 +18,7 @@ namespace System.ServiceModel.Description
         {
             if (contractType == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractType");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractType));
             }
 
             foreach (ServiceEndpoint endpoint in this)
@@ -36,7 +36,7 @@ namespace System.ServiceModel.Description
         {
             if (contractName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractName));
             }
 
             foreach (ServiceEndpoint endpoint in this)
@@ -54,11 +54,11 @@ namespace System.ServiceModel.Description
         {
             if (contractType == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractType");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractType));
             }
             if (bindingName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingName));
             }
 
             foreach (ServiceEndpoint endpoint in this)
@@ -78,11 +78,11 @@ namespace System.ServiceModel.Description
         {
             if (contractName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractName));
             }
             if (bindingName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingName));
             }
 
             foreach (ServiceEndpoint endpoint in this)
@@ -103,7 +103,7 @@ namespace System.ServiceModel.Description
         {
             if (address == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("address");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(address));
             }
 
             foreach (ServiceEndpoint endpoint in this)
@@ -121,7 +121,7 @@ namespace System.ServiceModel.Description
         {
             if (contractType == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractType");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractType));
             }
 
             Collection<ServiceEndpoint> results = new Collection<ServiceEndpoint>();
@@ -141,7 +141,7 @@ namespace System.ServiceModel.Description
         {
             if (contractName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractName));
             }
 
             Collection<ServiceEndpoint> results = new Collection<ServiceEndpoint>();
@@ -161,7 +161,7 @@ namespace System.ServiceModel.Description
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
             }
             base.InsertItem(index, item);
         }
@@ -170,7 +170,7 @@ namespace System.ServiceModel.Description
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
             }
             base.SetItem(index, item);
         }

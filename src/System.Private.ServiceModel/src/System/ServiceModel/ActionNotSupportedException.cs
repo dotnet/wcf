@@ -20,7 +20,7 @@ namespace System.ServiceModel
         {
             Contract.Assert(messageVersion.Addressing != AddressingVersion.None);
             FaultCode code = FaultCode.CreateSenderFaultCode(AddressingStrings.ActionNotSupported, messageVersion.Addressing.Namespace);
-            string reason = this.Message;
+            string reason = Message;
             return System.ServiceModel.Channels.Message.CreateMessage(
                messageVersion, code, reason, messageVersion.Addressing.FaultAction);
         }

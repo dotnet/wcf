@@ -10,19 +10,15 @@ namespace System.ServiceModel.Dispatcher
 {
     internal class EndpointDispatcherTable
     {
-        private object _thisLock;
         private const int optimizationThreshold = 2;
         private List<EndpointDispatcher> _cachedEndpoints;
 
         public EndpointDispatcherTable(object thisLock)
         {
-            _thisLock = thisLock;
+            ThisLock = thisLock;
         }
 
-        private object ThisLock
-        {
-            get { return _thisLock; }
-        }
+        private object ThisLock { get; }
 
         public void AddEndpoint(EndpointDispatcher endpoint)
         {

@@ -3,10 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
-using System.Collections.Generic;
 
 namespace System.ServiceModel.Description
 {

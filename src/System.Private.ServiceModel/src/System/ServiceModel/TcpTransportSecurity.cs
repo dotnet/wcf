@@ -35,7 +35,7 @@ namespace System.ServiceModel
             {
                 if (!TcpClientCredentialTypeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
                 _clientCredentialType = value;
             }
@@ -71,7 +71,10 @@ namespace System.ServiceModel
             requireClientCertificate = false;
             SslStreamSecurityBindingElement ssl = element as SslStreamSecurityBindingElement;
             if (ssl == null)
+            {
                 return false;
+            }
+
             transportSecurity._protectionLevel = ProtectionLevel.EncryptAndSign;
             requireClientCertificate = ssl.RequireClientCertificate;
             return true;
@@ -92,7 +95,7 @@ namespace System.ServiceModel
         {
             if (_clientCredentialType == TcpClientCredentialType.Certificate || _clientCredentialType == TcpClientCredentialType.None)
             {
-                return this.CreateSslBindingElement(_clientCredentialType == TcpClientCredentialType.Certificate);
+                return CreateSslBindingElement(_clientCredentialType == TcpClientCredentialType.Certificate);
             }
             else
             {
@@ -121,7 +124,7 @@ namespace System.ServiceModel
 
         internal bool InternalShouldSerialize()
         {
-            return this.ClientCredentialType != TcpTransportSecurity.DefaultClientCredentialType
+            return ClientCredentialType != TcpTransportSecurity.DefaultClientCredentialType
                 || _protectionLevel != TcpTransportSecurity.DefaultProtectionLevel;
         }
     }

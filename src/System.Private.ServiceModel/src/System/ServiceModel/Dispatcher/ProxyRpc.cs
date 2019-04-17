@@ -29,20 +29,20 @@ namespace System.ServiceModel.Dispatcher
 
         internal ProxyRpc(ServiceChannel channel, ProxyOperationRuntime operation, string action, object[] inputs, TimeSpan timeout)
         {
-            this.Action = action;
-            this.Activity = null;
+            Action = action;
+            Activity = null;
             _eventTraceActivity = null;
-            this.Channel = channel;
-            this.Correlation = EmptyArray<object>.Allocate(operation.Parent.CorrelationCount);
-            this.InputParameters = inputs;
-            this.Operation = operation;
-            this.OutputParameters = null;
-            this.Request = null;
-            this.Reply = null;
-            this.ActivityId = Guid.Empty;
-            this.ReturnValue = null;
-            this.MessageVersion = channel.MessageVersion;
-            this.TimeoutHelper = new TimeoutHelper(timeout);
+            Channel = channel;
+            Correlation = EmptyArray<object>.Allocate(operation.Parent.CorrelationCount);
+            InputParameters = inputs;
+            Operation = operation;
+            OutputParameters = null;
+            Request = null;
+            Reply = null;
+            ActivityId = Guid.Empty;
+            ReturnValue = null;
+            MessageVersion = channel.MessageVersion;
+            TimeoutHelper = new TimeoutHelper(timeout);
         }
 
         internal EventTraceActivity EventTraceActivity

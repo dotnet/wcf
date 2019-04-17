@@ -1,10 +1,9 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using System.Globalization;
 using System.ServiceModel;
+using HexBinary = System.Runtime.Remoting.Metadata.W3cXsd2001.SoapHexBinary;
 
 namespace System.IdentityModel.Tokens
 {
@@ -22,11 +21,11 @@ namespace System.IdentityModel.Tokens
         {
             if (identificationData == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("identificationData"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(identificationData)));
             }
             if (identificationData.Length == 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("identificationData", SR.LengthMustBeGreaterThanZero));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(identificationData), SR.LengthMustBeGreaterThanZero));
             }
 
             if (cloneBuffer)
@@ -64,7 +63,7 @@ namespace System.IdentityModel.Tokens
         {
             if (offset < 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", SR.ValueMustBeNonNegative));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(offset), SR.ValueMustBeNonNegative));
             }
             return SecurityUtils.MatchesBuffer(_identificationData, 0, data, offset);
         }
@@ -72,6 +71,11 @@ namespace System.IdentityModel.Tokens
         internal string ToBase64String()
         {
             return Convert.ToBase64String(_identificationData);
+        }
+
+        internal string ToHexString()
+        {
+            return new HexBinary(_identificationData).ToString();
         }
     }
 }

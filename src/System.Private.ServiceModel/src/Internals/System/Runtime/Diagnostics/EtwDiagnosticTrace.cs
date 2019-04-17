@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Security;
@@ -12,7 +11,6 @@ using System.Xml;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
-using System.ServiceModel;
 
 namespace System.Runtime.Diagnostics
 {
@@ -107,10 +105,10 @@ namespace System.Runtime.Diagnostics
         [SecurityCritical]
         public void Event(ref EventDescriptor eventDescriptor, string description)
         {
-            if (this.TracingEnabled)
+            if (TracingEnabled)
             {
-                TracePayload tracePayload = this.GetSerializedPayload(null, null, null);
-                this.WriteTraceSource(ref eventDescriptor, description, tracePayload);
+                TracePayload tracePayload = GetSerializedPayload(null, null, null);
+                WriteTraceSource(ref eventDescriptor, description, tracePayload);
             }
         }
 
@@ -170,7 +168,7 @@ namespace System.Runtime.Diagnostics
 
         public TracePayload GetSerializedPayload(object source, TraceRecord traceRecord, Exception exception)
         {
-            return this.GetSerializedPayload(source, traceRecord, exception, false);
+            return GetSerializedPayload(source, traceRecord, exception, false);
         }
 
         public TracePayload GetSerializedPayload(object source, TraceRecord traceRecord, Exception exception, bool getServiceReference)

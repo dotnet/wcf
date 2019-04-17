@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
 using System.Security;
 using System.ServiceModel;
 
@@ -22,7 +21,7 @@ namespace System.Runtime.Diagnostics
 
         public EventTraceActivity(Guid guid, bool setOnThread = false)
         {
-            this.ActivityId = guid;
+            ActivityId = guid;
             if (setOnThread)
             {
                 SetActivityIdOnThread();
@@ -66,7 +65,7 @@ namespace System.Runtime.Diagnostics
 
         public void SetActivityId(Guid guid)
         {
-            this.ActivityId = guid;
+            ActivityId = guid;
         }
         [Fx.Tag.SecurityNote(Critical = "Critical because the CorrelationManager property has a link demand on UnmanagedCode.",
                     Safe = "We do not leak security data.")]

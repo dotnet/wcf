@@ -9,22 +9,15 @@ namespace System.ServiceModel.Security
 {
     public abstract class TrustVersion
     {
-        private readonly XmlDictionaryString _trustNamespace;
         private readonly XmlDictionaryString _prefix;
 
         internal TrustVersion(XmlDictionaryString ns, XmlDictionaryString prefix)
         {
-            _trustNamespace = ns;
+            Namespace = ns;
             _prefix = prefix;
         }
 
-        public XmlDictionaryString Namespace
-        {
-            get
-            {
-                return _trustNamespace;
-            }
-        }
+        public XmlDictionaryString Namespace { get; }
 
         public XmlDictionaryString Prefix
         {

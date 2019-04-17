@@ -16,7 +16,9 @@ namespace System.ServiceModel
         public ExtensionCollection(T owner)
         {
             if (owner == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("owner");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(owner));
+            }
 
             _owner = owner;
         }
@@ -25,7 +27,9 @@ namespace System.ServiceModel
             : base(syncRoot)
         {
             if (owner == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("owner");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(owner));
+            }
 
             _owner = owner;
         }
@@ -39,10 +43,10 @@ namespace System.ServiceModel
         {
             IExtension<T>[] array;
 
-            lock (this.SyncRoot)
+            lock (SyncRoot)
             {
-                array = new IExtension<T>[this.Count];
-                this.CopyTo(array, 0);
+                array = new IExtension<T>[Count];
+                CopyTo(array, 0);
                 base.ClearItems();
 
                 foreach (IExtension<T> extension in array)
@@ -54,15 +58,17 @@ namespace System.ServiceModel
 
         public E Find<E>()
         {
-            List<IExtension<T>> items = this.Items;
+            List<IExtension<T>> items = Items;
 
-            lock (this.SyncRoot)
+            lock (SyncRoot)
             {
-                for (int i = this.Count - 1; i >= 0; i--)
+                for (int i = Count - 1; i >= 0; i--)
                 {
                     IExtension<T> item = items[i];
                     if (item is E)
+                    {
                         return (E)item;
+                    }
                 }
             }
 
@@ -72,15 +78,17 @@ namespace System.ServiceModel
         public Collection<E> FindAll<E>()
         {
             Collection<E> result = new Collection<E>();
-            List<IExtension<T>> items = this.Items;
+            List<IExtension<T>> items = Items;
 
-            lock (this.SyncRoot)
+            lock (SyncRoot)
             {
                 for (int i = 0; i < items.Count; i++)
                 {
                     IExtension<T> item = items[i];
                     if (item is E)
+                    {
                         result.Add((E)item);
+                    }
                 }
             }
 
@@ -90,9 +98,11 @@ namespace System.ServiceModel
         protected override void InsertItem(int index, IExtension<T> item)
         {
             if (item == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
+            }
 
-            lock (this.SyncRoot)
+            lock (SyncRoot)
             {
                 item.Attach(_owner);
                 base.InsertItem(index, item);
@@ -101,9 +111,9 @@ namespace System.ServiceModel
 
         protected override void RemoveItem(int index)
         {
-            lock (this.SyncRoot)
+            lock (SyncRoot)
             {
-                this.Items[index].Detach(_owner);
+                Items[index].Detach(_owner);
                 base.RemoveItem(index);
             }
         }

@@ -11,22 +11,15 @@ namespace System.ServiceModel.Dispatcher
 {
     public class InstanceBehavior
     {
-        private IInstanceContextProvider _instanceContextProvider;
         private IInstanceProvider _provider;
 
         internal InstanceBehavior(DispatchRuntime dispatch, ImmutableDispatchRuntime immutableRuntime)
         {
             _provider = dispatch.InstanceProvider;
-            _instanceContextProvider = dispatch.InstanceContextProvider;
+            InstanceContextProvider = dispatch.InstanceContextProvider;
         }
 
-        internal IInstanceContextProvider InstanceContextProvider
-        {
-            get
-            {
-                return _instanceContextProvider;
-            }
-        }
+        internal IInstanceContextProvider InstanceContextProvider { get; }
 
         internal void AfterReply(ref MessageRpc rpc, ErrorBehavior error)
         {

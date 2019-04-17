@@ -40,17 +40,26 @@ namespace System.IdentityModel
         public bool TryLookup(string key, out XmlDictionaryString value)
         {
             if (key == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("key"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(key)));
+            }
+
             if (_dictionary == null)
             {
                 Dictionary<string, int> dictionary = new Dictionary<string, int>(_count);
                 for (int i = 0; i < _count; i++)
+                {
                     dictionary.Add(_strings[i], i);
+                }
+
                 _dictionary = dictionary;
             }
             int id;
             if (_dictionary.TryGetValue(key, out id))
+            {
                 return TryLookup(id, out value);
+            }
+
             value = null;
             return false;
         }
@@ -63,7 +72,10 @@ namespace System.IdentityModel
                 return false;
             }
             if (_dictionaryStrings == null)
+            {
                 _dictionaryStrings = new XmlDictionaryString[_count];
+            }
+
             XmlDictionaryString s = _dictionaryStrings[key];
             if (s == null)
             {
@@ -77,7 +89,10 @@ namespace System.IdentityModel
         public bool TryLookup(XmlDictionaryString key, out XmlDictionaryString value)
         {
             if (key == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("key"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(key)));
+            }
+
             if (key.Dictionary == this)
             {
                 value = key;
@@ -86,7 +101,10 @@ namespace System.IdentityModel
             if (key.Dictionary == CurrentVersion)
             {
                 if (_versionedDictionaryStrings == null)
+                {
                     _versionedDictionaryStrings = new XmlDictionaryString[CurrentVersion._count];
+                }
+
                 XmlDictionaryString s = _versionedDictionaryStrings[key.Key];
                 if (s == null)
                 {

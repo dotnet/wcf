@@ -5,6 +5,7 @@
 
 using System.Runtime;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
 {
@@ -29,7 +30,7 @@ namespace System.ServiceModel.Security
         {
             if (typeof(T) == typeof(FaultConverter))
             {
-                return new SecurityChannelFaultConverter(this.InnerChannel) as T;
+                return new SecurityChannelFaultConverter(InnerChannel) as T;
             }
 
             return base.GetProperty<T>();
@@ -43,11 +44,7 @@ namespace System.ServiceModel.Security
             }
             protected set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
-                }
-                _securityProtocol = value;
+                _securityProtocol = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -55,41 +52,21 @@ namespace System.ServiceModel.Security
         {
             if (_securityProtocol != null)
             {
-                _securityProtocol.Close(true, TimeSpan.Zero);
+                _securityProtocol.CloseAsync(true, TimeSpan.Zero).GetAwaiter().GetResult();
             }
 
             base.OnAbort();
         }
 
-        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return new ChainedAsyncResult(timeout, callback, state, this.BeginCloseSecurityProtocol, this.EndCloseSecurityProtocol,
-                base.OnBeginClose, base.OnEndClose);
-        }
-
-        protected override void OnEndClose(IAsyncResult result)
-        {
-            ChainedAsyncResult.End(result);
-        }
-
-        private IAsyncResult BeginCloseSecurityProtocol(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SecurityChannel async path");
-        }
-
-        private void EndCloseSecurityProtocol(IAsyncResult result)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SecurityChannel async path");
-        }
-
-        protected override void OnClose(TimeSpan timeout)
+        protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             if (_securityProtocol != null)
             {
-                _securityProtocol.Close(false, timeoutHelper.RemainingTime());
+                await _securityProtocol.CloseAsync(false, timeoutHelper.RemainingTime());
             }
-            base.OnClose(timeoutHelper.RemainingTime());
+
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
         }
 
         protected void ThrowIfDisposedOrNotOpen(Message message)
@@ -97,20 +74,7 @@ namespace System.ServiceModel.Security
             ThrowIfDisposedOrNotOpen();
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
-            }
-        }
-
-        private class NullSecurityProtocolCloseAsyncResult : CompletedAsyncResult
-        {
-            public NullSecurityProtocolCloseAsyncResult(AsyncCallback callback, object state)
-                : base(callback, state)
-            {
-            }
-
-            new public static void End(IAsyncResult result)
-            {
-                AsyncResult.End<NullSecurityProtocolCloseAsyncResult>(result);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
         }
     }

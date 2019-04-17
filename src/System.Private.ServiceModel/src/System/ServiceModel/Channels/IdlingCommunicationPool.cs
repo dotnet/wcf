@@ -4,9 +4,7 @@
 
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime;
-using System.ServiceModel.Diagnostics;
 using System.Threading;
 
 namespace System.ServiceModel.Channels
@@ -16,20 +14,16 @@ namespace System.ServiceModel.Channels
         where TKey : class
         where TItem : class
     {
-        private TimeSpan _idleTimeout;
         private TimeSpan _leaseTimeout;
 
         protected IdlingCommunicationPool(int maxCount, TimeSpan idleTimeout, TimeSpan leaseTimeout)
             : base(maxCount)
         {
-            _idleTimeout = idleTimeout;
+            IdleTimeout = idleTimeout;
             _leaseTimeout = leaseTimeout;
         }
 
-        public TimeSpan IdleTimeout
-        {
-            get { return _idleTimeout; }
-        }
+        public TimeSpan IdleTimeout { get; }
 
         protected TimeSpan LeaseTimeout
         {
@@ -39,12 +33,12 @@ namespace System.ServiceModel.Channels
         protected override void CloseItemAsync(TItem item, TimeSpan timeout)
         {
             // Default behavior is sync. Derived classes can override.
-            this.CloseItem(item, timeout);
+            CloseItem(item, timeout);
         }
 
         protected override EndpointConnectionPool CreateEndpointConnectionPool(TKey key)
         {
-            if (_idleTimeout != TimeSpan.MaxValue || _leaseTimeout != TimeSpan.MaxValue)
+            if (IdleTimeout != TimeSpan.MaxValue || _leaseTimeout != TimeSpan.MaxValue)
             {
                 return new IdleTimeoutEndpointConnectionPool(this, key);
             }
@@ -61,7 +55,7 @@ namespace System.ServiceModel.Channels
             public IdleTimeoutEndpointConnectionPool(IdlingCommunicationPool<TKey, TItem> parent, TKey key)
                 : base(parent, key)
             {
-                _connections = new IdleTimeoutIdleConnectionPool(this, this.ThisLock);
+                _connections = new IdleTimeoutIdleConnectionPool(this, ThisLock);
             }
 
             protected override IdleConnectionPool GetIdleConnectionPool()
@@ -118,7 +112,7 @@ namespace System.ServiceModel.Channels
                 {
                     _parent = parent;
                     IdlingCommunicationPool<TKey, TItem> idlingCommunicationPool = ((IdlingCommunicationPool<TKey, TItem>)parent.Parent);
-                    _idleTimeout = idlingCommunicationPool._idleTimeout;
+                    _idleTimeout = idlingCommunicationPool.IdleTimeout;
                     _leaseTimeout = idlingCommunicationPool._leaseTimeout;
                     _thisLock = thisLock;
                     _connectionMapping = new Dictionary<TItem, IdlingConnectionSettings>();
@@ -126,7 +120,7 @@ namespace System.ServiceModel.Channels
 
                 public override bool Add(TItem connection)
                 {
-                    this.ThrowPendingException();
+                    ThrowPendingException();
 
                     bool result = base.Add(connection);
                     if (result)
@@ -139,7 +133,7 @@ namespace System.ServiceModel.Channels
 
                 public override bool Return(TItem connection)
                 {
-                    this.ThrowPendingException();
+                    ThrowPendingException();
 
                     if (!_connectionMapping.ContainsKey(connection))
                     {
@@ -157,7 +151,7 @@ namespace System.ServiceModel.Channels
 
                 public override TItem Take(out bool closeItem)
                 {
-                    this.ThrowPendingException();
+                    ThrowPendingException();
 
                     DateTime now = DateTime.UtcNow;
                     TItem item = base.Take(out closeItem);
@@ -171,7 +165,7 @@ namespace System.ServiceModel.Channels
 
                 public void OnItemClosing(TItem connection)
                 {
-                    this.ThrowPendingException();
+                    ThrowPendingException();
 
                     lock (_thisLock)
                     {
@@ -189,7 +183,7 @@ namespace System.ServiceModel.Channels
 
                 private void StartTimerIfNecessary()
                 {
-                    if (this.Count > timerThreshold)
+                    if (Count > timerThreshold)
                     {
                         if (_idleTimer == null)
                         {
@@ -220,7 +214,7 @@ namespace System.ServiceModel.Channels
                     {
                         try
                         {
-                            this.Prune(itemsToClose, true);
+                            Prune(itemsToClose, true);
                         }
                         catch (Exception e)
                         {
@@ -229,7 +223,7 @@ namespace System.ServiceModel.Channels
                                 throw;
                             }
                             _pendingException = e;
-                            this.CancelTimer();
+                            CancelTimer();
                         }
                     }
 
@@ -245,18 +239,20 @@ namespace System.ServiceModel.Channels
                 {
                     if (!calledFromTimer)
                     {
-                        this.ThrowPendingException();
+                        ThrowPendingException();
                     }
 
-                    if (this.Count == 0)
+                    if (Count == 0)
+                    {
                         return;
+                    }
 
                     DateTime now = DateTime.UtcNow;
                     bool setTimer = false;
 
                     lock (_thisLock)
                     {
-                        TItem[] connectionsCopy = new TItem[this.Count];
+                        TItem[] connectionsCopy = new TItem[Count];
                         for (int i = 0; i < connectionsCopy.Length; i++)
                         {
                             bool closeItem;
@@ -278,7 +274,7 @@ namespace System.ServiceModel.Channels
                             }
                         }
 
-                        setTimer = (this.Count > 0);
+                        setTimer = (Count > 0);
                     }
 
                     if (calledFromTimer && setTimer)
@@ -344,19 +340,15 @@ namespace System.ServiceModel.Channels
 
                 internal class IdlingConnectionSettings
                 {
-                    private DateTime _creationTime;
                     private DateTime _lastUsage;
 
                     public IdlingConnectionSettings()
                     {
-                        _creationTime = DateTime.UtcNow;
-                        _lastUsage = _creationTime;
+                        CreationTime = DateTime.UtcNow;
+                        _lastUsage = CreationTime;
                     }
 
-                    public DateTime CreationTime
-                    {
-                        get { return _creationTime; }
-                    }
+                    public DateTime CreationTime { get; }
 
                     public DateTime LastUsage
                     {

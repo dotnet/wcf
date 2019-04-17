@@ -94,7 +94,10 @@ namespace System.Runtime
         public static string UrlEncodeUnicode(string str)
         {
             if (str == null)
+            {
                 return null;
+            }
+
             return UrlEncodeUnicodeStringToStringInternal(str, false);
         }
 
@@ -514,7 +517,9 @@ namespace System.Runtime
                         if (ch == '=')
                         {
                             if (ti < 0)
+                            {
                                 ti = i;
+                            }
                         }
                         else if (ch == '&')
                         {
@@ -572,7 +577,9 @@ namespace System.Runtime
             {
                 int n = Count;
                 if (n == 0)
+                {
                     return string.Empty;
+                }
 
                 StringBuilder s = new StringBuilder();
                 string key, keyPrefix, item;
@@ -604,7 +611,10 @@ namespace System.Runtime
                         s.Append(keyPrefix);
                         item = (string)values[0];
                         if (urlencoded)
+                        {
                             item = UrlUtility.UrlEncodeUnicode(item);
+                        }
+
                         s.Append(item);
                     }
                     else if (numValues == 0)

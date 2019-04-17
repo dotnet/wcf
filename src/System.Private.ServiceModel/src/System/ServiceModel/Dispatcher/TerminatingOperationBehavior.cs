@@ -4,10 +4,6 @@
 
 
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Reflection;
 using System.Runtime;
 using System.Threading;
 

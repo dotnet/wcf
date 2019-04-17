@@ -5,28 +5,19 @@
 
 using System.Globalization;
 using System.ServiceModel.Channels;
-using System.ServiceModel;
 using System.ServiceModel.Description;
-using System.Xml;
-
-using DictionaryManager = System.IdentityModel.DictionaryManager;
-using ISecurityElement = System.IdentityModel.ISecurityElement;
 
 namespace System.ServiceModel.Security
 {
     internal abstract class SecurityHeader : MessageHeader
     {
         private readonly string _actor;
-        private readonly SecurityAlgorithmSuite _algorithmSuite;
         private bool _encryptedKeyContainsReferenceList = true;
-        private Message _message;
         private readonly bool _mustUnderstand;
         private readonly bool _relay;
         private bool _requireMessageProtection = true;
         private bool _processingStarted;
         private bool _maintainSignatureConfirmationState;
-        private readonly SecurityStandardsManager _standardsManager;
-        private MessageDirection _transferDirection;
         private SecurityHeaderLayout _layout = SecurityHeaderLayout.Strict;
 
         public SecurityHeader(Message message,
@@ -34,30 +25,13 @@ namespace System.ServiceModel.Security
             SecurityStandardsManager standardsManager, SecurityAlgorithmSuite algorithmSuite,
             MessageDirection transferDirection)
         {
-            if (message == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
-            }
-            if (actor == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("actor");
-            }
-            if (standardsManager == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("standardsManager");
-            }
-            if (algorithmSuite == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("algorithmSuite");
-            }
-
-            _message = message;
-            _actor = actor;
+            Message = message ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
+            _actor = actor ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(actor));
             _mustUnderstand = mustUnderstand;
             _relay = relay;
-            _standardsManager = standardsManager;
-            _algorithmSuite = algorithmSuite;
-            _transferDirection = transferDirection;
+            StandardsManager = standardsManager ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(standardsManager));
+            AlgorithmSuite = algorithmSuite ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(algorithmSuite));
+            MessageDirection = transferDirection;
         }
 
         public override string Actor
@@ -65,10 +39,7 @@ namespace System.ServiceModel.Security
             get { return _actor; }
         }
 
-        public SecurityAlgorithmSuite AlgorithmSuite
-        {
-            get { return _algorithmSuite; }
-        }
+        public SecurityAlgorithmSuite AlgorithmSuite { get; }
 
         public bool EncryptedKeyContainsReferenceList
         {
@@ -100,11 +71,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        protected Message Message
-        {
-            get { return _message; }
-            set { _message = value; }
-        }
+        protected Message Message { get; set; }
 
         public override bool MustUnderstand
         {
@@ -129,19 +96,13 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public SecurityStandardsManager StandardsManager
-        {
-            get { return _standardsManager; }
-        }
+        public SecurityStandardsManager StandardsManager { get; }
 
-        public MessageDirection MessageDirection
-        {
-            get { return _transferDirection; }
-        }
+        public MessageDirection MessageDirection { get; }
 
         protected MessageVersion Version
         {
-            get { return _message.Version; }
+            get { return Message.Version; }
         }
 
         protected void SetProcessingStarted()
@@ -159,7 +120,7 @@ namespace System.ServiceModel.Security
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0}(Actor = '{1}')", GetType().Name, this.Actor);
+            return string.Format(CultureInfo.InvariantCulture, "{0}(Actor = '{1}')", GetType().Name, Actor);
         }
     }
 }

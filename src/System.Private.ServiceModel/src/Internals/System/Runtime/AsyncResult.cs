@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace System.Runtime
@@ -16,12 +13,9 @@ namespace System.Runtime
     {
         private static AsyncCallback s_asyncCompletionWrapperCallback;
         private AsyncCallback _callback;
-        private bool _completedSynchronously;
         private bool _endCalled;
         private Exception _exception;
-        private bool _isCompleted;
         private AsyncCompletion _nextAsyncCompletion;
-        private object _state;
         private Action _beforePrepareAsyncCompletionAction;
         private Func<IAsyncResult, bool> _checkSyncValidationFunc;
         [Fx.Tag.SynchronizationObject]
@@ -35,17 +29,11 @@ namespace System.Runtime
         protected AsyncResult(AsyncCallback callback, object state)
         {
             _callback = callback;
-            _state = state;
+            AsyncState = state;
             _thisLock = new object();
         }
 
-        public object AsyncState
-        {
-            get
-            {
-                return _state;
-            }
-        }
+        public object AsyncState { get; }
 
         public WaitHandle AsyncWaitHandle
         {
@@ -60,7 +48,7 @@ namespace System.Runtime
                 {
                     if (_manualResetEvent == null)
                     {
-                        _manualResetEvent = new ManualResetEvent(_isCompleted);
+                        _manualResetEvent = new ManualResetEvent(IsCompleted);
                     }
                 }
 
@@ -68,13 +56,7 @@ namespace System.Runtime
             }
         }
 
-        public bool CompletedSynchronously
-        {
-            get
-            {
-                return _completedSynchronously;
-            }
-        }
+        public bool CompletedSynchronously { get; private set; }
 
         public bool HasCallback
         {
@@ -84,13 +66,7 @@ namespace System.Runtime
             }
         }
 
-        public bool IsCompleted
-        {
-            get
-            {
-                return _isCompleted;
-            }
-        }
+        public bool IsCompleted { get; private set; }
 
         // used in conjunction with PrepareAsyncCompletion to allow for finally blocks
         protected Action<AsyncResult, Exception> OnCompleting { get; set; }
@@ -112,14 +88,14 @@ namespace System.Runtime
 
         protected void Complete(bool completedSynchronously)
         {
-            if (_isCompleted)
+            if (IsCompleted)
             {
                 throw Fx.Exception.AsError(new InvalidOperationException(InternalSR.AsyncResultCompletedTwice));
             }
 
 
 
-            _completedSynchronously = completedSynchronously;
+            CompletedSynchronously = completedSynchronously;
             if (OnCompleting != null)
             {
                 // Allow exception replacement, like a catch/throw pattern.
@@ -142,13 +118,13 @@ namespace System.Runtime
                 // If we completedSynchronously, then there's no chance that the manualResetEvent was created so
                 // we don't need to worry about a race condition.
                 Fx.Assert(_manualResetEvent == null, "No ManualResetEvent should be created for a synchronous AsyncResult.");
-                _isCompleted = true;
+                IsCompleted = true;
             }
             else
             {
                 lock (ThisLock)
                 {
-                    _isCompleted = true;
+                    IsCompleted = true;
                     if (_manualResetEvent != null)
                     {
                         _manualResetEvent.Set();
@@ -169,8 +145,6 @@ namespace System.Runtime
                         _callback(this);
                     }
                 }
-#pragma warning disable 1634
-#pragma warning suppress 56500 // transferring exception to another thread
                 catch (Exception e)
                 {
                     if (Fx.IsFatal(e))
@@ -180,7 +154,6 @@ namespace System.Runtime
 
                     throw Fx.Exception.AsError(new CallbackException(InternalSR.AsyncCallbackThrewException, e));
                 }
-#pragma warning restore 1634
             }
         }
 
@@ -363,7 +336,7 @@ namespace System.Runtime
 
             asyncResult._endCalled = true;
 
-            if (!asyncResult._isCompleted)
+            if (!asyncResult.IsCompleted)
             {
                 asyncResult.AsyncWaitHandle.WaitOne();
             }

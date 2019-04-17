@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.CodeDom;
 using System.ServiceModel.Security;
 using System.Diagnostics;
 using System.Net.Security;
@@ -13,35 +12,19 @@ namespace System.ServiceModel.Description
     [DebuggerDisplay("Name={_name}, Action={_action}, DetailType={_detailType}")]
     public class FaultDescription
     {
-        private string _action;
-        private Type _detailType;
-        private XmlName _elementName;
         private XmlName _name;
-        private string _ns;
         private ProtectionLevel _protectionLevel;
-        private bool _hasProtectionLevel;
 
         public FaultDescription(string action)
         {
-            if (action == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("action"));
-
-            _action = action;
+            Action = action ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(action)));
         }
 
-        public string Action
-        {
-            get { return _action; }
-            internal set { _action = value; }
-        }
+        public string Action { get; internal set; }
 
         // Not serializable on purpose, metadata import/export cannot
         // produce it, only available when binding to runtime
-        public Type DetailType
-        {
-            get { return _detailType; }
-            set { _detailType = value; }
-        }
+        public Type DetailType { get; set; }
 
         public string Name
         {
@@ -49,17 +32,9 @@ namespace System.ServiceModel.Description
             set { SetNameAndElement(new XmlName(value, true /*isEncoded*/)); }
         }
 
-        public string Namespace
-        {
-            get { return _ns; }
-            set { _ns = value; }
-        }
+        public string Namespace { get; set; }
 
-        internal XmlName ElementName
-        {
-            get { return _elementName; }
-            set { _elementName = value; }
-        }
+        internal XmlName ElementName { get; set; }
 
         public ProtectionLevel ProtectionLevel
         {
@@ -67,31 +42,31 @@ namespace System.ServiceModel.Description
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
         public bool ShouldSerializeProtectionLevel()
         {
-            return this.HasProtectionLevel;
+            return HasProtectionLevel;
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; }
 
         internal void ResetProtectionLevel()
         {
             _protectionLevel = ProtectionLevel.None;
-            _hasProtectionLevel = false;
+            HasProtectionLevel = false;
         }
 
         internal void SetNameAndElement(XmlName name)
         {
-            _elementName = _name = name;
+            ElementName = _name = name;
         }
 
         internal void SetNameOnly(XmlName name)

@@ -15,9 +15,13 @@ namespace System.ServiceModel.Diagnostics
         internal SecurityTraceRecord(string traceName)
         {
             if (string.IsNullOrEmpty(traceName))
+            {
                 _traceName = "Empty";
+            }
             else
+            {
                 _traceName = traceName;
+            }
         }
 
         internal override string EventId { get { return BuildEventId(_traceName); } }

@@ -11,18 +11,13 @@ namespace System.ServiceModel.Channels
 {
     public class BindingContext
     {
-        private CustomBinding _binding;
-        private BindingParameterCollection _bindingParameters;
-        private Uri _listenUriBaseAddress;
-        private ListenUriMode _listenUriMode;
-        private string _listenUriRelativeAddress;
         private BindingElementCollection _remainingBindingElements;  // kept to ensure each BE builds itself once
 
         public BindingContext(CustomBinding binding, BindingParameterCollection parameters)
         {
             if (binding == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("binding");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(binding));
             }
 
             Initialize(binding, binding.Elements, parameters);
@@ -39,39 +34,21 @@ namespace System.ServiceModel.Channels
                         BindingElementCollection remainingBindingElements,
                         BindingParameterCollection parameters)
         {
-            _binding = binding;
+            Binding = binding;
 
             _remainingBindingElements = new BindingElementCollection(remainingBindingElements);
-            _bindingParameters = new BindingParameterCollection(parameters);
+            BindingParameters = new BindingParameterCollection(parameters);
         }
 
-        public CustomBinding Binding
-        {
-            get { return _binding; }
-        }
+        public CustomBinding Binding { get; private set; }
 
-        public BindingParameterCollection BindingParameters
-        {
-            get { return _bindingParameters; }
-        }
+        public BindingParameterCollection BindingParameters { get; private set; }
 
-        public Uri ListenUriBaseAddress
-        {
-            get { return _listenUriBaseAddress; }
-            set { _listenUriBaseAddress = value; }
-        }
+        public Uri ListenUriBaseAddress { get; set; }
 
-        public ListenUriMode ListenUriMode
-        {
-            get { return _listenUriMode; }
-            set { _listenUriMode = value; }
-        }
+        public ListenUriMode ListenUriMode { get; set; }
 
-        public string ListenUriRelativeAddress
-        {
-            get { return _listenUriRelativeAddress; }
-            set { _listenUriRelativeAddress = value; }
-        }
+        public string ListenUriRelativeAddress { get; set; }
 
         public BindingElementCollection RemainingBindingElements
         {
@@ -80,12 +57,12 @@ namespace System.ServiceModel.Channels
 
         public IChannelFactory<TChannel> BuildInnerChannelFactory<TChannel>()
         {
-            return this.RemoveNextElement().BuildChannelFactory<TChannel>(this);
+            return RemoveNextElement().BuildChannelFactory<TChannel>(this);
         }
 
         public bool CanBuildInnerChannelFactory<TChannel>()
         {
-            BindingContext clone = this.Clone();
+            BindingContext clone = Clone();
             return clone.RemoveNextElement().CanBuildChannelFactory<TChannel>(clone);
         }
 
@@ -98,31 +75,34 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                BindingContext clone = this.Clone();
+                BindingContext clone = Clone();
                 return clone.RemoveNextElement().GetProperty<T>(clone);
             }
         }
 
         public BindingContext Clone()
         {
-            return new BindingContext(_binding, _remainingBindingElements, _bindingParameters);
+            return new BindingContext(Binding, _remainingBindingElements, BindingParameters);
         }
 
         private BindingElement RemoveNextElement()
         {
             BindingElement element = _remainingBindingElements.Remove<BindingElement>();
             if (element != null)
+            {
                 return element;
+            }
+
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
-                SR.NoChannelBuilderAvailable, _binding.Name, _binding.Namespace)));
+                SR.NoChannelBuilderAvailable, Binding.Name, Binding.Namespace)));
         }
 
         internal void ValidateBindingElementsConsumed()
         {
-            if (this.RemainingBindingElements.Count != 0)
+            if (RemainingBindingElements.Count != 0)
             {
                 StringBuilder builder = new StringBuilder();
-                foreach (BindingElement bindingElement in this.RemainingBindingElements)
+                foreach (BindingElement bindingElement in RemainingBindingElements)
                 {
                     if (builder.Length > 0)
                     {

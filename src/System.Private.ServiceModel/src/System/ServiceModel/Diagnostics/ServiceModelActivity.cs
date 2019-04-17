@@ -3,10 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
 using System.Threading;
-using System.Collections.Generic;
-using System.Runtime.Diagnostics;
 
 namespace System.ServiceModel.Diagnostics
 {
@@ -16,20 +13,14 @@ namespace System.ServiceModel.Diagnostics
         private static ServiceModelActivity s_currentActivity;
 
         private static string[] s_ActivityTypeNames = new string[(int)ActivityType.NumItems];
-
-        private ServiceModelActivity _previousActivity = null;
         private static string s_activityBoundaryDescription = null;
-        private ActivityState _lastState = ActivityState.Unknown;
-        private string _name = null;
         private bool _autoStop = false;
         private bool _autoResume = false;
-        private Guid _activityId;
         private bool _disposed = false;
         private bool _isAsync = false;
         private int _stopCount = 0;
         private const int AsyncStopCount = 2;
         private TransferActivity _activity = null;
-        private ActivityType _activityType = ActivityType.Unknown;
 
         static ServiceModelActivity()
         {
@@ -51,8 +42,8 @@ namespace System.ServiceModel.Diagnostics
 
         private ServiceModelActivity(Guid activityId)
         {
-            _activityId = activityId;
-            _previousActivity = ServiceModelActivity.Current;
+            Id = activityId;
+            PreviousActivity = ServiceModelActivity.Current;
         }
 
         private static string ActivityBoundaryDescription
@@ -67,15 +58,9 @@ namespace System.ServiceModel.Diagnostics
             }
         }
 
-        internal ActivityType ActivityType
-        {
-            get { return _activityType; }
-        }
+        internal ActivityType ActivityType { get; private set; } = ActivityType.Unknown;
 
-        internal ServiceModelActivity PreviousActivity
-        {
-            get { return _previousActivity; }
-        }
+        internal ServiceModelActivity PreviousActivity { get; } = null;
 
         static internal Activity BoundOperation(ServiceModelActivity activity)
         {
@@ -100,7 +85,7 @@ namespace System.ServiceModel.Diagnostics
             TransferActivity retval = null;
             if (activity != null)
             {
-                retval = TransferActivity.CreateActivity(activity._activityId, addTransfer);
+                retval = TransferActivity.CreateActivity(activity.Id, addTransfer);
                 if (retval != null)
                 {
                     retval.SetPreviousServiceModelActivity(ServiceModelActivity.Current);
@@ -275,7 +260,7 @@ namespace System.ServiceModel.Diagnostics
                     }
                     if (_autoStop)
                     {
-                        this.Stop();
+                        Stop();
                     }
                     if (_autoResume &&
                         ServiceModelActivity.Current != null)
@@ -285,44 +270,33 @@ namespace System.ServiceModel.Diagnostics
                 }
                 finally
                 {
-                    ServiceModelActivity.Current = _previousActivity;
+                    ServiceModelActivity.Current = PreviousActivity;
                     GC.SuppressFinalize(this);
                 }
             }
         }
 
-        internal Guid Id
-        {
-            get { return _activityId; }
-        }
+        internal Guid Id { get; }
 
-        private ActivityState LastState
-        {
-            get { return _lastState; }
-            set { _lastState = value; }
-        }
+        private ActivityState LastState { get; set; } = ActivityState.Unknown;
 
-        internal string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        internal string Name { get; set; } = null;
 
         internal void Resume()
         {
-            if (this.LastState == ActivityState.Suspend)
+            if (LastState == ActivityState.Suspend)
             {
-                this.LastState = ActivityState.Resume;
+                LastState = ActivityState.Resume;
             }
         }
 
         internal void Resume(string activityName)
         {
-            if (string.IsNullOrEmpty(this.Name))
+            if (string.IsNullOrEmpty(Name))
             {
-                _name = activityName;
+                Name = activityName;
             }
-            this.Resume();
+            Resume();
         }
 
         static internal void Start(ServiceModelActivity activity, string activityName, ActivityType activityType)
@@ -330,8 +304,8 @@ namespace System.ServiceModel.Diagnostics
             if (activity != null && activity.LastState == ActivityState.Unknown)
             {
                 activity.LastState = ActivityState.Start;
-                activity._name = activityName;
-                activity._activityType = activityType;
+                activity.Name = activityName;
+                activity.ActivityType = activityType;
             }
         }
 
@@ -342,10 +316,10 @@ namespace System.ServiceModel.Diagnostics
             {
                 newStopCount = Interlocked.Increment(ref _stopCount);
             }
-            if (this.LastState != ActivityState.Stop &&
+            if (LastState != ActivityState.Stop &&
                 (!_isAsync || (_isAsync && newStopCount >= ServiceModelActivity.AsyncStopCount)))
             {
-                this.LastState = ActivityState.Stop;
+                LastState = ActivityState.Stop;
             }
         }
 
@@ -359,15 +333,15 @@ namespace System.ServiceModel.Diagnostics
 
         internal void Suspend()
         {
-            if (this.LastState != ActivityState.Stop)
+            if (LastState != ActivityState.Stop)
             {
-                this.LastState = ActivityState.Suspend;
+                LastState = ActivityState.Suspend;
             }
         }
 
         public override string ToString()
         {
-            return this.Id.ToString();
+            return Id.ToString();
         }
 
 
@@ -416,11 +390,11 @@ namespace System.ServiceModel.Diagnostics
                         // Make sure that we are transferring from our AID to the 
                         // parent. It is possible for someone else to change the ambient
                         // in user code (MB 49318).
-                        using (Activity.CreateActivity(this.Id))
+                        using (Activity.CreateActivity(Id))
                         {
                             if (null != FxTrace.Trace)
                             {
-                                FxTrace.Trace.TraceTransfer(this.parentId);
+                                FxTrace.Trace.TraceTransfer(parentId);
                             }
                         }
                     }

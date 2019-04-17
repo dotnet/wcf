@@ -29,15 +29,15 @@ namespace System.ServiceModel.Channels
         {
             if (innerChannel == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("innerChannel");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(innerChannel));
             }
 
-            this.ThrowIfMutable();
+            ThrowIfMutable();
 
             ChannelParameterCollection innerCollection = innerChannel.GetProperty<ChannelParameterCollection>();
             if (innerCollection != null)
             {
-                for (int i = 0; i < this.Count; i++)
+                for (int i = 0; i < Count; i++)
                 {
                     innerCollection.Add(this[i]);
                 }
@@ -46,31 +46,31 @@ namespace System.ServiceModel.Channels
 
         protected override void ClearItems()
         {
-            this.ThrowIfDisposedOrImmutable();
+            ThrowIfDisposedOrImmutable();
             base.ClearItems();
         }
 
         protected override void InsertItem(int index, object item)
         {
-            this.ThrowIfDisposedOrImmutable();
+            ThrowIfDisposedOrImmutable();
             base.InsertItem(index, item);
         }
 
         protected override void RemoveItem(int index)
         {
-            this.ThrowIfDisposedOrImmutable();
+            ThrowIfDisposedOrImmutable();
             base.RemoveItem(index);
         }
 
         protected override void SetItem(int index, object item)
         {
-            this.ThrowIfDisposedOrImmutable();
+            ThrowIfDisposedOrImmutable();
             base.SetItem(index, item);
         }
 
         private void ThrowIfDisposedOrImmutable()
         {
-            IChannel channel = this.Channel;
+            IChannel channel = Channel;
             if (channel != null)
             {
                 CommunicationState state = channel.State;
@@ -105,7 +105,7 @@ namespace System.ServiceModel.Channels
 
         private void ThrowIfMutable()
         {
-            IChannel channel = this.Channel;
+            IChannel channel = Channel;
             if (channel != null)
             {
                 CommunicationState state = channel.State;

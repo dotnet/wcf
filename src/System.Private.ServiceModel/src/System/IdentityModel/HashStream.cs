@@ -15,18 +15,18 @@ namespace System.IdentityModel
 
         private MemoryStream _logStream;
 
-#pragma warning disable 0436 // HashAlgorithm conflicts with imported types 
         /// <summary>
         /// Constructor for HashStream. The HashAlgorithm instance is owned by the caller.
         /// </summary>
         public HashStream(HashAlgorithm hash)
         {
             if (hash == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("hash");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(hash));
+            }
 
             Reset(hash);
         }
-#pragma warning restore 0436
 
         public override bool CanRead
         {
@@ -91,12 +91,10 @@ namespace System.IdentityModel
             throw ExceptionHelper.PlatformNotSupported();
         }
 
-#pragma warning disable 0436 // HashAlgorithm conflicts with imported types 
         public void Reset(HashAlgorithm hash)
         {
             throw ExceptionHelper.PlatformNotSupported();
         }
-#pragma warning restore 0436
 
         public override void Write(byte[] buffer, int offset, int count)
         {

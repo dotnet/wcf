@@ -30,7 +30,6 @@ public static class SecurityBindingElementTest
 
     [WcfTheory]
     [InlineData(BasicHttpSecurityMode.Message)]
-    [InlineData(BasicHttpSecurityMode.TransportWithMessageCredential)]
     // BasicHttpSecurityMode.Message is not supported
     public static void Create_HttpBinding_SecurityMode_Message_Throws_NotSupported(BasicHttpSecurityMode securityMode)
     {

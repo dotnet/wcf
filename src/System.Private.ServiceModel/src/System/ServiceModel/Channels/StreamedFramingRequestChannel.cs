@@ -18,7 +18,6 @@ namespace System.ServiceModel.Channels
         internal ConnectionPool _connectionPool;
         private MessageEncoder _messageEncoder;
         private IConnectionOrientedTransportFactorySettings _settings;
-        private byte[] _startBytes;
         private StreamUpgradeProvider _upgrade;
         private ChannelBinding _channelBindingToken;
 
@@ -34,10 +33,7 @@ namespace System.ServiceModel.Channels
             _upgrade = settings.Upgrade;
         }
 
-        private byte[] Preamble
-        {
-            get { return _startBytes; }
-        }
+        private byte[] Preamble { get; set; }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
@@ -61,7 +57,7 @@ namespace System.ServiceModel.Channels
         protected override void OnOpened()
         {
             // setup our preamble which we'll use for all connections we establish
-            EncodedVia encodedVia = new EncodedVia(this.Via.AbsoluteUri);
+            EncodedVia encodedVia = new EncodedVia(Via.AbsoluteUri);
             EncodedContentType encodedContentType = EncodedContentType.Create(_settings.MessageEncoderFactory.Encoder.ContentType);
             int startSize = ClientSingletonEncoder.ModeBytes.Length + ClientSingletonEncoder.CalcStartSize(encodedVia, encodedContentType);
             int preambleEndOffset = 0;
@@ -70,12 +66,12 @@ namespace System.ServiceModel.Channels
                 preambleEndOffset = startSize;
                 startSize += ClientDuplexEncoder.PreambleEndBytes.Length;
             }
-            _startBytes = Fx.AllocateByteArray(startSize);
-            Buffer.BlockCopy(ClientSingletonEncoder.ModeBytes, 0, _startBytes, 0, ClientSingletonEncoder.ModeBytes.Length);
-            ClientSingletonEncoder.EncodeStart(_startBytes, ClientSingletonEncoder.ModeBytes.Length, encodedVia, encodedContentType);
+            Preamble = Fx.AllocateByteArray(startSize);
+            Buffer.BlockCopy(ClientSingletonEncoder.ModeBytes, 0, Preamble, 0, ClientSingletonEncoder.ModeBytes.Length);
+            ClientSingletonEncoder.EncodeStart(Preamble, ClientSingletonEncoder.ModeBytes.Length, encodedVia, encodedContentType);
             if (preambleEndOffset > 0)
             {
-                Buffer.BlockCopy(ClientSingletonEncoder.PreambleEndBytes, 0, _startBytes, preambleEndOffset, ClientSingletonEncoder.PreambleEndBytes.Length);
+                Buffer.BlockCopy(ClientSingletonEncoder.PreambleEndBytes, 0, Preamble, preambleEndOffset, ClientSingletonEncoder.PreambleEndBytes.Length);
             }
 
             // and then transition to the Opened state
@@ -96,7 +92,7 @@ namespace System.ServiceModel.Channels
             {
                 IStreamUpgradeChannelBindingProvider channelBindingProvider = _upgrade.GetProperty<IStreamUpgradeChannelBindingProvider>();
 
-                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(RemoteAddress, Via);
 
                 if (!ConnectionUpgradeHelper.InitiateUpgrade(upgradeInitiator, ref connection, decoder,
                     this, ref timeoutHelper))
@@ -122,7 +118,7 @@ namespace System.ServiceModel.Channels
             // read ACK
             byte[] ackBuffer = new byte[1];
             int ackBytesRead = connection.Read(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
-            if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, decoder, this.Via))
+            if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, decoder, Via))
             {
                 ConnectionUpgradeHelper.DecodeFramingFault(decoder, connection, Via, _messageEncoder.ContentType, ref timeoutHelper);
             }
@@ -136,7 +132,7 @@ namespace System.ServiceModel.Channels
 
             if (_upgrade != null)
             {
-                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+                StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(RemoteAddress, Via);
 
                 await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime());
                 var connectionWrapper = new OutWrapper<IConnection>();
@@ -145,7 +141,7 @@ namespace System.ServiceModel.Channels
                 connection = connectionWrapper.Value;
                 if (!upgradeInitiated)
                 {
-                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(decoder, connection, this.Via, _messageEncoder.ContentType, timeoutHelper.RemainingTime());
+                    await ConnectionUpgradeHelper.DecodeFramingFaultAsync(decoder, connection, Via, _messageEncoder.ContentType, timeoutHelper.RemainingTime());
                 }
 
                 await upgradeInitiator.CloseAsync(timeoutHelper.RemainingTime());
@@ -196,7 +192,6 @@ namespace System.ServiceModel.Channels
         internal class StreamedConnectionPoolHelper : ConnectionPoolHelper
         {
             private StreamedFramingRequestChannel _channel;
-            private ClientSingletonDecoder _decoder;
             private SecurityMessageProperty _remoteSecurity;
 
             public StreamedConnectionPoolHelper(StreamedFramingRequestChannel channel)
@@ -205,10 +200,7 @@ namespace System.ServiceModel.Channels
                 _channel = channel;
             }
 
-            public ClientSingletonDecoder Decoder
-            {
-                get { return _decoder; }
-            }
+            public ClientSingletonDecoder Decoder { get; private set; }
 
             public SecurityMessageProperty RemoteSecurity
             {
@@ -223,14 +215,14 @@ namespace System.ServiceModel.Channels
 
             protected override IConnection AcceptPooledConnection(IConnection connection, ref TimeoutHelper timeoutHelper)
             {
-                _decoder = new ClientSingletonDecoder(0);
-                return _channel.SendPreamble(connection, ref timeoutHelper, _decoder, out _remoteSecurity);
+                Decoder = new ClientSingletonDecoder(0);
+                return _channel.SendPreamble(connection, ref timeoutHelper, Decoder, out _remoteSecurity);
             }
 
             protected override Task<IConnection> AcceptPooledConnectionAsync(IConnection connection, ref TimeoutHelper timeoutHelper)
             {
-                _decoder = new ClientSingletonDecoder(0);
-                return _channel.SendPreambleAsync(connection, timeoutHelper, _decoder);
+                Decoder = new ClientSingletonDecoder(0);
+                return _channel.SendPreambleAsync(connection, timeoutHelper, Decoder);
             }
 
             private class ClientSingletonConnectionReader : SingletonConnectionReader

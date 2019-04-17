@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 
@@ -20,7 +18,7 @@ namespace System.ServiceModel.Dispatcher
             if (channel == null)
             {
                 Fx.Assert("OutputChannelBinder.OutputChannelBinder: (channel != null)");
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channel");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channel));
             }
             _channel = channel;
         }

@@ -34,7 +34,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_exclusiveC14NDictionary == null)
+                {
                     s_exclusiveC14NDictionary = new ExclusiveC14NDictionary(Dictionary);
+                }
+
                 return s_exclusiveC14NDictionary;
             }
         }
@@ -44,7 +47,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_samlDictionary == null)
+                {
                     s_samlDictionary = new SamlDictionary(Dictionary);
+                }
+
                 return s_samlDictionary;
             }
         }
@@ -54,7 +60,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_secureConversationDec2005Dictionary == null)
+                {
                     s_secureConversationDec2005Dictionary = new SecureConversationDec2005Dictionary(Dictionary);
+                }
+
                 return s_secureConversationDec2005Dictionary;
             }
         }
@@ -64,7 +73,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_secureConversationFeb2005Dictionary == null)
+                {
                     s_secureConversationFeb2005Dictionary = new SecureConversationFeb2005Dictionary(Dictionary);
+                }
+
                 return s_secureConversationFeb2005Dictionary;
             }
         }
@@ -74,7 +86,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_securityAlgorithmDictionary == null)
+                {
                     s_securityAlgorithmDictionary = new SecurityAlgorithmDictionary(Dictionary);
+                }
+
                 return s_securityAlgorithmDictionary;
             }
         }
@@ -84,7 +99,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_securityAlgorithmDec2005Dictionary == null)
+                {
                     s_securityAlgorithmDec2005Dictionary = new SecurityAlgorithmDec2005Dictionary(Dictionary);
+                }
+
                 return s_securityAlgorithmDec2005Dictionary;
             }
         }
@@ -94,7 +112,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_securityJan2004Dictionary == null)
+                {
                     s_securityJan2004Dictionary = new SecurityJan2004Dictionary(Dictionary);
+                }
+
                 return s_securityJan2004Dictionary;
             }
         }
@@ -104,7 +125,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_securityXXX2005Dictionary == null)
+                {
                     s_securityXXX2005Dictionary = new SecurityXXX2005Dictionary(Dictionary);
+                }
+
                 return s_securityXXX2005Dictionary;
             }
         }
@@ -114,7 +138,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_trustDec2005Dictionary == null)
+                {
                     s_trustDec2005Dictionary = new TrustDec2005Dictionary(Dictionary);
+                }
+
                 return s_trustDec2005Dictionary;
             }
         }
@@ -124,7 +151,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_trustFeb2005Dictionary == null)
+                {
                     s_trustFeb2005Dictionary = new TrustFeb2005Dictionary(Dictionary);
+                }
+
                 return s_trustFeb2005Dictionary;
             }
         }
@@ -134,7 +164,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_utilityDictionary == null)
+                {
                     s_utilityDictionary = new UtilityDictionary(Dictionary);
+                }
+
                 return s_utilityDictionary;
             }
         }
@@ -144,7 +177,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_xmlEncryptionDictionary == null)
+                {
                     s_xmlEncryptionDictionary = new XmlEncryptionDictionary(Dictionary);
+                }
+
                 return s_xmlEncryptionDictionary;
             }
         }
@@ -154,7 +190,10 @@ namespace System.IdentityModel
             get
             {
                 if (s_xmlSignatureDictionary == null)
+                {
                     s_xmlSignatureDictionary = new XmlSignatureDictionary(Dictionary);
+                }
+
                 return s_xmlSignatureDictionary;
             }
         }
@@ -169,25 +208,27 @@ namespace System.IdentityModel
 
         public ExclusiveC14NDictionary(IdentityModelDictionary dictionary)
         {
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String20, 20);
-            this.PrefixList = dictionary.CreateString(IdentityModelStringsVersion1.String21, 21);
-            this.InclusiveNamespaces = dictionary.CreateString(IdentityModelStringsVersion1.String22, 22);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String23, 23);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String20, 20);
+            PrefixList = dictionary.CreateString(IdentityModelStringsVersion1.String21, 21);
+            InclusiveNamespaces = dictionary.CreateString(IdentityModelStringsVersion1.String22, 22);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String23, 23);
         }
 
         public ExclusiveC14NDictionary(IXmlDictionary dictionary)
         {
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String20);
-            this.PrefixList = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String21);
-            this.InclusiveNamespaces = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String22);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String23);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String20);
+            PrefixList = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String21);
+            InclusiveNamespaces = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String22);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String23);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -255,131 +296,133 @@ namespace System.IdentityModel
 
         public SamlDictionary(IdentityModelDictionary dictionary)
         {
-            this.Access = dictionary.CreateString(IdentityModelStringsVersion1.String24, 24);
-            this.AccessDecision = dictionary.CreateString(IdentityModelStringsVersion1.String25, 25);
-            this.Action = dictionary.CreateString(IdentityModelStringsVersion1.String26, 26);
-            this.Advice = dictionary.CreateString(IdentityModelStringsVersion1.String27, 27);
-            this.Assertion = dictionary.CreateString(IdentityModelStringsVersion1.String28, 28);
-            this.AssertionId = dictionary.CreateString(IdentityModelStringsVersion1.String29, 29);
-            this.AssertionIdReference = dictionary.CreateString(IdentityModelStringsVersion1.String30, 30);
-            this.Attribute = dictionary.CreateString(IdentityModelStringsVersion1.String31, 31);
-            this.AttributeName = dictionary.CreateString(IdentityModelStringsVersion1.String32, 32);
-            this.AttributeNamespace = dictionary.CreateString(IdentityModelStringsVersion1.String33, 33);
-            this.AttributeStatement = dictionary.CreateString(IdentityModelStringsVersion1.String34, 34);
-            this.AttributeValue = dictionary.CreateString(IdentityModelStringsVersion1.String35, 35);
-            this.Audience = dictionary.CreateString(IdentityModelStringsVersion1.String36, 36);
-            this.AudienceRestrictionCondition = dictionary.CreateString(IdentityModelStringsVersion1.String37, 37);
-            this.AuthenticationInstant = dictionary.CreateString(IdentityModelStringsVersion1.String38, 38);
-            this.AuthenticationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String39, 39);
-            this.AuthenticationStatement = dictionary.CreateString(IdentityModelStringsVersion1.String40, 40);
-            this.AuthorityBinding = dictionary.CreateString(IdentityModelStringsVersion1.String41, 41);
-            this.AuthorityKind = dictionary.CreateString(IdentityModelStringsVersion1.String42, 42);
-            this.AuthorizationDecisionStatement = dictionary.CreateString(IdentityModelStringsVersion1.String43, 43);
-            this.Binding = dictionary.CreateString(IdentityModelStringsVersion1.String44, 44);
-            this.Condition = dictionary.CreateString(IdentityModelStringsVersion1.String45, 45);
-            this.Conditions = dictionary.CreateString(IdentityModelStringsVersion1.String46, 46);
-            this.Decision = dictionary.CreateString(IdentityModelStringsVersion1.String47, 47);
-            this.DoNotCacheCondition = dictionary.CreateString(IdentityModelStringsVersion1.String48, 48);
-            this.Evidence = dictionary.CreateString(IdentityModelStringsVersion1.String49, 49);
-            this.IssueInstant = dictionary.CreateString(IdentityModelStringsVersion1.String50, 50);
-            this.Issuer = dictionary.CreateString(IdentityModelStringsVersion1.String51, 51);
-            this.Location = dictionary.CreateString(IdentityModelStringsVersion1.String52, 52);
-            this.MajorVersion = dictionary.CreateString(IdentityModelStringsVersion1.String53, 53);
-            this.MinorVersion = dictionary.CreateString(IdentityModelStringsVersion1.String54, 54);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String55, 55);
-            this.NameIdentifier = dictionary.CreateString(IdentityModelStringsVersion1.String56, 56);
-            this.NameIdentifierFormat = dictionary.CreateString(IdentityModelStringsVersion1.String57, 57);
-            this.NameIdentifierNameQualifier = dictionary.CreateString(IdentityModelStringsVersion1.String58, 58);
-            this.ActionNamespaceAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String59, 59);
-            this.NotBefore = dictionary.CreateString(IdentityModelStringsVersion1.String60, 60);
-            this.NotOnOrAfter = dictionary.CreateString(IdentityModelStringsVersion1.String61, 61);
-            this.PreferredPrefix = dictionary.CreateString(IdentityModelStringsVersion1.String62, 62);
-            this.Statement = dictionary.CreateString(IdentityModelStringsVersion1.String63, 63);
-            this.Subject = dictionary.CreateString(IdentityModelStringsVersion1.String64, 64);
-            this.SubjectConfirmation = dictionary.CreateString(IdentityModelStringsVersion1.String65, 65);
-            this.SubjectConfirmationData = dictionary.CreateString(IdentityModelStringsVersion1.String66, 66);
-            this.SubjectConfirmationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String67, 67);
-            this.HolderOfKey = dictionary.CreateString(IdentityModelStringsVersion1.String68, 68);
-            this.SenderVouches = dictionary.CreateString(IdentityModelStringsVersion1.String69, 69);
-            this.SubjectLocality = dictionary.CreateString(IdentityModelStringsVersion1.String70, 70);
-            this.SubjectLocalityDNSAddress = dictionary.CreateString(IdentityModelStringsVersion1.String71, 71);
-            this.SubjectLocalityIPAddress = dictionary.CreateString(IdentityModelStringsVersion1.String72, 72);
-            this.SubjectStatement = dictionary.CreateString(IdentityModelStringsVersion1.String73, 73);
-            this.UnspecifiedAuthenticationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String74, 74);
-            this.NamespaceAttributePrefix = dictionary.CreateString(IdentityModelStringsVersion1.String75, 75);
-            this.Resource = dictionary.CreateString(IdentityModelStringsVersion1.String76, 76);
-            this.UserName = dictionary.CreateString(IdentityModelStringsVersion1.String77, 77);
-            this.UserNameNamespace = dictionary.CreateString(IdentityModelStringsVersion1.String78, 78);
-            this.EmailName = dictionary.CreateString(IdentityModelStringsVersion1.String79, 79);
-            this.EmailNamespace = dictionary.CreateString(IdentityModelStringsVersion1.String80, 80);
+            Access = dictionary.CreateString(IdentityModelStringsVersion1.String24, 24);
+            AccessDecision = dictionary.CreateString(IdentityModelStringsVersion1.String25, 25);
+            Action = dictionary.CreateString(IdentityModelStringsVersion1.String26, 26);
+            Advice = dictionary.CreateString(IdentityModelStringsVersion1.String27, 27);
+            Assertion = dictionary.CreateString(IdentityModelStringsVersion1.String28, 28);
+            AssertionId = dictionary.CreateString(IdentityModelStringsVersion1.String29, 29);
+            AssertionIdReference = dictionary.CreateString(IdentityModelStringsVersion1.String30, 30);
+            Attribute = dictionary.CreateString(IdentityModelStringsVersion1.String31, 31);
+            AttributeName = dictionary.CreateString(IdentityModelStringsVersion1.String32, 32);
+            AttributeNamespace = dictionary.CreateString(IdentityModelStringsVersion1.String33, 33);
+            AttributeStatement = dictionary.CreateString(IdentityModelStringsVersion1.String34, 34);
+            AttributeValue = dictionary.CreateString(IdentityModelStringsVersion1.String35, 35);
+            Audience = dictionary.CreateString(IdentityModelStringsVersion1.String36, 36);
+            AudienceRestrictionCondition = dictionary.CreateString(IdentityModelStringsVersion1.String37, 37);
+            AuthenticationInstant = dictionary.CreateString(IdentityModelStringsVersion1.String38, 38);
+            AuthenticationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String39, 39);
+            AuthenticationStatement = dictionary.CreateString(IdentityModelStringsVersion1.String40, 40);
+            AuthorityBinding = dictionary.CreateString(IdentityModelStringsVersion1.String41, 41);
+            AuthorityKind = dictionary.CreateString(IdentityModelStringsVersion1.String42, 42);
+            AuthorizationDecisionStatement = dictionary.CreateString(IdentityModelStringsVersion1.String43, 43);
+            Binding = dictionary.CreateString(IdentityModelStringsVersion1.String44, 44);
+            Condition = dictionary.CreateString(IdentityModelStringsVersion1.String45, 45);
+            Conditions = dictionary.CreateString(IdentityModelStringsVersion1.String46, 46);
+            Decision = dictionary.CreateString(IdentityModelStringsVersion1.String47, 47);
+            DoNotCacheCondition = dictionary.CreateString(IdentityModelStringsVersion1.String48, 48);
+            Evidence = dictionary.CreateString(IdentityModelStringsVersion1.String49, 49);
+            IssueInstant = dictionary.CreateString(IdentityModelStringsVersion1.String50, 50);
+            Issuer = dictionary.CreateString(IdentityModelStringsVersion1.String51, 51);
+            Location = dictionary.CreateString(IdentityModelStringsVersion1.String52, 52);
+            MajorVersion = dictionary.CreateString(IdentityModelStringsVersion1.String53, 53);
+            MinorVersion = dictionary.CreateString(IdentityModelStringsVersion1.String54, 54);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String55, 55);
+            NameIdentifier = dictionary.CreateString(IdentityModelStringsVersion1.String56, 56);
+            NameIdentifierFormat = dictionary.CreateString(IdentityModelStringsVersion1.String57, 57);
+            NameIdentifierNameQualifier = dictionary.CreateString(IdentityModelStringsVersion1.String58, 58);
+            ActionNamespaceAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String59, 59);
+            NotBefore = dictionary.CreateString(IdentityModelStringsVersion1.String60, 60);
+            NotOnOrAfter = dictionary.CreateString(IdentityModelStringsVersion1.String61, 61);
+            PreferredPrefix = dictionary.CreateString(IdentityModelStringsVersion1.String62, 62);
+            Statement = dictionary.CreateString(IdentityModelStringsVersion1.String63, 63);
+            Subject = dictionary.CreateString(IdentityModelStringsVersion1.String64, 64);
+            SubjectConfirmation = dictionary.CreateString(IdentityModelStringsVersion1.String65, 65);
+            SubjectConfirmationData = dictionary.CreateString(IdentityModelStringsVersion1.String66, 66);
+            SubjectConfirmationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String67, 67);
+            HolderOfKey = dictionary.CreateString(IdentityModelStringsVersion1.String68, 68);
+            SenderVouches = dictionary.CreateString(IdentityModelStringsVersion1.String69, 69);
+            SubjectLocality = dictionary.CreateString(IdentityModelStringsVersion1.String70, 70);
+            SubjectLocalityDNSAddress = dictionary.CreateString(IdentityModelStringsVersion1.String71, 71);
+            SubjectLocalityIPAddress = dictionary.CreateString(IdentityModelStringsVersion1.String72, 72);
+            SubjectStatement = dictionary.CreateString(IdentityModelStringsVersion1.String73, 73);
+            UnspecifiedAuthenticationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String74, 74);
+            NamespaceAttributePrefix = dictionary.CreateString(IdentityModelStringsVersion1.String75, 75);
+            Resource = dictionary.CreateString(IdentityModelStringsVersion1.String76, 76);
+            UserName = dictionary.CreateString(IdentityModelStringsVersion1.String77, 77);
+            UserNameNamespace = dictionary.CreateString(IdentityModelStringsVersion1.String78, 78);
+            EmailName = dictionary.CreateString(IdentityModelStringsVersion1.String79, 79);
+            EmailNamespace = dictionary.CreateString(IdentityModelStringsVersion1.String80, 80);
         }
 
         public SamlDictionary(IXmlDictionary dictionary)
         {
-            this.Access = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String24);
-            this.AccessDecision = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String25);
-            this.Action = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String26);
-            this.Advice = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String27);
-            this.Assertion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String28);
-            this.AssertionId = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String29);
-            this.AssertionIdReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String30);
-            this.Attribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String31);
-            this.AttributeName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String32);
-            this.AttributeNamespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String33);
-            this.AttributeStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String34);
-            this.AttributeValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String35);
-            this.Audience = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String36);
-            this.AudienceRestrictionCondition = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String37);
-            this.AuthenticationInstant = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String38);
-            this.AuthenticationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String39);
-            this.AuthenticationStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String40);
-            this.AuthorityBinding = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String41);
-            this.AuthorityKind = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String42);
-            this.AuthorizationDecisionStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String43);
-            this.Binding = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String44);
-            this.Condition = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String45);
-            this.Conditions = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String46);
-            this.Decision = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String47);
-            this.DoNotCacheCondition = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String48);
-            this.Evidence = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String49);
-            this.IssueInstant = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String50);
-            this.Issuer = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String51);
-            this.Location = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String52);
-            this.MajorVersion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String53);
-            this.MinorVersion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String54);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String55);
-            this.NameIdentifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String56);
-            this.NameIdentifierFormat = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String57);
-            this.NameIdentifierNameQualifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String58);
-            this.ActionNamespaceAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String59);
-            this.NotBefore = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String60);
-            this.NotOnOrAfter = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String61);
-            this.PreferredPrefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String62);
-            this.Statement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String63);
-            this.Subject = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String64);
-            this.SubjectConfirmation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String65);
-            this.SubjectConfirmationData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String66);
-            this.SubjectConfirmationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String67);
-            this.HolderOfKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String68);
-            this.SenderVouches = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String69);
-            this.SubjectLocality = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String70);
-            this.SubjectLocalityDNSAddress = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String71);
-            this.SubjectLocalityIPAddress = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String72);
-            this.SubjectStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String73);
-            this.UnspecifiedAuthenticationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String74);
-            this.NamespaceAttributePrefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String75);
-            this.Resource = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String76);
-            this.UserName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String77);
-            this.UserNameNamespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String78);
-            this.EmailName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String79);
-            this.EmailNamespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String80);
+            Access = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String24);
+            AccessDecision = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String25);
+            Action = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String26);
+            Advice = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String27);
+            Assertion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String28);
+            AssertionId = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String29);
+            AssertionIdReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String30);
+            Attribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String31);
+            AttributeName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String32);
+            AttributeNamespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String33);
+            AttributeStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String34);
+            AttributeValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String35);
+            Audience = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String36);
+            AudienceRestrictionCondition = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String37);
+            AuthenticationInstant = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String38);
+            AuthenticationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String39);
+            AuthenticationStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String40);
+            AuthorityBinding = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String41);
+            AuthorityKind = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String42);
+            AuthorizationDecisionStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String43);
+            Binding = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String44);
+            Condition = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String45);
+            Conditions = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String46);
+            Decision = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String47);
+            DoNotCacheCondition = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String48);
+            Evidence = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String49);
+            IssueInstant = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String50);
+            Issuer = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String51);
+            Location = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String52);
+            MajorVersion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String53);
+            MinorVersion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String54);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String55);
+            NameIdentifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String56);
+            NameIdentifierFormat = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String57);
+            NameIdentifierNameQualifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String58);
+            ActionNamespaceAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String59);
+            NotBefore = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String60);
+            NotOnOrAfter = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String61);
+            PreferredPrefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String62);
+            Statement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String63);
+            Subject = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String64);
+            SubjectConfirmation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String65);
+            SubjectConfirmationData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String66);
+            SubjectConfirmationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String67);
+            HolderOfKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String68);
+            SenderVouches = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String69);
+            SubjectLocality = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String70);
+            SubjectLocalityDNSAddress = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String71);
+            SubjectLocalityIPAddress = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String72);
+            SubjectStatement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String73);
+            UnspecifiedAuthenticationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String74);
+            NamespaceAttributePrefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String75);
+            Resource = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String76);
+            UserName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String77);
+            UserNameNamespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String78);
+            EmailName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String79);
+            EmailNamespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String80);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -429,7 +472,9 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -439,67 +484,69 @@ namespace System.IdentityModel
     {
         public SecureConversationDec2005Dictionary(IdentityModelDictionary dictionary) : base(dictionary)
         {
-            this.SecurityContextToken = dictionary.CreateString(IdentityModelStringsVersion1.String175, 175);
-            this.AlgorithmAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
-            this.Generation = dictionary.CreateString(IdentityModelStringsVersion1.String176, 176);
-            this.Label = dictionary.CreateString(IdentityModelStringsVersion1.String177, 177);
-            this.Offset = dictionary.CreateString(IdentityModelStringsVersion1.String178, 178);
-            this.Properties = dictionary.CreateString(IdentityModelStringsVersion1.String179, 179);
-            this.Identifier = dictionary.CreateString(IdentityModelStringsVersion1.String180, 180);
-            this.Cookie = dictionary.CreateString(IdentityModelStringsVersion1.String181, 181);
-            this.RenewNeededFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String182, 182);
-            this.BadContextTokenFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String183, 183);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String268, 268);
-            this.DerivedKeyTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String269, 269);
-            this.SecurityContextTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String270, 270);
-            this.SecurityContextTokenReferenceValueType = dictionary.CreateString(IdentityModelStringsVersion1.String270, 270);
-            this.RequestSecurityContextIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String271, 271);
-            this.RequestSecurityContextIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String272, 272);
-            this.RequestSecurityContextRenew = dictionary.CreateString(IdentityModelStringsVersion1.String273, 273);
-            this.RequestSecurityContextRenewResponse = dictionary.CreateString(IdentityModelStringsVersion1.String274, 274);
-            this.RequestSecurityContextClose = dictionary.CreateString(IdentityModelStringsVersion1.String275, 275);
-            this.RequestSecurityContextCloseResponse = dictionary.CreateString(IdentityModelStringsVersion1.String276, 276);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String277, 277);
-            this.DerivedKeyToken = dictionary.CreateString(IdentityModelStringsVersion1.String173, 173);
-            this.Nonce = dictionary.CreateString(IdentityModelStringsVersion1.String120, 120);
-            this.Length = dictionary.CreateString(IdentityModelStringsVersion1.String174, 174);
-            this.Instance = dictionary.CreateString(IdentityModelStringsVersion1.String278, 278);
+            SecurityContextToken = dictionary.CreateString(IdentityModelStringsVersion1.String175, 175);
+            AlgorithmAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
+            Generation = dictionary.CreateString(IdentityModelStringsVersion1.String176, 176);
+            Label = dictionary.CreateString(IdentityModelStringsVersion1.String177, 177);
+            Offset = dictionary.CreateString(IdentityModelStringsVersion1.String178, 178);
+            Properties = dictionary.CreateString(IdentityModelStringsVersion1.String179, 179);
+            Identifier = dictionary.CreateString(IdentityModelStringsVersion1.String180, 180);
+            Cookie = dictionary.CreateString(IdentityModelStringsVersion1.String181, 181);
+            RenewNeededFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String182, 182);
+            BadContextTokenFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String183, 183);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String268, 268);
+            DerivedKeyTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String269, 269);
+            SecurityContextTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String270, 270);
+            SecurityContextTokenReferenceValueType = dictionary.CreateString(IdentityModelStringsVersion1.String270, 270);
+            RequestSecurityContextIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String271, 271);
+            RequestSecurityContextIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String272, 272);
+            RequestSecurityContextRenew = dictionary.CreateString(IdentityModelStringsVersion1.String273, 273);
+            RequestSecurityContextRenewResponse = dictionary.CreateString(IdentityModelStringsVersion1.String274, 274);
+            RequestSecurityContextClose = dictionary.CreateString(IdentityModelStringsVersion1.String275, 275);
+            RequestSecurityContextCloseResponse = dictionary.CreateString(IdentityModelStringsVersion1.String276, 276);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String277, 277);
+            DerivedKeyToken = dictionary.CreateString(IdentityModelStringsVersion1.String173, 173);
+            Nonce = dictionary.CreateString(IdentityModelStringsVersion1.String120, 120);
+            Length = dictionary.CreateString(IdentityModelStringsVersion1.String174, 174);
+            Instance = dictionary.CreateString(IdentityModelStringsVersion1.String278, 278);
         }
 
         public SecureConversationDec2005Dictionary(IXmlDictionary dictionary) : base(dictionary)
         {
-            this.SecurityContextToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String175);
-            this.AlgorithmAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
-            this.Generation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String176);
-            this.Label = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String177);
-            this.Offset = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String178);
-            this.Properties = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String179);
-            this.Identifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String180);
-            this.Cookie = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String181);
-            this.RenewNeededFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String182);
-            this.BadContextTokenFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String183);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String268);
-            this.DerivedKeyTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String269);
-            this.SecurityContextTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String270);
-            this.SecurityContextTokenReferenceValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String270);
-            this.RequestSecurityContextIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String271);
-            this.RequestSecurityContextIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String272);
-            this.RequestSecurityContextRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String273);
-            this.RequestSecurityContextRenewResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String274);
-            this.RequestSecurityContextClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String275);
-            this.RequestSecurityContextCloseResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String276);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String277);
-            this.DerivedKeyToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String173);
-            this.Nonce = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String120);
-            this.Length = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String174);
-            this.Instance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String278);
+            SecurityContextToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String175);
+            AlgorithmAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
+            Generation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String176);
+            Label = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String177);
+            Offset = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String178);
+            Properties = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String179);
+            Identifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String180);
+            Cookie = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String181);
+            RenewNeededFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String182);
+            BadContextTokenFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String183);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String268);
+            DerivedKeyTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String269);
+            SecurityContextTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String270);
+            SecurityContextTokenReferenceValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String270);
+            RequestSecurityContextIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String271);
+            RequestSecurityContextIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String272);
+            RequestSecurityContextRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String273);
+            RequestSecurityContextRenewResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String274);
+            RequestSecurityContextClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String275);
+            RequestSecurityContextCloseResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String276);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String277);
+            DerivedKeyToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String173);
+            Nonce = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String120);
+            Length = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String174);
+            Instance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String278);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -509,65 +556,67 @@ namespace System.IdentityModel
     {
         public SecureConversationFeb2005Dictionary(IdentityModelDictionary dictionary) : base(dictionary)
         {
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String172, 172);
-            this.DerivedKeyToken = dictionary.CreateString(IdentityModelStringsVersion1.String173, 173);
-            this.Nonce = dictionary.CreateString(IdentityModelStringsVersion1.String120, 120);
-            this.Length = dictionary.CreateString(IdentityModelStringsVersion1.String174, 174);
-            this.SecurityContextToken = dictionary.CreateString(IdentityModelStringsVersion1.String175, 175);
-            this.AlgorithmAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
-            this.Generation = dictionary.CreateString(IdentityModelStringsVersion1.String176, 176);
-            this.Label = dictionary.CreateString(IdentityModelStringsVersion1.String177, 177);
-            this.Offset = dictionary.CreateString(IdentityModelStringsVersion1.String178, 178);
-            this.Properties = dictionary.CreateString(IdentityModelStringsVersion1.String179, 179);
-            this.Identifier = dictionary.CreateString(IdentityModelStringsVersion1.String180, 180);
-            this.Cookie = dictionary.CreateString(IdentityModelStringsVersion1.String181, 181);
-            this.RenewNeededFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String182, 182);
-            this.BadContextTokenFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String183, 183);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String184, 184);
-            this.DerivedKeyTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String185, 185);
-            this.SecurityContextTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String186, 186);
-            this.SecurityContextTokenReferenceValueType = dictionary.CreateString(IdentityModelStringsVersion1.String186, 186);
-            this.RequestSecurityContextIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String187, 187);
-            this.RequestSecurityContextIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String188, 188);
-            this.RequestSecurityContextRenew = dictionary.CreateString(IdentityModelStringsVersion1.String189, 189);
-            this.RequestSecurityContextRenewResponse = dictionary.CreateString(IdentityModelStringsVersion1.String190, 190);
-            this.RequestSecurityContextClose = dictionary.CreateString(IdentityModelStringsVersion1.String191, 191);
-            this.RequestSecurityContextCloseResponse = dictionary.CreateString(IdentityModelStringsVersion1.String192, 192);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String172, 172);
+            DerivedKeyToken = dictionary.CreateString(IdentityModelStringsVersion1.String173, 173);
+            Nonce = dictionary.CreateString(IdentityModelStringsVersion1.String120, 120);
+            Length = dictionary.CreateString(IdentityModelStringsVersion1.String174, 174);
+            SecurityContextToken = dictionary.CreateString(IdentityModelStringsVersion1.String175, 175);
+            AlgorithmAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
+            Generation = dictionary.CreateString(IdentityModelStringsVersion1.String176, 176);
+            Label = dictionary.CreateString(IdentityModelStringsVersion1.String177, 177);
+            Offset = dictionary.CreateString(IdentityModelStringsVersion1.String178, 178);
+            Properties = dictionary.CreateString(IdentityModelStringsVersion1.String179, 179);
+            Identifier = dictionary.CreateString(IdentityModelStringsVersion1.String180, 180);
+            Cookie = dictionary.CreateString(IdentityModelStringsVersion1.String181, 181);
+            RenewNeededFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String182, 182);
+            BadContextTokenFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String183, 183);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String184, 184);
+            DerivedKeyTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String185, 185);
+            SecurityContextTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String186, 186);
+            SecurityContextTokenReferenceValueType = dictionary.CreateString(IdentityModelStringsVersion1.String186, 186);
+            RequestSecurityContextIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String187, 187);
+            RequestSecurityContextIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String188, 188);
+            RequestSecurityContextRenew = dictionary.CreateString(IdentityModelStringsVersion1.String189, 189);
+            RequestSecurityContextRenewResponse = dictionary.CreateString(IdentityModelStringsVersion1.String190, 190);
+            RequestSecurityContextClose = dictionary.CreateString(IdentityModelStringsVersion1.String191, 191);
+            RequestSecurityContextCloseResponse = dictionary.CreateString(IdentityModelStringsVersion1.String192, 192);
         }
 
         public SecureConversationFeb2005Dictionary(IXmlDictionary dictionary) : base(dictionary)
         {
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String172);
-            this.DerivedKeyToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String173);
-            this.Nonce = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String120);
-            this.Length = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String174);
-            this.SecurityContextToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String175);
-            this.AlgorithmAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
-            this.Generation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String176);
-            this.Label = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String177);
-            this.Offset = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String178);
-            this.Properties = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String179);
-            this.Identifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String180);
-            this.Cookie = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String181);
-            this.RenewNeededFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String182);
-            this.BadContextTokenFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String183);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String184);
-            this.DerivedKeyTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String185);
-            this.SecurityContextTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String186);
-            this.SecurityContextTokenReferenceValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String186);
-            this.RequestSecurityContextIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String187);
-            this.RequestSecurityContextIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String188);
-            this.RequestSecurityContextRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String189);
-            this.RequestSecurityContextRenewResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String190);
-            this.RequestSecurityContextClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String191);
-            this.RequestSecurityContextCloseResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String192);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String172);
+            DerivedKeyToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String173);
+            Nonce = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String120);
+            Length = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String174);
+            SecurityContextToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String175);
+            AlgorithmAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
+            Generation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String176);
+            Label = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String177);
+            Offset = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String178);
+            Properties = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String179);
+            Identifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String180);
+            Cookie = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String181);
+            RenewNeededFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String182);
+            BadContextTokenFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String183);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String184);
+            DerivedKeyTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String185);
+            SecurityContextTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String186);
+            SecurityContextTokenReferenceValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String186);
+            RequestSecurityContextIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String187);
+            RequestSecurityContextIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String188);
+            RequestSecurityContextRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String189);
+            RequestSecurityContextRenewResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String190);
+            RequestSecurityContextClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String191);
+            RequestSecurityContextCloseResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String192);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -603,67 +652,69 @@ namespace System.IdentityModel
 
         public SecurityAlgorithmDictionary(IdentityModelDictionary dictionary)
         {
-            this.Aes128Encryption = dictionary.CreateString(IdentityModelStringsVersion1.String95, 95);
-            this.Aes128KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String96, 96);
-            this.Aes192Encryption = dictionary.CreateString(IdentityModelStringsVersion1.String97, 97);
-            this.Aes192KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String98, 98);
-            this.Aes256Encryption = dictionary.CreateString(IdentityModelStringsVersion1.String99, 99);
-            this.Aes256KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String100, 100);
-            this.DesEncryption = dictionary.CreateString(IdentityModelStringsVersion1.String101, 101);
-            this.DsaSha1Signature = dictionary.CreateString(IdentityModelStringsVersion1.String102, 102);
-            this.ExclusiveC14n = dictionary.CreateString(IdentityModelStringsVersion1.String20, 20);
-            this.ExclusiveC14nWithComments = dictionary.CreateString(IdentityModelStringsVersion1.String103, 103);
-            this.HmacSha1Signature = dictionary.CreateString(IdentityModelStringsVersion1.String104, 104);
-            this.HmacSha256Signature = dictionary.CreateString(IdentityModelStringsVersion1.String105, 105);
-            this.Psha1KeyDerivation = dictionary.CreateString(IdentityModelStringsVersion1.String106, 106);
-            this.Ripemd160Digest = dictionary.CreateString(IdentityModelStringsVersion1.String107, 107);
-            this.RsaOaepKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String108, 108);
-            this.RsaSha1Signature = dictionary.CreateString(IdentityModelStringsVersion1.String109, 109);
-            this.RsaSha256Signature = dictionary.CreateString(IdentityModelStringsVersion1.String110, 110);
-            this.RsaV15KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String111, 111);
-            this.Sha1Digest = dictionary.CreateString(IdentityModelStringsVersion1.String112, 112);
-            this.Sha256Digest = dictionary.CreateString(IdentityModelStringsVersion1.String113, 113);
-            this.Sha512Digest = dictionary.CreateString(IdentityModelStringsVersion1.String114, 114);
-            this.TripleDesEncryption = dictionary.CreateString(IdentityModelStringsVersion1.String115, 115);
-            this.TripleDesKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String116, 116);
-            this.TlsSspiKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String117, 117);
-            this.WindowsSspiKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String118, 118);
+            Aes128Encryption = dictionary.CreateString(IdentityModelStringsVersion1.String95, 95);
+            Aes128KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String96, 96);
+            Aes192Encryption = dictionary.CreateString(IdentityModelStringsVersion1.String97, 97);
+            Aes192KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String98, 98);
+            Aes256Encryption = dictionary.CreateString(IdentityModelStringsVersion1.String99, 99);
+            Aes256KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String100, 100);
+            DesEncryption = dictionary.CreateString(IdentityModelStringsVersion1.String101, 101);
+            DsaSha1Signature = dictionary.CreateString(IdentityModelStringsVersion1.String102, 102);
+            ExclusiveC14n = dictionary.CreateString(IdentityModelStringsVersion1.String20, 20);
+            ExclusiveC14nWithComments = dictionary.CreateString(IdentityModelStringsVersion1.String103, 103);
+            HmacSha1Signature = dictionary.CreateString(IdentityModelStringsVersion1.String104, 104);
+            HmacSha256Signature = dictionary.CreateString(IdentityModelStringsVersion1.String105, 105);
+            Psha1KeyDerivation = dictionary.CreateString(IdentityModelStringsVersion1.String106, 106);
+            Ripemd160Digest = dictionary.CreateString(IdentityModelStringsVersion1.String107, 107);
+            RsaOaepKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String108, 108);
+            RsaSha1Signature = dictionary.CreateString(IdentityModelStringsVersion1.String109, 109);
+            RsaSha256Signature = dictionary.CreateString(IdentityModelStringsVersion1.String110, 110);
+            RsaV15KeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String111, 111);
+            Sha1Digest = dictionary.CreateString(IdentityModelStringsVersion1.String112, 112);
+            Sha256Digest = dictionary.CreateString(IdentityModelStringsVersion1.String113, 113);
+            Sha512Digest = dictionary.CreateString(IdentityModelStringsVersion1.String114, 114);
+            TripleDesEncryption = dictionary.CreateString(IdentityModelStringsVersion1.String115, 115);
+            TripleDesKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String116, 116);
+            TlsSspiKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String117, 117);
+            WindowsSspiKeyWrap = dictionary.CreateString(IdentityModelStringsVersion1.String118, 118);
         }
 
         public SecurityAlgorithmDictionary(IXmlDictionary dictionary)
         {
-            this.Aes128Encryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String95);
-            this.Aes128KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String96);
-            this.Aes192Encryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String97);
-            this.Aes192KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String98);
-            this.Aes256Encryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String99);
-            this.Aes256KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String100);
-            this.DesEncryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String101);
-            this.DsaSha1Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String102);
-            this.ExclusiveC14n = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String20);
-            this.ExclusiveC14nWithComments = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String103);
-            this.HmacSha1Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String104);
-            this.HmacSha256Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String105);
-            this.Psha1KeyDerivation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String106);
-            this.Ripemd160Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String107);
-            this.RsaOaepKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String108);
-            this.RsaSha1Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String109);
-            this.RsaSha256Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String110);
-            this.RsaV15KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String111);
-            this.Sha1Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String112);
-            this.Sha256Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String113);
-            this.Sha512Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String114);
-            this.TripleDesEncryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String115);
-            this.TripleDesKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String116);
-            this.TlsSspiKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String117);
-            this.WindowsSspiKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String118);
+            Aes128Encryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String95);
+            Aes128KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String96);
+            Aes192Encryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String97);
+            Aes192KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String98);
+            Aes256Encryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String99);
+            Aes256KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String100);
+            DesEncryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String101);
+            DsaSha1Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String102);
+            ExclusiveC14n = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String20);
+            ExclusiveC14nWithComments = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String103);
+            HmacSha1Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String104);
+            HmacSha256Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String105);
+            Psha1KeyDerivation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String106);
+            Ripemd160Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String107);
+            RsaOaepKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String108);
+            RsaSha1Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String109);
+            RsaSha256Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String110);
+            RsaV15KeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String111);
+            Sha1Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String112);
+            Sha256Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String113);
+            Sha512Digest = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String114);
+            TripleDesEncryption = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String115);
+            TripleDesKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String116);
+            TlsSspiKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String117);
+            WindowsSspiKeyWrap = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String118);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -675,19 +726,21 @@ namespace System.IdentityModel
 
         public SecurityAlgorithmDec2005Dictionary(IdentityModelDictionary dictionary)
         {
-            this.Psha1KeyDerivationDec2005 = dictionary.CreateString(IdentityModelStringsVersion1.String267, 267);
+            Psha1KeyDerivationDec2005 = dictionary.CreateString(IdentityModelStringsVersion1.String267, 267);
         }
 
         public SecurityAlgorithmDec2005Dictionary(IXmlDictionary dictionary)
         {
-            this.Psha1KeyDerivationDec2005 = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String267);
+            Psha1KeyDerivationDec2005 = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String267);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -728,77 +781,79 @@ namespace System.IdentityModel
 
         public SecurityJan2004Dictionary(IdentityModelDictionary dictionary)
         {
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String119, 119);
-            this.NonceElement = dictionary.CreateString(IdentityModelStringsVersion1.String120, 120);
-            this.PasswordElement = dictionary.CreateString(IdentityModelStringsVersion1.String121, 121);
-            this.PasswordTextName = dictionary.CreateString(IdentityModelStringsVersion1.String122, 122);
-            this.UserNameElement = dictionary.CreateString(IdentityModelStringsVersion1.String123, 123);
-            this.UserNameTokenElement = dictionary.CreateString(IdentityModelStringsVersion1.String124, 124);
-            this.BinarySecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String125, 125);
-            this.EncodingType = dictionary.CreateString(IdentityModelStringsVersion1.String126, 126);
-            this.Reference = dictionary.CreateString(IdentityModelStringsVersion1.String2, 2);
-            this.URI = dictionary.CreateString(IdentityModelStringsVersion1.String1, 1);
-            this.KeyIdentifier = dictionary.CreateString(IdentityModelStringsVersion1.String127, 127);
-            this.EncodingTypeValueBase64Binary = dictionary.CreateString(IdentityModelStringsVersion1.String128, 128);
-            this.EncodingTypeValueHexBinary = dictionary.CreateString(IdentityModelStringsVersion1.String129, 129);
-            this.EncodingTypeValueText = dictionary.CreateString(IdentityModelStringsVersion1.String130, 130);
-            this.X509SKIValueType = dictionary.CreateString(IdentityModelStringsVersion1.String131, 131);
-            this.KerberosTokenTypeGSS = dictionary.CreateString(IdentityModelStringsVersion1.String132, 132);
-            this.KerberosTokenType1510 = dictionary.CreateString(IdentityModelStringsVersion1.String133, 133);
-            this.SamlAssertionIdValueType = dictionary.CreateString(IdentityModelStringsVersion1.String134, 134);
-            this.SamlAssertion = dictionary.CreateString(IdentityModelStringsVersion1.String28, 28);
-            this.SamlUri = dictionary.CreateString(IdentityModelStringsVersion1.String55, 55);
-            this.RelAssertionValueType = dictionary.CreateString(IdentityModelStringsVersion1.String135, 135);
-            this.FailedAuthenticationFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String136, 136);
-            this.InvalidSecurityTokenFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String137, 137);
-            this.InvalidSecurityFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String138, 138);
-            this.SecurityTokenReference = dictionary.CreateString(IdentityModelStringsVersion1.String139, 139);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String140, 140);
-            this.Security = dictionary.CreateString(IdentityModelStringsVersion1.String141, 141);
-            this.ValueType = dictionary.CreateString(IdentityModelStringsVersion1.String142, 142);
-            this.TypeAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
-            this.KerberosHashValueType = dictionary.CreateString(IdentityModelStringsVersion1.String143, 143);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String119, 119);
+            NonceElement = dictionary.CreateString(IdentityModelStringsVersion1.String120, 120);
+            PasswordElement = dictionary.CreateString(IdentityModelStringsVersion1.String121, 121);
+            PasswordTextName = dictionary.CreateString(IdentityModelStringsVersion1.String122, 122);
+            UserNameElement = dictionary.CreateString(IdentityModelStringsVersion1.String123, 123);
+            UserNameTokenElement = dictionary.CreateString(IdentityModelStringsVersion1.String124, 124);
+            BinarySecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String125, 125);
+            EncodingType = dictionary.CreateString(IdentityModelStringsVersion1.String126, 126);
+            Reference = dictionary.CreateString(IdentityModelStringsVersion1.String2, 2);
+            URI = dictionary.CreateString(IdentityModelStringsVersion1.String1, 1);
+            KeyIdentifier = dictionary.CreateString(IdentityModelStringsVersion1.String127, 127);
+            EncodingTypeValueBase64Binary = dictionary.CreateString(IdentityModelStringsVersion1.String128, 128);
+            EncodingTypeValueHexBinary = dictionary.CreateString(IdentityModelStringsVersion1.String129, 129);
+            EncodingTypeValueText = dictionary.CreateString(IdentityModelStringsVersion1.String130, 130);
+            X509SKIValueType = dictionary.CreateString(IdentityModelStringsVersion1.String131, 131);
+            KerberosTokenTypeGSS = dictionary.CreateString(IdentityModelStringsVersion1.String132, 132);
+            KerberosTokenType1510 = dictionary.CreateString(IdentityModelStringsVersion1.String133, 133);
+            SamlAssertionIdValueType = dictionary.CreateString(IdentityModelStringsVersion1.String134, 134);
+            SamlAssertion = dictionary.CreateString(IdentityModelStringsVersion1.String28, 28);
+            SamlUri = dictionary.CreateString(IdentityModelStringsVersion1.String55, 55);
+            RelAssertionValueType = dictionary.CreateString(IdentityModelStringsVersion1.String135, 135);
+            FailedAuthenticationFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String136, 136);
+            InvalidSecurityTokenFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String137, 137);
+            InvalidSecurityFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String138, 138);
+            SecurityTokenReference = dictionary.CreateString(IdentityModelStringsVersion1.String139, 139);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String140, 140);
+            Security = dictionary.CreateString(IdentityModelStringsVersion1.String141, 141);
+            ValueType = dictionary.CreateString(IdentityModelStringsVersion1.String142, 142);
+            TypeAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
+            KerberosHashValueType = dictionary.CreateString(IdentityModelStringsVersion1.String143, 143);
         }
 
         public SecurityJan2004Dictionary(IXmlDictionary dictionary)
         {
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String119);
-            this.NonceElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String120);
-            this.PasswordElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String121);
-            this.PasswordTextName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String122);
-            this.UserNameElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String123);
-            this.UserNameTokenElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String124);
-            this.BinarySecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String125);
-            this.EncodingType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String126);
-            this.Reference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String2);
-            this.URI = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String1);
-            this.KeyIdentifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String127);
-            this.EncodingTypeValueBase64Binary = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String128);
-            this.EncodingTypeValueHexBinary = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String129);
-            this.EncodingTypeValueText = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String130);
-            this.X509SKIValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String131);
-            this.KerberosTokenTypeGSS = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String132);
-            this.KerberosTokenType1510 = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String133);
-            this.SamlAssertionIdValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String134);
-            this.SamlAssertion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String28);
-            this.SamlUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String55);
-            this.RelAssertionValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String135);
-            this.FailedAuthenticationFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String136);
-            this.InvalidSecurityTokenFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String137);
-            this.InvalidSecurityFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String138);
-            this.SecurityTokenReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String139);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String140);
-            this.Security = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String141);
-            this.ValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String142);
-            this.TypeAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
-            this.KerberosHashValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String143);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String119);
+            NonceElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String120);
+            PasswordElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String121);
+            PasswordTextName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String122);
+            UserNameElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String123);
+            UserNameTokenElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String124);
+            BinarySecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String125);
+            EncodingType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String126);
+            Reference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String2);
+            URI = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String1);
+            KeyIdentifier = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String127);
+            EncodingTypeValueBase64Binary = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String128);
+            EncodingTypeValueHexBinary = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String129);
+            EncodingTypeValueText = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String130);
+            X509SKIValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String131);
+            KerberosTokenTypeGSS = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String132);
+            KerberosTokenType1510 = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String133);
+            SamlAssertionIdValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String134);
+            SamlAssertion = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String28);
+            SamlUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String55);
+            RelAssertionValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String135);
+            FailedAuthenticationFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String136);
+            InvalidSecurityTokenFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String137);
+            InvalidSecurityFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String138);
+            SecurityTokenReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String139);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String140);
+            Security = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String141);
+            ValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String142);
+            TypeAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
+            KerberosHashValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String143);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -821,41 +876,43 @@ namespace System.IdentityModel
 
         public SecurityXXX2005Dictionary(IdentityModelDictionary dictionary)
         {
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String144, 144);
-            this.SignatureConfirmation = dictionary.CreateString(IdentityModelStringsVersion1.String145, 145);
-            this.ValueAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String146, 146);
-            this.TokenTypeAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String147, 147);
-            this.ThumbprintSha1ValueType = dictionary.CreateString(IdentityModelStringsVersion1.String148, 148);
-            this.EncryptedKeyTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String149, 149);
-            this.EncryptedKeyHashValueType = dictionary.CreateString(IdentityModelStringsVersion1.String150, 150);
-            this.SamlTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String151, 151);
-            this.Saml20TokenType = dictionary.CreateString(IdentityModelStringsVersion1.String152, 152);
-            this.Saml11AssertionValueType = dictionary.CreateString(IdentityModelStringsVersion1.String153, 153);
-            this.EncryptedHeader = dictionary.CreateString(IdentityModelStringsVersion1.String154, 154);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String155, 155);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String144, 144);
+            SignatureConfirmation = dictionary.CreateString(IdentityModelStringsVersion1.String145, 145);
+            ValueAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String146, 146);
+            TokenTypeAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String147, 147);
+            ThumbprintSha1ValueType = dictionary.CreateString(IdentityModelStringsVersion1.String148, 148);
+            EncryptedKeyTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String149, 149);
+            EncryptedKeyHashValueType = dictionary.CreateString(IdentityModelStringsVersion1.String150, 150);
+            SamlTokenType = dictionary.CreateString(IdentityModelStringsVersion1.String151, 151);
+            Saml20TokenType = dictionary.CreateString(IdentityModelStringsVersion1.String152, 152);
+            Saml11AssertionValueType = dictionary.CreateString(IdentityModelStringsVersion1.String153, 153);
+            EncryptedHeader = dictionary.CreateString(IdentityModelStringsVersion1.String154, 154);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String155, 155);
         }
 
         public SecurityXXX2005Dictionary(IXmlDictionary dictionary)
         {
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String144);
-            this.SignatureConfirmation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String145);
-            this.ValueAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String146);
-            this.TokenTypeAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String147);
-            this.ThumbprintSha1ValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String148);
-            this.EncryptedKeyTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String149);
-            this.EncryptedKeyHashValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String150);
-            this.SamlTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String151);
-            this.Saml20TokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String152);
-            this.Saml11AssertionValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String153);
-            this.EncryptedHeader = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String154);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String155);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String144);
+            SignatureConfirmation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String145);
+            ValueAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String146);
+            TokenTypeAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String147);
+            ThumbprintSha1ValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String148);
+            EncryptedKeyTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String149);
+            EncryptedKeyHashValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String150);
+            SamlTokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String151);
+            Saml20TokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String152);
+            Saml11AssertionValueType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String153);
+            EncryptedHeader = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String154);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String155);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -944,7 +1001,9 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -954,145 +1013,147 @@ namespace System.IdentityModel
     {
         public TrustDec2005Dictionary(IdentityModelDictionary dictionary) : base(dictionary)
         {
-            this.CombinedHashLabel = dictionary.CreateString(IdentityModelStringsVersion1.String196, 196);
-            this.RequestSecurityTokenResponse = dictionary.CreateString(IdentityModelStringsVersion1.String197, 197);
-            this.TokenType = dictionary.CreateString(IdentityModelStringsVersion1.String147, 147);
-            this.KeySize = dictionary.CreateString(IdentityModelStringsVersion1.String198, 198);
-            this.RequestedTokenReference = dictionary.CreateString(IdentityModelStringsVersion1.String199, 199);
-            this.AppliesTo = dictionary.CreateString(IdentityModelStringsVersion1.String200, 200);
-            this.Authenticator = dictionary.CreateString(IdentityModelStringsVersion1.String201, 201);
-            this.CombinedHash = dictionary.CreateString(IdentityModelStringsVersion1.String202, 202);
-            this.BinaryExchange = dictionary.CreateString(IdentityModelStringsVersion1.String203, 203);
-            this.Lifetime = dictionary.CreateString(IdentityModelStringsVersion1.String204, 204);
-            this.RequestedSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String205, 205);
-            this.Entropy = dictionary.CreateString(IdentityModelStringsVersion1.String206, 206);
-            this.RequestedProofToken = dictionary.CreateString(IdentityModelStringsVersion1.String207, 207);
-            this.ComputedKey = dictionary.CreateString(IdentityModelStringsVersion1.String208, 208);
-            this.RequestSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String209, 209);
-            this.RequestType = dictionary.CreateString(IdentityModelStringsVersion1.String210, 210);
-            this.Context = dictionary.CreateString(IdentityModelStringsVersion1.String211, 211);
-            this.BinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String212, 212);
-            this.Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
-            this.SpnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String240, 240);
-            this.TlsnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String241, 241);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String242, 242);
-            this.RequestSecurityTokenIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String243, 243);
-            this.RequestSecurityTokenIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String244, 244);
-            this.RequestTypeIssue = dictionary.CreateString(IdentityModelStringsVersion1.String245, 245);
-            this.AsymmetricKeyBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String246, 246);
-            this.SymmetricKeyBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String247, 247);
-            this.NonceBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String248, 248);
-            this.Psha1ComputedKeyUri = dictionary.CreateString(IdentityModelStringsVersion1.String249, 249);
-            this.KeyType = dictionary.CreateString(IdentityModelStringsVersion1.String230, 230);
-            this.SymmetricKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String247, 247);
-            this.PublicKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String250, 250);
-            this.Claims = dictionary.CreateString(IdentityModelStringsVersion1.String232, 232);
-            this.InvalidRequestFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String233, 233);
-            this.FailedAuthenticationFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String136, 136);
-            this.UseKey = dictionary.CreateString(IdentityModelStringsVersion1.String234, 234);
-            this.SignWith = dictionary.CreateString(IdentityModelStringsVersion1.String235, 235);
-            this.EncryptWith = dictionary.CreateString(IdentityModelStringsVersion1.String236, 236);
-            this.EncryptionAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String237, 237);
-            this.CanonicalizationAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String238, 238);
-            this.ComputedKeyAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String239, 239);
-            this.RequestSecurityTokenResponseCollection = dictionary.CreateString(IdentityModelStringsVersion1.String193, 193);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String251, 251);
-            this.BinarySecretClauseType = dictionary.CreateString(IdentityModelStringsVersion1.String252, 252);
-            this.RequestSecurityTokenCollectionIssuanceFinalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String253, 253);
-            this.RequestSecurityTokenRenewal = dictionary.CreateString(IdentityModelStringsVersion1.String254, 254);
-            this.RequestSecurityTokenRenewalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String255, 255);
-            this.RequestSecurityTokenCollectionRenewalFinalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String256, 256);
-            this.RequestSecurityTokenCancellation = dictionary.CreateString(IdentityModelStringsVersion1.String257, 257);
-            this.RequestSecurityTokenCancellationResponse = dictionary.CreateString(IdentityModelStringsVersion1.String258, 258);
-            this.RequestSecurityTokenCollectionCancellationFinalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String259, 259);
-            this.RequestTypeRenew = dictionary.CreateString(IdentityModelStringsVersion1.String260, 260);
-            this.RequestTypeClose = dictionary.CreateString(IdentityModelStringsVersion1.String261, 261);
-            this.RenewTarget = dictionary.CreateString(IdentityModelStringsVersion1.String222, 222);
-            this.CloseTarget = dictionary.CreateString(IdentityModelStringsVersion1.String223, 223);
-            this.RequestedTokenClosed = dictionary.CreateString(IdentityModelStringsVersion1.String224, 224);
-            this.RequestedAttachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String225, 225);
-            this.RequestedUnattachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String226, 226);
-            this.IssuedTokensHeader = dictionary.CreateString(IdentityModelStringsVersion1.String227, 227);
-            this.KeyWrapAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String262, 262);
-            this.BearerKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String263, 263);
-            this.SecondaryParameters = dictionary.CreateString(IdentityModelStringsVersion1.String264, 264);
-            this.Dialect = dictionary.CreateString(IdentityModelStringsVersion1.String265, 265);
-            this.DialectType = dictionary.CreateString(IdentityModelStringsVersion1.String266, 266);
+            CombinedHashLabel = dictionary.CreateString(IdentityModelStringsVersion1.String196, 196);
+            RequestSecurityTokenResponse = dictionary.CreateString(IdentityModelStringsVersion1.String197, 197);
+            TokenType = dictionary.CreateString(IdentityModelStringsVersion1.String147, 147);
+            KeySize = dictionary.CreateString(IdentityModelStringsVersion1.String198, 198);
+            RequestedTokenReference = dictionary.CreateString(IdentityModelStringsVersion1.String199, 199);
+            AppliesTo = dictionary.CreateString(IdentityModelStringsVersion1.String200, 200);
+            Authenticator = dictionary.CreateString(IdentityModelStringsVersion1.String201, 201);
+            CombinedHash = dictionary.CreateString(IdentityModelStringsVersion1.String202, 202);
+            BinaryExchange = dictionary.CreateString(IdentityModelStringsVersion1.String203, 203);
+            Lifetime = dictionary.CreateString(IdentityModelStringsVersion1.String204, 204);
+            RequestedSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String205, 205);
+            Entropy = dictionary.CreateString(IdentityModelStringsVersion1.String206, 206);
+            RequestedProofToken = dictionary.CreateString(IdentityModelStringsVersion1.String207, 207);
+            ComputedKey = dictionary.CreateString(IdentityModelStringsVersion1.String208, 208);
+            RequestSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String209, 209);
+            RequestType = dictionary.CreateString(IdentityModelStringsVersion1.String210, 210);
+            Context = dictionary.CreateString(IdentityModelStringsVersion1.String211, 211);
+            BinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String212, 212);
+            Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
+            SpnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String240, 240);
+            TlsnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String241, 241);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String242, 242);
+            RequestSecurityTokenIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String243, 243);
+            RequestSecurityTokenIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String244, 244);
+            RequestTypeIssue = dictionary.CreateString(IdentityModelStringsVersion1.String245, 245);
+            AsymmetricKeyBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String246, 246);
+            SymmetricKeyBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String247, 247);
+            NonceBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String248, 248);
+            Psha1ComputedKeyUri = dictionary.CreateString(IdentityModelStringsVersion1.String249, 249);
+            KeyType = dictionary.CreateString(IdentityModelStringsVersion1.String230, 230);
+            SymmetricKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String247, 247);
+            PublicKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String250, 250);
+            Claims = dictionary.CreateString(IdentityModelStringsVersion1.String232, 232);
+            InvalidRequestFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String233, 233);
+            FailedAuthenticationFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String136, 136);
+            UseKey = dictionary.CreateString(IdentityModelStringsVersion1.String234, 234);
+            SignWith = dictionary.CreateString(IdentityModelStringsVersion1.String235, 235);
+            EncryptWith = dictionary.CreateString(IdentityModelStringsVersion1.String236, 236);
+            EncryptionAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String237, 237);
+            CanonicalizationAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String238, 238);
+            ComputedKeyAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String239, 239);
+            RequestSecurityTokenResponseCollection = dictionary.CreateString(IdentityModelStringsVersion1.String193, 193);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String251, 251);
+            BinarySecretClauseType = dictionary.CreateString(IdentityModelStringsVersion1.String252, 252);
+            RequestSecurityTokenCollectionIssuanceFinalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String253, 253);
+            RequestSecurityTokenRenewal = dictionary.CreateString(IdentityModelStringsVersion1.String254, 254);
+            RequestSecurityTokenRenewalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String255, 255);
+            RequestSecurityTokenCollectionRenewalFinalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String256, 256);
+            RequestSecurityTokenCancellation = dictionary.CreateString(IdentityModelStringsVersion1.String257, 257);
+            RequestSecurityTokenCancellationResponse = dictionary.CreateString(IdentityModelStringsVersion1.String258, 258);
+            RequestSecurityTokenCollectionCancellationFinalResponse = dictionary.CreateString(IdentityModelStringsVersion1.String259, 259);
+            RequestTypeRenew = dictionary.CreateString(IdentityModelStringsVersion1.String260, 260);
+            RequestTypeClose = dictionary.CreateString(IdentityModelStringsVersion1.String261, 261);
+            RenewTarget = dictionary.CreateString(IdentityModelStringsVersion1.String222, 222);
+            CloseTarget = dictionary.CreateString(IdentityModelStringsVersion1.String223, 223);
+            RequestedTokenClosed = dictionary.CreateString(IdentityModelStringsVersion1.String224, 224);
+            RequestedAttachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String225, 225);
+            RequestedUnattachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String226, 226);
+            IssuedTokensHeader = dictionary.CreateString(IdentityModelStringsVersion1.String227, 227);
+            KeyWrapAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String262, 262);
+            BearerKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String263, 263);
+            SecondaryParameters = dictionary.CreateString(IdentityModelStringsVersion1.String264, 264);
+            Dialect = dictionary.CreateString(IdentityModelStringsVersion1.String265, 265);
+            DialectType = dictionary.CreateString(IdentityModelStringsVersion1.String266, 266);
         }
 
         public TrustDec2005Dictionary(IXmlDictionary dictionary) : base(dictionary)
         {
-            this.CombinedHashLabel = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String196);
-            this.RequestSecurityTokenResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String197);
-            this.TokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String147);
-            this.KeySize = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String198);
-            this.RequestedTokenReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String199);
-            this.AppliesTo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String200);
-            this.Authenticator = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String201);
-            this.CombinedHash = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String202);
-            this.BinaryExchange = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String203);
-            this.Lifetime = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String204);
-            this.RequestedSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String205);
-            this.Entropy = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String206);
-            this.RequestedProofToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String207);
-            this.ComputedKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String208);
-            this.RequestSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String209);
-            this.RequestType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String210);
-            this.Context = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String211);
-            this.BinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String212);
-            this.Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
-            this.SpnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String240);
-            this.TlsnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String241);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String242);
-            this.RequestSecurityTokenIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String243);
-            this.RequestSecurityTokenIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String244);
-            this.RequestTypeIssue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String245);
-            this.AsymmetricKeyBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String246);
-            this.SymmetricKeyBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String247);
-            this.NonceBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String248);
-            this.Psha1ComputedKeyUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String249);
-            this.KeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String230);
-            this.SymmetricKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String247);
-            this.PublicKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String250);
-            this.Claims = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String232);
-            this.InvalidRequestFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String233);
-            this.FailedAuthenticationFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String136);
-            this.UseKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String234);
-            this.SignWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String235);
-            this.EncryptWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String236);
-            this.EncryptionAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String237);
-            this.CanonicalizationAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String238);
-            this.ComputedKeyAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String239);
-            this.RequestSecurityTokenResponseCollection = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String193);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String251);
-            this.BinarySecretClauseType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String252);
-            this.RequestSecurityTokenCollectionIssuanceFinalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String253);
-            this.RequestSecurityTokenRenewal = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String254);
-            this.RequestSecurityTokenRenewalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String255);
-            this.RequestSecurityTokenCollectionRenewalFinalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String256);
-            this.RequestSecurityTokenCancellation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String257);
-            this.RequestSecurityTokenCancellationResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String258);
-            this.RequestSecurityTokenCollectionCancellationFinalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String259);
-            this.RequestTypeRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String260);
-            this.RequestTypeClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String261);
-            this.RenewTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String222);
-            this.CloseTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String223);
-            this.RequestedTokenClosed = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String224);
-            this.RequestedAttachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String225);
-            this.RequestedUnattachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String226);
-            this.IssuedTokensHeader = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String227);
-            this.KeyWrapAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String262);
-            this.BearerKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String263);
-            this.SecondaryParameters = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String264);
-            this.Dialect = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String265);
-            this.DialectType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String266);
+            CombinedHashLabel = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String196);
+            RequestSecurityTokenResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String197);
+            TokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String147);
+            KeySize = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String198);
+            RequestedTokenReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String199);
+            AppliesTo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String200);
+            Authenticator = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String201);
+            CombinedHash = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String202);
+            BinaryExchange = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String203);
+            Lifetime = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String204);
+            RequestedSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String205);
+            Entropy = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String206);
+            RequestedProofToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String207);
+            ComputedKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String208);
+            RequestSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String209);
+            RequestType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String210);
+            Context = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String211);
+            BinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String212);
+            Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
+            SpnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String240);
+            TlsnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String241);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String242);
+            RequestSecurityTokenIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String243);
+            RequestSecurityTokenIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String244);
+            RequestTypeIssue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String245);
+            AsymmetricKeyBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String246);
+            SymmetricKeyBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String247);
+            NonceBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String248);
+            Psha1ComputedKeyUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String249);
+            KeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String230);
+            SymmetricKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String247);
+            PublicKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String250);
+            Claims = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String232);
+            InvalidRequestFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String233);
+            FailedAuthenticationFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String136);
+            UseKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String234);
+            SignWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String235);
+            EncryptWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String236);
+            EncryptionAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String237);
+            CanonicalizationAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String238);
+            ComputedKeyAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String239);
+            RequestSecurityTokenResponseCollection = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String193);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String251);
+            BinarySecretClauseType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String252);
+            RequestSecurityTokenCollectionIssuanceFinalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String253);
+            RequestSecurityTokenRenewal = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String254);
+            RequestSecurityTokenRenewalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String255);
+            RequestSecurityTokenCollectionRenewalFinalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String256);
+            RequestSecurityTokenCancellation = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String257);
+            RequestSecurityTokenCancellationResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String258);
+            RequestSecurityTokenCollectionCancellationFinalResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String259);
+            RequestTypeRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String260);
+            RequestTypeClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String261);
+            RenewTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String222);
+            CloseTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String223);
+            RequestedTokenClosed = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String224);
+            RequestedAttachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String225);
+            RequestedUnattachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String226);
+            IssuedTokensHeader = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String227);
+            KeyWrapAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String262);
+            BearerKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String263);
+            SecondaryParameters = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String264);
+            Dialect = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String265);
+            DialectType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String266);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -1102,119 +1163,121 @@ namespace System.IdentityModel
     {
         public TrustFeb2005Dictionary(IdentityModelDictionary dictionary) : base(dictionary)
         {
-            this.RequestSecurityTokenResponseCollection = dictionary.CreateString(IdentityModelStringsVersion1.String193, 193);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String194, 194);
-            this.BinarySecretClauseType = dictionary.CreateString(IdentityModelStringsVersion1.String195, 195);
-            this.CombinedHashLabel = dictionary.CreateString(IdentityModelStringsVersion1.String196, 196);
-            this.RequestSecurityTokenResponse = dictionary.CreateString(IdentityModelStringsVersion1.String197, 197);
-            this.TokenType = dictionary.CreateString(IdentityModelStringsVersion1.String147, 147);
-            this.KeySize = dictionary.CreateString(IdentityModelStringsVersion1.String198, 198);
-            this.RequestedTokenReference = dictionary.CreateString(IdentityModelStringsVersion1.String199, 199);
-            this.AppliesTo = dictionary.CreateString(IdentityModelStringsVersion1.String200, 200);
-            this.Authenticator = dictionary.CreateString(IdentityModelStringsVersion1.String201, 201);
-            this.CombinedHash = dictionary.CreateString(IdentityModelStringsVersion1.String202, 202);
-            this.BinaryExchange = dictionary.CreateString(IdentityModelStringsVersion1.String203, 203);
-            this.Lifetime = dictionary.CreateString(IdentityModelStringsVersion1.String204, 204);
-            this.RequestedSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String205, 205);
-            this.Entropy = dictionary.CreateString(IdentityModelStringsVersion1.String206, 206);
-            this.RequestedProofToken = dictionary.CreateString(IdentityModelStringsVersion1.String207, 207);
-            this.ComputedKey = dictionary.CreateString(IdentityModelStringsVersion1.String208, 208);
-            this.RequestSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String209, 209);
-            this.RequestType = dictionary.CreateString(IdentityModelStringsVersion1.String210, 210);
-            this.Context = dictionary.CreateString(IdentityModelStringsVersion1.String211, 211);
-            this.BinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String212, 212);
-            this.Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
-            this.SpnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String213, 213);
-            this.TlsnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String214, 214);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String215, 215);
-            this.RequestSecurityTokenIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String216, 216);
-            this.RequestSecurityTokenIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String217, 217);
-            this.RequestTypeIssue = dictionary.CreateString(IdentityModelStringsVersion1.String218, 218);
-            this.SymmetricKeyBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String219, 219);
-            this.Psha1ComputedKeyUri = dictionary.CreateString(IdentityModelStringsVersion1.String220, 220);
-            this.NonceBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String221, 221);
-            this.RenewTarget = dictionary.CreateString(IdentityModelStringsVersion1.String222, 222);
-            this.CloseTarget = dictionary.CreateString(IdentityModelStringsVersion1.String223, 223);
-            this.RequestedTokenClosed = dictionary.CreateString(IdentityModelStringsVersion1.String224, 224);
-            this.RequestedAttachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String225, 225);
-            this.RequestedUnattachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String226, 226);
-            this.IssuedTokensHeader = dictionary.CreateString(IdentityModelStringsVersion1.String227, 227);
-            this.RequestTypeRenew = dictionary.CreateString(IdentityModelStringsVersion1.String228, 228);
-            this.RequestTypeClose = dictionary.CreateString(IdentityModelStringsVersion1.String229, 229);
-            this.KeyType = dictionary.CreateString(IdentityModelStringsVersion1.String230, 230);
-            this.SymmetricKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String219, 219);
-            this.PublicKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String231, 231);
-            this.Claims = dictionary.CreateString(IdentityModelStringsVersion1.String232, 232);
-            this.InvalidRequestFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String233, 233);
-            this.FailedAuthenticationFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String136, 136);
-            this.UseKey = dictionary.CreateString(IdentityModelStringsVersion1.String234, 234);
-            this.SignWith = dictionary.CreateString(IdentityModelStringsVersion1.String235, 235);
-            this.EncryptWith = dictionary.CreateString(IdentityModelStringsVersion1.String236, 236);
-            this.EncryptionAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String237, 237);
-            this.CanonicalizationAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String238, 238);
-            this.ComputedKeyAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String239, 239);
+            RequestSecurityTokenResponseCollection = dictionary.CreateString(IdentityModelStringsVersion1.String193, 193);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String194, 194);
+            BinarySecretClauseType = dictionary.CreateString(IdentityModelStringsVersion1.String195, 195);
+            CombinedHashLabel = dictionary.CreateString(IdentityModelStringsVersion1.String196, 196);
+            RequestSecurityTokenResponse = dictionary.CreateString(IdentityModelStringsVersion1.String197, 197);
+            TokenType = dictionary.CreateString(IdentityModelStringsVersion1.String147, 147);
+            KeySize = dictionary.CreateString(IdentityModelStringsVersion1.String198, 198);
+            RequestedTokenReference = dictionary.CreateString(IdentityModelStringsVersion1.String199, 199);
+            AppliesTo = dictionary.CreateString(IdentityModelStringsVersion1.String200, 200);
+            Authenticator = dictionary.CreateString(IdentityModelStringsVersion1.String201, 201);
+            CombinedHash = dictionary.CreateString(IdentityModelStringsVersion1.String202, 202);
+            BinaryExchange = dictionary.CreateString(IdentityModelStringsVersion1.String203, 203);
+            Lifetime = dictionary.CreateString(IdentityModelStringsVersion1.String204, 204);
+            RequestedSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String205, 205);
+            Entropy = dictionary.CreateString(IdentityModelStringsVersion1.String206, 206);
+            RequestedProofToken = dictionary.CreateString(IdentityModelStringsVersion1.String207, 207);
+            ComputedKey = dictionary.CreateString(IdentityModelStringsVersion1.String208, 208);
+            RequestSecurityToken = dictionary.CreateString(IdentityModelStringsVersion1.String209, 209);
+            RequestType = dictionary.CreateString(IdentityModelStringsVersion1.String210, 210);
+            Context = dictionary.CreateString(IdentityModelStringsVersion1.String211, 211);
+            BinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String212, 212);
+            Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
+            SpnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String213, 213);
+            TlsnegoValueTypeUri = dictionary.CreateString(IdentityModelStringsVersion1.String214, 214);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String215, 215);
+            RequestSecurityTokenIssuance = dictionary.CreateString(IdentityModelStringsVersion1.String216, 216);
+            RequestSecurityTokenIssuanceResponse = dictionary.CreateString(IdentityModelStringsVersion1.String217, 217);
+            RequestTypeIssue = dictionary.CreateString(IdentityModelStringsVersion1.String218, 218);
+            SymmetricKeyBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String219, 219);
+            Psha1ComputedKeyUri = dictionary.CreateString(IdentityModelStringsVersion1.String220, 220);
+            NonceBinarySecret = dictionary.CreateString(IdentityModelStringsVersion1.String221, 221);
+            RenewTarget = dictionary.CreateString(IdentityModelStringsVersion1.String222, 222);
+            CloseTarget = dictionary.CreateString(IdentityModelStringsVersion1.String223, 223);
+            RequestedTokenClosed = dictionary.CreateString(IdentityModelStringsVersion1.String224, 224);
+            RequestedAttachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String225, 225);
+            RequestedUnattachedReference = dictionary.CreateString(IdentityModelStringsVersion1.String226, 226);
+            IssuedTokensHeader = dictionary.CreateString(IdentityModelStringsVersion1.String227, 227);
+            RequestTypeRenew = dictionary.CreateString(IdentityModelStringsVersion1.String228, 228);
+            RequestTypeClose = dictionary.CreateString(IdentityModelStringsVersion1.String229, 229);
+            KeyType = dictionary.CreateString(IdentityModelStringsVersion1.String230, 230);
+            SymmetricKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String219, 219);
+            PublicKeyType = dictionary.CreateString(IdentityModelStringsVersion1.String231, 231);
+            Claims = dictionary.CreateString(IdentityModelStringsVersion1.String232, 232);
+            InvalidRequestFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String233, 233);
+            FailedAuthenticationFaultCode = dictionary.CreateString(IdentityModelStringsVersion1.String136, 136);
+            UseKey = dictionary.CreateString(IdentityModelStringsVersion1.String234, 234);
+            SignWith = dictionary.CreateString(IdentityModelStringsVersion1.String235, 235);
+            EncryptWith = dictionary.CreateString(IdentityModelStringsVersion1.String236, 236);
+            EncryptionAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String237, 237);
+            CanonicalizationAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String238, 238);
+            ComputedKeyAlgorithm = dictionary.CreateString(IdentityModelStringsVersion1.String239, 239);
         }
 
         public TrustFeb2005Dictionary(IXmlDictionary dictionary) : base(dictionary)
         {
-            this.RequestSecurityTokenResponseCollection = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String193);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String194);
-            this.BinarySecretClauseType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String195);
-            this.CombinedHashLabel = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String196);
-            this.RequestSecurityTokenResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String197);
-            this.TokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String147);
-            this.KeySize = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String198);
-            this.RequestedTokenReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String199);
-            this.AppliesTo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String200);
-            this.Authenticator = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String201);
-            this.CombinedHash = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String202);
-            this.BinaryExchange = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String203);
-            this.Lifetime = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String204);
-            this.RequestedSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String205);
-            this.Entropy = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String206);
-            this.RequestedProofToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String207);
-            this.ComputedKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String208);
-            this.RequestSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String209);
-            this.RequestType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String210);
-            this.Context = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String211);
-            this.BinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String212);
-            this.Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
-            this.SpnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String213);
-            this.TlsnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String214);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String215);
-            this.RequestSecurityTokenIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String216);
-            this.RequestSecurityTokenIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String217);
-            this.RequestTypeIssue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String218);
-            this.SymmetricKeyBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String219);
-            this.Psha1ComputedKeyUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String220);
-            this.NonceBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String221);
-            this.RenewTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String222);
-            this.CloseTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String223);
-            this.RequestedTokenClosed = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String224);
-            this.RequestedAttachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String225);
-            this.RequestedUnattachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String226);
-            this.IssuedTokensHeader = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String227);
-            this.RequestTypeRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String228);
-            this.RequestTypeClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String229);
-            this.KeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String230);
-            this.SymmetricKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String219);
-            this.PublicKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String231);
-            this.Claims = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String232);
-            this.InvalidRequestFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String233);
-            this.FailedAuthenticationFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String136);
-            this.UseKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String234);
-            this.SignWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String235);
-            this.EncryptWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String236);
-            this.EncryptionAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String237);
-            this.CanonicalizationAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String238);
-            this.ComputedKeyAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String239);
+            RequestSecurityTokenResponseCollection = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String193);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String194);
+            BinarySecretClauseType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String195);
+            CombinedHashLabel = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String196);
+            RequestSecurityTokenResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String197);
+            TokenType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String147);
+            KeySize = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String198);
+            RequestedTokenReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String199);
+            AppliesTo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String200);
+            Authenticator = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String201);
+            CombinedHash = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String202);
+            BinaryExchange = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String203);
+            Lifetime = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String204);
+            RequestedSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String205);
+            Entropy = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String206);
+            RequestedProofToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String207);
+            ComputedKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String208);
+            RequestSecurityToken = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String209);
+            RequestType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String210);
+            Context = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String211);
+            BinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String212);
+            Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
+            SpnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String213);
+            TlsnegoValueTypeUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String214);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String215);
+            RequestSecurityTokenIssuance = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String216);
+            RequestSecurityTokenIssuanceResponse = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String217);
+            RequestTypeIssue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String218);
+            SymmetricKeyBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String219);
+            Psha1ComputedKeyUri = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String220);
+            NonceBinarySecret = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String221);
+            RenewTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String222);
+            CloseTarget = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String223);
+            RequestedTokenClosed = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String224);
+            RequestedAttachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String225);
+            RequestedUnattachedReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String226);
+            IssuedTokensHeader = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String227);
+            RequestTypeRenew = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String228);
+            RequestTypeClose = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String229);
+            KeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String230);
+            SymmetricKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String219);
+            PublicKeyType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String231);
+            Claims = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String232);
+            InvalidRequestFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String233);
+            FailedAuthenticationFaultCode = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String136);
+            UseKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String234);
+            SignWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String235);
+            EncryptWith = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String236);
+            EncryptionAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String237);
+            CanonicalizationAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String238);
+            ComputedKeyAlgorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String239);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -1231,29 +1294,31 @@ namespace System.IdentityModel
 
         public UtilityDictionary(IdentityModelDictionary dictionary)
         {
-            this.IdAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String3, 3);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String16, 16);
-            this.Timestamp = dictionary.CreateString(IdentityModelStringsVersion1.String17, 17);
-            this.CreatedElement = dictionary.CreateString(IdentityModelStringsVersion1.String18, 18);
-            this.ExpiresElement = dictionary.CreateString(IdentityModelStringsVersion1.String19, 19);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String81, 81);
+            IdAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String3, 3);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String16, 16);
+            Timestamp = dictionary.CreateString(IdentityModelStringsVersion1.String17, 17);
+            CreatedElement = dictionary.CreateString(IdentityModelStringsVersion1.String18, 18);
+            ExpiresElement = dictionary.CreateString(IdentityModelStringsVersion1.String19, 19);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String81, 81);
         }
 
         public UtilityDictionary(IXmlDictionary dictionary)
         {
-            this.IdAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String3);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String16);
-            this.Timestamp = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String17);
-            this.CreatedElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String18);
-            this.ExpiresElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String19);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String81);
+            IdAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String3);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String16);
+            Timestamp = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String17);
+            CreatedElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String18);
+            ExpiresElement = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String19);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String81);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -1284,57 +1349,59 @@ namespace System.IdentityModel
 
         public XmlEncryptionDictionary(IdentityModelDictionary dictionary)
         {
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String156, 156);
-            this.DataReference = dictionary.CreateString(IdentityModelStringsVersion1.String157, 157);
-            this.EncryptedData = dictionary.CreateString(IdentityModelStringsVersion1.String158, 158);
-            this.EncryptionMethod = dictionary.CreateString(IdentityModelStringsVersion1.String159, 159);
-            this.CipherData = dictionary.CreateString(IdentityModelStringsVersion1.String160, 160);
-            this.CipherValue = dictionary.CreateString(IdentityModelStringsVersion1.String161, 161);
-            this.ReferenceList = dictionary.CreateString(IdentityModelStringsVersion1.String162, 162);
-            this.Encoding = dictionary.CreateString(IdentityModelStringsVersion1.String163, 163);
-            this.MimeType = dictionary.CreateString(IdentityModelStringsVersion1.String164, 164);
-            this.Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
-            this.Id = dictionary.CreateString(IdentityModelStringsVersion1.String3, 3);
-            this.CarriedKeyName = dictionary.CreateString(IdentityModelStringsVersion1.String165, 165);
-            this.Recipient = dictionary.CreateString(IdentityModelStringsVersion1.String166, 166);
-            this.EncryptedKey = dictionary.CreateString(IdentityModelStringsVersion1.String167, 167);
-            this.URI = dictionary.CreateString(IdentityModelStringsVersion1.String1, 1);
-            this.KeyReference = dictionary.CreateString(IdentityModelStringsVersion1.String168, 168);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String169, 169);
-            this.ElementType = dictionary.CreateString(IdentityModelStringsVersion1.String170, 170);
-            this.ContentType = dictionary.CreateString(IdentityModelStringsVersion1.String171, 171);
-            this.AlgorithmAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String156, 156);
+            DataReference = dictionary.CreateString(IdentityModelStringsVersion1.String157, 157);
+            EncryptedData = dictionary.CreateString(IdentityModelStringsVersion1.String158, 158);
+            EncryptionMethod = dictionary.CreateString(IdentityModelStringsVersion1.String159, 159);
+            CipherData = dictionary.CreateString(IdentityModelStringsVersion1.String160, 160);
+            CipherValue = dictionary.CreateString(IdentityModelStringsVersion1.String161, 161);
+            ReferenceList = dictionary.CreateString(IdentityModelStringsVersion1.String162, 162);
+            Encoding = dictionary.CreateString(IdentityModelStringsVersion1.String163, 163);
+            MimeType = dictionary.CreateString(IdentityModelStringsVersion1.String164, 164);
+            Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
+            Id = dictionary.CreateString(IdentityModelStringsVersion1.String3, 3);
+            CarriedKeyName = dictionary.CreateString(IdentityModelStringsVersion1.String165, 165);
+            Recipient = dictionary.CreateString(IdentityModelStringsVersion1.String166, 166);
+            EncryptedKey = dictionary.CreateString(IdentityModelStringsVersion1.String167, 167);
+            URI = dictionary.CreateString(IdentityModelStringsVersion1.String1, 1);
+            KeyReference = dictionary.CreateString(IdentityModelStringsVersion1.String168, 168);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String169, 169);
+            ElementType = dictionary.CreateString(IdentityModelStringsVersion1.String170, 170);
+            ContentType = dictionary.CreateString(IdentityModelStringsVersion1.String171, 171);
+            AlgorithmAttribute = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
         }
 
         public XmlEncryptionDictionary(IXmlDictionary dictionary)
         {
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String156);
-            this.DataReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String157);
-            this.EncryptedData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String158);
-            this.EncryptionMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String159);
-            this.CipherData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String160);
-            this.CipherValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String161);
-            this.ReferenceList = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String162);
-            this.Encoding = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String163);
-            this.MimeType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String164);
-            this.Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
-            this.Id = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String3);
-            this.CarriedKeyName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String165);
-            this.Recipient = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String166);
-            this.EncryptedKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String167);
-            this.URI = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String1);
-            this.KeyReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String168);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String169);
-            this.ElementType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String170);
-            this.ContentType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String171);
-            this.AlgorithmAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String156);
+            DataReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String157);
+            EncryptedData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String158);
+            EncryptionMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String159);
+            CipherData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String160);
+            CipherValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String161);
+            ReferenceList = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String162);
+            Encoding = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String163);
+            MimeType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String164);
+            Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
+            Id = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String3);
+            CarriedKeyName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String165);
+            Recipient = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String166);
+            EncryptedKey = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String167);
+            URI = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String1);
+            KeyReference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String168);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String169);
+            ElementType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String170);
+            ContentType = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String171);
+            AlgorithmAttribute = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }
@@ -1373,73 +1440,75 @@ namespace System.IdentityModel
 
         public XmlSignatureDictionary(IdentityModelDictionary dictionary)
         {
-            this.Algorithm = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
-            this.URI = dictionary.CreateString(IdentityModelStringsVersion1.String1, 1);
-            this.Reference = dictionary.CreateString(IdentityModelStringsVersion1.String2, 2);
-            this.Transforms = dictionary.CreateString(IdentityModelStringsVersion1.String4, 4);
-            this.Transform = dictionary.CreateString(IdentityModelStringsVersion1.String5, 5);
-            this.DigestMethod = dictionary.CreateString(IdentityModelStringsVersion1.String6, 6);
-            this.DigestValue = dictionary.CreateString(IdentityModelStringsVersion1.String7, 7);
-            this.Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String8, 8);
-            this.EnvelopedSignature = dictionary.CreateString(IdentityModelStringsVersion1.String9, 9);
-            this.KeyInfo = dictionary.CreateString(IdentityModelStringsVersion1.String10, 10);
-            this.Signature = dictionary.CreateString(IdentityModelStringsVersion1.String11, 11);
-            this.SignedInfo = dictionary.CreateString(IdentityModelStringsVersion1.String12, 12);
-            this.CanonicalizationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String13, 13);
-            this.SignatureMethod = dictionary.CreateString(IdentityModelStringsVersion1.String14, 14);
-            this.SignatureValue = dictionary.CreateString(IdentityModelStringsVersion1.String15, 15);
-            this.KeyName = dictionary.CreateString(IdentityModelStringsVersion1.String82, 82);
-            this.Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
-            this.MgmtData = dictionary.CreateString(IdentityModelStringsVersion1.String84, 84);
-            this.Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String85, 85);
-            this.KeyValue = dictionary.CreateString(IdentityModelStringsVersion1.String86, 86);
-            this.RsaKeyValue = dictionary.CreateString(IdentityModelStringsVersion1.String87, 87);
-            this.Modulus = dictionary.CreateString(IdentityModelStringsVersion1.String88, 88);
-            this.Exponent = dictionary.CreateString(IdentityModelStringsVersion1.String89, 89);
-            this.X509Data = dictionary.CreateString(IdentityModelStringsVersion1.String90, 90);
-            this.X509IssuerSerial = dictionary.CreateString(IdentityModelStringsVersion1.String91, 91);
-            this.X509IssuerName = dictionary.CreateString(IdentityModelStringsVersion1.String92, 92);
-            this.X509SerialNumber = dictionary.CreateString(IdentityModelStringsVersion1.String93, 93);
-            this.X509Certificate = dictionary.CreateString(IdentityModelStringsVersion1.String94, 94);
+            Algorithm = dictionary.CreateString(IdentityModelStringsVersion1.String0, 0);
+            URI = dictionary.CreateString(IdentityModelStringsVersion1.String1, 1);
+            Reference = dictionary.CreateString(IdentityModelStringsVersion1.String2, 2);
+            Transforms = dictionary.CreateString(IdentityModelStringsVersion1.String4, 4);
+            Transform = dictionary.CreateString(IdentityModelStringsVersion1.String5, 5);
+            DigestMethod = dictionary.CreateString(IdentityModelStringsVersion1.String6, 6);
+            DigestValue = dictionary.CreateString(IdentityModelStringsVersion1.String7, 7);
+            Namespace = dictionary.CreateString(IdentityModelStringsVersion1.String8, 8);
+            EnvelopedSignature = dictionary.CreateString(IdentityModelStringsVersion1.String9, 9);
+            KeyInfo = dictionary.CreateString(IdentityModelStringsVersion1.String10, 10);
+            Signature = dictionary.CreateString(IdentityModelStringsVersion1.String11, 11);
+            SignedInfo = dictionary.CreateString(IdentityModelStringsVersion1.String12, 12);
+            CanonicalizationMethod = dictionary.CreateString(IdentityModelStringsVersion1.String13, 13);
+            SignatureMethod = dictionary.CreateString(IdentityModelStringsVersion1.String14, 14);
+            SignatureValue = dictionary.CreateString(IdentityModelStringsVersion1.String15, 15);
+            KeyName = dictionary.CreateString(IdentityModelStringsVersion1.String82, 82);
+            Type = dictionary.CreateString(IdentityModelStringsVersion1.String83, 83);
+            MgmtData = dictionary.CreateString(IdentityModelStringsVersion1.String84, 84);
+            Prefix = dictionary.CreateString(IdentityModelStringsVersion1.String85, 85);
+            KeyValue = dictionary.CreateString(IdentityModelStringsVersion1.String86, 86);
+            RsaKeyValue = dictionary.CreateString(IdentityModelStringsVersion1.String87, 87);
+            Modulus = dictionary.CreateString(IdentityModelStringsVersion1.String88, 88);
+            Exponent = dictionary.CreateString(IdentityModelStringsVersion1.String89, 89);
+            X509Data = dictionary.CreateString(IdentityModelStringsVersion1.String90, 90);
+            X509IssuerSerial = dictionary.CreateString(IdentityModelStringsVersion1.String91, 91);
+            X509IssuerName = dictionary.CreateString(IdentityModelStringsVersion1.String92, 92);
+            X509SerialNumber = dictionary.CreateString(IdentityModelStringsVersion1.String93, 93);
+            X509Certificate = dictionary.CreateString(IdentityModelStringsVersion1.String94, 94);
         }
 
         public XmlSignatureDictionary(IXmlDictionary dictionary)
         {
-            this.Algorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
-            this.URI = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String1);
-            this.Reference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String2);
-            this.Transforms = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String4);
-            this.Transform = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String5);
-            this.DigestMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String6);
-            this.DigestValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String7);
-            this.Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String8);
-            this.EnvelopedSignature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String9);
-            this.KeyInfo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String10);
-            this.Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String11);
-            this.SignedInfo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String12);
-            this.CanonicalizationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String13);
-            this.SignatureMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String14);
-            this.SignatureValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String15);
-            this.KeyName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String82);
-            this.Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
-            this.MgmtData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String84);
-            this.Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String85);
-            this.KeyValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String86);
-            this.RsaKeyValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String87);
-            this.Modulus = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String88);
-            this.Exponent = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String89);
-            this.X509Data = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String90);
-            this.X509IssuerSerial = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String91);
-            this.X509IssuerName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String92);
-            this.X509SerialNumber = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String93);
-            this.X509Certificate = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String94);
+            Algorithm = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String0);
+            URI = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String1);
+            Reference = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String2);
+            Transforms = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String4);
+            Transform = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String5);
+            DigestMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String6);
+            DigestValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String7);
+            Namespace = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String8);
+            EnvelopedSignature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String9);
+            KeyInfo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String10);
+            Signature = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String11);
+            SignedInfo = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String12);
+            CanonicalizationMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String13);
+            SignatureMethod = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String14);
+            SignatureValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String15);
+            KeyName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String82);
+            Type = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String83);
+            MgmtData = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String84);
+            Prefix = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String85);
+            KeyValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String86);
+            RsaKeyValue = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String87);
+            Modulus = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String88);
+            Exponent = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String89);
+            X509Data = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String90);
+            X509IssuerSerial = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String91);
+            X509IssuerName = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String92);
+            X509SerialNumber = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String93);
+            X509Certificate = LookupDictionaryString(dictionary, IdentityModelStringsVersion1.String94);
         }
 
         private XmlDictionaryString LookupDictionaryString(IXmlDictionary dictionary, string value)
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.XDCannotFindValueInDictionaryString, value));
+            }
 
             return expectedValue;
         }

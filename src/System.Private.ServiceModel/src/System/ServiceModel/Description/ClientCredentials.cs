@@ -26,17 +26,34 @@ namespace System.ServiceModel.Description
         protected ClientCredentials(ClientCredentials other)
         {
             if (other == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("other");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(other));
+            }
+
             if (other._userName != null)
+            {
                 _userName = new UserNamePasswordClientCredential(other._userName);
+            }
+
             if (other._clientCertificate != null)
+            {
                 _clientCertificate = new X509CertificateInitiatorClientCredential(other._clientCertificate);
+            }
+
             if (other._serviceCertificate != null)
+            {
                 _serviceCertificate = new X509CertificateRecipientClientCredential(other._serviceCertificate);
+            }
+
             if (other._windows != null)
+            {
                 _windows = new WindowsClientCredential(other._windows);
+            }
+
             if (other._httpDigest != null)
+            {
                 _httpDigest = new HttpDigestClientCredential(other._httpDigest);
+            }
 
             _isReadOnly = other._isReadOnly;
         }
@@ -49,7 +66,9 @@ namespace System.ServiceModel.Description
                 {
                     _userName = new UserNamePasswordClientCredential();
                     if (_isReadOnly)
+                    {
                         _userName.MakeReadOnly();
+                    }
                 }
                 return _userName;
             }
@@ -63,7 +82,9 @@ namespace System.ServiceModel.Description
                 {
                     _clientCertificate = new X509CertificateInitiatorClientCredential();
                     if (_isReadOnly)
+                    {
                         _clientCertificate.MakeReadOnly();
+                    }
                 }
                 return _clientCertificate;
             }
@@ -77,7 +98,9 @@ namespace System.ServiceModel.Description
                 {
                     _serviceCertificate = new X509CertificateRecipientClientCredential();
                     if (_isReadOnly)
+                    {
                         _serviceCertificate.MakeReadOnly();
+                    }
                 }
                 return _serviceCertificate;
             }
@@ -91,7 +114,9 @@ namespace System.ServiceModel.Description
                 {
                     _windows = new WindowsClientCredential();
                     if (_isReadOnly)
+                    {
                         _windows.MakeReadOnly();
+                    }
                 }
                 return _windows;
             }
@@ -105,7 +130,9 @@ namespace System.ServiceModel.Description
                 {
                     _httpDigest = new HttpDigestClientCredential();
                     if (_isReadOnly)
+                    {
                         _httpDigest.MakeReadOnly();
+                    }
                 }
                 return _httpDigest;
             }
@@ -145,7 +172,7 @@ namespace System.ServiceModel.Description
         {
             if (bindingParameters == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingParameters");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingParameters));
             }
             // throw if bindingParameters already has a SecurityCredentialsManager
             SecurityCredentialsManager otherCredentialsManager = bindingParameters.Find<SecurityCredentialsManager>();
@@ -167,7 +194,7 @@ namespace System.ServiceModel.Description
         {
             if (serviceEndpoint == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("serviceEndpoint");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(serviceEndpoint));
             }
 
             if (serviceEndpoint.Binding == null)
@@ -188,15 +215,29 @@ namespace System.ServiceModel.Description
             _isReadOnly = true;
 
             if (_clientCertificate != null)
+            {
                 _clientCertificate.MakeReadOnly();
+            }
+
             if (_serviceCertificate != null)
+            {
                 _serviceCertificate.MakeReadOnly();
+            }
+
             if (_userName != null)
+            {
                 _userName.MakeReadOnly();
+            }
+
             if (_windows != null)
+            {
                 _windows.MakeReadOnly();
+            }
+
             if (_httpDigest != null)
+            {
                 _httpDigest.MakeReadOnly();
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace System.ServiceModel.Channels
 
         protected ChannelFactoryBase(IDefaultCommunicationTimeouts timeouts)
         {
-            this.InitializeTimeouts(timeouts);
+            InitializeTimeouts(timeouts);
         }
 
         protected override TimeSpan DefaultCloseTimeout
@@ -102,32 +102,38 @@ namespace System.ServiceModel.Channels
         protected ChannelFactoryBase(IDefaultCommunicationTimeouts timeouts)
             : base(timeouts)
         {
-            _channels = new CommunicationObjectManager<IChannel>(this.ThisLock);
+            _channels = new CommunicationObjectManager<IChannel>(ThisLock);
         }
 
         public TChannel CreateChannel(EndpointAddress address)
         {
             if (address == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("address");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(address));
+            }
 
-            return this.InternalCreateChannel(address, address.Uri);
+            return InternalCreateChannel(address, address.Uri);
         }
 
         public TChannel CreateChannel(EndpointAddress address, Uri via)
         {
             if (address == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("address");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(address));
+            }
 
             if (via == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("via");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(via));
+            }
 
-            return this.InternalCreateChannel(address, via);
+            return InternalCreateChannel(address, via);
         }
 
         private TChannel InternalCreateChannel(EndpointAddress address, Uri via)
         {
-            this.ValidateCreateChannel();
-            TChannel channel = this.OnCreateChannel(address, via);
+            ValidateCreateChannel();
+            TChannel channel = OnCreateChannel(address, via);
 
             bool success = false;
 
@@ -139,7 +145,9 @@ namespace System.ServiceModel.Channels
             finally
             {
                 if (!success)
+                {
                     ((IChannel)(object)channel).Abort();
+                }
             }
 
             return channel;
@@ -150,9 +158,9 @@ namespace System.ServiceModel.Channels
         protected void ValidateCreateChannel()
         {
             ThrowIfDisposed();
-            if (this.State != CommunicationState.Opened)
+            if (State != CommunicationState.Opened)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ChannelFactoryCannotBeUsedToCreateChannels, this.GetType().ToString())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ChannelFactoryCannotBeUsedToCreateChannels, GetType().ToString())));
             }
         }
 
@@ -160,7 +168,9 @@ namespace System.ServiceModel.Channels
         {
             IChannel[] currentChannels = _channels.ToArray();
             foreach (IChannel channel in currentChannels)
+            {
                 channel.Abort();
+            }
 
             _channels.Abort();
         }
@@ -170,7 +180,9 @@ namespace System.ServiceModel.Channels
             IChannel[] currentChannels = _channels.ToArray();
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             foreach (IChannel channel in currentChannels)
+            {
                 channel.Close(timeoutHelper.RemainingTime());
+            }
 
             _channels.Close(timeoutHelper.RemainingTime());
         }

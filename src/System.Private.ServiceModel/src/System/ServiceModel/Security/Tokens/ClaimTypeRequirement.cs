@@ -8,7 +8,6 @@ namespace System.ServiceModel.Security.Tokens
     public class ClaimTypeRequirement
     {
         internal const bool DefaultIsOptional = false;
-        private string _claimType;
         private bool _isOptional;
 
         public ClaimTypeRequirement(string claimType)
@@ -20,21 +19,18 @@ namespace System.ServiceModel.Security.Tokens
         {
             if (claimType == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claimType");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claimType));
             }
             if (claimType.Length <= 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("claimType", SR.ClaimTypeCannotBeEmpty);
             }
 
-            _claimType = claimType;
+            ClaimType = claimType;
             _isOptional = isOptional;
         }
 
-        public string ClaimType
-        {
-            get { return _claimType; }
-        }
+        public string ClaimType { get; }
 
         public bool IsOptional
         {

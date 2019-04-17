@@ -22,7 +22,9 @@ namespace System.ServiceModel.Channels
         public virtual IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
 
             return context.BuildInnerChannelFactory<TChannel>();
         }
@@ -30,7 +32,9 @@ namespace System.ServiceModel.Channels
         public virtual bool CanBuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
+            }
 
             return context.CanBuildInnerChannelFactory<TChannel>();
         }
@@ -39,7 +43,7 @@ namespace System.ServiceModel.Channels
 
         internal T GetIndividualProperty<T>() where T : class
         {
-            return this.GetProperty<T>(new BindingContext(new CustomBinding(), new BindingParameterCollection()));
+            return GetProperty<T>(new BindingContext(new CustomBinding(), new BindingParameterCollection()));
         }
 
         internal virtual bool IsMatch(BindingElement b)

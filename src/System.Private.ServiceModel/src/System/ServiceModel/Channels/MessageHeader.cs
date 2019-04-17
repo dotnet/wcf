@@ -43,7 +43,7 @@ namespace System.ServiceModel.Channels
         {
             if (messageVersion == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("messageVersion");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(messageVersion));
             }
 
             return true;
@@ -103,9 +103,15 @@ namespace System.ServiceModel.Channels
         public void WriteHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             if (writer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("writer"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(writer)));
+            }
+
             if (messageVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("messageVersion"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(messageVersion)));
+            }
+
             OnWriteStartHeader(writer, messageVersion);
             OnWriteHeaderContents(writer, messageVersion);
             writer.WriteEndElement();
@@ -114,24 +120,36 @@ namespace System.ServiceModel.Channels
         public void WriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             if (writer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("writer"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(writer)));
+            }
+
             if (messageVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("messageVersion"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(messageVersion)));
+            }
+
             OnWriteStartHeader(writer, messageVersion);
         }
 
         protected virtual void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            writer.WriteStartElement(this.Name, this.Namespace);
+            writer.WriteStartElement(Name, Namespace);
             WriteHeaderAttributes(writer, messageVersion);
         }
 
         public void WriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             if (writer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("writer"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(writer)));
+            }
+
             if (messageVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("messageVersion"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(messageVersion)));
+            }
+
             OnWriteHeaderContents(writer, messageVersion);
         }
 
@@ -139,13 +157,21 @@ namespace System.ServiceModel.Channels
 
         protected void WriteHeaderAttributes(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
-            string actor = this.Actor;
+            string actor = Actor;
             if (actor.Length > 0)
+            {
                 writer.WriteAttributeString(messageVersion.Envelope.DictionaryActor, messageVersion.Envelope.DictionaryNamespace, actor);
-            if (this.MustUnderstand)
+            }
+
+            if (MustUnderstand)
+            {
                 writer.WriteAttributeString(XD.MessageDictionary.MustUnderstand, messageVersion.Envelope.DictionaryNamespace, "1");
-            if (this.Relay && messageVersion.Envelope == EnvelopeVersion.Soap12)
+            }
+
+            if (Relay && messageVersion.Envelope == EnvelopeVersion.Soap12)
+            {
                 writer.WriteAttributeString(XD.Message12Dictionary.Relay, XD.Message12Dictionary.Namespace, "1");
+            }
         }
 
         public static MessageHeader CreateHeader(string name, string ns, object value)
@@ -186,7 +212,9 @@ namespace System.ServiceModel.Channels
         public static MessageHeader CreateHeader(string name, string ns, object value, XmlObjectSerializer serializer, bool mustUnderstand, string actor, bool relay)
         {
             if (serializer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("serializer"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(serializer)));
+            }
 
             return new XmlObjectSerializerHeader(name, ns, value, serializer, mustUnderstand, actor, relay);
         }
@@ -207,9 +235,13 @@ namespace System.ServiceModel.Channels
             {
                 string mustUnderstandString = reader.GetAttribute(XD.MessageDictionary.MustUnderstand, version.Envelope.DictionaryNamespace);
                 if (mustUnderstandString != null && ToBoolean(mustUnderstandString))
+                {
                     mustUnderstand = true;
+                }
                 else
+                {
                     mustUnderstand = false;
+                }
 
                 if (mustUnderstand && attributeCount == 1)
                 {
@@ -220,15 +252,21 @@ namespace System.ServiceModel.Channels
                 {
                     actor = reader.GetAttribute(version.Envelope.DictionaryActor, version.Envelope.DictionaryNamespace);
                     if (actor == null)
+                    {
                         actor = "";
+                    }
 
                     if (version.Envelope == EnvelopeVersion.Soap12)
                     {
                         string relayString = reader.GetAttribute(XD.Message12Dictionary.Relay, version.Envelope.DictionaryNamespace);
                         if (relayString != null && ToBoolean(relayString))
+                        {
                             relay = true;
+                        }
                         else
+                        {
                             relay = false;
+                        }
                     }
                     else
                     {
@@ -241,7 +279,9 @@ namespace System.ServiceModel.Channels
                 {
                     string refParam = reader.GetAttribute(XD.AddressingDictionary.IsReferenceParameter, version.Addressing.DictionaryNamespace);
                     if (refParam != null)
+                    {
                         isReferenceParameter = ToBoolean(refParam);
+                    }
                 }
             }
         }
@@ -320,15 +360,10 @@ namespace System.ServiceModel.Channels
 
         private XmlObjectSerializerHeader(XmlObjectSerializer serializer, bool mustUnderstand, string actor, bool relay)
         {
-            if (actor == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("actor");
-            }
-
             _mustUnderstand = mustUnderstand;
             _relay = relay;
             _serializer = serializer;
-            _actor = actor;
+            _actor = actor ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(actor));
             if (actor == EnvelopeVersion.Soap12.UltimateDestinationActor)
             {
                 _isOneOneSupported = false;
@@ -357,7 +392,7 @@ namespace System.ServiceModel.Channels
         {
             if (null == name)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
             }
 
             if (name.Length == 0)
@@ -367,7 +402,7 @@ namespace System.ServiceModel.Channels
 
             if (ns == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("ns");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(ns));
             }
             if (ns.Length > 0)
             {
@@ -382,7 +417,7 @@ namespace System.ServiceModel.Channels
         {
             if (messageVersion == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("messageVersion");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(messageVersion));
             }
 
             if (messageVersion.Envelope == EnvelopeVersion.Soap12)
@@ -435,7 +470,7 @@ namespace System.ServiceModel.Channels
                 if (_serializer == null)
                 {
                     _serializer = DataContractSerializerDefaults.CreateSerializer(
-                        (_objectToSerialize == null ? typeof(object) : _objectToSerialize.GetType()), this.Name, this.Namespace, int.MaxValue/*maxItems*/);
+                        (_objectToSerialize == null ? typeof(object) : _objectToSerialize.GetType()), Name, Namespace, int.MaxValue/*maxItems*/);
                 }
 
                 _serializer.WriteObjectContent(writer, _objectToSerialize);
@@ -450,7 +485,10 @@ namespace System.ServiceModel.Channels
         protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             if (!IsMessageVersionSupported(messageVersion))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionNotSupported, this.GetType().FullName, messageVersion.ToString()), "version"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionNotSupported, GetType().FullName, messageVersion.ToString()), "version"));
+            }
+
             XmlDictionaryReader reader = GetHeaderReader();
             writer.WriteStartElement(reader.Prefix, reader.LocalName, reader.NamespaceURI);
             writer.WriteAttributes(reader, false);
@@ -462,7 +500,10 @@ namespace System.ServiceModel.Channels
             XmlDictionaryReader reader = GetHeaderReader();
             reader.ReadStartElement();
             while (reader.NodeType != XmlNodeType.EndElement)
+            {
                 writer.WriteNode(reader, false);
+            }
+
             reader.ReadEndElement();
             reader.Dispose();
         }
@@ -529,12 +570,16 @@ namespace System.ServiceModel.Channels
             // Write an enclosing Envelope tag
             writer.WriteStartElement(MessageStrings.Envelope);
             if (envelopeAttributes != null)
+            {
                 XmlAttributeHolder.WriteAttributes(envelopeAttributes, writer);
+            }
 
             // Write and enclosing Header tag
             writer.WriteStartElement(MessageStrings.Header);
             if (headerAttributes != null)
+            {
                 XmlAttributeHolder.WriteAttributes(headerAttributes, writer);
+            }
 
             writer.WriteNode(reader, false);
 
@@ -577,7 +622,10 @@ namespace System.ServiceModel.Channels
         public override bool IsMessageVersionSupported(MessageVersion messageVersion)
         {
             if (messageVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("messageVersion"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(messageVersion)));
+            }
+
             return messageVersion == _version;
         }
 

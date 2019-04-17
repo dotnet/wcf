@@ -5,7 +5,6 @@
 
 using System.IO;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.Threading.Tasks;
 
@@ -13,8 +12,6 @@ namespace System.ServiceModel.Channels
 {
     internal abstract class StreamSecurityUpgradeInitiatorBase : StreamSecurityUpgradeInitiator
     {
-        private EndpointAddress _remoteAddress;
-        private Uri _via;
         private SecurityMessageProperty _remoteSecurity;
         private bool _securityUpgraded;
         private string _nextUpgrade;
@@ -22,26 +19,14 @@ namespace System.ServiceModel.Channels
 
         protected StreamSecurityUpgradeInitiatorBase(string upgradeString, EndpointAddress remoteAddress, Uri via)
         {
-            _remoteAddress = remoteAddress;
-            _via = via;
+            RemoteAddress = remoteAddress;
+            Via = via;
             _nextUpgrade = upgradeString;
         }
 
-        protected EndpointAddress RemoteAddress
-        {
-            get
-            {
-                return _remoteAddress;
-            }
-        }
+        protected EndpointAddress RemoteAddress { get; }
 
-        protected Uri Via
-        {
-            get
-            {
-                return _via;
-            }
-        }
+        protected Uri Via { get; }
 
         public override string GetNextUpgrade()
         {
@@ -64,15 +49,15 @@ namespace System.ServiceModel.Channels
         {
             if (stream == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("stream");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(stream));
             }
 
             if (!_isOpen)
             {
-                this.Open(TimeSpan.Zero);
+                Open(TimeSpan.Zero);
             }
 
-            Stream result = this.OnInitiateUpgrade(stream, out _remoteSecurity);
+            Stream result = OnInitiateUpgrade(stream, out _remoteSecurity);
             _securityUpgraded = true;
             return result;
         }
@@ -81,7 +66,7 @@ namespace System.ServiceModel.Channels
         {
             if (stream == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("stream");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(stream));
             }
 
             if (!_isOpen)

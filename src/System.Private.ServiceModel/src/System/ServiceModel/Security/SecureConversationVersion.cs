@@ -9,22 +9,15 @@ namespace System.ServiceModel.Security
 {
     public abstract class SecureConversationVersion
     {
-        private readonly XmlDictionaryString _scNamespace;
         private readonly XmlDictionaryString _prefix;
 
         internal SecureConversationVersion(XmlDictionaryString ns, XmlDictionaryString prefix)
         {
-            _scNamespace = ns;
+            Namespace = ns;
             _prefix = prefix;
         }
 
-        public XmlDictionaryString Namespace
-        {
-            get
-            {
-                return _scNamespace;
-            }
-        }
+        public XmlDictionaryString Namespace { get; }
 
         public XmlDictionaryString Prefix
         {

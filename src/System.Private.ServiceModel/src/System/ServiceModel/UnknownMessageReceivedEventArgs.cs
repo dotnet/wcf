@@ -9,16 +9,11 @@ namespace System.ServiceModel
 {
     public sealed class UnknownMessageReceivedEventArgs : EventArgs
     {
-        private Message _message;
-
         internal UnknownMessageReceivedEventArgs(Message message)
         {
-            _message = message;
+            Message = message;
         }
 
-        public Message Message
-        {
-            get { return _message; }
-        }
+        public Message Message { get; }
     }
 }

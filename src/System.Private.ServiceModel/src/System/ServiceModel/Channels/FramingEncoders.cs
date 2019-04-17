@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Runtime;
 using System.Text;
 
@@ -30,7 +29,7 @@ namespace System.ServiceModel.Channels
         {
             if (value < 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                     SR.ValueMustBeNonNegative));
             }
 
@@ -45,64 +44,72 @@ namespace System.ServiceModel.Channels
     }
     internal abstract class EncodedFramingRecord
     {
-        private byte[] _encodedBytes;
-
         protected EncodedFramingRecord(byte[] encodedBytes)
         {
-            _encodedBytes = encodedBytes;
+            EncodedBytes = encodedBytes;
         }
 
         internal EncodedFramingRecord(FramingRecordType recordType, string value)
         {
             int valueByteCount = Encoding.UTF8.GetByteCount(value);
             int sizeByteCount = IntEncoder.GetEncodedSize(valueByteCount);
-            _encodedBytes = Fx.AllocateByteArray(checked(1 + sizeByteCount + valueByteCount));
-            _encodedBytes[0] = (byte)recordType;
+            EncodedBytes = Fx.AllocateByteArray(checked(1 + sizeByteCount + valueByteCount));
+            EncodedBytes[0] = (byte)recordType;
             int offset = 1;
-            offset += IntEncoder.Encode(valueByteCount, _encodedBytes, offset);
-            Encoding.UTF8.GetBytes(value, 0, value.Length, _encodedBytes, offset);
-            SetEncodedBytes(_encodedBytes);
+            offset += IntEncoder.Encode(valueByteCount, EncodedBytes, offset);
+            Encoding.UTF8.GetBytes(value, 0, value.Length, EncodedBytes, offset);
+            SetEncodedBytes(EncodedBytes);
         }
 
 
-        public byte[] EncodedBytes
-        {
-            get { return _encodedBytes; }
-        }
+        public byte[] EncodedBytes { get; private set; }
 
         protected void SetEncodedBytes(byte[] encodedBytes)
         {
-            _encodedBytes = encodedBytes;
+            EncodedBytes = encodedBytes;
         }
 
         public override int GetHashCode()
         {
-            return (_encodedBytes[0] << 16) |
-                (_encodedBytes[_encodedBytes.Length / 2] << 8) |
-                _encodedBytes[_encodedBytes.Length - 1];
+            return (EncodedBytes[0] << 16) |
+                (EncodedBytes[EncodedBytes.Length / 2] << 8) |
+                EncodedBytes[EncodedBytes.Length - 1];
         }
 
         public override bool Equals(object o)
         {
             if (o is EncodedFramingRecord)
+            {
                 return Equals((EncodedFramingRecord)o);
+            }
+
             return false;
         }
 
         public bool Equals(EncodedFramingRecord other)
         {
             if (other == null)
-                return false;
-            if (other == this)
-                return true;
-            byte[] otherBytes = other._encodedBytes;
-            if (_encodedBytes.Length != otherBytes.Length)
-                return false;
-
-            for (int i = 0; i < _encodedBytes.Length; i++)
             {
-                if (_encodedBytes[i] != otherBytes[i])
+                return false;
+            }
+
+            if (other == this)
+            {
+                return true;
+            }
+
+            byte[] otherBytes = other.EncodedBytes;
+            if (EncodedBytes.Length != otherBytes.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < EncodedBytes.Length; i++)
+            {
+                if (EncodedBytes[i] != otherBytes[i])
+                {
                     return false;
+                }
             }
 
             return true;

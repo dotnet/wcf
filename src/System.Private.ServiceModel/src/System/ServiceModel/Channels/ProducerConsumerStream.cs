@@ -191,46 +191,36 @@ namespace System.ServiceModel.Channels
 #pragma warning restore 659,661
         {
             public static readonly WriteBufferWrapper EmptyContainer = new WriteBufferWrapper(null, -1, -1, true);
-
-            private byte[] _buffer;
-            private int _offset;
             private int _count;
             private readonly bool _readOnly;
-            private int _bytesWritten;
 
             public WriteBufferWrapper(byte[] buffer, int offset, int count) : this(buffer, offset, count, false) { }
             private WriteBufferWrapper(byte[] buffer, int offset, int count, bool isReadOnly) : this()
             {
-                _buffer = buffer;
-                _offset = offset;
+                ByteBuffer = buffer;
+                Offset = offset;
                 _count = count;
                 _readOnly = isReadOnly;
             }
 
-            public byte[] ByteBuffer
-            {
-                get { return _buffer; }
-            }
+            public byte[] ByteBuffer { get; }
 
-            public int Offset
-            {
-                get { return _offset; }
-            }
+            public int Offset { get; private set; }
 
             public int Count
             {
                 get { return _count; }
             }
 
-            public int BytesWritten
-            {
-                get { return _bytesWritten; }
-            }
+            public int BytesWritten { get; private set; }
 
             public override bool Equals(object obj)
             {
                 if (obj is WriteBufferWrapper)
-                    return this.Equals((WriteBufferWrapper)obj);
+                {
+                    return Equals((WriteBufferWrapper)obj);
+                }
+
                 return false;
             }
 
@@ -244,7 +234,7 @@ namespace System.ServiceModel.Channels
                     return _readOnly == other._readOnly;
                 }
 
-                if (other._buffer == _buffer && other._offset == _offset)
+                if (other.ByteBuffer == ByteBuffer && other.Offset == Offset)
                 {
                     return other._count == _count;
                 }
@@ -270,10 +260,10 @@ namespace System.ServiceModel.Channels
                 }
 
                 int bytesToCopy = Math.Min(_count, srcCount);
-                Buffer.BlockCopy(srcBuffer, srcOffset, _buffer, _offset, bytesToCopy);
-                _offset += bytesToCopy;
+                Buffer.BlockCopy(srcBuffer, srcOffset, ByteBuffer, Offset, bytesToCopy);
+                Offset += bytesToCopy;
                 _count -= bytesToCopy;
-                _bytesWritten += bytesToCopy;
+                BytesWritten += bytesToCopy;
                 return bytesToCopy;
             }
         }

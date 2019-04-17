@@ -15,31 +15,21 @@ namespace System.ServiceModel
         private string _action;
         private string _name;
         private string _ns;
-        private Type _type;
         private ProtectionLevel _protectionLevel = ProtectionLevel.None;
-        private bool _hasProtectionLevel = false;
 
         public FaultContractAttribute(Type detailType)
         {
-            if (detailType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("detailType"));
-
-            _type = detailType;
+            DetailType = detailType ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(detailType)));
         }
 
-        public Type DetailType
-        {
-            get { return _type; }
-        }
+        public Type DetailType { get; }
 
         public string Action
         {
             get { return _action; }
             set
             {
-                if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                _action = value;
+                _action = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -49,10 +39,16 @@ namespace System.ServiceModel
             set
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
                 if (value == string.Empty)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value",
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value),
                         SR.SFxNameCannotBeEmpty));
+                }
+
                 _name = value;
             }
         }
@@ -63,7 +59,10 @@ namespace System.ServiceModel
             set
             {
                 if (!string.IsNullOrEmpty(value))
+                {
                     NamingHelper.CheckUriProperty(value, "Namespace");
+                }
+
                 _ns = value;
             }
         }
@@ -78,16 +77,16 @@ namespace System.ServiceModel
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; } = false;
     }
 }
 

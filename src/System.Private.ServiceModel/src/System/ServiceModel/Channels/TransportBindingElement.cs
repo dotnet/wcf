@@ -57,7 +57,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.ValueMustBeNonNegative));
                 }
                 _maxBufferPoolSize = value;
@@ -75,7 +75,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.ValueMustBePositive));
                 }
                 _maxReceivedMessageSize = value;
@@ -95,12 +95,12 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
             if (typeof(T) == typeof(ChannelProtectionRequirements))
             {
-                ChannelProtectionRequirements myRequirements = this.GetProtectionRequirements(context);
+                ChannelProtectionRequirements myRequirements = GetProtectionRequirements(context);
                 myRequirements.Add(context.GetInnerProperty<ChannelProtectionRequirements>() ?? new ChannelProtectionRequirements());
                 return (T)(object)myRequirements;
             }

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Net.Security;
 using System.ServiceModel.Security;
 
@@ -16,16 +15,10 @@ namespace System.ServiceModel.Description
     [DebuggerDisplay("Name={_name}, Namespace={_ns}, ContractType={_contractType}")]
     public class ContractDescription
     {
-        private Type _callbackContractType;
-        private string _configurationName;
-        private Type _contractType;
         private XmlName _name;
         private string _ns;
-        private OperationDescriptionCollection _operations;
         private SessionMode _sessionMode;
-        private KeyedByTypeCollection<IContractBehavior> _behaviors = new KeyedByTypeCollection<IContractBehavior>();
         private ProtectionLevel _protectionLevel;
-        private bool _hasProtectionLevel;
 
         public ContractDescription(string name)
             : this(name, null)
@@ -35,11 +28,13 @@ namespace System.ServiceModel.Description
         public ContractDescription(string name, string ns)
         {
             // the property setter validates given value
-            this.Name = name;
+            Name = name;
             if (!string.IsNullOrEmpty(ns))
+            {
                 NamingHelper.CheckUriParameter(ns, "ns");
+            }
 
-            _operations = new OperationDescriptionCollection();
+            Operations = new OperationDescriptionCollection();
             _ns = ns ?? NamingHelper.DefaultNamespace; // ns can be ""
         }
 
@@ -49,23 +44,11 @@ namespace System.ServiceModel.Description
         }
 
         [DefaultValue(null)]
-        public string ConfigurationName
-        {
-            get { return _configurationName; }
-            set { _configurationName = value; }
-        }
+        public string ConfigurationName { get; set; }
 
-        public Type ContractType
-        {
-            get { return _contractType; }
-            set { _contractType = value; }
-        }
+        public Type ContractType { get; set; }
 
-        public Type CallbackContractType
-        {
-            get { return _callbackContractType; }
-            set { _callbackContractType = value; }
-        }
+        public Type CallbackContractType { get; set; }
 
         public string Name
         {
@@ -74,13 +57,13 @@ namespace System.ServiceModel.Description
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
 
                 if (value.Length == 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new ArgumentOutOfRangeException("value", SR.SFxContractDescriptionNameCannotBeEmpty));
+                        new ArgumentOutOfRangeException(nameof(value), SR.SFxContractDescriptionNameCannotBeEmpty));
                 }
                 _name = new XmlName(value, true /*isEncoded*/);
             }
@@ -92,15 +75,15 @@ namespace System.ServiceModel.Description
             set
             {
                 if (!string.IsNullOrEmpty(value))
+                {
                     NamingHelper.CheckUriProperty(value, "Namespace");
+                }
+
                 _ns = value;
             }
         }
 
-        public OperationDescriptionCollection Operations
-        {
-            get { return _operations; }
-        }
+        public OperationDescriptionCollection Operations { get; }
 
         public ProtectionLevel ProtectionLevel
         {
@@ -108,21 +91,21 @@ namespace System.ServiceModel.Description
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
         public bool ShouldSerializeProtectionLevel()
         {
-            return this.HasProtectionLevel;
+            return HasProtectionLevel;
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; }
 
         [DefaultValue(SessionMode.Allowed)]
         public SessionMode SessionMode
@@ -132,7 +115,7 @@ namespace System.ServiceModel.Description
             {
                 if (!SessionModeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
                 _sessionMode = value;
@@ -141,19 +124,18 @@ namespace System.ServiceModel.Description
 
         public KeyedCollection<Type, IContractBehavior> ContractBehaviors
         {
-            get { return this.Behaviors; }
+            get { return Behaviors; }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public KeyedByTypeCollection<IContractBehavior> Behaviors
-        {
-            get { return _behaviors; }
-        }
+        public KeyedByTypeCollection<IContractBehavior> Behaviors { get; } = new KeyedByTypeCollection<IContractBehavior>();
 
         public static ContractDescription GetContract(Type contractType)
         {
             if (contractType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractType");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractType));
+            }
 
             TypeLoader typeLoader = new TypeLoader();
             return typeLoader.LoadContractDescription(contractType);
@@ -162,10 +144,14 @@ namespace System.ServiceModel.Description
         public static ContractDescription GetContract(Type contractType, Type serviceType)
         {
             if (contractType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractType");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractType));
+            }
 
             if (serviceType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("serviceType");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(serviceType));
+            }
 
             TypeLoader typeLoader = new TypeLoader();
             ContractDescription description = typeLoader.LoadContractDescription(contractType, serviceType);
@@ -175,10 +161,14 @@ namespace System.ServiceModel.Description
         public static ContractDescription GetContract(Type contractType, object serviceImplementation)
         {
             if (contractType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contractType");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(contractType));
+            }
 
             if (serviceImplementation == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("serviceImplementation");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(serviceImplementation));
+            }
 
             TypeLoader typeLoader = new TypeLoader();
             Type serviceType = serviceImplementation.GetType();
@@ -206,47 +196,50 @@ namespace System.ServiceModel.Description
 
         internal void EnsureInvariants()
         {
-            if (string.IsNullOrEmpty(this.Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
                     SR.AChannelServiceEndpointSContractSNameIsNull0));
             }
-            if (this.Namespace == null)
+            if (Namespace == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
                     SR.AChannelServiceEndpointSContractSNamespace0));
             }
-            if (this.Operations.Count == 0)
+            if (Operations.Count == 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SR.Format(SR.SFxContractHasZeroOperations, this.Name)));
+                    SR.Format(SR.SFxContractHasZeroOperations, Name)));
             }
             bool thereIsAtLeastOneInitiatingOperation = false;
-            for (int i = 0; i < this.Operations.Count; i++)
+            for (int i = 0; i < Operations.Count; i++)
             {
-                OperationDescription operationDescription = this.Operations[i];
+                OperationDescription operationDescription = Operations[i];
                 operationDescription.EnsureInvariants();
                 if (operationDescription.IsInitiating)
+                {
                     thereIsAtLeastOneInitiatingOperation = true;
+                }
+
                 if ((!operationDescription.IsInitiating || operationDescription.IsTerminating)
-                    && (this.SessionMode != SessionMode.Required))
+                    && (SessionMode != SessionMode.Required))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SR.Format(SR.ContractIsNotSelfConsistentItHasOneOrMore2, this.Name)));
+                        SR.Format(SR.ContractIsNotSelfConsistentItHasOneOrMore2, Name)));
                 }
             }
             if (!thereIsAtLeastOneInitiatingOperation)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SR.Format(SR.SFxContractHasZeroInitiatingOperations, this.Name)));
+                    SR.Format(SR.SFxContractHasZeroInitiatingOperations, Name)));
             }
         }
 
         internal bool IsDuplex()
         {
-            for (int i = 0; i < _operations.Count; ++i)
+            for (int i = 0; i < Operations.Count; ++i)
             {
-                if (_operations[i].IsServerInitiated())
+                if (Operations[i].IsServerInitiated())
                 {
                     return true;
                 }

@@ -3,13 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.IdentityModel.Tokens;
-using System.Security.Cryptography;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.ServiceModel.Security.Tokens;
-using System.Xml;
 
 namespace System.ServiceModel.Security
 {

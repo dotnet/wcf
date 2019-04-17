@@ -10,48 +10,32 @@ namespace System.ServiceModel.Channels
 {
     public sealed class AddressingVersion
     {
-        private string _ns;
-        private XmlDictionaryString _dictionaryNs;
-        private MessagePartSpecification _signedMessageParts;
         private string _toStringFormat;
-        private string _anonymous;
-        private XmlDictionaryString _dictionaryAnonymous;
-        private Uri _anonymousUri;
         private Uri _noneUri;
-        private string _faultAction;
         private string _defaultFaultAction;
         private const string AddressingNoneToStringFormat = "AddressingNone ({0})";
         private const string Addressing10ToStringFormat = "Addressing10 ({0})";
         private const string Addressing200408ToStringFormat = "Addressing200408 ({0})";
-
-        private static AddressingVersion s_none = new AddressingVersion(AddressingNoneStrings.Namespace, XD.AddressingNoneDictionary.Namespace,
-            AddressingNoneToStringFormat, new MessagePartSpecification(), null, null, null, null, null);
-
         private static AddressingVersion s_addressing10 = new AddressingVersion(Addressing10Strings.Namespace,
             XD.Addressing10Dictionary.Namespace, Addressing10ToStringFormat, Addressing10SignedMessageParts,
             Addressing10Strings.Anonymous, XD.Addressing10Dictionary.Anonymous, Addressing10Strings.NoneAddress,
             Addressing10Strings.FaultAction, Addressing10Strings.DefaultFaultAction);
         private static MessagePartSpecification s_addressing10SignedMessageParts;
-
-        private static AddressingVersion s_addressing200408 = new AddressingVersion(Addressing200408Strings.Namespace,
-            XD.Addressing200408Dictionary.Namespace, Addressing200408ToStringFormat, Addressing200408SignedMessageParts,
-            Addressing200408Strings.Anonymous, XD.Addressing200408Dictionary.Anonymous, null,
-            Addressing200408Strings.FaultAction, Addressing200408Strings.DefaultFaultAction);
         private static MessagePartSpecification s_addressing200408SignedMessageParts;
 
         private AddressingVersion(string ns, XmlDictionaryString dictionaryNs, string toStringFormat,
             MessagePartSpecification signedMessageParts, string anonymous, XmlDictionaryString dictionaryAnonymous, string none, string faultAction, string defaultFaultAction)
         {
-            _ns = ns;
-            _dictionaryNs = dictionaryNs;
+            Namespace = ns;
+            DictionaryNamespace = dictionaryNs;
             _toStringFormat = toStringFormat;
-            _signedMessageParts = signedMessageParts;
-            _anonymous = anonymous;
-            _dictionaryAnonymous = dictionaryAnonymous;
+            SignedMessageParts = signedMessageParts;
+            Anonymous = anonymous;
+            DictionaryAnonymous = dictionaryAnonymous;
 
             if (anonymous != null)
             {
-                _anonymousUri = new Uri(anonymous);
+                AnonymousUri = new Uri(anonymous);
             }
 
             if (none != null)
@@ -59,30 +43,25 @@ namespace System.ServiceModel.Channels
                 _noneUri = new Uri(none);
             }
 
-            _faultAction = faultAction;
+            FaultAction = faultAction;
             _defaultFaultAction = defaultFaultAction;
         }
 
 
-        public static AddressingVersion WSAddressingAugust2004
-        {
-            get { return s_addressing200408; }
-        }
+        public static AddressingVersion WSAddressingAugust2004 { get; } = new AddressingVersion(Addressing200408Strings.Namespace,
+            XD.Addressing200408Dictionary.Namespace, Addressing200408ToStringFormat, Addressing200408SignedMessageParts,
+            Addressing200408Strings.Anonymous, XD.Addressing200408Dictionary.Anonymous, null,
+            Addressing200408Strings.FaultAction, Addressing200408Strings.DefaultFaultAction);
 
         public static AddressingVersion WSAddressing10
         {
             get { return s_addressing10; }
         }
 
-        public static AddressingVersion None
-        {
-            get { return s_none; }
-        }
+        public static AddressingVersion None { get; } = new AddressingVersion(AddressingNoneStrings.Namespace, XD.AddressingNoneDictionary.Namespace,
+            AddressingNoneToStringFormat, new MessagePartSpecification(), null, null, null, null, null);
 
-        internal string Namespace
-        {
-            get { return _ns; }
-        }
+        internal string Namespace { get; }
 
         private static MessagePartSpecification Addressing10SignedMessageParts
         {
@@ -130,25 +109,13 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        internal XmlDictionaryString DictionaryNamespace
-        {
-            get { return _dictionaryNs; }
-        }
+        internal XmlDictionaryString DictionaryNamespace { get; }
 
-        internal string Anonymous
-        {
-            get { return _anonymous; }
-        }
+        internal string Anonymous { get; }
 
-        internal XmlDictionaryString DictionaryAnonymous
-        {
-            get { return _dictionaryAnonymous; }
-        }
+        internal XmlDictionaryString DictionaryAnonymous { get; }
 
-        internal Uri AnonymousUri
-        {
-            get { return _anonymousUri; }
-        }
+        internal Uri AnonymousUri { get; }
 
         internal Uri NoneUri
         {
@@ -156,22 +123,14 @@ namespace System.ServiceModel.Channels
         }
 
         internal string FaultAction   // the action for addressing faults
-        {
-            get { return _faultAction; }
-        }
+        { get; }
 
         internal string DefaultFaultAction  // a default string that can be used for non-addressing faults
         {
             get { return _defaultFaultAction; }
         }
 
-        internal MessagePartSpecification SignedMessageParts
-        {
-            get
-            {
-                return _signedMessageParts;
-            }
-        }
+        internal MessagePartSpecification SignedMessageParts { get; }
 
         public override string ToString()
         {

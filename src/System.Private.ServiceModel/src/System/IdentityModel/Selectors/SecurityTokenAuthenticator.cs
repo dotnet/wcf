@@ -20,16 +20,16 @@ namespace System.IdentityModel.Selectors
         {
             if (token == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
             }
-            return this.CanValidateTokenCore(token);
+            return CanValidateTokenCore(token);
         }
 
         public ReadOnlyCollection<IAuthorizationPolicy> ValidateToken(SecurityToken token)
         {
             if (token == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
             }
             if (!CanValidateToken(token))
             {

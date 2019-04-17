@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -58,9 +58,18 @@ namespace System.Runtime
                 var tuple = obj as Tuple<TaskCompletionSource<TResult>, AsyncCallback>;
                 var tcsObj = tuple.Item1;
                 var callbackObj = tuple.Item2;
-                if (antecedent.IsFaulted) tcsObj.TrySetException(antecedent.Exception.InnerException);
-                else if (antecedent.IsCanceled) tcsObj.TrySetCanceled();
-                else tcsObj.TrySetResult(antecedent.Result);
+                if (antecedent.IsFaulted)
+                {
+                    tcsObj.TrySetException(antecedent.Exception.InnerException);
+                }
+                else if (antecedent.IsCanceled)
+                {
+                    tcsObj.TrySetCanceled();
+                }
+                else
+                {
+                    tcsObj.TrySetResult(antecedent.Result);
+                }
 
                 if (callbackObj != null)
                 {
@@ -145,6 +154,62 @@ namespace System.Runtime
             Task task = iar as Task;
             Contract.Assert(task != null, "IAsyncResult must be an instance of Task");
             task.GetAwaiter().GetResult();
+        }
+
+        // Helper method similar to TaskFactory.FromAsync but supports End methods which have an out parameter.
+        public delegate TResult EndWithOutDelegate<T1, TResult>(IAsyncResult iar, out T1 arg1);
+        public static Task<(TOut1, TOut2)> FromAsync<TIn, TOut1, TOut2>(Func<TIn, AsyncCallback, object, IAsyncResult> beginDelegate, EndWithOutDelegate<TOut2, TOut1> endDelegate, TIn arg1, object state)
+        {
+            var tcs = new TaskCompletionSource<(TOut1, TOut2)>(state);
+            try
+            {
+                beginDelegate(arg1, iar =>
+                {
+                    var tuple = iar.AsyncState as Tuple<EndWithOutDelegate<TOut2, TOut1>, TaskCompletionSource<(TOut1, TOut2)>>;
+                    var end = tuple.Item1;
+                    var taskcs = tuple.Item2;
+                    try
+                    {
+                        TOut2 out2;
+                        TOut1 out1 = end(iar, out out2);
+                        taskcs.TrySetResult((out1, out2));
+                    }
+                    catch (Exception e)
+                    {
+                        taskcs.TrySetException(e);
+                    }
+                }, Tuple.Create(endDelegate, tcs));
+            }
+            catch (Exception e)
+            {
+                tcs.TrySetException(e);
+            }
+
+            return tcs.Task;
+        }
+
+        public static Task CloseHelperAsync(this ICommunicationObject communicationObject, TimeSpan timeout)
+        {
+            if (communicationObject is IAsyncCommunicationObject)
+            {
+                return ((IAsyncCommunicationObject)communicationObject).CloseAsync(timeout);
+            }
+            else
+            {
+                return Task.Factory.FromAsync(communicationObject.BeginClose, communicationObject.EndClose, timeout, null);
+            }
+        }
+
+        public static Task OpenHelperAsync(this ICommunicationObject communicationObject, TimeSpan timeout)
+        {
+            if (communicationObject is IAsyncCommunicationObject)
+            {
+                return ((IAsyncCommunicationObject)communicationObject).OpenAsync(timeout);
+            }
+            else
+            {
+                return Task.Factory.FromAsync(communicationObject.BeginOpen, communicationObject.EndOpen, timeout, null);
+            }
         }
 
         // Awaitable helper to await a maximum amount of time for a task to complete. If the task doesn't

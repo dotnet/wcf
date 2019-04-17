@@ -6,7 +6,6 @@
 using System.Net;
 using System.Net.Security;
 using System.Net.WebSockets;
-using System.Runtime;
 using System.Security.Authentication;
 using System.Security.Principal;
 using System.ServiceModel.Security;
@@ -68,7 +67,9 @@ namespace System.ServiceModel.Channels
             for (int i = 0; i < supportedEncodings.Length; i++)
             {
                 if (charSet == supportedEncodings[i].WebName)
+                {
                     return;
+                }
             }
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageTextEncodingNotSupported, charSet), "encoding"));
         }
@@ -81,10 +82,14 @@ namespace System.ServiceModel.Channels
             {
                 Encoding enc = charSetEncodings[i].Encoding;
                 if (enc == null)
+                {
                     continue;
+                }
 
                 if (enc.WebName == webName)
+                {
                     return charSetEncodings[i].CharSet;
+                }
             }
             return null;
         }
@@ -108,7 +113,9 @@ namespace System.ServiceModel.Channels
             {
                 string compare = charSetEncodings[i].CharSet;
                 if (compare == null)
+                {
                     continue;
+                }
 
                 if (compare.Equals(charSet, StringComparison.OrdinalIgnoreCase))
                 {
